@@ -168,5 +168,7 @@ The first command shows what was defined in `lib/ag-solo/vats/vat-demo.js` as `c
 `history[3]!guess(14)` is a losing guess
 `history[3]!guess(37)` is a winning guess
 
-Congratulations! You've successfully
+Congratulations! You've successfully written a smart contract in JavaScript and run it in a solo node
+
+In the next steps, we'll discover how to make **more interesting contracts** and **how to run them in a proper blockchain**
 
