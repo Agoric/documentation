@@ -99,22 +99,20 @@ import harden from '@agoric/harden';
 import guess37ContractSource from '../../contracts/guess37.js'
 
 function build(E, log) {
-  let sharedPlayerInvite 
-  let sharedHost
+  let sharedGame
 
   async function startup(host) {
 
     const guess37Installation = await E(host).install({start: guess37ContractSource})
     const { playerInvite } = await E(guess37Installation).spawn()
+    const game = await E(host).redeem(playerInvite)
 
-    sharedPlayerInvite = playerInvite
-    sharedHost = host
+    sharedGame = game
   }
 
   async function createDemoClientBundle() {
     const chainBundle = {
-      playerInvite: sharedPlayerInvite,
-      host: sharedHost
+      game: sharedGame
     };
     return harden(chainBundle);
   }
@@ -152,23 +150,22 @@ TODO : provide a proper UI
 In the REPL, try the following commands in the same order:
 ```
 home
-home!playerInvite
-home!host
-history[2]!redeem(history[1])
-history[3]!guess(14)
-history[3]!guess(37)
+home!game!guess(14)
+home!game!guess(37)
 ```
 
-The first command shows what was defined in `lib/ag-solo/vats/vat-demo.js` as `chainBundle`
+The first `home` command shows what was defined in `lib/ag-solo/vats/vat-demo.js` as `chainBundle`
 
-`home!playerInvite` and `home!host` put these values in the `history` "array"
+`home!game!guess(14)` is a losing guess
+`home!game!guess(37)` is a winning guess
 
-`history[2]!redeem(history[1])` puts in `history[3]` the `seat` value of the contract (API to participate to the game)
+As you have guessed (pun intended!), `guess` refers to the function with the same name defined in the contract
 
-`history[3]!guess(14)` is a losing guess
-`history[3]!guess(37)` is a winning guess
+<small>
+TODO : explain infix-bang syntax
+</small>
 
-Congratulations! You've successfully written a smart contract in JavaScript and run it in a solo node
+**Congratulations!**\
+You've successfully written a smart contract in JavaScript and run it in a solo node
 
 In the next steps, we'll discover how to make **more interesting contracts** and **how to run them in a proper blockchain**
-
