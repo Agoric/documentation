@@ -82,7 +82,7 @@ function guess37Contract(terms, inviteMaker){
 export default guess37Contract.toString()
 ```
 
-The contract is materialized by the source code of the `start` function. JavaScript enables to retrieve the source code of a function by calling [toString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/toString) on the function
+The contract is materialized by the source code of the `start` function. JavaScript makes it possible to retrieve the source code of a function by calling [toString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/toString) on the function
 
 <small>
 TODO a documentation of the contract format
