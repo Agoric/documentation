@@ -7,6 +7,7 @@ It is meant to work like a wiki
 Here are a couple of rules to follow:
 - The content must be written in **English**
 - The content must be written in **markdown** (`.md` file extension)
+- Code samples should adhere to Agoric formatting rules. They can be found in the form of a [prettier config](https://github.com/Agoric/new-repo/blob/master/.prettierrc.json) and [eslint config](https://github.com/Agoric/new-repo/blob/master/.eslintrc.js)
 
 If it's your first contribution, it will go through a [pull request](https://help.github.com/en/articles/about-pull-requests#about-pull-requests) process, that is, someone will need to review and accept your changes first
 
