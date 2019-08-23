@@ -135,7 +135,7 @@ export default function setup(syscall, state, helpers) {
 
 [Run "scenario 3"](https://github.com/Agoric/cosmic-swingset#scenario-3--no-testnet-develop-off-chain-demo)
 
-```js
+```sh
 make scenario3-setup
 make scenario3-run-client
 ```
