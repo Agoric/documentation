@@ -11,6 +11,8 @@ The way it does it is by making easy to write secure smart contracts and making 
 
 Agoric works to make [ECMAScript](https://www.ecma-international.org/publications/standards/Ecma-262.htm) (standard defining JavaScript) a suitable language for easily expressing secure smart contracts. Agoric works with ECMA TC39 (which includes browser makers and Node.js representatives) in that direction
 
+Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc53.htm) to make [SES](https://github.com/Agoric/SES) the JavaScript for embedded devices
+
 
 #### Long term
 
