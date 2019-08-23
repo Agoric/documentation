@@ -41,12 +41,14 @@ ERTP provides well-designed and carefully reviewed smart contract building block
 
 ### Blockchains
 
-Various blockchains with various trade-offs exist and are created. Agoric does not develop its own blockchain technology, but rather builds on top of existing blockchains
+Various blockchains with various trade-offs exist and are created. Agoric does not develop its own blockchain *consensus* technology, but rather builds on top of existing blockchains
 
 
 #### Long-term
 
 Agoric aims at running its smart contract technology on top of all widely used blockchains.
+
+Agoric will also produce a blockchain using the [Tendermint](https://tendermint.com/docs/introduction/what-is-tendermint.html) consensus integrated with Cosmos and the larger Cosmos ecosystem
 
 
 #### Short-term
