@@ -67,19 +67,20 @@ touch contracts/guess37.js
 
 - copy/paste the following code in the file:
 ```js
-function guess37Contract(terms, inviteMaker){
-    const seat = harden({
-        guess(attempt) {
-            return attempt === 37 ? 'you win' : 'you lose';
-        }
-    });
+function guess37Contract(terms, inviteMaker) {
+  const seat = harden({
+    guess(attempt) {
+      return attempt === 37 ? 'you win' : 'you lose';
+    },
+  });
 
-    return harden({
-        playerInvite: inviteMaker.make('player', seat),
-    });
+  return harden({
+    playerInvite: inviteMaker.make('player', seat),
+  });
 }
 
-export default guess37Contract.toString()
+export default guess37Contract.toString();
+
 ```
 
 The contract is materialized by the source code of the `start` function. JavaScript makes it possible to retrieve the source code of a function by calling [toString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/toString) on the function
@@ -96,23 +97,24 @@ Change the content of `lib/ag-solo/vats/vat-demo.js` to be the following:
 
 ```js
 import harden from '@agoric/harden';
-import guess37ContractSource from '../../contracts/guess37.js'
+import guess37ContractSource from '../../contracts/guess37.js';
 
 function build(E, log) {
-  let sharedGame
+  let sharedGame;
 
   async function startup(host) {
+    const guess37Installation = await E(host).install({
+      start: guess37ContractSource,
+    });
+    const { playerInvite } = await E(guess37Installation).spawn();
+    const game = await E(host).redeem(playerInvite);
 
-    const guess37Installation = await E(host).install({start: guess37ContractSource})
-    const { playerInvite } = await E(guess37Installation).spawn()
-    const game = await E(host).redeem(playerInvite)
-
-    sharedGame = game
+    sharedGame = game;
   }
 
   async function createDemoClientBundle() {
     const chainBundle = {
-      game: sharedGame
+      game: sharedGame,
     };
     return harden(chainBundle);
   }
@@ -128,6 +130,7 @@ export default function setup(syscall, state, helpers) {
     helpers.vatID,
   );
 }
+
 ```
 
 
