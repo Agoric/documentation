@@ -27,7 +27,7 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 - Tooling
         - [Safe modules](https://github.com/Agoric/safe-modules)
             - [TOFU (Trust On First Use)](https://github.com/bmeck/tofu/)
-- [Jessie](https://github.com/Agoric/Jessie), a subset of JavaScript that enables easily writing of deterministic smart contracts. Jessie is intended to be interpreted (directly or after compilation) into blockchain virtual machines instruction set
+- [Jessie](https://github.com/Agoric/Jessie), a subset of JavaScript that enables easily writing of deterministic smart contracts
     - [eslint-config-jessie](https://github.com/Agoric/eslint-config-jessie) is an [ESLint](https://eslint.org/) plugin that enforces that some JavaScript files are valid Jessie
 - [SES](https://github.com/Agoric/SES), a secure JavaScript runtime to run untrusted code
 
