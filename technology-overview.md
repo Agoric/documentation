@@ -69,14 +69,11 @@ It is planned to enable smart contracts running across different blockchains. To
 
 ### Vat
 
-A central concept to Agoric's technical stack is the **vat**. A vat is a unit of computation running JavaScript
+A central abstraction to Agoric's technical stack is the **vat**. A vat is a unit of computation running JavaScript
 
-A vat is the moral equivalent of a Unix process. It has its **own memory space** separate from other vats, but can communicate with other vats via **message passing**
+A vat is the equivalent of a Unix process. It has its **own memory space** separate from other vats, and can communicate with other vats via **message passing**
 
-Agoric has developed a framework to create and manage vats called [Swingset](https://github.com/Agoric/swingset). Among other things, vats created with Swingset have **persistent state**. This means that they can be shut down and restarted. They can be restarted on the same machine or on a different machine.
+A vat can run on a single physical machine. Agoric's framework for vats running on single machines is called [Swingset](https://github.com/Agoric/swingset)\
+A vat can also run on a blockchain. Agoric's work to run a vat on a blockchain can be found in the [cosmic-swingset repo](https://github.com/Agoric/cosmic-swingset/)
 
-One physical machine can host and run several vats\
-Agoric works so that blockchains can be valid and interoperable vat environments. Currently this work is done in the [cosmic-swingset repo](https://github.com/Agoric/cosmic-swingset/). Each blockchain would play the role of one virtual machine in which instructions are run by different machines reaching consensus towards the next machine state
-
-
-
+Vats communicating with one another are unaware of whether the other vats run on single machines or on blockchains
