@@ -136,7 +136,7 @@ TODO : explain infix-bang syntax
 **Congratulations!**\
 You've successfully written a smart contract in JavaScript and run it in a solo node
 
-In the next steps, we'll discover how to make **more interesting contracts** and **how to run them in a proper blockchain**
+In the next steps, we'll discover how to make [more interesting contracts](./smart-contracts-tutorial/terms-and-invitation.md) and **how to run them in a proper blockchain**
 
 
 ## Code breakdown
