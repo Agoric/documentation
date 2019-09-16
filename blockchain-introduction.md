@@ -30,6 +30,6 @@ Since all the purple nodes are aimed at being the same machine, this virtual mac
 
 ![A blockchain represented as a stack of validators and the same solo nodes](./images/simplified-blockchain-solo-nodes.svg)
 
-It is usually related to the identity of a single user. The user has an interface to communicate with this solo node
+A solo node is usually related to the identity of a **single user**. The user has an **interface** to communicate with this solo node
 
 ![A blockchain connected to a solo node connected to a web browser used by a human being](./images/blockchain-solo-nodes-web-browser-user.svg)
