@@ -2,7 +2,7 @@
 
 [Agoric](https://agoric.com/about/) aims at enabling safe cooperation among otherwise mutually suspicious parties
 
-The way it does it is by making easy to write secure smart contracts and making it possible to run these contracts on one or several blockchains. Agoric strategy to writing smart contract is to write them in JavaScript using a framework called ERTP (Electronic Rights Transfer Protocol)
+The way it does it is by making it easy to write secure smart contracts and making it possible to run these contracts on one or several blockchains. Agoric strategy to writing smart contracts is to write them in JavaScript using a framework called ERTP (Electronic Rights Transfer Protocol)
 
 
 ## High-level view
@@ -27,7 +27,7 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 - Tooling
         - [Safe modules](https://github.com/Agoric/safe-modules)
             - [TOFU (Trust On First Use)](https://github.com/bmeck/tofu/)
-- [Jessie](https://github.com/Agoric/Jessie), a subset of JavaScript that enables easily writing of deterministic smart contracts
+- [Jessie](https://github.com/Agoric/Jessie), a subset of JavaScript that simplifies writing of deterministic smart contracts
     - [eslint-config-jessie](https://github.com/Agoric/eslint-config-jessie) is an [ESLint](https://eslint.org/) plugin that enforces that some JavaScript files are valid Jessie
 - [SES](https://github.com/Agoric/SES), a secure JavaScript runtime to run untrusted code
 
