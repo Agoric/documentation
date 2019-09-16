@@ -65,7 +65,7 @@ It is planned to enable smart contracts running across different blockchains. To
 *(soon)*
 
 
-## Detailed view
+## Useful concepts
 
 ### Vat
 
@@ -77,3 +77,5 @@ A vat can run on a single physical machine. Agoric's framework for vats running 
 A vat can also run on a blockchain. Agoric's work to run a vat on a blockchain can be found in the [cosmic-swingset repo](https://github.com/Agoric/cosmic-swingset/)
 
 Vats communicating with one another are unaware of whether the other vats run on single machines or on blockchains
+
+Vats are not a new concept. More can be read about [vats original definition on erights.com](http://erights.org/elib/concurrency/vat.html).
