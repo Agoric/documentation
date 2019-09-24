@@ -1,6 +1,6 @@
 # Technology overview
 
-[Agoric](https://agoric.com/about/) aims at enabling safe cooperation among otherwise mutually suspicious parties
+[Agoric](https://agoric.com/about/) aims at enabling safe cooperation among mutually suspicious parties
 
 The way it does it is by making it easy to write secure smart contracts and making it possible to run these contracts on one or several blockchains. Agoric strategy to writing smart contracts is to write them in JavaScript using a framework called ERTP (Electronic Rights Transfer Protocol)
 
@@ -19,6 +19,9 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 - [Realms](https://github.com/tc39/proposal-realms)
 - [Eventual-send operator](https://github.com/Agoric/proposal-infix-bang)
 - [WeakRefs](https://github.com/tc39/proposal-weakrefs/)
+- Jessie, a subset of JavaScript that simplifies writing of deterministic smart contracts
+    - eslint-config-jessie (v1+)
+- SES (v1+), a secure JavaScript runtime to run untrusted code
 
 
 #### Short term
@@ -27,9 +30,9 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 - Tooling
         - [Safe modules](https://github.com/Agoric/safe-modules)
             - [TOFU (Trust On First Use)](https://github.com/bmeck/tofu/)
-- [Jessie](https://github.com/Agoric/Jessie), a subset of JavaScript that simplifies writing of deterministic smart contracts
-    - [eslint-config-jessie](https://github.com/Agoric/eslint-config-jessie) is an [ESLint](https://eslint.org/) plugin that enforces that some JavaScript files are valid Jessie
-- [SES](https://github.com/Agoric/SES), a secure JavaScript runtime to run untrusted code
+- [Jessie prototype](https://github.com/Agoric/Jessie), a subset of JavaScript that simplifies writing of deterministic smart contracts
+    - [eslint-config-jessie (v0.x)](https://github.com/Agoric/eslint-config-jessie) is an [ESLint](https://eslint.org/) plugin that enforces that some JavaScript files are valid Jessie
+- [SES prototype (v0.x)](https://github.com/Agoric/SES), a secure JavaScript runtime to run untrusted code
 
 
 ### Smart Contracts in JavaScript
