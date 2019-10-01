@@ -1,17 +1,17 @@
 # Technology overview
 
-[Agoric](https://agoric.com/about/) aims at enabling safe cooperation among mutually suspicious parties
+[Agoric](https://agoric.com/about/) enables safe cooperation among mutually suspicious parties
 
-The way it does it is by making it easy to write secure smart contracts and making it possible to run these contracts on one or several blockchains. Agoric strategy to writing smart contracts is to write them in JavaScript using a framework called ERTP (Electronic Rights Transfer Protocol)
+It does this by making it easier to write secure smart contracts and making it possible to run these contracts on one or several blockchains. Agoric strategy to writing smart contracts is to write them in JavaScript using a framework called ERTP (Electronic Rights Transfer Protocol)
 
 
 ## High-level view
 
 ### JavaScript
 
-Agoric works to make [ECMAScript](https://www.ecma-international.org/publications/standards/Ecma-262.htm) (standard defining JavaScript) a suitable language for easily expressing secure smart contracts. Agoric works with ECMA TC39 (which includes browser makers and Node.js representatives) in that direction
+Agoric makes [ECMAScript](https://www.ecma-international.org/publications/standards/Ecma-262.htm) (the standards name for JavaScript) a suitable language for easily expressing secure smart contracts. Agoric participates in ECMA TC39 (the JavaScript standards committee) in that direction
 
-Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc53.htm) to make [SES](https://github.com/Agoric/SES) the JavaScript for embedded devices
+Agoric also participates in [ECMA TC53](https://www.ecma-international.org/memento/tc53.htm) which builds on [SES](https://github.com/Agoric/SES) as the JavaScript standard for embedded devices
 
 
 #### Long term
@@ -19,7 +19,7 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 - [Realms](https://github.com/tc39/proposal-realms)
 - [Eventual-send operator](https://github.com/Agoric/proposal-infix-bang)
 - [WeakRefs](https://github.com/tc39/proposal-weakrefs/)
-- Jessie, a subset of JavaScript that simplifies writing of deterministic smart contracts
+- Jessie, a subset of JavaScript that simplifies writing of reliable smart contracts
     - eslint-config-jessie (v1+)
 - SES (v1+), a secure JavaScript runtime to run untrusted code
 
@@ -30,7 +30,7 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 - Tooling
         - [Safe modules](https://github.com/Agoric/safe-modules)
             - [TOFU (Trust On First Use)](https://github.com/bmeck/tofu/)
-- [Jessie prototype](https://github.com/Agoric/Jessie), a subset of JavaScript that simplifies writing of deterministic smart contracts
+- [Jessie prototype](https://github.com/Agoric/Jessie), a subset of JavaScript that simplifies writing of reliable smart contracts
     - [eslint-config-jessie (v0.x)](https://github.com/Agoric/eslint-config-jessie) is an [ESLint](https://eslint.org/) plugin that enforces that some JavaScript files are valid Jessie
 - [SES prototype (v0.x)](https://github.com/Agoric/SES), a secure JavaScript runtime to run untrusted code
 
@@ -39,7 +39,7 @@ Agoric also works with [ECMA TC53](https://www.ecma-international.org/memento/tc
 
 Agoric works on [ERTP](https://github.com/Agoric/ERTP) (Electronic Rights Transfer Protocol), a framework to express secure smart contracts
 
-ERTP is to writing smart contracts in JavaScript what React is to write user interfaces in plain DOM
+ERTP is to writing smart contracts in JavaScript what [React](https://reactjs.org/) is to write user interfaces in plain DOM or what [express](https://expressjs.com/) is to writing a web server in Node.js
 
 ERTP provides well-designed and carefully reviewed smart contract building blocks as well as examples of how they can be used to build complex smart contracts
 
