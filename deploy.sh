@@ -4,7 +4,7 @@
 set -e
 
 # build
-npm run ertp:build
+npm run docs-ertp:build
 
 # navigate into the build output directory
 cd ertp/.vuepress/dist
