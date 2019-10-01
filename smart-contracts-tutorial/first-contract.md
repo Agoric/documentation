@@ -23,10 +23,8 @@ echo $PWD
 # (optional) create a git branch
 # git branch -c my-contract-tutorial
 
-# Create a directory for the contract
-mkdir contracts
 # Create the contract file
-touch contracts/guess37.js
+touch lib/ag-solo/vats/guess37-contract.js
 ```
 
 - copy/paste the following code in the file:
@@ -62,7 +60,7 @@ Change the content of `lib/ag-solo/vats/vat-pixel.js` to be the following:
 
 ```js
 import harden from '@agoric/harden';
-import guess37ContractSource from '../../contracts/guess37.js';
+import guess37ContractSource from './guess37-contract.js';
 
 function build(E, log) {
   let sharedGame;
@@ -190,7 +188,7 @@ This code is exactly the same code as above, but it's heavily commented in order
 // See https://github.com/Agoric/harden for details
 import harden from '@agoric/harden';
 // This inline imports to contract source code string and puts it in the `guess37ContractSource` variable
-import guess37ContractSource from '../../contracts/guess37.js';
+import guess37ContractSource from './guess37-contract.js';
 
 /*
 
