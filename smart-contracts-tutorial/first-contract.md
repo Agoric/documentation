@@ -50,15 +50,15 @@ export default guess37Contract.toString();
 
 The contract is materialized by the source code of the `start` function. JavaScript makes it possible to retrieve the source code of a function by calling [toString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/toString) on the function
 
-<small>
+```
 TODO a documentation of the contract format
 - Explain the contract host
     - Explain `terms` and `inviteMaker` arguments
 - Explain the [provided top-level variables](https://github.com/Agoric/ERTP/blob/8f42af53581821bb16a9f4e3d62603833354ef8b/core/contractHost.js#L53-L63)
 - Explain Jessie
-</small>
+```
 
-Change the content of `lib/ag-solo/vats/vat-demo.js` to be the following:
+Change the content of `lib/ag-solo/vats/vat-pixel.js` to be the following:
 
 ```js
 import harden from '@agoric/harden';
@@ -77,14 +77,14 @@ function build(E, log) {
     sharedGame = game;
   }
 
-  async function createDemoClientBundle() {
+  async function createPixelBundle() {
     const chainBundle = {
       game: sharedGame,
     };
     return harden(chainBundle);
   }
 
-  return harden({ startup, createDemoClientBundle });
+  return harden({ startup, createPixelBundle });
 }
 
 export default function setup(syscall, state, helpers) {
@@ -110,28 +110,28 @@ make scenario3-run-client
 
 Open a web browser to http://localhost:8000/
 
-<small>
+```
 currently, this is the UI of the Pixel Gallery demo
 TODO : provide a proper UI
-</small>
+```
 
 In the REPL, try the following commands in the same order:
 ```
 home
-home!game!guess(14)
-home!game!guess(37)
+home~.game~.guess(14)
+home~.game~.guess(37)
 ```
 
 The first `home` command shows what was defined in `lib/ag-solo/vats/vat-demo.js` as `chainBundle`
 
-`home!game!guess(14)` is a losing guess
-`home!game!guess(37)` is a winning guess
+`home~.game~.guess(14)` is a losing guess
+`home~.game~.guess(37)` is a winning guess
 
 As you have guessed (pun intended!), `guess` refers to the function with the same name defined in the contract
 
-<small>
-TODO : explain infix-bang syntax
-</small>
+```
+TODO : explain ~. syntax
+```
 
 **Congratulations!**\
 You've successfully written a smart contract in JavaScript and run it in a solo node
@@ -223,7 +223,7 @@ function build(E, log) {
     sharedGame = game;
   }
 
-  async function createDemoClientBundle() {
+  async function createPixelBundle() {
     // This object is what will be exposed in the client-side.
     // when you type "home" and see a "game" property, it's this one!
     const chainBundle = {
@@ -232,7 +232,7 @@ function build(E, log) {
     return harden(chainBundle);
   }
 
-  return harden({ startup, createDemoClientBundle });
+  return harden({ startup, createPixelBundle });
 }
 
 export default function setup(syscall, state, helpers) {
