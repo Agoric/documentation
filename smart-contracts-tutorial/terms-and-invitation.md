@@ -40,9 +40,7 @@ function build(E, log) {
     });
     // aside from naming changes, only this line changed with terms argument to `.spawn`
     const { playerInvite } = await E(guessInstallation).spawn({toGuess: 94});
-    const game = await E(host).redeem(playerInvite);
-
-    sharedGame = game;
+    sharedGame = await E(host).redeem(playerInvite);
   }
 
   async function createDemoClientBundle() {

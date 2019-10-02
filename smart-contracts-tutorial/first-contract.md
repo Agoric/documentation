@@ -70,9 +70,7 @@ function build(E, log) {
       start: guess37ContractSource,
     });
     const { playerInvite } = await E(guess37Installation).spawn();
-    const game = await E(host).redeem(playerInvite);
-
-    sharedGame = game;
+    sharedGame = await E(host).redeem(playerInvite);
   }
 
   async function createPixelBundle() {
@@ -122,7 +120,7 @@ home~.game~.guess(37)
 
 The first `home` command shows what was defined in `lib/ag-solo/vats/vat-demo.js` as `chainBundle`
 
-`home~.game~.guess(14)` is a losing guess
+`home~.game~.guess(14)` is a losing guess\
 `home~.game~.guess(37)` is a winning guess
 
 As you have guessed (pun intended!), `guess` refers to the function with the same name defined in the contract
@@ -146,12 +144,13 @@ This code is exactly the same code as above, but it's heavily commented in order
 ```js
 /*
 
-The first thing you see is a function declaration. This function will be the "start" function that starts the contract
+The first thing you see is a function declaration. This function will be used as the "start" function
+used in the call to contractHost.install
 The contract function arguments are:
 - `terms`, which can be any JavaScript value (number, string, object, array, etc.).
 In this specific contract, for the sake of simplicity, the "terms" argument is unused
-- `inviteMaker` is an object with a `make(description, seat)` function. It is used to create "invites" to the contract
-invites are explained later
+- `inviteMaker` is an object with a `make(description, seat)` function. It is used to create "invites"
+to the contract invites are explained later
 
 */
 function guess37Contract(terms, inviteMaker) {
@@ -194,19 +193,24 @@ import guess37ContractSource from './guess37-contract.js';
 
 `build` and its `E` and `log` arguments as well as the `setup` function below are part of the vats API
 This is all defined in https://github.com/Agoric/swingset
-The only important part is that `E` is a function that gives access to remote objects in a way that's convenient to write. The remote object is called a "presence"
+The only important part is that `E` is a function that gives access to remote objects in a way that's 
+convenient to write. The remote object is called a "presence"
 Eventually, this pattern will be replace by the future infix-bang syntax https://github.com/Agoric/proposal-infix-bang
 
 As far as swingset is concerned, the `build` function can return anything. 
-For the purpose of usage by cosmic-swingset (https://github.com/Agoric/cosmic-swingset), the `build` function of the demo vat is expected to return an object with 2 functions `startup` and `createDemoClientBundle`. Each function is always called only once and always `startup` first, then `createDemoClientBundle`
+For the purpose of usage by cosmic-swingset (https://github.com/Agoric/cosmic-swingset), the `build` 
+function of the demo vat is expected to return an object with 2 functions `startup` and 
+`createPixelBundle`. Each function is always called only once and always `startup`
+first, then `createPixelBundle`
 
 */
 function build(E, log) {
-  // this variable is shared by both functions, initialized in startup and used in createDemoClientBundle
+  // this variable is shared by both functions, initialized in startup and used in createPixelBundle
   let sharedGame;
 
   // the startup function is passed an object representing a presence of the contract host
-  // The contract host runs in a differ vat. At some point in this tutorial, this different vat will be executed by a blockchain
+  // The contract host runs in a different vat. At some point in this tutorial, this different vat will 
+  // be executed by a blockchain
   async function startup(host) {
     // installing the contract...
     const guess37Installation = await E(host).install({
@@ -216,9 +220,7 @@ function build(E, log) {
     // (spawn takes an optional argument which is the contracts `terms`, but we're not using them here)
     const { playerInvite } = await E(guess37Installation).spawn();
     // Using the invite, let's ask the seat to the contract host
-    const game = await E(host).redeem(playerInvite);
-
-    sharedGame = game;
+    sharedGame = await E(host).redeem(playerInvite);
   }
 
   async function createPixelBundle() {
