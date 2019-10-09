@@ -2,14 +2,11 @@
 
 ERTP utility functions can be imported from `/utils`.
 
-## makePromise
-
-- **Arguments:**
-  - None
-
-- **Usage:**
+## makePromise()
 
 Sets a variable to be an ocap-safe `Promise`.
+
+**Returns:** Promise
 
 ```js
 import { makePromise } from '../util/makePromise';
@@ -17,15 +14,11 @@ import { makePromise } from '../util/makePromise';
 const winnings = makePromise();
 ```
 
-### makePromise.res
+### makePromise.res(value)
 
-- **Arguments:**
-  - `{Any}` - value
-    -  Argument to be resolved by this `Promise`. Can also be a `Promise` or a thenable to resolve.
+- `value` `{Any}` - Argument to be resolved by this `Promise`. Can also be a `Promise` or a thenable to resolve.
 
-- **Usage:**
-
-Return a `Promise`-like object that is resolved with the given `value`.
+**Returns:** `Promise` that is resolved with the given `value`.
 
 ```js
 import { makePromise } from '../util/makePromise';
@@ -46,15 +39,11 @@ function makeTransfer(amount, srcPaymentP) {
   });
 ```
 
-### makePromise.reject
+### makePromise.reject(reason)
 
-- **Arguments:**
-  - `{Any}` - reason
-    - Reason why this `Promise` was rejected
+- reason - `{Any}` - Reason why this `Promise` was rejected
 
-- **Usage:**
-
-Returns a `Promise` object that is rejected with a given reason.
+**Returns:** a `Promise` object that is rejected with a given reason.
 
 ```js
 function makeTransfer(amount, srcPaymentP) {
@@ -84,12 +73,9 @@ function makeTransfer(amount, srcPaymentP) {
 }
 ```
 
-## allSettled
+## allSettled([Promises])
 
-- **Arguments:**
-  - `{Iterable[Promises]}` - promises
-
-- **Usage:**
+- promises - `{Iterable[Promises]}`
 
 Takes in an iterable of `Promises` or eventuals, and waits for them to resolve.
 
@@ -126,10 +112,7 @@ function makeCollect(E, log) {
 
 `Emap` is an abstract superclass with query-only methods. It encapsulates an iterable.
 
-- **Arguments:**
-  - `{Iterable}` - optIterable
-
-- **Usage:**
+- optIterable- `{Iterable}` - optIterable
 
 ```js
 // create constructor
