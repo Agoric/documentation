@@ -1,4 +1,56 @@
-# Assay
+# Mint
+
+## makeMint
+
+### makeMint(description, makeConfig)
+
+- `description` `{String}` - Description of the mint; becomes part of the label, and is used by the `descOps` to identify `assetDescs`
+  authorized/acknowledged by the mint
+- `makeConfig` `{MintConfigMaker}` - Default is for a basic fungible configuration
+- Returns: `{Mint}`
+
+`makeMint` takes in a string description as well as a function to make a configuration.
+
+This configuration can be used to add custom methods to assays, payments, purses, and mints, and it also defines the functions to make the "mintKeeper" (the actual holder
+of the mappings from purses/payments to "asset descriptions"--`assetDescs`) and to make the "asset description operations"--`descOps`
+(the object that describes the "extent operations" `extentOps` of how `assetDescs` are withdrawn or deposted, among other things).
+
+The `MintController` and `DescOps` must be compatible with the type of asset managed by the mint.
+
+```js
+import { makeMint } from '@agoric/ertp/core/mint';
+
+const happyTownBucks = makeMint('happyTownBucks');
+const assay = happyTownBucks.getAssay();
+const descOps = assay.getDescOps();
+const extentOps = assay.getExtentOps();
+const label = assay.getLabel();
+```
+
+## Mint
+Holding a Mint carries the right to control issuance and destruction of purses and payments containing `assetDescs` of a particular currency.
+Purses (and payments) associated with a particular assay can only transfer value to others using the same mint.
+
+### mint.getAssay()
+- Returns: `{Assay}`
+
+Get the Assay for this mint.
+
+```js
+Examples
+```
+
+### mint.mint(initialBalance, name)
+Create a new Purse containing the `assetDesc`. Give it the specified name or 'a purse'.
+
+- `intialBalance` `{AssetDesc}`
+- `name` `{String}` - the name of a Purse
+
+**Returns:** `{Purse}`
+
+```js
+Examples
+```
 
 ## Assay
 
@@ -136,51 +188,6 @@ Burn all of the rights from `src`.
 - `src` `{Payment}`
 
 **Returns:** `{AssetDesc}`
-
-```js
-Examples
-```
-
---------------------------
-
-## MintMaker
-Makes Mints.
-
-The description becomes part of the label, used by the `descOps` to identify `assetDescs` authorized/acknowledged by the mint. The `MintController` and `DescOps` must be compatible with the type of asset managed by the mint.
-
-Description doesn't have to be a string, but it will only be used for its value.
-
-### mintMaker.makeMint(description, makeConfig)
-
-- `description` `{Comparable}`
-- `makeConfig` `{MintConfigMaker}`
-
-**Returns:** `{Mint}`
-
-```js
-Examples
-```
-
-## Mint
-Holding a Mint carries the right to control issuance and destruction of purses and payments containing `assetDescs` of a particular currency. Purses (and payments) associated with a particular assay can only transfer value to others using the same mint.
-
-### mint.getAssay()
-Get the Assay for this mint.
-
-
-**Returns:** `{Assay}`
-
-```js
-Examples
-```
-
-### mint.mint(initialBalance, name)
-Create a new Purse containing the `assetDesc`. Give it the specified name or 'fa purse'.
-
-- `intialBalance` `{AssetDesc}`
-- `name` `{String}` - the name of a Purse
-
-**Returns:** `{Purse}`
 
 ```js
 Examples
