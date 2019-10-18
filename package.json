@@ -26,8 +26,7 @@
     "url": "https://github.com/Agoric/documentation/issues"
   },
   "homepage": "https://github.com/Agoric/documentation#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "vuepress": "^1.1.0"
   }
