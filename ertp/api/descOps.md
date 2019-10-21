@@ -47,6 +47,7 @@ Returns: `{AssetDesc}`
 
 ```js
 function insistAssetDescEqualsPaymentBalance(assetDesc, payment) {
+  // using coerce() here checks that assetDesc being passed in is an AssetDesc object made by descOps
   assetDesc = descOps.coerce(assetDesc);
   const paymentAssetDesc = paymentKeeper.getAssetDesc(payment);
   insist(
