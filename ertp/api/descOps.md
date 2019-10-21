@@ -32,18 +32,19 @@ const localLabel = localAssay.getLabel();
 
 Make a new verified AssetDesc containing the `allegedExtent`.
 
+# <span style="color:red">Confused here, because some uses in the code indicate two parameters, not one. So I'm not sure about what to use in the example. For reference, I put the code I saw below:"</span>
 ```js
-
+inviteMaker.make('writer', bobSeat);
 ```
 
 ### descOps.coerce(allegedAssetDesc)
+
+- `allegedAssetDesc` `{AssetDesc}` - An AssetDesc object made by this particular DescOps. Function will error otherwise.
+- Returns: `{AssetDesc}`
+
 Is this like an AssetDesc object made by this DescOps, such as one received by pass-by-copy from an otherwise-identical remote AssetDesc? If so, return an AssetDesc object made by this DescOps. Otherwise error.
 
 For fungible AssetDescs based on natural numbers, coerce also accepts a bare number which it will coerce to a labeled number via `descOps.make()`.
-
-- `allegedAssetDesc` `{AssetDesc}` - An AssetDesc object made by this particular DescOps. Function will error otherwise.
-
-Returns: `{AssetDesc}`
 
 ```js
 function insistAssetDescEqualsPaymentBalance(assetDesc, payment) {
@@ -65,7 +66,11 @@ function insistAssetDescEqualsPaymentBalance(assetDesc, payment) {
 Return an Extent representing the AssetDesc parameter.
 
 ```js
-Examples
+const coordinateExtent = coordinateDescOps.extent([{ x: 0, y: 0 }, { x: 1, y: 0 }]);
+
+const fungibleExtent = fungibleDescOps.extent(1)
+
+const rightsExtent = rightsDescOps.extent('This is an example of a string as an extent for rightsDescOps.')
 ```
 
 ### descOps.empty()
@@ -75,7 +80,7 @@ Examples
 Return an empty assetDesc. Conveys no authority.
 
 ```js
-Examples
+const emptyAssetDesc = exampleDescOps.empty()
 ```
 
 ### descOps.isEmpty(assetDesc)
@@ -86,7 +91,14 @@ Examples
 Return true if the AssetDesc is empty. Otherwise false.
 
 ```js
-Examples
+const emptyAssetDesc = exampleDescOps.empty()
+const notEmptyAssetDesc = exampleDescOps.make([])
+
+// returns true
+exampleDescOps.isEmpty(emptyAssetDesc)
+
+// returns false
+exampleDescOps.isEmpty(notEmptyAssetDesc)
 ```
 
 ### descOps.includes(leftAssetDesc, rightAssetDesc)
@@ -213,6 +225,7 @@ galleryPixelDescOps.without([startPixel]), [])
 galleryPixelDescOps.without([]), [startPixel])
 ```
 
+# <span style="color:red">Should we move the following descriptions to the top?</span>
 ## Label
 The label for an assetDesc identifies the assay, and includes a description of the rights it represents.
 
