@@ -147,7 +147,7 @@ The contractHost/install/spawn/invites/redeem choregraphy is part of the [ERTP f
 **Congratulations!**\
 You've successfully written a smart contract in JavaScript and run it in a solo node
 
-In the next steps, we'll discover how to make someone else play the `guess37` game
+In the next steps, [we'll discover how to make someone else play the `guess37` game](./guess37-multiple-participants)
 
 
 `TODO : explain ~. syntax`
