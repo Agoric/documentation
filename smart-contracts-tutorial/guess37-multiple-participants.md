@@ -1,6 +1,6 @@
 # Guess37 multiple participants
 
-In the [previous step](./first-contract), we set up a contract and run it and played the guess37 game
+In the [previous step](./first-contract), we set up a contract and ran it and played the guess37 game
 
 In this section, we'll see how to play 2 different roles: "contract installer" and "game player"
 
@@ -30,7 +30,7 @@ The second participant (game player) interacts with the smart contract on the bl
 Open http://localhost:8000/ in a browser tab and in the REPL enter the following commands in order:
 ```
 home
-host = home~.contractHost
+host = home.contractHost
 installation = host~.install({start: home.guess37ContractSource})
 invites = installation~.spawn()
 playerInvite = invites~.playerInvite
@@ -38,7 +38,7 @@ playerInvite = invites~.playerInvite
 
 The contract is now setup, like it was in the previous step. Let's now share the player invite with the game player:
 ```
-handoff = home~.handoff
+handoff = home.handoff
 board = handoff~.createBoard("guess37 game")
 board~.addEntry("invite", playerInvite)
 ```
@@ -54,13 +54,14 @@ This communication would happen out-of-band. Maybe via email, Mastodon DM, SMS, 
 Open http://localhost:8001/ in a different browser tab and in the REPL enter the following commands in order:
 ```
 home
-handoff = home~.handoff
+handoff = home.handoff
 board = handoff~.grabBoard("guess37 game")
 playerInvite = board~.lookup("invite")
 ```
 
 Now we have the invite to participate to the contract. Let's play the game:
 ```
+host = home.contractHost
 seat = host~.redeem(playerInvite)
 
 seat~.guess(121)

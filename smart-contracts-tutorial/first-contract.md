@@ -109,7 +109,7 @@ TODO : provide a proper UI
 In the REPL, try the following commands in the same order:
 ```
 home
-host = home~.contractHost
+host = home.contractHost
 installation = host~.install({start: home.guess37ContractSource})
 invites = installation~.spawn()
 playerInvite = invites~.playerInvite
@@ -122,7 +122,7 @@ seat~.guess(37)
 ### Commands breakdown 
 
 The first `home` command shows what was defined in `lib/ag-solo/vats/vat-pixel.js` as return value of `createPixelBundle`
-It is a presence for an object containing the properties `contractHost`, `handoffService` and `guess37ContractSource`
+It is an object containing the properties `contractHost`, `handoffService` and `guess37ContractSource`
 
 `host = home.contractHost` retrieves the contractHost presence and stores it in the `host` variable for convenience
 
@@ -132,7 +132,7 @@ It is a presence for an object containing the properties `contractHost`, `handof
 
 `playerInvite = invites~.playerInvite` extracts the `playerInvite` from the invites bundle
 
-`seat = host~.redeem(playerInvite)` redeems the invitation. This allows to participate to the contract. What is returned is stored in a `seat` variable as if the contract/game was a table and you were retrieving a seat at this table
+`seat = host~.redeem(playerInvite)` redeems the invitation. `redeem` returns an object that represents a right to participate in the contract (a seat at the table)
 
 `seat~.guess(14)` is a losing guess as defined by the `guess37` contract
 `seat~.guess(37)` is a winning guess
