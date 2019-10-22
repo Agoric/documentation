@@ -1,5 +1,8 @@
 # Mint
 
+Holding a Mint carries the right to control issuance and destruction of purses and payments containing `assetDescs` of a particular currency.
+Purses and payments associated with a particular assay can only transfer value to others using the same mint.
+
 ## makeMint
 
 ### makeMint(description, makeConfig)
@@ -15,21 +18,17 @@ This configuration can be used to add custom methods to assays, payments, purses
 of the mappings from purses/payments to "asset descriptions"--`assetDescs`) and to make the "asset description operations"--`descOps`
 (the object that describes the "extent operations" `extentOps` of how `assetDescs` are withdrawn or deposted, among other things).
 
-The `MintController` and `DescOps` must be compatible with the type of asset managed by the mint.
+`descOps` must be compatible with the type of asset managed by the mint.
 
 ```js
 import { makeMint } from '@agoric/ertp/core/mint';
 
+// Make a mint for happyTownBucks with default basic fungible configuration
 const happyTownBucks = makeMint('happyTownBucks');
-const assay = happyTownBucks.getAssay();
-const descOps = assay.getDescOps();
-const extentOps = assay.getExtentOps();
-const label = assay.getLabel();
-```
 
-## Mint
-Holding a Mint carries the right to control issuance and destruction of purses and payments containing `assetDescs` of a particular currency.
-Purses (and payments) associated with a particular assay can only transfer value to others using the same mint.
+// Make a mint for sadTownBucks with default basic fungible configuration
+const sadTownBucks = makeMint('sadTownBucks');
+```
 
 ### mint.getAssay()
 - Returns: `{Assay}`
@@ -37,54 +36,58 @@ Purses (and payments) associated with a particular assay can only transfer value
 Get the Assay for this mint.
 
 ```js
-Examples
-```
+import { makeMint } from '@agoric/ertp/core/mint';
 
-### mint.mint(initialBalance, name)
-Create a new Purse containing the `assetDesc`. Give it the specified name or 'a purse'.
-
-- `intialBalance` `{AssetDesc}`
-- `name` `{String}` - the name of a Purse
-
-**Returns:** `{Purse}`
-
-```js
-Examples
+// Make a mint
+const happyTownBucks = makeMint('happyTownBucks');
+// Get the assay for the mint
+const assay = happyTownBucks.getAssay();
 ```
 
 ## Assay
 
-Holding an Assay provides the ability to create assetDescs and empty purses, but confers no rights. It is also the mechanism used to get exclusive access to a Purse or Payment that you already hold, or to burn some or all of the contained rights.
+An Assay represents the identity of an issuer. Holding an Assay provides the ability to create `assetDescs` and empty purses, but confers no rights. It is also the mechanism used to get exclusive access to a Purse or Payment that you already hold, or to burn some or all of the contained rights.
 
 ### assay.getLabel()
-Get the label for this Assay. Labels can be used to manually construct assetDescs.
+- Returns: `{Label}` The label for the assay.
 
-**Returns:** `{Comparable}` The label for the assay.
+Get the label for this Assay. Labels can be used to manually construct `assetDescs`.
 
 ```js
+import { makeMint } from '@agoric/ertp/core/mint';
+import config from 'customConfig.js';
+
+// Initial mint
+const happyTownBucks = makeMint('happyTownBucks');
+const assay = happyTownBucks.getAssay();
 const { description } = assay.getLabel();
+
+// Make a child mint using the initial mint's description
 const childMint = makeMint(description, config);
 ```
 
 ### assay.getDescOps()
+- Returns: `{DescOps}` - returns the asset description operations for the Assay
+
 Get the `DescOps` for this Assay.
 
-**Returns:** `{DescOps}`
-
 ```js
+const galleryPixel = makeMint('galleryPixel');
+const galleryPixelAssay = galleryPixel.getAssay();
 const galleryPixelDescOps = galleryPixelAssay.getDescOps();
 ```
 
-After getting the `DescOps` of an `Assay`, `DescOps` methods can be called to verify properties of the assetDesc. See the [DescOps API](/api/descOps) for all available methods.
+After getting the `DescOps` of an `Assay`, `DescOps` methods can be called to verify properties of the `assetDesc`. See the [DescOps API](/api/descOps) for all available methods.
 
 ```js
-function insist(!assay.getDescOps().isEmpty(assetDesc))`\
-    no use rights present in assetDesc ${assetDesc}`;
+function insist(asset, assetDesc) {
+  !assay.getDescOps().isEmpty(assetDesc)
+  // no use rights present in assetDesc ${assetDesc}`;
 }
 
 function insistAssetHasAssetDesc(assay, asset, assetDesc) {
-  insist(assay.getDescOps().includes(asset.getBalance(), assetDesc))`\
-    ERTP asset ${asset} does not include assetDesc ${assetDesc}`;
+  insist(assay.getDescOps().includes(asset.getBalance(), assetDesc))
+  // ERTP asset ${asset} does not include assetDesc ${assetDesc}`;
 }
 
 function getPixelList(assay, assetDesc) {
@@ -92,10 +95,10 @@ function getPixelList(assay, assetDesc) {
 }
 ```
 
-### assay.getStrategy()
-Get the Strategy for this Assay.
+### assay.getExtentOps()
+- Returns: `{ExtentOps}`
 
-**Returns:** `{Strategy}`
+Get the `ExtentOps` for this Assay.
 
 ```js
 Examples
