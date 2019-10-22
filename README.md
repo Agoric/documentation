@@ -36,4 +36,7 @@ Progress can be followed [on this board](https://github.com/Agoric/Documentation
 
 ### Tutorial
 
+**Warning: The Agoric technology stack is currently being built with lots of moving pieces. As a consequence, the steps in this tutorial may seem unnecessarily complicated at times. It is a problem we are aware of and are working on**\
+We will improve the Developer Experience over time and update these tutorials accordingly
+
 **[The tutorial starts here](./smart-contracts-tutorial/first-contract.md)**
