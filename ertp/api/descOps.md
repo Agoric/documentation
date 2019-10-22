@@ -12,117 +12,220 @@ AssetDescs are the canonical description of tradable goods. They are manipulated
 The descOps treats the Label as an opaque object. It's used in the assetDescs produced by this descOps.
 
 ### descOps.getLabel()
+
+- Returns: `{Label}`
+
 Return this descOps's label.
 
-**Returns:** `{Label}`
-
 ```js
-Examples
+import { makeMint } from '../../core/mint';
+
+const localMint = makeMint(description, makeMintKeeper, makeDescOps);
+const localAssay = localMint.getAssay();
+const localLabel = localAssay.getLabel();
 ```
 
 ### descOps.make(allegedExtent)
-Make a new verified AssetDesc containing the `allegedExtent`.
 
 - `allegedExtent` `{Extent}`
+- Returns: `{AssetDesc}`
 
-**Returns:** `{AssetDesc}`
+Make a new verified AssetDesc containing the `allegedExtent`.
 
+# <span style="color:red">Confused here, because some uses in the code indicate two parameters, not one. So I'm not sure about what to use in the example. For reference, I put the code I saw below:"</span>
 ```js
-Examples
+inviteMaker.make('writer', bobSeat);
 ```
 
 ### descOps.coerce(allegedAssetDesc)
+
+- `allegedAssetDesc` `{AssetDesc}` - An AssetDesc object made by this particular DescOps. Function will error otherwise.
+- Returns: `{AssetDesc}`
+
 Is this like an AssetDesc object made by this DescOps, such as one received by pass-by-copy from an otherwise-identical remote AssetDesc? If so, return an AssetDesc object made by this DescOps. Otherwise error.
 
-For fungible assetDescs based on natural numbers, coerce also accepts a bare number which it will coerce to a labeled number via descOps.make().
-
-- `allegedAssetDesc` `{AssetDesc}`
-
-**Returns:** `{AssetDesc}`
+For fungible AssetDescs based on natural numbers, coerce also accepts a bare number which it will coerce to a labeled number via `descOps.make()`.
 
 ```js
-Examples
+function insistAssetDescEqualsPaymentBalance(assetDesc, payment) {
+  // using coerce() here checks that assetDesc being passed in is an AssetDesc object made by descOps
+  assetDesc = descOps.coerce(assetDesc);
+  const paymentAssetDesc = paymentKeeper.getAssetDesc(payment);
+  insist(
+    descOps.equals(assetDesc, paymentAssetDesc),
+  )`payment balance ${paymentAssetDesc} must equal assetDesc ${assetDesc}`;
+  return paymentAssetDesc;
+}
 ```
 
 ### descOps.extent(assetDesc)
-Return an Extent representing the AssetDesc parameter.
 
 - `assetDesc` `{AssetDesc}`
+- Returns: `{Extent}`
 
-**Returns:** `{Extent}`
+Return an Extent representing the AssetDesc parameter.
 
 ```js
-Examples
+const coordinateExtent = coordinateDescOps.extent([{ x: 0, y: 0 }, { x: 1, y: 0 }]);
+
+const fungibleExtent = fungibleDescOps.extent(1)
+
+const rightsExtent = rightsDescOps.extent('This is an example of a string as an extent for rightsDescOps.')
 ```
 
 ### descOps.empty()
+
+- Returns: `{AssetDesc}`
+
 Return an empty assetDesc. Conveys no authority.
 
-**Returns:** `{AssetDesc}`
-
 ```js
-Examples
+const emptyAssetDesc = exampleDescOps.empty()
 ```
 
 ### descOps.isEmpty(assetDesc)
-Return true if the AssetDesc is empty. Otherwise false.
 
 - `assetDesc` `{AssetDesc}`
+- Returns: `{boolean}`
 
-**Returns:** `{boolean}`
+Return true if the AssetDesc is empty. Otherwise false.
 
 ```js
-Examples
+const emptyAssetDesc = exampleDescOps.empty()
+const notEmptyAssetDesc = exampleDescOps.make([])
+
+// returns true
+exampleDescOps.isEmpty(emptyAssetDesc)
+
+// returns false
+exampleDescOps.isEmpty(notEmptyAssetDesc)
 ```
 
 ### descOps.includes(leftAssetDesc, rightAssetDesc)
-Returns true if the `leftAssetDesc` contains the `rightAssetDesc`.
 
 - `leftAssetDesc` `{AssetDesc}`
 - `rightAssetDesc` `{AssetDesc}`
+- Returns: `{boolean}`
 
-**Returns:** `{boolean}`
+Returns true if the `leftAssetDesc` contains the `rightAssetDesc`.
 
 ```js
-Examples
+import { makeMint } from '../../core/mint';
+
+const galleryPixelMint = makeMint('pixels', makePixelConfig);
+const galleryPixelAssay = galleryPixelMint.getAssay();
+const galleryPixelDescOps = galleryPixelAssay.getDescOps();
+
+const startPixel = { x: 0, y: 0 };
+const secondPixel = { x: 0, y: 1 };
+const thirdPixel = { x: 0, y: 2 };
+const fourthPixel = { x: 9, y: 1 };
+
+// returns true:
+galleryPixelDescOps.include([], [])
+galleryPixelDescOps.include([startPixel], [])
+galleryPixelDescOps.include([startPixel], [startPixel])
+galleryPixelDescOps.include([startPixel, secondPixel], [startPixel])
+
+// returns false:
+galleryPixelDescOps.include([], [startPixel])
+galleryPixelDescOps.include([startPixel], [secondPixel])
+galleryPixelDescOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel])
+galleryPixelDescOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel])
 ```
 
 ### descOps.equals(leftAssetDesc, rightAssetDesc)
-Returns true if the leftAssetDesc equals the rightAssetDesc. We assume that if includes is true in both directions, equals is also true.
 
 - `leftAssetDesc` `{AssetDesc}`
 - `rightAssetDesc` `{AssetDesc}`
+- Returns: `{boolean}`
 
-**Returns:** `{boolean}`
+Returns true if the leftAssetDesc equals the rightAssetDesc. We assume that if includes is true in both directions, equals is also true.
 
 ```js
-Examples
+import { makeMint } from '../../core/mint';
+
+const galleryPixelMint = makeMint('pixels', makePixelConfig);
+const galleryPixelAssay = galleryPixelMint.getAssay();
+const galleryPixelDescOps = galleryPixelAssay.getDescOps();
+
+const startPixel = { x: 0, y: 0 };
+const secondPixel = { x: 0, y: 1 };
+
+// returns true:
+galleryPixelDescOps.equals([], [])
+galleryPixelDescOps.equals([startPixel], [startPixel])
+
+// returns false:
+galleryPixelDescOps.equals([startPixel], [])
 ```
 
 ### descOps.with(leftAssetDesc, rightAssetDesc)
-Returns a new assetDesc that includes both leftAssetDesc and rightAssetDesc. For fungible assetDescs this means adding the extents. For other kinds of assetDescs, it usually means including both.
 
 - `leftAssetDesc` `{AssetDesc}`
 - `rightAssetDesc` `{AssetDesc}`
+- Returns: `{AssetDesc}`
 
-**Returns:** `{AssetDesc}`
+Returns a new assetDesc that includes both leftAssetDesc and rightAssetDesc. For fungible assetDescs this means adding the extents. For other kinds of assetDescs, it usually means including both.
 
 ```js
-Examples
+import { makeMint } from '../../core/mint';
+
+const galleryPixelMint = makeMint('pixels', makePixelConfig);
+const galleryPixelAssay = galleryPixelMint.getAssay();
+const galleryPixelDescOps = galleryPixelAssay.getDescOps();
+
+const startPixel = { x: 0, y: 0 };
+const secondPixel = { x: 0, y: 1 };
+
+// returns []
+galleryPixelDescOps.with([], [])
+
+// returns [startPixel]
+galleryPixelDescOps.with([startPixel]), [])
+
+// returns [startPixel]
+galleryPixelDescOps.with([], [startPixel])
+
+// returns [startPixel]
+galleryPixelDescOps.with([startPixel], [startPixel])
+
+// returns [startPixel, secondPixel]
+galleryPixelDescOps.with([startPixel], [secondPixel])
+
+// returns [startPixel, secondPixel]
+galleryPixelDescOps.with([startPixel, secondPixel], [startPixel])
 ```
 
 ### descOps.without(leftAssetDesc, rightAssetDesc)
-Returns a new assetDesc that includes the portion of leftAssetDesc not included in rightAssetDesc. If leftAssetDesc doesn't include rightAmout, throw an error.
 
 - `leftAssetDesc` `{AssetDesc}`
 - `rightAssetDesc` `{AssetDesc}`
+- Returns: `{AssetDesc}`
 
-**Returns:** `{AssetDesc}`
+Returns a new AssetDesc that includes the portion of leftAssetDesc not included in rightAssetDesc. If leftAssetDesc doesn't include rightAmout, throw an error.
 
 ```js
-Examples
+import { makeMint } from '../../core/mint';
+
+const galleryPixelMint = makeMint('pixels', makePixelConfig);
+const galleryPixelAssay = galleryPixelMint.getAssay();
+const galleryPixelDescOps = galleryPixelAssay.getDescOps();
+
+const startPixel = { x: 0, y: 0 };
+const secondPixel = { x: 0, y: 1 };
+
+// returns []
+galleryPixelDescOps.without([]), [])
+
+// returns [startPixel]
+galleryPixelDescOps.without([startPixel]), [])
+
+// throws error
+galleryPixelDescOps.without([]), [startPixel])
 ```
 
+# <span style="color:red">Should we move the following descriptions to the top?</span>
 ## Label
 The label for an assetDesc identifies the assay, and includes a description of the rights it represents.
 
@@ -134,7 +237,6 @@ Human-readable description of a kind of rights. The Descriptions must be Compara
 ## UniDescOps
 UniDescOps represents assetDescs that have unique descriptions. It is a refinement of DescOps that we've found useful, but has no special place in the protocol.
 
-<!-- The extent must either be null, in which case it is empty,or be some truthy comparable value, in which case it represents a single unique unit described by that truthy quantity. Combining two uni assetDescs with different truthy quantities fails, as they represent non-combinable rights. -->
 The extent must either be null, in which case it is empty,or be some truthy comparable value, in which case it represents a single unique unit described by that truthy extent. Combining two uni assetDescs with different truthy extents fails, as they represent non-combinable rights.
 
 ## NatDescOps
