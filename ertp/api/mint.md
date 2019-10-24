@@ -498,7 +498,7 @@ const secondPixel = { x: 0, y: 1 };
 const thirdPixel = { x: 0, y: 2 };
 const fourthPixel = { x: 9, y: 1 };
 
-// Create an extentOps that accepts an array of pixels
+// Create an extentOps for an array of pixels
 const extentOps = makePixelExtentOps();
 
 // returns true:
@@ -525,7 +525,7 @@ Does left equal right?
 const startPixel = { x: 0, y: 0 };
 const secondPixel = { x: 0, y: 1 };
 
-// Create an extentOps that accepts an array of pixels
+// Create an extentOps for an array of pixels
 const extentOps = makePixelExtentOps();
 
 // returns true:
@@ -547,7 +547,7 @@ Return the left combined with the right
 const startPixel = { x: 0, y: 0 };
 const secondPixel = { x: 0, y: 1 };
 
-// Create an extentOps that accepts an array of pixels
+// Create an extentOps for an array of pixels
 const extentOps = makePixelExtentOps();
 
 // returns []
@@ -580,7 +580,7 @@ Return what remains after removing the part from the whole.
 const startPixel = { x: 0, y: 0 };
 const secondPixel = { x: 0, y: 1 };
 
-// Create an extentOps that accepts an array of pixels
+// Create an extentOps for an array of pixels
 const extentOps = makePixelExtentOps();
 
 // returns []
