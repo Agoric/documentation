@@ -81,12 +81,12 @@ After getting the `DescOps` of an `Assay`, `DescOps` methods can be called to ve
 
 ```js
 function insist(asset, assetDesc) {
-  !assay.getDescOps().isEmpty(assetDesc)
+  !assay.getDescOps().isEmpty(assetDesc);
   // no use rights present in assetDesc ${assetDesc}`;
 }
 
 function insistAssetHasAssetDesc(assay, asset, assetDesc) {
-  insist(assay.getDescOps().includes(asset.getBalance(), assetDesc))
+  insist(assay.getDescOps().includes(asset.getBalance(), assetDesc));
   // ERTP asset ${asset} does not include assetDesc ${assetDesc}`;
 }
 
@@ -101,7 +101,7 @@ function getPixelList(assay, assetDesc) {
 Get the `ExtentOps` for this Assay.
 
 ```js
-const exampleExtentOps = exampleAssay.getExtentOps()
+const exampleExtentOps = exampleAssay.getExtentOps();
 ```
 
 ### assay.makeAssetDesc(extent)
@@ -110,14 +110,14 @@ const exampleExtentOps = exampleAssay.getExtentOps()
 
 Make an AssetDesc that contains the indicated extent.
 
-# <span style="color:red">Found this code that uses `.makeAssetDesc()` but I don't understand the context in which it is being used. Why are we minting using an AssetDesc? I feel like some sort of explanation is needed if I use this example and it's only one of two examples I can find in the code.</span>
-
 ```js
 import { setup } from '../setupBasicMints';
 
 const { assays: originalAssays, mints, descOps } = setup();
 const assays = originalAssays.slice(0, 2);
 
+// In this scenario, purses are created for two different assays.
+// We provide an AssetDesc, containing an extent, from the Moola and Simolean assays to create the appropriate purses.
 const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(3));
 const aliceSimoleanPurse = mints[1].mint(assays[1].makeAssetDesc(0));
 ```
@@ -138,7 +138,7 @@ const assay = mint.getAssay();
 const targetPurse = assay.makeEmptyPurse();
 
 // Returns 0
-targetPurse.getBalance()
+targetPurse.getBalance();
 ```
 
 ### assay.combine(paymentsArray, name)
@@ -165,7 +165,7 @@ for (let i = 0; i < 100; i += 1) {
 const combinedPayment = assay.combine(payments);
 
 // Returns 100
-combinedPayment.getBalance()
+combinedPayment.getBalance();
 ```
 
 ### assay.split(payment, assetDescsArray)
@@ -211,7 +211,7 @@ const newPayment = await assay.claimExactly(7, payment);
 
 // .claimExactly() will throw an error because the the balance of wrongPayment does not equal the assetDesc
 const wrongPayment = await purse.withdraw(7);
-const wrongNewPayment = await assay.claimExactly(8, wrongPayment)
+const wrongNewPayment = await assay.claimExactly(8, wrongPayment);
 ```
 
 ### assay.claimAll(src, name)
@@ -232,7 +232,7 @@ const payment = await purse.withdraw(10);
 const newPayment = await assay.claimAll(payment);
 
 // Returns 10
-newPayment.getBalance()
+newPayment.getBalance();
 ```
 
 ### assay.burnExactly(assetDesc, src)
@@ -252,10 +252,10 @@ const purse = mint.mint(1000);
 const payment = await purse.withdraw(10);
 
 // Throws error:
-await assay.burnExactly(6, payment)
+await assay.burnExactly(6, payment);
 
 // Successful burn:
-await assay.burnExactly(10, payment)
+await assay.burnExactly(10, payment);
 ```
 
 ### assay.burnAll(src)
@@ -272,85 +272,133 @@ const assay = mint.getAssay();
 const purse = mint.mint(1000);
 
 const payment = await purse.withdraw(10);
-await assay.burnAll(payment)
+await assay.burnAll(payment);
 ```
 
 ## Purse
 Purses hold verified `assetDescs` of certain rights issued by Mints. Purses can transfer part of the balance they hold in a payment, which has a narrower interface. A purse's balance can rise and fall, through the action of depositExactly() and withdraw(). Operations on payments (`burnExactly()`, `depositExactly()`, `assay.claimExactly()`) kill the original payment and create new payments if applicable. The primary use for Purses and Payments is for currency-like and goods-like valuables, but they can also be used to represent other kinds of rights, such as the right to participate in a particular contract.
 
 ### purse.getName()
-Get the name of this purse.
-
 - Returns: `{String}`
+
+Get the name of this purse.
 
 ```js
 Examples
 ```
 
 ### purse.getAssay()
-# Double check this description, in the `.chainmail` file it says that this method get the assay for this **mint**
-Get the Assay for this purse.
-
 - Returns: `{Assay}`
 
+Get the Assay for this purse.
+
 ```js
-Examples
+// Assume a mint has already been set up.
+const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(40));
+const aliceSimoleanPurse = mints[0].mint(assays[1].makeAssetDesc(40));
+
+const moolaAssay = await E(aliceMoolaPurse).getAssay();
+const simoleanAssay = await E(aliceSimoleanPurse).getAssay();
 ```
 
 ### purse.getBalance()
-Get the `assetDesc` contained in this purse, confirmed by the assay.
-
 - Returns: `{AssetDesc}`
 
+Get the `assetDesc` contained in this purse, confirmed by the assay.
+
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+// Returns 1000
+purse.getBalance();
 ```
 
 ### purse.depositExactly(assetDesc, src)
-# should this be srcPayment instead of src?
-Deposit all the contents of `src` Payment into this purse, returning the `assetDesc`. If the `assetDesc` does not equal the balance of `src` Payment, throw error.
-
 - `assetDesc` `{AssetDesc}`
 - `src` `{Payment}`
-
 - Returns: `{AssetDesc}`
 
+Deposit all the contents of `src` Payment into this purse, returning the `assetDesc`. If the `assetDesc` does not equal the balance of `src` Payment, throw error.
+
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+const targetPurse = assay.makeEmptyPurse();
+const payment = await purse.withdraw(7);
+
+// Throws error
+await wrongTargetPurse.depositExactly(8, payment);
+
+// Successful deposit
+await targetPurse.depositExactly(7, payment);
 ```
 
 ### purse.depositAll(srcPayment)
-Deposit all the contents of `srcPayment` into this purse, returning the `assetDesc`.
-
 - `srcPayment` `{Payment}`
-
 - Returns: `{AssetDesc}`
 
+Deposit all the contents of `srcPayment` into this purse, returning the `assetDesc`.
+
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+const targetPurse = assay.makeEmptyPurse();
+
+const payment = await purse.withdraw(22);
+await targetPurse.despositAll(payment);
+
+// Returns 22
+targetPurse.getBalance();
 ```
 
 ### purse.withdraw(assetDesc, name)
-Withdraw `assetDesc` from this purse into a new Payment.
-
 - `assetDesc` `{AssetDesc}`
-- `name` `{String}`
-
+- `name` `{String}` - Optional
 - Returns: `{Payment}`
 
+Withdraw `assetDesc` from this purse into a new Payment.
+
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payments = [];
+payments.push(purse.withdraw(20));
+
+// Returns 20
+payments.getBalance()
 ```
 
 ### purse.withdrawAll(name)
-Withdraw entire content of this purse into a new Payment.
-
 - `name` `{String}`
-
 - Returns: `{Payment}`
 
+Withdraw entire content of this purse into a new Payment.
+
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payment = purse.withdrawAll();
+
+// Returns 1000
+payment.getBalance()
 ```
 
 ## Payment
