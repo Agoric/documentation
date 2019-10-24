@@ -96,104 +96,183 @@ function getPixelList(assay, assetDesc) {
 ```
 
 ### assay.getExtentOps()
-- Returns: `{ExtentOps}`
+- Returns: `{ExtentOps}` - returns the extent operations for the Assay
 
 Get the `ExtentOps` for this Assay.
 
 ```js
-Examples
+const exampleExtentOps = exampleAssay.getExtentOps()
 ```
-### assay.makeAssetDesc(extent)
-Make an AssetDesc that contains the indicated extent.
-- `extent` `{Extent}`
 
-**Returns:** `{AssetDesc}`
+### assay.makeAssetDesc(extent)
+- `extent` `{Extent}`
+- Returns: `{AssetDesc}`
+
+Make an AssetDesc that contains the indicated extent.
+
+# <span style="color:red">Found this code that uses `.makeAssetDesc()` but I don't understand the context in which it is being used. Why are we minting using an AssetDesc? I feel like some sort of explanation is needed if I use this example and it's only one of two examples I can find in the code.</span>
 
 ```js
-Examples
+import { setup } from '../setupBasicMints';
+
+const { assays: originalAssays, mints, descOps } = setup();
+const assays = originalAssays.slice(0, 2);
+
+const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(3));
+const aliceSimoleanPurse = mints[1].mint(assays[1].makeAssetDesc(0));
 ```
 
 ### assay.makeEmptyPurse(name)
+- `name` `{String}`
+- Returns: `{Purse}`
+
 Make an empty purse associated with this kind of right.
 
-- `name` `{String}`
-
-**Returns:** `{Purse}`
-
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+
+// After creating an assay you can create an empty purse:
+const targetPurse = assay.makeEmptyPurse();
+
+// Returns 0
+targetPurse.getBalance()
 ```
 
 ### assay.combine(paymentsArray, name)
-Combine multiple payments into one payment.
-
 - `paymentsArray` `{Array <Payment>}` - A list of payments to combine into a new payment
 - `name` `{String}` - Name to call this combination of payments
+- Returns: `{Payment}`
 
-**Returns:** `{Payment}`
+Combine multiple payments into one payment.
 
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+// Create a payments array. Each element, or payment, has a value of 1.
+const payments = [];
+for (let i = 0; i < 100; i += 1) {
+  payments.push(purse.withdraw(1));
+}
+
+// Combine all the payments in the`payments` array
+const combinedPayment = assay.combine(payments);
+
+// Returns 100
+combinedPayment.getBalance()
 ```
 
 ### assay.split(payment, assetDescsArray)
-Split a single payment into multiple payments, according to the `assetDescs` and names passed in.
-
 - `payment` `{Payment}`
 - `assetDescsArray` `{Array <AssetDesc>}`
+- Returns: `{Array <Payment>}`
 
-**Returns:** `{Array <Payment>}`
+Split a single payment into multiple payments, according to the `assetDescs` and names passed in.
 
 ```js
-Examples
+// Assume a mint has already been set up.
+const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(40));
+const aliceMoolaPayment = aliceMoolaPurse.withdrawAll();
+const moola10 = assays[0].makeAssetDesc(10);
+const moola20 = assays[0].makeAssetDesc(20);
+
+// The following divides the aliceMoolaPayment into three payments:
+const aliceMoolaPayments = assays[0].split(aliceMoolaPayment, [
+  moola10,
+  moola10,
+  moola20,
+]);
+// aliceMoolaPayments is now an array of three Payment objects, with balances of 10, 10, 20, respectively.
 ```
 
 ### assay.claimExactly(assetDesc, src, name)
-Make a new `Payment` that has exclusive rights to all the contents of `src`. If `assetDesc` does not equal the balance of the `src` payment, throws error.
-
 - `assetDesc` `{AssetDesc}`
 - `src` `{Payment}`
-- `name` `{String}` - name of a new `Payment`
+- `name` `{String}` - name of a new `Payment`, optional
+- Returns: `{Payment}`
 
-**Returns:** `{Payment}`
+Make a new `Payment` that has exclusive rights to all the contents of `src`. If `assetDesc` does not equal the balance of the `src` payment, throws error.
 
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payment = await purse.withdraw(7);
+const newPayment = await assay.claimExactly(7, payment);
+
+// .claimExactly() will throw an error because the the balance of wrongPayment does not equal the assetDesc
+const wrongPayment = await purse.withdraw(7);
+const wrongNewPayment = await assay.claimExactly(8, wrongPayment)
 ```
 
 ### assay.claimAll(src, name)
-Make a new `Payment` that has exclusive rights to all the contents of `src`.
-
 - `src` `{Payment}`
 - `name` `{String}` - name of a new `Payment`
+- Returns: `{Payment}`
 
-**Returns:** `{Payment}`
+Make a new `Payment` that has exclusive rights to all the contents of `src`.
 
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payment = await purse.withdraw(10);
+const newPayment = await assay.claimAll(payment);
+
+// Returns 10
+newPayment.getBalance()
 ```
 
 ### assay.burnExactly(assetDesc, src)
-Burn all of the rights from `src`. If `assetDesc` does not equal the balance of the `src` payment, throw error.
-
 - `assetDesc` `{AssetDesc}`
 - `src` `{Payment}`
+- Returns: `{AssetDesc}`
 
-**Returns:** `{AssetDesc}`
+Burn all of the rights from `src`. If `assetDesc` does not equal the balance of the `src` payment, throw error.
 
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payment = await purse.withdraw(10);
+
+// Throws error:
+await assay.burnExactly(6, payment)
+
+// Successful burn:
+await assay.burnExactly(10, payment)
 ```
 
 ### assay.burnAll(src)
+- `src` `{Payment}`
+- Returns: `{AssetDesc}`
+
 Burn all of the rights from `src`.
 
-- `src` `{Payment}`
-
-**Returns:** `{AssetDesc}`
-
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payment = await purse.withdraw(10);
+await assay.burnAll(payment)
 ```
 
 ## Purse
@@ -202,7 +281,7 @@ Purses hold verified `assetDescs` of certain rights issued by Mints. Purses can 
 ### purse.getName()
 Get the name of this purse.
 
-**Returns:** `{String}`
+- Returns: `{String}`
 
 ```js
 Examples
@@ -212,7 +291,7 @@ Examples
 # Double check this description, in the `.chainmail` file it says that this method get the assay for this **mint**
 Get the Assay for this purse.
 
-**Returns:** `{Assay}`
+- Returns: `{Assay}`
 
 ```js
 Examples
@@ -221,7 +300,7 @@ Examples
 ### purse.getBalance()
 Get the `assetDesc` contained in this purse, confirmed by the assay.
 
-**Returns:** `{AssetDesc}`
+- Returns: `{AssetDesc}`
 
 ```js
 Examples
@@ -234,7 +313,7 @@ Deposit all the contents of `src` Payment into this purse, returning the `assetD
 - `assetDesc` `{AssetDesc}`
 - `src` `{Payment}`
 
-**Returns:** `{AssetDesc}`
+- Returns: `{AssetDesc}`
 
 ```js
 Examples
@@ -245,7 +324,7 @@ Deposit all the contents of `srcPayment` into this purse, returning the `assetDe
 
 - `srcPayment` `{Payment}`
 
-**Returns:** `{AssetDesc}`
+- Returns: `{AssetDesc}`
 
 ```js
 Examples
@@ -257,7 +336,7 @@ Withdraw `assetDesc` from this purse into a new Payment.
 - `assetDesc` `{AssetDesc}`
 - `name` `{String}`
 
-**Returns:** `{Payment}`
+- Returns: `{Payment}`
 
 ```js
 Examples
@@ -268,7 +347,7 @@ Withdraw entire content of this purse into a new Payment.
 
 - `name` `{String}`
 
-**Returns:** `{Payment}`
+- Returns: `{Payment}`
 
 ```js
 Examples
@@ -281,7 +360,7 @@ Payments hold verified assetDescs of certain rights issued by Mints. AssetDescs 
 Get the name of this purse.
 
 
-**Returns:** `{String}`
+- Returns: `{String}`
 
 ```js
 Examples
@@ -291,7 +370,7 @@ Examples
 Get the Assay for this mint.
 
 
-**Returns:** `{Assay}`
+- Returns: `{Assay}`
 
 ```js
 Examples
@@ -301,90 +380,89 @@ Examples
 Get the assetDesc contained in this payment, confirmed by the assay.
 
 
-**Returns:** `{AssetDesc}`
+- Returns: `{AssetDesc}`
 
 ```js
 Examples
 ```
 
-## Strategy
-# Is it Strategy or ExtentOps?
-All of the difference in how an descOps behaves can be reduced to the behavior of the set operations on quantities (think: arithmetic) such as `empty`, `with`, `without`, `includes`, etc. We extract this custom logic into a strategy. Strategies are about extent arithmetic, whereas DescOps are about AssetDescs, which are labeled quantities. DescOps use Strategies to do their extent arithmetic, and then label the results, making new AssetDescs.
+## ExtentOps
+All of the difference in how an descOps behaves can be reduced to the behavior of the set operations on quantities (think: arithmetic) such as `empty`, `with`, `without`, `includes`, etc. We extract this custom logic into an extentOps. ExtentOps are about extent arithmetic, whereas DescOps are about AssetDescs, which are labeled quantities. DescOps use ExtentOps to do their extent arithmetic, and then label the results, making new AssetDescs.
 
-### strategy.insistKind(allegedExtent)
+### extentOps.insistKind(allegedExtent)
 Check the kind of this extent and throw if it is not the expected kind.
 
 - `allegedExtent` `{Extent}`
 
-**Returns:** `{Extent}`
+- Returns: `{Extent}`
 
 ```js
 Examples
 ```
 
-### strategy.empty()
+### extentOps.empty()
 Get the representation for empty.
 
-**Returns:** `{Extent}`
+- Returns: `{Extent}`
 
 ```js
 Examples
 ```
 
-### strategy.isEmpty(extent)
+### extentOps.isEmpty(extent)
 Is the extent empty?
 
 - `extent` `{Extent}`
 
-**Returns:** `{boolean}`
+- Returns: `{boolean}`
 
 ```js
 Examples
 ```
 
-### strategy.includes(whole, part)
+### extentOps.includes(whole, part)
 Does the whole include the part?
 
 - `whole` `{Extent}`
 - `part` `{Extent}`
 
-**Returns:** `{boolean}`
+- Returns: `{boolean}`
 
 ```js
 Examples
 ```
 
-### strategy.equals(left, right)
+### extentOps.equals(left, right)
 Does left equal right?
 
 - `left` `{Extent}`
 - `right` `{Extent}`
 
-**Returns:** `{Extent}`
+- Returns: `{Extent}`
 
 ```js
 Examples
 ```
 
-### strategy.with(left, right)
+### extentOps.with(left, right)
 Return the left combined with the right
 
 - `left` `{Extent}`
 - `right` `{Extent}`
 
-**Returns:** `{Extent}`
+- Returns: `{Extent}`
 
 ```js
 Examples
 ```
 
-### strategy.without(whole, part)
+### extentOps.without(whole, part)
 Return what remains after removing the part from the whole.
 
 - `whole` `{Extent}`
 - `part` `{Extent}`
 
-**Returns:** `{Extent}`
+- Returns: `{Extent}`
 
 ```js
 Examples
