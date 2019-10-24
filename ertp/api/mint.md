@@ -379,7 +379,7 @@ const payments = [];
 payments.push(purse.withdraw(20));
 
 // Returns 20
-payments.getBalance()
+payments.getBalance();
 ```
 
 ### purse.withdrawAll(name)
@@ -398,40 +398,47 @@ const purse = mint.mint(1000);
 const payment = purse.withdrawAll();
 
 // Returns 1000
-payment.getBalance()
+payment.getBalance();
 ```
 
 ## Payment
 Payments hold verified assetDescs of certain rights issued by Mints. AssetDescs from payments can be deposited in purses, but otherwise, the entire assetDesc is available when the payment is transferred. A payment's balance can only fall, through the action of `depositExactly()`, `claimExactly()` or `burnExactly()`. Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
 
 ### payment.getName()
-Get the name of this purse.
-
-
 - Returns: `{String}`
+
+Get the name of this purse.
 
 ```js
 Examples
 ```
 
 ### payment.getAssay()
-Get the Assay for this mint.
-
-
 - Returns: `{Assay}`
 
+Get the Assay for this payment.
+
 ```js
-Examples
+const paymentAssay = anyPayment.getAssay();
 ```
 
 ### payment.getBalance()
-Get the assetDesc contained in this payment, confirmed by the assay.
-
-
 - Returns: `{AssetDesc}`
 
+Get the assetDesc contained in this payment, confirmed by the assay.
+
 ```js
-Examples
+import { makeMint } from './core/mint';
+
+const mint = makeMint('fungible');
+const assay = mint.getAssay();
+const purse = mint.mint(1000);
+
+const payments = [];
+payments.push(purse.withdraw(20));
+
+// Returns 20
+payments.getBalance();
 ```
 
 ## ExtentOps
