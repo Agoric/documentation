@@ -502,16 +502,16 @@ const fourthPixel = { x: 9, y: 1 };
 const extentOps = makePixelExtentOps();
 
 // returns true:
-extentOps.include([], [])
-extentOps.include([startPixel], [])
-extentOps.include([startPixel], [startPixel])
-extentOps.include([startPixel, secondPixel], [startPixel])
+extentOps.include([], []);
+extentOps.include([startPixel], []);
+extentOps.include([startPixel], [startPixel]);
+extentOps.include([startPixel, secondPixel], [startPixel]);
 
 // returns false:
-extentOps.include([], [startPixel])
-extentOps.include([startPixel], [secondPixel])
-extentOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel])
-extentOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel])
+extentOps.include([], [startPixel]);
+extentOps.include([startPixel], [secondPixel]);
+extentOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel]);
+extentOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel]);
 ```
 
 ### extentOps.equals(left, right)
@@ -529,11 +529,11 @@ const secondPixel = { x: 0, y: 1 };
 const extentOps = makePixelExtentOps();
 
 // returns true:
-extentOps.equals([], [])
-extentOps.equals([startPixel], [startPixel])
+extentOps.equals([], []);
+extentOps.equals([startPixel], [startPixel]);
 
 // returns false:
-extentOps.equals([startPixel], [])
+extentOps.equals([startPixel], []);
 ```
 
 ### extentOps.with(left, right)
@@ -551,22 +551,22 @@ const secondPixel = { x: 0, y: 1 };
 const extentOps = makePixelExtentOps();
 
 // returns []
-extentOps.with([], [])
+extentOps.with([], []);
 
 // returns [startPixel]
-extentOps.with([startPixel]), [])
+extentOps.with([startPixel]), []);
 
 // returns [startPixel]
-extentOps.with([], [startPixel])
+extentOps.with([], [startPixel]);
 
 // returns [startPixel]
-extentOps.with([startPixel], [startPixel])
+extentOps.with([startPixel], [startPixel]);
 
 // returns [startPixel, secondPixel]
-extentOps.with([startPixel], [secondPixel])
+extentOps.with([startPixel], [secondPixel]);
 
 // returns [startPixel, secondPixel]
-extentOps.with([startPixel, secondPixel], [startPixel])
+extentOps.with([startPixel, secondPixel], [startPixel]);
 ```
 
 ### extentOps.without(whole, part)
@@ -584,11 +584,11 @@ const secondPixel = { x: 0, y: 1 };
 const extentOps = makePixelExtentOps();
 
 // returns []
-extentOps.without([]), [])
+extentOps.without([]), []);
 
 // returns [startPixel]
-extentOps.without([startPixel]), [])
+extentOps.without([startPixel]), []);
 
 // throws error
-extentOps.without([]), [startPixel])
+extentOps.without([]), [startPixel]);
 ```

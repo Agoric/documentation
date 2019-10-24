@@ -68,9 +68,9 @@ Return an Extent representing the AssetDesc parameter.
 ```js
 const coordinateExtent = coordinateDescOps.extent([{ x: 0, y: 0 }, { x: 1, y: 0 }]);
 
-const fungibleExtent = fungibleDescOps.extent(1)
+const fungibleExtent = fungibleDescOps.extent(1);
 
-const rightsExtent = rightsDescOps.extent('This is an example of a string as an extent for rightsDescOps.')
+const rightsExtent = rightsDescOps.extent('This is an example of a string as an extent for rightsDescOps.');
 ```
 
 ### descOps.empty()
@@ -80,7 +80,7 @@ const rightsExtent = rightsDescOps.extent('This is an example of a string as an 
 Return an empty assetDesc. Conveys no authority.
 
 ```js
-const emptyAssetDesc = exampleDescOps.empty()
+const emptyAssetDesc = exampleDescOps.empty();
 ```
 
 ### descOps.isEmpty(assetDesc)
@@ -91,14 +91,14 @@ const emptyAssetDesc = exampleDescOps.empty()
 Return true if the AssetDesc is empty. Otherwise false.
 
 ```js
-const emptyAssetDesc = exampleDescOps.empty()
-const notEmptyAssetDesc = exampleDescOps.make([])
+const emptyAssetDesc = exampleDescOps.empty();
+const notEmptyAssetDesc = exampleDescOps.make([]);
 
 // returns true
-exampleDescOps.isEmpty(emptyAssetDesc)
+exampleDescOps.isEmpty(emptyAssetDesc);
 
 // returns false
-exampleDescOps.isEmpty(notEmptyAssetDesc)
+exampleDescOps.isEmpty(notEmptyAssetDesc);
 ```
 
 ### descOps.includes(leftAssetDesc, rightAssetDesc)
@@ -122,16 +122,16 @@ const thirdPixel = { x: 0, y: 2 };
 const fourthPixel = { x: 9, y: 1 };
 
 // returns true:
-galleryPixelDescOps.include([], [])
-galleryPixelDescOps.include([startPixel], [])
-galleryPixelDescOps.include([startPixel], [startPixel])
-galleryPixelDescOps.include([startPixel, secondPixel], [startPixel])
+galleryPixelDescOps.include([], []);
+galleryPixelDescOps.include([startPixel], []);
+galleryPixelDescOps.include([startPixel], [startPixel]);
+galleryPixelDescOps.include([startPixel, secondPixel], [startPixel]);
 
 // returns false:
-galleryPixelDescOps.include([], [startPixel])
-galleryPixelDescOps.include([startPixel], [secondPixel])
-galleryPixelDescOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel])
-galleryPixelDescOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel])
+galleryPixelDescOps.include([], [startPixel]);
+galleryPixelDescOps.include([startPixel], [secondPixel]);
+galleryPixelDescOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel]);
+galleryPixelDescOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel]);
 ```
 
 ### descOps.equals(leftAssetDesc, rightAssetDesc)
@@ -153,11 +153,11 @@ const startPixel = { x: 0, y: 0 };
 const secondPixel = { x: 0, y: 1 };
 
 // returns true:
-galleryPixelDescOps.equals([], [])
-galleryPixelDescOps.equals([startPixel], [startPixel])
+galleryPixelDescOps.equals([], []);
+galleryPixelDescOps.equals([startPixel], [startPixel]);
 
 // returns false:
-galleryPixelDescOps.equals([startPixel], [])
+galleryPixelDescOps.equals([startPixel], []);
 ```
 
 ### descOps.with(leftAssetDesc, rightAssetDesc)
@@ -179,22 +179,22 @@ const startPixel = { x: 0, y: 0 };
 const secondPixel = { x: 0, y: 1 };
 
 // returns []
-galleryPixelDescOps.with([], [])
+galleryPixelDescOps.with([], []);
 
 // returns [startPixel]
-galleryPixelDescOps.with([startPixel]), [])
+galleryPixelDescOps.with([startPixel]), []);
 
 // returns [startPixel]
-galleryPixelDescOps.with([], [startPixel])
+galleryPixelDescOps.with([], [startPixel]);
 
 // returns [startPixel]
-galleryPixelDescOps.with([startPixel], [startPixel])
+galleryPixelDescOps.with([startPixel], [startPixel]);
 
 // returns [startPixel, secondPixel]
-galleryPixelDescOps.with([startPixel], [secondPixel])
+galleryPixelDescOps.with([startPixel], [secondPixel]);
 
 // returns [startPixel, secondPixel]
-galleryPixelDescOps.with([startPixel, secondPixel], [startPixel])
+galleryPixelDescOps.with([startPixel, secondPixel], [startPixel]);
 ```
 
 ### descOps.without(leftAssetDesc, rightAssetDesc)
@@ -216,13 +216,13 @@ const startPixel = { x: 0, y: 0 };
 const secondPixel = { x: 0, y: 1 };
 
 // returns []
-galleryPixelDescOps.without([]), [])
+galleryPixelDescOps.without([]), []);
 
 // returns [startPixel]
-galleryPixelDescOps.without([startPixel]), [])
+galleryPixelDescOps.without([startPixel]), []);
 
 // throws error
-galleryPixelDescOps.without([]), [startPixel])
+galleryPixelDescOps.without([]), [startPixel]);
 ```
 
 # <span style="color:red">Should we move the following descriptions to the top?</span>
