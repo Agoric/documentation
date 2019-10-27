@@ -10,7 +10,7 @@ npm run docs:build
 cd ertp/.vuepress/dist
 
 # if you are deploying to a custom domain
-echo 'agoric.com/Documentation' > CNAME
+# echo 'agoric.com/Documentation' > CNAME
 
 git init
 git add -A
