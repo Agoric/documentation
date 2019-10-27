@@ -1,0 +1,33 @@
+{
+  "name": "@agoric/documentation",
+  "version": "0.1.5-dev.0",
+  "description": "Documentation of Agoric products",
+  "engines": {
+    "node": ">=11.0"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev ertp",
+    "docs:build": "vuepress build ertp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Agoric/documentation.git"
+  },
+  "keywords": [
+    "smart",
+    "contract",
+    "cryptocurrency",
+    "exchange",
+    "tokens"
+  ],
+  "author": "Agoric",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Agoric/documentation/issues"
+  },
+  "homepage": "https://github.com/Agoric/documentation#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "vuepress": "^1.1.0"
+  }
+}
