@@ -1,11 +1,11 @@
 module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
-  base: '/Documentation/', // name of the repo
+  base: '/Documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'ERTP 0.x', // title for the site. prefix for all page titles and displayed in the navbar
-  description: 'Electronic Rights Transfer Protocol (ERTP). A smart contract framework for exchanging electronic rights', // desc for the site; rendered as a tag in the page HTML
+  title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
+  description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
 
-  /* --- THEME CONFIG --- */
+  /* --- DEFAULT THEME CONFIG --- */
   // NOTES:
   // Internal links: Must have a corresponding folder with a README.md file
   // Links must be absolute with trailing slash '/guide/'
@@ -13,8 +13,22 @@ module.exports = {
   themeConfig: {
     /* --- NAVBAR (top) --- */
     nav: [
-      { text: 'Guide', link: '/guide/' },
-      { text: 'API', link: '/api/' },
+      {
+        text: 'ERTP',
+        ariaLabel: 'ERTP Menu',
+        items: [
+          { text: 'Guide', link: '/ertp/guide/' },
+          { text: 'API', link: '/ertp/api/' }
+        ]
+      },
+      {
+        text: 'Zoe',
+        ariaLabel: 'Zoe Menu',
+        items: [
+          { text: 'Guide', link: '/zoe/guide/' },
+          { text: 'API', link: '/zoe/api/' }
+        ],
+      },
       { text: 'Agoric', link: 'https://agoric.com/' },
       { text: 'Github', link: 'https://github.com/Agoric/ERTP' }
     ],
@@ -24,11 +38,10 @@ module.exports = {
     // content. Pages must be organized into directories for each desired
     // section
     sidebar: {
-      '/guide/': [
+      '/ertp/': [
         {
-          title: 'Guide',
-          path: '/guide/',
-          collapsable: false,
+          title: 'ERTP Guide',
+          path: '/guide/', // /ertp/guide/
           children: [
             ['/guide/', 'ERTP'], // [link, title]
             '/guide/getting-started', // default, gets title from header
@@ -42,19 +55,6 @@ module.exports = {
                 '/guide/contract-hosts'
               ]
             }
-          ]
-        }
-      ],
-      '/api/': [
-        {
-          title: 'API',
-          path: '/api/',
-          collapsable: false,
-          sidebarDepth: 2,
-          children: [
-            { title: 'Mint', path: '/api/mint' },
-            { title: 'DescOps', path: '/api/descOps' },
-            { title: '/util', path: '/api/utils' }
           ]
         }
       ]

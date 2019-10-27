@@ -4,12 +4,30 @@
 AssetDescs are wrappers on extents that have been validated by a DescOps, and can be verified as having been issued by the DescOps. They contain their extent and a Label. The label identifies a particular assay.
 
 ## Extent
-Extents describe the extent of something that can be owned or shared. The format is determined by its descOps. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue. All AssetDescs made by the same DescOps have the same label. Extent must be Comparable. (This IDL doesn't yet provide a way to specify subtype relationships for structs.)
+Extents describe the extent of something that can be owned or shared. The format is determined by its descOps. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue. All AssetDescs made by the same DescOps have the same label. Extent must be Comparable.
 
 ## DescOps
 Creator and validator of asset AssetDescs.
 AssetDescs are the canonical description of tradable goods. They are manipulated by mints, and represent the goods and currency carried by purses and payments. They can be used to represent things like currency, stock, and the abstract right to participate in a particular exchange.
 The descOps treats the Label as an opaque object. It's used in the assetDescs produced by this descOps.
+
+## Label
+The label for an assetDesc identifies the assay, and includes a description of the rights it represents.
+
+Every assetDesc created by the DescOps will have the same label, but recipients cannot use the label by itself to verify that a purported assetDesc is authentic, since the label can be copied.
+
+## Description
+Human-readable description of a kind of rights. The Descriptions must be Comparables. (This IDL doesn't yet provide a way to specify subtype relationships for structs.)
+
+## UniDescOps
+UniDescOps represents assetDescs that have unique descriptions. It is a refinement of DescOps that we've found useful, but has no special place in the protocol.
+
+The extent must either be null, in which case it is empty,or be some truthy comparable value, in which case it represents a single unique unit described by that truthy extent. Combining two uni assetDescs with different truthy extents fails, as they represent non-combinable rights.
+
+## NatDescOps
+DescOps for a labeled natural number describing a extent of fungible erights. The label describes what kinds of rights these are. NatDescOps is a refinement of DescOps that we've found useful, but has no special place in the protocol.
+
+Empty assetDescs have zero units. 'includes()' verifies that leftAssetDesc is greater than or equal to rightAssetDesc. 'with()' and 'without()' add and subtract their contents.
 
 ### descOps.getLabel()
 
@@ -28,11 +46,11 @@ const localLabel = localAssay.getLabel();
 ### descOps.make(allegedExtent)
 
 - `allegedExtent` `{Extent}`
+- [TOOD: add secod and third (optional) params]
 - Returns: `{AssetDesc}`
 
 Make a new verified AssetDesc containing the `allegedExtent`.
 
-# <span style="color:red">Confused here, because some uses in the code indicate two parameters, not one. So I'm not sure about what to use in the example. For reference, I put the code I saw below:"</span>
 ```js
 inviteMaker.make('writer', bobSeat);
 ```
@@ -225,21 +243,3 @@ galleryPixelDescOps.without([startPixel]), []);
 galleryPixelDescOps.without([]), [startPixel]);
 ```
 
-# <span style="color:red">Should we move the following descriptions to the top?</span>
-## Label
-The label for an assetDesc identifies the assay, and includes a description of the rights it represents.
-
-Every assetDesc created by the DescOps will have the same label, but recipients cannot use the label by itself to verify that a purported assetDesc is authentic, since the label can be copied.
-
-## Description
-Human-readable description of a kind of rights. The Descriptions must be Comparables. (This IDL doesn't yet provide a way to specify subtype relationships for structs.)
-
-## UniDescOps
-UniDescOps represents assetDescs that have unique descriptions. It is a refinement of DescOps that we've found useful, but has no special place in the protocol.
-
-The extent must either be null, in which case it is empty,or be some truthy comparable value, in which case it represents a single unique unit described by that truthy extent. Combining two uni assetDescs with different truthy extents fails, as they represent non-combinable rights.
-
-## NatDescOps
-DescOps for a labeled natural number describing a extent of fungible erights. The label describes what kinds of rights these are. NatDescOps is a refinement of DescOps that we've found useful, but has no special place in the protocol.
-
-Empty assetDescs have zero units. 'includes()' verifies that leftAssetDesc is greater than or equal to rightAssetDesc. 'with()' and 'without()' add and subtract their contents.
