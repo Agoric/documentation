@@ -37,8 +37,7 @@ module.exports = {
               path: '/guide/issuers/',
               collapsable: false,
               children: [
-                '/guide/issuers',
-                '/guide/mint',
+                '/guide/assays',
                 '/guide/contract-hosts'
               ]
             }
