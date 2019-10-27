@@ -57,40 +57,40 @@ function makeBasicFungibleConfig() {
 
 ## Configuration Object defaults
 
-`makePaymentTrait(_superPayment)` - default {}
-`makePurseTrait(_superPurse)` - default {}
-`makeMintTrait(_superMint)` - default {}
-`makeIssuerTrait(_superIssuer)` - default {}
-`makeMintKeeper` - default `makeCoreMintKeeper`
-`strategy` - default `natStrategy`
+- `makePaymentTrait(_superPayment)` - default {}
+- `makePurseTrait(_superPurse)` - default {}
+- `makeMintTrait(_superMint)` - default {}
+- `makeIssuerTrait(_superIssuer)` - default {}
+- `makeMintKeeper` - default `makeCoreMintKeeper`
+- `strategy` - default `natStrategy`
 
 ### Core Mint Keeper
 
-`mintKeeper`
-`mintKeeper.purseKeeper` - asset
-`mintKeeper.paymentKeeper` - asset
-`mintKeeper.isPurse(asset)`
-`mintKeeper.isPayment(asset)`
+- `mintKeeper`
+- `mintKeeper.purseKeeper` - asset
+- `mintKeeper.paymentKeeper` - asset
+- `mintKeeper.isPurse(asset)`
+- `mintKeeper.isPayment(asset)`
 
 `mintKeeper.purseKeeper` and `mintKeeper.paymentKeeper` are both asset keepers. An asset can either be a purse or payment. An asset keeper keeps track of either all of the purses (purseKeeper) or all of the payments (paymentKeeper) and their respective amounts. Asset keepers have the following properties:
-`updateAmount(asset, newAmount)`
-`recordeNew(asset, initialAmount)`
-`getAmount(asset)`
-`has(asset)`
-`remove(asset)`
+- `updateAmount(asset, newAmount)`
+- `recordeNew(asset, initialAmount)`
+- `getAmount(asset)`
+- `has(asset)`
+- `remove(asset)`
 
 ### Strategies
 
 ERTP comes with several strategies you can use in your project. The `natStrategy` is used in the default configuration.
 
 The following methods are defined in each strategy:
-`insistKind`
-`empty`
-`isEmpty`
-`includes`
-`equals`
-`with`
-`without`
+- `insistKind`
+- `empty`
+- `isEmpty`
+- `includes`
+- `equals`
+- `with`
+- `without`
 
 
 `listStrategy`
