@@ -1,7 +1,7 @@
 # Agoric Documentation Contributing Guide
 
-## Build Information
-Agoric [TODO: lnk] documentation is written in Markdown and built with VuePress. [TODO: link]
+## Overview
+Agoric [TODO: lnk] documentation is written in Markdown and built with VuePress. [TODO: link] The following guide highlights the important need-to-knows for contributing and understanding how the site is built.
 
 ## Developing
 1. Clone the repo
@@ -21,19 +21,26 @@ $ npm run docs:dev
 
 1. View documentation site at `localhost:8080`. Any changes triggers a hot reload.
 
-## Repo Structure
+## Structure
 
-The Documentation root contains the `README.md` for the repo. Anything not in `/main` is outside the documentation site build.
+### Site Build
+The Documentation root contains the `README.md` for the repo. This is separate from the site build. `/main` contains all of the files for the documentation site.
+
+::: tip NOTE:
+Everything is nested inside `/main`. This is the base path and will render as `/`.
+:::
+
+### Homepage
+`/main/README.md` is the homepage for the website. The homepage is written using the default VuePress homepage theme.
 
 ### Folders as URL Paths
 VuePress applies and builds internal links using the folder structure. Every desired link must have a corresponding folder with its own `README.md`. This is what renders when navigating to that URL.
 
-For example, if my folder structure is `/main/ertp`, whatever is in `/main/ertp/README.md` will render when navigating to `https://agoric.com/documentation/ertp`.
+For example, if the folder structure is `/main/ertp`, whatever is in `/main/ertp/README.md` will render when navigating to `https://agoric.com/documentation/ertp`.
 
-**Note:** It can be odd to think about having multiple `README.md`s in a repo, and I've found it can help to think of each `README.md` as an `index.js` file. And we all know there are lots of those in a project.
-
-### Site Build
-Everything in `/main` is pulled into the documentation site build. `/main/README.md` is the homepage for the website. The homepage is currently written using the default VuePress homepage theme.
+::: tip NOTE:
+It can be odd to think about having multiple `README.md`s in a repo, and I've found it can help to think of each `README.md` as an `index.js` file. And we all know there are lots of those in a project.
+:::
 
 ### Projects
 Each project gets its own folder with `/api` and `/guide` subfolders. Additional subfolders can be added as needed, but should have these at a minimum.
