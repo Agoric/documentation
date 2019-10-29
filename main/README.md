@@ -24,22 +24,22 @@ footer: Apache-2.0 Licensed | Copyright © 2019-Agoric
 
 <div class="flex flex--column flex--center">
   <p>
-    Learn about <router-link to="/ertp/">ERTP</router-link>, a uniform way of transferring tokens and other digital assets in JavaScript.
+    Learn about <router-link to="/ertp/guide/">ERTP</router-link>, a uniform way of transferring tokens and other digital assets in JavaScript.
   </p>
   <Button-Action-Link
     text="Get Started with ERTP"
-    link="/ertp/"
+    link="/ertp/guide/"
   />
 </div>
 
 <div class="flex flex--column flex--center">
-  <p>Ready for more? Check out [Zoe](/zoe/). Zoe is responsible for enforcing what we call "offer safety", and the smart contract that runs on top of Zoe is responsible for figuring out a proposed reallocation of resources.
-  <p//>
+  <p>Ready for more? Check out <router-link to="/zoe/guide/Zoe">Zoe</router-link>. Zoe is responsible for enforcing what we call "offer safety", and the smart contract that runs on top of Zoe is responsible for figuring out a proposed reallocation of resources.
+  <p/>
 <Button-Action-Link
   text="Use with  Zoe"
-  link="/zoe/"
+  link="/zoe/guide/"
 />
-
+</div>
 ## The Platform
 Building on 30 years of experience, Agoric is developing a secure distributed ocap platform for smart contracts and market-oriented programming. Our platform supports the development of smart contracts and market institutions across many different scales, from large public blockchains to small two-party contracts.
 
