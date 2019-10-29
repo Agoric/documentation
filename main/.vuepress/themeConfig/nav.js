@@ -32,8 +32,13 @@ module.exports = [
     items: [
       {
         text: 'Guide',
-        ariaLabel: 'Zoe Guide',
+        ariaLabel: 'Zoe Guide Link',
         link: '/zoe/guide/'
+      },
+      {
+        text: 'Contracts',
+        ariaLabel: 'Zoe Contracts Link',
+        link: '/zoe/guide/contracts'
       },
       {
         text: 'API',
