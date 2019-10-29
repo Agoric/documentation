@@ -1,4 +1,6 @@
-# Tutorial on creating and running the simplest Smart Contract
+# Guess37 - One Participant
+
+## Tutorial on creating and running the simplest Smart Contract
 
 This first contract will be a one-player game where the player tries to guess a number. If they guess right, they win, otherwise, they lose. The game can be played any number of times and there is no actual stake. For the purpose of keeping things simple, the number is hardcoded to be `37`
 
@@ -119,7 +121,7 @@ seat~.guess(14)
 seat~.guess(37)
 ```
 
-### Commands breakdown 
+### Commands breakdown
 
 The first `home` command shows what was defined in `lib/ag-solo/vats/vat-pixel.js` as return value of `createPixelBundle`
 It is an object containing the properties `contractHost`, `handoffService` and `guess37ContractSource`

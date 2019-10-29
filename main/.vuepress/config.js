@@ -21,36 +21,6 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
-      '/zoe/': [
-        {
-          title: 'Zoe',
-          path: '/zoe/guide/',
-          collapsable: false,
-          sideBarDepth: 5,
-          children: [
-            '/zoe/guide/',
-            '/zoe/guide/offer-safety'
-          ]
-        },
-        {
-          title: 'Zoe Contracts',
-          path: '/zoe/guide/contracts/',
-          collapsable: false,
-          sideBarDepth: 3,
-          children: [
-            '/zoe/guide/contracts/',
-            '/zoe/guide/contracts/autoswap',
-            '/zoe/guide/contracts/public-auction',
-            '/zoe/guide/contracts/public-swap'
-          ]
-        },
-        {
-          title: 'Zoe API',
-          path: '/zoe/api/',
-          collapsable: false
-        }
-      ],
-
       '/ertp/': [
         {
           title: 'ERTP Guide',
@@ -77,6 +47,48 @@ module.exports = {
               title: 'DescOps',
               path: '/ertp/api/descOps'
             }
+          ]
+        }
+      ],
+
+      '/zoe/': [
+        {
+          title: 'Zoe',
+          path: '/zoe/guide/',
+          collapsable: false,
+          sideBarDepth: 5,
+          children: [
+            '/zoe/guide/',
+            '/zoe/guide/offer-safety'
+          ]
+        },
+        {
+          title: 'Zoe Contracts',
+          path: '/zoe/guide/contracts/autoswap',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+            '/zoe/guide/contracts/autoswap',
+            '/zoe/guide/contracts/public-auction',
+            '/zoe/guide/contracts/public-swap'
+          ]
+        },
+        {
+          title: 'Zoe API',
+          path: '/zoe/api/',
+          collapsable: false
+        }
+      ],
+
+      '/smart-contracts-tutorials/': [
+        {
+          title: 'Smart Contracts Tutorials',
+          path: '/smart-contracts-tutorials/guess37-one',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+            '/smart-contracts-tutorials/guess37-one',
+            '/smart-contracts-tutorials/guess37-multiple'
           ]
         }
       ]
