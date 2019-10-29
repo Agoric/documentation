@@ -1,8 +1,8 @@
-# Issuer Configuration
+# Mint Configuration
 
 ## What is a configuration?
 
-Configurations add custom methods to issuers, payments, purses, and mints, defines the functions to make the "mintKeeper" (the actual holder of the mappings from purses/payments to amounts), and makes the "assay" (the object that describes the strategy of how amounts are withdrawn or deposited, among other things).
+Configurations add custom methods to  payments, purses, and mints, defines the functions to make the "mintKeeper" (the actual holder of the mappings from purses/payments to amounts), and makes the "assay" (the object that describes the strategy of how amounts are withdrawn or deposited, among other things).
 
 ## When is it used?
 
