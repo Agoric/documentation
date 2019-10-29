@@ -15,8 +15,8 @@ would look like:
 
 ```js
 [ 
-  { kind: 'offerExactly', assetDesc: dollars100 }, 
-  { kind: 'wantExactly', assetDesc: ticket1 }
+  { kind: 'offerExactly', units: dollars100 }, 
+  { kind: 'wantExactly', units: ticket1 }
 ]
 ```
 Note: In the future, we expect to allow for more complex `payoutRules`

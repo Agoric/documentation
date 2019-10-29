@@ -39,15 +39,15 @@ const aliceOfferRules = harden({
   payoutRules: [
     {
       kind: 'offerExactly',
-      assetDesc: moolaAssay.makeAssetDesc(10),
+      units: moolaAssay.makeUnits(10),
     },
     {
       kind: 'offerExactly',
-      assetDesc: simoleanAssay.makeAssetDesc(5),
+      units: simoleanAssay.makeUnits(5),
     },
     {
       kind: 'wantAtLeast',
-      assetDesc: liquidityAssay.makeAssetDesc(10),
+      units: liquidityAssay.makeUnits(10),
     },
   ],
   exitRule: {
@@ -73,8 +73,8 @@ Let's say that Bob wants to se the moola<->simolean autoswap
 to exchange 2 moola. First he will check the price:
 
 ```js
-const simoleanAssetDesc = autoswap.getPrice([
-  assetDesc2Moola,
+const simoleanUnits = autoswap.getPrice([
+  units2Moola,
   undefined,
   undefined,
 ]);
@@ -90,15 +90,15 @@ get a refund:
    payoutRules: [
     {
       kind: 'offerExactly',
-      assetDesc: moolaAssay.makeAssetDesc(2),
+      units: moolaAssay.makeUnits(2),
     },
     {
       kind: 'wantAtLeast',
-      assetDesc: simoleanAssay.makeAssetDesc(1),
+      units: simoleanAssay.makeUnits(1),
     },
     {
       kind: 'wantAtLeast',
-      assetDesc: liquidityAssay.makeAssetDesc(0),
+      units: liquidityAssay.makeUnits(0),
     },
   ],
   exitRule: {
@@ -144,15 +144,15 @@ const aliceRemoveLiquidityOfferRules = harden({
   payoutRules: [
     {
       kind: 'wantAtLeast',
-      assetDesc: allAssays[0].makeAssetDesc(0),
+      units: allAssays[0].makeUnits(0),
     },
     {
       kind: 'wantAtLeast',
-      assetDesc: allAssays[1].makeAssetDesc(0),
+      units: allAssays[1].makeUnits(0),
     },
     {
       kind: 'offerExactly',
-      assetDesc: allAssays[2].makeAssetDesc(10),
+      units: allAssays[2].makeUnits(10),
     },
   ],
   exitRule: {

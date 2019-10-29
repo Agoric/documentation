@@ -73,7 +73,7 @@ If we are using child routes, we must use the Object form as child routes are sp
     sidebarDepth: 2,
     children: [
       { title: 'Mint', path: '/api/mint' },
-      { title: 'DescOps', path: '/api/descOps' }
+      { title: 'UnitOps', path: '/api/unitOps' }
     ]
   }
 ```

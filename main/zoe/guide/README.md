@@ -174,9 +174,9 @@ accept. In this case, we only want to accept offers that have an
 `payoutRules` of the
 form: 
 ```js 
-[{ kind: 'offerExactly', assetDesc: x}, { kind: 'wantExactly', assetDesc: y}]
+[{ kind: 'offerExactly', units: x}, { kind: 'wantExactly', units: y}]
 ```
-where `x` and `y` are asset descriptions with the correct assays. 
+where `x` and `y` are units with the correct assays. 
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching

@@ -40,11 +40,11 @@ const aliceOfferRules = harden(
   payoutRules: [
   {
     kind: 'offerExactly',
-    assetDesc: moolaAssay.makeAssetDesc(3),
+    units: moolaAssay.makeUnits(3),
   },
   {
     kind: 'wantExactly',
-    assetDesc: simoleanAssay.makeAssetDesc(7),
+    units: simoleanAssay.makeUnits(7),
   },
   exitRule: {
     kind: 'onDemand',
@@ -88,11 +88,11 @@ const bobOfferRules = harden({
   payoutRules: [
     {
       kind: 'wantExactly',
-      assetDesc: bobAssays[0].makeAssetDesc(3),
+      units: bobAssays[0].makeUnits(3),
     },
     {
       kind: 'offerExactly',
-      assetDesc: bobAssays[1].makeAssetDesc(7),
+      units: bobAssays[1].makeUnits(7),
     },
   ],
   exitRule: {

@@ -1,24 +1,24 @@
 # Mint
 
-Holding a Mint carries the right to control issuance and destruction of purses and payments containing `assetDescs` of a particular currency.
+Holding a Mint carries the right to control issuance and destruction of purses and payments containing `units` of a particular currency.
 Purses and payments associated with a particular assay can only transfer value to others using the same mint.
 
 ## makeMint
 
-### makeMint(description, makeConfig)
+### makeMint(allegedName, makeConfig)
 
-- `description` `{String}` - Description of the mint; becomes part of the label, and is used by the `descOps` to identify `assetDescs`
-  authorized/acknowledged by the mint
+- `allegedName` `{String}` - Description of the mint; becomes part of
+  the label used by the `unitOps`
 - `makeConfig` `{MintConfigMaker}` - Default is for a basic fungible configuration
 - Returns: `{Mint}`
 
-`makeMint` takes in a string description as well as a function to make a configuration.
+`makeMint` takes in an allegedName as well as a function to make a configuration.
 
 This configuration can be used to add custom methods to assays, payments, purses, and mints, and it also defines the functions to make the "mintKeeper" (the actual holder
-of the mappings from purses/payments to "asset descriptions"--`assetDescs`) and to make the "asset description operations"--`descOps`
-(the object that describes the "extent operations" `extentOps` of how `assetDescs` are withdrawn or deposted, among other things).
+of the mappings from purses/payments to `units`) and to make the `unitOps`
+(the object that describes the "extent operations" `extentOps` of how `units` are withdrawn or deposited, among other things).
 
-`descOps` must be compatible with the type of asset managed by the mint.
+`unitOps` must be compatible with the type of asset managed by the mint.
 
 ```js
 import { makeMint } from '@agoric/ertp/core/mint';
@@ -46,12 +46,12 @@ const assay = happyTownBucks.getAssay();
 
 ## Assay
 
-An Assay represents the identity of an issuer. Holding an Assay provides the ability to create `assetDescs` and empty purses, but confers no rights. It is also the mechanism used to get exclusive access to a Purse or Payment that you already hold, or to burn some or all of the contained rights.
+An Assay represents the identity of an issuer. Holding an Assay provides the ability to create `units` and empty purses, but confers no rights. It is also the mechanism used to get exclusive access to a Purse or Payment that you already hold, or to burn some or all of the contained rights.
 
 ### assay.getLabel()
 - Returns: `{Label}` The label for the assay.
 
-Get the label for this Assay. Labels can be used to manually construct `assetDescs`.
+Get the label for this Assay. Labels can be used to manually construct `units`.
 
 ```js
 import { makeMint } from '@agoric/ertp/core/mint';
@@ -66,32 +66,32 @@ const { description } = assay.getLabel();
 const childMint = makeMint(description, config);
 ```
 
-### assay.getDescOps()
-- Returns: `{DescOps}` - returns the asset description operations for the Assay
+### assay.getUnitOps()
+- Returns: `{UnitOps}` - returns the unit operations for the Assay
 
-Get the `DescOps` for this Assay.
+Get the `UnitOps` for this Assay.
 
 ```js
 const galleryPixel = makeMint('galleryPixel');
 const galleryPixelAssay = galleryPixel.getAssay();
-const galleryPixelDescOps = galleryPixelAssay.getDescOps();
+const galleryPixelUnitOps = galleryPixelAssay.getUnitOps();
 ```
 
-After getting the `DescOps` of an `Assay`, `DescOps` methods can be called to verify properties of the `assetDesc`. See the [DescOps API](/api/descOps) for all available methods.
+After getting the `UnitOps` of an `Assay`, `UnitOps` methods can be called to verify properties of the `units`. See the [UnitOps API](/api/unitOps) for all available methods.
 
 ```js
-function insist(asset, assetDesc) {
-  !assay.getDescOps().isEmpty(assetDesc);
-  // no use rights present in assetDesc ${assetDesc}`;
+function insist(asset, units) {
+  !assay.getUnitOps().isEmpty(units);
+  // no use rights present in units ${units}`;
 }
 
-function insistAssetHasAssetDesc(assay, asset, assetDesc) {
-  insist(assay.getDescOps().includes(asset.getBalance(), assetDesc));
-  // ERTP asset ${asset} does not include assetDesc ${assetDesc}`;
+function insistAssetHasUnits(assay, asset, units) {
+  insist(assay.getUnitOps().includes(asset.getBalance(), units));
+  // ERTP asset ${asset} does not include units ${units}`;
 }
 
-function getPixelList(assay, assetDesc) {
-  return assay.getDescOps().extent(assetDesc);
+function getPixelList(assay, units) {
+  return assay.getUnitOps().extent(units);
 }
 ```
 
@@ -104,22 +104,22 @@ Get the `ExtentOps` for this Assay.
 const exampleExtentOps = exampleAssay.getExtentOps();
 ```
 
-### assay.makeAssetDesc(extent)
+### assay.makeUnits(extent)
 - `extent` `{Extent}`
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
-Make an AssetDesc that contains the indicated extent.
+Make Units that contain the indicated extent.
 
 ```js
 import { setup } from '../setupBasicMints';
 
-const { assays: originalAssays, mints, descOps } = setup();
+const { assays: originalAssays, mints, unitOps } = setup();
 const assays = originalAssays.slice(0, 2);
 
 // In this scenario, purses are created for two different assays.
-// We provide an AssetDesc, containing an extent, from the Moola and Simolean assays to create the appropriate purses.
-const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(3));
-const aliceSimoleanPurse = mints[1].mint(assays[1].makeAssetDesc(0));
+// We provide Units, containing an extent, from the Moola and Simolean assays to create the appropriate purses.
+const aliceMoolaPurse = mints[0].mint(assays[0].makeUnits(3));
+const aliceSimoleanPurse = mints[1].mint(assays[1].makeUnits(0));
 ```
 
 ### assay.makeEmptyPurse(name)
@@ -168,19 +168,19 @@ const combinedPayment = assay.combine(payments);
 combinedPayment.getBalance();
 ```
 
-### assay.split(payment, assetDescsArray)
+### assay.split(payment, unitsArray)
 - `payment` `{Payment}`
-- `assetDescsArray` `{Array <AssetDesc>}`
+- `unitsArray` `{Array <Units>}`
 - Returns: `{Array <Payment>}`
 
-Split a single payment into multiple payments, according to the `assetDescs` and names passed in.
+Split a single payment into multiple payments, according to the `units` and names passed in.
 
 ```js
 // Assume a mint has already been set up.
-const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(40));
+const aliceMoolaPurse = mints[0].mint(assays[0].makeUnits(40));
 const aliceMoolaPayment = aliceMoolaPurse.withdrawAll();
-const moola10 = assays[0].makeAssetDesc(10);
-const moola20 = assays[0].makeAssetDesc(20);
+const moola10 = assays[0].makeUnits(10);
+const moola20 = assays[0].makeUnits(20);
 
 // The following divides the aliceMoolaPayment into three payments:
 const aliceMoolaPayments = assays[0].split(aliceMoolaPayment, [
@@ -191,13 +191,13 @@ const aliceMoolaPayments = assays[0].split(aliceMoolaPayment, [
 // aliceMoolaPayments is now an array of three Payment objects, with balances of 10, 10, 20, respectively.
 ```
 
-### assay.claimExactly(assetDesc, src, name)
-- `assetDesc` `{AssetDesc}`
+### assay.claimExactly(units, src, name)
+- `units` `{Units}`
 - `src` `{Payment}`
 - `name` `{String}` - name of a new `Payment`, optional
 - Returns: `{Payment}`
 
-Make a new `Payment` that has exclusive rights to all the contents of `src`. If `assetDesc` does not equal the balance of the `src` payment, throws error.
+Make a new `Payment` that has exclusive rights to all the contents of `src`. If `units` does not equal the balance of the `src` payment, throws error.
 
 ```js
 import { makeMint } from './core/mint';
@@ -209,7 +209,7 @@ const purse = mint.mint(1000);
 const payment = await purse.withdraw(7);
 const newPayment = await assay.claimExactly(7, payment);
 
-// .claimExactly() will throw an error because the the balance of wrongPayment does not equal the assetDesc
+// .claimExactly() will throw an error because the the balance of wrongPayment does not equal the units
 const wrongPayment = await purse.withdraw(7);
 const wrongNewPayment = await assay.claimExactly(8, wrongPayment);
 ```
@@ -235,12 +235,12 @@ const newPayment = await assay.claimAll(payment);
 newPayment.getBalance();
 ```
 
-### assay.burnExactly(assetDesc, src)
-- `assetDesc` `{AssetDesc}`
+### assay.burnExactly(units, src)
+- `units` `{Units}`
 - `src` `{Payment}`
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
-Burn all of the rights from `src`. If `assetDesc` does not equal the balance of the `src` payment, throw error.
+Burn all of the rights from `src`. If `units` does not equal the balance of the `src` payment, throw error.
 
 ```js
 import { makeMint } from './core/mint';
@@ -260,7 +260,7 @@ await assay.burnExactly(10, payment);
 
 ### assay.burnAll(src)
 - `src` `{Payment}`
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
 Burn all of the rights from `src`.
 
@@ -276,7 +276,7 @@ await assay.burnAll(payment);
 ```
 
 ## Purse
-Purses hold verified `assetDescs` of certain rights issued by Mints. Purses can transfer part of the balance they hold in a payment, which has a narrower interface. A purse's balance can rise and fall, through the action of depositExactly() and withdraw(). Operations on payments (`burnExactly()`, `depositExactly()`, `assay.claimExactly()`) kill the original payment and create new payments if applicable. The primary use for Purses and Payments is for currency-like and goods-like valuables, but they can also be used to represent other kinds of rights, such as the right to participate in a particular contract.
+Purses hold verified `units` of certain rights issued by Mints. Purses can transfer part of the balance they hold in a payment, which has a narrower interface. A purse's balance can rise and fall, through the action of depositExactly() and withdraw(). Operations on payments (`burnExactly()`, `depositExactly()`, `assay.claimExactly()`) kill the original payment and create new payments if applicable. The primary use for Purses and Payments is for currency-like and goods-like valuables, but they can also be used to represent other kinds of rights, such as the right to participate in a particular contract.
 
 ### purse.getName()
 - Returns: `{String}`
@@ -294,17 +294,17 @@ Get the Assay for this purse.
 
 ```js
 // Assume a mint has already been set up.
-const aliceMoolaPurse = mints[0].mint(assays[0].makeAssetDesc(40));
-const aliceSimoleanPurse = mints[0].mint(assays[1].makeAssetDesc(40));
+const aliceMoolaPurse = mints[0].mint(assays[0].makeUnits(40));
+const aliceSimoleanPurse = mints[0].mint(assays[1].makeUnits(40));
 
 const moolaAssay = await E(aliceMoolaPurse).getAssay();
 const simoleanAssay = await E(aliceSimoleanPurse).getAssay();
 ```
 
 ### purse.getBalance()
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
-Get the `assetDesc` contained in this purse, confirmed by the assay.
+Get the `units` contained in this purse, confirmed by the assay.
 
 ```js
 import { makeMint } from './core/mint';
@@ -317,12 +317,12 @@ const purse = mint.mint(1000);
 purse.getBalance();
 ```
 
-### purse.depositExactly(assetDesc, src)
-- `assetDesc` `{AssetDesc}`
+### purse.depositExactly(units, src)
+- `units` `{Units}`
 - `src` `{Payment}`
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
-Deposit all the contents of `src` Payment into this purse, returning the `assetDesc`. If the `assetDesc` does not equal the balance of `src` Payment, throw error.
+Deposit all the contents of `src` Payment into this purse, returning the `units`. If the `units` does not equal the balance of `src` Payment, throw error.
 
 ```js
 import { makeMint } from './core/mint';
@@ -342,9 +342,9 @@ await targetPurse.depositExactly(7, payment);
 
 ### purse.depositAll(srcPayment)
 - `srcPayment` `{Payment}`
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
-Deposit all the contents of `srcPayment` into this purse, returning the `assetDesc`.
+Deposit all the contents of `srcPayment` into this purse, returning the `units`.
 
 ```js
 import { makeMint } from './core/mint';
@@ -361,12 +361,12 @@ await targetPurse.despositAll(payment);
 targetPurse.getBalance();
 ```
 
-### purse.withdraw(assetDesc, name)
-- `assetDesc` `{AssetDesc}`
+### purse.withdraw(units, name)
+- `units` `{Units}`
 - `name` `{String}` - Optional
 - Returns: `{Payment}`
 
-Withdraw `assetDesc` from this purse into a new Payment.
+Withdraw `units` from this purse into a new Payment.
 
 ```js
 import { makeMint } from './core/mint';
@@ -402,7 +402,7 @@ payment.getBalance();
 ```
 
 ## Payment
-Payments hold verified assetDescs of certain rights issued by Mints. AssetDescs from payments can be deposited in purses, but otherwise, the entire assetDesc is available when the payment is transferred. A payment's balance can only fall, through the action of `depositExactly()`, `claimExactly()` or `burnExactly()`. Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
+Payments hold verified units of certain rights issued by Mints. Units from payments can be deposited in purses, but otherwise, the entire units is available when the payment is transferred. A payment's balance can only fall, through the action of `depositExactly()`, `claimExactly()` or `burnExactly()`. Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
 
 ### payment.getName()
 - Returns: `{String}`
@@ -423,9 +423,9 @@ const paymentAssay = anyPayment.getAssay();
 ```
 
 ### payment.getBalance()
-- Returns: `{AssetDesc}`
+- Returns: `{Units}`
 
-Get the assetDesc contained in this payment, confirmed by the assay.
+Get the units contained in this payment, confirmed by the assay.
 
 ```js
 import { makeMint } from './core/mint';
@@ -442,7 +442,7 @@ payments.getBalance();
 ```
 
 ## ExtentOps
-All of the difference in how an descOps behaves can be reduced to the behavior of the set operations on quantities (think: arithmetic) such as `empty`, `with`, `without`, `includes`, etc. We extract this custom logic into an extentOps. ExtentOps are about extent arithmetic, whereas DescOps are about AssetDescs, which are labeled quantities. DescOps use ExtentOps to do their extent arithmetic, and then label the results, making new AssetDescs.
+All of the difference in how an unitOps behaves can be reduced to the behavior of the set operations on extents (think: arithmetic) such as `empty`, `with`, `without`, `includes`, etc. We extract this custom logic into an extentOps. ExtentOps are about extent arithmetic, whereas UnitOps are about Units, which are labeled extents. UnitOps use ExtentOps to do their extent arithmetic, and then label the results, making new Units.
 
 ### extentOps.insistKind(allegedExtent)
 - `allegedExtent` `{Extent}`
