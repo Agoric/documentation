@@ -1,4 +1,4 @@
-# Guess37 multiple participants
+# Guess37 - Multiple Participants
 
 In the [previous step](./first-contract), we set up a contract and ran it and played the guess37 game
 
