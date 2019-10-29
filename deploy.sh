@@ -7,7 +7,7 @@ set -e
 npm run docs:build
 
 # navigate into the build output directory
-cd ertp/.vuepress/dist
+cd main/.vuepress/dist
 
 # if you are deploying to a custom domain
 # echo 'agoric.com/Documentation' > CNAME

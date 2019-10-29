@@ -6,6 +6,8 @@ Bitcoin has unspent transactions. Ethereum has account balances. Agoric has ERTP
 
 ERTP is a uniform way of transferring tokens and other digital assets in JavaScript. All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
 
+Get started with the [ERTP Guide](/ertp/guide/) or [ERTP API](/ertp/api/).
+
 ## How It Works
 
 ERTP, or the Electronic Rights Transfer Protocol, is a smart contract framework. Throw away all you know about public key hashes mapped to account balances, because ERTP doesn't use 'em.
