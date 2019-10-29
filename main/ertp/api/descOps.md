@@ -248,4 +248,3 @@ galleryPixelDescOps.without([startPixel]), []);
 // throws error
 galleryPixelDescOps.without([]), [startPixel]);
 ```
-
