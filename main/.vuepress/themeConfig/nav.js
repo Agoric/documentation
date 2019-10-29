@@ -8,6 +8,7 @@ module.exports = [
   {
     text: 'ERTP   ', // spaces to add some distance to next link
     ariaLabel: 'ERTP Menu',
+    link: '/ertp/guide/',
     items: [
       {
         text: 'Guide',
@@ -29,6 +30,7 @@ module.exports = [
   {
     text: 'Zoe',
     ariaLabel: 'Zoe Menu',
+    link: '/zoe/guide',
     items: [
       {
         text: 'Guide',
@@ -38,7 +40,7 @@ module.exports = [
       {
         text: 'Contracts',
         ariaLabel: 'Zoe Contracts Link',
-        link: '/zoe/guide/contracts'
+        link: '/zoe/guide/contracts/autoswap'
       },
       {
         text: 'API',
@@ -51,6 +53,23 @@ module.exports = [
         link: 'https://github.com/Agoric/Zoe'
       }
     ],
+  },
+  {
+    text: 'Tutorials',
+    ariaLabel: 'Tutorials Menu',
+    link: '/smart-contracts-tutorials/guess37-one',
+    items: [
+      {
+        text: 'Guess 37 - One Participant',
+        ariaLabel: 'Guess 37 - One Participant',
+        link: '/smart-contracts-tutorials/guess37-one'
+      },
+      {
+        text: 'Guess37 - Multiple Participants',
+        ariaLabel: 'Guess37 Multiple Participants',
+        link: '/smart-contracts-tutorials/guess37-multiple'
+      }
+    ]
   },
   {
     text: 'Learn More',
