@@ -16,9 +16,9 @@ particular assay or mint.
 Units are labeled extents. To be specific, units are a record with two
 parts: a label, which identifies an assay, and an extent. The balance
 of a purse or payment is in units. For example, the balance of a purse
-might be 3 bucks, written in units as: 
+might be 3 bucks, written in units as:
 
-```
+```js
 {
   label: {
     allegedName: 'bucks',

@@ -14,4 +14,4 @@ As a verb, it refers to the act of analyzing, or of conducting that test.
 
 Assays are a key concept of ERTP.
 
-In ERTP, you can think of Assays as a validator to ensure that the information being passed in meets the requirements set.
+In ERTP, you can think of Assays as tests to ensure that the information being passed in meets the requirements set.

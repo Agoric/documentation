@@ -60,10 +60,10 @@ import config from 'customConfig.js';
 // Initial mint
 const happyTownBucks = makeMint('happyTownBucks');
 const assay = happyTownBucks.getAssay();
-const { description } = assay.getLabel();
+const { allegedName } = assay.getLabel();
 
-// Make a child mint using the initial mint's description
-const childMint = makeMint(description, config);
+// Make a child mint using the initial mint's allegedName
+const childMint = makeMint(allegedName, config);
 ```
 
 ### assay.getUnitOps()
@@ -402,7 +402,7 @@ payment.getBalance();
 ```
 
 ## Payment
-Payments hold verified units of certain rights issued by Mints. Units from payments can be deposited in purses, but otherwise, the entire units is available when the payment is transferred. A payment's balance can only fall, through the action of `depositExactly()`, `claimExactly()` or `burnExactly()`. Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
+Payments hold verified units of certain rights issued by Mints. Units from payments can be deposited in purses, but otherwise, the entire unit is available when the payment is transferred. A payment's balance can only fall, through the action of `depositExactly()`, `claimExactly()` or `burnExactly()`. Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
 
 ### payment.getName()
 - Returns: `{String}`
