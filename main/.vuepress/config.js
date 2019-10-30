@@ -44,8 +44,8 @@ module.exports = {
             '/ertp/api/',
             '/ertp/api/mint',
             {
-              title: 'DescOps',
-              path: '/ertp/api/descOps'
+              title: 'UnitOps',
+              path: '/ertp/api/unitOps'
             }
           ]
         }

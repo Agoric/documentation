@@ -8,4 +8,4 @@ The ERTP API is divided into the following sections:
   - [Payment](/ertp/api/mint.html#payment)
   - [ExtentOps](/ertp/api/mint.html#extentops)
 
-- [DescOps](/ertp/api/descOps)
+- [UnitOps](/ertp/api/unitOps)

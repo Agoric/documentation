@@ -39,11 +39,11 @@ const aliceOfferRules = harden({
   payoutRules: [
     {
       kind: 'offerExactly',
-      assetDesc: moolaAssay.makeAssetDesc(1),
+      units: moolaAssay.makeUnits(1),
     },
     {
       kind: 'wantAtLeast',
-      assetDesc: simoleanAssay.makeAssetDesc(3),
+      units: simoleanAssay.makeUnits(3),
     },
   ],
   exitRule: {
@@ -58,7 +58,7 @@ const {
 ```
 Note that in this implementation, the item that will be auctioned is
 described at index 0 of the `payoutRules` array, and Alice's minimum
-bid `assetDesc` is at index 1 in the `payoutRules` array. 
+bid `units` is at index 1 in the `payoutRules` array. 
 
 Once Alice has the escrow receipt, she can use it to start the auction:
 ```js
@@ -94,11 +94,11 @@ const bobOfferRules = harden({
   payoutRules: [
     {
       kind: 'wantExactly',
-      assetDesc: moolaAssay.makeAssetDesc(1),
+      units: moolaAssay.makeUnits(1),
     },
     {
       kind: 'offerAtMost',
-      assetDesc: simoleanAssay.makeAssetDesc(11),
+      units: simoleanAssay.makeUnits(11),
     },
   ],
   exitRule: {
