@@ -21,6 +21,34 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
+      '/getting-started/': [
+        {
+          title: 'Getting Started',
+          path: '/getting-started/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+            {
+              title: 'Agoric\'s Cosmic SwingSet',
+              path: '/getting-started/',
+              collapsable: false,
+              sideBarDepth: 3
+            },
+            {
+              title: 'Pixel Demo',
+              path: '/getting-started/pixel-demo',
+              collapsable: false,
+              sideBarDepth: 3
+            },
+            {
+              title: 'Timer Service',
+              path: '/getting-started/timer-service',
+              collapsable: false,
+              sideBarDepth: 3
+            }
+          ]
+        },
+      ],
       '/ertp/': [
         {
           title: 'ERTP Guide',
@@ -30,7 +58,12 @@ module.exports = {
           children: [
             '/ertp/guide/',
             '/ertp/guide/getting-started',
-            '/ertp/guide/assays',
+            '/ertp/guide/mint',
+            '/ertp/guide/assay',
+            '/ertp/guide/extent',
+            '/ertp/guide/units',
+            '/ertp/guide/label',
+            '/ertp/guide/unit-ops',
             '/ertp/guide/default-configuration',
             '/ertp/guide/contract-hosts',
             '/ertp/guide/gotchas'
@@ -42,12 +75,12 @@ module.exports = {
           collapsable: false,
           sideBarDepth: 3,
           children: [
-            '/ertp/api/',
             '/ertp/api/mint',
-            {
-              title: 'UnitOps',
-              path: '/ertp/api/unitOps'
-            }
+            '/ertp/api/assay',
+            '/ertp/api/purse',
+            '/ertp/api/payment',
+            '/ertp/api/extent-ops',
+            '/ertp/api/unit-ops'
           ]
         }
       ],
