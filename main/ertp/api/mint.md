@@ -28,6 +28,26 @@ const happyTownBucks = makeMint('happyTownBucks');
 const sadTownBucks = makeMint('sadTownBucks');
 ```
 
+## mint.mint(initialBalance, name)
+- `initialBalance` `{Units}` - Initial balance for the purse
+- `name` `{String}` - Name for the purse. Default is 'a purse'.
+- Returns: `{Purse}`
+
+Since newly minted units need to be held somewhere, this method actually creates a new Purse containing the specified units.
+Units must be held in either a Payment or a Purse.
+
+```js
+import { makeMint } from '@agoric/ertp/core/mint';
+const happyTownBucks = makeMint('happyTownBucks');
+
+// Create a new purse with 100 happyTownBucks
+const myHappyTownBucks = happyTownBucks.mint(100, 'myHappyTownBucks');
+
+// Create you a purse with 200 happyTownBucks
+const yourHappyTownBucks = happyTownBucks.mint(200, 'yourHappyTownBucks');
+
+```
+
 ## mint.getAssay()
 - Returns: `{Assay}`
 

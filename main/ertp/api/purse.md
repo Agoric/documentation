@@ -32,9 +32,9 @@ Get the `units` contained in this purse, confirmed by the assay.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 // Returns 1000
 purse.getBalance();
@@ -50,9 +50,9 @@ Deposit all the contents of `src` Payment into this purse, returning the `units`
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 const targetPurse = assay.makeEmptyPurse();
 const payment = await purse.withdraw(7);
 
@@ -72,9 +72,9 @@ Deposit all the contents of `srcPayment` into this purse, returning the `units`.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 const targetPurse = assay.makeEmptyPurse();
 
 const payment = await purse.withdraw(22);
@@ -94,9 +94,9 @@ Withdraw `units` from this purse into a new Payment.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payment = purse.withdraw(20);
 
@@ -113,9 +113,9 @@ Withdraw entire content of this purse into a new Payment.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payment = purse.withdrawAll();
 

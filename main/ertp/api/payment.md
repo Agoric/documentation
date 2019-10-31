@@ -27,9 +27,9 @@ Get the units contained in this payment, confirmed by the assay.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payments = [];
 payments.push(purse.withdraw(20));
