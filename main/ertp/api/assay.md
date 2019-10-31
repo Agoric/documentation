@@ -85,8 +85,8 @@ Make an empty purse associated with this kind of right.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
 
 // After creating an assay you can create an empty purse:
 const targetPurse = assay.makeEmptyPurse();
@@ -105,9 +105,9 @@ Combine multiple payments into one payment.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 // Create a payments array. Each element, or payment, has a value of 1.
 const payments = [];
@@ -156,9 +156,9 @@ Make a new `Payment` that has exclusive rights to all the contents of `src`. If 
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payment = await purse.withdraw(7);
 const newPayment = await assay.claimExactly(7, payment);
@@ -178,9 +178,9 @@ Make a new `Payment` that has exclusive rights to all the contents of `src`.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payment = await purse.withdraw(10);
 const newPayment = await assay.claimAll(payment);
@@ -199,9 +199,9 @@ Burn all of the rights from `src`. If `units` does not equal the balance of the 
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payment = await purse.withdraw(10);
 
@@ -221,9 +221,9 @@ Burn all of the rights from `src`.
 ```js
 import { makeMint } from './core/mint';
 
-const mint = makeMint('fungible');
-const assay = mint.getAssay();
-const purse = mint.mint(1000);
+const myNewMint = makeMint('fungible');
+const assay = myNewMint.getAssay();
+const purse = myNewMint.mint(1000);
 
 const payment = await purse.withdraw(10);
 await assay.burnAll(payment);
