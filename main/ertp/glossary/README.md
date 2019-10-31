@@ -31,7 +31,7 @@ A platform for evaluating contract code and handing out seats in that contract. 
 Electronic Rights Transfer Protocol - a smart contract framework that uses object capabilities to enforce access control. Instead of having to prove ownership of a corresponding private key, in the world of object capabilities, if your program has a reference to an object, it can call methods on that object. If it doesn't have a reference, it can't. For more on object capabilities, see [Chip Morningstar's post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 
 ## Extent
-How much, how many, or description of unique asset. (Pixel(3,2), $3 or ‘Right to occupy on Tuesdays’).  Extents describe the extent of something that can be owned or shared. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+Extents describe the extent of something that can be owned or shared: How much, how many, or description of unique asset. (Pixel(3,2), $3 or ‘Right to occupy on Tuesdays’). Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
 Extent must be Comparable.
 
@@ -54,13 +54,13 @@ An [AssetHolder](#assetholder). Purses hold verified units of certain rights iss
 An [AssetHolder](#assetholder). Payments hold verified units of certain rights issued by Mints, specifically units that are in _transit_. Units from payments can be deposited in [purses](#purse), but otherwise, the entire unit is available when the payment is transferred. Payments can be converted to Purses. [Payment API](/ertp/api/mint.html#payment)
 
 ## Unit
-Units are the canonical description of tradeable goods. They are manipulated by mints, and represent the goods and currency carried by purses and payments. They can be used to represent things like currency, stock, and the abstract right to participate in a particular exchange. Units are wrappers on extents that have been validated by an UnitOps, and can be verified as having been issued by the UnitOps.
+Units are the canonical description of tradeable goods. They are manipulated by mints, and represent the goods and currency carried by purses and payments. They can be used to represent things like currency, stock, and the abstract right to participate in a particular exchange.
 
 ### Composition
 `Label + Extent`
 
 ## UnitOps
-Creator and validator of asset Units. "Arithmetic" operations on [Units](#unit), used for actions like withdrawing a payment from a purse. UnitOps methods can be called to verify properties of the units. All of the custom behavior is stored in the ExtentOps, allowing for UnitOps to be polymorphic, exposing the same interface while allowing custom behavior
+ "Arithmetic" operations on [Units](#unit), used for actions like withdrawing a payment from a purse. All of the custom behavior is stored in the ExtentOps, allowing for UnitOps to be polymorphic, exposing the same interface while allowing custom behavior.
 
 ## UseObj
 A object associated with purses and payments that has custom behavior associated with the use of digital assets
