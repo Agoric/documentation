@@ -3,9 +3,8 @@
 The ERTP API is divided into the following sections:
 
 - [Mint](/ertp/api/mint)
-  - [Assay](/ertp/api/mint.html#assay)
-  - [Purse](/ertp/api/mint.html#purse)
-  - [Payment](/ertp/api/mint.html#payment)
-  - [ExtentOps](/ertp/api/mint.html#extentops)
-
-- [UnitOps](/ertp/api/unitOps.html#unitops-api)
+- [Assay](/ertp/api/assay)
+- [Purse](/ertp/api/purse)
+- [Payment](/ertp/api/payment)
+- [ExtentOps](/ertp/api/extentops)
+- [UnitOps](/ertp/api/unit-ops)

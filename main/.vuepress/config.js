@@ -58,7 +58,12 @@ module.exports = {
           children: [
             '/ertp/guide/',
             '/ertp/guide/getting-started',
-            '/ertp/guide/assays',
+            '/ertp/guide/mint',
+            '/ertp/guide/assay',
+            '/ertp/guide/extent',
+            '/ertp/guide/units',
+            '/ertp/guide/label',
+            '/ertp/guide/unit-ops',
             '/ertp/guide/default-configuration',
             '/ertp/guide/contract-hosts'
           ]
@@ -69,12 +74,12 @@ module.exports = {
           collapsable: false,
           sideBarDepth: 3,
           children: [
-            '/ertp/api/',
             '/ertp/api/mint',
-            {
-              title: 'UnitOps',
-              path: '/ertp/api/unitOps'
-            }
+            '/ertp/api/assay',
+            '/ertp/api/purse',
+            '/ertp/api/payment',
+            '/ertp/api/extent-ops',
+            '/ertp/api/unit-ops'
           ]
         }
       ],
