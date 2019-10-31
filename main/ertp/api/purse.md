@@ -1,5 +1,9 @@
 # Purse
-Purses hold verified `units` of certain rights issued by Mints. Purses can transfer part of the balance they hold in a payment, which has a narrower interface. A purse's balance can rise and fall, through the action of depositExactly() and withdraw(). Operations on payments (`burnExactly()`, `depositExactly()`, `assay.claimExactly()`) kill the original payment and create new payments if applicable. The primary use for Purses and Payments is for currency-like and goods-like valuables, but they can also be used to represent other kinds of rights, such as the right to participate in a particular contract.
+Purses hold verified `units` of certain rights issued by Mints. Purses can transfer part of the balance they hold in a payment, which has a narrower interface. A purse's balance can rise and fall, through the action of `purse.depositExactly()` and `purse.withdraw()`.
+
+Operations on payments (`assay.burnExactly(units, payment)`, `purse.depositExactly(units, payment)`, `assay.claimExactly(units, payment, name)`) kill the original payment and create new payments if applicable.
+
+The primary use for Purses and Payments is for currency-like and goods-like valuables, but they can also be used to represent other kinds of rights, such as the right to participate in a particular contract.
 
 ## purse.getName()
 - Returns: `{String}`
