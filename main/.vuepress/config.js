@@ -32,7 +32,8 @@ module.exports = {
             '/ertp/guide/getting-started',
             '/ertp/guide/assays',
             '/ertp/guide/default-configuration',
-            '/ertp/guide/contract-hosts'
+            '/ertp/guide/contract-hosts',
+            '/ertp/guide/gotchas'
           ]
         },
         {
