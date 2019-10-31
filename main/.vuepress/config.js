@@ -81,6 +81,10 @@ module.exports = {
             '/ertp/api/extent-ops',
             '/ertp/api/unit-ops'
           ]
+        },
+        {
+          title: 'ERTP Glossary',
+          path: '/ertp/glossary/'
         }
       ],
 
