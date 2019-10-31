@@ -1,67 +1,11 @@
-# UnitOps API
+# UnitOps
 
-## Definitions
-
-### Extent
-Extents answer the question 'how much?' or 'how many?'. Fungible
-extents are normally represented by natural numbers. For instance, if
-we refer to "3 bucks", the "3" is the extent. Other extents may be
-represented as strings naming a particular right (e.g. seat 'G19'), or
-an arbitrary object that sensibly represents the rights at issue.
-Extents must be pass-by-copy and Comparable. Extents are unlabeled,
-meaning that they alone are not necessarily associated with a
-particular assay or mint.
-
-### Units
-Units are labeled extents. To be specific, units are a record with two
-parts: a label, which identifies an assay, and an extent. The balance
-of a purse or payment is in units. For example, the balance of a purse
-might be 3 bucks, written in units as:
-
-```js
-{
-  label: {
-    allegedName: 'bucks',
-    assay: bucksAssay,
-  },
-  extent: 3,
-}
-```
-
-### UnitOps
 UnitOps are the "arithmetic" operations on units, used for actions like
 withdrawing a payment from a purse. All of the custom behavior is
-stored in the ExtentOps, allowing for UnitOps to be polymorphic,
+stored in the [ExtentOps](./extent-ops), allowing for UnitOps to be polymorphic,
 exposing the same interface while allowing custom behavior.
 
-Units are the canonical description of tradable goods. They are
-manipulated by mints, and represent the goods and currency carried by
-purses and payments. They can be used to represent things like
-currency, stock, and the abstract right to participate in a particular
-exchange.
-
-### Label
-The label in units identifies the assay, and includes an allegedName
-that was provided by the maker of the mint. This allegedName should
-not be trusted as accurate (for instance, anyone can create a mint
-with allegedName 'BTC'), but the allegedName can be useful for
-debugging and double-checking actions.
-
-## Types of UnitOps
-
-### UniUnitOps
-UniUnitOps represents units that have unique descriptions. It is a refinement of UnitOps that we've found useful, but has no special place in the protocol.
-
-The extent must either be null, in which case it is empty,or be some truthy comparable value, in which case it represents a single unique unit described by that truthy extent. Combining two uni units with different truthy extents fails, as they represent non-combinable rights.
-
-### NatUnitOps
-UnitOps for a labeled natural number describing a extent of fungible erights. The label describes what kinds of rights these are. NatUnitOps is a refinement of UnitOps that we've found useful, but has no special place in the protocol.
-
-Empty units have an extent equal to 0. 'includes()' verifies that leftUnits is greater than or equal to rightUnits. 'with()' and 'without()' add and subtract their contents.
-
-## unitOps Methods
-
-### unitOps.getLabel()
+## unitOps.getLabel()
 
 - Returns: `{Label}`
 
@@ -75,7 +19,7 @@ const localAssay = localMint.getAssay();
 const localLabel = localAssay.getLabel();
 ```
 
-### unitOps.make(allegedExtent)
+## unitOps.make(allegedExtent)
 
 - `allegedExtent` `{Extent}`
 - [TOOD: add secod and third (optional) params]
@@ -87,7 +31,7 @@ Make a new verified Units containing the `allegedExtent`.
 inviteMaker.make('writer', bobSeat);
 ```
 
-### unitOps.coerce(allegedUnits)
+## unitOps.coerce(allegedUnits)
 
 - `allegedUnits` `{Units}` - An Units object made by this particular UnitOps. Function will error otherwise.
 - Returns: `{Units}`
@@ -108,7 +52,7 @@ function insistUnitsEqualsPaymentBalance(units, payment) {
 }
 ```
 
-### unitOps.extent(units)
+## unitOps.extent(units)
 
 - `units` `{Units}`
 - Returns: `{Extent}`
@@ -123,7 +67,7 @@ const fungibleExtent = fungibleUnitOps.extent(1);
 const rightsExtent = rightsUnitOps.extent('This is an example of a string as an extent for rightsUnitOps.');
 ```
 
-### unitOps.empty()
+## unitOps.empty()
 
 - Returns: `{Units}`
 
@@ -133,7 +77,7 @@ Return an empty units. Conveys no authority.
 const emptyUnits = exampleUnitOps.empty();
 ```
 
-### unitOps.isEmpty(units)
+## unitOps.isEmpty(units)
 
 - `units` `{Units}`
 - Returns: `{boolean}`
@@ -151,7 +95,7 @@ exampleUnitOps.isEmpty(emptyUnits);
 exampleUnitOps.isEmpty(notEmptyUnits);
 ```
 
-### unitOps.includes(leftUnits, rightUnits)
+## unitOps.includes(leftUnits, rightUnits)
 
 - `leftUnits` `{Units}`
 - `rightUnits` `{Units}`
@@ -184,7 +128,7 @@ galleryPixelUnitOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel]
 galleryPixelUnitOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel]);
 ```
 
-### unitOps.equals(leftUnits, rightUnits)
+## unitOps.equals(leftUnits, rightUnits)
 
 - `leftUnits` `{Units}`
 - `rightUnits` `{Units}`
@@ -210,7 +154,7 @@ galleryPixelUnitOps.equals([startPixel], [startPixel]);
 galleryPixelUnitOps.equals([startPixel], []);
 ```
 
-### unitOps.with(leftUnits, rightUnits)
+## unitOps.with(leftUnits, rightUnits)
 
 - `leftUnits` `{Units}`
 - `rightUnits` `{Units}`
@@ -247,7 +191,7 @@ galleryPixelUnitOps.with([startPixel], [secondPixel]);
 galleryPixelUnitOps.with([startPixel, secondPixel], [startPixel]);
 ```
 
-### unitOps.without(leftUnits, rightUnits)
+## unitOps.without(leftUnits, rightUnits)
 
 - `leftUnits` `{Units}`
 - `rightUnits` `{Units}`
