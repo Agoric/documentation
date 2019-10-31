@@ -33,7 +33,7 @@ footer: Apache-2.0 Licensed | Copyright © 2019-Agoric
 </div>
 <br>
 <div class="flex flex--column flex--center">
-  <p>Ready for more? Check out <router-link to="/zoe/guide/Zoe">Zoe</router-link>. Zoe is responsible for enforcing what we call "offer safety", and the smart contract that runs on top of Zoe is responsible for figuring out a proposed reallocation of resources.
+  <p>Ready for more? Check out <router-link to="/zoe/guide/">Zoe</router-link>. Zoe is responsible for enforcing what we call "offer safety", and the smart contract that runs on top of Zoe is responsible for figuring out a proposed reallocation of resources.
   </p>
   <Button-Action-Link
     text="Use with  Zoe"
