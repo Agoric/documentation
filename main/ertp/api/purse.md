@@ -78,7 +78,7 @@ const purse = mint.mint(1000);
 const targetPurse = assay.makeEmptyPurse();
 
 const payment = await purse.withdraw(22);
-await targetPurse.despositAll(payment);
+await targetPurse.depositAll(payment);
 
 // Returns 22
 targetPurse.getBalance();
@@ -98,11 +98,10 @@ const mint = makeMint('fungible');
 const assay = mint.getAssay();
 const purse = mint.mint(1000);
 
-const payments = [];
-payments.push(purse.withdraw(20));
+const payment = purse.withdraw(20);
 
 // Returns 20
-payments.getBalance();
+payment.getBalance();
 ```
 
 ## purse.withdrawAll(name)
