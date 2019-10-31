@@ -1,14 +1,19 @@
-There will be one or two timerServices in home. One is from the chain (if
+# Timer Service
+
+## Description
+
+There will be one or two `timerServices` in home. One is from the chain (if
 present), the other from the local vat. It would probably be sensible to use a
 chain-based timer for contracts, but more efficient to use the local timer
-for operations that don't need consensus or consistency. Each timerService
-gives the ability to get the current time, schedule a single wake() call,
+for operations that don't need consensus or consistency. Each `timerService`
+gives the ability to get the current time, schedule a single `wake()` call,
 create a repeater that will allow scheduling of events at regular intervals,
 or remove scheduled calls.
 
-The timerService's API is 
+## API
+The timerService's API is:
 
-```
+```js
 interface TimerService {
   // Retrieve the time of the start of the current block.
   getCurrentTimestamp() -> (integer);
@@ -26,7 +31,7 @@ interface TimerService {
   // schedule(h) is called, h.wake() will be scheduled to be called after the
   // next multiple of interval from the base. Since block times are coarse-
   // grained, the actual call may occur later, but this won't change when the
-  // next event will be called. 
+  // next event will be called.
   createRepeater(delaySecs :integer, interval :integer) -> (Repeater);
 }
 
@@ -49,6 +54,7 @@ interface Handler {
 }
 ```
 
+## Transcript
 Here's a transcript of a session showing the use of the repeater.
 
 ```
@@ -69,13 +75,13 @@ history[4]  {"getCalls":[Function getCalls],"getArgs":[Function getArgs],"wake":
 command[5]  h2 = makeHandler()
 history[5]  {"getCalls":[Function getCalls],"getArgs":[Function getArgs],"wake":[Function wake]}
 command[6]  tl = home.localTimerService
-history[6]  [Presence o-59]  
+history[6]  [Presence o-59]
 command[7]  tc = home.chainTimerService
-history[7]  [Presence o-55]  
+history[7]  [Presence o-55]
 command[8]  rl = tl~.createRepeater(7, 1500)
-history[8]  [Presence o-64]  
+history[8]  [Presence o-64]
 command[9]  rc = tc~.createRepeater(7, 1)
-history[9]  [Presence o-65]  
+history[9]  [Presence o-65]
 command[10]  rl~.schedule(h1)
 history[10]  1571783040007
 command[11]  rc~.schedule(h2)

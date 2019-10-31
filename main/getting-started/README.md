@@ -2,12 +2,13 @@
 
 Agoric's Cosmic SwingSet enables developers to test smart contracts build with [ERTP](https://github.com/Agoric/ERTP) in various blockchain setup environments
 
+## Overview
 This document gives an overview of the process of setting up
 
-1  a local environment that will allow you to build and debug
-2  an environment that emulates a remote setup for testing
-3  deploying to the TestNet
-4  (not available yet) deploying to MainNet
+1.  a local environment that will allow you to build and debug
+2.  an environment that emulates a remote setup for testing
+3.  deploying to the TestNet
+4.  (not available yet) deploying to MainNet
 
 In order to build a DeFi app in the SwingSet environment, your team will have to write code for three things:
 
@@ -18,34 +19,34 @@ In order to build a DeFi app in the SwingSet environment, your team will have to
       other chains
 
 
-To develop and deploy new code, you'll have to clone our repo from GitHib
+To develop and deploy new code, you'll have to clone our [Cosmic SwingSet](https://github.com/Agoric/cosmic-swingset) repo from GitHib
 
-```
-git clone https://github.com/Agoric/cosmic-swingset
+```sh
+$ git clone https://github.com/Agoric/cosmic-swingset
 ```
 
 There is more thorough documentation there. This is an overview.
 
 
-## Different setups to run the Pixel Demo
+## Different ways to run the Pixel Demo
 
 Running the demo requires a local solo node to serve as your access point.
 Whichever environment you want to develop in, you'll start by building a solo
 node from the source code.
 
+**Choose a scenario:**
 
-### Choose a scenario
+## Scenario 3: no testnet
+### Develop off-chain demo locally
 
-#### Scenario 3 : no testnet (develop off-chain demo locally)
-
-In this scenario, you run: 
+In this scenario, you run:
 - a **solo node** with the server-side Pixel Demo running and exposing an HTTP server in localhost
 - a **web browser** connecting to the solo node and enabling user interaction with the Pixel Demo
 
 No blockchain is involved.
 
-| <img src="assets/LocalSolo.pdf" alt="Local Solo"> | 
-|:--:| 
+| <img src="./assets/LocalSolo.png" alt="Local Solo"> |
+|:--:|
 | *A Local Solo SwingSet. Notice that there's no chain.* |
 
 Run:
@@ -54,32 +55,33 @@ make scenario3-setup
 make scenario3-run-client
 ```
 
-[`lib/ag-solo/vats/vat-demo.js`](lib/ag-solo/vats/vat-demo.js) contains the code running a vat with
+[`lib/ag-solo/vats/vat-demo.js`](https://github.com/Agoric/cosmic-swingset/tree/master/lib/ag-solo/vats/vat-demo.js) contains the code running a vat with
 the Pixel Gallery Demo.
 
 Also, as part of `make scenario3-setup`, `bin/ag-solo init <directory>` gets called and all the
-content of the [`vats`](lib/ag-solo/vats) directory gets copied to the `<directory>`
+content of the [`vats`](https://github.com/Agoric/cosmic-swingset/tree/master/lib/ag-solo/vats) directory gets copied to the `<directory>`
 
 The objects added to `home` are created in
-[`lib/ag-solo/vats/vat-demo.js`](lib/ag-solo/vats/vat-demo.js).
+[`lib/ag-solo/vats/vat-demo.js`](https://github.com/Agoric/cosmic-swingset/tree/master/lib/ag-solo/vats/vat-demo.js).
 
 The [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop] handler is in
-[`lib/ag-solo/vats/vat-http.js`](lib/ag-solo/vats/vat-http.js).
+[`lib/ag-solo/vats/vat-http.js`](https://github.com/Agoric/cosmic-swingset/tree/master/lib/ag-solo/vats/vat-http.js).
 
 The HTML frontend code is pure JS/DOM (no additional libraries yet), in
 `lib/ag-solo/html/index.html` and `lib/ag-solo/html/main.js`.
 
 
-#### Scenario 2: a single local testnet node (develop on-chain demo)
+## Scenario 2: a single local testnet node
+### Develop on-chain demo
 
-In this scenario, you run: 
+In this scenario, you run:
 - one or several **solo node(s)** each exposing an HTTP server in localhost (each to a different port)
 - a **single local blockchain testnet node** with the server-side Pixel Demo running
 - a **web browser** connecting to each solo node via a different port and enabling user interaction with the Pixel Demo
 
 
-| <img src="assets/LocalChain.pdf" alt="Local Chain"> | 
-|:--:| 
+| <img src="./assets/LocalChain.png" alt="Local Chain"> |
+|:--:|
 | *A Local Chain SwingSet. Notice that the chain is private.* |
 
 The solo nodes communicate with the testnet node
@@ -111,19 +113,19 @@ scenario2-run-client BASE_PORT=8002` and communicate with them respectively with
 http://localhost:8001/ and http://localhost:8002/
 
 
-  
-#### Scenario 1: your own local testnet (develop testnet provisioner)
+## Scenario 1: your own local testnet
+### Develop testnet provisioner
 
-In this scenario, you run: 
+In this scenario, you run:
 - a **solo node** exposing an HTTP server in localhost
-- a **several local blockchain testnet nodes** with the server-side Pixel Demo running on top. 
+- a **several local blockchain testnet nodes** with the server-side Pixel Demo running on top.
 - a **web browser** connecting to the solo node and enabling user interaction with the Pixel Demo
 
 This scenario is only useful for moving toward deploying the local source code as a new
 testnet. Before using this scenario, you should test your on-chain code under Scenario 2.
 
-| <img src="assets/SharedChain.pdf" alt="Shared Chain"> | 
-|:--:| 
+| <img src="./assets/SharedChain.png" alt="Shared Chain"> |
+|:--:|
 | *A Shared Chain setup. You can connect to the chain with multiple solo SwingSets.* |
 
 ```sh
@@ -141,7 +143,7 @@ See [Testnet Tutorial](https://github.com/Agoric/cosmic-swingset#testnet-tutoria
 
 #### Scenario 0: a public testnet (kick the tires)
 
-In this scenario, you run: 
+In this scenario, you run:
 - a **solo node** exposing an HTTP server in localhost
 - a **web browser** connecting to the solo node and enabling user interaction with the Pixel Demo
 
@@ -153,7 +155,7 @@ $ make scenario0-setup
 $ make scenario0-run-client
 ```
 
-Alternatively, running the solo node from a Docker image and no local source code is described in the [top section](#agorics-cosmic-swingset).  
+Alternatively, running the solo node from a Docker image and no local source code is described in the [top section](#overview).
 
 Now go to http://localhost:8000/ to interact with your new solo node.
 
