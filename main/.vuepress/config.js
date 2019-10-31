@@ -80,7 +80,8 @@ module.exports = {
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/extent-ops',
-            '/ertp/api/unit-ops'
+            '/ertp/api/unit-ops',
+            '/ertp/api/contract-hosts'
           ]
         }
       ],

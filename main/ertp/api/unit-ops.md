@@ -28,7 +28,7 @@ const localLabel = localAssay.getLabel();
 Make a new verified Units containing the `allegedExtent`.
 
 ```js
-inviteMaker.make('writer', bobSeat);
+const inviteUnits = inviteUnitOps.make(seatDescription);
 ```
 
 ## unitOps.coerce(allegedUnits)
