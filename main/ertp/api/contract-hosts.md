@@ -72,7 +72,7 @@ const invitePayments = E(someInstallation).spawn(terms);
 The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit the installation parameter, as they will be supplied with a copy of the function with that information already supplied.
 
 As a general rule of thumb, these methods' parameters should follow this order:
-1. `{Installation}`
+1. `{Installation}` - Only required for development of contract, otherwise, omit.
 2. `{Units}`
 3. `{Terms}`
 4. Any additional parameters
