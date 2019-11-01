@@ -7,7 +7,7 @@ Payments hold verified units of certain rights issued by Mints. Units from payme
 Get the name of this purse.
 
 ```js
-Examples
+console.log( anyPayment.getName() )
 ```
 
 ## payment.getAssay()
@@ -31,9 +31,8 @@ const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
 const purse = myNewMint.mint(1000);
 
-const payments = [];
-payments.push(purse.withdraw(20));
+const payment = purse.withdraw(20);
 
 // Returns 20
-payments.getBalance();
+payment.getBalance();
 ```
