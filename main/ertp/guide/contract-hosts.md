@@ -50,9 +50,8 @@ The returned Payment is the invite that can be passed to `contractHost.redeem()`
 
 `collect()` calls `getWinnings()` and `getRefund()` on `seatP` and deposits the proceeds respectively into `winPurseP` and `refundPurseP`. `name` (which defaults to 'collecting') is converted to a String, and used for logging the results.
 
-### <span style="color:red">Is this sentence about Jessie supposed to be here?</span>
 `collect()` is a pure function that can be imported from
-`contractHost.js`. (Jessie will eventually provide assurances, because of
+`contractHost.js`. ([Jessie](https://github.com/Agoric/Jessie) will eventually provide assurances, because of
 the way that we import modules, that it is confined.) Since it is confined,
 users can be sure that it has no ability to skim any of the value being
 transferred.
