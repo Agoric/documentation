@@ -111,7 +111,12 @@ module.exports = {
         {
           title: 'Zoe API',
           path: '/zoe/api/',
-          collapsable: false
+          collapsable: false,
+          children: [
+            '/zoe/api/structs',
+            '/zoe/api/zoe',
+            '/zoe/api/zoeGoverningContractFacet'
+          ]
         }
       ],
 
