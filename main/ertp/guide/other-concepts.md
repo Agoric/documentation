@@ -1,4 +1,4 @@
-# Gotchas
+# Other Concepts
 
 When looking at the code in our [tests](https://github.com/Agoric/ERTP/tree/master/test), you might see some new
 concepts:

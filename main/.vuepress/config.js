@@ -66,7 +66,7 @@ module.exports = {
             '/ertp/guide/unit-ops',
             '/ertp/guide/default-configuration',
             '/ertp/guide/contract-hosts',
-            '/ertp/guide/gotchas'
+            '/ertp/guide/other-concepts'
           ]
         },
         {
