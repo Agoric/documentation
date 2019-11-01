@@ -4,7 +4,7 @@ The label in units identifies the assay, and includes an `allegedName`
 that was provided by the maker of the mint.
 
 ```js
-label: {
+const label = {
   allegedName: 'bucks',
   assay: bucksAssay,
 }
@@ -13,5 +13,5 @@ label: {
 ## allegedName
 This `allegedName` should
 not be trusted as accurate (for instance, anyone can create a mint
-with allegedName 'BTC'), but the `allegedName` can be useful for
+with `allegedName` 'BTC'), but the `allegedName` can be useful for
 debugging and double-checking actions.
