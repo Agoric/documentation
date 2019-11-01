@@ -6,7 +6,7 @@ Bitcoin has unspent transactions. Ethereum has account balances. Agoric has ERTP
 
 ERTP is a uniform way of transferring tokens and other digital assets in JavaScript. All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
 
-Get started with the [ERTP Guide](/ertp/guide/) or [ERTP API](/ertp/api/).
+You are currently reading the guide. There is also an [ERTP API reference](/ertp/api/) available.
 
 ## How It Works
 
@@ -14,15 +14,22 @@ ERTP, or the Electronic Rights Transfer Protocol, is a smart contract framework.
 
 ERTP itself doesn't have any concept of cryptography. Instead, it uses object capabilities to enforce access control. Instead of having to prove ownership of a corresponding private key, in the world of object capabilities, if your program has a reference to an object, it can call methods on that object. If it doesn't have a reference, it can't. For more on object capabilities, see [Chip Morningstar's post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 
+ERTP is the top layer of the Agoric stack. You can find out more about this stack in this introductory video:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/52SgGFpWjsY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## A quick tutorial
 
 Let's look at an example. In ERTP, all digital assets, including fungible and
-non-fungible tokens, are created by a `mint`. Having access to the mint
+non-fungible tokens, are created by a [`mint`](./mint.html). Having access to the mint
 gives you the power to create more digital assets of the same type at
 will. For instance, let's say we want to create a new community
-currency called 'BaytownBucks':
+currency called 'BaytownBucks'.
+You would first install the [ertp JavaScript package](https://www.npmjs.com/package/@agoric/ertp)
+(`npm install @agoric/ertp`) and then:
 
 ```js
+import { makeMint } from '@agoric/ertp/core/mint';
+
 const baytownBucksMint = makeMint('BaytownBucks');
 ```
 
@@ -33,11 +40,11 @@ const purse = baytownBucksMint.mint(1000, 'community treasury');
 ```
 
 The act of minting created 1000 BaytownBucks and stored them together in a
-`purse`. Purses in ERTP only hold one type of digital asset, so this
+`purse`. [Purses](./mint.html#purses) in ERTP only hold one type of digital asset, so this
 purse can only ever hold BaytownBucks.
 
 Let's distribute the BaytownBucks to members of the community. To send
-money in ERTP, we withdraw `payments` from purses.
+money in ERTP, we withdraw [`payments`](./mint.html#payments) from purses.
 
 ```js
 const paymentForAlice = purse.withdraw(10, `alice's community money`);
@@ -49,7 +56,7 @@ sent to someone else, a purse never should be.
 
 Now let's send the payment to Alice as message:
 
-```
+```js
 alice.receivePayment(paymentForAlice);
 ```
 
@@ -86,7 +93,7 @@ in an optional configuration that allows for many more possibilities.
 
 ## Pixel Demo
 
-For a demo on how ERTP can be used, check out our [Pixel Demo](https://github.com/Agoric/ERTP/blob/master/GALLERY-README.md).
+For a demo on how ERTP can be used, check out our [Pixel Demo](/Documentation/getting-started/pixel-demo.html#installation).
 
 ### A preemption hierarchy of rights
 
@@ -107,7 +114,7 @@ during San Francisco Blockchain Week at a
 The `contractHost` tests detail the composition of a covered call option
 with an escrow exchange contract.
 
-```
+```sh
 npx tape -r esm test/swingsetTests/contractHost/test-contractHost.js
 ```
 

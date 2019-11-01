@@ -23,9 +23,8 @@ The function to make a configuration should return an object with the following 
 import harden from '@agoric/harden';
 
 function makeConfig() {
-  return harden
+  return harden({})
 }
-
 ```
 
 ```js

@@ -11,7 +11,7 @@ The primary use for Purses and Payments is for currency-like and goods-like valu
 Get the name of this purse.
 
 ```js
-Examples
+console.log( purse.getName() )
 ```
 
 ## purse.getAssay()
