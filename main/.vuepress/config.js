@@ -6,6 +6,10 @@ module.exports = {
   /* --- HOME PAGE --- */
   title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
+  // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
+  head: [
+    ['link', { rel: 'icon', href: '/logo.svg' }]
+  ],
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
