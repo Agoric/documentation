@@ -8,7 +8,7 @@ module.exports = {
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
-    ['link', { rel: 'icon', href: '/logo.svg' }]
+    ['link', { rel: 'icon', href: '/favicon-full.ico' }]
   ],
 
   /* --- DEFAULT THEME CONFIG --- */
