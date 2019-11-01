@@ -68,14 +68,16 @@ const invitePayments = E(someInstallation).spawn(terms);
 - `installation` `{Installation}`
 - `inviteUnits` `{Units}`
 - `terms` `{Terms}`
-- Returns:
 
-### <span style="color:red">What does this method return? It's not stated in the chainmail file and it's not very clear in the code usage.</span>
+The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit this parameter, as they will be supplied with a copy of the function with that information already supplied.
 
-### <span style="color:red">Are these params correct? In the code they follow this pattern instead: `{inviteUnits, terms, anOptionalString}`. Example from `ERTP/test/swingsetTests/contractHost/vat-alice.js`:</span>
+Users usually want to validate their invitation, the terms of the deal they're attempting to participate in, and which seat they are taking. If the invitation is invalid `checkUnits()` will throw an error.
 
 ```js
-return E(escrowExchangeInstallationP)
+// If `allegedInviteUnits` is valid and matches the terms of the
+// contract, then the code will continue as expected.
+// Otherwise, `checkUnits()` will throw an error.
+E(escrowExchangeInstallationP)
   .checkUnits(allegedInviteUnits, { left, right }, 'left')
   .then(() => {
     return E(inviteAssayP).claimExactly(
@@ -85,13 +87,6 @@ return E(escrowExchangeInstallationP)
     );
   });
   ```
-
-The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit this parameter, as they will be supplied with a copy of the function with that information already supplied.
-
-Users usually want to validate their invitation, the terms of the deal they're attempting to participate in, and which seat they are taking.
-
-```js
-```
 
 ## contract.start(terms, inviteMaker)
 - `terms` `{Terms}`
