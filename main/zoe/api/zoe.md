@@ -2,12 +2,17 @@
 
 Zoe is a long-lived and well-trusted contract that enforces offer safety for the contracts that use it. Zoe has a single `seatAssay` and a single `escrowReceiptAssay` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `seatAssay` or `escrowReceiptAssay` and thus validate any `seat` or `escrowReceipt` they receive from someone else.
 
+### <span style="color:red">Zoe and ZoeGoverningContractFacet have some similar methods so those examples are the same. Those should be double-checked to make sure they are accurate in both locations. Methods: getSeatAssay, getEscrowReceiptAssay.</span>
+
+
 ## zoe.getSeatAssay()
 - Returns: `{Assay}`
 
 Get the long-lived `seatAssay`. The mint associated with the `seatAssay` creates the ERTP payments that represent the right to claim the payouts of involvement in a contract.
 
+### <span style="color:red">Couldn't find an example in the code, this needs checking.</span>
 ```js
+const someSeatAssay = zoe.getSeatAssay()
 ```
 
 ## zoe.getEscrowReceiptAssay()
@@ -16,14 +21,17 @@ Get the long-lived `seatAssay`. The mint associated with the `seatAssay` creates
 Get the long-lived `escrowReceiptAssay`. The mint associated with the `escrowReceiptAssay` creates the ERTP payments that represent proof of escrow and may be passed into a smart contract method.
 
 ```js
+const escrowReceiptAssay = zoe.getEscrowReceiptAssay();
 ```
 
-## zoe.getAssaysForInstance()
+## zoe.getAssaysForInstance(installationHandle)
+- `installationHandle` `{Object}`
 - Returns: `{Array <Assay>}`
 
 Returns the array of assays for the particular instance. This is helpful in the case that the user has forgotten the order.
 
 ```js
+const contractAssays = await E(zoe).getAssaysForInstance(instanceHandle);
 ```
 
 ## zoe.makeInstance(installationHandle, terms)
@@ -34,6 +42,10 @@ Returns the array of assays for the particular instance. This is helpful in the 
 Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, as well as the `terms` of the contract. The contract terms are the arguments to the contract, and must includ the expected assays for the underlying rights. (Other than th `assays` property of `terms`, the `terms` properties are up to the discretion of the smart contract.) We get back an instance,  handle for that instance, the handle for the installation, and th terms.
 
 ```js
+const {
+  instance: automaticRefund,
+  instanceHandle
+} = await E(zoe).makeInstance(installId, { assays });
 ```
 
 ## zoe.getInstance(instanceHandle)
@@ -42,6 +54,10 @@ Zoe is long-lived. We can use Zoe to create smart contract instances by specifyi
 Credibly get the instance from the `instanceHandle`.
 
 ```js
+const {
+  instance: swap,
+  installationHandle, terms
+} = await E(zoe).getInstance(instanceHandle);
 ```
 
 ## zoe.escrow(offerRules, payments)
@@ -54,4 +70,8 @@ To escrow, the user must provide a list of payments as well as their rules for t
 The rules for the offer are in two parts: `payoutRules` are used  by Zoe to enforce offer safety, and `exitRule` is used by Zoe  to enforce exit safety. `payoutRules` is a list of objects, each  with a `kind` property (such as 'offerExactly') and a units property. The objects in the `payoutRules` must be in the same order as the assays associated with a smart contract. That is, the units in index 0 of `payoutRules` should be a units for the assay in index 0 of the assays array.`payments` is an array of the actual payments to be escrowed, following the rules in the payoutRules. If the payoutRules kind is 'offerExactly' or 'offerAtMost', then a payment matching the units is expected. If the payoutRules kind is 'wantAtLeast' or 'wantExactly' then the payment will be ignored at escrow and should be `undefined`.
 
 ```js
+const {
+  escrowReceipt: aliceEscrowReceipt,
+  payout: payoutP
+} = await E(zoe).escrow(offerRules, offerPayments);
 ```
