@@ -3,7 +3,7 @@
 ## Alleged `<item>`
 `allegedName`, `allegedExtent`, `allegedUnits`
 
-Because there is no way to actually prove the item you are calling or passing through is what it says it is, we prepend `alleged` to these terms to get that sentiment across.
+Because there is no assurance when you receive an object from someone that it is the thing you were hoping to get, or vice versa, we initially refer to them as "alleged".
 
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
