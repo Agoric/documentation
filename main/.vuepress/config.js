@@ -107,7 +107,9 @@ module.exports = {
           children: [
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/public-auction',
-            '/zoe/guide/contracts/public-swap'
+            '/zoe/guide/contracts/public-swap',
+            '/zoe/guide/contracts/covered-call',
+            '/zoe/guide/contracts/simple-exchange'
           ]
         },
         {

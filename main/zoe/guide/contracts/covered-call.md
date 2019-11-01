@@ -4,7 +4,7 @@ The covered call contract is like a swap, but with one major
 difference. The covered call contract allows a user to issue an invite
 to make an offer representing the other side of the swap. This invite
 is itself an ERTP payment which can be escrowed and used in a
-contract, allowing for "higher order" contracts. 
+contract, allowing for "higher order" contracts.
 
 ## Making an offer
 
@@ -61,20 +61,22 @@ const bobOfferRulesSwap = harden({
 const bobPayments = [bobExclInvitePayment, undefined];
 ```
 
+## Buying an invite
+
 Now if Dave is interested in buying the invite, he can check the
 balance of the invite to see what contract it is for, and any
 contract-provided information about what the invite can be used for.
 This coveredCall creates invites with the units:
 
 ```js
-{ 
-  label: { 
+{
+  label: {
     assay: Object, allegedName: "zoeInvite"
-  }, 
-  extent: { 
-     instanceHandle: Object, 
-     handle: Object, 
-     offerMadeRules: Object, 
+  },
+  extent: {
+     instanceHandle: Object,
+     handle: Object,
+     offerMadeRules: Object,
      offerToBeMade: Array,
   }
 }
@@ -86,6 +88,7 @@ also inserted information about what offer has been made and what
 offer it expects to make. This information could be different
 depending on what the smart contract wants to express.
 
+## Unwrap the payment
 Once a user has an invite and decides to use it, they can `unwrap` the
 invite ERTP payment, which burns the payment and exposes an object on
 which they can talk to the smart contract. In this case, the object
@@ -93,4 +96,4 @@ has one method, `matchOffer`, which allows the user to make an offer
 to match the first offer. You can imagine that other contracts will
 make invites to take other actions with the smart contract. Thus, the
 invite use objects are like a private interface to the contract that
-can be traded and paid for. 
+can be traded and paid for.

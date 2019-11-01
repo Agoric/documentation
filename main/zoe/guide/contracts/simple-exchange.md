@@ -3,7 +3,9 @@
 The "simple exchange" is a very basic, un-optimized exchange. The
 simple exchange has an order book for one asset, priced in a second
 asset. The order book is naively kept as an array that iterated over
-to look for matches every time a new order arrives. 
+to look for matches every time a new order arrives.
+
+## Offer rules
 
 The exchange accepts buy and sell limit orders only. A sell order has
 offer rules in the format:
@@ -52,9 +54,9 @@ always about the price. For instance, if this were a BTC/USD exchange,
 BTC units would be first in the payout rules array, and USD would be
 in the second position. Note that there is no per unit price. Because
 there is no per unit price, this exchange can work equally as well for
-non-fungible tokens on both sides. 
+non-fungible tokens on both sides.
 
-### Instantiating the simple exchange
+## Instantiating the simple exchange
 
 ```js
 const { instance: exchange, instanceHandle } = await zoe.makeInstance(
@@ -63,7 +65,7 @@ const { instance: exchange, instanceHandle } = await zoe.makeInstance(
 );
 ```
 
-### Adding an order
+## Adding an order
 
 After escrowing with Zoe, the user can send their escrow receipt to
 the `exchange.addOrder` method:
@@ -72,7 +74,7 @@ the `exchange.addOrder` method:
 const outcomeMsg = await exchange.addOrder(escrowReceipt);
 ```
 
-### Payout
+## Payout
 
 If a match is made, the payout promise that the user receives when
 they escrow with Zoe is resolved to an array of payments.
