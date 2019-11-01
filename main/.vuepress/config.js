@@ -113,7 +113,12 @@ module.exports = {
         {
           title: 'Zoe API',
           path: '/zoe/api/',
+          sideBarDepth: 3,
           collapsable: false
+        },
+        {
+          title: 'Zoe Roadmap',
+          path: '/zoe/roadmap/'
         }
       ],
 
