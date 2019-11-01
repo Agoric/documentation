@@ -83,6 +83,10 @@ module.exports = {
             '/ertp/api/unit-ops',
             '/ertp/api/contract-hosts'
           ]
+        },
+        {
+          title: 'ERTP Glossary',
+          path: '/ertp/glossary/'
         }
       ],
 
