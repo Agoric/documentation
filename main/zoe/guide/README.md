@@ -3,12 +3,13 @@
 Note: Zoe is currently at the pre-alpha stage. It has not yet been
 formally tested or hardened.
 
-This guide assumes some knowledge of the [ERTP fundamentals](./README.md).
+This guide assumes some knowledge of the [ERTP
+fundamentals](../../ertp/guide/).
 
 ## What is Zoe? 
 
 __For users__: Zoe guarantees that as a user of a smart contract, you
-will either get back what you wanted or get back a full refund, even if the
+will either get what you wanted or get a full refund, even if the
 smart contract is buggy or malicious. (In fact, the smart contract
 never has access to your digital assets.)
 
@@ -26,8 +27,8 @@ turns out, many smart contracts (apart from gifts and one-way
 payments) involve an exchange of digital assets that can be put in
 terms of offers. 
 
-In this version of Zoe, our offers are simple (see [our roadmap](TODO) for
-more complex offer types and their expected release). We can say
+In this version of Zoe, our offers are simple (see [our roadmap](../roadmap/README.md) for
+more complex offer types). We can say
 things like, "I'll give you [three
 wood for two bricks](https://en.wikipedia.org/wiki/Catan)." We can
 also say something like, "I want three wood, and *the most* I'm
@@ -77,7 +78,7 @@ the swap contract behaves badly, we will both get a refund, and at
 best, we'll get what we each wanted.
 
 Let's look at the basic `publicSwap` contract ([full text of
-the real contract](/core/zoe/contracts/publicSwap.js)). 
+the real contract](https://github.com/Agoric/ERTP/blob/master/core/zoe/contracts/publicSwap.js)). 
 
 Here's a high-level overview of what would happen:
 1. I make an instance of the swap contract.
@@ -93,7 +94,7 @@ Here's a high-level overview of what would happen:
    return.
 8. You send your escrow receipt to the swap as a matching offer.
 9. The offer matches and both of our payout promises resolve to [ERTP
-   payments](TODO), mine to the five wool that I wanted, and yours to
+   payments](../../ertp/guide/mint.html#payments), mine to the five wool that I wanted, and yours to
    the three bricks that you wanted. Success!
 
 
@@ -103,7 +104,7 @@ Writing smart contracts that run on Zoe is easy, but let's look
 at a simple contract. This contract only does one thing, and
 it's pretty useless - it gives you back what you put in. Let's call it
 `automaticRefund`. Let's say the code of `automaticRefund` looks like this (see
-the [real contract code here](/core/zoe/contracts/automaticRefund.js)):
+the [real contract code here](https://github.com/Agoric/ERTP/blob/master/core/zoe/contracts/automaticRefund.js)):
 
 ```js
 export const makeContract = (zoe, terms) => {
@@ -228,7 +229,7 @@ Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
 escrowed for each offer. That information is in the form of an
 `extent`, which can be thought of as the answer to `how much` or `how
-many` ([see more about ERTP fundamentals here](TODO)). In "3 bricks"
+many` ([see more about ERTP fundamentals here](../../ertp/guide/)). In "3 bricks"
 the "3" is the extent. 
 
 Because this is a swap, we want to literally swap the extents for the
@@ -256,6 +257,6 @@ More:
 
 * [How can I build an application with my Zoe smart contract?](TODO)
 
-* [What is the API of the contract facet for Zoe?](TODO)
+* [What is the API of the contract facet for Zoe?](../api/TODO)
 
-* [What is the API of the user-facing facet for Zoe](TODO)
+* [What is the API of the user-facing facet for Zoe](../api/TODO)
