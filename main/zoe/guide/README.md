@@ -34,7 +34,7 @@ wood for two bricks](https://en.wikipedia.org/wiki/Catan)." We can
 also say something like, "I want three wood, and *the most* I'm
 willing to pay is two bricks." Or even: "I can pay you two bricks and
 I expect *at least* three wood back." [Learn more about the particulars
-of structuring an offer here](/in-progress).
+of structuring an offer here](./offer-rules.md).
 
 Offers are a structured way of describing user intent. To a certain
 extent, an offer's rules are the user's *contractual understanding*
@@ -250,13 +250,14 @@ send out payouts with a call to `zoe.complete`. Note that we can
 reallocate without completing offers, or complete without
 reallocating, depending on the logic of the contract.
 
-
+<!--
 More:
 
-* [How do I write a smart contract on Zoe and upload and install it?](/in-progress)
+* [How do I write a smart contract on Zoe and upload and install it?](/TODO)
 
-* [How can I build an application with my Zoe smart contract?](/in-progress)
+* [How can I build an application with my Zoe smart contract?](/TODO)
 
-* [What is the API of the contract facet for Zoe?](../api/in-progress)
+* [What is the API of the contract facet for Zoe?](../api/TODO)
 
-* [What is the API of the user-facing facet for Zoe](../api/in-progress)
+* [What is the API of the user-facing facet for Zoe](../api/TODO)
+-->
