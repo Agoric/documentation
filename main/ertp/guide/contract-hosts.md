@@ -18,8 +18,7 @@ refunds into appropriate purses.
 
 An installation of a Contract can spawn multiple copies each with the same or different terms. Each spawned instance has distinct invites and distinct seats representing a specific group of agents interacting according to the same prescribed roles.
 
-### <span style="color:red">Possible typo on the next sentence?</span>
-The Installation can also have functions with names starting 'check', as defined by the contract. They can be used to validate that the expected terms are actually the same as the terms of this spawned contract. The Installation is inserted by the ContactHost as the first parameter to these functions. The naming restriction is likely to be lifted.
+The Installation can also have functions with names starting with 'check'. These are helper functions that are specific to the particular contract (E.g. [Escrow](https://github.com/Agoric/ERTP/blob/master/core/escrow.js) has `checkUnits()` and `checkPartialUnits()`). They can be used to validate that the expected terms are actually the same as the terms of this spawned contract. The Installation is inserted by the ContactHost as the first parameter to these functions. The naming restriction is likely to be lifted.
 
 ## Contracts
 

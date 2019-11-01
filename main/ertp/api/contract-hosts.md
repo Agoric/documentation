@@ -69,9 +69,17 @@ const invitePayments = E(someInstallation).spawn(terms);
 - `inviteUnits` `{Units}`
 - `terms` `{Terms}`
 
-The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit this parameter, as they will be supplied with a copy of the function with that information already supplied.
+The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit the installation parameter, as they will be supplied with a copy of the function with that information already supplied.
+
+As a general rule of thumb, these methods' parameters should follow this order:
+1. `{Installation}`
+2. `{Units}`
+3. `{Terms}`
+4. Any additional parameters
 
 Users usually want to validate their invitation, the terms of the deal they're attempting to participate in, and which seat they are taking. If the invitation is invalid `checkUnits()` will throw an error.
+
+For example, the writer may provide a `checkUnits()` method that accepts the following parameters: `installation`, `inviteUnits`, `terms` and `seat`. However, on the user end, they would call `checkUnits()` and only use the `inviteUnits`, `terms` and `seat` parameters.
 
 ```js
 // If `allegedInviteUnits` is valid and matches the terms of the
