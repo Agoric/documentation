@@ -9,7 +9,7 @@ Payments can be converted to Purses by getting a verified assay and calling `ass
 Get the name of this purse.
 
 ```js
-Examples
+console.log( anyPayment.getName() )
 ```
 
 ## payment.getAssay()
@@ -33,8 +33,7 @@ const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
 const purse = myNewMint.mint(1000);
 
-const payments = [];
-payments.push(purse.withdraw(20));
+const payment = purse.withdraw(20);
 
 // Returns 20
 payments.getBalance();
