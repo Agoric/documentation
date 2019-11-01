@@ -1,18 +1,19 @@
 # Zoe
 
-Zoe is a long-lived and well-trusted contract that enforces offer safety for the contracts that use it. Zoe has a single `seatAssay` and a single `escrowReceiptAssay` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `seatAssay` or `escrowReceiptAssay` and thus validate any `seat` or `escrowReceipt` they receive from someone else.
+Zoe is a long-lived and well-trusted contract that enforces offer safety for the contracts that use it. Zoe has a single `inviteAssay` and a single `escrowReceiptAssay` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `inviteAssay` or `escrowReceiptAssay` and thus validate any `invite` or `escrowReceipt` they receive from someone else.
 
-### <span style="color:red">Zoe and ZoeGoverningContractFacet have some similar methods so those examples are the same. Those should be double-checked to make sure they are accurate in both locations. Methods: getSeatAssay, getEscrowReceiptAssay.</span>
+### <span style="color:red">Zoe and ZoeContractFacet have some similar methods so those examples are the same. Those should be double-checked to make sure they are accurate in both locations. Methods: getInviteAssay, getEscrowReceiptAssay.</span>
 
 
-## zoe.getSeatAssay()
+## zoe.getInviteAssay()
 - Returns: `{Assay}`
 
 Get the long-lived `seatAssay`. The mint associated with the `seatAssay` creates the ERTP payments that represent the right to claim the payouts of involvement in a contract.
 
-### <span style="color:red">Couldn't find an example in the code, this needs checking.</span>
 ```js
-const someSeatAssay = zoe.getSeatAssay()
+// Bob claims all with the Zoe inviteAssay
+const inviteAssay = zoe.getInviteAssay();
+const bobExclInvitePayment = await inviteAssay.claimAll(bobInvitePayment);
 ```
 
 ## zoe.getEscrowReceiptAssay()
@@ -22,6 +23,22 @@ Get the long-lived `escrowReceiptAssay`. The mint associated with the `escrowRec
 
 ```js
 const escrowReceiptAssay = zoe.getEscrowReceiptAssay();
+```
+
+## zoe.install(code)
+- `code` `{String}`
+- Returns: `{Object}`
+
+Create an installation by safely evaluating the code and registering it with Zoe. Returns an `installationHandle`.
+
+```js
+import bundleSource from '@agoric/bundle-source';
+
+// Pack the contract.
+const { sourceCode, moduleFormat } = await bundleSource(someContract);
+
+// create an `installationHandle` for someContract
+const installationHandle = zoe.install(sourceCode, moduleFormat);
 ```
 
 ## zoe.getAssaysForInstance(installationHandle)
@@ -39,7 +56,7 @@ const contractAssays = await E(zoe).getAssaysForInstance(instanceHandle);
 - `terms` `{Object}`
 - Returns: `{InstanceInformation}`
 
-Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, as well as the `terms` of the contract. The contract terms are the arguments to the contract, and must includ the expected assays for the underlying rights. (Other than th `assays` property of `terms`, the `terms` properties are up to the discretion of the smart contract.) We get back an instance,  handle for that instance, the handle for the installation, and th terms.
+Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, as well as the `terms` of the contract. The contract terms are the arguments to the contract, and must include the expected assays for the underlying rights. (Other than the `assays` property of `terms`, the `terms` properties are up to the discretion of the smart contract.) We get back an instance, a handle for that instance, the handle for the installation, and the terms.
 
 ```js
 const {

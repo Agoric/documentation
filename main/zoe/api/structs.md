@@ -22,12 +22,12 @@ someOfferRules: {
 
 ## PayoutRules
 
-`payoutRules` are an array of `PayoutRule`. The possible kinds are 'offerExactly', 'offerAtMost', 'wantExactly', and  'wantAtLeast'.
+`payoutRules` are an array of `PayoutRule`. The possible kinds are 'offerExactly', 'offerAtMost', 'wantExactly', and  'wantAtLeast'. `units` should be a labeled extent.
 
 ```js
 somePayoutRules: {
   kind: 'offerExactly',
-  units: 8,
+  units: someExtent,
 }
 ```
 

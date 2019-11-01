@@ -119,7 +119,7 @@ module.exports = {
           children: [
             '/zoe/api/structs',
             '/zoe/api/zoe',
-            '/zoe/api/zoeGoverningContractFacet'
+            '/zoe/api/zoeContractFacet'
           ]
         }
       ],

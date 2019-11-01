@@ -1,9 +1,6 @@
-# Zoe Governing Contract Facet
+# Zoe Contract Facet
 
-### <span style="color:red">Need clarification: In many methods the instanceHandle is referenced in the chaimail file, but in the code it is not used. Affected methods: reallocate, complete, burnEscrowReceipt</span>
-
-## zgcf.reallocate(instanceHandle, offerHandles, reallocation)
-- `instanceHandle` `{Object}`
+## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
 - `reallocation` `{Array <Array <Extent>>}`
 
@@ -19,20 +16,18 @@ zoe.reallocate(
 );
 ```
 
-## zgcf.complete(instanceHandle, offerHandles)
-- `instanceHandle` `{Object}`
+## zcf.complete(offerHandles)
 - `offerHandles` `{Array <Object>}`
 
 Eject the offer, taking the current allocation for that offer and creating payments to be returned to the user. No 'offer safety' checks are done here because any previous reallocation performed those checks.
 
-### <span style="color:red"></span>
 ```js
 import harden from '@agoric/harden';
 
 zoe.complete(harden([someOfferHandle]));
 ```
 
-## zgcf.escrowEmptyOffer()
+## zcf.escrowEmptyOffer()
 - Returns: `{OfferHandle}`
 
 Create an empty offer for recordkeeping purposes (Autoswap uses this to create the liquidity pool).
@@ -41,7 +36,7 @@ Create an empty offer for recordkeeping purposes (Autoswap uses this to create t
 let poolOfferHandle = zoe.escrowEmptyOffer();
 ```
 
-## zgcf.escrowOffer(payoutRules, offerPayments)
+## zcf.escrowOffer(payoutRules, offerPayments)
 - `payoutRules` `{Array <PayoutRulesElem>}`
 - `offerPayments` `{Array <Payment>}`
 - Returns: `{OfferHandle}`
@@ -54,8 +49,7 @@ const liquidityOfferHandle = await zoe.escrowOffer(
 );
 ```
 
-## zgcf.burnEscrowReceipt(instanceHandle, escrowReceipt)
-- `instanceHandle` `{Object}`
+## zcf.burnEscrowReceipt(escrowReceipt)
 - `escrowReceipt` `{Payment}`
 - Returns: `{Extent}`
 
@@ -65,7 +59,7 @@ Burn and validate an escrowReceipt received from the user.
 const { someExtent } = await zoe.burnEscrowReceipt(someEscrowReceipt);
 ```
 
-## zgcf.makeInvite(offerToBeMade, useObj)
+## zcf.makeInvite(offerToBeMade, useObj)
 - `offerToBeMade` `{Array <PayoutRulesElem>}`
 - `useObj` `{Object}`
 - Returns: `{Payment}`
@@ -80,10 +74,7 @@ const inviteP = zoe.makeInvite(
 );
 ```
 
-(need to add this bit of info?)
- ////// The methods below are pure and have no side-effects. ////////
-
-## zgcf.makeEmptyExtents()
+## zcf.makeEmptyExtents()
 - Returns: `{Array <Extent>}`
 
 Create an array of empty extents per assay. Note that if the mint is not a basic fungible mint, this may be something other than 0.
@@ -95,18 +86,21 @@ const newPlayerExtents = zoe.makeEmptyExtents();
 newPlayerExtents[2] = liquidityEOut;
 ```
 
-## zgcf.getExtentOps(instanceHandle)
+## zcf.getExtentOps(instanceHandle)
 - `instanceHandle` `{Object}`
 - Returns: `{Array <ExtentOps>}`
 
 Get the array of `extentOps` (the logic from the `unitOps`).
 
-### <span style="color:red">Could not find example</span>
 ```js
-
+const extentOpsArray = zoe.getExtentOpsArray();
+const assetEqual = extentOpsArray[0].equals(
+  sellOffer[0].units.extent,
+  buyOffer[0].units.extent,
+);
 ```
 
-## zgcf.getExtentsFor(offerHandles)
+## zcf.getExtentsFor(offerHandles)
 - `offerHandles` `{Array <Object>}`
 - Returns: `{Array <Array <Extent>>}`
 
@@ -119,7 +113,7 @@ const [
 ] = zoe.getExtentsFor(offerHandles);
 ```
 
-## zgcf.getPayoutRulesFor(offerHandles)
+## zcf.getPayoutRulesFor(offerHandles)
 - `offerHandles` `{Array <Object>}`
 - Returns: <router-link to="/zoe/api/structs.html#payoutrule">`{Array <PayoutRules>}`</router-link>
 
@@ -137,7 +131,7 @@ export const getActivePayoutRules = (zoe, offerHandles) => {
 };
 ```
 
-## zgcf.getSeatAssay()
+## zcf.getSeatAssay()
 - Returns: `{Assay}`
 
 Get the Zoe `seatAssay`.
@@ -147,7 +141,7 @@ Get the Zoe `seatAssay`.
 const someSeatAssay = zoe.getSeatAssay()
 ```
 
-## zgcf.getEscrowReceiptAssay()
+## zcf.getEscrowReceiptAssay()
 - Returns: `{Assay}`
 
 Get the Zoe `escrowReceiptAssay`.
