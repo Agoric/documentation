@@ -6,7 +6,7 @@ formally tested or hardened.
 This guide assumes some knowledge of the [ERTP
 fundamentals](../../ertp/guide/).
 
-## What is Zoe? 
+## What is Zoe?
 
 __For users__: Zoe guarantees that as a user of a smart contract, you
 will either get what you wanted or get a full refund, even if the
@@ -17,7 +17,7 @@ __For developers__: Zoe provides a safety net so you can focus on what
 your smart contract does best, without worrying about your users
 losing their assets due to a bug in the code that you wrote. Writing a
 smart contract on Zoe is easy: all of the Zoe smart contracts are
-written in the familiar language of JavaScript. 
+written in the familiar language of JavaScript.
 
 ## Sounds like magic. How does it actually work?
 
@@ -25,7 +25,7 @@ To use Zoe, we put things in terms of "offers". An offer is a
 statement about what you want and what you're willing to offer. It
 turns out, many smart contracts (apart from gifts and one-way
 payments) involve an exchange of digital assets that can be put in
-terms of offers. 
+terms of offers.
 
 In this version of Zoe, our offers are simple (see [our roadmap](../roadmap/README.md) for
 more complex offer types). We can say
@@ -34,7 +34,7 @@ wood for two bricks](https://en.wikipedia.org/wiki/Catan)." We can
 also say something like, "I want three wood, and *the most* I'm
 willing to pay is two bricks." Or even: "I can pay you two bricks and
 I expect *at least* three wood back." [Learn more about the particulars
-of structuring an offer here](TODO). 
+of structuring an offer here](/in-progress).
 
 Offers are a structured way of describing user intent. To a certain
 extent, an offer's rules are the user's *contractual understanding*
@@ -58,7 +58,7 @@ themselves.
 Zoe guarantees offer safety, meaning that when a user makes an offer
 that is escrowed with Zoe, Zoe guarantees that the user will either
 get back why they said they wanted, or the user will get back what they
-originally offered. 
+originally offered.
 
 When a user escrows with Zoe, they get two things back immediately: an escrow
 receipt, and a JavaScript promise for a future payout. This escrow
@@ -78,7 +78,7 @@ the swap contract behaves badly, we will both get a refund, and at
 best, we'll get what we each wanted.
 
 Let's look at the basic `publicSwap` contract ([full text of
-the real contract](https://github.com/Agoric/ERTP/blob/master/core/zoe/contracts/publicSwap.js)). 
+the real contract](https://github.com/Agoric/ERTP/blob/master/core/zoe/contracts/publicSwap.js)).
 
 Here's a high-level overview of what would happen:
 1. I make an instance of the swap contract.
@@ -125,7 +125,7 @@ deep-freeze it with `@agoric/harden`. You can [learn more about `harden` here](h
 `automaticRefund` has one method exposed to the user: `makeOffer`.
 `makeOffer` takes in a `escrowReceipt`, and after burning the
 `escrowReceipt` (and thus verifying it as well), it tells Zoe to
-complete the offer and send the user their payout. 
+complete the offer and send the user their payout.
 
 A smart contract on Zoe must export a function `makeContract` that
 takes two parameters: `zoe`, which is the contract-specific API for Zoe, and
@@ -140,7 +140,7 @@ The smart contract must return an object with two properties:
 `instance`, which is the user-facing API of the
 contract, and `assays`, which is what the contract has decided is the
 canonical list of assays for the contract. If no change is necessary,
-`assays` may just be the assays in the terms. 
+`assays` may just be the assays in the terms.
 
 ## Diving Deeper
 
@@ -173,11 +173,11 @@ are a few changes. First, in this contract, we actually check what was
 escrowed with Zoe to see if it's the kind of offer that we want to
 accept. In this case, we only want to accept offers that have an
 `payoutRules` of the
-form: 
-```js 
+form:
+```js
 [{ kind: 'offerExactly', units: x}, { kind: 'wantExactly', units: y}]
 ```
-where `x` and `y` are units with the correct assays. 
+where `x` and `y` are units with the correct assays.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
@@ -220,30 +220,30 @@ const matchOffer = async escrowReceipt => {
 In this method, we do a couple more things. First, we want to check if
 there has already been a first offer. If not, we reject the offer at
 hand. Second, if the offer at hand isn't a match for the first offer,
-we want to reject it for that reason as well. 
+we want to reject it for that reason as well.
 
 Once we're sure that we *do* have a matching offer, we can do the most
-exciting part, the reallocation. 
+exciting part, the reallocation.
 
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
 escrowed for each offer. That information is in the form of an
 `extent`, which can be thought of as the answer to `how much` or `how
 many` ([see more about ERTP fundamentals here](../../ertp/guide/)). In "3 bricks"
-the "3" is the extent. 
+the "3" is the extent.
 
 Because this is a swap, we want to literally swap the extents for the
 first offer and the matching offer. That is, the user who put in the
 first offer will get what the second user put in and vice versa. Our
 contract makes a call to `zoe.reallocate` in order to tell Zoe about
-this reallocation for the two offers. 
+this reallocation for the two offers.
 
 Zoe checks two invariants before changing its bookkeeping. First, Zoe
 checks that offer safety holds for these offers. In other words, does
 this reallocation either give a refund or give the user what they
 wanted? Second, Zoe checks that asset supply is conserved. This means
 that we haven't lost or added any digital assets on the whole as a
-result of this reallocation. 
+result of this reallocation.
 
 If the reallocation passes, we can tell Zoe to complete the offers and
 send out payouts with a call to `zoe.complete`. Note that we can
@@ -253,10 +253,10 @@ reallocating, depending on the logic of the contract.
 
 More:
 
-* [How do I write a smart contract on Zoe and upload and install it?](TODO)
+* [How do I write a smart contract on Zoe and upload and install it?](/in-progress)
 
-* [How can I build an application with my Zoe smart contract?](TODO)
+* [How can I build an application with my Zoe smart contract?](/in-progress)
 
-* [What is the API of the contract facet for Zoe?](../api/TODO)
+* [What is the API of the contract facet for Zoe?](../api/in-progress)
 
-* [What is the API of the user-facing facet for Zoe](../api/TODO)
+* [What is the API of the user-facing facet for Zoe](../api/in-progress)
