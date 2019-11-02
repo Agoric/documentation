@@ -64,7 +64,7 @@ content of the [`vats`](https://github.com/Agoric/cosmic-swingset/tree/master/li
 The objects added to `home` are created in
 [`lib/ag-solo/vats/vat-demo.js`](https://github.com/Agoric/cosmic-swingset/tree/master/lib/ag-solo/vats/vat-demo.js).
 
-The [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop] handler is in
+The [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) handler is in
 [`lib/ag-solo/vats/vat-http.js`](https://github.com/Agoric/cosmic-swingset/tree/master/lib/ag-solo/vats/vat-http.js).
 
 The HTML frontend code is pure JS/DOM (no additional libraries yet), in
@@ -141,7 +141,7 @@ make scenario1-run-client
 
 See [Testnet Tutorial](https://github.com/Agoric/cosmic-swingset#testnet-tutorial) for more guidance.
 
-#### Scenario 0: a public testnet (kick the tires)
+## Scenario 0: a public testnet (kick the tires)
 
 In this scenario, you run:
 - a **solo node** exposing an HTTP server in localhost
