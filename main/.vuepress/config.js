@@ -102,7 +102,8 @@ module.exports = {
           sideBarDepth: 5,
           children: [
             '/zoe/guide/',
-            '/zoe/guide/offer-safety'
+            '/zoe/guide/offer-safety',
+            '/zoe/guide/offer-rules'
           ]
         },
         {
