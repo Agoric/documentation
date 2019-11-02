@@ -65,15 +65,10 @@ const exampleExtentOps = exampleAssay.getExtentOps();
 Make Units that contain the indicated extent.
 
 ```js
-import { setup } from '../setupBasicMints';
-
-const { assays: originalAssays, mints, unitOps } = setup();
-const assays = originalAssays.slice(0, 2);
-
 // In this scenario, purses are created for two different assays.
 // We provide Units, containing an extent, from the Moola and Simolean assays to create the appropriate purses.
-const aliceMoolaPurse = mints[0].mint(assays[0].makeUnits(3));
-const aliceSimoleanPurse = mints[1].mint(assays[1].makeUnits(0));
+const aliceMoolaPurse = moolaMint.mint(moolaAssay.makeUnits(3));
+const aliceSimoleanPurse = simoleanMint.mint(simoleanAssay.makeUnits(0));
 ```
 
 ## assay.makeEmptyPurse(name)

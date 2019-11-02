@@ -6,6 +6,10 @@ module.exports = {
   /* --- HOME PAGE --- */
   title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
+  // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
+  head: [
+    ['link', { rel: 'icon', href: '/favicon-full.ico' }]
+  ],
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
@@ -66,7 +70,7 @@ module.exports = {
             '/ertp/guide/unit-ops',
             '/ertp/guide/default-configuration',
             '/ertp/guide/contract-hosts',
-            '/ertp/guide/gotchas'
+            '/ertp/guide/other-concepts'
           ]
         },
         {
@@ -109,7 +113,9 @@ module.exports = {
           children: [
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/public-auction',
-            '/zoe/guide/contracts/public-swap'
+            '/zoe/guide/contracts/public-swap',
+            '/zoe/guide/contracts/covered-call',
+            '/zoe/guide/contracts/simple-exchange'
           ]
         },
         {
@@ -120,7 +126,13 @@ module.exports = {
             '/zoe/api/structs',
             '/zoe/api/zoe',
             '/zoe/api/zoeContractFacet'
-          ]
+          ],
+          sideBarDepth: 3,
+          collapsable: false
+        },
+        {
+          title: 'Zoe Roadmap',
+          path: '/zoe/roadmap/'
         }
       ],
 

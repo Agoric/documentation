@@ -18,8 +18,7 @@ refunds into appropriate purses.
 
 An installation of a Contract can spawn multiple copies each with the same or different terms. Each spawned instance has distinct invites and distinct seats representing a specific group of agents interacting according to the same prescribed roles.
 
-### <span style="color:red">Possible typo on the next sentence?</span>
-The Installation can also have functions with names starting 'check', as defined by the contract. They can be used to validate that the expected terms are actually the same as the terms of this spawned contract. The Installation is inserted by the ContactHost as the first parameter to these functions. The naming restriction is likely to be lifted.
+The Installation can also have functions with names starting with 'check'. These are helper functions that are specific to the particular contract (E.g. [Escrow](https://github.com/Agoric/ERTP/blob/master/core/escrow.js) has `checkUnits()` and `checkPartialUnits()`). They can be used to validate that the expected terms are actually the same as the terms of this spawned contract. The Installation is inserted by the ContactHost as the first parameter to these functions. The naming restriction is likely to be lifted.
 
 ## Contracts
 
@@ -50,9 +49,8 @@ The returned Payment is the invite that can be passed to `contractHost.redeem()`
 
 `collect()` calls `getWinnings()` and `getRefund()` on `seatP` and deposits the proceeds respectively into `winPurseP` and `refundPurseP`. `name` (which defaults to 'collecting') is converted to a String, and used for logging the results.
 
-### <span style="color:red">Is this sentence about Jessie supposed to be here?</span>
 `collect()` is a pure function that can be imported from
-`contractHost.js`. (Jessie will eventually provide assurances, because of
+`contractHost.js`. ([Jessie](https://github.com/Agoric/Jessie) will eventually provide assurances, because of
 the way that we import modules, that it is confined.) Since it is confined,
 users can be sure that it has no ability to skim any of the value being
 transferred.

@@ -68,14 +68,24 @@ const invitePayments = E(someInstallation).spawn(terms);
 - `installation` `{Installation}`
 - `inviteUnits` `{Units}`
 - `terms` `{Terms}`
-- Returns:
 
-### <span style="color:red">What does this method return? It's not stated in the chainmail file and it's not very clear in the code usage.</span>
+The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit the installation parameter, as they will be supplied with a copy of the function with that information already supplied.
 
-### <span style="color:red">Are these params correct? In the code they follow this pattern instead: `{inviteUnits, terms, anOptionalString}`. Example from `ERTP/test/swingsetTests/contractHost/vat-alice.js`:</span>
+As a general rule of thumb, these methods' parameters should follow this order:
+1. `{Installation}` - Only required for development of contract, otherwise, omit.
+2. `{Units}`
+3. `{Terms}`
+4. Any additional parameters
+
+Users usually want to validate their invitation, the terms of the deal they're attempting to participate in, and which seat they are taking. If the invitation is invalid `checkUnits()` will throw an error.
+
+For example, the writer may provide a `checkUnits()` method that accepts the following parameters: `installation`, `inviteUnits`, `terms` and `seat`. However, on the user end, they would call `checkUnits()` and only use the `inviteUnits`, `terms` and `seat` parameters.
 
 ```js
-return E(escrowExchangeInstallationP)
+// If `allegedInviteUnits` is valid and matches the terms of the
+// contract, then the code will continue as expected.
+// Otherwise, `checkUnits()` will throw an error.
+E(escrowExchangeInstallationP)
   .checkUnits(allegedInviteUnits, { left, right }, 'left')
   .then(() => {
     return E(inviteAssayP).claimExactly(
@@ -86,13 +96,6 @@ return E(escrowExchangeInstallationP)
   });
   ```
 
-The writer of the contract can provide methods to help users of the contract verify that the terms of the contract match their expectation. These methods are defined with the installation as the first parameter, so the verifiers can validate that the caller's invitation was issued by the same one. The invocation by clients should omit this parameter, as they will be supplied with a copy of the function with that information already supplied.
-
-Users usually want to validate their invitation, the terms of the deal they're attempting to participate in, and which seat they are taking.
-
-```js
-```
-
 ## contract.start(terms, inviteMaker)
 - `terms` `{Terms}`
 - `inviteMaker` `{InviteMaker}`
@@ -100,7 +103,6 @@ Users usually want to validate their invitation, the terms of the deal they're a
 
 Start execution of the contract. May return invites for seats.
 
-### <span style="color:red">Need help writing/checking example.</span>
 ```js
 import harden from '@agoric/harden';
 
@@ -123,7 +125,6 @@ export { aNewContract }
 - `name` `{String}` - Labels the invite payment for this seat. Optional.
 - Returns: `{Payment}`
 
-### <span style="color:red">No description in chainmail file. Please double check that this description makes sense.</span>
 Creates a payment for an invite for a seat in a contract. The returned Payment can be passed to `contractHost.redeem()` to get a seat Object.
 
 ```js
