@@ -2,6 +2,6 @@
 
 The Zoe API is divided into the following sections:
 
-- [Structs](/zoe/api/structs)
-- [Zoe](/zoe/api/zoe)
-- [Zoe Contract Facet](/zoe/api/zoeContractFacet)
+- [Zoe](./zoe.md)
+- [Structs](./structs.md)
+- [Zoe Contract Facet](./zoe-contract-facet.md)

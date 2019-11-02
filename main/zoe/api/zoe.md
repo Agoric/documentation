@@ -2,9 +2,6 @@
 
 Zoe is a long-lived and well-trusted contract that enforces offer safety for the contracts that use it. Zoe has a single `inviteAssay` and a single `escrowReceiptAssay` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `inviteAssay` or `escrowReceiptAssay` and thus validate any `invite` or `escrowReceipt` they receive from someone else.
 
-### <span style="color:red">Zoe and ZoeContractFacet have some similar methods so those examples are the same. Those should be double-checked to make sure they are accurate in both locations. Methods: getInviteAssay, getEscrowReceiptAssay.</span>
-
-
 ## zoe.getInviteAssay()
 - Returns: `{Assay}`
 
