@@ -1,6 +1,6 @@
 # Mint
 
-Holding a Mint carries the right to control issuance and destruction of `purses` and `payments` containing `units` of a particular currency.
+Holding a Mint carries the right to control issuance of `purses` and `payments` containing `units` of a particular currency.
 
 Purses and payments associated with a particular assay can only transfer value to others using the same mint.
 

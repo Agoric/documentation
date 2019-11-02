@@ -3,7 +3,7 @@
 ## Alleged `<item>`
 `allegedName`, `allegedExtent`, `allegedUnits`
 
-Because there is no way to actually prove the item you are calling or passing through is what it says it is, we prepend `alleged` to these terms to get that sentiment across.
+Because there is no assurance when you receive an object from someone that it is the thing you were hoping to get, or vice versa, we initially refer to them as "alleged".
 
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
@@ -54,13 +54,13 @@ An [AssetHolder](#assetholder). Purses hold verified units of certain rights iss
 An [AssetHolder](#assetholder). Payments hold verified units of certain rights issued by Mints, specifically units that are in _transit_. Units from payments can be deposited in [purses](#purse), but otherwise, the entire unit is available when the payment is transferred. Payments can be converted to Purses. [Payment API](/ertp/api/mint.html#payment)
 
 ## Unit
-Units are the canonical description of tradeable goods. They are manipulated by mints, and represent the goods and currency carried by purses and payments. They can be used to represent things like currency, stock, and the abstract right to participate in a particular exchange. Units are wrappers on extents that have been validated by an UnitOps, and can be verified as having been issued by the UnitOps.
+Units are the canonical description of tradeable goods. They are manipulated by mints, and represent the goods and currency carried by purses and payments. They can be used to represent things like currency, stock, and the abstract right to participate in a particular exchange.
 
 ### Composition
 `Label + Extent`
 
 ## UnitOps
-Creator and validator of asset Units. "Arithmetic" operations on [Units](#unit), used for actions like withdrawing a payment from a purse.
+ "Arithmetic" operations on [Units](#unit), used for actions like withdrawing a payment from a purse. All of the custom behavior is stored in the ExtentOps, allowing for UnitOps to be polymorphic, exposing the same interface while allowing custom behavior.
 
 ## UseObj
 A object associated with purses and payments that has custom behavior associated with the use of digital assets
