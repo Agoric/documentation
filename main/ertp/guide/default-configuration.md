@@ -90,39 +90,4 @@ See [pixelConfig](https://github.com/Agoric/ERTP/blob/master/more/pixels/pixelCo
 
 See [pixelConfig](https://github.com/Agoric/ERTP/blob/master/more/pixels/pixelConfig.js) for an example.
 
-## Make MintKeeper
-The MintKeeper is the actual holder of the mappings from purses/payments to amounts.
-
-- `mintKeeper`
-- `mintKeeper.purseKeeper` - asset
-- `mintKeeper.paymentKeeper` - asset
-- `mintKeeper.isPurse(asset)`
-- `mintKeeper.isPayment(asset)`
-
-`mintKeeper.purseKeeper` and `mintKeeper.paymentKeeper` are both asset keepers. An asset can either be a purse or payment. An asset keeper keeps track of either all of the purses (purseKeeper) or all of the payments (paymentKeeper) and their respective amounts. Asset keepers have the following properties:
-- `updateAmount(asset, newAmount)`
-- `recordeNew(asset, initialAmount)`
-- `getAmount(asset)`
-- `has(asset)`
-- `remove(asset)`
-
-### Strategies
-
-ERTP comes with several strategies you can use in your project. The `natStrategy` is used in the default configuration.
-
-The following methods are defined in each strategy:
-- `insistKind`
-- `empty`
-- `isEmpty`
-- `includes`
-- `equals`
-- `with`
-- `without`
-
-
-`listStrategy`
-
-`natStrategy`
-The default kind of amount is a labeled natural number describing a quantity of fungible erights. The label describes what kinds of rights these are. This is a form of labeled unit, as in unit typing.
-
-Natural numbers are used for fungible erights such as money because rounding issues make floats problematic. All operations should be done with the smallest whole unit such that the NatAssay never deals with fractional parts.
+// Additional descriptions in progress
