@@ -69,7 +69,8 @@ module.exports = {
             '/ertp/guide/label',
             '/ertp/guide/unit-ops',
             '/ertp/guide/default-configuration',
-            '/ertp/guide/contract-hosts'
+            '/ertp/guide/contract-hosts',
+            '/ertp/guide/other-concepts'
           ]
         },
         {
@@ -83,7 +84,8 @@ module.exports = {
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/extent-ops',
-            '/ertp/api/unit-ops'
+            '/ertp/api/unit-ops',
+            '/ertp/api/contract-hosts'
           ]
         },
         {
