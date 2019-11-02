@@ -136,7 +136,6 @@ export const getActivePayoutRules = (zoe, offerHandles) => {
 
 Get the Zoe `seatAssay`.
 
-### <span style="color:red">Couldn't find an example in the code, this needs checking.</span>
 ```js
 const someSeatAssay = zoe.getSeatAssay()
 ```
