@@ -5,7 +5,7 @@ Zoe is a long-lived and well-trusted contract that enforces offer safety for the
 ## zoe.getInviteAssay()
 - Returns: `{Assay}`
 
-Get the long-lived `seatAssay`. The mint associated with the `seatAssay` creates the ERTP payments that represent the right to claim the payouts of involvement in a contract.
+Get the long-lived `inviteAssay`. The mint associated with the `inviteAssay` creates the ERTP payments that represent the right to claim the payouts of involvement in a contract.
 
 ```js
 // Bob claims all with the Zoe inviteAssay
