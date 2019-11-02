@@ -103,7 +103,6 @@ E(escrowExchangeInstallationP)
 
 Start execution of the contract. May return invites for seats.
 
-### <span style="color:red">Need help writing/checking example.</span>
 ```js
 import harden from '@agoric/harden';
 
@@ -126,7 +125,6 @@ export { aNewContract }
 - `name` `{String}` - Labels the invite payment for this seat. Optional.
 - Returns: `{Payment}`
 
-### <span style="color:red">No description in chainmail file. Please double check that this description makes sense.</span>
 Creates a payment for an invite for a seat in a contract. The returned Payment can be passed to `contractHost.redeem()` to get a seat Object.
 
 ```js
