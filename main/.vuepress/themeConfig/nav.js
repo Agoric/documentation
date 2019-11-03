@@ -11,37 +11,10 @@ module.exports = [
     link: '/getting-started/',
     items: [
       {
-        text: 'Agoric\'s Cosmic SwingSet',
-        ariaLabel: 'Agoric\'s Cosmic SwingSet Menu',
+        text: 'Agoric Dev Tools',
+        ariaLabel: 'Agoric Dev Tools Menu',
         link: '/getting-started/',
       },
-      {
-        text: 'Timer Service',
-        ariaLabel: 'Timer Service Link',
-        link: '/getting-started/timer-service'
-      },
-      {
-        text: 'Pixel Demo',
-        ariaLabel: 'Pixel Demo Link',
-        link: '/getting-started/pixel-demo'
-      },
-      {
-        text: 'Tutorials',
-        ariaLabel: 'Tutorials Menu',
-        link: '/smart-contracts-tutorials/guess37-one',
-        items: [
-          {
-            text: 'Guess 37 - One Participant',
-            ariaLabel: 'Guess 37 - One Participant',
-            link: '/smart-contracts-tutorials/guess37-one'
-          },
-          {
-            text: 'Guess37 - Multiple Participants',
-            ariaLabel: 'Guess37 Multiple Participants',
-            link: '/smart-contracts-tutorials/guess37-multiple'
-          }
-        ]
-      }
     ]
   },
   {

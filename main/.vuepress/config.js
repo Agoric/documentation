@@ -33,23 +33,11 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             {
-              title: 'Agoric\'s Cosmic SwingSet',
+              title: 'Agoric Dev Tools',
               path: '/getting-started/',
               collapsable: false,
               sideBarDepth: 3
             },
-            {
-              title: 'Pixel Demo',
-              path: '/getting-started/pixel-demo',
-              collapsable: false,
-              sideBarDepth: 3
-            },
-            {
-              title: 'Timer Service',
-              path: '/getting-started/timer-service',
-              collapsable: false,
-              sideBarDepth: 3
-            }
           ]
         },
       ],
