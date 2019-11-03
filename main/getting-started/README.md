@@ -1,5 +1,7 @@
 # Getting Started with the Agoric Devtools
 
+![The Agoric Stack](./assets/Agoric.svg)
+
 This tutorial will show you how to:
 1) __Write smart contracts on Zoe, the Agoric platform.__
 
@@ -54,11 +56,14 @@ npx agoric [...options]
 
 ## Your First Agoric Dapp
 
+![The Browser Environment](./assets/browser-environment.svg)
+
 Let's install the default smart contracts and UI. 
 
 ```sh
 # Initialize your dapp project.
 # Note: Change the `demo` name to something meaningful.
+# Remember to prefix this with `npx` if you chose that option.
 agoric init demo
 # Go to its directory.
 cd demo
@@ -93,6 +98,8 @@ agoric deploy ./contract/deploy.js ./api/deploy.js
 
 ## Writing a smart contract 
 
+![System Arch](./assets/system-arch.svg)
+
 If you take a look at the `demo` folder that you had just created,
 you should see folders like:
 
@@ -107,15 +114,13 @@ filled in with your particular business logic. To learn more about
 writing a smart contract on Zoe, please see the [Zoe
 guide](../zoe/guide/).
 
-Once you've made changes to the smart contract, run:
+Once you've made changes to the smart contract, redeploy:
 
 ```sh
-# Start the Agoric VM from the beginning, dropping any state
-agoric start --reset
 # Redeploy
 agoric deploy ./contract/deploy.js ./api/deploy.js
 ```
 
 ## Editing the UI
 
-
+![Autoswap Frontend](./assets/autoswap-frontend.svg)
