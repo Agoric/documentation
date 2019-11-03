@@ -89,14 +89,32 @@ our smart contract code will be run.
 agoric start
 ```
 
-Lastly, let's deploy our dapp on the Agoric VM. 
+Let's deploy our dapp on the Agoric VM. 
 ```sh
 # Install your smart contract and web api (can be done separately)
 agoric deploy ./contract/deploy.js ./api/deploy.js
-# Navigate to http://localhost:8000/
+```
+And navigate to our wallet
+[http://localhost:8000/wallet/](http://localhost:8000/wallet/)
+
+Now let's start up the autoswap frontend:
+
+```sh
+cd ui
+npm install
+npm run start  
 ```
 
+This will open a tab in your default browser, and will allow you to
+trade using the autoswap front-end and contract. We've given you a few
+purses to use in your trades.
+
 ## Writing a smart contract 
+
+Ready to write your own? We've given you a stripped down version of
+the autoswap contract to get you started. It currently allows you to
+trade 1 moola for 1 simolean and vice versa, but you can add more
+functionality and redeploy. 
 
 ![System Arch](./assets/system-arch.svg)
 
@@ -107,20 +125,22 @@ you should see folders like:
 * contract
 * ui
 
-Go ahead and open up `contract/myFirstDapp.js`. This is a
-stripped-down version of our [autoswap
-contract](../zoe/guide/contracts/autoswap.md) that is meant to be
-filled in with your particular business logic. To learn more about
+Go ahead and open up `contract/myFirstDapp.js`. To learn more about
 writing a smart contract on Zoe, please see the [Zoe
 guide](../zoe/guide/).
 
-Once you've made changes to the smart contract, redeploy:
+Once you've made changes to the smart contract, deploy:
 
 ```sh
 # Redeploy
-agoric deploy ./contract/deploy.js ./api/deploy.js
+agoric deploy ./contract/deploy-myfirstdapp.js ./api/deploy.js
 ```
 
 ## Editing the UI
 
 ![Autoswap Frontend](./assets/autoswap-frontend.svg)
+
+All of the UI for the autoswap frontend is under `/ui`. Your changes
+will automatically propagate to the browser tab.
+
+Happy hacking!
