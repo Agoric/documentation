@@ -20,6 +20,34 @@ also does not create a local chain. We are working on adding the
 ability to run contracts on chain to this devtool, but you can find
 [more information on running on chain here](../manual-setup/README.md).
 
+## Quick Overview
+
+To create and start a project, run:
+
+```sh
+npx agoric init demo
+cd demo
+npx agoric install
+npx agoric start
+```
+
+In another shell, from the same projects directory:
+
+```sh
+cd demo
+npx agoric deploy ./contract/deploy.js ./api/deploy.js
+cd ui
+npm install
+npm run start
+```
+
+_([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher)_
+
+Then open:
+- [http://localhost:3000](http://localhost:3000) to see the Dapp.<br>
+- [http://localhost:8000/wallet](http://localhost:8000/wallet) to see the Simple Wallet.<br>
+- [http://localhost:8000/](http://localhost:8000/) to see your the REPL.<br>
+
 ## Prerequisites
 
 ### Vagrant
