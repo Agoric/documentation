@@ -1,6 +1,6 @@
 # Agoric's Cosmic SwingSet
 
-Agoric's Cosmic SwingSet enables developers to test smart contracts build with [ERTP](https://github.com/Agoric/ERTP) in various blockchain setup environments
+Agoric's Cosmic SwingSet enables developers to test smart contracts built with [ERTP](https://github.com/Agoric/ERTP) in various blockchain setup environments
 
 ## Overview
 This document gives an overview of the process of setting up
@@ -12,7 +12,7 @@ This document gives an overview of the process of setting up
 
 In order to build a DeFi app in the SwingSet environment, your team will have to write code for three things:
 
-* The UI that displays in interface and talks to the handler via WebSockets
+* The UI that displays an interface and talks to the handler via WebSockets
 * The Handler that receives commands from the user via WebSockets and sends
    transactions to the local solo SwingSet for relay to the Chain
 * The Dapp code that runs in the Chain SwingSet and has access to objects on
