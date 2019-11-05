@@ -1,5 +1,7 @@
 # Guess37 - One Participant
 
+**Warning: The Agoric technology stack is currently being built with lots of moving pieces. As a consequence, the steps in this tutorial may seem complicated at times. It is a problem we are aware of and are working on**
+
 ## Tutorial on creating and running the simplest Smart Contract
 
 This first contract will be a one-player game where the player tries to guess a number. If they guess right, they win, otherwise, they lose. The game can be played any number of times and there is no actual stake. For the purpose of keeping things simple, the number is hardcoded to be `37`
@@ -12,7 +14,7 @@ Clone the [cosmic-swingset repository](https://github.com/Agoric/cosmic-swingset
 git clone git@github.com:Agoric/cosmic-swingset.git
 ```
 
-Follow the instruction to [build and setup cosmic-swingset](https://github.com/Agoric/cosmic-swingset#build-from-source) (~20 minutes)
+Follow the instruction to [build and setup cosmic-swingset for scenario 3](https://github.com/Agoric/cosmic-swingset#build-from-source) (~20 minutes)
 
 
 ## Write a contract
@@ -45,6 +47,8 @@ function guess37Contract(terms, inviteMaker) {
 
 export default guess37Contract.toString();
 ```
+
+(**note**: in a later version of the Agoric stack, importing the contract code to the contract host will be simpler than this manual manipulation of files)
 
 The contract is materialized by the source code of the `start` function. JavaScript makes it possible to retrieve the source code of a function by calling [toString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/toString) on the function
 
@@ -149,7 +153,4 @@ The contractHost/install/spawn/invites/redeem choregraphy is part of the [ERTP f
 **Congratulations!**\
 You've successfully written a smart contract in JavaScript and run it in a solo node
 
-In the next steps, [we'll discover how to make someone else play the `guess37` game](./guess37-multiple-participants)
-
-
-`TODO : explain ~. syntax`
+In the next steps, [we'll discover how to make someone else play the `guess37` game](./guess37-multiple)
