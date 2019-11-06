@@ -2,7 +2,7 @@ const nav = require('./themeConfig/nav')
 
 module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
-  base: '/Documentation/', // The base URL the site will be deployed at.
+  base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
   title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
