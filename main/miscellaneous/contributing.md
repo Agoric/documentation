@@ -6,7 +6,7 @@ Agoric [TODO: lnk] documentation is written in Markdown and built with VuePress.
 ## Developing
 1. Clone the repo
 ```sh
-$ git clone https://github.com/Agoric/Documentation
+$ git clone https://github.com/Agoric/documentation
 ```
 
 1. Install dependencies
@@ -24,7 +24,7 @@ $ npm run docs:dev
 ## Structure
 
 ### Site Build
-The Documentation root contains the `README.md` for the repo. This is separate from the site build. `/main` contains all of the files for the documentation site.
+The documentation root contains the `README.md` for the repo. This is separate from the site build. `/main` contains all of the files for the documentation site.
 
 ::: tip NOTE:
 Everything is nested inside `/main`. This is the base path and will render as `/`.

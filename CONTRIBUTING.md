@@ -25,4 +25,4 @@ Identified sources of complexity:
 ### Progress
 
 Progress can be followed [on this
-board](https://github.com/Agoric/Documentation/projects/1?fullscreen=true)
+board](https://github.com/Agoric/documentation/projects/1?fullscreen=true)

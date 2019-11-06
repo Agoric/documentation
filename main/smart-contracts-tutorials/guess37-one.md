@@ -141,7 +141,7 @@ It is an object containing the properties `contractHost`, `handoffService` and `
 
 As you have guessed (pun intended!), `guess` refers to the function with the same name defined in the contract
 
-The contractHost/install/spawn/invites/redeem choregraphy is part of the [ERTP framework](https://github.com/Agoric/ERTP) developed by Agoric. You can read more about it [in the dedicated repo](https://github.com/Agoric/ERTP/blob/master/core/contractHost.chainmail). [More detailled documentation is coming soon](https://github.com/Agoric/Documentation/pull/17)
+The contractHost/install/spawn/invites/redeem choregraphy is part of the [ERTP framework](https://github.com/Agoric/ERTP) developed by Agoric. You can read more about it [in the dedicated repo](https://github.com/Agoric/ERTP/blob/master/core/contractHost.chainmail). [More detailled documentation is coming soon](https://github.com/Agoric/documentation/pull/17)
 
 
 ## Conclusion and next steps
