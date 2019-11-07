@@ -1,4 +1,4 @@
-# Guess37 - One Participant
+# First contract: Guess game
 
 **Warning: The Agoric technology stack is currently being built with lots of moving pieces. As a consequence, the steps in this tutorial may seem complicated at times. It is a problem we are aware of and are working on**
 
@@ -33,7 +33,7 @@ touch lib/ag-solo/vats/guess-game-contract.js
 
 **copy/paste the following code in the contract file:**
 ```js
-function guess37Contract(terms, inviteMaker) {
+function guessContract(terms, inviteMaker) {
   const seat = harden({
     guess(attempt) {
       return attempt === 37 ? 'you win' : 'you lose';
@@ -45,7 +45,7 @@ function guess37Contract(terms, inviteMaker) {
   });
 }
 
-export default guess37Contract.toString();
+export default guessContract.toString();
 ```
 
 (**note**: in a later version of the Agoric stack, importing the contract code to the contract host will be simpler than this manual manipulation of files)
@@ -132,15 +132,15 @@ It is an object containing the properties `contractHost`, `handoffService` and `
 
 `host = home.contractHost` retrieves the contractHost presence and stores it in the `host` variable for convenience
 
-`installation = host~.install({start: home.guessGameContractSource})` installs the guess37 contract in the contract host
+`installation = host~.install({start: home.guessGameContractSource})` installs the guess contract in the contract host
 
-`invites = installation~.spawn()` runs the contract (here, the `guess37Contract` function) and store the invites bundle returned by the contract
+`invites = installation~.spawn()` runs the contract (here, the `guessContract` function) and store the invites bundle returned by the contract
 
 `playerInvite = invites~.playerInvite` extracts the `playerInvite` from the invites bundle
 
 `seat = host~.redeem(playerInvite)` redeems the invitation. `redeem` returns an object that represents a right to participate in the contract (a seat at the table)
 
-`seat~.guess(14)` is a losing guess as defined by the `guess37` contract
+`seat~.guess(14)` is a losing guess as defined by the `guess` contract
 `seat~.guess(37)` is a winning guess
 
 As you have guessed (pun intended!), `guess` refers to the function with the same name defined in the contract
@@ -153,4 +153,4 @@ The contractHost/install/spawn/invites/redeem choregraphy is part of the [ERTP f
 **Congratulations!**\
 You've successfully written a smart contract in JavaScript and run it in a solo node
 
-In the next steps, [we'll discover how to make someone else play the `guess37` game](./guess37-multiple)
+In the next steps, [we'll discover how to make someone else play the `guess` game](./guess-multiple)

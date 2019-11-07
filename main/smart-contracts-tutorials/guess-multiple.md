@@ -1,6 +1,6 @@
-# Guess37 - Multiple Participants
+# Guess game - Multiple Participants
 
-In the [previous step](./guess37-one.md), we set up a contract and ran it and played the guess37 game
+In the [previous step](./first-contract-guess.md), we set up a contract and ran it and played the Guess game
 
 In this section, we'll see how to play 2 different roles: "contract installer" and "game player"
 
@@ -39,11 +39,11 @@ playerInvite = invites~.playerInvite
 The contract is now setup, like it was in the previous step. Let's now share the player invite with the game player:
 ```
 handoff = home.handoff
-board = handoff~.createBoard("guess37 game")
+board = handoff~.createBoard("guess game")
 board~.addEntry("invite", playerInvite)
 ```
 
-Then, the contract installer would communicate to the game player that a board called `guess37 game` with an entry called `invite` is available for them to retrieve the invite
+Then, the contract installer would communicate to the game player that a board called `guess game` with an entry called `invite` is available for them to retrieve the invite
 This communication would happen out-of-band. Maybe via email, Mastodon DM, SMS, hand-written note; whatever is best suited to share these secrets
 
 `handoff` is a convenience [provided by ERTP](https://github.com/Agoric/ERTP/blob/master/more/handoff/handoff.js) and exposed publicly so that people can securely share secrets and capabilities via the blockchain
@@ -55,7 +55,7 @@ Open http://localhost:8001/ in a different browser tab and in the REPL enter the
 ```js
 home
 handoff = home.handoff
-board = handoff~.grabBoard("guess37 game")
+board = handoff~.grabBoard("guess game")
 allegedPlayerInvite = board~.lookup("invite")
 playerInvite = host~.getInviteAssay()~.claimAll( allegedPlayerInvite )
 // if the previous line succeeded, we know both that the invite is genuine 
@@ -73,7 +73,7 @@ seat~.guess(121)
 seat~.guess(37)
 ```
 
-Like in the previous step, `seat~.guess(121)` is a losing guess as defined by the `guess37` contract and `seat~.guess(37)` is a winning guess
+Like in the previous step, `seat~.guess(121)` is a losing guess as defined by the `guess` contract and `seat~.guess(37)` is a winning guess
 
 
 ## Security properties
@@ -83,7 +83,7 @@ In the choregraphy we just played, there are 3 main characters:
 - the contract installer
 - the game player
 
-How does the game player know they are playing the `guess37` game with the actual contract source code defined in the [previous step](./first-contract)?
+How does the game player know they are playing the `guess` game with the actual contract source code defined in the [previous step](./first-contract)?
 What if the contract installer makes them play a different game?
 **Let's see what guarantees the game player has even if they're suspicious of the contract installer**
 
@@ -127,4 +127,4 @@ Thanks to the [ERTP framework](https://github.com/Agoric/ERTP) and the design of
 All of this is assured even if the contract installer is malicious
 
 Now that we've seen all the guarantees ERTP provide, let's make a more interesting contract than a game to guess a fixed number
-In the next step, we'll see [how to configure the contract](./guess-with-reward.md)
+In the next step, we'll see [how to configure the contract](./guess-configuration.md)

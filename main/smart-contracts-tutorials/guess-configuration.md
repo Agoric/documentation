@@ -1,6 +1,6 @@
-# Guess37 - Reward
+# Guess game - Configuration
 
-In the [previous step](./guess37-multiple), we used the guess37 contract and used it in a way that multiple people can interact around it
+In the [previous step](./guess-multiple), we used the guess37 contract and used it in a way that multiple people can interact around it
 
 In this section, we discover how to configure a contract
 
