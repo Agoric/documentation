@@ -28,7 +28,7 @@ echo $PWD
 # git branch -c my-contract-tutorial
 
 # Create the contract file
-touch lib/ag-solo/vats/guess37-contract.js
+touch lib/ag-solo/vats/guess-game-contract.js
 ```
 
 **copy/paste the following code in the contract file:**
@@ -65,7 +65,7 @@ Replace the content of `lib/ag-solo/vats/vat-pixel.js` with the following:
 ```js
 import harden from '@agoric/harden';
 import { makeHandoffService } from '@agoric/ertp/more/handoff/handoff';
-import guess37ContractSource from './guess37-contract.js';
+import guessGameContractSource from './guess-game-contract.js';
 
 function build(E, log) {
   let contractHost
@@ -78,7 +78,7 @@ function build(E, log) {
     return harden({
       contractHost,
       handoffService: makeHandoffService(),
-      guess37ContractSource,
+      guessGameContractSource,
     });
   }
 
@@ -116,7 +116,7 @@ In the REPL, try the following commands in the same order:
 ```
 home
 host = home.contractHost
-installation = host~.install({start: home.guess37ContractSource})
+installation = host~.install({start: home.guessGameContractSource})
 invites = installation~.spawn()
 playerInvite = invites~.playerInvite
 seat = host~.redeem(playerInvite)
@@ -128,11 +128,11 @@ seat~.guess(37)
 ### Commands breakdown
 
 The first `home` command shows what was defined in `lib/ag-solo/vats/vat-pixel.js` as return value of `createPixelBundle`
-It is an object containing the properties `contractHost`, `handoffService` and `guess37ContractSource`
+It is an object containing the properties `contractHost`, `handoffService` and `guessGameContractSource`
 
 `host = home.contractHost` retrieves the contractHost presence and stores it in the `host` variable for convenience
 
-`installation = host~.install({start: home.guess37ContractSource})` installs the guess37 contract in the contract host
+`installation = host~.install({start: home.guessGameContractSource})` installs the guess37 contract in the contract host
 
 `invites = installation~.spawn()` runs the contract (here, the `guess37Contract` function) and store the invites bundle returned by the contract
 

@@ -1,6 +1,6 @@
 # Guess37 - Multiple Participants
 
-In the [previous step](./first-contract), we set up a contract and ran it and played the guess37 game
+In the [previous step](./guess37-one.md), we set up a contract and ran it and played the guess37 game
 
 In this section, we'll see how to play 2 different roles: "contract installer" and "game player"
 
@@ -31,7 +31,7 @@ Open http://localhost:8000/ in a browser tab and in the REPL enter the following
 ```
 home
 host = home.contractHost
-installation = host~.install({start: home.guess37ContractSource})
+installation = host~.install({start: home.guessGameContractSource})
 invites = installation~.spawn()
 playerInvite = invites~.playerInvite
 ```
@@ -52,15 +52,20 @@ This communication would happen out-of-band. Maybe via email, Mastodon DM, SMS, 
 ## Acting as the game player
 
 Open http://localhost:8001/ in a different browser tab and in the REPL enter the following commands in order:
-```
+```js
 home
 handoff = home.handoff
 board = handoff~.grabBoard("guess37 game")
-playerInvite = board~.lookup("invite")
+allegedPlayerInvite = board~.lookup("invite")
+playerInvite = host~.getInviteAssay()~.claimAll( allegedPlayerInvite )
+// if the previous line succeeded, we know both that the invite is genuine 
+// and that we have exclusive access to it
+// If we want to read the source code of the contract beforehand:
+source = host~.getInstallationSourceCode(playerInvite~.getBalance()~.installation)
 ```
 
-Now we have the invite to participate to the contract. Let's play the game:
-```
+Now that the player has reviewed the contract and knows they have an exclusive access to a genuine invite, let's play the game:
+```js
 host = home.contractHost
 seat = host~.redeem(playerInvite)
 
@@ -122,4 +127,4 @@ Thanks to the [ERTP framework](https://github.com/Agoric/ERTP) and the design of
 All of this is assured even if the contract installer is malicious
 
 Now that we've seen all the guarantees ERTP provide, let's make a more interesting contract than a game to guess a fixed number
-In the next step, we'll see how to configure the contract and make bets
+In the next step, we'll see [how to configure the contract](./guess-with-reward.md)
