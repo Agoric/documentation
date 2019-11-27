@@ -1,9 +1,19 @@
 # Creating a fungible eright with ERTP
 
-## A quick tutorial
+## Definition of "fungible"
 
-Let's look at an example. In ERTP, all digital assets, including fungible and
-non-fungible tokens, are created by a [`mint`](./mint.html). Having access to the mint
+A **fungible** asset means that different elements of this asset are interchangeable
+Currencies are interchangeable: if you have 10 one-dollar notes laying around and decide
+to take 5 of them, you do not care which 5 you will take. They're all "the same" as far 
+as counting value goes.
+
+This would not be the case for 10 house ownership rights each designating a different house
+House ownership right are not fungible, they are **specific**
+
+
+## Creating a fungible asset with ERTP
+
+In ERTP, digital assets are created by a [`mint`](./mint.html). Having access to the mint
 gives you the power to create more digital assets of the same type at
 will. For instance, let's say we want to create a new community
 currency called 'BaytownBucks'.
@@ -43,14 +53,12 @@ Now let's send the payment to Alice as message:
 alice.receivePayment(paymentForAlice);
 ```
 
-This may seem strange, but ERTP is built on top of [an
-infrastructure](https://github.com/Agoric/SwingSet) in which
-everything is an object. In this example, we have a reference to the
-object `alice`, and can call her `receivePayment` to ask her to
-receive this payment. Alice's methods are entirely up to her, and are
-not part of ERTP.
+Here `alice` is an object reference, and we can call her `receivePayment`
+to ask her to receive this payment. Alice's methods are entirely up to her, 
+and are not part of ERTP.
 
-## Security Properties
+
+### Security Properties
 
 How does Alice know that she got paid real money? She could have been
 sent fake money, or she could have been sent money that was
