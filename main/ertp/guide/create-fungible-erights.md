@@ -57,27 +57,3 @@ Here `alice` is an object reference, and we can call her `receivePayment`
 to ask her to receive this payment. Alice's methods are entirely up to her, 
 and are not part of ERTP.
 
-
-### Security Properties
-
-How does Alice know that she got paid real money? She could have been
-sent fake money, or she could have been sent money that was
-[double-spent](https://en.wikipedia.org/wiki/Double-spending).
-
-When alice receives an alleged payment, she can call a method to know
-that the alleged payment was valid, and get a new payment that is
-exclusively hers:
-
-```js
-const myExclusivePayment = BaytownBucksIssuer.claimAll(allegedPayment);
-```
-
-The BaytownBucksIssuer is associated with the BaytownBucksMint, but
-the issuer is the public-facing version that is accessible to anyone.
-By holding the reference to a mint, you can mint more tokens. By
-holding a reference to the issuer for a mint, you can check that a
-payment is valid and exclusively claim it in a new payment to yourself.
-
-That's the basic use case for a fungible token. `makeMint` in
-[issuers.js](core/issuers.js) takes
-in an optional configuration that allows for many more possibilities.
