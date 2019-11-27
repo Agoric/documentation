@@ -13,6 +13,8 @@ House ownership right are not fungible, they are **specific**
 
 ## Creating a fungible asset with ERTP
 
+### Creating and sending the asset
+
 In ERTP, digital assets are created by a [`mint`](./mint.html). Having access to the mint
 gives you the power to create more digital assets of the same type at
 will. For instance, let's say we want to create a new community
@@ -57,3 +59,34 @@ Here `alice` is an object reference, and we can call her `receivePayment`
 to ask her to receive this payment. Alice's methods are entirely up to her, 
 and are not part of ERTP.
 
+
+### Receiving the asset
+
+On Alice side, there is probably already an existing BaytownBucks purse where
+she will accumulate all the BaytownBucks she receives
+
+```js
+// assumed myBaytownBucksPurse variable which contains a genuine BaytownBucks purse
+
+myBaytownBucksPurse.getBalance(); // 150
+// Alice already has 150 BaytownBucks
+
+const alice = {
+    receivePayment(baytownBucksPayment){
+        myBaytownBucksPurse.depositAll(baytownBucksPayment)
+    }
+}
+```
+
+And just like that, when `alice.receivePayment(paymentForAlice)` from above 
+is called, Alice accumulates the 1000 payment in her purse which already contains
+150 units for a total of 1150
+
+When alice wants to exchange something for 300 BaytownBucks, she creates a payment:
+```js
+const payment = myBaytownBucksPurse.withdraw(300);
+```
+
+This came naturally without having to express "which" 300 she wanted to withdraw
+
+And this is how fungible assets work in ERTP!
