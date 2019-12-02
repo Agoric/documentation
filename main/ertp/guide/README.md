@@ -29,21 +29,11 @@ ERTP is the top layer of the Agoric stack. You can find out more about this stac
 
 ## Guide
 
-Different resources can help you understand what can be done with ERTP, but also how to do it:
+Let's get started by creating some different kinds of digital assets:
 - [Creating a fungible asset with ERTP](./create-fungible-erights.md)
 - [Explanation of the Pixel Demo](./pixel-demo-erights.md)
 
 
-
-## More ERTP resources
-
-Mark Miller explained ERTP on Oct 10, 2018 in his [Programming Secure Smart Contracts][watch] presentation
-during San Francisco Blockchain Week at a
-[SF Cryptocurrency Devs meetup](https://www.meetup.com/SF-Cryptocurrency-Devs/events/253457222/).
-
-[![miller-sfbw-erights](https://user-images.githubusercontent.com/150986/59150095-b8a65200-89e3-11e9-9b5d-43a9be8a3c90.png)][watch]
-
-[watch]: https://www.youtube.com/watch?v=YXUqfgdDbr8
 
 ## Higher Order Smart Contracts
 

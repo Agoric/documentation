@@ -10,26 +10,14 @@ concepts:
 * __Presences__: Presences are our name for the local object that stands in for the remote object. If `obj` is a presence of a remote object, we can send messages to the remote object by using "~." on `obj`, as in the above example.
 
 
-## Security Properties
 
-How does Alice know that she got paid real money? She could have been
-sent fake money, or she could have been sent money that was
-[double-spent](https://en.wikipedia.org/wiki/Double-spending).
 
-When alice receives an alleged payment, she can call a method to know
-that the alleged payment was valid, and get a new payment that is
-exclusively hers:
+## More ERTP resources
 
-```js
-const myExclusivePayment = BaytownBucksIssuer.claimAll(allegedPayment);
-```
+Mark Miller explained ERTP on Oct 10, 2018 in his [Programming Secure Smart Contracts][watch] presentation
+during San Francisco Blockchain Week at a
+[SF Cryptocurrency Devs meetup](https://www.meetup.com/SF-Cryptocurrency-Devs/events/253457222/).
 
-The BaytownBucksIssuer is associated with the BaytownBucksMint, but
-the issuer is the public-facing version that is accessible to anyone.
-By holding the reference to a mint, you can mint more tokens. By
-holding a reference to the issuer for a mint, you can check that a
-payment is valid and exclusively claim it in a new payment to yourself.
+[![miller-sfbw-erights](https://user-images.githubusercontent.com/150986/59150095-b8a65200-89e3-11e9-9b5d-43a9be8a3c90.png)][watch]
 
-That's the basic use case for a fungible token. `makeMint` in
-[issuers.js](core/issuers.js) takes
-in an optional configuration that allows for many more possibilities.
+[watch]: https://www.youtube.com/watch?v=YXUqfgdDbr8
