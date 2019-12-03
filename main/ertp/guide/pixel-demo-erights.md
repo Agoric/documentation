@@ -1,6 +1,6 @@
 ## Pixel Demo
 
-For a demo on how ERTP can be used, check out our [Pixel Demo](/documentation/getting-started/pixel-demo.html#installation).
+For a demo on how ERTP can be used for non-fungible digital assets, check out our [Pixel Demo](/documentation/getting-started/pixel-demo.html#installation).
 
 ### A preemption hierarchy of rights
 

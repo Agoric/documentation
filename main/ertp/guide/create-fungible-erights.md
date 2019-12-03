@@ -2,12 +2,12 @@
 
 ## Definition of "fungible"
 
-A **fungible** asset means that different elements of this asset are interchangeable
+A **fungible** asset means that different elements of this asset are interchangeable.
 Currencies are interchangeable: if you have 10 one-dollar notes laying around and decide
 to take 5 of them, you do not care which 5 you will take. They're all "the same" as far 
 as counting value goes.
 
-This would not be the case for 10 house ownership rights each designating a different house
+This would not be the case for 10 house ownership rights each designating a different house.
 House ownership rights are not fungible, they are **specific**.
 
 
@@ -86,7 +86,9 @@ is called, Alice accumulates the 1000 payment in her purse.
 
 When alice wants to exchange something for 300 BaytownBucks, she creates a payment from her purse:
 ```js
-const payment = myBaytownBucksPurse.withdraw(300);
+const baytownBucksAssay = baytownBucksMint.getAssay();
+const baytownBucks = baytownBucksAssay.makeUnits;
+const payment = myBaytownBucksPurse.withdraw(baytownBucks(300));
 ```
 
 This came naturally without having to express "which" 300 she wanted to withdraw.
@@ -100,8 +102,8 @@ How does Alice know that she got paid real money? She could have been
 sent fake money, or she could have been sent money that was
 [double-spent](https://en.wikipedia.org/wiki/Double-spending).
 
-When alice receives an alleged payment, she calls `myBaytownBucksPurse.depositAll`
-this function first checks that its argument is a genuine payment object of the same
+When alice receives an alleged payment, she calls `myBaytownBucksPurse.depositAll`.
+This function first checks that its argument is a genuine payment object of the same
 assay than the purse. If it's the case, the amount ("extent") is transfered in full
 from the payment to the purse. If there is a mismatch, the method throws an error.
 

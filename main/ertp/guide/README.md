@@ -32,18 +32,3 @@ ERTP is the top layer of the Agoric stack. You can find out more about this stac
 Let's get started by creating some different kinds of digital assets:
 - [Creating a fungible asset with ERTP](./create-fungible-erights.md)
 - [Explanation of the Pixel Demo](./pixel-demo-erights.md)
-
-
-
-## Higher Order Smart Contracts
-
-The `contractHost` tests detail the composition of a covered call option
-with an escrow exchange contract.
-
-```sh
-npx tape -r esm test/swingsetTests/contractHost/test-contractHost.js
-```
-
-For more examples, please see the code for Alice and Bob in `test/swingsetTests/contractHost/`.
-
-![higher-order-smart-contract-covered-call-escrow](https://user-images.githubusercontent.com/150986/59150181-f3f55080-89e4-11e9-8046-fcb9c10831b1.png)
