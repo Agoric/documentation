@@ -4,7 +4,7 @@
 
 A **fungible** asset means that different elements of this asset are interchangeable.
 Currencies are interchangeable: if you have 10 one-dollar notes laying around and decide
-to take 5 of them, you do not care which 5 you will take. They're all "the same" as far 
+to take 5 of them, you do not care which 5 you get. They're all "the same" as far 
 as counting value goes.
 
 This would not be the case for 10 house ownership rights each designating a different house.
@@ -104,7 +104,7 @@ sent fake money, or she could have been sent money that was
 
 When alice receives an alleged payment, she calls `myBaytownBucksPurse.depositAll`.
 This function first checks that its argument is a genuine payment object of the same
-assay than the purse. If it's the case, the amount ("extent") is transfered in full
+assay as the purse. If it's the case, the amount ("extent") is transfered in full
 from the payment to the purse. If there is a mismatch, the method throws an error.
 
 After the method call succeeded, ERTP guarantees that:
@@ -112,8 +112,8 @@ After the method call succeeded, ERTP guarantees that:
 - the purse contains the full content of the payment
 
 After the method call throws, ERTP guarantees that:
-- the alleged payment is in the same state than before the call
-- the purse is in the same state than before the call
+- the alleged payment is in the same state as before the call
+- the purse is in the same state as before the call
 
 The BaytownBucksAssay is associated with the BaytownBucksMint, but
 the assay is the public-facing version that is accessible to anyone.
