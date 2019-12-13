@@ -1,13 +1,13 @@
-# Creating a specific eright with ERTP
+# Creating non-fungible tokens with ERTP
 
-## Definition of "specific"
+## Definition of fungible/non-fungible
 
-In the context of ERTP and assets, "specific" means "non-fungible".
+Assets are fungible if each asset is just as valuable as other assets of the same kind. 
+For instance, dollar bills are fungible because it doesn't matter which bill you use. 
+Each dollar bill is interchangeable with any other. Paintings, on the other hand, are not fungible. 
+Paintings have drastically different values depending on the content and painter. 
+A deal involving a specific painting would not be satisfied by another painting.
 
-Assets of the same assay are not fungible if each different item of the assay
-cannot be replaced with another.
-House ownership rights are not fungible, because each ownership right refers to a 
-specific house and one house is not equal to another.
 
 ## Creating a fungible asset with ERTP
 
@@ -18,7 +18,7 @@ gives you the power to create more digital assets of the same type at
 will.
 
 Let's say we own an Opera and want to sell tickets to seats for ballet shows. Tickets are
-the specific assets we want to represent. Tickets refer to a specific seat for a specific 
+the non-fungible assets we want to represent. Tickets refer to a specific seat for a specific 
 show at a specific time and date.
 
 To do that, you would first install the [ertp JavaScript package](https://www.npmjs.com/package/@agoric/ertp)

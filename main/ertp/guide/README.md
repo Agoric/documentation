@@ -31,5 +31,5 @@ ERTP is the top layer of the Agoric stack. You can find out more about this stac
 
 Let's get started by creating some different kinds of digital assets:
 - [Creating a fungible asset with ERTP](./create-fungible-erights.md)
-- [Creating a specific asset with ERTP](./create-specific-erights.md)
+- [Creating non-fungible tokens with ERTP](./create-non-fungible-tokens.md)
 - [Explanation of the Pixel Demo](./pixel-demo-erights.md)
