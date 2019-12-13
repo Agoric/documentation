@@ -9,9 +9,9 @@ Paintings have drastically different values depending on the content and painter
 A deal involving a specific painting would not be satisfied by another painting.
 
 
-## Creating a fungible asset with ERTP
+## Creating a non-fungible asset with ERTP
 
-### Creating and sending the asset
+### Moldeing and creating the asset
 
 In ERTP, digital assets are created by a [`mint`](./mint.html). Having access to the mint
 gives you the power to create more digital assets of the same type at
@@ -40,7 +40,7 @@ const insistOptDescription = optDescription => {
   mustBeComparable(optDescription);
 };
 
-function makeInviteConfig() {
+function makeBalletTicketConfig() {
   return harden({
     ...noCustomization,
     makeMintKeeper: makeCoreMintKeeper,
@@ -49,7 +49,7 @@ function makeInviteConfig() {
   });
 }
 
-const balletTicketMint = makeMint('Agoric Ballet Opera tickets', makeInviteConfig);
+const balletTicketMint = makeMint('Agoric Ballet Opera tickets', makeBalletTicketConfig);
 ```
 
 At this Opera, there are [1114](https://fr.wikipedia.org/wiki/Grand_Th%C3%A9%C3%A2tre_(Bordeaux)#Salle_de_spectacle) seats numbered `1` to `1114`.
@@ -58,30 +58,26 @@ Objects that represent valid tickets will have the following properties:
 - `show` with a string describing the show
 - `start` with a string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
 
-Let's create the tickets in ERTP! The first step is to describe the **extents**. [Extents](https://agoric.com/documentation/ertp/guide/extent.html) are [comparable](https://github.com/Agoric/agoric-sdk/blob/f1b9dcae7d22aa7adc6222a42a0727ea29c055f3/packages/ERTP/util/sameStructure.js#L243-L245) values (as a first approximation, you can think of data-only objects that would translate as well in [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON)).
+Let's create the tickets in ERTP!
+The first step is to create the corresponding JavaScript objects and create the corresponding [units](https://agoric.com/documentation/ertp/guide/units.html) objects.
 
 ```js
-const startDateString = (new Date(2019, 11, 9, 20, 30)).toISOString()
+const startDateString = (new Date(2019, 11, 9, 20, 30)).toISOString();
 
-const ticketExtents = Array(1114).fill().map((_, i) => ({
+const ticketObjects = Array(1114).fill().map((_, i) => ({
   seat: i+1,
   show: 'The Sofa',
   start: startDateString,
 }))
+
+const ticketUnits = ticketObjects.map(ticketExtent => balletTicketMint.getAssay().makeUnits(ticketExtent));
 ```
 
-Now these ticket descriptions need to be turned into **units**. While extents can be thought of as data-only objects, [units](https://agoric.com/documentation/ertp/guide/units.html) are objects that represent goods that can be minted and exclusively shared.
-
-```js
-const balletTicketUnitOps = balletTicketMint.getAssay().getUnitOps();
-
-const ticketUnits = ticketExtents.map(ticketExtent => balletTicketUnitOps.make(ticketExtent))
-```
-
-And now, let's mint tickets!
+Units are "labeled [extents](https://agoric.com/documentation/ertp/guide/extent.html)" and only units 
+can be minted, so now that we have units, we can mint!
 
 ```js
 const balletTicketPurses = ticketUnits.map(ticketUnit => balletTicketMint.mint(ticketUnit))
 ```
 
-For each ticket unit, we've created a [purse](https://agoric.com/documentation/ertp/api/purse.html) which contains the corresponding unit. These purses can later be transformed into [payments](https://agoric.com/documentation/ertp/api/payment.html) via a call to `balletTicketPurse.withdrawAll()`. This payment can later be traded against other payments or on conditions decided by the payment holder.
+For each ticket unit, we've created a [purse](https://agoric.com/documentation/ertp/api/purse.html) which contains the corresponding unit. These purses can later be transformed into [payments](https://agoric.com/documentation/ertp/api/payment.html) via a call to `balletTicketPurse.withdrawAll()`. This payment can then be bought and sold and used in smart contracts.
