@@ -59,7 +59,8 @@ Objects that represent valid tickets will have the following properties:
 - `start` with a string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
 
 Let's create the tickets in ERTP!
-The first step is to create the corresponding JavaScript objects and create the corresponding [units](https://agoric.com/documentation/ertp/guide/units.html) objects.
+The first step is to create JavaScript objects, each representing a ticket.
+Then, only [units](https://agoric.com/documentation/ertp/guide/units.html) can be minted, so let's create units from the JavaScript objects and then, let's mint the tickets!
 
 ```js
 const startDateString = (new Date(2019, 11, 9, 20, 30)).toISOString();
@@ -71,12 +72,7 @@ const ticketObjects = Array(1114).fill().map((_, i) => ({
 }))
 
 const ticketUnits = ticketObjects.map(ticketExtent => balletTicketMint.getAssay().makeUnits(ticketExtent));
-```
 
-Units are "labeled [extents](https://agoric.com/documentation/ertp/guide/extent.html)" and only units 
-can be minted, so now that we have units, we can mint!
-
-```js
 const balletTicketPurses = ticketUnits.map(ticketUnit => balletTicketMint.mint(ticketUnit))
 ```
 
