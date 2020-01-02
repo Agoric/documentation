@@ -11,7 +11,7 @@ A deal involving a specific painting would not be satisfied by another painting.
 
 ## Creating a non-fungible asset with ERTP
 
-### Moldeing and creating the asset
+### Modeling and creating the asset
 
 In ERTP, digital assets are created by a [`mint`](./mint.html). Having access to the mint
 gives you the power to create more digital assets of the same type at
