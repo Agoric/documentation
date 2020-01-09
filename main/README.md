@@ -51,9 +51,3 @@ Our ocap platform consists of:
 - A cryptographic routing fabric for inter-chain interoperability.
 - A library of market abstractions and a framework for securely composing them.
 - A framework for secure user interaction.
-
-
-## Hackathon Cheat Sheet Links
-- Zoe
-- ERTP
-

@@ -1,5 +1,7 @@
 # Payment
-Payments hold verified units of certain rights issued by Mints. Units from payments can be deposited in purses, but otherwise, the entire unit is available when the payment is transferred. A payment's balance can only fall, through the action of `depositExactly()`, `claimExactly()` or `burnExactly()`. Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
+Payments hold verified units of certain rights issued by Mints. Units from payments can be deposited in purses, but otherwise, the entire unit is available when the payment is transferred. A payment's balance can only fall, through the action of `purse.depositExactly()`, `assay.claimExactly()` or `assay.burnExactly()`.
+
+Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
 
 ## payment.getName()
 - Returns: `{String}`
@@ -7,7 +9,7 @@ Payments hold verified units of certain rights issued by Mints. Units from payme
 Get the name of this purse.
 
 ```js
-Examples
+console.log( anyPayment.getName() )
 ```
 
 ## payment.getAssay()
@@ -31,8 +33,7 @@ const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
 const purse = myNewMint.mint(1000);
 
-const payments = [];
-payments.push(purse.withdraw(20));
+const payment = purse.withdraw(20);
 
 // Returns 20
 payments.getBalance();

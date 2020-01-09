@@ -2,10 +2,14 @@ const nav = require('./themeConfig/nav')
 
 module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
-  base: '/Documentation/', // The base URL the site will be deployed at.
+  base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
   title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
+  // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
+  head: [
+    ['link', { rel: 'icon', href: '/favicon-full.ico' }]
+  ],
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
@@ -29,23 +33,11 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             {
-              title: 'Agoric\'s Cosmic SwingSet',
+              title: 'Agoric Dev Tools',
               path: '/getting-started/',
               collapsable: false,
               sideBarDepth: 3
             },
-            {
-              title: 'Pixel Demo',
-              path: '/getting-started/pixel-demo',
-              collapsable: false,
-              sideBarDepth: 3
-            },
-            {
-              title: 'Timer Service',
-              path: '/getting-started/timer-service',
-              collapsable: false,
-              sideBarDepth: 3
-            }
           ]
         },
       ],
@@ -66,7 +58,7 @@ module.exports = {
             '/ertp/guide/unit-ops',
             '/ertp/guide/default-configuration',
             '/ertp/guide/contract-hosts',
-            '/ertp/guide/gotchas'
+            '/ertp/guide/other-concepts'
           ]
         },
         {
@@ -80,7 +72,8 @@ module.exports = {
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/extent-ops',
-            '/ertp/api/unit-ops'
+            '/ertp/api/unit-ops',
+            '/ertp/api/contract-hosts'
           ]
         },
         {
@@ -97,7 +90,8 @@ module.exports = {
           sideBarDepth: 5,
           children: [
             '/zoe/guide/',
-            '/zoe/guide/offer-safety'
+            '/zoe/guide/offer-safety',
+            '/zoe/guide/offer-rules'
           ]
         },
         {
@@ -108,13 +102,25 @@ module.exports = {
           children: [
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/public-auction',
-            '/zoe/guide/contracts/public-swap'
+            '/zoe/guide/contracts/public-swap',
+            '/zoe/guide/contracts/covered-call',
+            '/zoe/guide/contracts/simple-exchange'
           ]
         },
         {
           title: 'Zoe API',
           path: '/zoe/api/',
-          collapsable: false
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+            '/zoe/api/zoe',
+            '/zoe/api/structs',
+            '/zoe/api/zoe-contract-facet'
+          ],
+        },
+        {
+          title: 'Zoe Roadmap',
+          path: '/zoe/roadmap/'
         }
       ],
 
