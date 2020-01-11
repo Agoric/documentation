@@ -2,7 +2,7 @@
 
 ## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
-- `reallocation` `{Array <Array <Extent>>}`
+- `reallocation` `{Array <Array <Unit>>}`
 
 Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the units to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 

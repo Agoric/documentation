@@ -22,7 +22,7 @@ someOfferRules: {
 
 ## PayoutRule
 
-`payoutRules` are an array of `PayoutRule`. The possible kinds are 'offerAtMost' and 'wantAtLeast'. `units` should be a labeled extent.
+`payoutRules` are an array of `PayoutRule`. The possible kinds are 'offerAtMost' and 'wantAtLeast'.
 
 ```js
 somePayoutRules: {

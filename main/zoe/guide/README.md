@@ -242,12 +242,12 @@ exciting part, the reallocation.
 
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
-escrowed for each offer. That information is in the form of an
-`extent`, which can be thought of as the answer to `how much` or `how
+escrowed for each offer. That information is in the form of a
+`unit`, which can be thought of as the answer to `how much` or `how
 many` ([see more about ERTP fundamentals here](../../ertp/guide/)). In "3 bricks"
-the "3" is the extent.
+the "3" is the unit.
 
-Because this is a swap, we want to literally swap the extents for the
+Because this is a swap, we want to literally swap the units for the
 first offer and the matching offer. That is, the user who put in the
 first offer will get what the second user put in and vice versa. Our
 contract makes a call to `zoe.reallocate` in order to tell Zoe about
