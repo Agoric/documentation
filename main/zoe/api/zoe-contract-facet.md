@@ -4,15 +4,15 @@
 - `offerHandles` `{Array <Object>}`
 - `reallocation` `{Array <Array <Extent>>}`
 
-Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the extents to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the units to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 
 ```js
 import harden from '@agoric/harden';
 
-// reallocate by switching the extents of the firstOffer and matchingOffer
+// reallocate by switching the units of the firstOffer and matchingOffer
 zoe.reallocate(
   harden([firstOfferHandle, matchingOfferHandle]),
-  harden([matchingOfferExtents, firstOfferExtents]),
+  harden([matchingOfferUnit, firstOfferUnit]),
 );
 ```
 
@@ -36,8 +36,8 @@ Create an empty offer for recordkeeping purposes (Autoswap uses this to create t
 let poolOfferHandle = zoe.escrowEmptyOffer();
 ```
 
-## zcf.escrowOffer(payoutRules, offerPayments)
-- `payoutRules` `{Array <PayoutRulesElem>}`
+## zcf.escrowOffer(offerRules, offerPayments)
+- `offerRules` `{OfferRules}`
 - `offerPayments` `{Array <Payment>}`
 - Returns: `{OfferHandle}`
 
@@ -49,102 +49,77 @@ const liquidityOfferHandle = await zoe.escrowOffer(
 );
 ```
 
-## zcf.burnEscrowReceipt(escrowReceipt)
-- `escrowReceipt` `{Payment}`
-- Returns: `{Extent}`
-
-Burn and validate an escrowReceipt received from the user.
-
-```js
-const { someExtent } = await zoe.burnEscrowReceipt(someEscrowReceipt);
-```
-
-## zcf.makeInvite(offerToBeMade, useObj)
-- `offerToBeMade` `{Array <PayoutRulesElem>}`
-- `useObj` `{Object}`
+## zcf.makeInvite(seat, customProperties)
+- `seat` `{Object}`
+- `customProperties` `{Object}`
 - Returns: `{Payment}`
 
 Create an invite using the Zoe `inviteMint`.
 
 ```js
-import harden from '@agoric/harden';
-
-const inviteP = zoe.makeInvite(
-  harden({ matchOffer }),
+const { invite, inviteHandle } = zoe.makeInvite(
+  seat,
+  { seatDesc: 'bid', auctionedAssets, minimumBid }
 );
 ```
 
-## zcf.makeEmptyExtents()
-- Returns: `{Array <Extent>}`
+## zcf.getInviteAssay()
+- Returns: `{Assay}`
 
-Create an array of empty extents per assay. Note that if the mint is not a basic fungible mint, this may be something other than 0.
+Get the Zoe `inviteAssay`.
 
 ```js
-// Set the liquidity token extent in the array of extents that
-// will be turned into payments sent back to the user.
-const newPlayerExtents = zoe.makeEmptyExtents();
-newPlayerExtents[2] = liquidityEOut;
+const inviteAssay = await E(zoe).getInviteAssay();
 ```
 
-## zcf.getExtentOps(instanceHandle)
-- `instanceHandle` `{Object}`
-- Returns: `{Array <ExtentOps>}`
+## zcf.getUnitOpsForAssays(assays)
+- `assays` `{Array <Assay>}`
+- Returns: `{Array <UnitOps>}`
 
-Get the array of `extentOps` (the logic from the `unitOps`).
+Get a list of `unitOps` per assay
 
 ```js
-const extentOpsArray = zoe.getExtentOpsArray();
-const assetEqual = extentOpsArray[0].equals(
-  sellOffer[0].units.extent,
-  buyOffer[0].units.extent,
+const unitOpsArray = zoe.getUnitOpsForAssays(assays);
+```
+
+## zcf.isOfferActive(offerHandle)
+- `offerHandles` `{Object}`
+- Returns: `{Boolean}``
+
+Check if the offer is still active. This method does not throw if the offer is inactive.
+
+```js
+const isActive = zoe.isOfferActive(someOfferHandle);
+```
+
+## zcf.getOfferStatuses(offerHandles)
+- `offerHandles` `{Array <Object>}`
+- Returns: `{OfferStatusesRecord}`
+
+Divide the `offerHandles` into 'active' and 'inactive' lists
+
+```js
+const { active: activeBidHandles } = zoe.getOfferStatuses(
+  harden(allBidHandles),
 );
 ```
 
-## zcf.getExtentsFor(offerHandles)
+## zcf.getOffers(offerHandles)
 - `offerHandles` `{Array <Object>}`
-- Returns: `{Array <Array <Extent>>}`
+- Returns: `{Array <OfferRecord>}`
 
-Pass in an array of offerHandles and get a matrix (array of arrays) containing the extents, in the same order as the offerHandles array.
+Get a list of offer records.
 
 ```js
-const [
-  firstOfferExtents
-   matchingOfferExtents
-] = zoe.getExtentsFor(offerHandles);
+const offers = offerTable.getOffers(listOfOfferHandles);
 ```
 
-## zcf.getPayoutRulesFor(offerHandles)
-- `offerHandles` `{Array <Object>}`
-- Returns: <router-link to="/zoe/api/structs.html#payoutrule">`{Array <PayoutRules>}`</router-link>
+## zcf.getOffer(offerHandle)
+- `offerHandle` `{Object}`
+- Returns: `{Array <OfferRecord>}`
 
-Pass in an array of `offerHandles` and get a matrix (array of arrays) containing the offer descriptions for the offers, in the same order as the `offerHandles` array.
-
-```js
-import harden from '@agoric/harden';
-
-export const getActivePayoutRules = (zoe, offerHandles) => {
-  const { active } = zoe.getStatusFor(offerHandles);
-  return harden({
-    offerHandles: active,
-    payoutRulesArray: zoe.getPayoutRulesFor(active),
-  });
-};
-```
-
-## zcf.getSeatAssay()
-- Returns: `{Assay}`
-
-Get the Zoe `seatAssay`.
+Get the offer record.
 
 ```js
-const someSeatAssay = zoe.getSeatAssay()
-```
-
-## zcf.getEscrowReceiptAssay()
-- Returns: `{Assay}`
-
-Get the Zoe `escrowReceiptAssay`.
-
-```js
-const escrowReceiptAssay = zoe.getEscrowReceiptAssay();
+const { payoutRules } = zoe.getOffer(inviteHandle);
 ```

@@ -78,7 +78,7 @@ the swap contract behaves badly, we will both get a refund, and at
 best, we'll get what we each wanted.
 
 Let's look at the basic `publicSwap` contract ([full text of
-the real contract](https://github.com/Agoric/ERTP/blob/master/core/zoe/contracts/publicSwap.js)).
+the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/contracts/publicSwap.js)).
 
 Here's a high-level overview of what would happen:
 1. I make an instance of the swap contract.
@@ -104,19 +104,34 @@ Writing smart contracts that run on Zoe is easy, but let's look
 at a simple contract. This contract only does one thing, and
 it's pretty useless - it gives you back what you put in. Let's call it
 `automaticRefund`. Let's say the code of `automaticRefund` looks like this (see
-the [real contract code here](https://github.com/Agoric/ERTP/blob/master/core/zoe/contracts/automaticRefund.js)):
+the [real contract code here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/contracts/automaticRefund.js)):
 
 ```js
 export const makeContract = (zoe, terms) => {
-  return {
-    instance: {
-      makeOffer: async escrowReceipt => {
-        const { offerHandle } = await zoe.burnEscrowReceipt(escrowReceipt);
-        zoe.complete([offerHandle]);
+  let offersCount = 0;
+
+  const makeSeatInvite = () => {
+    const seat = harden({
+      makeOffer: () => {
+        offersCount += 1;
+        zoe.complete(harden([inviteHandle]));
+        return `The offer was accepted`;
       },
-    },
-    assays: terms.assays,
+    });
+    const { invite, inviteHandle } = zoe.makeInvite(seat, {
+      seatDesc: 'getRefund',
+    });
+    return invite;
   };
+
+  return harden({
+    invite: makeSeatInvite(),
+    publicAPI: {
+      getOffersCount: () => offersCount,
+      makeInvite: makeSeatInvite,
+    },
+    terms,
+  });
 };
 ```
 (In a real contract, whenever we create a new object or array, we recursively
