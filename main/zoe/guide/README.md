@@ -60,9 +60,7 @@ that is escrowed with Zoe, Zoe guarantees that the user will either
 get back why they said they wanted, or the user will get back what they
 originally offered.
 
-When a user escrows with Zoe, they get two things back immediately: an escrow
-receipt, and a JavaScript promise for a future payout. This escrow
-receipt is what the user can send to smart contracts, as proof that they
+When a user escrows with Zoe, they get two things back immediately: a `seat`, and a JavaScript promise for a future payout. This `seat` is what the user can send to smart contracts, as proof that they
 have escrowed the underlying digital assets with Zoe, without the
 smart contract ever having access to the underlying digital assets.
 Let's look a particular example to see how this works.
@@ -77,22 +75,21 @@ even if we don't trust one another. We are assured that at worst, if
 the swap contract behaves badly, we will both get a refund, and at
 best, we'll get what we each wanted.
 
-Let's look at the basic `publicSwap` contract ([full text of
-the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/contracts/publicSwap.js)).
+Let's look at the basic `atomicSwap` contract ([full text of
+the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what would happen:
-1. I make an instance of the swap contract.
-2. I escrow my three bricks with Zoe and get an escrow receipt and a
-   promise for a payout in return.
-3. I send my escrow receipt to the swap as the first offer.
+1. I make an instance of the swap contract, which creates an invite.
+2. I redeem my invite and escrow my three bricks with Zoe. In return, I get a seat and a promise for a payout in return.
+3. I use my seat to make the first offer in the swap.
 4. I tell you the swap's `instanceHandle`
 5. Using the `instanceHandle`, you look up the swap with Zoe.
-6. You verify that it's using the `publicSwap` contract
+6. You verify that it's using the `atomicSwap` contract
    code you expect, and can ask the swap about the offers made so far.
 7. You escrow your offer (offering five wool for three bricks) with
-   Zoe, getting an escrow receipt and a promise for a payout in
+   Zoe, getting a seat and a promise for a payout in
    return.
-8. You send your escrow receipt to the swap as a matching offer.
+8. You send your seat to the swap as a matching offer.
 9. The offer matches and both of our payout promises resolve to [ERTP
    payments](../../ertp/guide/mint.html#payments), mine to the five wool that I wanted, and yours to
    the three bricks that you wanted. Success!
@@ -104,16 +101,13 @@ Writing smart contracts that run on Zoe is easy, but let's look
 at a simple contract. This contract only does one thing, and
 it's pretty useless - it gives you back what you put in. Let's call it
 `automaticRefund`. Let's say the code of `automaticRefund` looks like this (see
-the [real contract code here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/contracts/automaticRefund.js)):
+the [real contract code here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
 
 ```js
 export const makeContract = (zoe, terms) => {
-  let offersCount = 0;
-
   const makeSeatInvite = () => {
     const seat = harden({
       makeOffer: () => {
-        offersCount += 1;
         zoe.complete(harden([inviteHandle]));
         return `The offer was accepted`;
       },
@@ -127,7 +121,6 @@ export const makeContract = (zoe, terms) => {
   return harden({
     invite: makeSeatInvite(),
     publicAPI: {
-      getOffersCount: () => offersCount,
       makeInvite: makeSeatInvite,
     },
     terms,
@@ -138,9 +131,7 @@ export const makeContract = (zoe, terms) => {
 deep-freeze it with `@agoric/harden`. You can [learn more about `harden` here](https://github.com/Agoric/harden).)
 
 `automaticRefund` has one method exposed to the user: `makeOffer`.
-`makeOffer` takes in a `escrowReceipt`, and after burning the
-`escrowReceipt` (and thus verifying it as well), it tells Zoe to
-complete the offer and send the user their payout.
+`makeOffer` tells Zoe to complete the offer, which gives the user their payout through Zoe.
 
 A smart contract on Zoe must export a function `makeContract` that
 takes two parameters: `zoe`, which is the contract-specific API for Zoe, and
@@ -160,80 +151,83 @@ canonical list of assays for the contract. If no change is necessary,
 ## Diving Deeper
 
 To get a better idea of the usual control flow, let's look at a more
-complex smart contract, such as the `publicSwap` contract that we
+complex smart contract, such as the `atomicSwap` contract that we
 mentioned earlier. Someone needs to make the first offer, so let's
 make sure our user-facing API has a method for that:
 
 ```js
-const makeFirstOffer = async escrowReceipt => {
-  const {
-    offerHandle,
-    offerRules: { payoutRules },
-  } = await zoe.burnEscrowReceipt(escrowReceipt);
-
-  const ruleKinds = ['offerExactly', 'wantExactly']
-  if (!hasValidPayoutRules(ruleKinds, terms.assays, payoutRules))
-    return rejectOffer(zoe, offerHandle);
-  }
-
-  // The offer is valid, so save information about the first offer
-  firstOfferHandle = offerHandle;
-  firstPayoutRules = offerMadeDesc;
-  return defaultAcceptanceMsg;
+const makeFirstOfferInvite = () => {
+  const seat = harden({
+    makeFirstOffer: () => {
+      if (
+        !hasValidPayoutRules(['offerAtMost', 'wantAtLeast'], inviteHandle)
+      ) {
+        throw rejectOffer(inviteHandle);
+      }
+      return makeMatchingInvite(inviteHandle);
+    },
+  });
+  const { invite, inviteHandle } = zoe.makeInvite(seat, {
+    seatDesc: 'firstOffer',
+  });
+  return invite;
 };
 ```
 
 This is pretty similar in format to the `automaticRefund`, but there
 are a few changes. First, in this contract, we actually check what was
 escrowed with Zoe to see if it's the kind of offer that we want to
-accept. In this case, we only want to accept offers that have an
+accept. In this case, we only want to accept offers that have a
 `payoutRules` of the
 form:
 ```js
-[{ kind: 'offerExactly', units: x}, { kind: 'wantExactly', units: y}]
+[{ kind: 'offerAtMost', units: x}, { kind: 'wantAtLeast', units: y}]
 ```
 where `x` and `y` are units with the correct assays.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
-offer. So, if we get a valid first offer, the only thing we can do is
-save the offer information.
-
-Lastly, in this contract, we return a message saying that we accepted
-the valid offer.
+offer. So, if we get a valid first offer, we create an invite which can be shared with other parties to create a matching offer.
 
 So, how does the matching happen? We can look at another user-facing
-method, `matchOffer`:
+method, `makeMatchingInvite`, and a helper function, `swap`:
 
 ```js
-const matchOffer = async escrowReceipt => {
-  const {
-    offerHandle: matchingOfferHandle,
-    offerRules: { payoutRules },
-  } = await zoe.burnEscrowReceipt(escrowReceipt);
-
-  if (!firstOfferHandle) {
-    return rejectOffer(zoe, matchingOfferHandle, `no offer to match`);
-  }
-
-  if (!isExactlyMatchingPayoutRules(zoe, firstPayoutRules, offerMadeDesc)) {
-    return rejectOffer(zoe, matchingOfferHandle);
-  }
-  const [firstOfferExtents, matchingOfferExtents] = zoe.getExtentsFor(
-    harden([firstOfferHandle, matchingOfferHandle]),
-  );
-  // reallocate by switching the extents of the firstOffer and matchingOffer
-  zoe.reallocate(
-    harden([firstOfferHandle, matchingOfferHandle]),
-    harden([matchingOfferExtents, firstOfferExtents]),
-  );
-  zoe.complete(harden([firstOfferHandle, matchingOfferHandle]));
-  return defaultAcceptanceMsg;
-};
+const makeMatchingInvite = firstInviteHandle => {
+    const seat = harden({
+      matchOffer: () => swap(firstInviteHandle, inviteHandle),
+    });
+    const { invite, inviteHandle } = zoe.makeInvite(seat, {
+      offerMadeRules: zoe.getOffer(firstInviteHandle).payoutRules,
+      seatDesc: 'matchOffer',
+    });
+    return invite;
+  };
 ```
 
-In this method, we do a couple more things. First, we want to check if
-there has already been a first offer. If not, we reject the offer at
+```js
+swap: (
+  keepHandle,
+  tryHandle,
+  keepHandleInactiveMsg = 'prior offer is unavailable',
+) => {
+  if (!zoe.isOfferActive(keepHandle)) {
+    throw helpers.rejectOffer(tryHandle, keepHandleInactiveMsg);
+  }
+  if (!helpers.canTradeWith(keepHandle, tryHandle)) {
+    throw helpers.rejectOffer(tryHandle);
+  }
+  const keepUnits = zoe.getOffer(keepHandle).units;
+  const tryUnits = zoe.getOffer(tryHandle).units;
+  // reallocate by switching the units
+  const handles = harden([keepHandle, tryHandle]);
+  zoe.reallocate(handles, harden([tryUnits, keepUnits]));
+  zoe.complete(handles);
+  return defaultAcceptanceMsg;
+},
+```
+
+In the `makeMatchingInvite` method we call `swap`, which handles a lot of the logic. First, it checks if the offer is still active. If not, we reject the offer at
 hand. Second, if the offer at hand isn't a match for the first offer,
 we want to reject it for that reason as well.
 
@@ -249,8 +243,7 @@ the "3" is the unit.
 
 Because this is a swap, we want to literally swap the units for the
 first offer and the matching offer. That is, the user who put in the
-first offer will get what the second user put in and vice versa. Our
-contract makes a call to `zoe.reallocate` in order to tell Zoe about
+first offer will get what the second user put in and vice versa. `swap` makes a call to `zoe.reallocate` in order to tell Zoe about
 this reallocation for the two offers.
 
 Zoe checks two invariants before changing its bookkeeping. First, Zoe
