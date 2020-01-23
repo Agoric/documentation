@@ -60,8 +60,7 @@ that is escrowed with Zoe, Zoe guarantees that the user will either
 get back why they said they wanted, or the user will get back what they
 originally offered.
 
-When a user escrows with Zoe, they get two things back immediately: a `seat`, and a JavaScript promise for a future payout. This `seat` is what the user can send to smart contracts, as proof that they
-have escrowed the underlying digital assets with Zoe, without the
+When a user escrows with Zoe, they get two things back immediately: a `seat`, and a JavaScript promise for a future payout. This `seat` has methods that the user can call to take action in the smart contract on Zoe, without the
 smart contract ever having access to the underlying digital assets.
 Let's look a particular example to see how this works.
 
