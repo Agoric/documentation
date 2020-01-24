@@ -11,9 +11,10 @@ Based on UniSwap.
 
 ## Initialization
 
+Create an instance of an autoswap invite:
+
 ```js
-const tokenAssays = [moolaAssay, simoleanAssay];
-const { instance: autoswap } = zoe.makeInstance(
+const aliceInvite = zoe.makeInstance(
   installationHandle,
   { assays },
 );
@@ -21,15 +22,21 @@ const { instance: autoswap } = zoe.makeInstance(
 
 ## Adding liquidity to the pool
 
-The moola<->simolean autoswap that we just created has a number of
-methods in the API available to the user:
-1. addLiquidity
-2. removeLiquidity
-3. getPrice
-4. makeOffer
+The moola<->simolean autoswap invite that we just created has a number of
+methods available:
 
-We can call `addLiquidity` with a seat from Zoe that proves
-that we've escrowed moola and simoleans appropriately. For instance,
+#### Invite API:
+1. `addLiquidity`
+2. `removeLiquidity`
+3. `swap`
+
+#### Public API:
+1. `getPrice`
+2. `getLiquidityAssay`
+3. `getPoolUnits`
+4. `makeInvite`
+
+We can contribute to the autoswap liquidity pool by calling `addLiquidity` on a seat. For instance,
 let's say that Alice decides to add liquidity. She creates an offer
 rule with the associated payments of moola and simoleans and
 escrows them by redeeming her invite:

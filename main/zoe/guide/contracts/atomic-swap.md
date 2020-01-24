@@ -45,11 +45,6 @@ const aliceOfferRules = harden(
   },
 ]);
 const alicePayments = [aliceMoolaPayment, undefined];
-
-const {
-  seat,
-  payout
-} = await zoe.redeem(newInvite, aliceOfferRules, alicePayments);
 ```
 
 In order for Alice to escrow with Zoe she needs to redeem her invite. Once Alice redeems her invite she will receive a `seat` and a promise that resolves to her payout.
@@ -68,8 +63,7 @@ Alice then makes the first offer in the swap:
 const newInviteP = aliceSeat.makeFirstOffer();
 ```
 
-She then spreads the invite widely. Bob hears about Alice's
-contract and he to look up the invite to see if it matches Alice's claims.
+She then sends the invite to Bob and he looks up the invite to see if it matches Alice's claims.
 
 ```js
 const inviteAssay = zoe.getInviteAssay();
@@ -83,10 +77,9 @@ const {
 
 
 // Bob does checks
-t.equals(bobInstallationId, installationHandle);
-t.deepEquals(bobTerms.assays, assays);
-
-t.deepEquals(bobInviteExtent.offerMadeRules, aliceOfferRules.payoutRules);
+insist(bobInstallationId === installationHandle)`wrong installation`;
+insist(bobTerms.assays[0] === inviteAssay)`wrong assays`;
+insist(bobInviteExtent.offerMadeRules === aliceOfferRules.payoutRules)`wrong payoutRules`;
 ```
 
 Bob decides to be the counter-party. He also escrows his payments and redeems his invite to

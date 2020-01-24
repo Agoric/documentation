@@ -100,7 +100,7 @@ module.exports = {
           collapsable: false,
           sideBarDepth: 3,
           children: [
-            '/zoe/guide/contracts/auto-swap',
+            '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/public-auction',
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/covered-call',
