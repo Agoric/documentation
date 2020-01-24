@@ -5,7 +5,7 @@ matching offer, an offer is always matched against the existing
 liquidity pool. The AutoSwap contract checks whether your offer will
 keep the [constant product
 invariant](https://github.com/runtimeverification/verified-smart-contracts/blob/uniswap/uniswap/x-y-k.pdf)
-before accepting. 
+before accepting.
 
 Based on UniSwap.
 
@@ -65,7 +65,7 @@ const {
 She is able to ensure that she will get a minimum number of liquidity
 tokens back by specifying a rule for the liquidity token slot with
 `wantAtLeast`. In this case, Alice is stating that she wants at least
-10 liquidity tokens back. 
+10 liquidity tokens back.
 
 ## Making a swap offer
 
