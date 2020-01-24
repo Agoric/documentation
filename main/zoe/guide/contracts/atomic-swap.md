@@ -10,11 +10,9 @@ behave opportunistically.
 
 ## Atomic Swap
 
-In the `atomicSwap` contract, anyone who has access to the swap instance can
-make an offer, with no invites necessary.
+In the `atomicSwap` contract, anyone can securely swap with a counterparty by escrowing digital assets with Zoe and sending an invite to the swap to the counterparty.
 
-Let's say that Alice wants to create a swap for which anyone can be the
-counter-party. She knows that the code for the swap has already
+Let's say that Alice wants to swap with Bob as the counterparty.  She knows that the code for the swap has already
 been installed, so she can create a swap instance from the swap
 installation (`handle` is the unique, unforgeable identifier):
 
@@ -47,10 +45,11 @@ const aliceOfferRules = harden(
   },
 ]);
 const alicePayments = [aliceMoolaPayment, undefined];
+
 const {
-  escrowReceipt,
-  payout,
-} = await zoe.escrow(aliceOfferRules, alicePayments);
+  seat,
+  payout
+} = await zoe.redeem(newInvite, aliceOfferRules, alicePayments);
 ```
 
 In order for Alice to escrow with Zoe she needs to redeem her invite. Once Alice redeems her invite she will receive a `seat` and a promise that resolves to her payout.
