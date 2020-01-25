@@ -117,7 +117,7 @@ const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
 const bobOfferResult = await bobSeat.matchOffer();
 ```
 
-Since multiple parties may want to participate in the swap, let's say that Carol and Dave also decide to bid in the same way
+Since multiple parties may want to participate in the auction, let's say that Carol and Dave also decide to bid in the same way
 as Bob, Carol bidding 7 simoleans, and Dave bidding 5 simoleans.
 
 Bob wins since he bid 11 simoleans, but pays the second-highest price, which is Carol's bid of 7
