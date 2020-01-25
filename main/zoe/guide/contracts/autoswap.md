@@ -11,9 +11,10 @@ Based on UniSwap.
 
 ## Initialization
 
+Create an instance of an autoswap invite:
+
 ```js
-const tokenAssays = [moolaAssay, simoleanAssay];
-const { instance: autoswap } = zoe.makeInstance(
+const aliceInvite = zoe.makeInstance(
   installationHandle,
   { assays },
 );
@@ -21,28 +22,37 @@ const { instance: autoswap } = zoe.makeInstance(
 
 ## Adding liquidity to the pool
 
-The moola<->simolean autoswap that we just created has a number of
-methods in the API available to the user:
-1. addLiquidity
-2. removeLiquidity
-3. getPrice
-4. makeOffer
+The moola<->simolean autoswap invite that we just created has a number of
+methods available:
 
-We can call `addLiquidity` with an escrow receipt from Zoe that proves
-that we've escrowed moola and simoleans appropriately. For instance,
+#### Invite API:
+1. `addLiquidity`
+2. `removeLiquidity`
+3. `swap`
+
+#### Public API:
+1. `getPrice`
+2. `getLiquidityAssay`
+3. `getPoolUnits`
+4. `makeInvite`
+
+We can contribute to the autoswap liquidity pool by calling `addLiquidity` on a seat. For instance,
 let's say that Alice decides to add liquidity. She creates an offer
 rule with the associated payments of moola and simoleans and
-escrows them:
+escrows them by redeeming her invite:
 
 ```js
+// Alice adds liquidity
+// 10 moola = 5 simoleans at the time of the liquidity adding
+// aka 2 moola = 1 simolean
 const aliceOfferRules = harden({
   payoutRules: [
     {
-      kind: 'offerExactly',
+      kind: 'offerAtMost',
       units: moolaAssay.makeUnits(10),
     },
     {
-      kind: 'offerExactly',
+      kind: 'offerAtMost',
       units: simoleanAssay.makeUnits(5),
     },
     {
@@ -57,9 +67,9 @@ const aliceOfferRules = harden({
 const alicePayments = [aliceMoolaPayment, aliceSimoleanPayment, undefined];
 
 const {
-  escrowReceipt,
-  payout,
-} = await zoe.escrow(aliceOfferRules, alicePayments);
+  seat: aliceSeat,
+  payout: aliceAddLiquidityPayoutP,
+} = await zoe.redeem(aliceInvite, aliceOfferRules, alicePayments);
 
 ```
 She is able to ensure that she will get a minimum number of liquidity
@@ -69,7 +79,7 @@ tokens back by specifying a rule for the liquidity token slot with
 
 ## Making a swap offer
 
-Let's say that Bob wants to se the moola<->simolean autoswap
+Let's say that Bob wants to use the moola<->simolean autoswap
 to exchange 2 moola. First he will check the price:
 
 ```js
@@ -89,7 +99,7 @@ get a refund:
  const bobMoolaForSimOfferRules = harden({
    payoutRules: [
     {
-      kind: 'offerExactly',
+      kind: 'offerAtMost',
       units: moolaAssay.makeUnits(2),
     },
     {
@@ -106,25 +116,22 @@ get a refund:
   },
 );
 ```
-He escrows 2 moola with Zoe and
-receives an escrow receipt.
+He escrows 2 moola with Zoe and redeems his invite:
 
 ```js
 const bobMoolaForSimPayments = [bobMoolaPayment, undefined, undefined];
 
-const {
-  escrowReceipt,
-  payout,
-} = await zoe.escrow(
+const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
+  bobExclInvite,
   bobMoolaForSimOfferRules,
   bobMoolaForSimPayments,
 );
 ```
 
-Then Bob uses this escrow receipt to make an offer.
+Then Bob uses this seat to make an offer.
 
 ```js
-autoswap.makeOffer(escrowReceipt);
+const offerOk = bobSeat.swap();
 ```
 
 Now Bob can get his payout:
@@ -140,18 +147,20 @@ she can do that by making new offerRules and escrowing a payment of
 liquidity tokens:
 
 ```js
+const aliceRemoveLiquidityInvite = publicAPI.makeInvite();
+
 const aliceRemoveLiquidityOfferRules = harden({
   payoutRules: [
     {
       kind: 'wantAtLeast',
-      units: allAssays[0].makeUnits(0),
+      units: moolaAssay.makeUnits(0),
     },
     {
       kind: 'wantAtLeast',
-      units: allAssays[1].makeUnits(0),
+      units: simoleanAssay.makeUnits(0),
     },
     {
-      kind: 'offerExactly',
+      kind: 'offerAtMost',
       units: allAssays[2].makeUnits(10),
     },
   ],
@@ -161,14 +170,15 @@ const aliceRemoveLiquidityOfferRules = harden({
 });
 
 const {
-  escrowReceipt,
-  payout,
-} = await zoe.escrow(
+  seat: aliceRemoveLiquiditySeat,
+  payout: aliceRemoveLiquidityPayoutP,
+} = await zoe.redeem(
+  aliceRemoveLiquidityInvite,
   aliceRemoveLiquidityOfferRules,
-  harden([undefined, undefined, liquidityPayment]),
+  harden([undefined, undefined, liquidityPayments[2]]),
 );
 
-aliceAutoswap.removeLiquidity(
-  aliceRemoveLiquidityEscrowReceipt,
-);
+const removeLiquidityResult = aliceRemoveLiquiditySeat.removeLiquidity();
+
+const alicePayoutPayments = await aliceRemoveLiquidityPayoutP;
 ```

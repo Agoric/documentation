@@ -100,6 +100,7 @@ Writing smart contracts that run on Zoe is easy, but let's look
 at a simple contract. This contract only does one thing, and
 it's pretty useless - it gives you back what you put in. Let's call it
 `automaticRefund`. Let's say the code of `automaticRefund` looks like this (see
+
 the [real contract code here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
 
 ```js
