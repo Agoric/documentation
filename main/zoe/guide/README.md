@@ -78,20 +78,19 @@ Let's look at the basic `atomicSwap` contract ([full text of
 the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what would happen:
-1. I make an instance of the swap contract, which creates an invite.
-2. I redeem my invite and escrow my three bricks with Zoe. In return, I get a seat and a promise for a payout in return.
-3. I use my seat to make the first offer in the swap.
-4. I tell you the swap's `instanceHandle`
-5. Using the `instanceHandle`, you look up the swap with Zoe.
-6. You verify that it's using the `atomicSwap` contract
-   code you expect, and can ask the swap about the offers made so far.
-7. You escrow your offer (offering five wool for three bricks) with
-   Zoe, getting a seat and a promise for a payout in
-   return.
-8. You send your seat to the swap as a matching offer.
-9. The offer matches and both of our payout promises resolve to [ERTP
-   payments](../../ertp/guide/mint.html#payments), mine to the five wool that I wanted, and yours to
-   the three bricks that you wanted. Success!
+1. I make an instance of the swap contract.
+2. I escrow my three bricks with Zoe. In return, I get a seat at the contract and a promise for a payout.
+3. I use my seat to make the first offer in the swap, and I get back
+   an invite to send to you to be the counter-party.
+4. You inspect the invite and verify that it was created using the
+   `atomicSwap` contract code.
+5. You use your invite to escrow your offer (offering five wool for
+   three bricks) with Zoe, getting a seat and a promise for a payout
+   in return.
+6. You use your seat to make a matching offer.
+7. The offer matches and both of our payout promises resolve, mine to
+   the five wool that I wanted, and yours to the three bricks that you
+   wanted. Success!
 
 
 ## How to write smart contracts
@@ -99,9 +98,9 @@ Here's a high-level overview of what would happen:
 Writing smart contracts that run on Zoe is easy, but let's look
 at a simple contract. This contract only does one thing, and
 it's pretty useless - it gives you back what you put in. Let's call it
-`automaticRefund`. Let's say the code of `automaticRefund` looks like this (see
-
-the [real contract code here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
+`automaticRefund`. Let's say the code of `automaticRefund` looks like
+this (see the [real contract code
+here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
 
 ```js
 export const makeContract = (zoe, terms) => {
@@ -142,11 +141,11 @@ bricks-for-wool example above, the contract terms would include the
 brick assay and the wool assay. `Terms` would also include any other
 contract-specific parameters that the author specified.
 
-The smart contract must return an object with two properties:
-`instance`, which is the user-facing API of the
-contract, and `assays`, which is what the contract has decided is the
-canonical list of assays for the contract. If no change is necessary,
-`assays` may just be the assays in the terms.
+The smart contract must return an object with three properties:
+`invite`, an invite to join the contract which will be given to the
+user who instantiated the contract, `publicAPI`, the public API to the
+contract (no invite necessary to call these methods!) and `terms`, the
+user-provided terms of the contract.
 
 ## Diving Deeper
 
@@ -237,9 +236,8 @@ exciting part, the reallocation.
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
 escrowed for each offer. That information is in the form of a
-`unit`, which can be thought of as the answer to `how much` or `how
-many` ([see more about ERTP fundamentals here](../../ertp/guide/)). In "3 bricks"
-the "3" is the unit.
+`unit`, which is a labeled extent. For instance, in "3 bricks", "3" is
+the extent, and "bricks" is the label. ([See more about ERTP fundamentals here](../../ertp/guide/)).
 
 Because this is a swap, we want to literally swap the units for the
 first offer and the matching offer. That is, the user who put in the

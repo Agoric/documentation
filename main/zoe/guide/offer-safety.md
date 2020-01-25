@@ -6,16 +6,16 @@ get back what they wanted or get back a full refund.
 In order for Zoe to be able to enforce offer safety, the user must
 provide Zoe a description of what they want and a description of what
 they are offering. These are called `payoutRules` and along with
-`exitRule` (which is used by Zoe to enforce exit safety), they make up
+`exitRule` (which is used by Zoe to enforce payout liveness), they make up
 the rules of the offer.
 
 For example, if I want to buy an event ticket for $100, I am offering
-exactly $100, and I want exactly one event ticket. My `payoutRules`
+$100, and I want one event ticket. My `payoutRules`
 would look like:
 
 ```js
 [
-  { kind: 'offerAtLeast', units: dollars100 },
+  { kind: 'offerAtMost', units: dollars100 },
   { kind: 'wantAtLeast', units: ticket1 }
 ]
 ```

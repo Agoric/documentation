@@ -61,7 +61,18 @@ const {
 
 To redeem an invite, the user must provide a list of payments as well as their rules for the offer.
 
-The rules for the offer are in two parts: `payoutRules` are used by Zoe to enforce offer safety, and `exitRule` is used by Zoe to enforce exit safety. `payoutRules` is a list of objects, each with a `kind` property (such as 'offerAtMost') and a units property. The objects in the `payoutRules` must be in the same order as the assays associated with a smart contract. That is, the units in index 0 of `payoutRules` should be a units for the assay in index 0 of the assays array.`payments` is an array of the actual payments to be escrowed, following the rules in the payoutRules. If the payoutRules kind is 'offerAtMost', then a payment matching the units is expected. If the payoutRules kind is 'wantAtLeast' then the payment will be ignored and should be `undefined`.
+The rules for the offer are in two parts: `payoutRules` are used by
+Zoe to enforce offer safety, and `exitRule` is used by Zoe to enforce
+payout liveness. `payoutRules` is a list of objects, each with a `kind`
+property (such as 'offerAtMost') and a units property. The objects in
+the `payoutRules` must be in the same order as the assays associated
+with a smart contract. That is, the units in index 0 of `payoutRules`
+should be a units for the assay in index 0 of the assays
+array.`payments` is an array of the actual payments to be escrowed,
+following the rules in the payoutRules. If the payoutRules kind is
+'offerAtMost', then a payment matching the units is expected. If the
+payoutRules kind is 'wantAtLeast' then the payment will be ignored and
+should be `undefined`.
 
 ```js
 // A user redeems their invite and escrows with Zoe
