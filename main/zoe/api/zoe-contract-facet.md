@@ -12,7 +12,7 @@ import harden from '@agoric/harden';
 // reallocate by switching the units of the firstOffer and matchingOffer
 zoe.reallocate(
   harden([firstOfferHandle, matchingOfferHandle]),
-  harden([matchingOfferUnit, firstOfferUnit]),
+  harden([matchingOfferUnits, firstOfferUnits]),
 );
 ```
 
@@ -27,26 +27,18 @@ import harden from '@agoric/harden';
 zoe.complete(harden([someOfferHandle]));
 ```
 
-## zcf.escrowEmptyOffer()
-- Returns: `{OfferHandle}`
+## zcf.addAssays(assays)
+- `assays` `{Array <Assays>}`
+- Returns: `{Promise}`
 
-Create an empty offer for recordkeeping purposes (Autoswap uses this to create the liquidity pool).
+Inform Zoe about new assays. Returns a promise for acknowledging when the assays are added and ready.
 
-```js
-let poolOfferHandle = zoe.escrowEmptyOffer();
-```
+## zcf.getZoeService()
+- Returns: `{ZoeService}`
 
-## zcf.escrowOffer(offerRules, offerPayments)
-- `offerRules` `{OfferRules}`
-- `offerPayments` `{Array <Payment>}`
-- Returns: `{OfferHandle}`
-
-Escrow an offer created by the smart contract. Autoswap uses this to mint liquidity tokens and add them to the rights managed by Zoe.
+Expose the user-facing Zoe Service API to the contracts as well.
 
 ```js
-const liquidityOfferHandle = await zoe.escrowOffer(
-  harden([undefined, undefined, newPayment]),
-);
 ```
 
 ## zcf.makeInvite(seat, customProperties)
