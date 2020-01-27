@@ -1,5 +1,7 @@
 # Zoe
 
+<Zoe-Version/>
+
 The Zoe API is divided into the following sections:
 
 - [Zoe](./zoe.md)
