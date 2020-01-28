@@ -22,64 +22,50 @@ ability to run contracts on chain to the Agoric CLI, but you can find
 
 ## Quick Overview
 
-To create and start a project, run:
+First, see the [prerequisites](#Prerequisites) below for how to set up your Agoric CLI.
+
+Then, to create and start a project, run:
 
 ```sh
-npx agoric init demo
+agoric init demo
 cd demo
-npx agoric install
-npx agoric start
+agoric install
+agoric start
 ```
 
 In another shell, from the same project directory:
 
 ```sh
 cd demo
-npx agoric deploy ./contract/deploy.js ./api/deploy.js
+agoric deploy ./contract/deploy.js ./api/deploy.js
 cd ui
-npm install
-npm run start
+yarn install
+yarn start
 ```
-
-_([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher)_
 
 Then open:
 - [http://localhost:3000](http://localhost:3000) to see our demo DApp.<br>
 - [http://localhost:8000/wallet](http://localhost:8000/wallet) to see the Simple Wallet.<br>
-- [http://localhost:8000/](http://localhost:8000/) to see your the REPL.<br>
+- [http://localhost:8000/](http://localhost:8000/) to see your REPL (Read-Eval-Print Loop).<br>
 
 ## Prerequisites
 
-### Vagrant
+First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://legacy.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
 
-To run a standardized Linux distribution with all the required development tools, you can use [Vagrant](https://www.vagrantup.com/docs/):
-
-```sh
-vagrant up --provider=docker
-# or
-vagrant up --provider=virtualbox
-# then
-vagrant ssh
-```
-
-The Vagrant setup has synchronized filesystem access with the workspace directory on your host system, so you can use your favourite IDE to modify the files, and just run Linux commands on the SSH connection.
-
-### Developing on the current OS
-
-If you don't use Vagrant, you can develop on your own local operating system.
-
-First, install [Node.js](http://nodejs.org/), [npm](https://npmjs.com/), and [go](https://golang.org/). You’ll need to have **Node 10.16.0 or later**, and **Go 1.12 or later**.
-
-You can install the Agoric CLI globally:
+For now, you will need to set up the Agoric CLI as part of a checked-out Agoric SDK.  Run:
 
 ```sh
-npm install -g agoric
-```
-
-or invoke it on demand without installing it using via `npx`:
-
-```sh
-npx agoric [...options]
+# Get the latest Agoric SDK in the agoric-sdk directory.
+git clone https://github.com/Agoric/agoric-sdk
+# Change to the agoric-sdk directory.
+cd agoric-sdk
+# Install NPM dependencies.
+yarn install
+# Build sources that need compiling.
+yarn build
+# You can install the agoric CLI anywhere in your $PATH,
+# here is how to do it as /usr/local/bin/agoric
+yarn link-cli /usr/local/bin/agoric
 ```
 
 ## Your First Agoric Dapp
@@ -101,13 +87,11 @@ cd demo
 the files you might need.
 
 ### 2. Installing the dependencies
-Next, let's install the necessary JavaScript packages and Go
-dependencies. This step might take a while. We use Go on our testnet,
-so this step is preparing for the near future in which we use this
-tutorial to run on our testnet.
+Next, let's install the necessary JavaScript packages. This step might
+take a while.
 
 ```sh
-# Install Javascript/Go dependencies.
+# Install Javascript dependencies.
 agoric install
 ```
 
@@ -134,8 +118,8 @@ Now let's start up the Autoswap frontend, our demo DApp:
 
 ```sh
 cd ui
-npm install
-npm run start  
+yarn install
+yarn start  
 ```
 
 This launches the React development server and opens a tab in your default browser, and will allow you to
