@@ -1,5 +1,7 @@
 # Zoe: Offer-Safety Enforcement
 
+<Zoe-Version/>
+
 Note: Zoe is currently at the pre-alpha stage. It has not yet been
 formally tested or hardened.
 

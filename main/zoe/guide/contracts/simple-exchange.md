@@ -1,5 +1,7 @@
 # Simple Exchange
 
+<Zoe-Version/>
+
 The "simple exchange" is a very basic, un-optimized exchange. The
 simple exchange has an order book for one asset, priced in a second
 asset. The order book is naively kept as an array that is iterated over

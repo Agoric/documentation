@@ -1,5 +1,7 @@
 # Second-price auction
 
+<Zoe-Version/>
+
 In a second-price auction, the winner is the participant with the
 highest bid, but the winner only pays the price corresponding to the
 second highest bid. Second-price auctions must have sealed (i.e.

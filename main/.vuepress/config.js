@@ -136,7 +136,11 @@ module.exports = {
           ]
         }
       ]
-    }
+    },
+
+    zoeVersion: 'v0.2.0',
+    zoeDocsUpdated: '1/28/2020'
+
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the
