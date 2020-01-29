@@ -1,5 +1,7 @@
 # Zoe
 
+<Zoe-Version/>
+
 Zoe is a long-lived and well-trusted contract that enforces offer safety for the contracts that use it. Zoe has a single `inviteAssay` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `inviteAssay` and thus validate any `invite` they receive from someone else.
 
 ## zoe.getInviteAssay()

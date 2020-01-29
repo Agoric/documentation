@@ -1,5 +1,7 @@
 # The Structure of Offer Rules
 
+<Zoe-Version/>
+
 ## Making an offer
 
 In order to make an offer, you must provide two things: the payments

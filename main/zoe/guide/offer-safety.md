@@ -1,5 +1,7 @@
 # Offer Safety
 
+<Zoe-Version/>
+
 Definition: *Offer safety* means that the user is guaranteed to either
 get back what they wanted or get back a full refund.
 
