@@ -35,7 +35,7 @@ module.exports = [
       {
         text: 'Github',
         ariaLabel: 'ERTP Github Link',
-        link: 'https://github.com/Agoric/ERTP'
+        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP'
       }
     ]
   },
@@ -62,7 +62,7 @@ module.exports = [
       {
         text: 'Github',
         ariaLabel: 'Zoe Github Link',
-        link: 'https://github.com/Agoric/Zoe'
+        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe'
       }
     ],
   },
