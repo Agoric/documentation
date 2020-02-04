@@ -12,7 +12,7 @@ exposing the same interface while allowing custom behavior.
 Return this unitOps's label.
 
 ```js
-import { makeMint } from '../../core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const localMint = makeMint(description, makeMintKeeper, makeUnitOps);
 const localAssay = localMint.getAssay();
@@ -104,7 +104,7 @@ exampleUnitOps.isEmpty(notEmptyUnits);
 Returns true if the `leftUnits` contains the `rightUnits`.
 
 ```js
-import { makeMint } from '../../core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const galleryPixelMint = makeMint('pixels', makePixelConfig);
 const galleryPixelAssay = galleryPixelMint.getAssay();
@@ -137,7 +137,7 @@ galleryPixelUnitOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, 
 Returns true if the leftUnits equals the rightUnits. We assume that if includes is true in both directions, equals is also true.
 
 ```js
-import { makeMint } from '../../core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const galleryPixelMint = makeMint('pixels', makePixelConfig);
 const galleryPixelAssay = galleryPixelMint.getAssay();
@@ -163,7 +163,7 @@ galleryPixelUnitOps.equals([startPixel], []);
 Returns a new units that includes both leftUnits and rightUnits. For fungible units this means adding the extents. For other kinds of units, it usually means including both.
 
 ```js
-import { makeMint } from '../../core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const galleryPixelMint = makeMint('pixels', makePixelConfig);
 const galleryPixelAssay = galleryPixelMint.getAssay();
@@ -200,7 +200,7 @@ galleryPixelUnitOps.with([startPixel, secondPixel], [startPixel]);
 Returns a new Units that includes the portion of leftUnits not included in rightUnits. If leftUnits doesn't include rightAmout, throw an error.
 
 ```js
-import { makeMint } from '../../core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const galleryPixelMint = makeMint('pixels', makePixelConfig);
 const galleryPixelAssay = galleryPixelMint.getAssay();

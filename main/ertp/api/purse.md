@@ -34,7 +34,7 @@ const simoleanAssay = await E(aliceSimoleanPurse).getAssay();
 Get the `units` contained in this purse, confirmed by the assay.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -52,7 +52,7 @@ purse.getBalance();
 Deposit all the contents of `src` Payment into this purse, returning the `units`. If the `units` does not equal the balance of `src` Payment, throw error.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -74,7 +74,7 @@ await targetPurse.depositExactly(7, payment);
 Deposit all the contents of `srcPayment` into this purse, returning the `units`.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -96,7 +96,7 @@ targetPurse.getBalance();
 Withdraw `units` from this purse into a new Payment.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -115,7 +115,7 @@ payment.getBalance();
 Withdraw entire content of this purse into a new Payment.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();

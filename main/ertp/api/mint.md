@@ -19,7 +19,7 @@ of the mappings from purses/payments to `units`) and to make the `unitOps`
 `unitOps` must be compatible with the type of asset managed by the mint.
 
 ```js
-import { makeMint } from '@agoric/ertp/core/mint';
+import { makeMint } from '@agoric/ertp';
 
 // Make a mint for happyTownBucks with default basic fungible configuration
 const happyTownBucks = makeMint('happyTownBucks');
@@ -37,7 +37,7 @@ Since newly minted units need to be held somewhere, this method actually creates
 Units must be held in either a Payment or a Purse.
 
 ```js
-import { makeMint } from '@agoric/ertp/core/mint';
+import { makeMint } from '@agoric/ertp';
 const happyTownBucks = makeMint('happyTownBucks');
 
 // Create a new purse with 100 happyTownBucks
@@ -54,7 +54,7 @@ const yourHappyTownBucks = happyTownBucks.mint(200, 'yourHappyTownBucks');
 Get the Assay for this mint.
 
 ```js
-import { makeMint } from '@agoric/ertp/core/mint';
+import { makeMint } from '@agoric/ertp';
 
 // Make a mint
 const happyTownBucks = makeMint('happyTownBucks');

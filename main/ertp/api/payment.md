@@ -27,7 +27,7 @@ const paymentAssay = anyPayment.getAssay();
 Get the units contained in this payment, confirmed by the assay.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();

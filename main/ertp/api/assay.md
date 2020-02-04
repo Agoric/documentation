@@ -8,7 +8,7 @@ An Assay represents the identity of an issuer. Holding an Assay provides the abi
 Get the label for this Assay. Labels can be used to manually construct `units`.
 
 ```js
-import { makeMint } from '@agoric/ertp/core/mint';
+import { makeMint } from '@agoric/ertp';
 import config from 'customConfig.js';
 
 // Initial mint
@@ -34,10 +34,9 @@ const galleryPixelUnitOps = galleryPixelAssay.getUnitOps();
 After getting the `UnitOps` of an `Assay`, `UnitOps` methods can be called to verify properties of the `units`. See the [UnitOps API](/api/unitOps) for all available methods.
 
 ```js
-function insist(asset, units) {
-  !assay.getUnitOps().isEmpty(units);
-  // no use rights present in units ${units}`;
-}
+// no use rights present in units ${units}`
+assay.getUnitOps().isEmpty(units);
+
 
 function insistAssetHasUnits(assay, asset, units) {
   insist(assay.getUnitOps().includes(asset.getBalance(), units));
@@ -78,7 +77,7 @@ const aliceSimoleanPurse = simoleanMint.mint(simoleanAssay.makeUnits(0));
 Make an empty purse associated with this kind of right.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -98,7 +97,7 @@ targetPurse.getBalance();
 Combine multiple payments into one payment.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -149,7 +148,7 @@ const aliceMoolaPayments = assays[0].split(aliceMoolaPayment, [
 Make a new `Payment` that has exclusive rights to all the contents of `src`. If `units` does not equal the balance of the `src` payment, throws error.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -171,7 +170,7 @@ const wrongNewPayment = await assay.claimExactly(8, wrongPayment);
 Make a new `Payment` that has exclusive rights to all the contents of `src`.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -192,7 +191,7 @@ newPayment.getBalance();
 Burn all of the rights from `src`. If `units` does not equal the balance of the `src` payment, throw error.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
@@ -214,7 +213,7 @@ await assay.burnExactly(10, payment);
 Burn all of the rights from `src`.
 
 ```js
-import { makeMint } from './core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const myNewMint = makeMint('fungible');
 const assay = myNewMint.getAssay();
