@@ -51,7 +51,7 @@ module.exports = {
             '/ertp/guide/',
             '/ertp/guide/getting-started',
             '/ertp/guide/mint',
-            '/ertp/guide/assay',
+            '/ertp/guide/issuer',
             '/ertp/guide/extent',
             '/ertp/guide/units',
             '/ertp/guide/label',
@@ -67,7 +67,7 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/api/mint',
-            '/ertp/api/assay',
+            '/ertp/api/issuer',
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/extent-ops',
