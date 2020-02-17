@@ -29,7 +29,7 @@ someOfferRules: {
 ```js
 somePayoutRules: {
   kind: 'offerAtMost',
-  units: someUnit,
+  amount: someAmount,
 }
 ```
 

@@ -4,17 +4,17 @@
 
 ## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
-- `reallocation` `{Array <Array <Unit>>}`
+- `reallocation` `{Array <Array <Amount>>}`
 
-Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the units to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 
 ```js
 import harden from '@agoric/harden';
 
-// reallocate by switching the units of the firstOffer and matchingOffer
+// reallocate by switching the amount of the firstOffer and matchingOffer
 zoe.reallocate(
   harden([firstOfferHandle, matchingOfferHandle]),
-  harden([matchingOfferUnits, firstOfferUnits]),
+  harden([matchingOfferAmount, firstOfferAmount]),
 );
 ```
 
@@ -29,11 +29,11 @@ import harden from '@agoric/harden';
 zoe.complete(harden([someOfferHandle]));
 ```
 
-## zcf.addAssays(assays)
-- `assays` `{Array <Assays>}`
+## zcf.addIssuers(issuers)
+- `issuers` `{Array <Issuer>}`
 - Returns: `{Promise}`
 
-Inform Zoe about new assays. Returns a promise for acknowledging when the assays are added and ready.
+Inform Zoe about new issuers. Returns a promise for acknowledging when the issuers are added and ready.
 
 ## zcf.getZoeService()
 - Returns: `{ZoeService}`
@@ -57,23 +57,23 @@ const { invite, inviteHandle } = zoe.makeInvite(
 );
 ```
 
-## zcf.getInviteAssay()
-- Returns: `{Assay}`
+## zcf.getInviteIssuer()
+- Returns: `{Issuer}`
 
-Get the Zoe `inviteAssay`.
+Get the Zoe `inviteIssuer`.
 
 ```js
-const inviteAssay = await E(zoe).getInviteAssay();
+const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
-## zcf.getUnitOpsForAssays(assays)
-- `assays` `{Array <Assay>}`
-- Returns: `{Array <UnitOps>}`
+## zcf.getAmountMathForIssuers(issuers)
+- `issuers` `{Array <Issuer>}`
+- Returns: `{Array <AmountMath>}`
 
-Get a list of `unitOps` per assay
+Get a list of local `amountMath` per issuer
 
 ```js
-const unitOpsArray = zoe.getUnitOpsForAssays(assays);
+const amountMathArray = zoe.getAmountMathForIssuers(issuers);
 ```
 
 ## zcf.isOfferActive(offerHandle)
