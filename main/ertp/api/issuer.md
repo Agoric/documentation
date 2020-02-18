@@ -18,6 +18,7 @@ const myBrand = issuer.getBrand();
 Get the `allegedName` for this mint/issuer.
 
 ```js
+const { issuer } = produceIssuer('fungible');
 const issuerName = issuer.allegedName;
 ```
 
@@ -27,7 +28,8 @@ const issuerName = issuer.allegedName;
 Get the `AmountMath` for this Issuer.
 
 ```js
-const exampleAmountMath = exampleIssuer.getAmountMath();
+const { issuer } = produceIssuer('fungible');
+const exampleAmountMath = issuer.getAmountMath();
 ```
 
 ## issuer.getMathHelpersName()
@@ -36,158 +38,148 @@ const exampleAmountMath = exampleIssuer.getAmountMath();
 Get the name of the MathHelpers for this Issuer.
 
 ```js
-const exampleMathHelpersName = exampleIssuer.getMathHelpersName();
+const { issuer } = produceIssuer('fungible');
+const exampleMathHelpersName = issuer.getMathHelpersName();
 ```
 
-## issuer.makeEmptyPurse(name)
-- `name` `{String}`
+## issuer.makeEmptyPurse(memo)
+- `memo` `{String}`
 - Returns: `{Purse}`
 
-Make an empty purse associated with this kind of right.
+Make an empty purse of this brand.
 
 ```js
-import { makeMint } from './core/mint';
-
-const myNewMint = makeMint('fungible');
-const issuer = myNewMint.getAssay();
-
-// After creating an issuer you can create an empty purse:
-const targetPurse = issuer.makeEmptyPurse();
-
-// Returns 0
-targetPurse.getBalance();
+const { issuer } = produceIssuer('fungible');
+const purse = exampleIssuer.makeEmptyPurse('my new purse');
 ```
 
-## issuer.combine(paymentsArray, name)
-- `paymentsArray` `{Array <Payment>}` - A list of payments to combine into a new payment
-- `name` `{String}` - Name to call this combination of payments
+## issuer.getBalance(payment)
+- `payment` `{Payment}`
+- Returns: `{Amount}`
+
+Get payment balance.
+
+```js
+const { issuer } = produceIssuer('fungible');
+const purse = issuer.makeEmptyPurse('my new purse');
+
+const currentBalance = purse.getBalance();
+```
+
+## issuer.burn(payment, amount)
+- `payment` `{Payment}`
+- `amount` `{Amount}` - Optional
+- Returns: `{Amount}`
+
+Burn all of the digital assets in the payment. `Amount` is optional. If `amount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion.
+
+```js
+const { issuer, mint, amountMath } = produceIssuer('fungible');
+const paymentToBurn = mint.mintPayment(10)
+const amountToBurn = amountMath.make(10)
+
+// burntAmount should equal 10
+const burntAmount = issuer.burn(paymentToBurn, amountToBurn)
+```
+
+## issuer.claim(payment, memo, amount)
+- `payment` `{Payment}` - The original payment.
+- `memo` `{String}` - Optional. Default value is 'payment'.
+- `amount` `{Amount}` - Optional.
+- Returns: `{Payment}` - The new payment.
+
+Transfer all digital assets from the payment to a new payment and delete the original. `memo` and `amount` are optional. If `amount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion. If `amount` does not equal the balance in the original payment then it will throw an error.
+
+```js
+const { mint, issuer, amountMath } = produceIssuer('fungible');
+const originalPayment = mint.mintPayment(2)
+const amountExpectedToTransfer = amountMath.make(837)
+
+const newPayment = issuer.claim(originalPayment, amountToTransfer)
+```
+
+## issuer.combine(paymentsArray, memo)
+- `paymentsArray` `{Array <Payment>}`
+- `memo` `{String}` - Default value is 'payment'
 - Returns: `{Payment}`
 
 Combine multiple payments into one payment.
 
 ```js
-import { makeMint } from './core/mint';
+const { mint, issuer } = produceIssuer('fungible');
 
-const myNewMint = makeMint('fungible');
-const issuer = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-// Create a payments array. Each element, or payment, has a value of 1.
+// create an array of payments where the total value of all elements equals 100
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(purse.withdraw(1));
+  payments.push(mint.mintPayment(1));
 }
 
-// Combine all the payments in the`payments` array
-const combinedPayment = issuer.combine(payments);
-
-// Returns 100
-combinedPayment.getBalance();
+// combinedPayment equals 100
+const combinedPayment = issuer.combine(payments)
 ```
 
-## issuer.split(payment, unitsArray)
+Note that you cannot combine payments from different mints:
+
+```js
+const { mint: otherMint } = produceIssuer('other fungible');
+const otherPayment = otherMint.mintPayment(10)
+payments.push(otherPayment) // using the payments array from the above code
+
+// throws error
+const badPayment = issuer.combine(payments)
+```
+
+## issuer.split(payment, paymentAmountA, memoArray)
 - `payment` `{Payment}`
-- `unitsArray` `{Array <Amount>}`
+- `paymentAmountA` `{Amount}`
+- `memoArray` `{Array <String>}` - Optional. Default is an array of 'payment' strings.
 - Returns: `{Array <Payment>}`
 
-Split a single payment into multiple payments, according to the `amount` and names passed in.
+Split a single payment into two payments, A and B, according to the paymentAmountA and memoArray passed in.
 
 ```js
-// Assume a mint has already been set up.
-const aliceMoolaPurse = mints[0].mint(assays[0].makeUnits(40));
-const aliceMoolaPayment = aliceMoolaPurse.withdrawAll();
-const moola10 = assays[0].makeUnits(10);
-const moola20 = assays[0].makeUnits(20);
+const { mint, issuer, amountMath } = produceIssuer('fungible');
+const oldPayment = mint.mintPayment(20);
 
-// The following divides the aliceMoolaPayment into three payments:
-const aliceMoolaPayments = assays[0].split(aliceMoolaPayment, [
-  moola10,
-  moola10,
-  moola20,
-]);
-// aliceMoolaPayments is now an array of three Payment objects, with balances of 10, 10, 20, respectively.
+const paymentsAandB = issuer.split(oldPayment, amountMath.make(10))
 ```
 
-## issuer.claimExactly(amount, src, name)
-- `amount` `{Amount}`
-- `src` `{Payment}`
-- `name` `{String}` - name of a new `Payment`, optional
-- Returns: `{Payment}`
-
-Make a new `Payment` that has exclusive rights to all the contents of `src`. If `amount` does not equal the balance of the `src` payment, throws error.
+Note that you cannot split payments if you pass in a non-matching amount:
 
 ```js
-import { makeMint } from './core/mint';
+const { mint, issuer } = produceIssuer('fungible');
+const { amountMath: otherAmount } = produceIssuer('other fungible');
+const payment = mint.mintPayment(1000);
 
-const myNewMint = makeMint('fungible');
-const issuer = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-const payment = await purse.withdraw(7);
-const newPayment = await issuer.claimExactly(7, payment);
-
-// .claimExactly() will throw an error because the the balance of wrongPayment does not equal the amount
-const wrongPayment = await purse.withdraw(7);
-const wrongNewPayment = await issuer.claimExactly(8, wrongPayment);
+// throws error
+issuer.split(payment, otherAmount.make(10))
 ```
 
-## issuer.claimAll(src, name)
-- `src` `{Payment}`
-- `name` `{String}` - name of a new `Payment`
-- Returns: `{Payment}`
+## issuer.splitMany(payment, amountArray, memoArray)
+- `payment` `{Payment}`
+- `amountArray` `{Array <Amount>}`
+- `memoArray` `{Array <String>}` - Optional. Default is an array of 'payment' strings.
+- Returns: `{Array <Payment>}`
 
-Make a new `Payment` that has exclusive rights to all the contents of `src`.
+Split a single payment into many payments, according to the amountArray and memoArray passed in.
 
 ```js
-import { makeMint } from './core/mint';
+const { mint, issuer, amountMath } = produceIssuer('fungible');
+const oldPayment = mint.mintPayment(100);
+const goodAmounts = Array(10).fill(amountMath.make(10));
 
-const myNewMint = makeMint('fungible');
-const issuer = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-const payment = await purse.withdraw(10);
-const newPayment = await issuer.claimAll(payment);
-
-// Returns 10
-newPayment.getBalance();
+const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts)
 ```
 
-## issuer.burnExactly(amount, src)
-- `amount` `{Amount}`
-- `src` `{Payment}`
-- Returns: `{Amount}`
-
-Burn all of the rights from `src`. If `amount` does not equal the balance of the `src` payment, throw error.
+Note that the total amount in the `amountArray` must equal the amount in the original `payment`:
 
 ```js
-import { makeMint } from './core/mint';
+const { mint, issuer, amountMath } = produceIssuer('fungible');
+const payment = mint.mintPayment(1000);
 
-const myNewMint = makeMint('fungible');
-const issuer = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
+// total amounts in badAmounts equal 20, when it should equal 1000
+const badAmounts = Array(2).fill(amountMath.make(10));
 
-const payment = await purse.withdraw(10);
-
-// Throws error:
-await issuer.burnExactly(6, payment);
-
-// Successful burn:
-await issuer.burnExactly(10, payment);
-```
-
-## issuer.burnAll(src)
-- `src` `{Payment}`
-- Returns: `{Amount}`
-
-Burn all of the rights from `src`.
-
-```js
-import { makeMint } from './core/mint';
-
-const myNewMint = makeMint('fungible');
-const issuer = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-const payment = await purse.withdraw(10);
-await issuer.burnAll(payment);
+// throws error
+issuer.splitMany(payment, badAmounts)
 ```
