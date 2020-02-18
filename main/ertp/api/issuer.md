@@ -57,7 +57,7 @@ const purse = exampleIssuer.makeEmptyPurse('my new purse');
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
-Get payment balance.
+Get payment balance. Because the payment is not trusted, we cannot call a method on it directly, and must use the issuer instead.
 
 ```js
 const { issuer } = produceIssuer('fungible');
