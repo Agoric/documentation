@@ -2,6 +2,40 @@
 
 The issuer cannot mint new amount, but it can create empty purses and payments. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
 
+## produceIssuer(allegedName, mathHelperName)
+- `allegedName` `{Comporable}`
+- `mathHelpersName` `{String}`
+- Returns: `{IssuerObjs}`
+
+Makes Issuers.
+
+The `allegedName` becomes part of the brand in asset descriptions. The `allegedName` doesn't have to be a string, but it will only be used for its value. The `allegedName` is useful for debugging and double-checking assumptions, but should not be trusted.
+
+The `mathHelpersName` will be used to import a specific mathHelpers from the mathHelpers library. For example, `natMathHelpers`, the default, is used for basic fungible tokens.
+
+```js
+// creates an issuer that utilizes the default mathHelper for fungible amounts
+const { issuer, mint, amountMath } = produceIssuer('fungible');
+const fungibleAmount = amountMath.make(1)
+
+// creates an issuer that utilizes the the mathHelper called 'natListMathHelpers' for list amounts
+const { mint, issuer, amountMath } = produceIssuer('items', 'natList');
+const listAmount = amountMath.make(harden[1,2,4])
+```
+
+## IssuerObjs
+
+The return value of `produceIssuer`.
+
+```js
+issuer: {
+  mint: 'fungible',
+  issuer: someAmount,
+  amountMath: amountMath,
+  brand: someBrand
+}
+```
+
 ## issuer.getBrand()
 - Returns: `{Brand}` - The brand for the issuer.
 
