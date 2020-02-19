@@ -23,7 +23,7 @@ ability to run contracts on chain to the Agoric CLI, but you can find
 
 ## Prerequisites
 
-First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://classic.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
+First, install [Node.js](http://nodejs.org/) (**version 10.16.0 or above**), and [Yarn 1](https://classic.yarnpkg.com/en/docs/install).
 
 For now, you will need to set up the Agoric CLI as part of a checked-out Agoric SDK.  Run:
 
@@ -41,55 +41,77 @@ yarn build
 yarn link-cli /usr/local/bin/agoric
 ```
 
+
 ## Your First Agoric Dapp
 
 ![The Browser Environment](./assets/browser-environment.svg)
 
-### 1. Creating a project directory
-Let's install the default smart contracts and UI.
+In this guide, we're installing, running and interacting with the default smart contracts and UI.
+
+TODO: define/explain the various parts
+
+
+### Initialize the Dapp code
+
+For now, you have to **stay in the `agoric-sdk` directory**. This is a [known limitation](https://github.com/Agoric/agoric-sdk/issues/570) that will be fixed.
 
 ```sh
 # Initialize your dapp project.
 # Note: Change the `demo` name to something meaningful.
-# Remember to prefix this with `npx` if you chose that option.
 agoric init demo
+# `init` creates a folder with the name you specify and copies over all
+# the files you might need.
+
 # Go to its directory.
 cd demo
-```
-`init` creates a folder with the name you specify and copies over all
-the files you might need.
 
-### 2. Installing the dependencies
-Next, let's install the necessary JavaScript packages. This step might
-take a while.
-
-```sh
 # Install Javascript dependencies.
 agoric install
 ```
 
-### 3. Launching the Agoric server
-Next, let's start up the Agoric VM. This creates the "vats" in which
-our smart contract code will be run.
+
+### Start the local Agoric Node, wallet server and Dapp Server
+
+This is all done in one command
 
 ```sh
 # Run the local vat machine.
 agoric start
 ```
 
+Keep this terminal open somewhere
 
-### 4. Installing a contract
+You can now open
+- [http://localhost:3000](http://localhost:3000) to see our demo DApp
+- [http://localhost:8000/wallet](http://localhost:8000/wallet) to see the Simple Wallet
+- [http://localhost:8000/](http://localhost:8000/) to see your REPL (Read-Eval-Print Loop)
 
 
-Let's deploy our dapp on the Agoric VM.
+### Installing a contract
+
+In a new terminal:
+
 ```sh
+# make sure you're in the 'demo' directory
+
 # Install your smart contract and web api (can be done separately)
 agoric deploy ./contract/deploy.js ./api/deploy.js
 ```
+
+TOCLARIFY: why those 2 files?
+What does each refer to?
+What is the benefit of deploying together or separately?
+
+
 And navigate to our wallet
 [http://localhost:8000/wallet/](http://localhost:8000/wallet/)
 
-### 5. Launching a demo DApp server
+TOCLARIFY: what is the user supposed to see/noticed/understand with this step?
+They deployed a contract. Who are the parties of this contract? Does the user play one or both roles (or none)?
+
+
+### Launching a demo DApp server
+
 Now let's start up the Autoswap frontend, our demo DApp:
 
 ```sh
