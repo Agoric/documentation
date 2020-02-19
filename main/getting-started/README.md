@@ -20,37 +20,10 @@ also does not create a local chain. We are working on adding the
 ability to run contracts on chain to the Agoric CLI, but you can find
 [more information on running on chain here](../manual-setup/README.md).
 
-## Quick Overview
-
-First, see the [prerequisites](#Prerequisites) below for how to set up your Agoric CLI.
-
-Then, to create and start a project, run:
-
-```sh
-agoric init demo
-cd demo
-agoric install
-agoric start
-```
-
-In another shell, from the same project directory:
-
-```sh
-cd demo
-agoric deploy ./contract/deploy.js ./api/deploy.js
-cd ui
-yarn install
-yarn start
-```
-
-Then open:
-- [http://localhost:3000](http://localhost:3000) to see our demo DApp.<br>
-- [http://localhost:8000/wallet](http://localhost:8000/wallet) to see the Simple Wallet.<br>
-- [http://localhost:8000/](http://localhost:8000/) to see your REPL (Read-Eval-Print Loop).<br>
 
 ## Prerequisites
 
-First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://legacy.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
+First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://classic.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
 
 For now, you will need to set up the Agoric CLI as part of a checked-out Agoric SDK.  Run:
 
@@ -104,7 +77,10 @@ our smart contract code will be run.
 agoric start
 ```
 
+
 ### 4. Installing a contract
+
+
 Let's deploy our dapp on the Agoric VM.
 ```sh
 # Install your smart contract and web api (can be done separately)
