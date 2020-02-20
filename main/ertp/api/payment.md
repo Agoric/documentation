@@ -1,40 +1,18 @@
 # Payment
-Payments hold verified units of certain rights issued by Mints. Units from payments can be deposited in purses, but otherwise, the entire unit is available when the payment is transferred. A payment's balance can only fall, through the action of `purse.depositExactly()`, `assay.claimExactly()` or `assay.burnExactly()`.
+Payments hold an amount of digital assets of the same brand that are in transit. Payments can be deposited in purses, split into multiple payments, combined, and claimed (getting an exclusive payment). Payments are linear, meaning that either a payment has its full original balance, or it is used up entirely. It is impossible to partially use a payment.
 
-Payments can be converted to Purses by getting a verified assay and calling `assay.makeEmptyPurse().depositAll(payment)`;
+Payments are often received from other actors and therefore should not be trusted themselves. To get the balance of a payment, use the trusted issuer: issuer.getBalance(payment).
 
-## payment.getName()
-- Returns: `{String}`
+Payments can be converted to Purses by getting a trusted issuer and calling `issuer.makeEmptyPurse()` to create a purse, then `purse.deposit(payment)`.
 
-Get the name of this purse.
+## payment.allegedBrand()
+- Returns: `{Brand}`
 
-```js
-console.log( anyPayment.getName() )
-```
-
-## payment.getAssay()
-- Returns: `{Assay}`
-
-Get the Assay for this payment.
+Get the allegedBrand, indicating the kind of digital asset this payment purports to be, and which issuer to use. Because payments  are not trusted, any method calls on payments should be treated with suspicion and verified elsewhere.
 
 ```js
-const paymentAssay = anyPayment.getAssay();
-```
+const { issuer, mint, brand } = produceIssuer('fungible');
+const payment = mint.mintPayment(10)
 
-## payment.getBalance()
-- Returns: `{Units}`
-
-Get the units contained in this payment, confirmed by the assay.
-
-```js
-import { makeMint } from './core/mint';
-
-const myNewMint = makeMint('fungible');
-const assay = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-const payment = purse.withdraw(20);
-
-// Returns 20
-payments.getBalance();
+const officialBrand = payment.allegedBrand()
 ```

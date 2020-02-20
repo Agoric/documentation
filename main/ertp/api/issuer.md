@@ -53,10 +53,10 @@ Get the `allegedName` for this mint/issuer.
 
 ```js
 const { issuer } = produceIssuer('fungible');
-const issuerName = issuer.allegedName;
+const issuerName = issuer.allegedName();
 ```
 
-## issuer.getAmountMath()
+## issuer.getAmountMath()g
 - Returns: `{AmountMath}`
 
 Get the `AmountMath` for this Issuer.
@@ -76,15 +76,14 @@ const { issuer } = produceIssuer('fungible');
 const exampleMathHelpersName = issuer.getMathHelpersName();
 ```
 
-## issuer.makeEmptyPurse(memo)
-- `memo` `{String}`
+## issuer.makeEmptyPurse()
 - Returns: `{Purse}`
 
 Make an empty purse of this brand.
 
 ```js
 const { issuer } = produceIssuer('fungible');
-const purse = exampleIssuer.makeEmptyPurse('my new purse');
+const purse = exampleIssuer.makeEmptyPurse();
 ```
 
 ## issuer.getBalance(payment)
@@ -94,10 +93,11 @@ const purse = exampleIssuer.makeEmptyPurse('my new purse');
 Get payment balance. Because the payment is not trusted, we cannot call a method on it directly, and must use the issuer instead.
 
 ```js
-const { issuer } = produceIssuer('fungible');
-const purse = issuer.makeEmptyPurse('my new purse');
+const { issuer, mint } = produceIssuer('fungible');
+const payment = mint.mintPayment(100)
 
-const currentBalance = purse.getBalance();
+// returns 100
+const currentBalance = issuer.getBalance(payment);
 ```
 
 ## issuer.burn(payment, amount)
@@ -116,13 +116,12 @@ const amountToBurn = amountMath.make(10)
 const burntAmount = issuer.burn(paymentToBurn, amountToBurn)
 ```
 
-## issuer.claim(payment, memo, amount)
+## issuer.claim(payment, amount)
 - `payment` `{Payment}` - The original payment.
-- `memo` `{String}` - Optional. Default value is 'payment'.
 - `amount` `{Amount}` - Optional.
 - Returns: `{Payment}` - The new payment.
 
-Transfer all digital assets from the payment to a new payment and delete the original. `memo` and `amount` are optional. If `amount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion. If `amount` does not equal the balance in the original payment then it will throw an error.
+Transfer all digital assets from the payment to a new payment and delete the original. `amount` is optional. If `amount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion. If `amount` does not equal the balance in the original payment then it will throw an error.
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('fungible');
@@ -132,9 +131,8 @@ const amountExpectedToTransfer = amountMath.make(837)
 const newPayment = issuer.claim(originalPayment, amountToTransfer)
 ```
 
-## issuer.combine(paymentsArray, memo)
+## issuer.combine(paymentsArray)
 - `paymentsArray` `{Array <Payment>}`
-- `memo` `{String}` - Default value is 'payment'
 - Returns: `{Payment}`
 
 Combine multiple payments into one payment.
@@ -163,13 +161,12 @@ payments.push(otherPayment) // using the payments array from the above code
 const badPayment = issuer.combine(payments)
 ```
 
-## issuer.split(payment, paymentAmountA, memoArray)
+## issuer.split(payment, paymentAmountA)
 - `payment` `{Payment}`
 - `paymentAmountA` `{Amount}`
-- `memoArray` `{Array <String>}` - Optional. Default is an array of 'payment' strings.
 - Returns: `{Array <Payment>}`
 
-Split a single payment into two payments, A and B, according to the paymentAmountA and memoArray passed in.
+Split a single payment into two payments, A and B, according to the paymentAmountA.
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('fungible');
@@ -189,13 +186,12 @@ const payment = mint.mintPayment(1000);
 issuer.split(payment, otherAmount.make(10))
 ```
 
-## issuer.splitMany(payment, amountArray, memoArray)
+## issuer.splitMany(payment, amountArray)
 - `payment` `{Payment}`
 - `amountArray` `{Array <Amount>}`
-- `memoArray` `{Array <String>}` - Optional. Default is an array of 'payment' strings.
 - Returns: `{Array <Payment>}`
 
-Split a single payment into many payments, according to the amountArray and memoArray passed in.
+Split a single payment into many payments, according to the amountArray.
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('fungible');
