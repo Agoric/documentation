@@ -1,11 +1,3 @@
-##### I'm trying to understand what `doGetIdentity()` and `doIsIdentity()` are for. What is an identity and why is it important to know? Why is it often '0' or an empty array.
-
-
-
-
-
-
-
 # Math Helpers
 All of the differences in how digital asset amount are manipulated can be reduced to the behavior of the math on extents. We extract this custom logic into mathHelpers. MathHelpers are about extent arithmetic, whereas AmountMath is about amounts, which are the extents labeled with a brand. AmountMath use mathHelpers to do their extent arithmetic, and then brand the results, making a new amount.
 
@@ -36,23 +28,30 @@ fungibleMathHelper.doAssertKind(fungibleExtent)
 fungibleMathHelper.doAssertKind(liquidityExtent)
 ```
 
-## mathHelpers.doGetIdentity()
+## mathHelpers.doGetEmpty()
 - Returns: `{Extent}`
 
-Get the representation for the identity element (often 0 or an empty array).
+Get the value for an empty extent (often 0 or an empty array).
+
+Get the empty value for an extent (often 0 or an empty array).
+
+Mathematically, this is the representation for the identity element.
 
 ```js
-
+// Create an empty amount using a mathHelper
+const empty = amountMath.make(mathHelper.doGetEmpty());
 ```
 
-## mathHelpers.doIsIdentity(extent)
+## mathHelpers.doIsEmpty(extent)
 - `extent` `{Extent}`
 - Returns: `{Boolean}`
 
-Is the extent the identity element?
+Is the extent an empty value?
+
+Mathematically, this determines if the extent is the identity element.
 
 ```js
-
+mathHelper.doIsEmpty(amountMath.getExtent(amount))
 ```
 
 ## mathHelpers.doIsGTE(left, right)
@@ -63,7 +62,10 @@ Is the extent the identity element?
 Is the left greater than or equal to the right?
 
 ```js
-
+helpers.doIsGTE(
+  amountMath.getExtent(leftAmount),
+  amountMath.getExtent(rightAmount),
+)
 ```
 
 ## mathHelpers.doIsEqual(left, right)
@@ -74,7 +76,10 @@ Is the left greater than or equal to the right?
 Does left equal right?
 
 ```js
-
+helpers.doIsEqual(
+  amountMath.getExtent(leftAmount),
+  amountMath.getExtent(rightAmount),
+)
 ```
 
 ## mathHelpers.doAdd(left, right)
@@ -85,7 +90,10 @@ Does left equal right?
 Return the left combined with the right
 
 ```js
-
+const combinedExtent = helpers.doAdd(
+  amountMath.getExtent(leftAmount),
+  amountMath.getExtent(rightAmount),
+)
 ```
 
 ## mathHelpers.doSubtract(left, right)
@@ -96,5 +104,5 @@ Return the left combined with the right
 Return what remains after removing the right from the left. If the result is negative (i.e. something in the right was not in the left) we throw an error.
 
 ```js
-
+const remainingExtent = helpers.doSubtract(leftExtent, rightExtent)
 ```

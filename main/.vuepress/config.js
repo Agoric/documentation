@@ -71,7 +71,7 @@ module.exports = {
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/math-helpers',
-            '/ertp/api/unit-ops',
+            '/ertp/api/amount-math',
           ]
         },
         {
