@@ -18,6 +18,15 @@ The alleged amount or description of a unique asset. See [Extent](#extent) for f
 ## AllegedUnits
 The alleged description of tradeable goods. See [Unit](#unit) for full definition.
 
+## AmountMath
+AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
+
+## Amounts
+Amounts are the canonical description of tradable goods. They are manipulated
+by issuers and mints, and represent the goods and currency carried by purses and
+payments. They can be used to represent things like currency, stock, and the
+abstract right to participate in a particular exchange.
+
 ## Assay
 An Assay represents the identity of an issuer. Holding an Assay provides the ability to create units and empty purses, but confers no rights. It is also the mechanism used to get exclusive access to a Purse or Payment that you already hold, or to burn some or all of the contained rights.
 

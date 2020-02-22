@@ -14,12 +14,10 @@ The `allegedName` becomes part of the brand in asset descriptions. The `allegedN
 The `mathHelpersName` will be used to import a specific mathHelpers from the mathHelpers library. For example, `natMathHelpers`, the default, is used for basic fungible tokens.
 
 ```js
-// creates an issuer that utilizes the default mathHelper for fungible amounts
 const { issuer, mint, amountMath } = produceIssuer('fungible');
-const fungibleAmount = amountMath.make(1)
+const fungible1 = amountMath.make(1)
 
-// creates an issuer that utilizes the the mathHelper called 'natListMathHelpers' for list amounts
-const { mint, issuer, amountMath } = produceIssuer('items', 'natList');
+const { mint, issuer, amountMath } = produceIssuer('items');
 const listAmount = amountMath.make(harden[1,2,4])
 ```
 

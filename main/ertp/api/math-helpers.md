@@ -33,9 +33,7 @@ fungibleMathHelper.doAssertKind(liquidityExtent)
 
 Get the value for an empty extent (often 0 or an empty array).
 
-Get the empty value for an extent (often 0 or an empty array).
-
-Mathematically, this is the representation for the identity element.
+Mathematically, this is a representation of the identity element for the addition operation.
 
 ```js
 // Create an empty amount using a mathHelper
@@ -46,9 +44,9 @@ const empty = amountMath.make(mathHelper.doGetEmpty());
 - `extent` `{Extent}`
 - Returns: `{Boolean}`
 
-Is the extent an empty value?
+Is this an empty extent?
 
-Mathematically, this determines if the extent is the identity element.
+Mathematically, this determines if the extent is the identity element for the addition operation.
 
 ```js
 mathHelper.doIsEmpty(amountMath.getExtent(amount))
@@ -87,7 +85,7 @@ helpers.doIsEqual(
 - `right` `{Extent}`
 - Returns: `{Extent}`
 
-Return the left combined with the right
+Return the left combined with the right.
 
 ```js
 const combinedExtent = helpers.doAdd(

@@ -53,9 +53,8 @@ module.exports = {
             '/ertp/guide/mint',
             '/ertp/guide/issuer',
             '/ertp/guide/extent',
-            '/ertp/guide/units',
-            '/ertp/guide/label',
-            '/ertp/guide/unit-ops',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
             '/ertp/guide/default-configuration',
             '/ertp/guide/other-concepts'
           ]
