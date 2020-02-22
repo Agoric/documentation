@@ -1,228 +1,188 @@
 # Amount Math
-Amounts describe digital assets. From an amount, you can learn the kind of digital asset as well as "how much" or "how many". These two parts are known as the **brand** (the kind of digital asset) and the **extent** (the answer to "how much"). For example, in the phrase "5 bucks", "bucks" takes the role of the brand and the extent is 5. Amounts can describe fungible and non-fungible digital assets. Amounts are pass-by-copy and can be made by and sent to anyone.
 
-The issuer has an internal table that maps purses and payments to amounts. The issuer must be able to do things such as add digital assets to a purse and withdraw digital assets from a purse. To do so, it must know how to add and subtract digital assets. Rather than hard-coding a particular solution, we chose to parameterize the issuer with a collection of polymorphic functions, which we call `amountMath`. These math functions include concepts like addition, subtraction, and greater than or equal to.
+Logic for manipulating amounts.
 
-We also want to make sure there is no confusion as to what kind of asset we are using. Thus, amountMath includes checks of the `brand`, the unique identifier for the type of digital asset. If the wrong brand is used in amountMath, an error is thrown and the operation does not succeed.
+## Amount
 
-amountMath uses mathHelpers to do most of the work, but then adds the brand to the result. The function `extent` gets the extent from the amount by removing the brand (amount -> extent), and the function `make` adds the brand to produce an amount (extent -> amount). The function `coerce` takes an amount and checks it, returning an amount (amount -> amount).
-
-`makeAmount` takes in a brand and the name of the particular mathHelpers to use.
-
-amountMath is unfortunately not pass-by-copy. If you call `getAmountMath` on a remote issuer, it will be a remote object and each call will incur the costs of calling a remote object. However, you can create a local amountMath by importing this module locally and recreating by passing in a brand and an mathHelpers name, both of which can be passed-by-copy (since there are no calls to brand in this module).
-
-Each issuer of digital assets has an associated brand in a one-to-one mapping. In untrusted contexts, such as in analyzing payments and amounts, we can get the brand and find the issuer which matches the brand. The issuer and the brand mutually validate each other.
-
-## unitOps.getLabel()
-
-- Returns: `{Label}`
-
-Return this unitOps's label.
+Amounts are descriptions of digital assets, answering the questions "how much" and "of what kind". Amounts are extents labeled with a brand. AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
 
 ```js
-import { makeMint } from '../../core/mint';
-
-const localMint = makeMint(description, makeMintKeeper, makeUnitOps);
-const localAssay = localMint.getAssay();
-const localLabel = localAssay.getLabel();
-```
-
-## unitOps.make(allegedExtent)
-
-- `allegedExtent` `{Extent}`
-- [TOOD: add secod and third (optional) params]
-- Returns: `{Units}`
-
-Make a new verified Units containing the `allegedExtent`.
-
-```js
-const inviteUnits = inviteUnitOps.make(seatDescription);
-```
-
-## unitOps.coerce(allegedUnits)
-
-- `allegedUnits` `{Units}` - An Units object made by this particular UnitOps. Function will error otherwise.
-- Returns: `{Units}`
-
-Is this like a Units object made by this UnitOps, such as one received by pass-by-copy from an otherwise-identical remote Units? If so, return a Units object made by this UnitOps. Otherwise error.
-
-For fungible Units based on natural numbers, coerce also accepts a bare number which it will coerce to a labeled number via `unitOps.make()`.
-
-```js
-function insistUnitsEqualsPaymentBalance(units, payment) {
-  // using coerce() here checks that units being passed in has the correct format
-  units = unitOps.coerce(units);
-  const paymentUnits = paymentKeeper.getUnits(payment);
-  insist(
-    unitOps.equals(units, paymentUnits),
-  )`payment balance ${paymentUnits} must equal units ${units}`;
-  return paymentUnits;
+someAmount: {
+  brand: 'fungible',
+  extent: someExtent
 }
 ```
 
-## unitOps.extent(units)
+## Extent
 
-- `units` `{Units}`
+Extents describe the extent of something that can be owned or shared. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+
+Extent must be Comparable. (This IDL doesn't yet provide a way to specify subtype relationships for structs.)
+
+## amountMath.getBrand()
+- Returns: `{Brand}`
+
+Return the brand.
+
+```js
+const { issuer } = produceIssuer('fungible');
+const exampleAmountMath = issuer.getAmountMath();
+
+const exampleBrand = exampleAmountMath.getBrand()
+```
+
+## amountMath.getMathHelpersName()
+- Returns: `{String}`
+
+Get the name of the mathHelpers used.
+
+```js
+const { amountMath } = produceIssuer('fungible');
+const mathHelperName = amountMath.getMathHepersName()
+```
+
+## amountMath.make(allegedExtent)
+
+- `allegedExtent` `{Extent}`
+- Returns: `{Amount}`
+
+Make an amount from an extent by adding the brand.
+
+```js
+const { amountMath } = produceIssuer('fungible');
+const amount837 = amountMath.make(837)
+```
+
+## amountMath.coerce(allegedAmountOrExtent)
+- `allegedAmountOrExtent` `{Amount}`
+- Returns: `{Amount}`
+
+Make sure this amount (or extent) is valid and return it if so.
+
+```js
+const { mint, amountMath } = produceIssuer('fungible');
+const payment = mint.mintPayment(100)
+
+const validPayment = amountMath.coerce(payment)
+```
+
+## amountMath.extent(amount)
 - Returns: `{Extent}`
 
-Return an Extent representing the Units parameter.
+Extract and return the extent.
 
 ```js
-const coordinateExtent = coordinateUnitOps.extent([{ x: 0, y: 0 }, { x: 1, y: 0 }]);
+const { amountMath } = produceIssuer('fungible');
+const fungible123 = amountMath.make(123)
 
-const fungibleExtent = fungibleUnitOps.extent(1);
-
-const rightsExtent = rightsUnitOps.extent('This is an example of a string as an extent for rightsUnitOps.');
+// returns 123
+const extent = amountMath.extent(amount)
 ```
 
-## unitOps.empty()
+## amountMath.getEmpty()
+- Returns: `{Amount}`
 
-- Returns: `{Units}`
-
-Return an empty units. Conveys no authority.
+Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
 
 ```js
-const emptyUnits = exampleUnitOps.empty();
+const { amountMath } = produceIssuer('fungible');
+
+// Returns an empty amount for this issuer.
+// Since this is a fungible amount it returns 0
+const empty = amountMath.getEmpty();
 ```
 
-## unitOps.isEmpty(units)
-
-- `units` `{Units}`
+## amountMath.isEmpty(amount)
+- `amount` `{Amount}`
 - Returns: `{boolean}`
 
-Return true if the Units is empty. Otherwise false.
+Return true if the amount is empty. Otherwise false.
 
 ```js
-const emptyUnits = exampleUnitOps.empty();
-const notEmptyUnits = exampleUnitOps.make([]);
+const { amountMath } = produceIssuer('fungible');
+const empty = amountMath.getEmpty();
+const fungible1 = amountMath.make(1)
 
 // returns true
-exampleUnitOps.isEmpty(emptyUnits);
+amountMath.isEmpty(empty)
 
 // returns false
-exampleUnitOps.isEmpty(notEmptyUnits);
+amountMath.isEmpty(fungible1)
 ```
 
-## unitOps.includes(leftUnits, rightUnits)
-
-- `leftUnits` `{Units}`
-- `rightUnits` `{Units}`
+## amountMath.isGTE(leftAmount, rightAmount)
+- `leftAmount` `{Amount}`
+- `rightAmount` `{Amount}`
 - Returns: `{boolean}`
 
-Returns true if the `leftUnits` contains the `rightUnits`.
+Returns true if the leftAmount is greater than or equal to the rightAmount. For non-scalars, "greater than or equal to" depends on the kind of amount, as defined by the MathHelpers. For example, whether rectangle A is greater than rectangle B depends on whether rectangle A includes rectangle B as defined by the logic in MathHelpers.
 
 ```js
-import { makeMint } from '../../core/mint';
+const { amountMath } = produceIssuer('fungible');
+const empty = amountMath.getEmpty();
+const fungible1 = amountMath.make(1)
 
-const galleryPixelMint = makeMint('pixels', makePixelConfig);
-const galleryPixelAssay = galleryPixelMint.getAssay();
-const galleryPixelUnitOps = galleryPixelAssay.getUnitOps();
+// Returns true
+amountMath.isGTE(fungible1, empty)
 
-const startPixel = { x: 0, y: 0 };
-const secondPixel = { x: 0, y: 1 };
-const thirdPixel = { x: 0, y: 2 };
-const fourthPixel = { x: 9, y: 1 };
-
-// returns true:
-galleryPixelUnitOps.include([], []);
-galleryPixelUnitOps.include([startPixel], []);
-galleryPixelUnitOps.include([startPixel], [startPixel]);
-galleryPixelUnitOps.include([startPixel, secondPixel], [startPixel]);
-
-// returns false:
-galleryPixelUnitOps.include([], [startPixel]);
-galleryPixelUnitOps.include([startPixel], [secondPixel]);
-galleryPixelUnitOps.include([startPixel, thirdPixel], [secondPixel, fourthPixel]);
-galleryPixelUnitOps.include([startPixel, secondPixel, thirdPixel], [thirdPixel, fourthPixel]);
+// Returns false
+amountMath.isGTE(empty, fungible1)
 ```
 
-## unitOps.equals(leftUnits, rightUnits)
-
-- `leftUnits` `{Units}`
-- `rightUnits` `{Units}`
+## amountMath.isEqual(leftAmount, rightAmount)
+- `leftAmount` `{Amount}`
+- `rightAmount` `{Amount}`
 - Returns: `{boolean}`
 
-Returns true if the leftUnits equals the rightUnits. We assume that if includes is true in both directions, equals is also true.
+Returns true if the leftAmount equals the rightAmount. We assume that if isGTE is true in both directions, isEqual is also true.
 
 ```js
-import { makeMint } from '../../core/mint';
+const { amountMath } = produceIssuer('fungible');
+const empty = amountMath.getEmpty();
+const fungible1 = amountMath.make(1)
+const anotherFungible1 = amountMath.make(1)
 
-const galleryPixelMint = makeMint('pixels', makePixelConfig);
-const galleryPixelAssay = galleryPixelMint.getAssay();
-const galleryPixelUnitOps = galleryPixelAssay.getUnitOps();
+// Returns true
+amountMath.isEqual(fungible1, anotherFungible1)
 
-const startPixel = { x: 0, y: 0 };
-const secondPixel = { x: 0, y: 1 };
-
-// returns true:
-galleryPixelUnitOps.equals([], []);
-galleryPixelUnitOps.equals([startPixel], [startPixel]);
-
-// returns false:
-galleryPixelUnitOps.equals([startPixel], []);
+// Returns false
+amountMath.isEqual(empty, fungible1)
 ```
 
-## unitOps.with(leftUnits, rightUnits)
+## amountMath.add(leftAmount, rightAmount)
+- `leftAmount` `{Amount}`
+- `rightAmount` `{Amount}`
+- Returns: `{Amount}`
 
-- `leftUnits` `{Units}`
-- `rightUnits` `{Units}`
-- Returns: `{Units}`
+Returns a new amount that is the union of both leftAmount and rightAmount.
 
-Returns a new units that includes both leftUnits and rightUnits. For fungible units this means adding the extents. For other kinds of units, it usually means including both.
+For fungible amount this means adding the extents. For other kinds of amount, it usually means including all of the elements from both left and right.
 
 ```js
-import { makeMint } from '../../core/mint';
+const { amountMath } = produceIssuer('items');
+const listAmountA = amountMath.make(harden[1,2,4]);
+const listAmountB = amountMath.make(harden[3]);
 
-const galleryPixelMint = makeMint('pixels', makePixelConfig);
-const galleryPixelAssay = galleryPixelMint.getAssay();
-const galleryPixelUnitOps = galleryPixelAssay.getUnitOps();
-
-const startPixel = { x: 0, y: 0 };
-const secondPixel = { x: 0, y: 1 };
-
-// returns []
-galleryPixelUnitOps.with([], []);
-
-// returns [startPixel]
-galleryPixelUnitOps.with([startPixel]), []);
-
-// returns [startPixel]
-galleryPixelUnitOps.with([], [startPixel]);
-
-// returns [startPixel]
-galleryPixelUnitOps.with([startPixel], [startPixel]);
-
-// returns [startPixel, secondPixel]
-galleryPixelUnitOps.with([startPixel], [secondPixel]);
-
-// returns [startPixel, secondPixel]
-galleryPixelUnitOps.with([startPixel, secondPixel], [startPixel]);
+// Returns [1, 2, 4, 3]
+const combinedList = amountMath.add(listAmountA, listAmountB);
 ```
 
-## unitOps.without(leftUnits, rightUnits)
+## amountMath.subtract(leftAmount, rightAmount)
+- `leftAmount` `{Amount}`
+- `rightAmount` `{Amount}`
+- Returns: `{Amount}`
 
-- `leftUnits` `{Units}`
-- `rightUnits` `{Units}`
-- Returns: `{Units}`
-
-Returns a new Units that includes the portion of leftUnits not included in rightUnits. If leftUnits doesn't include rightAmout, throw an error.
+Returns a new amount that is the leftAmount minus the rightAmount (i.e. everything in the leftAmount that is not in the rightAmount). If leftAmount doesn't include rightAmount (subtraction results in a negative), throw  an error. Because the left amount must include the right amount, this is NOT equivalent to set subtraction.
 
 ```js
-import { makeMint } from '../../core/mint';
+const { amountMath } = produceIssuer('items');
+const listAmountA = amountMath.make(harden[1,2,4]);
+const listAmountB = amountMath.make(harden[3]);
+const listAmountC = amountMath.make(harden[2]);
 
-const galleryPixelMint = makeMint('pixels', makePixelConfig);
-const galleryPixelAssay = galleryPixelMint.getAssay();
-const galleryPixelUnitOps = galleryPixelAssay.getUnitOps();
+// Returns [1, 4]
+const subtractedList = amountMath.subtract(listAmountA, listAmountC)
 
-const startPixel = { x: 0, y: 0 };
-const secondPixel = { x: 0, y: 1 };
-
-// returns []
-galleryPixelUnitOps.without([]), []);
-
-// returns [startPixel]
-galleryPixelUnitOps.without([startPixel]), []);
-
-// throws error
-galleryPixelUnitOps.without([]), [startPixel]);
+// Throws error
+const badList = amountMath.subtract(listAmountA, listAmountB)
 ```
