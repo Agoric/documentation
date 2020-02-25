@@ -1,37 +1,29 @@
 # Issuer
 
-The issuer cannot mint new amount, but it can create empty purses and payments. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
+The issuer cannot mint new amounts, but it can create empty purses and payments. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
 
 ## produceIssuer(allegedName, mathHelperName)
-- `allegedName` `{Comporable}`
+- `allegedName` `{String}`
 - `mathHelpersName` `{String}`
-- Returns: `{IssuerObjs}`
+- Returns: `{ mint, issuer, amountMath, brand }`
 
-Makes Issuers.
+Makes an issuer and related objects. 
 
-The `allegedName` becomes part of the brand in asset descriptions. The `allegedName` doesn't have to be a string, but it will only be used for its value. The `allegedName` is useful for debugging and double-checking assumptions, but should not be trusted.
+The `allegedName` can be gotten from the brand in asset descriptions. The `allegedName` is useful for debugging and double-checking assumptions, but should not be trusted.
 
 The `mathHelpersName` will be used to import a specific mathHelpers from the mathHelpers library. For example, `natMathHelpers`, the default, is used for basic fungible tokens.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('fungible');
-const fungible1 = amountMath.make(1);
+const { issuer, mint, amountMath } = produceIssuer('bucks');
+// This is merely an amount, describing assets.
+const bucks2 = amountMath.make(2);
 
-const { mint, issuer, amountMath } = produceIssuer('items');
-const listAmount = amountMath.make(harden[1,2,4]);
-```
+const { mint, issuer, amountMath } = produceIssuer('alamedaCountyPropertyTitle', 'strSet');
 
-## IssuerObjs
-
-The return value of `produceIssuer`.
-
-```js
-issuer: {
-  mint: 'fungible',
-  issuer: someAmount,
-  amountMath: amountMath,
-  brand: someBrand
-}
+// These are merely amounts describing digital assets, not minting assets.
+const cornerProperty = amountMath.make(harden['1292826']);
+const adjacentProperty = amountMath.make(harden['1028393']);
+const combinedProperty = amountMath.make(harden['1292826', '1028393']);
 ```
 
 ## issuer.getBrand()
@@ -40,8 +32,9 @@ issuer: {
 Get the Brand for this Issuer. The Brand indicates the kind of digital asset and is shared by the mint, the issuer, and any purses and payments of this particular kind. The brand is not closely held, so this function should not be trusted to identify an issuer alone. Fake digital assets and amount can use another issuer's brand.
 
 ```js
-const { issuer, brand } = produceIssuer('fungible');
-const myBrand = issuer.getBrand();
+const { issuer, brand } = produceIssuer('bucks');
+const bucksBrand = issuer.getBrand();
+// brand === bucksBrand
 ```
 
 ## issuer.allegedName()
@@ -50,8 +43,9 @@ const myBrand = issuer.getBrand();
 Get the `allegedName` for this mint/issuer.
 
 ```js
-const { issuer } = produceIssuer('fungible');
-const issuerName = issuer.allegedName();
+const { issuer } = produceIssuer('bucks');
+const issuerAllegedName = issuer.getAllegedName();
+// issuerAllegedName === 'bucks'
 ```
 
 ## issuer.getAmountMath()
@@ -60,8 +54,9 @@ const issuerName = issuer.allegedName();
 Get the `AmountMath` for this Issuer.
 
 ```js
-const { issuer } = produceIssuer('fungible');
-const exampleAmountMath = issuer.getAmountMath();
+const { issuer, amountMath } = produceIssuer('bucks');
+const issuerAmountMath = issuer.getAmountMath();
+// amountMath === issuerAmountMath
 ```
 
 ## issuer.getMathHelpersName()
@@ -70,8 +65,8 @@ const exampleAmountMath = issuer.getAmountMath();
 Get the name of the MathHelpers for this Issuer.
 
 ```js
-const { issuer } = produceIssuer('fungible');
-const exampleMathHelpersName = issuer.getMathHelpersName();
+const { issuer } = produceIssuer('bucks');
+issuer.getMathHelpersName(); // 'nat'
 ```
 
 ## issuer.makeEmptyPurse()
@@ -80,33 +75,31 @@ const exampleMathHelpersName = issuer.getMathHelpersName();
 Make an empty purse of this brand.
 
 ```js
-const { issuer } = produceIssuer('fungible');
+const { issuer } = produceIssuer('bucks');
 const purse = exampleIssuer.makeEmptyPurse();
 ```
 
-## issuer.getBalance(payment)
+## issuer.getAmountOf(payment)
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
 Get payment balance. Because the payment is not trusted, we cannot call a method on it directly, and must use the issuer instead.
 
 ```js
-const { issuer, mint } = produceIssuer('fungible');
+const { issuer, mint } = produceIssuer('bucks');
 const payment = mint.mintPayment(100);
-
-// returns 100
-const currentBalance = issuer.getBalance(payment);
+issuer.getAmountOf(payment); // returns 100
 ```
 
-## issuer.burn(payment, amount)
+## issuer.burn(payment, optAmount)
 - `payment` `{Payment}`
-- `amount` `{Amount}` - Optional
+- `optAmount` `{Amount}` - Optional
 - Returns: `{Amount}`
 
-Burn all of the digital assets in the payment. `Amount` is optional. If `amount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion.
+Burn all of the digital assets in the payment. `optAmount` is optional. If `optAmount` is present, the code will insist that the payment balance is equal to `optAmount`, to prevent sending the wrong payment and other confusion.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('fungible');
+const { issuer, mint, amountMath } = produceIssuer('bucks');
 const paymentToBurn = mint.mintPayment(10);
 const amountToBurn = amountMath.make(10);
 
@@ -114,29 +107,30 @@ const amountToBurn = amountMath.make(10);
 const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
 ```
 
-## issuer.claim(payment, amount)
+## issuer.claim(payment, optAmount)
 - `payment` `{Payment}` - The original payment.
-- `amount` `{Amount}` - Optional.
+- `optAmount` `{Amount}` - Optional.
 - Returns: `{Payment}` - The new payment.
 
-Transfer all digital assets from the payment to a new payment and delete the original. `amount` is optional. If `amount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion. If `amount` does not equal the balance in the original payment then it will throw an error.
+Transfer all digital assets from the payment to a new payment and delete the original. `optAmount` is optional. If `optAmount` is present, the code will insist that the payment balance is equal to `amount`, to prevent sending the wrong payment and other confusion. If `optAmount` does not equal the balance in the original payment then it will throw an error.
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('fungible');
+const { mint, issuer, amountMath } = produceIssuer('bucks');
 const originalPayment = mint.mintPayment(2);
-const amountExpectedToTransfer = amountMath.make(837);
+const amountExpectedToTransfer = amountMath.make(2);
 
 const newPayment = issuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## issuer.combine(paymentsArray)
 - `paymentsArray` `{Array <Payment>}`
+- `optTotalAmount` `{Amount}` - Optional.
 - Returns: `{Payment}`
 
 Combine multiple payments into one payment.
 
 ```js
-const { mint, issuer } = produceIssuer('fungible');
+const { mint, issuer } = produceIssuer('bucks');
 
 // create an array of payments where the total value of all elements equals 100
 const payments = [];
@@ -167,21 +161,10 @@ const badPayment = issuer.combine(payments);
 Split a single payment into two payments, A and B, according to the paymentAmountA.
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('fungible');
+const { mint, issuer, amountMath } = produceIssuer('bucks');
 const oldPayment = mint.mintPayment(20);
 
-const paymentsAandB = issuer.split(oldPayment, amountMath.make(10));
-```
-
-Note that you cannot split payments if you pass in a non-matching amount:
-
-```js
-const { mint, issuer } = produceIssuer('fungible');
-const { amountMath: otherAmount } = produceIssuer('other fungible');
-const payment = mint.mintPayment(1000);
-
-// throws error
-issuer.split(payment, otherAmount.make(10));
+const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(10));
 ```
 
 ## issuer.splitMany(payment, amountArray)

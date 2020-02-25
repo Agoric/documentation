@@ -2,8 +2,8 @@
 
 The ERTP API is divided into the following sections:
 
-- [Mint](./mint)
 - [Issuer](./issuer)
+- [Mint](./mint)
 - [Brand](./brand)
 - [Purse](./purse)
 - [Payment](./payment)
