@@ -8,7 +8,7 @@ Amounts are descriptions of digital assets, answering the questions "how much" a
 
 ```js
 someAmount: {
-  brand: 'fungible',
+  brand,
   extent: someExtent
 }
 ```
@@ -17,7 +17,7 @@ someAmount: {
 
 Extents describe the extent of something that can be owned or shared. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
-Extent must be Comparable. (This IDL doesn't yet provide a way to specify subtype relationships for structs.)
+Extent must be Comparable.
 
 ## amountMath.getBrand()
 - Returns: `{Brand}`
@@ -25,7 +25,7 @@ Extent must be Comparable. (This IDL doesn't yet provide a way to specify subtyp
 Return the brand.
 
 ```js
-const { issuer } = produceIssuer('fungible');
+const { issuer } = produceIssuer('bucks');
 const exampleAmountMath = issuer.getAmountMath();
 
 const exampleBrand = exampleAmountMath.getBrand();
@@ -37,8 +37,8 @@ const exampleBrand = exampleAmountMath.getBrand();
 Get the name of the mathHelpers used.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
-const mathHelperName = amountMath.getMathHepersName();
+const { amountMath } = produceIssuer('bucks');
+amountMath.getMathHelpersName(); // 'nat'
 ```
 
 ## amountMath.make(allegedExtent)
@@ -49,7 +49,7 @@ const mathHelperName = amountMath.getMathHepersName();
 Make an amount from an extent by adding the brand.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = produceIssuer('bucks');
 const amount837 = amountMath.make(837);
 ```
 
@@ -57,13 +57,13 @@ const amount837 = amountMath.make(837);
 - `allegedAmountOrExtent` `{Amount}`
 - Returns: `{Amount}`
 
-Make sure this amount (or extent) is valid and return it if so.
+Make sure this amount (or extent) is valid and return it as an amount if so.
 
 ```js
-const { mint, amountMath } = produceIssuer('fungible');
-const payment = mint.mintPayment(100);
+const { amountMath } = produceIssuer('bucks');
+const bucks50 = amountMath.make(50);
 
-const validPayment = amountMath.coerce(payment);
+amountMath.coerce(bucks50); // equal to bucks50
 ```
 
 ## amountMath.extent(amount)
@@ -72,7 +72,7 @@ const validPayment = amountMath.coerce(payment);
 Extract and return the extent.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = produceIssuer('bucks');
 const fungible123 = amountMath.make(123);
 
 // returns 123
@@ -85,7 +85,7 @@ const extent = amountMath.extent(amount);
 Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = produceIssuer('bucks');
 
 // Returns an empty amount for this issuer.
 // Since this is a fungible amount it returns 0
@@ -159,11 +159,11 @@ Returns a new amount that is the union of both leftAmount and rightAmount.
 For fungible amount this means adding the extents. For other kinds of amount, it usually means including all of the elements from both left and right.
 
 ```js
-const { amountMath } = produceIssuer('items');
-const listAmountA = amountMath.make(harden[1,2,4]);
-const listAmountB = amountMath.make(harden[3]);
+const { amountMath } = produceIssuer('myItems', 'strSet');
+const listAmountA = amountMath.make(harden['1','2','4']);
+const listAmountB = amountMath.make(harden['3']);
 
-// Returns [1, 2, 4, 3]
+// Returns ['1', '2', '4', '3']
 const combinedList = amountMath.add(listAmountA, listAmountB);
 ```
 
@@ -175,12 +175,12 @@ const combinedList = amountMath.add(listAmountA, listAmountB);
 Returns a new amount that is the leftAmount minus the rightAmount (i.e. everything in the leftAmount that is not in the rightAmount). If leftAmount doesn't include rightAmount (subtraction results in a negative), throw  an error. Because the left amount must include the right amount, this is NOT equivalent to set subtraction.
 
 ```js
-const { amountMath } = produceIssuer('items');
-const listAmountA = amountMath.make(harden[1,2,4]);
-const listAmountB = amountMath.make(harden[3]);
-const listAmountC = amountMath.make(harden[2]);
+const { amountMath } = produceIssuer('myItems', 'strSet');
+const listAmountA = amountMath.make(harden['1','2','4']);
+const listAmountB = amountMath.make(harden['3']);
+const listAmountC = amountMath.make(harden['2']);
 
-// Returns [1, 4]
+// Returns ['1', '4']
 const subtractedList = amountMath.subtract(listAmountA, listAmountC)
 
 // Throws error
