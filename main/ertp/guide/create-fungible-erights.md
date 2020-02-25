@@ -15,7 +15,7 @@ House ownership rights are not fungible, they are **specific**.
 
 ### Creating and sending the asset
 
-In ERTP, digital assets are created by a [`mint`](./mint.html). Having access to the mint
+In ERTP, digital assets are created by a [`mint`](./issuer#mint). Having access to the mint
 gives you the power to create more digital assets of the same type at
 will. For instance, let's say we want to create a new community
 currency called 'BaytownBucks'.
@@ -23,33 +23,42 @@ You would first install the [ertp JavaScript package](https://www.npmjs.com/pack
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import { makeMint } from '@agoric/ertp';
+import produceIssuer from '@agoric/ertp';
+import harden from '@agoric/harden';
 
-const baytownBucksMint = makeMint('BaytownBucks');
+const { mint: baytownBucksMint, issuer } = produceIssuer('BaytownBucks');
 ```
 
 Great! Now let's use our mint to create 1000 new BaytownBucks.
 
 ```js
-const baytownBucksAssay = baytownBucksMint.getAssay();
-const baytownBucks = baytownBucksAssay.makeUnits;
-const purse = baytownBucksMint.mint(baytownBucks(1000), 'community treasury');
+const baytownBucks = issuer.getAmountMath().make;
+const payment = baytownBucksMint.mintPayment(baytownBucks(1000), 'community treasury');
 ```
 
-The act of minting created 1000 BaytownBucks and stored them together in a
-`purse`. [Purses](./mint.html#purses) in ERTP only hold one type of digital asset, so this
-purse can only ever hold BaytownBucks.
+The act of minting created 1000 BaytownBucks and stored them together in a 
+`payment`.
+
+[`Payment`s](./issuer#payments) are objects that are meant to be exchanged. On the 
+other hand, if you want to store the asset for some time before exchanging it, you can 
+store it in a [`Purse`](./issuer#purses).
+Let's store our payment in a purse!
+
+```js
+const myPurse = issuer.makeEmptyPurse();
+console.log(myPurse.getBalance().extent); // 0
+
+myPurse.deposit(payment);
+console.log(myPurse.getBalance().extent); // 1000
+```
+
 
 Let's distribute the BaytownBucks to members of the community. To send
 money in ERTP, we withdraw [`payments`](./mint.html#payments) from purses.
 
 ```js
-const paymentForAlice = purse.withdraw(10, `alice's community money`);
+const paymentForAlice = myPurse.withdraw(35, `alice's community money`);
 ```
-
-Like our purse, this payment contains BaytownBucks, but unlike purses,
-payments are used to represent tokens in transit. A payment can be
-sent to someone else, a purse never should be.
 
 Now let's send the payment to Alice as a message:
 
@@ -70,25 +79,24 @@ However, she does not need access to `baytownBucksMint`.
 If she had access to it, she could create baytownBucks herself by calling `baytownBucksMint.mint`.
 
 ```js
-const myBaytownBucksPurse = baytownBucksAssay.makeEmptyPurse()
+const myBaytownBucksPurse = issuer.makeEmptyPurse();
 
-myBaytownBucksPurse.getBalance(); // 0
+console.log(myBaytownBucksPurse.getBalance().extent); // 0
 
 const alice = {
     receivePayment(allegedBaytownBucksPayment){
-        myBaytownBucksPurse.depositAll(allegedBaytownBucksPayment)
+        myBaytownBucksPurse.deposit(allegedBaytownBucksPayment)
     }
 }
 ```
 
 And just like that, when `alice.receivePayment(paymentForAlice)` from earlier 
-is called, Alice accumulates the 1000 payment in her purse.
+is called, Alice accumulates the 35 payment in her purse.
 
-When alice wants to exchange something for 300 BaytownBucks, she creates a payment from her purse:
+When alice wants to exchange something for 13 BaytownBucks, she creates a payment from her purse:
 ```js
-const baytownBucksAssay = baytownBucksMint.getAssay();
-const baytownBucks = baytownBucksAssay.makeUnits;
-const payment = myBaytownBucksPurse.withdraw(baytownBucks(300));
+const baytownBucks = issuer.getAmountMath().make;
+const payment = myBaytownBucksPurse.withdraw(baytownBucks(13));
 ```
 
 This came naturally without having to express "which" 300 she wanted to withdraw.
@@ -102,9 +110,9 @@ How does Alice know that she got paid real money? She could have been
 sent fake money, or she could have been sent money that was
 [double-spent](https://en.wikipedia.org/wiki/Double-spending).
 
-When alice receives an alleged payment, she calls `myBaytownBucksPurse.depositAll`.
+When alice receives an alleged payment, she calls `myBaytownBucksPurse.deposit`.
 This function first checks that its argument is a genuine payment object of the same
-assay as the purse. If it's the case, the amount ("extent") is transfered in full
+assay as the purse. If it's the case, the amount is transfered in full
 from the payment to the purse. If there is a mismatch, the method throws an error.
 
 After the method call succeeded, ERTP guarantees that:
@@ -115,10 +123,10 @@ After the method call throws, ERTP guarantees that:
 - the alleged payment is in the same state as before the call
 - the purse is in the same state as before the call
 
-The BaytownBucksAssay is associated with the BaytownBucksMint, but
-the assay is the public-facing version that is accessible to anyone.
+The issuer is associated with the mint, but
+the issuer is the public-facing version that is accessible to anyone.
 By holding the reference to a mint, you can mint more tokens. By
-holding a reference to the assay for a mint, you can check that a
-payment is valid and exclusively claim it (`baytownBucksAssay.claimAll`)
+holding a reference to the issuer for a mint, you can check that a
+payment is valid and exclusively claim it (`issuer.claim`)
 in a new payment to yourself or deposit it in a purse of 
-yours (`myBaytownBucksPurse.depositAll`).
+yours (`myBaytownBucksPurse.deposit`).

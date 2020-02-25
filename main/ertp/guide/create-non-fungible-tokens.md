@@ -13,9 +13,8 @@ A deal involving a specific painting would not be satisfied by another painting.
 
 ### Modeling and creating the asset
 
-In ERTP, digital assets are created by a [`mint`](./mint.html). Having access to the mint
-gives you the power to create more digital assets of the same type at
-will.
+In ERTP, digital assets are created by a [`mint`](./issuer#mint). Having access to the mint
+gives you the power to create more digital assets of the same type at will.
 
 Let's say we own an Opera and want to sell tickets to seats for ballet shows. Tickets are
 the non-fungible assets we want to represent. Tickets refer to a specific seat for a specific 
@@ -25,31 +24,10 @@ To do that, you would first install the [ertp JavaScript package](https://www.np
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import { makeMint } from '@agoric/ertp';
-
+import produceIssuer from '@agoric/ertp';
 import harden from '@agoric/harden';
 
-import { noCustomization } from '@agoric/ertp/core/config/noCustomization.js';
-import { makeCoreMintKeeper } from '@agoric/ertp/core/config/coreMintKeeper';
-
-import { insist } from '@agoric/insist';
-import { mustBeComparable } from '@agoric/same-structure';
-
-const insistOptDescription = optDescription => {
-  insist(!!optDescription)`optDescription must be truthy ${optDescription}`;
-  mustBeComparable(optDescription);
-};
-
-function makeBalletTicketConfig() {
-  return harden({
-    ...noCustomization,
-    makeMintKeeper: makeCoreMintKeeper,
-    extentOpsName: 'uniExtentOps',
-    extentOpsArgs: [insistOptDescription],
-  });
-}
-
-const balletTicketMint = makeMint('Agoric Ballet Opera tickets', makeBalletTicketConfig);
+const { mint, issuer } = produceIssuer('Agoric Ballet Opera tickets', 'set');
 ```
 
 At this Opera, there are [1114](https://fr.wikipedia.org/wiki/Grand_Th%C3%A9%C3%A2tre_(Bordeaux)#Salle_de_spectacle) seats numbered `1` to `1114`.
@@ -60,20 +38,23 @@ Objects that represent valid tickets will have the following properties:
 
 Let's create the tickets in ERTP!
 The first step is to create JavaScript objects, each representing a ticket.
-Then, only [units](https://agoric.com/documentation/ertp/guide/units.html) can be minted, so let's create units from the JavaScript objects and then, let's mint the tickets!
+Then, only [amounts](./amounts) can be minted, so let's create amounts from the JavaScript objects and then, let's mint the tickets!
 
 ```js
 const startDateString = (new Date(2019, 11, 9, 20, 30)).toISOString();
 
-const ticketObjects = Array(1114).fill().map((_, i) => ({
-  seat: i+1,
-  show: 'The Sofa',
-  start: startDateString,
-}))
+const ticketDescriptionObjects = Array(1114).fill()
+  .map((_, i) => ({
+    seat: i + 1,
+    show: 'The Sofa',
+    start: startDateString,
+  }));
 
-const ticketUnits = ticketObjects.map(ticketExtent => balletTicketMint.getAssay().makeUnits(ticketExtent));
-
-const balletTicketPurses = ticketUnits.map(ticketUnit => balletTicketMint.mint(ticketUnit))
+const balletTicketPayments = ticketDescriptionObjects.map(
+  ticketDescription => balletTicketMint.mintPayment(
+    issuer.getAmountMath().make(harden([ticketDescription]))
+  )
+);
 ```
 
-For each ticket unit, we've created a [purse](https://agoric.com/documentation/ertp/api/purse.html) which contains the corresponding unit. These purses can later be transformed into [payments](https://agoric.com/documentation/ertp/api/payment.html) via a call to `balletTicketPurse.withdrawAll()`. This payment can then be bought and sold and used in smart contracts.
+For each ticket amount, a [payment](../api/payment.md) which contains the corresponding amount. These payments can then be used in smart contracts.
