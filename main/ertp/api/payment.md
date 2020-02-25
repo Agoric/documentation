@@ -12,7 +12,7 @@ Get the allegedBrand, indicating the kind of digital asset this payment purports
 
 ```js
 const { issuer, mint, brand } = produceIssuer('fungible');
-const payment = mint.mintPayment(10)
+const payment = mint.mintPayment(10);
 
-const officialBrand = payment.allegedBrand()
+const officialBrand = payment.allegedBrand();
 ```

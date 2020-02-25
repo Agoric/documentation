@@ -9,7 +9,7 @@ The primary use for Purses and Payments is for currency-like and goods-like digi
 Get the Issuer for this mint.
 
 ```js
-const purseIssuer = purse.getIssuer()
+const purseIssuer = purse.getIssuer();
 ```
 
 ## purse.getBalance()
@@ -33,16 +33,16 @@ Deposit all the contents of `srcPayment` into this purse, returning the `amount`
 
 ```js
 const { issuer, mint } = produceIssuer('fungible');
-const purse = issuer.makeEmptyPurse()
-const payment = mint.mintPayment(123)
-const fungible123 = amountMath.make(123)
+const purse = issuer.makeEmptyPurse();
+const payment = mint.mintPayment(123);
+const fungible123 = amountMath.make(123);
 
 // Deposit a payment for 123 amount into the purse. Ensure that this is the amount you expect.
-purse.deposit(payment, fungible123)
+purse.deposit(payment, fungible123);
 
-const secondPayment = mint.mintPayment(100)
+const secondPayment = mint.mintPayment(100);
 // Throws error
-purse.deposit(secondPayment, fungible123)
+purse.deposit(secondPayment, fungible123);
 
 ```
 
@@ -55,18 +55,18 @@ Withdraw the `amount` from this purse into a new Payment.
 ```js
 // Create a purse with a balance of 10 amount
 const { issuer, mint } = produceIssuer('fungible');
-const purse = issuer.makeEmptyPurse()
-const payment = mint.mintPayment(10)
-const fungible10 = amountMath.make(10)
-purse.deposit(payment, fungible10)
+const purse = issuer.makeEmptyPurse();
+const payment = mint.mintPayment(10);
+const fungible10 = amountMath.make(10);
+purse.deposit(payment, fungible10);
 
 // Withdraw 3 amount from the purse
-const fungible3 = amountMath.make(3)
-const withdrawalPayment = purse.withdraw(fungible3)
+const fungible3 = amountMath.make(3);
+const withdrawalPayment = purse.withdraw(fungible3);
 
 // The balance of the withdrawal payment is 3 amount
-issuer.getBalance(withdrawalPayment)
+issuer.getBalance(withdrawalPayment);
 
 // The new balance of the purse is 7 amount
-purse.getBalance()
+purse.getBalance();
 ```

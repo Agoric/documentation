@@ -50,10 +50,11 @@ module.exports = {
           children: [
             '/ertp/guide/',
             '/ertp/guide/getting-started',
-            '/ertp/guide/mint',
             '/ertp/guide/issuer',
+            '/ertp/guide/brand',
             '/ertp/guide/amounts',
             '/ertp/guide/amount-math',
+            '/ertp/guide/math-helpers',
             '/ertp/guide/default-configuration',
             '/ertp/guide/contract-hosts',
             '/ertp/guide/other-concepts'
@@ -65,9 +66,9 @@ module.exports = {
           collapsable: false,
           sideBarDepth: 3,
           children: [
+            '/ertp/api/issuer',
             '/ertp/api/mint',
             '/ertp/api/brand',
-            '/ertp/api/issuer',
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/amount-math',

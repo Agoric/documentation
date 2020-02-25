@@ -4,7 +4,9 @@ The ERTP API is divided into the following sections:
 
 - [Mint](./mint)
 - [Issuer](./issuer)
+- [Brand](./brand)
 - [Purse](./purse)
 - [Payment](./payment)
-- [ExtentOps](./extentops)
-- [UnitOps](./unit-ops)
+- [AmountMath](./amount-math)
+- [MathHelpers](./math-helpers)
+- [ContractHosts](./contract-hosts)

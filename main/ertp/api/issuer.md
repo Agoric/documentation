@@ -15,10 +15,10 @@ The `mathHelpersName` will be used to import a specific mathHelpers from the mat
 
 ```js
 const { issuer, mint, amountMath } = produceIssuer('fungible');
-const fungible1 = amountMath.make(1)
+const fungible1 = amountMath.make(1);
 
 const { mint, issuer, amountMath } = produceIssuer('items');
-const listAmount = amountMath.make(harden[1,2,4])
+const listAmount = amountMath.make(harden[1,2,4]);
 ```
 
 ## IssuerObjs
@@ -54,7 +54,7 @@ const { issuer } = produceIssuer('fungible');
 const issuerName = issuer.allegedName();
 ```
 
-## issuer.getAmountMath()g
+## issuer.getAmountMath()
 - Returns: `{AmountMath}`
 
 Get the `AmountMath` for this Issuer.
@@ -92,7 +92,7 @@ Get payment balance. Because the payment is not trusted, we cannot call a method
 
 ```js
 const { issuer, mint } = produceIssuer('fungible');
-const payment = mint.mintPayment(100)
+const payment = mint.mintPayment(100);
 
 // returns 100
 const currentBalance = issuer.getBalance(payment);
@@ -107,11 +107,11 @@ Burn all of the digital assets in the payment. `Amount` is optional. If `amount`
 
 ```js
 const { issuer, mint, amountMath } = produceIssuer('fungible');
-const paymentToBurn = mint.mintPayment(10)
-const amountToBurn = amountMath.make(10)
+const paymentToBurn = mint.mintPayment(10);
+const amountToBurn = amountMath.make(10);
 
 // burntAmount should equal 10
-const burntAmount = issuer.burn(paymentToBurn, amountToBurn)
+const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
 ```
 
 ## issuer.claim(payment, amount)
@@ -123,10 +123,10 @@ Transfer all digital assets from the payment to a new payment and delete the ori
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('fungible');
-const originalPayment = mint.mintPayment(2)
-const amountExpectedToTransfer = amountMath.make(837)
+const originalPayment = mint.mintPayment(2);
+const amountExpectedToTransfer = amountMath.make(837);
 
-const newPayment = issuer.claim(originalPayment, amountToTransfer)
+const newPayment = issuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## issuer.combine(paymentsArray)
@@ -145,18 +145,18 @@ for (let i = 0; i < 100; i += 1) {
 }
 
 // combinedPayment equals 100
-const combinedPayment = issuer.combine(payments)
+const combinedPayment = issuer.combine(payments);
 ```
 
 Note that you cannot combine payments from different mints:
 
 ```js
 const { mint: otherMint } = produceIssuer('other fungible');
-const otherPayment = otherMint.mintPayment(10)
-payments.push(otherPayment) // using the payments array from the above code
+const otherPayment = otherMint.mintPayment(10);
+payments.push(otherPayment); // using the payments array from the above code
 
 // throws error
-const badPayment = issuer.combine(payments)
+const badPayment = issuer.combine(payments);
 ```
 
 ## issuer.split(payment, paymentAmountA)
@@ -170,7 +170,7 @@ Split a single payment into two payments, A and B, according to the paymentAmoun
 const { mint, issuer, amountMath } = produceIssuer('fungible');
 const oldPayment = mint.mintPayment(20);
 
-const paymentsAandB = issuer.split(oldPayment, amountMath.make(10))
+const paymentsAandB = issuer.split(oldPayment, amountMath.make(10));
 ```
 
 Note that you cannot split payments if you pass in a non-matching amount:
@@ -181,7 +181,7 @@ const { amountMath: otherAmount } = produceIssuer('other fungible');
 const payment = mint.mintPayment(1000);
 
 // throws error
-issuer.split(payment, otherAmount.make(10))
+issuer.split(payment, otherAmount.make(10));
 ```
 
 ## issuer.splitMany(payment, amountArray)
@@ -196,7 +196,7 @@ const { mint, issuer, amountMath } = produceIssuer('fungible');
 const oldPayment = mint.mintPayment(100);
 const goodAmounts = Array(10).fill(amountMath.make(10));
 
-const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts)
+const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts);
 ```
 
 Note that the total amount in the `amountArray` must equal the amount in the original `payment`:
@@ -209,5 +209,5 @@ const payment = mint.mintPayment(1000);
 const badAmounts = Array(2).fill(amountMath.make(10));
 
 // throws error
-issuer.splitMany(payment, badAmounts)
+issuer.splitMany(payment, badAmounts);
 ```
