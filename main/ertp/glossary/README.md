@@ -1,22 +1,11 @@
 # ERTP Glossary
 
-## Alleged `<item>`
-`allegedName`, `allegedExtent`, `allegedUnits`
-
-Because there is no assurance when you receive an object from someone that it is the thing you were hoping to get, or vice versa, we initially refer to them as "alleged".
-
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
 not be trusted as an accurate depiction, since it is provided by
 the maker of the mint and could be deceptive, but is useful for debugging and double-checking.
 
 The AllegedName must be Comparable.
-
-## AllegedExtent
-The alleged amount or description of a unique asset. See [Extent](#extent) for full definition.
-
-## AllegedUnits
-The alleged description of tradeable goods. See [Unit](#unit) for full definition.
 
 ## AmountMath
 AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
@@ -27,8 +16,8 @@ by issuers and mints, and represent the goods and currency carried by purses and
 payments. They can be used to represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-## Assay
-An Assay represents the identity of an issuer. Holding an Assay provides the ability to create units and empty purses, but confers no rights. It is also the mechanism used to get exclusive access to a Purse or Payment that you already hold, or to burn some or all of the contained rights.
+### Composition
+`Brand` + `Extent`
 
 ## AssetHolder
 Purses and Payments are AssetHolders.
@@ -44,32 +33,24 @@ Extents describe the extent of something that can be owned or shared: How much, 
 
 Extent must be Comparable.
 
-## ExtentOps
-“Arithmetic” operations on Extents. All of the difference in how a unitOps behaves can be reduced to the behavior of the set operations on extents (think: arithmetic) such as `empty`, `with`, `without`, `includes`, etc. We extract this custom logic into an extentOps. ExtentOps are about extent arithmetic, whereas UnitOps are about Units, which are labeled extents. UnitOps use ExtentOps to do their extent arithmetic, and then label the results, making new Units
+## Issuer
+Can create empty purses and payments, but it cannot mint new amounts. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
 
-## Label
-The label in units identifies the assay, and includes an allegedName that was provided by the maker of the mint.
-
-### Composition
-`AllegedName (made by maker of mint) + Assay`
+## MathHelpers
+Arithmetic on extents. MathHelpers are used by AmountMath to do their extent arithmetic, and then brand the result, making a new amount.
 
 ## Mint
-The autority to mint. The right to control issuance and destruction of purses and payments containing `units` of a particular currency.
+The autority to mint. The right to control issuance and destruction of purses and payments containing `amounts` of a particular currency.
 
 ## Purse
-An [AssetHolder](#assetholder). Purses hold verified units of certain rights issued by Mints, specifically units that are _stationary_. Purses can transfer part of the balance they hold in a [payment](#payment), which has a narrower interface. [Purse API](/ertp/api/mint.html#purse)
+An [AssetHolder](#assetholder). Purses hold verified amounts of certain rights issued by Mints, specifically amounts that are _stationary_. Purses can transfer part of the balance they hold in a payment, which has a narrower interface.
+
+See more: [Purse API](/ertp/api/purse.md)
 
 ## Payment
-An [AssetHolder](#assetholder). Payments hold verified units of certain rights issued by Mints, specifically units that are in _transit_. Units from payments can be deposited in [purses](#purse), but otherwise, the entire unit is available when the payment is transferred. Payments can be converted to Purses. [Payment API](/ertp/api/mint.html#payment)
+An [AssetHolder](#assetholder). Payments hold verified amounts of certain rights issued by Mints, specifically amounts that are in _transit_. Amounts from payments can be deposited in purses, but otherwise, the entire amount is available when the payment is transferred. Payments can be converted to Purses.
 
-## Unit
-Units are the canonical description of tradeable goods. They are manipulated by mints, and represent the goods and currency carried by purses and payments. They can be used to represent things like currency, stock, and the abstract right to participate in a particular exchange.
-
-### Composition
-`Label + Extent`
-
-## UnitOps
- "Arithmetic" operations on [Units](#unit), used for actions like withdrawing a payment from a purse. All of the custom behavior is stored in the ExtentOps, allowing for UnitOps to be polymorphic, exposing the same interface while allowing custom behavior.
+See more: [Payment API](/ertp/api/payment.md)
 
 ## UseObj
 A object associated with purses and payments that has custom behavior associated with the use of digital assets
