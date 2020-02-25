@@ -7,6 +7,5 @@ Requires Node.js >= 11.0.
 ## Installation
 
 ```bash
-$ npm install
-$ npm test
+$ yarn add @agoric/ertp
 ```
