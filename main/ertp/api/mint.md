@@ -1,6 +1,8 @@
 # Mint
 
-Holding a Mint carries the right to issue new digital assets. These assets all have the same kind, which is called a [`Brand`](./brand.md).
+Only the mint can issue new digital assets, so only the holder of the mint can
+create new digital assets. These assets all have the same kind, which is called a
+[`Brand`](./brand.md).
 
 ## mint.getIssuer()
 - Returns: `{Issuer}`
@@ -8,8 +10,7 @@ Holding a Mint carries the right to issue new digital assets. These assets all h
 Get the Issuer for this mint.
 
 ```js
-const { issuer, mint } = produceIssuer('fungible');
-
+const { issuer, mint } = produceIssuer('bucks');
 const mintIssuer = mint.getIssuer();
 
 // returns true
