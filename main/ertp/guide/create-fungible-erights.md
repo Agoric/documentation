@@ -23,7 +23,7 @@ You would first install the [ertp JavaScript package](https://www.npmjs.com/pack
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import { makeMint } from '@agoric/ertp/core/mint';
+import { makeMint } from '@agoric/ertp';
 
 const baytownBucksMint = makeMint('BaytownBucks');
 ```

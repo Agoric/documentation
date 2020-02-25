@@ -133,7 +133,6 @@ When a client is started up, it has a few items in a record named home.
 * registrar: a public directory for published objects
 * localTimerService and chainTimerService: tools for scheduling
 * [zoe](/zoe/guide/): support for contracts with Offer-Safety Enforcement
-* [contractHost](/ertp/guide/contract-hosts): secure smart contracts
 
 ### sharingService
 

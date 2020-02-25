@@ -1,5 +1,7 @@
 # Zoe Roadmap
 
+<Zoe-Version/>
+
 Here's a number of features that we are planning to add in the near
 future to Zoe, in response to user feedback.
 

@@ -1,5 +1,7 @@
 # Structs
 
+<Zoe-Version/>
+
 ## SeatAndPayout
 
 This is returned by a call to `redeem` on Zoe. A seat is an arbitrary object whose methods allow the user to take certain actions. The payout is a promise that resolves to an array of promises for payments. Note that while the payout promise resolves when an offer is completed, the promise for each payment resolves after the remote issuer successfully withdraws the payment.

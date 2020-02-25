@@ -25,15 +25,15 @@ To do that, you would first install the [ertp JavaScript package](https://www.np
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import { makeMint } from '@agoric/ertp/core/mint';
+import { makeMint } from '@agoric/ertp';
 
 import harden from '@agoric/harden';
 
 import { noCustomization } from '@agoric/ertp/core/config/noCustomization.js';
 import { makeCoreMintKeeper } from '@agoric/ertp/core/config/coreMintKeeper';
 
-import { insist } from '@agoric/ertp/util/insist';
-import { mustBeComparable } from '@agoric/ertp/util/sameStructure';
+import { insist } from '@agoric/insist';
+import { mustBeComparable } from '@agoric/same-structure';
 
 const insistOptDescription = optDescription => {
   insist(!!optDescription)`optDescription must be truthy ${optDescription}`;

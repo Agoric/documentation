@@ -1,5 +1,7 @@
 # Zoe Contract Facet
 
+<Zoe-Version/>
+
 ## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
 - `reallocation` `{Array <Array <Amount>>}`

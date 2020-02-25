@@ -1,5 +1,7 @@
 # AutoSwap
 
+<Zoe-Version/>
+
 An AutoSwap is like a swap, except instead of having to find a
 matching offer, an offer is always matched against the existing
 liquidity pool. The AutoSwap contract checks whether your offer will
