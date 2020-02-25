@@ -9,4 +9,3 @@ The ERTP API is divided into the following sections:
 - [Payment](./payment)
 - [AmountMath](./amount-math)
 - [MathHelpers](./math-helpers)
-- [ContractHosts](./contract-hosts)

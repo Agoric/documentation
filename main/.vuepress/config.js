@@ -55,7 +55,6 @@ module.exports = {
             '/ertp/guide/amounts',
             '/ertp/guide/amount-math',
             '/ertp/guide/math-helpers',
-            '/ertp/guide/default-configuration',
             '/ertp/guide/other-concepts'
           ]
         },
@@ -72,7 +71,6 @@ module.exports = {
             '/ertp/api/payment',
             '/ertp/api/amount-math',
             '/ertp/api/math-helpers',
-            '/ertp/api/contract-hosts'
           ]
         },
         {
