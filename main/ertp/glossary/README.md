@@ -33,6 +33,9 @@ An Assay represents the identity of an issuer. Holding an Assay provides the abi
 ## AssetHolder
 Purses and Payments are AssetHolders.
 
+## Brand
+Identifies the kind of issuer.
+
 ## ContractHost
 A platform for evaluating contract code and handing out seats in that contract. A way to install and run verifiable contracts.
 

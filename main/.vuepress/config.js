@@ -52,7 +52,6 @@ module.exports = {
             '/ertp/guide/getting-started',
             '/ertp/guide/mint',
             '/ertp/guide/issuer',
-            '/ertp/guide/extent',
             '/ertp/guide/amounts',
             '/ertp/guide/amount-math',
             '/ertp/guide/default-configuration',
@@ -67,11 +66,12 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/api/mint',
+            '/ertp/api/brand',
             '/ertp/api/issuer',
             '/ertp/api/purse',
             '/ertp/api/payment',
-            '/ertp/api/math-helpers',
             '/ertp/api/amount-math',
+            '/ertp/api/math-helpers',
             '/ertp/api/contract-hosts'
           ]
         },
