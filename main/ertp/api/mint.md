@@ -1,6 +1,6 @@
 # Mint
 
-Holding a Mint carries the right to issue new digital assets. These assets all have the same kind, which is called a `Brand`.
+Holding a Mint carries the right to issue new digital assets. These assets all have the same kind, which is called a [`Brand`](./brand.md).
 
 ## mint.getIssuer()
 - Returns: `{Issuer}`
