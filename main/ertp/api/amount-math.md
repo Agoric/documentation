@@ -28,7 +28,7 @@ Return the brand.
 const { issuer } = produceIssuer('fungible');
 const exampleAmountMath = issuer.getAmountMath();
 
-const exampleBrand = exampleAmountMath.getBrand()
+const exampleBrand = exampleAmountMath.getBrand();
 ```
 
 ## amountMath.getMathHelpersName()
@@ -38,7 +38,7 @@ Get the name of the mathHelpers used.
 
 ```js
 const { amountMath } = produceIssuer('fungible');
-const mathHelperName = amountMath.getMathHepersName()
+const mathHelperName = amountMath.getMathHepersName();
 ```
 
 ## amountMath.make(allegedExtent)
@@ -50,7 +50,7 @@ Make an amount from an extent by adding the brand.
 
 ```js
 const { amountMath } = produceIssuer('fungible');
-const amount837 = amountMath.make(837)
+const amount837 = amountMath.make(837);
 ```
 
 ## amountMath.coerce(allegedAmountOrExtent)
@@ -61,9 +61,9 @@ Make sure this amount (or extent) is valid and return it if so.
 
 ```js
 const { mint, amountMath } = produceIssuer('fungible');
-const payment = mint.mintPayment(100)
+const payment = mint.mintPayment(100);
 
-const validPayment = amountMath.coerce(payment)
+const validPayment = amountMath.coerce(payment);
 ```
 
 ## amountMath.extent(amount)
@@ -73,10 +73,10 @@ Extract and return the extent.
 
 ```js
 const { amountMath } = produceIssuer('fungible');
-const fungible123 = amountMath.make(123)
+const fungible123 = amountMath.make(123);
 
 // returns 123
-const extent = amountMath.extent(amount)
+const extent = amountMath.extent(amount);
 ```
 
 ## amountMath.getEmpty()
@@ -101,7 +101,7 @@ Return true if the amount is empty. Otherwise false.
 ```js
 const { amountMath } = produceIssuer('fungible');
 const empty = amountMath.getEmpty();
-const fungible1 = amountMath.make(1)
+const fungible1 = amountMath.make(1);
 
 // returns true
 amountMath.isEmpty(empty)
@@ -120,13 +120,13 @@ Returns true if the leftAmount is greater than or equal to the rightAmount. For 
 ```js
 const { amountMath } = produceIssuer('fungible');
 const empty = amountMath.getEmpty();
-const fungible1 = amountMath.make(1)
+const fungible1 = amountMath.make(1);
 
 // Returns true
-amountMath.isGTE(fungible1, empty)
+amountMath.isGTE(fungible1, empty);
 
 // Returns false
-amountMath.isGTE(empty, fungible1)
+amountMath.isGTE(empty, fungible1);
 ```
 
 ## amountMath.isEqual(leftAmount, rightAmount)
@@ -139,14 +139,14 @@ Returns true if the leftAmount equals the rightAmount. We assume that if isGTE i
 ```js
 const { amountMath } = produceIssuer('fungible');
 const empty = amountMath.getEmpty();
-const fungible1 = amountMath.make(1)
-const anotherFungible1 = amountMath.make(1)
+const fungible1 = amountMath.make(1);
+const anotherFungible1 = amountMath.make(1);
 
 // Returns true
-amountMath.isEqual(fungible1, anotherFungible1)
+amountMath.isEqual(fungible1, anotherFungible1);
 
 // Returns false
-amountMath.isEqual(empty, fungible1)
+amountMath.isEqual(empty, fungible1);
 ```
 
 ## amountMath.add(leftAmount, rightAmount)

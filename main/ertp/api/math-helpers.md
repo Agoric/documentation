@@ -10,22 +10,22 @@ Check the kind of this extent and throw if it is not the expected kind.
 ```js
 // Get the extent for a fungible issuer
 const { issuer, amountMath } = produceIssuer('fungible');
-const amount = amountMath.make(10)
-const fungibleExtent = amountMath.extent(amount)
+const amount = amountMath.make(10);
+const fungibleExtent = amountMath.extent(amount);
 
 // Get the mathHelper for a fungible issuer
-const fungibleMathHelper = issuer.getMathHelpersName()
+const fungibleMathHelper = issuer.getMathHelpersName();
 
 // Get the extent for a liquidity issuer
 const { issuerL, amountMathL } = produceIssuer('liquidity');
-const amountL = amountMathL.make(10)
-const liquidityExtent = amountMathL.extent(amountL)
+const amountL = amountMathL.make(10);
+const liquidityExtent = amountMathL.extent(amountL);
 
 // Check passes
-fungibleMathHelper.doAssertKind(fungibleExtent)
+fungibleMathHelper.doAssertKind(fungibleExtent);
 
 // Throws error
-fungibleMathHelper.doAssertKind(liquidityExtent)
+fungibleMathHelper.doAssertKind(liquidityExtent);
 ```
 
 ## mathHelpers.doGetEmpty()
@@ -49,7 +49,7 @@ Is this an empty extent?
 Mathematically, this determines if the extent is the identity element for the addition operation.
 
 ```js
-mathHelper.doIsEmpty(amountMath.getExtent(amount))
+mathHelper.doIsEmpty(amountMath.getExtent(amount));
 ```
 
 ## mathHelpers.doIsGTE(left, right)
@@ -63,7 +63,7 @@ Is the left greater than or equal to the right?
 helpers.doIsGTE(
   amountMath.getExtent(leftAmount),
   amountMath.getExtent(rightAmount),
-)
+);
 ```
 
 ## mathHelpers.doIsEqual(left, right)
@@ -77,7 +77,7 @@ Does left equal right?
 helpers.doIsEqual(
   amountMath.getExtent(leftAmount),
   amountMath.getExtent(rightAmount),
-)
+);
 ```
 
 ## mathHelpers.doAdd(left, right)
@@ -91,7 +91,7 @@ Return the left combined with the right.
 const combinedExtent = helpers.doAdd(
   amountMath.getExtent(leftAmount),
   amountMath.getExtent(rightAmount),
-)
+);
 ```
 
 ## mathHelpers.doSubtract(left, right)
@@ -102,5 +102,5 @@ const combinedExtent = helpers.doAdd(
 Return what remains after removing the right from the left. If the result is negative (i.e. something in the right was not in the left) we throw an error.
 
 ```js
-const remainingExtent = helpers.doSubtract(leftExtent, rightExtent)
+const remainingExtent = helpers.doSubtract(leftExtent, rightExtent);
 ```

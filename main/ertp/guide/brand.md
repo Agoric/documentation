@@ -1,12 +1,12 @@
-# Label
+# Brand
 
-The label in units identifies the assay, and includes an `allegedName`
+The "brand" in `amounts` identifies the `issuer`, and includes an `allegedName`
 that was provided by the maker of the mint.
 
 ```js
-const label = {
+const brand = {
   allegedName: 'bucks',
-  assay: bucksAssay,
+  issuer: bucksIssuer,
 }
 ```
 

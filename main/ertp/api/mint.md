@@ -10,10 +10,10 @@ Get the Issuer for this mint.
 ```js
 const { issuer, mint } = produceIssuer('fungible');
 
-const mintIssuer = mint.getIssuer()
+const mintIssuer = mint.getIssuer();
 
 // returns true
-Object.is(issuer, mintIssuer)
+Object.is(issuer, mintIssuer);
 ```
 
 ## mint.mintPayment(newAmount)
