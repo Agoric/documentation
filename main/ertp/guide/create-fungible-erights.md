@@ -57,7 +57,7 @@ Let's distribute the BaytownBucks to members of the community. To send
 money in ERTP, we withdraw [`payments`](./mint.html#payments) from purses.
 
 ```js
-const paymentForAlice = myPurse.withdraw(35, `alice's community money`);
+const paymentForAlice = myPurse.withdraw(35);
 ```
 
 Now let's send the payment to Alice as a message:
