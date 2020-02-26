@@ -49,7 +49,7 @@ const myPurse = issuer.makeEmptyPurse();
 console.log(myPurse.getBalance().extent); // 0
 
 myPurse.deposit(payment);
-console.log(myPurse.getBalance().extent); // 1000
+console.log(myPurse.getCurrentAmount().extent); // 1000
 ```
 
 
