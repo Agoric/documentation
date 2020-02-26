@@ -99,7 +99,7 @@ const baytownBucks = issuer.getAmountMath().make;
 const payment = myBaytownBucksPurse.withdraw(baytownBucks(13));
 ```
 
-This came naturally without having to express "which" 300 she wanted to withdraw.
+This came naturally without having to express "which" 13 she wanted to withdraw.
 
 And this is how fungible assets work in ERTP!
 
