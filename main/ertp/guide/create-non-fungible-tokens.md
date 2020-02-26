@@ -57,4 +57,4 @@ const balletTicketPayments = ticketDescriptionObjects.map(
 );
 ```
 
-For each ticket amount, a [payment](../api/payment.md) which contains the corresponding amount. These payments can then be used in smart contracts.
+For each ticket amount, we've created a [payment](../api/payment.md) which contains the corresponding amount. These payments can then be used in smart contracts.
