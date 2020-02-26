@@ -46,7 +46,7 @@ Let's store our payment in a purse!
 
 ```js
 const myPurse = issuer.makeEmptyPurse();
-console.log(myPurse.getBalance().extent); // 0
+console.log(myPurse.getCurrentAmount().extent); // 0
 
 myPurse.deposit(payment);
 console.log(myPurse.getCurrentAmount().extent); // 1000
@@ -115,11 +115,11 @@ This function first checks that its argument is a genuine payment object of the 
 assay as the purse. If it's the case, the amount is transfered in full
 from the payment to the purse. If there is a mismatch, the method throws an error.
 
-After the method call succeeded, ERTP guarantees that:
+After the call to `deposit` succeeds, ERTP guarantees that:
 - the payment object is now empty
 - the purse contains the full content of the payment
 
-After the method call throws, ERTP guarantees that:
+After the call to `deposit` throws, ERTP guarantees that:
 - the alleged payment is in the same state as before the call
 - the purse is in the same state as before the call
 
