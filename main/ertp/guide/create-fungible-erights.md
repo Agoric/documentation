@@ -81,7 +81,7 @@ If she had access to it, she could create baytownBucks herself by calling `bayto
 ```js
 const myBaytownBucksPurse = issuer.makeEmptyPurse();
 
-console.log(myBaytownBucksPurse.getBalance().extent); // 0
+console.log(myBaytownBucksPurse.getCurrentAmount().extent); // 0
 
 const alice = {
     receivePayment(allegedBaytownBucksPayment){
