@@ -45,8 +45,7 @@ yarn start
 
 Then open:
 - [http://localhost:3000](http://localhost:3000) to see our demo DApp.<br>
-- [http://localhost:8000/wallet](http://localhost:8000/wallet) to see the Simple Wallet.<br>
-- [http://localhost:8000/](http://localhost:8000/) to see your REPL (Read-Eval-Print Loop).<br>
+- [http://localhost:8000/](http://localhost:8000/) to see the Simple Wallet and your REPL (Read-Eval-Print Loop).<br>
 
 ## Prerequisites
 
