@@ -20,11 +20,29 @@ also does not create a local chain. We are working on adding the
 ability to run contracts on chain to the Agoric CLI, but you can find
 [more information on running on chain here](../manual-setup/README.md).
 
+## Prerequisites
+
+First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://legacy.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
+
+For now, you will need to set up the Agoric CLI as part of a checked-out Agoric SDK, as `npx agoric` doesn't yet work.  Run:
+
+```sh
+# Get the latest Agoric SDK in the agoric-sdk directory.
+git clone https://github.com/Agoric/agoric-sdk
+# Change to the agoric-sdk directory.
+cd agoric-sdk
+# Install NPM dependencies.
+yarn install
+# Build sources that need compiling.
+yarn build
+# You can install the agoric CLI anywhere in your $PATH,
+# here is how to do it as /usr/local/bin/agoric
+yarn link-cli /usr/local/bin/agoric
+```
+
 ## Quick Overview
 
-First, see the [prerequisites](#Prerequisites) below for how to set up your Agoric CLI.
-
-Then, to create and start a project, run:
+After installing the [Prerequisites](#prerequisites), to create and start a project, run:
 
 ```sh
 agoric init demo
@@ -46,26 +64,6 @@ yarn start
 Then open:
 - [http://localhost:3000](http://localhost:3000) to see our demo DApp.<br>
 - [http://localhost:8000/](http://localhost:8000/) to see the Simple Wallet and your REPL (Read-Eval-Print Loop).<br>
-
-## Prerequisites
-
-First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://legacy.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
-
-For now, you will need to set up the Agoric CLI as part of a checked-out Agoric SDK.  Run:
-
-```sh
-# Get the latest Agoric SDK in the agoric-sdk directory.
-git clone https://github.com/Agoric/agoric-sdk
-# Change to the agoric-sdk directory.
-cd agoric-sdk
-# Install NPM dependencies.
-yarn install
-# Build sources that need compiling.
-yarn build
-# You can install the agoric CLI anywhere in your $PATH,
-# here is how to do it as /usr/local/bin/agoric
-yarn link-cli /usr/local/bin/agoric
-```
 
 ## Your First Agoric Dapp
 
