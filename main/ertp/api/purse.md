@@ -37,15 +37,15 @@ balance of
 `payment`, throw error.
 
 ```js
-const { issuer, mint } = produceIssuer('bucks');
+const { issuer, mint, amountMath } = produceIssuer('bucks');
 const purse = issuer.makeEmptyPurse();
-const payment = mint.mintPayment(123);
+const payment = mint.mintPayment(amountMath.make(123));
 const bucks123 = amountMath.make(123);
 
 // Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
 purse.deposit(payment, bucks123);
 
-const secondPayment = mint.mintPayment(100);
+const secondPayment = mint.mintPayment(amountMath.make(100));
 // Throws error
 purse.deposit(secondPayment, fungible123);
 
@@ -61,7 +61,7 @@ Withdraw the `amount` from this purse into a new Payment.
 // Create a purse with a balance of 10 amount
 const { issuer, mint } = produceIssuer('bucks');
 const purse = issuer.makeEmptyPurse();
-const payment = mint.mintPayment(10);
+const payment = mint.mintPayment(amountMath.make(10));
 const fungible10 = amountMath.make(10);
 purse.deposit(payment, fungible10);
 

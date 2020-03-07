@@ -86,8 +86,8 @@ const purse = exampleIssuer.makeEmptyPurse();
 Get payment balance. Because the payment is not trusted, we cannot call a method on it directly, and must use the issuer instead.
 
 ```js
-const { issuer, mint } = produceIssuer('bucks');
-const payment = mint.mintPayment(100);
+const { issuer, mint, amountMath } = produceIssuer('bucks');
+const payment = mint.mintPayment(amountMath.make(100));
 issuer.getAmountOf(payment); // returns 100
 ```
 
@@ -100,8 +100,8 @@ Burn all of the digital assets in the payment. `optAmount` is optional. If `optA
 
 ```js
 const { issuer, mint, amountMath } = produceIssuer('bucks');
-const paymentToBurn = mint.mintPayment(10);
 const amountToBurn = amountMath.make(10);
+const paymentToBurn = mint.mintPayment(amountToBurn);
 
 // burntAmount should equal 10
 const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
@@ -116,8 +116,8 @@ Transfer all digital assets from the payment to a new payment and delete the ori
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('bucks');
-const originalPayment = mint.mintPayment(2);
 const amountExpectedToTransfer = amountMath.make(2);
+const originalPayment = mint.mintPayment(amountExpectedToTransfer);
 
 const newPayment = issuer.claim(originalPayment, amountToTransfer);
 ```
@@ -130,12 +130,12 @@ const newPayment = issuer.claim(originalPayment, amountToTransfer);
 Combine multiple payments into one payment.
 
 ```js
-const { mint, issuer } = produceIssuer('bucks');
+const { mint, issuer, amountMath } = produceIssuer('bucks');
 
 // create an array of payments where the total value of all elements equals 100
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(mint.mintPayment(1));
+  payments.push(mint.mintPayment(amountMath.make(1)));
 }
 
 // combinedPayment equals 100
@@ -145,8 +145,8 @@ const combinedPayment = issuer.combine(payments);
 Note that you cannot combine payments from different mints:
 
 ```js
-const { mint: otherMint } = produceIssuer('other fungible');
-const otherPayment = otherMint.mintPayment(10);
+const { mint: otherMint, amountMath: otherAmountMath } = produceIssuer('other fungible');
+const otherPayment = otherMint.mintPayment(otherAmountMath.make(10));
 payments.push(otherPayment); // using the payments array from the above code
 
 // throws error
@@ -162,7 +162,7 @@ Split a single payment into two payments, A and B, according to the paymentAmoun
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('bucks');
-const oldPayment = mint.mintPayment(20);
+const oldPayment = mint.mintPayment(amountMath.make(20));
 
 const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(10));
 ```
@@ -176,7 +176,7 @@ Split a single payment into many payments, according to the amountArray.
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('fungible');
-const oldPayment = mint.mintPayment(100);
+const oldPayment = mint.mintPayment(amountMath.make(100));
 const goodAmounts = Array(10).fill(amountMath.make(10));
 
 const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts);
@@ -186,7 +186,7 @@ Note that the total amount in the `amountArray` must equal the amount in the ori
 
 ```js
 const { mint, issuer, amountMath } = produceIssuer('fungible');
-const payment = mint.mintPayment(1000);
+const payment = mint.mintPayment(amountMath.make(1000));
 
 // total amounts in badAmounts equal 20, when it should equal 1000
 const badAmounts = Array(2).fill(amountMath.make(10));

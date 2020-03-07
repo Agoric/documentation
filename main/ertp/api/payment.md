@@ -17,8 +17,8 @@ Payments can be converted to Purses by getting a trusted issuer and calling `iss
 Get the allegedBrand, indicating the kind of digital asset this payment purports to be, and which issuer to use. Because payments are not trusted, any method calls on payments should be treated with suspicion and verified elsewhere.
 
 ```js
-const { issuer, mint, brand } = produceIssuer('bucks');
-const payment = mint.mintPayment(10);
+const { issuer, mint, brand, amountMath } = produceIssuer('bucks');
+const payment = mint.mintPayment(amountMath.make(10));
 
 const officialBrand = payment.getAllegedBrand();
 ```
