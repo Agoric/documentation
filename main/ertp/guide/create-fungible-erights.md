@@ -33,7 +33,7 @@ Great! Now let's use our mint to create 1000 new BaytownBucks.
 
 ```js
 const baytownBucks = issuer.getAmountMath().make;
-const payment = baytownBucksMint.mintPayment(baytownBucks(1000), 'community treasury');
+const payment = baytownBucksMint.mintPayment(baytownBucks(1000));
 ```
 
 The act of minting created 1000 BaytownBucks and stored them together in a 
@@ -57,7 +57,7 @@ Let's distribute the BaytownBucks to members of the community. To send
 money in ERTP, we withdraw [`payments`](./mint.html#payments) from purses.
 
 ```js
-const paymentForAlice = myPurse.withdraw(35);
+const paymentForAlice = myPurse.withdraw(baytownBucks(35));
 ```
 
 Now let's send the payment to Alice as a message:
