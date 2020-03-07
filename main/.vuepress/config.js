@@ -49,7 +49,6 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/guide/',
-            '/ertp/guide/getting-started',
             '/ertp/guide/issuer',
             '/ertp/guide/brand',
             '/ertp/guide/amounts',
