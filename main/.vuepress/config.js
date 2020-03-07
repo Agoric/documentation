@@ -49,14 +49,11 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/guide/',
-            '/ertp/guide/getting-started',
-            '/ertp/guide/mint',
-            '/ertp/guide/assay',
-            '/ertp/guide/extent',
-            '/ertp/guide/units',
-            '/ertp/guide/label',
-            '/ertp/guide/unit-ops',
-            '/ertp/guide/default-configuration',
+            '/ertp/guide/issuer',
+            '/ertp/guide/brand',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
+            '/ertp/guide/math-helpers',
             '/ertp/guide/other-concepts'
           ]
         },
@@ -66,12 +63,13 @@ module.exports = {
           collapsable: false,
           sideBarDepth: 3,
           children: [
+            '/ertp/api/issuer',
             '/ertp/api/mint',
-            '/ertp/api/assay',
+            '/ertp/api/brand',
             '/ertp/api/purse',
             '/ertp/api/payment',
-            '/ertp/api/extent-ops',
-            '/ertp/api/unit-ops',
+            '/ertp/api/amount-math',
+            '/ertp/api/math-helpers',
           ]
         },
         {

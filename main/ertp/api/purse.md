@@ -1,128 +1,77 @@
 # Purse
-Purses hold verified `units` of certain rights issued by Mints. Purses can transfer part of the balance they hold in a payment, which has a narrower interface. A purse's balance can rise and fall, through the action of `purse.depositExactly()` and `purse.withdraw()`.
+Purses hold an amount of digital assets of the same brand, but unlike payments, they are not meant to be sent to others. To transfer digital assets, a payment should be withdrawn from a purse. A purse's balance can rise and fall, through the action of deposit() and withdraw().
 
-Operations on payments (`assay.burnExactly(units, payment)`, `purse.depositExactly(units, payment)`, `assay.claimExactly(units, payment, name)`) kill the original payment and create new payments if applicable.
+The digital assets in purses and payments can be currency-like and goods-like digital assets, but they can also be other kinds of rights, such as the right to participate in a particular contract.
 
-The primary use for Purses and Payments is for currency-like and goods-like valuables, but they can also be used to represent other kinds of rights, such as the right to participate in a particular contract.
+## purse.getIssuer()
+- Returns: `{Issuer}`
 
-## purse.getName()
-- Returns: `{String}`
-
-Get the name of this purse.
+Get the Issuer for this mint.
 
 ```js
-console.log( purse.getName() )
+const purseIssuer = purse.getIssuer();
 ```
 
-## purse.getAssay()
-- Returns: `{Assay}`
+## purse.getCurrentAmount()
+- Returns: `{Amount}`
 
-Get the Assay for this purse.
+Get the current `amount` contained in this purse, confirmed by the
+issuer. Note that this amount will change from call to call if assets
+have been deposited or withdrawn between calls. 
 
 ```js
-// Assume a mint has already been set up.
-const aliceMoolaPurse = mints[0].mint(assays[0].makeUnits(40));
-const aliceSimoleanPurse = mints[0].mint(assays[1].makeUnits(40));
+const { issuer } = produceIssuer('bucks');
+const purse = issuer.makeEmptyPurse();
 
-const moolaAssay = await E(aliceMoolaPurse).getAssay();
-const simoleanAssay = await E(aliceSimoleanPurse).getAssay();
+const currentBalance = purse.getCurrentAmount();
 ```
 
-## purse.getBalance()
-- Returns: `{Units}`
+## purse.deposit(payment, optAmount)
+- `payment` `{Payment}`
+- `optAmount` `{Amount}` - Optional. This parameter ensures you are depositing the amount you expect.
+- Returns: `{Amount}`
 
-Get the `units` contained in this purse, confirmed by the assay.
-
-```js
-import { makeMint } from '@agoric/ertp';
-
-const myNewMint = makeMint('fungible');
-const assay = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-// Returns 1000
-purse.getBalance();
-```
-
-## purse.depositExactly(units, src)
-- `units` `{Units}`
-- `src` `{Payment}`
-- Returns: `{Units}`
-
-Deposit all the contents of `src` Payment into this purse, returning the `units`. If the `units` does not equal the balance of `src` Payment, throw error.
+Deposit all the contents of `payment` into this purse, returning the
+payment's amount of digital assets. If the optional argument `optAmount` does not equal the
+balance of
+`payment`, throw error.
 
 ```js
-import { makeMint } from '@agoric/ertp';
+const { issuer, mint, amountMath } = produceIssuer('bucks');
+const purse = issuer.makeEmptyPurse();
+const payment = mint.mintPayment(amountMath.make(123));
+const bucks123 = amountMath.make(123);
 
-const myNewMint = makeMint('fungible');
-const assay = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-const targetPurse = assay.makeEmptyPurse();
-const payment = await purse.withdraw(7);
+// Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
+purse.deposit(payment, bucks123);
 
+const secondPayment = mint.mintPayment(amountMath.make(100));
 // Throws error
-await wrongTargetPurse.depositExactly(8, payment);
+purse.deposit(secondPayment, fungible123);
 
-// Successful deposit
-await targetPurse.depositExactly(7, payment);
 ```
 
-## purse.depositAll(srcPayment)
-- `srcPayment` `{Payment}`
-- Returns: `{Units}`
-
-Deposit all the contents of `srcPayment` into this purse, returning the `units`.
-
-```js
-import { makeMint } from '@agoric/ertp';
-
-const myNewMint = makeMint('fungible');
-const assay = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-const targetPurse = assay.makeEmptyPurse();
-
-const payment = await purse.withdraw(22);
-await targetPurse.depositAll(payment);
-
-// Returns 22
-targetPurse.getBalance();
-```
-
-## purse.withdraw(units, name)
-- `units` `{Units}`
-- `name` `{String}` - Optional
+## purse.withdraw(amount)
+- `amount` `{Amount}`
 - Returns: `{Payment}`
 
-Withdraw `units` from this purse into a new Payment.
+Withdraw the `amount` from this purse into a new Payment.
 
 ```js
-import { makeMint } from '@agoric/ertp';
+// Create a purse with a balance of 10 amount
+const { issuer, mint } = produceIssuer('bucks');
+const purse = issuer.makeEmptyPurse();
+const payment = mint.mintPayment(amountMath.make(10));
+const fungible10 = amountMath.make(10);
+purse.deposit(payment, fungible10);
 
-const myNewMint = makeMint('fungible');
-const assay = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
+// Withdraw 3 amount from the purse
+const fungible3 = amountMath.make(3);
+const withdrawalPayment = purse.withdraw(fungible3);
 
-const payment = purse.withdraw(20);
+// The balance of the withdrawal payment is 3 amount
+issuer.getAmountOf(withdrawalPayment);
 
-// Returns 20
-payment.getBalance();
-```
-
-## purse.withdrawAll(name)
-- `name` `{String}`
-- Returns: `{Payment}`
-
-Withdraw entire content of this purse into a new Payment.
-
-```js
-import { makeMint } from '@agoric/ertp';
-
-const myNewMint = makeMint('fungible');
-const assay = myNewMint.getAssay();
-const purse = myNewMint.mint(1000);
-
-const payment = purse.withdrawAll();
-
-// Returns 1000
-payment.getBalance();
+// The new balance of the purse is 7 amount
+purse.getCurrentAmount();
 ```
