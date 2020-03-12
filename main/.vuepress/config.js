@@ -4,15 +4,38 @@ module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
   base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
+  title: 'Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
-    ['link', { rel: 'icon', href: '/favicon-full.ico' }]
+    ['link', { rel: 'icon', href: '/favicon-full.ico' }],
+    ["script",
+      {},
+      `
+    const logoUrlChanger = setInterval(function() {
+    //Anchor above the logo image
+    const homeEls = document.getElementsByClassName("home-link");
+    if(homeEls.length > 0) {
+      const homeEl = homeEls[0];
+      homeEl.setAttribute("href", "https://agoric.com");
+      homeEl.setAttribute("onclick", "return false;");
+      clearInterval(logoUrlChanger);
+    }
+
+    //Actual logo image
+    const logoEls = document.getElementsByClassName("logo")
+    if(logoEls.length > 0) {
+      const logoEl = logoEls[0]
+      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+      clearInterval(logoUrlChanger);
+    }
+   }, 1000) `
+    ]
   ],
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
+    logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
     nav,
     /* --- SIDEBAR --- */
