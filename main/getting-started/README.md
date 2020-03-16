@@ -36,8 +36,8 @@ yarn install
 # Build sources that need compiling.
 yarn build
 # You can install the agoric CLI anywhere in your $PATH,
-# here is how to do it as /usr/local/bin/agoric
-yarn link-cli /usr/local/bin/agoric
+# here is how to do it in ~/bin/agoric
+yarn link-cli ~/bin/agoric
 ```
 
 ## Quick Overview
@@ -48,7 +48,7 @@ After installing the [Prerequisites](#prerequisites), to create and start a proj
 agoric init demo
 cd demo
 agoric install
-agoric start
+agoric start --reset
 ```
 
 In another shell, from the same project directory:
@@ -97,8 +97,8 @@ Next, let's start up the Agoric VM. This creates the "vats" in which
 our smart contract code will be run.
 
 ```sh
-# Run the local vat machine.
-agoric start
+# Run the local vat machine.  Use --reset if you want to discard prior state.
+agoric start --reset
 ```
 
 ### 4. Installing a contract
