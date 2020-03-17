@@ -1,6 +1,6 @@
 # Other Concepts
 
-When looking at the code in our [tests](https://github.com/Agoric/ERTP/tree/master/test), you might see some new
+When looking at the code in our [tests](https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP/test), you might see some new
 concepts:
 
 * __Vats__: All user code runs in what we call a vat. Within a vat, code is run synchronously. Communication with another vat happens asynchronously. The [SwingSet infrastructure](https://github.com/Agoric/SwingSet) creates the vats and makes communication between vats possible.

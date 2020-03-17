@@ -4,15 +4,38 @@ module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
   base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
+  title: 'Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
-    ['link', { rel: 'icon', href: '/favicon-full.ico' }]
+    ['link', { rel: 'icon', href: '/favicon-full.ico' }],
+    ["script",
+      {},
+      `
+    const logoUrlChanger = setInterval(function() {
+    //Anchor above the logo image
+    const homeEls = document.getElementsByClassName("home-link");
+    if(homeEls.length > 0) {
+      const homeEl = homeEls[0];
+      homeEl.setAttribute("href", "https://agoric.com");
+      homeEl.setAttribute("onclick", "return false;");
+      clearInterval(logoUrlChanger);
+    }
+
+    //Actual logo image
+    const logoEls = document.getElementsByClassName("logo")
+    if(logoEls.length > 0) {
+      const logoEl = logoEls[0]
+      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+      clearInterval(logoUrlChanger);
+    }
+   }, 1000) `
+    ]
   ],
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
+    logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
     nav,
     /* --- SIDEBAR --- */
@@ -49,15 +72,11 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/guide/',
-            '/ertp/guide/getting-started',
-            '/ertp/guide/mint',
-            '/ertp/guide/assay',
-            '/ertp/guide/extent',
-            '/ertp/guide/units',
-            '/ertp/guide/label',
-            '/ertp/guide/unit-ops',
-            '/ertp/guide/default-configuration',
-            '/ertp/guide/contract-hosts',
+            '/ertp/guide/issuer',
+            '/ertp/guide/brand',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
+            '/ertp/guide/math-helpers',
             '/ertp/guide/other-concepts'
           ]
         },
@@ -67,13 +86,13 @@ module.exports = {
           collapsable: false,
           sideBarDepth: 3,
           children: [
+            '/ertp/api/issuer',
             '/ertp/api/mint',
-            '/ertp/api/assay',
+            '/ertp/api/brand',
             '/ertp/api/purse',
             '/ertp/api/payment',
-            '/ertp/api/extent-ops',
-            '/ertp/api/unit-ops',
-            '/ertp/api/contract-hosts'
+            '/ertp/api/amount-math',
+            '/ertp/api/math-helpers',
           ]
         },
         {
@@ -136,7 +155,11 @@ module.exports = {
           ]
         }
       ]
-    }
+    },
+
+    zoeVersion: 'v0.2.0',
+    zoeDocsUpdated: '1/28/2020'
+
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the

@@ -28,6 +28,6 @@
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {},
   "devDependencies": {
-    "vuepress": "^1.1.0"
+    "vuepress": "^1.2.0"
   }
 }

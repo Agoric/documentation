@@ -1,5 +1,7 @@
 # Swaps
 
+<Zoe-Version/>
+
 If I want to trade one kind of asset for another kind, I could send
 you the asset and ask you to send me the other kind back. But, you
 could choose to behave opportunistically: receive my asset and give
