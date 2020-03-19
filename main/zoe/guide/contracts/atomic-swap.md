@@ -14,12 +14,12 @@ behave opportunistically.
 
 In the `atomicSwap` contract, anyone can securely swap with a counterparty by escrowing digital assets with Zoe and sending an invite to the swap to the counterparty.
 
-Let's say that Alice wants to swap with Bob as the counterparty.  She knows that the code for the swap has already
+Let's say that Alice wants to swap with Bob as the counterparty. She knows that the code for the swap has already
 been installed, so she can create a swap instance from the swap
 installation (`handle` is the unique, unforgeable identifier):
 
 ```js
-const newInvite = await zoe.makeInstance(installationHandle, { assays });
+const newInvite = await zoe.makeInstance(installationHandle, keywords, { assays });
 ```
 
 Then she escrows her offer with Zoe. When she escrows, she passes in

@@ -25,7 +25,7 @@ someOfferRules: {
   }}
 }
 ```
-Each contract has its own specific `keywords`.
+The offerRules in each contract has its own specific `keywords`.
 Keywords are unique identifiers per contract, that tie together
 the offer rules, payments to be escrowed, and payouts to the user.
 In the above example, "Asset" and "Price" are keywords.

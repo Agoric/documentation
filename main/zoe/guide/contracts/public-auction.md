@@ -19,7 +19,7 @@ installation. (`installationHandle` is the unique, unforgeable
 indentifier for the installation.)
 
 ```js
-const aliceInvite = await zoe.makeInstance( installationHandle, {
+const aliceInvite = await zoe.makeInstance( installationHandle, keywords, {
     assays,
     numBidsAllowed: 3
   },

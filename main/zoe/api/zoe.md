@@ -32,15 +32,24 @@ const { sourceCode, moduleFormat } = await bundleSource(someContract);
 const installationHandle = zoe.install(sourceCode, moduleFormat);
 ```
 
-## zoe.makeInstance(installationHandle, terms)
+## zoe.makeInstance(installationHandle, issuerKeywordRecord, terms)
 - `installationHandle` `{Object}`
+- `issuerKeywordRecord` `{Object}`
 - `terms` `{Object}`
 - Returns: `{Payment}`
 
-Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, as well as the `terms` of the contract. The contract terms are the arguments to the contract, and must include the expected issuers for the underlying rights. (Other than the `issuers` property of `terms`, the `terms` properties are up to the discretion of the smart contract.) We get back an invite (an ERTP payment) to participate in the contract.
+Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, its [keywords](structs.md#offerRules), as well as the terms of the contract.
+
+The `issuerKeywordRecord` should have strings as keys (called keywords), and issuers as values (called args).
+
+`terms` should be used for any contract-specific parameters, such as the number of bids an
+auction should wait for before closing. (These parameters are up to the discretion of the smart contract.)
+
+We get back an invite (an ERTP payment) to participate in the contract.
 
 ```js
-const someInvite = await E(zoe).makeInstance(isntallationHandle, { issuers });
+const keywords = { 'Asset' : moolaIssuer, 'Price' : simoleanIssuer }
+const someInvite = await E(zoe).makeInstance(installationHandle, keywords, terms);
 ```
 
 ## zoe.getInstance(instanceHandle)

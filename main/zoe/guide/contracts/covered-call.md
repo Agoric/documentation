@@ -17,6 +17,7 @@ just like she would create the first offer in the atomic swap.
 ```js
 const aliceInvite = await zoe.makeInstance(
   coveredCallInstallationHandle,
+  keywords,
   terms,
 );
 
@@ -63,7 +64,7 @@ const bobExclOption = await inviteAssay.claimAll(option);
 
 // Let's imagine that Bob wants to sell the invite for the call option.
 // He can create a swap to trade this invite for bucks.
-const bobSwapInvite = await zoe.makeInstance(swapInstallationId, {
+const bobSwapInvite = await zoe.makeInstance(swapInstallationId, keywords, {
   assays: harden([inviteAssay, bucksAssay]),
 });
 

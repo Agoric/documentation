@@ -18,6 +18,7 @@ Create an instance of an autoswap invite:
 ```js
 const aliceInvite = zoe.makeInstance(
   installationHandle,
+  keywords,
   { assays },
 );
 ```

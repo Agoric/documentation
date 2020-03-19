@@ -65,7 +65,7 @@ non-fungible tokens on both sides.
 ## Instantiating the simple exchange
 
 ```js
-const aliceInvite = await zoe.makeInstance(installationHandle, {
+const aliceInvite = await zoe.makeInstance(installationHandle, keywords, {
   assays,
 });
 const { instanceHandle } = aliceInvite.getBalance().extent;
