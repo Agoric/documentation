@@ -17,9 +17,31 @@ someSeatAndPayout: {
 
 ```js
 someOfferRules: {
-  payoutRules: [payoutRule1, payoutRule2, payoutRule3],
-  exitRule: someExitRule,
+  offer: { Asset: moolaAmountMath.make(4) },
+  want: { Price: simoleansAmountMath.make(15) },
+  exit: { afterDeadline: {
+    timer,
+    deadline: 100,
+  }}
 }
+```
+Each contract has its own specific `keywords`.
+Keywords are unique identifiers per contract, that tie together
+the offer rules, payments to be escrowed, and payouts to the user.
+In the above example, "Asset" and "Price" are keywords.
+And in an auction instance, the keywords might be "Asset" and "Bid".
+
+Users should submit their payments using keywords:
+
+```js
+const payments = { Asset: moolaPayment };
+```
+
+And, users will receive their payouts with keywords as the keys of a
+payout object:
+
+```js
+moolaPurse.deposit(payout.Asset);
 ```
 
 ## PayoutRule
