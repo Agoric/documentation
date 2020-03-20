@@ -41,7 +41,7 @@ that she can exit at any time.
 ```js
 const aliceOfferRules = harden({
   give: { Asset: moolaAssay.make(3) },
-  want: { Price: simoleans.maek(15) },
+  want: { Price: simoleans.make(15) },
   exit: 'onDemand'
 })
 
