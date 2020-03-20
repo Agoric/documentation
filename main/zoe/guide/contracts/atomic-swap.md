@@ -32,21 +32,13 @@ exit safety. In this case, Alice's exit rule is `onDemand`, meaning
 that she can exit at any time.
 
 ```js
-const aliceOfferRules = harden(
-  payoutRules: [
-  {
-    kind: 'offerAtMost',
-    units: moolaAssay.makeUnits(3),
-  },
-  {
-    kind: 'wantAtLeast',
-    units: simoleanAssay.makeUnits(7),
-  },
-  exitRule: {
-    kind: 'onDemand',
-  },
-]);
-const alicePayments = [aliceMoolaPayment, undefined];
+const aliceOfferRules = harden({
+  offer: { Asset: moolaAssay.make(3) },
+  want: { Price: simoleans.maek(15) },
+  exit: 'onDemand'
+})
+
+const alicePayments = { Asset: aliceMoolaPayment }
 ```
 
 In order for Alice to escrow with Zoe she needs to redeem her invite. Once Alice redeems her invite she will receive a `seat` and a promise that resolves to her payout.
@@ -89,21 +81,10 @@ make an offer in the same way as Alice, but his `offerRules` match Alice's:
 
 ```js
 const bobOfferRules = harden({
-  payoutRules: [
-    {
-      kind: 'wantAtLeast',
-      units: bobAssays[0].makeUnits(3),
-    },
-    {
-      kind: 'offerAtMost',
-      units: bobAssays[1].makeUnits(7),
-    },
-  ],
-  exitRule: {
-    kind: 'onDemand',
-  }
-);
-const bobPayments = [undefined, bobSimoleanPayment];
+  want: { Asset: bobAssays[0].make(3) },
+  offer: { Price: bobAssays[1].make(7) },
+  exit: 'onDemand'
+})
 
 // Bob escrows with zoe
 const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
@@ -123,8 +104,8 @@ moolaPayment is empty, and the simoleanPayment has a balance of 7.
 The same is true for Bob, but for his specific payout.
 
 ```js
-const bobPayout = await bobPayoutP;
-const alicePayout = await alicePayoutP;
+const bobPayout = await bobPayoutP.Asset;
+const alicePayout = await alicePayoutP.Asset;
 
 const [bobMoolaPayout, bobSimoleanPayout] = await Promise.all(bobPayout);
 const [aliceMoolaPayout, aliceSimoleanPayout] = await Promise.all(

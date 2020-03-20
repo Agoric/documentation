@@ -21,12 +21,9 @@ would look like:
   { kind: 'wantAtLeast', units: ticket1 }
 ]
 ```
-Note: In the future, we expect to allow for more complex `payoutRules`
-and may change the structure.
 
-When the user escrows with Zoe, the user must also submit payments for any
-`payoutRule` with the kind `offerAtMost`. Zoe
-expects to be able to escrow these payments immediately. In this
+When the user escrows with Zoe, the user must also submit payments using keywords.
+Zoe expects to be able to escrow these payments immediately. In this
 particular example, I would have to include a payment of $100 for Zoe
 to escrow my offer.
 

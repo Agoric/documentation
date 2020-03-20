@@ -38,7 +38,7 @@ const installationHandle = zoe.install(sourceCode, moduleFormat);
 - `terms` `{Object}`
 - Returns: `{Payment}`
 
-Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, its [keywords](structs.md#offerRules), as well as the terms of the contract.
+Zoe is long-lived. We can use Zoe to create smart contract instances by specifying a particular contract installation to use, its <router-link to="/zoe/api/structs.html#offerrules">keywords</router-link>, as well as the terms of the contract.
 
 The `issuerKeywordRecord` should have strings as keys (called keywords), and issuers as values (called args).
 
@@ -67,12 +67,12 @@ const {
 ## zoe.redeem(invite, offerRules, payments)
 - `invite` `{Payment}`
 - `offerRules` <router-link to="/zoe/api/structs.html#offerrules">`{OfferRules}`</router-link>
-- `payments` `{Array <Payment>}`
+- `payments` `{Object <Payment>}`
 - Returns: `{SeatAndPayout}`
 
 To redeem an invite, the user must provide a list of payments as well as their rules for the offer.
 
-The rules for the offer are in two parts: `payoutRules` are used by Zoe to enforce offer safety, and `exitRule` is used by Zoe to enforce exit safety. `payoutRules` is a list of objects, each with a `kind` property (such as 'offerAtMost') and an amount property. The objects in the `payoutRules` must be in the same order as the issuers associated with a smart contract. That is, the amount in index 0 of `payoutRules` should be an amount for the issuer in index 0 of the issuers array.`payments` is an array of the actual payments to be escrowed, following the rules in the payoutRules. If the payoutRules kind is 'offerAtMost', then a payment matching the amount is expected. If the payoutRules kind is 'wantAtLeast' then the payment will be ignored and should be `undefined`.
+Payments to be escrowed must be an object keyed by `keywords`.
 
 ```js
 // A user redeems their invite and escrows with Zoe
