@@ -111,7 +111,7 @@ moolaPayment is empty, and the simoleanPayment has a balance of 7.
 The same is true for Bob, but for his specific payout.
 
 ```js
-const bobPayout = await bobPayoutP.Asset;
+const bobPayout = await bobPayoutP;
 const alicePayout = await alicePayoutP.Asset;
 
 const [bobMoolaPayout, bobSimoleanPayout] = await Promise.all(bobPayout);
