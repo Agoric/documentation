@@ -89,7 +89,7 @@ make an offer in the same way as Alice, but his `offerRules` match Alice's:
 ```js
 const bobOfferRules = harden({
   want: { Asset: bobAssays[0].make(3) },
-  offer: { Price: bobAssays[1].make(7) },
+  give: { Price: simoleans.make(7) },
   exit: { onDemand: null },
 })
 
