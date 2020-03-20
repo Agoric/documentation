@@ -90,7 +90,7 @@ make an offer in the same way as Alice, but his `offerRules` match Alice's:
 const bobOfferRules = harden({
   want: { Asset: bobAssays[0].make(3) },
   offer: { Price: bobAssays[1].make(7) },
-  exit: 'onDemand'
+  exit: { onDemand: null },
 })
 
 // Bob escrows with zoe
