@@ -114,7 +114,11 @@ The same is true for Bob, but for his specific payout.
 const bobPayout = await bobPayoutP;
 const alicePayout = await alicePayoutP.Asset;
 
-const [bobMoolaPayout, bobSimoleanPayout] = await Promise.all(bobPayout);
+    const bobMoolaPayout = await bobPayout.Asset;
+    const bobSimoleanPayout = await bobPayout.Price;
+
+    const aliceMoolaPayout = await alicePayout.Asset;
+    const aliceSimoleanPayout = await alicePayout.Price;
 const [aliceMoolaPayout, aliceSimoleanPayout] = await Promise.all(
   alicePayout,
 );
