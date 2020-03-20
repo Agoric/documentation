@@ -19,7 +19,14 @@ been installed, so she can create a swap instance from the swap
 installation (`handle` is the unique, unforgeable identifier):
 
 ```js
-const newInvite = await zoe.makeInstance(installationHandle, keywords, { assays });
+    const issuerKeywordRecord = harden({
+      Asset: moolaIssuer,
+      Price: simoleanIssuer,
+    });
+    const newInvite = await zoe.makeInstance(
+      installationHandle,
+      issuerKeywordRecord,
+    );
 ```
 
 Then she escrows her offer with Zoe. When she escrows, she passes in
