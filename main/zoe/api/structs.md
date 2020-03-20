@@ -4,7 +4,7 @@
 
 ## SeatAndPayout
 
-This is returned by a call to `redeem` on Zoe. A seat is an arbitrary object whose methods allow the user to take certain actions. The payout is a promise that resolves to an array of promises for payments. Note that while the payout promise resolves when an offer is completed, the promise for each payment resolves after the remote issuer successfully withdraws the payment.
+This is returned by a call to `redeem` on Zoe. A seat is an arbitrary object whose methods allow the user to take certain actions in a contract. The payout is a promise that resolves to an object which has keywords as keys and promises for payments as values. Note that while the payout promise resolves when an offer is completed, the promise for each payment resolves after the remote issuer successfully withdraws the payment.
 
 ```js
 someSeatAndPayout: {
@@ -13,45 +13,33 @@ someSeatAndPayout: {
 }
 ```
 
-## OfferRules
+## Proposal
 
 ```js
-someOfferRules: {
-  offer: { Asset: moolaAmountMath.make(4) },
-  want: { Price: simoleansAmountMath.make(15) },
-  exit: { afterDeadline: {
-    timer,
-    deadline: 100,
-  }}
+someProposal: {
+  want: someAmountKeywordRecord,
+  give: anotherAmountKeywordRecord,
+  exit: someExitRule
 }
 ```
-The offerRules in each contract has its own specific `keywords`.
+
+## AmountKeywordRecord
+
+The keys are keywords, and the values are amounts.
 Keywords are unique identifiers per contract, that tie together
 the offer rules, payments to be escrowed, and payouts to the user.
 In the above example, "Asset" and "Price" are keywords.
 And in an auction instance, the keywords might be "Asset" and "Bid".
 
-Users should submit their payments using keywords:
-
-```js
-const payments = { Asset: moolaPayment };
-```
+Users should submit their payments using keywords: `const payments = { Asset: moolaPayment };`
 
 And, users will receive their payouts with keywords as the keys of a
-payout object:
+payout object: `moolaPurse.deposit(payout.Asset);`
 
 ```js
-moolaPurse.deposit(payout.Asset);
-```
-
-## PayoutRule
-
-`payoutRules` are an array of `PayoutRule`. The possible kinds are 'offerAtMost' and 'wantAtLeast'.
-
-```js
-somePayoutRules: {
-  kind: 'offerAtMost',
-  amount: someAmount,
+someAmountKeywordRecord: {
+  Asset: amountMath.make(5),
+  Price: amountMath.make(9)
 }
 ```
 
