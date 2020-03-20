@@ -19,7 +19,14 @@ been installed, so she can create a swap instance from the swap
 installation (`handle` is the unique, unforgeable identifier):
 
 ```js
-const newInvite = await zoe.makeInstance(installationHandle, keywords, { assays });
+    const issuerKeywordRecord = harden({
+      Asset: moolaIssuer,
+      Price: simoleanIssuer,
+    });
+    const newInvite = await zoe.makeInstance(
+      installationHandle,
+      issuerKeywordRecord,
+    );
 ```
 
 Then she escrows her offer with Zoe. When she escrows, she passes in
@@ -33,9 +40,9 @@ that she can exit at any time.
 
 ```js
 const aliceOfferRules = harden({
-  offer: { Asset: moolaAssay.make(3) },
-  want: { Price: simoleans.maek(15) },
-  exit: 'onDemand'
+  give: { Asset: moolaAssay.make(3) },
+  want: { Price: simoleans.make(15) },
+  exit: { onDemand: null },
 })
 
 const alicePayments = { Asset: aliceMoolaPayment }
@@ -82,8 +89,8 @@ make an offer in the same way as Alice, but his `offerRules` match Alice's:
 ```js
 const bobOfferRules = harden({
   want: { Asset: bobAssays[0].make(3) },
-  offer: { Price: bobAssays[1].make(7) },
-  exit: 'onDemand'
+  give: { Price: simoleans.make(7) },
+  exit: { onDemand: null },
 })
 
 // Bob escrows with zoe
@@ -104,10 +111,14 @@ moolaPayment is empty, and the simoleanPayment has a balance of 7.
 The same is true for Bob, but for his specific payout.
 
 ```js
-const bobPayout = await bobPayoutP.Asset;
+const bobPayout = await bobPayoutP;
 const alicePayout = await alicePayoutP.Asset;
 
-const [bobMoolaPayout, bobSimoleanPayout] = await Promise.all(bobPayout);
+    const bobMoolaPayout = await bobPayout.Asset;
+    const bobSimoleanPayout = await bobPayout.Price;
+
+    const aliceMoolaPayout = await alicePayout.Asset;
+    const aliceSimoleanPayout = await alicePayout.Price;
 const [aliceMoolaPayout, aliceSimoleanPayout] = await Promise.all(
   alicePayout,
 );
