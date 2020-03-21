@@ -19,29 +19,32 @@ been installed, so she can create a swap instance from the swap
 installation (`handle` is the unique, unforgeable identifier):
 
 ```js
-    const issuerKeywordRecord = harden({
-      Asset: moolaIssuer,
-      Price: simoleanIssuer,
-    });
-    const newInvite = await zoe.makeInstance(
-      installationHandle,
-      issuerKeywordRecord,
-    );
+const issuerKeywordRecord = harden({
+  Asset: moolaIssuer,
+  Price: simoleanIssuer,
+});
+const newInvite = await zoe.makeInstance(
+  installationHandle,
+  issuerKeywordRecord,
+);
 ```
 
 Then she escrows her offer with Zoe. When she escrows, she passes in
 two things, the actual ERTP payments that are part of her offer, and
-an object called `offerRules`. The `offerRules` will be used by Zoe to
+an object called `Proposal`. The `Proposal` will be used by Zoe to
 protect Alice from the smart contract and other participants. The
-`offerRules` have two parts: `payoutRules`, which is used for
+`Proposal` has three parts: `give` and `want`, which is used for
 enforcing offer safety, and `exitRule,` which is used to enforce
 exit safety. In this case, Alice's exit rule is `onDemand`, meaning
 that she can exit at any time.
 
 ```js
-const aliceOfferRules = harden({
-  give: { Asset: moolaAssay.make(3) },
-  want: { Price: simoleans.make(15) },
+const moola = moolaAmountMath.make;
+const simoleans = simoleanAmountMath.make;
+
+const aliceProposal = harden({
+  give: { Asset: moola(3) },
+  want: { Price: simoleans(15) },
   exit: { onDemand: null },
 })
 
@@ -53,7 +56,7 @@ In order for Alice to escrow with Zoe she needs to redeem her invite. Once Alice
 ```js
 const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
   aliceInvite,
-  aliceOfferRules,
+  aliceProposal,
   alicePayments,
 );
 ```
@@ -67,8 +70,8 @@ const newInviteP = aliceSeat.makeFirstOffer();
 She then sends the invite to Bob and he looks up the invite to see if it matches Alice's claims.
 
 ```js
-const inviteAssay = zoe.getInviteAssay();
-const bobExclusiveInvite = await inviteAssay.claimAll(newInviteP);
+const inviteIssuer = zoe.getInviteIssuer();
+const bobExclusiveInvite = await inviteIssuer.claimAll(newInviteP);
 const bobInviteExtent = bobExclusiveInvite.getBalance().extent;
 
 const {
@@ -79,24 +82,24 @@ const {
 
 // Bob does checks
 insist(bobInstallationId === installationHandle)`wrong installation`;
-insist(bobTerms.assays[0] === inviteAssay)`wrong assays`;
-insist(bobInviteExtent.offerMadeRules === aliceOfferRules.payoutRules)`wrong payoutRules`;
+insist(bobTerms.moola === inviteIssuer)`wrong issuer`;
+insist(bobInviteExtent.Asset === aliceProposal.Price)`wrong price`;
 ```
 
 Bob decides to be the counter-party. He also escrows his payments and redeems his invite to
-make an offer in the same way as Alice, but his `offerRules` match Alice's:
+make an offer in the same way as Alice, but his `Proposal` match Alice's:
 
 ```js
-const bobOfferRules = harden({
-  want: { Asset: bobAssays[0].make(3) },
-  give: { Price: simoleans.make(7) },
+const bobProposal = harden({
+  want: { Asset: moola(3) },
+  give: { Price: simoleans(7) },
   exit: { onDemand: null },
 })
 
 // Bob escrows with zoe
 const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
   bobExclusiveInvite,
-  bobOfferRules,
+  bobProposal,
   bobPayments,
 );
 
@@ -104,21 +107,22 @@ const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
 const bobOfferResult = await bobSeat.matchOffer();
 ```
 
-Now that Bob has made his offer, Alice's `payout` resolves to an array
-of ERTP payments `[moolaPayment, simoleanPayment]` where the
+Now that Bob has made his offer, the contract executes and Alice's
+payout resolves to a a record with keyword keys
+of ERTP payments `{ Asset: moola(0), Price: simoleans(7) }` where the
 moolaPayment is empty, and the simoleanPayment has a balance of 7.
 
 The same is true for Bob, but for his specific payout.
 
 ```js
 const bobPayout = await bobPayoutP;
-const alicePayout = await alicePayoutP.Asset;
+const alicePayout = await alicePayoutP;
 
-    const bobMoolaPayout = await bobPayout.Asset;
-    const bobSimoleanPayout = await bobPayout.Price;
+const bobMoolaPayout = await bobPayout.Asset;
+const bobSimoleanPayout = await bobPayout.Price;
 
-    const aliceMoolaPayout = await alicePayout.Asset;
-    const aliceSimoleanPayout = await alicePayout.Price;
+const aliceMoolaPayout = await alicePayout.Asset;
+const aliceSimoleanPayout = await alicePayout.Price;
 const [aliceMoolaPayout, aliceSimoleanPayout] = await Promise.all(
   alicePayout,
 );
