@@ -12,115 +12,104 @@ items.
 ## Public second-price auction
 
 In this particular "public" second-price auction, anyone who has
-access to the auction instance can make a bid by making an offer.
+access to the auction instance can make a bid by making a proposal.
 
 Alice can create an auction from an existing second-price auction
 installation. (`installationHandle` is the unique, unforgeable
 indentifier for the installation.)
 
 ```js
-const aliceInvite = await zoe.makeInstance( installationHandle, keywords, {
-    assays,
-    numBidsAllowed: 3
-  },
+const numBidsAllowed = 3;
+
+const issuerKeywordRecord = harden({
+  Asset: moolaR.issuer,
+  Bid: simoleanR.issuer,
+});
+
+const terms = harden({ numBidsAllowed });
+
+const aliceInvite = await zoe.makeInstance(
+  installationHandle,
+  issuerKeywordRecord,
+  terms,
 );
 ```
 
 She can put up something at auction by first escrowing it with Zoe. In
 order to escrow something with Zoe, she needs to provide a payment for
-what she wants to put up at auction, and she needs to decide what her
-`offerRules` are. The `offerRules` will be enforced by Zoe and will
+what she wants to put up at auction, and she needs to decide the keywords
+of her `proposal`. The `proposal` will be enforced by Zoe and will
 protect Alice from misbehavior by the smart contract and other
-participants. `payoutRules` are used to enforce offer safety, and
-`exitRule` is used to enforce payout liveness.
+participants. `want` and `give` are used to enforce offer safety, and
+`exit` is used to enforce payout liveness.
 
 ```js
-const aliceOfferRules = harden({
-  payoutRules: [
-    {
-      kind: 'offerAtMost',
-      units: moolaAssay.makeUnits(1),
-    },
-    {
-      kind: 'wantAtLeast',
-      units: simoleanAssay.makeUnits(3),
-    },
-  ],
-  exitRule: {
-    kind: 'onDemand',
-  },
+const aliceProposal = harden({
+  give: { Asset: moola(1) },
+  want: { Bid: simoleans(3) },
 });
 
-const alicePayments = [aliceMoolaPayment, undefined];
+const alicePayments = { Asset: aliceMoolaPayment };
 
 const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
   aliceInvite,
-  aliceOfferRules,
+  aliceProposal,
   alicePayments,
 );
 ```
-Note that in this implementation, the item that will be auctioned is
-described at index 0 of the `payoutRules` array, and Alice's minimum
-bid `units` is at index 1 in the `payoutRules` array.
 
-Once Alice has redeemed her invite, she can start the auction by making the first offer in the swap:
+Once Alice has redeemed her invite, she can initialize the auction:
 ```js
-const bobInviteP = aliceSeat.makeFirstOffer();
+const aliceOfferResult = await aliceSeat.sellAssets();
 ```
 
 Now Alice can spread her invite far and wide and see if
 there are any bidders. Let's say that Bob gets the invite and
 wants to see if it is the kind of contract that he wants to join. He
-can check that the installationHandle installed is the swap he is expecting. He can also check that the item up for sale is the kind that he wants by comparing the assays.
+can check that the installationHandle installed is the swap he is expecting. He can also check that the item up for sale is the kind that he wants by comparing the issuers.
 
 ```js
 // Bob collects information about the swap
-const inviteAssay = zoe.getInviteAssay();
-const bobExclusiveInvite = await inviteAssay.claimAll(bobInviteP);
-const bobInviteExtent = bobExclusiveInvite.getBalance().extent;
+const inviteIssuer = zoe.getInviteIssuer();
+const bobExclusiveInvite = await inviteIssuer.claim(bobInvite);
+const bobInviteExtent = inviteIssuer.getAmountOf(bobExclusiveInvite)
+  .extent[0];
+
 const {
   installationHandle: bobInstallationId,
   terms: bobTerms,
+  issuerKeywordRecord: bobIssuers,
 } = zoe.getInstance(bobInviteExtent.instanceHandle);
 
 // Bob checks the information is what he expects
 insist(bobInstallationId === installationHandle)`wrong installation`;
-insist(bobTerms.assays[0] === inviteAssay)`wrong assay`
+insist(bobTerms.issuers[0] === inviteIssuer)`wrong issuer`
 ```
 
 Bob decides to join the contract and
 makes an offer:
 
 ```js
-const bobOfferRules = harden({
-  payoutRules: [
-    {
-      kind: 'wantAtLeast',
-      units: moolaAssay.makeUnits(1),
-    },
-    {
-      kind: 'offerAtMost',
-      units: simoleanAssay.makeUnits(11),
-    },
-  ],
-  exitRule: {
-    kind: 'onDemand',
-  },
-);
+const bobProposal = harden({
+  give: { Bid: simoleans(11) },
+  want: { Asset: moola(1) },
+});
 
-const bobPayments = [undefined, bobSimoleanPayment];
+const bobPayments = { Bid: bobSimoleanPayment };
 
+// Bob escrows with zoe
 const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
   bobExclusiveInvite,
-  bobOfferRules,
+  bobProposal,
   bobPayments,
 );
 
-const bobOfferResult = await bobSeat.matchOffer();
+// Bob bids
+const bobOfferResult = await bobSeat.bid();
 ```
 
 Since multiple parties may want to participate in the auction, let's say that Carol and Dave also decide to bid in the same way
-as Bob, Carol bidding 7 simoleans, and Dave bidding 5 simoleans.
+as Bob- Carol bidding 7 simoleans, and Dave bidding 5 simoleans.
 
 Bob wins since he bid 11 simoleans, but pays the second-highest price, which is Carol's bid of 7
 simoleans. Thus, when Alice claims her winnings, she gets 7 simoleans.
