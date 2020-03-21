@@ -27,8 +27,8 @@ someProposal: {
 
 The keys are keywords, and the values are amounts.
 Keywords are unique identifiers per contract, that tie together
-the offer rules, payments to be escrowed, and payouts to the user.
-In the above example, "Asset" and "Price" are keywords.
+the proposal, payments to be escrowed, and payouts to the user.
+In the below example, "Asset" and "Price" are keywords.
 And in an auction instance, the keywords might be "Asset" and "Bid".
 
 Users should submit their payments using keywords: `const payments = { Asset: moolaPayment };`
@@ -47,11 +47,24 @@ someAmountKeywordRecord: {
 
 The possible kinds are 'waived', 'onDemand', and 'afterDeadline'. `timer` and `deadline` only are used for the `afterDeadline` kind.
 
+The possible records are:
+
+`{ waived: null }`
+
+`{ onDemand: null }`
+
+`{ afterDeadline: { timer :Timer, deadline :Number } }`
+
 ```js
 someExitRule: {
-  kind: 'afterDeadline',
-  timer: someTimer,
-  deadline: 1893459600,
+  afterDeadline: {
+    timer: someTimer,
+    deadline: 1893459600
+  }
+}
+
+anotherExitRule: {
+  waived: undefined
 }
 ```
 
