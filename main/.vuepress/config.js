@@ -110,7 +110,7 @@ module.exports = {
           children: [
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
-            '/zoe/guide/offer-rules'
+            '/zoe/guide/proposal'
           ]
         },
         {
