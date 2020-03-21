@@ -4,9 +4,9 @@
 
 ## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
-- `reallocation` `{Array <Array <Amount>>}`
+- `reallocation` `{Array <AmountKeywordRecord>}`
 
-Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the values are amounts. The amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 
 ```js
 import harden from '@agoric/harden';
@@ -29,19 +29,23 @@ import harden from '@agoric/harden';
 zoe.complete(harden([someOfferHandle]));
 ```
 
-## zcf.addIssuers(issuers)
+## zcf.addNewIssuer(issuers, keyword)
 - `issuers` `{Array <Issuer>}`
+- `keyword` `{String}`
 - Returns: `{Promise}`
 
 Inform Zoe about new issuers. Returns a promise for acknowledging when the issuers are added and ready.
+
+```js
+zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
+  //do stuff
+});
+```
 
 ## zcf.getZoeService()
 - Returns: `{ZoeService}`
 
 Expose the user-facing Zoe Service API to the contracts as well.
-
-```js
-```
 
 ## zcf.makeInvite(seat, customProperties)
 - `seat` `{Object}`
@@ -66,14 +70,14 @@ Get the Zoe `inviteIssuer`.
 const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
-## zcf.getAmountMathForIssuers(issuers)
-- `issuers` `{Array <Issuer>}`
-- Returns: `{Array <AmountMath>}`
+## zcf.getAmountMath(issuerKeywordRecord)
+- `issuerKeywordRecord` `{IssuerKeywordRecord}`
+- Returns: `{AmountMathKeywordRecord}`
 
-Get a list of local `amountMath` per issuer
+Get a list of local amountMath for each keyword in the issuerKeywordRecord object.
 
 ```js
-const amountMathArray = zoe.getAmountMathForIssuers(issuers);
+const amountMaths = zoe.getAmountMaths(issuerKeywordRecord);
 ```
 
 ## zcf.isOfferActive(offerHandle)
@@ -116,4 +120,15 @@ Get the offer record.
 
 ```js
 const { payoutRules } = zoe.getOffer(inviteHandle);
+```
+
+## zcf.getInstanceRecord()
+- Returns: `{InstanceRecord}`
+
+Get the instance record. This allows the contracts to get access
+to their keywords, issuers and other "instanceRecord" information from
+Zoe.
+
+```js
+const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ```

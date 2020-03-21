@@ -96,18 +96,32 @@ const { seat: userSeat, payout: userPayoutP } = await zoe.redeem(
 );
 ```
 
-## zoe.getOffer(inviteHandle)
-- `inviteHandle` `{Payment}`
-- Returns: `{Object <Offer>}`
+## zoe.isOfferActive(offerHandle)
+- `offerHandles` `{Object}`
+- Returns: `{Boolean}``
 
-Return the offer for the contract. Throws error if the offer is not found.
+Check if the offer is still active. This method does not throw if the offer is inactive.
 
 ```js
-const {
-  offerRules: { want, offer },
-} = zoe.getOffer(firstInviteHandle)
+const isActive = zoe.isOfferActive(someOfferHandle);
 ```
 
-## zoe.getOffers
+## zoe.getOffers(offerHandles)
+- `offerHandles` `{Array <Object>}`
+- Returns: `{Array <OfferRecord>}`
 
-## zoe.isOfferActive
+Get a list of offer records. Throws error if offers are not found.
+
+```js
+const offers = offerTable.getOffers(listOfOfferHandles);
+```
+
+## zoe.getOffer(offerHandle)
+- `offerHandle` `{Object}`
+- Returns: `{Array <OfferRecord>}`
+
+Get the offer record. Throws error if the offer is not found.
+
+```js
+const { payoutRules } = zoe.getOffer(inviteHandle);
+```
