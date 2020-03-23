@@ -135,7 +135,8 @@ module.exports = {
           children: [
             '/zoe/api/zoe',
             '/zoe/api/structs',
-            '/zoe/api/zoe-contract-facet'
+            '/zoe/api/zoe-contract-facet',
+            '/zoe/api/zoe-helpers'
           ],
         },
         {
