@@ -149,33 +149,29 @@ make sure our user-facing API has a method for that:
 
 ```js
 const makeFirstOfferInvite = () => {
-  const seat = harden({
-    makeFirstOffer: () => {
-      if (
-        !hasValidPayoutRules(['offerAtMost', 'wantAtLeast'], inviteHandle)
-      ) {
-        throw rejectOffer(inviteHandle);
-      }
-      return makeMatchingInvite(inviteHandle);
-    },
-  });
-  const { invite, inviteHandle } = zoe.makeInvite(seat, {
-    seatDesc: 'firstOffer',
-  });
-  return invite;
-};
+    const seat = harden({
+      makeFirstOffer: () => {
+        const expected = harden({ give: ['Asset'], want: ['Price'] });
+        rejectIfNotProposal(inviteHandle, expected);
+        return makeMatchingInvite(inviteHandle);
+      },
+    });
+    const { invite, inviteHandle } = zoe.makeInvite(seat, {
+      seatDesc: 'firstOffer',
+    });
+    return invite;
+  };
 ```
 
 This is pretty similar in format to the `automaticRefund`, but there
 are a few changes. First, in this contract, we actually check what was
 escrowed with Zoe to see if it's the kind of offer that we want to
 accept. In this case, we only want to accept offers that have a
-`payoutRules` of the
-form:
+proposal of the form:
 ```js
-[{ kind: 'offerAtMost', units: x}, { kind: 'wantAtLeast', units: y}]
+{ give: ['Asset'], want: ['Price'] }
 ```
-where `x` and `y` are units with the correct assays.
+where `give` and `want` are amounts with the correct issuers.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
@@ -186,15 +182,19 @@ method, `makeMatchingInvite`, and a helper function, `swap`:
 
 ```js
 const makeMatchingInvite = firstInviteHandle => {
-    const seat = harden({
-      matchOffer: () => swap(firstInviteHandle, inviteHandle),
-    });
-    const { invite, inviteHandle } = zoe.makeInvite(seat, {
-      offerMadeRules: zoe.getOffer(firstInviteHandle).payoutRules,
-      seatDesc: 'matchOffer',
-    });
-    return invite;
-  };
+  const seat = harden({
+    matchOffer: () => swap(firstInviteHandle, inviteHandle),
+  });
+  const {
+    proposal: { want, give },
+  } = zoe.getOffer(firstInviteHandle);
+  const { invite, inviteHandle } = zoe.makeInvite(seat, {
+    asset: give.Asset,
+    price: want.Price,
+    seatDesc: 'matchOffer',
+  });
+  return invite;
+};
 ```
 
 ```js
@@ -209,17 +209,17 @@ swap: (
   if (!helpers.canTradeWith(keepHandle, tryHandle)) {
     throw helpers.rejectOffer(tryHandle);
   }
-  const keepUnits = zoe.getOffer(keepHandle).units;
-  const tryUnits = zoe.getOffer(tryHandle).units;
-  // reallocate by switching the units
+  const keepAmounts = zoe.getOffer(keepHandle).amounts;
+  const tryAmounts = zoe.getOffer(tryHandle).amounts;
+  // reallocate by switching the amount
   const handles = harden([keepHandle, tryHandle]);
-  zoe.reallocate(handles, harden([tryUnits, keepUnits]));
+  zoe.reallocate(handles, harden([tryAmounts, keepAmounts]));
   zoe.complete(handles);
   return defaultAcceptanceMsg;
-},
+}
 ```
 
-In the `makeMatchingInvite` method we call `swap`, which handles a lot of the logic. First, it checks if the offer is still active. If not, we reject the offer at
+In the `makeMatchingInvite` method we call `swap`, which handles a lot of the logic. First, `swap` checks if the offer is still active. If not, we reject the offer at
 hand. Second, if the offer at hand isn't a match for the first offer,
 we want to reject it for that reason as well.
 
@@ -228,14 +228,13 @@ exciting part, the reallocation.
 
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
-escrowed for each offer. That information is in the form of a
-`unit`, which is a labeled extent. For instance, in "3 bricks", "3" is
+escrowed for each offer. That information is in the form of an
+`amount`, which is a labeled extent. For instance, in "3 bricks", "3" is
 the extent, and "bricks" is the label. ([See more about ERTP fundamentals here](../../ertp/guide/)).
 
-Because this is a swap, we want to literally swap the units for the
+Because this is a swap, we want to literally swap the amounts for the
 first offer and the matching offer. That is, the user who put in the
-first offer will get what the second user put in and vice versa. `swap` makes a call to `zoe.reallocate` in order to tell Zoe about
-this reallocation for the two offers.
+first offer will get what the second user put in and vice versa. `swap` makes a call to `zoe.reallocate` in order to tell Zoe about this reallocation for the two offers.
 
 Zoe checks two invariants before changing its bookkeeping. First, Zoe
 checks that offer safety holds for these offers. In other words, does
