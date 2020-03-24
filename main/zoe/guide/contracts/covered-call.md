@@ -4,20 +4,20 @@
 
 In a covered call, the owner of a digital asset sells a call option. A call option is the right to buy the digital asset at a certain price, called the strike price. The call option has an expiry date, at which point the contract is cancelled.
 
-In this contract, the expiry date is represented by the deadline at which the owner of the digital asset's proposal is cancelled. Therefore, the owner of the digital asset's proposal `exit` must be "afterDeadline".
+In this contract, the expiry date is represented by the deadline at which the owner of the digital asset's offer is cancelled. Therefore, the owner of the digital asset's proposal `exit` must be "afterDeadline".
 
 The invite that the creator of the covered call receives is the call option and has the following additional information in the extent of the invite: `{ expirationDate, timerAuthority, underlyingAsset, strikePrice }`.
 
 
 ## Making A Call Option
 
-Let's say Alice wants to create a covered call proposal. She creates the first proposal
+Let's say Alice wants to create a covered call. She creates the first proposal
 just like she would create the first proposal in the atomic swap.
 
 ```js
 const issuerKeywordRecord = harden({
-  UnderlyingAsset: moolaR.issuer,
-  StrikePrice: simoleanR.issuer,
+  UnderlyingAsset: moolaIssuer,
+  StrikePrice: simoleanIssuer,
 });
 
 const aliceInvite = await zoe.makeInstance(
@@ -26,6 +26,8 @@ const aliceInvite = await zoe.makeInstance(
 );
 
 // Alice escrows with Zoe
+const moola = moolaAmountMath.make;
+const simoleans = simoleanAmountMath.make;
 const aliceProposal = harden({
   give: { UnderlyingAsset: moola(3) },
   want: { StrikePrice: simoleans(7) },
@@ -45,15 +47,15 @@ const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
 const option = aliceSeat.makeCallOption();
 ```
 
-This invite is a full ERTP payment and can be escrowed and used in other
+This option is a full ERTP payment and can be escrowed and used in other
 contracts. For instance, if Alice is the user to makes the first
-proposal and gets an invite in return, she can send it to Bob, who can
+proposal and gets the option (a Zoe invite) in return, she can send it to Bob, who can
 either exercise the call option or sell it in another contract, say, an atomic
 swap:
 
 ```js
 const inviteIssuer = zoe.getInviteIssuer();
-const bobExclOption = await inviteIssuer.claimAll(option);
+const bobExclOption = await inviteIssuer.claim(option);
 
 // Let's imagine that Bob wants to sell the invite for the call option.
 // He can create a swap to trade this invite for bucks.
