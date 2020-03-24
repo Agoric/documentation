@@ -1,6 +1,9 @@
-# Structs
+# Records
 
 <Zoe-Version/>
+
+These records (JavaScript objects with data properties and no
+functions) are used throughout Zoe.
 
 ## SeatAndPayout
 
@@ -9,7 +12,7 @@ This is returned by a call to `redeem` on Zoe. A seat is an arbitrary object who
 ```js
 someSeatAndPayout: {
   seat: someSeat,
-  payout: someArrayOfPayments,
+  payout: paymentKeywordRecord,
 }
 ```
 
@@ -20,6 +23,19 @@ someProposal: {
   want: someAmountKeywordRecord,
   give: anotherAmountKeywordRecord,
   exit: someExitRule
+}
+```
+
+## IssuerKeywordRecord
+
+The keys are keywords, and the values are issuers. These keywords will
+be used by users to make their proposal. In the below example, "Asset"
+and "Price" are keywords.
+
+```js
+someIssuerKeywordRecord: {
+  Asset: moolaIssuer,
+  Price: simoleanIssuer
 }
 ```
 
@@ -43,6 +59,20 @@ someAmountKeywordRecord: {
 }
 ```
 
+## AmountMathKeywordRecord
+
+The keys are keywords, and the values are the [amountMath](/ertp/guide/amount-math.html) for
+particular issuers.
+
+```js
+const someAmountMathKeywordRecord = {
+  Asset: ticketAmountMath,
+  Price: simoleanAmountMath
+};
+someAmountMathKeywordRecord.Asset.coerce(tickets3);
+
+```
+
 ## ExitRule
 
 The possible kinds are 'waived', 'onDemand', and 'afterDeadline'. `timer` and `deadline` only are used for the `afterDeadline` kind.
@@ -64,7 +94,7 @@ someExitRule: {
 }
 
 anotherExitRule: {
-  waived: undefined
+  waived: null,
 }
 ```
 
@@ -78,3 +108,31 @@ someOfferStatusesRecord: {
   inactive: anotherListOfOfferHandles
 }
 ```
+
+# Table columns
+
+These columns are revealed to the dev/user in API methods like "getInstanceRecord" and "getOffer".
+
+## Installation Table
+- handle
+- Installation
+
+## Instance Record properties
+- handle
+- installationHandle
+- publicAPI
+- terms
+- issuerKeywordRecord
+- keywords
+
+## Offer Record
+- handle
+- installationHandle
+- publicAPI
+- terms
+
+## Issuer Table
+- issuer
+- brand
+- purse
+- amountmath

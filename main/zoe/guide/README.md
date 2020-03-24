@@ -23,17 +23,17 @@ written in the familiar language of JavaScript.
 
 ## Sounds like magic. How does it actually work?
 
-To use Zoe, we put things in terms of "offers". An offer is a
+To use Zoe, we put things in terms of "offers". An offer proposal is a
 statement about what you want and what you're willing to offer. It
 turns out, many smart contracts (apart from gifts and one-way
 payments) involve an exchange of digital assets that can be put in
-terms of offers.
+terms of offer proposals.
 
-In this version of Zoe, our offers are simple (see [our roadmap](../roadmap/README.md) for
-more complex offer types). We can say
-things like, "I'll give you [three
-wood for two bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the particulars
-of structuring an offer here](./offer-rules.md).
+In this version of Zoe, our offer proposals are simple (see [our
+roadmap](../roadmap/README.md) for more complex proposal types). We
+can say things like, "I'll give you [three wood for two
+bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the
+particulars of structuring an offer proposal here](./proposal.md).
 
 Offers are a structured way of describing user intent. To a certain
 extent, an offer's rules (called a *proposal*) are the user's
@@ -169,9 +169,9 @@ escrowed with Zoe to see if it's the kind of offer that we want to
 accept. In this case, we only want to accept offers that have a
 proposal of the form:
 ```js
-{ give: ['Asset'], want: ['Price'] }
+{ give: { Asset: amount1, want: { Price: amount2 } }
 ```
-where `give` and `want` are amounts with the correct issuers.
+where `amount1` and `amount2` are amounts with the correct issuers.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
