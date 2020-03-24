@@ -9,7 +9,7 @@ keep the [constant product
 invariant](https://github.com/runtimeverification/verified-smart-contracts/blob/uniswap/uniswap/x-y-k.pdf)
 before accepting.
 
-Based on UniSwap.
+An implementation of [UniSwap](https://uniswap.org/).
 
 ## Initialization
 
@@ -17,12 +17,12 @@ Create an instance of an autoswap invite:
 
 ```js
 const issuerKeywordRecord = harden({
-  Asset: moolaIssuer,
-  Price: simoleanIssuer,
+  TokenA: moolaIssuer,
+  TokenB: simoleanIssuer,
 });
 
 const aliceInvite = zoe.makeInstance(
-  installationHandle,
+  autoswapInstallationHandle,
   issuerKeywordRecord,
 );
 ```
@@ -37,14 +37,8 @@ methods available:
 2. `removeLiquidity`
 3. `swap`
 
-#### Public API:
-1. `getPrice`
-2. `getLiquidityAssay`
-3. `getPoolUnits`
-4. `makeInvite`
-
 We can contribute to the autoswap liquidity pool by calling `addLiquidity` on a seat. For instance,
-let's say that Alice decides to add liquidity. She creates a proposal with the associated payments of moola and simoleans and
+let's say that Alice creates a proposal with the associated payments of moola and simoleans and
 escrows them by redeeming her invite:
 
 ```js
@@ -84,7 +78,14 @@ tokens back by specifying a rule for the liquidity token slot with
 ## Making a swap offer
 
 Let's say that Bob wants to use the moola<->simolean autoswap
-to exchange 2 moola. First he will check the price:
+to exchange 2 moola. First he will check the price using the public
+API:
+
+#### Public API:
+1. `getPrice`
+2. `getLiquidityIssuer`
+3. `getPoolUnits`
+4. `makeInvite`
 
 ```js
 const simoleanAmounts = bobAutoswap.getPrice(harden({ TokenA: moola(2) }));
@@ -131,7 +132,7 @@ const bobSimoleanPayout1 = await bobPayout.TokenB;
 ## Removing Liquidity
 
 If Alice wants to remove liquidity and get moola and simoleans back,
-she can do that by making new proposals and escrowing a payment of
+she can do that by making a new proposal and escrowing a payment of
 liquidity tokens:
 
 ```js

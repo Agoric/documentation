@@ -112,7 +112,7 @@ sent fake money, or she could have been sent money that was
 
 When alice receives an alleged payment, she calls `myBaytownBucksPurse.deposit`.
 This function first checks that its argument is a genuine payment object of the same
-assay as the purse. If it's the case, the amount is transfered in full
+issuer as the purse. If it's the case, the amount is transferred in full
 from the payment to the purse. If there is a mismatch, the method throws an error.
 
 After the call to `deposit` succeeds, ERTP guarantees that:
