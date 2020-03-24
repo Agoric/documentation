@@ -5,31 +5,21 @@
 Here's a number of features that we are planning to add in the near
 future to Zoe, in response to user feedback.
 
-1. Allow users of smart contracts to make their offer rules with any
-   order of assays. Currently, the payout rules portion of the offer
-   rules must be in the same order as the canonical array of assays
-   in the smart contract.
-2. Allow smart contracts to use whatever assays the users of the smart
-   contract contribute. Currently, smart contracts must use a specific
-   array of assays that the smart contract returns on instantiation.
-3. Allow user and smart contracts to talk about a subset of the total
-   assays for a particular smart contract instance. For example, in
-   autoswap, there are three assays, two for the swappable assets and
-   one for the liquidity token for that particular instance. We would
-   like the users to not have to include mention of the liquidity
-   token unless they are removing or adding liquidity.
-4. Support "multiples" in offer rules. Multiples are a
+1. Allow smart contracts to talk to Zoe in terms of a subset of the
+   keywords. Currently, when a smart contract queries Zoe or calls Zoe
+   methods, all of the keywords are used.
+2. Support "multiples" in proposals. Multiples are a
    way of expressing partial fulfillment of offers without having to
    deal with the problem of division. For instance, we may want to buy
    100 shares of stock for 10 dollars each, and if we can't buy 100
    shares, we're happy with as much as we can get. We want to be able
    to encode this kind of offer more succinctly than having to make
    100 separate offers.
-5. Support "disjuncts" in offer rules. By disjuncts, we mean allowing
+3. Support "disjuncts" in proposals. By disjuncts, we mean allowing
    compound offers in which we want exactly one of them to be
    accepted. For instance, we might want to find a good weekend
    activity and we're ok with buying a ticket to the museum or the
    concert, but not both because they will happen at the same time.
-6. Separate Zoe into two layers. One layer, doing the escrowing and
+4. Separate Zoe into two layers. One layer, doing the escrowing and
    actually holding the assets, is in a different Vat than the other
-   layer, which runs the contracts.
+   layer, which runs a contract instance.

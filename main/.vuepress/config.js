@@ -111,7 +111,6 @@ module.exports = {
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
             '/zoe/guide/proposal',
-            '/zoe/guide/table-columns'
           ]
         },
         {
@@ -134,7 +133,7 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/zoe/api/zoe',
-            '/zoe/api/structs',
+            '/zoe/api/records',
             '/zoe/api/zoe-contract-facet',
             '/zoe/api/zoe-helpers'
           ],
