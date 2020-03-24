@@ -16,14 +16,14 @@ access to the auction instance can make a bid by making a proposal.
 
 Alice can create an auction from an existing second-price auction
 installation. (`installationHandle` is the unique, unforgeable
-indentifier for the installation.)
+identifier for the installation.)
 
 ```js
 const numBidsAllowed = 3;
 
 const issuerKeywordRecord = harden({
-  Asset: moolaR.issuer,
-  Bid: simoleanR.issuer,
+  Asset: moolaIssuer,
+  Bid: simoleanIssuer,
 });
 
 const terms = harden({ numBidsAllowed });
@@ -37,11 +37,12 @@ const aliceInvite = await zoe.makeInstance(
 
 She can put up something at auction by first escrowing it with Zoe. In
 order to escrow something with Zoe, she needs to provide a payment for
-what she wants to put up at auction, and she needs to decide the keywords
-of her `proposal`. The `proposal` will be enforced by Zoe and will
-protect Alice from misbehavior by the smart contract and other
-participants. `want` and `give` are used to enforce offer safety, and
-`exit` is used to enforce payout liveness.
+what she wants to put up at auction, and she needs to make a
+`proposal`. The `proposal` will be enforced by Zoe and will protect
+Alice from misbehavior by the smart contract and other participants.
+`want` and `give` are used to enforce offer safety, and `exit` is used
+to enforce payout liveness. If no `exit` rule is given, as in this
+example, the default (`{ onDemand: null }`) is used.
 
 ```js
 const aliceProposal = harden({
@@ -77,13 +78,12 @@ const bobInviteExtent = inviteIssuer.getAmountOf(bobExclusiveInvite)
 
 const {
   installationHandle: bobInstallationId,
-  terms: bobTerms,
   issuerKeywordRecord: bobIssuers,
 } = zoe.getInstance(bobInviteExtent.instanceHandle);
 
 // Bob checks the information is what he expects
-insist(bobInstallationId === installationHandle)`wrong installation`;
-insist(bobTerms.issuers[0] === inviteIssuer)`wrong issuer`
+assert(bobInstallationId === installationHandle, details`wrong installation`);
+assert(bobIssuers.Asset === moolaIssuer, details`wrong issuer`);
 ```
 
 Bob decides to join the contract and
