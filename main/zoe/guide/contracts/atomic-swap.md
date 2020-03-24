@@ -1,4 +1,4 @@
-# Swaps
+# Atomic Swap
 
 <Zoe-Version/>
 
@@ -6,17 +6,16 @@ If I want to trade one kind of asset for another kind, I could send
 you the asset and ask you to send me the other kind back. But, you
 could choose to behave opportunistically: receive my asset and give
 nothing back. To solve this problem, swap contracts allow users to
-securely trade one kind of eright for another kind, leveraging Zoe for
+securely trade one kind of digital asset for another kind, leveraging Zoe for
 escrow and offer safety. At no time does any user have the ability to
 behave opportunistically.
 
-## Atomic Swap
-
 In the `atomicSwap` contract, anyone can securely swap with a counterparty by escrowing digital assets with Zoe and sending an invite to the swap to the counterparty.
 
-Let's say that Alice wants to swap with Bob as the counterparty. She knows that the code for the swap has already
-been installed, so she can create a swap instance from the swap
-installation (`handle` is the unique, unforgeable identifier):
+Let's say that Alice wants to swap with Bob as the counterparty. She
+knows that the code for the swap has already been installed, so she
+can create a swap instance from the swap installation (`handle` is the
+unique, unforgeable identifier):
 
 ```js
 const issuerKeywordRecord = harden({
@@ -34,7 +33,7 @@ two things, the actual ERTP payments that are part of her offer, and
 an object called `Proposal`. The `Proposal` will be used by Zoe to
 protect Alice from the smart contract and other participants. The
 `Proposal` has three parts: `give` and `want`, which is used for
-enforcing offer safety, and `exitRule,` which is used to enforce
+enforcing offer safety, and `exit`, which is used to enforce
 exit safety. In this case, Alice's exit rule is `onDemand`, meaning
 that she can exit at any time.
 
@@ -71,19 +70,22 @@ She then sends the invite to Bob and he looks up the invite to see if it matches
 
 ```js
 const inviteIssuer = zoe.getInviteIssuer();
-const bobExclusiveInvite = await inviteIssuer.claimAll(newInviteP);
-const bobInviteExtent = bobExclusiveInvite.getBalance().extent;
+const bobExclusiveInvite = await inviteIssuer.claim(newInviteP);
+const bobInviteExtent = inviteIssuer.getAmountOf(bobExclusiveInvite)
+  .extent[0];
 
 const {
   installationHandle: bobInstallationId,
-  terms: bobTerms,
+  issuerKeywordRecord: bobIssuers,
 } = zoe.getInstance(bobInviteExtent.instanceHandle);
 
 
 // Bob does checks
-insist(bobInstallationId === installationHandle)`wrong installation`;
-insist(bobTerms.moola === inviteIssuer)`wrong issuer`;
-insist(bobInviteExtent.Asset === aliceProposal.Price)`wrong price`;
+assert(bobInstallationId === installationHandle, details`wrong installation`);
+assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
+assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
+assert(moolaAmountMath.isEqual(bobInviteExtent.asset, moola(3)), details`wrong asset`);
+assert(simoleanAmountMath.isEqual(bobInviteExtent.price, simoleans(7)), details`wrong price`);
 ```
 
 Bob decides to be the counter-party. He also escrows his payments and redeems his invite to
@@ -123,7 +125,4 @@ const bobSimoleanPayout = await bobPayout.Price;
 
 const aliceMoolaPayout = await alicePayout.Asset;
 const aliceSimoleanPayout = await alicePayout.Price;
-const [aliceMoolaPayout, aliceSimoleanPayout] = await Promise.all(
-  alicePayout,
-);
 ```
