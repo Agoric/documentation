@@ -83,7 +83,7 @@ The possible records are:
 
 `{ onDemand: null }`
 
-`{ afterDeadline: { timer :Timer, deadline :Number } }`
+`{ afterDeadline: { timer :Timer, deadline :Deadline} }`
 
 ```js
 someExitRule: {
@@ -98,7 +98,7 @@ anotherExitRule: {
 }
 ```
 
-## OfferStatusesRecord
+## OfferStatuses Record
 
 `active` and `inactive` lists of offerHandles.
 
@@ -109,30 +109,43 @@ someOfferStatusesRecord: {
 }
 ```
 
-# Table columns
+## Installation Record
+```js
+{
+  handle, // opaque identifier, used as the table key
+  installation, // contract code
+}
+```
 
-These columns are revealed to the dev/user in API methods like "getInstanceRecord" and "getOffer".
+## Instance Record
 
-## Installation Table
-- handle
-- Installation
-
-## Instance Record properties
-- handle
-- installationHandle
-- publicAPI
-- terms
-- issuerKeywordRecord
-- keywords
+```js
+{ 
+  handle, // opaque identifier for the instance, used as the table key
+  installationHandle, // opaque identifier for the installation
+  publicAPI, // the invite-free publicly accessible API for the contract
+  terms, // contract parameters
+  issuerKeywordRecord, // record with keywords keys, issuer values
+  keywords, // an array of the keywords, in sorted order
+}
+```
 
 ## Offer Record
-- handle
-- installationHandle
-- publicAPI
-- terms
+```js
+{ 
+  handle, // opaque identifier for the offer, used as the table key
+  instanceHandle, // opaque identifier for the instance
+  proposal, // the offer proposal (including want, give, exit)
+  amounts, // the amountKeywordRecord that will be turned into payouts
+}
+```
 
-## Issuer Table
-- issuer
-- brand
-- purse
-- amountmath
+## Issuer Record
+```js
+{
+  issuer, // an ERTP issuer, used as the key for this table
+  brand, // ERTP brand for the issuer
+  purse, // A single purse used in common by contracts using this issuer
+  amountMath, // local ERTP amountMath for the issuer
+}
+```
