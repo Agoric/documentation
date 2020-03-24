@@ -11,7 +11,7 @@ to look for matches every time a new order arrives.
 
 The exchange accepts buy and sell limit orders only.
 
-Note that the asset in the `give` of the proposal will always be bought or sold in exact amounts, whereas the amount of the `want` asset received in a sell order may be greater than expected, and the amount of the `give` asset paid in a buy order may be less than expected. This simple exchange does not support partial fills of orders.
+The Asset is treated as an exact amount to be exchanged, while the Price is a limit that may be improved on. This simple exchange does not support partial fills of orders.
 
 ## Instantiating the simple exchange
 
@@ -33,7 +33,7 @@ A user, Alice, can escrow with zoe to create a sell order. She wants to sell 3 m
 const aliceSellOrderProposal = harden({
   give: { Asset: moola(3) },
   want: { Price: simoleans(4) },
-  exitRule: { kind: 'onDemand' },
+  exit: { onDemand: null },
 });
 
 const alicePayments = { Asset: aliceMoolaPayment };
@@ -51,22 +51,25 @@ const bobInvite = publicAPI.makeInvite();
 
 ## Buying an order
 
-Let's say that Bob hears about Alice's invite and deciees he wants to join. He will check the `installationHandle` and the kind of units is what he expects:
+Let's say that Bob hears about Alice's invite and decides he wants to
+join. He will check the `installationHandle` and see that the exchange
+is trading what he
+expects:
 
 ```js
 // Bob collects information
 const inviteIssuer = zoe.getInviteIssuer();
-const bobExclusiveInvite = await inviteIssuer.claimAll(bobInvite);
-const bobInviteExtent = bobExclusiveInvite.getBalance().extent;
+const bobExclusiveInvite = await inviteIssuer.claim(bobInvite);
+const { instanceHandle } = inviteIssuer.getAmountOf(bobExclusiveInvite).extent[0];
 const {
   installationHandle: bobInstallationId,
   issuerKeywordRecord: bobIssuers,
-} = zoe.getInstance(bobInviteExtent.instanceHandle);
+} = zoe.getInstance(instanceHandle);
 
 // Bob checks the information is what he expects
-insist(bobInstallationId === installationHandle)`wrong installation`;
-insist(bobIssuers.Asset === moolaIssuer)`wrong Asset issuer`
-insist(bobIssuers.Price === simoleanIssuer)`wrong Price issuer`
+assert(bobInstallationId === installationHandle, details`wrong installation`);
+assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`);
+assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`);
 ```
 
 Now that Bob has checked to make sure everything is in order, he proceeds to fulfill the buy order:
@@ -76,7 +79,7 @@ Now that Bob has checked to make sure everything is in order, he proceeds to ful
 const bobBuyOrderProposal = harden({
   give: { Price: simoleans(7) },
   want: { Asset: moola(3) },
-  exitRule: { kind: 'onDemand' },
+  exit: { onDemand: null },
 });
 
 const bobPayments = { Price: bobSimoleanPayment };
@@ -95,7 +98,7 @@ const bobOfferResult = await bobSeat.addOrder();
 ## Payout
 
 If a match is made, the payout promise that the user receives when
-they escrow with Zoe is resolved to an array of payments.
+they escrow with Zoe is resolved to a record of promises for payments with keyword keys:
 
 ```js
 const bobPayout = await bobPayoutP;
