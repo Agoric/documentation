@@ -7,10 +7,18 @@ functions) are used throughout Zoe.
 
 ## SeatAndPayout
 
-This is returned by a call to `redeem` on Zoe. A seat is an arbitrary object whose methods allow the user to take certain actions in a contract. The payout is a promise that resolves to an object which has keywords as keys and promises for payments as values. Note that while the payout promise resolves when an offer is completed, the promise for each payment resolves after the remote issuer successfully withdraws the payment.
+This is returned by a call to `redeem` on Zoe. A seat is an arbitrary
+object whose methods allow the user to take certain actions in a
+contract. The payout is a promise that resolves to an object which has
+keywords as keys and promises for payments as values. Keywords are
+strings that must begin with a capital letter and must be ASCII.
+Parties to the contract will use the keywords to index their proposal
+and their payments.  Note that while the payout promise resolves when
+an offer is completed, the promise for each payment resolves after the
+remote issuer successfully withdraws the payment.
 
 ```js
-someSeatAndPayout: {
+{
   seat: someSeat,
   payout: paymentKeywordRecord,
 }
@@ -19,7 +27,7 @@ someSeatAndPayout: {
 ## Proposal
 
 ```js
-someProposal: {
+{
   want: someAmountKeywordRecord,
   give: anotherAmountKeywordRecord,
   exit: someExitRule
@@ -33,7 +41,7 @@ be used by users to make their proposal. In the below example, "Asset"
 and "Price" are keywords.
 
 ```js
-someIssuerKeywordRecord: {
+{
   Asset: moolaIssuer,
   Price: simoleanIssuer
 }
@@ -53,7 +61,7 @@ And, users will receive their payouts with keywords as the keys of a
 payout object: `moolaPurse.deposit(payout.Asset);`
 
 ```js
-someAmountKeywordRecord: {
+{
   Asset: amountMath.make(5),
   Price: amountMath.make(9)
 }
@@ -65,11 +73,11 @@ The keys are keywords, and the values are the [amountMath](/ertp/guide/amount-ma
 particular issuers.
 
 ```js
-const someAmountMathKeywordRecord = {
+const record = {
   Asset: ticketAmountMath,
   Price: simoleanAmountMath
 };
-someAmountMathKeywordRecord.Asset.coerce(tickets3);
+record.Asset.coerce(tickets3);
 
 ```
 
@@ -86,14 +94,14 @@ The possible records are:
 `{ afterDeadline: { timer :Timer, deadline :Deadline} }`
 
 ```js
-someExitRule: {
+{
   afterDeadline: {
     timer: someTimer,
     deadline: 1893459600
   }
 }
 
-anotherExitRule: {
+{
   waived: null,
 }
 ```
@@ -103,7 +111,7 @@ anotherExitRule: {
 `active` and `inactive` lists of offerHandles.
 
 ```js
-someOfferStatusesRecord: {
+{
   active: someListOfOfferHandles,
   inactive: anotherListOfOfferHandles
 }
@@ -137,15 +145,5 @@ someOfferStatusesRecord: {
   instanceHandle, // opaque identifier for the instance
   proposal, // the offer proposal (including want, give, exit)
   amounts, // the amountKeywordRecord that will be turned into payouts
-}
-```
-
-## Issuer Record
-```js
-{
-  issuer, // an ERTP issuer, used as the key for this table
-  brand, // ERTP brand for the issuer
-  purse, // A single purse used in common by contracts using this issuer
-  amountMath, // local ERTP amountMath for the issuer
 }
 ```
