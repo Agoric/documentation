@@ -7,26 +7,25 @@ get back what they wanted or get back a full refund.
 
 In order for Zoe to be able to enforce offer safety, the user must
 provide Zoe a description of what they want and a description of what
-they are offering. These are called `payoutRules` and along with
-`exitRule` (which is used by Zoe to enforce payout liveness), they make up
-the rules of the offer.
+they are offering. This is called a `proposal`. A proposal also
+contains the conditions under which a user can exit a contract (this is used by Zoe to enforce payout liveness).
 
 For example, if I want to buy an event ticket for $100, I am offering
-$100, and I want one event ticket. My `payoutRules`
-would look like:
+$100, and I want one event ticket. My `proposal`
+might look like:
 
 ```js
-[
-  { kind: 'offerAtMost', units: dollars100 },
-  { kind: 'wantAtLeast', units: ticket1 }
-]
+{
+  give: { Price: dollars100 },
+  want: { Asset: ticket1 },
+}
 ```
-Note: In the future, we expect to allow for more complex `payoutRules`
-and may change the structure.
+Asset and Price are examples of the `keywords` of a contract. Each
+contract uses keywords to allow the users to easily refer to parts of
+a proposal, payments escrowed with Zoe, and payouts received from Zoe.
 
-When the user escrows with Zoe, the user must also submit payments for any
-`payoutRule` with the kind `offerAtMost`. Zoe
-expects to be able to escrow these payments immediately. In this
+For example, when the user escrows with Zoe, the user must also submit payments using keywords.
+Zoe expects to be able to escrow these payments immediately. In this
 particular example, I would have to include a payment of $100 for Zoe
 to escrow my offer.
 
@@ -44,8 +43,8 @@ payout of an event ticket if the update is offer-safe and conserves
 total supply.
 
 The code for enforcing offer safety can be found in
-[isOfferSafe.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/isOfferSafe.js), and tests, including
-edge cases, can be found in [test-isOfferSafe.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/unitTests/test-isOfferSafe.js).
+[offerSafety.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/offerSafety.js), and tests, including
+edge cases, can be found in [test-offerSafety.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/unitTests/test-offerSafety.js).
 
 ## Offer Safety Gotchas
 
@@ -55,14 +54,14 @@ Yes, under offer safety you can get a full refund *and* get what you
 wanted. Offer safety guarantees that at least one of these is true.
 Both could be true.
 
-### What if there are no rules that are `offerAtMost`?
+### What if there are no rules under `give`?
 
-If there are no rules that are `offerAtMost`, then
+If there are no rules under `give` or `give` is omitted, then
 trivially, whatever you get will fulfill offer-safety, because you are
 always getting a full refund of what you put in, which was nothing.
 
-### What if there are no rules that are `wantAtLeast`?
+### What if there are no rules under `want`
 
-If there are no rules that are `wantAtLeast`, then
+If there are no rules under `want` or `want` is omitted, then
 trivially, whatever you get will fulfill offer-safety, because you
 specified nothing about what you want, and so anything fulfills that.

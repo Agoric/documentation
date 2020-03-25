@@ -23,37 +23,34 @@ written in the familiar language of JavaScript.
 
 ## Sounds like magic. How does it actually work?
 
-To use Zoe, we put things in terms of "offers". An offer is a
+To use Zoe, we put things in terms of "offers". An offer proposal is a
 statement about what you want and what you're willing to offer. It
 turns out, many smart contracts (apart from gifts and one-way
 payments) involve an exchange of digital assets that can be put in
-terms of offers.
+terms of offer proposals.
 
-In this version of Zoe, our offers are simple (see [our roadmap](../roadmap/README.md) for
-more complex offer types). We can say
-things like, "I'll give you [three
-wood for two bricks](https://en.wikipedia.org/wiki/Catan)." We can
-also say something like, "I want three wood, and *the most* I'm
-willing to pay is two bricks." Or even: "I can pay you two bricks and
-I expect *at least* three wood back." [Learn more about the particulars
-of structuring an offer here](./offer-rules.md).
+In this version of Zoe, our offer proposals are simple (see [our
+roadmap](../roadmap/README.md) for more complex proposal types). We
+can say things like, "I'll give you [three wood for two
+bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the
+particulars of structuring an offer proposal here](./proposal.md).
 
 Offers are a structured way of describing user intent. To a certain
-extent, an offer's rules are the user's *contractual understanding*
-of the agreement they are entering into. You might have noticed that
-the offer doesn't specify the mechanism by which the exchange happens.
-The offer doesn't say whether the item you want is up for auction, in
-an exchange, or part of a private trade. The offer doesn't mention the
-particular mechanism because an important part of the design of Zoe is
-a __separation of concerns__. Zoe is responsible for enforcing what we
-call "offer safety", and the smart contract that runs on top of Zoe is
-responsible for figuring out a proposed reallocation of resources. To
-use an auction as an example, the smart contract is responsible for
-figuring out who wins the auction and how much they pay, but Zoe
-handles the escrowing of the bids and the payments. You can think of
-this as similar to e-commerce websites using a separate
-payment-processor so that they don't have to handle the credit cards
-themselves.
+extent, an offer's rules (called a *proposal*) are the user's
+*contractual understanding* of the agreement they are entering into.
+You might have noticed that the offer doesn't specify the mechanism by
+which the exchange happens. The offer doesn't say whether the item you
+want is up for auction, in an exchange, or part of a private trade.
+The offer doesn't mention the particular mechanism because an
+important part of the design of Zoe is a __separation of concerns__.
+Zoe is responsible for enforcing what we call "offer safety", and the
+smart contract that runs on top of Zoe is responsible for figuring out
+a proposed reallocation of resources. To use an auction as an example,
+the smart contract is responsible for figuring out who wins the
+auction and how much they pay, but Zoe handles the escrowing of the
+bids and the payments. You can think of this as similar to e-commerce
+websites using a separate payment-processor so that they don't have to
+handle the credit cards themselves.
 
 ### What is "offer safety"?
 
@@ -62,9 +59,11 @@ that is escrowed with Zoe, Zoe guarantees that the user will either
 get back why they said they wanted, or the user will get back what they
 originally offered.
 
-When a user escrows with Zoe, they get two things back immediately: a `seat`, and a JavaScript promise for a future payout. This `seat` has methods that the user can call to take action in the smart contract on Zoe, without the
-smart contract ever having access to the underlying digital assets.
-Let's look a particular example to see how this works.
+When a user escrows with Zoe, they get two things back immediately: a
+`seat`, and a JavaScript promise for a future payout. This `seat` has
+methods that the user can call to take action in the smart contract on
+Zoe, without the smart contract ever having access to the underlying
+digital assets. Let's look a particular example to see how this works.
 
 ## An example: A swap
 
@@ -105,7 +104,7 @@ this (see the [real contract code
 here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
 
 ```js
-export const makeContract = (zoe, terms) => {
+export const makeContract = zoe => {
   const makeSeatInvite = () => {
     const seat = harden({
       makeOffer: () => {
@@ -124,7 +123,6 @@ export const makeContract = (zoe, terms) => {
     publicAPI: {
       makeInvite: makeSeatInvite,
     },
-    terms,
   });
 };
 ```
@@ -135,19 +133,12 @@ deep-freeze it with `@agoric/harden`. You can [learn more about `harden` here](h
 `makeOffer` tells Zoe to complete the offer, which gives the user their payout through Zoe.
 
 A smart contract on Zoe must export a function `makeContract` that
-takes two parameters: `zoe`, which is the contract-specific API for Zoe, and
-`terms`, which are the contract terms that a contract instance is made
-with. `Terms` must include a property called `assays`, which is an
-array of assays, the public API of mints. For instance, in our
-bricks-for-wool example above, the contract terms would include the
-brick assay and the wool assay. `Terms` would also include any other
-contract-specific parameters that the author specified.
-
-The smart contract must return an object with three properties:
+takes a single parameters: `zoe`, which is the contract-specific API
+for Zoe. The smart contract must return an object with two
+properties:
 `invite`, an invite to join the contract which will be given to the
-user who instantiated the contract, `publicAPI`, the public API to the
-contract (no invite necessary to call these methods!) and `terms`, the
-user-provided terms of the contract.
+user who instantiated the contract and `publicAPI`, the public API to the
+contract (no invite necessary to call these methods!).
 
 ## Diving Deeper
 
@@ -158,33 +149,29 @@ make sure our user-facing API has a method for that:
 
 ```js
 const makeFirstOfferInvite = () => {
-  const seat = harden({
-    makeFirstOffer: () => {
-      if (
-        !hasValidPayoutRules(['offerAtMost', 'wantAtLeast'], inviteHandle)
-      ) {
-        throw rejectOffer(inviteHandle);
-      }
-      return makeMatchingInvite(inviteHandle);
-    },
-  });
-  const { invite, inviteHandle } = zoe.makeInvite(seat, {
-    seatDesc: 'firstOffer',
-  });
-  return invite;
-};
+    const seat = harden({
+      makeFirstOffer: () => {
+        const expected = harden({ give: ['Asset'], want: ['Price'] });
+        rejectIfNotProposal(inviteHandle, expected);
+        return makeMatchingInvite(inviteHandle);
+      },
+    });
+    const { invite, inviteHandle } = zoe.makeInvite(seat, {
+      seatDesc: 'firstOffer',
+    });
+    return invite;
+  };
 ```
 
 This is pretty similar in format to the `automaticRefund`, but there
 are a few changes. First, in this contract, we actually check what was
 escrowed with Zoe to see if it's the kind of offer that we want to
 accept. In this case, we only want to accept offers that have a
-`payoutRules` of the
-form:
+proposal of the form:
 ```js
-[{ kind: 'offerAtMost', units: x}, { kind: 'wantAtLeast', units: y}]
+{ give: { Asset: amount1, want: { Price: amount2 } }
 ```
-where `x` and `y` are units with the correct assays.
+where `amount1` and `amount2` are amounts with the correct issuers.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
@@ -195,15 +182,19 @@ method, `makeMatchingInvite`, and a helper function, `swap`:
 
 ```js
 const makeMatchingInvite = firstInviteHandle => {
-    const seat = harden({
-      matchOffer: () => swap(firstInviteHandle, inviteHandle),
-    });
-    const { invite, inviteHandle } = zoe.makeInvite(seat, {
-      offerMadeRules: zoe.getOffer(firstInviteHandle).payoutRules,
-      seatDesc: 'matchOffer',
-    });
-    return invite;
-  };
+  const seat = harden({
+    matchOffer: () => swap(firstInviteHandle, inviteHandle),
+  });
+  const {
+    proposal: { want, give },
+  } = zoe.getOffer(firstInviteHandle);
+  const { invite, inviteHandle } = zoe.makeInvite(seat, {
+    asset: give.Asset,
+    price: want.Price,
+    seatDesc: 'matchOffer',
+  });
+  return invite;
+};
 ```
 
 ```js
@@ -218,17 +209,17 @@ swap: (
   if (!helpers.canTradeWith(keepHandle, tryHandle)) {
     throw helpers.rejectOffer(tryHandle);
   }
-  const keepUnits = zoe.getOffer(keepHandle).units;
-  const tryUnits = zoe.getOffer(tryHandle).units;
-  // reallocate by switching the units
+  const keepAmounts = zoe.getOffer(keepHandle).amounts;
+  const tryAmounts = zoe.getOffer(tryHandle).amounts;
+  // reallocate by switching the amount
   const handles = harden([keepHandle, tryHandle]);
-  zoe.reallocate(handles, harden([tryUnits, keepUnits]));
+  zoe.reallocate(handles, harden([tryAmounts, keepAmounts]));
   zoe.complete(handles);
   return defaultAcceptanceMsg;
-},
+}
 ```
 
-In the `makeMatchingInvite` method we call `swap`, which handles a lot of the logic. First, it checks if the offer is still active. If not, we reject the offer at
+In the `makeMatchingInvite` method we call `swap`, which handles a lot of the logic. First, `swap` checks if the offer is still active. If not, we reject the offer at
 hand. Second, if the offer at hand isn't a match for the first offer,
 we want to reject it for that reason as well.
 
@@ -237,14 +228,13 @@ exciting part, the reallocation.
 
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
-escrowed for each offer. That information is in the form of a
-`unit`, which is a labeled extent. For instance, in "3 bricks", "3" is
+escrowed for each offer. That information is in the form of an
+`amount`, which is a labeled extent. For instance, in "3 bricks", "3" is
 the extent, and "bricks" is the label. ([See more about ERTP fundamentals here](../../ertp/guide/)).
 
-Because this is a swap, we want to literally swap the units for the
+Because this is a swap, we want to literally swap the amounts for the
 first offer and the matching offer. That is, the user who put in the
-first offer will get what the second user put in and vice versa. `swap` makes a call to `zoe.reallocate` in order to tell Zoe about
-this reallocation for the two offers.
+first offer will get what the second user put in and vice versa. `swap` makes a call to `zoe.reallocate` in order to tell Zoe about this reallocation for the two offers.
 
 Zoe checks two invariants before changing its bookkeeping. First, Zoe
 checks that offer safety holds for these offers. In other words, does

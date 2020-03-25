@@ -110,19 +110,19 @@ module.exports = {
           children: [
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
-            '/zoe/guide/offer-rules'
+            '/zoe/guide/proposal',
           ]
         },
         {
           title: 'Zoe Contracts',
-          path: '/zoe/guide/contracts/autoswap',
+          path: '/zoe/guide/contracts/',
           collapsable: false,
           sideBarDepth: 3,
           children: [
-            '/zoe/guide/contracts/autoswap',
-            '/zoe/guide/contracts/public-auction',
             '/zoe/guide/contracts/atomic-swap',
+            '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/covered-call',
+            '/zoe/guide/contracts/second-price-auction',
             '/zoe/guide/contracts/simple-exchange'
           ]
         },
@@ -133,8 +133,9 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/zoe/api/zoe',
-            '/zoe/api/structs',
-            '/zoe/api/zoe-contract-facet'
+            '/zoe/api/records',
+            '/zoe/api/zoe-contract-facet',
+            '/zoe/api/zoe-helpers'
           ],
         },
         {
@@ -157,8 +158,8 @@ module.exports = {
       ]
     },
 
-    zoeVersion: 'v0.2.0',
-    zoeDocsUpdated: '1/28/2020'
+    zoeVersion: 'v0.3.0',
+    zoeDocsUpdated: '3/24/2020'
 
 
     /* --- SEARCH --- */

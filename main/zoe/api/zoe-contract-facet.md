@@ -4,9 +4,9 @@
 
 ## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
-- `reallocation` `{Array <Array <Amount>>}`
+- `reallocation` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
 
-Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is a matrix (array of arrays) where the rows are the amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the values are amounts. The amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 
 ```js
 import harden from '@agoric/harden';
@@ -29,19 +29,23 @@ import harden from '@agoric/harden';
 zoe.complete(harden([someOfferHandle]));
 ```
 
-## zcf.addIssuers(issuers)
-- `issuers` `{Array <Issuer>}`
+## zcf.addNewIssuer(issuer, keyword)
+- `issuers` `{Issuer}`
+- `keyword` `{String}`
 - Returns: `{Promise}`
 
-Inform Zoe about new issuers. Returns a promise for acknowledging when the issuers are added and ready.
+Inform Zoe about a new issuer. Returns a promise for acknowledging when the issuer is added and ready.
+
+```js
+zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
+  //do stuff
+});
+```
 
 ## zcf.getZoeService()
 - Returns: `{ZoeService}`
 
 Expose the user-facing Zoe Service API to the contracts as well.
-
-```js
-```
 
 ## zcf.makeInvite(seat, customProperties)
 - `seat` `{Object}`
@@ -53,7 +57,7 @@ Create an invite using the Zoe `inviteMint`.
 ```js
 const { invite, inviteHandle } = zoe.makeInvite(
   seat,
-  { seatDesc: 'bid', auctionedAssets, minimumBid }
+  { seatDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
 );
 ```
 
@@ -66,14 +70,14 @@ Get the Zoe `inviteIssuer`.
 const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
-## zcf.getAmountMathForIssuers(issuers)
-- `issuers` `{Array <Issuer>}`
-- Returns: `{Array <AmountMath>}`
+## zcf.getAmountMath(issuerKeywordRecord)
+- `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
 
-Get a list of local `amountMath` per issuer
+Pass in an issuerKeywordRecord and get an amountMathKeywordRecord in return.
 
 ```js
-const amountMathArray = zoe.getAmountMathForIssuers(issuers);
+const amountMathKeywordRecord = zoe.getAmountMaths(issuerKeywordRecord);
 ```
 
 ## zcf.isOfferActive(offerHandle)
@@ -100,7 +104,7 @@ const { active: activeBidHandles } = zoe.getOfferStatuses(
 
 ## zcf.getOffers(offerHandles)
 - `offerHandles` `{Array <Object>}`
-- Returns: `{Array <OfferRecord>}`
+- Returns: <router-link to="/zoe/api/records.html#offer-record">`{Array <OfferRecord>}`</router-link>
 
 Get a list of offer records.
 
@@ -110,10 +114,23 @@ const offers = offerTable.getOffers(listOfOfferHandles);
 
 ## zcf.getOffer(offerHandle)
 - `offerHandle` `{Object}`
-- Returns: `{Array <OfferRecord>}`
+- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
 
 Get the offer record.
 
 ```js
 const { payoutRules } = zoe.getOffer(inviteHandle);
+```
+
+## zcf.getInstanceRecord()
+- Returns: <router-link
+  to="/zoe/api/records.html#instance-record-properties">`{InstanceRecord}`</router-link>
+
+
+Get the instance record. This allows the contracts to get access
+to their keywords, issuers and other "instanceRecord" information from
+Zoe.
+
+```js
+const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ```
