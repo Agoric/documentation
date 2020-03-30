@@ -20,7 +20,10 @@ software, you need to install the following.
     <td>Yarn is a package manager for your code and lets developers
   share code with others. Code is shared via a <i>package</i> (also
   called a <i>module</i>) that contains all shared code and a
-  <code>package.json</code> file describing the package.</td>
+  <code>package.json</code> file describing the package. The link takes you to 
+  the Yarn install page, where you first select what operating system you want to
+  install on. Your selection changes the page's content to give install instructions for that 
+  OS and links to the needed downloads.</td>
   </tr>
   <tr>
     <td><center>3</center></td>
