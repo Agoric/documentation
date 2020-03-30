@@ -2,7 +2,7 @@
 
 ERTP (*Electronic Rights Transfer Protocol*) is Agoric's token
 standard for transferring tokens and other digital assets in
-JavaScript. Using the ETRP API, you can easily create digital assets,
+JavaScript. Using ERTP, you can easily create digital assets,
 all of which are transferred exactly the same way and with exactly the
 same security properties. 
 
