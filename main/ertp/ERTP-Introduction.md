@@ -100,7 +100,7 @@ it).
 
 ## Amount Math
 
-Issuers must be able to add and withdraw assets from a purse. This
+Issuers must be able to deposit and withdraw assets from a purse. This
 requires being able to add and subtract digital assets. They use a set
 of `amountMath` functions, which are aided by `mathHelpers` functions.
 
