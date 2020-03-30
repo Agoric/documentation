@@ -26,7 +26,7 @@ To send assets in ERTP:
 To receive assets in ERTP:
 1. Create a purse for the asset type you'll receive.
 2. Get access to the asset type you'll receive. (**Note:** you
-do not need access to the type's mint, just the specifc asset you'll 
+do not need access to the type's mint, just the speciifc asset you'll 
 receive. 
 3. Receive the message with the payment and put the payment in
 your purse.
