@@ -15,7 +15,7 @@ object. If it doesn't have a reference, it can't.
 In ERTP, *mints* create digital *assets*. Access to an asset type's
 mint lets you create more digital assets of that type. You can then
 store new assets in a *payment* or a *purse*. 
-- **Payments**: Assets you intend to trade with someone else.
+- **Payments**: Assets you intend to send to someone else.
 - **Purses**: Store assets until you use them for a trade.
 
 To send assets in ERTP:
