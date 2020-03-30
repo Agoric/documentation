@@ -35,7 +35,7 @@ your purse.
 
 ERTP purse objects have a `deposit` message which takes a payment
 object as its argument. It first checks that the payment object is
-genuine and the same assay type as the purse takes (after all,
+genuine and the same asset type as the purse (after all,
 quatloos are a very unstable asset, so you don't want to swap your
 very stable simoleans for them). 
 
