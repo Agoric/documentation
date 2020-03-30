@@ -85,7 +85,7 @@ valid
 
 *Amounts* describe digital assets. Anyone can make one, and they can
  be sent to anyone. They have two parts:
-- **Brand**: The type of digital asset, such as `qualtoos`.
+- **Brand**: The type of digital asset, such as `quatloos`.
 - **Extent**: How much/many of the asset. Fungible extents are natural
   numbers (**tyg todo**: We don't do, say, 45.7
   bitcoin?). Non-fungible extents are strings or objects representing
