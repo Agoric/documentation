@@ -95,7 +95,7 @@ Note: *fungible* means any item in a set can be used. For example, for
 change for a dollar, any four quarters work. *Non-fungible* means
 specific items in a set must be used. For  example, theater tickets
 are not all the same, and it matters if you get third row center or
-second balcony far left  (and affects what you're willing to trade for
+second balcony far left (and affects what you're willing to trade for
 it). 
 
 ## Amount Math
