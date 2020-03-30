@@ -37,7 +37,7 @@ ERTP purse objects have a `deposit` message which takes a payment
 object as its argument. It first checks that the payment object is
 genuine and the same assay type as the purse takes (after all,
 quatloos are a very unstable asset, so you don't want to swap your
-very stable simoleans for them). . 
+very stable simoleans for them). 
 
 If everything passes the checks, the asset moves from the payment to
 the purse. If there's a problem, it throws an error.
