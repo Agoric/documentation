@@ -1,8 +1,8 @@
-# ETRP Introduction
+# ERTP Introduction
 
 ERTP (*Electronic Rights Transfer Protocol*) is Agoric's token
-standard for transferring tokens and other digital assets in
-JavaScript. Using ERTP, you can easily create digital assets,
+standard for digital assets in
+JavaScript. Using ERTP, you can easily create a wide variety of digital assets,
 all of which are transferred exactly the same way and with exactly the
 same security properties. 
 
@@ -16,7 +16,7 @@ In ERTP, *mints* create digital *assets*. Access to an asset type's
 mint lets you create more digital assets of that type. You can then
 store new assets in a *payment* or a *purse*. 
 - **Payments**: Assets you intend to send to someone else.
-- **Purses**: Store assets until you use them for a trade.
+- **Purses**: Store assets until you use them.
 
 To send assets in ERTP:
 1. Withdraw them from a purse.
@@ -25,8 +25,8 @@ To send assets in ERTP:
 
 To receive assets in ERTP:
 1. Create a purse for the asset type you'll receive.
-2. Get access to the asset type you'll receive. (**Note:** you
-do not need access to the type's mint, just the speciifc asset you'll 
+2. Get access to the asset type you'll receive. **Note:** you
+do not need access to the type's mint, just the specific asset you'll 
 receive. 
 3. Receive the message with the payment and put the payment in
 your purse.
@@ -56,14 +56,14 @@ ERTP guarantees:
 Other key ERTP objects are:
 
 - **Mints**: Issue new digital assets as a new Payment. Mints only
-issue one kind of asset (quatloos, simoleons, moola, etc.). We refer to
-that kind as the mint's *Brand*. So if a mint issues quatloos, it's a
+issue one type of asset (quatloos, simoleons, moola, etc.). We refer to
+that type as the mint's *Brand*. So if a mint issues quatloos, it's a
 quatloo brand mint.  Only mints can issue new digital assets. To mint
 new assets of a particular type, you must have a reference to that
 type's mint 
 
 - **Issuers**: Create empty purses and payments and map minted
- assets to them when the assets are added or removed. 
+ assets to them when assets are added or removed. 
  Issuers verify and move digital assets.
 
 An issuer's special admin facet is a Mint, and that Mint and Issuer are
@@ -83,19 +83,19 @@ valid
 
 ## Amounts
 
-*Amounts* describe digital assets. Anyone can make one, and they can
- be sent to anyone. They have two parts:
-- **Brand**: The type of digital asset, such as `quatloos`.
+*Amounts* describe digital assets without having any value of their own.
+Anyone can make one, and they can be sent to anyone. They have two parts:
+- **Brand**: An unforgeable object identity for the digital asset's type,
+  such as an object that represents quatloos.
 - **Extent**: How much/many of the asset. Fungible extents are natural
-  numbers (**tyg todo**: We don't do, say, 45.7
-  bitcoin?). Non-fungible extents are strings or objects representing
+  numbers. Non-fungible extents are strings or objects representing
   attributes of the asset (say, a theater ticket's row and seat positions).
 
 Note: *fungible* means any item in a set can be used. For example, for 
 change for a dollar, any four quarters work. *Non-fungible* means
 specific items in a set must be used. For  example, theater tickets
 are not all the same, and it matters if you get third row center or
-second balcony far left (and affects what you're willing to trade for
+second balcony far left  (and affects what you're willing to trade for
 it). 
 
 ## Amount Math
