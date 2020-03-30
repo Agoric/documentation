@@ -1,20 +1,23 @@
 # Agoric Documentation Map
 
-Agoric provides three different types of documentation. This page
-explains what they are and when you should use them, as well as
-what order to read them.
+**tyg todo**: Add links to all these docs before publishing
 
-Our three documentation types are:
-- **Getting Started**: These are the first you should
-read. They cover what you need to do to install, set up, and start
-using Agoric's smart contract tools and introduce those tools and
+Agoric provides three main types of documentation, as well as links to
+"big picture" presentations and papers and links to our source code on GitHub. This page
+describes our documentation structure, where documents are, and when you should use them, 
+as well as what order to read them.
+
+Our three main documentation types are:
+- **Getting Started**: These are the first things you should
+read. They cover what to do to install, set up, and start
+using Agoric's smart contract tools. They also introduce those tools and
 their underlying concepts and designs.
 - **Guides**: These are more detailed and complete descriptions
 of our tools and their concepts, designs, and usage. They include
 descriptions and examples of how to do various tasks with Agoric
 software.
 - **Reference**: These are the specs for our APIs and commands,
-  as well as procedure checklist tables that specify and explain the
+  as well as checklist tables that specify and explain the
   steps for extended procedures, such as installing Agoric
   software.
 
@@ -33,11 +36,11 @@ You should read them in this order:
   for writing smart contracts in JavaScript. Zoe implements our smart
   contract guarantee that users either get what they wanted from the
   contract or a full refund of what they put up for it. Regardless of
-  whether the contract is buggy or malicious.
+  whether the contract is honest, buggy, or malicious.
 4. **Using An Agoric Demo Contract**: Agoric supplies several
   demo smart contracts for you to experiment with, learn from, and
   even copy code from for use in your projects. This document shows
-  you how to install and modify the AutoSwap demo contract.
+  you how to install and modify the Autoswap demo contract.
 5. **ERTP Guide**: A detailed description of ERTP concepts, 
   design, components, and commands. Includes examples of command 
   usage.
@@ -45,19 +48,20 @@ You should read them in this order:
   design, components, and commands. Includes examples of command 
   usage.
 7. **Creating New Smart Contracts and Using Existing Ones**: A
-  procedure checklist table Reference document that walks you through
-  what you need to do to create a new smart contract from
-  scratch. Another procedure checklist table walks you through editing
+  procedure checklist that walks you through
+  creating a new smart contract from
+  scratch. Another procedure checklist walks you through editing
   and using an existing contract.
 
-When needed, refer to the **ERTP API Reference** and **Zoe API
-Reference** for command specifications. We also have an **Agoric
-Glossary** for terms we've given Agoric-context definitions to
-(i.e. what does *mint* mean in an Agoric context?).
+When needed, refer to the **ERTP API Reference**, **Zoe API
+Reference**, and **Agoric CLI Reference** for command specifications. 
+We also have an **Agoric Glossary** for terms we've given Agoric-context
+definitions to (i.e. what does *mint* mean in an Agoric context?).
 
-We also have a **Learn More** page. This has links to Agoric's
-company homepage and various documents and videos you may find useful,
-such as conference talks, white papers, conference papers, etc.
+For more about Agoric's ideas, plans, and goals, see our **Learn More**
+page. It has links to Agoric's company homepage and various documents and 
+videos you may find useful, such as conference talks, white papers, 
+conference papers, etc.
 
 Finally, we have links to the ultimate documentation; the GitHub
 repositories for the code that defines the Agoric SDK and our Zoe
