@@ -6,8 +6,8 @@ ever need to stop or suspend it?)
 
 This document shows how to create and start the Autoswap demo
 project. Agoric projects are called <i>Dapps (distributed
-applications)</i>, an entire application consisting of a contract and
-its UI. (**tyg todo**: Is this correct?) 
+applications)</i>, which typically have a browser-based user interface, 
+a public API server, and a contract running on the Agoric blockchain.
 <br><br>
 <table border="1">
   <tbody>
@@ -18,28 +18,28 @@ its UI. (**tyg todo**: Is this correct?)
   </th>
   <tr>
     <td><center>1</center></td>
-    <td>Run <code>cd ~/agoric/sdk</code></td>
+    <td>Go to or open a shell and run <code>cd ~/agoric/sdk</code></td>
     <td>Go to the directory where you copied the latest Agoric SDK
-  from the Agoric GitHub repository in Step 4 of (**tyg todo**: Insert link
+	    from the Agoric GitHub repository in Step 4 of (<b>tyg todo</b>: Insert link
       when determined to Before Using Agoric Software).</td>
   </tr>
   <tr>
     <td><center>2</center></td>
     <td>Run <code>agoric init demo</code>
-    <td>Initializes a <i>Dapp</i>e (<i>Distributed application</i>)
-	project, in this case an Agoric-written demo written to introduce
+    <td>Initializes a <i>Dapp</i> (<i>Distributed application</i>)
+	project, in this case Autoswap, an Agoric-written demo that introduces
 	you to Agoric smart contracts.
 	<br><br>
     <code>init</code> creates a folder with the specified name
     (<code>demo</code> in this case) and copies the files you need
     into it. You can give the project any name you like. This
-    documentation assumes you used <code>demo</code>.. 
+    documentation assumes you used <code>demo</code>. 
     <br><br>
     There are optional arguments that let you specify which project
     you want to initialize. By default, their values are set to
     initialize a project we wrote to introduce you to Agoric smart
     contracts. See the (<b>tyg todo</b> insert links) Agoric CLI page
-    or Creating New Contracts or Using Existing Contracts page for
+    or the Creating New Contracts or Using Existing Contracts page for
     details on these optional arguments.
   <br><br>If this 
   doesn't work, use <code>echo $PATH</code> to check that your Agoric
@@ -93,12 +93,12 @@ its UI. (**tyg todo**: Is this correct?)
     <td><center>10</center></td>
     <td>In the new shell, run <code>yarn start</code></td>
     <td><code>start</code> is a <code>yarn</code> sub-command
-  implemented by Agoric. It lauunches the React development server.</td>
+  implemented by Agoric. It launches the React development server.</td>
   </tr>
   <tr>
     <td><center>11</center></td>
     <td>Go to a browser and open <code>http://localhost:3000</code> to
-  see our demo Dapp (<i>Distributed Application</i>)</td>
+  see our demo Autoswap Dapp.</td>
     <td>See a screenshot and a description of this Dapp below.</td>
   </tr>
   <tr>
@@ -113,10 +113,10 @@ its UI. (**tyg todo**: Is this correct?)
 
 (**tyg todo** Add Wallet UI screenshot)
 
-You've now got the Autoswap smart contract demo app running, and can
+The Autoswap smart contract demo app is running, and you can
 see its UI in a browser tab. The UI shows the purses we gave you to
 start trading with.
 
-Now that you've got the Autoswap demo running, go to (**tyg todo** add
+Now go to (**tyg todo** add
 link) Experimenting With the Autoswap Demo Contract.  There, we'll
 look at the code behind Autoswap and experiment with modifying it.
