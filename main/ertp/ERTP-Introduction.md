@@ -62,7 +62,7 @@ quatloo brand mint.  Only mints can issue new digital assets. To mint
 new assets of a particular type, you must have a reference to that
 type's mint 
 
-- **Issuers**: Creates empty purses and payments and maps minted
+- **Issuers**: Create empty purses and payments and map minted
  assets to them when the assets are added or removed. 
  Issuers verify and move digital assets.
 
