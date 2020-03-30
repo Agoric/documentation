@@ -70,7 +70,7 @@ Get the Zoe `inviteIssuer`.
 const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
-## zcf.getAmountMath(issuerKeywordRecord)
+## zcf.getAmountMaths(issuerKeywordRecord)
 - `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
 - Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
 
