@@ -109,7 +109,7 @@ const { active: activeBidHandles } = zoe.getOfferStatuses(
 Get a list of offer records.
 
 ```js
-const offers = offerTable.getOffers(listOfOfferHandles);
+const offers = zoe.getOffers(listOfOfferHandles);
 ```
 
 ## zcf.getOffer(offerHandle)

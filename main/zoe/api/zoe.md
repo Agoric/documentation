@@ -127,7 +127,7 @@ const isActive = zoe.isOfferActive(someOfferHandle);
 Get a list of offer records. Throws error if offers are not found.
 
 ```js
-const offers = offerTable.getOffers(listOfOfferHandles);
+const offers = zoe.getOffers(listOfOfferHandles);
 ```
 
 ## zoe.getOffer(offerHandle)
