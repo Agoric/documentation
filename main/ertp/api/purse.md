@@ -31,10 +31,9 @@ const currentBalance = purse.getCurrentAmount();
 - `optAmount` `{Amount}` - Optional. This parameter ensures you are depositing the amount you expect.
 - Returns: `{Amount}`
 
-Deposit all the contents of `payment` into this purse, returning the
-payment's amount of digital assets. If the optional argument `optAmount` does not equal the
-balance of
-`payment`, throw error.
+Deposit all the contents of `payment` into this purse, returning the payment's amount
+of digital assets. If the optional argument `optAmount` does not equal the balance of
+`payment`, or if `payment` is an unresolved promise, throw an error.
 
 ```js
 const { issuer, mint, amountMath } = produceIssuer('bucks');
