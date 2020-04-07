@@ -44,7 +44,7 @@ Extent must be Comparable.
 ## Handle
 A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so most handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means no one who doesn't already have reference to the handle can create a fake a new reference to it.
 
-For example, there exists an `offerHandle` is Zoe contracts. The `offerHandle` is the key to knowing what the current allocation for this offer is or to reallocate assets to this offerHandle.
+For example, Zoe contracts have an `offerHandle`. The `offerHandle` is the key for requesting the current allocation for this offer or reallocating the offerHandle's assets.
 
 ## Issuer
 Can create empty purses and payments, but it cannot mint new amounts. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
