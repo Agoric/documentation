@@ -42,7 +42,9 @@ Extents describe the extent of something that can be owned or shared: How much, 
 Extent must be Comparable.
 
 ## Handle
-A handle is a unique identifier implemented as an JavaScript object. Only its identity is meaningful, so most handles do not properties. For instance, there exists an `offerHandle` is Zoe contracts. The `offerHandle` is the key to knowing what the current allocation for this offer is or to reallocate assets to this offerHandle.
+A handle is a unique identifier implemented as an JavaScript object. Only its identity is meaningful, so most handles do not properties. Unlike number or string identifiers, handles are unforgeable. This means no one who doesn't already have reference to the handle can create a fake a new reference to it.
+
+For example, there exists an `offerHandle` is Zoe contracts. The `offerHandle` is the key to knowing what the current allocation for this offer is or to reallocate assets to this offerHandle.
 
 ## Issuer
 Can create empty purses and payments, but it cannot mint new amounts. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
