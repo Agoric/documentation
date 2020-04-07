@@ -1,5 +1,7 @@
 # ERTP Glossary
 
+This page lists words, expressions or concepts that are used by the Agoric technology stack
+
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
 not be trusted as an accurate depiction, since it is provided by
@@ -38,6 +40,9 @@ post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 Extents describe the extent of something that can be owned or shared: How much, how many, or description of unique asset. (Pixel(3,2), $3 or ‘Right to occupy on Tuesdays’). Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
 Extent must be Comparable.
+
+## Handle
+A handle is a unique identifier implemented as an JavaScript object. Only its identity is meaningful, so most handles do not properties. For instance, there exists an `offerHandle` is Zoe contracts. The `offerHandle` is the key to knowing what the current allocation for this offer is or to reallocate assets to this offerHandle.
 
 ## Issuer
 Can create empty purses and payments, but it cannot mint new amounts. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
