@@ -3,12 +3,47 @@
 ZoeHelpers are functions that extract common contract code and
 patterns into reusable helpers.
 
+These helper functions can be imported from @agoric/zoe/src/contractSupport. We
+expect to move them to a separate package shortly, so it would become
+'@agoric/zoe-contract-support'. The import provides a function `makeZoeHelpers()`,
+which produces versions of the function that are bound to the current zoe instance.
+
+```
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const {
+  assertKeywords,
+  canTradeWith,
+  checkIfProposal,
+  rejectOffer,
+  swap,
+  rejectIfNotProposal,
+  getActiveOffers,
+  makeEmptyOffer,
+} = makeZoeHelpers(zoe);
+```
+
 ## zoeHelper.assertKeywords(keywords)
 - `keywords` `{Array <String>}`
 
 Checks that the keywords submitted by the creator of the contract
 instance match what the contract expects. Throws if incorrect or if there is
 missing or extra keywords. Order of keywords is irrelevant.
+
+```
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { assertKeywords } = makeZoeHelpers(zoe);
+
+// proposal for inviteHandle
+const proposal = {
+  want: { Asset: moola(4) },
+  give: { Price: simoleans(16) },
+  exit: { onDemand: null },
+}
+
+assertKeywords(['Asset', 'Price']);
+```
 
 ## zoeHelper.rejectIfNotProposal(inviteHandle, expectedProposalStructure)
 - `inviteHandle` `{Handle}`
@@ -21,6 +56,10 @@ not match the `expectedProposalStructure`. If a property (`want`,
 actual proposal is accepted.
 
 ```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { rejectIfNotProposal } = makeZoeHelpers(zoe);
+
 // proposal for inviteHandle
 const proposal = {
   want: { Asset: moola(4) },
@@ -44,6 +83,10 @@ expected proposal structure. However, `checkIfProposal` returns a
 boolean and never throws or completes the offer. 
 
 ```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { checkIfProposal } = makeZoeHelpers(zoe);
+
 // proposal for inviteHandle
 const proposal = {
   want: { Asset: moola(4) },
@@ -74,6 +117,10 @@ Checks if the `give` and `want` of two invites would satisfy offer
 safety if the two allocations are swapped.
 
 ```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { canTradeWith } = makeZoeHelpers(zoe);
+
 const leftInvite = harden({
   give: { Asset: moola(10) },
   want: { Price: simoleans(4) },
@@ -122,6 +169,10 @@ amounts for the two offers, then we complete both offers so that the
 users will receive their payout.
 
 ```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { swap } = makeZoeHelpers(zoe);
+
   const seat = harden({
     matchOffer: () => swap(firstInviteHandle, inviteHandle),
   });
@@ -133,5 +184,9 @@ users will receive their payout.
 Creates an empty offer.
 
 ```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { makeEmptyOffer } = makeZoeHelpers(zoe);
+
 makeEmptyOffer().then(inviteHandle => {...})
 ```
