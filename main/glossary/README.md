@@ -42,7 +42,7 @@ Extents describe the extent of something that can be owned or shared: How much, 
 Extent must be Comparable.
 
 ## Handle
-A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so most handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means no one who doesn't already have reference to the handle can create a fake a new reference to it.
+A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means the only way to know a handle identity is being given an object reference, and no identity can be guessed and no fake identity will succeed. 
 
 For example, Zoe contracts have an `offerHandle`. The `offerHandle` is the key for requesting the current allocation for this offer or reallocating the offerHandle's assets.
 
