@@ -17,7 +17,7 @@ jobs:
         npm install
         npm run docs:build
 
-    - name: Build and Deploy
+    - name: Deploy to gh-pages
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provided by github: https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#about-the-github_token-secret
