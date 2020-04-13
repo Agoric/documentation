@@ -77,20 +77,9 @@ module.exports = [
     link: '/glossary/'
   },
   {
-    text: 'Learn More',
-    ariaLabel: 'Learn More Menu',
-    items: [
-      {
-        text: 'Contributing',
-        ariaLabel: 'Contributing',
-        link: '/miscellaneous/contributing'
-      },
-      {
-        text: 'Agoric',
-        ariaLabel: 'Agoric Homepage Link',
-        link: 'https://agoric.com/'
-      }
-    ]
+    text: 'Contribute to the doc',
+    ariaLabel: 'Contribute to the doc',
+    link: 'https://github.com/Agoric/documentation/blob/master/README.md'
   },
   {
     text: 'Github',
