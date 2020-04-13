@@ -1,0 +1,21 @@
+# Based on example at: https://github.com/marketplace/actions/deploy-to-vuepress
+
+name: Build and Deploy documentation site
+on:
+  push:	
+    branches:	
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build and Deploy
+      uses: grasilife/github-pages-deploy-action@v1.2
+      env:
+        BASE_BRANCH: master # The branch the action should deploy from.
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: main/.vuepress/dist # The folder the action should deploy.
+        BUILD_SCRIPT: npm install && npm run docs:build # The build script the action should run prior to deploying.
