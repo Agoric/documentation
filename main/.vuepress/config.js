@@ -94,10 +94,6 @@ module.exports = {
             '/ertp/api/amount-math',
             '/ertp/api/math-helpers',
           ]
-        },
-        {
-          title: 'ERTP Glossary',
-          path: '/ertp/glossary/'
         }
       ],
 
