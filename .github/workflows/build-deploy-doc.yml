@@ -1,4 +1,4 @@
-# Based on example at: https://github.com/marketplace/actions/deploy-to-vuepress
+# Based on example at: https://github.com/marketplace/actions/deploy-to-github-pages
 
 name: Build and Deploy documentation site
 on:
