@@ -72,6 +72,11 @@ module.exports = [
     link: '/dapps/',
   },
   {
+    text: 'Glossary',
+    ariaLabel: 'Glossary Menu',
+    link: '/glossary/'
+  },
+  {
     text: 'Learn More',
     ariaLabel: 'Learn More Menu',
     items: [
