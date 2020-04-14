@@ -1,8 +1,10 @@
 # Getting Started with the Agoric CLI
 
-Note: This tutorial and the Agoric Dapps are currently under
+::: warning
+This tutorial and the Agoric Dapps are currently under
 construction for the [Gitcoin Cross-Chain Hackathon](https://gitcoin.co/hackathon/cross-chain/onboard). We will remove this message
 when things are ready for use.
+:::
 
 ![The Agoric Stack](./assets/Agoric.svg)
 
