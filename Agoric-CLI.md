@@ -8,6 +8,8 @@ In general, you want to issue Agoric CLI commands in this order:
 3. `agoric start` (Usually with `--reset`)
 4. `agoric deploy`
 
+Use `agoric help` whenever you need help with one of the above Agoric CLI commands.
+
 ## `agoric init`
 - **Function**: 
   - Creates a new Dapp directory named `<project>` with contents copied from the `dapp-template` argument template.
@@ -15,7 +17,7 @@ In general, you want to issue Agoric CLI commands in this order:
     - `project`: Name of the new project to initialize.
 - **Optional Arguments**:
     - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-simple-exchange`.
-    - `--dapp-base <base-url>`: Look under this directory for the template. Defaults to `git://github.com/Agoric/`
+    - `--dapp-base <base-url>`: Look under this directory for the Dapp template. Defaults to `git://github.com/Agoric/`
 - **Examples**:
   - Creates a directory named `demo` with contents copied from the default `dapp-template` value `dapp-simple-exchange`.
 	- `agoric init demo`
@@ -26,7 +28,7 @@ In general, you want to issue Agoric CLI commands in this order:
 
 ## `agoric install`
 - **Function**:
-  - Install Dapp JavaScript dependencies. This may take a while. **tyg todo**: Are these general dependencies for all Agoric projects, or specific ones connected to the directory created by `agoric init`?
+  - Install Dapp JavaScript dependencies. This may take a while.
 - **Required Arguments**:
   - None.
 - **Optional Arguments**:
