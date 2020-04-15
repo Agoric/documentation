@@ -18,6 +18,7 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 - **Optional Arguments**:
     - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-simple-exchange`.
     - `--dapp-base <base-url>`: Look under this directory for the Dapp template. Defaults to `git://github.com/Agoric/`
+    - `-h`, `--help`: Display help for `init` command.
 - **Examples**:
   - Creates a directory named `demo` with contents copied from the default `dapp-template` value `dapp-simple-exchange`.
 	- `agoric init demo`
@@ -41,27 +42,25 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 - **Function**:
   - Run an Agoric VM on which contracts will run.
 - **Required Arguments**:
-  - `[profile]`
-	- **tyg todo Not sure what goes here** ?
-  - `[args...]`
-    - **tyg todo Not sure what goes here?**	
+  - `[profile]`: Specifies the environment for the VM. Defaults to `dev` for development mode, `testnet` connects to our current testnet.
+  - `[args]`: Ignore this for now. It currently has no valid values.
 - **Optional Arguments**:
-    -`--reset:`  Clear all VM state before starting.
-    - `--no-restart`: Do not actually start the VM. **tyg todo: Why
-      would you do this?**
+    -`--reset`:  Clear all VM state before starting.
+    - `--no-restart`: Do not actually start the VM. 
     - `--pull`:  For Docker-based VM, pull the image before running.
-    - `--delay [seconds]`: Delay the given number of seconds before
-      starting for a simulated chain to process messages.
+    - `--delay [seconds]`: Delay the given number of seconds for each round-trip to the simulated chain and back for a simulated chain to process messages. A `1` value lets you easily count the number of trips in your head.
+    - `--inspect`: [host[:port]]`: Activate inspector on host:port (default: "127.0.0.1:9229")
+    - `--inspect-brk [host[:port]]`:  Activate inspector on host:port and break at start of script (default: "127.0.0.1:9229")
+    - `-h`, `--help`: Display help for `start` command
 - **Examples**:
   - Restart the Agoric VM, clearing all existing state before doing so.  
     - `agoric start --reset`
   - Don't actually start the Agoric VM.
     - `agoric start --no-restart`
   - For Docker-based VM, before running pull the image.
-	  - `agoric start --pull`
-    - Delay 5 seconds before starting in order for a simulated chain to
- proces messages. (**tyg todo: Any suggestions for a good number of
- seconds or how to determine it?**)
+    - `agoric start --pull`
+  - Delay 5 seconds for each round-trip to the simulated chain and back in order for a simulated chain to
+ process messages. 
       - `agoric start --delay 5`
 
 ## `agoric deploy`
@@ -71,6 +70,7 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
   - `<script...>`: Deployment script(s) to run against the local Agoric instance. You must specify at least one, and may specify more than one. 
 - **Optional Arguments**:
   - `--hostport <HOST:PORT>`: Host and port on which to connect to the VM.
+  - `-h`, `--help`: Display help for `deploy` command
 - **Examples**:
   - Run the specified `deploy.js` scripts against the local Agoric VM.
     - `agoric deploy ./contract/deploy.js ./api/deploy.js`
@@ -84,7 +84,16 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 - **Required Arguments**:
   - None
 - **Optional Arguments**:
-  - None.
+  - `-V`, `--version`: Output Agoric's version number.
+  - `--sdk`: Use the Agoric SDK containing this program.
+  - `-v`, `--verbose`: Output a more detailed version of help (note: only for some commands)
+  - `-h`, `--help`: display help for command
 - **Examples**:
   - Display Agoric CLI commmands with brief descriptions.
     - `agoric help`
+  - Display current Agoric version number
+    - `agoric -V help`
+  - Display verbose help for an Agoric command
+    - `agoric start -h -v`
+  - Display verbose general help
+    - `agoric help -v`
