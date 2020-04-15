@@ -16,7 +16,7 @@ In ERTP, *mints* create digital *assets*. Access to an asset type's
 mint lets you create more digital assets of that type. You can then
 store new assets in a *payment* or a *purse*. 
 - **Payments**: Assets you intend to send to someone else.
-- **Purses**: Store assets until you use them.
+- **Purses**: Store assets until you withdraw them into a payment for use
 
 To send assets in ERTP:
 1. Withdraw them from a purse.
@@ -25,19 +25,18 @@ To send assets in ERTP:
 
 To receive assets in ERTP:
 1. Create a purse for the asset type you'll receive.
-2. Get access to the asset type you'll receive. **Note:** you
-do not need access to the type's mint, just the specific asset you'll 
-receive. 
+2. Get access to the asset type you'll receive. **Note:** You
+do not need access to the type's mint. The Issuer (which is widely shared) provides an empty purse for the asking.  
 3. Receive the message with the payment and put the payment in
 your purse.
 
 ## Security properties
 
 ERTP purse objects have a `deposit` message which takes a payment
-object as its argument. It first checks that the payment object is
-genuine and the same asset type as the purse (after all,
-quatloos are a very unstable asset, so you don't want to swap your
-very stable simoleans for them). 
+object as its argument. It first checks that the payment object is 
+genuine and the same asset type as the purse (after all, quatloos 
+are a very unstable asset, so we wouldn't want to let people deposit 
+quatloos and get credit for simoleans.)
 
 If everything passes the checks, the asset moves from the payment to
 the purse. If there's a problem, it throws an error.
@@ -113,5 +112,5 @@ If Getting Started, you should go to the Zoe Introduction. **tyg
 todo:** Link to Zoe intro.
 
 If you've finished the Getting Started material, you should go to the
-ERTP Guide (**tyg todo: Add link**) for a fuller explanation of ERTP
+[ERTP Guide](https://agoric.com/documentation/ertp/guide/) for a fuller explanation of ERTP
 concepts, including ones not covered in this Introduction. 
