@@ -11,7 +11,7 @@ software, you need to install the following.
   <th><b>Explanation</b></th>
   <tr>
     <td><center>1</center></td>
-    <td><a href="https://nodejs.org/">Install Node.js</a>, version 10.16.0 or higher</td>
+    <td><a href="https://nodejs.org/">Install Node.js</a>, version 12.16.1 or higher</td>
     <td></td>
   </tr>
   <tr>
