@@ -36,16 +36,15 @@ What you need to do before installing Agoric software and installing the Agoric 
 2. **[Start a Project](https://agoric.com/documentation/getting-started/start-a-project)**: A
   procedure checklist that walks you through creating a new smart contract 
   project from scratch. 
-3. **[ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction)**: A
+3. **[ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction)**:
   A Getting Started document that
   briefly explains the concepts and components of Agoric's Electronic
-  Rights Transfer Protocol (ERTP) which is the base of Agoric
+  Rights Transfer Protocol (ERTP) which is the heart of Agoric
   software.
 4. **[Zoe Introduction](https://agoric.com/documentation/getting-started/zoe-introduction)**: 
   A Getting Started document that
-  briefly explains the concepts and components of Zoe, our platform
-  for writing smart contracts in JavaScript. Zoe implements our smart
-  contract guarantee that users either get what they wanted from the
+  briefly explains the concepts and components of Zoe, our reusable smart contract 
+  for writing other smart contracts in JavaScript. Zoe implements our guarantee that users either get what they wanted from the
   contract or a full refund of what they put up for it. 
 5. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
   A detailed description of ERTP concepts, design, components, and commands. 
@@ -58,7 +57,8 @@ What you need to do before installing Agoric software and installing the Agoric 
 
 When needed, refer to the **[ERTP API Reference](https://agoric.com/documentation/ertp/api/)**, **[Zoe API
 Reference](https://agoric.com/documentation/zoe/api/)**, and 
-**[Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/)** for command specifications. 
+**[Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/)** for details about 
+their respective commands. 
 
 To familiarize yourself with working Agoric smart contracts, take a look at our 
 **[Sample Contracts](https://agoric.com/documentation/zoe/guide/contracts/)**. 
@@ -72,6 +72,5 @@ videos you may find useful, such as conference talks, white papers,
 conference papers, etc.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
-repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK and our Zoe
-smart contract framework.
+repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
 
