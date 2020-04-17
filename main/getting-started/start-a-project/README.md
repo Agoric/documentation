@@ -1,14 +1,14 @@
 # Starting a Project
 
-This document shows how to start a new Agoric project. Agoric projects are called <i>Dapps (distributed
+This document shows how to start a new Agoric project. Our demos are called <i>Dapps (distributed
 applications)</i>, which typically have a browser-based user interface, 
 a public API server, and a contract running on the Agoric blockchain.
 
 For complete documentation on the Agoric CLI commands (those starting with `agoric`) used here, 
-see the [Agoric CLI](https://agoric.com/documentation/getting-started/agoric-cli/) documentation.
+see the [Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/) documentation.
 
 Also, for what needs to be done after you modify a project's code, see 
-[Development Init Cycle](https://agoric.com/documentation/getting-started/development-init-cycle/)
+[Development Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
 <br><br>
 <table border="1">
   <tbody>
@@ -36,7 +36,7 @@ Also, for what needs to be done after you modify a project's code, see
     <br><br>
     There are optional arguments that let you specify which project
     you want copied into the specified directory. By default, their values are set to
-    use a project we wrote to introduce you to Agoric smart
+    use a Dapp we wrote to introduce you to Agoric smart
     contracts. To specify a different project use the optional arguments:<br>
     <code>--dapp-template &lt;name&gt;</code> Use the template specified by &lt;name&gt;.<br> 
 	    <code>--dapp-base &lt;base-url&gt;</code> Look under this directory for the Dapp template. 
