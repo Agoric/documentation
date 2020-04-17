@@ -3,7 +3,7 @@ Need help? Got questions?
 
 To create a new issue on Agoric's Hackathon repository, click [here](https://github.com/Agoric/cross-chain-hackathon/issues/new)
 
-Send questions to <a href="mailto:tatyana@agoric.com">tatyana@agoric.com</a>
+Send questions to <a href="mailto:support@agoric.com">support@agoric.com</a>
 :::
 
 ::: warning
