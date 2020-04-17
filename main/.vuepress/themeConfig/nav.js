@@ -11,9 +11,34 @@ module.exports = [
     link: '/getting-started/',
     items: [
       {
-        text: 'Agoric Dev Tools',
-        ariaLabel: 'Agoric Dev Tools Menu',
+        text: 'Documentation Guide',
+        ariaLabel: 'Documentation Guide Menu',
         link: '/getting-started/',
+      },
+      {
+        text: 'Before Using Agoric',
+        ariaLabel: 'Before Using Agoric Menu',
+        link: '/getting-started/before-using-agoric/',
+      },
+      {
+        text: 'Starting A Project',
+        ariaLabel: 'Starting A Project Menu',
+        link: '/getting-started/start-a-project/',
+      },
+      {
+        text: 'Development Cycle',
+        ariaLabel: 'Development Cycle Menu',
+        link: '/getting-started/development-cycle/',
+      },
+      {
+        text: 'ERTP Introduction',
+        ariaLabel: 'ERTP Introduction Menu',
+        link: '/getting-started/ertp-introduction/',
+      },
+      {
+        text: 'Agoric CLI Guide',
+        ariaLabel: 'Agoric CLI Guide Menu',
+        link: '/getting-started/agoric-cli-guide/',
       },
     ]
   },
@@ -22,6 +47,12 @@ module.exports = [
     ariaLabel: 'ERTP Menu',
     link: '/ertp/guide/',
     items: [
+      {
+        text: 'Introduction',
+        ariaLabel: 'ERTP Introduction Link',
+        link: '/getting-started/ertp-introduction/',
+      },
+ 
       {
         text: 'Guide',
         ariaLabel: 'ERTP Guide Link',
