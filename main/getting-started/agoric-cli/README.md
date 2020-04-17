@@ -16,7 +16,7 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 - **Required Arguments**:
     - `project`: Name of the new project to initialize.
 - **Optional Arguments**:
-    - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-simple-exchange`.
+    - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-encouragement`.
     - `--dapp-base <base-url>`: Look under this directory for the Dapp template. Defaults to `git://github.com/Agoric/`
     - `-h`, `--help`: Display help for `init` command.
 - **Examples**:
