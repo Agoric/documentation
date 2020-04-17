@@ -79,4 +79,3 @@ conference papers, etc.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
-

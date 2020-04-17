@@ -1,0 +1,25 @@
+# Based on example at: https://github.com/marketplace/actions/deploy-to-github-pages
+
+name: Build and Deploy documentation site
+on:
+  push:	
+    branches:	
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install and Build
+      run: |
+        npm install
+        npm run docs:build
+
+    - name: Deploy to gh-pages
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provided by github: https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#about-the-github_token-secret
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: main/.vuepress/dist # The folder the action should deploy.

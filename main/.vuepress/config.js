@@ -94,10 +94,6 @@ module.exports = {
             '/ertp/api/amount-math',
             '/ertp/api/math-helpers',
           ]
-        },
-        {
-          title: 'ERTP Glossary',
-          path: '/ertp/glossary/'
         }
       ],
 
@@ -143,19 +139,6 @@ module.exports = {
           path: '/zoe/roadmap/'
         }
       ],
-
-      '/smart-contracts-tutorials/': [
-        {
-          title: 'Smart Contracts Tutorials',
-          path: '/smart-contracts-tutorials/guess37-one',
-          collapsable: false,
-          sideBarDepth: 3,
-          children: [
-            '/smart-contracts-tutorials/guess37-one',
-            '/smart-contracts-tutorials/guess37-multiple'
-          ]
-        }
-      ]
     },
 
     zoeVersion: 'v0.3.0',

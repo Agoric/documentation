@@ -1,4 +1,6 @@
-# ERTP Glossary
+# Glossary
+
+This page lists words, expressions, or concepts used by the Agoric technology stack.
 
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
@@ -39,8 +41,13 @@ Extents describe the extent of something that can be owned or shared: How much, 
 
 Extent must be Comparable.
 
+## Handle
+A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means the only way to know a handle identity is being given an object reference, and no identity can be guessed and no fake identity will succeed. 
+
+For example, Zoe often uses `offerHandle` to refer to offers. Zoe contracts can use an offer's `offerHandle` as the key for requesting the current allocation of an offer or reallocating the offer's assets.
+
 ## Issuer
-Can create empty purses and payments, but it cannot mint new amounts. The issuer can also transform payments (splitting payments, combining payments, burning payments, and claiming payments exclusively). The issuer should be gotten from a trusted source and then relied upon as the decider of whether an untrusted payment is valid.
+Can create empty purses and payments, but cannot mint new amounts. Issuers can also transform payments (splitting, combining, burning, and claiming payments exclusively). You should get an issuer from a trusted source and then rely on it to determine if an untrusted payment is valid. Issuers are linked to a single mint and vice versa, so each issuer only works with one type of thing, such as only working with quatloos or only working with moola.
 
 ## MathHelpers
 Arithmetic on extents. MathHelpers are used by AmountMath to do their extent arithmetic, and then brand the result, making a new amount.
