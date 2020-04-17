@@ -63,10 +63,10 @@ their respective commands.
 To familiarize yourself with working Agoric smart contracts, take a look at our 
 **[Sample Contracts](https://agoric.com/documentation/zoe/guide/contracts/)**. 
 
-We also have an **[Agoric Glossary]()** for terms we've given Agoric-context
+We also have an **[Agoric Glossary](https://agoric.com/documentation/glossary/)** for terms we've given Agoric-context
 definitions to (i.e. what does *mint* mean in an Agoric context?).
 
-For more about Agoric's ideas, plans, and goals, see our **[Learn More]()**
+For more about Agoric's ideas, plans, and goals, see our **[Learn More](https://agoric.com/)**
 page. It has links to Agoric's company homepage and various documents and 
 videos you may find useful, such as conference talks, white papers, 
 conference papers, etc.
