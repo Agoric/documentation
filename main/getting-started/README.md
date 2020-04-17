@@ -1,160 +1,77 @@
-# Getting Started with the Agoric CLI
+::: Hackathon Participants!
+Need help? Got questions?
 
-![The Agoric Stack](./assets/Agoric.svg)
+To create a new issue on Agoric's Hackathon repository, click [here](https://github.com/Agoric/cross-chain-hackathon/issues/new)
 
-This tutorial will show you how to:
-1) __Write smart contracts on Zoe, the Agoric platform.__
+Send questions to <a href="mailto:tatyana@agoric.com">tatyana@agoric.com</a>
+:::
 
-   Our pre-made contracts that you can copy include a Uniswap implementation
-   (called autoswap), a second-price auction, and a simple exchange
-   with an order book.
+# Agoric Documentation Guide
 
-2) __Create dapp user interfaces that interact with the smart contracts
-   and the user wallet.__
+Agoric provides three main types of documentation, as well as links to
+"big picture" presentations and papers and links to our source code on GitHub. This page
+describes our documentation structure, where documents are, and when you should use them, 
+as well as what order to read them.
 
-   Our pre-made UI that you can work with is the
-   UI for autoswap, the Uniswap implementation.
+Our three main documentation types are:
+- **Getting Started**: These are the first things you should
+read. They cover what to do to install, set up, and start
+using Agoric's smart contract tools. They also introduce those tools and
+their underlying concepts and designs.
+- **Guides**: These are more detailed and complete descriptions
+of our tools and their concepts, designs, and usage. They include
+descriptions and examples of how to do various tasks with Agoric
+software.
+- **Reference**: These are the specs for our APIs and commands,
+  as well as checklist tables that specify and explain the
+  steps for extended procedures, such as installing Agoric
+  software.
 
-Note that this environment does not connect to the Agoric testnet chain and
-also does not create a local chain. We are working on adding the
-ability to run contracts on chain to the Agoric CLI, but you can find
-[more information on running on chain here](../manual-setup/README.md).
+Some documents fall into multiple categories. For example, our Agoric
+installation document is both a Reference and a Getting Started document.
 
-## Prerequisites
+You should read them in this order:
+1. **[Agoric Prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric)**: 
+What you need to do before installing Agoric software and installing the Agoric SDK.
+2. **[Start a Project](https://agoric.com/documentation/getting-started/start-a-project)**: A
+  procedure checklist that walks you through creating a new smart contract 
+  project from scratch. 
+3. **[ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction)**: A
+  A Getting Started document that
+  briefly explains the concepts and components of Agoric's Electronic
+  Rights Transfer Protocol (ERTP) which is the base of Agoric
+  software.
+4. **[Zoe Introduction](https://agoric.com/documentation/getting-started/zoe-introduction)**: 
+  A Getting Started document that
+  briefly explains the concepts and components of Zoe, our platform
+  for writing smart contracts in JavaScript. Zoe implements our smart
+  contract guarantee that users either get what they wanted from the
+  contract or a full refund of what they put up for it. 
+5. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
+  A detailed description of ERTP concepts, design, components, and commands. 
+  Includes examples of command usage. You should also look at the ERTP API 
+  documentation, accessible from the ERTP documentation sidebar menu.
+6. **[Zoe Guide](https://agoric.com/documentation/zoe/guide/)**: 
+  A detailed description of Zoe concepts, design, components, and commands. 
+  Includes examples of command usage. You should also look at the Zoe API 
+  documentation, accessible from the Zoe documentation sidebar menu.
 
-First, install [Node.js](http://nodejs.org/), and [Yarn 1](https://legacy.yarnpkg.com/en/docs/install).  You’ll need to have **Node 10.16.0 or later**.
+When needed, refer to the **[ERTP API Reference](https://agoric.com/documentation/ertp/api/)**, **[Zoe API
+Reference](https://agoric.com/documentation/zoe/api/)**, and 
+**[Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/)** for command specifications. 
 
-For now, you will need to set up the Agoric CLI as part of a checked-out Agoric SDK, as `npx agoric` doesn't yet work.  Run:
+To familiarize yourself with working Agoric smart contracts, take a look at our 
+**[Sample Contracts](https://agoric.com/documentation/zoe/guide/contracts/)**. 
 
-```sh
-# Get the latest Agoric SDK in the agoric-sdk directory.
-git clone https://github.com/Agoric/agoric-sdk
-# Change to the agoric-sdk directory.
-cd agoric-sdk
-# Install NPM dependencies.
-yarn install
-# Build sources that need compiling.
-yarn build
-# You can install the agoric CLI anywhere in your $PATH,
-# here is how to do it in ~/bin/agoric
-yarn link-cli ~/bin/agoric
-```
+We also have an **[Agoric Glossary]()** for terms we've given Agoric-context
+definitions to (i.e. what does *mint* mean in an Agoric context?).
 
-## Quick Overview
+For more about Agoric's ideas, plans, and goals, see our **[Learn More]()**
+page. It has links to Agoric's company homepage and various documents and 
+videos you may find useful, such as conference talks, white papers, 
+conference papers, etc.
 
-After installing the [Prerequisites](#prerequisites), to create and start a project, run:
+Finally, we have links to the ultimate documentation; the **[GitHub
+repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK and our Zoe
+smart contract framework.
 
-```sh
-agoric init demo
-cd demo
-agoric install
-agoric start --reset
-```
-
-In another shell, from the same project directory:
-
-```sh
-cd demo
-agoric deploy ./contract/deploy.js ./api/deploy.js
-cd ui
-yarn install
-yarn start
-```
-
-Then open:
-- [http://localhost:3000](http://localhost:3000) to see our demo DApp.<br>
-- [http://localhost:8000/](http://localhost:8000/) to see the Simple Wallet and your REPL (Read-Eval-Print Loop).<br>
-
-## Your First Agoric Dapp
-
-![The Browser Environment](./assets/browser-environment.svg)
-
-### 1. Creating a project directory
-Let's install the default smart contracts and UI.
-
-```sh
-# Initialize your dapp project.
-# Note: Change the `demo` name to something meaningful.
-# Remember to prefix this with `npx` if you chose that option.
-agoric init demo
-# Go to its directory.
-cd demo
-```
-`init` creates a folder with the name you specify and copies over all
-the files you might need.
-
-### 2. Installing the dependencies
-Next, let's install the necessary JavaScript packages. This step might
-take a while.
-
-```sh
-# Install Javascript dependencies.
-agoric install
-```
-
-### 3. Launching the Agoric server
-Next, let's start up the Agoric VM. This creates the "vats" in which
-our smart contract code will be run.
-
-```sh
-# Run the local vat machine.  Use --reset if you want to discard prior state.
-agoric start --reset
-```
-
-### 4. Installing a contract
-Let's deploy our dapp on the Agoric VM.
-```sh
-# Install your smart contract and web api (can be done separately)
-agoric deploy ./contract/deploy.js ./api/deploy.js
-```
-And navigate to our wallet
-[http://localhost:8000/wallet/](http://localhost:8000/wallet/)
-
-### 5. Launching a demo DApp server
-Now let's start up the Autoswap frontend, our demo DApp:
-
-```sh
-cd ui
-yarn install
-yarn start  
-```
-
-This launches the React development server and opens a tab in your default browser, and will allow you to
-trade using the autoswap front-end and contract. We've given you a few
-purses to use in your trades.
-
-## Writing a smart contract
-
-Ready to write your own? We've given you a stripped down version of
-the autoswap contract to get you started. It currently allows you to
-trade 1 moola for 1 simolean and vice versa, but you can add more
-functionality and redeploy.
-
-![System Arch](./assets/system-arch.svg)
-
-If you take a look at the `demo` folder that you had just created,
-you should see folders like:
-
-* api
-* contract
-* ui
-
-Go ahead and open up `contract/myFirstDapp.js`. To learn more about
-writing a smart contract on Zoe, please see the [Zoe
-guide](../zoe/guide/).
-
-Once you've made changes to the smart contract, deploy:
-
-```sh
-# Redeploy
-agoric deploy ./contract/deploy-myfirstdapp.js ./api/deploy.js
-```
-
-## Editing the demo DAppp
-
-![Autoswap Frontend](./assets/autoswap-frontend.svg)
-
-All of the code for the demo DAppp is under `/ui`. Once  changes
-will automatically propagate to the browser tab.
-
-Happy hacking!
