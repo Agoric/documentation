@@ -6,6 +6,12 @@ To create a new issue on Agoric's Hackathon repository, click [here](https://git
 Send questions to <a href="mailto:tatyana@agoric.com">tatyana@agoric.com</a>
 :::
 
+::: warning
+Documentation and the Agoric Dapps are currently under
+construction for the [Gitcoin Cross-Chain Hackathon](https://gitcoin.co/hackathon/cross-chain/onboard). We will remove this message
+when things are ready for use.
+:::
+
 # Agoric Documentation Guide
 
 Agoric provides three main types of documentation, as well as links to
