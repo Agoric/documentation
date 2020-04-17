@@ -49,23 +49,65 @@ module.exports = {
     // Trailing slash implies it is looking for a .md file
     sidebar: {
       '/getting-started/': [
-        {
-          title: 'Getting Started',
+         {
+          title: 'Documentation Guide',
           path: '/getting-started/',
           collapsable: false,
           sideBarDepth: 3,
           children: [
-            {
-              title: 'Agoric Dev Tools',
-              path: '/getting-started/',
-              collapsable: false,
-              sideBarDepth: 3
-            },
           ]
-        },
-      ],
+         },       
+         {
+          title: 'Before Using Agoric',
+          path: '/getting-started/before-using-agoric/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+	       },
+         {
+          title: 'Starting A Project',
+          path: '/getting-started/start-a-project/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+	       },
+         {
+          title: 'Development Cycle',
+          path: '/getting-started/development-cycle/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+	       },
+         {
+          title: 'ERTP Introduction',
+          path: '/getting-started/ertp-introduction/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+         },
+         {
+          title: 'Agoric CLI Guide',
+          path: '/getting-started/agoric-cli-guide/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+	       },
+        ],
       '/ertp/': [
-        {
+         {
+          title: 'ERTP Introduction',
+          path: '/getting-started/ertp-introduction/',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+	       },
+         {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
           collapsable: false,
