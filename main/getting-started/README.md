@@ -1,5 +1,4 @@
-::: tip
-Hackathon Participants!
+::: tip Hackathon Participants!
 Need help? Got questions?
 
 To create a new issue on Agoric's Hackathon repository, click [here](https://github.com/Agoric/cross-chain-hackathon/issues/new)

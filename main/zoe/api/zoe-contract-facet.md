@@ -52,11 +52,11 @@ Expose the user-facing Zoe Service API to the contracts as well.
 ## zcf.MakeInvitation(offerHook, customProperties)
 - `offerHook` `{OfferHandle => Object}`
 - `customProperties` `{Object}`
-- Returns: `{Payment}`
+- Returns: `{Invite}`
 
-Make a credible Zoe invite for the associated smart contract. The invite 
+Make a credible Zoe invite for the associated smart contract. The Invite 
 is a `Payment` minted from Zoe's internal `inviteMint`. It can be used
-in `zoe.offer` for the holder of it to participate in this contract. 
+in `E(zoe).offer` for the holder of it to participate in this contract. 
 
 When an offer is submitted via the invitation, `offerHook` will be
 invoked in the contract with a handle for the offer. The result of the 
