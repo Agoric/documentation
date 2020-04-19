@@ -70,7 +70,7 @@ invitation.
 ```js
 const invite = zoe.makeInvitation(
   myAuction.onNewOffer,
-  { seatDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
+  { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
 );
 ```
 

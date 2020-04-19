@@ -1,4 +1,4 @@
-::: warning
+::: tip
 Hackathon Participants!
 Need help? Got questions?
 

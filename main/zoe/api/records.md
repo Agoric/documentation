@@ -8,16 +8,24 @@ functions) are used throughout Zoe.
 ## OfferResultRecord
 
 This is returned in a promise by a call to `offer` on Zoe. It contains 
-a handle for querying Zoe about the offer, a promise for the payouts 
-when the offer is complete, a promise for the result of invoking the contract-specific hook associated with the invitation, and if 
-appropriate for the specified `exit` policy, a function to cancel 
-the offer.
+promises for handle for querying Zoe about the offer, the payouts 
+when the offer is complete, the result of invoking the contract-specific 
+hook associated with the invitation, and if appropriate for the specified
+ `exit` policy, a remote object with a `cancel` operation to cancel the 
+ offer.
+
+ The `offerHandle` promise fulfills once the payments in the offer have 
+ been escrowed. The `contractOfferPromise` is from the contract, and so
+ depends on the contract code. The `paymentKeywordRecordPromise` gets
+ resolved by Zoe when the corresponding offer is completed (i.e., 
+ when the offer exits).
 
 ```js
 {
-  offerHandle: someSeat,
-  payout: Promise<PaymentKeywordRecord>,
-
+  offerHandle: offerHandlePromise,
+  outcome: contractOfferPromise,
+  payout: paymentKeywordRecordPromise,
+  cancelObj: remoteCancelObj
 }
 ```
  
