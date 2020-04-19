@@ -2,6 +2,8 @@
 
 <Zoe-Version/>
 
+A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is access synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `zoe.makeInstance`, andis given access to the `zcf` object dduring that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
+
 ## zcf.reallocate(offerHandles, reallocation)
 - `offerHandles` `{Array <Object>}`
 - `reallocation` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
@@ -47,16 +49,27 @@ zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
 
 Expose the user-facing Zoe Service API to the contracts as well.
 
-## zcf.makeInvite(seat, customProperties)
-- `seat` `{Object}`
+## zcf.MakeInvitation(offerHook, customProperties)
+- `offerHook` `{OfferHandle => Object}`
 - `customProperties` `{Object}`
 - Returns: `{Payment}`
 
-Create an invite using the Zoe `inviteMint`.
+Make a credible Zoe invite for the associated smart contract. The invite 
+is a `Payment` minted from Zoe's internal `inviteMint`. It can be used
+in `zoe.offer` for the holder of it to participate in this contract. 
+
+When an offer is submitted via the invitation, `offerHook` will be
+invoked in the contract with a handle for the offer. The result of the 
+`offerHook` will be returned as the "outcome" of making the offer via 
+the invitation.
+
+The `customProperties` is an object whose properties contain information 
+as defined by the smart contract, to include in the extent of the 
+invitation.
 
 ```js
-const { invite, inviteHandle } = zoe.makeInvite(
-  seat,
+const invite = zoe.makeInvitation(
+  myAuction.onNewOffer,
   { seatDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
 );
 ```

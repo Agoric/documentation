@@ -5,26 +5,29 @@
 These records (JavaScript objects with data properties and no
 functions) are used throughout Zoe.
 
-## SeatAndPayout
+## OfferResultRecord
 
-This is returned by a call to `redeem` on Zoe. A seat is an arbitrary
-object whose methods allow the user to take certain actions in a
-contract. The payout is a promise that resolves to an object which has
-keywords as keys and promises for payments as values. Keywords are
-strings that must begin with a capital letter and must be ASCII.
-Parties to the contract will use the keywords to index their proposal
-and their payments.  Note that while the payout promise resolves when
-an offer is completed, the promise for each payment resolves after the
-remote issuer successfully withdraws the payment.
+This is returned in a promise by a call to `offer` on Zoe. It contains 
+a handle for querying Zoe about the offer, a promise for the payouts 
+when the offer is complete, a promise for the result of invoking the contract-specific hook associated with the invitation, and if 
+appropriate for the specified `exit` policy, a function to cancel 
+the offer.
 
 ```js
 {
-  seat: someSeat,
-  payout: paymentKeywordRecord,
+  offerHandle: someSeat,
+  payout: Promise<PaymentKeywordRecord>,
+
 }
 ```
-
+ 
 ## Proposal
+
+A Proposal has three parts: `want` and `give` are used
+by Zoe to enforce offer safety; `exit` is used to specify
+the particular payout-liveness policy that Zoe can guarantee.
+`want` and `give` are objects with keywords as keys and amounts
+as values. 
 
 ```js
 {

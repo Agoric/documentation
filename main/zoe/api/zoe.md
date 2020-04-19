@@ -66,7 +66,7 @@ const someInvite = await E(zoe).makeInstance(
 );
 ```
 
-## zoe.getInstance(instanceHandle)
+## zoe.getInstanceRecord(instanceHandle)
 - Returns: <router-link
   to="/zoe/api/table-columns.html#instance-record-properties">`{InstanceRecord}`</router-link>
 
@@ -80,34 +80,43 @@ const {
   terms,
   issuerKeywordRecord,
   keywords,
-} = await E(zoe).getInstance(instanceHandle);
+} = await E(zoe).getInstanceRecord(instanceHandle);
 ```
 
-## zoe.redeem(invite, proposal, payments)
+## zoe.offer(invite, proposal, payments)
 - `invite` `{Payment}`
 - `proposal` <router-link to="/zoe/api/structs.html#proposal">`{Proposal}`</router-link>
-- `payments` `{PaymentKeywordRecord}`
-- Returns: `{SeatAndPayout}`
+- `paymentKeywordRecord` `{PaymentKeywordRecord}`
+- Returns: `Promise<{OfferResultRecord}>`
 
-To redeem an invite, the user must provide a proposal (their rules for the
-offer) as well as payments to be escrowed by Zoe.
+To make an offer to a contract, the user must provide an invite ot the 
+contract, a proposal (their rules for the offer), and the payments to be 
+escrowed by Zoe. 
 
 The proposal has three parts: `want` and `give` are used
-by Zoe to enforce offer safety, and `exit` is used to specify
-the extent of payout liveness that Zoe can guarantee.
-
+by Zoe to enforce offer safety; `exit` is used to specify
+the particular payout-liveness policy that Zoe can guarantee.
 `want` and `give` are objects with keywords as keys and amounts
-as values. `payments` is a record with keywords as keys,
+as values. 
+
+The `paymentKeywordRecord` is a record with keywords as keys,
 and the values are the actual payments to be escrowed. A payment
-is expected for every rule under `give`.
+is required for every rule under `give`.
+
+The resulting `OfferResultRecord` contains a handle for querying 
+Zoe about the offer, a promise for the payouts when the offer 
+is complete, a promise for the result of invoking the contract-specific
+hook associated with the invitation, and if appropriate for the specified 
+`exit` policy, a function to cancel the offer.
 
 ```js
-// A user redeems their invite and escrows with Zoe
-const { seat: userSeat, payout: userPayoutP } = await zoe.redeem(
-  userInvite,
-  userProposal,
-  userPayments,
-);
+// A user makes an offer and escrows with Zoe using an invite 
+const { offerHandle, payout: userPayoutP, outcome: outcomeP, cancelObj } = 
+  await zoe.offer(
+    userInvite,
+    userProposal,
+    userPayments,
+  );
 ```
 
 ## zoe.isOfferActive(offerHandle)
