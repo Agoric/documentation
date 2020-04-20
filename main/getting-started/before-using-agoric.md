@@ -16,7 +16,8 @@ software, you need to install the following.
   </tr>
   <tr>
     <td><center>2</center></td>
-    <td><a href="https://classic.yarnpkg.com/en/docs/install#mac-stable">Install Yarn 1</a></td>
+    <td><a href="https://classic.yarnpkg.com/en/docs/install">Install Yarn 1</a><br>
+    (Yes, Yarn 1, not Yarn 2 or anything higher)</td>
     <td>Yarn is a package manager for your code and lets developers
   share code with others. Code is shared via a <i>package</i> that contains all shared code and a
   <code>package.json</code> file describing the package. The link takes you to 
