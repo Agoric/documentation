@@ -1,9 +1,16 @@
-::: tip Hackathon Participants!
-Need help? Got questions?
+::: tip Welcome Hackathon Participants!
+The Gitcoin Cross Chain Hackathon is a three-week virtual hackathon 
+for open-source collaboration across blockchain ecosystems - 
+Agoric, Band Protocol and Cosmos.
+
+* Get to know the Agoric tech stack by using the Guide below. 
+* Talk to us on Keybase in the `agoric.support` channel with ideas, questions, or issues. 
+* View [Prizes](https://gitcoin.co/agoric/active)
+* [Register](https://hackathons.gitcoin.co/cross-chain) for Cross Chain Hackathon
+* Send questions to <a href="mailto:support@agoric.com">support@agoric.com</a>
 
 To create a new issue on Agoric's Hackathon repository, click [here](https://github.com/Agoric/cross-chain-hackathon/issues/new)
 
-Send questions to <a href="mailto:support@agoric.com">support@agoric.com</a>
 :::
 
 

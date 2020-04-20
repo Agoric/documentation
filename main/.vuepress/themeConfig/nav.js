@@ -97,9 +97,36 @@ module.exports = [
     ],
   },
   {
-    text: 'Dapp Guide',
-    ariaLabel: 'Dapps',
-    link: '/dapps/',
+    text: 'Guides',
+    ariaLabel: 'Guides',
+    link: '/getting-started/',
+    items: [
+      {
+        text: 'Documentation',
+        ariaLabel: 'Documentation Guide',
+        link: '/getting-started/',
+      },
+      {
+        text: 'Agoric CLI',
+        ariaLabel: 'Agoric CLI Guide',
+        link: '/getting-started/agoric-cli-guide/',
+      },
+      {
+        text: 'Agoric Dapps',
+        ariaLabel: 'Dapps Guide',
+        link: '/dapps/',
+      },
+      {
+        text: 'Zoe',
+        ariaLabel: 'Zoe Guide',
+        link: '/zoe/guide/'
+      },
+      {
+        text: 'Dynamic IBC (dIBC)',
+        ariaLabel: 'dIBC Guide',
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
+      }
+    ],
   },
   {
     text: 'Glossary',
