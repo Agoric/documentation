@@ -2,8 +2,10 @@
 
 <Zoe-Version/>
 
-Note: Zoe is currently at the pre-alpha stage. It has not yet been
+::: tip Pre-alpha status
+Zoe is currently at the pre-alpha stage. It has not yet been
 formally tested or hardened.
+:::
 
 This guide assumes some knowledge of the [ERTP
 fundamentals](../../ertp/guide/).
@@ -104,40 +106,39 @@ this (see the [real contract code
 here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
 
 ```js
-export const makeContract = zoe => {
-  const makeSeatInvite = () => {
-    const seat = harden({
-      makeOffer: () => {
-        zoe.complete(harden([inviteHandle]));
-        return `The offer was accepted`;
+export const makeContract = harden(zcf => {
+  const refundOfferHook = offerHandle => {
+    zcf.complete(harden([offerHandle]));
+    return `The offer was accepted`;
+  };
+  const makeRefundInvite = () =>
+    zcf.makeInvitation({
+      offerHook: refundOfferHook,
+      customProperties: {
+        inviteDesc: 'getRefund',
       },
     });
-    const { invite, inviteHandle } = zoe.makeInvite(seat, {
-      seatDesc: 'getRefund',
-    });
-    return invite;
-  };
-
-  return harden({
-    invite: makeSeatInvite(),
+  return {
+    invite: makeRefundInvite(),
     publicAPI: {
-      makeInvite: makeSeatInvite,
+      makeInvite: makeRefundInvite,
     },
   });
-};
+});
 ```
 (In a real contract, whenever we create a new object or array, we recursively
 deep-freeze it with `@agoric/harden`. You can [learn more about `harden` here](https://github.com/Agoric/harden).)
 
-`automaticRefund` has one method exposed to the user: `makeOffer`.
-`makeOffer` tells Zoe to complete the offer, which gives the user their payout through Zoe.
+The `automaticRefund` contract behavior is implemented in `refundOfferHook`. 
+It just tells Zoe to complete the offer, which gives the user their payout 
+through Zoe.
 
 A smart contract on Zoe must export a function `makeContract` that
-takes a single parameters: `zoe`, which is the contract-specific API
+takes a single parameters: `zcf`, which is the contract-internal API
 for Zoe. The smart contract must return an object with two
 properties:
-`invite`, an invite to join the contract which will be given to the
-user who instantiated the contract and `publicAPI`, the public API to the
+`invite`, an invite to join the contract, which will be given to the
+user who instantiated the contract, and `publicAPI`, the public API to the
 contract (no invite necessary to call these methods!).
 
 ## Diving Deeper
@@ -148,23 +149,23 @@ mentioned earlier. Someone needs to make the first offer, so let's
 make sure our user-facing API has a method for that:
 
 ```js
-const makeFirstOfferInvite = () => {
-    const seat = harden({
-      makeFirstOffer: () => {
-        const expected = harden({ give: ['Asset'], want: ['Price'] });
-        rejectIfNotProposal(inviteHandle, expected);
-        return makeMatchingInvite(inviteHandle);
-      },
-    });
-    const { invite, inviteHandle } = zoe.makeInvite(seat, {
-      seatDesc: 'firstOffer',
-    });
-    return invite;
-  };
+const makeFirstOfferInvite = () =>
+  inviteAnOffer({
+    offerHook: makeMatchingInvite,
+    customProperties: {
+      inviteDesc: 'firstOffer',
+    },
+    expected: {
+      give: { Asset: null },
+      want: { Price: null },
+    },
+  });
 ```
 
 This is pretty similar in format to the `automaticRefund`, but there
-are a few changes. First, in this contract, we actually check what was
+are a few changes. First, in this contract, we use the 
+[`inviteAnOffer` helper function](../api/zoe-helpers.html#zoehelper-inviteanoffer-options) to 
+make an invite that will actually check what was
 escrowed with Zoe to see if it's the kind of offer that we want to
 accept. In this case, we only want to accept offers that have a
 proposal of the form:
@@ -175,53 +176,54 @@ where `amount1` and `amount2` are amounts with the correct issuers.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
-offer. So, if we get a valid first offer, we create an invite which can be shared with other parties to create a matching offer.
+offer. So, if we get a valid first offer, we create an invite which can 
+be shared with other parties to create a matching offer.
 
 So, how does the matching happen? We can look at another user-facing
 method, `makeMatchingInvite`, and a helper function, `swap`:
 
 ```js
-const makeMatchingInvite = firstInviteHandle => {
-  const seat = harden({
-    matchOffer: () => swap(firstInviteHandle, inviteHandle),
-  });
+const makeMatchingInvite = firstOfferHandle => {
   const {
     proposal: { want, give },
-  } = zoe.getOffer(firstInviteHandle);
-  const { invite, inviteHandle } = zoe.makeInvite(seat, {
-    asset: give.Asset,
-    price: want.Price,
-    seatDesc: 'matchOffer',
+  } = zcf.getOffer(firstOfferHandle);
+  return inviteAnOffer({
+    offerHook: offerHandle => swap(firstOfferHandle, offerHandle),
+    customProperties: {
+      asset: give.Asset,
+      price: want.Price,
+      inviteDesc: 'matchOffer',
+    },
   });
-  return invite;
 };
 ```
+In the `makeMatchingInvite` method we call the [`swap` helper function](../api/zoe-helpers.html#zoehelper-swap-keephandle-tryhandle-keephandleinactivemsg), which handles a lot of the logic. The code for `swap` is:
 
 ```js
-swap: (
-  keepHandle,
-  tryHandle,
-  keepHandleInactiveMsg = 'prior offer is unavailable',
-) => {
-  if (!zoe.isOfferActive(keepHandle)) {
-    throw helpers.rejectOffer(tryHandle, keepHandleInactiveMsg);
+  swap: (
+    keepHandle,
+    tryHandle,
+    keepHandleInactiveMsg = 'prior offer is unavailable',
+  ) => {
+    if (!zcf.isOfferActive(keepHandle)) {
+      throw helpers.rejectOffer(tryHandle, keepHandleInactiveMsg);
+    }
+    if (!helpers.canTradeWith(keepHandle, tryHandle)) {
+      throw helpers.rejectOffer(tryHandle);
+    }
+    const keepAmounts = zcf.getCurrentAllocation(keepHandle);
+    const tryAmounts = zcf.getCurrentAllocation(tryHandle);
+    // reallocate by switching the amount
+    const handles =         harden([keepHandle, tryHandle]);
+    zcf.reallocate(handles, harden([tryAmounts, keepAmounts]));
+    zcf.complete(handles);
+    return defaultAcceptanceMsg;
   }
-  if (!helpers.canTradeWith(keepHandle, tryHandle)) {
-    throw helpers.rejectOffer(tryHandle);
-  }
-  const keepAmounts = zoe.getOffer(keepHandle).amounts;
-  const tryAmounts = zoe.getOffer(tryHandle).amounts;
-  // reallocate by switching the amount
-  const handles = harden([keepHandle, tryHandle]);
-  zoe.reallocate(handles, harden([tryAmounts, keepAmounts]));
-  zoe.complete(handles);
-  return defaultAcceptanceMsg;
-}
 ```
-
-In the `makeMatchingInvite` method we call `swap`, which handles a lot of the logic. First, `swap` checks if the offer is still active. If not, we reject the offer at
-hand. Second, if the offer at hand isn't a match for the first offer,
-we want to reject it for that reason as well.
+First, `swap` checks if the offer is still 
+active. If not, we reject the offer at hand. Second, if the offer 
+at hand isn't a match for the first offer, we want to reject it 
+for that reason as well.
 
 Once we're sure that we *do* have a matching offer, we can do the most
 exciting part, the reallocation.
