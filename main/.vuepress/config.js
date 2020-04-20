@@ -183,8 +183,8 @@ module.exports = {
       ],
     },
 
-    zoeVersion: 'v0.3.0',
-    zoeDocsUpdated: '3/24/2020'
+    zoeVersion: 'v0.5.0',
+    zoeDocsUpdated: '4/20/2020'
 
 
     /* --- SEARCH --- */
