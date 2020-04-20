@@ -22,9 +22,8 @@ Also, for what needs to be done after you modify a project's code, see
   </th>
   <tr>
     <td><center>1</center></td>
-    <td>Go to or open a shell and <code>cd ~/agoric-sdk</code></td>
-    <td>Go to the directory where you copied the latest Agoric SDK
-	    from the Agoric GitHub repository in Step 4 of <a href="https://agoric.com/documentation/getting-started/before-using-agoric/">Before Using Agoric</a>.</td>
+    <td>Go to or open a shell and <code>cd &lt;directory-where-you-want-to-install-Dapp-code&gt;</code></td>
+    <td>When you initialize your project/Dapp in the next step, its initial code is copied into your current directory (permissions allowing).</td>
   </tr>
   <tr>
     <td><center>2</center></td>
@@ -32,14 +31,14 @@ Also, for what needs to be done after you modify a project's code, see
     <td>Initializes a <i>Dapp</i> (<i>Distributed application</i>)
 	project.
 	<br><br>
-    <code>init</code> creates a folder with the specified name
+    <code>init</code> creates a sub-directory with the specified name
     (<code>demo</code> in this case) in your current directory and copies an existing project's files
     into it. You can give the project any name you like. This
     documentation assumes you used <code>demo</code>. 
     <br><br>
     There are optional arguments that let you specify which project
     you want copied into the specified directory. By default, their values are set to
-    use a Dapp we wrote to introduce you to Agoric smart
+    use the Encouragement Dapp we wrote to introduce you to Agoric smart
     contracts. To specify a different project use the optional arguments:<br>
     <code>--dapp-template &lt;name&gt;</code> Use the project specified by this &lt;name&gt; as the template copied into your current directory.<br> 
 	    <code>--dapp-base &lt;base-url&gt;</code> Look under this directory for the Dapp template. 
@@ -57,7 +56,7 @@ Also, for what needs to be done after you modify a project's code, see
   <tr>
     <td><center>4</center></td>
     <td><code>agoric install</code></td>
-    <td>Install JavaScript dependencies, which may take a while..</td>
+    <td>Install JavaScript dependencies, which may take a while.</td>
   </tr>
   <tr>
     <td><center>5</center></td>
@@ -70,9 +69,9 @@ Also, for what needs to be done after you modify a project's code, see
   </tr>
   <tr>
     <td><center>6</center></td>
-    <td>Open another shell, and in it <code>cd ~/agoric-sdk/demo</code></td>
+    <td>Open another shell, and in it <code>cd ~/.../demo</code></td>
     <td>For the remainer of this table, we call this the <i>deploy shell</i>.
-    <br><br>Use the same project directory name as you used in Step 2. In
+    <br><br>Use the same project directory name and location as you used in Step 2. In
       this example, we used <code>demo</code> but you may have used a
       different name in Step 2.</td>
   </tr>
