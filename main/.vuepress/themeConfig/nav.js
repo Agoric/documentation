@@ -111,20 +111,15 @@ module.exports = [
     ariaLabel: 'Learn More Menu',
     items: [
       {
-        text: 'Contributing',
-        ariaLabel: 'Contributing',
-        link: '/miscellaneous/contributing'
-      },
-      {
         text: 'Agoric',
         ariaLabel: 'Agoric Homepage Link',
         link: 'https://agoric.com/'
+      },
+      {
+        text: 'Github',
+        ariaLabel: 'Agoric Github Link',
+        link: 'https://github.com/Agoric/'
       }
     ]
-  },
-  {
-    text: 'Github',
-    ariaLabel: 'Agoric Github Link',
-    link: 'https://github.com/Agoric/'
-  }
+  },  
 ]
