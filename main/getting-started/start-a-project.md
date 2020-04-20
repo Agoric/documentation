@@ -69,7 +69,7 @@ Also, for what needs to be done after you modify a project's code, see
   </tr>
   <tr>
     <td><center>6</center></td>
-    <td>Open another shell, and in it <code>cd ~/.../demo</code></td>
+    <td>Open another shell, go to your <code>demo</code> directory</td>
     <td>For the remainer of this table, we call this the <i>deploy shell</i>.
     <br><br>Use the same project directory name and location as you used in Step 2. In
       this example, we used <code>demo</code> but you may have used a
