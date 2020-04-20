@@ -18,27 +18,27 @@ module.exports = [
       {
         text: 'Before Using Agoric',
         ariaLabel: 'Before Using Agoric Menu',
-        link: '/getting-started/before-using-agoric/',
+        link: '/getting-started/before-using-agoric',
       },
       {
         text: 'Starting a Project',
         ariaLabel: 'Starting a Project Menu',
-        link: '/getting-started/start-a-project/',
+        link: '/getting-started/start-a-project',
       },
       {
         text: 'Development Cycle',
         ariaLabel: 'Development Cycle Menu',
-        link: '/getting-started/development-cycle/',
+        link: '/getting-started/development-cycle',
       },
       {
         text: 'ERTP Introduction',
         ariaLabel: 'ERTP Introduction Menu',
-        link: '/getting-started/ertp-introduction/',
+        link: '/getting-started/ertp-introduction',
       },
       {
         text: 'Agoric CLI Guide',
         ariaLabel: 'Agoric CLI Guide Menu',
-        link: '/getting-started/agoric-cli-guide/',
+        link: '/getting-started/agoric-cli-guide',
       },
     ]
   },
