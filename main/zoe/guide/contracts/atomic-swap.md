@@ -50,20 +50,23 @@ const aliceProposal = harden({
 const alicePayments = { Asset: aliceMoolaPayment }
 ```
 
-In order for Alice to escrow with Zoe she needs to redeem her invite. Once Alice redeems her invite she will receive a `seat` and a promise that resolves to her payout.
+In order for Alice to escrow with Zoe she needs to redeem her invite.
+Once Alice redeems her invite and makes her offer she will receive an `outcome` and a
+promise that resolves to her payout.
 
 ```js
-const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
+const { outcome, payout: alicePayoutP } = await E(zoe).offer(
   aliceInvite,
   aliceProposal,
   alicePayments,
 );
 ```
 
-Alice then makes the first offer in the swap:
+Alice's outcome, the result of the offer, is an invite she can send to
+someone else:
 
 ```js
-const newInviteP = aliceSeat.makeFirstOffer();
+const newInviteP = outcome;
 ```
 
 She then sends the invite to Bob and he looks up the invite to see if it matches Alice's claims.
@@ -98,16 +101,13 @@ const bobProposal = harden({
   exit: { onDemand: null },
 })
 
-// Bob escrows with zoe
-const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
+// Bob escrows with zoe and makes an offer
+const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
   bobExclusiveInvite,
   bobProposal,
   bobPayments,
 );
 
-// Bob makes an offer
-const bobOfferResult = await bobSeat.matchOffer();
-```
 
 Now that Bob has made his offer, the contract executes and Alice's
 payout resolves to a a record with keyword keys

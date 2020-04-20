@@ -52,16 +52,11 @@ const aliceProposal = harden({
 
 const alicePayments = { Asset: aliceMoolaPayment };
 
-const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
+const { outcome: aliceOfferResult, payout: alicePayoutP } = await E(zoe).offer(
   aliceInvite,
   aliceProposal,
   alicePayments,
 );
-```
-
-Once Alice has redeemed her invite, she can initialize the auction:
-```js
-const aliceOfferResult = await aliceSeat.sellAssets();
 ```
 
 Now Alice can spread her invite far and wide and see if
@@ -97,15 +92,13 @@ const bobProposal = harden({
 
 const bobPayments = { Bid: bobSimoleanPayment };
 
-// Bob escrows with zoe
-const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
+// Bob escrows with Zoe and bids
+const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
   bobExclusiveInvite,
   bobProposal,
   bobPayments,
 );
 
-// Bob bids
-const bobOfferResult = await bobSeat.bid();
 ```
 
 Since multiple parties may want to participate in the auction, let's say that Carol and Dave also decide to bid in the same way

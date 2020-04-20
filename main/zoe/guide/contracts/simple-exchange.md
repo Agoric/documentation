@@ -38,14 +38,14 @@ const aliceSellOrderProposal = harden({
 
 const alicePayments = { Asset: aliceMoolaPayment };
 
-const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
+// Alice escrows with Zoe and adds her sell order to the exchange
+const { outcome: aliceOfferResult, payout: alicePayoutP } = await E(zoe).offer(
   aliceInvite,
   aliceSellOrderProposal,
   alicePayments,
 );
 
-// After escrowing with zoe, Alice can add her sell order to the exchange and create an invite for another party to participate in the exchange
-const aliceOfferResult = await aliceSeat.addOrder();
+// Alice creates an invite for another party to participate in the exchange
 const bobInvite = publicAPI.makeInvite();
 ```
 
@@ -84,15 +84,13 @@ const bobBuyOrderProposal = harden({
 
 const bobPayments = { Price: bobSimoleanPayment };
 
-// 6: Bob escrows with zoe
-const { seat: bobSeat, payout: bobPayoutP } = await zoe.redeem(
+// Bob escrows with zoe and adds an order to the exchange
+const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
   bobExclusiveInvite,
   bobBuyOrderProposal,
   bobPayments,
 );
 
-// 8: Bob submits the buy order to the exchange
-const bobOfferResult = await bobSeat.addOrder();
 ```
 
 ## Payout
