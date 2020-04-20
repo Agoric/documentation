@@ -6,11 +6,6 @@ To create a new issue on Agoric's Hackathon repository, click [here](https://git
 Send questions to <a href="mailto:support@agoric.com">support@agoric.com</a>
 :::
 
-::: warning
-Documentation and the Agoric Dapps are currently under
-construction for the [Gitcoin Cross-Chain Hackathon](https://gitcoin.co/hackathon/cross-chain/onboard). We will remove this message
-when things are ready for use.
-:::
 
 # Agoric Documentation Guide
 
@@ -37,7 +32,7 @@ Some documents fall into multiple categories. For example, our Agoric
 installation document is both a Reference and a Getting Started document.
 
 You should read them in this order:
-1. **[Agoric Prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric)**: 
+1. **[Before Using Agoric](https://agoric.com/documentation/getting-started/before-using-agoric)**: 
 What you need to do before installing Agoric software and installing the Agoric SDK.
 2. **[Start a Project](https://agoric.com/documentation/getting-started/start-a-project)**: A
   procedure checklist that walks you through creating a new smart contract 
@@ -47,8 +42,8 @@ What you need to do before installing Agoric software and installing the Agoric 
   briefly explains the concepts and components of Agoric's Electronic
   Rights Transfer Protocol (ERTP) which is the heart of Agoric
   software.
-4. **[Zoe Introduction](https://agoric.com/documentation/getting-started/zoe-introduction)**: 
-  A Getting Started document that
+4. **Zoe Introduction**: 
+  **[IN PROGRESS]** A Getting Started document that
   briefly explains the concepts and components of Zoe, our reusable smart contract 
   for writing other smart contracts in JavaScript. Zoe implements our guarantee that users either get what they wanted from the
   contract or a full refund of what they put up for it. 
@@ -72,10 +67,9 @@ To familiarize yourself with working Agoric smart contracts, take a look at our
 We also have an **[Agoric Glossary](https://agoric.com/documentation/glossary/)** for terms we've given Agoric-context
 definitions to (i.e. what does *mint* mean in an Agoric context?).
 
-For more about Agoric's ideas, plans, and goals, see our **[Learn More](https://agoric.com/)**
-page. It has links to Agoric's company homepage and various documents and 
-videos you may find useful, such as conference talks, white papers, 
-conference papers, etc.
+For more about Agoric's ideas, plans, and goals, see our **[homepage](https://agoric.com/)**. 
+It has links to various documents and 
+videos you may find useful, such as conference talks, white papers, conference papers, etc.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
