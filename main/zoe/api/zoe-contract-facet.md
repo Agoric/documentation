@@ -132,7 +132,7 @@ const offers = zoe.getOffers(listOfOfferHandles);
 Get the offer record.
 
 ```js
-const { payoutRules } = zoe.getOffer(inviteHandle);
+const { payoutRules } = zoe.getOffer(offerHandle);
 ```
 
 ## zcf.getInstanceRecord()

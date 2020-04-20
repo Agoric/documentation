@@ -8,7 +8,7 @@ as a long-lived and well-trusted service that enforces offer safety for the cont
 ::: tip Zoe is accessed asynchronously
 The Zoe service is accessed asynchronously, using a standards-track library extension
 to JavaScript that uses promises as remote references. In code, the Zoe service instance 
-is refered to via `zoe`, whcih only supports asynchronous invocation. Operations are 
+is referred to via `zoe`, which only supports asynchronous invocation. Operations are 
 invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies). 
 All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences. See the note in `getInviteIssuer` below.
 :::
@@ -165,5 +165,5 @@ const {
   installationHandle,
   publicAPI,
   terms
-} = await E(zoe).getOffer(inviteHandle);
+} = await E(zoe).getOffer(offerHandle);
 ```
