@@ -4,7 +4,7 @@ for open-source collaboration across blockchain ecosystems -
 Agoric, Band Protocol and Cosmos.
 
 * Get to know the Agoric tech stack by using the Guide below. 
-* Talk to us on Keybase in the `agoric.support` channel with ideas, questions, or issues. 
+* Talk to us on [Keybase](https://keybase.io/team/agoric.support) in the `agoric.support` channel with ideas, questions, or issues. 
 * View [Prizes](https://gitcoin.co/agoric/active)
 * [Register](https://hackathons.gitcoin.co/cross-chain) for Cross Chain Hackathon
 * Send questions to <a href="mailto:support@agoric.com">support@agoric.com</a>
