@@ -2,20 +2,34 @@
 
 <Zoe-Version/>
 
-Zoe is a long-lived and well-trusted contract that enforces offer safety for the contracts that use it. Zoe has a single `inviteIssuer` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `inviteIssuer` and thus validate any `invite` they receive from someone else.
+Zoe provides a framework for deploying and working with smart contracts. It is accessed 
+as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe has a single `inviteIssuer` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `inviteIssuer` and thus validate any `invite` they receive from someone else.
 
-## zoe.getInviteIssuer()
+::: tip Zoe is accessed asynchronously
+The Zoe service is accessed asynchronously, using a standards-track library extension
+to JavaScript that uses promises as remote references. In code, the Zoe service instance 
+is referred to via `zoe`, which only supports asynchronous invocation. Operations are 
+invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies). 
+All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences. See the note in `getInviteIssuer` below.
+:::
+
+## E(zoe).getInviteIssuer()
 - Returns: `{Issuer}`
 
 Get the long-lived `inviteIssuer`. The mint associated with the `inviteIssuer` creates the ERTP payments that represent the right to participate in a contract.
 
 ```js
 // Bob claims all with the Zoe inviteIssuer
-const inviteIssuer = zoe.getInviteIssuer();
-const bobExclInvitePayment = await inviteIssuer.claim(bobInvitePayment);
+const inviteIssuerP = E(zoe).getInviteIssuer();
+const bobExclInvitePayment = await E(inviteIssuerP).claim(bobInvitePayment);
 ```
 
-## zoe.install(code, moduleFormat)
+Note: in the example above, the `inviteIssuerP` is necessarily a promise because it 
+is the result of an async message (using `E`). In this case, there is no need to
+`await` it; the `claim` operation is sent immediately, and will be delivered once
+the `inviteIssuerP` is fulfilled. 
+
+## E(zoe).install(code, moduleFormat)
 - `code` `{String}`
 - `moduleFormat` `{String}`
 - Returns: `{Object}`
@@ -31,10 +45,10 @@ import bundleSource from '@agoric/bundle-source';
 const { sourceCode, moduleFormat } = await bundleSource(someContract);
 
 // install and get the `installationHandle` for someContract
-const installationHandle = zoe.install(sourceCode, moduleFormat);
+const installationHandleP = E(zoe).install(sourceCode, moduleFormat);
 ```
 
-## zoe.makeInstance(installationHandle, issuerKeywordRecord, terms)
+## E(zoe).makeInstance(installationHandle, issuerKeywordRecord, terms)
 - `installationHandle` `{Object}`
 - `issuerKeywordRecord` `{Object}`
 - `terms` `{Object}`
@@ -66,7 +80,7 @@ const someInvite = await E(zoe).makeInstance(
 );
 ```
 
-## zoe.getInstanceRecord(instanceHandle)
+## E(zoe).getInstanceRecord(instanceHandle)
 - Returns: <router-link
   to="/zoe/api/table-columns.html#instance-record-properties">`{InstanceRecord}`</router-link>
 
@@ -83,7 +97,7 @@ const {
 } = await E(zoe).getInstanceRecord(instanceHandle);
 ```
 
-## zoe.offer(invite, proposal, payments)
+## E(zoe).offer(invite, proposal, payments)
 - `invite` `{Payment}`
 - `proposal` <router-link to="/zoe/api/structs.html#proposal">`{Proposal}`</router-link>
 - `paymentKeywordRecord` `{PaymentKeywordRecord}`
@@ -112,34 +126,34 @@ hook associated with the invitation, and if appropriate for the specified
 ```js
 // A user makes an offer and escrows with Zoe using an invite 
 const { offerHandle, payout: userPayoutP, outcome: outcomeP, cancelObj } = 
-  await zoe.offer(
+  await E(zoe).offer(
     userInvite,
     userProposal,
     userPayments,
   );
 ```
 
-## zoe.isOfferActive(offerHandle)
+## E(zoe).isOfferActive(offerHandle)
 - `offerHandles` `{Object}`
 - Returns: `{Boolean}``
 
 Check if the offer is still active. This method does not throw if the offer is inactive.
 
 ```js
-const isActive = zoe.isOfferActive(someOfferHandle);
+const isActive = E(zoe).isOfferActive(someOfferHandle);
 ```
 
-## zoe.getOffers(offerHandles)
+## E(zoe).getOffers(offerHandles)
 - `offerHandles` `{Array <Object>}`
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{Array <OfferRecord>}`</router-link>
 
 Get a list of offer records. Throws error if offers are not found.
 
 ```js
-const offers = zoe.getOffers(listOfOfferHandles);
+const offers = await E(zoe).getOffers(listOfOfferHandles);
 ```
 
-## zoe.getOffer(offerHandle)
+## E(zoe).getOffer(offerHandle)
 - `offerHandle` `{Object}`
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
 
@@ -151,5 +165,5 @@ const {
   installationHandle,
   publicAPI,
   terms
-} = zoe.getOffer(inviteHandle);
+} = await E(zoe).getOffer(offerHandle);
 ```

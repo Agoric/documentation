@@ -8,7 +8,7 @@ expect to move them to a separate package shortly, so it would become
 '@agoric/zoe-contract-support'. The import provides a function `makeZoeHelpers()`,
 which produces versions of the function that are bound to the current zoe instance.
 
-```
+```js
 import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const {
@@ -30,12 +30,12 @@ Checks that the keywords submitted by the creator of the contract
 instance match what the contract expects. Throws if incorrect or if there is
 missing or extra keywords. Order of keywords is irrelevant.
 
-```
+```js
 import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const { assertKeywords } = makeZoeHelpers(zoe);
 
-// proposal for inviteHandle
+// proposal for offerHandle
 const proposal = {
   want: { Asset: moola(4) },
   give: { Price: simoleans(16) },
@@ -45,11 +45,11 @@ const proposal = {
 assertKeywords(['Asset', 'Price']);
 ```
 
-## zoeHelper.rejectIfNotProposal(inviteHandle, expectedProposalStructure)
-- `inviteHandle` `{Handle}`
+## zoeHelper.rejectIfNotProposal(offerHandle, expectedProposalStructure)
+- `offerHandle` `{Handle}`
 - `expectedProposalStructure` `{Object}`
 
-Throws and completes the offer if the `proposal` for the offer indexed by inviteHandle does
+Throws and completes the offer if the `proposal` for the offer indexed by offerHandle does
 not match the `expectedProposalStructure`. If a property (`want`,
 `give` or `exit`) is undefined in
 `expectedProposalStructure`, anything under that property in the
@@ -60,7 +60,7 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const { rejectIfNotProposal } = makeZoeHelpers(zoe);
 
-// proposal for inviteHandle
+// proposal for offerHandle
 const proposal = {
   want: { Asset: moola(4) },
   give: { Price: simoleans(16) },
@@ -69,13 +69,13 @@ const proposal = {
 
 // Throws: "Asset" !== "Assets"
 rejectIfNotProposal(
-  inviteHandle,
+  offerHandle,
   harden({ want: ['Assets'], give: ['Price'] }),
 )
 ```
 
-## zoeHelper.checkIfProposal(inviteHandle, expectedProposalStructure)
-- `inviteHandle` `{Handle}`
+## zoeHelper.checkIfProposal(offerHandle, expectedProposalStructure)
+- `offerHandle` `{Handle}`
 - `expectedProposalStructure` `{Object}`
 
 Like `rejectIfNotProposal`, this checks if the proposal has the
@@ -87,7 +87,7 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const { checkIfProposal } = makeZoeHelpers(zoe);
 
-// proposal for inviteHandle
+// proposal for offerHandle
 const proposal = {
   want: { Asset: moola(4) },
   give: { Price: simoleans(16) },
@@ -95,7 +95,7 @@ const proposal = {
 }
 
 checkIfProposal(
-  inviteHandle,
+  offerHandle,
   harden({ want: ['Assets'], give: ['Price'] }),
 ) // => false
 ```
@@ -108,9 +108,9 @@ Returns the offer records, but only if the offer is still active.
 - `offerHandle`
 
 
-## zoeHelper.canTradeWith(leftInviteHandle, rightInviteHandle)
-- `leftInviteHandle`
-- `rightInviteHandle`
+## zoeHelper.canTradeWith(leftOfferHandle, rightOfferHandle)
+- `leftOfferHandle`
+- `rightOfferHandle`
 - Returns: `{Boolean}`
 
 Checks if the `give` and `want` of two invites would satisfy offer
@@ -173,13 +173,48 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const { swap } = makeZoeHelpers(zoe);
 
-  const seat = harden({
-    matchOffer: () => swap(firstInviteHandle, inviteHandle),
-  });
+  // `firstOfferHandle` is from a prior offer to the contract
+  const hook = newHandle => swap(firstOfferHandle, newHandle);
+  return zcf.makeInvitation(hook);
+```
+
+## zoeHelper.inviteAnOffer(options)
+- `options` `{offerHook, customProperties, expected}` Optional name 
+  properties of the 
+- Returns: a promise for the new offerHandle
+
+Make an invitation to submit an Offer to this contract. This
+invitation can be given to a client, granting them the ability to
+participate in the contract.
+
+If "offerHook" is provided, it will be called when an offer is made 
+using the invite. The callback will get a reference to the offerHandle.
+
+If the "expected" option is provided, it should be an {ExpectedRecord}.
+This is like a {Proposal}, but the amounts in 'want' and 'give' should be null,
+and the 'exit' should have a choice but the contents should be null.
+If the client submits an Offer which does not match these expectations,
+that offer will be rejected (and refunded) without invoking the offerHook.
+
+```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { inviteAnOffer } = makeZoeHelpers(zoe);
+
+  const firstOffer = inviteAnOffer({
+      offerHook: makeMatchingInvite,
+      customProperties: {
+        inviteDesc: 'firstOffer',
+      },
+      expected: {
+        give: { Asset: null },
+        want: { Price: null },
+      },
+    });
 ```
 
 ## zoeHelper.makeEmptyOffer()
-- Returns: a promise for the new inviteHandle
+- Returns: a promise for the new offerHandle
 
 Creates an empty offer.
 
@@ -188,5 +223,5 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const { makeEmptyOffer } = makeZoeHelpers(zoe);
 
-makeEmptyOffer().then(inviteHandle => {...})
+makeEmptyOffer().then(offerHandle => {...})
 ```

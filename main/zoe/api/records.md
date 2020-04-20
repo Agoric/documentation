@@ -89,7 +89,6 @@ const record = {
   Price: simoleanAmountMath
 };
 record.Asset.coerce(tickets3);
-
 ```
 
 ## ExitRule
