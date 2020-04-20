@@ -61,11 +61,10 @@ that is escrowed with Zoe, Zoe guarantees that the user will either
 get back why they said they wanted, or the user will get back what they
 originally offered.
 
-When a user escrows with Zoe, they get two things back immediately: a
-`seat`, and a JavaScript promise for a future payout. This `seat` has
-methods that the user can call to take action in the smart contract on
-Zoe, without the smart contract ever having access to the underlying
-digital assets. Let's look a particular example to see how this works.
+When a user escrows with Zoe, they get a few things back immediately:
+an `outcome`, and a JavaScript promise for a future payout. The
+`outcome` is a promise for the return value of making the offer. Let's
+look a particular example to see how this works.
 
 ## An example: A swap
 
@@ -82,16 +81,15 @@ the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe
 
 Here's a high-level overview of what would happen:
 1. I make an instance of the swap contract.
-2. I escrow my three bricks with Zoe. In return, I get a seat at the contract and a promise for a payout.
-3. I use my seat to make the first offer in the swap, and I get back
-   an invite to send to you to be the counter-party.
-4. You inspect the invite and verify that it was created using the
+2. I escrow my three bricks with Zoe and make my offer. In return, I
+   get an invite to join the contract as the matching offer, and  a
+   promise for a payout. I send you the invite.
+3. You inspect the invite and verify that it was created using the
    `atomicSwap` contract code.
-5. You use your invite to escrow your offer (offering five wool for
-   three bricks) with Zoe, getting a seat and a promise for a payout
-   in return.
-6. You use your seat to make a matching offer.
-7. The offer matches and both of our payout promises resolve, mine to
+4. You use your invite to escrow your offer (offering five wool for
+   three bricks) with Zoe, making a matching offer. You get an outcome
+   and a promise for a payout in return.
+5. The offer matches and both of our payout promises resolve, mine to
    the five wool that I wanted, and yours to the three bricks that you
    wanted. Success!
 

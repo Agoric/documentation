@@ -36,15 +36,14 @@ const aliceProposal = harden({
 
 const alicePayments = { UnderlyingAsset: aliceMoolaPayment };
 
-  // Alice redeems her invite for a seat
-const { seat: aliceSeat, payout: alicePayoutP } = await zoe.redeem(
+  // Alice makes an offer and gets an option as the outcome
+const { outcome: optionP, payout: alicePayoutP } = await E(zoe).offer(
   aliceInvite,
   aliceProposal,
   alicePayments,
 );
 
-// Alice uses her seat to create an invite for the call option
-const option = aliceSeat.makeCallOption();
+const option = await optionP;
 ```
 
 This option is a full ERTP payment and can be escrowed and used in other
@@ -74,14 +73,14 @@ const bobProposalSwap = harden({
 
 const bobPayments = harden({ Asset: bobExclOption });
 
-// Bob escrows his option in the swap
-const { seat: bobSwapSeat, payout: bobPayoutP } = await zoe.redeem(
+// Bob escrows his option in the swap and gets an invite as the outcome that he can send to Dave
+const { outcome: bobSwapInviteP, payout: bobPayoutP } = await E(zoe).offer(
   bobSwapInvite,
   bobProposalSwap,
   bobPayments,
 );
 
-const daveSwapInvite = await bobSwapSeat.makeFirstOffer();
+const daveSwapInvite = await bobSwapInviteP;
 ```
 
 Bob now has a call option, in the form of an invite, ready to sell via an atomic swap contract.
@@ -115,14 +114,11 @@ const daveSwapProposal = harden({
 
 const daveSwapPayments = harden({ Price: daveBucksPayment });
 
-const { seat: daveSwapSeat, payout: daveSwapPayoutP } = await zoe.redeem(
+const { outcome, payout: daveSwapPayoutP } = await E(zoe).offer(
   daveSwapInvite,
   daveSwapProposal,
   daveSwapPayments,
 );
-
-// Dave completes the swap and awaits his payout
-const daveSwapOutcome = await daveSwapSeat.matchOffer();
 
 const daveSwapPayout = await daveSwapPayoutP;
 const daveOption = await daveSwapPayout.Asset;
@@ -131,7 +127,9 @@ const daveBucksPayout = await daveSwapPayout.Price;
 
 ## Exercising the Option
 
-Now that Dave owns the option he can exercise the option by making and completing a proposal to the covered call. First, he escrows with Zoe, then he calls the `exercise` method to complete the proposal:
+Now that Dave owns the option he can exercise the option. He can
+exercise the option by submitting an offer that pays the required
+exercise price in exchange for the underlying asset:
 
 ```js
 const daveCoveredCallProposal = harden({
@@ -144,13 +142,12 @@ const daveCoveredCallPayments = harden({
 });
 
 const {
-  seat: daveCoveredCallSeat,
+  outcome,
   payout: daveCoveredCallPayoutP,
-} = await zoe.redeem(
+} = await E(zoe).offer(
   daveOption,
   daveCoveredCallProposal,
   daveCoveredCallPayments,
 );
 
-const daveCoveredCallOutcome = await daveCoveredCallSeat.exercise();
 ```
