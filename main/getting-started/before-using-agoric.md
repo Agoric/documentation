@@ -52,7 +52,7 @@ software, you need to install the following.
   </tr>
   <tr>
     <td><center>7</center></td>
-    <td>Run <code>yarn build</td>
+    <td>Run <code>yarn build</code></td>
     <td>Build sources that need compiling. <b>Note:</b>
   <code>build</code> is not a standard <code>yarn</code> parameter,
   but one installed with the Agoric SDK.</td>
@@ -60,7 +60,7 @@ software, you need to install the following.
   <tr>
     <td><center>8</center></td>
     <td>Install the Agoric CLI by running: <code>yarn link-cli 
-      &lt;<i>agoric-cli's install directory</i>&gt;</td>
+      &lt;<i>agoric-cli's install directory</i>&gt;</code></td>
     <td>Select a directory to install the Agoric CLI in. For example,
       <code>yarn link-cli  
       ~/bin/agoric</code> The install directory need not already

@@ -59,7 +59,7 @@ module.exports = {
          },       
          {
           title: 'Before Using Agoric',
-          path: '/getting-started/before-using-agoric/',
+          path: '/getting-started/before-using-agoric.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
@@ -67,7 +67,7 @@ module.exports = {
 	       },
          {
           title: 'Starting A Project',
-          path: '/getting-started/start-a-project/',
+          path: '/getting-started/start-a-project.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
@@ -75,7 +75,7 @@ module.exports = {
 	       },
          {
           title: 'Development Cycle',
-          path: '/getting-started/development-cycle/',
+          path: '/getting-started/development-cycle.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
@@ -83,7 +83,7 @@ module.exports = {
 	       },
          {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction/',
+          path: '/getting-started/ertp-introduction.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
@@ -91,7 +91,7 @@ module.exports = {
          },
          {
           title: 'Agoric CLI Guide',
-          path: '/getting-started/agoric-cli-guide/',
+          path: '/getting-started/agoric-cli-guide.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
@@ -101,7 +101,7 @@ module.exports = {
       '/ertp/': [
          {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction/',
+          path: '/getting-started/ertp-introduction.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
