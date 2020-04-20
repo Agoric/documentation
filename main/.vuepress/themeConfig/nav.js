@@ -112,8 +112,8 @@ module.exports = [
         link: '/getting-started/agoric-cli-guide/',
       },
       {
-        text: 'Dapp Structure',
-        ariaLabel: 'Dapps',
+        text: 'Agoric Dapps',
+        ariaLabel: 'Dapps Guide',
         link: '/dapps/',
       },
       {
