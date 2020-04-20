@@ -15,6 +15,7 @@ module.exports = [
         ariaLabel: 'Agoric Dev Tools Menu',
         link: '/getting-started/',
       },
+      {
         text: 'Before Using Agoric',
         ariaLabel: 'Before Using Agoric Menu',
         link: '/getting-started/before-using-agoric/',

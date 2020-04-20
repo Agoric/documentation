@@ -21,9 +21,9 @@ For example, let’s say you changed code in <code>agoric-sdk</code>. Going down
 </td>
 </tr>
 <tr>
-<th><center><b>If you...</b></center></td>
-<th><center><b>Then you must...</b></center></td>
-<th><center><b>Notes</b></center></td>
+<th><center><b>If you...</b></center></td></th>
+<th><center><b>Then you must...</b></center></td></th>
+<th><center><b>Notes</b></center></td></th>
 </tr>
 <tr>
 <td>Change which npm packages are used in <code>agoric-sdk</code></td>
