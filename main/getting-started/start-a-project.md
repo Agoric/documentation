@@ -71,8 +71,8 @@ Also, for what needs to be done after you modify a project's code, see
   <tr>
     <td><center>6</center></td>
     <td>Open another shell, and in it <code>cd ~/agoric-sdk/demo</code></td>
-	  For the remainer of this table, we call this the <i>deploy shell</i>.
-    <td>Use the same project directory name as you used in Step 2. In
+    <td>For the remainer of this table, we call this the <i>deploy shell</i>.
+    <br><br>Use the same project directory name as you used in Step 2. In
       this example, we used <code>demo</code> but you may have used a
       different name in Step 2.</td>
   </tr>
