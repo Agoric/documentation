@@ -63,8 +63,8 @@ originally offered.
 
 When a user escrows with Zoe, they get a few things back immediately:
 an `outcome`, and a JavaScript promise for a future payout. The
-`outcome` is the return value of making the offer. Let's look a
-particular example to see how this works.
+`outcome` is a promise for the return value of making the offer. Let's
+look a particular example to see how this works.
 
 ## An example: A swap
 

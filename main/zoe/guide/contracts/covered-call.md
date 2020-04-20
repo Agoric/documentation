@@ -127,8 +127,9 @@ const daveBucksPayout = await daveSwapPayout.Price;
 
 ## Exercising the Option
 
-Now that Dave owns the option he can exercise the option. He can do by
-redeeming the option (an invite) and making an offer:
+Now that Dave owns the option he can exercise the option. He can
+exercise the option by submitting an offer that pays the required
+exercise price in exchange for the underlying asset:
 
 ```js
 const daveCoveredCallProposal = harden({

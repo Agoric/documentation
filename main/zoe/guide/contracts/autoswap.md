@@ -14,7 +14,7 @@ An implementation of [UniSwap](https://uniswap.org/).
 ## Initialization
 
 Create an instance of the Autoswap code, and receive an invite that
-when redeemed, will let you add liquidity to Autoswap.
+when used, will let you add liquidity to Autoswap.
 
 ```js
 const issuerKeywordRecord = harden({
@@ -31,9 +31,9 @@ const addLiquidityInvite = await E(zoe).makeInstance(
 ## Adding liquidity to the pool
 
 We can contribute to the Autoswap liquidity pool by making an offer by
-redeeming an addLiquidityInvite. For instance, let's say that Alice
+using an addLiquidityInvite. For instance, let's say that Alice
 creates a proposal with the associated payments of moola and simoleans
-and escrows them by redeeming her invite:
+and escrows them:
 
 ```js
 // Alice adds liquidity
@@ -103,7 +103,7 @@ Now Bob uses the publicAPI to get an invite specifically for swapping.
 const swapInvite = await E(publicAPI).makeSwapInvite();
 ```
 
-He escrows 2 moola with Zoe and redeems his invite:
+He escrows 2 moola with Zoe and uses his invite to make an offer:
 
 ```js
 const bobMoolaForSimPayments = harden({ TokenA: bobMoolaPayment });

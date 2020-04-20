@@ -50,8 +50,8 @@ const aliceProposal = harden({
 const alicePayments = { Asset: aliceMoolaPayment }
 ```
 
-In order for Alice to escrow with Zoe she needs to redeem her invite.
-Once Alice redeems her invite and makes her offer she will receive an `outcome` and a
+In order for Alice to escrow with Zoe she needs to use her invite.
+Once Alice uses her invite and makes her offer she will receive an `outcome` and a
 promise that resolves to her payout.
 
 ```js
@@ -91,7 +91,7 @@ assert(moolaAmountMath.isEqual(bobInviteExtent.asset, moola(3)), details`wrong a
 assert(simoleanAmountMath.isEqual(bobInviteExtent.price, simoleans(7)), details`wrong price`);
 ```
 
-Bob decides to be the counter-party. He also escrows his payments and redeems his invite to
+Bob decides to be the counter-party. He also escrows his payments and uses his invite to
 make an offer in the same way as Alice, but his `Proposal` match Alice's:
 
 ```js
