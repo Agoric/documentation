@@ -39,13 +39,16 @@ software, you need to install the following.
   </tr>
   <tr>
     <td><center>4</center></td>
-    <td><code>git clone
+    <td><code>git clone --branch hackathon-2020-04
       https://github.com/Agoric/agoric-sdk</code></td> 
     <td>Get the latest Agoric SDK from the Agoric GitHub
   repository. It goes into the 
       <code>agoric-sdk</code> sub-directory of your home directory.
       If the <code>agoric-sdk</code> sub-directory doesn't already exist, 
-    this operation creates it.</td>
+      this operation creates it.
+      We will be using the <code>hackathon-2020-04</code> branch
+      of the repository, rather than the usual <code>master</code>.
+    </td>
   </tr>
   <tr>
     <td><center>5</center></td>
