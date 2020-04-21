@@ -41,15 +41,19 @@ export const makeContract = harden(zcf => {
 });
 ```
 
-`zcf` is the <router-link
-to="/zoe/api/zoe-contract-facet.html">Zoe Contract Facet</router-link>. The `makeContract` function
-must return a record with an `invite` property. This should be a Zoe
+* `zcf` is the <router-link
+  to="/zoe/api/zoe-contract-facet.html">Zoe Contract
+  Facet</router-link>.
+* `invite` must be a Zoe
 invite that will be provided to the user who instantiates the
-contract. `publicAPI` is an optional object whose methods will be
+contract. 
+* `publicAPI` is an optional object whose methods will be
 available to anyone who knows the `instanceHandle` of the contract
 instance. `publicAPI` is a good place to put public queries (i.e.
 `getCurrentPrice` of Autoswap) and other
 requests that shouldn't require making an offer or having an invite.
+
+## Creating an invite
 
 To create an invite in the contract, you can use the Zoe Contract
 Facet method directly (<router-link
