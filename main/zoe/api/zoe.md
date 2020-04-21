@@ -14,7 +14,7 @@ All such operations immediately return a promise for their result. That may even
 :::
 
 ## E(zoe).getInviteIssuer()
-- Returns: `{Issuer}`
+- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
 
 Get the long-lived `inviteIssuer`. The mint associated with the `inviteIssuer` creates the ERTP payments that represent the right to participate in a contract.
 
@@ -35,7 +35,7 @@ the `inviteIssuerP` is fulfilled.
 - Returns: `{Object}`
 
 Create an installation by safely evaluating the code and registering
-it with Zoe. Returns an `installationHandle`, an opaque unique
+it with Zoe. Returns an `installationHandle`. A <router-link to="/glossary/#handle">handle</router-link> is an opaque unique
 identifier for the contract code.
 
 ```js
@@ -49,10 +49,10 @@ const installationHandleP = E(zoe).install(sourceCode, moduleFormat);
 ```
 
 ## E(zoe).makeInstance(installationHandle, issuerKeywordRecord, terms)
-- `installationHandle` `{Object}`
-- `issuerKeywordRecord` `{Object}`
+- `installationHandle` <router-link to="/glossary/#handle">`{Handle}`</router-link>
+- `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
 - `terms` `{Object}`
-- Returns: `{Invite}`
+- Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
 
 We can use Zoe to create smart contract instances by specifying a
 particular contract installation to use, as well as the
@@ -82,9 +82,9 @@ const someInvite = await E(zoe).makeInstance(
 
 ## E(zoe).getInstanceRecord(instanceHandle)
 - Returns: <router-link
-  to="/zoe/api/table-columns.html#instance-record-properties">`{InstanceRecord}`</router-link>
+  to="/zoe/api/records.html#instance-record">`{InstanceRecord}`</router-link>
 
-Credibly get the instance record using the `instanceHandle` ID.
+Credibly get the instance record using the <router-link to="/glossary/#handle">`instanceHandle`</router-link> ID.
 
 ```js
 const {
@@ -98,10 +98,10 @@ const {
 ```
 
 ## E(zoe).offer(invite, proposal, payments)
-- `invite` `{Payment}`
-- `proposal` <router-link to="/zoe/api/structs.html#proposal">`{Proposal}`</router-link>
-- `paymentKeywordRecord` `{PaymentKeywordRecord}`
-- Returns: `Promise<{OfferResultRecord}>`
+- `invite` <router-link to="/ertp/api/payment.html#payment">`{Payment}`</router-link>
+- `proposal` <router-link to="/zoe/api/records.html#proposal">`{Proposal}`</router-link>
+- `paymentKeywordRecord` <router-link to="/zoe/api/records.html#paymentkeywordrecord">`{PaymentKeywordRecord}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#offerresultrecord">`Promise<{OfferResultRecord}>`</router-link>
 
 To make an offer to a contract, the user must provide an invite ot the 
 contract, a proposal (their rules for the offer), and the payments to be 
@@ -134,8 +134,8 @@ const { offerHandle, payout: userPayoutP, outcome: outcomeP, cancelObj } =
 ```
 
 ## E(zoe).isOfferActive(offerHandle)
-- `offerHandles` `{Object}`
-- Returns: `{Boolean}``
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- Returns: `{Boolean}`
 
 Check if the offer is still active. This method does not throw if the offer is inactive.
 
@@ -144,7 +144,7 @@ const isActive = E(zoe).isOfferActive(someOfferHandle);
 ```
 
 ## E(zoe).getOffers(offerHandles)
-- `offerHandles` `{Array <Object>}`
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{Array <OfferRecord>}`</router-link>
 
 Get a list of offer records. Throws error if offers are not found.
@@ -154,7 +154,7 @@ const offers = await E(zoe).getOffers(listOfOfferHandles);
 ```
 
 ## E(zoe).getOffer(offerHandle)
-- `offerHandle` `{Object}`
+- `offerHandle` <router-link to="/glossary/#handle">`{Handle}`</router-link>
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
 
 Get the offer record. Throws error if the offer is not found.

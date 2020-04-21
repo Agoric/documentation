@@ -58,6 +58,16 @@ and "Price" are keywords.
 }
 ```
 
+## PaymentKeywordRecord
+
+The keys are keywords, and the values are payments
+```js
+{
+  Asset: moolaPayment,
+  Price: simoleanPayment,
+}
+```
+
 ## AmountKeywordRecord
 
 The keys are keywords, and the values are amounts.
