@@ -38,8 +38,8 @@ Also, for what needs to be done after you modify a project's code, see
     <br><br>
     There are optional arguments that let you specify which project
     you want copied into the specified directory. By default, their values are set to
-    use the Encouragement Dapp we wrote to introduce you to Agoric smart
-    contracts. To specify a different project use the optional arguments:<br>
+    use the Encouragement Dapp we wrote to provide a simple skeleton for a smart contract.
+    To specify a different project, use the optional arguments:<br>
     <code>--dapp-template &lt;name&gt;</code> Use the project specified by this &lt;name&gt; as the template copied into your current directory.<br> 
 	    <code>--dapp-base &lt;base-url&gt;</code> Look under this directory for the Dapp template. 
   <br><br>If this 
