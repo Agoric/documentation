@@ -42,7 +42,7 @@ lockdown(); // turns the current realm into an immutable realm
 
 JavaScript code runs in the context of a [`Realm`](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-code-realms). A realm is composed of the set of *primordials* (objects and functions of the standard library like `Array.prototype.push`) and of a global object. In a web browser, an iframe is a realm. In Node.js, a Node process is a realm.
 
-For historical reasons, the ECMAScript specification requires the *primordials* to be mutable (`Array.prototype.push = yourFunction` is valid ECMAScript but not recommanded). SES provides to turn the current realm into an **immutable realm**, that is a realm within which, the primordials are deeply frozen. It also allows to create **Compartments**.
+For historical reasons, the ECMAScript specification requires the *primordials* to be mutable (`Array.prototype.push = yourFunction` is valid ECMAScript but not recommended). SES provides to turn the current realm into an **immutable realm**, that is a realm within which, the primordials are deeply frozen. It also allows to create **Compartments**.
 
 Compartments are "mini-realms". They have their own dedicated global object and environement, but they inherit the primordials from their parent realm.
 
@@ -83,6 +83,5 @@ const installationHandle = await E(zoe).install(source, moduleFormat);
 ```
 
 The `E` function is a local "bridge" that allows to talk to remote object and call their methods. The local version of a remote object is called a **presence**. `E` takes a presence as an argument all created an object with the corresponding methods. It performs the communication asynchronously under the hood. Method calls can take arguments that are objects in the current vat or presences to the zoe vat or presences of objects from other vats.
-
 
 
