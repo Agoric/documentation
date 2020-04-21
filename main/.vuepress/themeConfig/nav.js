@@ -97,11 +97,6 @@ module.exports = [
     ],
   },
   {
-    text: 'JS distributed programming',
-    ariaLabel: 'JS distributed programming Menu',
-    link: 'distributed-programming.md',
-  },
-  {
     text: 'Guides',
     ariaLabel: 'Guides',
     link: '/getting-started/',
@@ -130,7 +125,12 @@ module.exports = [
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
         link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
-      }
+      },
+      {
+        text: 'JS Distributed Programming',
+        ariaLabel: 'JS Distributed Programming',
+        link: '/distributed-programming',
+      },
     ],
   },
   {
