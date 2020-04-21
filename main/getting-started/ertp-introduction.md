@@ -19,15 +19,14 @@ store new assets in a *payment* or a *purse*.
 - **Purses**: Store assets until you withdraw them into a payment for use
 
 To send assets in ERTP:
-1. Withdraw them from a purse.
-2. Put them in a payment.
-3. Send them to a recipient object as a message.
+1. Withdraw them from a purse. This creates a payment.
+2. Send this payment to a recipient object as a message.
 
 To receive assets in ERTP:
-1. Create a purse for the asset type you'll receive.
-2. Get access to the asset type you'll receive. **Note:** You
-do not need access to the type's mint. The Issuer (which is widely shared) provides an empty purse for the asking.  
-3. Receive the message with the payment and put the payment in
+1. Create a purse for the asset type you'll receive. **Note:** You
+do not need access to the type's mint. The Issuer (which is widely shared) provides an empty purse for the asking.
+2. Get access to the asset type you'll receive.
+3. Receive the message with the payment and deposit the payment in
 your purse.
 
 ## Security properties

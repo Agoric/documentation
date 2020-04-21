@@ -5,7 +5,7 @@
 A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is access synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).makeInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
 
 ## zcf.reallocate(offerHandles, reallocation)
-- `offerHandles` `{Array <Object>}`
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `reallocation` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
 
 Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the values are amounts. The amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
@@ -21,7 +21,7 @@ zoe.reallocate(
 ```
 
 ## zcf.complete(offerHandles)
-- `offerHandles` `{Array <Object>}`
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 
 Eject the offer, taking the current allocation for that offer and creating payments to be returned to the user. No 'offer safety' checks are done here because any previous reallocation performed those checks.
 
@@ -32,7 +32,7 @@ zoe.complete(harden([someOfferHandle]));
 ```
 
 ## zcf.addNewIssuer(issuer, keyword)
-- `issuers` `{Issuer}`
+- `issuer` <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
 - `keyword` `{String}`
 - Returns: `{Promise}`
 
@@ -45,14 +45,14 @@ zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
 ```
 
 ## zcf.getZoeService()
-- Returns: `{ZoeService}`
+- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
 
-Expose the user-facing Zoe Service API to the contracts as well.
+Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
 
 ## zcf.MakeInvitation(offerHook, customProperties)
 - `offerHook` `{OfferHandle => Object}`
 - `customProperties` `{Object}`
-- Returns: `{Invite}`
+- Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
 
 Make a credible Zoe invite for the associated smart contract. The Invite 
 is a `Payment` minted from Zoe's internal `inviteMint`. It can be used
@@ -75,7 +75,7 @@ const invite = zoe.makeInvitation(
 ```
 
 ## zcf.getInviteIssuer()
-- Returns: `{Issuer}`
+- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
 
 Get the Zoe `inviteIssuer`.
 
@@ -83,19 +83,19 @@ Get the Zoe `inviteIssuer`.
 const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
-## zcf.getAmountMaths(issuerKeywordRecord)
-- `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
+## zcf.getAmountMaths(keywords)
+- `keywords` `{Array <String>}`
 - Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
 
-Pass in an issuerKeywordRecord and get an amountMathKeywordRecord in return.
+Pass in an array of keywords and get an amountMathKeywordRecord in return.
 
 ```js
-const amountMathKeywordRecord = zoe.getAmountMaths(issuerKeywordRecord);
+const amountMathKeywordRecord = zoe.getAmountMaths(['Asset', 'Price']);
 ```
 
 ## zcf.isOfferActive(offerHandle)
-- `offerHandles` `{Object}`
-- Returns: `{Boolean}``
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- Returns: `{Boolean}`
 
 Check if the offer is still active. This method does not throw if the offer is inactive.
 
@@ -104,8 +104,8 @@ const isActive = zoe.isOfferActive(someOfferHandle);
 ```
 
 ## zcf.getOfferStatuses(offerHandles)
-- `offerHandles` `{Array <Object>}`
-- Returns: `{OfferStatusesRecord}`
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#offerstatuses-record">`{OfferStatusesRecord}`</router-link>
 
 Divide the `offerHandles` into 'active' and 'inactive' lists
 
@@ -116,7 +116,7 @@ const { active: activeBidHandles } = zoe.getOfferStatuses(
 ```
 
 ## zcf.getOffers(offerHandles)
-- `offerHandles` `{Array <Object>}`
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{Array <OfferRecord>}`</router-link>
 
 Get a list of offer records.
@@ -126,7 +126,7 @@ const offers = zoe.getOffers(listOfOfferHandles);
 ```
 
 ## zcf.getOffer(offerHandle)
-- `offerHandle` `{Object}`
+- `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
 
 Get the offer record.
