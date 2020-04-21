@@ -97,6 +97,11 @@ module.exports = [
     ],
   },
   {
+    text: 'JS distributed programming',
+    ariaLabel: 'JS distributed programming Menu',
+    link: 'distributed-programming.md',
+  },
+  {
     text: 'Guides',
     ariaLabel: 'Guides',
     link: '/getting-started/',
