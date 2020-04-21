@@ -65,3 +65,15 @@ See more: [Purse API](/ertp/api/purse.md)
 An [AssetHolder](#assetholder). Payments hold amounts of certain rights issued by Mints, specifically amounts that are in _transit_. Amounts from payments can be deposited in purses, but otherwise, the entire amount is available when the payment is transferred. Payments can be converted to Purses.
 
 See more: [Payment API](/ertp/api/payment.md)
+
+## Vat
+
+A vat is a *unit of synchrony*. This means that within a JavaScript vat, objects and functions can communicate with one another synchronously.
+
+A vat runs a single *event loop*.
+
+A physical machine can run one or several vats. A blockchain can run one or several communicating vats.
+
+Different vats can communicate by sending asynchronous messages to other vats.
+
+A vat is the moral equivalent of a Unix Process.
