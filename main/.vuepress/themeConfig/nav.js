@@ -43,60 +43,6 @@ module.exports = [
     ]
   },
   {
-    text: 'ERTP', // spaces to add some distance to next link
-    ariaLabel: 'ERTP Menu',
-    link: '/ertp/guide/',
-    items: [
-       {
-        text: 'Introduction',
-        ariaLabel: 'ERTP Introduction Link',
-        link: '/getting-started/ertp-introduction/',
-      },
-     {
-        text: 'Guide',
-        ariaLabel: 'ERTP Guide Link',
-        link: '/ertp/guide/'
-      },
-      {
-        text: 'API',
-        ariaLabel: 'ERTP API Link',
-        link: '/ertp/api/'
-      },
-      {
-        text: 'Github',
-        ariaLabel: 'ERTP Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP'
-      }
-    ]
-  },
-  {
-    text: 'Zoe',
-    ariaLabel: 'Zoe Menu',
-    link: '/zoe/guide',
-    items: [
-      {
-        text: 'Guide',
-        ariaLabel: 'Zoe Guide Link',
-        link: '/zoe/guide/'
-      },
-      {
-        text: 'Contracts',
-        ariaLabel: 'Zoe Contracts Link',
-        link: '/zoe/guide/contracts/autoswap'
-      },
-      {
-        text: 'API',
-        ariaLabel: 'Zoe API',
-        link: '/zoe/api/'
-      },
-      {
-        text: 'Github',
-        ariaLabel: 'Zoe Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe'
-      }
-    ],
-  },
-  {
     text: 'Guides',
     ariaLabel: 'Guides',
     link: '/getting-started/',
@@ -132,6 +78,72 @@ module.exports = [
         link: '/distributed-programming',
       },
     ],
+  },
+  {
+    text: 'Zoe',
+    ariaLabel: 'Zoe Menu',
+    link: '/zoe/guide',
+    items: [
+      {
+        text: 'Guide',
+        ariaLabel: 'Zoe Guide Link',
+        link: '/zoe/guide/'
+      },
+      {
+        text: 'Contracts',
+        ariaLabel: 'Zoe Contracts Link',
+        link: '/zoe/guide/contracts/autoswap'
+      },
+      {
+        text: 'API',
+        ariaLabel: 'Zoe API',
+        link: '/zoe/api/'
+      },
+      {
+        text: 'Github',
+        ariaLabel: 'Zoe Github Link',
+        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe'
+      }
+    ],
+  },
+  {
+    text: 'ERTP', // spaces to add some distance to next link
+    ariaLabel: 'ERTP Menu',
+    link: '/ertp/guide/',
+    items: [
+       {
+        text: 'Introduction',
+        ariaLabel: 'ERTP Introduction Link',
+        link: '/getting-started/ertp-introduction/',
+      },
+     {
+        text: 'Guide',
+        ariaLabel: 'ERTP Guide Link',
+        link: '/ertp/guide/'
+      },
+      {
+        text: 'API',
+        ariaLabel: 'ERTP API Link',
+        link: '/ertp/api/'
+      },
+      {
+        text: 'Github',
+        ariaLabel: 'ERTP Github Link',
+        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP'
+      }
+    ]
+  },
+  {
+    text: 'Platform',
+    ariaLabel: 'Platform Menu',
+    link: '/platform/',
+    items: [
+       {
+        text: 'Agoric Stack',
+        ariaLabel: 'Agoric Stack Link',
+        link: '/platform/',
+      },
+    ]
   },
   {
     text: 'Glossary',
