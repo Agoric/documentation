@@ -54,7 +54,7 @@ relayers.
 Dynamic IBC (dIBC) is a solution to the problem of rolling out a new
 protocol without needing a platform upgrade or chain governance vote.
 
-In essence, bIBC is the idea of using a smart contract or VM platform
+In essence, dIBC is the idea of using a smart contract or VM platform
 to deploy new contracts that support new protocols, all on an existing
 chain without having to wait for chain upgrades. 
 
