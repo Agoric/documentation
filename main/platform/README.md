@@ -40,25 +40,29 @@ machine.
 Our testnet has a single Swingset instance with multiple vats running
 on top of Cosmos SDK. Swingset and most of our code is written in
 JavaScript, so we currently have a complicated process that starts up
-Node, starts a Swingset instance, and then connects through Go to ???
+the JavaScript environment, starts a Swingset instance, and then 
+connects through Go to the Cosmos SDK modules, the consensus algorithm
+in Tendermint, and back again.
 
 ## Dynamic IBC
 
 IBC is the protocol for [Inter-Blockchain
 Communication](https://cosmos.network/ibc/). IBC enables messages to
 be sent from one blockchain to another with the use of intermediary
-relayers. Dynamic IBC (dIBC) is, in essence, the idea of using a smart
-contract or VM platform to deploy new contracts that support new
-protocols, all on an existing chain without having to wait for chain
-upgrades. The tl;dr is: There shouldn’t need to be a platform upgrade
-or chain governance vote every time someone wants to roll out a new
-protocol.
+relayers.
+
+Dynamic IBC (dIBC) is a solution to the problem of rolling out a new
+protocol without needing a platform upgrade or chain governance vote.
+
+In essence, bIBC is the idea of using a smart contract or VM platform
+to deploy new contracts that support new protocols, all on an existing
+chain without having to wait for chain upgrades. 
 
 For more information, check out [a recent article on
 dIBC](https://medium.com/agoric/the-road-to-dynamic-ibc-4a43bc964bca).
 
 ## Tendermint
 
-Tendermint is a byzantine fault tolerant engine, defining how blocks
-are agreed upon and created. Effectively, Tendermint is the lowest level layer that
+Tendermint is a consensus engine, defining how blocks are agreed upon
+and created. Effectively, Tendermint is the lowest level layer that
 defines the blockchain itself.
