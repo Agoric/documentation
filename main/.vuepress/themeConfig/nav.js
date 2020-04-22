@@ -80,18 +80,6 @@ module.exports = [
     ],
   },
   {
-    text: 'Platform',
-    ariaLabel: 'Platform Menu',
-    link: '/platform/',
-    items: [
-       {
-        text: 'Agoric Stack',
-        ariaLabel: 'Agoric Stack Link',
-        link: '/platform/',
-      },
-    ]
-  },
-  {
     text: 'Zoe',
     ariaLabel: 'Zoe Menu',
     link: '/zoe/guide',
@@ -143,6 +131,18 @@ module.exports = [
         ariaLabel: 'ERTP Github Link',
         link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP'
       }
+    ]
+  },
+  {
+    text: 'Platform',
+    ariaLabel: 'Platform Menu',
+    link: '/platform/',
+    items: [
+       {
+        text: 'Agoric Stack',
+        ariaLabel: 'Agoric Stack Link',
+        link: '/platform/',
+      },
     ]
   },
   {
