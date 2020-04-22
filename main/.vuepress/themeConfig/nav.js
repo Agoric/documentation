@@ -43,6 +43,33 @@ module.exports = [
     ]
   },
   {
+    text: 'Zoe',
+    ariaLabel: 'Zoe Menu',
+    link: '/zoe/guide',
+    items: [
+      {
+        text: 'Guide',
+        ariaLabel: 'Zoe Guide Link',
+        link: '/zoe/guide/'
+      },
+      {
+        text: 'Contracts',
+        ariaLabel: 'Zoe Contracts Link',
+        link: '/zoe/guide/contracts/autoswap'
+      },
+      {
+        text: 'API',
+        ariaLabel: 'Zoe API',
+        link: '/zoe/api/'
+      },
+      {
+        text: 'Github',
+        ariaLabel: 'Zoe Github Link',
+        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe'
+      }
+    ],
+  },
+  {
     text: 'ERTP', // spaces to add some distance to next link
     ariaLabel: 'ERTP Menu',
     link: '/ertp/guide/',
@@ -70,31 +97,16 @@ module.exports = [
     ]
   },
   {
-    text: 'Zoe',
-    ariaLabel: 'Zoe Menu',
-    link: '/zoe/guide',
+    text: 'Platform',
+    ariaLabel: 'Platform Menu',
+    link: '/platform/',
     items: [
-      {
-        text: 'Guide',
-        ariaLabel: 'Zoe Guide Link',
-        link: '/zoe/guide/'
+       {
+        text: 'Agoric Stack',
+        ariaLabel: 'Agoric Stack Link',
+        link: '/platform/',
       },
-      {
-        text: 'Contracts',
-        ariaLabel: 'Zoe Contracts Link',
-        link: '/zoe/guide/contracts/autoswap'
-      },
-      {
-        text: 'API',
-        ariaLabel: 'Zoe API',
-        link: '/zoe/api/'
-      },
-      {
-        text: 'Github',
-        ariaLabel: 'Zoe Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe'
-      }
-    ],
+    ]
   },
   {
     text: 'Guides',
