@@ -54,8 +54,6 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 - **Examples**:
   - Restart the Agoric VM, clearing all existing state before doing so.  
     - `agoric start --reset`
-  - Don't actually start the Agoric VM.
-    - `agoric start --no-restart`
   - For Docker-based VM, before running pull the image.
     - `agoric start --pull`
   - Delay 5 seconds for each round-trip to the simulated chain and back in order for a simulated chain to
