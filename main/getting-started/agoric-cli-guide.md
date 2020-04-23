@@ -45,8 +45,7 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
   - `[profile]`: Specifies the environment for the VM. Defaults to `dev` for development mode, `testnet` connects to our current testnet.
   - `[args]`: Ignore this for now. It currently has no valid values.
 - **Optional Arguments**:
-    -`--reset`:  Clear all VM state before starting.
-    - `--no-restart`: Do not actually start the VM. 
+    - `--reset`:  Clear all VM state before starting.
     - `--pull`:  For Docker-based VM, pull the image before running.
     - `--delay [seconds]`: Delay the given number of seconds for each round-trip to the simulated chain and back for a simulated chain to process messages. A `1` value lets you easily count the number of trips in your head.
     - `--inspect`: [host[:port]]`: Activate inspector on host:port (default: "127.0.0.1:9229")
