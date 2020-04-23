@@ -63,6 +63,11 @@ module.exports = [
         link: '/dapps/',
       },
       {
+        text: 'ERTP',
+        ariaLabel: 'ERTP Guide',
+        link: '/ertp/guide/'
+      },
+      {
         text: 'Zoe',
         ariaLabel: 'Zoe Guide',
         link: '/zoe/guide/'
@@ -158,6 +163,11 @@ module.exports = [
         text: 'Agoric',
         ariaLabel: 'Agoric Homepage Link',
         link: 'https://agoric.com/'
+      },      
+      {
+        text: 'Papers',
+        ariaLabel: 'Papers Page Link',
+        link: 'https://agoric.com/papers/'
       },
       {
         text: 'Github',
