@@ -2,6 +2,9 @@
 
 <Zoe-Version/>
 
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/958a2c0a3dec38bdba2234934119ea2c28958262/packages/zoe/src/contracts/atomicSwap.js) (Last updated: 4/22/2020)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+
 If I want to trade one kind of asset for another kind, I could send
 you the asset and ask you to send me the other kind back. But, you
 could choose to behave opportunistically: receive my asset and give
