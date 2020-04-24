@@ -95,6 +95,11 @@ module.exports = [
     link: '/zoe/guide',
     items: [
       {
+        text: 'Introduction',
+        ariaLabel: 'Zoe Introduction Link',
+        link: '/getting-started/zoe-intro/'
+     },
+     {
         text: 'Guide',
         ariaLabel: 'Zoe Guide Link',
         link: '/zoe/guide/'
