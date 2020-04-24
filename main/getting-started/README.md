@@ -49,16 +49,17 @@ What you need to do before installing Agoric software and installing the Agoric 
   briefly explains the concepts and components of Agoric's Electronic
   Rights Transfer Protocol (ERTP) which is the heart of Agoric
   software.
-4. **Zoe Introduction**: 
-  **[IN PROGRESS]** A Getting Started document that
+4. **[Zoe Introduction](https://agoric.com/documentation/getting-started/intro-zoe)**: 
+  A Getting Started document that
   briefly explains the concepts and components of Zoe, our reusable smart contract 
   for writing other smart contracts in JavaScript. Zoe implements our guarantee that users either get what they wanted from the
   contract or a full refund of what they put up for it. 
-5. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
+5. **[Agoric Platform/Stack](https://agoric.com/documentation/platform/)** A brief introduction to the complete Agoric platform/technical stack. 
+6. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
   A detailed description of ERTP concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the ERTP API 
   documentation, accessible from the ERTP documentation sidebar menu.
-6. **[Zoe Guide](https://agoric.com/documentation/zoe/guide/)**: 
+7. **[Zoe Guide](https://agoric.com/documentation/zoe/guide/)**: 
   A detailed description of Zoe concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the Zoe API 
   documentation, accessible from the Zoe documentation sidebar menu.
@@ -75,8 +76,8 @@ We also have an **[Agoric Glossary](https://agoric.com/documentation/glossary/)*
 definitions to (i.e. what does *mint* mean in an Agoric context?).
 
 For more about Agoric's ideas, plans, and goals, see our **[homepage](https://agoric.com/)**. 
-It has links to various documents and 
-videos you may find useful, such as conference talks, white papers, conference papers, etc.
+
+Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
