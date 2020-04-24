@@ -54,12 +54,14 @@ What you need to do before installing Agoric software and installing the Agoric 
   briefly explains the concepts and components of Zoe, our reusable smart contract 
   for writing other smart contracts in JavaScript. Zoe implements our guarantee that users either get what they wanted from the
   contract or a full refund of what they put up for it. 
-5. **[Agoric Platform/Stack](https://agoric.com/documentation/platform/)** A brief introduction to the complete Agoric platform/technical stack. 
-6. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
+5. **[Agoric Platform/Stack](https://agoric.com/documentation/platform/)**: A brief introduction to the complete Agoric platform/technical stack. 
+6. **[JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html)**:
+We've made some Agoric-specific additions at various layers, including concepts, syntax, and additions to the Agoric library. You should know about and understand these before programming on the Agoric platform.
+7. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
   A detailed description of ERTP concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the ERTP API 
   documentation, accessible from the ERTP documentation sidebar menu.
-7. **[Zoe Guide](https://agoric.com/documentation/zoe/guide/)**: 
+8. **[Zoe Guide](https://agoric.com/documentation/zoe/guide/)**: 
   A detailed description of Zoe concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the Zoe API 
   documentation, accessible from the Zoe documentation sidebar menu.
@@ -75,7 +77,7 @@ To familiarize yourself with working Agoric smart contracts, take a look at our
 We also have an **[Agoric Glossary](https://agoric.com/documentation/glossary/)** for terms we've given Agoric-context
 definitions to (i.e. what does *mint* mean in an Agoric context?).
 
-For more about Agoric's ideas, plans, and goals, see our **[homepage](https://agoric.com/)**. 
+For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
 
 Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
 
