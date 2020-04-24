@@ -114,7 +114,7 @@ module.exports = {
           sideBarDepth: 3,
           children: [
           ]
-	       },
+	 },
          {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
@@ -146,18 +146,17 @@ module.exports = {
           ]
         }
       ],
-
       '/zoe/': [
         {
-          title: 'Zoe',
-          path: '/getting-started/zoe-intro/',
+          title: 'Zoe Introduction',
+          path: '/getting-started/zoe-intro.html',
           collapsable: false,
-          sideBarDepth: 5,
+          sideBarDepth: 3,
           children: [
           ]
         },  
         {
-          title: 'Zoe',
+          title: 'Zoe Guide',
           path: '/zoe/guide/',
           collapsable: false,
           sideBarDepth: 5,
