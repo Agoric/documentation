@@ -232,7 +232,7 @@ The following table summarizes an Atomic Swap workflow:
 </td>
 </tr>
 <tr>
-<td colspan="2">At this point, everything is installed and set up and you’ve got a contract instance. The following rows covers what happens to offers in a contract instance.
+<td colspan="2">At this point, everything is installed and set up and you’ve got a contract instance. The following rows cover what happens to offers in a contract instance.
 </td>
 <tr>
 <tr>
