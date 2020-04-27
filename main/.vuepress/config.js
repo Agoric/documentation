@@ -149,7 +149,7 @@ module.exports = {
       '/zoe/': [
         {
           title: 'Zoe Introduction',
-          path: '/getting-started/zoe-intro.html',
+          path: '/getting-started/intro-zoe.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
