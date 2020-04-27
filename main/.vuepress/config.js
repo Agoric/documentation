@@ -90,6 +90,14 @@ module.exports = {
           ]
          },
          {
+          title: 'Zoe Introduction',
+          path: '/getting-started/intro-zoe.html',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+         },      
+         {
           title: 'Agoric CLI Guide',
           path: '/getting-started/agoric-cli-guide.html',
           collapsable: false,
@@ -106,7 +114,7 @@ module.exports = {
           sideBarDepth: 3,
           children: [
           ]
-	       },
+	 },
          {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
@@ -138,10 +146,17 @@ module.exports = {
           ]
         }
       ],
-
       '/zoe/': [
         {
-          title: 'Zoe',
+          title: 'Zoe Introduction',
+          path: '/getting-started/zoe-intro.html',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+        },  
+        {
+          title: 'Zoe Guide',
           path: '/zoe/guide/',
           collapsable: false,
           sideBarDepth: 5,
@@ -151,7 +166,7 @@ module.exports = {
             '/zoe/guide/proposal',
             '/zoe/guide/contract-requirements'
           ]
-        },
+        },  
         {
           title: 'Zoe Contracts',
           path: '/zoe/guide/contracts/',

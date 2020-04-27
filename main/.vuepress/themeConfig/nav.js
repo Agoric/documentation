@@ -36,6 +36,11 @@ module.exports = [
         link: '/getting-started/ertp-introduction',
       },
       {
+        text: 'Zoe Introduction',
+        ariaLabel: 'Zoe Introduction Menu',
+        link: '/getting-started/zoe-intro',
+      },
+      {
         text: 'Agoric CLI Guide',
         ariaLabel: 'Agoric CLI Guide Menu',
         link: '/getting-started/agoric-cli-guide',
@@ -90,6 +95,11 @@ module.exports = [
     link: '/zoe/guide',
     items: [
       {
+        text: 'Introduction',
+        ariaLabel: 'Zoe Introduction Link',
+        link: '/getting-started/zoe-intro/'
+     },
+     {
         text: 'Guide',
         ariaLabel: 'Zoe Guide Link',
         link: '/zoe/guide/'
