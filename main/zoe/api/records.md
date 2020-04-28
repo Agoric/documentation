@@ -154,7 +154,6 @@ The possible records are:
   publicAPI, // the invite-free publicly accessible API for the contract
   terms, // contract parameters
   issuerKeywordRecord, // record with keywords keys, issuer values
-  keywords, // an array of the keywords, in sorted order
 }
 ```
 
@@ -164,6 +163,6 @@ The possible records are:
   handle, // opaque identifier for the offer, used as the table key
   instanceHandle, // opaque identifier for the instance
   proposal, // the offer proposal (including want, give, exit)
-  amounts, // the amountKeywordRecord that will be turned into payouts
+  currentAllocation, // the amountKeywordRecord that will be turned into payouts
 }
 ```
