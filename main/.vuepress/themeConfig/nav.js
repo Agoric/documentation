@@ -38,7 +38,7 @@ module.exports = [
       {
         text: 'Zoe Introduction',
         ariaLabel: 'Zoe Introduction Menu',
-        link: '//getting-started/intro-zoe',
+        link: '/getting-started/intro-zoe',
       },
       {
         text: 'Agoric CLI Guide',
