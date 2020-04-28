@@ -167,3 +167,18 @@ const {
   terms
 } = await E(zoe).getOffer(offerHandle);
 ```
+
+## E(zoe).getInstallation(installationHandle)
+- `installationHandle` `{InstallationHandle}`
+- Returns: {String} the source code
+
+Get the source code for the installed contract. Throws an error if the installationHandle is not found.
+
+```js
+const {
+  handle,
+  installationHandle,
+  publicAPI,
+  terms
+} = await E(zoe).getOffer(offerHandle);
+```

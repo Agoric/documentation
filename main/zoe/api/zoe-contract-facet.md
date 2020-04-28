@@ -4,12 +4,20 @@
 
 A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is access synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).makeInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
 
-## zcf.reallocate(offerHandles, reallocation)
+## zcf.reallocate(offerHandles, newAmountKeywordRecords, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `reallocation` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
+- `newAmountKeywordRecords` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
+- `sparseKeywords `{Array <String>}` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
 
-Instruct Zoe to try reallocating for the given `offerHandles`. Reallocation is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the values are amounts. The amount to be paid to the player who made the offer at the same index in the `offerHandles` array. The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
-
+Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This will only succeed if the reallocation 1) conserves rights, and 2) is 'offer-safe' for all parties involved. This reallocation is partial, meaning that it applies only to
+the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
+rights are conserved and offer safety is enforced for all offers, even though the reallocation is partial, because once
+these invariants are true, they will remain true until changes are made.
+newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the
+values are the amounts to be paid to the offer at the same index in the `offerHandles`.
+This operation will throw an error if any of the newAmountKeywordRecords do not have a value for all the keywords in
+sparseKeywords. An error will also be thrown if any newAmountKeywordRecords have keywords that are not in sparseKeywords
+The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 ```js
 import harden from '@agoric/harden';
 
@@ -147,3 +155,21 @@ Zoe.
 ```js
 const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ```
+
+## zcf.getCurrentAllocation(offerHandle, sparseKeywords)
+- `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
+
+Get the amounts associated with the sparseKeywords for the offer.
+
+```js
+const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
+```
+
+## zcf.getCurrentAllocations(offerHandles, sparseKeywords)
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
+
+Get the amounts associated with the sparseKeywords for the offers.
