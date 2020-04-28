@@ -36,7 +36,7 @@ SES is a standards-track extension of
 the JavaScript standard - common to web browsers, Node.js, and embedded
 devices. SES provides a secure platform for executing programs, which means that
 it's possible to run code you don't completely trust, without being vulnerable
-to its bugs or bad intentions. The hosted code runs in an immutable realm has no
+to its bugs or bad intentions. The hosted code runs in an immutable realm that has no
 access to ambient authority by default. The hosting code can provide access to
 disk or network or other services, and any authority not granted is inaccessible
 to the hosted code.
@@ -68,22 +68,17 @@ Agoric "deploy scripts" and smart contract code run in an immutable realm with c
 
 ### harden
 
-`harden` is a function provided by the [`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden).
+`harden` is a function provided by the
+[`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden).  It ensures
+that external callers of hardened objects can only interact with them through
+functions present in their API.  `harden` does a transitive version of
+[`Object.freeze`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze),
+which only locks up an object's own properties.
 
-In a nutshell, `harden` creates objects that can't be changed. In practice,
-`harden` performs the deep version of
-[`Object.freeze`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze). Freeze
-only freezes the object's own properties, so harden is necessary in order to
-ensure that no further changes can be made. It is useful in distributed systems
-to distinguish objects with mutable state from objects that are
-unchanging. Objects that can change over time are extremely useful, but in order
-to interact with them, you have to send the message to where they are. If an
-object is guaranteed not to change, then copies of it can be widely shared, and
-interacted with directly.
-
-Many services provided by Agoric require their parameters to be hardened so they
-can interact with them locally. This makes it possible to provide reliable
-service without waiting for further round trips to collect information.
+CapTP, our comms layer for passing references to distributed objects, requires that
+all objects that will be transferred to other trust domains must have their API
+surface frozen (usually by calling harden). This ensures that other objects can only
+interact with them through their defined method interface.
 
 After you've [installed](https://docs.npmjs.com/cli/install) the [`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden), you can use it this way:
 
