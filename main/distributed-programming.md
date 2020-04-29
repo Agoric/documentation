@@ -36,10 +36,10 @@ SES is a standards-track extension of
 the JavaScript standard - common to web browsers, Node.js, and embedded
 devices. SES provides a secure platform for executing programs, which means that
 it's possible to run code you don't completely trust, without being vulnerable
-to its bugs or bad intentions. The hosted code runs in an immutable realm that has no
+to its bugs or bad intentions. The guest code runs in an immutable realm that has no
 access to ambient authority by default. The hosting code can provide access to
 disk or network or other services, and any authority not granted is inaccessible
-to the hosted code.
+to the guest code.
 
 SES can be enabled via the [`ses` package](https://www.npmjs.com/package/@agoric/harden).
 
@@ -75,10 +75,10 @@ functions present in their API.  `harden` does a transitive version of
 [`Object.freeze`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze),
 which only locks up an object's own properties.
 
-CapTP, our comms layer for passing references to distributed objects, requires that
-all objects that will be transferred to other trust domains must have their API
+All objects that will be transferred across a trust boundary must have their API
 surface frozen (usually by calling harden). This ensures that other objects can only
-interact with them through their defined method interface.
+interact with them through their defined method interface. CapTP, our communications
+layer for passing references to distributed objects, enforces this at vat boundaries.
 
 After you've [installed](https://docs.npmjs.com/cli/install) the [`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden), you can use it this way:
 
@@ -97,7 +97,7 @@ o.a  = 37; // throws a TypeError because o is now hardened
 ### Communicating with remote objects using `E`
 
 
-On the Agoric platform, object may be running in distinct vats, or on a remote
+On the Agoric platform, objects may be running in distinct vats, or on a remote
 machine, or even on a blockchain. Whenever you send messages to an object that
 isn't accessible locally in the same vat, the response can't be received
 immediately and can't be acted upon locally until the response comes back. In
@@ -137,7 +137,7 @@ const installationHandle = await E(zoe).install(source, moduleFormat);
 
 The `E` function is a local "bridge" that makes is possible to invoke methods on
 remote object. The local version of a remote object is called a
-**presence**. `E` takes a presence as an argument all creates an object with the
+**presence**. `E` takes a presence as an argument and creates an object with the
 corresponding methods. It performs the communication asynchronously. Method
 calls can take arguments that are objects in the current vat or presences for
 objects in other vats.
