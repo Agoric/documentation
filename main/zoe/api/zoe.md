@@ -121,11 +121,11 @@ The resulting `OfferResultRecord` contains a handle for querying
 Zoe about the offer, a promise for the payouts when the offer 
 is complete, a promise for the result of invoking the contract-specific
 hook associated with the invitation, and if appropriate for the specified 
-`exit` policy, a function to cancel the offer.
+`exit` policy, a function to complete the offer.
 
 ```js
 // A user makes an offer and escrows with Zoe using an invite 
-const { offerHandle, payout: userPayoutP, outcome: outcomeP, cancelObj } = 
+const { offerHandle, payout: userPayoutP, outcome: outcomeP, completeObj } = 
   await E(zoe).offer(
     userInvite,
     userProposal,
