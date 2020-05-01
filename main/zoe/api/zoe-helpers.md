@@ -183,6 +183,12 @@ const { swap } = makeZoeHelpers(zoe);
   properties of the 
 - Returns: a promise for the new offerHandle
 
+**DEPRECATED AS OF ZOE 0.6 / MAY 2020**
+
+**We recommend using `checkhook` instead.**
+
+**See [`zcf.makeInvitation`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-makeinvitation-offerhook-customproperties)**
+
 Make an invitation to submit an Offer to this contract. This
 invitation can be given to a client, granting them the ability to
 participate in the contract.
