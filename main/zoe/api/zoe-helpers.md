@@ -179,9 +179,12 @@ const { swap } = makeZoeHelpers(zoe);
   return zcf.makeInvitation(hook);
 ```
 
-## zoeHelpers.inviteAnOffer(options)
-- `options` `{offerHook, customProperties, expected}` Optional name 
-  properties of the 
+## zoeHelpers.inviteAnOffer({offerHook, customProperties, expected})
+- `offerHook` - the function to be called when the offer is made and
+  invite redeemed
+- `customProperties` - (optional) properties to be added to the extent
+- `expected` - the expected structure of the proposal for the offer.
+  Values are null.
 - Returns: a promise for the new offerHandle
 
 Make an invitation to submit an Offer to this contract. This
@@ -227,7 +230,15 @@ const { makeEmptyOffer } = makeZoeHelpers(zoe);
 makeEmptyOffer().then(offerHandle => {...})
 ```
 
-## zoeHelpers.escrowAndAllocateTo()
+## zoeHelpers.escrowAndAllocateTo({ amount, payment, keyword, recipientHandle })
+- `amount` - the amount to be escrowed. This should be equal to the
+  payment amount
+- `payment` - the payment that will be escrowed
+- `keyword` - the keyword under which the payment should be escrowed.
+  This will be used to create the proposal and the
+  paymentKeywordRecord
+- `recipientHandle` - the offerHandle that we will reallocate the
+  amount to
 - Returns: undefined
 
 Escrow a payment with Zoe and reallocate the amount of the payment to a recipient.
