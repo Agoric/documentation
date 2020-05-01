@@ -20,10 +20,11 @@ const {
   rejectIfNotProposal,
   getActiveOffers,
   makeEmptyOffer,
+  escrowAndAllocateTo,
 } = makeZoeHelpers(zoe);
 ```
 
-## zoeHelper.assertKeywords(keywords)
+## zoeHelpers.assertKeywords(keywords)
 - `keywords` `{Array <String>}`
 
 Checks that the keywords submitted by the creator of the contract
@@ -45,7 +46,7 @@ const proposal = {
 assertKeywords(['Asset', 'Price']);
 ```
 
-## zoeHelper.rejectIfNotProposal(offerHandle, expectedProposalStructure)
+## zoeHelpers.rejectIfNotProposal(offerHandle, expectedProposalStructure)
 - `offerHandle` `{Handle}`
 - `expectedProposalStructure` `{Object}`
 
@@ -74,7 +75,7 @@ rejectIfNotProposal(
 )
 ```
 
-## zoeHelper.checkIfProposal(offerHandle, expectedProposalStructure)
+## zoeHelpers.checkIfProposal(offerHandle, expectedProposalStructure)
 - `offerHandle` `{Handle}`
 - `expectedProposalStructure` `{Object}`
 
@@ -99,16 +100,16 @@ checkIfProposal(
   harden({ want: ['Assets'], give: ['Price'] }),
 ) // => false
 ```
-## zoeHelper.getActiveOffers(offerHandles)
+## zoeHelpers.getActiveOffers(offerHandles)
 - `offerHandle[]`
 
 Returns the offer records, but only if the offer is still active.
 
-## zoeHelper.rejectOffer(offerHandle)
+## zoeHelpers.rejectOffer(offerHandle)
 - `offerHandle`
 
 
-## zoeHelper.canTradeWith(leftOfferHandle, rightOfferHandle)
+## zoeHelpers.canTradeWith(leftOfferHandle, rightOfferHandle)
 - `leftOfferHandle`
 - `rightOfferHandle`
 - Returns: `{Boolean}`
@@ -146,7 +147,7 @@ canTradeWith(leftInvite, rightInvite)
 canTradeWith(leftInvite, cantTradeRightInvite)
 ```
 
-## zoeHelper.swap(keepHandle, tryHandle, keepHandleInactiveMsg)
+## zoeHelpers.swap(keepHandle, tryHandle, keepHandleInactiveMsg)
 - `keepHandle`
 - `tryHandle`
 - `keepHandleInactiveMsg`
@@ -178,7 +179,7 @@ const { swap } = makeZoeHelpers(zoe);
   return zcf.makeInvitation(hook);
 ```
 
-## zoeHelper.inviteAnOffer(options)
+## zoeHelpers.inviteAnOffer(options)
 - `options` `{offerHook, customProperties, expected}` Optional name 
   properties of the 
 - Returns: a promise for the new offerHandle
@@ -213,7 +214,7 @@ const { inviteAnOffer } = makeZoeHelpers(zoe);
     });
 ```
 
-## zoeHelper.makeEmptyOffer()
+## zoeHelpers.makeEmptyOffer()
 - Returns: a promise for the new offerHandle
 
 Creates an empty offer.
@@ -224,4 +225,40 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 const { makeEmptyOffer } = makeZoeHelpers(zoe);
 
 makeEmptyOffer().then(offerHandle => {...})
+```
+
+## zoeHelpers.escrowAndAllocateTo()
+- Returns: undefined
+
+Escrow a payment with Zoe and reallocate the amount of the payment to a recipient.
+
+```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { escrowAndAllocateTo } = makeZoeHelpers(zoe);
+
+const offerHook = offerHandle => {
+  // We will send everyone who makes an offer 1000 tokens
+
+  const tokens1000 = amountMath.make(1000);
+  const payment = mint.mintPayment(tokens1000);
+
+  // Let's use a helper function which escrows the payment with
+  // Zoe, and reallocates to the recipientHandle.
+  return zoeHelpers
+    .escrowAndAllocateTo({
+      amount: tokens1000,
+      payment,
+      keyword: 'Token',
+      recipientHandle: offerHandle,
+    })
+    .then(() => {
+      // Complete the user's offer so that the user gets a payout
+      zcf.complete(harden([offerHandle]));
+
+      // Since the user is getting the payout through Zoe, we can
+      // return anything here. Let's return some helpful instructions.
+      return 'Offer completed. You should receive a payment from Zoe';
+    });
+};
 ```
