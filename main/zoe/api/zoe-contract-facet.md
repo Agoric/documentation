@@ -164,7 +164,7 @@ const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ## zcf.getCurrentAllocation(offerHandle, sparseKeywords)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
 
 Get the amounts associated with the sparseKeywords for the offer.
 
@@ -175,6 +175,6 @@ const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ## zcf.getCurrentAllocations(offerHandles, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offers.
+Get a list of the amounts associated with the sparseKeywords for the offers.
