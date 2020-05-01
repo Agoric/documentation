@@ -186,7 +186,7 @@ const {
 ## E(zoe).getCurrentAllocation(offerHandle, sparseKeywords)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<AmountKeywordRecord>}`</router-link>
 
 Get the amounts associated with the sparseKeywords for the offer.
 
@@ -197,6 +197,7 @@ const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ## E(zoe).getCurrentAllocations(offerHandles, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{Array <AmountKeywordRecord>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{ Array AmountKeywordRecord>}`</router-link>
 
-Get a list of the amounts associated with the sparseKeywords for the offers.
+Get the amounts associated with the sparseKeywords for the offers.
+
