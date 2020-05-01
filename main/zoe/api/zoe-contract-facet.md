@@ -13,11 +13,16 @@ Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This wi
 the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
 rights are conserved and offer safety is enforced for all offers, even though the reallocation is partial, because once
 these invariants are true, they will remain true until changes are made.
+
 newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the
 values are the amounts to be paid to the offer at the same index in the `offerHandles`.
-This operation will throw an error if any of the newAmountKeywordRecords do not have a value for all the keywords in
-sparseKeywords. An error will also be thrown if any newAmountKeywordRecords have keywords that are not in sparseKeywords
-The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+
+This operation throws an error:
+- If any of the newAmountKeywordRecords do not have a value for all the keywords in sparseKeywords. 
+- If any newAmountKeywordRecords have keywords not in sparseKeywords.
+- If there are only 0 or 1 offerHandles given.
+
+The reallocation only happens if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 ```js
 import harden from '@agoric/harden';
 
