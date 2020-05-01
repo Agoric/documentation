@@ -11,7 +11,7 @@ This is returned in a promise by a call to `offer` on Zoe. It contains
 promises for handle for querying Zoe about the offer, the payouts 
 when the offer is complete, the result of invoking the contract-specific 
 hook associated with the invitation, and if appropriate for the specified
- `exit` policy, a remote object with a `cancel` operation to cancel the 
+ `exit` policy, a remote object with a `complete` operation to complete the 
  offer.
 
  The `offerHandle` promise fulfills once the payments in the offer have 
@@ -25,7 +25,7 @@ hook associated with the invitation, and if appropriate for the specified
   offerHandle: offerHandlePromise,
   outcome: contractOfferPromise,
   payout: paymentKeywordRecordPromise,
-  cancelObj: remoteCancelObj
+  completeObj: remoteCompleteObj
 }
 ```
  
