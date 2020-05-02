@@ -62,8 +62,9 @@ zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
 
 Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
 
-## zcf.MakeInvitation(offerHook, customProperties)
+## zcf.MakeInvitation(offerHook, inviteDesc, customProperties)
 - `offerHook` `{OfferHandle => Object}`
+- `inviteDesc` `{String}`
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
 
@@ -75,6 +76,8 @@ When an offer is submitted via the invitation, `offerHook` will be
 invoked in the contract with a handle for the offer. The result of the 
 `offerHook` will be returned as the "outcome" of making the offer via 
 the invitation.
+
+The `inviteDesc` is a string **tyg todo** need to find definition.
 
 The `customProperties` is an object whose properties contain information 
 as defined by the smart contract, to include in the extent of the 
