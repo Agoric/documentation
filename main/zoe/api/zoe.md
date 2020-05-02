@@ -121,11 +121,11 @@ The resulting `OfferResultRecord` contains a handle for querying
 Zoe about the offer, a promise for the payouts when the offer 
 is complete, a promise for the result of invoking the contract-specific
 hook associated with the invitation, and if appropriate for the specified 
-`exit` policy, a function to cancel the offer.
+`exit` policy, a function to complete the offer.
 
 ```js
 // A user makes an offer and escrows with Zoe using an invite 
-const { offerHandle, payout: userPayoutP, outcome: outcomeP, cancelObj } = 
+const { offerHandle, payout: userPayoutP, outcome: outcomeP, completeObj } = 
   await E(zoe).offer(
     userInvite,
     userProposal,
@@ -182,3 +182,22 @@ const {
   terms
 } = await E(zoe).getOffer(offerHandle);
 ```
+
+## E(zoe).getCurrentAllocation(offerHandle, sparseKeywords)
+- `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<AmountKeywordRecord>}`</router-link>
+
+Get the amounts associated with the sparseKeywords for the offer.
+
+```js
+const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
+```
+
+## E(zoe).getCurrentAllocations(offerHandles, sparseKeywords)
+- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{ Array AmountKeywordRecord>}`</router-link>
+
+Get the amounts associated with the sparseKeywords for the offers.
+

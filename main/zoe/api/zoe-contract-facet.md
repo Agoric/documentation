@@ -13,11 +13,16 @@ Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This wi
 the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
 rights are conserved and offer safety is enforced for all offers, even though the reallocation is partial, because once
 these invariants are true, they will remain true until changes are made.
+
 newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the
 values are the amounts to be paid to the offer at the same index in the `offerHandles`.
-This operation will throw an error if any of the newAmountKeywordRecords do not have a value for all the keywords in
-sparseKeywords. An error will also be thrown if any newAmountKeywordRecords have keywords that are not in sparseKeywords
-The reallocation will only happen if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+
+This operation throws an error:
+- If any of the newAmountKeywordRecords do not have a value for all the keywords in sparseKeywords. 
+- If any newAmountKeywordRecords have keywords not in sparseKeywords.
+- If there are only 0 or 1 offerHandles given.
+
+The reallocation only happens if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 ```js
 import harden from '@agoric/harden';
 
@@ -57,8 +62,9 @@ zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
 
 Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
 
-## zcf.MakeInvitation(offerHook, customProperties)
+## zcf.MakeInvitation(offerHook, inviteDesc, customProperties)
 - `offerHook` `{OfferHandle => Object}`
+- `inviteDesc` `{String}`
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
 
@@ -70,6 +76,10 @@ When an offer is submitted via the invitation, `offerHook` will be
 invoked in the contract with a handle for the offer. The result of the 
 `offerHook` will be returned as the "outcome" of making the offer via 
 the invitation.
+
+The `inviteDesc` is a string used as a description of the invite, such as
+"bidderInvite" or "exerciseOption". It's mainly used to enable searching for
+and finding particular invites in a contract.
 
 The `customProperties` is an object whose properties contain information 
 as defined by the smart contract, to include in the extent of the 
@@ -159,7 +169,7 @@ const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ## zcf.getCurrentAllocation(offerHandle, sparseKeywords)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
 
 Get the amounts associated with the sparseKeywords for the offer.
 
@@ -170,6 +180,6 @@ const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ## zcf.getCurrentAllocations(offerHandles, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offers.
+Get a list of the amounts associated with the sparseKeywords for the offers.

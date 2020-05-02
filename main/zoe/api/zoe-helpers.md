@@ -187,6 +187,12 @@ const { swap } = makeZoeHelpers(zoe);
   Values are null.
 - Returns: a promise for the new offerHandle
 
+**DEPRECATED AS OF ZOE 0.6 / MAY 2020**
+
+**We recommend using `checkhook` instead.**
+
+**See [`zcf.makeInvitation`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-makeinvitation-offerhook-customproperties)**
+
 Make an invitation to submit an Offer to this contract. This
 invitation can be given to a client, granting them the ability to
 participate in the contract.
@@ -230,6 +236,15 @@ const { makeEmptyOffer } = makeZoeHelpers(zoe);
 makeEmptyOffer().then(offerHandle => {...})
 ```
 
+## zoeHelpers.checkHook(offerHook, expected)
+- `offerHook` - the function to be called when the offer is made and
+  invite redeemed
+- `expected` - the expected structure of the proposal for the offer. Values are null.
+- Returns: a new offerHook
+
+Create a new offerHook that checks whether the proposal matches the
+`expected` structure before calling the `offerHook` argument
+=======
 ## zoeHelpers.escrowAndAllocateTo({ amount, payment, keyword, recipientHandle })
 - `amount` - the amount to be escrowed. This should be equal to the
   payment amount
@@ -246,6 +261,18 @@ Escrow a payment with Zoe and reallocate the amount of the payment to a recipien
 ```js
 import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
+const { checkHook } = makeZoeHelpers(zoe);
+
+const expected = harden({
+  give: { Asset: null },
+  want: { Price: null },
+});
+
+return zcf.makeInvitation(
+  checkHook(internalOfferHook, expected),
+  'firstOffer',
+);
+=======
 const { escrowAndAllocateTo } = makeZoeHelpers(zoe);
 
 const offerHook = offerHandle => {
