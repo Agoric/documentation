@@ -77,7 +77,9 @@ invoked in the contract with a handle for the offer. The result of the
 `offerHook` will be returned as the "outcome" of making the offer via 
 the invitation.
 
-The `inviteDesc` is a string **tyg todo** need to find definition.
+The `inviteDesc` is a string used as a description of the invite, such as
+"bidderInvite" or "exerciseOption". It's mainly used to enable searching for
+and finding particular invites in a contract.
 
 The `customProperties` is an object whose properties contain information 
 as defined by the smart contract, to include in the extent of the 
