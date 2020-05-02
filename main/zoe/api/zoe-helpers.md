@@ -231,3 +231,28 @@ const { makeEmptyOffer } = makeZoeHelpers(zoe);
 
 makeEmptyOffer().then(offerHandle => {...})
 ```
+
+## zoeHelpers.checkHook(offerHook, expected)
+- `offerHook` - the function to be called when the offer is made and
+  invite redeemed
+- `expected` - the expected structure of the proposal for the offer. Values are null.
+- Returns: a new offerHook
+
+Create a new offerHook that checks whether the proposal matches the
+`expected` structure before calling the `offerHook` argument
+
+```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { checkHook } = makeZoeHelpers(zoe);
+
+const expected = harden({
+  give: { Asset: null },
+  want: { Price: null },
+});
+
+return zcf.makeInvitation(
+  checkHook(internalOfferHook, expected),
+  'firstOffer',
+);
+```
