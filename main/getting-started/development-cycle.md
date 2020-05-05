@@ -41,6 +41,12 @@ For example, let’s say you changed code in <code>agoric-sdk</code>. Going down
 <td>Copies the new <code>agoric-sdk/node_modules</code> into the Dapp.</td>
 </tr>
 <tr>
+    <td>Change code in <code>agoric-sdk</code></td>
+  <td>1. Kill the current <code>agoric</code> instance.<br><br>
+    2. Run <code>agoric start --reset</code>
+  </td>
+  <td>When you change Agoric SDK code, you must restart your Agoric instance to use the revised version.</td>
+</tr>
 <tr>
 <td>Change your contract definition.</td>
 <td>Run <code>agoric deploy contract/deploy.js</code></td>
