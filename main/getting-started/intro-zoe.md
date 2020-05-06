@@ -18,7 +18,7 @@ You can run different types of smart contracts on Zoe. In this document, for the
 **For developers**: Zoe is a framework for writing and running smart contracts. It provides a safety net so you can focus on what your smart contract does best, without worrying about users losing their assets due to a bug in your code. 
 
 
-Many contracts are installed on Zoe, including [several Agoric-written ones](]https://agoric.com/documentation/zoe/guide/contracts/) to get you started. 
+Many contracts are installed on Zoe, including [several Agoric-written ones](https://agoric.com/documentation/zoe/guide/contracts/) to get you started. 
 
 
 ## The simple Atomic Swap contract
