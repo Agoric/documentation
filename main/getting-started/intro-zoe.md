@@ -67,7 +67,7 @@ Let’s work backwards from `makeInstance()`’s arguments. As you’ll recall f
 Finally, `E(zoe).makeInstance()` can take a `terms` argument, another set of key:value pairs. Terms let a contract instance creator further customize the contract operations, as enabled by the contract code. Contract terms can be expressed without specific values. For example, an auction contract may define minimum bid and minimum raise variables and use them in its code, but the variables are not given values in the code. Instead, the `terms` argument provides the variables’ values.
 
 
-Why the need to parameterize a contract with terms? Well, the minimum raise ]should be quite different if an auction is for a used Harry Potter paperback vs. a signed first British hardback edition of *Harry Potter and the Philosopher’s Stone*]. The `terms` value for the used paperback auction would be `{ Currency: 'USDollar', MinRaise: 1 }`. For the first edition auction, `terms`’ value would be  `{ Currency: 'USDollar', MinRaise: 500)`. With the different `terms` values, there are now contract instances customized for the items being sold in each one.
+Why the need to parameterize a contract with terms? Well, the minimum raise should be quite different if an auction is for a used Harry Potter paperback vs. a signed first British hardback edition of *Harry Potter and the Philosopher’s Stone*. The `terms` value for the used paperback auction would be `{ Currency: 'USDollar', MinRaise: 1 }`. For the first edition auction, `terms`’ value would be  `{ Currency: 'USDollar', MinRaise: 500 }`. With the different `terms` values, there are now contract instances customized for the items being sold in each one.
 
 ## Invites
 
