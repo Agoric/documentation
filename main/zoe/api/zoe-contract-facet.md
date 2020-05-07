@@ -7,7 +7,7 @@ A Zoe Contract Facet is an API object for a running contract instance to access 
 ## zcf.reallocate(offerHandles, newAmountKeywordRecords, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `newAmountKeywordRecords` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
-- `sparseKeywords `{Array <String>}` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `sparseKeywords` `{Array <String>}` sparseKeywords is an optional array of string keywords, which may be a subset of allKeywords.
 
 Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This will only succeed if the reallocation 1) conserves rights, and 2) is 'offer-safe' for all parties involved. This reallocation is partial, meaning that it applies only to
 the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
