@@ -142,3 +142,78 @@ corresponding methods. It performs the communication asynchronously. Method
 calls can take arguments that are objects in the current vat or presences for
 objects in other vats.
 
+### Notifiers
+
+DApps and other tools may want to be notified about changes to the state of a Zoe
+contract or a particular offer. We support this with a Notifier tool based on Promises,
+which allows many parties to subscribe to be notified without requiring that the
+publisher track a subscription list.
+
+This is currently supported by Zoe itself, which publishes updates to the state of
+offers (reallocations and completions), and by some contracts, which can publish
+current prices or other details specific to the contract.
+
+#### Getting Notifications
+
+Zoe has a public method `getOfferNotifier()`, and contracts will have similar
+methods. This provides a long-lived notifier object associated with a particular
+stream of updates. At any time, you can call `notifier.getUpdateSince()`, and it will
+return a record `{ value, updateHandle, done }`. `value` is the current state,
+according to the source. `done` will be false until the stream reaches a final state,
+after which `value` will never change, and the same record will always be
+returned. `updateHandle` allows you to ask to be notified the next time there's a
+change to the state.
+
+If you call `getUpdateSince(oldUpdateHandle)` with no handle, or any `updateHandle`
+other than the most recent one, the notifier will immediately return a record with
+the current state. If you call `getUpdateSince(updateHandle)` with the most-recently
+issued `updateHandle`, you'll get a promise for the next record, which will be
+resolved the next time there's a change in the state.
+
+This approach to notification doesn't give any way to get a list of all state
+changes, but we don't know of any way to do that that doesn't require someone to hold
+onto unbounded amounts of state for clients that might have disappeared.
+
+A common pattern for following updates to the notifier until it's done looks like this:
+
+```
+  function updateStateOnChanges(notifier, lastHandle) {
+    E(notifier)
+      .getUpdateSince(lastHandle)
+      .then({ value, updateHandle, done } => {
+        if (done) {
+          stopTracking(notifier);
+        } else {
+          respondToNewValue(value);
+          // resubscribe for more updates
+          updateStateOnChanges(notifier, updateHandle);
+        );
+    });
+  }
+
+  E(publicAPI)
+    .getNotifier(offerHandle)
+    .then(notifier => updateStateOnChanges(notifier );
+```
+
+Zoe's updates for an offer show the current allocation that will be paid if the
+contract completes without further changes. When the contract calls `complete()` on
+the offer, the notifier is marked `done`.
+
+### providing updates
+
+Contracts can provide updates using a notifier by importing notifer and calling `produceNotifier()`.
+
+```
+import { produceNotifier } from '@agoric/notifier';
+
+const { notifier, updater } = produceNotifier();
+```
+
+The notifier half of the pair can be returned to anyone who should be allowed to see
+state changes.
+
+The updater has only two methods: `updateState(newState)`, and
+`resolve(finalState)`. Both send a notification with the new state to any waiting
+notifiers. `resolve()` also resolves the promise to a record with `done: true,
+updateHandle: undefined`, and ensures that the answer will never change.

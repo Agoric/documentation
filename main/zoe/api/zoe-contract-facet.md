@@ -183,3 +183,17 @@ const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
 Get a list of the amounts associated with the sparseKeywords for the offers.
+
+## zcf.getOfferNotifier(offerHandle)
+- `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
+- Returns: a <router-link to="/glossary/#notifier">notifier</router-link> for the offer.
+
+```js
+  const offerNotifer = zoe.getOfferNotifier(offerHandle);
+  const { value, updateHandle, done } = offerNotifier.getUpdateSince();
+  if (done) {
+   <drop offer from list>
+  }
+  newValue = value;
+  waitForNextUpdate(offerNotifier, updateHandle);
+```
