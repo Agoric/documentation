@@ -35,7 +35,8 @@ ERTP purse objects have a `deposit` message which takes a payment
 object as its argument. It first checks that the payment object is 
 genuine and the same asset type as the purse (after all, quatloos 
 are a very unstable asset, so we wouldn't want to let people deposit 
-quatloos and get credit for simoleans.)
+quatloos and get credit for simoleans. (Note: quatloos and simoleans are both
+imaginary currencies.)
 
 If everything passes the checks, the asset moves from the payment to
 the purse. If there's a problem, it throws an error.
@@ -54,7 +55,8 @@ ERTP guarantees:
 Other key ERTP objects are:
 
 - **Mints**: Issue new digital assets as a new Payment. Mints only
-issue one type of asset (quatloos, simoleons, moola, etc.). We refer to
+issue one type of asset (quatloos, simoleons, moola, etc. Note that these
+are all imaginary currencies used as examples.). We refer to
 that type as the mint's *Brand*. So if a mint issues quatloos, it's a
 quatloo brand mint.  Only mints can issue new digital assets. To mint
 new assets of a particular type, you must have a reference to that
