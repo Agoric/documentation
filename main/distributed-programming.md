@@ -167,7 +167,7 @@ change to the state.
 If you call `getUpdateSince(oldUpdateHandle)` with no handle, or any `updateHandle`
 other than the most recent one, the notifier will immediately return a record with
 the current state. If you call `getUpdateSince(updateHandle)` with the most-recently
-issued `updateHandle`, you'll get a promise for the next record, which will be
+generated `updateHandle`, you'll get a promise for the next record, which will be
 resolved the next time there's a change in the state.
 
 This approach to notification doesn't give any way to get a list of all state
@@ -176,7 +176,7 @@ onto unbounded amounts of state for clients that might have disappeared.
 
 A common pattern for following updates to the notifier until it's done looks like this:
 
-```
+```js
   function updateStateOnChanges(notifier, lastHandle) {
     E(notifier)
       .getUpdateSince(lastHandle)
@@ -187,7 +187,7 @@ A common pattern for following updates to the notifier until it's done looks lik
           respondToNewValue(value);
           // resubscribe for more updates
           updateStateOnChanges(notifier, updateHandle);
-        );
+        };
     });
   }
 
@@ -204,7 +204,7 @@ the offer, the notifier is marked `done`.
 
 Contracts can provide updates using a notifier by importing notifer and calling `produceNotifier()`.
 
-```
+```js
 import { produceNotifier } from '@agoric/notifier';
 
 const { notifier, updater } = produceNotifier();
