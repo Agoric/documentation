@@ -170,9 +170,10 @@ the current state. If you call `getUpdateSince(updateHandle)` with the most-rece
 generated `updateHandle`, you'll get a promise for the next record, which will be
 resolved the next time there's a change in the state.
 
-This approach to notification doesn't give any way to get a list of all state
-changes, but we don't know of any way to do that that doesn't require someone to hold
-onto unbounded amounts of state for clients that might have disappeared.
+Well-designed notification systems can provide access either to the most recent
+state, or to a complete list of changes. (Sometimes providing changes since a recent
+epoch improves the UX.) This API is designed to support the former style of update,
+though it's a simple work-around to include deltas as part of the state.
 
 A common pattern for following updates to the notifier until it's done looks like this:
 
