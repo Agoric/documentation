@@ -2,6 +2,11 @@
 
 **Note:** Before reading this, you should be familiar with [ERTP basics](/getting-started/ertp-introduction/). 
 
+::: tip Pre-alpha status
+Zoe is currently at the pre-alpha stage. It has not yet been
+formally tested or hardened. It is not yet of production quality.
+:::
+
 
 This is an introduction to Zoe, Agoric's smart contract framework. The [Zoe Guide](/zoe/guide/) has more complete and detailed information, including concepts not covered here. 
 
