@@ -201,3 +201,17 @@ const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
 
 Get the amounts associated with the sparseKeywords for the offers.
 
+
+## zoe.getOfferNotifier(offerHandle)
+- `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
+- Returns: a <router-link to="/glossary/#notifier">notifier</router-link> for the offer.
+
+```js
+  const offerNotifer = E(zoe).getOfferNotifier(offerHandle);
+  const { value, updateHandle, done } = offerNotifier.getUpdateSince();
+  if (done) {
+   <drop offer from list>
+  }
+  newValue = value;
+  waitForNextUpdate(offerNotifier, updateHandle);
+```

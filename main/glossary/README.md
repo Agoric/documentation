@@ -77,3 +77,11 @@ A physical machine can run one or several vats. A blockchain can run one or seve
 Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
+
+## Notifier
+
+You can track updates to contract state using a notifier. The notifier provides a
+stream of updates describing changes to the state of an offer.
+
+See more: [Notifier](/distributed-programming.md)
+
