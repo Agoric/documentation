@@ -56,15 +56,25 @@ Arithmetic on extents. MathHelpers are used by AmountMath to do their extent ari
 The admin facet of the issuer, and the only object with the authority
 to mint new digital assets.
 
-## Purse
-An [AssetHolder](#assetholder). Purses hold amounts of certain rights issued by Mints, specifically amounts that are _stationary_. Purses can transfer part of the balance they hold in a payment, which has a narrower interface.
+## Notifier
 
-See more: [Purse API](/ertp/api/purse.md)
+You can track updates to contract state using a notifier. The notifier provides a
+stream of updates describing changes to the state of an offer.
+
+See more: [Notifier](/distributed-programming.md)
 
 ## Payment
 An [AssetHolder](#assetholder). Payments hold amounts of certain rights issued by Mints, specifically amounts that are in _transit_. Amounts from payments can be deposited in purses, but otherwise, the entire amount is available when the payment is transferred. Payments can be converted to Purses.
 
 See more: [Payment API](/ertp/api/payment.md)
+
+## Presence
+A local version of a remote object that serves as a proxy for the remote object. 
+
+## Purse
+An [AssetHolder](#assetholder). Purses hold amounts of certain rights issued by Mints, specifically amounts that are _stationary_. Purses can transfer part of the balance they hold in a payment, which has a narrower interface.
+
+See more: [Purse API](/ertp/api/purse.md)
 
 ## Vat
 
@@ -78,10 +88,5 @@ Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
 
-## Notifier
 
-You can track updates to contract state using a notifier. The notifier provides a
-stream of updates describing changes to the state of an offer.
-
-See more: [Notifier](/distributed-programming.md)
 
