@@ -26,6 +26,11 @@ Purses and Payments are AssetHolders.
 ## Brand
 Identifies the kind of issuer.
 
+## Contract and Contract Instance
+In Agoric documentation, *contract* usually refers to a contract's source code that defines how the contract works, which is *installed* on Zoe. A contract is *instantiated* to create *contract instances*, which are run on Zoe and are the active execution of the contract code.  
+
+For example, a realtor has a standard house selling agreement. The contract is the code defining how that agreement works. When the realtor has a new house to sell, they instantiate a new instance of their standard contract for that specific property. If they have ten houses for sale, they have ten different contract instances.
+
 ## ERTP
 Electronic Rights Transfer Protocol - Agoric's fungible and
 nonfungible token standard that uses object capabilities to enforce
