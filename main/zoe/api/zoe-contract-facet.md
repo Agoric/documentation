@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is access synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).makeInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
+A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).makeInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
 
 ## zcf.reallocate(offerHandles, newAmountKeywordRecords, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
@@ -68,13 +68,13 @@ Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
 
-Make a credible Zoe invite for the associated smart contract. The Invite 
+Make a credible Zoe invite for the associated smart contract. The Invite
 is a `Payment` minted from Zoe's internal `inviteMint`. It can be used
-in `E(zoe).offer` for the holder of it to participate in this contract. 
+in `E(zoe).offer` for the holder of it to participate in this contract.
 
 When an offer is submitted via the invitation, `offerHook` will be
-invoked in the contract with a handle for the offer. The result of the 
-`offerHook` will be returned as the "outcome" of making the offer via 
+invoked in the contract with a handle for the offer. The result of the
+`offerHook` will be returned as the "outcome" of making the offer via
 the invitation.
 
 The `inviteDesc` is a string used as a description of the invite, such as
