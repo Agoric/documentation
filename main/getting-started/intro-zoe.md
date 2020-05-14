@@ -137,7 +137,7 @@ const { outcome, payout: alicePayoutP } = await E(zoe).offer(
   alicePayments,
 );
 ```
-Zoe checks the invite for its validity for that contract instance. If it’s an invalid invite, the offer attempt fails, and Alice gets her refund in the payout. When she makes her offer, Alice receives an *outcome* and a *promise* that resolves to her *payout* . 
+Zoe checks the invite for its validity for that contract instance. If it’s an invalid invite, the offer attempt fails, and Alice gets her refund in the payout. When she makes her offer, Alice receives an *outcome* and a *promise* that resolves to her *payout*. If the offer is valid, it's now an *active offer*.
 
 Now, Alice needs to get someone else involved who potentially will also make an offer, hopefully one that offers what she wants for the price she’s willing to pay for it. For the Atomic Swap contract, the *outcome* from her offer resolves to an *invite* she can send to others, in this case Bob. This is specific to this Atomic Swap contract; the outcome is whatever the contract instance returns from its hook that was attached to the invite when it was created:
 
@@ -170,19 +170,19 @@ const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
   bobPayments,
 );
 ```
-Bob has also gotten back an *outcome* and a *promise* for a *payout*.
+Bob has also gotten back an *outcome* and a *promise* for a *payout*. His offer is also now an *active offer*.
 
 
 ## Satisfying and completing offers
 
 
-At this point, both the offers that Alice and Bob made are known to the contract instance. The Atomic Swap contract code determines that they are matching offers.  The contract instance calls `reallocate`, which *reallocates* the amounts which are the accounting records within Zoe. Payouts are not created here. 
+At this point, both the offers that Alice and Bob made are active and known to the contract instance. The Atomic Swap contract code determines that they are matching offers.  The contract instance calls `reallocate`, which *reallocates* the amounts which are the accounting records within Zoe. Payouts are not created here. 
 
 
 The contract instance then *completes* the offers. A call to `zcf.complete()` with both offers as arguments, makes the payouts to the offer holders.  This takes the amounts from the account records, and withdraws the amounts specified by the offers from the digital assets escrowed within Zoe. It's only at the `complete` step that *amounts* are turned into real payments. This is when the payout *promise* resolves into payments. 
 
 
-The offers are now completed, and nothing more is or can be done with them. Zoe deletes completed offers from the contract instance.
+The offers are now completed and no longer active. There is nothing more that can be done with them, so Zoe deletes completed offers from the contract instance.
 
 
 ## Auction example
