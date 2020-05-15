@@ -68,6 +68,24 @@ stream of updates describing changes to the state of an offer.
 
 See more: [Notifier](/distributed-programming.md)
 
+## Object Capabilities
+
+Objects have state, behavior, and references. Lets say Object A has references to Objects B and C, while B and C do not have references to each other. Thus, A can communicate with B and C, and B and C cannot commuicate with each other.
+There is an effective zero-cost firewall between B and C.
+
+An *object capability system* constrains how references are obtained. You can't get one just by knowing the name of a global variable or a public class. You can get a reference in only three ways. 
+- Creation: Functions that create objects get a reference to them.
+- Construction: Constuctors can endow their constructed objects with  references, including inherited references. 
+- Introduction: 
+  - A has references to B and C. 
+  - B and C  do *not* have references to each other
+  - A sends B a reference to C. 
+    - B now has a reference to C and can communicate with C. 
+
+If references can only be obtained by creation, construction, or introduction, you may have a safe system. If they can be obtained in any other way, your system is unsafe.
+
+For more information, see [Douglas Crockford on Object Capabilities](https://frontendmasters.com/courses/good-parts-javascript-web/object-capabilities/).
+
 ## Payment
 An [AssetHolder](#assetholder). Payments hold amounts of certain rights issued by Mints, specifically amounts that are in _transit_. Amounts from payments can be deposited in purses, but otherwise, the entire amount is available when the payment is transferred. Payments can be converted to Purses.
 
