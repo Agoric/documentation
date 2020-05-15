@@ -26,6 +26,18 @@ Purses and Payments are AssetHolders.
 ## Brand
 Identifies the kind of issuer.
 
+## Comparable
+
+A *passable* is something that can be mashalled. A *comparable* is a
+passable whose leaves contain no promises. Two comparables can be
+synchronously compared for structural equivalence.
+
+A comparable is a JavaScript object containing no promises, and can
+thus be locally compared for equality with another object. If either object
+contains promises, equality is indeterminable. If both are fullfilled down
+to Presences and local state, then either they're the same all the way
+down, or they represent different objects.
+
 ## Contract and Contract Instance
 In Agoric documentation, *contract* usually refers to a contract's source code that defines how the contract works, which is *installed* on Zoe. A contract is *instantiated* to create *contract instances*, which are run on Zoe and are the active execution of the contract code.  
 
