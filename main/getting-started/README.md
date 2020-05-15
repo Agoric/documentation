@@ -52,14 +52,20 @@ What you need to do before installing Agoric software and installing the Agoric 
 4. **[Zoe Introduction](https://agoric.com/documentation/getting-started/intro-zoe)**: 
   A Getting Started document that
   briefly explains the concepts and components of Zoe, our reusable smart contract 
-  for writing other smart contracts in JavaScript. Zoe implements our guarantee that users either get what they wanted from the
-  contract or a full refund of what they put up for it. 
+  for writing other smart contracts in JavaScript. Zoe implements our guarantee that users
+  either get what they wanted from the contract or a full refund of what they put up for it. 
 5. **[Agoric Platform/Stack](https://agoric.com/documentation/platform/)**: A brief introduction to the complete Agoric platform/technical stack.
-6. **[Agoric Dapp Guide](https://agoric.com/documentation/dapps/)**: A Dapp is a distributed application, typically with
-a browser-based user interface, a public API server, and a contract running on the Agoric blockchain. This document explains
-a Dapp's basic directory and file structure.
-7. **[JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html)**:
-We've made some Agoric-specific additions at various layers, including concepts, syntax, and additions to the Agoric library. You should know about and understand these before programming on the Agoric platform.
+6. **[Agoric Dapp Guide](https://agoric.com/documentation/dapps/)**: 
+   A Dapp is a distributed application, typically with a browser-based user interface, a public
+   API server, and a contract running on the Agoric blockchain. This document explains a Dapp's
+   basic directory and file structure.
+7. **[Deploying Smart Contracts](https://agoric.com/documentation/getting-started/deploying)**: 
+  A brief description of the tools and processes for deploying contracts to the chain and
+  application code to the application server.
+8. **[JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html)**: 
+  We've made some Agoric-specific additions at various layers, including concepts, syntax, 
+  and additions to the Agoric library. You should know about and understand these before 
+  programming on the Agoric platform.
 8. **[ERTP Guide](https://agoric.com/documentation/ertp/guide/)**: 
   A detailed description of ERTP concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the ERTP API 

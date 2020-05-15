@@ -31,6 +31,11 @@ module.exports = [
         link: '/getting-started/development-cycle',
       },
       {
+        text: 'Deploying Smart Contracts',
+        ariaLabel: 'Deploying Menu',
+        link: '/getting-started/deploying',
+      },
+      {
         text: 'ERTP Introduction',
         ariaLabel: 'ERTP Introduction Menu',
         link: '/getting-started/ertp-introduction',
