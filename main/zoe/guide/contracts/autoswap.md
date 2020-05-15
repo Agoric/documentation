@@ -1,13 +1,13 @@
-# AutoSwap
+# Autoswap
 
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/958a2c0a3dec38bdba2234934119ea2c28958262/packages/zoe/src/contracts/autoswap.js) (Last updated: 4/22/2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-An AutoSwap is like a swap, except instead of having to find a
+An Autoswap is like a swap, except instead of having to find a
 matching offer, an offer is always matched against the existing
-liquidity pool. The AutoSwap contract checks whether your offer will
+liquidity pool. The Autoswap contract checks whether your offer will
 keep the [constant product
 invariant](https://github.com/runtimeverification/verified-smart-contracts/blob/uniswap/uniswap/x-y-k.pdf)
 before accepting.
@@ -74,7 +74,7 @@ tokens back by specifying a rule for the liquidity token slot with
 
 ## Making a swap offer
 
-Let's say that Bob wants to use the moola<->simolean autoswap
+Let's say that Bob wants to use the moola<->simolean Autoswap
 to exchange 2 moola. First he will check the price using the public
 API:
 
