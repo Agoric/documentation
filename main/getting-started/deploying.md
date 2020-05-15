@@ -73,9 +73,10 @@ or remote chain. The local process has a `home` object, which contains
 references to services on-chain, include `zoe`, the default `registry`, and the 
 application user's `wallet`. Deploying to the chain uploads 
 the bundled contract source code to the local process, and then uses its `zoe` 
-access (via that `home` object) to install the code on chain. All the commands
-it uses can be used manually by the developer via the REPL associated with the 
-wallet.
+access (via that `home` object) to install the code on chain. 
+
+Developers can use all the on-chain commands that deployment scripts use to deploy 
+contracts and dapps via the REPL associated with the wallet.
 
 The deploy.js scripts run in an ephemeral Node.js outside of the swingset kernel.
 The spawner runs within ag-solo, so is persistent. Once the deploy.js script ends,
