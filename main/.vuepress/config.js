@@ -72,15 +72,23 @@ module.exports = {
           sideBarDepth: 3,
           children: [
           ]
-	       },
-         {
+        },
+        {
           title: 'Development Cycle',
           path: '/getting-started/development-cycle.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-	       },
+        },
+        {
+          title: 'Deploying Smart Contracts',
+          path: '/getting-started/deploying.html',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+        },
          {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.html',
