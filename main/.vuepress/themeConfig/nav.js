@@ -83,6 +83,11 @@ module.exports = [
         link: '/zoe/guide/'
       },
       {
+        text: 'Wallet API',
+        ariaLabel: 'Wallet API Guide',
+        link: '/wallet-api',
+      },
+      {
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
         link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
