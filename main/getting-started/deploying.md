@@ -5,7 +5,9 @@ supports deploying contracts and off-chain web applications that talk to them. T
 has two primary uses:
 
 * Deploy smart contract source code onto the blockchain
-* Deploy and setup an application program to the local server 
+* Deploy and setup an application program to the local server
+
+The deployment process uses the `agoric deploy` command to run your Dapp's `contract/deploy.js` and `api/deploy.js` scripts. You can use the deploy scripts created when you copied an existing Dapp into your directory as they are, or you can modify the scripts as suggested later in this document.
 
 ## Contract deployment
 
@@ -20,9 +22,9 @@ source code. In a typical contract deployment, the installation handle is stored
 in the default shared registry so that it is broadly accessible on the chain.
 Its registry key is written to a config file in the `ui` directory. 
 
-See the [dapp-encouragement repository](https://github.com/Agoric/dapp-encouragement/blob/master/contract/deploy.js) for an example of a typical contract deploy script.
+See the [`dapp-encouragement` repository](https://github.com/Agoric/dapp-encouragement/blob/master/contract/deploy.js) for an example of a typical contract deploy script.
 
-Deploying the dapp-encouragement contract (e.g., with `agoric deploy contract/deploy.js`) installs `dapp-encouragement` contract on chain, and generates the 
+Deploying the `dapp-encouragement` contract (e.g., with `agoric deploy contract/deploy.js`) installs it on chain, and generates the 
 file `./ui/public/conf/installationConstants.js`
 with contents like:
 ```js
@@ -45,11 +47,11 @@ create new on-chain resources like new currencies or NFTs, create new Purses
 for the application's use, or seed the on-chain contract with initial orders
 or configuration.
 
-The api/deploy.js scripts from teh example contracts can show some of the 
+The `api/deploy.js` scripts from the example contracts can show some of the 
 range of these custom setup actions:
-* [dapp-encouragement](https://github.com/Agoric/dapp-encouragement/blob/master/api/deploy.js)
-* [dapp-simple-exchange](https://github.com/Agoric/dapp-simple-exchange/blob/master/api/deploy.js)
-* [dapp-autoswap](https://github.com/Agoric/dapp-autoswap/blob/master/api/deploy.js)
+* [`dapp-encouragement`](https://github.com/Agoric/dapp-encouragement/blob/master/api/deploy.js)
+* [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/master/api/deploy.js)
+* [`dapp-autoswap`](https://github.com/Agoric/dapp-autoswap/blob/master/api/deploy.js)
 
 See the [`dibc-encouragement` branch](https://github.com/Agoric/dapp-encouragement/compare/master..dibc-encouragement) for an example of the additions needed to support IBC.
 
@@ -76,10 +78,8 @@ the bundled contract source code to the local process, and then uses its `zoe`
 access (via that `home` object) to install the code on chain. 
 
 Developers can use all the on-chain commands that deployment scripts use to deploy 
-contracts and dapps via the REPL associated with the wallet.
+contracts and Dapps via the REPL associated with the wallet.
 
-The deploy.js scripts run in an ephemeral Node.js outside of the swingset kernel.
-The spawner runs within ag-solo, so is persistent. Once the deploy.js script ends,
+The `deploy.js` scripts run in an ephemeral `Node.js` outside of the Swingset kernel.
+The spawner runs within `ag-solo`, so is persistent. Once the `deploy.js` script ends,
 connections to any of its objects are severed.
-
-
