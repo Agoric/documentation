@@ -71,7 +71,7 @@ Assigns the given petname to a given `issuer` object, and adds the issuer to the
 ### `getIssuers()`
 - Returns: All issuers associated with the wallet and their petnames as an array of arrays of the format `[[issuerPetname, issuer], ...]`. 
 
-You can use `getIssuers()` it to make a new map of petnames to issuers by doing `new Map(getIssuer())` 
+You can use `getIssuers()` to make a new map of petnames to issuers by doing `new Map(getIssuer())` 
 
 ### `getIssuerNames(issuer)`
 - `issuer` `{issuer}`
@@ -92,12 +92,17 @@ Makes the id-specified offer to the target contract. It approves a proposal adde
 
 Adds a new proposal to the wallet's inbox that the user can approve to make an  offer to a contract invitation. The `rawOffer` is a potential offer sent from the Dapp UI to be looked at by the user. The `hooks` instruct the wallet to do actions before or after the offer is made, such as getting an invite from the `publicAPI` in order to make an offer. 
 
-`hooks` format is 
+`hooks` format is: 
+```js
+hooks[targetName][hookName] = [hookMethod, ...hookArgs]
+```
 
-`hooks[targetName][hookName] = [hookMethod, ...hookArgs]`
+Within the wallet, hooks are called as:
+```js
+E(target)[hookMethod](...hookArgs)
+```
 
-It’s called within the wallet as
-`E(target)[hookMethod](...hookArgs)`
+For example:
 
 ```Js
 `hooks: {
