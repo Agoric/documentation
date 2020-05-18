@@ -194,7 +194,7 @@ Let’s look at a more complicated example: an auction, where many users might m
 But what about all those other bidders who escrowed their bid amounts with Zoe and didn’t win? Zoe guarantees they all get a *refund* of their escrowed amount. Zoe’s *offer safety* guarantees offer makers either get what they wanted or get refunded whatever they put in Zoe’s escrow with their offer.
 
 
-It’s even possible to get both what you wanted in an offer, and at least a partial refund of what you offered. Consider an auction where you make a bid offer where you’re willing to pay up to 10 quatloos (an imaginatry currency), but if you can win with a lower bid, that’s your offer. You win the auction, but your winning bid amount is only 8 quatloos. The payout would resolve to both the item up for auction you get as the winning bidder and the refund of the 2 extra quatloos you escrowed in the offer. 
+It’s even possible to get both what you wanted in an offer, and at least a partial refund of what you offered. Consider an auction where you make a bid offer where you’re willing to pay up to 10 quatloos (an imaginary currency), but if you can win with a lower bid, that’s your offer. You win the auction, but your winning bid amount is only 8 quatloos. The payout would resolve to both the item up for auction you get as the winning bidder and the refund of the 2 extra quatloos you escrowed in the offer. 
 
 
 ## Other things to know about Zoe
