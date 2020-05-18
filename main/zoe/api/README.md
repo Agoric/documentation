@@ -1,4 +1,4 @@
-# Zoe
+# Zoe API
 
 <Zoe-Version/>
 
@@ -9,11 +9,11 @@ Explore our pre-built contracts [here](../guide/contracts/README.md).
 
 The Zoe API is divided into the following sections:
 
-- [Zoe](./zoe.md) -
-  This section lists the methods for deploying and working with smart contracts.
+- [Zoe Service](./zoe.md) - 
+  The methods for deploying and working with smart contracts.
 - [Zoe Contract Facet](./zoe-contract-facet.md) -
-  The Zoe methods provided in this section can be called synchronously by contract code. A contract can use the Zoe Contract Facet (zcf) to do things like reallocate among offers or complete an offer.
+  These Zoe methods can be called synchronously by contract code. A contract can use the Zoe Contract Facet (zcf) to do things like reallocate among offers or complete an offer.
 - [ZoeHelpers for writing contracts](./zoe-helpers.md) -
-  ZoeHelpers are functions that extract common contract code and patterns into reusable helpers.
+  Functions that extract common contract code and patterns into reusable helpers.
 - [Records in Zoe](./records.md) -
-  Throughout the documentation you will see Javascript objects that are specific to Zoe. This section provides further insight into these objects.
+  Javascript objects specific to Zoe. 

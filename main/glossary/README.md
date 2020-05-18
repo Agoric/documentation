@@ -26,6 +26,23 @@ Purses and Payments are AssetHolders.
 ## Brand
 Identifies the kind of issuer.
 
+## Comparable
+
+A *passable* is something that can be marshalled. A *comparable* is a
+passable whose leaves contain no promises. Two comparables can be
+synchronously compared for structural equivalence.
+
+A comparable is a JavaScript object containing no promises, and can
+thus be locally compared for equality with another object. If either object
+contains promises, equality is indeterminable. If both are fullfilled down
+to Presences and local state, then either they're the same all the way
+down, or they represent different objects.
+
+## Contract and Contract Instance
+In Agoric documentation, *contract* usually refers to a contract's source code that defines how the contract works, which is *installed* on Zoe. A contract is *instantiated* to create *contract instances*, which are run on Zoe and are the active execution of the contract code.  
+
+For example, a realtor has a standard house selling agreement. The contract is the code defining how that agreement works. When the realtor has a new house to sell, they instantiate a new instance of their standard contract for that specific property. If they have ten houses for sale, they have ten different contract instances.
+
 ## ERTP
 Electronic Rights Transfer Protocol - Agoric's fungible and
 nonfungible token standard that uses object capabilities to enforce
@@ -56,15 +73,43 @@ Arithmetic on extents. MathHelpers are used by AmountMath to do their extent ari
 The admin facet of the issuer, and the only object with the authority
 to mint new digital assets.
 
-## Purse
-An [AssetHolder](#assetholder). Purses hold amounts of certain rights issued by Mints, specifically amounts that are _stationary_. Purses can transfer part of the balance they hold in a payment, which has a narrower interface.
+## Notifier
 
-See more: [Purse API](/ertp/api/purse.md)
+You can track updates to contract state using a notifier. The notifier provides a
+stream of updates describing changes to the state of an offer.
+
+See more: [Notifier](/distributed-programming.md)
+
+## Object Capabilities
+
+Objects have state, behavior, and references. Lets say Object A has references to Objects B and C, while B and C do not have references to each other. Thus, A can communicate with B and C, and B and C cannot commuicate with each other.
+There is an effective zero-cost firewall between B and C.
+
+An *object capability system* constrains how references are obtained. You can't get one just by knowing the name of a global variable or a public class. You can get a reference in only three ways. 
+- Creation: Functions that create objects get a reference to them.
+- Construction: Constuctors can endow their constructed objects with  references, including inherited references. 
+- Introduction: 
+  - A has references to B and C. 
+  - B and C  do *not* have references to each other
+  - A sends B a reference to C. 
+    - B now has a reference to C and can communicate with C. 
+
+If references can only be obtained by creation, construction, or introduction, you may have a safe system. If they can be obtained in any other way, your system is unsafe.
+
+For more information, see [Douglas Crockford on Object Capabilities](https://frontendmasters.com/courses/good-parts-javascript-web/object-capabilities/).
 
 ## Payment
 An [AssetHolder](#assetholder). Payments hold amounts of certain rights issued by Mints, specifically amounts that are in _transit_. Amounts from payments can be deposited in purses, but otherwise, the entire amount is available when the payment is transferred. Payments can be converted to Purses.
 
 See more: [Payment API](/ertp/api/payment.md)
+
+## Presence
+A local version of a remote object that serves as a proxy for the remote object. 
+
+## Purse
+An [AssetHolder](#assetholder). Purses hold amounts of certain rights issued by Mints, specifically amounts that are _stationary_. Purses can transfer part of the balance they hold in a payment, which has a narrower interface.
+
+See more: [Purse API](/ertp/api/purse.md)
 
 ## Vat
 
@@ -78,10 +123,4 @@ Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
 
-## Notifier
-
-You can track updates to contract state using a notifier. The notifier provides a
-stream of updates describing changes to the state of an offer.
-
-See more: [Notifier](/distributed-programming.md)
 

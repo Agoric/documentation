@@ -4,7 +4,7 @@
 
 ::: tip Pre-alpha status
 Zoe is currently at the pre-alpha stage. It has not yet been
-formally tested or hardened.
+formally tested or hardened. It is not yet of production quality.
 :::
 
 This guide assumes some knowledge of the [ERTP

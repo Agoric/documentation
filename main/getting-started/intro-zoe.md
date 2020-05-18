@@ -2,6 +2,11 @@
 
 **Note:** Before reading this, you should be familiar with [ERTP basics](/getting-started/ertp-introduction/). 
 
+::: tip Pre-alpha status
+Zoe is currently at the pre-alpha stage. It has not yet been
+formally tested or hardened. It is not yet of production quality.
+:::
+
 
 This is an introduction to Zoe, Agoric's smart contract framework. The [Zoe Guide](/zoe/guide/) has more complete and detailed information, including concepts not covered here. 
 
@@ -61,7 +66,7 @@ const aliceInvite = await E(zoe).makeInstance(
   issuerKeywordRecord, 
 });
 ```
-Let’s work backwards from `makeInstance()`’s arguments. As you’ll recall from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints), *issuers* map minted assets to purses and payments. The *keyword record* is made up of two key:value pairs. The key names must be ASCII and capitalized; they are the same as are used in the contract code, in this case `Price` and `Asset`. `Price` is for what is wanted, and `Asset` is for what is being sold. `Price` is for what will be swapped for it (from the perspective of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). The price is denominated in simoleons, so that keyword needs the simoleon Issuer associated with it. The asset is denominated in moola, so that keyword needs the moola Issuer as its value. 
+Let’s work backwards from `makeInstance()`’s arguments. As you’ll recall from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints), *issuers* map minted assets to purses and payments. The *keyword record* is made up of two key:value pairs. The key names must be ASCII and capitalized; they are the same as are used in the contract code, in this case `Price` and `Asset`. `Price` is for what is wanted, and `Asset` is for what is being sold. `Price` is for what will be swapped for it (from the perspective of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). The price is denominated in the imaginary currency simoleons, so that keyword needs the simoleon Issuer associated with it. The asset is denominated in the imaginary currency moola, so that keyword needs the moola Issuer as its value. 
 
 
 Finally, `E(zoe).makeInstance()` can take a `terms` argument, another set of key:value pairs. Terms let a contract instance creator further customize the contract operations, as enabled by the contract code. Contract terms can be expressed without specific values. For example, an auction contract may define minimum bid and minimum raise variables and use them in its code, but the variables are not given values in the code. Instead, the `terms` argument provides the variables’ values.
@@ -132,7 +137,7 @@ const { outcome, payout: alicePayoutP } = await E(zoe).offer(
   alicePayments,
 );
 ```
-Zoe checks the invite for its validity for that contract instance. If it’s an invalid invite, the offer attempt fails, and Alice gets her refund in the payout. When she makes her offer, Alice receives an *outcome* and a *promise* that resolves to her *payout* . 
+Zoe checks the invite for its validity for that contract instance. If it’s an invalid invite, the offer attempt fails, and Alice gets her refund in the payout. When she makes her offer, Alice receives an *outcome* and a *promise* that resolves to her *payout*. If the offer is valid, it's now an *active offer*.
 
 Now, Alice needs to get someone else involved who potentially will also make an offer, hopefully one that offers what she wants for the price she’s willing to pay for it. For the Atomic Swap contract, the *outcome* from her offer resolves to an *invite* she can send to others, in this case Bob. This is specific to this Atomic Swap contract; the outcome is whatever the contract instance returns from its hook that was attached to the invite when it was created:
 
@@ -165,19 +170,19 @@ const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
   bobPayments,
 );
 ```
-Bob has also gotten back an *outcome* and a *promise* for a *payout*.
+Bob has also gotten back an *outcome* and a *promise* for a *payout*. His offer is also now an *active offer*.
 
 
 ## Satisfying and completing offers
 
 
-At this point, both the offers that Alice and Bob made are known to the contract instance. The Atomic Swap contract code determines that they are matching offers.  The contract instance calls `reallocate`, which *reallocates* the amounts which are the accounting records within Zoe. Payouts are not created here. 
+At this point, both the offers that Alice and Bob made are active and known to the contract instance. The Atomic Swap contract code determines that they are matching offers.  The contract instance calls `reallocate`, which *reallocates* the amounts which are the accounting records within Zoe. Payouts are not created here. 
 
 
 The contract instance then *completes* the offers. A call to `zcf.complete()` with both offers as arguments, makes the payouts to the offer holders.  This takes the amounts from the account records, and withdraws the amounts specified by the offers from the digital assets escrowed within Zoe. It's only at the `complete` step that *amounts* are turned into real payments. This is when the payout *promise* resolves into payments. 
 
 
-The offers are now completed, and nothing more is or can be done with them. Zoe deletes completed offers from the contract instance.
+The offers are now completed and no longer active. There is nothing more that can be done with them, so Zoe deletes completed offers from the contract instance.
 
 
 ## Auction example
@@ -189,7 +194,7 @@ Let’s look at a more complicated example: an auction, where many users might m
 But what about all those other bidders who escrowed their bid amounts with Zoe and didn’t win? Zoe guarantees they all get a *refund* of their escrowed amount. Zoe’s *offer safety* guarantees offer makers either get what they wanted or get refunded whatever they put in Zoe’s escrow with their offer.
 
 
-It’s even possible to get both what you wanted in an offer, and at least a partial refund of what you offered. Consider an auction where you make a bid offer where you’re willing to pay up to 10 quatloos, but if you can win with a lower bid, that’s your offer. You win the auction, but your winning bid amount is only 8 quatloos. The payout would resolve to both the item up for auction you get as the winning bidder and the refund of the 2 extra quatloos you escrowed in the offer. 
+It’s even possible to get both what you wanted in an offer, and at least a partial refund of what you offered. Consider an auction where you make a bid offer where you’re willing to pay up to 10 quatloos (an imaginary currency), but if you can win with a lower bid, that’s your offer. You win the auction, but your winning bid amount is only 8 quatloos. The payout would resolve to both the item up for auction you get as the winning bidder and the refund of the 2 extra quatloos you escrowed in the offer. 
 
 
 ## Other things to know about Zoe
