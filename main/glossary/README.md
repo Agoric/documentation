@@ -28,7 +28,7 @@ Identifies the kind of issuer.
 
 ## Comparable
 
-A *passable* is something that can be mashalled. A *comparable* is a
+A *passable* is something that can be marshalled. A *comparable* is a
 passable whose leaves contain no promises. Two comparables can be
 synchronously compared for structural equivalence.
 
@@ -122,6 +122,5 @@ A physical machine can run one or several vats. A blockchain can run one or seve
 Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
-
 
 
