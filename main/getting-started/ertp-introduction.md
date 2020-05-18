@@ -56,7 +56,7 @@ Other key ERTP objects are:
 
 - **Mints**: Issue new digital assets as a new Payment. Mints only
 issue one type of asset (quatloos, simoleons, moola, etc. Note that these
-are all imaginary currencies used as examples.). We refer to
+are all imaginary currencies used as examples.) We refer to
 that type as the mint's *Brand*. So if a mint issues quatloos, it's a
 quatloo brand mint.  Only mints can issue new digital assets. To mint
 new assets of a particular type, you must have a reference to that
