@@ -72,13 +72,13 @@ Steps for contracts that use a singleton instance for all clients may further in
 All deployment happens via the local running Agoric process (specifically, the `ag-solo` 
 process) that communicates with either a locally running
 or remote chain. The local process has a `home` object, which contains 
-references to services on-chain, include `zoe`, the default `registry`, and the 
+references to services on-chain, including `zoe`, the default `registry`, and the 
 application user's `wallet`. Deploying to the chain uploads 
 the bundled contract source code to the local process, and then uses its `zoe` 
 access (via that `home` object) to install the code on chain. 
 
-Developers can use all the on-chain commands that deployment scripts use to deploy 
-contracts and Dapps via the REPL associated with the wallet.
+Via the REPL associated with the wallet, developers can use all the on-chain commands that deployment scripts use to deploy 
+contracts and Dapps.
 
 The `deploy.js` scripts run in an ephemeral `Node.js` outside of the Swingset kernel.
 The spawner runs within `ag-solo`, so is persistent. Once the `deploy.js` script ends,
