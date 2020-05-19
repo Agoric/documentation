@@ -1,19 +1,3 @@
-::: tip Welcome Hackathon Participants!
-The Gitcoin Cross Chain Hackathon is a three-week virtual hackathon 
-for open-source collaboration across blockchain ecosystems - 
-Agoric, Band Protocol and Cosmos.
-
-* Get to know the Agoric tech stack by using the Guide below. 
-* Talk to us on [Keybase](https://keybase.io/team/agoric.support) in the `agoric.support` channel with ideas, questions, or issues. 
-* View [Prizes](https://gitcoin.co/agoric/active)
-* [Register](https://hackathons.gitcoin.co/cross-chain) for Cross Chain Hackathon
-* Send questions to <a href="mailto:support@agoric.com">support@agoric.com</a>
-
-To create a new issue on Agoric's Hackathon repository, click [here](https://github.com/Agoric/cross-chain-hackathon/issues/new)
-
-:::
-
-
 # Agoric Documentation Guide
 
 Agoric provides three main types of documentation, as well as links to
@@ -76,8 +60,8 @@ What you need to do before installing Agoric software and installing the Agoric 
   documentation, accessible from the Zoe documentation sidebar menu.
 
 When needed, refer to the **[ERTP API Reference](https://agoric.com/documentation/ertp/api/)**, **[Zoe API
-Reference](https://agoric.com/documentation/zoe/api/)**, and 
-**[Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/)** for details about 
+Reference](https://agoric.com/documentation/zoe/api/)**, **[Wallet API Reference](https://agoric.com/documentation/wallet-api.html)**,
+and **[Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/)** for details about 
 their respective commands. 
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
