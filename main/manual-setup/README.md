@@ -1,6 +1,6 @@
 # Agoric's Cosmic SwingSet
 
-Agoric's Cosmic SwingSet enables developers to test smart contracts build with [ERTP](https://github.com/Agoric/ERTP) in various blockchain setup environments
+Agoric's Cosmic SwingSet enables developers to test smart contracts built with [ERTP](https://github.com/Agoric/ERTP) in various blockchain setup environments
 
 ## Overview
 This document gives an overview of the process of setting up
