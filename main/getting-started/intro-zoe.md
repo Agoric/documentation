@@ -66,7 +66,7 @@ const aliceInvite = await E(zoe).makeInstance(
   issuerKeywordRecord, 
 });
 ```
-Let’s work backwards from `makeInstance()`’s arguments. As you’ll recall from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints), *issuers* map minted assets to purses and payments. The *keyword record* is made up of two key:value pairs. The key names must be ASCII and capitalized; they are the same as are used in the contract code, in this case `Price` and `Asset`. `Price` is for what is wanted, and `Asset` is for what is being sold. `Price` is for what will be swapped for it (from the perspective of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). The price is denominated in the imaginary currency simoleons, so that keyword needs the simoleon Issuer associated with it. The asset is denominated in the imaginary currency moola, so that keyword needs the moola Issuer as its value. 
+Let’s work backwards from `E(zoe).makeInstance()`’s arguments. As you’ll recall from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints), *issuers* map minted assets to purses and payments. The *keyword record* is made up of two key:value pairs. The key names must be ASCII and capitalized; they are the same as are used in the contract code, in this case `Price` and `Asset`. `Price` is for what is wanted, and `Asset` is for what is being sold. `Price` is for what will be swapped for it (from the perspective of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). The price is denominated in the imaginary currency simoleons, so that keyword needs the simoleon Issuer associated with it. The asset is denominated in the imaginary currency moola, so that keyword needs the moola Issuer as its value. 
 
 
 Finally, `E(zoe).makeInstance()` can take a `terms` argument, another set of key:value pairs. Terms let a contract instance creator further customize the contract operations, as enabled by the contract code. Contract terms can be expressed without specific values. For example, an auction contract may define minimum bid and minimum raise variables and use them in its code, but the variables are not given values in the code. Instead, the `terms` argument provides the variables’ values.
@@ -76,7 +76,11 @@ Why the need to parameterize a contract with terms? Well, the minimum raise shou
 
 ## Invites
 
-The `E(zoe).makeInstance()` call returns an *invite* to that contract instance. Invites are [*ERTP payment objects*](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp) that let their holder interact with that specific contract instance. If there are ten instances of a contract running and you hold an invite to, say, the earliest created one, that’s the only one the invite works with. It doesn’t work with any of the nine later created contract instances. 
+The `E(zoe).makeInstance()` call returns a record consisting of:
+- An *invite* to that contract instance. 
+- An `instanceRecord` containing information about the new instance.
+
+Invites are [*ERTP payment objects*](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp) that let their holder interact with that specific contract instance. If there are ten instances of a contract running and you hold an invite to, say, the earliest created one, that’s the only one the invite works with. It doesn’t work with any of the nine later created contract instances. 
 
 
 And while whoever instantiated the contract gets the initial invite to that instantiation, as with all invites, they can transfer it to another party before it’s used. Who created or first held an invite doesn’t matter. Whoever possesses an invite has control and use of it. 
