@@ -1,11 +1,27 @@
 # MathHelpers
-MathHelpers are the "arithmetic" operations on extents, used for actions like
-addition, subtraction, and greater than or equal to. There are currently three choices for mathHelpers.
+AmountMath uses MathHelpers to do their extent arithmetic. The results are branded, making
+a new amount (which consists of an extent and a brand). MathHelper operations include addition,
+subtraction, equality checking, greater than testing, and working with empty extents.
 
-## Choices of MathHelpers
+The MathHelper operations are polymorphic. There are three types of MathHelpers, each of which 
+implements all of the same set of API methods:
+- `nat`: Used with fungible assests.
+- `strSet`: Used with non-fungible assets.
+- `set`: Used with sets of objects, primarily non-fungible assets **tyg todo: Is the non-fungible part correct?**
+
+Use `produceIssuer(allegedName, mathHelpersName)` to specify which type of MathHelpers your contract uses. The second
+parameter, `mathHelpersName` is optional and defaults to `nat` if not given. For example
+```
+produceIssuer('quatloos`); // Defaults to 'nat'
+produceIssuer('quatloos', 'strSet');
+produceIssuer('quatloos, 'set');
+```
+See the [MathHelpers API documentation](https://agoric.com/documentation/ertp/api/math-helpers.html) for the set of operations all the above types implement.
+
+## MathHelpers Types
 
 ### 'nat'
-The default fungible asset case. For example, an amount might look like:
+The default fungible asset case. For example, an amount you'd use `nat` MathHelpers with might look like:
 
 ```js
 { brand: myBrand, extent: 40 }
@@ -13,7 +29,8 @@ The default fungible asset case. For example, an amount might look like:
 
 ### 'strSet'
 High performance operations on sets of string IDs for a basic nonfungible asset
-case. An amount might look like:
+case. An amount you'd use `strSet` with might look like the following. Note that
+the `extent` is not a numeric value, but an array specifying a specific `myBrand` object.
 
 ```js
 { brand: myBrand, extent: ['39283', 'bas029s'] }
@@ -31,6 +48,5 @@ information. An amount might look like:
 { brand: myBrand, extent: [{ seat: '16F', flight: '39DFK', date: '2020-06-08'}] }
 ```
 
-While the `set` mathHelpers are slower than the `strSet`, they are
-more trustworthy because all of the necessary information is in the
-extent.
+While the `set` mathHelpers are slower than the `strSet` equivalents, they are
+more trustworthy because all of the necessary information is in the extent.
