@@ -1,14 +1,31 @@
-# Math Helpers
-All of the differences in how digital asset amount are manipulated can
-be reduced to the behavior of the math on extents. We extract this
-custom logic into mathHelpers. MathHelpers are about extent
-arithmetic, whereas AmountMath is about amounts, which are the extents
-labeled with a brand. AmountMath use mathHelpers to do their extent
-arithmetic, and then brand the results, making a new amount.
+# MathHelpers
+AmountMath is about doing math operations on `amount`s, which are extents labeled with a brand.
+AmountMath uses MathHelpers to do its extent arithmatic operations. It then brands the results,
+creating a new `amount`. 
+
+There are three different types of MathHelpers, each of which implements all the methods shown 
+on this page. You only have to specify the MathHelper type when creating an `issuer`; it then knows
+which type's operations to use on itself. 
+
+There are three types of MathHelpers, each of which implements all of the same 
+set of API methods (i.e. MathHelpers are polymorphic):
+- `nat`: Used with fungible assests.
+- `strSet`: Used with non-fungible assets.
+- `set`: Used with sets of objects, primarily non-fungible assets.
+
+Use `produceIssuer(allegedName, mathHelpersName)` to specify which type of MathHelpers
+your contract uses. The second parameter, `mathHelpersName` is optional and defaults 
+to `nat` if not given. For example
+```js
+produceIssuer('quatloos`); // Defaults to 'nat'
+produceIssuer('quatloos', 'strSet');
+produceIssuer('quatloos, 'set');
+```
+For more details on the MathHelper types, see the [ERTP Guide's MathHelpers section](https://agoric.com/documentation/ertp/api/math-helpers.html)
 
 ::: warning MathHelpers versus AmountMath
-These MathHelpers should not be used on their own. Instead, a local
-version of AmountMath should be made (see below).
+MathHelper operations should not be used on their own. Instead, you 
+should first make a local version of AmountMath as shown below.
 :::
 
 
