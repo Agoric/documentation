@@ -1,24 +1,24 @@
 # MathHelpers
-AmountMath uses MathHelpers to do their extent arithmetic. The results are branded, making
+AmountMath uses MathHelpers to do extent arithmetic. The results are branded, making
 a new amount (which consists of an extent and a brand). MathHelper operations include addition,
-subtraction, equality checking, greater than testing, and working with empty extents.
+subtraction, equality checking, comparison of two extents, and working with empty extents.
 
-The MathHelper operations are polymorphic. There are three types of MathHelpers, each of which 
+The MathHelper operations are polymorphic. You have your choice of three MathHelpers, each of which 
 implements all of the same set of API methods:
 - `nat`: Used with fungible assests.
-- `strSet`: Used with non-fungible assets.
-- `set`: Used with sets of objects, primarily non-fungible assets **tyg todo: Is the non-fungible part correct?**
+- `strSet`: Used with non-fungible assets, operates on an array of string identifiers
+- `set`: Used with non-fungible assets, operates on an array of records (objects) with keys and values
 
-Use `produceIssuer(allegedName, mathHelpersName)` to specify which type of MathHelpers your contract uses. The second
+Use `produceIssuer(allegedName, mathHelpersName)` to specify which MathHelpers choice your contract uses. The second
 parameter, `mathHelpersName` is optional and defaults to `nat` if not given. For example
 ```
-produceIssuer('quatloos`); // Defaults to 'nat'
+produceIssuer('quatloos'); // Defaults to 'nat'
 produceIssuer('quatloos', 'strSet');
 produceIssuer('quatloos, 'set');
 ```
-See the [MathHelpers API documentation](https://agoric.com/documentation/ertp/api/math-helpers.html) for the set of operations all the above types implement.
+See the [MathHelpers API documentation](https://agoric.com/documentation/ertp/api/math-helpers.html) for the set of operations all the above choices implement.
 
-## MathHelpers Types
+## MathHelpers Choices
 
 ### 'nat'
 The default fungible asset case. For example, an amount you'd use `nat` MathHelpers with might look like:
