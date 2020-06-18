@@ -4,23 +4,20 @@
 
 A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).makeInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
 
-## zcf.reallocate(offerHandles, newAmountKeywordRecords, sparseKeywords)
+## zcf.reallocate(offerHandles, newAmountKeywordRecords)
+
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `newAmountKeywordRecords` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
-- `sparseKeywords` `{Array <String>}` sparseKeywords is an optional array of string keywords, which may be a subset of allKeywords.
 
 Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This will only succeed if the reallocation 1) conserves rights, and 2) is 'offer-safe' for all parties involved. This reallocation is partial, meaning that it applies only to
 the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
 rights are conserved and offer safety is enforced for all offers, even though the reallocation is partial, because once
 these invariants are true, they will remain true until changes are made.
 
-newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the
-values are the amounts to be paid to the offer at the same index in the `offerHandles`.
+newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are
+keywords and the values are the amounts to be paid to the offer at the same index in the `offerHandles`.
 
-This operation throws an error:
-- If any of the newAmountKeywordRecords do not have a value for all the keywords in sparseKeywords. 
-- If any newAmountKeywordRecords have keywords not in sparseKeywords.
-- If there are only 0 or 1 offerHandles given.
+This operation throws an error if there are only 0 or 1 offerHandles given.
 
 The reallocation only happens if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 ```js
@@ -166,23 +163,39 @@ Zoe.
 const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ```
 
-## zcf.getCurrentAllocation(offerHandle, sparseKeywords)
+## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
+- `brandKeywordRecord` <router-link to="/zoe/api/records.html#brand-keyword-record">
+`{[<BrandKeywordRecord>]}`</router-link> is an optional record mapping keywords to brands for each of the offers.
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">
+`{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offer.
+Get the amounts currently allocated to the offer for the keywords specified by brandKeywordRecord. If
+brandKeywordRecord is not specified, amounts are returned for only the Keywords that currently have
+allocated amounts (including empty amounts.) This might mean that amounts that will be included in the
+payout could be omitted if not specified.
+
+If brandKeywordRecord is specified and amounts for some keywords haven't been assigned to the
+offer, empty amounts will be filled in.
 
 ```js
 const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ```
 
-## zcf.getCurrentAllocations(offerHandles, sparseKeywords)
+## zcf.getCurrentAllocations(offerHandles, brandKeywordRecords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `brandKeywordRecords` <router-link to="/zoe/api/records.html#brand-keyword-record">
+`{[ Array <BrandKeywordRecords>]}`</router-link> brandKeywordRecords is an optional array of records
+mapping keywords to brands for each of the offers.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
-Get a list of the amounts associated with the sparseKeywords for the offers.
+Get the amounts currently allocated to each offer for the keywords specified by brandKeywordRecord. If
+brandKeywordRecord is not specified, amounts are returned for only the Keywords that currently have
+allocated amounts (including empty amounts.) This might mean that amounts that will be included in the
+payout could be omitted if not specified.
+
+If brandKeywordRecord is specified and amounts for some keywords haven't been assigned to the
+offer, empty amounts will be filled in.
 
 ## zcf.getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>

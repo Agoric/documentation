@@ -166,3 +166,8 @@ The possible records are:
   currentAllocation, // the amountKeywordRecord that will be turned into payouts
 }
 ```
+
+## BrandKeywordRecord
+
+The keys are keywords and the values are brands.
+

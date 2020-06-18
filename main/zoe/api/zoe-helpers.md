@@ -147,6 +147,27 @@ canTradeWith(leftInvite, rightInvite)
 canTradeWith(leftInvite, cantTradeRightInvite)
 ```
 
+## zoeHelpers.canTradeWithMapKeywords(leftOfferHandle, rightOfferHandle, keywords)
+- `leftOfferHandle`
+- `rightOfferHandle`
+- `keywords` - correspondence map of keywords on the left and right handles. keywords is an
+  array containing two equal-length arrays.
+- Returns: `{Boolean}`
+
+Checks if the `give` and `want` of two invites would satisfy offer
+safety if the two allocations are swapped mapping the keywords as specified.
+
+```js
+import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+
+const { canTradeWithMapKeywords } = makeZoeHelpers(zoe);
+
+canTradeWithMapKeywords(
+  leftHandle,
+  rightHandle,
+  [['Price', 'Asset'], ['P', 'Goods']]);
+```
+
 ## zoeHelpers.swap(keepHandle, tryHandle, keepHandleInactiveMsg)
 - `keepHandle`
 - `tryHandle`
@@ -179,50 +200,6 @@ const { swap } = makeZoeHelpers(zoe);
   return zcf.makeInvitation(hook);
 ```
 
-## zoeHelpers.inviteAnOffer({offerHook, customProperties, expected})
-- `offerHook` - the function to be called when the offer is made and
-  invite redeemed
-- `customProperties` - (optional) properties to be added to the extent
-- `expected` - the expected structure of the proposal for the offer.
-  Values are null.
-- Returns: a promise for the new offerHandle
-
-**DEPRECATED AS OF ZOE 0.6 / MAY 2020**
-
-**We recommend using `checkhook` instead.**
-
-**See [`zcf.makeInvitation`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-makeinvitation-offerhook-customproperties)**
-
-Make an invitation to submit an Offer to this contract. This
-invitation can be given to a client, granting them the ability to
-participate in the contract.
-
-If "offerHook" is provided, it will be called when an offer is made 
-using the invite. The callback will get a reference to the offerHandle.
-
-If the "expected" option is provided, it should be an {ExpectedRecord}.
-This is like a {Proposal}, but the amounts in 'want' and 'give' should be null,
-and the 'exit' should have a choice but the contents should be null.
-If the client submits an Offer which does not match these expectations,
-that offer will be rejected (and refunded) without invoking the offerHook.
-
-```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
-
-const { inviteAnOffer } = makeZoeHelpers(zoe);
-
-  const firstOffer = inviteAnOffer({
-      offerHook: makeMatchingInvite,
-      customProperties: {
-        inviteDesc: 'firstOffer',
-      },
-      expected: {
-        give: { Asset: null },
-        want: { Price: null },
-      },
-    });
-```
-
 ## zoeHelpers.makeEmptyOffer()
 - Returns: a promise for the new offerHandle
 
@@ -244,16 +221,13 @@ makeEmptyOffer().then(offerHandle => {...})
 
 Create a new offerHook that checks whether the proposal matches the
 `expected` structure before calling the `offerHook` argument
-=======
+
 ## zoeHelpers.escrowAndAllocateTo({ amount, payment, keyword, recipientHandle })
-- `amount` - the amount to be escrowed. This should be equal to the
-  payment amount
+- `amount` - the amount to be escrowed. This should be equal to the payment amount
 - `payment` - the payment that will be escrowed
-- `keyword` - the keyword under which the payment should be escrowed.
-  This will be used to create the proposal and the
-  paymentKeywordRecord
-- `recipientHandle` - the offerHandle that we will reallocate the
-  amount to
+- `keyword` - the keyword under which the payment should be escrowed. This will be used to create
+  the proposal and the paymentKeywordRecord.
+- `recipientHandle` - the offerHandle that we will reallocate the amount to
 - Returns: undefined
 
 Escrow a payment with Zoe and reallocate the amount of the payment to a recipient.
@@ -272,7 +246,7 @@ return zcf.makeInvitation(
   checkHook(internalOfferHook, expected),
   'firstOffer',
 );
-=======
+
 const { escrowAndAllocateTo } = makeZoeHelpers(zoe);
 
 const offerHook = offerHandle => {
@@ -300,3 +274,9 @@ const offerHook = offerHandle => {
     });
 };
 ```
+
+## zoeHelpers.assertNatMathHelpers(brand)
+- `brand`
+- Returns: `{Boolean}`
+
+Checks if the brand uses a `nat` MathHelper.
