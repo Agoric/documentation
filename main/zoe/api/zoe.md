@@ -183,24 +183,36 @@ const {
 } = await E(zoe).getOffer(offerHandle);
 ```
 
-## E(zoe).getCurrentAllocation(offerHandle, sparseKeywords)
+## E(zoe).getCurrentAllocation(offerHandle, brandKeywordRecord)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `brandKeywordRecord` <router-link to="/zoe/api/records.html#brand-keyword-record">`{[<BrandKeywordRecord>]}`</router-link>
+brandKeywordRecord is an optional record mapping keywords to brands for each of the offers.
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offer.
+Get the amounts associated with the keywords for the offer. If brandKeywordRecord is not
+specified, amounts are returned for only the Keywords that currently have allocated amounts
+(including empty amounts.) This might mean that amounts that will be included in the payout
+could be omitted if not specified.
+
+If brandKeywordRecord is specified, and amounts for some keywords haven't been assigned to the
+offer, empty amounts will be returned.
 
 ```js
 const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ```
 
-## E(zoe).getCurrentAllocations(offerHandles, sparseKeywords)
+## E(zoe).getCurrentAllocations(offerHandles, brandKeywordRecords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `brandKeywordRecords` <router-link to="/zoe/api/records.html#brand-keyword-record">`{[ Array <BrandKeywordRecords>]}`</router-link> brandKeywordRecords is an optional array of records mapping keywords to brands for each of the offers.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{ Array AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offers.
+Get the amounts associated with the keywords for the offers. If brandKeywordRecords is not
+specified, amounts are returned for only the Keywords that currently have allocated amounts
+(including empty amounts.) This might mean that amounts that will be included in the payout
+could be omitted if not specified.
 
+If brandKeywordRecords is specified, and amounts for some keywords haven't been assigned for some
+offers, empty amounts will be returned.
 
 ## E(zoe).getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
