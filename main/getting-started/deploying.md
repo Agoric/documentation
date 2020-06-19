@@ -5,7 +5,7 @@ supports deploying contracts and off-chain web applications that talk to them. T
 has two primary uses:
 
 * Deploy smart contract source code onto the blockchain
-* Deploy and setup an application program to a local server running an Agoric api process
+* Deploy and setup an application program to a local server running an Agoric process
 
 Use the `agoric deploy` command to run your Dapp's `contract/deploy.js` 
 and `api/deploy.js` scripts. You can use the deploy scripts created when you copied an existing 
@@ -13,25 +13,25 @@ Dapp into your directory as they are, or you can modify the scripts as suggested
 
 Remember, your Dapp has three primary subdirectories:
 - `contract/`which contains files relating to your smart contract itself.
-- `api/`which contains **tyg todo: Could use suggestions for a concise description**.
+- `api/`which contains files enabling the UI frontend to communicate via HTTP/WebSocket to an on-chain backend contract instance and start your Dapp contract instance and backend.
 - `ui/` which contains files relating to your contract's user interface.
 
 ## How it works
 
 All deployment happens via the local running Agoric process. This is usually the `ag-solo` process, 
-and frequently refered to as that or just as `ag-solo`.  It is also sometimes described as/called an Agoric VM or a local server.
+and frequently refered to as that or just as `ag-solo`. It is also sometimes described as/called an Agoric VM or a local server.
 
 `ag-solo` communicates with either a locally running or remote chain. The local process has a `home` object, which contains 
 references to services on-chain, including `zoe`, the default `registry`, and an application user's `wallet`. Developers can
 use these service references to call their associated API commands.
 
-Deploying to the chain first uploads the bundled contract source code to the local process (`ag-solo`).
+Deploying to the chain first uploads the bundled contract source code to the local Agoric process (`ag-solo`).
 The deployment script then uses the `home` object to access `zoe` which installs the code on chain. 
 
 Via the REPL associated with the wallet, developers can use all the on-chain commands that deployment scripts use to deploy 
-contracts and Dapps. **tyg todo: Some examples and use cases would be good here**
+contracts and Dapps.
 
-The `deploy.js` scripts run in an ephemeral `Node.js` outside of the Swingset kernel. **tyg todo: Good short definition for Swingset?** 
+The `deploy.js` scripts run in an ephemeral `Node.js` outside of the Swingset kernel. 
 `ag-solo`'s spawner is persistent. Once the `deploy.js` script ends,
 connections to any of its objects are severed.
 
@@ -68,8 +68,11 @@ The Registry determines the installation registry key, in this case
 ## Application service deployment and setup
 
 Next, let's look at *application deployment and setup*. As compared to contract deployment, 
-you need to customize the API server deployment and setup much more
-for your particular application and contract. Some Dapps use a singleton contract instance **tyg todo: Could use a succinct defintion of "singleton" here. I think it means one basic contract that only interacts with itself, but aren't sure about that** that potentially must:
+you need to customize the Agoric API server deployment and setup much more
+for your particular application and contract. Some Dapps use a singleton contract instance 
+which presumes that it will be installed once and serve all customers (as opposed to an auction
+or swap contract, which is installed once, but instantiated separately for each sale it manages).
+A singleton potentially must:
 - Be created. 
 - Find and connect to on-chain resources such as issuers for specific currencies
 - Create new on-chain resources like new currencies or NFTs
@@ -85,7 +88,7 @@ range of the above custom setup actions:
 For an example of additions needed to support IBC (*Inter-Blockchain Communication protocol*), see the [`dibc-encouragement` branch](https://github.com/Agoric/dapp-encouragement/compare/master..dibc-encouragement). The link takes you to a page showing the differences in various files in the Encouragement Dapp between the master branch and a branch which supports IBC. 
 
 Application deployment steps may include:
-* Bundle the `api` code and deploy it to the running local "api" process
+* Bundle the `api` code and deploy it to the running local "api" process (ag-solo)
 * Include the contract installation configuration information in the bundle
 * Create new currencies and add them to the application's wallet
 
