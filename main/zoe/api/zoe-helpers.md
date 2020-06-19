@@ -226,8 +226,8 @@ Create a new offerHook that checks whether the proposal matches the
 - `amount` - the amount to be escrowed. This should be equal to the payment amount
 - `payment` - the payment that will be escrowed
 - `keyword` - the keyword under which the payment should be escrowed. This will be used to create
-  the proposal and the paymentKeywordRecord.
-- `recipientHandle` - the offerHandle that we will reallocate the amount to
+  the proposal and the `paymentKeywordRecord`.
+- `recipientHandle` - the`offerHandle` that we will reallocate the amount to
 - Returns: undefined
 
 Escrow a payment with Zoe and reallocate the amount of the payment to a recipient.
