@@ -170,4 +170,12 @@ The possible records are:
 ## BrandKeywordRecord
 
 The keys are keywords and the values are brands.
+Users use these keywords to make their proposal. 
+In the below example, "Asset" and "Price" are keywords.
 
+```js
+{
+  Asset: moola,
+  Price: simolean
+}
+```
