@@ -171,12 +171,12 @@ const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">
 `{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts currently allocated to the offer for the keywords specified by `brandKeywordRecord`. If
+For the keywords specified by `brandKeywordRecord, get the amounts currently allocated to the offer. If
 `brandKeywordRecord` is not specified, amounts are returned for only the Keywords that currently have
-allocated amounts (including empty amounts.) This might mean that amounts that will be included in the
+allocated amounts (including empty amounts.) This might mean amounts that will be included in the
 payout could be omitted if not specified.
 
-If brandKeywordRecord is specified, empty amounts are filled in for keywords without amounts assigned to the offer.
+If `brandKeywordRecord` is specified, for keywords without amounts assigned to the offer, empty amounts are filled in 
 
 ```js
 const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
@@ -193,7 +193,7 @@ For each `brandKeywordRecord specified keyword, from each offer get its currentl
 `brandKeywordRecord``` is not specified, amounts are returned only for the Keywords that currently have
 allocated amounts (including empty amounts.) Amounts included in the payout might be omitted if not specified.
 
-If `brandKeywordRecord is specified, and some keywords' amounts haven't been assigned to the offer, empty amounts are filled in.
+If `brandKeywordRecord` is specified, and some keywords' amounts haven't been assigned to the offer, empty amounts are filled in.
 
 ## zcf.getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
