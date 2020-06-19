@@ -201,13 +201,11 @@ const {
 brandKeywordRecord is an optional record mapping keywords to brands for each of the offers.
 - Returns: <router-link to="/zoe/api/records.html#offer-record">`{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the keywords for the offer. If brandKeywordRecord is not
-specified, amounts are returned for only the Keywords that currently have allocated amounts
-(including empty amounts.) This might mean that amounts that will be included in the payout
-could be omitted if not specified.
+For the offer's keywords, get their associated amounts. If `brandKeywordRecord` is not specified,
+only keywords with currently allocated amounts (including empty amounts) have their amounts returned.
+If amounts to be included in the payout are not specified, they may be omitted.
 
-If brandKeywordRecord is specified, and amounts for some keywords haven't been assigned to the
-offer, empty amounts will be returned.
+If `brandKeywordRecord` is specified, and some keyword amounts aren't assigned to the offer, empty amounts are returned.
 
 ```js
 const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
@@ -218,13 +216,11 @@ const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
 - `brandKeywordRecords` <router-link to="/zoe/api/records.html#brand-keyword-record">`{[ Array <BrandKeywordRecords>]}`</router-link> brandKeywordRecords is an optional array of records mapping keywords to brands for each of the offers.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{ Array AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the keywords for the offers. If brandKeywordRecords is not
-specified, amounts are returned for only the Keywords that currently have allocated amounts
-(including empty amounts.) This might mean that amounts that will be included in the payout
-could be omitted if not specified.
+For the offer's keywords, get their associated amounts. If `brandKeywordRecord` is not specified,
+only keywords with currently allocated amounts (including empty amounts) have their amounts returned.
+If amounts to be included in the payout are not specified, they may be omitted.
 
-If brandKeywordRecords is specified, and amounts for some keywords haven't been assigned for some
-offers, empty amounts will be returned.
+If `brandKeywordRecord` is specified, and some keyword amounts aren't assigned to the offer, empty amounts are returned.
 
 ## E(zoe).getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
