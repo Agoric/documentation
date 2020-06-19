@@ -2,22 +2,23 @@
 
 <Zoe-Version/>
 
-A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).makeInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
+A Zoe Contract Facet is an API object for a running contract instance. It accesses the instance's Zoe state. From within the contract, you synchronously access a Zoe Contract Facet (usually is referred to in code as `zcf`). The contract instance is launched and given access to the zcf object by `E(zoe).makeInstance`. In the operation below, the `instanceHandle` is the handle for the running contract instance.
+**tyg todo: There is no other instance of `instanceHandle` in this doc. Delete or rework?**
 
 ## zcf.reallocate(offerHandles, newAmountKeywordRecords)
 
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `newAmountKeywordRecords` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
 
-Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This will only succeed if the reallocation 1) conserves rights, and 2) is 'offer-safe' for all parties involved. This reallocation is partial, meaning that it applies only to
-the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
-rights are conserved and offer safety is enforced for all offers, even though the reallocation is partial, because once
-these invariants are true, they will remain true until changes are made.
+Instructs Zoe to try to reallocate payouts for the given `offerHandles`. This only succeeds if the reallocation:
+- Conserves rights.
+- Is 'offer-safe' for all involved parties.
+This reallocation is partial, so it only applies to the amounts associated with passed in `offerHandles`. We ensure that with each reallocation, rights are conserved and offer safety enforced for all offers. This is true even for partial reallocations. Once these invariants are true, they stay true until changes happen.
 
-newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are
+`newAmountKeywordRecords` is an array of `AmountKeywordRecords`, objects where the keys are
 keywords and the values are the amounts to be paid to the offer at the same index in the `offerHandles`.
 
-This operation throws an error if there are only 0 or 1 offerHandles given.
+This operation throws an error if there are only 0 or 1 `offerHandles` given.
 
 The reallocation only happens if 'offer safety' and conservation of rights are true, as enforced by Zoe.
 ```js
@@ -102,7 +103,7 @@ const inviteIssuer = await E(zoe).getInviteIssuer();
 - `keywords` `{Array <String>}`
 - Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
 
-Pass in an array of keywords and get an amountMathKeywordRecord in return.
+Pass in an array of keywords and get an `amountMathKeywordRecord` in return.
 
 ```js
 const amountMathKeywordRecord = zoe.getAmountMaths(['Asset', 'Price']);
@@ -170,13 +171,12 @@ const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">
 `{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts currently allocated to the offer for the keywords specified by brandKeywordRecord. If
-brandKeywordRecord is not specified, amounts are returned for only the Keywords that currently have
+Get the amounts currently allocated to the offer for the keywords specified by `brandKeywordRecord`. If
+`brandKeywordRecord` is not specified, amounts are returned for only the Keywords that currently have
 allocated amounts (including empty amounts.) This might mean that amounts that will be included in the
 payout could be omitted if not specified.
 
-If brandKeywordRecord is specified and amounts for some keywords haven't been assigned to the
-offer, empty amounts will be filled in.
+If brandKeywordRecord is specified, empty amounts are filled in for keywords without amounts assigned to the offer.
 
 ```js
 const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
@@ -185,17 +185,15 @@ const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ## zcf.getCurrentAllocations(offerHandles, brandKeywordRecords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `brandKeywordRecords` <router-link to="/zoe/api/records.html#brand-keyword-record">
-`{[ Array <BrandKeywordRecords>]}`</router-link> brandKeywordRecords is an optional array of records
-mapping keywords to brands for each of the offers.
+`{[ Array <BrandKeywordRecords>]}`</router-link> `brandKeywordRecords` is an optional array of records
+mapping keywords to brands for each offer.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
-Get the amounts currently allocated to each offer for the keywords specified by brandKeywordRecord. If
-brandKeywordRecord is not specified, amounts are returned for only the Keywords that currently have
-allocated amounts (including empty amounts.) This might mean that amounts that will be included in the
-payout could be omitted if not specified.
+For each `brandKeywordRecord specified keyword, from each offer get its currently allocated amount. If
+`brandKeywordRecord``` is not specified, amounts are returned only for the Keywords that currently have
+allocated amounts (including empty amounts.) Amounts included in the payout might be omitted if not specified.
 
-If brandKeywordRecord is specified and amounts for some keywords haven't been assigned to the
-offer, empty amounts will be filled in.
+If `brandKeywordRecord is specified, and some keywords' amounts haven't been assigned to the offer, empty amounts are filled in.
 
 ## zcf.getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
