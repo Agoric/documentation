@@ -23,7 +23,7 @@ and frequently refered to as that or just as `ag-solo`. It is also sometimes des
 
 `ag-solo` communicates with either a locally running or remote chain. The local process has a `home` object, which contains 
 references to services on-chain, including `zoe`, the default `registry`, and an application user's `wallet`. Developers can
-use these service references to call their associated API commands.
+use these service references to call the service's associated API commands.
 
 Deploying to the chain first uploads the bundled contract source code to the local Agoric process (`ag-solo`).
 The deployment script then uses the `home` object to access `zoe` which installs the code on chain. 
@@ -44,11 +44,11 @@ This does _not_ execute contract code; it just makes the code available on-chain
 
 The contract deployment process uses [`zoe.install()`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-install-code-moduleformat) 
 to install the contract source code on-chain. This returns an *installation handle* associated with the 
-source code. In a typical contract deployment, the installation handle is stored 
-in the default shared registry so it is broadly accessible on the chain.
-Its registry key is written to a config file in the Dapp's `ui` directory as shown below.
+source code. In a typical contract deployment, the deploy script adds the installation handle  
+to the default shared registry so it is broadly accessible on the chain. The script then writes
+the registry key to a config file in the Dapp's `ui` directory as shown below.
 
-By default, when you run `agoric initi`, your Dapp gets 
+By default, when you run `agoric init`, your Dapp gets 
 the [`dapp-encouragement` `contract/deploy.js` file](https://github.com/Agoric/dapp-encouragement/blob/master/contract/deploy.js), 
 which is our example of a typical contract deploy script.
 
@@ -73,7 +73,7 @@ for your particular application and contract. Some Dapps use a singleton contrac
 which presumes that it will be installed once and serve all customers (as opposed to an auction
 or swap contract, which is installed once, but instantiated separately for each sale it manages).
 A singleton potentially must:
-- Be created. 
+- Be created 
 - Find and connect to on-chain resources such as issuers for specific currencies
 - Create new on-chain resources like new currencies or NFTs
 - Create new Purses for the application to use
@@ -85,7 +85,7 @@ range of the above custom setup actions:
 * [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/master/api/deploy.js)
 * [`dapp-autoswap`](https://github.com/Agoric/dapp-autoswap/blob/master/api/deploy.js)
 
-For an example of additions needed to support IBC (*Inter-Blockchain Communication protocol*), see the [`dibc-encouragement` branch](https://github.com/Agoric/dapp-encouragement/compare/master..dibc-encouragement). The link takes you to a page showing the differences in various files in the Encouragement Dapp between the master branch and a branch which supports IBC. 
+For an example of additions needed to support IBC (*Inter-Blockchain Communication protocol*), see the [`dibc-encouragement` branch](https://github.com/Agoric/dapp-encouragement/compare/master..dibc-encouragement). The link takes you to a page showing the differences in various files in the Encouragement Dapp between the master branch and a branch which integrates IBC. 
 
 Application deployment steps may include:
 * Bundle the `api` code and deploy it to the running local "api" process (ag-solo)
