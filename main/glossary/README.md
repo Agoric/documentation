@@ -10,21 +10,35 @@ the maker of the mint and could be deceptive, but is useful for debugging and do
 The AllegedName must be a string.
 
 ## AmountMath
-AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
+AmountMath executes the logic of how amounts are changed when digital assets are merged, separated,
+or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
+gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic
+[MathHelpers](#mathhelpers), which manipulate an `amount`'s [extent](#extent) or unbranded portion. 
+Standard natural number operations cannot be used on extents, since they can be an array or object. 
+See the [ERTP Guide's AmountMath section](https://agoric.com/documentation/ertp/guide/amount-math.html) 
+and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) for more information.
 
 ## Amounts
 Amounts are the canonical description of tradable goods. They are manipulated
-by issuers and mints, and represent the goods and currency carried by purses and
-payments. They can be used to represent things like currency, stock, and the
+by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
+[purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-An amount is composed of a `Brand` with an `Extent`.
+An amount is comprised of a [brand](#brand) with an [extent](#extent). For example, "4 quatloos"
+is an amount with an extent value of "4" and a brand value of the imaginary currency "quatloos".
+
+See the [ERTP Guide's Amounts section](https://agoric.com/documentation/ertp/guide/amounts.html) 
+and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) 
+for more information.
 
 ## AssetHolder
-Purses and Payments are AssetHolders.
+[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amount).
 
 ## Brand
-Identifies the kind of issuer.
+Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
+make up an [amount](#amount).
+See the [ERTP Guide's Brand section](https://agoric.com/documentation/ertp/guide/brand.html)
+and the [ERTP API's Brand section](https://agoric.com/documentation/ertp/api/brand.html) for more information.
 
 ## Comparable
 
@@ -44,19 +58,32 @@ In Agoric documentation, *contract* usually refers to a contract's source code t
 For example, a realtor has a standard house selling agreement. The contract is the code defining how that agreement works. When the realtor has a new house to sell, they instantiate a new instance of their standard contract for that specific property. If they have ten houses for sale, they have ten different contract instances.
 
 ## ERTP
-Electronic Rights Transfer Protocol - Agoric's fungible and
-nonfungible token standard that uses object capabilities to enforce
-access control. Instead of having to prove ownership of a
-corresponding private key, in the world of object capabilities, if
-your program has a reference to an object, it can call methods on that
-object. If it doesn't have a reference, it can't. For more on object
-capabilities, see [Chip Morningstar's
-post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
+*Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, both [fungible](#fungible) and [non-fungible](#non-fungable), in JavaScript. All kinds of digital assets can easily be created and they can be all be transferred in exactly the same ways, with exactly the same security properties.
+
+It uses [object capabilities](#object-capabilities) to enforce access control. Instead of having 
+to prove ownership of a corresponding private key, if your program has a 
+reference to an object, it can call methods on that object. If it doesn't 
+have a reference, it can't. For more on object capabilities, see [this post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
+
+Key ERTP concepts include [Issuers](#issuer), [mints](#mint), 
+[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also 
+see the [ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction.html),
+[ERTP Guide](https://agoric.com/documentation/ertp/guide/), and [ERTP API](https://agoric.com/documentation/ertp/api/).
 
 ## Extent
-Extents describe the extent of something that can be owned or shared: How much, how many, or description of unique asset. (Pixel(3,2), $3 or ‘Right to occupy on Tuesdays’). Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+Extents are the part of an [amount](#amount) that describe the extent of something
+that can be owned or shared: How much, how many, or a description of a unique asset, such as
+Pixel(3,2), $3, or ‘Right to occupy on Tuesdays’. [Fungible](#fungible) extents are usually 
+represented by natural numbers. Other extents may be represented as strings naming a particular
+right, or an arbitrary object representing the rights at issue. The latter two examples 
+are usually [non-fungible](#nonfungible) assets. Extents must be [Comparable](#comparable).
 
-Extent must be Comparable.
+See the [ERTP Guide's Extent section](https://agoric.com/documentation/ertp/guide/extent.html) for more information.
+
+## Fungible
+A fungible asset is one where all exemplars of the asset are interchangable. For example, if you 
+have 100 one dollar bills and need to pay someone five dollars, it does not matter which
+five one dollar bills you use. Also see [non-fungible](#non-fungible).
 
 ## Handle
 A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means the only way to know a handle identity is being given an object reference, and no identity can be guessed and no fake identity will succeed. 
@@ -64,14 +91,43 @@ A handle is a unique identifier implemented as a JavaScript object. Only its ide
 For example, Zoe often uses `offerHandle` to refer to offers. Zoe contracts can use an offer's `offerHandle` as the key for requesting the current allocation of an offer or reallocating the offer's assets.
 
 ## Issuer
-Can create empty purses and payments, but cannot mint new amounts. Issuers can also transform payments (splitting, combining, burning, and claiming payments exclusively). You should get an issuer from a trusted source and then rely on it to determine if an untrusted payment is valid. Issuers are linked to a single mint and vice versa, so each issuer only works with one type of thing, such as only working with quatloos or only working with moola.
+Issuers are linked to a single [mint](#mint) and vice versa, so each issuer works
+with one and only one asset type, such as only working with quatloos or only working
+with moola. They can create empty [purses](#purse) and [payments](#payment) for
+their asset type, but cannot mint new [amounts](#amount). 
+
+Issuers can also transform
+payments of their asset type (splitting, combining, burning, and exclusively claiming
+payments). An issuer from a trusted source can determine if an untrusted payment of
+its asset type is valid. 
+
+See the [ERTP Guide's Issuer section](https://agoric.com/documentation/ertp/guide/issuer.html)
+and the [ERTP API's Issuer section](https://agoric.com/documentation/ertp/api/issuer.html) for more information.
 
 ## MathHelpers
-Arithmetic on extents. MathHelpers are used by AmountMath to do their extent arithmetic, and then brand the result, making a new amount.
+MathHelpers are methods for performing arithmetic operations on an [amount's](#amount) [extent](#extent). 
+[AmountMath](#amountmath) uses MathHelpers to do extent arithmetic, after which it [brands](#brand)
+the result to create a new [amount](#amount). For more information, see the 
+[MathHelpers ERTP Guide section](https://agoric.com/documentation/ertp/guide/math-helpers.html) and
+the [MathHelpers ERTP API section](https://agoric.com/documentation/ertp/api/math-helpers.html).
 
 ## Mint
-The admin facet of the issuer, and the only object with the authority
-to mint new digital assets.
+In ERTP, mints create digital assets and are the only objects with the authority to do so. 
+Access to a mint gives you the power to create more digital assets of its type at will. Mints
+can only create one type of asset. 
+
+Mints are [issuer's](#issuer) admin facets, and there is a one-to-one relationship between an issuer and
+its mint.
+
+See the [ERTP Guide's Mint section](https://agoric.com/documentation/ertp/guide/mint.html) 
+and the [ERTP API's Mint section](https://agoric.com/documentation/ertp/api/mint.html) for more information.
+
+## Non-fungible
+A non-fungible asset is one where each incidence of the asset has unique individual properties and
+is not interchangable with another incidence. For example, if your asset is show tickets, it matters to the buyer 
+what the date and time of the show is, which row the seat is in, and where in the row the 
+seat is (and likely other factors as well). You can't just give them any ticket in your supply,
+as they are not interchangable (and may even have different prices). See also [fungible](#fungible).
 
 ## Notifier
 
@@ -99,17 +155,27 @@ If references can only be obtained by creation, construction, or introduction, y
 For more information, see [Douglas Crockford on Object Capabilities](https://frontendmasters.com/courses/good-parts-javascript-web/object-capabilities/).
 
 ## Payment
-An [AssetHolder](#assetholder). Payments hold amounts of certain rights issued by Mints, specifically amounts that are in _transit_. Amounts from payments can be deposited in purses, but otherwise, the entire amount is available when the payment is transferred. Payments can be converted to Purses.
+Payments hold [amounts](#amount) of certain assets 
+issued by [Mints](#mint). Specifically amounts that are *in transit* from one party to another. 
+Amounts from payments can be deposited in [purses](#purse), but otherwise, the entire amount is 
+available when the payment is transferred. Payments can be converted to [Purses](#purse). All contents 
+of a purse must be of the same [brand](#brand).
 
-See more: [Payment API](/ertp/api/payment.md)
+See the [ERTP Guide's Payments section](https://agoric.com/documentation/ertp/guide/issuer.html#payments)
+and the [ERTP API's Payments section](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand) 
+for more information.
 
 ## Presence
 A local version of a remote object that serves as a proxy for the remote object. 
+If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`. 
+See the [JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html) for more information. 
 
 ## Purse
-An [AssetHolder](#assetholder). Purses hold amounts of certain rights issued by Mints, specifically amounts that are _stationary_. Purses can transfer part of the balance they hold in a payment, which has a narrower interface.
+Purses hold [amounts](#amount) of certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
 
-See more: [Purse API](/ertp/api/purse.md)
+See the [ERTP Guide's Purses section](https://agoric.com/documentation/ertp/guide/issuer.html#purses) and the
+[ERTP API's Purses section](https://agoric.com/documentation/ertp/api/purse.html)
+for more information.
 
 ## Vat
 
