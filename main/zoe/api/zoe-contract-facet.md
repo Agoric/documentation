@@ -101,6 +101,12 @@ Get the Zoe `inviteIssuer`.
 const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
+## zcf.getAmountMath(brand)
+- `brand` string
+- Returns {amountMath}
+
+Returns the `amountMath` object associated with the `brand` argument.
+
 ## zcf.getAmountMaths(keywords)
 - `keywords` `{Array <String>}`
 - Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
