@@ -32,7 +32,7 @@ const currentBalance = purse.getCurrentAmount();
 - Returns: `{Amount}`
 
 Deposit all the contents of `payment` into this purse, returning the payment's amount
-of digital assets. If the optional argument `optAmount` does not equal the balance of
+of digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
 `payment`, or if `payment` is an unresolved promise, throw an error.
 
 ```js
