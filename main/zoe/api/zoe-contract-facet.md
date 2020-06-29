@@ -102,10 +102,15 @@ const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
 ## zcf.getAmountMath(brand)
-- `brand` string
-- Returns {amountMath}
+- `brand` `{String}`
+- Returns `{amountMath}`
 
 Returns the `amountMath` object associated with the `brand` argument.
+
+```js
+const ticketIssuer = publicAPI.getTicketIssuer();
+const ticketAmountMath = ticketIssuer.getAmountMath();
+```
 
 ## zcf.getAmountMaths(keywords)
 - `keywords` `{Array <String>}`
@@ -116,7 +121,12 @@ Pass in an array of keywords and get an amountMathKeywordRecord in return.
 ```js
 const amountMathKeywordRecord = zoe.getAmountMaths(['Asset', 'Price']);
 ```
-
+## zcf.assertNatMathHelpers(brand)
+- `brand` `{String}`
+- Given a brand, assert that the mathHelpers for that issuer
+  are the 'nat' type (i.e. that the issuer is associated with
+  fungible assets).
+  
 ## zcf.isOfferActive(offerHandle)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - Returns: `{Boolean}`
