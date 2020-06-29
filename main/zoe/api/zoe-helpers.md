@@ -179,50 +179,6 @@ const { swap } = makeZoeHelpers(zoe);
   return zcf.makeInvitation(hook);
 ```
 
-## zoeHelpers.inviteAnOffer({offerHook, customProperties, expected})
-- `offerHook` - the function to be called when the offer is made and
-  invite redeemed
-- `customProperties` - (optional) properties to be added to the extent
-- `expected` - the expected structure of the proposal for the offer.
-  Values are null.
-- Returns: a promise for the new offerHandle
-
-**DEPRECATED AS OF ZOE 0.6 / MAY 2020**
-
-**We recommend using `checkhook` instead.**
-
-**See [`zcf.makeInvitation`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-makeinvitation-offerhook-customproperties)**
-
-Make an invitation to submit an Offer to this contract. This
-invitation can be given to a client, granting them the ability to
-participate in the contract.
-
-If "offerHook" is provided, it will be called when an offer is made 
-using the invite. The callback will get a reference to the offerHandle.
-
-If the "expected" option is provided, it should be an {ExpectedRecord}.
-This is like a {Proposal}, but the amounts in 'want' and 'give' should be null,
-and the 'exit' should have a choice but the contents should be null.
-If the client submits an Offer which does not match these expectations,
-that offer will be rejected (and refunded) without invoking the offerHook.
-
-```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
-
-const { inviteAnOffer } = makeZoeHelpers(zoe);
-
-  const firstOffer = inviteAnOffer({
-      offerHook: makeMatchingInvite,
-      customProperties: {
-        inviteDesc: 'firstOffer',
-      },
-      expected: {
-        give: { Asset: null },
-        want: { Price: null },
-      },
-    });
-```
-
 ## zoeHelpers.makeEmptyOffer()
 - Returns: a promise for the new offerHandle
 
