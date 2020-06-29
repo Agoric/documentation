@@ -182,23 +182,29 @@ Zoe.
 const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ```
 
-## zcf.getCurrentAllocation(offerHandle, sparseKeywords)
+
+getCurrentAllocation and getCurrentAllocations no longer take sparseKeywords as a parameter. Instead, brandKeywordRecord is an optional parameter. If omitted, amounts are returned only for brands for which an allocation currently exists.
+
+## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists.
 - `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offer.
+Get the amounts associated with the `brand` for the offer. If the optional `brandKeywordRecord`
+argument is omitted, it only returns amounts for brands for which an allocation currently exists.
 
 ```js
 const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ```
 
-## zcf.getCurrentAllocations(offerHandles, sparseKeywords)
+## zcf.getCurrentAllocations(offerHandles, brandKeywordRecord)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
-Get a list of the amounts associated with the sparseKeywords for the offers.
+Get a list of the amounts associated with the `brand` for the offers. If the optional `brandKeywordRecord`
+argument is omitted, it only returns amounts for brands for which an allocation currently exists.
 
 ## zcf.getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
