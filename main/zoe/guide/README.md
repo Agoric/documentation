@@ -133,11 +133,12 @@ through Zoe.
 
 A smart contract on Zoe must export a function `makeContract` that
 takes a single parameters: `zcf`, which is the contract-internal API
-for Zoe. The smart contract must return an object with two
-properties:
+for Zoe. The smart contract must return an
 `invite`, an invite to join the contract, which will be given to the
-user who instantiated the contract, and `publicAPI`, the public API to the
-contract (no invite necessary to call these methods!).
+user who instantiated the contract.
+
+If you want your contract to have a public API, add one via
+`zcf.initPublicAPI()`
 
 ## Diving Deeper
 
