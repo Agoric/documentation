@@ -13,8 +13,7 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const {
   assertKeywords,
-  canTradeWith,
-  canTradeWithMapKeywords,
+  assertNatMathHelpers,
   checkIfProposal,
   rejectOffer,
   swap,
@@ -22,6 +21,9 @@ const {
   getActiveOffers,
   makeEmptyOffer,
   escrowAndAllocateTo,
+  isOfferSafe,
+  satisfies,
+  trade,
 } = makeZoeHelpers(zoe);
 ```
 
@@ -124,12 +126,13 @@ and the offer that we are trying out has the handle `tryHandle`.
 If the `keepOffer` is no longer active, we reject the `tryOffer` with
 the `keepHandleInactiveMsg`. 
 
-If `canTradeWith` returns false for the two offers, we reject the
+If `satisfies` returns false for the two offers, we reject the
 `tryOffer`.
 
-If `canTradeWith` is true, we reallocate with Zoe by swapping the
+If `satisfies` is true, we reallocate with Zoe by swapping the
 amounts for the two offers, then we complete both offers so that the
-users will receive their payout.
+users will receive their payout. Any surplus in the swap remains with the 
+original offer (`keepHandle`).
 
 ```js
 import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
@@ -162,7 +165,7 @@ makeEmptyOffer().then(offerHandle => {...})
 
 Create a new offerHook that checks whether the proposal matches the
 `expected` structure before calling the `offerHook` argument
-=======
+
 ## zoeHelpers.escrowAndAllocateTo({ amount, payment, keyword, recipientHandle })
 - `amount` - the amount to be escrowed. This should be equal to the
   payment amount
@@ -217,4 +220,92 @@ const offerHook = offerHandle => {
       return 'Offer completed. You should receive a payment from Zoe';
     });
 };
+```
+
+## zoeHelpers.satisfies()
+- `offerhandle`- The offer being checked
+- `allocation` - The allocation checked against the offer's wants.
+- Returns: `true` if the allocation satisfies the offer, `false` if not.
+
+Checks is an allocation would satisfy a single offer's wants if that was the allocation passed to
+`reallocate()`. This is half of the offer safety check; whether the allocation constitutes a refund
+is not checked. 
+```js
+//If `leftOfferHandle' is:
+//{ give: { Asset: moola(10) },
+//  want: { Price: simoleans(4) },
+// giving someone exactly what they want satisifies wants, returns `true`
+satisfies(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(4),
+})
+// giving someone less than what they want even with a refund doesn't satisfy wants`,
+satisfies(leftOfferHandle, {
+  Asset: moola(10),
+  Price: simoleans(3),
+})
+//giving someone less than what they want even with a refund doesn't satisfy wants`,      
+satisfies(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(3),
+}),
+```
+
+## zoeHelpers.isOfferSafe()
+- `offerHandle` - Offer being checked.
+- `allocation` - Proposed allocation
+- Returns: `true` if the allocation is safe for the offer, `false` otherwise.
+checks whether an
+allocation for a particular offer would satisfy offer safety. Any
+allocation that returns true under `satisfy` **(tyg todo: Should this be "satisfies"?)** will also return true
+under `isOfferSafe`. (`isOfferSafe` is equivalent of `satisfies` || **(tyg todo: I'd prefer to use "logical OR" here. OK?)**
+gives a refund).
+```js
+//If `leftOfferHandle` is:
+//{ give: { Asset: moola(10) },
+//  want: { Price: simoleans(4) },
+//Giving someone exactly what they want is offer safe
+isOfferSafe(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(4),
+})
+// Giving someone less than what they want and not what they gave is not offer safe
+isOfferSafe(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(3),
+})  ,
+```
+
+## zoeHelpers.trade()
+- **(tyg todo: Not sure how to describe/name the arguments with respect to their being a combination of offerHandle, gain, and loss?)**
+- Returns: **(tyg todo: Not clear on what's returned; boolean? Or from the code, either undefined or an acceptance message?)**
+Performs a trade between two offers given a declarative description of what each side loses
+and gains. If the two `offerHandle` arguments can trade, then swap their compatible assets, marking both offers as complete.
+
+Any surplus remains with the original offer. For example if offer A gives 5 moola and offer B only wants 3 moola, offer A
+retains 2 moola.
+
+If the first offer argument has already completed and is no longer active, the other offer is rejected with a message.
+```js
+// If 'leftOfferHandle' is
+// {
+//  give: { Asset: moola(10) },
+//  want: { Bid: simoleans(4) } }
+// and `rightOfferHandle` is
+// {
+//  give: { Money: simoleans(6) },
+//  want: { Items: moola(7) } }
+// `trade` makes the trade and returns `true`
+   trade(
+        {
+          offerHandle: leftOfferHandle,
+          gains: { Bid: simoleans(4) },
+          losses: { Asset: moola(7) },
+        },
+        {
+          offerHandle: rightOfferHandle,
+          gains: { Items: moola(7) },
+          losses: { Money: simoleans(4) },
+        },
+      );
 ```
