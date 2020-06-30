@@ -103,7 +103,7 @@ const inviteIssuer = await E(zoe).getInviteIssuer();
 - `issuer` `{Issuer}`
 - Returns `{Brand}`
 
-Synchronously returns the `brand` of the `issuer` argument
+Returns the `brand` of the `issuer` argument
 
 ## zcf.getAmountMath(brand)
 - `brand` `{String}`
@@ -115,21 +115,6 @@ Returns the `amountMath` object associated with the `brand` argument.
 const ticketIssuer = publicAPI.getTicketIssuer();
 const ticketAmountMath = ticketIssuer.getAmountMath();
 ```
-
-## zcf.getAmountMaths(keywords)
-- `keywords` `{Array <String>}`
-- Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
-
-Pass in an array of keywords and get an amountMathKeywordRecord in return.
-
-```js
-const amountMathKeywordRecord = zoe.getAmountMaths(['Asset', 'Price']);
-```
-## zcf.assertNatMathHelpers(brand)
-- `brand` `{String}`
-- Given a brand, assert that the mathHelpers for that issuer
-  are the 'nat' type (i.e. that the issuer is associated with
-  fungible assets).
   
 ## zcf.isOfferActive(offerHandle)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
@@ -191,7 +176,7 @@ const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 - `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the `brand` for the offer. If the optional `brandKeywordRecord`
+Get the amounts associated with the `brand`s for the offer. If the optional `brandKeywordRecord`
 argument is omitted, it only returns amounts for brands for which an allocation currently exists.
 
 ```js
@@ -218,8 +203,9 @@ argument is omitted, it only returns amounts for brands for which an allocation 
   }
   newValue = value;
   waitForNextUpdate(offerNotifier, updateHandle);
+```
   
-## zcf.initPublicAPI(publicAPI
+## zcf.initPublicAPI(publicAPI)
 - `publicAPI` <Object>
 - Returns `{void}`
 
