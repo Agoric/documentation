@@ -50,6 +50,14 @@ purse.deposit(secondPayment, fungible123);
 
 ```
 
+## purse.makeDepositFacet()
+
+Creates a deposit-only facet on the `purse`. This is an object you can give to other parties
+that lets them deposit to your  `purse` without being able to withdraw, making it a safe
+way to let other people send you payments.
+**(tyg todo: Not sure of what a usage example looks like; obviously starts with `purse.makeDepositFacet()`,
+but then do you send a returned object to someone else who calls `purse.deposit()` with it?)**
+
 ## purse.withdraw(amount)
 - `amount` `{Amount}`
 - Returns: `{Payment}`
