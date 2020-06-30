@@ -47,12 +47,12 @@ const { sourceCode, moduleFormat } = await bundleSource(someContract);
 // install and get the `installationHandle` for someContract
 const installationHandleP = E(zoe).install(sourceCode, moduleFormat);
 ```
-
+ 
 ## E(zoe).makeInstance(installationHandle, issuerKeywordRecord, terms)
 - `installationHandle` <router-link to="/glossary/#handle">`{Handle}`</router-link>
 - `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
 - `terms` `{Object}`
-- Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
+- Returns: `{Invite, instanceRecord}`
 
 We can use Zoe to create smart contract instances by specifying a
 particular contract installation to use, as well as the
@@ -64,8 +64,10 @@ contract will use the keywords to index their proposal and their
 payments. The payout that users receive from Zoe will be in the form of an
 object with keywords as keys. Terms are the arguments to the contract,
 such as the number of bids an auction will wait for before closing.
-Terms are up to the discretion of the smart contract. We get back an
-invite (an ERTP payment) to participate in the contract.
+Terms are up to the discretion of the smart contract. We get back a record
+of an invite (an ERTP payment) to participate in the contract and an
+instanceRecord so you have direct access to information such as the 
+relevant instanceHandle.
 
 ```js
 const issuerKeywordRecord = { 
@@ -73,7 +75,7 @@ const issuerKeywordRecord = {
   'Price' : simoleanIssuer 
 };
 const terms = { numBids: 3 };
-const someInvite = await E(zoe).makeInstance(
+const inviteInstanceRecordRecord = await E(zoe).makeInstance(
   secondPriceAuctionInstallationHandle, 
   issuerKeywordRecord, 
   terms
