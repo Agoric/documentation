@@ -218,4 +218,11 @@ argument is omitted, it only returns amounts for brands for which an allocation 
   }
   newValue = value;
   waitForNextUpdate(offerNotifier, updateHandle);
-```
+  
+## zcf.initPublicAPI(publicAPI
+- `publicAPI` <Object>
+- Returns `{void}`
+
+Initialize the publicAPI for the contract instance, as stored by Zoe in
+the instanceRecord. The `publicAPI` argument is an object whose methods are the API
+available to anyone who knows the `instanceHandle`
