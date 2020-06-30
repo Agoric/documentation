@@ -14,6 +14,7 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 const {
   assertKeywords,
   canTradeWith,
+  canTradeWithMapKeywords,
   checkIfProposal,
   rejectOffer,
   swap,
@@ -107,45 +108,6 @@ Returns the offer records, but only if the offer is still active.
 
 ## zoeHelpers.rejectOffer(offerHandle)
 - `offerHandle`
-
-
-## zoeHelpers.canTradeWith(leftOfferHandle, rightOfferHandle)
-- `leftOfferHandle`
-- `rightOfferHandle`
-- Returns: `{Boolean}`
-
-Checks if the `give` and `want` of two invites would satisfy offer
-safety if the two allocations are swapped.
-
-```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
-
-const { canTradeWith } = makeZoeHelpers(zoe);
-
-const leftInvite = harden({
-  give: { Asset: moola(10) },
-  want: { Price: simoleans(4) },
-  exit: { onDemand: null },
-})
-
-const rightInvite = harden({
-  give: { Price: simoleans(6) },
-  want: { Asset: moola(7) },
-  exit: { onDemand: null },
-})
-
-const cantTradeRightInvite = harden({
-  give: { Price: simoleans(6) },
-  want: { Asset: moola(100) },
-  exit: { onDemand: null },
-})
-
-// Returns true
-canTradeWith(leftInvite, rightInvite)
-
-// Returns false
-canTradeWith(leftInvite, cantTradeRightInvite)
-```
 
 ## zoeHelpers.swap(keepHandle, tryHandle, keepHandleInactiveMsg)
 - `keepHandle`
