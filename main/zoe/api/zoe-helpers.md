@@ -13,7 +13,7 @@ import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
 
 const {
   assertKeywords,
-  canTradeWith,
+  assertNatMathHelpers,
   checkIfProposal,
   rejectOffer,
   swap,
@@ -21,6 +21,9 @@ const {
   getActiveOffers,
   makeEmptyOffer,
   escrowAndAllocateTo,
+  isOfferSafe,
+  satisfies,
+  trade,
 } = makeZoeHelpers(zoe);
 ```
 
@@ -45,6 +48,15 @@ const proposal = {
 
 assertKeywords(['Asset', 'Price']);
 ```
+
+## zoeHelpers.assertNatMathHelpers(brand)
+- `brand` `{String}`
+
+Given a brand, assert that the mathHelpers for that issuer
+are the 'nat' type (i.e. that the issuer is associated with
+fungible assets). Returns `true` if they are `nat`, `false` if
+they are not.
+
 
 ## zoeHelpers.rejectIfNotProposal(offerHandle, expectedProposalStructure)
 - `offerHandle` `{Handle}`
@@ -108,45 +120,6 @@ Returns the offer records, but only if the offer is still active.
 ## zoeHelpers.rejectOffer(offerHandle)
 - `offerHandle`
 
-
-## zoeHelpers.canTradeWith(leftOfferHandle, rightOfferHandle)
-- `leftOfferHandle`
-- `rightOfferHandle`
-- Returns: `{Boolean}`
-
-Checks if the `give` and `want` of two invites would satisfy offer
-safety if the two allocations are swapped.
-
-```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
-
-const { canTradeWith } = makeZoeHelpers(zoe);
-
-const leftInvite = harden({
-  give: { Asset: moola(10) },
-  want: { Price: simoleans(4) },
-  exit: { onDemand: null },
-})
-
-const rightInvite = harden({
-  give: { Price: simoleans(6) },
-  want: { Asset: moola(7) },
-  exit: { onDemand: null },
-})
-
-const cantTradeRightInvite = harden({
-  give: { Price: simoleans(6) },
-  want: { Asset: moola(100) },
-  exit: { onDemand: null },
-})
-
-// Returns true
-canTradeWith(leftInvite, rightInvite)
-
-// Returns false
-canTradeWith(leftInvite, cantTradeRightInvite)
-```
-
 ## zoeHelpers.swap(keepHandle, tryHandle, keepHandleInactiveMsg)
 - `keepHandle`
 - `tryHandle`
@@ -162,12 +135,13 @@ and the offer that we are trying out has the handle `tryHandle`.
 If the `keepOffer` is no longer active, we reject the `tryOffer` with
 the `keepHandleInactiveMsg`. 
 
-If `canTradeWith` returns false for the two offers, we reject the
+If `satisfies` returns false for the two offers, we reject the
 `tryOffer`.
 
-If `canTradeWith` is true, we reallocate with Zoe by swapping the
+If `satisfies` is true, we reallocate with Zoe by swapping the
 amounts for the two offers, then we complete both offers so that the
-users will receive their payout.
+users will receive their payout. Any surplus in the swap remains with the 
+offer who gave the surplus.
 
 ```js
 import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
@@ -177,50 +151,6 @@ const { swap } = makeZoeHelpers(zoe);
   // `firstOfferHandle` is from a prior offer to the contract
   const hook = newHandle => swap(firstOfferHandle, newHandle);
   return zcf.makeInvitation(hook);
-```
-
-## zoeHelpers.inviteAnOffer({offerHook, customProperties, expected})
-- `offerHook` - the function to be called when the offer is made and
-  invite redeemed
-- `customProperties` - (optional) properties to be added to the extent
-- `expected` - the expected structure of the proposal for the offer.
-  Values are null.
-- Returns: a promise for the new offerHandle
-
-**DEPRECATED AS OF ZOE 0.6 / MAY 2020**
-
-**We recommend using `checkhook` instead.**
-
-**See [`zcf.makeInvitation`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-makeinvitation-offerhook-customproperties)**
-
-Make an invitation to submit an Offer to this contract. This
-invitation can be given to a client, granting them the ability to
-participate in the contract.
-
-If "offerHook" is provided, it will be called when an offer is made 
-using the invite. The callback will get a reference to the offerHandle.
-
-If the "expected" option is provided, it should be an {ExpectedRecord}.
-This is like a {Proposal}, but the amounts in 'want' and 'give' should be null,
-and the 'exit' should have a choice but the contents should be null.
-If the client submits an Offer which does not match these expectations,
-that offer will be rejected (and refunded) without invoking the offerHook.
-
-```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
-
-const { inviteAnOffer } = makeZoeHelpers(zoe);
-
-  const firstOffer = inviteAnOffer({
-      offerHook: makeMatchingInvite,
-      customProperties: {
-        inviteDesc: 'firstOffer',
-      },
-      expected: {
-        give: { Asset: null },
-        want: { Price: null },
-      },
-    });
 ```
 
 ## zoeHelpers.makeEmptyOffer()
@@ -244,7 +174,7 @@ makeEmptyOffer().then(offerHandle => {...})
 
 Create a new offerHook that checks whether the proposal matches the
 `expected` structure before calling the `offerHook` argument
-=======
+
 ## zoeHelpers.escrowAndAllocateTo({ amount, payment, keyword, recipientHandle })
 - `amount` - the amount to be escrowed. This should be equal to the
   payment amount
@@ -299,4 +229,98 @@ const offerHook = offerHandle => {
       return 'Offer completed. You should receive a payment from Zoe';
     });
 };
+```
+
+## zoeHelpers.satisfies()
+- `offerhandle`- The offer being checked
+- `allocation` - The allocation checked against the offer's wants.
+- Returns: `true` if the allocation satisfies the offer, `false` if not.
+
+Checks if an allocation would satisfy a single offer's wants if that was the allocation passed to
+`reallocate()`. This is half of the offer safety check; whether the allocation constitutes a refund
+is not checked. 
+```js
+//If `leftOfferHandle' is:
+//{ give: { Asset: moola(10) },
+//  want: { Price: simoleans(4) },
+// giving someone exactly what they want satisifies wants, returns `true`
+satisfies(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(4),
+})
+// giving someone less than what they want even with a refund doesn't satisfy wants
+satisfies(leftOfferHandle, {
+  Asset: moola(10),
+  Price: simoleans(3),
+})
+//giving someone less than what they want even with a refund doesn't satisfy wants      
+satisfies(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(3),
+}),
+```
+
+## zoeHelpers.isOfferSafe()
+- `offerHandle` - Offer being checked.
+- `allocation` - Proposed allocation
+- Returns: `true` if the allocation is safe for the offer, `false` otherwise.
+checks whether an
+allocation for a particular offer would satisfy offer safety. Any
+allocation that returns true under `satisfies` will also return true
+under `isOfferSafe`. (`isOfferSafe` is equivalent of `satisfies` logical OR
+gives a refund).
+```js
+//If `leftOfferHandle` has the proposal
+//{ give: { Asset: moola(10) },
+//  want: { Price: simoleans(4) },
+//Giving someone exactly what they want is offer safe
+isOfferSafe(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(4),
+})
+// Giving someone less than what they want and not what they gave is not offer safe
+isOfferSafe(leftOfferHandle, {
+  Asset: moola(0),
+  Price: simoleans(3),
+})  ,
+```
+
+## zoeHelpers.trade(leftItem, rightItem)
+- `leftItem` - See below.
+- `rightItem` - See below.
+- Returns: Undefined.
+
+The `leftItem` and `rightItem` arguments are each a record with keys: `offerHandle`, `gains`, and `losses`
+(`losses` is optional). The value of `offerHandle` is an `offerHandle`. `gains` and `losses` are `amountKeywordRecords`
+describing declaratively what is added or removed from the allocation for that offer.
+
+Performs a trade between two offers given a declarative description of what each side loses
+and gains. If the two `offerHandle` argument parts can trade, then swap their compatible assets, marking both offers as complete.
+
+Any surplus remains with the original offer. For example if offer A gives 5 moola and offer B only wants 3 moola, offer A
+retains 2 moola.
+
+If the first offer argument has already completed and is no longer active, the other offer is rejected with a message.
+```js
+// If 'leftOfferHandle' has the proposal
+// {
+//  give: { Asset: moola(10) },
+//  want: { Bid: simoleans(4) } }
+// and `rightOfferHandle` has the proposal
+// {
+//  give: { Money: simoleans(6) },
+//  want: { Items: moola(7) } }
+// `trade` makes the trade and returns `undefined`
+   trade(
+        {
+          offerHandle: leftOfferHandle,
+          gains: { Bid: simoleans(4) },
+          losses: { Asset: moola(7) },
+        },
+        {
+          offerHandle: rightOfferHandle,
+          gains: { Items: moola(7) },
+          losses: { Money: simoleans(4) },
+        },
+      );
 ```

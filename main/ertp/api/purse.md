@@ -32,7 +32,7 @@ const currentBalance = purse.getCurrentAmount();
 - Returns: `{Amount}`
 
 Deposit all the contents of `payment` into this purse, returning the payment's amount
-of digital assets. If the optional argument `optAmount` does not equal the balance of
+of digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
 `payment`, or if `payment` is an unresolved promise, throw an error.
 
 ```js
@@ -48,6 +48,17 @@ const secondPayment = mint.mintPayment(amountMath.make(100));
 // Throws error
 purse.deposit(secondPayment, fungible123);
 
+```
+
+## purse.makeDepositFacet()
+
+Creates a deposit-only facet on the `purse`. This is an object you can give to other parties
+that lets them deposit to your  `purse` without being able to withdraw, making it a safe
+way to let other people send you payments.
+```js
+const depositOnlyFacet = purse.makeDepositFacet();
+// Give depositOnlyFacet to someone else. They can pass a payment that will be deposited:
+depositOnlyFacet.receive(payment);
 ```
 
 ## purse.withdraw(amount)

@@ -101,6 +101,10 @@ const record = {
 record.Asset.coerce(tickets3);
 ```
 
+## BrandKeywordRecord
+
+The keys are keywords and the values are the brands for particular issuers.
+
 ## ExitRule
 
 The possible kinds are 'waived', 'onDemand', and 'afterDeadline'. `timer` and `deadline` only are used for the `afterDeadline` kind.
@@ -153,7 +157,8 @@ The possible records are:
   installationHandle, // opaque identifier for the installation
   publicAPI, // the invite-free publicly accessible API for the contract
   terms, // contract parameters
-  issuerKeywordRecord, // record with keywords keys, issuer values
+  issuerKeywordRecord, // record with keyword keys, issuer values
+  brandKeywordRecord, // record with keyword keys, brand values
 }
 ```
 

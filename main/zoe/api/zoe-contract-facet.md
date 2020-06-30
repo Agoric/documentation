@@ -7,7 +7,6 @@ A Zoe Contract Facet is an API object for a running contract instance to access 
 ## zcf.reallocate(offerHandles, newAmountKeywordRecords, sparseKeywords)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `newAmountKeywordRecords` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
-- `sparseKeywords` `{Array <String>}` sparseKeywords is an optional array of string keywords, which may be a subset of allKeywords.
 
 Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This will only succeed if the reallocation 1) conserves rights, and 2) is 'offer-safe' for all parties involved. This reallocation is partial, meaning that it applies only to
 the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
@@ -15,11 +14,10 @@ rights are conserved and offer safety is enforced for all offers, even though th
 these invariants are true, they will remain true until changes are made.
 
 newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the
-values are the amounts to be paid to the offer at the same index in the `offerHandles`.
+values are the amounts to be paid to the offer at the same index in the `offerHandles`. Note that the offer keywords
+can be different for different offers with no effect on a reallocation. 
 
 This operation throws an error:
-- If any of the newAmountKeywordRecords do not have a value for all the keywords in sparseKeywords. 
-- If any newAmountKeywordRecords have keywords not in sparseKeywords.
 - If there are only 0 or 1 offerHandles given.
 
 The reallocation only happens if 'offer safety' and conservation of rights are true, as enforced by Zoe.
@@ -101,16 +99,23 @@ Get the Zoe `inviteIssuer`.
 const inviteIssuer = await E(zoe).getInviteIssuer();
 ```
 
-## zcf.getAmountMaths(keywords)
-- `keywords` `{Array <String>}`
-- Returns: <router-link to="/zoe/api/records.html#amountmathkeywordrecord">`{AmountMathKeywordRecord}`</router-link>
+## zcf.getBrandForIssuer(issuer)
+- `issuer` `{Issuer}`
+- Returns `{Brand}`
 
-Pass in an array of keywords and get an amountMathKeywordRecord in return.
+Returns the `brand` of the `issuer` argument
+
+## zcf.getAmountMath(brand)
+- `brand` `{String}`
+- Returns `{amountMath}`
+
+Returns the `amountMath` object associated with the `brand` argument.
 
 ```js
-const amountMathKeywordRecord = zoe.getAmountMaths(['Asset', 'Price']);
+const ticketIssuer = publicAPI.getTicketIssuer();
+const ticketAmountMath = ticketIssuer.getAmountMath();
 ```
-
+  
 ## zcf.isOfferActive(offerHandle)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - Returns: `{Boolean}`
@@ -166,23 +171,25 @@ Zoe.
 const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
 ```
 
-## zcf.getCurrentAllocation(offerHandle, sparseKeywords)
+## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists.
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
 
-Get the amounts associated with the sparseKeywords for the offer.
+Get the amounts associated with the `brand`s for the offer. If the optional `brandKeywordRecord`
+argument is omitted, it only returns amounts for brands for which an allocation currently exists.
 
 ```js
 const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ```
 
-## zcf.getCurrentAllocations(offerHandles, sparseKeywords)
+## zcf.getCurrentAllocations(offerHandles, brandKeywordRecord)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
+- `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists
 - Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{[<AmountKeywordRecord>]}`</router-link>
 
-Get a list of the amounts associated with the sparseKeywords for the offers.
+Get a list of the amounts associated with the `brand` for the offers. If the optional `brandKeywordRecord`
+argument is omitted, it only returns amounts for brands for which an allocation currently exists.
 
 ## zcf.getOfferNotifier(offerHandle)
 - `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
@@ -197,3 +204,11 @@ Get a list of the amounts associated with the sparseKeywords for the offers.
   newValue = value;
   waitForNextUpdate(offerNotifier, updateHandle);
 ```
+  
+## zcf.initPublicAPI(publicAPI)
+- `publicAPI` <Object>
+- Returns `{void}`
+
+Initialize the publicAPI for the contract instance, as stored by Zoe in
+the instanceRecord. The `publicAPI` argument is an object whose methods are the API
+available to anyone who knows the `instanceHandle`
