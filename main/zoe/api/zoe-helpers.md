@@ -49,6 +49,15 @@ const proposal = {
 assertKeywords(['Asset', 'Price']);
 ```
 
+## zoeHelpers.assertNatMathHelpers(brand)
+- `brand` `{String}`
+
+Given a brand, assert that the mathHelpers for that issuer
+are the 'nat' type (i.e. that the issuer is associated with
+fungible assets). Returns `true` if they are `nat`, `false` if
+they are not.
+
+
 ## zoeHelpers.rejectIfNotProposal(offerHandle, expectedProposalStructure)
 - `offerHandle` `{Handle}`
 - `expectedProposalStructure` `{Object}`
@@ -132,7 +141,7 @@ If `satisfies` returns false for the two offers, we reject the
 If `satisfies` is true, we reallocate with Zoe by swapping the
 amounts for the two offers, then we complete both offers so that the
 users will receive their payout. Any surplus in the swap remains with the 
-original offer (`keepHandle`).
+offer who gave the surplus.
 
 ```js
 import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
@@ -227,7 +236,7 @@ const offerHook = offerHandle => {
 - `allocation` - The allocation checked against the offer's wants.
 - Returns: `true` if the allocation satisfies the offer, `false` if not.
 
-Checks is an allocation would satisfy a single offer's wants if that was the allocation passed to
+Checks if an allocation would satisfy a single offer's wants if that was the allocation passed to
 `reallocate()`. This is half of the offer safety check; whether the allocation constitutes a refund
 is not checked. 
 ```js
@@ -239,12 +248,12 @@ satisfies(leftOfferHandle, {
   Asset: moola(0),
   Price: simoleans(4),
 })
-// giving someone less than what they want even with a refund doesn't satisfy wants`,
+// giving someone less than what they want even with a refund doesn't satisfy wants
 satisfies(leftOfferHandle, {
   Asset: moola(10),
   Price: simoleans(3),
 })
-//giving someone less than what they want even with a refund doesn't satisfy wants`,      
+//giving someone less than what they want even with a refund doesn't satisfy wants      
 satisfies(leftOfferHandle, {
   Asset: moola(0),
   Price: simoleans(3),
@@ -257,11 +266,11 @@ satisfies(leftOfferHandle, {
 - Returns: `true` if the allocation is safe for the offer, `false` otherwise.
 checks whether an
 allocation for a particular offer would satisfy offer safety. Any
-allocation that returns true under `satisfy` **(tyg todo: Should this be "satisfies"?)** will also return true
-under `isOfferSafe`. (`isOfferSafe` is equivalent of `satisfies` || **(tyg todo: I'd prefer to use "logical OR" here. OK?)**
+allocation that returns true under `satisfies` will also return true
+under `isOfferSafe`. (`isOfferSafe` is equivalent of `satisfies` logical OR
 gives a refund).
 ```js
-//If `leftOfferHandle` is:
+//If `leftOfferHandle` has the proposal
 //{ give: { Asset: moola(10) },
 //  want: { Price: simoleans(4) },
 //Giving someone exactly what they want is offer safe
@@ -276,26 +285,32 @@ isOfferSafe(leftOfferHandle, {
 })  ,
 ```
 
-## zoeHelpers.trade()
-- **(tyg todo: Not sure how to describe/name the arguments with respect to their being a combination of offerHandle, gain, and loss?)**
-- Returns: **(tyg todo: Not clear on what's returned; boolean? Or from the code, either undefined or an acceptance message?)**
+## zoeHelpers.trade(leftItem, rightItem)
+- `leftItem` - See below.
+- `rightItem` - See below.
+- Returns: Undefined.
+
+The `leftItem` and `rightItem` arguments are each a record with keys: `offerHandle`, `gains`, and `losses`
+(`losses` is optional). The value of `offerHandle` is an `offerHandle`. `gains` and `losses` are `amountKeywordRecords`
+describing declaratively what is added or removed from the allocation for that offer.
+
 Performs a trade between two offers given a declarative description of what each side loses
-and gains. If the two `offerHandle` arguments can trade, then swap their compatible assets, marking both offers as complete.
+and gains. If the two `offerHandle` argument parts can trade, then swap their compatible assets, marking both offers as complete.
 
 Any surplus remains with the original offer. For example if offer A gives 5 moola and offer B only wants 3 moola, offer A
 retains 2 moola.
 
 If the first offer argument has already completed and is no longer active, the other offer is rejected with a message.
 ```js
-// If 'leftOfferHandle' is
+// If 'leftOfferHandle' has the proposal
 // {
 //  give: { Asset: moola(10) },
 //  want: { Bid: simoleans(4) } }
-// and `rightOfferHandle` is
+// and `rightOfferHandle` has the proposal
 // {
 //  give: { Money: simoleans(6) },
 //  want: { Items: moola(7) } }
-// `trade` makes the trade and returns `true`
+// `trade` makes the trade and returns `undefined`
    trade(
         {
           offerHandle: leftOfferHandle,
