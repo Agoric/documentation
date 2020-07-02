@@ -32,7 +32,6 @@ Via the REPL associated with the wallet, developers can use all the on-chain com
 contracts and Dapps.
 
 Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, through which it can reach the chain."
-Once the `deploy.js` script ends, connections to any of its objects are severed.
 
 ## Contract deployment
 
