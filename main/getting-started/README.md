@@ -23,19 +23,17 @@ Some documents fall into multiple categories. For example, our Agoric
 installation document is both a Reference and a Getting Started document.
 
 You should read them in this order:
-1. **[Before Using Agoric](https://agoric.com/documentation/getting-started/before-using-agoric)**: 
-What you need to do before installing Agoric software and installing the Agoric SDK.
+1. **[Before Using the Agoric SDK](https://agoric.com/documentation/getting-started/before-using-agoric)**: 
+How to install software that the Agoric SDK depends on.
 2. **[Start a Project](https://agoric.com/documentation/getting-started/start-a-project)**: A
-  procedure checklist that walks you through creating a new smart contract 
+  procedure checklist that walks you through creating a new Agoric SDK 
   project from scratch. 
 3. **[ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction)**:
-  A Getting Started document that
-  briefly explains the concepts and components of Agoric's Electronic
+  A Getting Started document that briefly explains the concepts and components of Agoric's Electronic
   Rights Transfer Protocol (ERTP) which is the heart of Agoric
   software.
 4. **[Zoe Introduction](https://agoric.com/documentation/getting-started/intro-zoe)**: 
-  A Getting Started document that
-  briefly explains the concepts and components of Zoe, our reusable smart contract 
+  A Getting Started document that briefly explains the concepts and components of Zoe, our reusable smart contract 
   for writing other smart contracts in JavaScript. Zoe implements our guarantee that users
   either get what they wanted from the contract or a full refund of what they put up for it. 
 5. **[Agoric Platform/Stack](https://agoric.com/documentation/platform/)**: A brief introduction to the complete Agoric platform/technical stack.
