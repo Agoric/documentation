@@ -84,36 +84,18 @@ Also, for what needs to be done after you modify a project's code, see
   </tr>
   <tr>
     <td><center>8</center></td>
-    <td>In the deploy shell, <code>cd ui</code></td>
-    <td>Move into the sub-directory that stores the demo project's UI</td></td>
+    <td>In the deploy shell, <code>(cd ui && yarn start)</code></td>
+    <td>This starts the demo project's UI development server.</td></td>
   </tr>
   <tr>
     <td><center>9</center></td>
-    <td>In the deploy shell, <code>yarn install</code></td>
-    <td>Install NPM dependencies</td>
-  </tr>
-  <tr>
-    <td><center>10</center></td>
-    <td>In the deploy shell, <code>yarn start</code></td>
-    <td><code>start</code> is a <code>yarn</code> sub-command
-  implemented by Agoric. It launches the React development server.</td>
-  </tr>
-  <tr>
-    <td><center>11</center></td>
     <td>Go to a browser and open <code>http://localhost:3000</code> to
 	    see the Dapp. If you used the default values for <code>agoric init</code>
 	in Step 2, you'll see the Encouragement demo Dapp, described in the next cell.</td>
 	<td>If you used the <code>agoric init</code> defaults in Step 2, 
 		you'll see our Encouragement Dapp, which lets you get encouragement, 
 	either for free or by making a tip. The latter requires interaction
-	with your wallet where your assets are stored. See the next step.</td>
-  </tr>
-  <tr>
-    <td><center>12</center></td>
-    <td>Go to another tab or browser and open
-  <code>http://localhost:8000/</code> to see and interact with a basic wallet and a REPL</td>
-    <td>REPL is <i>Read-Eval-Print Loop</i>. Your Encouragement Dapp wallet is seeded
-  with a few purses.</td>
+	with your wallet where your assets are stored (which was started with the Agoric VM).</td>
   </tr>
 </tbody>
 </table>

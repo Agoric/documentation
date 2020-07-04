@@ -2,13 +2,19 @@
 # Before Using Agoric Software
 
 Before working with the Agoric CLI, Zoe, and other Agoric tools and
-software, you need to install the following. 
+software, you need to install the following.
 
 <table border="1">
   <tbody>
   <th><b>Step</b></th>
   <th><b>Action</b></th>
   <th><b>Explanation</b></th>
+  <tr>
+    <td><center>0</center></td>
+    <td>Use a Unix-like environment</td>
+    <td>You will need to type commands at a Bash-like shell command line prompt,
+    such as is found in [Linux](https://en.wikipedia.org/wiki/Linux), [MacOS](https://www.apple.com/macos/), or
+    [Windows Subsystem for Linux (wsl)](https://docs.microsoft.com/en-us/windows/wsl/).</td>
   <tr>
     <td><center>1</center></td>
     <td><a href="https://nodejs.org/">Install Node.js</a>, version 12.16.1 or higher</td>
@@ -41,7 +47,7 @@ software, you need to install the following.
     <td><center>4</center></td>
     <td>If you already have a <code>~/agoric-sdk</code> directory, update it: 
       <br><code>cd agoric-sdk</code>
-      <br><code>git checkout hackathon-2020-04</code>
+      <br><code>git checkout master</code>
       <br><code>git pull</code>
     </td>
     <td>In the next step, if you don't have a copy of our <code>agoric-sdk</code> directory, you'll get one. This is in case you already have one and might need to update it.</td>
@@ -49,15 +55,12 @@ software, you need to install the following.
   <tr>
     <td><center>5</center></td>
     <td>If you don't have an <code>~/agoric-sdk</code> directory with Agoric's SDK content in it,
-      <code>git clone --branch hackathon-2020-04
-      https://github.com/Agoric/agoric-sdk</code></td> 
+      <code>git clone https://github.com/Agoric/agoric-sdk</code></td> 
     <td>Get the latest Agoric SDK from the Agoric GitHub
   repository. It goes into the 
       <code>agoric-sdk</code> sub-directory of your home directory.
       If the <code>agoric-sdk</code> sub-directory doesn't already exist, 
       this operation creates it.
-      We will be using the <code>hackathon-2020-04</code> branch
-      of the repository, rather than the usual <code>master</code>.
     </td>
   </tr>
   <tr>
@@ -81,18 +84,10 @@ software, you need to install the following.
   <tr>
     <td><center>9</center></td>
     <td>Install the Agoric CLI by: <code>yarn link-cli 
-      &lt;<i>agoric-cli's install directory</i>&gt;</code></td>
-    <td>Select a directory to install the Agoric CLI in. For example,
-      <code>yarn link-cli  
-      ~/bin/agoric</code> The install directory need not already
-  exist. In Agoric documentation, we use <code>~/bin/agoric</code> as
-      the CLI install directory.</td> 
-    </tr>
-  <tr>
-    <td><center>10</center></td>
-    <td>If not already there, add the directory you installed the Agoric CLI in to your <code>$PATH</code>.</td>
-      <td><code>echo $PATH</code> to see <code>$PATH</code>'s
-  current value.</td>
+      &lt;<i>agoric script location</i>&gt;</code></td>
+    <td>Select a location for the Agoric CLI program. For example,
+      <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
+      with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>)
   </tr>
 </tbody>
 </table>
