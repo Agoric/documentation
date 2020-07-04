@@ -81,18 +81,10 @@ software, you need to install the following.
   <tr>
     <td><center>9</center></td>
     <td>Install the Agoric CLI by: <code>yarn link-cli 
-      &lt;<i>agoric-cli's install directory</i>&gt;</code></td>
-    <td>Select a directory to install the Agoric CLI in. For example,
-      <code>yarn link-cli  
-      ~/bin/agoric</code> The install directory need not already
-  exist. In Agoric documentation, we use <code>~/bin/agoric</code> as
-      the CLI install directory.</td> 
-    </tr>
-  <tr>
-    <td><center>10</center></td>
-    <td>If not already there, add the directory you installed the Agoric CLI in to your <code>$PATH</code>.</td>
-      <td><code>echo $PATH</code> to see <code>$PATH</code>'s
-  current value.</td>
+      &lt;<i>agoric script location</i>&gt;</code></td>
+    <td>Select a location for the Agoric CLI program. For example,
+      <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
+      with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>)
   </tr>
 </tbody>
 </table>
