@@ -109,7 +109,7 @@ arguments' brands, throwing an error if the wrong brand was used.
 
 ## Next Steps
 
-If Getting Started, you should go to the [Introduction to Zoe](https://agoric.com/documentation/getting-started/zoe-introduction/).
+If Getting Started, you should go to the [Introduction to Zoe](https://agoric.com/documentation/getting-started/intro-zoe.html).
 
 If you've finished the Getting Started material, you should go to the
 [ERTP Guide](https://agoric.com/documentation/ertp/guide/) for a fuller explanation of ERTP
