@@ -47,7 +47,7 @@ software, you need to install the following.
     <td><center>4</center></td>
     <td>If you already have a <code>~/agoric-sdk</code> directory, update it: 
       <br><code>cd agoric-sdk</code>
-      <br><code>git checkout hackathon-2020-04</code>
+      <br><code>git checkout master</code>
       <br><code>git pull</code>
     </td>
     <td>In the next step, if you don't have a copy of our <code>agoric-sdk</code> directory, you'll get one. This is in case you already have one and might need to update it.</td>
@@ -55,15 +55,12 @@ software, you need to install the following.
   <tr>
     <td><center>5</center></td>
     <td>If you don't have an <code>~/agoric-sdk</code> directory with Agoric's SDK content in it,
-      <code>git clone --branch hackathon-2020-04
-      https://github.com/Agoric/agoric-sdk</code></td> 
+      <code>git clone https://github.com/Agoric/agoric-sdk</code></td> 
     <td>Get the latest Agoric SDK from the Agoric GitHub
   repository. It goes into the 
       <code>agoric-sdk</code> sub-directory of your home directory.
       If the <code>agoric-sdk</code> sub-directory doesn't already exist, 
       this operation creates it.
-      We will be using the <code>hackathon-2020-04</code> branch
-      of the repository, rather than the usual <code>master</code>.
     </td>
   </tr>
   <tr>
