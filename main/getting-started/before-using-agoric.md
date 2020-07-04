@@ -2,13 +2,18 @@
 # Before Using Agoric Software
 
 Before working with the Agoric CLI, Zoe, and other Agoric tools and
-software, you need to install the following. 
+software, you need to install the following.
 
 <table border="1">
   <tbody>
   <th><b>Step</b></th>
   <th><b>Action</b></th>
   <th><b>Explanation</b></th>
+  <tr>
+    <td><center>0</center></td>
+    <td>Use a Unix-like environment</td>
+    <td>You will need to type commands at a Bash-like shell command line prompt,
+    such as is found in Linux, MacOS, or Windows Subsystem for Linux (ws4l).</td>
   <tr>
     <td><center>1</center></td>
     <td><a href="https://nodejs.org/">Install Node.js</a>, version 12.16.1 or higher</td>
