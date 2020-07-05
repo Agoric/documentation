@@ -10,7 +10,7 @@ When developing a Dapp, you may need to test how it behaves with multiple users 
 These users could have different roles, such as the contract deployer, an auctioneer, a bidder, a buyer, a seller, etc. 
 The Agoric CLI implements a local-chain-multiuser scenario for developing and testing multiuser Dapps.
 
-### Usage
+#### Usage
 
 Develop your Dapp as described in the [Agoric Getting Started Guide](https://agoric.com/documentation/getting-started/).
 After using `agoric start` to test with the simulated chain, stop the simulated chain with Control-C.  Then start a real
@@ -22,17 +22,17 @@ There won’t be any running clients yet, but the chain will start and be fully 
 
 If you’re satisfied with the restart and want to run the chain in the background, you must know how to manage background 
 processes on your system.  For example, Unix-like systems can use the following to log to `chain.log` and start in the background:
-```js
+```sh
 agoric start local-chain >& chain.log &
 ```
 To start a local solo machine connected to the above local chain (your API ag-solo), use:
-```;
+```sh
 agoric start local-solo 8000
 ```
 This starts a solo machine listening for HTTP on TCP port 8000.
 
 To start other local ag-solos, use a unique port number for each one, such as 8001 or 8002 with:
-```js
+```sh
 agoric start local-solo <PORT-NUMBER>
 ```
 
@@ -40,7 +40,7 @@ Test that each of your ag-solos is running and has a wallet by connecting to htt
 Run your contract and API deployment scripts against the API ag-solo with this `deploy` command. Note that port 8000 is the default 
 for `agoric deploy` operations.  To deploy to an ag-solo running on a different port, add the `--hostport=127.0.0.1:<PORT-NUMBER>` 
 option to the deploy command.
-```js
+```sh
 agoric deploy <PATH-TO-DEPLOY.JS>
 ```
 
@@ -49,7 +49,7 @@ different profiles of the same browser).  Then fill out the localhost address of
 that browser. This connects the processes in the browsers to their own wallets so they do not share per-client data 
 such as cookies, storage, etc. Test your UI in each browser!
 
-### Example
+#### Example
 
 This section shows how you do the above steps.
 
