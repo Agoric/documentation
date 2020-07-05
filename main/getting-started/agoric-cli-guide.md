@@ -71,11 +71,15 @@ agoric start local-solo 8001 >& solo-8001.log &
 ```
 Configure the first client browser
 
-Open a browser (or a new profile), and navigate to https://local.agoric.com/ .
+Open a browser (or a new profile), and navigate to https://local.agoric.com/ 
+
+![Agoric Registration](./assets/Agoric-Registration.png)
 
 Keep the recommended address (`http://localhost:8000`), click **Open**, and verify that it opens a wallet and 
 REPL (Read-Eval-Print-Loop).  In the REPL, type `console.log(8000)`, hit **Enter**, and see the 
 command and output in the REPL history.
+
+![REPL](./assets/REPL-1.png)
 
 #### Configure an additional client browser
 Open a different browser. Not just another tab or window, but a completely different browser or browser profile 
@@ -84,6 +88,8 @@ create a new Chrome profile, or open a Firefox or Safari window. Navigate to `ht
 in the resulting page, set the address to `http://localhost:8001` Click **Save**. Then click **Open** and 
 verify that it opens a different wallet and REPL (the REPL history will be blank). Type `console.log(8001)` 
 in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL’s history.
+
+![REPL](./assets/REPL-2.png)
 
 You can repeat this section for as many other ports as you ran ag-solos for.
 
