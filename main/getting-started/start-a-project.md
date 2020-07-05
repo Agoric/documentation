@@ -10,6 +10,9 @@ specified in [Before Using Agoric](https://agoric.com/documentation/getting-star
 For complete documentation on the Agoric CLI commands (those starting with `agoric`) used here, 
 see the [Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/).
 
+For starting a local chain with multiple users, making it possible to develop and test multiuser Dapps, also see the 
+ [Agoric CLI Guide](https://github.com/Agoric/documentation/blob/cli-multiuser/main/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
+
 Also, for what needs to be done after you modify a project's code, see 
 [Development Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
 <br><br>
