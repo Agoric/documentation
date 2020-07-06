@@ -73,7 +73,7 @@ and are not part of ERTP.
 
 ### Receiving the asset
 
-On Alice side, she creates a purse for baytownBucks and gets ready to receive payments.
+On Alice's side, she creates a `purse` for `baytownBucks` and gets ready to receive payments.
 For this to happen, Alice needs access to `baytownBucksAssay`.
 However, she does not need access to `baytownBucksMint`.
 If she had access to it, she could create baytownBucks herself by calling `baytownBucksMint.mint`.
@@ -84,7 +84,7 @@ const myBaytownBucksPurse = issuer.makeEmptyPurse();
 console.log(myBaytownBucksPurse.getCurrentAmount().extent); // 0
 
 const alice = {
-    receivePayment(allegedBaytownBucksPayment){
+    receivePayment(allegedBaytownBucksPayment) {
         myBaytownBucksPurse.deposit(allegedBaytownBucksPayment)
     }
 }
@@ -127,6 +127,7 @@ The issuer is associated with the mint, but
 the issuer is the public-facing version that is accessible to anyone.
 By holding the reference to a mint, you can mint more tokens. By
 holding a reference to the issuer for a mint, you can check that a
-payment is valid and exclusively claim it (`issuer.claim`)
-in a new payment to yourself or deposit it in a purse of 
+payment is valid and exclusively claim it 
+in a new payment to yourself (`issuer.claim`) or deposit it in a purse of 
 yours (`myBaytownBucksPurse.deposit`).
+
