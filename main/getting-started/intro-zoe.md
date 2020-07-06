@@ -119,7 +119,7 @@ Const alicePayments = { Asset: aliceMoolaPayment }
 `AmountMath` is an [ERTP API object ](https://agoric.com/documentation/ertp/guide/amount-math.html) whose methods manipulate asset and payment amounts. Here, Alice is setting up the ability to use the moola and simolean currencies.
 
 
-She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with keywords as keys and amounts as values. `exit` is an `ExitRule` record. In the above example, Alice wants at least 15 simoleans, in exchange for giving at most 3 moola, where she can exit the offer at any time just by asking, and get her money back (or get her `want` if the offer happened to be satisfied before then.
+She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with keywords as keys and amounts as values. `exit` is an `ExitRule` record. In the above example, Alice wants at least 15 simoleans, in exchange for giving at most 3 moola, where she can exit the offer at any time just by asking, and get her money back (or get her `want` if the offer happened to be satisfied before then).
 
 
 The `want` and `give`values are JavaScript records, objects with property names and values. The property names of these records are the keywords in the `keywordRecord` from when you created the contract instance. The values of the records are [ERTP amounts](https://agoric.com/documentation/ertp/guide/amounts.html) of how many of the asset the user either wants or is willing to give in exchange. 
