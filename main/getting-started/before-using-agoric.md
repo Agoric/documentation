@@ -13,8 +13,9 @@ software, you need to install the following.
     <td><center>0</center></td>
     <td>Use a Unix-like environment</td>
     <td>You will need to type commands at a Bash-like shell command line prompt,
-    such as is found in [Linux](https://en.wikipedia.org/wiki/Linux), [MacOS](https://www.apple.com/macos/), or
-    [Windows Subsystem for Linux (wsl)](https://docs.microsoft.com/en-us/windows/wsl/).</td>
+      such as is found in <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>, 
+      (<a href="https://www.apple.com/macos/">MacOS</a>, or
+      <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (wsl)</a>.</td>
   <tr>
     <td><center>1</center></td>
     <td><a href="https://nodejs.org/">Install Node.js</a>, version 12.16.1 or higher</td>
