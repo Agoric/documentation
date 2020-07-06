@@ -121,7 +121,7 @@ using`E` will always be a Promise, the normal thing to do with the result (as
 with any object) is either pass it as a parameter or invoke a function to be
 performed once the Promise is fulfilled.
 
-`E(remoteServiceP).startup(params).then(result => useTheService(result);`
+`E(remoteServiceP).startup(params).then(result => useTheService(result));`
 
 Deploy scripts and Zoe smart contracts may need to access services that run in a
 different vat. For instance, a deploy script may want to install a contract in a
@@ -153,7 +153,7 @@ This is currently supported by Zoe itself, which publishes updates to the state 
 offers (reallocations and completions), and by some contracts, which can publish
 current prices or other details specific to the contract.
 
-#### Getting Notifications
+#### Getting notifications
 
 Zoe has a public method `getOfferNotifier()`, and contracts will have similar
 methods. This provides a long-lived notifier object associated with a particular
@@ -201,7 +201,7 @@ Zoe's updates for an offer show the current allocation that will be paid if the
 contract completes without further changes. When the contract calls `complete()` on
 the offer, the notifier is marked `done`.
 
-### providing updates
+### Providing updates
 
 Contracts can provide updates using a notifier by importing notifer and calling `produceNotifier()`.
 

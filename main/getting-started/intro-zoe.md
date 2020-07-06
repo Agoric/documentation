@@ -43,7 +43,7 @@ To use a contract, it needs to be *installed* on Zoe. This is putting the contra
 
 When a contract is installed on Zoe, the operation returns an `installationHandle`, which is an *opaque JavaScript object*  used to refer to the installed contract source code. Agoric uses such objects as handles since they cannot be forged. For example
 ```js
-const installationHandle = zoe.install(sourceCode, moduleFormat);
+const installationHandle = E(zoe).install(sourceCode, moduleFormat);
 ```
 
 
@@ -119,7 +119,7 @@ Const alicePayments = { Asset: aliceMoolaPayment }
 `AmountMath` is an [ERTP API object ](https://agoric.com/documentation/ertp/guide/amount-math.html) whose methods manipulate asset and payment amounts. Here, Alice is setting up the ability to use the moola and simolean currencies.
 
 
-She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with keywords as keys and amounts as values. `exit` is an `ExitRule` record. In the above example, Alice wants at least 15 simoleans, in exchange for giving at most 3 moola, where she can exit the offer at any time just by asking, and get her money back (or get her `want` if the offer happened to be satisfied before then.
+She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with keywords as keys and amounts as values. `exit` is an `ExitRule` record. In the above example, Alice wants at least 15 simoleans, in exchange for giving at most 3 moola, where she can exit the offer at any time just by asking, and get her money back (or get her `want` if the offer happened to be satisfied before then).
 
 
 The `want` and `give`values are JavaScript records, objects with property names and values. The property names of these records are the keywords in the `keywordRecord` from when you created the contract instance. The values of the records are [ERTP amounts](https://agoric.com/documentation/ertp/guide/amounts.html) of how many of the asset the user either wants or is willing to give in exchange. 
@@ -200,7 +200,7 @@ It’s even possible to get both what you wanted in an offer, and at least a par
 ## Other things to know about Zoe
 
 
-A *Dapp (distributed application)* is a combination of a Zoe contract and a server that’s running the back and front ends, and a front end that may be connected to the user’s wallet.
+A *Dapp (decentralized application)* is a combination of a Zoe contract and a server that’s running the back and front ends, and a front end that may be connected to the user’s wallet.
 
 
 Zoe has two distinct APIs. One is the widely accessible, singular Zoe service object that smart contract clients use to provide offers and otherwise interface with contracts. The Zoe service object is a remote object, and so should be accessed with `E(zoe).<api_method>`, which returns a promise. For more on E() see [here](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-via-e). 
@@ -218,21 +218,16 @@ The following table summarizes an Atomic Swap workflow:
 <tbody>
 <tr>
 <td><center>1</center></td>
-<td>Install Zoe on a server and start it running. 
-</td>
-</tr>
-<tr>
-<td><center>2</center></td>
 <td>Write your contract
 </td>
 </tr>
 <tr>
-<td><center>3</center></td>
+<td><center>2</center></td>
 <td>Install your contract’s source code on Zoe. 
 </td>
 </tr>
 <tr>
-<td><center>4</center></td>
+<td><center>3</center></td>
 <td>Start a contract instance based on an installed contract. 
 </td>
 </tr>

@@ -31,7 +31,7 @@ The deployment script then uses the `home` object to access `zoe` which installs
 Via the REPL associated with the wallet, developers can use all the on-chain commands that deployment scripts use to deploy 
 contracts and Dapps.
 
-Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, through which it can reach the chain."
+Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, through which it can reach the chain.
 
 ## Contract deployment
 
