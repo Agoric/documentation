@@ -92,15 +92,20 @@ other objects can only interact with them through their defined
 method interface. CapTP, our communications layer for passing
 references to distributed objects, enforces this at vat boundaries.
 
-The general rule is that if you make a new object and give it to someone else (and don't immediately forget it yourself), you should give them `harden(obj)` instead the raw object.
+The general rule is that if you make a new object and give it to someone else (and don't immediately forget it yourself),
+you should give them `harden(obj)` instead the raw object.
 This prevents someone from adding/deleting the properties or prototypes of that object.
-It doesn't make them immutable (`harden(new Map()) ` still behaves like a normal mutable `Map`), but it means their methods stay the same and can't be surprisingly changed by someone else
+It doesn't make them immutable (`harden(new Map()) ` still behaves like a normal mutable `Map`), but it means
+their methods stay the same and can't be surprisingly changed by someone else
 
 Defined objects (`mint`, `issuer`, `zcf,` etc.) shouldn't need hardening as their constructors should do that work. It's mainly records, callbacks, and ephemeral objects that need hardening.
 
 You can send a message to a hardened object. If it's a record, you can extract values from it.
 
-You have to harden a class before you harden any of its instances; i.e. it takes two separate steps to harden both a class and its instances. `harden()` does transitive freezing by following the object’s own properties (as opposed to properties it inherited), and the objects whose own properties refer to them, and so forth. Harden a base class before hardening classes that inherit from it.
+You have to harden a class before you harden any of its instances; i.e. it takes two separate steps
+to harden both a class and its instances. `harden()` does transitive freezing by following the object’s
+own properties (as opposed to properties it inherited), and the objects whose own properties refer to them,
+and so forth. Harden a base class before hardening classes that inherit from it.
 
 `harden()` is provided by the
 [`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden). 
@@ -181,20 +186,12 @@ having to track a subscription list.
 
 Zoe supports the Notifier, which publishes updates to offer state
 (reallocations and completions). Some contracts also use it, and
-can publish current prices or other contract-specific details.
-## Contract and offer states
-
-**tyg todo: It's never specified just what is a contract or offer
-  state. Are they pre-defined? Is it something developers define in
-  contract definitions? What do they look like, what's their format,
-  what values are or can be included??**
+can publish current prices or other contract-specific details
 
 ### Getting notifications
 
 Zoe has a public method `getOfferNotifier()`, and contracts will have
-similar methods. **tyg todo: Do contract writers have to write these
-methods, or do we provide anything they can use?**
-This method provides a long-lived notifier object associated 
+similar methods. This method provides a long-lived notifier object associated 
 with a particular stream of updates.
 
 ```js
@@ -207,18 +204,14 @@ const offerNotifer = zoe.getOfferNotifier(offerHandle);
   waitForNextUpdate(offerNotifier, updateHandle);
 ```
 
-Note: There is both a `zoe.getOfferNotifier()` and a `zcf.getOfferNotifier()`. Use the `zcf.` version within contracts and the `zoe.` version in the REPL, deploy scripts, and similar outside of a contract cases. 
-**tyg todo: Does this work only on offerHandles or also on any other
-  handles?** 
+Note: There is both a `zoe.getOfferNotifier()` and a `zcf.getOfferNotifier()`. Use the `zcf.` version 
+within contracts and the `zoe.` version in the REPL, deploy scripts, and similar outside of a contract cases. 
 
 When called on a notifier object`notifier.getUpdateSince()` returns
 the record `{ value, updateHandle, done }`. `value` represents 
 the state of an offer or contract. If you get a notifier from Zoe, you have to 
-Identify the offer. 
-**tyg todo: Does it take
-any arguments? If not,  what object's state is being returned?**
-- `value` is the current state, according to the source. **tyg todo:
-  examples of possible state values?**
+identify the offer. 
+- `value` is the current state, according to the source. 
 - `done` is `false` until the stream of updates reaches a final state. Then 
 `value` never changes and , and `getUpdateSince()` always returns the
 same record. A contract calling `complete()` on an offer causes that
@@ -233,16 +226,25 @@ one:
 - With the most-recently generated `updateHandle`:
   - The notifier returns a promise for the next record, which is resolved
 on the next state change.
+- If you haven't called `getUpdateSince()` before, there is no previous update handle to use.
 
 Some notification systems also provide access to a complete list of
 an object's state changes. The Agoric Notifier API only directly supports
-the single state change notification style, although it's easy enough
-to extend it by keeping lists of objects' state changes **(tyg todo:
-changed from "it's a simple workaround to include deltas as part of the
-state; we should tell them how to do that. Please change if my guess
-as to how isn't correct)**
+the single state change notification style. The client can't work around this
+by keeping lists of changes, since the service doesn't send out all the changes
+by default. The alternative approach is for the service to represent its state
+as the set of changes leading up to the present. A use case for this is an 
+editor with an undo function, or an application with rollback ability.
 
-A common pattern for following updates to a notifier until it's done is the following. Note that the notifier object is outside the contract facet, and so uses `E()`.* Also, `PublicAPI` is a widely available contract facet, where it often makes sense to put the `getNotifier()` method.
+Rather than sending `"the current state is 'blue'."`, a contract could send 
+`"the current state is 'blue', the most recent update was { ''blah' => 'blue' }"`. 
+That requires the contract to determine that clients want redundant info, and 
+package and send it.
+
+A common pattern for following updates to a notifier until it's done is the following. 
+Note that the notifier object is outside the contract facet, and so uses `E()`.* 
+Also, `PublicAPI` is a widely available contract facet, where it often makes sense to 
+put the `getNotifier()` method.
 
 ```js
   function updateStateOnChanges(notifier, lastHandle) {
@@ -270,8 +272,9 @@ contract calls `complete()` on the offer, its notifier is marked `done`.
 
 ### Providing updates
 
-Contract instances use a notifier to provide updates by importing and calling
-`produceNotifer()`, which returns a notifier and an updater. You can 
+Contract instances use a notifier to provide updates to people who
+want to follow changes. They import and call
+`produceNotifer()`, which returns two facets, a notifier and an updater. You can 
 pass the notifier object to anyone allowed to see that contract
 instance's state changes.
 
@@ -281,12 +284,6 @@ new state to any waiting notifiers:
 - `resolve(finalState)`
   - `resolve()` also resolves the promise to a record with `done: true, 
 updateHandle: undefined`, and ensures that the answer will never change. 
-
-**tyg todo: I'm not clear why arguments are needed for these. It'd
-seem the states are what would be returned rather than passed? This
-implies developers specify what states look like/are composed of?
-Would be good below to include examples of using the updater with 
-actual argument values**
 
 ```js
 import { produceNotifier } from '@agoric/notifier';
