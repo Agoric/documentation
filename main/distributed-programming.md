@@ -1,9 +1,9 @@
 # Agoric JavaScript Programming Extensions
 
-Agoric's platform lets you write secure smart contracts in JavaScript. The platform itself is mainly written in JavaScript. However, we've made several Agoric-specific additions to general JavaScript programming that you should know about and understand before programming on the platform. Some are *concepts*, others are *Agoric library additions*, and some are at the *syntax level*.
+Agoric's platform lets you write secure smart contracts in JavaScript. The platform itself is mainly written in JavaScript. However, we've made several Agoric-specific additions to general JavaScript programming that you should know about and understand before programming on the platform. Some are *concepts*, others are *Agoric library additions*, and some are at the *syntax level*. All changes at the language level are in process to become official standards.
 
 Extensions covered in this document are:
-- **[Vats](#vats)**: Objects and functions In the same JavaScript vat can
+- **[Vats](#vats)**: Objects and functions in the same JavaScript vat can
   communicate synchronously. Communication with objects outside the
   vat can only be done asynchronously. 
 
@@ -18,28 +18,33 @@ Extensions covered in this document are:
   browser, an iframe is a realm. In Node.js, a Node process is a
   realm. A *compartment* is a separate execution environment within a realm.
 
-- **`harden()`**: A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods. `harden()`is similar to `Object.freeze()` but
+- **`harden()`**: A hardened object’s properties cannot be changed, so the only way to interact
+with a hardened object is through its methods. `harden()`is similar to `Object.freeze()` but
 more powerful. 
 
-- **Remote object communication using `E`**: `E` is a local "bridge" function that lets you invoke methods on remote objects, whether in another vat, machine, or blockchain (for example).
-It takes a local representative (a *proxy*) for a remote object as an argument and sends messages to it using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with. If you are familiar with the `~` operator, `E` is a workaround for the JavaScript standard not yet supporting `~`.
+- **Remote object communication using `E`**: `E` is a local "bridge" function that lets
+you invoke methods on remote objects, whether in another vat, machine, or blockchain (for example).
+It takes a local representative (a *proxy*) for a remote object as an argument and sends messages
+to it using normal message-sending syntax. The local proxy forwards all messages to the remote 
+object to deal with. Sending a message to the remote object must be done by 
+using `E` (`E(remoteObj).myMethod()`), or the "tildot" operator `remoteObj~.myMethod()``
 
 - **Notifiers:** Our Promise-based Notifier notifies Dapps and other tools
-about changes to their subscribed to contracts or offers' state.
+about changes to their subscribed-to contracts or offers' state.
 
 ## Vats
 
 A vat is a *unit of isolation*. To paraphrase the Las Vegas advertising slogan, what happens in the vat stays in the vat. Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can communicate with other vats and their objects and functions, but have to
 [manage asynchronous messages and responses](#Communicating-with-remote-objects-via-E).
 
-There are no tools for telling what vat something is in, or if two things are in the same or different vats. In general, you/your code should know if things are local (in the same vat) because you created them or they were passed to you by something guaranteeing that’s the case. Other objects you should treat as if they might be distant (in different vats). 
+There are no tools for telling what vat something is in, or if two things are in the same or different vats. In general, you/your code should know if things are local (in the same vat) because you created them or they were passed to you by something guaranteeing that’s the case. Other objects you should treat as if they might be distant (in different vats). In practice, you will know that your normal method calls (`obj.method()`) fails because the method doesn't exist and that's usually when you slap your forehead and go "Of course, it's remote!".
 
 Vats need to run on some platform. Both a single physical machine and a blockchain (which might itself be running on a set of  collaborating machines) are possible platforms. Either type of platform can host one or more vats.
 
-Since a vat runs in a single *event loop*, each incoming request has to finish before the next one starts. If there's remaining work, you schedule it to happen later when a Promise resolves.
+Since a vat runs in a single *event loop*, each incoming request has to finish before the next one starts. If there's remaining work, you schedule it to happen later after a Promise resolves.
 
-The Agoric process starts several vats. Each vat hosts a service (e.g. Registry, Zoe,
-etc.). As of April, 2020, all contracts run in the Zoe vat. Eventually this will change to each contract having a dedicated vat.
+The Agoric process starts several vats. Each vat hosts a service (e.g. the Board, Zoe,
+etc.). As of July, 2020, all contracts run in the Zoe vat. Eventually this will change to each contract having a dedicated vat.
 
 ## Secure EcmaScript (SES)
 
@@ -69,14 +74,13 @@ current realm into an **immutable realm**, that is a realm within
 which the primordials are deeply frozen. It also allows programs to
 create **Compartments**. 
 
-Compartments are "mini-realms". They have their own dedicated global object and environment, but they inherit the primordials from their parent realm.
+Compartments are "mini-realms". They have their own dedicated global object 
+and environment, but they inherit the primordials from their parent realm.
 
 Agoric deploy scripts and smart contract code run in an immutable
 realm with compartments providing just enough authority to create
 useful and secure contracts (but not enough authority to do anything
 unintended or harmful to the participants of the smart contract). 
-This means you cannot send email, write to disk, or visit arbitrary web
-pages, etc. from code inside a contract.
 
 ## `harden()`
 
@@ -93,29 +97,30 @@ method interface. CapTP, our communications layer for passing
 references to distributed objects, enforces this at vat boundaries.
 
 The general rule is that if you make a new object and give it to someone else (and don't immediately forget it yourself),
-you should give them `harden(obj)` instead the raw object.
+you should give them `harden(obj)` instead of the raw object.
 This prevents someone from adding/deleting the properties or prototypes of that object.
-It doesn't make them immutable (`harden(new Map()) ` still behaves like a normal mutable `Map`), but it means
-their methods stay the same and can't be surprisingly changed by someone else
+Being hardened doesn't preclude an object from having access to mutable state (`harden(new Map()) ` still behaves like a normal mutable `Map`), but it means their methods stay the same and can't be surprisingly changed by someone else
 
 Defined objects (`mint`, `issuer`, `zcf,` etc.) shouldn't need hardening as their constructors should do that work. It's mainly records, callbacks, and ephemeral objects that need hardening.
 
-You can send a message to a hardened object. If it's a record, you can extract values from it.
+You can send a message to a hardened object. If it's a record, you can access its
+properties and their values.
 
 You have to harden a class before you harden any of its instances; i.e. it takes two separate steps
-to harden both a class and its instances. `harden()` does transitive freezing by following the object’s
+to harden both a class and its instances. Harden a base class before hardening classes that inherit from it.
+`harden()` does transitive freezing by following the object’s
 own properties (as opposed to properties it inherited), and the objects whose own properties refer to them,
-and so forth. Harden a base class before hardening classes that inherit from it.
+and so forth. 
 
-`harden()` is provided by the
-[`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden). 
-After you've [installed](https://docs.npmjs.com/cli/install) the
-[`@agoric/harden` package](https://www.npmjs.com/package/@agoric/harden),
-you use it like this:
+`harden()` is automatically provided by SES. Any code that will run inside a vat or a contract
+can use harden as a global, without importing anything. 
+
+**Tip**: If your text editor/IDE complains about `harden()` not being defined or imported, try
+adding `/* global harden */` to the top of the file. 
+
+You use `harden()` like this:
 
 ```js
-import harden from '@agoric/harden';
-
 const o = {a: 2};
 o.a  = 12;
 console.log(o.a); // 12 because o is still mutable
@@ -135,7 +140,7 @@ can't be acted upon locally until it arrives.
 To keep from blocking local code until the response arrives, we
 return a `Promise` for the result. You can send more messages to a result's
 `Promise`. If and when the `Promise` resolves to a remote object, the messages
-are forwarded to the object's location, and their results arel
+are forwarded to the object's location, and their results are
 eventually returned and processed locally. 
 
 JavaScript natively
@@ -157,24 +162,28 @@ invoke a function to be performed once the `Promise` is fulfilled.
 Deploy scripts and Zoe smart contracts often access services running in a
 different vat. For instance, a deploy script may want to install a contract in a
 Zoe instance running in a blockchain. But the deploy script
-cannot call `zoe.install(code, moduleFormat)`, because it does not have local
+cannot call `zoe.install(bundle)`, because it does not have local
 access to the `zoe` object in a different vat. However, the deploy
 script is given access to a `zoe` *presence*. To call methods on the
 actual Zoe object, the deploy code can do:
 
 ```js
-const installationHandle = await E(zoe).install(source, moduleFormat);
+const installationHandle = await E(zoe).install(bundle);
 ```
 
 The `E()` function is a local "bridge" that lets you invoke methods on
 remote objects. The local version of a remote object is called a
 **presence**. `E()` takes a presence as an argument and creates an
-object with the corresponding methods.
+object that is a forwarder that doesn't know what methods the remote object has.
+
+This is useful to know for debugging. If you misspell or incorrectly capitalize the method name, 
+the local environment can't tell you've done so. You'll only find out at runtime when the 
+remote object complains that it doesn't know that method.
 
 `E()` performs the communication asynchronously. Method calls can take
 objects in the current vat or presences for objects in other vats as arguments.
 
-`E()` is frequently used in contract code to call
+`E()` is frequently used in code to call
 [Zoe Service API methods](https://agoric.com/documentation/zoe/api/zoe.html).
 
 ## Notifiers
@@ -186,7 +195,7 @@ having to track a subscription list.
 
 Zoe supports the Notifier, which publishes updates to offer state
 (reallocations and completions). Some contracts also use it, and
-can publish current prices or other contract-specific details
+can publish current prices or other contract-specific details.
 
 ### Getting notifications
 
@@ -200,7 +209,6 @@ const offerNotifer = zoe.getOfferNotifier(offerHandle);
   if (done) {
    <drop offer from list>
   }
-  newValue = value;
   waitForNextUpdate(offerNotifier, updateHandle);
 ```
 
@@ -209,11 +217,11 @@ within contracts and the `zoe.` version in the REPL, deploy scripts, and similar
 
 When called on a notifier object`notifier.getUpdateSince()` returns
 the record `{ value, updateHandle, done }`. `value` represents 
-the state of an offer or contract. If you get a notifier from Zoe, you have to 
+the state of an offer or contract. If you want a notifier from Zoe, you have to 
 identify the offer. 
 - `value` is the current state, according to the source. 
 - `done` is `false` until the stream of updates reaches a final state. Then 
-`value` never changes and , and `getUpdateSince()` always returns the
+`value` never changes and `getUpdateSince()` always returns the
 same record. A contract calling `complete()` on an offer causes that
 offer's notifier to be marked as done.
 - `updateHandle` is used to request to be notified the next
