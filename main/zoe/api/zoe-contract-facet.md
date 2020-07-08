@@ -60,7 +60,7 @@ zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
 
 Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
 
-## zcf.MakeInvitation(offerHook, inviteDesc, customProperties)
+## zcf.makeInvitation(offerHook, inviteDesc, customProperties)
 - `offerHook` `{OfferHandle => Object}`
 - `inviteDesc` `{String}`
 - `customProperties` `{Object}`
