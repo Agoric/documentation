@@ -25,7 +25,7 @@ The reallocation only happens if 'offer safety' and conservation of rights are t
 import harden from '@agoric/harden';
 
 // reallocate by switching the amount of the firstOffer and matchingOffer
-zoe.reallocate(
+zcf.reallocate(
   harden([firstOfferHandle, matchingOfferHandle]),
   harden([matchingOfferAmount, firstOfferAmount]),
 );
@@ -39,7 +39,7 @@ Eject the offer, taking the current allocation for that offer and creating payme
 ```js
 import harden from '@agoric/harden';
 
-zoe.complete(harden([someOfferHandle]));
+zcf.complete(harden([someOfferHandle]));
 ```
 
 ## zcf.addNewIssuer(issuer, keyword)
@@ -50,7 +50,7 @@ zoe.complete(harden([someOfferHandle]));
 Inform Zoe about a new issuer. Returns a promise for acknowledging when the issuer is added and ready.
 
 ```js
-zoe.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
+zcf.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
   //do stuff
 });
 ```
@@ -84,7 +84,7 @@ as defined by the smart contract, to include in the extent of the
 invitation.
 
 ```js
-const invite = zoe.makeInvitation(
+const invite = zcf.makeInvitation(
   myAuction.onNewOffer,
   { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
 );
@@ -96,7 +96,7 @@ const invite = zoe.makeInvitation(
 Get the Zoe `inviteIssuer`.
 
 ```js
-const inviteIssuer = await E(zoe).getInviteIssuer();
+const inviteIssuer = await zcf.getInviteIssuer();
 ```
 
 ## zcf.getBrandForIssuer(issuer)
@@ -123,7 +123,7 @@ const ticketAmountMath = ticketIssuer.getAmountMath();
 Check if the offer is still active. This method does not throw if the offer is inactive.
 
 ```js
-const isActive = zoe.isOfferActive(someOfferHandle);
+const isActive = zcf.isOfferActive(someOfferHandle);
 ```
 
 ## zcf.getOfferStatuses(offerHandles)
@@ -133,7 +133,7 @@ const isActive = zoe.isOfferActive(someOfferHandle);
 Divide the `offerHandles` into 'active' and 'inactive' lists
 
 ```js
-const { active: activeBidHandles } = zoe.getOfferStatuses(
+const { active: activeBidHandles } = zcf.getOfferStatuses(
   harden(allBidHandles),
 );
 ```
@@ -145,7 +145,7 @@ const { active: activeBidHandles } = zoe.getOfferStatuses(
 Get a list of offer records.
 
 ```js
-const offers = zoe.getOffers(listOfOfferHandles);
+const offers = zcf.getOffers(listOfOfferHandles);
 ```
 
 ## zcf.getOffer(offerHandle)
@@ -155,7 +155,7 @@ const offers = zoe.getOffers(listOfOfferHandles);
 Get the offer record.
 
 ```js
-const { payoutRules } = zoe.getOffer(offerHandle);
+const { payoutRules } = zcf.getOffer(offerHandle);
 ```
 
 ## zcf.getInstanceRecord()
@@ -168,7 +168,7 @@ to their keywords, issuers and other "instanceRecord" information from
 Zoe.
 
 ```js
-const { issuerKeywordRecord, keywords, terms } = zoe.getInstanceRecord()
+const { issuerKeywordRecord, keywords, terms } = zcf.getInstanceRecord()
 ```
 
 ## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
@@ -180,7 +180,7 @@ Get the amounts associated with the `brand`s for the offer. If the optional `bra
 argument is omitted, it only returns amounts for brands for which an allocation currently exists.
 
 ```js
-const { foo, bar } = zoe.getCurrentAllocation(offerHandle, ['foo', 'bar']);
+const { foo, bar } = zcf.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 ```
 
 ## zcf.getCurrentAllocations(offerHandles, brandKeywordRecord)
@@ -196,7 +196,7 @@ argument is omitted, it only returns amounts for brands for which an allocation 
 - Returns: a <router-link to="/glossary/#notifier">notifier</router-link> for the offer.
 
 ```js
-  const offerNotifer = zoe.getOfferNotifier(offerHandle);
+  const offerNotifer = zcf.getOfferNotifier(offerHandle);
   const { value, updateHandle, done } = offerNotifier.getUpdateSince();
   if (done) {
    <drop offer from list>
