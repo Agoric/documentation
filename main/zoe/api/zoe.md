@@ -105,7 +105,7 @@ const {
 - `paymentKeywordRecord` <router-link to="/zoe/api/records.html#paymentkeywordrecord">`{PaymentKeywordRecord}`</router-link>
 - Returns: <router-link to="/zoe/api/records.html#offerresultrecord">`Promise<{OfferResultRecord}>`</router-link>
 
-To make an offer to a contract, the user must provide an invite ot the 
+To make an offer to a contract, the user must provide an invite to the 
 contract, a proposal (their rules for the offer), and the payments to be 
 escrowed by Zoe. 
 
