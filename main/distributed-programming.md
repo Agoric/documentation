@@ -49,8 +49,10 @@ etc.). As of July, 2020, all contracts run in the Zoe vat. Eventually this will 
 ## Secure EcmaScript (SES)
 
 SES is a standards-track extension of the JavaScript standard 
-[EcmaScript](https://www.ecma-international.org/publications/standards/Ecma-262.htm),
-It provides a secure platform for executing programs, letting you run code you don't completely trust. Our code, as operator of a chain machine, can host untrusted developer apps’ code without being vulnerable to possible bugs or bad intentions.  
+[EcmaScript](https://www.ecma-international.org/publications/standards/Ecma-262.htm).
+It provides a secure platform for executing programs, letting you run code you don't completely trust. 
+SES-based programs, whether you are an enduser or a server operator, can host untrusted developer apps’ 
+code without being vulnerable to possible bugs or bad intentions.  
 
 The guest developer’s app code runs in an immutable realm that by default has no access to ambient authority. Agoric’s hosting code provides access to disk or network or other services, and the guest code has no access to any ungranted authority. So developers can import and rely on library code from anywhere on the net, and have limited vulnerability to its misbehavior. The outside code can’t talk to the network, store data on disk, or use other powers without the Dapp's explicit permission. 
 
