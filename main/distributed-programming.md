@@ -7,29 +7,29 @@ Extensions covered in this document are:
   communicate synchronously. Communication with objects outside the
   vat can only be done asynchronously. 
 
-- **Secure EcmaScript (SES)**: SES provides a secure platform for
+- **[Secure EcmaScript (SES)](#secure-ecmascript-ses)**: SES provides a secure platform for
   executing programs. With SES, you can run code you don't completely trust,
   without being vulnerable to bugs or bad intentions. It's a
   standards-track extension to the JavaScript standard. 
 
-- **Realms and compartments**: JavaScript code runs in the context of
+- **[Realms and compartments](#compartments-and-realms)**: JavaScript code runs in the context of
   a *realm*, made up of the set of primordials (the standard
   library's objects and functions) and a global object. In a web
   browser, an iframe is a realm. In Node.js, a Node process is a
   realm. A *compartment* is a separate execution environment within a realm.
 
-- **`harden()`**: A hardened object’s properties cannot be changed, so the only way to interact
+- **[`harden()`](#harden)**: A hardened object’s properties cannot be changed, so the only way to interact
 with a hardened object is through its methods. `harden()`is similar to `Object.freeze()` but
 more powerful. 
 
-- **Remote object communication using `E`**: `E` is a local "bridge" function that lets
+- **[Remote object communication using `E`](#communicating-with-remote-objects-using-e)**: `E` is a local "bridge" function that lets
 you invoke methods on remote objects, whether in another vat, machine, or blockchain (for example).
 It takes a local representative (a *proxy*) for a remote object as an argument and sends messages
 to it using normal message-sending syntax. The local proxy forwards all messages to the remote 
 object to deal with. Sending a message to the remote object must be done by 
 using `E` (`E(remoteObj).myMethod()`), or the "tildot" operator `remoteObj~.myMethod()``
 
-- **Notifiers:** Our Promise-based Notifier notifies Dapps and other tools
+- **[Notifiers](#notifiers):** Our Promise-based Notifier notifies Dapps and other tools
 about changes to their subscribed-to contracts or offers' state.
 
 ## Vats
