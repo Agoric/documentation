@@ -66,7 +66,7 @@ const bucks50 = amountMath.make(50);
 amountMath.coerce(bucks50); // equal to bucks50
 ```
 
-## amountMath.extent(amount)
+## amountMath.getExtent(amount)
 - Returns: `{Extent}`
 
 Extract and return the extent.
@@ -76,7 +76,7 @@ const { amountMath } = produceIssuer('bucks');
 const fungible123 = amountMath.make(123);
 
 // returns 123
-const extent = amountMath.extent(amount);
+const extent = amountMath.getExtent(amount);
 ```
 
 ## amountMath.getEmpty()
