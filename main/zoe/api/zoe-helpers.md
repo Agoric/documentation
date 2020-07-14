@@ -202,7 +202,7 @@ return zcf.makeInvitation(
   checkHook(internalOfferHook, expected),
   'firstOffer',
 );
-=======
+
 const { escrowAndAllocateTo } = makeZoeHelpers(zoe);
 
 const offerHook = offerHandle => {
