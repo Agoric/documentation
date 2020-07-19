@@ -41,7 +41,7 @@ const bucksBrand = issuer.getBrand();
 // brand === bucksBrand
 ```
 
-## issuer.allegedName()
+## issuer.getAllegedName()
 - Returns: `{allegedName}`
 
 Get the `allegedName` for this mint/issuer.
