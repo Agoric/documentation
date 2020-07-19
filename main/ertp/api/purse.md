@@ -6,7 +6,7 @@ The digital assets in purses and payments can be currency-like and goods-like di
 ## purse.getIssuer()
 - Returns: `{Issuer}`
 
-Get the Issuer for this mint.
+Get the Issuer for this purse.
 
 ```js
 const purseIssuer = purse.getIssuer();
