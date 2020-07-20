@@ -105,6 +105,12 @@ const inviteIssuer = await zcf.getInviteIssuer();
 
 Returns the `brand` of the `issuer` argument
 
+## zcf.getIssuerForBrand(brand)
+- `brand` `{Brand}`
+- Returns `{Issuer}`
+
+Returns the `issuer` of the `brand` argument
+
 ## zcf.getAmountMath(brand)
 - `brand` `{String}`
 - Returns `{amountMath}`
