@@ -4,7 +4,7 @@ The issuer cannot mint new amounts, but it can create empty purses and payments.
 payments, burning payments, and claiming payments exclusively). The issuer should be obtained from a trusted source and then relied upon as the
 authority as to whether an untrusted payment is valid.
 
-## produceIssuer(allegedName, mathHelperName)
+## makeIssuerKit(allegedName, mathHelperName)
 - `allegedName` `{String}`
 - `mathHelpersName` `{String}`
 - Returns: `{ mint, issuer, amountMath, brand }`
@@ -18,11 +18,11 @@ The `mathHelpersName` will be used to import a specific mathHelpers from the mat
 natural numbers and is used for basic fungible tokens.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('bucks');
+const { issuer, mint, amountMath } = makeIssuerKit('bucks');
 // This is merely an amount, describing assets.
 const bucks2 = amountMath.make(2);
 
-const { mint, issuer, amountMath } = produceIssuer('alamedaCountyPropertyTitle', 'strSet');
+const { mint, issuer, amountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
 
 // These are merely amounts describing digital assets, not minting assets.
 const cornerProperty = amountMath.make(harden['1292826']);
