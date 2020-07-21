@@ -25,7 +25,7 @@ Extent must be Comparable.
 Return the brand.
 
 ```js
-const { issuer } = produceIssuer('bucks');
+const { issuer } = makeIssuerKit('bucks');
 const exampleAmountMath = issuer.getAmountMath();
 
 const exampleBrand = exampleAmountMath.getBrand();
@@ -37,7 +37,7 @@ const exampleBrand = exampleAmountMath.getBrand();
 Get the name of the mathHelpers used.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 amountMath.getMathHelpersName(); // 'nat'
 ```
 
@@ -49,7 +49,7 @@ amountMath.getMathHelpersName(); // 'nat'
 Make an amount from an extent by adding the brand.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 const amount837 = amountMath.make(837);
 ```
 
@@ -60,7 +60,7 @@ const amount837 = amountMath.make(837);
 Make sure this amount (or extent) is valid and return it as an amount if so.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 const bucks50 = amountMath.make(50);
 
 amountMath.coerce(bucks50); // equal to bucks50
@@ -72,7 +72,7 @@ amountMath.coerce(bucks50); // equal to bucks50
 Extract and return the extent.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 const fungible123 = amountMath.make(123);
 
 // returns 123
@@ -85,7 +85,7 @@ const extent = amountMath.getExtent(amount);
 Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 
 // Returns an empty amount for this issuer.
 // Since this is a fungible amount it returns 0
@@ -99,7 +99,7 @@ const empty = amountMath.getEmpty();
 Return true if the amount is empty. Otherwise false.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = makeIssuerKit('fungible');
 const empty = amountMath.getEmpty();
 const fungible1 = amountMath.make(1);
 
@@ -118,7 +118,7 @@ amountMath.isEmpty(fungible1)
 Returns true if the leftAmount is greater than or equal to the rightAmount. For non-scalars, "greater than or equal to" depends on the kind of amount, as defined by the MathHelpers. For example, whether rectangle A is greater than rectangle B depends on whether rectangle A includes rectangle B as defined by the logic in MathHelpers.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = makeIssuerKit('fungible');
 const empty = amountMath.getEmpty();
 const fungible1 = amountMath.make(1);
 
@@ -137,7 +137,7 @@ amountMath.isGTE(empty, fungible1);
 Returns true if the leftAmount equals the rightAmount. We assume that if isGTE is true in both directions, isEqual is also true.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = makeIssuerKit('fungible');
 const empty = amountMath.getEmpty();
 const fungible1 = amountMath.make(1);
 const anotherFungible1 = amountMath.make(1);
@@ -159,7 +159,7 @@ Returns a new amount that is the union of both leftAmount and rightAmount.
 For fungible amount this means adding the extents. For other kinds of amount, it usually means including all of the elements from both left and right.
 
 ```js
-const { amountMath } = produceIssuer('myItems', 'strSet');
+const { amountMath } = makeIssuerKit('myItems', 'strSet');
 const listAmountA = amountMath.make(harden['1','2','4']);
 const listAmountB = amountMath.make(harden['3']);
 
@@ -175,7 +175,7 @@ const combinedList = amountMath.add(listAmountA, listAmountB);
 Returns a new amount that is the leftAmount minus the rightAmount (i.e. everything in the leftAmount that is not in the rightAmount). If leftAmount doesn't include rightAmount (subtraction results in a negative), throw  an error. Because the left amount must include the right amount, this is NOT equivalent to set subtraction.
 
 ```js
-const { amountMath } = produceIssuer('myItems', 'strSet');
+const { amountMath } = makeIssuerKit('myItems', 'strSet');
 const listAmountA = amountMath.make(harden['1','2','4']);
 const listAmountB = amountMath.make(harden['3']);
 const listAmountC = amountMath.make(harden['2']);
