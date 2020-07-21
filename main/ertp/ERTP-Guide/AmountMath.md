@@ -1,6 +1,6 @@
 # Amount Math
 
-![AmountMath methods](AmountMath.svg) 
+![AmountMath methods](amountMath.svg) 
 
 `issuer` objects must be able to add and withdraw assets from a
 `purse` and manipulate `payment` amounts. This 
@@ -21,14 +21,14 @@ is used on `amount` objects with that `brand`. The kinds are:
 - `strSet`: Used with non-fungible assets (i.e. strings).
 - `set`: Used with sets of objects, primarily non-fungible assets.
 
-`produceIssuer(allegedName, amountMathKind)` creates a new `issuer`.
+`makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`.
 The second, optional, argument specifies which kind
 of `amountMath` your contract uses for the `brand` in a one-to-one
 association with the new `issuer`. It defaults to `nat` if not given. For example: 
 ```js
-produceIssuer('quatloos`); // Defaults to 'nat'
-produceIssuer('quatloos', 'strSet');
-produceIssuer('quatloos, 'set');
+makeIssuerKit('quatloos`); // Defaults to 'nat'
+makeIssuerKit('quatloos', 'strSet');
+makeIssuerKit('quatloos, 'set');
 ```
 `AmountMath` has:
 - Three information getting methods (get brand, get value, and get
@@ -47,24 +47,24 @@ API Reference.
   - [`amountMath.getBrand()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getbrand)
     - For this `amountMath`, return its `brand`.
     - ```js
-    const { issuer } = produceIssuer('bucks');
-    const exampleAmountMath = issuer.getAmountMath();
-    const exampleBrand = exampleAmountMath.getBrand();
-	```
+      const { issuer } = makeIssuerKit('bucks');
+      const exampleAmountMath = issuer.getAmountMath();
+      const exampleBrand = exampleAmountMath.getBrand();
+      ```
   - [`amountMath.getValue(amount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getvalue-amount)
     - Returns the `value` of the `amount` argument. 
     - ```js 
-	const { amountMath } = produceIssuer('bucks'); 
-	const fungible123 = amountMath.make(123); 
-	// returns 123 
-	const value = amountMath.getValue(amount); 
-    ```
+      const { amountMath } = makeIssuerKit('bucks'); 
+      const fungible123 = amountMath.make(123); 
+      // returns 123 
+      const value = amountMath.getValue(amount); 
+      ```
   - [`amountMath.getAmountMathKind()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getmathhelpersname)
     - Returns a string of either 'nat', 'str', or 'strSet',
        indicating the kind of methods this
        `amountMath` uses.
     - ```js
-       const { amountMath } = produceIssuer('bucks');
+       const { amountMath } = makeIssuerKit('bucks');
        amountMath.getAmountMathKind(); // 'nat'
        ```
   - [`amountMath.getEmpty()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getempty)
@@ -73,7 +73,7 @@ API Reference.
        operations. Note that this value varies depending on the
        `brand` and whether `amountMath` is of kind `nat`, `str`, or `strSet`..
     - ```js
-	   const { amountMath } = produceIssuer('bucks');
+	   const { amountMath } = makeIssuerKit('bucks');
 	   // Returns an empty amount for this issuer.
        // Since this is a fungible amount it returns 0
        const empty = amountMath.getEmpty();
@@ -82,36 +82,36 @@ API Reference.
   - [`amountMath.isEmpty(amount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-isempty-amount)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
     - ```js
-	const { amountMath } = produceIssuer('fungible');
-	const empty = amountMath.getEmpty();
-	const fungible1 = amountMath.make(1);
-    amountMath.isEmpty(empty)
-    // returns false
-    amountMath.isEmpty(fungible1)
-	```
+      const { amountMath } = makeIssuerKit('fungible');
+      const empty = amountMath.getEmpty();
+      const fungible1 = amountMath.make(1);
+      amountMath.isEmpty(empty)
+      // returns false
+      amountMath.isEmpty(fungible1)
+      ```
   - [`amountMath.isGTE(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-isgte-leftamount-rightamount)
     - Returns `true` if the `leftAmount` argument is greater than or equal
        to the `rightAmount` argument, `false` otherwise.
     - ```js
-    const { amountMath } = produceIssuer('fungible');
-    const empty = amountMath.getEmpty();
-    const fungible1 = amountMath.make(1);
-   // Returns true
-    amountMath.isGTE(fungible1, empty);
-    // Returns false
-    amountMath.isGTE(empty, fungible1);
-    ```
+      const { amountMath } = makeIssuerKit('fungible');
+      const empty = amountMath.getEmpty();
+      const fungible1 = amountMath.make(1);
+      // Returns true
+      amountMath.isGTE(fungible1, empty);
+      // Returns false
+      amountMath.isGTE(empty, fungible1);
+      ```
   - [`amountMath.isEqual(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-isequal-leftamount-rightamount)
     - Returns `true` if the `leftAmount` argument equals the
 	`rightAmount` argment
     - ```js
-	   const { amountMath } = produceIssuer('fungible');
-       const empty = amountMath.getEmpty();
-       const fungible1 = amountMath.make(1);
-       const anotherFungible1 = amountMath.make(1);
+      const { amountMath } = makeIssuerKit('fungible');
+      const empty = amountMath.getEmpty();
+      const fungible1 = amountMath.make(1);
+      const anotherFungible1 = amountMath.make(1);
 
-       // Returns true
-       amountMath.isEqual(fungible1, anotherFungible1);
+      // Returns true
+      amountMath.isEqual(fungible1, anotherFungible1);
       // Returns false
       amountMath.isEqual(empty, fungible1);
       ```
@@ -119,13 +119,13 @@ API Reference.
     - Takes an `amount` and returns it if it's a valid `amount`   
       **(tyg todo: What does it return if not a valid amount? Also,
       claims it can take a value, but the type of argument is only
-	  given as an amount. If it can take a `value`, what does it
+      given as an amount. If it can take a `value`, what does it
       return on success/failure?**
-    - ```
-	 const { amountMath } = produceIssuer('bucks');  
-     const bucks50 = amountMath.make(50);
-     amountMath.coerce(bucks50); /equal to bucks50
-	 ```
+    - ```js
+      const { amountMath } = makeIssuerKit('bucks');  
+      const bucks50 = amountMath.make(50);
+      amountMath.coerce(bucks50); /equal to bucks50
+      ```
 - **Manipulator Methods**
 
   - [`amountMath.add(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-add-leftamount-rightamount)
@@ -133,15 +133,14 @@ API Reference.
        `amount` arguments. For a fungible `amount`, this means add their
        values.  For a non-fungible `amount`, it usually means
        including all elements from both `leftAmount` and `rightAmount`.
-    -
-      ```;
-     const { amountMath } = produceIssuer('myItems', 'strSet');
-     const listAmountA = amountMath.make(harden['1','2','4']);
-     const listAmountB = amountMath.make(harden['3']);
+    - ```js
+      const { amountMath } = makeIssuerKit('myItems', 'strSet');
+      const listAmountA = amountMath.make(harden['1','2','4']);
+      const listAmountB = amountMath.make(harden['3']);
 
-     // Returns ['1', '2', '4', '3']
-     const combinedList = amountMath.add(listAmountA, listAmountB);
-    ```
+      // Returns ['1', '2', '4', '3']
+      const combinedList = amountMath.add(listAmountA, listAmountB);
+      ```
   - [`amountMath.subtract(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-subtract-leftamount-rightamount)
     - Returns a new `amount` that is the `leftAmount` argument minus
       the `rightAmount` argument  (i.e. for strings or objects
@@ -149,29 +148,29 @@ API Reference.
       doesn't include `rightAmount` (subtraction results in a
       negative), throws error. 
     - ```js
-	const { amountMath } = produceIssuer('myItems', 'strSet');
-	const listAmountA = amountMath.make(harden['1','2','4']);
-	const listAmountB = amountMath.make(harden['3']);
-	const listAmountC = amountMath.make(harden['2']);
-    // Returns ['1', '4']
-    const subtractedList = amountMath.subtract(listAmountA, listAmountC)
-    // Throws error
-    const badList = amountMath.subtract(listAmountA, listAmountB)
-    ```
+      const { amountMath } = makeIssuerKit('myItems', 'strSet');
+      const listAmountA = amountMath.make(harden['1','2','4']);
+      const listAmountB = amountMath.make(harden['3']);
+      const listAmountC = amountMath.make(harden['2']);
+      // Returns ['1', '4']
+      const subtractedList = amountMath.subtract(listAmountA, listAmountC)
+      // Throws error
+      const badList = amountMath.subtract(listAmountA, listAmountB)
+      ```
 - **Amount creation method**
   - [`amountMath.make(allegedValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-make-allegedvalue)	
     - Takes a `value` argument and returns an `amount` by combining the
        `amountMath`'s associated `brand` to the `value`.
     - ```js
-       const {amountMath } = produceIssuer('bucks');
-       const amount837 = amountMath.make(837);
-	   ```
+      const {amountMath } = makeIssuerKit('bucks');
+      const amount837 = amountMath.make(837);
+      ```
  
 ## Methods on other objects
 
-These methods either  use or return `amountMath` objects:
+These methods either use or return `amountMath` objects:
 
-- [`produceIssuer(alledgedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
+- [`makeIssuerKit(alledgedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#makeissuerkit-allegedname-mathhelpername)
   - Creates a new `issuer` that uses the `amountMath` kind
     designated by the `amountMathKind` argument (`nat`, `str`,
     `strSet`).
@@ -181,13 +180,13 @@ These methods either  use or return `amountMath` objects:
   - Returns the `amountMath` object associated with the `brand`
   argument.
   - ```js
-  const ticketIssuer = publicAPI.getTicketIssuer();
-  const ticketAmountMath = ticketIssuer.getAmountMath();
-  ```
+    const ticketIssuer = publicAPI.getTicketIssuer();
+    const ticketAmountMath = ticketIssuer.getAmountMath();
+    ```
 - [`issuer.getAmountMath()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountmath)
   - Returns the `amountMath` object for this `issuer`.   
   - ```js
-  const { issuer, amountMath } = produceIssuer('bucks');
-  const issuerAmountMath = issuer.getAmountMath();
-  // amountMath === issuerAmountMath
-  ```
+    const { issuer, amountMath } = makeIssuerKit('bucks');
+    const issuerAmountMath = issuer.getAmountMath();
+    // amountMath === issuerAmountMath
+    ```
