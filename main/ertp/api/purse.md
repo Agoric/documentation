@@ -20,7 +20,7 @@ issuer. Note that this amount will change from call to call if assets
 have been deposited or withdrawn between calls. 
 
 ```js
-const { issuer } = produceIssuer('bucks');
+const { issuer } = makeIssuerKit('bucks');
 const purse = issuer.makeEmptyPurse();
 
 const currentBalance = purse.getCurrentAmount();
@@ -36,7 +36,7 @@ of digital assets (i.e. the deposit amount). If the optional argument `optAmount
 `payment`, or if `payment` is an unresolved promise, throw an error.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('bucks');
+const { issuer, mint, amountMath } = makeIssuerKit('bucks');
 const purse = issuer.makeEmptyPurse();
 const payment = mint.mintPayment(amountMath.make(123));
 const bucks123 = amountMath.make(123);
@@ -69,7 +69,7 @@ Withdraw the `amount` from this purse into a new Payment.
 
 ```js
 // Create a purse with a balance of 10 amount
-const { issuer, mint } = produceIssuer('bucks');
+const { issuer, mint } = makeIssuerKit('bucks');
 const purse = issuer.makeEmptyPurse();
 const payment = mint.mintPayment(amountMath.make(10));
 const fungible10 = amountMath.make(10);
