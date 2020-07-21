@@ -4,9 +4,10 @@
 
 [`amount`](https://agoric.com/documentation/glossary/#amount) objects
 have no API methods. Instead, each of an `amount` objects two
-component objects, [`value`]() and [`brand`]() have API methods. To get
+component objects, [`value`](https://agoric.com/documentation/glossary/#value) 
+and [`brand`](https://agoric.com/documentation/glossary/#brand) have API methods. To get
 information about and otherwise manipulate `amount` objects as a
-whole, use the [`amountMath]() API methods.
+whole, use the [`amountMath`](https://agoric.com/documentation/glossary/#amountmath) API methods.
 
 Amounts describe digital assets.  Anyone with access to a `mint` object can
  create an `amount` object with new assets. 
@@ -21,7 +22,7 @@ object of 7 quatloos requires access to the quatloos `mint` object.
 - **[Brand](https://agoric.com/documentation/glossary/#brand)**: The
   type of digital asset, such as our imaginary `qualtoos` currency or,
   in a game, a powerful magic sword.
-- **[Value]((https://agoric.com/documentation/glossary/#value)**: How much/many of the asset. Fungible values are natural
+- **[Value](https://agoric.com/documentation/glossary/#value)**: How much/many of the asset. Fungible values are natural
 numbers. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
 issue (say, a theater ticket's date, time, row and seat positions).
@@ -46,21 +47,21 @@ is used with that brand. The possible values are:
 - `set`: Used with sets of objects, primarily non-fungible assets.
 
 Use
-[`produceIssuer(allegedName, amountMathType)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
+[`makeIssuerKit(allegedName, amountMathType)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
  to specify which kind of `amountMath` your contract uses for the brand
  associated with the created `issuer`.  The second parameter,
  `amountMathType`, is optional and defaults to `nat` if not given. For
  example: 
 ```js
-produceIssuer('quatloos`); // Defaults to 'nat'
-produceIssuer('quatloos', 'strSet');
-produceIssuer('quatloos, 'set');
+makeIssuerKit('quatloos`); // Defaults to 'nat'
+makeIssuerKit('quatloos', 'strSet');
+makeIssuerKit('quatloos, 'set');
 ```
 
 You should make and use a local version of `AmountMath` for the brands
 your contract works with:
 ```js
-const { issuer, brand } = produceIssuer('bucks'); //Defaults to 'nat' 
+const { issuer, brand } = makeIssuerKit('bucks'); //Defaults to 'nat' 
 const amountMathName = issuer.getAmountMathKind(); // 'nat'
 const localAmountMath = makeAmountMath(brand, type)
 ```
@@ -101,13 +102,13 @@ their `mint`'s `issuer`, and thus their `brand`, was created to be.
   - Returns `true` is the brand is the one associated with the
   `issuer` argument. 
   - ```js
-  const isIssuer = brand.isMyIssuer(issuer);
-  ```
+    const isIssuer = brand.isMyIssuer(issuer);
+    ```
 - [`brand.getAllegedName()`](https://agoric.com/documentation/ertp/api/brand.html#brand-getallegedname)
   - Return the `brand`'s alleged name, but should not be trusted as accurate.
   - ```js
-  const name = brand.getAllegedName();
-  ```
+    const name = brand.getAllegedName();
+    ```
 
 The following methods on other object types also either operate on or
 return `brand` objects.
@@ -118,27 +119,27 @@ return `brand` objects.
     alone. Fake digital assets and `amount`s can use another`
     issuer`'s `brand`.
   - ```js
-	const { issuer, brand } = produceIssuer('bucks');
-	const bucksBrand = issuer.getBrand();
-	// brand === bucksBrand
-	```
+    const { issuer, brand } = makeIssuerKit('bucks');
+    const bucksBrand = issuer.getBrand();
+    // brand === bucksBrand
+    ```
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
   - Return the `payment`s alledged `brand` object. Because `payment`s
   are not trusted, this should be treated with suspicion and verified
   elsewhere.
   - ```js
-	  const { issuer, mint, brand, amountMath } = produceIssuer('bucks');
-	  const payment = mint.mintPayment(amountMath.make(10));
-	  const officialBrand = payment.getAllegedBrand();
-	  ```
+    const { issuer, mint, brand, amountMath } = makeIssuerKit('bucks');
+    const payment = mint.mintPayment(amountMath.make(10));
+    const officialBrand = payment.getAllegedBrand();
+    ```
 - [`amountMath.getBrand()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getbrand)
   - Return the `brand` the `amountMath` object is using for its
   methods.
   - ```js
-	  const { issuer } = produceIssuer('bucks');
-	  const exampleAmountMath = issuer.getAmountMath();
-	  const exampleBrand = exampleAmountMath.getBrand();
-	  ```
+    const { issuer } = makeIssuerKit('bucks');
+    const exampleAmountMath = issuer.getAmountMath();
+    const exampleBrand = exampleAmountMath.getBrand();
+    ```
 
 ## Values
 
@@ -152,16 +153,16 @@ with complete `amount` objects, including their `value` part.
 - [`amountMath.getValue(amount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getvalue-amount)
   - Return the `amount` argument's `value`
   - ```js
-	  const { amountMath } = produceIssuer('bucks');
-	  const fungible123 = amountMath.make(123);
-	  // returns 123
-	  const value = amountMath.getValue(amount);
-	  ```
+    const { amountMath } = makeIssuerKit('bucks');
+    const fungible123 = amountMath.make(123);
+    // returns 123
+    const value = amountMath.getValue(amount);
+    ```
 - [`amountMath.make(alledgedValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-make-allegedvalue)
   - Make an `amount`from a `value` by adding the
   `amountMath`'s associated `brand` to the `value`. **tyg todo: Not sure what good this is, since it's
     not an actual amount/assets, since those can only be created by mints?**  
   - ```js
-  const { amountMath } = produceIssuer('bucks');
-  const amount837 = amountMath.make(837);
-  ```
+    const { amountMath } = makeIssuerKit('bucks');
+    const amount837 = amountMath.make(837);
+    ```
