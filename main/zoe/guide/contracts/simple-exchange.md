@@ -23,7 +23,7 @@ const simpleExchangeInvite = await zoe.makeInstance(installationHandle, {
    Asset: moolaIssuer,
    Price: simoleanIssuer,
   });
-const { instanceHandle } = inviteIssuer.getAmountOf(simpleExchangeInvite).extent[0];
+const { instanceHandle } = inviteIssuer.getAmountOf(simpleExchangeInvite).value[0];
 const { publicAPI } = zoe.getInstance(instanceHandle);
 const aliceInvite = publicAPI.makeInvite()
 ```
@@ -63,7 +63,7 @@ expects:
 // Bob collects information
 const inviteIssuer = zoe.getInviteIssuer();
 const bobExclusiveInvite = await inviteIssuer.claim(bobInvite);
-const { instanceHandle } = inviteIssuer.getAmountOf(bobExclusiveInvite).extent[0];
+const { instanceHandle } = inviteIssuer.getAmountOf(bobExclusiveInvite).value[0];
 const {
   installationHandle: bobInstallationId,
   issuerKeywordRecord: bobIssuers,
