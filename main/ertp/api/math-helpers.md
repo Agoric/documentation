@@ -13,13 +13,13 @@ set of API methods (i.e. MathHelpers are polymorphic):
 - `strSet`: Used with non-fungible assets.
 - `set`: Used with sets of objects, primarily non-fungible assets.
 
-Use `produceIssuer(allegedName, mathHelpersName)` to specify which type of MathHelpers
+Use `makeIssuerKit(allegedName, mathHelpersName)` to specify which type of MathHelpers
 your contract uses. The second parameter, `mathHelpersName` is optional and defaults 
 to `nat` if not given. For example
 ```js
-produceIssuer('quatloos`); // Defaults to 'nat'
-produceIssuer('quatloos', 'strSet');
-produceIssuer('quatloos, 'set');
+makeIssuerKit('quatloos`); // Defaults to 'nat'
+makeIssuerKit('quatloos', 'strSet');
+makeIssuerKit('quatloos, 'set');
 ```
 For more details on the MathHelper types, see the [ERTP Guide's MathHelpers section](https://agoric.com/documentation/ertp/api/math-helpers.html)
 
@@ -30,7 +30,7 @@ should first make a local version of AmountMath as shown below.
 
 
 ```js
-const { issuer, brand } = produceIssuer('bucks');
+const { issuer, brand } = makeIssuerKit('bucks');
 const mathHelperName = issuer.getMathHelpersName(); // 'nat'
 const localAmountMath = makeAmountMath(brand, mathHelpersName)
 ```
