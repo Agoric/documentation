@@ -24,10 +24,10 @@ To do that, you would first install the [ertp JavaScript package](https://www.np
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import produceIssuer from '@agoric/ertp';
+import makeIssuerKit from '@agoric/ertp';
 import harden from '@agoric/harden';
 
-const { mint, issuer } = produceIssuer('Agoric Ballet Opera tickets', 'set');
+const { mint, issuer } = makeIssuerKit('Agoric Ballet Opera tickets', 'set');
 ```
 
 At this Opera, there are [1114](https://fr.wikipedia.org/wiki/Grand_Th%C3%A9%C3%A2tre_(Bordeaux)#Salle_de_spectacle) seats numbered `1` to `1114`.
