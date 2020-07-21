@@ -125,7 +125,7 @@ const baytownBucksMint = makeMint('BaytownBucks');
 Now, use the `mint` to create 1000 new BaytownBucks.
 
 ```js
-const { issuer, mint } = produceIssuer('BaytownBucks');
+const { issuer, mint } = makeIssuerKit('BaytownBucks');
 const BB1000 = amountMath.make(1000);
 const newPayment = mint.mintPayment(BB1000);
 const BBpurse = issuer.makeEmptyPurse();
