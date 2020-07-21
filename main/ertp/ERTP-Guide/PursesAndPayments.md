@@ -47,16 +47,16 @@ Purses have five API methods:
   - Returns the `issuer` for the purse's `brand`. See the [Issuer](#issuers)
   section for more details about what this means and how it is used.
   - ```js
-	const purseIssuer = purse.getIssuer();
-	```
+    const purseIssuer = purse.getIssuer();
+    ```
 - [`purse.getCurrentAmount()`](https://agoric.com/documentation/ertp/api/purse.html#purse-getcurrentamount)
   - Returns the current `amount` object stored in the purse. Note that
     purses can be empty.
   - ```js
-  const { issuer } = produceIssuer('bucks');
-  const purse = issuer.makeEmptyPurse();
-  const currentBalance = purse.getCurrentAmount();
-  ```
+    const { issuer } = makeIssuerKit('bucks');
+    const purse = issuer.makeEmptyPurse();
+    const currentBalance = purse.getCurrentAmount();
+    ```
 - [`purse.deposit(payment, optAmount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-deposit-payment-optamount)
   - Deposit the `amount` contents of a `payment` into this purse,
     returning the `payment`'s `amount`. If the optional argument
@@ -65,16 +65,16 @@ Purses have five API methods:
     [promise](https://agoric.com/documentation/glossary/#promise),
     it throws an error.
   - ```js
-     const { issuer, mint, amountMath } = produceIssuer('bucks');
-     const purse = issuer.makeEmptyPurse();
-	 const payment = mint.mintPayment(amountMath.make(123));
-	 const bucks123 = amountMath.make(123);
-	 // Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
-	 purse.deposit(payment, bucks123);
-	 const secondPayment = mint.mintPayment(amountMath.make(100));
-	 // Throws error
-	 purse.deposit(secondPayment, fungible123);
-     ```
+    const { issuer, mint, amountMath } = makeIssuerKit('bucks');
+    const purse = issuer.makeEmptyPurse();
+    const payment = mint.mintPayment(amountMath.make(123));
+    const bucks123 = amountMath.make(123);
+    // Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
+    purse.deposit(payment, bucks123);
+    const secondPayment = mint.mintPayment(amountMath.make(100));
+    // Throws error
+    purse.deposit(secondPayment, fungible123);
+    ```
 - [`purse.makeDepositFacet()`](https://agoric.com/documentation/ertp/api/purse.html#purse-makedepositfacet)
   - Creates a deposit-only facet on the `purse` that can be given
     to other parties. This lets them make a deposit, but not make
@@ -95,9 +95,9 @@ purses as arguments or return purses. In particular:
   - Returns a new empty `purse` for storing an `amount` of the same `brand` as
   the `issuer`.
   - ```js
-	   const { issuer, mint } = produceIssuer('bucks');
-	   const purse = issuer.makeEmptyPurse();
-   ```
+    const { issuer, mint } = makeIssuerKit('bucks');
+    const purse = issuer.makeEmptyPurse();
+    ```
 
 ## Payments
 
@@ -141,21 +141,21 @@ Other objects' `payment`-related methods:
     so you must use this `issuer` method to be sure of getting the
     true value. 
   ` ```js
-	  const { issuer, mint, amountMath } = produceIssuer('bucks');
-	  const payment = mint.mintPayment(amountMath.make(100));
-	  issuer.getAmountOf(payment); // returns 100
+    const { issuer, mint, amountMath } = makeIssuerKit('bucks');
+    const payment = mint.mintPayment(amountMath.make(100));
+    issuer.getAmountOf(payment); // returns 100
     ```
 - [`issuer.burn(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-burn-payment-optamount)
   - Burn all of the digital assets in the `payment`. `optAmount` is
     optional but if present, the `payment` balance must be equal to
     it. If `payment` is a promise, the operation proceeds after it resolves. 
   - ```js
-	  const { issuer, mint, amountMath } = produceIssuer('bucks');
-	  const amountToBurn = amountMath.make(10);
-	  const paymentToBurn = mint.mintPayment(amountToBurn);
-	  // burntAmount should equal 10
-	  const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
-	  ```
+    const { issuer, mint, amountMath } = makeIssuerKit('bucks');
+    const amountToBurn = amountMath.make(10);
+    const paymentToBurn = mint.mintPayment(amountToBurn);
+    // burntAmount should equal 10
+    const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
+    ```
 - [`issuer.claim(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-claim-payment-optamount)
   - Transfer all assets from the `payment` to a returned new `payment`
     and burn the original. No other references to this payment survive, so 
@@ -163,25 +163,25 @@ Other objects' `payment`-related methods:
     present, `payment`'s balance is equal to `optAmount`'s, or it throsw
     an error. If `payment` is a promise, the operation proceeds after it resolves. 
   - ```js
-	  const { mint, issuer, amountMath } = produceIssuer('bucks');
-	  const amountExpectedToTransfer = amountMath.make(2);
-	  const originalPayment = mint.mintPayment(amountExpectedToTransfer);
-	  const newPayment = issuer.claim(originalPayment, amountToTransfer);
-	  ```
+    const { mint, issuer, amountMath } = makeIssuerKit('bucks');
+    const amountExpectedToTransfer = amountMath.make(2);
+    const originalPayment = mint.mintPayment(amountExpectedToTransfer);
+    const newPayment = issuer.claim(originalPayment, amountToTransfer);
+    ```
 - [`issuer.combine(paymentsArray)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-combine-paymentsarray)
   - Combine multiple `payment`s into one, returned, `payment`. If any `payment`
   the array is a promise, the operation proceeds after all `payment`s
   resolve. All `payment`s in the array are burned.
   - ```js
-	  const { mint, issuer, amountMath } = produceIssuer('bucks');
-	  // create an array of 100 payments of 1 unit each
-	  const payments = [];
-	  for (let i = 0; i < 100; i += 1) {
-	    payments.push(mint.mintPayment(amountMath.make(1)));
-	  }
-	  // combinedPayment equals 100
-	  const combinedPayment = issuer.combine(payments);
-	  ```
+    const { mint, issuer, amountMath } = makeIssuerKit('bucks');
+    // create an array of 100 payments of 1 unit each
+    const payments = [];
+    for (let i = 0; i < 100; i += 1) {
+      payments.push(mint.mintPayment(amountMath.make(1)));
+    }
+    // combinedPayment equals 100
+    const combinedPayment = issuer.combine(payments);
+    ```
 - [`issuer.split(payment, paymentAmountA)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-split-payment-paymentamounta)
   - Split one `payment` into two new `payment`s, A and B, returned in
     an array. `paymentAmountA` determines A's value, and whatever is
@@ -189,9 +189,9 @@ Other objects' `payment`-related methods:
     is burned. If `payment` is a promise, the operation proceeds after
     the promise resolves. 
   - ```js
-	const { mint, issuer, amountMath } = produceIssuer('bucks');
-	const oldPayment = mint.mintPayment(amountMath.make(20));
-	const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(10));
+    const { mint, issuer, amountMath } = makeIssuerKit('bucks');
+    const oldPayment = mint.mintPayment(amountMath.make(20));
+    const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(10));
 	```
 - [`issuer.splitMany(payment, amountArray)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-splitmany-payment-amountarray)
   - Split `payment` into multiple `payment`s, returned as an array the
@@ -201,11 +201,11 @@ Other objects' `payment`-related methods:
     `payment`'s value is not equal to the sum of `amountArray`'s
     values, the operation fails. On success, the original `payment` is burned.
   - ```js
-	  const { mint, issuer, amountMath } = produceIssuer('fungible');
-	  const oldPayment = mint.mintPayment(amountMath.make(100));
-	  const goodAmounts = Array(10).fill(amountMath.make(10));
-	  const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts);
-	  ```
+    const { mint, issuer, amountMath } = makeIssuerKit('fungible');
+    const oldPayment = mint.mintPayment(amountMath.make(100));
+    const goodAmounts = Array(10).fill(amountMath.make(10));
+    const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts);
+    ```
 - [`issuer.isLive(payment)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-islive-payment)
   - Returns `true` if `payment` has value. If `payment` is a promise,
 	 the operation proceeds upon resolution.
@@ -214,35 +214,34 @@ Other objects' `payment`-related methods:
     that unlike creating a new `payment` with an existing `amount`,
     this creates new digital assets of the specified in `newAmount` `brand`.
   - ```js
-	  const { issuer, mint } = produceIssuer('fungible');
-	  const fungible1000 = amountMath.make(1000);
-	  const newPayment = mint.mintPayment(fungible1000);
-	  ```
+    const { issuer, mint } = makeIssuerKit('fungible');
+    const fungible1000 = amountMath.make(1000);
+    const newPayment = mint.mintPayment(fungible1000);
+    ```
 - [`purse.deposit(payment, optAmount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-deposit-payment-optamount)
   - Deposit all of `payment` into this `purse`, returning the deposit
     `amount`. If optional `optAmount` does not equal the `payment`'s balance
      or if `payment` is an unresolved promise, it throws an error.
   - ```js
-	  const { issuer, mint, amountMath } = produceIssuer('bucks');
-	  const purse = issuer.makeEmptyPurse();
-	  const payment = mint.mintPayment(amountMath.make(123));
-	  const bucks123 = amountMath.make(123);
-	  // Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
-	  purse.deposit(payment, bucks123);
-	  const secondPayment = mint.mintPayment(amountMath.make(100));
-	  // Throws error
-	  purse.deposit(secondPayment, fungible123);
-      ```
+    const { issuer, mint, amountMath } = makeIssuerKit('bucks');
+    const purse = issuer.makeEmptyPurse();
+    const payment = mint.mintPayment(amountMath.make(123));
+    const bucks123 = amountMath.make(123);
+    // Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
+    purse.deposit(payment, bucks123);
+    const secondPayment = mint.mintPayment(amountMath.make(100));
+    // Throws error
+    purse.deposit(secondPayment, fungible123);
+    ```
 - [`purse.makeDepositFacet()`](https://agoric.com/documentation/ertp/api/purse.html#purse-makedepositfacet)
   - Creates a deposit-only facet on the `purse` that can be given to
     other parties that lets them deposit a `payment` (but not
     withdraw) into the `purse`. 
   - ```js
-	  const depositOnlyFacet = purse.makeDepositFacet();
-	  // Give depositOnlyFacet to someone else. They can pass a payment that will be deposited:
-	  depositOnlyFacet.receive(payment);
-	  ```
-
+    const depositOnlyFacet = purse.makeDepositFacet();
+    // Give depositOnlyFacet to someone else. They can pass a payment that will be deposited:
+    depositOnlyFacet.receive(payment);
+    ```
 ## `purse` and `payment` example
 
 The following code creates a new purse for the `bucks` brand, deposits
@@ -251,7 +250,7 @@ payment, and finally returns the amount currently in the purse, 7 bucks.
 
 ```js
 // Create a purse with a balance of 10 amount
-const { issuer, mint } = produceIssuer('bucks');
+const { issuer, mint } = makeIssuerKit('bucks');
 const purse = issuer.makeEmptyPurse();
 const payment = mint.mintPayment(amountMath.make(10));
 const fungible10 = amountMath.make(10);
