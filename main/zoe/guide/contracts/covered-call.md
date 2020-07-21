@@ -9,7 +9,7 @@ In a covered call, the owner of a digital asset sells a call option. A call opti
 
 In this contract, the expiry date is represented by the deadline at which the owner of the digital asset's offer is cancelled. Therefore, the owner of the digital asset's proposal `exit` must be "afterDeadline".
 
-The invite that the creator of the covered call receives is the call option and has the following additional information in the extent of the invite: `{ expirationDate, timerAuthority, underlyingAsset, strikePrice }`.
+The invite that the creator of the covered call receives is the call option and has the following additional information in the value of the invite: `{ expirationDate, timerAuthority, underlyingAsset, strikePrice }`.
 
 
 ## Making A Call Option
@@ -97,7 +97,7 @@ contract-provided information about what the invite can be used for.
 ```js
 // Check the balance
 const {
-  extent: [{ instanceHandle: swapInstanceHandle }],
+  value: [{ instanceHandle: swapInstanceHandle }],
 } = inviteIssuer.getAmountOf(daveSwapInvite);
 
 const {
