@@ -13,8 +13,8 @@ The AllegedName must be a string.
 AmountMath executes the logic of how amounts are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
 gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic
-[MathHelpers](#mathhelpers), which manipulate an `amount`'s [extent](#extent) or unbranded portion. 
-Standard natural number operations cannot be used on extents, since they can be an array or object. 
+[MathHelpers](#mathhelpers), which manipulate an `amount`'s [value](#value) or unbranded portion. 
+Standard natural number operations cannot be used on values, since they can be an array or object. 
 See the [ERTP Guide's AmountMath section](https://agoric.com/documentation/ertp/guide/amount-math.html) 
 and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) for more information.
 
@@ -24,8 +24,8 @@ by [issuers](#issuer) and [mints](#mint), and represent the goods and currency c
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-An amount is comprised of a [brand](#brand) with an [extent](#extent). For example, "4 quatloos"
-is an amount with an extent value of "4" and a brand value of the imaginary currency "quatloos".
+An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 quatloos"
+is an amount with a value of "4" and a brand of the imaginary currency "quatloos".
 
 See the [ERTP Guide's Amounts section](https://agoric.com/documentation/ertp/guide/amounts.html) 
 and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) 
@@ -70,15 +70,15 @@ Key ERTP concepts include [Issuers](#issuer), [mints](#mint),
 see the [ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction.html),
 [ERTP Guide](https://agoric.com/documentation/ertp/guide/), and [ERTP API](https://agoric.com/documentation/ertp/api/).
 
-## Extent
-Extents are the part of an [amount](#amount) that describe the extent of something
+## Value
+Values are the part of an [amount](#amount) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
-Pixel(3,2), $3, or ‘Right to occupy on Tuesdays’. [Fungible](#fungible) extents are usually 
-represented by natural numbers. Other extents may be represented as strings naming a particular
+Pixel(3,2), $3, or ‘Right to occupy on Tuesdays’. [Fungible](#fungible) values are usually 
+represented by natural numbers. Other values may be represented as strings naming a particular
 right, or an arbitrary object representing the rights at issue. The latter two examples 
-are usually [non-fungible](#nonfungible) assets. Extents must be [Comparable](#comparable).
+are usually [non-fungible](#nonfungible) assets. Values must be [Comparable](#comparable).
 
-See the [ERTP Guide's Extent section](https://agoric.com/documentation/ertp/guide/extent.html) for more information.
+See the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/value.html) for more information.
 
 ## Fungible
 A fungible asset is one where all exemplars of the asset are interchangable. For example, if you 
@@ -105,8 +105,8 @@ See the [ERTP Guide's Issuer section](https://agoric.com/documentation/ertp/guid
 and the [ERTP API's Issuer section](https://agoric.com/documentation/ertp/api/issuer.html) for more information.
 
 ## MathHelpers
-MathHelpers are methods for performing arithmetic operations on an [amount's](#amount) [extent](#extent). 
-[AmountMath](#amountmath) uses MathHelpers to do extent arithmetic, after which it [brands](#brand)
+MathHelpers are methods for performing arithmetic operations on an [amount's](#amount) [value](#value). 
+[AmountMath](#amountmath) uses MathHelpers to do value arithmetic, after which it [brands](#brand)
 the result to create a new [amount](#amount). For more information, see the 
 [MathHelpers ERTP Guide section](https://agoric.com/documentation/ertp/guide/math-helpers.html) and
 the [MathHelpers ERTP API section](https://agoric.com/documentation/ertp/api/math-helpers.html).
