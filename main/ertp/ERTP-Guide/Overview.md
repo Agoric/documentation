@@ -31,7 +31,7 @@ symbol is linked to the term's [Glossary]() entry.
   *[brand](#brand)* *[&](https://agoric.com/documentation/glossary/#brand)* (the
   kind of asset). You can think of these as the "how many" and the
   "what" of an asset.
-- **[AmountMath](#amountmath)** **[&]((https://agoric.com/documentation/glossary/#amountmath)**:
+- **[AmountMath](#amountmath)** **[&](https://agoric.com/documentation/glossary/#amountmath)**:
 Methods to do math operations on `amount` objects.
 - **[Purse](#purse)** **[&](https://agoric.com/documentation/glossary/#purse)**: an
   object for long term `amount` object storage. 
