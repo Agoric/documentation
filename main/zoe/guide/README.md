@@ -230,8 +230,8 @@ exciting part, the reallocation.
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
 escrowed for each offer. That information is in the form of an
-`amount`, which is a labeled extent. For instance, in "3 bricks", "3" is
-the extent, and "bricks" is the label. ([See more about ERTP fundamentals here](../../ertp/guide/)).
+`amount`, which is a branded value. For instance, in "3 bricks", "3" is
+the value, and "bricks" is the brand. ([See more about ERTP fundamentals here](../../ertp/guide/)).
 
 Because this is a swap, we want to literally swap the amounts for the
 first offer and the matching offer. That is, the user who put in the

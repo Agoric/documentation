@@ -80,7 +80,7 @@ The `inviteDesc` is a string used as a description of the invite, such as
 and finding particular invites in a contract.
 
 The `customProperties` is an object whose properties contain information 
-as defined by the smart contract, to include in the extent of the 
+as defined by the smart contract, to include in the value of the 
 invitation.
 
 ```js

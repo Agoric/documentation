@@ -77,21 +77,21 @@ She then sends the invite to Bob and he looks up the invite to see if it matches
 ```js
 const inviteIssuer = zoe.getInviteIssuer();
 const bobExclusiveInvite = await inviteIssuer.claim(newInviteP);
-const bobInviteExtent = inviteIssuer.getAmountOf(bobExclusiveInvite)
-  .extent[0];
+const bobInviteValue = inviteIssuer.getAmountOf(bobExclusiveInvite)
+  .value[0];
 
 const {
   installationHandle: bobInstallationId,
   issuerKeywordRecord: bobIssuers,
-} = zoe.getInstance(bobInviteExtent.instanceHandle);
+} = zoe.getInstance(bobInviteValue.instanceHandle);
 
 
 // Bob does checks
 assert(bobInstallationId === installationHandle, details`wrong installation`);
 assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
-assert(moolaAmountMath.isEqual(bobInviteExtent.asset, moola(3)), details`wrong asset`);
-assert(simoleanAmountMath.isEqual(bobInviteExtent.price, simoleans(7)), details`wrong price`);
+assert(moolaAmountMath.isEqual(bobInviteValue.asset, moola(3)), details`wrong asset`);
+assert(simoleanAmountMath.isEqual(bobInviteValue.price, simoleans(7)), details`wrong price`);
 ```
 
 Bob decides to be the counter-party. He also escrows his payments and uses his invite to

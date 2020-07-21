@@ -23,10 +23,10 @@ You would first install the [ertp JavaScript package](https://www.npmjs.com/pack
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import produceIssuer from '@agoric/ertp';
+import makeIssuerKit from '@agoric/ertp';
 import harden from '@agoric/harden';
 
-const { mint: baytownBucksMint, issuer } = produceIssuer('BaytownBucks');
+const { mint: baytownBucksMint, issuer } = makeIssuerKit('BaytownBucks');
 ```
 
 Great! Now let's use our mint to create 1000 new BaytownBucks.
@@ -46,10 +46,10 @@ Let's store our payment in a purse!
 
 ```js
 const myPurse = issuer.makeEmptyPurse();
-console.log(myPurse.getCurrentAmount().extent); // 0
+console.log(myPurse.getCurrentAmount().value); // 0
 
 myPurse.deposit(payment);
-console.log(myPurse.getCurrentAmount().extent); // 1000
+console.log(myPurse.getCurrentAmount().value); // 1000
 ```
 
 
@@ -81,7 +81,7 @@ If she had access to it, she could create baytownBucks herself by calling `bayto
 ```js
 const myBaytownBucksPurse = issuer.makeEmptyPurse();
 
-console.log(myBaytownBucksPurse.getCurrentAmount().extent); // 0
+console.log(myBaytownBucksPurse.getCurrentAmount().value); // 0
 
 const alice = {
     receivePayment(allegedBaytownBucksPayment) {

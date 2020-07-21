@@ -71,13 +71,13 @@ can check that the installationHandle installed is the swap he is expecting. He 
 // Bob collects information about the swap
 const inviteIssuer = zoe.getInviteIssuer();
 const bobExclusiveInvite = await inviteIssuer.claim(bobInvite);
-const bobInviteExtent = inviteIssuer.getAmountOf(bobExclusiveInvite)
-  .extent[0];
+const bobInviteValue = inviteIssuer.getAmountOf(bobExclusiveInvite)
+  .value[0];
 
 const {
   installationHandle: bobInstallationId,
   issuerKeywordRecord: bobIssuers,
-} = zoe.getInstance(bobInviteExtent.instanceHandle);
+} = zoe.getInstance(bobInviteValue.instanceHandle);
 
 // Bob checks the information is what he expects
 assert(bobInstallationId === installationHandle, details`wrong installation`);

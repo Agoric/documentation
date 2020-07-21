@@ -87,8 +87,8 @@ valid
 Anyone can make one, and they can be sent to anyone. They have two parts:
 - **Brand**: An unforgeable object identity for the digital asset's type,
   such as an object that represents quatloos.
-- **Extent**: How much/many of the asset. Fungible extents are natural
-  numbers. Non-fungible extents are strings or objects representing
+- **Value**: How much/many of the asset. Fungible values are natural
+  numbers. Non-fungible values are strings or objects representing
   attributes of the asset (say, a theater ticket's row and seat positions).
 
 Note: *fungible* means any item in a set can be used. For example, for 

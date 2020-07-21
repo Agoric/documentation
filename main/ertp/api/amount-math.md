@@ -4,20 +4,20 @@ Logic for manipulating amounts.
 
 ## Amount
 
-Amounts are descriptions of digital assets, answering the questions "how much" and "of what kind". Amounts are extents labeled with a brand. AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
+Amounts are descriptions of digital assets, answering the questions "how much" and "of what kind". Amounts are values labeled with a brand. AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
 
 ```js
 someAmount: {
   brand,
-  extent: someExtent
+  value: someValue
 }
 ```
 
-## Extent
+## Value
 
-Extents describe the extent of something that can be owned or shared. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+Values describe how much of something that can be owned or shared. Fungible values are normally represented by natural numbers. Other values may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
-Extent must be Comparable.
+Value must be Comparable.
 
 ## amountMath.getBrand()
 - Returns: `{Brand}`
@@ -25,7 +25,7 @@ Extent must be Comparable.
 Return the brand.
 
 ```js
-const { issuer } = produceIssuer('bucks');
+const { issuer } = makeIssuerKit('bucks');
 const exampleAmountMath = issuer.getAmountMath();
 
 const exampleBrand = exampleAmountMath.getBrand();
@@ -37,46 +37,46 @@ const exampleBrand = exampleAmountMath.getBrand();
 Get the name of the mathHelpers used.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 amountMath.getMathHelpersName(); // 'nat'
 ```
 
-## amountMath.make(allegedExtent)
+## amountMath.make(allegedValue)
 
-- `allegedExtent` `{Extent}`
+- `allegedValue` `{Value}`
 - Returns: `{Amount}`
 
-Make an amount from an extent by adding the brand.
+Make an amount from a value by adding the brand.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 const amount837 = amountMath.make(837);
 ```
 
-## amountMath.coerce(allegedAmountOrExtent)
-- `allegedAmountOrExtent` `{Amount}`
+## amountMath.coerce(allegedAmountOrValue)
+- `allegedAmountOrValue` `{Amount}`
 - Returns: `{Amount}`
 
-Make sure this amount (or extent) is valid and return it as an amount if so.
+Make sure this amount (or value) is valid and return it as an amount if so.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 const bucks50 = amountMath.make(50);
 
 amountMath.coerce(bucks50); // equal to bucks50
 ```
 
-## amountMath.getExtent(amount)
-- Returns: `{Extent}`
+## amountMath.getValue(amount)
+- Returns: `{Value}`
 
-Extract and return the extent.
+Extract and return the value.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 const fungible123 = amountMath.make(123);
 
 // returns 123
-const extent = amountMath.getExtent(amount);
+const value = amountMath.getValue(amount);
 ```
 
 ## amountMath.getEmpty()
@@ -85,7 +85,7 @@ const extent = amountMath.getExtent(amount);
 Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
+const { amountMath } = makeIssuerKit('bucks');
 
 // Returns an empty amount for this issuer.
 // Since this is a fungible amount it returns 0
@@ -99,7 +99,7 @@ const empty = amountMath.getEmpty();
 Return true if the amount is empty. Otherwise false.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = makeIssuerKit('fungible');
 const empty = amountMath.getEmpty();
 const fungible1 = amountMath.make(1);
 
@@ -118,7 +118,7 @@ amountMath.isEmpty(fungible1)
 Returns true if the leftAmount is greater than or equal to the rightAmount. For non-scalars, "greater than or equal to" depends on the kind of amount, as defined by the MathHelpers. For example, whether rectangle A is greater than rectangle B depends on whether rectangle A includes rectangle B as defined by the logic in MathHelpers.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = makeIssuerKit('fungible');
 const empty = amountMath.getEmpty();
 const fungible1 = amountMath.make(1);
 
@@ -137,7 +137,7 @@ amountMath.isGTE(empty, fungible1);
 Returns true if the leftAmount equals the rightAmount. We assume that if isGTE is true in both directions, isEqual is also true.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
+const { amountMath } = makeIssuerKit('fungible');
 const empty = amountMath.getEmpty();
 const fungible1 = amountMath.make(1);
 const anotherFungible1 = amountMath.make(1);
@@ -156,10 +156,10 @@ amountMath.isEqual(empty, fungible1);
 
 Returns a new amount that is the union of both leftAmount and rightAmount.
 
-For fungible amount this means adding the extents. For other kinds of amount, it usually means including all of the elements from both left and right.
+For fungible amount this means adding the values. For other kinds of amount, it usually means including all of the elements from both left and right.
 
 ```js
-const { amountMath } = produceIssuer('myItems', 'strSet');
+const { amountMath } = makeIssuerKit('myItems', 'strSet');
 const listAmountA = amountMath.make(harden['1','2','4']);
 const listAmountB = amountMath.make(harden['3']);
 
@@ -172,10 +172,10 @@ const combinedList = amountMath.add(listAmountA, listAmountB);
 - `rightAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Returns a new amount that is the leftAmount minus the rightAmount (i.e. everything in the leftAmount that is not in the rightAmount). If leftAmount doesn't include rightAmount (subtraction results in a negative), throw  an error. Because the left amount must include the right amount, this is NOT equivalent to set subtraction.
+Returns a new amount that is the leftAmount minus the rightAmount (i.e. everything in the leftAmount that is not in the rightAmount). If leftAmount doesn't include rightAmount (subtraction results in a negative), throw an error. Because the left amount must include the right amount, this is NOT equivalent to set subtraction.
 
 ```js
-const { amountMath } = produceIssuer('myItems', 'strSet');
+const { amountMath } = makeIssuerKit('myItems', 'strSet');
 const listAmountA = amountMath.make(harden['1','2','4']);
 const listAmountB = amountMath.make(harden['3']);
 const listAmountC = amountMath.make(harden['2']);

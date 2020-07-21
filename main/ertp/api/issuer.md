@@ -4,7 +4,7 @@ The issuer cannot mint new amounts, but it can create empty purses and payments.
 payments, burning payments, and claiming payments exclusively). The issuer should be obtained from a trusted source and then relied upon as the
 authority as to whether an untrusted payment is valid.
 
-## produceIssuer(allegedName, mathHelperName)
+## makeIssuerKit(allegedName, mathHelperName)
 - `allegedName` `{String}`
 - `mathHelpersName` `{String}`
 - Returns: `{ mint, issuer, amountMath, brand }`
@@ -18,11 +18,11 @@ The `mathHelpersName` will be used to import a specific mathHelpers from the mat
 natural numbers and is used for basic fungible tokens.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('bucks');
+const { issuer, mint, amountMath } = makeIssuerKit('bucks');
 // This is merely an amount, describing assets.
 const bucks2 = amountMath.make(2);
 
-const { mint, issuer, amountMath } = produceIssuer('alamedaCountyPropertyTitle', 'strSet');
+const { mint, issuer, amountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
 
 // These are merely amounts describing digital assets, not minting assets.
 const cornerProperty = amountMath.make(harden['1292826']);
@@ -36,7 +36,7 @@ const combinedProperty = amountMath.make(harden['1292826', '1028393']);
 Get the Brand for this Issuer. The Brand indicates the kind of digital asset and is shared by the mint, the issuer, and any purses and payments of this particular kind. The brand is not closely held, so this function should not be trusted to identify an issuer alone. Fake digital assets and amounts can use another issuer's brand.
 
 ```js
-const { issuer, brand } = produceIssuer('bucks');
+const { issuer, brand } = makeIssuerKit('bucks');
 const bucksBrand = issuer.getBrand();
 // brand === bucksBrand
 ```
@@ -47,7 +47,7 @@ const bucksBrand = issuer.getBrand();
 Get the `allegedName` for this mint/issuer.
 
 ```js
-const { issuer } = produceIssuer('bucks');
+const { issuer } = makeIssuerKit('bucks');
 const issuerAllegedName = issuer.getAllegedName();
 // issuerAllegedName === 'bucks'
 ```
@@ -58,7 +58,7 @@ const issuerAllegedName = issuer.getAllegedName();
 Get the `AmountMath` for this Issuer. If `payment` is a promise, the operation will proceed after the promise resolves.
 
 ```js
-const { issuer, amountMath } = produceIssuer('bucks');
+const { issuer, amountMath } = makeIssuerKit('bucks');
 const issuerAmountMath = issuer.getAmountMath();
 // amountMath === issuerAmountMath
 ```
@@ -69,7 +69,7 @@ const issuerAmountMath = issuer.getAmountMath();
 Get the name of the MathHelpers for this Issuer.
 
 ```js
-const { issuer } = produceIssuer('bucks');
+const { issuer } = makeIssuerKit('bucks');
 issuer.getMathHelpersName(); // 'nat'
 ```
 
@@ -79,7 +79,7 @@ issuer.getMathHelpersName(); // 'nat'
 Make an empty purse of this brand.
 
 ```js
-const { issuer } = produceIssuer('bucks');
+const { issuer } = makeIssuerKit('bucks');
 const purse = exampleIssuer.makeEmptyPurse();
 ```
 
@@ -90,7 +90,7 @@ const purse = exampleIssuer.makeEmptyPurse();
 Get payment balance. Because the payment is not trusted, we cannot trust it to provide its true value, and must rely on the issuer.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('bucks');
+const { issuer, mint, amountMath } = makeIssuerKit('bucks');
 const payment = mint.mintPayment(amountMath.make(100));
 issuer.getAmountOf(payment); // returns 100
 ```
@@ -105,7 +105,7 @@ equal to `optAmount`, to prevent sending the wrong payment and other confusion. 
 promise resolves.
 
 ```js
-const { issuer, mint, amountMath } = produceIssuer('bucks');
+const { issuer, mint, amountMath } = makeIssuerKit('bucks');
 const amountToBurn = amountMath.make(10);
 const paymentToBurn = mint.mintPayment(amountToBurn);
 
@@ -124,7 +124,7 @@ equal to `amount`, to prevent sending the wrong `payment` and other confusion. I
 then it will throw an error.  If `payment` is a promise, the operation will proceed after the promise resolves.
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('bucks');
+const { mint, issuer, amountMath } = makeIssuerKit('bucks');
 const amountExpectedToTransfer = amountMath.make(2);
 const originalPayment = mint.mintPayment(amountExpectedToTransfer);
 
@@ -140,7 +140,7 @@ Combine multiple payments into one payment.  If any payment in `paymentsArray` i
 resolve. The payments in `paymentsArray` will be burned.
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('bucks');
+const { mint, issuer, amountMath } = makeIssuerKit('bucks');
 
 // create an array of 100 payments of 1 unit each
 const payments = [];
@@ -155,7 +155,7 @@ const combinedPayment = issuer.combine(payments);
 Note that you cannot combine payments from different mints:
 
 ```js
-const { mint: otherMint, amountMath: otherAmountMath } = produceIssuer('other fungible');
+const { mint: otherMint, amountMath: otherAmountMath } = makeIssuerKit('other fungible');
 const otherPayment = otherMint.mintPayment(otherAmountMath.make(10));
 payments.push(otherPayment); // using the payments array from the above code
 
@@ -172,7 +172,7 @@ Split a single payment into two new payments, A and B, according to `paymentAmou
 is a promise, the operation will proceed after the promise resolves.
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('bucks');
+const { mint, issuer, amountMath } = makeIssuerKit('bucks');
 const oldPayment = mint.mintPayment(amountMath.make(20));
 
 const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(10));
@@ -188,7 +188,7 @@ corresponding to `amountArray`. If the original `payment` is a promise, the oper
 `amountArray` don't add up to the value of `payment`, the operation fails. The original `payment` will be burned.
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('fungible');
+const { mint, issuer, amountMath } = makeIssuerKit('fungible');
 const oldPayment = mint.mintPayment(amountMath.make(100));
 const goodAmounts = Array(10).fill(amountMath.make(10));
 
@@ -198,7 +198,7 @@ const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts);
 Note that the total amount in the `amountArray` must equal the amount in the original `payment`:
 
 ```js
-const { mint, issuer, amountMath } = produceIssuer('fungible');
+const { mint, issuer, amountMath } = makeIssuerKit('fungible');
 const payment = mint.mintPayment(amountMath.make(1000));
 
 // total amounts in badAmounts equal 20, when it should equal 1000

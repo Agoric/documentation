@@ -4,7 +4,7 @@ The [issuer](./issuer.md) has an internal table that maps [purses](../api/purse.
 
 We also want to make sure there is no confusion as to what kind of asset we are using. Thus, amountMath includes checks of the `brand`, the unique identifier for the type of digital asset. If the wrong brand is used in amountMath, an error is thrown and the operation does not succeed.
 
-AmountMath uses [mathHelpers](./math-helpers.md) to do most of the work, but then adds the brand to the result. The amountMath function `extent()` gets the extent from the amount by removing the brand (amount -> extent), and the function `make()` adds the brand to produce an amount (extent -> amount). The function `coerce()` takes an amount and checks it, returning an amount (amount -> amount). `makeAmount()` takes in a brand and the name of the particular mathHelpers to use.
+AmountMath uses [mathHelpers](./math-helpers.md) to do most of the work, but then adds the brand to the result. The amountMath function `value()` gets the value from the amount by removing the brand (amount -> value), and the function `make()` adds the brand to produce an amount (value -> amount). The function `coerce()` takes an amount and checks it, returning an amount (amount -> amount). `makeAmount()` takes in a brand and the name of the particular mathHelpers to use.
 
 AmountMath is unfortunately not pass-by-copy. If you call `getAmountMath()` on a remote issuer, it will be a remote object and each call will incur the costs of calling a remote object. However, you can create a local amountMath by importing this module locally and recreating by passing in a brand and a mathHelpers name, both of which can be passed-by-copy (since there are no calls to brand in this module).
 
