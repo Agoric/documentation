@@ -23,10 +23,10 @@ You would first install the [ertp JavaScript package](https://www.npmjs.com/pack
 (`npm install @agoric/ertp`) and then:
 
 ```js
-import produceIssuer from '@agoric/ertp';
+import makeIssuerKit from '@agoric/ertp';
 import harden from '@agoric/harden';
 
-const { mint: baytownBucksMint, issuer } = produceIssuer('BaytownBucks');
+const { mint: baytownBucksMint, issuer } = makeIssuerKit('BaytownBucks');
 ```
 
 Great! Now let's use our mint to create 1000 new BaytownBucks.
