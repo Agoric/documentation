@@ -10,7 +10,7 @@ create new digital assets. These assets all have the same kind, which is called 
 Get the Issuer for this mint.
 
 ```js
-const { issuer, mint } = produceIssuer('bucks');
+const { issuer, mint } = makeIssuerKit('bucks');
 const mintIssuer = mint.getIssuer();
 
 // returns true
@@ -24,7 +24,7 @@ Object.is(issuer, mintIssuer);
 Create a new Payment containing newly minted amount.
 
 ```js
-const { issuer, mint } = produceIssuer('fungible');
+const { issuer, mint } = makeIssuerKit('fungible');
 
 const fungible1000 = amountMath.make(1000);
 const newPayment = mint.mintPayment(fungible1000);
