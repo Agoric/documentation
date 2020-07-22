@@ -53,11 +53,11 @@ const { amountMath } = makeIssuerKit('bucks');
 const amount837 = amountMath.make(837);
 ```
 
-## amountMath.coerce(allegedAmountOrValue)
-- `allegedAmountOrValue` `{Amount}`
+## amountMath.coerce(allegedAmount)
+- `allegedAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Make sure this amount (or value) is valid and return it as an amount if so.
+Make sure this amount is valid and return it as an amount if so.
 
 ```js
 const { amountMath } = makeIssuerKit('bucks');
