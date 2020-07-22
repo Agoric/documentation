@@ -58,6 +58,7 @@ const amount837 = amountMath.make(837);
 - Returns: `{Amount}`
 
 Make sure this amount is valid and return it as an amount if so.
+If not valid, throws an exception. 
 
 ```js
 const { amountMath } = makeIssuerKit('bucks');
