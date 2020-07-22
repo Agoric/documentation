@@ -2,23 +2,22 @@
 
 ![AmountMath methods](amountMath.svg) 
 
-`issuer` objects must be able to add and withdraw assets from a
+`issuer` objects must be able to deposit and withdraw assets from a
 `purse` and manipulate `payment` amounts. This 
 requires being able to add and subtract digital assets. To do this,
-and other operations on `amount` objects, an `issuer` uses a set 
-of `amountMath` methods. 
+and other operations on `amount` objects, an `issuer` uses `amountMath`methods. 
 
-In addition to math operations, `amountMath` methods check on their
+In addition to math operations, `amountMath` methods check their
 arguments' brands, throwing an error if the wrong `brand` was used.
 
 There are three different kinds of `amountMath`s, each of which
-implements the same set of methods. When you create an `issuer`, you
+implements the same methods. When you create an `issuer`, you
 do so for a specific `brand`. You thus have to specify which kind of
 `amountMath` that `brand` uses. The 
 correct kind is automatically used whenever an `amountMath` method
 is used on `amount` objects with that `brand`. The kinds are: 
-- `nat`: Used with fungible assests (i.e. natural numbers).
-- `strSet`: Used with non-fungible assets (i.e. strings).
+- `nat`: Used with fungible assets (the values are natural numbers).
+- `strSet`: Used with non-fungible assets (the values are strings).
 - `set`: Used with sets of objects, primarily non-fungible assets.
 
 `makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`.
@@ -47,9 +46,8 @@ API Reference.
   - [`amountMath.getBrand()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getbrand)
     - For this `amountMath`, return its `brand`.
     - ```js
-      const { issuer } = makeIssuerKit('bucks');
-      const exampleAmountMath = issuer.getAmountMath();
-      const exampleBrand = exampleAmountMath.getBrand();
+      const { issuer, amountMath } = makeIssuerKit('bucks');
+      const exampleBrand = amountMath.getBrand();
       ```
   - [`amountMath.getValue(amount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getvalue-amount)
     - Returns the `value` of the `amount` argument. 
@@ -61,8 +59,8 @@ API Reference.
       ```
   - [`amountMath.getAmountMathKind()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getmathhelpersname)
     - Returns a string of either 'nat', 'str', or 'strSet',
-       indicating the kind of methods this
-       `amountMath` uses.
+       indicating the kind of values this
+       `amountMath` operates on.
     - ```js
        const { amountMath } = makeIssuerKit('bucks');
        amountMath.getAmountMathKind(); // 'nat'
@@ -85,6 +83,7 @@ API Reference.
       const { amountMath } = makeIssuerKit('fungible');
       const empty = amountMath.getEmpty();
       const fungible1 = amountMath.make(1);
+      // returns true
       amountMath.isEmpty(empty)
       // returns false
       amountMath.isEmpty(fungible1)
@@ -115,12 +114,9 @@ API Reference.
       // Returns false
       amountMath.isEqual(empty, fungible1);
       ```
-  - [`amountMath.coerce(allegedAmountOrValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-coerce-allegedamountorvalue)
-    - Takes an `amount` and returns it if it's a valid `amount`   
-      **(tyg todo: What does it return if not a valid amount? Also,
-      claims it can take a value, but the type of argument is only
-      given as an amount. If it can take a `value`, what does it
-      return on success/failure?**
+  - [`amountMath.coerce(allegedAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-coerce-allegedamount)
+    - Takes an `amount` and returns it if it's a valid `amount`.
+      If invalid, it throws an error.
     - ```js
       const { amountMath } = makeIssuerKit('bucks');  
       const bucks50 = amountMath.make(50);
@@ -162,7 +158,7 @@ API Reference.
     - Takes a `value` argument and returns an `amount` by combining the
        `amountMath`'s associated `brand` to the `value`.
     - ```js
-      const {amountMath } = makeIssuerKit('bucks');
+      const { amountMath } = makeIssuerKit('bucks');
       const amount837 = amountMath.make(837);
       ```
  
@@ -170,7 +166,7 @@ API Reference.
 
 These methods either use or return `amountMath` objects:
 
-- [`makeIssuerKit(alledgedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#makeissuerkit-allegedname-mathhelpername)
+- [`makeIssuerKit(allegedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#makeissuerkit-allegedname-mathhelpername)
   - Creates a new `issuer` that uses the `amountMath` kind
     designated by the `amountMathKind` argument (`nat`, `str`,
     `strSet`).
