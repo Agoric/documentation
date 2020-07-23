@@ -21,26 +21,26 @@ reference, it can't. For more on object capabilities, see
 
 There are eight fundamental ERTP objects, two of which are parts of
 another, and one which is used by that same object. For each entry,
-the name is linked to its section in this document. The following "&"
-symbol is linked to the term's [Glossary]() entry.
+the name is linked to its section in this document. 
 
-- **[Amount](#amount)** **[&](https://agoric.com/documentation/glossary/#amount)**:
-  the representation of an asset, made up of a
-  *[value](#value)* *[&](https://agoric.com/documentation/glossary/#value)*  (the
+- **[Amount](#amount)** **[Glossary](https://agoric.com/documentation/glossary/#amount)**:
+  The description of an asset, it is not an asset itself, having no economic scarcity or economic value.
+  Made up of a:
+  *[value](#value)* *[Glossary](https://agoric.com/documentation/glossary/#value)*  (the
   size of the amount) and a
-  *[brand](#brand)* *[&](https://agoric.com/documentation/glossary/#brand)* (the
+  *[brand](#brand)* *[Glossary](https://agoric.com/documentation/glossary/#brand)* (the
   kind of asset). You can think of these as the "how many" and the
   "what" of an asset.
-- **[AmountMath](#amountmath)** **[&](https://agoric.com/documentation/glossary/#amountmath)**:
-Methods to do math operations on `amount` objects.
-- **[Purse](#purse)** **[&](https://agoric.com/documentation/glossary/#purse)**: an
+- **[AmountMath](#amountmath)** **[Glossary](https://agoric.com/documentation/glossary/#amountmath)**:
+Methods to do math operations on an `amount`..
+- **[Purse](#purse)** **[Glossary](https://agoric.com/documentation/glossary/#purse)**: an
   object for long term `amount` object storage. 
-- **[Payment](#payment)** **[&](https://agoric.com/documentation/glossary/#payment)**:
+- **[Payment](#payment)** **[Glossary](https://agoric.com/documentation/glossary/#payment)**:
   an object for transfering an `amount` object to another party.
-- **[Mint](#mint)** **[&](https://agoric.com/documentation/glossary/#mint)**: an
-  object that creates new `amount` objects of a specific brand. Each brand has
-  a one to one relationship with a mint and vice versa.
-- **[Issuer](#issuer)** **[&](https://agoric.com/documentation/glossary/#issuer)**: 
+- **[Mint](#mint)** **[Glossary](https://agoric.com/documentation/glossary/#mint)**: an
+  object that creates new `payment` objects of a specific `brand`. Each `brand` has
+  a one to one relationship with a `mint` and vice versa.
+- **[Issuer](#issuer)** **[Glossary](https://agoric.com/documentation/glossary/#issuer)**: 
 an object linked to a single `mint` object that creates empty `purse` and
 `payment` objects for that mint's brand and operates on payments of
 that brand. 
@@ -71,10 +71,7 @@ balcony ticket, even if it's for the same act.
 
 ERTP `purse` objects have a `deposit` method which takes a `payment`
 object as its argument. It first checks that the `payment` object is
-genuine and the same asset type as the `purse` (after all, our quatloos currency is
-a very unstable asset, so we wouldn't want to let people deposit
-quatloos and get credit for simoleans). Note: quatloos and simoleans
-are both imaginary currencies. 
+genuine and the same asset `brand` as the `purse`
 
 If everything passes the checks, the asset moves from 
 the `payment` to the `purse`. If there's a problem, it throws an error.
@@ -129,7 +126,7 @@ const { issuer, mint } = makeIssuerKit('BaytownBucks');
 const BB1000 = amountMath.make(1000);
 const newPayment = mint.mintPayment(BB1000);
 const BBpurse = issuer.makeEmptyPurse();
-const BB100Amount = BBpurse.deposit(newPayment);
+const BB1000Amount = BBpurse.deposit(newPayment);
 ```
 
 The act of minting created 1000 BaytownBucks and stored them together in a
@@ -259,18 +256,5 @@ const balletTicketPurses = ticketUnits.map(ticketUnit => balletTicketMint.mint(t
 
 For each ticket unit, we've created a
 [purse](https://agoric.com/documentation/ertp/api/purse.html) which
-contains the corresponding unit. These purses can later be transformed
-into
-[payments](https://agoric.com/documentation/ertp/api/payment.html) via
-a call to `balletTicketPurse.withdrawAll()`. This payment can then be
-bought and sold and used in smart contracts. 
-
-## More ERTP resources
-
-Agoric's Mark Miller explained ERTP on Oct 10, 2018 in his [Programming Secure Smart Contracts][watch] presentation
-during San Francisco Blockchain Week at a
-[SF Cryptocurrency Devs meetup](https://www.meetup.com/SF-Cryptocurrency-Devs/events/253457222/).
-
-[![miller-sfbw-erights](https://user-images.githubusercontent.com/150986/59150095-b8a65200-89e3-11e9-9b5d-43a9be8a3c90.png)][watch]
-
-[watch]: https://www.youtube.com/watch?v=YXUqfgdDbr8
+contains digital assets of the corresponding `amount`. The digital assets in
+a `purse` can be transferred to other people and used in smart contracts.
