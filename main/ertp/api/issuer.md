@@ -55,8 +55,7 @@ const issuerAllegedName = issuer.getAllegedName();
 ## issuer.getAmountMath()
 - Returns: `{AmountMath}`
 
-Get the `AmountMath` for this Issuer. If `payment` is a promise, the operation will proceed after the promise resolves.
-
+Get the `AmountMath` for this Issuer. 
 ```js
 const { issuer, amountMath } = makeIssuerKit('bucks');
 const issuerAmountMath = issuer.getAmountMath();
