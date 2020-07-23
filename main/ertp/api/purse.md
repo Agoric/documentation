@@ -3,15 +3,6 @@ Purses hold an amount of digital assets of the same brand, but unlike payments, 
 
 The digital assets in purses and payments can be currency-like and goods-like digital assets, but they can also be other kinds of rights, such as the right to participate in a particular contract.
 
-## purse.getIssuer()
-- Returns: `{Issuer}`
-
-Get the Issuer for this purse.
-
-```js
-const purseIssuer = purse.getIssuer();
-```
-
 ## purse.getCurrentAmount()
 - Returns: `{Amount}`
 
