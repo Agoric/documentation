@@ -1,17 +1,16 @@
 # Purses and Payments
 
-You can store `amount` objects in two kinds of objects:
+You can store digital assets in two kinds of objects:
 - **[`purse`](https://agoric.com/documentation/glossary/#purse)**: Hold
   an `amount` of same branded digital assets until you withdraw part or
   all of them into a `payment` for use.
-- **[`payment`](https://agoric.com/documentation/glossary/#purse)**:
+- **[`payment`](https://agoric.com/documentation/glossary/#payment)**:
   Hold an `amount` of digital assets to send to another party. Usually either
   a freshly created `amount` or one taken from a `purse`
 
 Assets in purses and payments do not have to be currency-like, but can
-be anything you can construct a digital rights `amount` object for;
-swords to use in a game, rights to use a particular contract, theater
-tickets, etc.
+be any kind of digital asset; swords to use in a game, rights to use 
+a particular contract, theater tickets, etc.
 
 Each non-empty `purse` and `payment` object contains exactly one
 `amount` object. While you may deposit or withdraw an `amount` to a
@@ -34,15 +33,14 @@ another `purse`. Instead, to send and receive assets in ERTP you do these steps:
 - Receive assets:
   1. If you don't already have one, create a `purse` for the asset `brand`
      you'll receive. 
-  2. Get access to the asset `brand` you'll receive.
-  3. Receive the message with the `payment` and deposit the `payment` in
+  2. Receive the message with the `payment` and deposit the `payment` in
      your `brand` appropriate `purse`. 
 
 ## Purses
 
 ![Purse methods](purse.svg)  
 
-Purses have five API methods:
+Purses have four API methods:
 - [`purse.getIssuer()`](https://agoric.com/documentation/ertp/api/purse.html#purse-getissuer)
   - Returns the `issuer` for the purse's `brand`. See the [Issuer](#issuers)
   section for more details about what this means and how it is used.
@@ -58,7 +56,7 @@ Purses have five API methods:
     const currentBalance = purse.getCurrentAmount();
     ```
 - [`purse.deposit(payment, optAmount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-deposit-payment-optamount)
-  - Deposit the `amount` contents of a `payment` into this purse,
+  - Deposit the digital asset contents of a `payment` into this purse,
     returning the `payment`'s `amount`. If the optional argument
     `optAmount` does not equal the `payment`'s balance,  or if `payment`
     is an unresolved
@@ -89,8 +87,7 @@ Purses have five API methods:
   - Withdraw the `amount` from this purse into a new
     `payment`. Returns the new `payment`.
 
-In addition, other objects, such as `issuer`, have methods which take
-purses as arguments or return purses. In particular:
+In addition, the method to create a new, empty, `purse` is called on an `issuer`:
 - [`issuer.makeEmptyPurse()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-makeemptypurse)
   - Returns a new empty `purse` for storing an `amount` of the same `brand` as
   the `issuer`.
@@ -103,14 +100,13 @@ purses as arguments or return purses. In particular:
 
 ![Payment methods](payment.svg)   
 
-Payments hold an `amount` of digital assets that are either about to
-be sent to another party or which is in transit to another
-party. Payments are linear, meaning that either a `payment` has its full
+Payments hold an `amount` of digital assets which can be transferred to another party.
+They are linear, meaning that either a `payment` has its full
 original balance, or it is used up entirely. It is impossible to
 partially use a `payment`. In other words, if you create a `payment` with
 an `amount` of 10 quatloos, the `payment` will always either have an
-`amount` of 10 quatloos or an `amount` of 0 quatloos, never anything
-in-between or larger than 10.
+`amount` of 10 quatloos or it will be deleted from its `issuer` and no
+longer exist. 
 
 Payments can be deposited in purses, split into multiple 
 payments, combined, and claimed (getting an exclusive payment and
@@ -119,12 +115,16 @@ revoking access from anyone else).
 Payments are often received from other actors and therefore should not
 be trusted themselves. To get the balance of a payment, use the
 `getAmountOf(payment)` method on the trusted `issuer` for the `brand`
-of the `payment`.  **tyg todo: How does one get said trusted issuer?**
+of the `payment`. To get the `issuer` for a `brand` you didn't create, 
+ask someone you trust. For example, the venue creating tickets for shows
+can be trusted to give you the tickets' `issue. Or, a friend might have 
+a cryptocurrency they like, and, if you trust them, you might accept 
+that the `issuer` they give you.
 
 To convert a `payment` into a `purse`: 
-1. Access a trusted `issuer` for the `payment`'s `brand`.. 
-2. Create an empty purse with `issuer.makeEmptyPurse()`
-3. Put the payment `amount` in the purse with `purse.deposit(payment)`
+1. Access a trusted `issuer` for the `payment`'s `brand`. 
+2. Create an empty purse with `issuer.makeEmptyPurse()`.
+3. Transfer the digital assets from the `payment` to the `purse` with `purse.deposit(payment)`.
 
 Payments have one API method, but many methods for other object
 types have `payment` objects as arguments and effectively operate on `payments`.
@@ -132,11 +132,12 @@ types have `payment` objects as arguments and effectively operate on `payments`.
   - Returns the `payment`'s `brand`, indicating what digital asset the
   payment purports to be. Note that `payment`s are not trusted, so this
   result should be treated with suspicion and verified before 
-  use. **tyg todo: How do I verify?**
+  use. Any `issuer` operations on the `payment`, if they succeed, verify the `payment`.
+  For example, `E(issuer).isLive(payment)`.
 
 Other objects' `payment`-related methods:
 
-- [`issuer.getAmountOfPayment(payment)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountof-payment)
+- [`issuer.getAmountOf(payment)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountof-payment)
   - Get the `payment`'s `amount`. The `payment` itself is not trusted,
     so you must use this `issuer` method to be sure of getting the
     true value. 
@@ -160,7 +161,7 @@ Other objects' `payment`-related methods:
   - Transfer all assets from the `payment` to a returned new `payment`
     and burn the original. No other references to this payment survive, so 
     the new `payment`'s owner is the exclusive one. If `optAmount` is
-    present, `payment`'s balance is equal to `optAmount`'s, or it throsw
+    present, `payment`'s balance is equal to `optAmount`'s, or it throws
     an error. If `payment` is a promise, the operation proceeds after it resolves. 
   - ```js
     const { mint, issuer, amountMath } = makeIssuerKit('bucks');
