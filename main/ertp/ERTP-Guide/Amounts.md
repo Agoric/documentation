@@ -2,27 +2,18 @@
 
 ## Amounts
 
-[`amount`](https://agoric.com/documentation/glossary/#amount) objects
-have no API methods. Instead, each of an `amount` objects two
-component objects, [`value`](https://agoric.com/documentation/glossary/#value) 
-and [`brand`](https://agoric.com/documentation/glossary/#brand) have API methods. To get
-information about and otherwise manipulate `amount` objects as a
-whole, use the [`amountMath`](https://agoric.com/documentation/glossary/#amountmath) API methods.
+Amounts describe digital assets. There are no [`amount`](https://agoric.com/documentation/glossary/#amount) API methods.
+Instead, Amounts have two properties, [`value`](https://agoric.com/documentation/glossary/#value)
+and [`brand`](https://agoric.com/documentation/glossary/#brand) with their own API methods.
+Use the [`amountMath`](https://agoric.com/documentation/glossary/#amountmath) API methods 
+to get information about and otherwise manipulate an `amount` as a whole.
 
-Amounts describe digital assets.  Anyone with access to a `mint` object can
- create an `amount` object with new assets. 
-
-By this, we mean it is possible to create a new `amount` object by
-combining or splitting an existing one without using a `mint`; adding
-2 quatloos to a purse with an `amount` of 3 quatloos results in an
-`amount` of 5 quatloos. But to create a completely new `amount`
-object of 7 quatloos requires access to the quatloos `mint` object. 
-
-`amount` objects have two parts:
+`amount` objects two properties are:
 - **[Brand](https://agoric.com/documentation/glossary/#brand)**: The
-  type of digital asset, such as our imaginary `qualtoos` currency or,
+  type of digital asset, such as our imaginary `quatloos` currency or,
   in a game, a powerful magic sword.
-- **[Value](https://agoric.com/documentation/glossary/#value)**: How much/many of the asset. Fungible values are natural
+- **[Value](https://agoric.com/documentation/glossary/#value)**: How much/many 
+of the asset. Fungible values are natural
 numbers. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
 issue (say, a theater ticket's date, time, row and seat positions).
@@ -36,21 +27,21 @@ balance of 5 bucks. An empty purse has 0 bucks.
 
 As fungible and non-fungible assets have different types as values,
 there are three different types of `amountMath` methods, one 
-for each kind of value. Each implements the same set of methods.
+for each kind of value. Each implements the same methods.
 
 When you create an `issuer` for a
 brand, you specify which kind of `amountMath` the brand uses. The
-correct type is automatically used whenever an `amountMath` method
-is used with that brand. The possible values are:
-- `nat`: Used with fungible assests (i.e. natural numbers).
-- `strSet`: Used with non-fungible assets (i.e. strings).
+correct kind is automatically used whenever an `amountMath` method
+is used on an a`amount` with that `brand`. The possible values are:
+- `nat`: Used with fungible assets (the values are natural numbers).
+- `strSet`: Used with non-fungible assets (the values are strings).
 - `set`: Used with sets of objects, primarily non-fungible assets.
 
 Use
-[`makeIssuerKit(allegedName, amountMathType)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
+[`makeIssuerKit(allegedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
  to specify which kind of `amountMath` your contract uses for the brand
  associated with the created `issuer`.  The second parameter,
- `amountMathType`, is optional and defaults to `nat` if not given. For
+ `amountMathKind`, is optional and defaults to `nat` if not given. For
  example: 
 ```js
 makeIssuerKit('quatloos`); // Defaults to 'nat'
@@ -86,21 +77,20 @@ A `brand` object is an `amount` object's kind of digital asset, such as
 our imaginary qualtoos currency or, in a game, a powerful magic
 sword.
 
-As we'll see later, `mint` objects create new asset `amount`
+As we'll see later, `mint` objects create new asset `payment`
 objects. Each `mint` has a one-to-one relationship with an `issuer`
 object (also see later). And each `issuer` object has a one-to-one
 relationship with a `brand` object. This means:
-- `mint`s can only create `amount`s for one specific `brand`, which
+- `mint`s can only create `payment`s for one specific `brand`, which
   must be the same `brand` as their associated `issuer`.
-- `issuer`s can only create new empty `purse` and `payment` objects
+- `issuer`s can only create new empty `purse` objects
 for one specific `brand`, the same as their associated `issuer`.
 - `amount`s are either fungible or non-fungible, as determined by which
-their `mint`'s `issuer`, and thus their `brand`, was created to be. 
+their `issuer`, and thus their `brand`, was created to be. 
 
 `brand` objects have two associated methods:
 - [`brand.isMyIssuer(issuer)`](https://agoric.com/documentation/ertp/api/brand.html#brand-ismyissuer-issuer)
-  - Returns `true` is the brand is the one associated with the
-  `issuer` argument. 
+  - Returns `true` if the `issuer` argument matches the `issuer` associated with the brand.
   - ```js
     const isIssuer = brand.isMyIssuer(issuer);
     ```
@@ -124,13 +114,13 @@ return `brand` objects.
     // brand === bucksBrand
     ```
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
-  - Return the `payment`s alledged `brand` object. Because `payment`s
-  are not trusted, this should be treated with suspicion and verified
+  - Return the `payment`s alleged `brand` object. Because a `payment`
+  is not trusted, this should be treated with suspicion and verified
   elsewhere.
   - ```js
     const { issuer, mint, brand, amountMath } = makeIssuerKit('bucks');
     const payment = mint.mintPayment(amountMath.make(10));
-    const officialBrand = payment.getAllegedBrand();
+    const allegedBrand = payment.getAllegedBrand();
     ```
 - [`amountMath.getBrand()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getbrand)
   - Return the `brand` the `amountMath` object is using for its
@@ -158,10 +148,9 @@ with complete `amount` objects, including their `value` part.
     // returns 123
     const value = amountMath.getValue(amount);
     ```
-- [`amountMath.make(alledgedValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-make-allegedvalue)
+- [`amountMath.make(allegedValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-make-allegedvalue)
   - Make an `amount`from a `value` by adding the
-  `amountMath`'s associated `brand` to the `value`. **tyg todo: Not sure what good this is, since it's
-    not an actual amount/assets, since those can only be created by mints?**  
+  `amountMath`'s associated `brand` to the `value`. 
   - ```js
     const { amountMath } = makeIssuerKit('bucks');
     const amount837 = amountMath.make(837);
