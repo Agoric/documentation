@@ -4,27 +4,25 @@
 
 ![Issuer methods](issuer.svg)  
 
-An `issuer` maps minted digital assets to their location in a `purse`
+Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
 Its special admin facet is a `mint` which it has a one-to-one
 relationship with. Only a `mint` can issue new digital assets.
 
 An `issuer` also has a one-to-one relationship with a `brand`. So, if
-our `brand`'s alleged name (for human reference) is *quatloos*, only
+our `brand` is *quatloos*, only
 the `issuer` in the one-to-one relationship with the quatloos `brand`
 can:
 - Create a new empty `purse` that can store quatloos.
 - Manipulate a `payment` in quatloos to be claimed, split, combined,
 burned, or have its amount gotten.
-- Use the operations in its associated `amountMath` on an `amount` of
-  quatloos. 
 
 The issuer cannot mint new amounts, but it can create empty purses and
 payments. The issuer should be obtained from a trusted source and
 then relied upon as the authority as to whether an untrusted payment
 is valid.
 
-`issuer` objects have 13 API commands. 4 return information about an
+`issuer` objects have 13 methods. 4 return information about an
 `issuer`, 1 creates a new `issuer`, 1 creates a new `purse`, and 7
 which actually operate on their `payment` object argument.
 
@@ -32,7 +30,7 @@ which actually operate on their `payment` object argument.
   - [`makeIssuerKit(allegedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#makeissuerkit-allegedname-mathhelpername)
     - Makes an `issuer` and its related `amountMath` and `brand`
     objects that are in one-to-one relationships with each
-    other. Returns ` { mint, issuer, amountMath, brand }`. The `alledgedName`
+    other. Returns ` { mint, issuer, amountMath, brand }`. The `allegedName`
     is available from the `brand` to describe assets, but should not
     be trusted. `amountMathKind` specifies if the associated
     `amountMath` is of kind `nat` (the default), `str`, or `strSet`;
@@ -63,10 +61,7 @@ which actually operate on their `payment` object argument.
       // issuerAllegedName === 'bucks'
        ```
   - [`issuer.getAmountMath()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountmath) 
-    - Gets the issuer's `AmountMath` object. If `payment` is a
-    promise, the operation will proceed after the promise resolves. **(tyg todo: The last sentence is in the API description, but
-    otherwise there's no specific link from an amountMath to a
-    payment. Could someone expand/clarify this please?)**
+    - Gets the issuer's `AmountMath` object. 
     - ```js
       const { issuer, amountMath } = makeIssuerKit('bucks');
       const issuerAmountMath = issuer.getAmountMath();
@@ -81,23 +76,22 @@ which actually operate on their `payment` object argument.
       ```
 - **Purse operations**
   - [`issuer.makeEmptyPurse()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-makeemptypurse) 
-    - Returns an empy purse for the `brand` associated with the issuer.
+    - Returns an empty purse for the `brand` associated with the issuer.
     - ```js
       const { issuer } = makeIssuerKit('bucks');
       const purse = exampleIssuer.makeEmptyPurse();
       ```
 - **Payment operations**
   - [`issuer.getAmountOf(payment)`](htttps://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountof-payment)
-    - Returns an `amount` object containing the `payment` argument's
-      balance. Using the issuer rather than the payment lets us trust
-      the result. **tyg todo: Should this be "//returns { 100, "bucks"}"?**
+    -  Returns the `payment` balance, an `amount`. Using the `issuer` rather than the `payment` lets us trust
+      the result even if someone else sent us the payment.
     - ```js
       const { issuer, mint, amountMath } = makeIssuerKit('bucks');
       const payment = mint.mintPayment(amountMath.make(100));
-      issuer.getAmountOf(payment); // returns 100
+      issuer.getAmountOf(payment); // returns 100 bucks
       ```
   - [`issuer.burn(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-burn-payment-optamount)
-    - Burns (renders invalid) all of the `payment` argument's digital assets.
+    - Burns (deletes) all of the `payment` argument's digital assets and deletes all mention of the `payment` from the `issuer`.
        If optional argument `optAmount` is present, the `payment`
        balance must be equal to its value.  If `payment` is a promise, the operation 
        happens after the promise resolves.
@@ -139,21 +133,18 @@ which actually operate on their `payment` object argument.
 
   - [`issuer.split(payment, paymentAmountA)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-split-payment-paymentamounta) 
     - Split a single payment into two new payments, A and B, according
-      to the `paymentAmountA` argument's value. 
+      to the `paymentAmountA` argument's value. In other words, the result
+      has A equal to `paymentAmountA` and B equal to the original `payment`
+      minus `paymentAmountA'. 
       The original `payment` argument is burned. If the original
       `payment` is a promise, the operation happens when  the promise
-      resolves. **(tyg todo: Unclear how this splits "per the value of
-      AmountA". In the redone example below, the original is 30 bucks
-      and A is 10 bucks. Unclear whether the result is A with 10, as
-      specified in the call and B with 20, the remainder when 10 is
-      subtracted from 30, or if A is the original minus A's value and
-      thus 20, leaving B as 10. Probably the former, but I want to be sure.)**
+      resolves. 
     - ```js
       const { mint, issuer, amountMath } = makeIssuerKit('bucks');
       const oldPayment = mint.mintPayment(amountMath.make(30));
 
       const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(10));       
-      // paymentA
+      // paymentA is 10 bucks, payment B is 20 bucks.
       ```
   - [`issuer.splitMany(payment, paymentAmountArray)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-splitmany-paymentamountarray) 
     - Returns multiple payments in an array from splitting its single
@@ -163,8 +154,8 @@ which actually operate on their `payment` object argument.
       to those in `paymentAmountArray`. If the `paymentAmountArray`
       argument amounts don't add up to the value of the `payment`
       argument, the operation fails. If the operation is successful,
-      the original `payment` is burned. **(tyg todo: Please confirm that
-      it's *not* burned if the operation fails)**
+      the original `payment` is burned. If the operation fails, the
+      original `payment` is *not* burned.
     - ```js
       const { mint, issuer, amountMath } = makeIssuerKit('fungible');
       const oldPayment = mint.mintPayment(amountMath.make(100));
@@ -216,7 +207,7 @@ which actually operate on their `payment` object argument.
 A `mint` issues new digital assets of its associated [*brand*]() as a new 
 [`payment`]() object. These assets may be currency-like (our imaginary
 quatloos currency), goods-like valuables (magic swords for games), or
-digital rights (the right to participate in a contract). Only the `mint`object
+electronic rights (the right to participate in a contract). Only the `mint`object
 holder can create a new asset-containing `amount` from it.
 
 A `mint` has a one-to-one relationship with an `issuer`, which in turn has
