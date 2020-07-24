@@ -145,7 +145,7 @@ The possible records are:
 ```js
 {
   installationHandle, // opaque identifier, used as the table key
-  installation, // contract code
+  bundle, // contains source code (accesible via bundle.source) and other info. 
 }
 ```
 
