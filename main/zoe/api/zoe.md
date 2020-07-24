@@ -90,7 +90,7 @@ Credibly get the instance record using the <router-link to="/glossary/#handle">`
 
 ```js
 const {
-  handle,
+  instanceHandle,
   installationHandle,
   publicAPI,
   terms,
@@ -163,7 +163,7 @@ Get the offer record. Throws error if the offer is not found.
 
 ```js
 const { 
-  handle,
+  offerHandle,
   installationHandle,
   publicAPI,
   terms
@@ -178,7 +178,7 @@ Get the source code for the installed contract. Throws an error if the installat
 
 ```js
 const {
-  handle,
+  instanceHandle,
   installationHandle,
   publicAPI,
   terms
