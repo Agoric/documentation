@@ -35,8 +35,8 @@ makeIssuerKit('quatloos, 'set');
 - Four comparison methods (is an amount empty, is an amount valid,
 are two amounts equal, and is one amount greater than or equal to another)
 - Two manipulator methods (add and subtract amounts)
-- One amount creation method (create an `amount` with the
-  `amountMath`'s associated `brand`)
+- Two amount creation method (create an `amount` with the
+  `amountMath`'s associated `brand`, and get a new, empty, `amount`)
 
 The following is a brief description and example of each `amountMath` method. For
 more detail, click the method's name to go to its entry in the ERTP
@@ -125,7 +125,7 @@ API Reference.
 - **Manipulator Methods**
 
   - [`amountMath.add(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-add-leftamount-rightamount)
-    - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`.
+    - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
        `amount` arguments. For a fungible `amount`, this means add their
        values.  For a non-fungible `amount`, it usually means
        including all elements from both `leftAmount` and `rightAmount`.
@@ -134,15 +134,14 @@ API Reference.
       const listAmountA = amountMath.make(harden['1','2','4']);
       const listAmountB = amountMath.make(harden['3']);
 
-      // Returns ['1', '2', '4', '3']
+      // Returns an amount containing all of ['1', '2', '4', '3']
       const combinedList = amountMath.add(listAmountA, listAmountB);
       ```
   - [`amountMath.subtract(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-subtract-leftamount-rightamount)
     - Returns a new `amount` that is the `leftAmount` argument minus
       the `rightAmount` argument  (i.e. for strings or objects
       everything in `leftAmount` not in `rightAmount`). If `leftAmount`
-      doesn't include `rightAmount` (subtraction results in a
-      negative), throws error. 
+      doesn't include the contents of `rightAmount`, it throws an error. 
     - ```js
       const { amountMath } = makeIssuerKit('myItems', 'strSet');
       const listAmountA = amountMath.make(harden['1','2','4']);
@@ -153,7 +152,7 @@ API Reference.
       // Throws error
       const badList = amountMath.subtract(listAmountA, listAmountB)
       ```
-- **Amount creation method**
+- **Amount Creation Methods**
   - [`amountMath.make(allegedValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-make-allegedvalue)	
     - Takes a `value` argument and returns an `amount` by combining the
        `amountMath`'s associated `brand` to the `value`.
@@ -161,6 +160,17 @@ API Reference.
       const { amountMath } = makeIssuerKit('bucks');
       const amount837 = amountMath.make(837);
       ```
+  - [`amountMath.getEmpty()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getempty)
+    - Returns an `amount` representing an empty `amount` (which is the identity
+       element for the `amountMath` `add()` and `subtract()`
+       operations. Note that this value varies depending on `amountMath`'s associated
+       `brand` and whether `amountMath` is of kind `nat`, `str`, or `strSet`..
+    - ```js
+      const { amountMath } = makeIssuerKit('bucks');
+      // Returns an empty amount for this issuer.
+      // Since this is a fungible amount it returns 0
+      const empty = amountMath.getEmpty();
+      ```  
  
 ## Methods on other objects
 
