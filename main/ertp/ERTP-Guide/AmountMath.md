@@ -5,17 +5,17 @@
 `issuer` objects must be able to deposit and withdraw assets from a
 `purse` and manipulate `payment` amounts. This 
 requires being able to add and subtract digital assets. To do this,
-and other operations on `amount` objects, an `issuer` uses `amountMath`methods. 
+and other operations on an `amount`, an `issuer` uses `amountMath`methods. 
 
 In addition to math operations, `amountMath` methods check their
 arguments' brands, throwing an error if the wrong `brand` was used.
 
-There are three different kinds of `amountMath`s, each of which
+There are three different kinds of `amountMath` methods, each of which
 implements the same methods. When you create an `issuer`, you
 do so for a specific `brand`. You thus have to specify which kind of
 `amountMath` that `brand` uses. The 
 correct kind is automatically used whenever an `amountMath` method
-is used on `amount` objects with that `brand`. The kinds are: 
+is used on an `amount` with that `brand`. The kinds are: 
 - `nat`: Used with fungible assets (the values are natural numbers).
 - `strSet`: Used with non-fungible assets (the values are strings).
 - `set`: Used with sets of objects, primarily non-fungible assets.
@@ -58,7 +58,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       const value = amountMath.getValue(amount); 
       ```
   - [`amountMath.getAmountMathKind()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getmathhelpersname)
-    - Returns a string of either 'nat', 'str', or 'strSet',
+    - Returns a string of either `'nat'`, `'str'`, or `'strSet'`,
        indicating the kind of values this
        `amountMath` operates on.
     - ```js
