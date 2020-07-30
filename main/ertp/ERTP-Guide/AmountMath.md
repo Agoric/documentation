@@ -1,6 +1,6 @@
 # Amount Math
 
-![AmountMath methods](amountMath.svg) 
+![AmountMath methods](./assets/amountMath.svg) 
 
 `issuer` objects must be able to deposit and withdraw assets from a
 `purse` and manipulate `payment` amounts. This 
@@ -39,12 +39,12 @@ are two amounts equal, and is one amount greater than or equal to another)
   `amountMath`'s associated `brand`, and get a new, empty, `amount`)
 
 The following is a brief description and example of each `amountMath` method. For
-more detail, click the method's name to go to its entry in the ERTP
-API Reference.
+more detail, click the method's name to go to its entry in the [ERTP
+API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 
 - **Information Getting Methods**
-  - [`amountMath.getBrand()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getbrand)
-    - For this `amountMath`, return its `brand`.
+  - [`amountMath.getBrand()`](../api/amount-math.html#amountmath-getbrand)
+    - For this `amountMath`, return the `brand` it can operate on..
     - ```js
       const { issuer, amountMath } = makeIssuerKit('bucks');
       const exampleBrand = amountMath.getBrand();
@@ -69,13 +69,13 @@ API Reference.
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
        operations. Note that this value varies depending on the
-       `brand` and whether `amountMath` is of kind `nat`, `str`, or `strSet`..
+       `brand` and whether its `amountMath` is of kind `nat`, `str`, or `strSet`..
     - ```js
-	   const { amountMath } = makeIssuerKit('bucks');
-	   // Returns an empty amount for this issuer.
-       // Since this is a fungible amount it returns 0
-       const empty = amountMath.getEmpty();
-       ```
+      const { amountMath } = makeIssuerKit('bucks');
+      // Returns an empty amount for this issuer.
+      // Since this is a fungible amount it returns 0
+      const empty = amountMath.getEmpty();
+      ```
 - **Comparison Methods**
   - [`amountMath.isEmpty(amount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-isempty-amount)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
@@ -90,7 +90,7 @@ API Reference.
       ```
   - [`amountMath.isGTE(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-isgte-leftamount-rightamount)
     - Returns `true` if the `leftAmount` argument is greater than or equal
-       to the `rightAmount` argument, `false` otherwise.
+       to the `rightAmount` argument, otherwise `false`.
     - ```js
       const { amountMath } = makeIssuerKit('fungible');
       const empty = amountMath.getEmpty();
@@ -181,10 +181,9 @@ These methods either use or return `amountMath` objects:
     designated by the `amountMathKind` argument (`nat`, `str`,
     `strSet`).
 - [`issuer.getAmountMathKind()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getmathhelpersname)
-  - Returns the kind of AmountMath the `issuer` uses (`nat`, `str`, or `strSet`).	
+  - Returns the kind of `amountMath` the `issuer` uses (`nat`, `str`, or `strSet`).	
 - [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
-  - Returns the `amountMath` object associated with the `brand`
-  argument.
+  - Returns the `amountMath` object associated with the `brand` argument.
   - ```js
     const ticketIssuer = publicAPI.getTicketIssuer();
     const ticketAmountMath = ticketIssuer.getAmountMath();
