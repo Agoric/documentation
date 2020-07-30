@@ -113,7 +113,7 @@ Purses have four API methods:
 
 In addition, the method to create a new, empty, `purse` is called on an `issuer`:
 - [`issuer.makeEmptyPurse()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-makeemptypurse)
-  - Returns a new empty `purse` for storing digital assets of the `brand` the `issuer` is assocated with.
+  - Returns a new empty `purse` for storing digital assets of the `brand` the `issuer` is associated with.
   - ```js
     const { issuer, mint } = makeIssuerKit('bucks');
     // The new purse can only contain assets of the bucks brand.
@@ -143,7 +143,7 @@ be trusted. To get the balance of a `payment`, use the
 `getAmountOf(payment)` method on the trusted `issuer` for the `brand`
 of the `payment`. To get the `issuer` for a `brand` you didn't create, 
 ask someone you trust. For example, the venue creating tickets for shows
-can be trusted to give you the tickets' `issue. Or, a friend might have 
+can be trusted to give you the tickets' `issuer`. Or, a friend might have 
 a cryptocurrency they like, and, if you trust them, you might accept 
 that the `issuer` they give you is valid.
 
