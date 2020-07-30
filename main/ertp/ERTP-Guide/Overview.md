@@ -65,11 +65,34 @@ for a Friday evening ticket than a Wednesday matinee ticket, even if it's for th
 ## Amounts are not assets
 
 **IMPORTANT**: Despite how it may seem, an `amount` is only a description of an asset, not
-an asset in and of itself. Actual assets are in `purse` and `payment` objects, and exist via
-the records kept by the associated `issuer` object. Some analogies may be helpful in understanding this:
+an asset in and of itself. Actual assets are in `purse` and `payment` objects, but the
+assets aren't ever embodied in any particular JavaScript object. Instead, what makes the 
+assets exist is the issuer having a mapping from the `purse` or `payment` to an `amount` (description).
+There is no `amount` object stored in a `purse` or `payment`.
 
-- Let's say Caltech replicates its famous hack of 
+Some analogies may be helpful in understanding this:
 
+- Let's say Caltech replicates its [famous hack of the Rose Bowl scoreboard](https://www.admissions.caltech.edu/pranks).
+But this time, instead of changing the team names, they change the score display from 14-7 to 0-21. This does not change
+the actual game score (the "asset"); that's part of the game itself and based on record keeping of what's happened
+during the game. The score on the scoreboard is just a description of the game's "asset", post-hack an incorrect one.
+- A typo in the Wall Street Journal's stock listings that results in Google stock being shown as having closed the
+previous day at 15 dollars per share rather than the correct 1507 dollars does not cause Google stock to be valued at
+15; it's not the actual asset, but a description of its value (again, in this case, an incorrect one).
+
+Making a new `amount` or changing an `amount` `value` does not create any new assets. New assets are created by using 
+a `mint` to create a new `payment` that contains a newly created asset. In the real world, I can't create a new ten dollar
+bill by drawing one; a new one has to be minted (printed) by an authorized government-run facility with its asset status
+derived from its government backing. 
+
+So an `amount` just describes an asset along the two axes of how many and
+what units it's in (`value` and `brand`). They're used as a way of negotiating
+with parties that doesn't involve sending/sharing the actual asset
+until a deal is made. In other words, I don't make you an offer that I'll pay you ten dollars for something
+by sending you an actual ten dollar bill. Instead I make you an offer by sending you a written description
+of what I'm willing to pay, namely ten dollars. If the offer is accepted, then I send you the actual asset, 
+in this case a `payment` for ten dollars.
+ 
 ## Security properties
 
 ERTP `purse` objects have a `deposit` method which takes a `payment`
@@ -108,7 +131,7 @@ JavaScript implements `Promise` objects, and recently added the two commands `as
 ## Object capabilities and ERTP
 
 ERTP implements [*object capabilities*](https://agoric.com/documentation/glossary/#object-capabilities). You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual object that is a `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
-them all on Captain Kirk to win his gladitorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
+them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 
 ## Creating and sending a fungible asset
 
@@ -196,19 +219,17 @@ since BaytownBucks are fungible.
 
 ## Creating a non-fungible asset with ERTP
 
-### Modeling and creating the asset
-
 In ERTP, digital assets are created by a `mint`. Having
 access to the `mint` gives you the power to create more digital assets
 of the same brand at  will.
 
-Let's say we own a theater and want to sell tickets to seats for ballet shows. Tickets are
+Let's say we own a theater and want to sell tickets to seats for a play. Tickets are
 the non-fungible assets we want to represent, which refer to a
 specific seat for a specific show at a specific time and date. 
 
 ```js
 import { makeIssuerKit } from '@agoric/ertp';
-const { mint: balletTicketMint, amountMath: balletTicketAmountMath } = makeIssuerKit('Agoric Ballet Opera tickets', 'set');
+const { mint: theatreTicketMint, amountMath: theatreTicketAmountMath } = makeIssuerKit('Agoric Theater tickets', 'set');
 ```
 
 This theater has 1114 seats numbered `1` to `1114`.
