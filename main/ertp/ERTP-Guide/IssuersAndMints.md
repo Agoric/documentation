@@ -2,7 +2,7 @@
 
 ## Issuers
 
-![Issuer methods](issuer.svg)  
+![Issuer methods](./assets/issuer.svg)  
 
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
@@ -189,7 +189,7 @@ which actually operate on their `payment` object argument.
     // returns true
     Object.is(issuer, mintIssuer);
     ```
--  [`brand.isMyIssuer(issuer)`](https://agoric.com/documentation/ertp/api/brand.html#brand-ismyissuer-issuer)
+- [`brand.isMyIssuer(issuer)`](https://agoric.com/documentation/ertp/api/brand.html#brand-ismyissuer-issuer)
   - Returns `true` if the `brand` comes from this `issuer`.
   - ```js
     const isIssuer = brand.isMyIssuer(issuer);
@@ -202,27 +202,28 @@ which actually operate on their `payment` object argument.
 
 ## Mints
 
-![Mint methods](mint.svg)  
+![Mint methods](./assets/mint.svg)  
 
-A `mint` issues new digital assets of its associated [*brand*]() as a new 
-[`payment`]() object. These assets may be currency-like (our imaginary
+A `mint` issues new digital assets of its associated `brand` as a new 
+`payment` object. These assets may be currency-like (our imaginary
 quatloos currency), goods-like valuables (magic swords for games), or
-electronic rights (the right to participate in a contract). Only the `mint`object
-holder can create a new asset-containing `amount` from it.
+electronic rights (the right to participate in a contract). Only a`mint`object
+holder can create a new asset from it. In other words, let's say there
+are 1000 quatloos in circulation. Only the holder of the quatloos associated
+`mint` object can make any more quatloos that'd boost the amount in circulation to, say, 2000.
 
 A `mint` has a one-to-one relationship with an `issuer`, which in turn has
 a one-to-one relationship with a `brand`. Thus, a `mint` has a one-to-one
-relationships with its issuer's `brand`. So for quatloos (or any other brand):
+relationships with the `brand` of its `issuer`. So for quatloos (or any other brand):
 - Only one `issuer` can create new quatloos brand `purse` objects.
-- Only one `mint` can create brand new quatloos to go into quatloo brand
-`purse`s and `payment`s.
+- Only one `mint` can create a new `payment` that contains newly created quatloo digital assets.
 
 **tyg todo: We should have information on how one
-creates/establishes a mint, and connects them to our `mint` objects both for our  currencies and for ones we've pegged from elsewhere. Who'd be good for getting info  on this from?"**
+creates/establishes a mint, and connects them to our `mint` objects both for our  currencies and for ones we've pegged from elsewhere. Who'd be good for getting info  on this from?"**  **Kate response: I think the concept of connecting a mint to "mint objects" is a wrong idea. Calling makeIssuerKit is what creates/establishes a mint, and that is it.**  **Tom response: Let me rephase the question. I'm about to write my first two contracts. One of them uses my personal digital currency, "tygs", over which I have control. How do I go about incorporating tygs into the contract/Agoric such that a contract transaction using tygs is the same as my doing a tygs using transaction outside of Agoric. In other words, I want to use "real" tygs, how do I get them into Agoric such that I can mint new ones, such that there's a valid issuer in the contract for them, etc.? For the other contract, I want to let people use an existing digital currency I don't control, say Bitcoin. Other than by the pegging method Pegasus did for the hackathon, how do I create/link Bitcoin within an Agoric contract? I just don't know of anywhere we explain how to set up "real currencies/digital rights" in our sandbox, as opposed to making up quatloos or similar that really don't have any value.**
 
 There are two `mint` API commands:
 - [`mint.getIssuer()`](https://agoric.com/documentation/ertp/api/mint.html#mint-getissuer)
-  - Returns the `issuer` object for the mint.
+  - Returns the `issuer` uniquely associated with the `mint`.
   - ```js
     const { issuer, mint } = makeIssuerKit('bucks');
     const mintIssuer = mint.getIssuer();
@@ -230,8 +231,8 @@ There are two `mint` API commands:
     Object.is(issuer, mintIssuer);
     ```
 - [`mint.mintPayment(newAmount)`](https://agoric.com/documentation/ertp/api/mint.html#mint-mintpayment-newamount)
-  - Returns a new `payment` object containing the newly minted
-  `amount` object argument. In other words, it creates the `amount`'s `value`  quantity of new `brand` kind assets.
+  - Returns a new `payment` containing newly minted assets with a balance equal to `newAmount`. In other words,
+  it mints `newAmount` of digital assets and creates a `payment` to hold those assets.  
   - ```js
     const { issuer, mint } = makeIssuerKit('fungible');
     const fungible1000 = amountMath.make(1000);
