@@ -43,7 +43,7 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 
 - **Information Getting Methods**
-  - [`amountMath.getBrand()`](../api/amount-math.html#amountmath-getbrand)
+  - [`amountMath.getBrand()`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getbrand)
     - For this `amountMath`, return the `brand` it can operate on..
     - ```js
       const { issuer, amountMath } = makeIssuerKit('bucks');
