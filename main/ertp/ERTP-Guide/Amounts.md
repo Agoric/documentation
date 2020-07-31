@@ -15,7 +15,7 @@ numbers. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
 issue (e.g., a theater ticket's date, time, row and seat positions).
 
-Amounts and their values and brands, are manipulated by
+Amounts and their values and brands are manipulated by
 the [`amountMath`](https://agoric.com/documentation/glossary/#amountmath)
 API. It executes the logic of how amounts are changed when digital 
 assets are merged, separated, or otherwise manipulated. For example, 
@@ -69,7 +69,7 @@ changed to `amountMathKind` and the `mathHelpers` methods were deprecated.
 ![Brand methods](brand.svg) 
 
 A `brand` object is an `amount` object's kind of digital asset, such as
-our imaginary qualtoos currency or, in a game, a powerful magic
+our imaginary quatloos currency or, in a game, a powerful magic
 sword.
 
 As we'll see later, `mint` objects create new asset `payment`
