@@ -2,6 +2,8 @@
 
 ## Amounts
 
+![Amount methods](./assets/amount.svg)
+
 Amounts describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
 Use the `amountMath` (covered in-depth [here](./AmountMath.html)) API methods 
@@ -66,7 +68,7 @@ changed to `amountMathKind` and the `mathHelpers` methods were deprecated.
 
 ## Brands
 
-![Brand methods](brand.svg) 
+![Brand methods](./assets/brand.svg) 
 
 A `brand` object is an `amount` object's kind of digital asset, such as
 our imaginary quatloos currency or, in a game, a powerful magic
