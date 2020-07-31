@@ -30,12 +30,12 @@ makeIssuerKit('quatloos', 'strSet');
 makeIssuerKit('quatloos, 'set');
 ```
 `AmountMath` has:
-- Three information getting methods (get brand, get value, and get
+- Three information getting methods (get `brand`, get `value`, and get
 `amountMath` kind)
-- Four comparison methods (is an amount empty, is an amount valid,
-are two amounts equal, and is one amount greater than or equal to another)
-- Two manipulator methods (add and subtract amounts)
-- Two amount creation method (create an `amount` with the
+- Four comparison methods (is an `amount` empty, is an `amount` valid,
+are two `amount`s equal, and is one `amount` greater than or equal to another)
+- Two manipulator methods (add and subtract `amount`s)
+- Two amount creation methods (create an `amount` with the
   `amountMath`'s associated `brand`, and get a new, empty, `amount`)
 
 The following is a brief description and example of each `amountMath` method. For
