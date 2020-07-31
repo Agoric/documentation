@@ -9,7 +9,7 @@ you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
 ERTP uses
-*[object capabilities](https://agoric.com/documentation/glossary/#object-capabilities)*
+*[OCaps (object capabilities)](https://agoric.com/documentation/glossary/#object-capabilities)*
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -23,26 +23,26 @@ There are eight fundamental ERTP objects, two of which are parts of
 another, and one which is used by that same object. For each entry,
 the name is linked to its primary page in this Guide. 
 
-- **[Amount](./Amounts.md)** **[(Glossary)](https://agoric.com/documentation/glossary/#amount)**:
+- **[Amount](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#amount)):
   The description of an asset, it is not an asset itself, having no economic scarcity or economic value.
   Made up of a:
-  - *[value](./Amounts.md)* *[(Glossary)](https://agoric.com/documentation/glossary/#value)*:  The
+  - *[value](./Amounts.md)* ([glossary](https://agoric.com/documentation/glossary/#value)):  The
   size of the amount.
-  - *[brand](./Amounts.md)* *[(Glossary)](https://agoric.com/documentation/glossary/#brand)* The
+  - *[brand](./Amounts.md)* ([glossary](https://agoric.com/documentation/glossary/#brand)) The
   kind of asset. 
   
-  You can think of these as the "how many" and the "what" of an asset, for example, 7 quatloos (an imaginary
+  You can think of these as the "how much or how many?" and the "of what?" of an asset, for example, 7 quatloos (an imaginary
   currency).
-- **[AmountMath](./AmountMath.md)** **[(Glossary)](https://agoric.com/documentation/glossary/#amountmath)**:
-Methods to do math operations on an `amount`..
-- **[Purse](./PursesAndPayments.md)** **[(Glossary)](https://agoric.com/documentation/glossary/#purse)**: an
-  object for long term digital assets storage. 
-- **[Payment](./PuresAndPayments.md)** **[(Glossary)](https://agoric.com/documentation/glossary/#payment)**:
+- **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
+Methods to do math operations on an `amount`.
+- **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): an
+  object for holding digital assets. 
+- **[Payment](./PuresAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
   an object for transfering digital assets to another party.
-- **[Mint](./IssuersAndMints.md)** **[(Glossary)](https://agoric.com/documentation/glossary/#mint)**: an
+- **[Mint](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#mint)): an
   object that creates new `payment` objects of a specific `brand`. Each `brand` has
   a one to one relationship with a `mint` and vice versa.
-- **[Issuer](./IssuersAndMints.md)** **[(Glossary)](https://agoric.com/documentation/glossary/#issuer)**: 
+- **[Issuer](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#issuer)): 
 an object linked to a single `mint` object that creates empty `purse` objects
 for that mint's `brand` and operates on any `payment` of that `brand`. 
 
@@ -65,7 +65,7 @@ for a Friday evening ticket than a Wednesday matinee ticket, even if it's for th
 ## Amounts are not assets
 
 **IMPORTANT**: Despite how it may seem, an `amount` is only a description of an asset, not
-an asset in and of itself. Actual assets are in `purse` and `payment` objects, but the
+an asset in and of itself. Actual assets are represented by `purse` and `payment` objects. but the
 assets aren't ever embodied in any particular JavaScript object. Instead, what makes the 
 assets exist is the issuer having a mapping from the `purse` or `payment` to an `amount` (description).
 There is no `amount` object stored in a `purse` or `payment`.
@@ -76,8 +76,8 @@ Some analogies may be helpful in understanding this:
 But this time, instead of changing the team names, they change the score display from 14-7 to 0-21. This does not change
 the actual game score (the "asset"); that's part of the game itself and based on record keeping of what's happened
 during the game. The score on the scoreboard is just a description of the game's "asset", post-hack an incorrect one.
-- A typo in the Wall Street Journal's stock listings that results in Google stock being shown as having closed the
-previous day at 15 dollars per share rather than the correct 1507 dollars does not cause Google stock to be valued at
+- A typo in the Wall Street Journal's stock listings results in Google stock being shown as having closed the
+previous day at 15 dollars per share rather than the correct 1507 dollars. This does not cause Google stock to be valued at
 15; it's not the actual asset, but a description of its value (again, in this case, an incorrect one).
 
 Making a new `amount` or changing an `amount` `value` does not create any new assets. New assets are created by using 
@@ -88,10 +88,10 @@ derived from its government backing.
 So an `amount` just describes an asset along the two axes of how many and
 what units it's in (`value` and `brand`). They're used as a way of negotiating
 with parties that doesn't involve sending/sharing the actual asset
-until a deal is made. In other words, I don't make you an offer that I'll pay you ten dollars for something
-by sending you an actual ten dollar bill. Instead I make you an offer by sending you a written description
-of what I'm willing to pay, namely ten dollars. If the offer is accepted, then I send you the actual asset, 
-in this case a `payment` for ten dollars.
+until a deal is made. In other words, I don't make you an offer that I'll swap you a ticket to *Hamilton* for something
+by sending you an actual ticket. Instead I make you an offer by sending you a written description
+of what I'm willing to swap, namely a *Hamilton* ticket. If the offer is accepted, then I send you the actual asset, 
+in this case an actual *Hamilton* ticket (enjoy the show!).
  
 ## Security properties
 
@@ -107,21 +107,19 @@ After a successful deposit, ERTP guarantees:
 - Its `issuer` no longer recognizes the `payment`.
 - The `purse` contains all of the `payment`'s digital assets.
 
-When the `deposit` call throws an error (i.e. something went wrong), ERTP guarantees:
-
-- The alleged `payment` is in the same state as before the call.
-- The `purse` is in the same state as before the call.
+When the `deposit` call throws an error (i.e. something went wrong), ERTP guarantees
+the `purse` and the alleged `payment` were unaffected by that call.
 
 In addition, you can create a *deposit facet* for any `purse`. This is an object associated
 with a specific purse that can be sent to another party instead of a reference to the `purse`.
 The security advantage is that the other party can only make deposits to the associated `purse`
-via the deposit facet. They cannot make a withdrawal from a `purse` via its deposit facet.
+via the deposit facet. They cannot make a withdrawal from or ask about the balance of a `purse` via its deposit facet.
 
 ## Promises
 
 Several ERTP methods are *asynchronous* and instead of immediately returning their expected value, return a *promise* for that value.
 
-JavaScript implements `Promise` objects, and recently added the two commands `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see either:
+JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see either:
 - [javascript.info](https://javascript.info/async)
 - [Mozilla's Developer Docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
 
@@ -139,9 +137,9 @@ In ERTP, digital assets are created by a `mint`. You must have
 access to a `mint` object to create new assets of the `mint` object's
 associated `brand`. 
 
-For instance, let's say we want to create a new community
-currency called 'BaytownBucks'. You start by getting access to a `mint`
-object whose associated brand is 'BaytownBucks'.
+For instance, let's say you want to create a new community
+currency called 'BaytownBucks'. You start by creating or 
+getting access to a `mint` object whose associated brand is 'BaytownBucks'.
 ```js
 import { makeMint } from '@agoric/ertp';
 const baytownBucksMint = makeMint('BaytownBucks');
@@ -168,7 +166,7 @@ const paymentForAlice = purse.withdraw(bucks10);
 ```
 
 Like our `purse`, this `payment` contains BaytownBucks, but unlike purses,
-payments are used to represent tokens in transit. A `payment` can be
+we use payments to represent tokens in transit. A `payment` can be
 sent to someone else, a `purse` should never be sent to someone else.
 
 Now let's send the `payment` to Alice.
@@ -177,10 +175,10 @@ Before she can receive a `payment` in BaytownBucks, Alice needs to
 create an empty `purse` for BaytownBucks and otherwise get ready to
 receive payments. 
 
-For this to happen, Alice needs access to `baytownBucksIssuer`.
-However, she does not need access to `baytownBucksMint`.
-If she had access to the `mint`, she could create BaytownBucks herself
-by calling `baytownBucksMint.mint`. 
+For this to happen, Alice needs access to `baytownBucksIssuer()`.
+However, she does not need access to `baytownBucksMint()`.
+If she had access to the `mint()`, she could create BaytownBucks herself
+by calling `baytownBucksMint.mint()`. 
 
 ```js
 const aliceBaytownBucksPurse = baytownBucksIssuer.makeEmptyPurse()
@@ -192,13 +190,13 @@ to make a withdrawal from its `purse`.
 ```js
 const aliceDepositFacet = purse.makeDepositFacet();
 ```
-Here `aliceDepositFacet` is an object reference, and we can call its `receive`method
+Here `aliceDepositFacet` is an object reference, and we can call its `receive` method
 to deposit this `payment` into its associated `purse`. 
 ```js
 aliceDepositFacet.receive(paymentForAlice);
 ```
 
-As a more complete example using Agoric's Board, a simple contract-internal "bulletin board"
+And here is a more complete example using Agoric's Board, a simple "bulletin board"
 for posting and getting Id-value pairs:
 ```js
 // Alice posts an Id-value pair to the Board, where the value is the deposit facet object
