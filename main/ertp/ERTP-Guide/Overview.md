@@ -206,7 +206,7 @@ for posting and getting Id-value pairs:
 const aliceDepositFacet = await E(board).getValue(aliceDepositFacetBoardId);
 E(aliceDepositFacet).receive(payment);
 // Alice got her payment automatically deposited in her purse!
-
+```
 When Alice wants to exchange something for 300 BaytownBucks, she
 creates a `payment` from her `purse`: 
 ```js
