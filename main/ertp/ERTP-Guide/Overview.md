@@ -17,34 +17,137 @@ reference, it can't. For more on object capabilities, see
 
 ## Objects Overview
 
-![ERTP object relationships](./assets/relationships.svg)  
-
 There are eight fundamental ERTP objects, two of which are parts of
 another, and one which is used by that same object. For each entry,
 the name is linked to its primary page in this Guide. 
 
-- **[Amount](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#amount)):
-  The description of an asset, it is not an asset itself, having no economic scarcity or economic value.
-  Made up of a:
-  - *[value](./Amounts.md)* ([glossary](https://agoric.com/documentation/glossary/#value)):  The
-  size of the amount.
-  - *[brand](./Amounts.md)* ([glossary](https://agoric.com/documentation/glossary/#brand)) The
-  kind of asset. 
+Asset descriptions have two parts:
+ - **[value](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#value)):  An
+  asset's size. You can think of this as the answer to the questions "how many?" or "how much?" about
+  an asset.
+ - **[brand](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#brand)): An
+  asset's kind. You can think of this as the answer to the question "What is it?" about an asset.
   
-  You can think of these as the "how much or how many?" and the "of what?" of an asset, for example, 7 quatloos (an imaginary
-  currency).
-- **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
-Methods to do math operations on an `amount`.
-- **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): an
-  object for holding digital assets. 
-- **[Payment](./PuresAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
-  an object for transfering digital assets to another party.
-- **[Mint](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#mint)): an
-  object that creates new `payment` objects of a specific `brand`. Each `brand` has
+These are combined into:
+- **[Amount](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#amount)):
+  Consists of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
+  having no economic scarcity or economic value.
+  
+So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
+where "400" is the value and "Quatloos" is the brand. As described later, you're not limited to non-negative
+integers as a `value`.
+
+The `brand` is a very important component. Many ERTP components are defined to work with or on one specific `brand`.
+In fact, exemplars of these next three components are all in one-to-one relationships with each other and a `brand`.
+ 
+- **[Mint](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#mint)): 
+  Creates new `payments` of a specific `brand`. Each `brand` has
   a one to one relationship with a `mint` and vice versa.
 - **[Issuer](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#issuer)): 
-an object linked to a single `mint` object that creates empty `purse` objects
-for that mint's `brand` and operates on any `payment` of that `brand`. 
+  Has a one-to-one relationship with a `mint`. Used to create empty `purses` to hold assets of the `brand`
+  associated with its `mint` and operate on any `payment` of that `brand`. Also used to validate a `brand`.
+- **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
+Methods to do math operations on an `amount`. Each `brand` has its own `amountMath` in a one-to-one relationship.
+
+![ERTP object relationships](./assets/relationships.svg) 
+
+Let's look at an example. Suppose there is the "Quatloos" `brand`. That means there is also:
+- A "Quatloos `mint`" that is the only `mint` that can create new Quatloos assets.
+` A "Quatloos `issuer`" that is the only `issuer` that can create a new `purse` to contain Quatloos and 
+  operate on a payment containing Quatloos.
+- A "Quatloos `amountMath`" that is the only `amountMath` whose operations work on an `amount` whose `brand` is Quatloos.
+
+We've already mentioned our final two components:
+- **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): An
+  object for holding digital assets of a specific `brand`.
+- **[Payment](./PuresAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
+  An object for transfering digital assets of a specific `brand` to another party.
+  
+Similar to other components, a `purse` and a `payment` are defined so that they only work with one
+`brand`. So a `purse` or `payment` that holds Quatloos cannot hold an asset of `brand` Moola or vice versa. 
+You cannot change the `brand` associated with a `purse` or `payment` on their creation, so once you create a
+"Quatloos `purse`" or "Quatloos `payment`", they can never hold anything other than Quatloos.
+
+However, unlike the other components, these are not one-to-one relationships. There can be thousands or more
+`purses` or `payments` that hold Quatloos, or for any other `brand`.
+
+## Life of an Asset
+
+Let's look at some asset "lifecycles". While it's very rare for an asset to be destroyed, these "lifecycles"
+show assets from their creation through common usage patterns. These are deliberately stripped down to their
+basic, core, functionality. Optional parameters and non-core operations are not shown, nor are some significant
+concepts which would make this introduction more confusing. 
+
+### Asset creation and storage
+
+First, you take a string naming a new to the system `brand` and use it as the argument to
+`makeIssuerKit()`. The name underestimates its power; in addition to returning a new `issuer`
+for the specified `brand`, it also returns a new `mint`, `amountMath`, and formal `brand` object
+for the argument. All are in one-to-one associations with each other. 
+```js
+const { bucksIssuer, bucksMint, bucksAmountMath, bucksBrand } = makeIssuerKit('bucks');
+```
+In this case, you used the string 'quatloos' to name the `brand`. As good programming style, you
+included the `brand` name in the variable names where you store the new `issuer`, `mint`, `amountMath`, and `brand`.
+
+```js
+const bucksSeven = buckAmountMath.make(7);;
+```
+Here you use the Quatloos `amountMath` to make a new `amount` description of the asset you want to create.
+Since `amountMath` objects are always one-to-one associated with a `brand`, in this case Quatloos, you 
+only have to specify what you want for the `value` of the new `amount`, in this case '7'.
+
+This returns an `amount` description stored in `quatloosSeven`. Remember, an `amount` is only a description
+of an asset, not an asset itself. `quatloosSeven` has no worth or intrinsic value.
+
+```js
+Mint new payment for seven bucks
+const bucksPayment = bucksMint.mintPayment(bucksSeven);
+```
+You've just created a new asset of 7 Quatloos. It's returned as a `payment`, so you need a place to store it.
+```js
+const bucksPurse = bucksIssuer.makeEmptyPurse();
+bucksPurse.deposit(bucksPayment);
+```
+
+For long term storate, we prefer using a `purse`. First you create a new empty `purse` for Quatloos using
+the `issuer` associated with Quatloos. Then you deposit the `payment` into the `purse`. When this happens,
+the `payment` is automatically *burned*, such that it no longer exists, and the 7 Quatloos are now resident
+in the `purse`. If there were already, say, 17 Quatloos in the `purse`, these 7 are added to them such that
+the `purse` balance is at 24 Quatloos. 
+
+### Transfering an asset
+
+Let's start with our `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
+another party.
+```js
+Create new amount, withdraw payment from purse into a new payment. 
+const bucksFive = bucksAmountMath.make(5);
+```
+First you create a new Quatloos `amount` with a `value` of 5 to describe what you want to withdraw.
+Remember, an `amount` is just a description of assets, not the actual assets.
+```js
+const myBucksPayment = bucksPurse.withdraw(bucksFive);
+```
+Now you tell your Quatloos containing `purse` that you want to withdraw the specified `amount` from 
+it. The 5 Quatloos goes into a `payment`
+
+You've got your `payment` for 5 Quatloos, but how do you get it to another party? They need to
+have done some work first.
+```
+const yourBucksDepositFacet = yourPurse.makeDepositFacet()
+```
+Assume the other party already has a Quatloos containing `purse` of their own. They create
+a *deposit facet* for that `purse`. If you have access to a deposit facet, you can deposit
+assets to the `purse` but cannot either make a withdrawal from it or get its balance. It's like
+being able to send money to a friend via their email address; you can't then take money out
+of your friend's accounts or find out how much is in them.
+```js
+**tyg** Explain board
+Const yourBucksDepositFacet = 
+      await E(board).getValue(yourDepositFacetBoardId);
+E(yourBucksDepositFacet.receive(myBucksPayment);
+
 
 ## Fungible and Non-Fungible Assets
 
