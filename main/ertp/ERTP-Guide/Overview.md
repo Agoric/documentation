@@ -27,7 +27,7 @@ which five of your one-dollar bills you give them.
 
 Non-fungible assets are of the same kind, but are not interchangeable
 and specific items must be used. For example, you might have 100
-theater tickets. But someone wanting to buy even a General Admission ticket from you will want one
+theatre tickets. But someone wanting to buy even a General Admission ticket from you will want one
 for a specific date and time. This might also affect the price; you'll want to charge more
 for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
 
@@ -50,7 +50,7 @@ These are combined into:
   as it has no economic scarcity or economic value.
   
 So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
-where "400" is the value and "Quatloos" is the brand. For now, we'll just look at fungible assets
+where `400` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
 whose values have to be non-negative integers. 
 
 The `brand` is a very important component. Most ERTP component instances are defined to work with or on one specific `brand`.
@@ -61,10 +61,10 @@ In fact, instances of these next three components are all in one-to-one relation
   a one to one relationship with a `mint` and vice versa. The created assets are stored in `payments`.   
 - **[Issuer](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#issuer)): 
   The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
-  can be used to validate `payments` received by untrusted parties. Has a one-to-one relationship
+  is used to validate `payments` received from untrusted parties. Has a one-to-one relationship
   with both a `brand` and a `mint`. 
 - **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
-Methods to do math operations on an `amount`. Each `brand` has its own `amountMath` in a one-to-one relationship.
+  Methods to do math operations on `amounts`. Each `brand` has its own `amountMath` in a one-to-one relationship.
 
 ![ERTP object relationships](./assets/relationships.svg) 
 
@@ -88,7 +88,7 @@ You cannot change the `brand` a `purse` or `payment` was originally associated w
 However, unlike the other components, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
 
-## Life of an Asset
+## Life of Assets
 
 Let's look at some asset "lifecycles". While it's very rare for an asset to be destroyed, these "lifecycles"
 show assets from their creation through common usage patterns. These are deliberately stripped down to their
@@ -98,14 +98,14 @@ concepts which would make this introduction more confusing. These are covered on
 ### Asset creation and storage
 
 ```js
-const { quatloosIssuer, quatloosMint, quatloosAmountMath, quatloosBrand } = makeIssuerKit('Quatloos');
+const { quatloosIssuer, quatloosMint, quatloosAmountMath, quatloosBrand } = makeIssuerKit('quatloos');
 ```
 First, you take a string naming a new to the system `brand` and use it as the argument to
 `makeIssuerKit()`. The name underestimates its power; in addition to returning a new `issuer`
-for the specified `brand`, it also returns a new `mint`, `amountMath`, and formal `brand` object
+for the specified `brand`, it also returns a new `mint`, `amountMath`, and formal `brand` 
 for the argument. All are in one-to-one associations with each other. 
 
-In this case, you used the string 'Quatloos' to name the `brand`. As good programming style, you
+In this case, you used the string 'quatloos' to name the `brand`. As good programming style, you
 included the `brand` name in the variable names where you store the new `issuer`, `mint`, `amountMath`, and `brand`.
 
 ```js
@@ -121,7 +121,7 @@ of an asset, not an asset itself. `quatloosSeven` has no worth or intrinsic valu
 ```js
 const quatloosPayment = quatloosMint.mintPayment(quatloosSeven);
 ```
-This creates a new asset of 7 Quatloos. It's returned as a `payment`, so you need a place to store it.
+This creates a new asset of 7 Quatloos. It's returned as a `payment`, so you want a place to store it.
 ```js
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 quatloosPurse.deposit(quatloosPayment);
@@ -139,13 +139,13 @@ another party named Alice.
 ```js
 const quatloosFive = quatloosAmountMath.make(5);
 ```
-First you create a new Quatloos `amount` with a `value` of 5 to describe what you want to withdraw.
+First you create a new Quatloos branded `amount` with a `value` of 5 to describe what you want to withdraw.
 Remember, an `amount` is just a description of assets, not the actual assets.
 ```js
-const myQuatloosPayment = quatloosPurse.withdraw(quatloossFive);
+const myQuatloosPayment = quatloosPurse.withdraw(quatloosFive);
 ```
 Now you tell your Quatloos containing `purse` that you want to withdraw the specified `amount` from 
-it. The 5 Quatloos goes into a `payment`
+it. The withdrawn 5 Quatloos goes into a `payment`
 
 You've got your `payment` for 5 Quatloos, but how do you get it to Alice? She needs to
 have done some work first so there's somewhere for her to put it and a way of getting it to
@@ -212,7 +212,7 @@ mint the tickets. In this case, you're making tickets for one performance of *Ha
 ```js
 const { mint: agoricTheatreTicketMint, agoricTheatreAmountMath: agoricTheatreTicketAmountMath } = makeIssuerKit('Agoric Theater tickets', 'set');
 ```
-As before, you use `makeIssuerKit()` to create `mint` that can create Agoric Theatre ticket assets. 
+As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
 The difference from when you created the fungible asset is that you have to use a second argument,
 in this case `set`.
 
@@ -274,23 +274,23 @@ them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [W
 
 ## Security properties
 
-ERTP `purse` objects have a `deposit` method which takes a `payment`
-object as its argument. It first checks that the `payment` object is
+ERTP `purses` have a `deposit` method which takes a `payment`
+as its argument. It first checks that the `payment` is
 genuine and the same asset `brand` as the `purse`
 
 If everything passes the checks, the asset moves from 
 the `payment` to the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
-- The `payment` object is deleted from the `issuer`'s records and no longer has any assets associated with it.
-- Its `issuer` no longer recognizes the `payment`.
-- The `purse` contains all of the `payment`'s digital assets.
+- The `payment` is deleted from its `issuer`'s records and no longer has any assets associated with it.
+- Its `issuer` no longer recognizes that `payment`.
+- The `purse` contains all digital assets that were in the `payment`.
 
 When the `deposit` call throws an error (i.e. something went wrong), ERTP guarantees
 the `purse` and the alleged `payment` were unaffected by that call.
 
 In addition, you can create a *deposit facet* for any `purse`. This is an object associated
-with a specific purse that can be sent to another party instead of a reference to the `purse`.
+with a specific `purse` that can be sent to another party instead of a reference to the `purse`.
 The security advantage is that the other party can only make deposits to the associated `purse`
 via the deposit facet. They cannot make a withdrawal from or ask about the balance of a `purse` via its deposit facet.
 
