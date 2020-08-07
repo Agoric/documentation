@@ -2,7 +2,7 @@
 
 You store digital assets in either a `purse` or a `payment`:
 - **[`purse`](https://agoric.com/documentation/glossary/#purse)**: Hold
-  a quantity of same branded digital assets until part or
+  a quantity of same-branded digital assets until part or
   all of them are withdrawn into a `payment` for use. A `purse` can only
   hold the same `brand` as that of the `issuer` that created it.
 - **[`payment`](https://agoric.com/documentation/glossary/#payment)**:
@@ -26,7 +26,7 @@ one is for everyday expenses, and the other is your emergency fund.
 When you deposit additional assets into a `purse` or `payment`, they are added to
 whatever assets already exist in the `purse` or `payment`. So if you deposit 3 Quatloos 
 into a `purse` with 8 Quatloos, you end up with a `purse` with 11 Quatloos. Similarly, 
-it you withdraw 6 Quatloos from the `purse` into a new `payment`, the `purse` has five Quatloos left
+if you withdraw 6 Quatloos from the `purse` into a new `payment`, the `purse` has five Quatloos left
 and the `payment` has six Quatloos. 
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. If you
