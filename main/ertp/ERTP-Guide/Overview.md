@@ -34,7 +34,7 @@ for a Friday evening ticket than a Wednesday matinee ticket, even if it's for th
 ## Components Overview
 
 There are eight fundamental ERTP components, two of which are parts of
-another, and one which is used by that same object. For each entry,
+another, and one which is used by that same component. For each entry,
 the name is linked to its primary page in this Guide. 
 
 Asset descriptions have two parts:
@@ -47,7 +47,7 @@ Asset descriptions have two parts:
 These are combined into:
 - **[Amount](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#amount)):
   Consists of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
-  having no economic scarcity or economic value.
+  as it has no economic scarcity or economic value.
   
 So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
 where "400" is the value and "Quatloos" is the brand. For now, we'll just look at fungible assets
@@ -57,11 +57,12 @@ The `brand` is a very important component. Most ERTP component instances are def
 In fact, instances of these next three components are all in one-to-one relationships with each other and a `brand`.
  
 - **[Mint](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#mint)): 
-  Creates new assets of a specific `brand`. Each `brand` has
-  a one to one relationship with a `mint` and vice versa.
+  The only way to create digital assets of a particular `brand`. Each `brand` has
+  a one to one relationship with a `mint` and vice versa. The created assets are stored in `payments`.   
 - **[Issuer](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#issuer)): 
-  Has a one-to-one relationship with a `mint`. Used to create empty `purses` to hold assets of the `brand`
-  associated with its `mint` and operate on any `payment` of that `brand`. Also used to validate a `brand`.
+  The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
+  can be used to validate `payments` received by untrusted parties. Has a one-to-one relationship
+  with both a `brand` and a `mint`. 
 - **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
 Methods to do math operations on an `amount`. Each `brand` has its own `amountMath` in a one-to-one relationship.
 
@@ -76,7 +77,7 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 We've already mentioned our final two components:
 - **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): An
   object for holding digital assets of a specific `brand`.
-- **[Payment](./PuresAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
+- **[Payment](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
   An object for transfering digital assets of a specific `brand` to another party.
   
 Similar to other component instances, a `purse` and a `payment` only work with one
@@ -131,10 +132,10 @@ the `payment` is automatically *burned*, such that it no longer exists, and the 
 in the `purse`. If you'd used an existing `purse` that contained, say, 17 Quatloos, these 7 would have been
 added to them so the `purse` balance would be 24 Quatloos. 
 
-### Transfering an asset
+### Transferring an asset
 
 Start with your `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
-another party, in this case one named Alice.
+another party named Alice.
 ```js
 const quatloosFive = quatloosAmountMath.make(5);
 ```
@@ -161,84 +162,40 @@ of your friend's accounts or find out how much is in them.
 ```js
 Const aliceQuatloosDepositFacet = 
       await E(board).getValue(aliceQuatloosDepositFacetBoardId);
-E(aliceQuatloosDepositFacet.receive(myQuatloosPayment);
+E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
 ```
-Alice uses Agoric's *Board* to make her Quatloos `purse` deposit facet generally available.
+Remember, ERTP's use of OCaps requires that you have access to an object in order to run methods on
+it. Alice uses Agoric's *Board* to make her Quatloos `purse` deposit facet generally available for use.
+ 
 The Board is a basic bulletin board type system where users can post an Id for a value and
-others can get the value just by knowing the Id. Alice can make her key(s) known by any
+others can get the value just by knowing the Id. Alice can make her Id(s) known by any
 communication method she likes; private email, an email blast to a mailing list or many individuals,
 buying an ad on a website, tv program, or newspaper, listing it on her website, etc.
 
 Alice tells you the Board Id associated with her Quatloos `purse` deposit facet. You get the Id associated value,
-which gives you the reference to that deposit facet. You then just tell the facet to receive your Quatloos
-`payment`. Your Quatloos `purse` now has 2 Quatloos (7 - 5), Alice's Quatloos `purse` now has 5 more Quatloos
-in it, and the 5 Quatloos `payment` was burned when the transfer happened.For this to happen, Alice needs access to `baytownBucksIssuer()`.
-However, she does not need access to `baytownBucksMint()`.
-If she had access to the `mint()`, she could create BaytownBucks herself
-by calling `baytownBucksMint.mint()`. 
+which gives you the reference to that deposit facet. You then just tell the facet to receive your `payment`
+of 5 Quatloos. 
 
-```js
-const aliceBaytownBucksPurse = baytownBucksIssuer.makeEmptyPurse()
-aliceBaytownBucksPurse.getAmount(); // Empty, so the value is 0
-```
+Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
+in it, and the 5 Quatloos `payment` burned when the transfer happened. 
 
-And here is a more complete example using Agoric's Board, a simple "bulletin board"
-for posting and getting Id-value pairs:
-```js
-// Alice posts an Id-value pair to the Board, where the value is the deposit facet object
-// for her `purse`.
-// Alice then gives us the boardId to use for the transfer: aliceDepositFacetBoardId
-// We retrieve the value from the boardID and then deposit the payment in the deposit facet.
-const aliceDepositFacet = await E(board).getValue(aliceDepositFacetBoardId);
-E(aliceDepositFacet).receive(payment);
-// Alice got her payment automatically deposited in her purse!
+The [`E()` notation](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e)
+is a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
+representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy 
+forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
+is explained in more detail at the preceding link.
 
------------------------
+### Creating and using non-fungible assets
 
------------------
+Say you own the Agoric Theatre and want to sell tickets to seats for a play. Tickets are non-fungible assets, 
+as they refer to a specific seat for a specific show at a specific time and date. It matters to
+buyers which ticket they get.
 
-For this to happen, Alice needs access to `baytownBucksIssuer()`.
-However, she does not need access to `baytownBucksMint()`.
-If she had access to the `mint()`, she could create BaytownBucks herself
-by calling `baytownBucksMint.mint()`. 
-
-```js
-const aliceBaytownBucksPurse = baytownBucksIssuer.makeEmptyPurse()
-aliceBaytownBucksPurse.getAmount(); // Empty, so the value is 0
-```
-
-And here is a more complete example using Agoric's Board, a simple "bulletin board"
-for posting and getting Id-value pairs:
-```js
-// Alice posts an Id-value pair to the Board, where the value is the deposit facet object
-// for her `purse`.
-// Alice then gives us the boardId to use for the transfer: aliceDepositFacetBoardId
-// We retrieve the value from the boardID and then deposit the payment in the deposit facet.
-const aliceDepositFacet = await E(board).getValue(aliceDepositFacetBoardId);
-E(aliceDepositFacet).receive(payment);
-// Alice got her payment automatically deposited in her purse!
-
------------------------
-## Creating a non-fungible asset with ERTP
-
-Let's say we own a theater and want to sell tickets to seats for a play. Tickets are
-the non-fungible assets we want to represent, which refer to a
-specific seat for a specific show at a specific time and date. 
-
-```js
-import { makeIssuerKit } from '@agoric/ertp';
-const { mint: theatreTicketMint, amountMath: theatreTicketAmountMath } = makeIssuerKit('Agoric Theater tickets', 'set');
-```
-
-This theater has 1114 seats numbered `1` to `1114`.
-Objects that represent valid tickets have these properties:
-- `seat` with a number
-- `show` with a string describing the show
-- `start` with a string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
-
-To create tickets, we first create JavaScript objects that each represent a ticket.
-Then, only units can be minted, so let's create units from the JavaScript objects and then
-mint the tickets! 
+The Agoric Theatre has 1114 seats numbered `1` to `1114`.
+Objects representing valid tickets have the properties:
+- `seat`: A number
+- `show`: A string describing the show
+- `start`: A string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
 
 ```js
 const startDateString = (new Date(2019, 11, 9, 20, 30)).toISOString();
@@ -248,22 +205,44 @@ const ticketValues = Array(1114).fill().map((_, i) => ({
   show: 'Hamilton',
   start: startDateString,
 }))
-
-const ticketAmounts = ticketValues.map(ticketValue => theatreTicketAmountMath.make(ticketValue));
-const theaterTicketPayments = ticketAmounts.map(ticketAmount => theatreTicketMint.mintPayment(ticketAmount))
 ```
+To create tickets, you first create JavaScript objects that each represent a ticket.
+Then, since only units can be minted, you create units from the JavaScript objects and then
+mint the tickets. In this case, you're making tickets for one performance of *Hamilton*.
+```js
+const { mint: agoricTheatreTicketMint, agoricTheatreAmountMath: agoricTheatreTicketAmountMath } = makeIssuerKit('Agoric Theater tickets', 'set');
+```
+As before, you use `makeIssuerKit()` to create `mint` that can create Agoric Theatre ticket assets. 
+The difference from when you created the fungible asset is that you have to use a second argument,
+in this case `set`.
 
-For each `amount`, we've created a `payment` which contains digital assets
-of the corresponding `amount`. These digital assets can be transferred 
-to other people and used in smart contracts.
+There are three kinds of `amountMath`. Each kind polymorphicly implements the same set of methods. 
+- `nat`: Works with natural number `value` and fungible assets. Default value for `makeIssuerKit()`.
+- `strSet`: Used with non-fungible assets, operates on an array of string identifiers
+- `set`: Used with non-fungible assets, operates on an array of records (objects) with keys and values
+
+```js
+const ticketAmounts = ticketValues.map(ticketValue => agoricTheatreTicketAmountMath.make(ticketValue));
+const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount => agoricTheatreTicketMint.mintPayment(ticketAmount))
+```
+First you define an `amount` description for each ticket you want to issue. 
+
+Then you use your `mint` for the approprirate `brand` to create an asset for each ticket. Each ticket asset
+is a separate `payment`. You can transfer and deposit a non-fungible asset `payment` just like a fungible one.
 
 ## Amounts are not assets
 
 **IMPORTANT**: Despite how it may seem, an `amount` is only a description of an asset, not
-an asset in and of itself. Actual assets are represented by `purse` and `payment` objects. but the
-assets aren't ever embodied in any particular JavaScript object. Instead, what makes the 
-assets exist is the issuer having a mapping from the `purse` or `payment` to an `amount` (description).
-There is no `amount` object stored in a `purse` or `payment`.
+an asset in and of itself. 
+An asset is held by a `purse` or `payment` in the same way a bank account holds money; not because of anything physical, 
+but because of a record held by an authoritative source. In ERTP, the `issuer` for each `brand` of asset 
+is the source of truth of what assets of that `brand` are held by what `purses` and `payments`.
+There is no `amount` stored in a `purse` or `payment`.
+
+For example, if I want to make you an offer to buy an asset, let's say a magic sword in a game, I'll send you
+an `amount` describing the asset of 5 Quatloos I'm willing to trade for your sword. I don't send you the actual 
+5 Quatloos; that only happens when we agree on the trade terms and I send you a `payment` of 5 Quatloos, the
+actual asset.
 
 Some analogies may be helpful in understanding this:
 
