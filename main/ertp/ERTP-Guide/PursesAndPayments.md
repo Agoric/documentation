@@ -1,48 +1,49 @@
 # Purses and Payments
 
-You can store digital assets in two kinds of objects:
+You store digital assets in either a `purse` or a `payment`:
 - **[`purse`](https://agoric.com/documentation/glossary/#purse)**: Hold
   a quantity of same branded digital assets until part or
-  all of them are withdrawn into a `payment` for use.
+  all of them are withdrawn into a `payment` for use. A `purse` can only
+  hold the same `brand` as that of the `issuer` that created it.
 - **[`payment`](https://agoric.com/documentation/glossary/#payment)**:
   Hold a quantity of digital assets to send to another party. Created either
   with new assets by a `mint` or by withdrawing assets from a `purse`.
 
-Assets in purses and payments do not have to be currency-like, but can
+Assets in `purses` and `payments` do not have to be currency-like, but can
 be any kind of digital asset; swords to use in a game, rights to use 
-a particular contract, theater tickets, etc.
+a particular contract, theatre tickets, etc.
 
 Each non-empty `purse` and `payment` object contains exactly one
-quantity of its digital asset. So, for example, a single `purse` can contain assets of
-5 quatloos, but not two separated assets of 2 quatloos and 3 quatloos. If you want to
-hold multiple, separated, quantities of same-branded assets (for example, you might have two
-bank accounts, both of which hold dollars. You want to keep them separated since 
-one is for everyday expenses, and the other is where you're saving up for the
-down payment on a house), you have to have multiple `purse` objects for that `brand`.
+quantity of its digital asset. 
 
-While you may deposit or withdraw assets to or from a
-`purse`, it is respectively added to the `purse` or split off into a `payment`. 
-The same is true for adding to or splitting a
-`payment`.  Both a `purse` and a `payment` can only
-have one quantity of a single `brand` of digital asset.
+So, for example, a single `purse` can contain assets of
+5 Quatloos, but not two separated assets of 2 Quatloos and 3 Quatloos. If you want to
+hold multiple, separated, quantities of same-branded assets you have to have multiple
+`purses` for that `brand`. This is similar to how in the real world, you might have two
+bank accounts, both of which hold dollars. You want to keep them separated since 
+one is for everyday expenses, and the other is your emergency fund.
+
+When you deposit additional assets into a `purse` or `payment`, they are added to
+whatever assets already exist in the `purse` or `payment`. So if you deposit 3 Quatloos 
+into a `purse` with 8 Quatloos, you end up with a `purse` with 11 Quatloos. Similarly, 
+it you withdraw 6 Quatloos from the `purse` into a new `payment`, the `purse` has five Quatloos left
+and the `payment` has six Quatloos. 
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. If you
 only want to add part of a `payment` to a `purse`, you must use `payment.split()` 
-or `payment.splitMany()` first to split the `payment` into one or more `payment` objects.
+or `payment.splitMany()` first to split the `payment` into one or more `payments`.
 
-With the exception of `mint` objects creating entirely new `payment`
-objects containing digital assets, a `payment` is
-created by making a withdrawal from a `purse` or by splitting an
-existing `payment`. Note
-that the `brand` of the new `payment` is the same as the
-`purse`'s or original `payment`'s associated `brand`.
+With the exception of a `mint` creating an entirely new `payment`
+containing digital assets, you create a `payment` by making a withdrawal from
+a `purse` or by splitting an existing `payment`. Note that the `brand` of the new `payment` is the same as the
+associated `brand` of its originating `purse` or `payment`.
 
 Note that you don't transfer assets directly from one `purse` to
 another `purse`. Instead, you do something like these steps to send and receive assets in ERTP.
 The actual send operation is up to you; ERTP does not implement a way of 
 sending object-containing messages between parties.
 - Send assets:
-  1. Withdraw an `amount`from a `purse`, creating a `payment`.
+  1. Withdraw assets described by an `amount`from a `purse`, creating a `payment`.
   2. Send this `payment` to a recipient object as a message.
 - Receive assets:
   1. If you don't already have one, create a `purse` for the asset `brand`
@@ -50,12 +51,12 @@ sending object-containing messages between parties.
   2. Receive the message with the `payment` and deposit the `payment` in
      your `brand` appropriate `purse`. 
      
-In addition, you can create a *deposit facet* for a `purse`. This is an object you
-can send to others that allows them to deposit a `payment` into the `purse` the 
+In addition, you can create a *deposit facet* for a `purse`. These are used to
+send to another party that lets them deposit a `payment` into the `purse` the 
 deposit facet object represents. The benefit of sending a deposit facet instead of 
 providing access to its `purse` is that deposit facets only accept deposits; a party 
 with a deposit facet object cannot use it to make a withdrawal. 
-
+tyg: Up to here
 If you receive a deposit facet, you can make a deposit to its associated `purse` by calling 
 `depositOnlyFacet.receive(payment);`. Note that the `payment` must be the same `brand` as what
 the associated `purse` object can contain. Otherwise it throws an error. If you send a party a 
@@ -80,15 +81,15 @@ Purses have four API methods:
     const currentBalance = purse.getCurrentAmount();
     ```
 - [`purse.deposit(payment, optAmount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-deposit-payment-optamount)
-  - Deposit the digital asset contents of a `payment` into this purse,
+  - Deposit the digital asset contents of a `payment` into this `purse`,
     returning a description of the `payment`'s balance as an `amount`. If the optional argument
     `optAmount` does not equal the `payment`'s balance,  or if `payment`
     is an unresolved
     [promise](https://agoric.com/documentation/glossary/#promise),
     it throws an error.
   - ```js
-    const { issuer, mint, amountMath } = makeIssuerKit('bucks');
-    const purse = issuer.makeEmptyPurse();
+    const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('Quatloos');
+    const quatloosPurse = quatloos.Issuer.makeEmptyPurse();
     const payment = mint.mintPayment(amountMath.make(123));
     const bucks123 = amountMath.make(123);
     // Deposit a payment for 123 bucks into the purse. Ensure that this is the amount you expect.
