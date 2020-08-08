@@ -2,7 +2,7 @@
 
 ## Issuers
 
-![Issuer methods](./assets/issuer.svg)  
+![Issuer methods](./assets/issuer2.svg)  
 
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
@@ -21,6 +21,8 @@ An `issuer` cannot mint new assets, but it can create an empty `purse` and
 operate on a `payment`. An `issuer` should be obtained from a trusted source and
 then relied upon as the authority as to whether an untrusted `payment`
 is valid.
+
+![Issuer methods](./assets/issuer1.svg)  
 
 An `issuer` has 13 methods. 4 return information about an
 `issuer`, 1 creates a new `issuer`, 1 creates a new `purse`, and 7
