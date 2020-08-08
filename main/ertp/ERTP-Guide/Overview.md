@@ -66,13 +66,15 @@ In fact, instances of these next three components are all in one-to-one relation
 - **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
   Methods to do math operations on `amounts`. Each `brand` has its own `amountMath` in a one-to-one relationship.
 
-![ERTP object relationships](./assets/relationships.svg) 
+![ERTP object relationships](./assets/relationships1.svg) 
 
 Let's look at an example. Suppose there is the "Quatloos" `brand`. That means there is also:
 - A "Quatloos `mint`" that is the only `mint` that can create new Quatloos assets.
 - A "Quatloos `issuer`" that is the only `issuer` that can create a new `purse` to contain Quatloos and 
   operate on a `payment` containing Quatloos.
 - A "Quatloos `amountMath`" that is the only `amountMath` whose operations work on an `amount` whose `brand` is Quatloos.
+
+![ERTP object relationships 2](./assets/relationships2.svg) 
 
 We've already mentioned our final two components:
 - **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): An
@@ -97,6 +99,7 @@ concepts which would make this introduction more confusing. These are covered on
 
 ### Asset creation and storage
 
+![Asset creation](./assets/assetCreation.svg)
 ```js
 const { quatloosIssuer, quatloosMint, quatloosAmountMath, quatloosBrand } = makeIssuerKit('quatloos');
 ```
@@ -134,6 +137,7 @@ added to them so the `purse` balance would be 24 Quatloos.
 
 ### Transferring an asset
 
+![Asset transfer](./assetTransfer.svg)
 Start with your `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
 another party named Alice.
 ```js
