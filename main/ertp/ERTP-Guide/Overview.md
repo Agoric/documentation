@@ -137,7 +137,7 @@ added to them so the `purse` balance would be 24 Quatloos.
 
 ### Transferring an asset
 
-![Asset transfer](./assetTransfer.svg)
+![Asset transfer](./assets/assetTransfer.svg)
 Start with your `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
 another party named Alice.
 ```js
