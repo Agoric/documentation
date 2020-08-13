@@ -49,14 +49,14 @@ const exampleAmountMath = issuer.getAmountMath();
 const exampleBrand = exampleAmountMath.getBrand();
 ```
 
-## amountMath.getMathHelpersName()
+## amountMath.getAmountMathKind()
 - Returns: `{String}`
 
-Get the name of the mathHelpers used.
+Get the kind of the `amountMath`, one of `nat`, `set`, or `setStr`.
 
 ```js
 const { amountMath } = makeIssuerKit('bucks');
-amountMath.getMathHelpersName(); // 'nat'
+amountMath.getAmountMathKind(); // 'nat'
 ```
 
 ## amountMath.make(allegedValue)
@@ -101,7 +101,7 @@ const value = amountMath.getValue(amount);
 ## amountMath.getEmpty()
 - Returns: `{Amount}`
 
-Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
+Return the amount representing an empty amount. This is the identity element for `amountMath.add()` and `amountMath.subtract()`.
 
 ```js
 const { amountMath } = makeIssuerKit('bucks');
@@ -134,7 +134,10 @@ amountMath.isEmpty(fungible1)
 - `rightAmount` `{Amount}`
 - Returns: `{boolean}`
 
-Returns true if the leftAmount is greater than or equal to the rightAmount. For non-scalars, "greater than or equal to" depends on the kind of amount, as defined by the MathHelpers. For example, whether rectangle A is greater than rectangle B depends on whether rectangle A includes rectangle B as defined by the logic in MathHelpers.
+Returns true if the leftAmount is greater than or equal to the rightAmount. For 
+non-scalars, "greater than or equal to" depends on the kind of amountMath. For example, 
+whether rectangle A is greater than rectangle B 
+depends on whether rectangle A includes rectangle B as defined by the logic in `amountMath`
 
 ```js
 const { amountMath } = makeIssuerKit('fungible');
