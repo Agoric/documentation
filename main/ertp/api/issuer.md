@@ -1,21 +1,25 @@
 # Issuer
 
-The issuer cannot mint new amounts, but it can create empty purses and payments. The issuer can also transform payments (splitting payments, combining
-payments, burning payments, and claiming payments exclusively). The issuer should be obtained from a trusted source and then relied upon as the
-authority as to whether an untrusted payment is valid.
+The issuer cannot mint new amounts, but it can create empty purses and operate on payments (splitting, 
+combining, burning, and exclusively claiming payments). The issuer should be obtained from a trusted 
+source and then relied upon as the authority as to whether an untrusted payment is valid.
 
-## makeIssuerKit(allegedName, mathHelperName)
+## makeIssuerKit(allegedName, amountMathKind)
 - `allegedName` `{String}`
-- `mathHelpersName` `{String}`
+- `amountMathKind` `{String}`
 - Returns: `{ mint, issuer, amountMath, brand }`
 
 Makes an issuer and related objects. 
 
-The `allegedName` is available from the brand in asset descriptions. The `allegedName` is useful for debugging and double-checking assumptions, but
-should not be trusted.
+The `allegedName` is available from the brand in asset descriptions. The `allegedName` is 
+useful for debugging and double-checking assumptions, but should not be trusted.
 
-The `mathHelpersName` will be used to import a specific mathHelpers from the mathHelpers library. For example, `natMathHelpers`, the default, supports
-natural numbers and is used for basic fungible tokens.
+The `amountMathKind` specifies which of the three kinds of `amountMaths` to use:
+strSet: Used with non-fungible assets.
+set: Used with sets of objects, primarily non-fungible assets.
+- `nat`: The default, supports natural numbers and is used for basic fungible tokens.
+- `strSet`: Used with non-fungible assets.
+- `set`: Used with sets of objects, primarily non-fungible assets.
 
 ```js
 const { issuer, mint, amountMath } = makeIssuerKit('bucks');
@@ -62,14 +66,14 @@ const issuerAmountMath = issuer.getAmountMath();
 // amountMath === issuerAmountMath
 ```
 
-## issuer.getMathHelpersName()
+## issuer.getAmountMathKind()
 - Returns: `{String}`
 
-Get the name of the MathHelpers for this Issuer.
+Get the kind of the `amountMath` for this `issuer`. Possible values are `nat`, `set`, and `strSet`.
 
 ```js
 const { issuer } = makeIssuerKit('bucks');
-issuer.getMathHelpersName(); // 'nat'
+issuer.getAmountMathKind(); // 'nat'
 ```
 
 ## issuer.makeEmptyPurse()
@@ -117,9 +121,11 @@ const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
 - `optAmount` `{Amount}` - Optional.
 - Returns: `{Payment}` - The new payment.
 
-Transfer all digital assets from `payment` to a new payment and burn the original. This allows the owner to be sure that no other references to this
-payment survive, so they are the exclusive owner. `optAmount` is optional. If `optAmount` is present, the code will insist that `payment`'s balance is
-equal to `amount`, to prevent sending the wrong `payment` and other confusion. If `optAmount` does not equal the balance in the original `payment`
+Transfer all digital assets from `payment` to a new payment and burn the original. 
+This allows the owner to be sure that no other references to this
+payment survive, so they are the exclusive owner. `optAmount` is optional. If `optAmount` 
+is present, the code will insist that `payment`'s balance is equal to `amount`, to prevent 
+sending the wrong `payment` and other confusion. If `optAmount` does not equal the balance in the original `payment`
 then it will throw an error.  If `payment` is a promise, the operation will proceed after the promise resolves.
 
 ```js
