@@ -2,6 +2,24 @@
 
 Logic for manipulating amounts.
 
+## AmountMath Kinds
+
+There are three different kinds of `amountMaths`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer`; it then knows which kinds's operations to use on itself.
+
+The three kindss of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic):
+
+- `nat`: Used with fungible assests.
+- `strSet`: Used with non-fungible assets.
+- `set`: Used with sets of objects, primarily non-fungible assets.
+
+Use `makeIssuerKit(allegedName, amountMathKind)` to specify which `amountMath` 
+kind your contract uses. The second parameter, `amountMathKind` is optional and 
+defaults to `nat` if not given. For example
+```js
+makeIssuerKit('quatloos`); // Defaults to 'nat'
+makeIssuerKit('quatloos', 'strSet');
+makeIssuerKit('quatloos, 'set');
+```
 ## Amount
 
 Amounts are descriptions of digital assets, answering the questions "how much" and "of what kind". Amounts are values labeled with a brand. AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
