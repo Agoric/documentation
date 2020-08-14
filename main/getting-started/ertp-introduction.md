@@ -100,9 +100,12 @@ it).
 
 ## Amount Math
 
-Issuers must be able to deposit and withdraw assets from a purse. This
-requires being able to add and subtract digital assets. They use a set
-of `amountMath` functions, which are aided by `mathHelpers` functions.
+Issuers must be able to deposit and withdraw assets from a purse. They 
+use a set of `amountMath` functions to add and subtract digital assets.
+An `amountMath` has a one-to-one relation with its issuer's `brand`. Depending on
+the fungibility of the `brand`, a particular kind of `amountMath` is assigned 
+on creation. Polymorphic `amountMath` methods handle
+fungible and non-fungible assets without any kind-based user-visible difference.
 
 In addition to math operations, `amountMath` functions check on their
 arguments' brands, throwing an error if the wrong brand was used.
