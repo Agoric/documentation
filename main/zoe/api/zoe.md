@@ -48,7 +48,7 @@ const { sourceCode, moduleFormat } = await bundleSource(someContract);
 const installationHandleP = E(zoe).install(sourceCode, moduleFormat);
 ```
 
-## E(zoe).makeInstance(installationHandle, issuerKeywordRecord, terms)
+## E(zoe).startInstance(installationHandle, issuerKeywordRecord, terms)
 - `installationHandle` <router-link to="/glossary/#handle">`{Handle}`</router-link>
 - `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
 - `terms` `{Object}`
@@ -75,7 +75,7 @@ const issuerKeywordRecord = {
   'Price' : simoleanIssuer 
 };
 const terms = { numBids: 3 };
-const { invite, instanceRecord } = await E(zoe).makeInstance(
+const { invite, instanceRecord } = await E(zoe).startInstance(
   secondPriceAuctionInstallationHandle, 
   issuerKeywordRecord, 
   terms
