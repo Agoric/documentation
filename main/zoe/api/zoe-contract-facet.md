@@ -4,32 +4,141 @@
 
 A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).startInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
 
-## zcf.reallocate(offerHandles, newAmountKeywordRecords, sparseKeywords)
-- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `newAmountKeywordRecords` <router-link to="/zoe/api/records.html#amountkeywordrecord">`{Array <AmountKeywordRecord>}`</router-link>
+## zcf.reallocate(seatStagings)
+- `seatStagings` 
+- Returns: `{void}`
 
-Instruct Zoe to try to reallocate payouts for the given `offerHandles`.  This will only succeed if the reallocation 1) conserves rights, and 2) is 'offer-safe' for all parties involved. This reallocation is partial, meaning that it applies only to
-the amount associated with the offerHandles that are passed in.  We are able to ensure that with each reallocation,
-rights are conserved and offer safety is enforced for all offers, even though the reallocation is partial, because once
-these invariants are true, they will remain true until changes are made.
+The contract reallocates over `seatStagings`, which are
+associations of seats with reallocations. **tyg todo: should it be
+"reallocates payouts" or similar?**
 
-newAmountKeywordRecords is an array of `AmountKeywordRecords`, which are objects where the keys are keywords and the
-values are the amounts to be paid to the offer at the same index in the `offerHandles`. Note that the offer keywords
-can be different for different offers with no effect on a reallocation. 
+The reallocation only succeeds if it:
+1 Conserves rights (the amounts specified have the same total value as the
+  current total amount)
+2 Is 'offer-safe' for all parties
+  involved. Offer safety is checked at the staging step.
 
-This operation throws an error:
-- If there are only 0 or 1 offerHandles given.
+The reallocation is partial, only applying to seats associated
+with the `seatStagings`. By induction, if rights conservation and 
+offer safety hold before, they hold after a safe reallocation. 
 
-The reallocation only happens if 'offer safety' and conservation of rights are true, as enforced by Zoe.
+This is true even though we only re-validate for seats whose 
+allocations change. A reallocation can only effect offer safety for 
+those seats, and since rights are conserved for the change, overall 
+rights are unchanged.
+
+**tyg todo: Check to see if it throws any errors**
+**tyg todo: Rewrite sample code**
 ```js
-import harden from '@agoric/harden';
-
 // reallocate by switching the amount of the firstOffer and matchingOffer
 zcf.reallocate(
   harden([firstOfferHandle, matchingOfferHandle]),
   harden([matchingOfferAmount, firstOfferAmount]),
 );
 ```
+
+## zcf.addNewIssuer(issuer, keyword)
+- `issuerP` <router-link to="/ertp/api/issuer.html">`{ERef<Issuer>}`</router-link>
+- `keyword` `{String}`
+- Returns: `{Promise<IssuerRecord>}`
+
+Inform Zoe about an `issuer`. Returns a promise for acknowledging when the `issuer` is added and ready. **tyg todo: What is the keyword argument for?
+The issuer's brand name? A petname?**
+
+```js
+zcf.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
+  //do stuff
+});
+```
+
+## zcf.getZoeService()
+- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
+
+Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
+**tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
+
+## zcf.makeInvitation(offerHandler, invitationDesc, customProperties)
+- `offerHandler` `{OfferHandle => Object}`
+- `invitationDesc` `{String}`
+- `customProperties` `{Object}`
+- Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
+
+**tyg todo: In the types.js, says "the extent of the invitation" several
+times. Shouldn't that be "the value..."?**
+
+Make a credible Zoe `invitation` for a smart contract. The invitation's 
+`value` specifies:
+- The specific contract `instance`.
+- The Zoe `installation`.
+- A unique `handle`
+
+The second argument is a required `description` for the `invitation`, 
+and should include whatever information is needed for a potential buyer **tyg todo: Should this be "recipient"  instead of "buyer"?** of the invitation
+to know what they are getting in the `customProperties` argument, which is
+put in the invitation's `value`.
+**tyg todo: Rewrite sample code
+```js
+const invite = zcf.makeInvitation(
+  myAuction.onNewOffer,
+  { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
+);
+```
+
+## zcf.getInvitationIssuer()
+- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
+Zoe has a single `invitationIssuer` for the entirety of its
+lifetime. By having a reference to Zoe, a user can get the
+`invitationIssuer` and thus validate any `invitation` they receive
+from someone else. The `mint `associated with the `invitationIssuer`
+creates the ERTP `payments` (`invitations`) that represent the right to 
+interact with a smart contract in particular ways.
+**tyg todo: May want to clafiry the "have a reference to Zoe" bit, since
+it looks like being able to call zcf methods is sufficient to indicate
+that**
+```js
+const invitationIssuer = await zcf.getInvitationIssuer();
+```
+
+## zcf.getBrandForIssuer(issuer)
+- `issuer` `{Issuer}`
+- Returns `{Brand}`
+
+Returns the `brand` of the `issuer` argument
+**tyg todo: Get sample code, use cases**
+
+## zcf.getAmountMath(brand)
+- `brand` `{String}`
+- Returns `{amountMath}`
+
+Returns the `amountMath` object associated with the `brand` argument.
+
+```js
+const ticketIssuer = publicAPI.getTicketIssuer();
+const ticketAmountMath = ticketIssuer.getAmountMath();
+```
+**tyg todo: Redo as Allocations are properties of Seats, specificall
+ZCFSeat and UserSeat**
+## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
+- `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
+- `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists.
+- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
+
+Get the amounts associated with the `brand`s for the offer. If the optional `brandKeywordRecord`
+argument is omitted, it only returns amounts for brands for which an allocation currently exists.
+
+```js
+const { foo, bar } = zcf.getCurrentAllocation(offerHandle, ['foo', 'bar']);
+```
+## zcf.initPublicAPI(publicAPI)
+- `publicAPI` <Object>
+- Returns `{void}`
+
+Initialize the publicAPI for the contract instance, as stored by Zoe in
+the `instanceRecord`. The `publicAPI` argument is an object whose methods are the API available to anyone who knows the `instanceHandle`
+
+**tyg todo: Below here are Zoe 0.7 zcf API requests no longer in zcf. 
+Confirm they're gone **
+# Removed API Requests
 
 ## zcf.complete(offerHandles)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
@@ -42,85 +151,12 @@ import harden from '@agoric/harden';
 zcf.complete(harden([someOfferHandle]));
 ```
 
-## zcf.addNewIssuer(issuer, keyword)
-- `issuer` <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
-- `keyword` `{String}`
-- Returns: `{Promise}`
-
-Inform Zoe about a new issuer. Returns a promise for acknowledging when the issuer is added and ready.
-
-```js
-zcf.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
-  //do stuff
-});
-```
-
-## zcf.getZoeService()
-- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
-
-Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
-
-## zcf.makeInvitation(offerHook, inviteDesc, customProperties)
-- `offerHook` `{OfferHandle => Object}`
-- `inviteDesc` `{String}`
-- `customProperties` `{Object}`
-- Returns: <router-link to="/ertp/api/payment.html#payment">`{Invite}`</router-link>
-
-Make a credible Zoe invite for the associated smart contract. The Invite
-is a `Payment` minted from Zoe's internal `inviteMint`. It can be used
-in `E(zoe).offer` for the holder of it to participate in this contract.
-
-When an offer is submitted via the invitation, `offerHook` will be
-invoked in the contract with a handle for the offer. The result of the
-`offerHook` will be returned as the "outcome" of making the offer via
-the invitation.
-
-The `inviteDesc` is a string used as a description of the invite, such as
-"bidderInvite" or "exerciseOption". It's mainly used to enable searching for
-and finding particular invites in a contract.
-
-The `customProperties` is an object whose properties contain information 
-as defined by the smart contract, to include in the value of the 
-invitation.
-
-```js
-const invite = zcf.makeInvitation(
-  myAuction.onNewOffer,
-  { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
-);
-```
-
-## zcf.getInviteIssuer()
-- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
-
-Get the Zoe `inviteIssuer`.
-
-```js
-const inviteIssuer = await zcf.getInviteIssuer();
-```
-
-## zcf.getBrandForIssuer(issuer)
-- `issuer` `{Issuer}`
-- Returns `{Brand}`
-
-Returns the `brand` of the `issuer` argument
-
 ## zcf.getIssuerForBrand(brand)
 - `brand` `{Brand}`
 - Returns `{Issuer}`
 
 Returns the `issuer` of the `brand` argument
 
-## zcf.getAmountMath(brand)
-- `brand` `{String}`
-- Returns `{amountMath}`
-
-Returns the `amountMath` object associated with the `brand` argument.
-
-```js
-const ticketIssuer = publicAPI.getTicketIssuer();
-const ticketAmountMath = ticketIssuer.getAmountMath();
-```
   
 ## zcf.isOfferActive(offerHandle)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
@@ -176,19 +212,6 @@ Zoe.
 ```js
 const { issuerKeywordRecord, keywords, terms } = zcf.getInstanceRecord()
 ```
-
-## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
-- `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists.
-- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{<AmountKeywordRecord>}`</router-link>
-
-Get the amounts associated with the `brand`s for the offer. If the optional `brandKeywordRecord`
-argument is omitted, it only returns amounts for brands for which an allocation currently exists.
-
-```js
-const { foo, bar } = zcf.getCurrentAllocation(offerHandle, ['foo', 'bar']);
-```
-
 ## zcf.getCurrentAllocations(offerHandles, brandKeywordRecord)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists
@@ -210,11 +233,3 @@ argument is omitted, it only returns amounts for brands for which an allocation 
   newValue = value;
   waitForNextUpdate(offerNotifier, updateHandle);
 ```
-  
-## zcf.initPublicAPI(publicAPI)
-- `publicAPI`
-- Returns `{void}`
-
-Initialize the publicAPI for the contract instance, as stored by Zoe in
-the instanceRecord. The `publicAPI` argument is an object whose methods are the API
-available to anyone who knows the `instanceHandle`
