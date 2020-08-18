@@ -51,7 +51,7 @@ code to enforce the correct return values for your contract:
  */
  ```
 
-Contract code must export a function `start` as a non-default export,
+Contract code must export a function `start` (formerly named `makeContract`) as a non-default export,
 like so:
 
 ```js
@@ -147,6 +147,12 @@ reallocate like so, with any number of stagings passed in as separate arguments:
 ```js
 zcf.reallocate(creatorStage, userStage);
 ```
+
+### Invitations, not invites
+
+We are no longer using the noun `invite` because it can be confused
+with the verb, and are using the word `invitation` instead. This
+changed the Zoe API and many of the contract publicFacet methods slightly.
 
 ## Wallet Changes
 
