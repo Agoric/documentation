@@ -90,6 +90,18 @@ You cannot change the `brand` a `purse` or `payment` was originally associated w
 However, unlike the other components, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
 
+## Method Naming Structure
+
+ERTP methods use a template for their names. Knowing what a particular method name prefix represents
+can help you when reading code.
+
+- `make<Foo>()`: Creates a new Foo object and returns only that object.
+- `make<Foo>Kit()`: Creates a new Foo object as well as other things. It returns some combination of useful things, usually including the new
+  Foo object. But not always; sometimes Foo is conceptual, and, for example, instead of a single object, two facets are returned.
+`create<Foo>()`: Creates a new Foo, but doesn't return it. 
+`get<Foo>()`: Returns a Foo that already existed. 
+`provide<Foo>()`: If Foo already exists, it returns it. If not, it creates a new Foo and returns that.
+
 ## Life of Assets
 
 Let's look at some asset "lifecycles". While it's very rare for an asset to be destroyed, these "lifecycles"
@@ -103,10 +115,10 @@ concepts which would make this introduction more confusing. These are covered on
 ```js
 const { quatloosIssuer, quatloosMint, quatloosAmountMath, quatloosBrand } = makeIssuerKit('quatloos');
 ```
-First, you take a string naming a new to the system `brand` and use it as the argument to
-`makeIssuerKit()`. The name underestimates its power; in addition to returning a new `issuer`
-for the specified `brand`, it also returns a new `mint`, `amountMath`, and formal `brand` 
-for the argument. All are in one-to-one associations with each other. 
+First, you pass a string naming a new `brand` to
+`makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
+Here it also creates a new `mint`, `amountMath`, and formal `brand` 
+for the argument, and returns all four new objects. All are in one-to-one associations with each other. 
 
 In this case, you used the string 'quatloos' to name the `brand`. As good programming style, you
 included the `brand` name in the variable names where you store the new `issuer`, `mint`, `amountMath`, and `brand`.
@@ -258,18 +270,21 @@ during the game. The score on the scoreboard is just a description of the game's
 previous day at 15 dollars per share rather than the correct 1507 dollars. This does not cause Google stock to be valued at
 15; it's not the actual asset, but a description of its value (again, in this case, an incorrect one).
 
-Making a new `amount` or changing an `amount` `value` does not create any new assets. New assets are created by using 
-a `mint` to create a new `payment` that contains a newly created asset. In the real world, I can't create a new ten dollar
+Making a new `amount` does not create any new assets. Nor does adding two `amounts`; since an `amount` is immutable, the
+addition just creates a new `amount` while the original two still exist. Since an `amount` is just a description of an 
+asset, it's the same as how you can't create a new ten dollar
 bill by drawing one; a new one has to be minted (printed) by an authorized government-run facility with its asset status
-derived from its government backing. 
+derived from its government backing. Similarly, new assets in ERTP are created by using 
+a `mint` to create a new `payment` that contains a newly created asset. 
 
 So an `amount` just describes an asset along the two axes of how many and
 what units it's in (`value` and `brand`). They're used as a way of negotiating
 with parties that doesn't involve sending/sharing the actual asset
-until a deal is made. In other words, I don't make you an offer that I'll swap you a ticket to *Hamilton* for something
-by sending you an actual ticket. Instead I make you an offer by sending you a written description
-of what I'm willing to swap, namely a *Hamilton* ticket. If the offer is accepted, then I send you the actual asset, 
-in this case an actual *Hamilton* ticket (enjoy the show!).
+until a deal is made. In other words, I don't make you an offer that I'll swap you a ticket to *Hamilton* for $300
+by sending you an actual ticket any more than you sent me $300 before finding out what I'd give you for it. Instead, 
+I make you an offer by sending you a written description
+of what I'm willing to swap ("I will swap a *Hamilton* ticket for $300"). If the offer is accepted, then I send you the actual asset, 
+in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the actual $300 (I'll enjoy spending it!).
  
 ## Object capabilities and ERTP
 
