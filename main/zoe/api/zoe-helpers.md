@@ -3,17 +3,33 @@
 ZoeHelpers are functions that extract common contract code and
 patterns into reusable helpers.
 
-These helper functions can be imported from @agoric/zoe/src/contractSupport. We
-expect to move them to a separate package shortly, so it would become
-'@agoric/zoe-contract-support'. The import provides a function `makeZoeHelpers()`,
-which produces versions of the function that are bound to the current zoe instance.
-
+The ZoeHelper methods are listed below. To use any of them, you import
+it directly from `@agoric/zoe/src/contractSupport/`. For example, the following 
+imports the two ZoeHelpers `assertIssuerKeywords()` and `asserProposalShape()`:
 ```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+import {
+  assertIssuerKeywords,
+  assertProposalShape,
+} from '../../../src/contractSupport';
+```
+Note that several ZoeHelpers require `zcf` as a first argument. 
+**tyg todo: Why? And why not just drop a standard string argument and set something inside
+the method to 'zcf'?**
 
+
+**tyg todo: Pre-Alpha ZoeHelpers. Leaving here to keep track, will remove**
+```js
+(from index.js)
+defaultAcceptanceMsg,
+  trade,
+  swap,
+  assertProposalShape,
+  assertIssuerKeywords,
+  *satisfies,
+  *assertUsesNatMath,
 const {
-  assertKeywords,
-  assertNatMathHelpers,
+  *assertKeywords,
+  *assertNatMathHelpers,
   checkIfProposal,
   rejectOffer,
   swap,
@@ -22,40 +38,80 @@ const {
   makeEmptyOffer,
   escrowAndAllocateTo,
   isOfferSafe,
-  satisfies,
+  *satisfies,
   trade,
 } = makeZoeHelpers(zoe);
 ```
 
-## zoeHelpers.assertKeywords(keywords)
+## assertKeywords(zcf, keywords)
+- `zcf` `{String}`
 - `keywords` `{Array <String>}`
 
 Checks that the keywords submitted by the creator of the contract
-instance match what the contract expects. Throws if incorrect or if there is
-missing or extra keywords. Order of keywords is irrelevant.
+instance match what the contract expects. Throws if incorrect or if there are
+missing or extra keywords. The order of the keywords is irrelevant.
+
+The first argument is always just `zcf`.
+
+**tyg todo: Does this need (or should most of the time) to follow `zcf.getTerms`?
+Seems to in most of the contracts. Or is just the `zcf` argument sufficient?**
 
 ```js
-import { makeZoeHelpers } from '@agoric/zoe/src/contractSupport/zoeHelpers';
+import {
+  assertIssuerKeywords,
+} from '../../../src/contractSupport';
 
-const { assertKeywords } = makeZoeHelpers(zoe);
-
-// proposal for offerHandle
-const proposal = {
-  want: { Asset: moola(4) },
-  give: { Price: simoleans(16) },
-  exit: { onDemand: null },
-}
-
-assertKeywords(['Asset', 'Price']);
+// proposals for this contract instance use keywords 'Asset' and 'Price'
+assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
-## zoeHelpers.assertNatMathHelpers(brand)
-- `brand` `{String}`
+## satisfies(zcf, seat, update)
+- `zcf`- `{String}`
+- `seat` - `{zcfSeat}`
+- `update` - `{AmountKeywordRecord}`
+- Returns: `true` if allocation update satisfies `proposal.want`, `false` if not.
 
-Given a brand, assert that the mathHelpers for that issuer
-are the 'nat' type (i.e. that the issuer is associated with
-fungible assets). Returns `true` if they are `nat`, `false` if
-they are not.
+Checks if an update to a `seat`'s `currentAllocation` satisfies
+`proposal.want`. Note this is half of the offer safety check; 
+it does not check if the allocation constitutes a refund.
+The update is merged with `currentAllocation` such that
+`update`'s values prevail if the keywords are the same **(tyg todo: And if they're not the same?)**
+The result is the `newAllocation`. **tyg todo: Which is used how/where is it?**
+
+This code uses two `satisfies()` calls to make sure both offers satisfy the other before
+doing a swap.
+```js
+import {
+  satisfies,
+} from '../../../src/contractSupport';
+
+const satisfiedBy = (xSeat, ySeat) =>
+        satisfies(zcf, xSeat, ySeat.getCurrentAllocation());
+      if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
+        swap(zcf, seat, offer);
+```
+## assertUsesNatMath
+- `zcf`- `{String}`
+- `brand` - `{Brand}`
+- Returns - `{Boolean}` with a message if `false`  **tyg todo: Not sure how to describe this?**
+
+**tyg todo: Should this be assertUsesNatMathKind?**
+
+Assert that the `amountMath`, and thus its `issuer`, that are both in
+one-to-one relationships with the `brand` argument value use the `NAT`
+`amountMathKind`; i.e. that the `issuer` is associated with fungible assets.
+Returns `true` if so, `false` if not. `false` also returns `details` 'issuer must use NAT amountMath`'
+```js
+import {
+  assertUsesNatMath,
+} from '../../../src/contractSupport';
+
+ assertUsesNatMath(zcf, quatloosBrand);
+ ```
+
+GYT
+
+
 
 
 ## zoeHelpers.rejectIfNotProposal(offerHandle, expectedProposalStructure)
@@ -231,34 +287,6 @@ const offerHook = offerHandle => {
 };
 ```
 
-## zoeHelpers.satisfies()
-- `offerhandle`- The offer being checked
-- `allocation` - The allocation checked against the offer's wants.
-- Returns: `true` if the allocation satisfies the offer, `false` if not.
-
-Checks if an allocation would satisfy a single offer's wants if that was the allocation passed to
-`reallocate()`. This is half of the offer safety check; whether the allocation constitutes a refund
-is not checked. 
-```js
-//If `leftOfferHandle' is:
-//{ give: { Asset: moola(10) },
-//  want: { Price: simoleans(4) },
-// giving someone exactly what they want satisifies wants, returns `true`
-satisfies(leftOfferHandle, {
-  Asset: moola(0),
-  Price: simoleans(4),
-})
-// giving someone less than what they want even with a refund doesn't satisfy wants
-satisfies(leftOfferHandle, {
-  Asset: moola(10),
-  Price: simoleans(3),
-})
-//giving someone less than what they want even with a refund doesn't satisfy wants      
-satisfies(leftOfferHandle, {
-  Asset: moola(0),
-  Price: simoleans(3),
-}),
-```
 
 ## zoeHelpers.isOfferSafe()
 - `offerHandle` - Offer being checked.
