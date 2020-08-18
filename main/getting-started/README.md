@@ -1,5 +1,12 @@
 # Agoric Documentation Guide
 
+::: tip Out-of-date status
+Zoe's master branch is currently an Alpha release candidate. The docs
+are in the process of being updated, and should be current with
+the release candidate in another few days. What you see here is out of
+date. We apologize for any inconvenience this may cause. 
+:::
+
 Agoric provides three main types of documentation, as well as links to
 "big picture" presentations and papers and links to our source code on GitHub. This page
 describes our documentation structure, where documents are, and when you should use them, 
