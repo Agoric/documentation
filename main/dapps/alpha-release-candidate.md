@@ -2,12 +2,16 @@
 
 ## Zoe Changes
 
+### Types Are Available
+
 We now have types for Zoe that can imported for use in your contract.
 Import like so before using any of the Zoe types:
 
 ```js
 import '@agoric/zoe/exported';
 ```
+
+### Synchronous Minting and Escrowing
 
 If you were previously creating a token within your contract, you will
 want to switch to using our synchronous Zoe mints rather than
@@ -23,15 +27,20 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 For more information on how to use these specialized mints, please see
 the type definitions
 [here](https://github.com/Agoric/agoric-sdk/blob/7058a852c46625e28aa9a290b2c99f2a39d0cba5/packages/zoe/src/types.js#L221)
-And example
-[here](https://github.com/Agoric/agoric-sdk/blob/ee8f782578ff4f2ea9e0ec557e14d1f52c795ca9/packages/zoe/src/contracts/mintPayments.js#L34)
+and example
+[here](https://github.com/Agoric/agoric-sdk/blob/ee8f782578ff4f2ea9e0ec557e14d1f52c795ca9/packages/zoe/src/contracts/mintPayments.js#L34).
 The issuers associated with the synchronous mints are already saved in
 Zoe, so there is no need to `addNewIssuer` (renamed to `saveIssuer` in
-this version) for synchronous mints.
+this version) for synchronous mints. Note that the first call to *make*
+the ZCFMint is asynchronous, but the following calls are synchronous. 
+
+### ZoeHelpers
 
 There is no longer any `makeZoeHelpers` call. Instead, any helpers can
 be imported directly from `@agoric/zoe/src/contractSupport/`. Note
 that some require `zcf` to be passed as the first argument.
+
+### Contract Structure
 
 Please add the following type right before the start of your contract
 code to enforce the correct return values for your contract:
@@ -59,18 +68,20 @@ export { start };
 the contract.
 
 The contract must return a record with any of the following:
-1. creatorFacet - an object usually with admin authority only given to the
+1. `creatorFacet` - an object usually with admin authority only given to the
    entity which calls `E(zoe).startInstance(...)`. The creatorFacet
    can be used to create invitations for other parties, and take actions
    that are unrelated to making offers.
-2. creatorInvitation - a Zoe invitation that is only given to the entity
+2. `creatorInvitation` - a Zoe invitation that is only given to the entity
    with calls `E(zoe).startInstance(...)`. This invitation is usually
    used for cases in which a party has to make an offer first, such as
    escrowing the underlying good for sale in an auction or covered
    call.
-3. publicFacet - an object that will be available through Zoe to anyone who knows
+3. `publicFacet` - an object that will be available through Zoe to anyone who knows
    the contract instance. The publicFacet is good for general queries,
    such as getting the current price.
+
+### Access contract terms
 
 To get information such as the issuers, brands, or custom terms that
 a contract was instantiated with, do:
@@ -82,13 +93,19 @@ Note that `brands` and `issuers` are records with keyword keys,
 formerly called `brandKeywordRecord` and `issuerKeywordRecord`,
 respectively.
 
+### Seats (no more offerHandles!)
+
 There are no more offerHandles! Instead, we took a more object-oriented
-approach and created `seats` per `E(zoe).offer(...)` call. These seats
-have methods such as `getProposal()`, `getCurrentAllocation()`. There
+approach and created a new `seat` per `E(zoe).offer(...)` call. These seats
+have methods such as `getProposal()`, `getCurrentAllocation()`, and `exit()`. There
 are two important "facets" for seats (a facet is a particular view or API of
 an object; there may be multiple such APIs per object): the ZCFSeat
-and the UserSeat. The ZCFSeat is what is passed to the
-`offerHandlers`, like this one, called `mintPayment`
+and the UserSeat. 
+
+### ZCFSeat Facet 
+
+The ZCFSeat is what is passed to the
+`offerHandlers`, like this one:
 
 ```js
 const mintPayment = seat => {
@@ -105,6 +122,8 @@ const mintPayment = seat => {
 
 To learn more about the API of the ZCFSeat, see the type definitions
 [here](https://github.com/Agoric/agoric-sdk/blob/7058a852c46625e28aa9a290b2c99f2a39d0cba5/packages/zoe/src/types.js#L377)
+
+### UserSeat Facet
 
 The UserSeat is what is returned to the caller of
 `E(zoe).offer(invitation, proposal, payments)`. The UserSeat has

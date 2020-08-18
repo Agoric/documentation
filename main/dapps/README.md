@@ -1,5 +1,10 @@
 # Agoric Dapp
 
+::: warning Changes in the Alpha Release Candidate
+[Learn more about the changes to Zoe, contracts, and dapps in the
+Alpha Release Candidate](./alpha-release-candidate).
+:::
+
 **This is a generic guide to Agoric Dapp projects**
 
 A Dapp is a *distributed application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
