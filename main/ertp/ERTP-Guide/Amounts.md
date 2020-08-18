@@ -11,7 +11,7 @@ to get information about and otherwise manipulate an `amount` as a whole.
 
 `amount` has two properties:
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
-  in a game, a powerful magic sword.
+  in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
 - **Value**: How much/many of the asset. Fungible values are natural
 numbers. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
