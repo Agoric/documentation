@@ -7,6 +7,13 @@ Zoe is currently at the pre-alpha stage. It has not yet been
 formally tested or hardened. It is not yet of production quality.
 :::
 
+::: tip Out-of-date status
+Zoe's master branch is currently an Alpha release candidate. The docs
+are in the process of being updated, and should be current with
+the release candidate in another few days. What you see here is out of
+date. We apologize for any inconvenience this may cause. 
+:::
+
 This guide assumes some knowledge of the [ERTP
 fundamentals](../../ertp/guide/).
 
