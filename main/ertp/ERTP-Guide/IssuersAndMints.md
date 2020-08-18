@@ -79,7 +79,9 @@ which actually operate on their `payment` object argument.
       ```
 - **Purse operations**
   - [`issuer.makeEmptyPurse()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-makeemptypurse) 
-    - Returns an empty `purse` for the `brand` associated with the `issuer`.
+    - Returns an empty `purse` for the `brand` associated with the `issuer`. The `purse` only accepts valid 
+    deposits of its associated `brand`, so you can retroactively identify a valid `payment` of that `brand`
+    by successfully depositing it.
     - ```js
       const { quatloosIssuer } = makeIssuerKit('quatloos');
       // The new empty purse contains 0 Quatloos
@@ -97,21 +99,21 @@ which actually operate on their `payment` object argument.
   - [`issuer.burn(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-burn-payment-optamount)
     - Burns (deletes) all of the `payment` argument's digital assets and deletes all mention of the `payment` from the `issuer`.
        If optional argument `optAmount` is present, the `payment`
-       balance must be equal to its value.  If `payment` is a promise, the operation 
-       happens after the promise resolves.
+       balance must be equal to `optAmount`'s value.  If `payment` is a promise, the operation 
+       happens after the promise resolves. Returns the value of the burned `payment`.
     - ```js
       const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('quatloos');
       const amountToBurn = quatloosAmountMath.make(10);
       const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
-      // burntAmount should equal 10
-      const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
+      // burntAmountValue should equal 10
+      const burntAmountValue = quatloosIssuer.burn(paymentToBurn, amountToBurn);
       ```
   - [`issuer.claim(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-claim-payment-optamount)
-    - Transfer all digital assets from `payment` to a new payment and
-	burn the original so no other references to this `payment` survive.
-    if optional argument `optAmount` is present, the `payment` balance
-	must be equal to its balance, otherwise it throws an error. If `payment`
+    - Transfer all digital assets from the `payment` argument to a new `payment` and
+	burn the original so no other references to this `payment` survive. Returns the new `payment`
+    If optional argument `optAmount` is present, the `payment` balance
+	must be equal to `optAmount`'s balance, otherwise it throws an error. If `payment`
     is a promise, the operation happens after the promise resolves.
     - ```js
       const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -123,7 +125,8 @@ which actually operate on their `payment` object argument.
     - Combine multiple `payment`s into one `payment`. If any `payment`
       in `paymentsArray` is a promise, the operation happens after all
       `payment`s resolve. Every `payment` is burned except for the
-      returned one. You cannot combine `payments` of different brands.
+      returned one. If you try to combine `payments` of different brands,
+      it throws an exception and each `payment` is unaffected.
     - ```js
       const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
       // create an array of 100 payments of 1 unit each
@@ -138,9 +141,9 @@ which actually operate on their `payment` object argument.
     - Split a single `payment` into two new `payments`, A and B, according
       to the `paymentAmountA` argument's value. In other words, the result
       has A equal to `paymentAmountA` and B equal to the original `payment`
-      minus `paymentAmountA'. 
+      minus `paymentAmountA`. 
       The original `payment` argument is burned. If the original
-      `payment` is a promise, the operation happens when  the promise
+      `payment` is a promise, the operation happens when the promise
       resolves. 
     - ```js
       const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -179,10 +182,14 @@ which actually operate on their `payment` object argument.
       ```
   - [`issuer.isLive(payment)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-islive-payment])
     - Returns `true` if the `payment` argument is still active
-      (i.e. has not been used or burned). If `payment` is a promise,
+      (i.e. has not been used or burned and was issued by this `issuer`). If `payment` is a promise,
       the operation happens on its resolution.
 
 **Other objects' `issuer`-related methods:**
+
+**Note**: None of these methods return a canonical result. If the `issuer` itself doesn't acknowledge that
+the `mint`, `brand` or `purse` are from it, then they're invalid. These methods help you find the right `issuer`, 
+but aren't authoritative.
 
 - [`mint.getIssuer()`](https://agoric.com/documentation/ertp/api/mint.html#mint-getissuer)
   - Return the `issuer` for the `mint`.
