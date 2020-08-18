@@ -43,7 +43,8 @@ that some require `zcf` to be passed as the first argument.
 ### Contract Structure
 
 Please add the following type right before the start of your contract
-code to enforce the correct return values for your contract:
+code to warn if the correct return values for your contract are not
+being returned:
 
 ```js
 /**
@@ -51,7 +52,7 @@ code to enforce the correct return values for your contract:
  */
  ```
 
-Contract code must export a function `start` as a non-default export,
+Contract code must export a function `start` (formerly named `makeContract`) as a non-default export,
 like so:
 
 ```js
@@ -67,7 +68,7 @@ export { start };
 `zcf` is the Zoe Contract Facet and is the only argument provided to
 the contract.
 
-The contract must return a record with any of the following:
+The contract must return a record with any (or none) of the following:
 1. `creatorFacet` - an object usually with admin authority only given to the
    entity which calls `E(zoe).startInstance(...)`. The creatorFacet
    can be used to create invitations for other parties, and take actions
@@ -78,8 +79,8 @@ The contract must return a record with any of the following:
    escrowing the underlying good for sale in an auction or covered
    call.
 3. `publicFacet` - an object that will be available through Zoe to anyone who knows
-   the contract instance. The publicFacet is good for general queries,
-   such as getting the current price.
+   the contract instance. The publicFacet is good for general queries and actions,
+   such as getting the current price or creating public invitations.
 
 ### Access contract terms
 
@@ -142,11 +143,18 @@ const creatorStage = creatorSeat.stage({
 ```
 
 Once you have a few seatStagings to reallocate over, you can call
-reallocate like so, with any number of stagings passed in as separate arguments:
+reallocate like so, with at least two stagings passed in as separate
+arguments (passing in multiple stagings for the same seat will throw):
 
 ```js
 zcf.reallocate(creatorStage, userStage);
 ```
+
+### Invitations, not invites
+
+We are no longer using the noun `invite` because it can be confused
+with the verb, and are using the word `invitation` instead. This
+changed the Zoe API and many of the contract publicFacet methods slightly.
 
 ## Wallet Changes
 
