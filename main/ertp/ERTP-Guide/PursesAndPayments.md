@@ -116,7 +116,7 @@ In addition, the method to create a new, empty, `purse` is called on an `issuer`
   - Returns a new empty `purse` for storing digital assets of the `brand` the `issuer` is associated with.
   - ```js
     const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
-    // The new purse can only contain assets of the bucks brand.
+    // The new purse can only contain assets of the Quatloos brand.
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     ```
 To add the assets from a `payment` to a `depositFacet`, use the **tyg todo: See above. Write
@@ -132,11 +132,11 @@ original balance, or it is used up entirely. It is impossible to
 partially use a `payment`. In other words, if you create a `payment` containing
 10 Quatloos, the `payment` will always either contain 
 10 Quatloos or it will be deleted from its `issuer` records and no
-longer exist. While a `payment` can be either combined with others or
+longer has any value. While a `payment` can be either combined with others or
 split into multiple `payments`, in both case the original `payment(s)`
 is/are deleted and the results put in one or more new `payments`.
 
-A `payment can be deposited in purses, split into multiple 
+A `payment` can be deposited in purses, split into multiple 
 `payments`, combined, and claimed (getting an exclusive `payment` and
 revoking access from anyone else). 
 
@@ -150,7 +150,7 @@ a cryptocurrency they like, and, if you trust them, you might accept
 that the `issuer` they give you is valid.
 
 To convert a `payment` into a `purse`: 
-1. Access a trusted `issuer` for the `payment``brand`. 
+1. Access a trusted `issuer` for the `payment`'s `brand`. 
 2. Create an empty purse with `issuer.makeEmptyPurse()`.
 3. Transfer the digital assets from the `payment` to the `purse` with `purse.deposit(payment)`.
 
@@ -158,10 +158,9 @@ Payments have one API method, but many methods for other ERTP components
 have `payment` objects as arguments and effectively operate on a `payment`.
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
-  `payment` purports to be. Since a `payment` is not trusted, this
-  result should be treated with suspicion and verified before 
-  use. If any operation by the `issuer` for that `brand` done on the `payment` succeeds, it verifies the `payment`.
-  For example, `E(issuer).isLive(payment)`.
+  `payment` purports to be. Since a `payment` is not trusted, this result should be treated with suspicion. Either verify 
+  the value before holding on to it, or check the result when you use it. Any successful operation by 
+  the `issuer` for that `brand` done on the `payment` verifies the `payment`.
 
 Other objects' `payment`-related methods:
 
@@ -169,7 +168,7 @@ Other objects' `payment`-related methods:
   - Get a description of a `payment` balance as an `amount`. The `payment` itself is not trusted,
     so you must use the `issuer` method associated with its `brand` to be sure of getting the
     true value. 
-  ` ```js
+    ```js
     const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('quatloos');
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     quatloosIssuer.getAmountOf(quatloosayment); // returns an amount with 100 value `quatloos` brand
@@ -198,9 +197,9 @@ Other objects' `payment`-related methods:
     const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
     ```
 - [`issuer.combine(paymentsArray)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-combine-paymentsarray)
-  - Combine multiple `payment`s into one, returned, `payment`. If any `payment` in
+  - Combine multiple `payments` into one, returned, `payment`. If any `payment` in
   the array is a promise, the operation proceeds after every `payment`
-  resolves. All `payments` in the array are burned.
+  resolves. All `payments` in the array are burned on successful completion.
   - ```js
     const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
     // create an array of 100 payments of 1 unit each
@@ -214,7 +213,10 @@ Other objects' `payment`-related methods:
 - [`issuer.split(payment, paymentAmountA)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-split-payment-paymentamounta)
   - Split one `payment` into two new ones, A and B, returned in
     an array. `paymentAmountA` determines A's value, and whatever is
-    left of the original `payment` after subtracting A is B's value. The `payment`
+    left of the original `payment` after subtracting A is B's value. 
+    If `paymentAmountA` has a larger `value` than `payment`, it throws an error.
+    
+    The `payment`
     argument is burned. If `payment` is a promise, the operation proceeds after
     the promise resolves. 
   - ```js
