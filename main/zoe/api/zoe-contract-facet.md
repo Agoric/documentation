@@ -2,15 +2,41 @@
 
 <Zoe-Version/>
 
-A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, and usually is referred to in code as `zcf`. The contract instance is launched by `E(zoe).startInstance`, and is given access to the `zcf` object during that launch. In the operation below, the `instanceHandle` is the handle for the running contract instance.
+A Zoe Contract Facet is an API object for a running contract instance to access the Zoe state
+for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, 
+and usually is referred to in code as `zcf`. 
+
+The contract instance is launched by `E(zoe).startInstance`, and is given access to 
+the `zcf` object during that launch. In the operations below, the `instanceHandle` is 
+the handle for the running contract instance.
+
+----------------------
+From Types.js
+!!@property {Reallocate} reallocate - reallocate amounts among seats
+!! * @property {(keyword: Keyword) => void} assertUniqueKeyword - check
+ * whether a keyword is valid and unique and could be added in `saveIssuer`
+!! * @property {SaveIssuer} saveIssuer - save an issuer to ZCF and Zoe
+ * and get the amountMath and brand synchronously accessible after saving
+ %%* @property {MakeInvitation} makeInvitation
+ !! @property {Shutdown} shutdown
+ %%* @property {() => ZoeService} getZoeService
+ %%* @property {() => Issuer} getInvitationIssuer
+ * @property {() => Terms } getTerms
+ !!* @property {(issuer: Issuer) => Brand} getBrandForIssuer
+ !!* @property {(brand: Brand) => Issuer} getIssuerForBrand
+ !!* @property {GetAmountMath} getAmountMath
+ * @property {MakeZCFMint} makeZCFMint
+ * @property {() => ZcfSeatKit} makeEmptySeatKit
+---------------------------
 
 ## zcf.reallocate(seatStagings)
-- `seatStagings` 
+- `seatStagings` `{SeatStaging[]}` (at least two)
 - Returns: `{void}`
 
 The contract reallocates over `seatStagings`, which are
 associations of seats with reallocations. **tyg todo: should it be
-"reallocates payouts" or similar?**
+"reallocates payouts" or similar?** There must be at least two
+`seatStagings` in the array argument. 
 
 The reallocation only succeeds if it:
 1 Conserves rights (the amounts specified have the same total value as the
@@ -27,36 +53,35 @@ allocations change. A reallocation can only effect offer safety for
 those seats, and since rights are conserved for the change, overall 
 rights are unchanged.
 
-**tyg todo: Check to see if it throws any errors**
+**tyg todo: Check to see if it throws any errors. Doesn't seem to, but does have some assert fail messages.**
 **tyg todo: Rewrite sample code**
 ```js
-// reallocate by switching the amount of the firstOffer and matchingOffer
 zcf.reallocate(
-  harden([firstOfferHandle, matchingOfferHandle]),
-  harden([matchingOfferAmount, firstOfferAmount]),
-);
+    offerA.seat.stage(offerAAllocation),
+    offerB.seat.stage(offerBAllocation),
+  );
 ```
-
-## zcf.addNewIssuer(issuer, keyword)
-- `issuerP` <router-link to="/ertp/api/issuer.html">`{ERef<Issuer>}`</router-link>
+## zcf.assertUniqueKeyword(keyword)
 - `keyword` `{String}`
-- Returns: `{Promise<IssuerRecord>}`
+Returns: `true` if the keyword is not already used as a brand, otherwise `false`
 
-Inform Zoe about an `issuer`. Returns a promise for acknowledging when the `issuer` is added and ready. **tyg todo: What is the keyword argument for?
-The issuer's brand name? A petname?**
-
+Checks if a keyword is valid and not already used as a `brand` (i.e. unique)
+and could used as a new `brand` to make an `issuer`
 ```js
-zcf.addNewIssuer(liquidityIssuer, 'Liquidity').then(() => {
-  //do stuff
-});
+zcf.assertUniqueKeyword(keyword);
 ```
+## zcf.saveIssuer(issuerP, keyword)
+- `issuerP` `{promise of an Issuer}`
+- `keyword` `{String}`
+Returns **tyg todo not sure?**
 
-## zcf.getZoeService()
-- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
-
-Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
-**tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
-
+Save an `issuer` to ZCF and Zoe and get the `amountMath` and `brand` 
+synchronously accessible after saving. **tyg todo: Not really clear on what this is doing. Creating a new
+issuer with brand keyword? what is the keyword for?**
+```js
+await zcf.saveIssuer(secondaryIssuer, keyword);
+```
+gyt
 ## zcf.makeInvitation(offerHandler, invitationDesc, customProperties)
 - `offerHandler` `{OfferHandle => Object}`
 - `invitationDesc` `{String}`
@@ -83,6 +108,67 @@ const invite = zcf.makeInvitation(
   { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
 );
 ```
+## zcf.shutdown()
+
+Shuts down the entire vat and gives payouts.
+**tyg todo: Need more info; what does shutting the vat usually do?
+Shut down a contract instance? What does "gives payouts" mean, particularly
+in active trades?
+
+
+## zcf.getBrandForIssuer(issuer)
+- `issuer` `{Issuer}`
+- Returns `{Brand}`
+
+Returns the `brand` of the `issuer` argument.
+
+## zcf.getIssuerForBrand(brand)
+- `brand` `{Brand}`
+- Returns `{Issuer}`
+
+Returns the `issuer` of the `brand` argument
+
+## zcf.getAmountMath(brand)
+- `brand` `{String}`
+- Returns `{amountMath}`
+
+Returns the `amountMath` object associated with the `brand` argument.
+
+getZoeService: () => zoeService,
+      getInvitationIssuer: () => invitationIssuer,
+      getTerms: () => instanceRecord.terms,
+
+GYT (see above three lines)
+
+```js
+const ticketIssuer = publicAPI.getTicketIssuer();
+const ticketAmountMath = ticketIssuer.getAmountMath();
+```
+
+
+## zcf.addNewIssuer(issuerP, keyword)
+- `issuerP` <router-link to="/ertp/api/issuer.html">`{ERef<Issuer>}`</router-link>
+- `keyword` `{String}`
+- Returns: `{Promise<IssuerRecord>}`
+
+**tyg todo: This doesn't seem to actually be used at all. And it's not
+defined in contractFacet.js? Delete?**
+
+Inform Zoe about an `issuer`. Returns a promise for acknowledging when the `issuer` is added and ready. **tyg todo: What is the keyword argument for?
+The issuer's brand name? A petname?**
+
+```js
+zcf.addNewIssuer(liquidityIssuer, 'Liquidity')
+});
+```
+
+## zcf.getZoeService()
+- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
+
+Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
+**tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
+
+
 
 ## zcf.getInvitationIssuer()
 - Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
@@ -99,23 +185,6 @@ that**
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
-## zcf.getBrandForIssuer(issuer)
-- `issuer` `{Issuer}`
-- Returns `{Brand}`
-
-Returns the `brand` of the `issuer` argument
-**tyg todo: Get sample code, use cases**
-
-## zcf.getAmountMath(brand)
-- `brand` `{String}`
-- Returns `{amountMath}`
-
-Returns the `amountMath` object associated with the `brand` argument.
-
-```js
-const ticketIssuer = publicAPI.getTicketIssuer();
-const ticketAmountMath = ticketIssuer.getAmountMath();
-```
 **tyg todo: Redo as Allocations are properties of Seats, specificall
 ZCFSeat and UserSeat**
 ## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
@@ -151,13 +220,7 @@ import harden from '@agoric/harden';
 zcf.complete(harden([someOfferHandle]));
 ```
 
-## zcf.getIssuerForBrand(brand)
-- `brand` `{Brand}`
-- Returns `{Issuer}`
 
-Returns the `issuer` of the `brand` argument
-
-  
 ## zcf.isOfferActive(offerHandle)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - Returns: `{Boolean}`
