@@ -30,13 +30,114 @@ From Types.js starting at 190
 ---------------------------
 In Progress:
 @property {Reallocate} reallocate - reallocate amounts among seats
- * @property {SaveIssuer} saveIssuer - save an issuer to ZCF and Zoe
- * and get the amountMath and brand synchronously accessible after saving
- * @property {MakeInvitation} makeInvitation
- * @property {() => Issuer} getInvitationIssuer
- * @property {MakeZCFMint} makeZCFMint
- * @property {() => ZcfSeatKit} makeEmptySeatKit
- ------------------------------------
+
+ ------------------------------------ 
+## zcf.makeZCFMint(keyword, amountMathKind)
+- `keyword` `{String}`
+- `amountMathKind` `{AmountMathKind}` (defaults to `NAT`)
+Returns: `{Mint}`
+
+Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
+instead of importing and using ERTP-based `mints`.
+
+For more information on how to use these specialized mints, please see the type
+definitions [here](https://github.com/Agoric/agoric-sdk/blob/7058a852c46625e28aa9a290b2c99f2a39d0cba5/packages/zoe/src/types.js#L221)
+and example [here](https://github.com/Agoric/agoric-sdk/blob/ee8f782578ff4f2ea9e0ec557e14d1f52c795ca9/packages/zoe/src/contracts/mintPayments.js#L34). 
+The `issuers` associated with the synchronous 
+mints are already saved in Zoe, so no need to run `saveIssuer()` 
+for synchronous mints. 
+
+**tyg todo: Does a ZCFMint have the same methods as an ERTP mint?**
+
+**Note**: The call to make the `ZCFMint` is asynchronous, but 
+calls to the resulting `ZCFMint` are synchronous.
+```js
+const mySynchronousMint = await zcf.makeZCFMint('MySyncMint', 'set');
+const { amountMath, brand, issuer } = mySynchronousMint.getIssuerRecord();
+mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
+```
+
+## zcf.getInvitationIssuer()
+- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
+Zoe has a single `invitationIssuer` for the entirety of its
+lifetime. By having a reference to Zoe, a user can get the
+`invitationIssuer` and thus validate any `invitation` they receive
+from someone else. The `mint `associated with the `invitationIssuer`
+creates the ERTP `payments` (`invitations`) that represent the right to 
+interact with a smart contract in particular ways.
+**tyg todo: May want to clafiry the "have a reference to Zoe" bit, since
+it looks like being able to call zcf methods is sufficient to indicate
+that**
+```js
+const invitationIssuer = await zcf.getInvitationIssuer();
+```
+
+
+## zcf.saveIssuer(issuerP, keyword)
+- `issuerP` `{IssuerP}`
+- `keyword` `{String}`
+Returns: **tyg todo not sure?** `{IssuerP}`
+
+Save an `issuer` to ZCF and Zoe and get the `amountMath` and `brand` 
+synchronously accessible after saving. **tyg todo: Not really clear on what this is doing. Creating a new
+issuer with brand keyword? what is the keyword for?**
+```js
+await zcf.saveIssuer(secondaryIssuer, keyword);
+``` 
+## zcf.makeInvitation(offerHandler, invitationDesc, customProperties)
+- `offerHandler` `{OfferHandle => Object}`
+- `invitationDesc` `{String}`
+- `customProperties` `{Object}`
+- Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
+
+**tyg todo: In the types.js, says "the extent of the invitation" several
+times. Shouldn't that be "the value..."? Changed to that below. **
+
+Make a credible Zoe `invitation` for a smart contract. The invitation's 
+`value` specifies:
+- The specific contract `instance`.
+- The Zoe `installation`.
+- A unique `handle`
+
+The second argument is a required `description` for the `invitation`, 
+and should include whatever information is needed for a potential buyer **tyg todo: Should this be "recipient"  instead of "buyer"?** of the invitation
+to know what they are getting in the **tyg todo: Is this optional?**`customProperties` argument, which is
+put in the invitation's `value`.
+
+**tyg todo: Pretty sure I don't understand this well enough, and need an infodump from someone**
+```js
+const creatorInvitation = zcf.makeInvitation(
+    assertProposalShape(makeCallOption, makeCallOptionExpected),
+    'makeCallOption',
+  );
+```
+
+## zcf.makeEmptySeatKit()
+- Returns: `{ZcfSeat}`
+
+Returns an empty `zcfSeat`. See `zcfSeat` in the ZCF Objects section for details.
+
+Seats are used to represent offers, and have two facets (a particular view or API of an object; 
+there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`. A `ZCFSeat` is passed
+to `offerHandlers`
+```js
+const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
+```
+The ZCFSeat is what is passed to the offerHandlers, like this one:
+```js
+const mintPayment = seat => {
+  const amount = amountMath.make(1000);
+  // Synchronously mint and allocate amount to seat.
+  zcfMint.mintGains({ Token: amount }, seat);
+  // Exit the seat so that the user gets a payout.
+  seat.exit();
+  // Since the user is getting the payout through Zoe, we can
+  // return anything here. Let's return some helpful instructions.
+  return 'Offer completed. You should receive a payment from Zoe';
+};
+```
+See the Objects section for more about `ZCFSeat`. 
+ 
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
 - Returns `{Brand}`
@@ -71,10 +172,14 @@ zcf.shutdown();
 ## zcf.getTerms()
 - Returns: `{Object}`
 
-Returns the terms given when this contract instance was instantiated. 
+Gets the `issuers`, `brands`, or custom `terms` the current contract instance was instantiated with.
+Note in the example below, `brands` and `issuers` are records with keyword keys, formerly 
+called `brandKeywordRecord` and `issuerKeywordRecord`, respectively.
+
 **tyg todo: there's also E(zoe).getTerms(instance). Any difference, when would you use one and when the other,
 and should we kill one of them?**
 ```js
+const { brands, issuers, terms } = zcf.getTerms()
 ```
 
 ## zcf.getZoeService()
@@ -131,44 +236,9 @@ zcf.reallocate(
   );
 ```
 
-## zcf.saveIssuer(issuerP, keyword)
-- `issuerP` `{promise of an Issuer}`
-- `keyword` `{String}`
-Returns **tyg todo not sure?**
 
-Save an `issuer` to ZCF and Zoe and get the `amountMath` and `brand` 
-synchronously accessible after saving. **tyg todo: Not really clear on what this is doing. Creating a new
-issuer with brand keyword? what is the keyword for?**
-```js
-await zcf.saveIssuer(secondaryIssuer, keyword);
-```
 gyt
-## zcf.makeInvitation(offerHandler, invitationDesc, customProperties)
-- `offerHandler` `{OfferHandle => Object}`
-- `invitationDesc` `{String}`
-- `customProperties` `{Object}`
-- Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
 
-**tyg todo: In the types.js, says "the extent of the invitation" several
-times. Shouldn't that be "the value..."?**
-
-Make a credible Zoe `invitation` for a smart contract. The invitation's 
-`value` specifies:
-- The specific contract `instance`.
-- The Zoe `installation`.
-- A unique `handle`
-
-The second argument is a required `description` for the `invitation`, 
-and should include whatever information is needed for a potential buyer **tyg todo: Should this be "recipient"  instead of "buyer"?** of the invitation
-to know what they are getting in the `customProperties` argument, which is
-put in the invitation's `value`.
-**tyg todo: Rewrite sample code
-```js
-const invite = zcf.makeInvitation(
-  myAuction.onNewOffer,
-  { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
-);
-```
 ## zcf.assertUniqueKeyword(keyword)
 - `keyword` `{String}`
 Returns: `true` if the keyword is not already used as a brand, otherwise `false`
@@ -200,20 +270,7 @@ zcf.addNewIssuer(liquidityIssuer, 'Liquidity')
 
 
 
-## zcf.getInvitationIssuer()
-- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
-Zoe has a single `invitationIssuer` for the entirety of its
-lifetime. By having a reference to Zoe, a user can get the
-`invitationIssuer` and thus validate any `invitation` they receive
-from someone else. The `mint `associated with the `invitationIssuer`
-creates the ERTP `payments` (`invitations`) that represent the right to 
-interact with a smart contract in particular ways.
-**tyg todo: May want to clafiry the "have a reference to Zoe" bit, since
-it looks like being able to call zcf methods is sufficient to indicate
-that**
-```js
-const invitationIssuer = await zcf.getInvitationIssuer();
-```
+
 
 **tyg todo: Redo as Allocations are properties of Seats, specificall
 ZCFSeat and UserSeat**
@@ -234,6 +291,26 @@ const { foo, bar } = zcf.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 
 Initialize the publicAPI for the contract instance, as stored by Zoe in
 the `instanceRecord`. The `publicAPI` argument is an object whose methods are the API available to anyone who knows the `instanceHandle`
+
+# ZCF Objects
+
+**tyg todo: May move to separate page. Here for the time being**
+
+## zcfSeat
+A `zcfSeat` has these properties and methods:
+- @property {() => void} exit
+- @property {(msg?: string) => void} kickOut
+- @property {() => Notifier<Allocation>} getNotifier
+- @property {() => boolean} hasExited
+- @property {() => ProposalRecord} getProposal
+- @property {(keyword: Keyword, brand: Brand) => Amount} getAmountAllocated
+The `brand` fills in an empty amount if the `keyword` is not present in the `allocation`
+- @property {() => Allocation} getCurrentAllocation
+- @property {(newAllocation: Allocation) => Boolean} isOfferSafe
+- @property {(newAllocation: Allocation) => SeatStaging} stage
+
+`zcfSeats` are created as empty seats; you need to fill in the property values. **tyg todo: Is this correct?**
+**tyg todo: Why and when do you want to use a zcfSeat?**
 
 **tyg todo: Below here are Zoe 0.7 zcf API requests no longer in zcf. 
 Confirm they're gone **
