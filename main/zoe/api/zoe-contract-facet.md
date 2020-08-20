@@ -11,23 +11,92 @@ the `zcf` object during that launch. In the operations below, the `instanceHandl
 the handle for the running contract instance.
 
 ----------------------
-From Types.js
-!!@property {Reallocate} reallocate - reallocate amounts among seats
-!! * @property {(keyword: Keyword) => void} assertUniqueKeyword - check
+From Types.js starting at 190
+@property {Reallocate} reallocate - reallocate amounts among seats
+ * @property {(keyword: Keyword) => void} assertUniqueKeyword - check
  * whether a keyword is valid and unique and could be added in `saveIssuer`
-!! * @property {SaveIssuer} saveIssuer - save an issuer to ZCF and Zoe
+ * @property {SaveIssuer} saveIssuer - save an issuer to ZCF and Zoe
  * and get the amountMath and brand synchronously accessible after saving
- %%* @property {MakeInvitation} makeInvitation
- !! @property {Shutdown} shutdown
- %%* @property {() => ZoeService} getZoeService
- %%* @property {() => Issuer} getInvitationIssuer
+ * @property {MakeInvitation} makeInvitation
+ * @property {Shutdown} shutdown
+ * @property {() => ZoeService} getZoeService
+ * @property {() => Issuer} getInvitationIssuer
  * @property {() => Terms } getTerms
- !!* @property {(issuer: Issuer) => Brand} getBrandForIssuer
- !!* @property {(brand: Brand) => Issuer} getIssuerForBrand
- !!* @property {GetAmountMath} getAmountMath
+ * @property {(issuer: Issuer) => Brand} getBrandForIssuer
+ * @property {(brand: Brand) => Issuer} getIssuerForBrand
+ * @property {GetAmountMath} getAmountMath
  * @property {MakeZCFMint} makeZCFMint
  * @property {() => ZcfSeatKit} makeEmptySeatKit
 ---------------------------
+In Progress:
+@property {Reallocate} reallocate - reallocate amounts among seats
+ * @property {SaveIssuer} saveIssuer - save an issuer to ZCF and Zoe
+ * and get the amountMath and brand synchronously accessible after saving
+ * @property {MakeInvitation} makeInvitation
+ * @property {() => Issuer} getInvitationIssuer
+ * @property {MakeZCFMint} makeZCFMint
+ * @property {() => ZcfSeatKit} makeEmptySeatKit
+ ------------------------------------
+## zcf.getBrandForIssuer(issuer)
+- `issuer` `{Issuer}`
+- Returns `{Brand}`
+
+Returns the `brand` of the `issuer` argument.
+
+## zcf.getIssuerForBrand(brand)
+- `brand` `{Brand}`
+- Returns `{Issuer}`
+
+Returns the `issuer` of the `brand` argument
+
+## zcf.getAmountMath(brand)
+- `brand` `{String}`
+- Returns `{amountMath}`
+
+Returns the `amountMath` object associated with the `brand` argument.
+**tyg todo: Need to fix source code**
+```js
+const ticketIssuer = publicAPI.getTicketIssuer();
+const ticketAmountMath = ticketIssuer.getAmountMath();
+```
+## zcf.shutdown()
+
+Shuts down the entire vat and gives payouts.
+**tyg todo: Need more info; what does shutting the vat usually do?
+Shut down a contract instance? What does "gives payouts" mean, particularly
+in active trades? When should you use this/not use this?
+```js
+zcf.shutdown();
+```
+## zcf.getTerms()
+- Returns: `{Object}`
+
+Returns the terms given when this contract instance was instantiated. 
+**tyg todo: there's also E(zoe).getTerms(instance). Any difference, when would you use one and when the other,
+and should we kill one of them?**
+```js
+```
+
+## zcf.getZoeService()
+- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
+
+Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
+**tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
+
+
+GYT
+
+
+## zcf.assertUniqueKeyword(keyword)
+- `keyword` `{String}`
+Returns: `true` if the keyword is not already used as a brand, otherwise `false`
+
+Checks if a keyword is valid and not already used as a `brand` in this `instance` (i.e. unique)
+and could be used as a new `brand` to make an `issuer`
+```js
+zcf.assertUniqueKeyword(keyword);
+```
+
 
 ## zcf.reallocate(seatStagings)
 - `seatStagings` `{SeatStaging[]}` (at least two)
@@ -61,15 +130,7 @@ zcf.reallocate(
     offerB.seat.stage(offerBAllocation),
   );
 ```
-## zcf.assertUniqueKeyword(keyword)
-- `keyword` `{String}`
-Returns: `true` if the keyword is not already used as a brand, otherwise `false`
 
-Checks if a keyword is valid and not already used as a `brand` (i.e. unique)
-and could used as a new `brand` to make an `issuer`
-```js
-zcf.assertUniqueKeyword(keyword);
-```
 ## zcf.saveIssuer(issuerP, keyword)
 - `issuerP` `{promise of an Issuer}`
 - `keyword` `{String}`
@@ -108,42 +169,17 @@ const invite = zcf.makeInvitation(
   { inviteDesc: 'bid', auctionedAssets: tickets3, minimumBid: simoleans100 }
 );
 ```
-## zcf.shutdown()
+## zcf.assertUniqueKeyword(keyword)
+- `keyword` `{String}`
+Returns: `true` if the keyword is not already used as a brand, otherwise `false`
 
-Shuts down the entire vat and gives payouts.
-**tyg todo: Need more info; what does shutting the vat usually do?
-Shut down a contract instance? What does "gives payouts" mean, particularly
-in active trades?
-
-
-## zcf.getBrandForIssuer(issuer)
-- `issuer` `{Issuer}`
-- Returns `{Brand}`
-
-Returns the `brand` of the `issuer` argument.
-
-## zcf.getIssuerForBrand(brand)
-- `brand` `{Brand}`
-- Returns `{Issuer}`
-
-Returns the `issuer` of the `brand` argument
-
-## zcf.getAmountMath(brand)
-- `brand` `{String}`
-- Returns `{amountMath}`
-
-Returns the `amountMath` object associated with the `brand` argument.
-
-getZoeService: () => zoeService,
-      getInvitationIssuer: () => invitationIssuer,
-      getTerms: () => instanceRecord.terms,
-
-GYT (see above three lines)
-
+Checks if a keyword is valid and not already used as a `brand` in this `instance` (i.e. unique)
+and could be used as a new `brand` to make an `issuer`
 ```js
-const ticketIssuer = publicAPI.getTicketIssuer();
-const ticketAmountMath = ticketIssuer.getAmountMath();
+zcf.assertUniqueKeyword(keyword);
 ```
+
+
 
 
 ## zcf.addNewIssuer(issuerP, keyword)
@@ -161,12 +197,6 @@ The issuer's brand name? A petname?**
 zcf.addNewIssuer(liquidityIssuer, 'Liquidity')
 });
 ```
-
-## zcf.getZoeService()
-- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
-
-Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
-**tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
 
 
 
