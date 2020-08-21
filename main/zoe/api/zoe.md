@@ -197,7 +197,7 @@ const { invite, instanceRecord } = await E(zoe).startInstance(
 
 Used to exercise the `invitation` provided as the first argument.
 
-To redeem (sometimes called "excercise") an `invitation`, a user normally provides a `proposal` (their
+To redeem (sometimes called "exercise") an `invitation`, a user normally provides a `proposal` (their
 rules for the offer) as well as `payments` to be escrowed by Zoe.  If
 either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
