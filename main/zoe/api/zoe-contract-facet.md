@@ -143,7 +143,7 @@ const assetMath = zcf.getAmountMath(assetAmount.brand);
 Shuts down the entire vat and gives payouts.
 **tyg todo: Need more info; what does shutting the vat usually do?
 Shut down a contract instance? What does "gives payouts" mean, particularly
-in active trades? When should you use this/not use this?
+in active trades? When should you use this/not use this?**
 ```js
 zcf.shutdown();
 ```
@@ -224,17 +224,17 @@ A `zcfSeat` has these properties and methods:
   - Returns: `boolean`
 - `getProposal()`
   - Returns: `ProposalRecord` 
-- `getAmountAllocated(keyword: Keyword, brand: Brand) => Amount} 
+- `getAmountAllocated(keyword, brand)`
   - `keyword` `Keyword`
   - `brand` `Brand`
   - Returns: `Amount`
   - The `brand` fills in an empty `amount` if the `keyword` is not present in the `allocation`
 - `getCurrentAllocation()`
   - Returns: `Allocation`
-- isOfferSafe(newAllocation)
-  - `newAllocation `Allocation`
+- `isOfferSafe(newAllocation)`
+  - `newAllocation` `Allocation`
   - Returns `Boolean` 
-- `stage(newAllocation)
+- `stage(newAllocation)`
   - `newAllocation` `Allocation`
   - Returns: `SeatStaging` 
 
