@@ -288,7 +288,7 @@ A `userSeat` object has eight methods and one property. The methods are:
 - getNotifier()
   - Returns: `{Promise<Notifier>}`
  
- **tyg todo: Any more details we should go into on these?
+ **tyg todo: Any more details we should go into on these?**
 
 
 # Deprecated Zoe Methods
