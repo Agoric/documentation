@@ -1,6 +1,6 @@
 # Amount Math
 
-Logic for manipulating amounts.
+Logic for manipulating `amounts`.
 
 ## AmountMath Kinds
 
