@@ -13,11 +13,10 @@ invoked asynchronously using the [`E` helper for async messaging](https://github
 All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences. 
 
 For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html). 
-
-**tyg todo: Does the contents of cleanProposal.js need to be documented?**
-
 :::
 
+
+**tyg todo: Does cleanProposal.js need to be documented?**
 **tyg todo: Where should the "start" method(?) be documented? i.e.**
 ```js
 const start = zcf => {
@@ -233,186 +232,70 @@ shows their definitions and discusses their uses.
 
 ## Installation Object
 
-## Invitation Object
+`installation` objects represent stored in Zoe contract source code. 
+They have one method and no properties.
+
+- installation.getBundle()
+  - Returns: `{SourceBundle}`
+  - Gets and returns the bundled source code for its associated contract.
+
+## StartInstanceResult Object
+`startInstance()` returns a `promise` for a `StartInstanceResult` object. It has four properties: of:
+- `creatorFacet` `{any}`
+- `publicFacet` `{any}`
+- `instance` `{Instance}`
+- `creatorInvitation `{Payment | undefined}`
+ 
+
+## InvitationDetails Object
+
+`invitationDetails` objects have four properties:
 - `installation` `{Installation}`: The contract's Zoe installation.
-- `instance` `{Instance}`: The contract instance this invitation is in.
-- `invitationHandle` `{Handle}: A reference used to refer to this invitation.
-- `description` `{String}`: A description of the invitation, covering what a recipient needs to know about the contract and participating in it, as well as anything about the invitation, such as an expiration date after which the invitation is invalid.
+- `instance` `{Instance}`: The contract instance this `invitation` is in.
+- `invitationHandle` `{Handle}: A reference that refers to this `invitation`.
+- `description` `{String}`: A description of the `invitation`, covering what 
+  a recipient needs to know about the contract and participating in it.
+  Also anything else about the `invitation`, such as an expiration date after
+  which the `invitation` is invalid.
 
-Represents an invitation to participate in a Zoe contract
+## ProposalRecord Object
 
+A `proposalRecord` has three properties:
+- `give: AmountKeywordRecord`
+- `want: AmountKeywordRecord`
+- `exit: ExitRule
+  - `exitRule` must be one of these three values: **tyg todo: Need info on what each does**
+    - `'onDemand'`
+    - `'afterDeadline'`
+    - `'waived'`
 
-
-
-
-
-
- *
- * 
- *
- * @property {Install} install
- * @property {StartInstance} startInstance
- * @property {Offer} offer
- * @property {(instance: Instance) => Object} getPublicFacet
- * @property {(instance: Instance) => IssuerKeywordRecord} getIssuers
- * @property {(instance: Instance) => BrandKeywordRecord} getBrands
- * @property {(instance: Instance) => Object} getTerms
- * @property {(invitation: Invitation) => Promise<Instance>} getInstance
- * @property {(invitation: Invitation) => Promise<Installation>} getInstallation
- * @property {(invitation: Invitation) => Promise<InvitationDetails>}
- * getInvitationDetails - return an object with the instance,
- * installation, description, invitation handle, and any custom properties
- * specific to the contract.
-
-
-
-
-
-
-
-
-getInvitationIssuer: () => invitationKit.issuer,
-    install,
-    getPublicFacet: instance =>
-      instanceToInstanceAdmin.get(instance).getPublicFacet(),
-    getTerms: instance => instanceToInstanceAdmin.get(instance).getTerms(),
-    getInstance: invitation =>
-      E(invitationKit.issuer)
-        .getAmountOf(invitation)
-        .then(amount => amount.value[0].instance),
-    getInstallation: invitation =>
-      E(invitationKit.issuer)
-        .getAmountOf(invitation)
-        .then(amount => amount.value[0].installation),
-    getInvitationDetails: invitation =>
-      E(invitationKit.issuer)
-        .getAmountOf(invitation)
-        .then(amount => amount.value[0]),
-    startInstance: async (
-      installation,
-      uncleanIssuerKeywordRecord = harden({}),
-      customTerms = harden({}),
-    ) => {
-      /** @param {Issuer[]} issuers */
-      const initIssuers = issuers =>
-        Promise.all(issuers.map(issuerTable.initIssuer));
-      assert(
-        installations.has(installation),
-        details`${installation} was not a valid installation`,
-      );
-
-      const zoeSeatAdmins = new Set();
-      const instance = makeHandle('InstanceHandle');
-
-      const keywords = cleanKeywords(uncleanIssuerKeywordRecord);
-
-      const issuerPs = keywords.map(
-        keyword => uncleanIssuerKeywordRecord[keyword],
-      );
-
-      // The issuers may not have been seen before, so we must wait for the
-      // issuer records to be available synchronously
-      const issuerRecords = await initIssuers(issuerPs);
-      issuerRecords.forEach(record => {
-        if (!brandToPurse.has(record.brand)) {
-          brandToPurse.init(record.brand, E(record.issuer).makeEmptyPurse());
-        }
-      });
-
-      const issuers = arrayToObj(
-        issuerRecords.map(record => record.issuer),
-        keywords,
-      );
-      const brands = arrayToObj(
-        issuerRecords.map(record => record.brand),
-        keywords,
-      );
-      const maths = arrayToObj(
-        issuerRecords.map(record => record.amountMath),
-        keywords,
-      );
-
-      let instanceRecord = {
-        installation,
-        terms: {
-          ...customTerms,
-          issuers,
-          brands,
-          maths,
-        },
-      };
+## UserSeat Object
+A `userSeat` object has eight methods and one property. The methods are:
+- getCurrentAllocation() => 
+  - Returns: `{Promise<Allocation>}` 
+- getProposal()
+  - Returns: `{Promise<ProposalRecord>}` 
+- getPayouts()
+  - Returns: `{Promise<PaymentPKeywordRecord>}`
+- getPayout(keyword: Keyword)
+  - Returns: `{Promise<Payment>}` 
+- getOfferResult()
+  - Returns: `{Promise<OfferResult>}`
+- tryExit() 
+  - Returns: `void` 
+- hasExited()
+  - Returns: `{Promise<boolean>}` 
+- getNotifier()
+  - Returns: `{Promise<Notifier>}`
+ 
+ **tyg todo: Any more details we should go into on these?
 
 
+# Deprecated Zoe Methods
 
+These are the methods in 0.7 that look to be deprecated in Alpha. 
+Just want to be sure I can delete from here to the end.
 
-## E(zoe).getInviteIssuer()
-- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
-
-Get the long-lived `inviteIssuer`. The mint associated with the `inviteIssuer` creates the ERTP payments that represent the right to participate in a contract.
-
-```js
-// Bob claims all with the Zoe inviteIssuer
-const inviteIssuerP = E(zoe).getInviteIssuer();
-const bobExclInvitePayment = await E(inviteIssuerP).claim(bobInvitePayment);
-```
-
-Note: in the example above, the `inviteIssuerP` is necessarily a promise because it 
-is the result of an async message (using `E`). In this case, there is no need to
-`await` it; the `claim` operation is sent immediately, and will be delivered once
-the `inviteIssuerP` is fulfilled. 
-
-## E(zoe).install(code, moduleFormat)
-- `code` `{String}`
-- `moduleFormat` `{String}`
-- Returns: `{Object}`
-
-Create an installation by safely evaluating the code and registering
-it with Zoe. Returns an `installationHandle`. A <router-link to="/glossary/#handle">handle</router-link> is an opaque unique
-identifier for the contract code.
-
-```js
-import bundleSource from '@agoric/bundle-source';
-
-// Pack the contract.
-const { sourceCode, moduleFormat } = await bundleSource(someContract);
-
-// install and get the `installationHandle` for someContract
-const installationHandleP = E(zoe).install(sourceCode, moduleFormat);
-```
-
-## E(zoe).startInstance(installationHandle, issuerKeywordRecord, terms)
-- `installationHandle` <router-link to="/glossary/#handle">`{Handle}`</router-link>
-- `issuerKeywordRecord` <router-link to="/zoe/api/records.html#issuerkeywordrecord">`{IssuerKeywordRecord}`</router-link>
-- `terms` `{Object}`
-- Returns: `{Invite, instanceRecord}`
-
-We can use Zoe to create smart contract instances by specifying a
-particular contract installation to use, as well as the
-`issuerKeywordRecord` and `terms` of the contract. The
-`issuerKeywordRecord` is a record mapping string names (keywords) to
-issuers, such as `{ Asset: simoleanIssuer}`. (Note that the keywords
-must begin with a capital letter and must be ASCII.) Parties to the
-contract will use the keywords to index their proposal and their
-payments. The payout that users receive from Zoe will be in the form of an
-object with keywords as keys. Terms are the arguments to the contract,
-such as the number of bids an auction will wait for before closing.
-Terms are up to the discretion of the smart contract. We get back a record
-of an invite (an ERTP payment) to participate in the contract and an
-instanceRecord so you have direct access to information such as the 
-relevant instanceHandle.
-
-```js
-const issuerKeywordRecord = { 
-  'Asset' : moolaIssuer, 
-  'Price' : simoleanIssuer 
-};
-const terms = { numBids: 3 };
-const { invite, instanceRecord } = await E(zoe).startInstance(
-  secondPriceAuctionInstallationHandle, 
-  issuerKeywordRecord, 
-  terms
-);
-```
 
 ## E(zoe).getInstanceRecord(instanceHandle)
 - Returns: <router-link
@@ -431,41 +314,6 @@ const {
 } = await E(zoe).getInstanceRecord(instanceHandle);
 ```
 
-## E(zoe).offer(invite, proposal, payments)
-- `invite` <router-link to="/ertp/api/payment.html#payment">`{Payment}`</router-link>
-- `proposal` <router-link to="/zoe/api/records.html#proposal">`{Proposal}`</router-link>
-- `paymentKeywordRecord` <router-link to="/zoe/api/records.html#paymentkeywordrecord">`{PaymentKeywordRecord}`</router-link>
-- Returns: <router-link to="/zoe/api/records.html#offerresultrecord">`Promise<{OfferResultRecord}>`</router-link>
-
-To make an offer to a contract, the user must provide an invite to the 
-contract, a proposal (their rules for the offer), and the payments to be 
-escrowed by Zoe. 
-
-The proposal has three parts: `want` and `give` are used
-by Zoe to enforce offer safety; `exit` is used to specify
-the particular payout-liveness policy that Zoe can guarantee.
-`want` and `give` are objects with keywords as keys and amounts
-as values. 
-
-The `paymentKeywordRecord` is a record with keywords as keys,
-and the values are the actual payments to be escrowed. A payment
-is required for every rule under `give`.
-
-The resulting `OfferResultRecord` contains a handle for querying 
-Zoe about the offer, a promise for the payouts when the offer 
-is complete, a promise for the result of invoking the contract-specific
-hook associated with the invitation, and if appropriate for the specified 
-`exit` policy, a function to complete the offer.
-
-```js
-// A user makes an offer and escrows with Zoe using an invite 
-const { offerHandle, payout: userPayoutP, outcome: outcomeP, completeObj } = 
-  await E(zoe).offer(
-    userInvite,
-    userProposal,
-    userPayments,
-  );
-```
 
 ## E(zoe).isOfferActive(offerHandle)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
@@ -496,21 +344,6 @@ Get the offer record. Throws error if the offer is not found.
 ```js
 const { 
   offerHandle,
-  installationHandle,
-  publicAPI,
-  terms
-} = await E(zoe).getOffer(offerHandle);
-```
-
-## E(zoe).getInstallation(installationHandle)
-- `installationHandle` `{InstallationHandle}`
-- Returns: {String} the source code
-
-Get the source code for the installed contract. Throws an error if the installationHandle is not found.
-
-```js
-const {
-  instanceHandle,
   installationHandle,
   publicAPI,
   terms
