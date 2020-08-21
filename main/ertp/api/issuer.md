@@ -14,12 +14,11 @@ Makes an issuer and related objects.
 The `allegedName` is available from the brand in asset descriptions. The `allegedName` is 
 useful for debugging and double-checking assumptions, but should not be trusted.
 
-The `amountMathKind` specifies which of the three kinds of `amountMaths` to use:
-strSet: Used with non-fungible assets.
-set: Used with sets of objects, primarily non-fungible assets.
-- `nat`: The default, supports natural numbers and is used for basic fungible tokens.
-- `strSet`: Used with non-fungible assets.
-- `set`: Used with sets of objects, primarily non-fungible assets.
+The `amountMathKind` argument specifies which of the three kinds of `amountMaths` to use. It
+defaults to `nat`.
+`nat`: Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+`strSet`: Used with non-fungible assets. `amount` `values` are strings.
+`set`: Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 ```js
 const { issuer, mint, amountMath } = makeIssuerKit('bucks');
