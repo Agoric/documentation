@@ -13,11 +13,28 @@ invoked asynchronously using the [`E` helper for async messaging](https://github
 All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences. 
 
 For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html). 
+
+**tyg todo: Does the contents of cleanProposal.js need to be documented?**
+
 :::
+
+**tyg todo: Where should the "start" method(?) be documented? i.e.**
+```js
+const start = zcf => {
+  ...
+  // your code here
+  return harden({ creatorFacet, creatorInvitation, publicFacet });
+}
+harden(start);
+export { start };
+```
 
 ## E(zoe).getBrands(instance)
 - `instance` `{Instance}`
 - Returns: `{BrandKeywordRecord}`
+
+**tyg todo: Should all the "getFoo()" methods return** {Promise<Record>}? 
+**tyg todo: And related, are they always called with "await"?**
 
 Returns a `BrandKeywordRecord` containing all `brands` defined in the argument contract `instance`.
 ```js
@@ -33,8 +50,8 @@ const issuerKeywordRecord = await E(zoe).getIssuers(instance);
 ```
 ## E(zoe).getTerms(instance)
 - `instance` `{Instance}`
-Returns: A set of key:value pairs **tyg todo: Is there a better way to state this here?**
-
+- Returns: `{Object}` consisting of key:value pairs **tyg todo: Is there a better way to state this here?**
+**tyg todo: Not sure if this is right, or if it should be the same as zcf.getTerms()**
 Terms let a contract instance creator further customize the contract operations, 
 as enabled by the contract code. Contract terms can be expressed without specific values. 
 For example, an auction contract may define minimum bid and minimum raise variables and 
@@ -59,15 +76,20 @@ Returns a `IssuerKeywordRecord` containing the public facet defined in the argum
 const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
 ## E(zoe).getInvitationIssuer()
-- `zoe` `{zoeReference}` **tyg todo: What type is this?**
 - Returns `{Issuer}`
 
-Zoe has a single `invitationIssuer` for the entirety of its
+Zoe has a single `invitationIssuer` for its entire
 lifetime. By having a reference to Zoe, a user can get the `invitationIssuer` and 
-thus validate any `invitation` they receive
-from someone else. The `mint` associated with the `invitationIssuer`
-creates the ERTP `payments` that represent the right to interact with
+validate any `invitation` they receive
+from someone else by calling `invitationIssuer.claim()` with the 
+untrusted invitation as the argument.
+
+The `mint` associated with the `invitationIssuer`
+create `invitations` in the form of ERTP `payments` that represent the right to interact with
 a smart contract in particular ways.
+
+**tyg todo: Need more info on how to use this, including just making invitations and
+what the .claim and .getAmountOf methods do/are for**
 ```js
 const invitationIssuer = await E(zoe).getInvitationIssuer();
 // Here a user, Bob, has received an untrusted invitation from Alice.
@@ -75,6 +97,8 @@ const invitationIssuer = await E(zoe).getInvitationIssuer();
 // transform the untrusted invitation to a trusted one
 const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
+const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
+        invitation);
 ```
 ## E(zoe).getInvitationDetails(invitation)
 - `invitation` `{Invitation}`
@@ -91,9 +115,9 @@ const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
 ```
 
-## E(zoe).install(code)
-`code` `{String}`
-Returns: `{Object}`
+## E(zoe).install(bundle)
+- `bundle` `{SourceBundle}`
+- Returns: `{Promise<Installation>}`
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
 Returns an `installation` object. **tyg todo: Cover how to get code bundled (or link to same)**
@@ -111,7 +135,7 @@ const installations = {
 
 ## E(zoe).getInstance(invitation)
 - `invitation` `{Invitation}`
-Returns: `{InstanceP}`
+- Returns: `{Promise<Instance>}`
 
 Returns a `Promise` for the contract `instance` the `invitation` argument is part of.
 ```js
@@ -120,18 +144,40 @@ const instance = await E(zoe).getInstance(invitation);
       
 ## E(zoe).getInstallation(invitation)
 - `invitation` `{Invitation}`
-- Returns: `{InstallationP}`
+- Returns: `{Promise<Installation>}`
 
 Returns a `Promise` for the contract `installation` the `invitation` arguments is part of.
 ```js
 const installation = await E(zoe).getInstallation(invitation);
 ```
-## E(zoe).startInstance(installationHandle, issuerKeywordRecord, terms)
-- `installationHandle` `{Handle}`
+## E(zoe).startInstance(installation, issuerKeywordRecord, terms)
+- `installation` `{Installation}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - `terms` `{Object}`
-Returns: `{Invite, instanceRecord}`
-We can use Zoe to create smart contract instances by specifying a particular contract installation to use, as well as the issuerKeywordRecord and terms of the contract. The issuerKeywordRecord is a record mapping string names (keywords) to issuers, such as { Asset: simoleanIssuer}. (Note that the keywords must begin with a capital letter and must be ASCII.) Parties to the contract will use the keywords to index their proposal and their payments. The payout that users receive from Zoe will be in the form of an object with keywords as keys. Terms are the arguments to the contract, such as the number of bids an auction will wait for before closing. Terms are up to the discretion of the smart contract. We get back a record of an invite (an ERTP payment) to participate in the contract and an instanceRecord so you have direct access to information such as the relevant instanceHandle.
+- Returns: `{Promise<StartInstanceResult>}`
+
+Create an `instance` of the installed smart contract (specified by 
+the `installation` argument). You must also specify the 
+instance's `issuerKeywordRecord` and `terms` for the contract 
+(as key-value pairs). 
+
+The `issuerKeywordRecord` is a record mapping string names (keywords) 
+to `issuers`, such as `{ Asset: quatlooIssuer}`. Keywords must begin 
+with a capital letter and must be ASCII. Parties to the contract will 
+use the keywords to index their proposal and their payments. 
+
+`terms` are values used by this contract instance, such as the 
+number of bids an auction will wait for before closing. These values may
+be different for different instances of the same contract, but the contract
+defines what variables need their values passed in as `terms`. 
+
+It returns a `promise` for a `StartInstanceResult` object. The object consists of:
+- `creatorFacet` `{any}`
+- `publicFacet` `{any}`
+- `instance` `{Instance}`
+- `creatorInvitation `{Payment | undefined}`
+
+**tyg todo: How is the creatorInvitation used?**
 ```js
 const issuerKeywordRecord = { 
   'Asset' : moolaIssuer, 
@@ -144,7 +190,34 @@ const { invite, instanceRecord } = await E(zoe).startInstance(
   terms
 );
 ```
+## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
+- `invitation` `{Invitation|Promise<Invitation>}`
+- `proposal` `{Proposal}`
+- `paymentKeywordRecord` `{PaymentKeywordRecord}`
+- Returns: `{Promise<UserSeat>}`
 
+Used to exercise the `invitation` provided as the first argument.
+
+To redeem (sometimes called "excercise") an `invitation`, a user normally provides a `proposal` (their
+rules for the offer) as well as `payments` to be escrowed by Zoe.  If
+either the `proposal `or `payments` are empty, indicate this by
+omitting that argument or passing `undefined`, instead of passing an
+empty record.
+
+The `proposal` has three parts: 
+- `want`: An object with keywords as keys and amounts as values.
+- `give`: An object with keywords as keys and amounts as values.
+- `exit`: Specifies the payout-liveness policy Zoe can guarantee for the offer.
+
+`paymentKeywordRecord` is a record with keywords as keys, with
+ values of the actual `payments` to be escrowed. A `payment` is
+ expected for every rule under `give`.
+ 
+ `offer()` returns a `promise` for a `userSeat`. See the Objects section for its
+ description.
+ ```js
+ **tyg todo: Need good source code**
+ ```
 
 
 ---------------------------
