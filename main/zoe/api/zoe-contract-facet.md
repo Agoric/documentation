@@ -10,28 +10,6 @@ The contract instance is launched by `E(zoe).startInstance`, and is given access
 the `zcf` object during that launch. In the operations below, the `instanceHandle` is 
 the handle for the running contract instance.
 
-----------------------
-From Types.js starting at 190
-@property {Reallocate} reallocate - reallocate amounts among seats
- * @property {(keyword: Keyword) => void} assertUniqueKeyword - check
- * whether a keyword is valid and unique and could be added in `saveIssuer`
- * @property {SaveIssuer} saveIssuer - save an issuer to ZCF and Zoe
- * and get the amountMath and brand synchronously accessible after saving
- * @property {MakeInvitation} makeInvitation
- * @property {Shutdown} shutdown
- * @property {() => ZoeService} getZoeService
- * @property {() => Issuer} getInvitationIssuer
- * @property {() => Terms } getTerms
- * @property {(issuer: Issuer) => Brand} getBrandForIssuer
- * @property {(brand: Brand) => Issuer} getIssuerForBrand
- * @property {GetAmountMath} getAmountMath
- * @property {MakeZCFMint} makeZCFMint
- * @property {() => ZcfSeatKit} makeEmptySeatKit
----------------------------
-In Progress:
-@property {Reallocate} reallocate - reallocate amounts among seats
-
- ------------------------------------ 
 ## zcf.makeZCFMint(keyword, amountMathKind)
 - `keyword` `{String}`
 - `amountMathKind` `{AmountMathKind}` (defaults to `NAT`)
@@ -67,20 +45,22 @@ creates the ERTP `payments` (`invitations`) that represent the right to
 interact with a smart contract in particular ways.
 **tyg todo: May want to clafiry the "have a reference to Zoe" bit, since
 it looks like being able to call zcf methods is sufficient to indicate
-that**
+that**  **tyg todo: We seem to have both zoe. and zcf. invitationIssuers.
+When should each be used?
 ```js
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
-
 ## zcf.saveIssuer(issuerP, keyword)
-- `issuerP` `{IssuerP}`
+- `issuerP` `{Promise<Issuer>|Issuer}``
 - `keyword` `{String}`
-Returns: **tyg todo not sure?** `{IssuerP}`
+Returns: `{Promise<IssuerRecord>}`
 
-Save an `issuer` to ZCF and Zoe and get the `amountMath` and `brand` 
-synchronously accessible after saving. **tyg todo: Not really clear on what this is doing. Creating a new
-issuer with brand keyword? what is the keyword for?**
+Informs Zoe about an `issuer` and returns a `promise` for acknowledging
+when the `issuer` is added and ready. The `keyword` is the one associated
+with the new `issuer`. It returns a promise for `issuerRecord` of the new `issuer`
+
+**tyg todo: How/when is this used?**
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ``` 
@@ -155,10 +135,8 @@ Returns the `issuer` of the `brand` argument
 - Returns `{amountMath}`
 
 Returns the `amountMath` object associated with the `brand` argument.
-**tyg todo: Need to fix source code**
 ```js
-const ticketIssuer = publicAPI.getTicketIssuer();
-const ticketAmountMath = ticketIssuer.getAmountMath();
+const assetMath = zcf.getAmountMath(assetAmount.brand);
 ```
 ## zcf.shutdown()
 
@@ -172,7 +150,7 @@ zcf.shutdown();
 ## zcf.getTerms()
 - Returns: `{Object}`
 
-Gets the `issuers`, `brands`, or custom `terms` the current contract instance was instantiated with.
+Gets the `issuers`, `brands`, and custom `terms` the current contract instance was instantiated with.
 Note in the example below, `brands` and `issuers` are records with keyword keys, formerly 
 called `brandKeywordRecord` and `issuerKeywordRecord`, respectively.
 
@@ -189,9 +167,6 @@ Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</
 **tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
 
 
-GYT
-
-
 ## zcf.assertUniqueKeyword(keyword)
 - `keyword` `{String}`
 Returns: `true` if the keyword is not already used as a brand, otherwise `false`
@@ -201,8 +176,6 @@ and could be used as a new `brand` to make an `issuer`
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
-
-
 ## zcf.reallocate(seatStagings)
 - `seatStagings` `{SeatStaging[]}` (at least two)
 - Returns: `{void}`
@@ -235,21 +208,69 @@ zcf.reallocate(
     offerB.seat.stage(offerBAllocation),
   );
 ```
+# ZCF Objects
 
+**tyg todo: May move to separate page. Here for the time being**
 
-gyt
+## zcfSeat
+A `zcfSeat` has these properties and methods:
+- `exit()`
+  - Returns: `void`
+- `kickOut(msg?: string)`
+  - Returns: `void` 
+- `getNotifier()` 
+  - Returns: `{Notifier<Allocation>}`  **tyg todo Is this right?** 
+- `hasExited()`
+  - Returns: `boolean`
+- `getProposal()`
+  - Returns: `ProposalRecord` 
+- `getAmountAllocated(keyword: Keyword, brand: Brand) => Amount} 
+  - `keyword` `Keyword`
+  - `brand` `Brand`
+  - Returns: `Amount`
+  - The `brand` fills in an empty `amount` if the `keyword` is not present in the `allocation`
+- `getCurrentAllocation()`
+  - Returns: `Allocation`
+- isOfferSafe(newAllocation)
+  - `newAllocation `Allocation`
+  - Returns `Boolean` 
+- `stage(newAllocation)
+  - `newAllocation` `Allocation`
+  - Returns: `SeatStaging` 
 
-## zcf.assertUniqueKeyword(keyword)
-- `keyword` `{String}`
-Returns: `true` if the keyword is not already used as a brand, otherwise `false`
+`zcfSeats` are created as empty seats; you need to fill in the property values. **tyg todo: Is this correct?**
+**tyg todo: Why and when do you want to use a zcfSeat?**
 
-Checks if a keyword is valid and not already used as a `brand` in this `instance` (i.e. unique)
-and could be used as a new `brand` to make an `issuer`
-```js
-zcf.assertUniqueKeyword(keyword);
-```
+## ZCFMint
+A `ZCFMint` has these properties and methods:
+- `getIssuerRecord()
+  - Returns: `IssuerRecord` 
+- `mintGains(gains, zcfSeat)
+  - `gains` `AmountKeywordRecord`
+  - `zcfSeat?` `ZCFSeat`  **tyg todo: Not sure about this; was "zcfSeat?: ZCFSeat"?
+  - Returns: `ZCFSeat`            ) 
+  - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
+    The `gains`' keywords are in the namespace of that seat.
+    Add the `gains` to that `seat`'s `allocation`.
+    The resulting state must be offer safe. (Currently, increasing assets can
+    never violate offer safety.)
+    Mint that amount of assets into the pooled `purse`.
+    If a `seat` is provided, it is returned. Otherwise a new `seat` is
+    returned. 
+- `burnLosses(losses. zcfSeat)`
+  - `losses` `AmountKeywordRecord`
+  - `zcfSeat` `ZCFSeat` 
+  - Returns: `void`
+  - All the `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
+    The `losses`' keywords are in the namespace of that `seat`.
+    Subtract `losses` from that `seat`'s `allocation`.
+    The resulting state must be offer safe.
+    Burn that `amount` of assets from the pooled `purse`.
 
+# Deprecated ZCF Methods
 
+From here to the are method descriptions from 0.7 that I think have
+been deprecated in Alpha. Please let me know if any should stay in.
 
 
 ## zcf.addNewIssuer(issuerP, keyword)
@@ -267,13 +288,6 @@ The issuer's brand name? A petname?**
 zcf.addNewIssuer(liquidityIssuer, 'Liquidity')
 });
 ```
-
-
-
-
-
-**tyg todo: Redo as Allocations are properties of Seats, specificall
-ZCFSeat and UserSeat**
 ## zcf.getCurrentAllocation(offerHandle, brandKeywordRecord)
 - `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
 - `brandKeywordRecord` An optional parameter. If omitted, only returns amounts for brands for which an allocation currently exists.
@@ -291,30 +305,6 @@ const { foo, bar } = zcf.getCurrentAllocation(offerHandle, ['foo', 'bar']);
 
 Initialize the publicAPI for the contract instance, as stored by Zoe in
 the `instanceRecord`. The `publicAPI` argument is an object whose methods are the API available to anyone who knows the `instanceHandle`
-
-# ZCF Objects
-
-**tyg todo: May move to separate page. Here for the time being**
-
-## zcfSeat
-A `zcfSeat` has these properties and methods:
-- @property {() => void} exit
-- @property {(msg?: string) => void} kickOut
-- @property {() => Notifier<Allocation>} getNotifier
-- @property {() => boolean} hasExited
-- @property {() => ProposalRecord} getProposal
-- @property {(keyword: Keyword, brand: Brand) => Amount} getAmountAllocated
-The `brand` fills in an empty amount if the `keyword` is not present in the `allocation`
-- @property {() => Allocation} getCurrentAllocation
-- @property {(newAllocation: Allocation) => Boolean} isOfferSafe
-- @property {(newAllocation: Allocation) => SeatStaging} stage
-
-`zcfSeats` are created as empty seats; you need to fill in the property values. **tyg todo: Is this correct?**
-**tyg todo: Why and when do you want to use a zcfSeat?**
-
-**tyg todo: Below here are Zoe 0.7 zcf API requests no longer in zcf. 
-Confirm they're gone **
-# Removed API Requests
 
 ## zcf.complete(offerHandles)
 - `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
