@@ -19,15 +19,15 @@ This means you have to specify which kind of`amountMath` to use
 on an `amount` of that `brand`. That 
 kind is automatically used whenever an `amountMath` method
 is used on an `amount` with that `brand`. The kinds are: 
-- `nat`: Used with fungible assets (the values are natural numbers).
-- `strSet`: Used with non-fungible assets (the values are strings).
-- `set`: Used with sets of objects, primarily non-fungible assets.
+- `nat`: Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `strSet`: Used with non-fungible assets. `amount` `values` are strings.
+- `set`: Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 `makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`,
 `mint`, `brand`, and `amountMath`. 
 The second, optional, argument specifies which kind
 of `amountMath` is used for the `brand` in a one-to-one
-association with the new `issuer`. It defaults to `nat` if not given. 
+association with the new `issuer`. It defaults to `nat`. 
 
 For example: 
 ```js
