@@ -43,10 +43,10 @@ lifetime. By having a reference to Zoe, a user can get the
 from someone else. The `mint `associated with the `invitationIssuer`
 creates the ERTP `payments` (`invitations`) that represent the right to 
 interact with a smart contract in particular ways.
-**tyg todo: May want to clafiry the "have a reference to Zoe" bit, since
+**tyg todo: May want to clarify the "have a reference to Zoe" bit, since
 it looks like being able to call zcf methods is sufficient to indicate
 that**  **tyg todo: We seem to have both zoe. and zcf. invitationIssuers.
-When should each be used?
+When should each be used?**
 ```js
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
@@ -71,7 +71,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
 
 **tyg todo: In the types.js, says "the extent of the invitation" several
-times. Shouldn't that be "the value..."? Changed to that below. **
+times. Shouldn't that be "the value..."? Changed to that below.**
 
 Make a credible Zoe `invitation` for a smart contract. The invitation's 
 `value` specifies:
@@ -103,14 +103,14 @@ to `offerHandlers`
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
-The ZCFSeat is what is passed to the offerHandlers, like this one:
+The `zcfSeat` is what is passed to the `offerHandlers`, like this one:
 ```js
-const mintPayment = seat => {
+const mintPayment = mySeat => {
   const amount = amountMath.make(1000);
   // Synchronously mint and allocate amount to seat.
-  zcfMint.mintGains({ Token: amount }, seat);
+  zcfMint.mintGains({ Token: amount }, mySeat);
   // Exit the seat so that the user gets a payout.
-  seat.exit();
+  mySeat.exit();
   // Since the user is getting the payout through Zoe, we can
   // return anything here. Let's return some helpful instructions.
   return 'Offer completed. You should receive a payment from Zoe';
@@ -243,12 +243,12 @@ A `zcfSeat` has these properties and methods:
 
 ## ZCFMint
 A `ZCFMint` has these properties and methods:
-- `getIssuerRecord()
+- `getIssuerRecord()`
   - Returns: `IssuerRecord` 
-- `mintGains(gains, zcfSeat)
+- `mintGains(gains, zcfSeat)`
   - `gains` `AmountKeywordRecord`
-  - `zcfSeat?` `ZCFSeat`  **tyg todo: Not sure about this; was "zcfSeat?: ZCFSeat"?
-  - Returns: `ZCFSeat`            ) 
+  - `zcfSeat?` `ZCFSeat`  **tyg todo: Not sure about this; was "zcfSeat?: ZCFSeat"?**
+  - Returns: `ZCFSeat`             
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
     The `gains`' keywords are in the namespace of that seat.
     Add the `gains` to that `seat`'s `allocation`.
