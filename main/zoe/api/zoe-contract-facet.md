@@ -35,7 +35,7 @@ In Progress:
 ## zcf.makeZCFMint(keyword, amountMathKind)
 - `keyword` `{String}`
 - `amountMathKind` `{AmountMathKind}` (defaults to `NAT`)
-Returns: `{Mint}`
+Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
 instead of importing and using ERTP-based `mints`.
