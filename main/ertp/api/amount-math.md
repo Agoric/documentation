@@ -8,9 +8,9 @@ There are three different kinds of `amountMaths`, each of which implements all t
 
 The three kindss of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic):
 
-- `nat`: Used with fungible assests.
-- `strSet`: Used with non-fungible assets.
-- `set`: Used with sets of objects, primarily non-fungible assets.
+- `nat`: Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `strSet`: Used with non-fungible assets. `amount` `values` are strings.
+- `set`: Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 Use `makeIssuerKit(allegedName, amountMathKind)` to specify which `amountMath` 
 kind your contract uses. The second parameter, `amountMathKind` is optional and 
