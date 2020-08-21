@@ -108,7 +108,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       ```
   - [`amountMath.isEqual(leftAmount, rightAmount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-isequal-leftamount-rightamount)
     - Returns `true` if the `leftAmount` argument equals the
-	`rightAmount` argment
+	`rightAmount` argument
     - ```js
       const { quatloosAmountMath } = makeIssuerKit('quatloos');
       const empty = quatloosAmountMath.getEmpty();
@@ -138,7 +138,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
     - ```js
       const { myItemsAmountMath } = makeIssuerKit('myItems', 'strSet');
       const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
-      const listAmountB = myItemsAMath.make(harden['3']);
+      const listAmountB = myItemsAmountMath.make(harden['3']);
 
       // Returns an amount containing all of ['1', '2', '4', '3']
       const combinedList = myItemsAmountMath.add(listAmountA, listAmountB);
