@@ -113,8 +113,8 @@ A gives 5 moola and offer B only wants 3 moola, offer A retains 2 moola.
 If the first offer argument has already completed and is no longer active, 
 the other offer is rejected with a message.
 
-If the trade fails for any reason, it throws the message `The trade between l
-eft ${keepLeft} and right ${tryRight} failed. Please check the log for more 
+If the trade fails for any reason, it throws the message `The trade between 
+left ${keepLeft} and right ${tryRight} failed. Please check the log for more 
 information`. It writes the specific error to the console.
 ```js
 import {
@@ -155,7 +155,7 @@ Once the contract has been completed, please check your payout`.
 
 In many contracts, we have a particular offer we want to find a
 match for. The contract iterates over potential matches, and 
-checks if the two offers are swappable. `keepSeat is the offer
+checks if the two offers are swappable. `keepSeat` is the offer
 we are trying to match, and `trySeat` is the offer being checked
 for a match with `keepSeat`
 
