@@ -5,7 +5,7 @@ patterns into reusable helpers.
 
 The ZoeHelper methods are listed below. To use any of them, you import
 it directly from `@agoric/zoe/src/contractSupport/`. For example, the following 
-imports the two ZoeHelpers `assertIssuerKeywords()` and `asserProposalShape()`:
+imports the two ZoeHelpers `assertIssuerKeywords()` and `assertProposalShape()`:
 ```js
 import {
   assertIssuerKeywords,
@@ -29,11 +29,6 @@ match what the contract expects. Throws if incorrect or if there are
 missing or extra keywords. The keywords order is irrelevant.
 
 The first argument is always `zcf`.
-
-**tyg todo: Does this need (or should most of the time) to follow `zcf.getTerms`?
-Seems to in most of the contracts. Or is just the `zcf` argument sufficient?**
-**tyg todo: Should the keywords always be hardened? If so, can that be done by
-the method instead of the developer having to specify it?**
 ```js
 import {
   assertIssuerKeywords,
@@ -76,12 +71,10 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
 - `brand` - `{Brand}`
 - Returns - `{Boolean}` with a message if `false`  **tyg todo: Not sure how to describe this?**
 
-**tyg todo: Should this be assertUsesNatMathKind()?**
-
 This method always takes `'zcf'` as its first argument. 
 
 Assert that the `brand` argument's one-to-one associated `amountMath`
-use the `NAT` value of `amountMathKind` (i.e. the `brand`, and its 
+uses the `NAT` value of `amountMathKind` (i.e. the `brand`, and its 
 associated `issuer`, are for fungible assets).
 
 Returns `true` if so, `false` if not. `false` also returns `details` '`issuer must use NAT amountMath`'
@@ -107,14 +100,14 @@ describing declaratively what is added or removed from that offer's allocation.
 `trade()` does a trade between its two offer arguments. If the two offers can trade, 
 it swaps their compatible assets and marks both offers as complete.
 
-Any surplus remains with the original, left, offer. For example if offer 
+Any surplus remains with its original offer. For example if offer 
 A gives 5 moola and offer B only wants 3 moola, offer A retains 2 moola.
 
 If the first offer argument has already completed and is no longer active, 
 the other offer is rejected with a message.
 
 If the trade fails for any reason, it throws the message `The trade between 
-left ${keepLeft} and right ${tryRight} failed. Please check the log for more 
+left and right failed. Please check the log for more 
 information`. It writes the specific error to the console.
 ```js
 import {
@@ -125,10 +118,10 @@ trade(
       {
         seat: poolSeat,
         gains: {
-          [getPoolKeyword(amountIn.brand)]: amountIn,
+          tokenA: amountIn,
         },
         losses: {
-          [getPoolKeyword(amountOut.brand)]: amountOut,
+          tokenB: amountOut,
         },
       },
       {
@@ -139,15 +132,21 @@ trade(
     );
 ```
 
-## swap(keepSeat, trySeat, keepHandleInactiveMsg)
-- `zcf` `{String}
+## swap(zcf, keepSeat, trySeat, keepHandleInactiveMsg)
+- `zcf` `{ContractFacet}
 - `keepSeat` `{ZCFSeat}
 - `trySeat` `{ZCFSeat}
 - `[keepHandleInactiveMsg]` `{String}`
 - Returns: `defaultAcceptanceMsg`
 
-**tyg todo: Could I get a description that's a clear distinction between
-swap() and trade(), including use cases when you'd use each one (but not the other)?**
+`swap()` is a specific use of `trade()` in which everything each `seat` wants
+is taken from the other `seat` and given to the `seat` that wanted it. 
+`swap()` exits both `seats`, but `trade()` does not.
+
+Use `swap()` when both `seats` use the same keywords, their wants can be fulfilled
+from the other `seat`, and no other `seat` interaction is wanted. Use `trade()` when the `seats`
+have different keywords, the `amounts` to be reallocated don't exactly match the wants of the `seats, 
+or you want more interaction with the `seats`.
 
 If the two `seats` and their offers can trade, then swap their compatible assets,
 marking both offers as complete. It returns the message `The offer has been accepted. 
@@ -169,9 +168,9 @@ If `satisfies` is `true`, Zoe reallocates by swapping the
 amounts for the two offers, then both offers complete so the
 users receive their payout.
 
-Any surplus remains with the `keepSeat` original offer. For example if
-offer A gives 5 Quatloos and offer B only wants 3 Quatloos, offer A
-retains 2 Quatloos.
+Any surplus remains with whichever `seat` has the surplus. 
+For example if offer A gives 5 Quatloos and offer B only 
+wants 3 Quatloos, offer A retains 2 Quatloos.
 
 If the swap fails, no assets transfer, and the 'trySeat' offer is rejected.
 
@@ -198,19 +197,25 @@ function swapIfCanTrade(offers, seat) {
 ## assertProposalShape(offerHandler, expected)
 - `offerHandler` `{OfferHandler}`
 - `expected` `{ExpectedRecord}`
-- Returns: **tyg todo: Not sure what to put here since I'm not sure what's happening**
+- Returns: `{OfferHandler}
 
 This is the only ZoeHelper that does **not** take 'zcf' as its first argument.
 
 Make an `offerHandler` that wraps the provided `offerHandler`, to first
 check the submitted offer against an `expected` record that says
-what shape of proposal is acceptable.  **tyg todo: Not sure what "shape" means here?**
+what shape of proposal is acceptable.  
+
+By "shape", we mean the `give`, `want`, and exit rule keywords of the offer must be equal to 
+those in `expected`. Note that exit rule keywords are optional in `expected`. Also, none of the 
+values of those keywords are checked.
 
 This `ExpectedRecord` is like a `Proposal`, but the amounts in `want`
 and `give` should be `null`; the `exit` clause should specify a rule with
 null contents. If the client submits an `Offer` which does not match
-these expectations, that offer is rejected (and refunded). **tyg todo: Really need a clearer explanation of just what's being 
-checked here.**
+these expectations, that offer is rejected (and refunded). 
+
+The returned `offerHandler` performs the check. It then calls the `offerHandler`
+that was passed in as an argument.
 ```js
 import {
   assertProposalShape,
