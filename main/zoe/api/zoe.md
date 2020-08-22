@@ -15,8 +15,6 @@ All such operations immediately return a promise for their result. That may even
 For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html). 
 :::
 
-
-**tyg todo: Does cleanProposal.js need to be documented?**
 **tyg todo: Where should the "start" method(?) be documented? i.e.**
 ```js
 const start = zcf => {
@@ -30,25 +28,25 @@ export { start };
 
 ## E(zoe).getBrands(instance)
 - `instance` `{Instance}`
-- Returns: `{BrandKeywordRecord}`
+- Returns: `{Promise<BrandKeywordRecord>}`
 
 **tyg todo: Should all the "getFoo()" methods return** {Promise<Record>}? 
 **tyg todo: And related, are they always called with "await"?**
 
-Returns a `BrandKeywordRecord` containing all `brands` defined in the argument contract `instance`.
+Returns a `BrandKeywordRecord` containing all `brands` defined in the `instance`.
 ```js
 const brandKeywordRecord = await E(zoe).getBrands(instance);
 ```
 ## E(zoe).getIssuers(instance)
 - `instance` `{Instance}`
-- Returns: `{IssuerKeywordRecord}`
+- Returns: `{Promise<IssuerKeywordRecord>}`
 
 Returns a `IssuerKeywordRecord` containing all `issuers` defined in the argument contract `instance`.
 ```js
 const issuerKeywordRecord = await E(zoe).getIssuers(instance);
 ```
 ## E(zoe).getTerms(instance)
-- `instance` `{Instance}`
+- `instance` `{Promise<Instance>}`
 - Returns: `{Object}` consisting of key:value pairs **tyg todo: Is there a better way to state this here?**
 **tyg todo: Not sure if this is right, or if it should be the same as zcf.getTerms()**
 Terms let a contract instance creator further customize the contract operations, 
@@ -62,7 +60,7 @@ const terms = await E(zoe).getTerms(instance);
 
 ## E(zoe).getPublicFacet(instance)
 - `instance` `{Instance}`
-- Returns: `{PublicFacet}`  **tyg todo: Is this right?**
+- Returns: `{PublicFacet}` 
 
 A contract instance's `publicFacet` is an object available via Zoe to anyone knowing that `instance`. 
 You use it for general queries and actions, such as getting a current price or creating public invitations.
@@ -80,7 +78,7 @@ const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 Zoe has a single `invitationIssuer` for its entire
 lifetime. By having a reference to Zoe, a user can get the `invitationIssuer` and 
 validate any `invitation` they receive
-from someone else by calling `invitationIssuer.claim()` with the 
+from someone else by calling `E(invitationIssuer).claim()` with the 
 untrusted invitation as the argument.
 
 The `mint` associated with the `invitationIssuer`
@@ -104,11 +102,11 @@ const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
 - Returns `{Object}`
 
 Takes an `invitation` as an argument and returns an object containing the following 
-details about the argument:
-- `installation` `{Installation}`: The contract's Zoe installation.
-- `instance` `{Instance}`: The contract instance this invitation is in.
+details about the `invitation`:
+- `installation` `{Installation}`: The contract's installation in Zoe.
+- `instance` `{Instance}`: The contract instance this invitation is for.
 - `invitationHandle` `{Handle}`: A reference used to refer to this invitation.
-- `description` `{String}`: A description of the invitation, covering what a recipient needs to know about the contract and participating in it, as well as anything about the invitation, such as an expiration date after which the invitation is invalid.
+- `description` `{String}`: A short string indicating which part of the code produced the invitation. T
 ```js
 const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
@@ -122,21 +120,16 @@ Takes bundled source code for a Zoe contract as an argument and installs the cod
 Returns an `installation` object. **tyg todo: Cover how to get code bundled (or link to same)**
 
 ```js
-import automaticRefundBundle from './bundle-automaticRefund';
-import coveredCallBundle from './bundle-coveredCall';
-import publicAuctionBundle from './bundle-publicAuction';
-const zoe = await E(vats.zoe).buildZoe(vatAdminSvc);
-const installations = {
-  automaticRefund: await E(zoe).install(automaticRefundBundle.bundle),
-  coveredCall: await E(zoe).install(coveredCallBundle.bundle),
-  publicAuction: await E(zoe).install(publicAuctionBundle.bundle),
+import bundleSource from '@agoric/bundle-source';
+  const bundle = await bundleSource(pathResolve(`./src/contract.js`));
+  const installationHandle = await E(zoe).install(bundle);
 ```
 
 ## E(zoe).getInstance(invitation)
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Instance>}`
 
-Returns a `Promise` for the contract `instance` the `invitation` argument is part of.
+Returns a `Promise` for the contract `instance` the `invitation` is part of.
 ```js
 const instance = await E(zoe).getInstance(invitation);
 ```
@@ -145,7 +138,7 @@ const instance = await E(zoe).getInstance(invitation);
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Installation>}`
 
-Returns a `Promise` for the contract `installation` the `invitation` arguments is part of.
+Returns a `Promise` for the contract `installation` the `invitation`'s contract instance uses.
 ```js
 const installation = await E(zoe).getInstallation(invitation);
 ```
@@ -176,7 +169,11 @@ It returns a `promise` for a `StartInstanceResult` object. The object consists o
 - `instance` `{Instance}`
 - `creatorInvitation `{Payment | undefined}`
 
-**tyg todo: How is the creatorInvitation used?**
+`creatorInvitation` is an invitation that the contract instance creator can use. 
+It is usually used in contracts where the creator immediately sells 
+something (auctions, swaps, etc.), so it's helpful for the creator to have 
+an invitation to escrow and sell goods.
+
 ```js
 const issuerKeywordRecord = { 
   'Asset' : moolaIssuer, 
@@ -184,10 +181,7 @@ const issuerKeywordRecord = {
 };
 const terms = { numBids: 3 };
 const { invite, instanceRecord } = await E(zoe).startInstance(
-  auctionInstallationHandle, 
-  issuerKeywordRecord, 
-  terms
-);
+  creatorFacet, publicFacet, creatorInvitation);
 ```
 ## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
 - `invitation` `{Invitation|Promise<Invitation>}`
@@ -195,10 +189,10 @@ const { invite, instanceRecord } = await E(zoe).startInstance(
 - `paymentKeywordRecord` `{PaymentKeywordRecord}`
 - Returns: `{Promise<UserSeat>}`
 
-Used to exercise the `invitation` provided as the first argument.
+Used to redeem the `invitation` provided as the first argument.
 
-To redeem (sometimes called "exercise") an `invitation`, a user normally provides a `proposal` (their
-rules for the offer) as well as `payments` to be escrowed by Zoe.  If
+To redeem an `invitation`, a user normally provides a `proposal` (their
+rules for an offer) as well as `payments` to be escrowed by Zoe.  If
 either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
 empty record.
@@ -215,7 +209,18 @@ The `proposal` has three parts:
  `offer()` returns a `promise` for a `userSeat`. See the Objects section for its
  description.
  ```js
- **tyg todo: Need good source code**
+ const swapProposal = harden({
+   give: { Asset: moola(5) },
+   want: { Price: simoleans(12) },
+   exit: { onDemand: null },
+ });
+ const aliceSwapPayments = { Asset: swapPayment };
+ const swapInvitation = await E(publicFacet).makeSwapInvitation();
+ const seat = await E(zoe).offer(
+   swapInvitation,
+   swapProposal,
+   aliceSwapPayments,
+ );
  ```
 
 
@@ -291,94 +296,3 @@ A `userSeat` object has eight methods and one property. The methods are:
  **tyg todo: Any more details we should go into on these?**
 
 
-# Deprecated Zoe Methods
-
-These are the methods in 0.7 that look to be deprecated in Alpha. 
-Just want to be sure I can delete from here to the end.
-
-
-## E(zoe).getInstanceRecord(instanceHandle)
-- Returns: <router-link
-  to="/zoe/api/records.html#instance-record">`{InstanceRecord}`</router-link>
-
-Credibly get the instance record using the <router-link to="/glossary/#handle">`instanceHandle`</router-link> ID.
-
-```js
-const {
-  instanceHandle,
-  installationHandle,
-  publicAPI,
-  terms,
-  issuerKeywordRecord,
-  keywords,
-} = await E(zoe).getInstanceRecord(instanceHandle);
-```
-
-
-## E(zoe).isOfferActive(offerHandle)
-- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- Returns: `{Boolean}`
-
-Check if the offer is still active. This method does not throw if the offer is inactive.
-
-```js
-const isActive = E(zoe).isOfferActive(someOfferHandle);
-```
-
-## E(zoe).getOffers(offerHandles)
-- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{Array <OfferRecord>}`</router-link>
-
-Get a list of offer records. Throws error if offers are not found.
-
-```js
-const offers = await E(zoe).getOffers(listOfOfferHandles);
-```
-
-## E(zoe).getOffer(offerHandle)
-- `offerHandle` <router-link to="/glossary/#handle">`{Handle}`</router-link>
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<OfferRecord>}`</router-link>
-
-Get the offer record. Throws error if the offer is not found.
-
-```js
-const { 
-  offerHandle,
-  installationHandle,
-  publicAPI,
-  terms
-} = await E(zoe).getOffer(offerHandle);
-```
-
-## E(zoe).getCurrentAllocation(offerHandle, sparseKeywords)
-- `offerHandle` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#offer-record">`{<AmountKeywordRecord>}`</router-link>
-
-Get the amounts associated with the sparseKeywords for the offer.
-
-```js
-const { foo, bar } = E(zoe).getCurrentAllocation(offerHandle, ['foo', 'bar']);
-```
-
-## E(zoe).getCurrentAllocations(offerHandles, sparseKeywords)
-- `offerHandles` <router-link to="/glossary/#handle">`{Array <Handle>}`</router-link>
-- `sparseKeywords` sparseKeywords is an array of string keywords, which may be a subset of allKeywords.
-- Returns: <router-link to="/zoe/api/records.html#amount-keyword-record">`{ Array AmountKeywordRecord>}`</router-link>
-
-Get the amounts associated with the sparseKeywords for the offers.
-
-
-## E(zoe).getOfferNotifier(offerHandle)
-- `offerHandle` <router-link to="/glossary/#handle">`<Handle>`</router-link>
-- Returns: a <router-link to="/glossary/#notifier">notifier</router-link> for the offer.
-
-```js
-  const offerNotifer = E(zoe).getOfferNotifier(offerHandle);
-  const { value, updateHandle, done } = offerNotifier.getUpdateSince();
-  if (done) {
-   <drop offer from list>
-  }
-  newValue = value;
-  waitForNextUpdate(offerNotifier, updateHandle);
-```
