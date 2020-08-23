@@ -51,7 +51,7 @@ When should each be used?**
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
-## zcf.saveIssuer(issuerP, keyword)
+## zcf.saveIssuer(issuer, keyword)
 - `issuerP` `{Promise<Issuer>|Issuer}``
 - `keyword` `{String}`
 Returns: `{Promise<IssuerRecord>}`
@@ -60,18 +60,19 @@ Informs Zoe about an `issuer` and returns a `promise` for acknowledging
 when the `issuer` is added and ready. The `keyword` is the one associated
 with the new `issuer`. It returns a promise for `issuerRecord` of the new `issuer`
 
-**tyg todo: How/when is this used?**
+This saves an `issuer` to Zoe such that Zoe has a local `amountMath` for the `issuer`
+It also has saved the `issuer` information such that Zoe can handle offers involving 
+this `issuer` and ZCF can provide the `issuerRecord` (`amountMath`, `brand`, `issuer`) 
+synchronously on request.
+
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ``` 
-## zcf.makeInvitation(offerHandler, invitationDesc, customProperties)
+## zcf.makeInvitation(offerHandler, description, customProperties)
 - `offerHandler` `{OfferHandle => Object}`
-- `invitationDesc` `{String}`
+- `description` `{String}`
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
-
-**tyg todo: In the types.js, says "the extent of the invitation" several
-times. Shouldn't that be "the value..."? Changed to that below.**
 
 Make a credible Zoe `invitation` for a smart contract. The invitation's 
 `value` specifies:
@@ -80,9 +81,9 @@ Make a credible Zoe `invitation` for a smart contract. The invitation's
 - A unique `handle`
 
 The second argument is a required `description` for the `invitation`, 
-and should include whatever information is needed for a potential buyer **tyg todo: Should this be "recipient"  instead of "buyer"?** of the invitation
-to know what they are getting in the **tyg todo: Is this optional?**`customProperties` argument, which is
-put in the invitation's `value`.
+and should include whatever information is needed for a potential recipient of the `invitation`
+to know what they are getting in the optional `customProperties` argument, which is
+put in the `invitation`'s `value`.
 
 **tyg todo: Pretty sure I don't understand this well enough, and need an infodump from someone**
 ```js
@@ -122,7 +123,7 @@ See the Objects section for more about `ZCFSeat`.
 - `issuer` `{Issuer}`
 - Returns `{Brand}`
 
-Returns the `brand` of the `issuer` argument.
+Returns the `brand` associated with the `issuer`.
 
 ## zcf.getIssuerForBrand(brand)
 - `brand` `{Brand}`
@@ -140,10 +141,18 @@ const assetMath = zcf.getAmountMath(assetAmount.brand);
 ```
 ## zcf.shutdown()
 
+**Note**: Still in development, use at your own risk.
+
 Shuts down the entire vat and gives payouts.
-**tyg todo: Need more info; what does shutting the vat usually do?
-Shut down a contract instance? What does "gives payouts" mean, particularly
-in active trades? When should you use this/not use this?**
+
+This exits all `seats` associated with the contract `instance`, 
+giving them their payouts.
+
+Call when:
+- You want nothing more to happen in the contract, and 
+- You don't want to take any more offers
+
+
 ```js
 zcf.shutdown();
 ```
@@ -200,12 +209,17 @@ allocations change. A reallocation can only effect offer safety for
 those seats, and since rights are conserved for the change, overall 
 rights are unchanged.
 
-**tyg todo: Check to see if it throws any errors. Doesn't seem to, but does have some assert fail messages.**
-**tyg todo: Rewrite sample code**
+Reallocate throws these errors:
+- `reallocating must be done over two or more seats`
+- `The seatStaging was not recognized`
+- `The seatStaging was not recognized`
+- `keyword must be unique`
+- If the total `amount` per `brand` is not equal to the total `amount` per `brand`
+  in the proposed reallocation. (no message)
 ```js
 zcf.reallocate(
-    offerA.seat.stage(offerAAllocation),
-    offerB.seat.stage(offerBAllocation),
+    seat.stage(seatAAllocation),
+    seat.stage(seatBAllocation),
   );
 ```
 # ZCF Objects
@@ -238,8 +252,8 @@ A `zcfSeat` has these properties and methods:
   - `newAllocation` `Allocation`
   - Returns: `SeatStaging` 
 
-`zcfSeats` are created as empty seats; you need to fill in the property values. **tyg todo: Is this correct?**
-**tyg todo: Why and when do you want to use a zcfSeat?**
+`zcfSeats` are created when an offer is made, and are passed to the `offerHandler` specified when the `invitation`
+is made, as the sole argument.
 
 ## ZCFMint
 A `ZCFMint` has these properties and methods:
