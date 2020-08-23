@@ -6,19 +6,20 @@ Logic for manipulating `amounts`.
 
 There are three different kinds of `amountMaths`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer` (which also creates the `issuer`'s associated `amountMath`). It then knows which kinds's operations to use on itself.
 
-The three kinds of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic):
+The three kinds of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
-- `nat`: Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
-- `strSet`: Used with non-fungible assets. `amount` `values` are strings.
-- `set`: Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
-Use `makeIssuerKit(allegedName, amountMathKind)` to specify which `amountMath` 
-kind your contract uses. The second parameter, `amountMathKind` is optional and 
-defaults to `nat` if not given. For example
+Use `makeIssuerKit(allegedName, MathKind)` to specify which `amountMath` 
+kind your contract uses. The second parameter, `MathKind` is optional and 
+defaults to `MathKind.NAT` if not given. For example
 ```js
-makeIssuerKit('quatloos`); // Defaults to 'nat'
-makeIssuerKit('quatloos', 'strSet');
-makeIssuerKit('quatloos, 'set');
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+makeIssuerKit('quatloos`); // Defaults to 'MathKind.NAT'
+makeIssuerKit('foobars', 'MathKind.STRSET');
+makeIssuerKit('kitties', MathKind.SET');
 ```
 
 ## Amount
@@ -60,6 +61,9 @@ const exampleBrand = exampleAmountMath.getBrand();
 - Returns: `{String}`
 
 Get the kind ('nat', `strSet', `set`) of the `amountMath`.
+
+**tyg todo: Not sure if need to import MathKind, or whether the example
+returns `nat` or `MathKind.NAT`?**
 
 ```js
 const { amountMath } = makeIssuerKit('quatloos');
@@ -110,12 +114,16 @@ const myValue = amountMath.getValue(quatloos123);
 ## amountMath.getEmpty()
 - Returns: `{Amount}`
 
-Returns the `amount` representing an empty `amount` for the `amountMath`'s associated `brand`. This is the identity element for `AmountMath.add()` and `AmountMath.subtract()`. The empty `value` depends on whether the `amountMath` is of kind `nat` (`0`), `set` (`[]`), or `strSet` (`[]`).
+Returns the `amount` representing an empty `amount` for the `amountMath`'s 
+associated `brand`. This is the identity element for `AmountMath.add()` 
+and `AmountMath.subtract()`. The empty `value` depends on whether 
+the `amountMath` is of kind `nat` (`0`), `set` (`[]`), or `strSet` (`[]`).
 
 ```js
 const { amountMath } = makeIssuerKit('quatloos');
 // Returns an empty amount for this amountMath.
-// Since this is a fungible amount it returns 0
+// Since this is a fungible amount it returns an amount
+// with 0 as its value.
 const empty = amountMath.getEmpty();
 ```
 
@@ -146,7 +154,8 @@ Returns `true` if the `value` of `leftAmount` is greater than or equal to
 the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
 
-For non-fungible `values`, "greater than or equal to" depends on the kind of `amountMath`. For example, whether rectangle A is greater than rectangle B 
+For non-fungible `values`, "greater than or equal to" depends on the 
+kind of `amountMath`. For example, whether rectangle A is greater than rectangle B 
 depends on whether rectangle A includes rectangle B as defined by the logic in `amountMath`
 
 ```js
@@ -176,7 +185,8 @@ Returns `true` if the `value` of `leftAmount` is equal to
 the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
 
-For non-fungible `values`, "equal to" depends on the kind of `amountMath`. For example, whether rectangle A is greater to rectangle B 
+For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
+For example, whether rectangle A is greater to rectangle B 
 depends on by the logic in `amountMath`. For example, is a 6x4 rectangle
 equal to a 8x3 rectangle? Their areas are equal (24), but the first has
 a total edge length of 20 while the second has a total edge length of 22.
@@ -217,7 +227,8 @@ If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty
 `amount` argument. If both are empty, it returns an empty `amount`.
 
 ```js
-const { amountMath } = makeIssuerKit('myItems', 'strSet');
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+const { amountMath } = makeIssuerKit('myItems', MathKind.STRING_SET');
 const listAmountA = amountMath.make(harden['1','2','4']);
 const listAmountB = amountMath.make(harden['3']);
 
@@ -238,7 +249,8 @@ If the `rightAmount` is empty, it returns the `leftAmount`. If both arguments ar
 empty, it returns an empty `amount`.
 
 ```js
-const { amountMath } = makeIssuerKit('myItems', 'strSet');
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+const { amountMath } = makeIssuerKit('myItems', MathKind.STRING_SET);
 const listAmountA = amountMath.make(harden['1','2','4']);
 const listAmountB = amountMath.make(harden['3']);
 const listAmountC = amountMath.make(harden['2']);
