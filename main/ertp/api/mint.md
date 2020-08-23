@@ -1,16 +1,16 @@
 # Mint
 
-Only the mint can issue new digital assets, so only the holder of the mint can
-create new digital assets. These assets all have the same kind, which is called a
-[`Brand`](./brand.md).
+Only a `mint` can issue new digital assets, so only the holder of the `mint` can
+do so. A `mint` has a one-to-one relationship with both an `issuer` and a `brand`,
+and can only mint new assets of that `brand`.
 
 ## mint.getIssuer()
 - Returns: `{Issuer}`
 
-Get the Issuer for this mint.
+Get the `Issuer` for this `mint`.
 
 ```js
-const { issuer, mint } = makeIssuerKit('bucks');
+const { issuer, mint } = makeIssuerKit('quatloos');
 const mintIssuer = mint.getIssuer();
 
 // returns true
@@ -21,11 +21,13 @@ Object.is(issuer, mintIssuer);
 - `newAmount` `{Amount}`
 - Returns: `{Payment}`
 
-Create a new Payment containing newly minted amount.
+Create new digital assets of the `mint`'s associated `brand`.
+Returns a `payment containing the newly minted assets..
 
 ```js
-const { issuer, mint } = makeIssuerKit('fungible');
+const { issuer, mint } = makeIssuerKit('quatloos');
 
-const fungible1000 = amountMath.make(1000);
-const newPayment = mint.mintPayment(fungible1000);
+const quatloos1000 = amountMath.make(1000);
+// newPayment will have a balance of 1000 Quatloos
+const newPayment = mint.mintPayment(quatloos1000);
 ```
