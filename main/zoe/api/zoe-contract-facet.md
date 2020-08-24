@@ -7,7 +7,7 @@ for that instance. A Zoe Contract Facet is accessed synchronously from within th
 and usually is referred to in code as `zcf`. 
 
 The contract instance is launched by `E(zoe).startInstance`, and is given access to 
-the `zcf` object during that launch. In the operations below, the `instanceHandle` is 
+the `zcf` object during that launch. In the operations below, `instance` is 
 the handle for the running contract instance.
 
 ## zcf.makeZCFMint(keyword, amountMathKind)
@@ -25,6 +25,8 @@ The `issuers` associated with the synchronous
 mints are already saved in Zoe, so no need to run `saveIssuer()` 
 for synchronous mints. 
 
+I wrote these pointers for an internal audience. I'm not sure they work for external audience. do we want the external audience looking at the types file? I don't think so. We can point them to the API doc instead.
+
 **tyg todo: Does a ZCFMint have the same methods as an ERTP mint?**
 
 **Note**: The call to make the `ZCFMint` is asynchronous, but 
@@ -38,15 +40,10 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ## zcf.getInvitationIssuer()
 - Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
 Zoe has a single `invitationIssuer` for the entirety of its
-lifetime. By having a reference to Zoe, a user can get the
-`invitationIssuer` and thus validate any `invitation` they receive
-from someone else. The `mint `associated with the `invitationIssuer`
-creates the ERTP `payments` (`invitations`) that represent the right to 
-interact with a smart contract in particular ways.
-**tyg todo: May want to clarify the "have a reference to Zoe" bit, since
-it looks like being able to call zcf methods is sufficient to indicate
-that**  **tyg todo: We seem to have both zoe. and zcf. invitationIssuers.
-When should each be used?**
+lifetime. This method returns the Zoe `InvitationIssuer`, which
+is used to validate `invitations` that users receive to participate
+in contract instances.
+
 ```js
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
@@ -159,12 +156,12 @@ zcf.shutdown();
 ## zcf.getTerms()
 - Returns: `{Object}`
 
-Gets the `issuers`, `brands`, and custom `terms` the current contract instance was instantiated with.
-Note in the example below, `brands` and `issuers` are records with keyword keys, formerly 
-called `brandKeywordRecord` and `issuerKeywordRecord`, respectively.
+Returns the `issuers`, `brands`, and custom `terms` the current contract instance was instantiated with.
 
-**tyg todo: there's also E(zoe).getTerms(instance). Any difference, when would you use one and when the other,
-and should we kill one of them?**
+Note that there is also an `E(zoe).getTerms(instance)`. Often the choice of which to use is not which method 
+to use, but which of Zoe Service or ZCF you have access to. On the contract side, you more easily have access 
+to `zcf`, and `zcf` already knows what instance is running. So in contract code, you use `zcf.getTerms()`. From 
+a user side, with access to Zoe Service, you use `E(zoe).getTerms()`. In other words, are you in contract code or not?
 ```js
 const { brands, issuers, terms } = zcf.getTerms()
 ```
@@ -178,10 +175,10 @@ Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</
 
 ## zcf.assertUniqueKeyword(keyword)
 - `keyword` `{String}`
-Returns: `true` if the keyword is not already used as a brand, otherwise `false`
+Returns: Undefined
 
 Checks if a keyword is valid and not already used as a `brand` in this `instance` (i.e. unique)
-and could be used as a new `brand` to make an `issuer`
+and could be used as a new `brand` to make an `issuer`.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
@@ -190,9 +187,8 @@ zcf.assertUniqueKeyword(keyword);
 - Returns: `{void}`
 
 The contract reallocates over `seatStagings`, which are
-associations of seats with reallocations. **tyg todo: should it be
-"reallocates payouts" or similar?** There must be at least two
-`seatStagings` in the array argument. 
+associations of seats with new allocations to be used in reallocation.
+There must be at least two `seatStagings` in the array argument. 
 
 The reallocation only succeeds if it:
 1 Conserves rights (the amounts specified have the same total value as the
