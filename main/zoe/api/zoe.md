@@ -41,19 +41,15 @@ const brandKeywordRecord = await E(zoe).getBrands(instance);
 - `instance` `{Instance}`
 - Returns: `{Promise<IssuerKeywordRecord>}`
 
-Returns a `IssuerKeywordRecord` containing all `issuers` defined in the argument contract `instance`.
+Returns a `IssuerKeywordRecord` containing all `issuers` defined in the `instance` argument.
 ```js
 const issuerKeywordRecord = await E(zoe).getIssuers(instance);
 ```
 ## E(zoe).getTerms(instance)
 - `instance` `{Promise<Instance>}`
-- Returns: `{Object}` consisting of key:value pairs **tyg todo: Is there a better way to state this here?**
-**tyg todo: Not sure if this is right, or if it should be the same as zcf.getTerms()**
-Terms let a contract instance creator further customize the contract operations, 
-as enabled by the contract code. Contract terms can be expressed without specific values. 
-For example, an auction contract may define minimum bid and minimum raise variables and 
-use them in its code, but the variables are not given values in the code. 
-Instead, the terms given at contract instantiation provide the variables’ values.
+- Returns: `{Object}` 
+Returns the terms of the `instance` argument, including its `issuers`, `brands` and any 
+custom terms.
 ```js
 const terms = await E(zoe).getTerms(instance);
 ```
@@ -68,7 +64,7 @@ You use it for general queries and actions, such as getting a current price or c
 developer to create a publicFacet (or pointer to same) and details of how to use it. Is it just publicFacet.getCurrentPrice() or similar
 depending on its definition?**
 
-Returns a `IssuerKeywordRecord` containing the public facet defined in the argument contract `instance`.
+Returns a `publicFacet` containing the public facet defined for `instance`.
 ```js
 const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
@@ -85,8 +81,14 @@ The `mint` associated with the `invitationIssuer`
 create `invitations` in the form of ERTP `payments` that represent the right to interact with
 a smart contract in particular ways.
 
-**tyg todo: Need more info on how to use this, including just making invitations and
-what the .claim and .getAmountOf methods do/are for**
+The `invitationIssuer` has two methods, both of which take an `invitation` as an argument.
+Remember, an `invitation` is just a special case of an ERTP `payment`, so `claim()` and
+`getAmountOf()` are the same as for other `issuers`.
+
+A successful call of `invitationIssuer.claim(invitation)` means you are assured the `invitation`
+is recognized as valid by the `invitationIssuer`. You are also assured the `invitation` is exclusively yours
+and no one else has access to it.
+
 ```js
 const invitationIssuer = await E(zoe).getInvitationIssuer();
 // Here a user, Bob, has received an untrusted invitation from Alice.
@@ -97,6 +99,7 @@ const invitationValue = await E(zoe).getInvitationDetails(invitation);
 const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
         invitation);
 ```
+
 ## E(zoe).getInvitationDetails(invitation)
 - `invitation` `{Invitation}`
 - Returns `{Object}`
@@ -237,8 +240,8 @@ shows their definitions and discusses their uses.
 
 ## Installation Object
 
-`installation` objects represent stored in Zoe contract source code. 
-They have one method and no properties.
+An `installation` is contract source code bundled and saved in Zoe to make contract instances. 
+Any `installation` can make many `instances`. 
 
 - installation.getBundle()
   - Returns: `{SourceBundle}`
