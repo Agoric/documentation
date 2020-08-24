@@ -39,7 +39,7 @@ const officialBrand = payment.getAllegedBrand();
 ## Related Methods
 
 The following methods on other ERTP components also either operate
-on or return a `brand`. While a brief desciption is given for each, 
+on or return a `brand`. While a brief description is given for each, 
 you should click through to a method's main documentation entry for 
 full details on what it does and how to use it.
 
