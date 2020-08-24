@@ -36,11 +36,13 @@ const payment = quatloosMint.mintPayment(quatloosAmountMath.make(10));
 const officialBrand = payment.getAllegedBrand();
 ```
 
-## Other Methods
+## Related Methods
 
-While `payment` has only one method, the are several methods on other ERTP objects that 
-create, operate on, or return `payments`. These are listed here with a very brief description
-and linked to their primary documentation.
+The following methods on other ERTP components also either operate
+on or return a `brand`. While a brief desciption is given for each, 
+you should click through to a method's main documentation entry for 
+full details on what it does and how to use it.
+
 - [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
   - Get a description of a `payment` balance as an amount`. 
 - [`issuer.burn(payment, optAmount)`](./issuer.html#issuer-burn-payment-optamount)
