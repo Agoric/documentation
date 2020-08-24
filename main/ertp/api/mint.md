@@ -2,19 +2,30 @@
 
 Only a `mint` can issue new digital assets, so only the holder of the `mint` can
 do so. A `mint` has a one-to-one relationship with both an `issuer` and a `brand`,
-and can only mint new assets of that `brand`.
+and can only mint new assets of that `brand` and is the only `'mint` that can mint
+new `brand` type assets for its associated `brand`.
+
+## makeIssuerKit(allegedName, amountMathKind)
+- `allegedName` `{String}`
+- `amountMathKind` `{MathKind}`
+- Returns: `{Purse}`
+
+While not a method called on a `mint`, clearly it's important to know how to create a new `mint`. 
+`makeIssuerKit()` returns a new `issuer`, `mint`, `amountMath`, and `brand`. 
+See [here](./issuer.md#makeissuerkit-allegedname-amountmathkind) for details.
 
 ## mint.getIssuer()
 - Returns: `{Issuer}`
 
-Get the `Issuer` for this `mint`.
+Get the `Issuer` associated with this `mint`. A `mint` is always in an unchangable
+one-to-one relationship with an `issuer` from their creation. 
 
 ```js
-const { issuer, mint } = makeIssuerKit('quatloos');
-const mintIssuer = mint.getIssuer();
+const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
+const quatloosMintIssuer = quatloosMint.getIssuer();
 
 // returns true
-Object.is(issuer, mintIssuer);
+Object.is(issuer, quatloosMintIssuer);
 ```
 
 ## mint.mintPayment(newAmount)
@@ -22,12 +33,16 @@ Object.is(issuer, mintIssuer);
 - Returns: `{Payment}`
 
 Create new digital assets of the `mint`'s associated `brand`.
-Returns a `payment containing the newly minted assets..
+A `mint` is always in an unchangable
+one-to-one relationship with a `brand` from their creation. 
+
+Returns a `payment` containing the newly minted assets. 
 
 ```js
-const { issuer, mint } = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint
+        amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 
-const quatloos1000 = amountMath.make(1000);
+const quatloos1000 = quatloosAmountMath.make(1000);
 // newPayment will have a balance of 1000 Quatloos
-const newPayment = mint.mintPayment(quatloos1000);
+const newPayment = quatloosMint.mintPayment(quatloos1000);
 ```
