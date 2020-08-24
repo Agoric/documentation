@@ -221,7 +221,7 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloos.AmountMat
 Split a single `payment` into multiple `payments`. The resulting array of `payments` is
 as long as `amountArray`, and the `payments` will have `amounts` corresponding to 
 the `amountArray` contents. The original `payment` is burned. If the original `payment` 
-is a `promise`, the operation proceeds` after the `promise` resolves.  If the `amounts` 
+is a `promise`, the operation proceeds after the `promise` resolves.  If the `amounts` 
 in `amountArray` don't add up to the value of `payment`, the operation fails. The `brands`
 of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
@@ -233,7 +233,7 @@ const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 ```
 
-Note that the total `amoun`t in the `amountArray` must equal the `amount` in the original `payment`:
+Note that the total `amount` in the `amountArray` must equal the `amount` in the original `payment`:
 
 ```js
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
