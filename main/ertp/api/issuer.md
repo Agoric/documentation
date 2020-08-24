@@ -5,86 +5,100 @@ combining, burning, or exclusively claiming `payments`). An `issuer` should be o
 then relied upon as the authority as to whether an untrusted `payment` is valid.
 
 ## makeIssuerKit(allegedName, amountMathKind)
- * @param {string} allegedName
- * @param {AmountMathKind} amountMathKind
- * @returns {IssuerKit}
+- `allegedName` `{String}` 
+- `amountMathKind` `{MathKind}` - optional
+- Returns `{IssuerKit}`
 
-Makes an issuer and its associated objects. A particular `issuer`, 'mint', `amountMath', and `brand` 
-are all in one-to-one relationships with each other. 
+Makes a new `issuer` as well as its one-to-one associated ERTP objects; a 'mint', `amountMath', and `brand`. 
+All are in unchangable one-to-one relationships with each other. 
 
-The `allegedName` is available from the brand in asset descriptions. The `allegedName` is useful for debugging and double-checking assumptions, but
-should not be trusted.
+The `allegedName` is available from the `brand` in asset descriptions. The `allegedName` is 
+useful for debugging and double-checking assumptions, but should not be trusted.
 
-The `amountMathKind` is used to import a specific `amountMath`. For example, `nat`, the default, supports
-natural numbers and is used for basic fungible tokens.
+The optional `amountMathKind` specifies which of three kinds the created `amountMath` is.
+Each implements all of the same set of API methods (i.e. `amountMath` methods are 
+polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` 
+instead of making the strings yourself.
+- `MathKind.NAT` (`nat`): Used with fungible assets. amount values are natural numbers (non-negative integers). Default value.
+- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. amount values are strings.
+- `MathKind.SET` (`set`): Used with non-fungible assets. amount values are objects or records with multiple properties.
 
 ```js
-const { issuer, mint, amountMath } = makeIssuerKit('quatloos');
-// This is merely an amount, describing assets.
-const quatloos2 = amountMath.make(2);
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+makeIssuerKit('quatloos`); // Defaults to 'MathKind.NAT'
+makeIssuerKit('foobars', 'MathKind.STRSET');
+makeIssuerKit('kitties', MathKind.SET');
+```
 
-const { mint, issuer, amountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
+```js
+const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+// This is merely an amount, describing assets.
+const quatloos2 = quatloosAmountMath.make(2);
+
+const { mint: titleMint, issuer: titleIssuer, amountMath: titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
 
 // These are merely amounts describing digital assets, not minting assets.
-const cornerProperty = amountMath.make(harden['1292826']);
-const adjacentProperty = amountMath.make(harden['1028393']);
-const combinedProperty = amountMath.make(harden['1292826', '1028393']);
+const cornerProperty = titleAmountMath.make(harden['1292826']);
+const adjacentProperty = titleAmountMath.make(harden['1028393']);
+const combinedProperty = titleAmountMath.make(harden['1292826', '1028393']);
 ```
 
 ## issuer.getBrand()
 - Returns: `{Brand}` 
 
-Get the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
+Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
 and is the same for the `issuer`'s associated `mint`, and any `purses` and `payments` of this particular
 kind. The `brand` is not closely held, so this function should not be trusted to identify
 an `issuer` alone. Fake digital assets and amounts can use another `issuer's `brand`.
 
 ```js
-const { issuer, brand } = makeIssuerKit('quatloos');
-const quatloosBrand = issuer.getBrand();
+const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const quatloosBrand = quatloosIssuer.getBrand();
 // brand === quatloosBrand
 ```
 
 ## issuer.getAllegedName()
 - Returns: `{allegedName}`
 
-Get the `allegedName` for this `issuer`.
+Returns the `allegedName` for this `issuer`.
 
 ```js
-const { issuer } = makeIssuerKit('bucks');
-const issuerAllegedName = issuer.getAllegedName();
-// issuerAllegedName === 'bucks'
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
+// quatloosIssuerAllegedName === 'quatloos'
 ```
 
 ## issuer.getAmountMath()
 - Returns: `{AmountMath}`
 
-Get the `amountMath` for this `issuer`. 
+Returns the `amountMath` for this `issuer`. 
 ```js
-const { issuer, amountMath } = makeIssuerKit('quatloos');
-const issuerAmountMath = issuer.getAmountMath();
-// amountMath === issuerAmountMath
+const { issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const quatloosIssuerAmountMath = quatloosIssuer.getAmountMath();
+// quatloosAmountMath === quatloosIssuerAmountMath
 ```
 
 ## issuer.getAmountMathKind()
-- Returns: `{AmountMathKind}`
+- Returns: `{MathKind}`
 
 Get the kind of this `issuer`'s `amountMath`. It returns one of
-`nat`, `str`, or `setStr`
+`MathKind.NAT` (`nat`), `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`).
 
 ```js
-const { issuer } = makeIssuerKit('quatloos');
-issuer.getAmountMathKind(); // Returns 'nat', the default value.
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+quatloosIssuer.getAmountMathKind(); // Returns 'MathKind.NAT', the default value.
+const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STR);
+moolaIssuer.getAmountMathKind(); // Returns 'MathKind.STR`
 ```
 
 ## issuer.makeEmptyPurse()
 - Returns: `{Purse}`
 
-Make an empty `purse` that holds assets of the `brand` associated with the `issuer`.
+Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
 
 ```js
-const { issuer } = makeIssuerKit('quatloos');
-const purse = issuer.makeEmptyPurse();
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
 ## issuer.getAmountOf(payment)
@@ -92,50 +106,56 @@ const purse = issuer.makeEmptyPurse();
 - Returns: `{Amount}`
 
 Get the `payment`'s balance. Because the `payment` is not trusted, we cannot
-trust it to provide its true value, and must rely on the `issuer` for
-the `payment`'s `brand` to guarantee.
+trust it to provide its true value, and must rely on the `issuer` to guarantee
+the `payment`'s `brand`.
 
 ```js
-const { issuer, mint, amountMath } = makeIssuerKit('quatloos');
-const payment = mint.mintPayment(amountMath.make(100));
-issuer.getAmountOf(payment); // returns 100  **tyg todo: If it just returns 100, shouldn't this be getAmountValueOf?**
+const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
+quatloosIssuer.getAmountOf(quatloosPayment); // returns 100  
 ```
+**tyg todo: If it just returns 100, shouldn't this be getAmountValueOf?**
 
 ## issuer.burn(payment, optAmount)
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` - Optional
 - Returns: `{Amount}`
 
-Burn all of the digital assets in the `payment`. `optAmount` is optional. If `optAmount` is present, 
+Burn (destroy) all of the digital assets in the `payment`. `optAmount` is optional. If `optAmount` is present, 
 the code insists the `payment` balance is equal to `optAmount`, to prevent sending the wrong `payment`
 and other confusion.  If `payment` is a `promise`, the operation proceeds after the
 `promise` resolves.
 
 ```js
-const { issuer, mint, amountMath } = makeIssuerKit('bucks');
-const amountToBurn = amountMath.make(10);
-const paymentToBurn = mint.mintPayment(amountToBurn);
+const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = 
+      makeIssuerKit('quatloos');
+const amountToBurn = quatloosAmountMath.make(10);
+const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
 // burntAmount should equal 10
-const burntAmount = issuer.burn(paymentToBurn, amountToBurn);
+const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
 ## issuer.claim(payment, optAmount)
-- `payment` `{Payment}` - The original payment.
-- `optAmount` `{Amount}` - Optional.
-- Returns: `{Payment}` - The new payment.
+- `payment` `{Payment}` 
+- `optAmount` `{Amount}` 
+- Returns: `{Payment}` 
 
-Transfer all digital assets from `payment` to a new payment and burn the original. This allows the owner to be sure that no other references to this
-payment survive, so they are the exclusive owner. `optAmount` is optional. If `optAmount` is present, the code will insist that `payment`'s balance is
-equal to `amount`, to prevent sending the wrong `payment` and other confusion. If `optAmount` does not equal the balance in the original `payment`
-then it will throw an error.  If `payment` is a promise, the operation will proceed after the promise resolves.
+Transfer all digital assets from `payment` to a new `payment` and burn the
+original. This allows the owner to be sure no other references to this
+payment survive, so they are the exclusive owner. `optAmount` is optional. 
+If `optAmount` is present, the code insists that `payment`'s balance is
+equal to `amount`, to prevent sending the wrong `payment` and other confusion. 
+If `optAmount` does not equal the balance in the original `payment`
+then it throws an error.  If `payment` is a promise, the operation will 
+proceed after the promise resolves.
 
 ```js
-const { mint, issuer, amountMath } = makeIssuerKit('bucks');
-const amountExpectedToTransfer = amountMath.make(2);
-const originalPayment = mint.mintPayment(amountExpectedToTransfer);
+const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const amountExpectedToTransfer = quatloosAmountMath.make(2);
+const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
-const newPayment = issuer.claim(originalPayment, amountToTransfer);
+const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## issuer.combine(paymentsArray)
@@ -143,31 +163,35 @@ const newPayment = issuer.claim(originalPayment, amountToTransfer);
 - `optTotalAmount` `{Amount}` - Optional.
 - Returns: `{Payment}`
 
-Combine multiple payments into one payment.  If any payment in `paymentsArray` is a promise, the operation will proceed after all the payments
-resolve. The payments in `paymentsArray` will be burned.
+Combines multiple `payments` into one `payment`.  If any `payment` in `paymentsArray` is 
+a `promise`, the operation proceeds after all the `payments`
+resolve. The `payments` in `paymentsArray` are burned.
+
+If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
+array must equal `optTotalAmount`'s `value` or it throws an error.
 
 ```js
-const { mint, issuer, amountMath } = makeIssuerKit('bucks');
+const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 
-// create an array of 100 payments of 1 unit each
+// create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(mint.mintPayment(amountMath.make(1)));
+  payments.push(quatloosMint.mintPayment(quatloosAmountMath.make(1)));
 }
 
 // combinedPayment equals 100
-const combinedPayment = issuer.combine(payments);
+const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
 **Note**: You **cannot** combine `payments` from different `mints` (as they are of different `brands`):
 
 ```js
-const { mint: otherMint, amountMath: otherAmountMath } = makeIssuerKit('other fungible');
+const { mint: otherMint, amountMath: otherAmountMath } = makeIssuerKit('other');
 const otherPayment = otherMint.mintPayment(otherAmountMath.make(10));
 payments.push(otherPayment); // using the payments array from the above code
 
 // throws error
-const badPayment = issuer.combine(payments);
+const badPayment = quatloosIssuer.combine(payments);
 ```
 
 ## issuer.split(payment, paymentAmountA)
@@ -175,14 +199,18 @@ const badPayment = issuer.combine(payments);
 - `paymentAmountA` `{Amount}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`. The original `payment` is burned. If the original `payment`
+Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`. 
+For example, if the `payment` is for 10 quatloos, and `paymentAmountA` is 3 quatloos,
+it returns an array of two `payments` with balances of 3 quatloos and 7 quatloos.
+
+The original `payment` is burned. If the original `payment`
 is a `promise`, the operation proceeds after the `promise` resolves.
 
 ```js
-const { mint, issuer, amountMath } = makeIssuerKit('quatloos');
-const oldPayment = mint.mintPayment(amountMath.make(20));
+const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20));
 // After the split, paymentA has 5 quatloos and paymentB has 15.
-const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(5));
+const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloos.AmountMath.make(5));
 ```
 
 ## issuer.splitMany(payment, amountArray)
@@ -190,32 +218,35 @@ const [paymentA, paymentB] = issuer.split(oldPayment, amountMath.make(5));
 - `amountArray` `{Array <Amount>}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into multiple `payments`. The resulting array of `payments` is as long as `amountArray`, and the `payments` will have `amounts`
-corresponding to `amountArray`. The original `payment` is burned. If the original `payment` is a `promise`, the operation proceed` after the `promise` resolves.  If the `amounts` in `amountArray` don't add up to the value of `payment`, the operation fails. 
+Split a single `payment` into multiple `payments`. The resulting array of `payments` is
+as long as `amountArray`, and the `payments` will have `amounts` corresponding to 
+the `amountArray` contents. The original `payment` is burned. If the original `payment` 
+is a `promise`, the operation proceeds` after the `promise` resolves.  If the `amounts` 
+in `amountArray` don't add up to the value of `payment`, the operation fails. The `brands`
+of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
 ```js
-const { mint, issuer, amountMath } = makeIssuerKit('fungible');
-const oldPayment = mint.mintPayment(amountMath.make(100));
-const goodAmounts = Array(10).fill(amountMath.make(10));
+const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath} = makeIssuerKit('quatloos');
+const oldPayment = quatloosMint.mintPayment(quatloos.AmountMath.make(100));
+const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
 
-const arrayOfNewPayments = issuer.splitMany(oldPayment, goodAmounts);
+const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 ```
 
 Note that the total `amoun`t in the `amountArray` must equal the `amount` in the original `payment`:
 
 ```js
-const { mint, issuer, amountMath } = makeIssuerKit('fungible');
-const payment = mint.mintPayment(amountMath.make(1000));
+const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
 
 // total amounts in badAmounts equal 20, when it should equal 1000
-const badAmounts = Array(2).fill(amountMath.make(10));
+const badAmounts = Array(2).fill(quatloosAmountMath.make(10));
 
 // throws error
-issuer.splitMany(payment, badAmounts);
+quatloosIssuer.splitMany(payment, badAmounts);
 ```
 
 ## issuer.isLive(payment)
 - `payment` `{Payment}`
 - Returns: `{Boolean}`
 
-Returns true if the payment continues to have value. If `payment` is a promise, the operation will proceed upon resolution.
+Returns `true` if the `payment` continues to have value. If `payment` is a promise, the operation proceeds upon resolution.
