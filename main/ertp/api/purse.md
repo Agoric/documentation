@@ -124,8 +124,3 @@ issuer.getAmountOf(withdrawalPayment);
 // The new balance of the purse is 7 Quatloos
 purse.getCurrentAmount();
 ```
-
-## Other Methods
-
-Other than the above covered `issuer.makeEmptyPurse()` and the `depositFacet` methods, 
-there are no non-`purse` ERTP methods relating to `purses`.
