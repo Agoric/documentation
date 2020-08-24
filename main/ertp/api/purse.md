@@ -31,7 +31,7 @@ to create a new `purse`. Call `makeEmptyPurse()` on the `issuer` associated
 with the `brand` of assets you want the new `purse` to hold. It returns the
 new `purse` with an empty balance. 
 ```js
-const {quatloosIssuer: issuer} = makeIssuerKit('quatloos');
+const {issuer: quatloosIssuer} = makeIssuerKit('quatloos');
 quatloosPurse1 = quatloosIssuer.makeEmptyPurse();
 quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
@@ -46,8 +46,8 @@ call `getCurrentAmount()` on the same `purse` if assets have been deposited or
 withdrawn from it in-between calls. . 
 
 ```js
-const { quatloosissuer: issuer } = makeIssuerKit('quatloos');
-const quatloosPurse = issuer.makeEmptyPurse();
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 // quatloos5 is a payment with balance of 5 quatloos
 const quatloosPurse.deposit(quatloos5);
 // Returns an amount with value = 5 and brand = quatloos
@@ -56,7 +56,7 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 
 ## purse.deposit(payment, optAmount)
 - `payment` `{Payment}`
-- `optAmount` `{Amount}` - Optional. This parameter ensures you are depositing the amount you expect.
+- `optAmount` `{Amount}` - Optional. 
 - Returns: `{Amount}`
 
 Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
@@ -64,17 +64,18 @@ Deposit all the contents of `payment` into this `purse`, returning an `amount` d
 `payment`, or if `payment` is an unresolved promise, it throws an error.
 
 ```js
-const { issuer, mint, amountMath } = makeIssuerKit('quatloos');
-const purse = issuer.makeEmptyPurse();
-const payment = mint.mintPayment(amountMath.make(123));
-const quatloos123 = amountMath.make(123);
+const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = 
+      makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
+const payment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
+const quatloos123 = quatloosAmountMath.make(123);
 
 // Deposit a payment for 123 Quatloos into the purse. Ensure that this is the amount you expect.
-purse.deposit(payment, quatloos123);
+quatloosPurse.deposit(payment, quatloos123);
 
-const secondPayment = mint.mintPayment(amountMath.make(100));
+const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
 // Throws error
-purse.deposit(secondPayment, quatloos123);
+quatloosPurse.deposit(secondPayment, quatloos123);
 
 ```
 
@@ -83,6 +84,9 @@ purse.deposit(secondPayment, quatloos123);
 Creates a deposit-only facet on the `purse`. This is an object you can give to other parties
 that lets them deposit `payments` to your  `purse` without being able to withdraw assets from or check
 the balance of the `purse`. This makes it a safe way to let other people send you `payments`.
+
+You can only deposit a `payment` into a deposit facet that's the same `brand` as the original `purse`
+takes.
  
 ```js
 const depositOnlyFacet = purse.makeDepositFacet();
