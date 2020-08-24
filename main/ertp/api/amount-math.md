@@ -66,8 +66,8 @@ Get the kind ('nat', `strSet', `set`) of the `amountMath`.
 returns `nat` or `MathKind.NAT`?**
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
-amountMath.getMathHelpersName(); // 'nat'
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+quatloosAmountMath.getMathHelpersName(); // 'nat'
 ```
 
 ## amountMath.make(allegedValue)
@@ -79,36 +79,37 @@ Make an `amount` from a `value` by adding the `brand` associated with
 the `amountMath`..
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 //amount837 = value: 837 brand: quatloos
-const amount837 = amountMath.make(837);
+const amount837 = quatloosAmountMath.make(837);
 ```
 
 ## amountMath.coerce(allegedAmount)
 - `allegedAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Make sure this `amount` is valid and return it as an `amount` if so.
+Make sure this `amount` is valid and if so, return it as an `amount`.
 If not valid, throws an exception. 
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
-const quatloos50 = amountMath.make(50);
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const quatloos50 = quatloosAmountMath.make(50);
 
-amountMath.coerce(quatloos50); // equal to quatloos50
+quatloosAmountMath.coerce(quatloos50); // Returns amount equal to quatloos50
 ```
 
 ## amountMath.getValue(amount)
+- `amount` `{Amount}`
 - Returns: `{Value}`
 
 Returns the `value` from the given `amount`.
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
-const quatloos123 = amountMath.make(123);
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const quatloos123 = quatloosAmountMath.make(123);
 
 // returns 123
-const myValue = amountMath.getValue(quatloos123);
+const myValue = quatloosAmountMath.getValue(quatloos123);
 ```
 
 ## amountMath.getEmpty()
@@ -120,11 +121,11 @@ and `AmountMath.subtract()`. The empty `value` depends on whether
 the `amountMath` is of kind `nat` (`0`), `set` (`[]`), or `strSet` (`[]`).
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 // Returns an empty amount for this amountMath.
 // Since this is a fungible amount it returns an amount
 // with 0 as its value.
-const empty = amountMath.getEmpty();
+const empty = quatloosAmountMath.getEmpty();
 ```
 
 ## amountMath.isEmpty(amount)
@@ -134,15 +135,15 @@ const empty = amountMath.getEmpty();
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
-const empty = amountMath.getEmpty();
-const quatloos1` = amountMath.make(1);
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const empty = quatloosAmountMath.getEmpty();
+const quatloos1` = quatloosAmountMath.make(1);
 
 // returns true
-amountMath.isEmpty(empty)
+quatloosAmountMath.isEmpty(empty)
 
 // returns false
-amountMath.isEmpty(quatloos1)
+quatloosAmountMath.isEmpty(quatloos1)
 ```
 
 ## amountMath.isGTE(leftAmount, rightAmount)
@@ -154,26 +155,26 @@ Returns `true` if the `value` of `leftAmount` is greater than or equal to
 the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
 
-For non-fungible `values`, "greater than or equal to" depends on the 
+For non-fungible `values`, what "greater than or equal to" is depends on the 
 kind of `amountMath`. For example, whether rectangle A is greater than rectangle B 
 depends on whether rectangle A includes rectangle B as defined by the logic in `amountMath`
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
-const empty = amountMath.getEmpty();
-const quatloos5 = amountMath.make(5);
-const quatloos10 = amountMath.make(10);
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const empty = quatloosAmountMath.getEmpty();
+const quatloos5 = quatloosAmountMath.make(5);
+const quatloos10 = quatloosAmountMath.make(10);
 
 // Returns true
-amountMath.isGTE(quatloos5, empty);
+quatloosAmountMath.isGTE(quatloos5, empty);
 // Returns false
-amountMath.isGTE(empty, quatloos5);
+quatloosAmountMath.isGTE(empty, quatloos5);
 // Returns true
-amountMath.isGTE(quatloos10, quatloos5);
+quatloosAmountMath.isGTE(quatloos10, quatloos5);
 // Returns false
-amountMath.isGTE(quatloos5, quatloos10);
+quatloosAmountMath.isGTE(quatloos5, quatloos10);
 // Returns true
-amountMath.isGTE(quatloos5, quatloos5);
+quatloosAmountMath.isGTE(quatloos5, quatloos5);
 ```
 
 ## amountMath.isEqual(leftAmount, rightAmount)
@@ -192,23 +193,23 @@ equal to a 8x3 rectangle? Their areas are equal (24), but the first has
 a total edge length of 20 while the second has a total edge length of 22.
 
 ```js
-const { amountMath } = makeIssuerKit('quatloos');
-const empty = amountMath.getEmpty();
-const quatloos10 = amountMath.make(10);
-const quatloos5 = amountMath.make(5);
-const quatloos5-2 = amountMath.make(5);
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const empty = quatloosAmountMath.getEmpty();
+const quatloos10 = quatloosAmountMath.make(10);
+const quatloos5 = quatloosAmountMath.make(5);
+const quatloos5-2 = quatloosAmountMath.make(5);
 
 // Returns true
-amountMath.isEqual(quatloos10, quatloos10);
+quatloosAmountMath.isEqual(quatloos10, quatloos10);
 
 // Returns true
-amountMath.isEqual(quatloos5, quatloos5-2);
+quatloosAmountMath.isEqual(quatloos5, quatloos5-2);
 
 // Returns false
-amountMath.isEqual(quatloos10, quatloos5);
+quatloosAmountMath.isEqual(quatloos10, quatloos5);
 
 // Returns false
-amountMath.isEqual(empty, quatloos10);
+quatloosAmountMath.isEqual(empty, quatloos10);
 ```
 
 ## amountMath.add(leftAmount, rightAmount)
@@ -228,12 +229,12 @@ If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-const { amountMath } = makeIssuerKit('myItems', MathKind.STRING_SET');
-const listAmountA = amountMath.make(harden['1','2','4']);
-const listAmountB = amountMath.make(harden['3']);
+const { amountMath: itemsAmountMath } = makeIssuerKit('myItems', MathKind.STRING_SET');
+const listAmountA = itemsAmountMath.make(harden['1','2','4']);
+const listAmountB = itemsAmountMath.make(harden['3']);
 
 // Returns ['1', '2', '4', '3']
-const combinedList = amountMath.add(listAmountA, listAmountB);
+const combinedList = itemsAmountMath.add(listAmountA, listAmountB);
 ```
 
 ## amountMath.subtract(leftAmount, rightAmount)
@@ -250,14 +251,29 @@ empty, it returns an empty `amount`.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-const { amountMath } = makeIssuerKit('myItems', MathKind.STRING_SET);
-const listAmountA = amountMath.make(harden['1','2','4']);
-const listAmountB = amountMath.make(harden['3']);
-const listAmountC = amountMath.make(harden['2']);
+const { amountMath: itemsAmountMath } = makeIssuerKit('myItems', MathKind.STRING_SET);
+const listAmountA = itemsAmountMath.make(harden['1','2','4']);
+const listAmountB = itemsAmountMath.make(harden['3']);
+const listAmountC = itemsAmountMath.make(harden['2']);
 
 // Returns ['1', '4']
-const subtractedList = amountMath.subtract(listAmountA, listAmountC)
+const subtractedList = itemsAmountMath.subtract(listAmountA, listAmountC)
 
 // Throws error
-const badList = amountMath.subtract(listAmountA, listAmountB)
+const badList = itemsAmountMath.subtract(listAmountA, listAmountB)
 ```
+## Related Methods
+
+The following methods on other ERTP components and objects also either operate
+on or return a brand. While a brief desciption is given for each, you should
+click through to a method's main documentation entry for full details on
+what it does and how to use it.
+[`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+
+- [`issuer.getAmountMath()`](./issuer.html#issuer-getamountmath)
+  - Returns the `amountMath` associated with the `issuer`.
+- [`issuer.getAmountMathKind()`](./issuer.html#issuer-getamountmathking)
+  - Returns the kind of the `issuer`'s associated `amountMath`.
+- [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
+  - Returns the `amountMath` associated with the `brand`.
+  -
