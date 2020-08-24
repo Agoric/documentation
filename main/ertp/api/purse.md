@@ -24,7 +24,7 @@ To transfer digital assets, you should withdraw a `payment` from a `purse` and
 send the `payment` to another party.
 
 ## issuer.makeEmptyPurse()
-- Returns: `{Purse}
+- Returns: `{Purse}`
 
 While not a method called on a `purse`, clearly it's important to know how
 to create a new `purse`. Call `makeEmptyPurse()` on the `issuer` associated
@@ -83,6 +83,7 @@ purse.deposit(secondPayment, quatloos123);
 Creates a deposit-only facet on the `purse`. This is an object you can give to other parties
 that lets them deposit `payments` to your  `purse` without being able to withdraw assets from or check
 the balance of the `purse`. This makes it a safe way to let other people send you `payments`.
+ 
 ```js
 const depositOnlyFacet = purse.makeDepositFacet();
 
@@ -90,6 +91,10 @@ const depositOnlyFacet = purse.makeDepositFacet();
 // a `payment`, thus depositing the `payment` assets in the `purse` associated with the deposit facet.
 depositOnlyFacet.receive(payment);
 ```
+Once you have created a `depositFacet`, there is one method you can call 
+on it. **tyg todo: is it "recieve" or "deposit"?** `deposit.receive(payment)`. 
+The `depositFacet` takes the `payment` and adds it to the balance of the facet's
+associated `purse`. The `payment` must be of the same `brand` as what the `purse` holds.
 
 ## purse.withdraw(amount)
 - `amount` `{Amount}`
@@ -115,3 +120,8 @@ issuer.getAmountOf(withdrawalPayment);
 // The new balance of the purse is 7 Quatloos
 purse.getCurrentAmount();
 ```
+
+## Other Methods
+
+Other than the above covered `issuer.makeEmptyPurse()` and the `depositFacet` methods, 
+there are no non-`purse` ERTP methods relating to `purses`.
