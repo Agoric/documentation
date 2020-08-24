@@ -34,3 +34,31 @@ const payment = mint.mintPayment(amountMath.make(10));
 //Should return 'quatloos'
 const officialBrand = payment.getAllegedBrand();
 ```
+
+## Other Methods
+
+While `payment` has only one method, the are several methods on other ERTP objects that 
+create, operate on, or return `payments`. These are listed here with a very brief description
+and linked to their primary documentation.
+- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+  - Get a description of a `payment` balance as an amount`. 
+- [`issuer.burn(payment, optAmount)`](./issuer.html#issuer-burn-payment-optamount)
+  - Burn (destroy) all of the digital assets in the `payment`.
+- [`issuer.claim(payment, optAmount)`](./issuer.html#issuer-claim-payment-optamount)
+  - Transfer all assets from the `payment` to a returned new `payment` and burn the original.
+- [`issuer.combine(paymentsArray)`](./issuer.html#issuer-combine-paymentsarray)
+  - Combine multiple `payments` into one, returned, `payment`.
+- [`issuer.split(payment, paymentAmountA)`](./issuer.html#issuer-split-payment-paymentamounta)
+  - Split one `payment` into two new ones.
+- [`issuer.splitMany(payment, amountArray)`](./issuer.html#issuer-splitmany-payment-amountarray)
+  - Split `payment` into multiple `payments`, returned as an array.
+- [`issuer.isLive(payment)`](./issuer.html#issuer-islive-payment)
+  - Returns `true` if `payment` has value. 
+- [`mint.mintPayment(newAmount)`](./mint.html#mint-mintpayment-newamount)
+  - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. 
+- [`purse.deposit(payment, optAmount`)](./purse.html#purse-deposit-payment-optamount)
+  - Deposit all of `payment` into this `purse`.
+- [`purse.makeDepositFacet()`](./purse.html#purse-makedepositfacet)
+  - Creates a deposit-only facet on the `purse` that can be given to other parties.
+- [`purse.withdraw(amount)`](./purse.html#purse-withdraw-amount)
+  - Returns a new `payment` whose balance is described by the `amount` argument. 
