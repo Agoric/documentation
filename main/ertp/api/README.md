@@ -7,7 +7,7 @@ the release candidate in another few days. What you see here is out of
 date. We apologize for any inconvenience this may cause. 
 :::
 
-The ERTP API is divided into the following sections:
+The ERTP API documentation is divided into these sections:
 
 - [Issuer](./issuer)
 - [Mint](./mint)
@@ -15,4 +15,3 @@ The ERTP API is divided into the following sections:
 - [Purse](./purse)
 - [Payment](./payment)
 - [AmountMath](./amount-math)
-- [MathHelpers](./math-helpers)
