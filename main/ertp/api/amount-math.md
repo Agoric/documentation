@@ -60,7 +60,7 @@ const exampleBrand = exampleAmountMath.getBrand();
 ## amountMath.getAmountMathKind()
 - Returns: `{String}`
 
-Get the kind ('nat', `strSet', `set`) of the `amountMath`.
+Get the kind (`nat`, `strSet`, `set`) of the `amountMath`.
 
 **tyg todo: Not sure if need to import MathKind, or whether the example
 returns `nat` or `MathKind.NAT`?**
@@ -130,7 +130,7 @@ const empty = quatloosAmountMath.getEmpty();
 
 ## amountMath.isEmpty(amount)
 - `amount` `{Amount}`
-- Returns: `{boolean}`
+- Returns: `{Boolean}`
 
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
@@ -265,7 +265,7 @@ const badList = itemsAmountMath.subtract(listAmountA, listAmountB)
 ## Related Methods
 
 The following methods on other ERTP components and objects also either operate
-on or return a brand. While a brief desciption is given for each, you should
+on or return a brand. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
 [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
@@ -276,4 +276,4 @@ what it does and how to use it.
   - Returns the kind of the `issuer`'s associated `amountMath`.
 - [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
   - Returns the `amountMath` associated with the `brand`.
-  -
+
