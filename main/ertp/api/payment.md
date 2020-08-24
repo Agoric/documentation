@@ -29,8 +29,9 @@ with it. Because `payments` are not trusted, any method calls on `payments`
 should be treated with suspicion and verified elsewhere.
 
 ```js
-const { issuer, mint, brand, amountMath } = makeIssuerKit('quatloos');
-const payment = mint.mintPayment(amountMath.make(10));
+const { issuer: quatloosIssuer, mint: quatloosMint, 
+        brand: quatloosBrand, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+const payment = quatloosMint.mintPayment(quatloosAmountMath.make(10));
 //Should return 'quatloos'
 const officialBrand = payment.getAllegedBrand();
 ```
