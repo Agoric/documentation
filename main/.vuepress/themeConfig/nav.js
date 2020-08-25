@@ -8,7 +8,6 @@ module.exports = [
   {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
-    link: '/getting-started/',
     items: [
       {
         text: 'Documentation Guide',
@@ -55,7 +54,6 @@ module.exports = [
   {
     text: 'Guides',
     ariaLabel: 'Guides',
-    link: '/getting-started/',
     items: [
       {
         text: 'Documentation',

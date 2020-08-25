@@ -36,7 +36,7 @@ To start other local ag-solos, use a unique port number for each one, such as 80
 agoric start local-solo <PORT-NUMBER>
 ```
 
-Test that each of your ag-solos is running and has a wallet by connecting to http://localhost:<PORT-NUMBER>/ for each port you used.
+Test that each of your ag-solos is running and has a wallet by connecting to `http://localhost:<PORT-NUMBER>/` for each port you used.
 Run your contract and API deployment scripts against the API ag-solo with this `deploy` command. Note that port 8000 is the default 
 for `agoric deploy` operations.  To deploy to an ag-solo running on a different port, add the `--hostport=127.0.0.1:<PORT-NUMBER>` 
 option to the deploy command.
