@@ -10,24 +10,74 @@ The contract instance is launched by `E(zoe).startInstance`, and is given access
 the `zcf` object during that launch. In the operations below, `instance` is 
 the handle for the running contract instance.
 
+## start
+
+This section covers the code you need to have at the start of your contract code.
+
+To warn if the correct return values for your contract are not being returned,
+add this right before the start of your contract code 
+/**
+ * @type {ContractStartFn}
+ */
+
+Your contract code must export a function `start` as a non-default export.
+`zcf` is the Zoe Contract Facet and is the only argument provided to the contract
+
+```js
+const start = zcf => {
+  ...
+  // your code here
+  return harden({ creatorFacet, creatorInvitation, publicFacet });
+}
+harden(start);
+export { start };
+```
+The contract must return a record with any (or none) of the following:
+
+- `creatorFacet` - an object usually with admin authority. It is only given to the entity that 
+calls `E(zoe).startInstance(...)`; i.e. the party that was the creator of the current contract instance.
+It creates invitations for other parties, and takes actions that are unrelated to making offers.
+- `creatorInvitation` - a Zoe invitation only given to the entity that calls `E(zoe).startInstance(...)`; i.e. 
+the party that was the creator of the current contract instance.
+This is usually used when a party has to make an offer first, such as escrowing the underlying good 
+for sale in an auction or covered call.
+- `publicFacet` - an object available through Zoe to anyone who knows the contract `instance`. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public invitations.
+
 ## zcf.makeZCFMint(keyword, amountMathKind)
 - `keyword` `{String}`
-- `amountMathKind` `{AmountMathKind}` (defaults to `NAT`)
+- `amountMathKind` `{AmountMathKind}` (defaults to `MathKind.NAT`)
 Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
 instead of importing and using ERTP-based `mints`.
 
-For more information on how to use these specialized mints, please see the type
-definitions [here](https://github.com/Agoric/agoric-sdk/blob/7058a852c46625e28aa9a290b2c99f2a39d0cba5/packages/zoe/src/types.js#L221)
-and example [here](https://github.com/Agoric/agoric-sdk/blob/ee8f782578ff4f2ea9e0ec557e14d1f52c795ca9/packages/zoe/src/contracts/mintPayments.js#L34). 
-The `issuers` associated with the synchronous 
-mints are already saved in Zoe, so no need to run `saveIssuer()` 
-for synchronous mints. 
+**Important**: `ZCFMints` do **not** have the same methods as an ERTP `mint`. Do not try to use
+ERTP methods on a `ZCFMint`.
 
-I wrote these pointers for an internal audience. I'm not sure they work for external audience. do we want the external audience looking at the types file? I don't think so. We can point them to the API doc instead.
-
-**tyg todo: Does a ZCFMint have the same methods as an ERTP mint?**
+`ZCFMints` have three methods:
+- `getIssuerRecord()` 
+  - Returns: `{Promise<IssuerRecord>}`
+  - If there are no `issuer`, `brand`, or `amountMath` associated with the `zcfMint`, it
+    creates them and returns an `issuerRecord` containing them. Otherwise, it just returns the
+   `issuerRecord`.
+- `mintGains`
+  - `gains: amountKeywordRecord` **tyg todo: Not sure how to describe this**
+  - `zcfSeat` `{ZCFSeat}` - optional
+  - Returns `{ZCFSeat}`
+  - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
+    The `gains`' keywords are in that seat's namespace.
+    Add the `gains` to that seat's `allocation`.
+    Mint that amount of assets into the pooled `purse`.
+    If a seat is provided, it is returned. Otherwise a new seat is
+    returned.
+- `burnlosses
+  - `losses: AmountKeyWordRecord` **tyg todo: Not sure how to describe this**
+  - `zcfSeat` : `{ZCFSeat}`
+  - Returns: void
+  - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
+    The `losses`' keywords are in that seat's namespace.
+    Subtract `losses` from that seat's `allocation`.
+    Burn that `amount` of assets from the pooled `purse`.
 
 **Note**: The call to make the `ZCFMint` is asynchronous, but 
 calls to the resulting `ZCFMint` are synchronous.
