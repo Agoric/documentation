@@ -51,6 +51,8 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 - `seat` - `{ZcfSeat}`
 - `update` - `{AmountKeywordRecord}`
 - Returns: `true` if the `seat`'s allocation update satisfies its `proposal.want`, `false` if not.
+<details>
+<summary>Click for description</summary>
 
 Checks if an update to a `seat`'s `currentAllocation` satisfies its
 `proposal.want`. Note this is half of the offer safety check; 
@@ -63,7 +65,12 @@ This code uses `satisfies()` to define a `satisfiedBy()` comparison
 method between two `seats` to see if the second `seat` argument's `currentAllocation`
 satisfies the first `seat` argument's `proposal.want`. It then calls
 `satisfiedBy()` on both orders of the two `seats`, and if both satisfy each other,
-it does a swap on them. 
+it does a swap on them.
+</details>
+
+<details>
+<summary>Click for description</summary>
+
 ```js
 import {
   satisfies,
@@ -74,9 +81,13 @@ const satisfiedBy = (xSeat, ySeat) =>
 if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
     swap(zcf, seat, offer);
 ```
+</details>
+
 ## assertUsesNatMath
 - `zcf`- `{ContractFacet}`
 - `brand` - `{Brand}`
+<details>
+<summary>Click for description</summary>
 
 This method always takes `'zcf'` as its first argument. 
 
@@ -85,6 +96,11 @@ uses the `NAT` value of `amountMathKind` (i.e. the `brand`, and its
 associated `issuer`, are for fungible assets).
 
 If `false` throws with message `issuer must use NAT amountMath`.
+</details>
+
+<details>
+<summary>Click for description</summary>
+
 ```js
 import {
   assertUsesNatMath,
@@ -92,12 +108,16 @@ import {
 
  assertUsesNatMath(zcf, quatloosBrand);
  ```
+ </details>
+ 
 ## trade(zcf, keepLeft, tryRight)
 - `zcf` - `{ContractFacet}`
 - `keepLeft` - `{Seat}`
 - `tryRight` - `{Seat}`
 - Returns: Undefined.
-
+<details>
+<summary>Click for description</summary>
+  
 **Note**: The `swap()` method is a specific use of `trade(). In `swap()`,` 
 for both `seats`, everything a `seat` wants is given to it, having been
 taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
@@ -124,6 +144,11 @@ the other `seat` is rejected with a message. `trade()` does **not** exit the `se
 If the trade fails for any reason, it throws the message `The trade between 
 left and right failed. Please check the log for more 
 information`. It writes the specific error to the console.
+</details>
+
+<details>
+<summary>Click for source code.</summary>
+
 ```js
 import {
   trade,
@@ -143,6 +168,7 @@ trade(
       },
     );
 ```
+</details>
 
 ## swap(zcf, keepSeat, trySeat, keepHandleInactiveMsg)
 - `zcf` `{ContractFacet}
@@ -150,7 +176,9 @@ trade(
 - `trySeat` `{ZCFSeat}
 - `[keepHandleInactiveMsg]` `{String}`
 - Returns: `defaultAcceptanceMsg`
-
+<details>
+<summary>Click for description</summary>
+  
 **Note**: The `swap()` method is a specific use of `trade(). In `swap()`,` 
 for both `seats`, everything a `seat` wants is given to it, having been
 taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
@@ -184,6 +212,10 @@ For example if `seat` A gives 5 Quatloos and `seat` B only
 wants 3 Quatloos, `seat` A retains 2 Quatloos.
 
 If the swap fails, no assets transfer, and the 'trySeat' offer is rejected.
+</details>
+
+<details>
+<summary>Click here to see example code</summary>
 
 ```js
 import {
@@ -205,11 +237,33 @@ function swapIfCanTrade(offers, seat) {
    return undefined;
  }
 ```
+</details>
+
+### SwapObject
+The swap object stores information about a swap in key-value form, posts it on The Board,
+and then runs through the flowering meadows with it.
+
+<details>
+<summary>Click here to see the full description</summary>
+
+Test, test, test.
+</details>
+
+<details>
+<summary>Click here to see source code</summary>
+  
+```js
+code, code, and more code = foobar(fundamental);
+```
+</details>
+
 ## assertProposalShape(offerHandler, expected)
 - `offerHandler` `{OfferHandler}`
 - `expected` `{ExpectedRecord}`
 - Returns: `{OfferHandler}
-
+<details>
+<summary>Click here to expand the description</summary>
+  
 This is the only ZoeHelper that does **not** take 'zcf' as its first argument.
 
 Make an `offerHandler` that wraps the provided `offerHandler`, to first
@@ -227,6 +281,11 @@ these expectations, that offer is rejected (and refunded).
 
 The returned `offerHandler` performs the check. It then calls the `offerHandler`
 that was passed in as an argument.
+</details>
+
+<details>
+  <summary>Click her to expand the description</summary>
+  
 ```js
 import {
   assertProposalShape,
@@ -243,3 +302,4 @@ const sell = seat => {
 
 const sellHandler = assertProposalShape(sell, sellAssetForPrice);
 ```
+</details>
