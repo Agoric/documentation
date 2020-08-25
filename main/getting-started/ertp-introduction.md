@@ -35,8 +35,8 @@ An ERTP `purse` has a `deposit` method which takes a `payment`
 as its argument. It first checks that the `payment` is 
 genuine and the same asset kind as the `purse` (any individual
 `purse` or `payment` can only hold one kind of asset, which is set on
-their creation. So a `purse` might hold `Quatloos`, meaning it couldn't
-hold `Moola` or any other non-Qualoo asset). Note: Quatloos and Moola are both
+their creation. So a `purse` might hold Quatloos, meaning it couldn't
+hold Moola or any other non-Quatloo asset). Note: Quatloos and Moola are both
 imaginary currencies.
 
 If everything passes the checks, the asset moves from the `payment` to
