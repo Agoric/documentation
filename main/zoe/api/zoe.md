@@ -60,9 +60,8 @@ const terms = await E(zoe).getTerms(instance);
 
 A contract instance's `publicFacet` is an object available via Zoe to anyone knowing that `instance`. 
 You use it for general queries and actions, such as getting a current price or creating public invitations.
-**tyg todo: I'd really like to beef this up a bit, including what needs and should be done for a contract
-developer to create a publicFacet (or pointer to same) and details of how to use it. Is it just publicFacet.getCurrentPrice() or similar
-depending on its definition?**
+Since a facet is defined just as any other object, you add methods to the `publicFacet` just like you would
+any object.
 
 Returns a `publicFacet` containing the public facet defined for `instance`.
 ```js
@@ -95,7 +94,6 @@ const invitationIssuer = await E(zoe).getInvitationIssuer();
 // Bob uses the trusted `invitationIssuer` from Zoe to
 // transform the untrusted invitation to a trusted one
 const invitation = await invitationIssuer.claim(untrustedInvitation);
-const invitationValue = await E(zoe).getInvitationDetails(invitation);
 const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
         invitation);
 ```
@@ -296,6 +294,6 @@ A `userSeat` object has eight methods and one property. The methods are:
 - getNotifier()
   - Returns: `{Promise<Notifier>}`
  
- **tyg todo: Any more details we should go into on these?**
+
 
 
