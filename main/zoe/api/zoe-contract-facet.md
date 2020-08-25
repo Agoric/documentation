@@ -71,7 +71,11 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
 
-Make a credible Zoe `invitation` for a smart contract. The invitation's 
+Make a credible Zoe invitation for a smart contract. Note that invitations are a special case
+of a `payment`. They are in a one-to-one relationship with the `invitationsIssuer`, which is used
+to validate invitations and their `amounts`.
+
+The invitation's 
 `value` specifies:
 - The specific contract `instance`.
 - The Zoe `installation`.
@@ -82,39 +86,20 @@ and should include whatever information is needed for a potential recipient of t
 to know what they are getting in the optional `customProperties` argument, which is
 put in the `invitation`'s `value`.
 
-**tyg todo: Pretty sure I don't understand this well enough, and need an infodump from someone**
 ```js
-const creatorInvitation = zcf.makeInvitation(
-    assertProposalShape(makeCallOption, makeCallOptionExpected),
-    'makeCallOption',
-  );
+const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ```
 
 ## zcf.makeEmptySeatKit()
-- Returns: `{ZcfSeat}`
+- Returns: `{ZCFSeatRecord, Promise<UserSeat}`
 
-Returns an empty `zcfSeat`. See `zcfSeat` in the ZCF Objects section for details.
+Returns an empty `zcfSeatRecord` and a `promise` for a `userSeat` 
 
 Seats are used to represent offers, and have two facets (a particular view or API of an object; 
-there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`. A `ZCFSeat` is passed
-to `offerHandlers`
+there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`. 
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
-```
-The `zcfSeat` is what is passed to the `offerHandlers`, like this one:
-```js
-const mintPayment = mySeat => {
-  const amount = amountMath.make(1000);
-  // Synchronously mint and allocate amount to seat.
-  zcfMint.mintGains({ Token: amount }, mySeat);
-  // Exit the seat so that the user gets a payout.
-  mySeat.exit();
-  // Since the user is getting the payout through Zoe, we can
-  // return anything here. Let's return some helpful instructions.
-  return 'Offer completed. You should receive a payment from Zoe';
-};
-```
-See the Objects section for more about `ZCFSeat`. 
+``` 
  
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
@@ -169,9 +154,13 @@ const { brands, issuers, terms } = zcf.getTerms()
 ## zcf.getZoeService()
 - Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
 
-Expose the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to the contracts as well.
-**tyg todo: Need sample and use cases. Why do you use this instead of E(zoe.whatever)?**
-
+This is the only way to get the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to
+the contract code as well.
+```js
+// Making an offer to another contract in the contract.
+const zoeService = zcf.getZoeService();
+E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
+```
 
 ## zcf.assertUniqueKeyword(keyword)
 - `keyword` `{String}`
@@ -218,18 +207,34 @@ zcf.reallocate(
     seat.stage(seatBAllocation),
   );
 ```
-# ZCF Objects
 
-**tyg todo: May move to separate page. Here for the time being**
+## OfferHandlers
 
-## zcfSeat
-A `zcfSeat` has these properties and methods:
+**NOTE: This section is still in progress.** 
+
+A `zcfSeat` is passed to the `offerHandlers`, like this one:
+```js
+const mintPayment = mySeat => {
+  const amount = amountMath.make(1000);
+  // Synchronously mint and allocate amount to seat.
+  zcfMint.mintGains({ Token: amount }, mySeat);
+  // Exit the seat so that the user gets a payout.
+  mySeat.exit();
+  // Since the user is getting the payout through Zoe, we can
+  // return anything here. Let's return some helpful instructions.
+  return 'Offer completed. You should receive a payment from Zoe';
+};
+```
+### ZCFSeat
+
+Making an offer creates `zcfSeats`. They and passed to the `offerHandler` specified when the `invitation`
+is made, as the sole argument. A `zcfSeat` has these properties and methods:
 - `exit()`
   - Returns: `void`
 - `kickOut(msg?: string)`
   - Returns: `void` 
 - `getNotifier()` 
-  - Returns: `{Notifier<Allocation>}`  **tyg todo Is this right?** 
+  - Returns: `{Notifier<Allocation>}` 
 - `hasExited()`
   - Returns: `boolean`
 - `getProposal()`
@@ -248,16 +253,13 @@ A `zcfSeat` has these properties and methods:
   - `newAllocation` `Allocation`
   - Returns: `SeatStaging` 
 
-`zcfSeats` are created when an offer is made, and are passed to the `offerHandler` specified when the `invitation`
-is made, as the sole argument.
-
 ## ZCFMint
 A `ZCFMint` has these properties and methods:
 - `getIssuerRecord()`
   - Returns: `IssuerRecord` 
 - `mintGains(gains, zcfSeat)`
   - `gains` `AmountKeywordRecord`
-  - `zcfSeat?` `ZCFSeat`  **tyg todo: Not sure about this; was "zcfSeat?: ZCFSeat"?**
+  - `zcfSeat?` `ZCFSeat` - Optional
   - Returns: `ZCFSeat`             
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
     The `gains`' keywords are in the namespace of that seat.
