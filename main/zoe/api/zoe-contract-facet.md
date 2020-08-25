@@ -212,7 +212,7 @@ argument is omitted, it only returns amounts for brands for which an allocation 
 ```
   
 ## zcf.initPublicAPI(publicAPI)
-- `publicAPI` <Object>
+- `publicAPI`
 - Returns `{void}`
 
 Initialize the publicAPI for the contract instance, as stored by Zoe in

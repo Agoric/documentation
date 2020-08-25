@@ -89,6 +89,7 @@ software, you need to install the following.
     <td>Select a location for the Agoric CLI program. For example,
       <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
       with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>)
+      </td>
   </tr>
 </tbody>
 </table>
