@@ -24,13 +24,17 @@ looked to be the argument to start(), which also seemed to just be a 'zcf' strin
 - `zcf` `{ContractFacet}` 
 - `keywords` `{Array <String>}`
 <details>
-<summary>Click to expand.</summary>
+<summary>Click for description</summary>
 
 Checks that keywords submitted by the contract instance creator
 match what the contract expects. Throws if incorrect or if there are
 missing or extra keywords. The keywords order is irrelevant.
 
 The first argument is always `zcf`.
+</details>
+
+<details>
+<summary>Click for example source code</
 ```js
 import {
   assertIssuerKeywords,
