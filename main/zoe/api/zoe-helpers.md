@@ -12,13 +12,10 @@ import {
   assertProposalShape,
 } from '@agoric/zoe/src/contractSupport';
 ```
-**tyg todo: Do the exported methods in .../contractSupport/index.js all need to be documented?
-Specifically, the ones not in the zoeHelpers.js file?**
 
-Note that almost all ZoeHelpers require `zcf` as a first argument. 
-**tyg todo: Why? Also, if this is a contractFacet rather than a string, 
-where is it coming from? Looking at the contracts, the only prior zcf
-looked to be the argument to start(), which also seemed to just be a 'zcf' string?**
+Note that almost all ZoeHelpers require `zcf`, a `ContractFacet` as a first argument.
+Since they are contract helpers, they have access to the contract source code, which
+passes in `zcf`, the contract facet object, when it runs `start()`. 
 
 ## assertIssuerKeywords(zcf, keywords)
 - `zcf` `{ContractFacet}` 
