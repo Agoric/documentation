@@ -34,7 +34,8 @@ The first argument is always `zcf`.
 </details>
 
 <details>
-<summary>Click for example source code</
+<summary>Click for example source code</summary>
+  
 ```js
 import {
   assertIssuerKeywords,
