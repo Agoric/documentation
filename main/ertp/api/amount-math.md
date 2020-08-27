@@ -1,25 +1,7 @@
 # Amount Math
 
-Logic for manipulating `amounts`.
+Logic for manipulating amounts.
 
-## AmountMath Kinds
-
-There are three different kinds of `amountMaths`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer`; it then knows which kinds's operations to use on itself.
-
-The three kindss of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic):
-
-- `nat`: Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
-- `strSet`: Used with non-fungible assets. `amount` `values` are strings.
-- `set`: Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
-
-Use `makeIssuerKit(allegedName, amountMathKind)` to specify which `amountMath` 
-kind your contract uses. The second parameter, `amountMathKind` is optional and 
-defaults to `nat` if not given. For example
-```js
-makeIssuerKit('quatloos`); // Defaults to 'nat'
-makeIssuerKit('quatloos', 'strSet');
-makeIssuerKit('quatloos, 'set');
-```
 ## Amount
 
 Amounts are descriptions of digital assets, answering the questions "how much" and "of what kind". Amounts are values labeled with a brand. AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
@@ -49,14 +31,14 @@ const exampleAmountMath = issuer.getAmountMath();
 const exampleBrand = exampleAmountMath.getBrand();
 ```
 
-## amountMath.getAmountMathKind()
+## amountMath.getMathHelpersName()
 - Returns: `{String}`
 
-Get the kind of the `amountMath`, one of `nat`, `set`, or `setStr`.
+Get the name of the mathHelpers used.
 
 ```js
 const { amountMath } = makeIssuerKit('bucks');
-amountMath.getAmountMathKind(); // 'nat'
+amountMath.getMathHelpersName(); // 'nat'
 ```
 
 ## amountMath.make(allegedValue)
@@ -101,7 +83,7 @@ const value = amountMath.getValue(amount);
 ## amountMath.getEmpty()
 - Returns: `{Amount}`
 
-Return the amount representing an empty amount. This is the identity element for `amountMath.add()` and `amountMath.subtract()`.
+Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
 
 ```js
 const { amountMath } = makeIssuerKit('bucks');
@@ -134,10 +116,7 @@ amountMath.isEmpty(fungible1)
 - `rightAmount` `{Amount}`
 - Returns: `{boolean}`
 
-Returns true if the leftAmount is greater than or equal to the rightAmount. For 
-non-scalars, "greater than or equal to" depends on the kind of amountMath. For example, 
-whether rectangle A is greater than rectangle B 
-depends on whether rectangle A includes rectangle B as defined by the logic in `amountMath`
+Returns true if the leftAmount is greater than or equal to the rightAmount. For non-scalars, "greater than or equal to" depends on the kind of amount, as defined by the MathHelpers. For example, whether rectangle A is greater than rectangle B depends on whether rectangle A includes rectangle B as defined by the logic in MathHelpers.
 
 ```js
 const { amountMath } = makeIssuerKit('fungible');
