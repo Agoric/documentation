@@ -15,11 +15,12 @@ the handle for the running contract instance.
 This section covers the code you need to have at the start of your contract code.
 
 To warn if the correct return values for your contract are not being returned,
-add this right before the start of your contract code 
+add this right before the start of your contract code:
+```js
 /**
  * @type {ContractStartFn}
  */
-
+```
 Your contract code must export a function `start` as a non-default export.
 `zcf` is the Zoe Contract Facet and is the only argument provided to the contract
 
@@ -34,7 +35,7 @@ export { start };
 ```
 The contract must return a record with any (or none) of the following:
 
-- `creatorFacet` - an object usually with admin authority. It is only given to the entity that 
+- `creatorFacet` - an object, usually with admin authority. It is only given to the entity that 
 calls `E(zoe).startInstance(...)`; i.e. the party that was the creator of the current contract instance.
 It creates invitations for other parties, and takes actions that are unrelated to making offers.
 - `creatorInvitation` - a Zoe invitation only given to the entity that calls `E(zoe).startInstance(...)`; i.e. 
@@ -46,7 +47,7 @@ for sale in an auction or covered call.
 ## zcf.makeZCFMint(keyword, amountMathKind)
 - `keyword` `{String}`
 - `amountMathKind` `{AmountMathKind}` (defaults to `MathKind.NAT`)
-Returns: `{Promise<ZCFMint>}`
+- Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
 instead of importing and using ERTP-based `mints`.
@@ -57,11 +58,11 @@ ERTP methods on a `ZCFMint`.
 `ZCFMints` have three methods:
 - `getIssuerRecord()` 
   - Returns: `{Promise<IssuerRecord>}`
-  - If there are no `issuer`, `brand`, or `amountMath` associated with the `zcfMint`, it
+  - If there is no `issuer`, `brand`, or `amountMath` associated with the `zcfMint`, it
     creates them and returns an `issuerRecord` containing them. Otherwise, it just returns the
    `issuerRecord`.
 - `mintGains`
-  - `gains: amountKeywordRecord` **tyg todo: Not sure how to describe this**
+  - `gains: amountKeywordRecord` 
   - `zcfSeat` `{ZCFSeat}` - optional
   - Returns `{ZCFSeat}`
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
@@ -70,14 +71,16 @@ ERTP methods on a `ZCFMint`.
     Mint that amount of assets into the pooled `purse`.
     If a seat is provided, it is returned. Otherwise a new seat is
     returned.
+  - `zcfMint.mintGains({ Token: amount }, seat);
 - `burnlosses
-  - `losses: AmountKeyWordRecord` **tyg todo: Not sure how to describe this**
+  - `losses: AmountKeyWordRecord` 
   - `zcfSeat` : `{ZCFSeat}`
   - Returns: void
   - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
     The `losses`' keywords are in that seat's namespace.
     Subtract `losses` from that seat's `allocation`.
-    Burn that `amount` of assets from the pooled `purse`.
+    Burns that `amount` of assets from the pooled `purse`.
+  - ``zcfMint.burnLosses({ Token: amount }, seat);`
 
 **Note**: The call to make the `ZCFMint` is asynchronous, but 
 calls to the resulting `ZCFMint` are synchronous.
@@ -89,6 +92,7 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 
 ## zcf.getInvitationIssuer()
 - Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
+
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
 is used to validate `invitations` that users receive to participate
@@ -121,11 +125,11 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
 
-Make a credible Zoe invitation for a smart contract. Note that invitations are a special case
-of a `payment`. They are in a one-to-one relationship with the `invitationsIssuer`, which is used
+Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
+of an ERTP `payment`. They are in a one-to-one relationship with the `invitationsIssuer`, which is used
 to validate invitations and their `amounts`.
 
-The invitation's 
+The `invitation`'s 
 `value` specifies:
 - The specific contract `instance`.
 - The Zoe `installation`.
@@ -141,11 +145,11 @@ const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ```
 
 ## zcf.makeEmptySeatKit()
-- Returns: `{ZCFSeatRecord, Promise<UserSeat}`
+- Returns: `{ZCFSeatRecord, Promise<UserSeat>}`
 
 Returns an empty `zcfSeatRecord` and a `promise` for a `userSeat` 
 
-Seats are used to represent offers, and have two facets (a particular view or API of an object; 
+Zoe uses `seats` to represent offers, and have two facets (a particular view or API of an object; 
 there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`. 
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
@@ -177,13 +181,12 @@ const assetMath = zcf.getAmountMath(assetAmount.brand);
 
 Shuts down the entire vat and gives payouts.
 
-This exits all `seats` associated with the contract `instance`, 
+This exits all `seats` associated with the current `instance`, 
 giving them their payouts.
 
 Call when:
 - You want nothing more to happen in the contract, and 
 - You don't want to take any more offers
-
 
 ```js
 zcf.shutdown();
@@ -207,7 +210,7 @@ const { brands, issuers, terms } = zcf.getTerms()
 This is the only way to get the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to
 the contract code as well.
 ```js
-// Making an offer to another contract in the contract.
+// Making an offer to another contract instance in the contract.
 const zoeService = zcf.getZoeService();
 E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
@@ -226,22 +229,22 @@ zcf.assertUniqueKeyword(keyword);
 - Returns: `{void}`
 
 The contract reallocates over `seatStagings`, which are
-associations of seats with new allocations to be used in reallocation.
+associations of `seats` with new `allocations` to be used in reallocation.
 There must be at least two `seatStagings` in the array argument. 
 
 The reallocation only succeeds if it:
-1 Conserves rights (the amounts specified have the same total value as the
+1 Conserves rights (the specified `amounts` have the same total value as the
   current total amount)
 2 Is 'offer-safe' for all parties
   involved. Offer safety is checked at the staging step.
 
-The reallocation is partial, only applying to seats associated
+The reallocation is partial, only applying to `seats` associated
 with the `seatStagings`. By induction, if rights conservation and 
 offer safety hold before, they hold after a safe reallocation. 
 
-This is true even though we only re-validate for seats whose 
-allocations change. A reallocation can only effect offer safety for 
-those seats, and since rights are conserved for the change, overall 
+This is true even though we only re-validate for `seats` whose 
+`allocations` change. A reallocation can only effect offer safety for 
+those `seats`, and since rights are conserved for the change, overall 
 rights are unchanged.
 
 Reallocate throws these errors:
@@ -312,11 +315,11 @@ A `ZCFMint` has these properties and methods:
   - `zcfSeat?` `ZCFSeat` - Optional
   - Returns: `ZCFSeat`             
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
-    The `gains`' keywords are in the namespace of that seat.
+    The `gains`' keywords are in the namespace of that `seat`.
     Add the `gains` to that `seat`'s `allocation`.
     The resulting state must be offer safe. (Currently, increasing assets can
     never violate offer safety.)
-    Mint that amount of assets into the pooled `purse`.
+    Mints that amount of assets into the pooled `purse`.
     If a `seat` is provided, it is returned. Otherwise a new `seat` is
     returned. 
 - `burnLosses(losses. zcfSeat)`
