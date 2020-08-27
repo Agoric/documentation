@@ -23,8 +23,9 @@ To send assets in ERTP:
 2. Send this `payment` to a recipient object as a message.
 
 To receive assets in ERTP:
-1. Create a `purse` for the asset kind you'll receive. **Note:** You
-do not need access to the kind's `mint` to do this. 
+1. Create a `purse` for the asset kind you'll receive. Since
+an empty `purse` conveys no asset rights, you create it with
+a less powerful `Issuer` instead of a `Mint`. 
 2. Get access to the asset kind you'll receive.
 3. Receive the message with the `payment` and deposit the `payment` in
 your `purse`.
@@ -43,7 +44,7 @@ If everything passes the checks, the asset moves from the `payment` to
 the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
-- The `payment` is burned (i.e. destroyed)..
+- The `payment` is burned (i.e. destroyed).
 - The `purse` contains the total of what it held before plus the `payment`'s full content.
   - i.e. If the `purse` had 7 Quatloos and the `payment` had 3 Quatloos, after depositing the `payment`
     the `purse` has 10 Quatloos.
