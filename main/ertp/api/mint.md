@@ -1,6 +1,6 @@
 # Mint
 
-Only a `mint` can issue new digital assets, so only the holder of the `mint` can
+Only a `mint` can issue new digital assets, so only the holder of a `mint` can
 do so. A `mint` has a one-to-one relationship with both an `issuer` and a `brand`,
 and can only mint new assets of that `brand` and is the only `'mint` that can mint
 new `brand` type assets for its associated `brand`.
