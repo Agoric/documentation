@@ -49,13 +49,13 @@ If necessary, both a `LocalAmountMath` and an `AmountMath` can exist and be asso
 
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
-Returns: `{ LocalMathAmount }`
+Returns: `{ AmountMath }`
 
 Creates and returns a local (synchronous) Amount Math object. The new `localAmountMath` has a one-to-one
 relationship with the `issuer`, and thus also to the `brand` and `mint` in one-to-one
 ```js
 import { makeLocalAmountMath } from '@agoric/ertp';
-const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
+const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
 ```
 
 ## amountMath.getBrand()
@@ -92,11 +92,11 @@ quatloosAmountMath.getMathHelpersName(); // MathKind.NAT
 - Returns: `{Amount}`
 
 Make an `amount` from a `value` by adding the `brand` associated with
-the `amountMath`..
+the `amountMath`.
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-//amount837 = { value: 837 brand: quatloos }
+//amount837 = { value: 837, brand: quatloos }
 const amount837 = quatloosAmountMath.make(837);
 ```
 
@@ -106,15 +106,6 @@ const amount837 = quatloosAmountMath.make(837);
 
 Make sure this `amount` is valid and if so, return it.
 If not valid, throws an exception. 
-
-
-Make sure this amount is valid and if so, return it.
-
-The example would show
-
-const verifiedAmount = quatlooAmountMath.coerce(allegedAmount);
-If allegedAmount isn't valid, this throws an exception, which is often a useful thing to do in a contract when an amount of a particular currency is required.
-
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -218,21 +209,20 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
 For example, { 'seat 1', 'seat 2' } is considered
 unequal to { 'seat 2' } because the number of items in the former is
-different from that of the latter. Similarly { `seat 1` } and { `seat2` } 
-are considered unequal because the conthe former both contains all of the latter's 
-contents and has more elements.
+different from that of the latter. Similarly { `seat 1`,  `seat2`  } and { `seat2` } 
+are considered unequal because the former has elements that are not contained in the latter.
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos10 = quatloosAmountMath.make(10);
 const quatloos5 = quatloosAmountMath.make(5);
-const quatloos5-2 = quatloosAmountMath.make(5);
+const quatloos5b = quatloosAmountMath.make(5);
 
 // Returns true
 quatloosAmountMath.isEqual(quatloos10, quatloos10);
 // Returns true
-quatloosAmountMath.isEqual(quatloos5, quatloos5-2);
+quatloosAmountMath.isEqual(quatloos5, quatloos5b);
 // Returns false
 quatloosAmountMath.isEqual(quatloos10, quatloos5);
 // Returns false
@@ -260,7 +250,7 @@ const { amountMath: itemsAmountMath } = makeIssuerKit('myItems', MathKind.STRING
 const listAmountA = itemsAmountMath.make(harden['1','2','4']);
 const listAmountB = itemsAmountMath.make(harden['3']);
 
-// Returns ['1', '2', '4', '3']
+// Returns an amount whose value is ['1', '2', '4', '3']
 const combinedList = itemsAmountMath.add(listAmountA, listAmountB);
 ```
 
