@@ -15,17 +15,6 @@ All such operations immediately return a promise for their result. That may even
 For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html). 
 :::
 
-**tyg todo: Where should the "start" method(?) be documented? i.e.**
-```js
-const start = zcf => {
-  ...
-  // your code here
-  return harden({ creatorFacet, creatorInvitation, publicFacet });
-}
-harden(start);
-export { start };
-```
-
 ## E(zoe).getBrands(instance)
 - `instance` `{Instance}`
 - Returns: `{Promise<BrandKeywordRecord>}`
@@ -48,6 +37,7 @@ const issuerKeywordRecord = await E(zoe).getIssuers(instance);
 ## E(zoe).getTerms(instance)
 - `instance` `{Promise<Instance>}`
 - Returns: `{Object}` 
+
 Returns the terms of the `instance` argument, including its `issuers`, `brands` and any 
 custom terms.
 ```js
@@ -56,7 +46,7 @@ const terms = await E(zoe).getTerms(instance);
 
 ## E(zoe).getPublicFacet(instance)
 - `instance` `{Instance}`
-- Returns: `{PublicFacet}` 
+- Returns: `{Promise<PublicFacet>}` 
 
 A contract instance's `publicFacet` is an object available via Zoe to anyone knowing that `instance`. 
 You use it for general queries and actions, such as getting a current price or creating public invitations.
@@ -68,7 +58,7 @@ Returns a `publicFacet` containing the public facet defined for `instance`.
 const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
 ## E(zoe).getInvitationIssuer()
-- Returns `{Issuer}`
+- Returns `{Promise<Issuer>}`
 
 Zoe has a single `invitationIssuer` for its entire
 lifetime. By having a reference to Zoe, a user can get the `invitationIssuer` and 
@@ -77,7 +67,7 @@ from someone else by calling `E(invitationIssuer).claim()` with the
 untrusted invitation as the argument.
 
 The `mint` associated with the `invitationIssuer`
-create `invitations` in the form of ERTP `payments` that represent the right to interact with
+creates `invitations` in the form of ERTP `payments` that represent the right to interact with
 a smart contract in particular ways.
 
 The `invitationIssuer` has two methods, both of which take an `invitation` as an argument.
@@ -100,14 +90,15 @@ const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
 
 ## E(zoe).getInvitationDetails(invitation)
 - `invitation` `{Invitation}`
-- Returns `{Object}`
+- Returns `{Promise<Object>}`
 
 Takes an `invitation` as an argument and returns an object containing the following 
 details about the `invitation`:
 - `installation` `{Installation}`: The contract's installation in Zoe.
 - `instance` `{Instance}`: The contract instance this invitation is for.
 - `invitationHandle` `{Handle}`: A reference used to refer to this invitation.
-- `description` `{String}`: A short string indicating which part of the code produced the invitation. T
+- `description` `{String}`: Serves as a name of the `invitation`. Use it
+   to find which part of the contract code created the ``invitation.
 ```js
 const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
@@ -118,12 +109,14 @@ const invitationValue = await E(zoe).getInvitationDetails(invitation);
 - Returns: `{Promise<Installation>}`
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
-Returns an `installation` object. **tyg todo: Cover how to get code bundled (or link to same)**
+Returns an `installation` object. 
 
 ```js
+// bundleSource takes source code files and 
+// bundles them together in the format install expects.
 import bundleSource from '@agoric/bundle-source';
-  const bundle = await bundleSource(pathResolve(`./src/contract.js`));
-  const installationHandle = await E(zoe).install(bundle);
+const bundle = await bundleSource(pathResolve(`./src/contract.js`));
+const installationP = await E(zoe).install(bundle);
 ```
 
 ## E(zoe).getInstance(invitation)
@@ -139,7 +132,7 @@ const instance = await E(zoe).getInstance(invitation);
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Installation>}`
 
-Returns a `Promise` for the contract `installation` the `invitation`'s contract instance uses.
+Returns a `Promise` for the contract `installation` the `invitation`'s contract `instance` uses.
 ```js
 const installation = await E(zoe).getInstallation(invitation);
 ```
@@ -168,7 +161,12 @@ It returns a `promise` for a `StartInstanceResult` object. The object consists o
 - `creatorFacet` `{any}`
 - `publicFacet` `{any}`
 - `instance` `{Instance}`
-- `creatorInvitation `{Payment | undefined}`
+- `creatorInvitation` `{Payment | undefined}`
+
+A `publicFacet` and a `creatorFacet` are objects available via Zoe to anyone knowing 
+the `instance` they are associated with. The `publicFacet` is used for general queries 
+and actions, such as getting a current price or creating public invitations. Since a 
+facet is defined just as any other object, you add methods to them just like you would any object.
 
 `creatorInvitation` is an invitation that the contract instance creator can use. 
 It is usually used in contracts where the creator immediately sells 
@@ -199,83 +197,17 @@ omitting that argument or passing `undefined`, instead of passing an
 empty record.
 
 The `proposal` has three parts: 
-- `want`: An object with keywords as keys and amounts as values.
-- `give`: An object with keywords as keys and amounts as values.
+- `want`: An object with keywords as keys and `amounts` as values.
+- `give`: An object with keywords as keys and `amounts` as values.
 - `exit`: Specifies the payout-liveness policy Zoe can guarantee for the offer.
 
 `paymentKeywordRecord` is a record with keywords as keys, with
  values of the actual `payments` to be escrowed. A `payment` is
  expected for every rule under `give`.
  
- `offer()` returns a `promise` for a `userSeat`. See the Objects section for its
- description.
- ```js
- const swapProposal = harden({
-   give: { Asset: moola(5) },
-   want: { Price: simoleans(12) },
-   exit: { onDemand: null },
- });
- const aliceSwapPayments = { Asset: swapPayment };
- const swapInvitation = await E(publicFacet).makeSwapInvitation();
- const seat = await E(zoe).offer(
-   swapInvitation,
-   swapProposal,
-   aliceSwapPayments,
- );
- ```
-
-
----------------------------
-**tyg todo: As mentioned in the standup, I think we now need to cover
-API objects in the doc. I'm undecided if they should be one page with methods,
-on have their own pages. Thoughts? For the time being, I'm including them on the
-same page with a h1 heading**
-
-# Objects
-
-The Zoe API defines and uses several object types. This **tyg todo section/page** 
-shows their definitions and discusses their uses.
-
-## Installation Object
-
-An `installation` is contract source code bundled and saved in Zoe to make contract instances. 
-Any `installation` can make many `instances`. 
-
-- installation.getBundle()
-  - Returns: `{SourceBundle}`
-  - Gets and returns the bundled source code for its associated contract.
-
-## StartInstanceResult Object
-`startInstance()` returns a `promise` for a `StartInstanceResult` object. It has four properties: of:
-- `creatorFacet` `{any}`
-- `publicFacet` `{any}`
-- `instance` `{Instance}`
-- `creatorInvitation `{Payment | undefined}`
+ `offer()` returns a `promise` for a `userSeat`. 
  
-
-## InvitationDetails Object
-
-`invitationDetails` objects have four properties:
-- `installation` `{Installation}`: The contract's Zoe installation.
-- `instance` `{Instance}`: The contract instance this `invitation` is in.
-- `invitationHandle` `{Handle}: A reference that refers to this `invitation`.
-- `description` `{String}`: A description of the `invitation`, covering what 
-  a recipient needs to know about the contract and participating in it.
-  Also anything else about the `invitation`, such as an expiration date after
-  which the `invitation` is invalid.
-
-## ProposalRecord Object
-
-A `proposalRecord` has three properties:
-- `give: AmountKeywordRecord`
-- `want: AmountKeywordRecord`
-- `exit: ExitRule
-  - `exitRule` must be one of these three values: **tyg todo: Need info on what each does**
-    - `'onDemand'`
-    - `'afterDeadline'`
-    - `'waived'`
-
-## UserSeat Object
+ ### UserSeat Object
 A `userSeat` object has eight methods and one property. The methods are:
 - getCurrentAllocation() => 
   - Returns: `{Promise<Allocation>}` 
@@ -293,6 +225,60 @@ A `userSeat` object has eight methods and one property. The methods are:
   - Returns: `{Promise<boolean>}` 
 - getNotifier()
   - Returns: `{Promise<Notifier>}`
+ 
+ ```js
+ const swapProposal = harden({
+   give: { Asset: moola(5) },
+   want: { Price: simoleans(12) },
+   exit: { onDemand: null },
+ });
+ const aliceSwapPayments = { Asset: swapPayment };
+ const swapInvitation = await E(publicFacet).makeSwapInvitation();
+ const seat = await E(zoe).offer(
+   swapInvitation,
+   swapProposal,
+   aliceSwapPayments,
+ );
+ ```
+
+
+## Installation Object
+
+An `installation` is contract source code bundled and saved in Zoe to make contract instances. 
+Any `installation` can make many `instances`. 
+
+- `installation.getBundle()`
+  - Returns: `{SourceBundle}`
+  - Gets and returns the bundled source code for its associated contract.
+
+## StartInstanceResult Object
+`startInstance()` returns a `promise` for a `StartInstanceResult` object. It has four properties:
+- `creatorFacet` `{any}`
+- `publicFacet` `{any}`
+- `instance` `{Instance}`
+- `creatorInvitation` `{Payment | undefined}`
+ 
+## InvitationDetails Object
+
+`invitationDetails` objects have four properties:
+- `installation` `{Installation}`: The contract's Zoe installation.
+- `instance` `{Instance}`: The contract instance this `invitation` is in.
+- `invitationHandle` `{Handle}`: A reference that refers to this `invitation`.
+- `description` `{String}`: Serves as a name of the `invitation`. Use it
+   to find which part of the contract code created the ``invitation.
+
+## ProposalRecord Object
+
+A `proposalRecord` has three properties:
+- `give: AmountKeywordRecord`
+- `want: AmountKeywordRecord`
+- `exit: ExitRule
+  - `exitRule` must be one of these three values: **tyg todo: Need info on what each does**
+    - `'onDemand'`
+    - `'afterDeadline'`
+    - `'waived'`
+
+
  
 
 
