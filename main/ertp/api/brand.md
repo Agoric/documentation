@@ -1,12 +1,12 @@
 # Brand
 The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships within a
 contract `instance`
-with an `issuer`, `mint`, and `amountMath`, and one-to-many relationships with `purses` and `payments`.
+with an `issuer` and a `mint, and one-to-many relationships with `amountMaths`, `purses` and `payments`.
 Meaning for, say, the Quatloos `brand`:
 - There is only one Quatloos `issuer`.
 - There is only one Quatloos `mint`.
-- There is only one Quatloos `amountMath`.
 - All `amounts` created via the Quatloos `amountMath` have a Quatloos `brand`.
+- There can be many local copies of the Quatloos `amountMath`, but those `amountMaths` only work on Quatloos branded `amounts`.
 - There can be any number of Quatloos holding `purses`, but those `purses` can only hold Quatloos.
 - There can be any number of Quatloos holding `payments`, but those `payments` can only hold Quatloos.
 
@@ -15,7 +15,7 @@ purported `amount` cannot use the `brand` by itself to verify its authenticity,
 since the `brand` can be reused by a misbehaving `issuer`
 
 All of these relationships are unchangable; if, say, a `mint` is created that makes new Quatloos, it
-can never create new assets of any other `brand`..`
+can never create new assets of any other `brand`.`
 
 ## AllegedName
 Human-readable string name of a kind of digital asset. The alleged name should
@@ -25,7 +25,11 @@ not be trusted as accurate, since it is not provided by a trusted source.
 - `issuer` `{Issuer}`
 - Returns: `{Boolean}`
 
-Return `true` if the `brand` comes from this `issuer`, `false` if not.
+Return `true` if `issuer` is this brand's `issuer`, `false` if not.
+
+An `issuer` uniquely identifies its `brand`. A `brand` **unreliably** identifies 
+its `issuer`. If `brand` B claims its `issuer` is A, but A doesn't agree 
+that B is its `brand`, then the `brand` is unreliable.
 
 ```js
 const isIssuer = brand.isMyIssuer(issuer);
