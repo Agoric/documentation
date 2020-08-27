@@ -18,7 +18,7 @@ defaults to `MathKind.NAT` if not given. For example
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos`); // Defaults to 'MathKind.NAT'
-makeIssuerKit('foobars', 'MathKind.STRSET');
+makeIssuerKit('foobars', 'MathKind.STRING_SET');
 makeIssuerKit('kitties', MathKind.SET');
 ```
 
@@ -38,6 +38,25 @@ someAmount: {
 `values` describe how much of something can be owned or shared. A fungible `value` is normally represented by a natural number. Other `values` may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
 A `value` must be `Comparable`.
+
+## LocalAmountMath
+
+We encourage you to make and use `LocalAmountMath`, a local and thus synchronous version of `AmountMath`. 
+Their local or remote status is the only different between the two types; each has the same methods, the
+same kinds (`MathKind.NAT`, etc.) and the same one-to-one relationship with a `mint`, `issuer`, and `brand`.
+If necessary, both a `LocalAmountMath` and an `AmountMath` can exist and be associated with the same
+`mint`, `issuer`, and `brand` **tyg todo This last is a guess on my part. Correct?**.
+
+## makeLocalAmountMath(issuer)
+- `issuer`: `{issuer}`
+Returns: `{ LocalMathAmount }`
+
+Creates and returns a local (synchronous) Amount Math object. The new `localAmountMath` has a one-to-one
+relationship with the `issuer`, and thus also to the `brand` and `mint` in one-to-one
+```js
+import { makeLocalAmountMath } from '@agoric/ertp';
+const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
+```
 
 ## amountMath.getBrand()
 - Returns: `{Brand}`
@@ -60,14 +79,11 @@ const exampleBrand = exampleAmountMath.getBrand();
 ## amountMath.getAmountMathKind()
 - Returns: `{String}`
 
-Get the kind (`nat`, `strSet`, `set`) of the `amountMath`.
-
-**tyg todo: Not sure if need to import MathKind, or whether the example
-returns `nat` or `MathKind.NAT`?**
+Get the kind (`MathKind.NAT`, `MathKind.STRING_SET`, `MathKind.SET`) of the `amountMath`.
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-quatloosAmountMath.getMathHelpersName(); // 'nat'
+quatloosAmountMath.getMathHelpersName(); // MathKind.NAT
 ```
 
 ## amountMath.make(allegedValue)
@@ -80,7 +96,7 @@ the `amountMath`..
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-//amount837 = value: 837 brand: quatloos
+//amount837 = { value: 837 brand: quatloos }
 const amount837 = quatloosAmountMath.make(837);
 ```
 
@@ -88,14 +104,26 @@ const amount837 = quatloosAmountMath.make(837);
 - `allegedAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Make sure this `amount` is valid and if so, return it as an `amount`.
+Make sure this `amount` is valid and if so, return it.
 If not valid, throws an exception. 
+
+
+Make sure this amount is valid and if so, return it.
+
+The example would show
+
+const verifiedAmount = quatlooAmountMath.coerce(allegedAmount);
+If allegedAmount isn't valid, this throws an exception, which is often a useful thing to do in a contract when an amount of a particular currency is required.
+
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloos50 = quatloosAmountMath.make(50);
-
-quatloosAmountMath.coerce(quatloos50); // Returns amount equal to quatloos50
+// Returns the same amount as quatloos50
+// allegedAmount is the argument to coerce. If it isn't
+// valid, this throws an exception. This is often a useful
+// thing to do when an amount of a particular currency is required.
+const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
 ```
 
 ## amountMath.getValue(amount)
@@ -118,7 +146,7 @@ const myValue = quatloosAmountMath.getValue(quatloos123);
 Returns the `amount` representing an empty `amount` for the `amountMath`'s 
 associated `brand`. This is the identity element for `AmountMath.add()` 
 and `AmountMath.subtract()`. The empty `value` depends on whether 
-the `amountMath` is of kind `nat` (`0`), `set` (`[]`), or `strSet` (`[]`).
+the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`), or `MathKind.STRING_SET` (`[]`).
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -137,7 +165,7 @@ Returns `true` if the `amount` is empty. Otherwise returns `false`.
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
-const quatloos1` = quatloosAmountMath.make(1);
+const quatloos1 = quatloosAmountMath.make(1);
 
 // returns true
 quatloosAmountMath.isEmpty(empty)
@@ -153,11 +181,12 @@ quatloosAmountMath.isEmpty(quatloos1)
 
 Returns `true` if the `value` of `leftAmount` is greater than or equal to
 the `value` of `rightAmount`. Both `amount` arguments must have the same
-`brand`.
+`brand` as this `amountMath`.
 
 For non-fungible `values`, what "greater than or equal to" is depends on the 
-kind of `amountMath`. For example, whether rectangle A is greater than rectangle B 
-depends on whether rectangle A includes rectangle B as defined by the logic in `amountMath`
+kind of `amountMath`. For example, { 'seat 1', 'seat 2' } is considered
+greater than { 'seat 2' } because the former both contains all of the latter's 
+contents and has more elements.
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -187,10 +216,11 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
 
 For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
-For example, whether rectangle A is greater to rectangle B 
-depends on by the logic in `amountMath`. For example, is a 6x4 rectangle
-equal to a 8x3 rectangle? Their areas are equal (24), but the first has
-a total edge length of 20 while the second has a total edge length of 22.
+For example, { 'seat 1', 'seat 2' } is considered
+unequal to { 'seat 2' } because the number of items in the former is
+different from that of the latter. Similarly { `seat 1` } and { `seat2` } 
+are considered unequal because the conthe former both contains all of the latter's 
+contents and has more elements.
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -201,13 +231,10 @@ const quatloos5-2 = quatloosAmountMath.make(5);
 
 // Returns true
 quatloosAmountMath.isEqual(quatloos10, quatloos10);
-
 // Returns true
 quatloosAmountMath.isEqual(quatloos5, quatloos5-2);
-
 // Returns false
 quatloosAmountMath.isEqual(quatloos10, quatloos5);
-
 // Returns false
 quatloosAmountMath.isEqual(empty, quatloos10);
 ```
@@ -268,10 +295,8 @@ The following methods on other ERTP components and objects also either operate
 on or return a brand. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
-[`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
-
-- [`issuer.getAmountMath()`](./issuer.html#issuer-getamountmath)
-  - Returns the `amountMath` associated with the `issuer`.
+- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+  - Returns the `amount` description of the `payment`
 - [`issuer.getAmountMathKind()`](./issuer.html#issuer-getamountmathking)
   - Returns the kind of the `issuer`'s associated `amountMath`.
 - [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
