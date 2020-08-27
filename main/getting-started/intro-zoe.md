@@ -47,7 +47,7 @@ const installationHandle = E(zoe).install(sourceCode, moduleFormat);
 ```
 
 
-A contract has to be *instantiated* for it to actually be used. A contract can be instantiated by calling `E(zoe).startInstance(installationHandle).` Multiple *instances* of any Zoe-installed contract can execute simultaneously. For clarity, in this document a *contract* is the installed code that defines how the contract works. A *contract instance* is an active execution of the contract code. 
+A contract has to be *instantiated* for it to actually be used. A contract can be instantiated by calling `E(zoe).makeInstance(installationHandle).` Multiple *instances* of any Zoe-installed contract can execute simultaneously. For clarity, in this document a *contract* is the installed code that defines how the contract works. A *contract instance* is an active execution of the contract code. 
 
 
 For example, let’s say a realtor has a standard agreement they use when selling a client’s house. The contract would be the code that defines how that standard agreement works. Every time the realtor has a new house to sell, they instantiate a new instance of their standard contract to use for that specific property. If they have ten houses up for sale, they have ten different contract instances.
@@ -61,22 +61,22 @@ const issuerKeywordRecord = harden({
   Asset: moolaIssuer,
   Price: simoleanIssuer,
 });
-const aliceInvite = await E(zoe).startInstance(
+const aliceInvite = await E(zoe).makeInstance(
   installationHandle,
   issuerKeywordRecord, 
 });
 ```
-Let’s work backwards from `startInstance()`’s arguments. As you’ll recall from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints), *issuers* map minted assets to purses and payments. The *keyword record* is made up of two key:value pairs. The key names must be ASCII and capitalized; they are the same as are used in the contract code, in this case `Price` and `Asset`. `Price` is for what is wanted, and `Asset` is for what is being sold. `Price` is for what will be swapped for it (from the perspective of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). The price is denominated in the imaginary currency simoleons, so that keyword needs the simoleon Issuer associated with it. The asset is denominated in the imaginary currency moola, so that keyword needs the moola Issuer as its value. 
+Let’s work backwards from `makeInstance()`’s arguments. As you’ll recall from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints), *issuers* map minted assets to purses and payments. The *keyword record* is made up of two key:value pairs. The key names must be ASCII and capitalized; they are the same as are used in the contract code, in this case `Price` and `Asset`. `Price` is for what is wanted, and `Asset` is for what is being sold. `Price` is for what will be swapped for it (from the perspective of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). The price is denominated in the imaginary currency simoleons, so that keyword needs the simoleon Issuer associated with it. The asset is denominated in the imaginary currency moola, so that keyword needs the moola Issuer as its value. 
 
 
-Finally, `E(zoe).startInstance()` can take a `terms` argument, another set of key:value pairs. Terms let a contract instance creator further customize the contract operations, as enabled by the contract code. Contract terms can be expressed without specific values. For example, an auction contract may define minimum bid and minimum raise variables and use them in its code, but the variables are not given values in the code. Instead, the `terms` argument provides the variables’ values.
+Finally, `E(zoe).makeInstance()` can take a `terms` argument, another set of key:value pairs. Terms let a contract instance creator further customize the contract operations, as enabled by the contract code. Contract terms can be expressed without specific values. For example, an auction contract may define minimum bid and minimum raise variables and use them in its code, but the variables are not given values in the code. Instead, the `terms` argument provides the variables’ values.
 
 
 Why the need to parameterize a contract with terms? Well, the minimum raise should be quite different if an auction is for a used Harry Potter paperback vs. a signed first British hardback edition of *Harry Potter and the Philosopher’s Stone*. The `terms` value for the used paperback auction would be `{ Currency: 'USDollar', MinRaise: 1 }`. For the first edition auction, `terms`’ value would be  `{ Currency: 'USDollar', MinRaise: 500 }`. With the different `terms` values, there are now contract instances customized for the items being sold in each one.
 
 ## Invites
 
-The `E(zoe).startInstance()` call returns an *invite* to that contract instance. Invites are [*ERTP payment objects*](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp) that let their holder interact with that specific contract instance. If there are ten instances of a contract running and you hold an invite to, say, the earliest created one, that’s the only one the invite works with. It doesn’t work with any of the nine later created contract instances. 
+The `E(zoe).makeInstance()` call returns an *invite* to that contract instance. Invites are [*ERTP payment objects*](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp) that let their holder interact with that specific contract instance. If there are ten instances of a contract running and you hold an invite to, say, the earliest created one, that’s the only one the invite works with. It doesn’t work with any of the nine later created contract instances. 
 
 
 And while whoever instantiated the contract gets the initial invite to that instantiation, as with all invites, they can transfer it to another party before it’s used. Who created or first held an invite doesn’t matter. Whoever possesses an invite has control and use of it. 
