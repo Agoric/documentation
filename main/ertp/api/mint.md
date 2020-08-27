@@ -8,7 +8,7 @@ new `brand` type assets for its associated `brand`.
 ## makeIssuerKit(allegedName, amountMathKind)
 - `allegedName` `{String}`
 - `amountMathKind` `{MathKind}`
-- Returns: `{Purse}`
+- Returns: `{IssuerKit}`
 
 While not a method called on a `mint`, clearly it's important to know how to create a new `mint`. 
 `makeIssuerKit()` returns a new `issuer`, `mint`, `amountMath`, and `brand`. 
@@ -25,7 +25,7 @@ const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos')
 const quatloosMintIssuer = quatloosMint.getIssuer();
 
 // returns true
-Object.is(issuer, quatloosMintIssuer);
+issuer === quatloosMintIssuer);
 ```
 
 ## mint.mintPayment(newAmount)
