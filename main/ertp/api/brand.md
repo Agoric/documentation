@@ -1,16 +1,18 @@
 # Brand
-The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships within an `instance`
+The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships within a
+contract `instance`
 with an `issuer`, `mint`, and `amountMath`, and one-to-many relationships with `purses` and `payments`.
 Meaning for, say, the Quatloos `brand`:
 - There is only one Quatloos `issuer`.
 - There is only one Quatloos `mint`.
 - There is only one Quatloos `amountMath`.
-- All `amounts` created the Quatloos `amountMath` have a Quatloos `brand`.
+- All `amounts` created via the Quatloos `amountMath` have a Quatloos `brand`.
 - There can be any number of Quatloos holding `purses`, but those `purses` can only hold Quatloos.
 - There can be any number of Quatloos holding `payments`, but those `payments` can only hold Quatloos.
 
-But recipients cannot use the `brand` by itself to verify that a 
-purported `amount` is authentic, since the `brand` can be reused by a misbehaving `issuer`
+But recipients of a 
+purported `amount` cannot use the `brand` by itself to verify its authenticity,
+since the `brand` can be reused by a misbehaving `issuer`
 
 All of these relationships are unchangable; if, say, a `mint` is created that makes new Quatloos, it
 can never create new assets of any other `brand`..`
