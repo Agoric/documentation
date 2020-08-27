@@ -16,8 +16,8 @@ friend Alice could have eight Quatloos `purses`, and so on.
 
 You change a `purse`'s balance by calling either `deposit()` (to add assets)
 or `withdraw()` (to remove assets) on it. A `purse` can be empty, meaning it
-has a balance value of 0 (which depending on the kind of asset, could also be
-that just aren't any, say, theater tickets in the `purse`).
+has a balance value of 0 (which, for a ticket-holding `purse`, means that
+there just aren't any theater tickets in the `purse`).
 
 Unlike `payments`, `purses` are not meant to be sent to others. 
 To transfer digital assets, you should withdraw a `payment` from a `purse` and
@@ -70,12 +70,12 @@ const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
 const quatloos123 = quatloosAmountMath.make(123);
 
-// Deposit a payment for 123 Quatloos into the purse. Ensure that this is the amount you expect.
-quatloosPurse.deposit(payment, quatloos123);
+// Deposit a payment for 123 Quatloos into the purse. 
+const depostiAmountA = quatloosPurse.deposit(payment, quatloos123);
 
 const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
 // Throws error
-quatloosPurse.deposit(secondPayment, quatloos123);
+const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 
 ```
 
@@ -96,9 +96,13 @@ const depositOnlyFacet = purse.makeDepositFacet();
 depositOnlyFacet.receive(payment);
 ```
 Once you have created a `depositFacet`, there is one method you can call 
-on it. **tyg todo: is it "recieve" or "deposit"?** `deposit.receive(payment)`. 
-The `depositFacet` takes the `payment` and adds it to the balance of the facet's
-associated `purse`. The `payment` must be of the same `brand` as what the `purse` holds.
+on it. `depositFacet.receive(payment)`. The `depositFacet` takes the `payment` 
+and adds it to the balance of the facet's associated `purse`. The `payment` 
+must be of the same `brand` as what the `purse` holds.
+
+Note the difference in method names for adding assets between a `purse` and its `depositFacet`.
+To add assets to a `purse` directly, you use `purse.deposit()`. To add assets
+to a `purse` via its `depositFacet`, you use `depositFacet.receive().
 
 ## purse.withdraw(amount)
 - `amount` `{Amount}`
@@ -114,7 +118,7 @@ const payment = mint.mintPayment(amountMath.make(10));
 const quatloos10 = amountMath.make(10);
 purse.deposit(payment, quatloos10);
 
-// Withdraw 3 amount from the purse
+// Withdraw an amount of 3 from the purse
 const quatloos3 = amountMath.make(3);
 const withdrawalPayment = purse.withdraw(quatloos3);
 
