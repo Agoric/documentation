@@ -4,7 +4,7 @@ Logic for manipulating `amounts`.
 
 ## AmountMath Kinds
 
-There are three different kinds of `amountMaths`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer` (which also creates the `issuer`'s associated `amountMath`). It then knows which kinds's operations to use on itself.
+There are three different kinds of `amountMaths`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer` (which also creates the `issuer`'s associated `amountMath`). It then knows which kinds's operations to use on its `amounts`..
 
 The three kinds of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
@@ -41,18 +41,20 @@ A `value` must be `Comparable`.
 
 ## LocalAmountMath
 
-We encourage you to make and use `LocalAmountMath`, a local and thus synchronous version of `AmountMath`. 
-Their local or remote status is the only different between the two types; each has the same methods, the
+We encourage you to make and use local and thus synchronous versions of `AmountMaths`. 
+Their local or remote status is the only different between the two; each has the same methods, the
 same kinds (`MathKind.NAT`, etc.) and the same one-to-one relationship with a `mint`, `issuer`, and `brand`.
-If necessary, both a `LocalAmountMath` and an `AmountMath` can exist and be associated with the same
-`mint`, `issuer`, and `brand` **tyg todo This last is a guess on my part. Correct?**.
+Both a local `amountMath` and a remote `amountMath` can exist and be associated with the same
+`mint`, `issuer`, and `brand`.
+
+The advantage of making and using a local `amountMath` is that it's synchronous.
 
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
 Returns: `{ AmountMath }`
 
-Creates and returns a local (synchronous) Amount Math object. The new `localAmountMath` has a one-to-one
-relationship with the `issuer`, and thus also to the `brand` and `mint` in one-to-one
+Creates and returns a local (synchronous) `amountMath` object. The new local copy has the same many-to-one
+relationship with the original's `issuer`, and thus also to the original's `brand` and `mint`.
 ```js
 import { makeLocalAmountMath } from '@agoric/ertp';
 const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
@@ -63,7 +65,7 @@ const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
 
 Return the `brand` the `amountMath` works on. 
 
-An `amountMath` has a one-to-one association with a `brand`, established when
+An `amountMath` has a many-to-one association with a `brand`, established when
 both are created by `makeIssuerKit()`. The association cannot be broken or changed;
 a particular `amountMath` will always and only be used on `amounts` with its
 initially associated `brand`. 
@@ -136,8 +138,9 @@ const myValue = quatloosAmountMath.getValue(quatloos123);
 
 Returns the `amount` representing an empty `amount` for the `amountMath`'s 
 associated `brand`. This is the identity element for `AmountMath.add()` 
-and `AmountMath.subtract()`. The empty `value` depends on whether 
-the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`), or `MathKind.STRING_SET` (`[]`).
+and `AmountMath.subtract()`. The empty `value` depends 
+on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`), 
+or `MathKind.STRING_SET` (`[]`).
 
 ```js
 const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
