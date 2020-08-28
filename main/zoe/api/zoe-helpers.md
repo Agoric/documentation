@@ -40,7 +40,7 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 - `zcf`- `{ContractFacet}`
 - `brand` - `{Brand}`
 
-This method always takes `'zcf'` as its first argument. 
+This method always takes `zcf` as its first argument. 
 
 Assert that the `brand` argument's one-to-many associated `amountMath`
 uses the `MathKind.NAT` value of `amountMathKind` (i.e. the `brand`, and its 
