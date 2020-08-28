@@ -1,7 +1,7 @@
 # Brand
 The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships within a
 contract `instance`
-with an `issuer` and a `mint, and one-to-many relationships with `amountMaths`, `purses` and `payments`.
+with an `issuer` and a `mint`, and one-to-many relationships with `amountMaths`, `purses` and `payments`.
 Meaning for, say, the Quatloos `brand`:
 - There is only one Quatloos `issuer`.
 - There is only one Quatloos `mint`.
