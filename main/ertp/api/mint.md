@@ -1,9 +1,9 @@
 # Mint
 
 Only a `mint` can issue new digital assets, so only the holder of a `mint` can
-do so. A `mint` has a one-to-one relationship with both an `issuer` and a `brand`,
-and can only mint new assets of that `brand` and is the only `'mint` that can mint
-new `brand` type assets for its associated `brand`.
+do so. A `mint` has a one-to-one relationship with both an `issuer` and a `brand`.
+So it can only mint new assets of that `brand` and is the only `'mint` that can mint
+new assets of that `brand`.
 
 ## makeIssuerKit(allegedName, amountMathKind)
 - `allegedName` `{String}`
@@ -17,8 +17,8 @@ See [here](./issuer.md#makeissuerkit-allegedname-amountmathkind) for details.
 ## mint.getIssuer()
 - Returns: `{Issuer}`
 
-Get the `Issuer` associated with this `mint`. A `mint` is always in an unchangable
-one-to-one relationship with an `issuer` from their creation. 
+Get the `Issuer` associated with this `mint`. From their creation, a `mint` is always
+in an unchangable one-to-one relationship with an `issuer`. 
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
@@ -33,8 +33,8 @@ issuer === quatloosMintIssuer);
 - Returns: `{Payment}`
 
 Create new digital assets of the `mint`'s associated `brand`.
-A `mint` is always in an unchangable
-one-to-one relationship with a `brand` from their creation. 
+From their creation, a `mint` is always in an unchangable
+one-to-one relationship with a `brand`. 
 
 Returns a `payment` containing the newly minted assets. 
 
