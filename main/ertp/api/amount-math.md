@@ -212,7 +212,7 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
 For example, { 'seat 1', 'seat 2' } is considered
 unequal to { 'seat 2' } because the number of items in the former is
-different from that of the latter. Similarly { `seat 1`,  `seat2`  } and { `seat2` } 
+different from that of the latter. Similarly { 'seat 1',  'seat 2'  } and { 'seat 2' } 
 are considered unequal because the former has elements that are not contained in the latter.
 
 ```js
