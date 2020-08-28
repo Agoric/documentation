@@ -95,7 +95,7 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
 - `tryRight` - `{Seat}`
 - Returns: Undefined.
 
-**Note**: The `swap()` method is a specific use of `trade()`. In `swap()`,` 
+**Note**: The `swap()` method is a specific use of `trade()`. In `swap()`, 
 for both `seats`, everything a `seat` wants is given to it, having been
 taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
 - Use `trade()` when any of these are true:
@@ -153,7 +153,7 @@ trade(
 - `[keepHandleInactiveMsg]` `{String}`
 - Returns: `defaultAcceptanceMsg`
 
-**Note**: The `swap()` method is a specific use of `trade()`. In `swap()`,` 
+**Note**: The `swap()` method is a specific use of `trade()`. In `swap(),` 
 for both `seats`, everything a `seat` wants is given to it, having been
 taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
 - Use `trade()` when any of these are true:
