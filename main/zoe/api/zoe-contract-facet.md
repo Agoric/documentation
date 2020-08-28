@@ -62,25 +62,25 @@ ERTP methods on a `ZCFMint`.
     creates them and returns an `issuerRecord` containing them. Otherwise, it just returns the
    `issuerRecord`.
 - `mintGains`
-  - `gains: amountKeywordRecord` 
+  - `gains`: `AmountKeywordRecord` 
   - `zcfSeat` `{ZCFSeat}` - optional
-  - Returns `{ZCFSeat}`
+  - Returns: `{ZCFSeat}`
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
     The `gains`' keywords are in that seat's namespace.
-    Add the `gains` to that seat's `allocation`.
-    Mint that amount of assets into the pooled `purse`.
-    If a seat is provided, it is returned. Otherwise a new seat is
+    Add the `gains` to that seat's `allocation`, then
+    mint that `amount` of assets into the pooled `purse`.
+    If a `seat` is provided, it is returned. Otherwise a new `seat` is
     returned.
-  - `zcfMint.mintGains({ Token: amount }, seat);
-- `burnlosses
-  - `losses: AmountKeyWordRecord` 
+  - `zcfMint.mintGains({ Token: amount }, seat);`
+- `burnlosses`
+  - `losses`: `AmountKeyWordRecord` 
   - `zcfSeat` : `{ZCFSeat}`
   - Returns: void
   - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
-    The `losses`' keywords are in that seat's namespace.
-    Subtract `losses` from that seat's `allocation`.
-    Burns that `amount` of assets from the pooled `purse`.
-  - ``zcfMint.burnLosses({ Token: amount }, seat);`
+    The `losses`' keywords are in that `seat`'s namespace.
+    Subtract `losses` from that `seat`'s `allocation`, then
+    burn that `amount` of assets from the pooled `purse`.
+  - `zcfMint.burnLosses({ Token: amount }, seat);`
 
 **Note**: The call to make the `ZCFMint` is asynchronous, but 
 calls to the resulting `ZCFMint` are synchronous.
@@ -105,7 +105,7 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ## zcf.saveIssuer(issuer, keyword)
 - `issuerP` `{Promise<Issuer>|Issuer}``
 - `keyword` `{String}`
-Returns: `{Promise<IssuerRecord>}`
+- Returns: `{Promise<IssuerRecord>}`
 
 Informs Zoe about an `issuer` and returns a `promise` for acknowledging
 when the `issuer` is added and ready. The `keyword` is the one associated
@@ -126,7 +126,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
-of an ERTP `payment`. They are in a one-to-one relationship with the `invitationsIssuer`, which is used
+of an ERTP `payment`. They are in a one-to-one relationship with the `invitationIssuer`, which is used
 to validate invitations and their `amounts`.
 
 The `invitation`'s 
@@ -149,7 +149,7 @@ const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 
 Returns an empty `zcfSeatRecord` and a `promise` for a `userSeat` 
 
-Zoe uses `seats` to represent offers, and have two facets (a particular view or API of an object; 
+Zoe uses `seats` to represent offers, and has two `seat` facets (a particular view or API of an object; 
 there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`. 
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
@@ -157,23 +157,23 @@ const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
  
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
-- Returns `{Brand}`
+- Returns: `{Brand}`
 
 Returns the `brand` associated with the `issuer`.
 
 ## zcf.getIssuerForBrand(brand)
 - `brand` `{Brand}`
-- Returns `{Issuer}`
+- Returns: `{Issuer}`
 
-Returns the `issuer` of the `brand` argument
+Returns the `issuer` of the `brand` argument.
 
 ## zcf.getAmountMath(brand)
 - `brand` `{String}`
-- Returns `{amountMath}`
+- Returns: `{amountMath}`
 
 Returns the `amountMath` object associated with the `brand` argument.
 ```js
-const assetMath = zcf.getAmountMath(assetAmount.brand);
+const assetAmountMath = zcf.getAmountMath(assetAmount.brand);
 ```
 ## zcf.shutdown()
 
@@ -199,7 +199,7 @@ Returns the `issuers`, `brands`, and custom `terms` the current contract instanc
 Note that there is also an `E(zoe).getTerms(instance)`. Often the choice of which to use is not which method 
 to use, but which of Zoe Service or ZCF you have access to. On the contract side, you more easily have access 
 to `zcf`, and `zcf` already knows what instance is running. So in contract code, you use `zcf.getTerms()`. From 
-a user side, with access to Zoe Service, you use `E(zoe).getTerms()`. In other words, are you in contract code or not?
+a user side, with access to Zoe Service, you use `E(zoe).getTerms()`. 
 ```js
 const { brands, issuers, terms } = zcf.getTerms()
 ```
@@ -217,7 +217,7 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 
 ## zcf.assertUniqueKeyword(keyword)
 - `keyword` `{String}`
-Returns: Undefined
+- Returns: Undefined
 
 Checks if a keyword is valid and not already used as a `brand` in this `instance` (i.e. unique)
 and could be used as a new `brand` to make an `issuer`.
@@ -233,9 +233,9 @@ associations of `seats` with new `allocations` to be used in reallocation.
 There must be at least two `seatStagings` in the array argument. 
 
 The reallocation only succeeds if it:
-1 Conserves rights (the specified `amounts` have the same total value as the
+1. Conserves rights (the specified `amounts` have the same total value as the
   current total amount)
-2 Is 'offer-safe' for all parties
+2. Is 'offer-safe' for all parties
   involved. Offer safety is checked at the staging step.
 
 The reallocation is partial, only applying to `seats` associated
@@ -247,7 +247,7 @@ This is true even though we only re-validate for `seats` whose
 those `seats`, and since rights are conserved for the change, overall 
 rights are unchanged.
 
-Reallocate throws these errors:
+`reallocate()` throws these errors:
 - `reallocating must be done over two or more seats`
 - `The seatStaging was not recognized`
 - `The seatStaging was not recognized`
@@ -260,75 +260,3 @@ zcf.reallocate(
     seat.stage(seatBAllocation),
   );
 ```
-
-## OfferHandlers
-
-**NOTE: This section is still in progress.** 
-
-A `zcfSeat` is passed to the `offerHandlers`, like this one:
-```js
-const mintPayment = mySeat => {
-  const amount = amountMath.make(1000);
-  // Synchronously mint and allocate amount to seat.
-  zcfMint.mintGains({ Token: amount }, mySeat);
-  // Exit the seat so that the user gets a payout.
-  mySeat.exit();
-  // Since the user is getting the payout through Zoe, we can
-  // return anything here. Let's return some helpful instructions.
-  return 'Offer completed. You should receive a payment from Zoe';
-};
-```
-### ZCFSeat
-
-Making an offer creates `zcfSeats`. They and passed to the `offerHandler` specified when the `invitation`
-is made, as the sole argument. A `zcfSeat` has these properties and methods:
-- `exit()`
-  - Returns: `void`
-- `kickOut(msg?: string)`
-  - Returns: `void` 
-- `getNotifier()` 
-  - Returns: `{Notifier<Allocation>}` 
-- `hasExited()`
-  - Returns: `boolean`
-- `getProposal()`
-  - Returns: `ProposalRecord` 
-- `getAmountAllocated(keyword, brand)`
-  - `keyword` `Keyword`
-  - `brand` `Brand`
-  - Returns: `Amount`
-  - The `brand` fills in an empty `amount` if the `keyword` is not present in the `allocation`
-- `getCurrentAllocation()`
-  - Returns: `Allocation`
-- `isOfferSafe(newAllocation)`
-  - `newAllocation` `Allocation`
-  - Returns `Boolean` 
-- `stage(newAllocation)`
-  - `newAllocation` `Allocation`
-  - Returns: `SeatStaging` 
-
-## ZCFMint
-A `ZCFMint` has these properties and methods:
-- `getIssuerRecord()`
-  - Returns: `IssuerRecord` 
-- `mintGains(gains, zcfSeat)`
-  - `gains` `AmountKeywordRecord`
-  - `zcfSeat?` `ZCFSeat` - Optional
-  - Returns: `ZCFSeat`             
-  - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
-    The `gains`' keywords are in the namespace of that `seat`.
-    Add the `gains` to that `seat`'s `allocation`.
-    The resulting state must be offer safe. (Currently, increasing assets can
-    never violate offer safety.)
-    Mints that amount of assets into the pooled `purse`.
-    If a `seat` is provided, it is returned. Otherwise a new `seat` is
-    returned. 
-- `burnLosses(losses. zcfSeat)`
-  - `losses` `AmountKeywordRecord`
-  - `zcfSeat` `ZCFSeat` 
-  - Returns: `void`
-  - All the `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
-    The `losses`' keywords are in the namespace of that `seat`.
-    Subtract `losses` from that `seat`'s `allocation`.
-    The resulting state must be offer safe.
-    Burn that `amount` of assets from the pooled `purse`.
-
