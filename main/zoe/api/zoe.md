@@ -19,9 +19,6 @@ For more information about using `E`, see the section on it in [Agoric's JavaScr
 - `instance` `{Instance}`
 - Returns: `{Promise<BrandKeywordRecord>}`
 
-**tyg todo: Should all the "getFoo()" methods return** {Promise<Record>}? 
-**tyg todo: And related, are they always called with "await"?**
-
 Returns a `BrandKeywordRecord` containing all `brands` defined in the `instance`.
 ```js
 const brandKeywordRecord = await E(zoe).getBrands(instance);
@@ -98,7 +95,7 @@ details about the `invitation`:
 - `instance` `{Instance}`: The contract instance this invitation is for.
 - `invitationHandle` `{Handle}`: A reference used to refer to this invitation.
 - `description` `{String}`: Serves as a name of the `invitation`. Use it
-   to find which part of the contract code created the ``invitation.
+   to find which part of the contract code created the `invitation`.
 ```js
 const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
@@ -207,79 +204,3 @@ The `proposal` has three parts:
  
  `offer()` returns a `promise` for a `userSeat`. 
  
- ### UserSeat Object
-A `userSeat` object has eight methods and one property. The methods are:
-- getCurrentAllocation() => 
-  - Returns: `{Promise<Allocation>}` 
-- getProposal()
-  - Returns: `{Promise<ProposalRecord>}` 
-- getPayouts()
-  - Returns: `{Promise<PaymentPKeywordRecord>}`
-- getPayout(keyword: Keyword)
-  - Returns: `{Promise<Payment>}` 
-- getOfferResult()
-  - Returns: `{Promise<OfferResult>}`
-- tryExit() 
-  - Returns: `void` 
-- hasExited()
-  - Returns: `{Promise<boolean>}` 
-- getNotifier()
-  - Returns: `{Promise<Notifier>}`
- 
- ```js
- const swapProposal = harden({
-   give: { Asset: moola(5) },
-   want: { Price: simoleans(12) },
-   exit: { onDemand: null },
- });
- const aliceSwapPayments = { Asset: swapPayment };
- const swapInvitation = await E(publicFacet).makeSwapInvitation();
- const seat = await E(zoe).offer(
-   swapInvitation,
-   swapProposal,
-   aliceSwapPayments,
- );
- ```
-
-
-## Installation Object
-
-An `installation` is contract source code bundled and saved in Zoe to make contract instances. 
-Any `installation` can make many `instances`. 
-
-- `installation.getBundle()`
-  - Returns: `{SourceBundle}`
-  - Gets and returns the bundled source code for its associated contract.
-
-## StartInstanceResult Object
-`startInstance()` returns a `promise` for a `StartInstanceResult` object. It has four properties:
-- `creatorFacet` `{any}`
-- `publicFacet` `{any}`
-- `instance` `{Instance}`
-- `creatorInvitation` `{Payment | undefined}`
- 
-## InvitationDetails Object
-
-`invitationDetails` objects have four properties:
-- `installation` `{Installation}`: The contract's Zoe installation.
-- `instance` `{Instance}`: The contract instance this `invitation` is in.
-- `invitationHandle` `{Handle}`: A reference that refers to this `invitation`.
-- `description` `{String}`: Serves as a name of the `invitation`. Use it
-   to find which part of the contract code created the ``invitation.
-
-## ProposalRecord Object
-
-A `proposalRecord` has three properties:
-- `give: AmountKeywordRecord`
-- `want: AmountKeywordRecord`
-- `exit: ExitRule
-  - `exitRule` must be one of these three values: **tyg todo: Need info on what each does**
-    - `'onDemand'`
-    - `'afterDeadline'`
-    - `'waived'`
-
-
- 
-
-
-
