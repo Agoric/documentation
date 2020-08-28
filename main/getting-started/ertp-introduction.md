@@ -23,10 +23,13 @@ To send assets in ERTP:
 2. Send this `payment` to a recipient object as a message.
 
 To receive assets in ERTP:
-1. Create a `purse` for the asset kind you'll receive. Since
-an empty `purse` conveys no asset rights, you create it with
-a less powerful `Issuer` instead of a `Mint`. 
-2. Get access to the asset kind you'll receive.
+
+**Note**: Since an empty `purse` conveys no asset rights, you create it with
+a less powerful `Issuer` instead of a `Mint`. We'll cover `issuers` a bit
+further down. 
+
+1. Get access to the *issuer* for the asset kind you'll receive.
+2. Use the `issuer` to create a `purse` for the asset kind you'll receive. 
 3. Receive the message with the `payment` and deposit the `payment` in
 your `purse`.
 
@@ -40,7 +43,7 @@ their creation. So a `purse` might hold Quatloos, meaning it couldn't
 hold Moola or any other non-Quatloo asset). Note: Quatloos and Moola are both
 imaginary currencies.
 
-If everything passes the checks, the asset moves from the `payment` to
+If everything passes the checks, the assets move from the `payment` to
 the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
@@ -68,25 +71,24 @@ currencies, etc.). We refer to
 that kind as a `mint`'s *Brand*. So if a `mint` issues Quatloos, it's a
 Quatloo `brand` `mint`.  Only `mints` can issue new digital assets. To mint
 new assets of a particular kind, you must have a reference to that
-kind's `mint` 
+kind's `mint`. 
 
-- **Issuers**: Create empty `purses`, manipulate and operate on
- `payments` and map minted assets to both of them when assets are 
- added or removed. `Issuers` verify and move digital assets.
+- **Issuers**: Create empty `purses`, and manipulate and operate on
+ `payments`. `Issuers` are the authority on which `payments` and `purses`
+ hold what digital assets.
 
 An `issuer`'s special admin facet is a `mint`, and that `mint` and `issuer`
 have a one-to-one relationship. With a reference to an `issuer`, you can
-check the validity of a `payment` in that `issuer`'s `mint`'s assets, as
-well as claim it either as a new `payment` to yourself or a `purse` you
-control. 
+check the validity of a `payment` whose asset `brand` is associated with that `issuer`;
+i.e. If you have a reference to the Quatloos `issuer`, you can validate
+any `payment` made in Quatloos. You can also claim the `payment` either 
+as a new `payment` to yourself or a `purse` you control. 
 
-`Issuers` (i.e. their references) should be gotten from a trusted source
-and then relied upon as the decider of whether an untrusted `payment` is
-valid  
+`Issuers` should be gotten from a trusted source
+and then relied upon as the decider of whether an untrusted `payment` is valid. 
 
-**Note**: There is a one-to-one correspondence between a `brand` and a
-  `mint`, a `mint` and an `issuer`, and an `issuer` and a `brand`. In other
-  words:
+**Note**: There is a one-to-one correspondence between a `brand`, a
+  `mint`, and an `issuer`. In other words:
   - A `mint` associated with a Quatloos `brand` can only create new Quatloos
   and is the only `mint` that can create new Quatloos. 
   - A `issuer` associated with a Quatloos `mint` can only operate on Quatloos
@@ -118,14 +120,16 @@ of `amountMath` functions.
 In addition to math operations, `amountMath` functions check on their
 arguments' `brands`, throwing an error if the wrong `brand` was used.
 
-`amountMaths` only work on assets of their associated `brand` and its `issuer.
+An `amountMath` only works on assets of their associated `brand` and `issuer`.
 There can be many copies of the `amountMath` for a particular `brand` and
 its `issuer`. 
 
 ## Next Steps
 
-If you are Getting Started, you should go to the [Introduction to Zoe](https://agoric.com/documentation/getting-started/intro-zoe.html).
+If you are Getting Started, you should go to the 
+<router-link to="/getting-started/intro-zoe.html">Introduction to Zoe</router-link>.
 
 If you've finished the Getting Started material, you should go to the
-[ERTP Guide](https://agoric.com/documentation/ertp/guide/) for a fuller explanation of ERTP
+<router-link to="/ertp/guide/">ERTP Guide</router-link>
+for a fuller explanation of ERTP
 concepts, including ones not covered in this Introduction. 
