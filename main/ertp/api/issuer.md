@@ -1,16 +1,25 @@
 # Issuer
 
-An `issuer` cannot mint new digital assets, but it can create empty `purses` and transform `payments` (splitting, 
-combining, burning, or exclusively claiming `payments`). An `issuer` should be obtained from a trusted source and 
-then relied upon as the authority as to whether an untrusted `payment` is valid.
+An `issuer` represents the identity of a specific kind of digital asset. 
+While it cannot create new value by creating digital assets like a `mint`, 
+it recognizes and identifies `purses` and `payments` that carry actual value.
+It can create empty `purses` and transform `payments` (by splitting, 
+combining, burning, or exclusively claiming). 
+
+An `issuer` has an unchangeable one-to-one relationship with the `mint` and
+`brand` that were created with it. For any `brand` for which you will accept
+`payments` in, you should obtain its `issuer` from a trusted source.
+You can then rely on that `issuer` as the authority to 
+determine if an untrusted `payment` of that `brand` is valid.
 
 ## makeIssuerKit(allegedName, amountMathKind)
 - `allegedName` `{String}` 
 - `amountMathKind` `{MathKind}` - optional
 - Returns `{IssuerKit}`
 
-Makes a new `issuer` as well as its one-to-one associated ERTP objects; a 'mint', `amountMath', and `brand`. 
-All are in unchangable one-to-one relationships with each other. 
+Makes a new `issuer` as well as its one-to-one associated ERTP objects; a 'mint' and a `brand`. 
+All are in unchangable one-to-one relationships with each other. It also makes a new
+`amountMath`, which is in an unchangeable many-to-one relationship with the new `issuer`.
 
 The `allegedName` is available from the `brand` in asset descriptions. The `allegedName` is 
 useful for debugging and double-checking assumptions, but should not be trusted.
@@ -19,9 +28,9 @@ The optional `amountMathKind` specifies which of three kinds the created `amount
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
 polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` 
 instead of making the strings yourself.
-- `MathKind.NAT` (`nat`): Used with fungible assets. amount values are natural numbers (non-negative integers). Default value.
-- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. amount values are strings.
-- `MathKind.SET` (`set`): Used with non-fungible assets. amount values are objects or records with multiple properties.
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative integers). Default value.
+- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` values are strings.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
@@ -43,24 +52,15 @@ const adjacentProperty = titleAmountMath.make(harden['1028393']);
 const combinedProperty = titleAmountMath.make(harden['1292826', '1028393']);
 ```
 
-## issuer.getBrand()
-- Returns: `{Brand}` 
-
-Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
-and is the same for the `issuer`'s associated `mint`, and any `purses` and `payments` of this particular
-kind. The `brand` is not closely held, so this function should not be trusted to identify
-an `issuer` alone. Fake digital assets and amounts can use another `issuer's `brand`.
-
-```js
-const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
-const quatloosBrand = quatloosIssuer.getBrand();
-// brand === quatloosBrand
-```
-
 ## issuer.getAllegedName()
 - Returns: `{allegedName}`
 
 Returns the `allegedName` for this `issuer`.
+
+An alleged name is a human-readable string name 
+of a kind of digital asset. The alleged name 
+should not be trusted as accurate, since it 
+is not provided by a trusted source.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -84,23 +84,19 @@ const quatloosIssuerAmountMath = quatloosIssuer.getAmountMath();
 Get the kind of this `issuer`'s `amountMath`. It returns one of
 `MathKind.NAT` (`nat`), `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`).
 
+The `amountMathKind` value specifies which of three kinds an `amountMath` is,
+and what kind of values it is used on. Each kind implements all of the same set 
+of API methods (i.e. `amountMath` methods are polymorphic). 
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative integers). Default value.
+- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` values are strings.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
+
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 quatloosIssuer.getAmountMathKind(); // Returns 'MathKind.NAT', the default value.
 const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STR);
 moolaIssuer.getAmountMathKind(); // Returns 'MathKind.STR`
 ```
-
-## issuer.makeEmptyPurse()
-- Returns: `{Purse}`
-
-Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
-
-```js
-const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const quatloosPurse = quatloosIssuer.makeEmptyPurse();
-```
-
 ## issuer.getAmountOf(payment)
 - `payment` `{Payment}`
 - Returns: `{Amount}`
@@ -113,6 +109,30 @@ the `payment`'s `brand`  and tell us its how much it contains.
 const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
+```
+
+## issuer.getBrand()
+- Returns: `{Brand}` 
+
+Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
+and is the same for the `issuer`'s associated `mint`, and any `purses` and `payments` of this particular
+kind. The `brand` is not closely held, so this function should not be trusted to identify
+an `issuer` alone. Fake digital assets and amounts can use another `issuer's `brand`.
+
+```js
+const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const quatloosBrand = quatloosIssuer.getBrand();
+// brand === quatloosBrand
+```
+
+## issuer.makeEmptyPurse()
+- Returns: `{Purse}`
+
+Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
+
+```js
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
 ## issuer.burn(payment, optAmount)
