@@ -47,9 +47,6 @@ on or return a `payment`. While a brief description is given for each,
 you should click through to a method's main documentation entry for 
 full details on what it does and how to use it.
 
-<router-link 
-to="/distributed-programming.html#vats">vat</router-link> 
-
 - <router-link to="./issuer.html#issuer-burn-payment-optamount">`issuer.burn(payment, optAmount)`</router-link> 
   - Burn (destroy) all of the digital assets in the `payment`.
 - <router-link to="./issuer.html#issuer-claim-payment-optamount">`issuer.claim(payment, optAmount)`</router-link> 
