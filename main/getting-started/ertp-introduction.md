@@ -66,8 +66,9 @@ in a 7 Quatloo `purse` means the `payment` continues to exist and hold
 Other key ERTP components are:
 
 - **Mints**: Make new digital assets as a new `Payment`. `Mints` only
-make one kind of asset (Quatloos, Simoleons, Moola, other imaginary
-currencies, etc.). We refer to
+make one kind of asset (these can be currencies, objects for use in games, property rights, etc.
+In these docs, we use an imaginary currency, Quatloos, for our examples).
+We refer to
 that kind as a `mint`'s *Brand*. So if a `mint` issues Quatloos, it's a
 Quatloo `brand` `mint`.  Only `mints` can issue new digital assets. To mint
 new assets of a particular kind, you must have a reference to that
@@ -95,9 +96,9 @@ and then relied upon as the decider of whether an untrusted `payment` is valid.
   asset holders. It is the only `issuer` that can operate on them. 
 
 ## Amounts
-
 *Amounts* describe digital assets without having any value of their own.
-Anyone can make one, and they can be sent to anyone. They have two parts:
+Anyone can make one, and they can be sent freely to anyone since they
+convey no underlying value. They have two parts:
 - **Brand**: An unforgeable object identity for the digital asset's kind,
   such as an object that represents Quatloos.
 - **Value**: How much/many of the asset. Fungible `values` are natural
