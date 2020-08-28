@@ -12,83 +12,97 @@ object. If it doesn't have a reference, it can't.
 
 ## Creating assets with ERTP
 
-In ERTP, *mints* create digital *assets*. Access to an asset type's
-mint lets you create more digital assets of that type. You can then
+In ERTP, *mints* create *digital assets*. Access to an asset kind's
+`mint` lets you create more digital assets of that kind. You can then
 store new assets in a *payment* or a *purse*. 
-- **Payments**: Assets you intend to send to someone else.
-- **Purses**: Store assets until you withdraw them into a payment for use
+- `Payments`: Assets you intend to send to someone else.
+- `Purses`: Store assets until you withdraw them into a payment for use
 
 To send assets in ERTP:
-1. Withdraw them from a purse. This creates a payment.
-2. Send this payment to a recipient object as a message.
+1. Withdraw them from a `purse`. This creates a `payment`.
+2. Send this `payment` to a recipient object as a message.
 
 To receive assets in ERTP:
-1. Create a purse for the asset type you'll receive. **Note:** You
-do not need access to the type's mint. The Issuer (which is widely shared) provides an empty purse for the asking.
-2. Get access to the asset type you'll receive.
-3. Receive the message with the payment and deposit the payment in
-your purse.
+
+**Note**: Since an empty `purse` conveys no asset rights, you create it with
+a less powerful `Issuer` instead of a `Mint`. We'll cover `issuers` a bit
+further down. 
+
+1. Get access to the *issuer* for the asset kind you'll receive.
+2. Use the `issuer` to create a `purse` for the asset kind you'll receive. 
+3. Receive the message with the `payment` and deposit the `payment` in
+your `purse`.
 
 ## Security properties
 
-ERTP purse objects have a `deposit` message which takes a payment
-object as its argument. It first checks that the payment object is 
-genuine and the same asset type as the purse (after all, quatloos 
-are a very unstable asset, so we wouldn't want to let people deposit 
-quatloos and get credit for simoleans). Note: quatloos and simoleans are both
+An ERTP `purse` has a `deposit` method which takes a `payment`
+as its argument. It first checks that the `payment` is 
+genuine and the same asset kind as the `purse` (any individual
+`purse` or `payment` can only hold one kind of asset, which is set on
+their creation. So a `purse` might hold Quatloos, meaning it couldn't
+hold Moola or any other non-Quatloo asset). Note: Quatloos and Moola are both
 imaginary currencies.
 
-If everything passes the checks, the asset moves from the payment to
-the purse. If there's a problem, it throws an error.
+If everything passes the checks, the assets move from the `payment` to
+the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
-- The payment object is empty.
-- The purse contains the payment's full content.
+- The `payment` is burned (i.e. destroyed).
+- The `purse` contains the total of what it held before plus the `payment`'s full content.
+  - i.e. If the `purse` had 7 Quatloos and the `payment` had 3 Quatloos, after depositing the `payment`
+    the `purse` has 10 Quatloos.
 
-When the `deposit` call throws an error (i.e. something went wrong),
+When the `deposit()` call throws an error (i.e. something went wrong),
 ERTP guarantees: 
-- The alleged payment is in the same state as before the call.
-- The purse is in the same state as before the call.
+- The alleged `payment` is in the same state as before the call.
+- The `purse` is in the same state as before the call.
+
+In other words, a failed attempt to deposit a 3 Quatloo `payment`
+in a 7 Quatloo `purse` means the `payment` continues to exist and hold
+3 Quatloos, and the `purse` continues to hold 7 Quatloos.
 
 ## Issuers and mints
 
-Other key ERTP objects are:
+Other key ERTP components are:
 
-- **Mints**: Issue new digital assets as a new Payment. Mints only
-issue one type of asset (quatloos, simoleons, moola, etc. Note that these
-are all imaginary currencies used as examples.) We refer to
-that type as the mint's *Brand*. So if a mint issues quatloos, it's a
-quatloo brand mint.  Only mints can issue new digital assets. To mint
-new assets of a particular type, you must have a reference to that
-type's mint 
+- **Mints**: Make new digital assets as a new `Payment`. `Mints` only
+make one kind of asset (these can be currencies, objects for use in games, property rights, etc.
+In these docs, we use an imaginary currency, Quatloos, for our examples).
+We refer to
+that kind as a `mint`'s *Brand*. So if a `mint` issues Quatloos, it's a
+Quatloo `brand` `mint`.  Only `mints` can issue new digital assets. To mint
+new assets of a particular kind, you must have a reference to that
+kind's `mint`. 
 
-- **Issuers**: Create empty purses and payments and map minted
- assets to them when assets are added or removed. 
- Issuers verify and move digital assets.
+- **Issuers**: Create empty `purses`, and manipulate and operate on
+ `payments`. `Issuers` are the authority on which `payments` and `purses`
+ hold what digital assets.
 
-An issuer's special admin facet is a Mint, and that Mint and Issuer are
- associated with each other. With a reference to an issuer, you can
- check the validity of a payment in that issuer's mint's assets, as
- well as claim it either as a new payment to yourself or a purse you
- control. 
+An `issuer`'s special admin facet is a `mint`, and that `mint` and `issuer`
+have a one-to-one relationship. With a reference to an `issuer`, you can
+check the validity of a `payment` whose asset `brand` is associated with that `issuer`;
+i.e. If you have a reference to the Quatloos `issuer`, you can validate
+any `payment` made in Quatloos. You can also claim the `payment` either 
+as a new `payment` to yourself or a `purse` you control. 
 
-Issuers (i.e. their references) should be gotten from a trusted source
-and then relied upon as the decider of whether an untrusted payment is
-valid  
+`Issuers` should be gotten from a trusted source
+and then relied upon as the decider of whether an untrusted `payment` is valid. 
 
-**Note**: There is a one-to-one correspondence between a brand and a
-  mint, a mint and an issuer, and an issuer and a brand. In other
-  words, each mint issues a unique kind of digital asset, say,
-  quatloos, and only that kind of asset.
+**Note**: There is a one-to-one correspondence between a `brand`, a
+  `mint`, and an `issuer`. In other words:
+  - A `mint` associated with a Quatloos `brand` can only create new Quatloos
+  and is the only `mint` that can create new Quatloos. 
+  - A `issuer` associated with a Quatloos `mint` can only operate on Quatloos
+  asset holders. It is the only `issuer` that can operate on them. 
 
 ## Amounts
-
 *Amounts* describe digital assets without having any value of their own.
-Anyone can make one, and they can be sent to anyone. They have two parts:
-- **Brand**: An unforgeable object identity for the digital asset's type,
-  such as an object that represents quatloos.
-- **Value**: How much/many of the asset. Fungible values are natural
-  numbers. Non-fungible values are strings or objects representing
+Anyone can make one, and they can be sent freely to anyone since they
+convey no underlying value. They have two parts:
+- **Brand**: An unforgeable object identity for the digital asset's kind,
+  such as an object that represents Quatloos.
+- **Value**: How much/many of the asset. Fungible `values` are natural
+  numbers. Non-fungible `values` are strings or objects representing
   attributes of the asset (say, a theater ticket's row and seat positions).
 
 Note: *fungible* means any item in a set can be used. For example, for 
@@ -98,19 +112,25 @@ are not all the same, and it matters if you get third row center or
 second balcony far left  (and affects what you're willing to trade for
 it). 
 
-## Amount Math
+## AmountMath
 
-Issuers must be able to deposit and withdraw assets from a purse. This
+`Issuers` must be able to deposit and withdraw assets from a `purse`. This
 requires being able to add and subtract digital assets. They use a set
-of `amountMath` functions, which are aided by `mathHelpers` functions.
+of `amountMath` functions.
 
 In addition to math operations, `amountMath` functions check on their
-arguments' brands, throwing an error if the wrong brand was used.
+arguments' `brands`, throwing an error if the wrong `brand` was used.
+
+An `amountMath` only works on assets of their associated `brand` and `issuer`.
+There can be many copies of the `amountMath` for a particular `brand` and
+its `issuer`. 
 
 ## Next Steps
 
-If Getting Started, you should go to the [Introduction to Zoe](https://agoric.com/documentation/getting-started/intro-zoe.html).
+If you are Getting Started, you should go to the 
+<router-link to="/getting-started/intro-zoe.html">Introduction to Zoe</router-link>.
 
 If you've finished the Getting Started material, you should go to the
-[ERTP Guide](https://agoric.com/documentation/ertp/guide/) for a fuller explanation of ERTP
+<router-link to="/ertp/guide/">ERTP Guide</router-link>
+for a fuller explanation of ERTP
 concepts, including ones not covered in this Introduction. 
