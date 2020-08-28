@@ -5,21 +5,25 @@ split into or combined with multiple `payments`, and claimed (getting
 an exclusive `payment` and revoking access from anyone else). 
 
 A `payment` is linear, meaning either a `payment` has its full
-original balance, or it is used up entirely. While you can split
-a `payment` into multiple `payments`, it is impossible to partially use a
+original balance, or it is used up entirely. You cannot partially use a
 `payment`. In other words, if a `payment` is 10 Quatloos, you can't
 take out, say, 3 Quatloos from it, leaving the `payment` with 7 Quatloos.
 
-You can split the `payment` into two new `payments` of 3 and 7 Quatloos.
-The `split()` operation destroys (or burns) the original `payment`.
+However, you can split a `payment` into multiple `payments`, for example 
+into two new `payments` of 3 Quatloos and 7 Quatloos.
+The `split()` operation *burns* (destroys) the original 10 Quatloos `payment`.
 
 `Payments` are often received from other actors and therefore should not be
-trusted themselves. To get the balance of a `payment`, use its trusted `issuer`: 
+trusted themselves. To get the balance of a `payment`, use its trusted `issuer`,
+which is the `issuer` associated with the `payment`'s `brand`: 
 `issuer.getAmountOf(payment)`.
 
-To convert a `payment` into a `purse`, get the trusted `issuer` for the `payment`'s `brand`,
-use it to create an empty `purse` for that `brand`, and then deposit the `payment` into the
-new `purse`. The deposit operation destroys the `payment`.
+To convert a `payment` into a new `purse`: 
+1. Get the `payment`'s trusted `issuer`. 
+2. Use the `issuer` to create an empty `purse` for that `brand`.
+3. Deposit the `payment` into the new `purse`. 
+
+`purse.deposit(payment)` burns the `payment`.
 
 ## payment.getAllegedBrand()
 - Returns: `{Brand}`
@@ -33,35 +37,35 @@ const { issuer: quatloosIssuer, mint: quatloosMint,
         brand: quatloosBrand, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(10));
 //Should return 'quatloos'
-const officialBrand = payment.getAllegedBrand();
+const allegedBrand = payment.getAllegedBrand();
 ```
 
 ## Related Methods
 
-The following methods on other ERTP components also either operate
-on or return a `brand`. While a brief description is given for each, 
+The following methods on other ERTP components either operate
+on or return a `payment`. While a brief description is given for each, 
 you should click through to a method's main documentation entry for 
 full details on what it does and how to use it.
 
-- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
-  - Get a description of a `payment` balance as an amount`. 
 - [`issuer.burn(payment, optAmount)`](./issuer.html#issuer-burn-payment-optamount)
   - Burn (destroy) all of the digital assets in the `payment`.
 - [`issuer.claim(payment, optAmount)`](./issuer.html#issuer-claim-payment-optamount)
   - Transfer all assets from the `payment` to a returned new `payment` and burn the original.
 - [`issuer.combine(paymentsArray)`](./issuer.html#issuer-combine-paymentsarray)
   - Combine multiple `payments` into one, returned, `payment`.
+- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+  - Get a description of a `payment` balance as an `amount`. 
+- [`issuer.isLive(payment)`](./issuer.html#issuer-islive-payment)
+  - Returns `true` if `payment` has value. 
 - [`issuer.split(payment, paymentAmountA)`](./issuer.html#issuer-split-payment-paymentamounta)
   - Split one `payment` into two new ones.
 - [`issuer.splitMany(payment, amountArray)`](./issuer.html#issuer-splitmany-payment-amountarray)
   - Split `payment` into multiple `payments`, returned as an array.
-- [`issuer.isLive(payment)`](./issuer.html#issuer-islive-payment)
-  - Returns `true` if `payment` has value. 
 - [`mint.mintPayment(newAmount)`](./mint.html#mint-mintpayment-newamount)
   - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. 
 - [`purse.deposit(payment, optAmount`)](./purse.html#purse-deposit-payment-optamount)
   - Deposit all of `payment` into this `purse`.
 - [`purse.makeDepositFacet()`](./purse.html#purse-makedepositfacet)
-  - Creates a deposit-only facet on the `purse` that can be given to other parties.
+  - Creates a deposit-only facet on the `purse` that can be given to other parties to deposit `payments` in.
 - [`purse.withdraw(amount)`](./purse.html#purse-withdraw-amount)
   - Returns a new `payment` whose balance is described by the `amount` argument. 
