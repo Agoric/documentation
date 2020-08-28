@@ -3,7 +3,7 @@
 and their `brand` cannot be changed. For example, you might create a `purse` to
 hold Quatloos. That `purse` can only hold Quatloos; it can't hold Moola or theater
 tickets or anything else. And you can't change that `purse` so that it now holds
-Moola instead; you need to create a `purse` that holds only `moola`.
+Moola instead; you need to create a `purse` that holds only Moola.
 
 Digital assets in `purses` and `payments` can be any of:
 - Currency-like, such as our imaginary Quatloos currency.
@@ -71,7 +71,7 @@ const payment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
 const quatloos123 = quatloosAmountMath.make(123);
 
 // Deposit a payment for 123 Quatloos into the purse. 
-const depostiAmountA = quatloosPurse.deposit(payment, quatloos123);
+const depositAmountA = quatloosPurse.deposit(payment, quatloos123);
 
 const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
 // Throws error
@@ -92,7 +92,7 @@ takes.
 const depositOnlyFacet = purse.makeDepositFacet();
 
 // Give depositOnlyFacet to someone else. Anyone with a deposit facet reference can tell it to receive
-// a `payment`, thus depositing the `payment` assets in the `purse` associated with the deposit facet.
+// a payment, thus depositing the payment assets in the purse associated with the deposit facet.
 depositOnlyFacet.receive(payment);
 ```
 Once you have created a `depositFacet`, there is one method you can call 
@@ -102,7 +102,7 @@ must be of the same `brand` as what the `purse` holds.
 
 Note the difference in method names for adding assets between a `purse` and its `depositFacet`.
 To add assets to a `purse` directly, you use `purse.deposit()`. To add assets
-to a `purse` via its `depositFacet`, you use `depositFacet.receive().
+to a `purse` via its `depositFacet`, you use `depositFacet.receive()`.
 
 ## purse.withdraw(amount)
 - `amount` `{Amount}`
