@@ -2,7 +2,7 @@
 
 Only a `mint` can issue new digital assets, so only the holder of a `mint` can
 do so. A `mint` has a one-to-one relationship with both an `issuer` and a `brand`.
-So it can only mint new assets of that `brand` and is the only `'mint` that can mint
+So it can only mint new assets of that `brand` and is the only `mint` that can mint
 new assets of that `brand`.
 
 ## makeIssuerKit(allegedName, amountMathKind)
