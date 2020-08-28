@@ -62,9 +62,9 @@ in a 7 Quatloo `purse` means the `payment` continues to exist and hold
 
 Other key ERTP components are:
 
-- **Mints**: Issue new digital assets as a new `Payment`. `Mints` only
-issue one kind of asset (Quatloos, Simoleons, Moola, etc. Note that these
-are all imaginary currencies used as examples.) We refer to
+- **Mints**: Make new digital assets as a new `Payment`. `Mints` only
+make one kind of asset (Quatloos, Simoleons, Moola, other imaginary
+currencies, etc.). We refer to
 that kind as a `mint`'s *Brand*. So if a `mint` issues Quatloos, it's a
 Quatloo `brand` `mint`.  Only `mints` can issue new digital assets. To mint
 new assets of a particular kind, you must have a reference to that
@@ -74,7 +74,7 @@ kind's `mint`
  `payments` and map minted assets to both of them when assets are 
  added or removed. `Issuers` verify and move digital assets.
 
-An `issuer`'s special admin facet is a `Mint`, and that `Mint` and `Issuer`
+An `issuer`'s special admin facet is a `mint`, and that `mint` and `issuer`
 have a one-to-one relationship. With a reference to an `issuer`, you can
 check the validity of a `payment` in that `issuer`'s `mint`'s assets, as
 well as claim it either as a new `payment` to yourself or a `purse` you
@@ -118,9 +118,9 @@ of `amountMath` functions.
 In addition to math operations, `amountMath` functions check on their
 arguments' `brands`, throwing an error if the wrong `brand` was used.
 
-Since an `amountMath` is in a one-to-one relationship with an `issuer`,
-and thus that `issuer`'s `brand`, `amountMaths` also only work on assets 
-of their associated `brand`.
+`amountMaths` only work on assets of their associated `brand` and its `issuer.
+There can be many copies of the `amountMath` for a particular `brand` and
+its `issuer`. 
 
 ## Next Steps
 
