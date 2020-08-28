@@ -17,8 +17,8 @@ determine if an untrusted `payment` of that `brand` is valid.
 - `amountMathKind` `{MathKind}` - optional
 - Returns `{IssuerKit}`
 
-Makes a new `issuer` as well as its one-to-one associated ERTP objects; a 'mint' and a `brand`. 
-All are in unchangable one-to-one relationships with each other. It also makes a new
+Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
+All are in unchangeable one-to-one relationships with each other. It also makes a new
 `amountMath`, which is in an unchangeable many-to-one relationship with the new `issuer`.
 
 The `allegedName` is available from the `brand` in asset descriptions. The `allegedName` is 
@@ -103,7 +103,7 @@ moolaIssuer.getAmountMathKind(); // Returns 'MathKind.STR`
 
 Get the `payment`'s balance. Because the `payment` is not trusted, we cannot
 trust it to provide its true value, and must rely on the `issuer` to guarantee
-the `payment`'s `brand`  and tell us its how much it contains.
+the `payment`'s `brand`  and tell us how much it contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -169,7 +169,7 @@ Transfer all digital assets from `payment` to a new `payment` and burn the
 original. This allows the owner to be sure no other references to this
 payment survive, so they are the exclusive owner. `optAmount` is optional. 
 If `optAmount` is present, the code insists that `payment`'s balance is
-equal to `amount`, to prevent sending the wrong `payment` and other confusion. 
+equal to `optAmount`, to prevent sending the wrong `payment` and other confusion. 
 If `optAmount` does not equal the balance in the original `payment`
 then it throws an error.  If `payment` is a promise, the operation will 
 proceed after the promise resolves.
@@ -224,8 +224,8 @@ const badPayment = quatloosIssuer.combine(payments);
 - Returns: `{Array <Payment>}`
 
 Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`. 
-For example, if the `payment` is for 10 quatloos, and `paymentAmountA` is 3 quatloos,
-it returns an array of two `payments` with balances of 3 quatloos and 7 quatloos.
+For example, if the `payment` is for 10 Quatloos, and `paymentAmountA` is 3 Quatloos,
+it returns an array of two `payments` with balances of 3 Quatloos and 7 Quatloos.
 
 The original `payment` is burned. If the original `payment`
 is a `promise`, the operation proceeds after the `promise` resolves.
