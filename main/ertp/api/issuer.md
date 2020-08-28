@@ -68,16 +68,6 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 // quatloosIssuerAllegedName === 'quatloos'
 ```
 
-## issuer.getAmountMath()
-- Returns: `{AmountMath}`
-
-Returns the `amountMath` for this `issuer`. 
-```js
-const { issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-const quatloosIssuerAmountMath = quatloosIssuer.getAmountMath();
-// quatloosAmountMath === quatloosIssuerAmountMath
-```
-
 ## issuer.getAmountMathKind()
 - Returns: `{MathKind}`
 
