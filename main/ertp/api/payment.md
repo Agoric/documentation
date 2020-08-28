@@ -47,25 +47,28 @@ on or return a `payment`. While a brief description is given for each,
 you should click through to a method's main documentation entry for 
 full details on what it does and how to use it.
 
-- [`issuer.burn(payment, optAmount)`](./issuer.html#issuer-burn-payment-optamount)
+<router-link 
+to="/distributed-programming.html#vats">vat</router-link> 
+
+- <router-link to="./issuer.html#issuer-burn-payment-optamount">`issuer.burn(payment, optAmount)`</router-link> 
   - Burn (destroy) all of the digital assets in the `payment`.
-- [`issuer.claim(payment, optAmount)`](./issuer.html#issuer-claim-payment-optamount)
+- <router-link to="./issuer.html#issuer-claim-payment-optamount">`issuer.claim(payment, optAmount)`</router-link> 
   - Transfer all assets from the `payment` to a returned new `payment` and burn the original.
-- [`issuer.combine(paymentsArray)`](./issuer.html#issuer-combine-paymentsarray)
+- <router-link to="./issuer.html#issuer-combine-paymentsarray">`issuer.combine(paymentsArray)`</router-link> 
   - Combine multiple `payments` into one, returned, `payment`.
-- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+- <router-link to="./issuer.html#issuer-getamountof-payment">`issuer.getAmountOf(payment)`</router-link> 
   - Get a description of a `payment` balance as an `amount`. 
-- [`issuer.isLive(payment)`](./issuer.html#issuer-islive-payment)
+- <router-link to="./issuer.html#issuer-islive-payment">`issuer.isLive(payment)`</router-link> 
   - Returns `true` if `payment` has value. 
-- [`issuer.split(payment, paymentAmountA)`](./issuer.html#issuer-split-payment-paymentamounta)
+- <router-link to="./issuer.html#issuer-split-payment-paymentamounta">`issuer.split(payment, paymentAmountA)`</router-link> 
   - Split one `payment` into two new ones.
-- [`issuer.splitMany(payment, amountArray)`](./issuer.html#issuer-splitmany-payment-amountarray)
+- <router-link to="./issuer.html#issuer-splitmany-payment-amountarray">`issuer.splitMany(payment, amountArray)`</router-link> 
   - Split `payment` into multiple `payments`, returned as an array.
-- [`mint.mintPayment(newAmount)`](./mint.html#mint-mintpayment-newamount)
+- <router-link to="./mint.html#mint-mintpayment-newamount">`mint.mintPayment(newAmount)`</router-link> 
   - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. 
-- [`purse.deposit(payment, optAmount`)](./purse.html#purse-deposit-payment-optamount)
+- <router-link to="./purse.html#purse-deposit-payment-optamount">`purse.deposit(payment, optAmount`)`</router-link> 
   - Deposit all of `payment` into this `purse`.
-- [`purse.makeDepositFacet()`](./purse.html#purse-makedepositfacet)
+- <router-link to="./purse.html#purse-makedepositfacet">`purse.makeDepositFacet()`</router-link> 
   - Creates a deposit-only facet on the `purse` that can be given to other parties to deposit `payments` in.
-- [`purse.withdraw(amount)`](./purse.html#purse-withdraw-amount)
+- <router-link to="./purse.html#purse-withdraw-amount">`purse.withdraw(amount)`</router-link> 
   - Returns a new `payment` whose balance is described by the `amount` argument. 
