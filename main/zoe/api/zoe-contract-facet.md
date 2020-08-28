@@ -95,7 +95,7 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
-is used to validate `invitations` that users receive to participate
+validates user-received `invitations` to participate
 in contract instances.
 
 ```js
@@ -103,7 +103,7 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
-- `issuerP` `{Promise<Issuer>|Issuer}``
+- `issuer` `{Issuer}``
 - `keyword` `{String}`
 - Returns: `{Promise<IssuerRecord>}`
 
