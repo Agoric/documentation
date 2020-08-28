@@ -107,23 +107,27 @@ const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 
 Get the `payment`'s balance. Because the `payment` is not trusted, we cannot
 trust it to provide its true value, and must rely on the `issuer` to guarantee
-the `payment`'s `brand`.
+the `payment`'s `brand`  and tell us its how much it contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
-quatloosIssuer.getAmountOf(quatloosPayment); // returns 100  
+quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
-**tyg todo: If it just returns 100, shouldn't this be getAmountValueOf?**
 
 ## issuer.burn(payment, optAmount)
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` - Optional
 - Returns: `{Amount}`
 
-Burn (destroy) all of the digital assets in the `payment`. `optAmount` is optional. If `optAmount` is present, 
+Burn (destroy) all of the digital assets in the `payment`
+and return an `amount` of what was burned. 
+
+`optAmount` is optional. If `optAmount` is present, 
 the code insists the `payment` balance is equal to `optAmount`, to prevent sending the wrong `payment`
-and other confusion.  If `payment` is a `promise`, the operation proceeds after the
+and other confusion.  
+
+If `payment` is a `promise`, the operation proceeds after the
 `promise` resolves.
 
 ```js
@@ -132,7 +136,7 @@ const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMa
 const amountToBurn = quatloosAmountMath.make(10);
 const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
-// burntAmount should equal 10
+// burntAmount should equal 10 Quatloos
 const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
@@ -231,11 +235,8 @@ const oldPayment = quatloosMint.mintPayment(quatloos.AmountMath.make(100));
 const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
 
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
-```
 
-Note that the total `amount` in the `amountArray` must equal the `amount` in the original `payment`:
-
-```js
+// The total amount in the amountArray must equal the original payment amount
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
 
 // total amounts in badAmounts equal 20, when it should equal 1000
