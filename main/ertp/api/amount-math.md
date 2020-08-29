@@ -19,7 +19,7 @@ defaults to `MathKind.NAT` if not given. For example
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to 'MathKind.NAT'
 makeIssuerKit('foobars', MathKind.STRING_SET);
-makeIssuerKit('kitties', MathKind.SET');
+makeIssuerKit('kitties', MathKind.SET);
 ```
 
 ## Amount
