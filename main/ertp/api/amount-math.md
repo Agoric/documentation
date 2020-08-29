@@ -4,7 +4,7 @@ Logic for manipulating `amounts`.
 
 ## AmountMath Kinds
 
-There are three different kinds of `amountMaths`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer` (which also creates the `issuer`'s associated `amountMath`). It then knows which kinds's operations to use on its `amounts`..
+There are three different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer`.
 
 The three kinds of `amountMaths` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
@@ -294,4 +294,3 @@ what it does and how to use it.
   - Returns the kind of the `issuer`'s associated `amountMath`.
 - [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
   - Returns the `amountMath` associated with the `brand`.
-
