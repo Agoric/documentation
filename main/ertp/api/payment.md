@@ -14,9 +14,8 @@ into two new `payments` of 3 Quatloos and 7 Quatloos.
 The `split()` operation *burns* (destroys) the original 10 Quatloos `payment`.
 
 `Payments` are often received from other actors and therefore should not be
-trusted themselves. To get the balance of a `payment`, use its trusted `issuer`,
-which is the `issuer` associated with the `payment`'s `brand`: 
-`issuer.getAmountOf(payment)`.
+trusted themselves. To get the balance of a `payment`, use the `issuer` 
+associated with the `payment`'s `brand`: `issuer.getAmountOf(payment)`.
 
 To convert a `payment` into a new `purse`: 
 1. Get the `payment`'s trusted `issuer`. 
@@ -56,7 +55,7 @@ full details on what it does and how to use it.
 - <router-link to="./issuer.html#issuer-getamountof-payment">`issuer.getAmountOf(payment)`</router-link> 
   - Get a description of a `payment` balance as an `amount`. 
 - <router-link to="./issuer.html#issuer-islive-payment">`issuer.isLive(payment)`</router-link> 
-  - Returns `true` if `payment` has value. 
+  - Returns `true` if the `issuer` says the `payment` exists (i.e. it's been created and hasn't been burned).
 - <router-link to="./issuer.html#issuer-split-payment-paymentamounta">`issuer.split(payment, paymentAmountA)`</router-link> 
   - Split one `payment` into two new ones.
 - <router-link to="./issuer.html#issuer-splitmany-payment-amountarray">`issuer.splitMany(payment, amountArray)`</router-link> 
