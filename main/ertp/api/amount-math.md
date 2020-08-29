@@ -181,7 +181,6 @@ greater than { 'seat 2' } because the former both contains all of the latter's
 contents and has more elements.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos5 = quatloosAmountMath.make(5);
 const quatloos10 = quatloosAmountMath.make(10);
