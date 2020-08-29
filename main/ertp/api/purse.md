@@ -15,7 +15,11 @@ created that hold that `brand`. So you could have, say, three Quatloos `purses`,
 friend Alice could have eight Quatloos `purses`, and so on. 
 
 You change a `purse`'s balance by calling either `deposit()` (to add assets)
-or `withdraw()` (to remove assets) on it. A `purse` can be empty, meaning it
+or `withdraw()` (to remove assets) on it. A `purse` can be empty, which if it holds 
+a fungible currency means it has a value of 0. If it holds non-fungible theatre tickets, 
+it means it just doesn't have any tickets.
+
+meaning it
 has a balance value of 0 (which, for a ticket-holding `purse`, means that
 there just aren't any theater tickets in the `purse`).
 
