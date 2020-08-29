@@ -156,7 +156,6 @@ const empty = quatloosAmountMath.getEmpty();
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos1 = quatloosAmountMath.make(1);
 
