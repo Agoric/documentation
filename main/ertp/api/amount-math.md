@@ -143,7 +143,6 @@ on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`),
 or `MathKind.STRING_SET` (`[]`).
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 // Returns an empty amount for this amountMath.
 // Since this is a fungible amount it returns an amount
 // with 0 as its value.
