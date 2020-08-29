@@ -47,7 +47,7 @@ same kinds (`MathKind.NAT`, etc.) and the same one-to-one relationship with a `m
 Both a local `amountMath` and a remote `amountMath` can exist and be associated with the same
 `mint`, `issuer`, and `brand`.
 
-The advantage of making and using a local `amountMath` is that it's synchronous.
+The advantage of making and using a local `amountMath` is that the amountMath methods can be called synchronously.
 
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
