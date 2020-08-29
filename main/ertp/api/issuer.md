@@ -21,10 +21,10 @@ Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint`
 All are in unchangeable one-to-one relationships with each other. It also makes a new
 `amountMath`, which is in an unchangeable many-to-one relationship with the new `issuer`.
 
-The `allegedName` is available from the `brand` in asset descriptions. The `allegedName` is 
+The `allegedName` is available from the `brand` or the `issuer` in asset descriptions. The `allegedName` is 
 useful for debugging and double-checking assumptions, but should not be trusted.
 
-The optional `amountMathKind` specifies which of three kinds the created `amountMath` is.
+The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
 polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` 
 instead of making the strings yourself.
@@ -34,9 +34,9 @@ instead of making the strings yourself.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-makeIssuerKit('quatloos`); // Defaults to 'MathKind.NAT'
-makeIssuerKit('foobars', 'MathKind.STRSET');
-makeIssuerKit('kitties', MathKind.SET');
+makeIssuerKit('quatloos'); // Defaults to 'MathKind.NAT'
+makeIssuerKit('foobars', 'MathKind.STRING_SET');
+makeIssuerKit('kitties', MathKind.SET);
 ```
 
 ```js
@@ -83,16 +83,16 @@ of API methods (i.e. `amountMath` methods are polymorphic).
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-quatloosIssuer.getAmountMathKind(); // Returns 'MathKind.NAT', the default value.
+quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as 'MathKind.NAT', the default value.
 const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STR);
-moolaIssuer.getAmountMathKind(); // Returns 'MathKind.STR`
+moolaIssuer.getAmountMathKind(); // Returns 'str', also known as'MathKind.STR`
 ```
 ## issuer.getAmountOf(payment)
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
 Get the `payment`'s balance. Because the `payment` is not trusted, we cannot
-trust it to provide its true value, and must rely on the `issuer` to guarantee
+trust it to provide its true value, and must rely on the `issuer` to validate
 the `payment`'s `brand`  and tell us how much it contains.
 
 ```js
@@ -137,7 +137,7 @@ and return an `amount` of what was burned.
 the code insists the `payment` balance is equal to `optAmount`, to prevent sending the wrong `payment`
 and other confusion.  
 
-If `payment` is a `promise`, the operation proceeds after the
+If `payment` is a `promise` for a `payment`, the operation proceeds after the
 `promise` resolves.
 
 ```js
@@ -161,7 +161,7 @@ payment survive, so they are the exclusive owner. `optAmount` is optional.
 If `optAmount` is present, the code insists that `payment`'s balance is
 equal to `optAmount`, to prevent sending the wrong `payment` and other confusion. 
 If `optAmount` does not equal the balance in the original `payment`
-then it throws an error.  If `payment` is a promise, the operation will 
+then it throws an error.  If `payment` is a promise for a `payment`, the operation will 
 proceed after the promise resolves.
 
 ```js
@@ -182,7 +182,7 @@ a `promise`, the operation proceeds after all the `payments`
 resolve. The `payments` in `paymentsArray` are burned.
 
 If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
-array must equal `optTotalAmount`'s `value` or it throws an error.
+array must equal `optTotalAmount` or it throws an error.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -247,12 +247,13 @@ const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
+// Set original amout to 1000
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
 
-// total amounts in badAmounts equal 20, when it should equal 1000
+// Total amounts in badAmounts equal 20, when it should equal 1000
 const badAmounts = Array(2).fill(quatloosAmountMath.make(10));
 
-// throws error
+// 20 does not equal 1000, so throws error
 quatloosIssuer.splitMany(payment, badAmounts);
 ```
 
@@ -260,4 +261,5 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - `payment` `{Payment}`
 - Returns: `{Boolean}`
 
-Returns `true` if the `payment` continues to have value. If `payment` is a promise, the operation proceeds upon resolution.
+Returns `true` if the `payment` was created by the issuer and has not yet been destroyed.
+If `payment` is a promise, the operation proceeds upon resolution.
