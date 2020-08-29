@@ -1,7 +1,7 @@
 # Brand
-The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships within a
-contract `instance`
+The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships
 with an `issuer` and a `mint`, and one-to-many relationships with `amountMaths`, `purses` and `payments`.
+
 Meaning for, say, the Quatloos `brand`:
 - There is only one Quatloos `issuer`.
 - There is only one Quatloos `mint`.
@@ -49,7 +49,7 @@ The following methods on other ERTP components also either operate on or
 return a `brand`. While a brief description is given for each, you should click through
 to a method's main documentation entry for full details on what it does and how
 to use it. 
-- <router-link to="./issuer.html#getbrand">issuer.getBrand()</router-link>: Returns
+- <router-link to="./issuer.html#issuer-getbrand">issuer.getBrand()</router-link>: Returns
 the `brand` for the `issuer`.  
-- <router-link to="./payment.html#getallegedbrand">payment.getAllegedBrand()</router-link>: Returns
+- <router-link to="./payment.html#payment-getallegedbrand">payment.getAllegedBrand()</router-link>: Returns
 the `payment`'s alleged `brand`.
