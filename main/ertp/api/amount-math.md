@@ -126,7 +126,6 @@ const verifiedAmount = quatlooAmountMath.coerce(allegedAmount);
 Returns the `value` from the given `amount`.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloos123 = quatloosAmountMath.make(123);
 
 // returns 123
