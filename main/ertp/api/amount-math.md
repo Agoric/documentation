@@ -37,21 +37,19 @@ someAmount: {
 
 `values` describe how much of something can be owned or shared. A fungible `value` is normally represented by a natural number. Other `values` may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
-A `value` must be `Comparable`.
-
 ## LocalAmountMath
 
 We encourage you to make and use local and thus synchronous versions of `AmountMaths`. 
 Their local or remote status is the only different between the two; each has the same methods, the
-same kinds (`MathKind.NAT`, etc.) and the same one-to-one relationship with a `mint`, `issuer`, and `brand`.
+same kinds (`MathKind.NAT`, etc.) and the same relationship with a `mint`, `issuer`, and `brand`.
 Both a local `amountMath` and a remote `amountMath` can exist and be associated with the same
 `mint`, `issuer`, and `brand`.
 
-The advantage of making and using a local `amountMath` is that the amountMath methods can be called synchronously.
+The advantage of making and using a local `amountMath` is that it's synchronous.
 
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
-Returns: `{ AmountMath }`
+Returns: `{ Promise<AmountMath> }`
 
 Creates and returns a local (synchronous) `amountMath` object. The new local copy has the same many-to-one
 relationship with the original's `issuer`, and thus also to the original's `brand` and `mint`.
@@ -126,6 +124,7 @@ const verifiedAmount = quatlooAmountMath.coerce(allegedAmount);
 Returns the `value` from the given `amount`.
 
 ```js
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloos123 = quatloosAmountMath.make(123);
 
 // returns 123
@@ -142,6 +141,7 @@ on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`),
 or `MathKind.STRING_SET` (`[]`).
 
 ```js
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 // Returns an empty amount for this amountMath.
 // Since this is a fungible amount it returns an amount
 // with 0 as its value.
@@ -155,6 +155,7 @@ const empty = quatloosAmountMath.getEmpty();
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos1 = quatloosAmountMath.make(1);
 
@@ -180,6 +181,7 @@ greater than { 'seat 2' } because the former both contains all of the latter's
 contents and has more elements.
 
 ```js
+const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos5 = quatloosAmountMath.make(5);
 const quatloos10 = quatloosAmountMath.make(10);
@@ -284,7 +286,7 @@ The following methods on other ERTP components and objects also either operate
 on or return a brand. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
-- <router-link to="./issuer.html#issuer-getamountof-payment">issuer.getAmountOf(payment)</router-link>
+- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
   - Returns the `amount` description of the `payment`
 - [`issuer.getAmountMathKind()`](./issuer.html#issuer-getamountmathking)
   - Returns the kind of the `issuer`'s associated `amountMath`.
