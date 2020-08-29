@@ -285,7 +285,7 @@ The following methods on other ERTP components and objects also either operate
 on or return a brand. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
-- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+- <router-link to="./issuer.html#issuer-getamountof-payment">issuer.getAmountOf(payment)</router-link>
   - Returns the `amount` description of the `payment`
 - [`issuer.getAmountMathKind()`](./issuer.html#issuer-getamountmathking)
   - Returns the kind of the `issuer`'s associated `amountMath`.
