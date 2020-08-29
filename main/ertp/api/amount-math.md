@@ -18,7 +18,7 @@ defaults to `MathKind.NAT` if not given. For example
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to 'MathKind.NAT'
-makeIssuerKit('foobars', 'MathKind.STRING_SET');
+makeIssuerKit('foobars', MathKind.STRING_SET);
 makeIssuerKit('kitties', MathKind.SET');
 ```
 
