@@ -1,6 +1,6 @@
 # Purses and Payments
 
-You store digital assets in either a `purse` or a `payment`:
+Digital assets exist in either a `purse` or a `payment`:
 - **[`purse`](https://agoric.com/documentation/glossary/#purse)**: Hold
   a quantity of same-branded digital assets until part or
   all of them are withdrawn into a `payment` for use. A `purse` can only
@@ -26,12 +26,12 @@ one is for everyday expenses, and the other is your emergency fund.
 When you deposit additional assets into a `purse` or `payment`, they are added to
 whatever assets already exist in the `purse` or `payment`. So if you deposit 3 Quatloos 
 into a `purse` with 8 Quatloos, you end up with a `purse` with 11 Quatloos. Similarly, 
-if you withdraw 6 Quatloos from the `purse` into a new `payment`, the `purse` has five Quatloos left
-and the `payment` has six Quatloos. 
+if you withdraw 6 Quatloos from the `purse` into a new `payment`, the `purse` has 5 Quatloos 
+left and the `payment` has 6 Quatloos. 
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. If you
-only want to add part of a `payment` to a `purse`, you must use `payment.split()` 
-or `payment.splitMany()` first to split the `payment` into one or more `payments`.
+only want to add part of a `payment` to a `purse`, you must first use `payment.split()` 
+or `payment.splitMany()` to split the `payment` into one or more `payments`.
 
 With the exception of a `mint` creating an entirely new `payment`
 containing digital assets, you create a `payment` by making a withdrawal from
@@ -51,10 +51,10 @@ sending object-containing messages between parties.
   2. Receive the message with the `payment` and deposit the `payment` in
      your `brand` appropriate `purse`. 
      
-In addition, you can create a *deposit facet* for a `purse`. These are used to
-send to another party that lets them deposit a `payment` into the `purse` the 
+In addition, you can create a *deposit facet* for a `purse`. These are sent
+to another party and lets the other party deposit a `payment` into the `purse` the 
 deposit facet object represents. The benefit of sending a deposit facet instead of 
-providing access to its `purse` is that deposit facets only accept deposits; a party 
+providing access to its `purse` is deposit facets only accept deposits; a party 
 with a deposit facet object cannot use it to make a withdrawal or get a balance.
 
 If you receive a deposit facet, you can make a deposit to its associated `purse` by calling 
@@ -62,32 +62,28 @@ If you receive a deposit facet, you can make a deposit to its associated `purse`
 the associated `purse` object can contain. Otherwise it throws an error. If you send a party a 
 deposit facet object, you should also tell them what `brand` of assets it accepts.
 
-**tyg todo: See agoric-sdk/packages/ERTP/src/types.js. At line 221 it defines a
-depositFacet with a receive() operation to add assets to the associated purse. 
-But lines 253-254 specify that depositFacet uses deposit() to add assets. Which (or both?)
-is/are correct? Note to self to update API docs with answer.**
-
 ## Purses
 
 ![Purse methods](./assets/purse.svg)  
 
 Purses have four API methods:
 - [`purse.getCurrentAmount()`](https://agoric.com/documentation/ertp/api/purse.html#purse-getcurrentamount)
-  - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that
-    a `purse` can be empty.
+  - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
   - ```js
-    const { quatloosIssuer } = makeIssuerKit('quatloos');
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     // Balance should be 0 Quatloos.
     const currentBalance = quatloosPurse.getCurrentAmount();
+    // Deposit a payment of 5 Quatloos
+    quatloosPurse.deposit(quatloosPayment5);
+    // Balance should be 5 Quatloos
+    const newBalance = quatloosPurse.getCurrentAmount());
     ```
 - [`purse.deposit(payment, optAmount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-deposit-payment-optamount)
-  - Deposit the digital asset contents of a `payment` into this `purse`,
+  - Deposit the digital asset contents of the `payment` into this `purse`,
     returning a description of the `payment` balance as an `amount`. If the optional argument
     `optAmount` does not equal the `payment` balance,  or if `payment`
     is an unresolved promise, it throws an error.
   - ```js
-    const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('Quatloos');
     const quatloosPurse = quatloos.Issuer.makeEmptyPurse();
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
     const quatloos123 = quatloosmountMath.make(123);
@@ -100,7 +96,8 @@ Purses have four API methods:
 - [`purse.makeDepositFacet()`](https://agoric.com/documentation/ertp/api/purse.html#purse-makedepositfacet)
   - Creates a deposit-only facet on the `purse` that can be given
     to other parties. This lets them make a deposit to the `purse`, but not make
-    withdrawals from it or get its balance. **tyg todo: Possible fix source code depending on answer to above deposit vs. receive question**
+    withdrawals from it or get its balance. Note that the command to add a `payment`'s
+    assets via a `DepositFacet` is not `deposit()` but `receive()` as shown here.
   - ```js
      const depositOnlyFacet = purse.makeDepositFacet();
      // Give depositOnlyFacet to someone else. They can pass a payment
@@ -115,12 +112,11 @@ In addition, the method to create a new, empty, `purse` is called on an `issuer`
 - [`issuer.makeEmptyPurse()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-makeemptypurse)
   - Returns a new empty `purse` for storing digital assets of the `brand` the `issuer` is associated with.
   - ```js
-    const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
     // The new purse can only contain assets of the Quatloos brand.
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     ```
-To add the assets from a `payment` to a `depositFacet`, use the **tyg todo: See above. Write
-when resolves if this is .receive(), .deposit() or both**.
+To add the assets from a `payment` to a `depositFacet`, use the receive() method.
+There is **not** a `DepositFacet` deposit() method.
 
 ## Payments
 
@@ -132,7 +128,7 @@ original balance, or it is used up entirely. It is impossible to
 partially use a `payment`. In other words, if you create a `payment` containing
 10 Quatloos, the `payment` will always either contain 
 10 Quatloos or it will be deleted from its `issuer` records and no
-longer has any value. While a `payment` can be either combined with others or
+longer have any value. While a `payment` can be either combined with others or
 split into multiple `payments`, in both case the original `payment(s)`
 is/are deleted and the results put in one or more new `payments`.
 
@@ -283,7 +279,7 @@ The following code creates a new `purse` for the `quatloos` brand, deposits
 
 ```js
 // Create a purse with a balance of 10 Quatloos
-const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(10));
 const quatloos10 = quatloosAmountMath.make(10);
