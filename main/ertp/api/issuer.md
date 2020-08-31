@@ -10,7 +10,7 @@ An `issuer` has an unchangeable one-to-one relationship with the `mint` and
 `brand` that were created with it. For any `brand` for which you will accept
 `payments` in, you should obtain its `issuer` from a trusted source.
 You can then rely on that `issuer` as the authority to 
-determine if an untrusted `payment` of that `brand` is valid.
+validate an untrusted `payment` of that `brand`.
 
 ## makeIssuerKit(allegedName, amountMathKind)
 - `allegedName` `{String}` 
@@ -18,11 +18,8 @@ determine if an untrusted `payment` of that `brand` is valid.
 - Returns `{IssuerKit}`
 
 Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
-All are in unchangeable one-to-one relationships with each other. 
-
-While this also returns an `amountMath`, we strongly urge that instead of using that one, which
-is asynchronous, you use `makeLocalAmountMath(issuer)` to create a local, synchronous, version
-and use that one. 
+All are in unchangeable one-to-one relationships with each other. It also returns an `amountMath`
+that can be used on `amounts` of the created `brand`.
 
 The `allegedName` is available from the `brand` or the `issuer` in asset descriptions. The `allegedName` is 
 useful for debugging and double-checking assumptions, but should not be trusted.
@@ -43,13 +40,12 @@ makeIssuerKit('kitties', MathKind.SET);
 ```
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand amountMath: quatloosAmountMath } = 
+      makeIssuerKit('quatloos');
 // This is merely an amount, describing assets.
-const quatloos2 = quatloosLocalAmountMath.make(2);
+const quatloos2 = quatloosAmountMath.make(2);
 
-const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
-const localTitleAmountMath = makeLocalAmountMath(titleIssuer);
+const { mint: titleMint, issuer: titleIssuer amountMath: titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
 // These are merely amounts describing digital assets, not minting assets.
 const cornerProperty = titleLocalAmountMath.make(harden['1292826']);
 const adjacentProperty = titleLocalAmountMath.make(harden['1028393']);
@@ -153,8 +149,7 @@ If `payment` is a `promise` for a `payment`, the operation proceeds after the
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint } = 
-      makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);      
+      makeIssuerKit('quatloos');     
 const amountToBurn = quatloosAmountMath.make(10);
 const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
@@ -178,7 +173,6 @@ proceed after the promise resolves.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
 const amountExpectedToTransfer = quatloosAmountMath.make(2);
 const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
@@ -203,7 +197,7 @@ const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
 // create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(quatloosMint.mintPayment(quatloosLocalAmountMath.make(1)));
+  payments.push(quatloosMint.mintPayment(quatloosAmountMath.make(1)));
 }
 
 // combinedPayment equals 100
@@ -214,8 +208,7 @@ const combinedPayment = quatloosIssuer.combine(payments);
 
 ```js
 const { mint: otherMint, issuer: otherIssuer } = makeIssuerKit('other');
-const otherLocalAmountMath = makeLocalAmountMath(otherIssuer);
-const otherPayment = otherMint.mintPayment(otherLocalAmountMath.make(10));
+const otherPayment = otherMint.mintPayment(otherAmountMath.make(10));
 payments.push(otherPayment); // using the payments array from the above code
 
 // throws error
@@ -236,10 +229,9 @@ is a `promise`, the operation proceeds after the `promise` resolves.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
-const oldPayment = quatloosMint.mintPayment(quatloosLocalAmountMath.make(20));
+const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20));
 // After the split, paymentA has 5 quatloos and paymentB has 15.
-const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloosLocalAmountMath.make(5));
+const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloosAmountMath.make(5));
 ```
 
 ## issuer.splitMany(payment, amountArray)
@@ -256,15 +248,14 @@ of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer} = makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
-const oldPayment = quatloosMint.mintPayment(quatloosLocalAmountMath.make(100));
-const goodAmounts = Array(10).fill(quatloosLocalAmountMath.make(10));
+const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
+const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
 
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
 // Set original amout to 1000
-const payment = quatloosMint.mintPayment(quatloosLocalAmountMath.make(1000));
+const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
 
 // Total amounts in badAmounts equal 20, when it should equal 1000
 const badAmounts = Array(2).fill(quatloosAmountMath.make(10));
