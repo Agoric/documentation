@@ -2,9 +2,16 @@
 
 Logic for manipulating `amounts`.
 
+## Obtaining an AmountMath
+
+There are three ways and circumstances you can get access to an `amountMath`:
+- You made its associated `mint` and `issuer` with `makeIssuerKit()`, so use the `amountMath` returned from the call. 
+- You are writing a Zoe contract and the `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`.. 
+- You receive or learn about an `issuer` and are not writing a Zoe contract, so call `makeLocalAmountMath(issuer)`.
+
 ## AmountMath Kinds
 
-There are three different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating an `issuer`.
+There are three different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
 
 The three kinds of `amountMath` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
@@ -24,35 +31,34 @@ makeIssuerKit('kitties', MathKind.SET);
 
 ## Amount
 
-An `amount` is a description of digital assets, answering the questions "how much?" and "of what kind?". It is a `value` ("how much") labeled with a `brand` ("of what kind"). `AmountMath` executes the logic of how an `amount` changes when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 Quatloos into a `purse` that already has 3 Quatloos gives a new balance of 5 Quatloos. An empty `purse` has 0 Quatloos. 
+An `amount` is a description of digital assets, answering the 
+questions "how much?" and "of what kind?". It is a `value` ("how much") 
+labeled with a `brand` ("of what kind"). `AmountMath` executes the logic 
+of how an `amount` changes when digital assets are merged, separated, or 
+otherwise manipulated. For example, a deposit of 2 Quatloos into a `purse` 
+that already has 3 Quatloos gives a new balance of 5 Quatloos. 
+An empty `purse` has 0 Quatloos. 
 
 ```js
 someAmount: {
   brand: someBrand,
-  value: someValue,
 }
+  value: someValue,
 ```
 
 ## Value
 
 `values` describe how much of something can be owned or shared. A fungible `value` is normally represented by a natural number. Other `values` may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
-## LocalAmountMath
-
-We encourage you to make and use local and thus synchronous versions of `AmountMaths`. 
-Their local or remote status is the only difference between the two; each has the same methods, the
-same kinds (`MathKind.NAT`, etc.) and the same relationship with a `mint`, `issuer`, and `brand`.
-Both a local `amountMath` and a remote `amountMath` can exist and be associated with the same
-`mint`, `issuer`, and `brand`.
-
-The advantage of making and using a local `amountMath` is that it's synchronous.
-
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
 - Returns: `{ Promise<AmountMath> }`
 
-Creates and returns a local (synchronous) `amountMath` object. The new
+Creates and returns a local `amountMath` object. The new
 local copy uses the same remote `brand` as the `issuer` does.
+
+This should be used when you need an `amountMath`, and receive or 
+learn about an `issuer`, and are not writing a Zoe contract,
 ```js
 import { makeLocalAmountMath } from '@agoric/ertp';
 const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
@@ -64,8 +70,9 @@ const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
 Return the `brand` the `amountMath` works on. 
 
 The association cannot be broken or changed;
-a particular `amountMath` will always and only be used on `amounts` that have its
-initially associated `brand`. 
+a particular `amountMath` and its methods 
+will always and only be used on `amounts` that have that
+`amountMath`'s initially associated `brand`. 
 
 ```js
 //Get the amountMath's associated brand.
@@ -78,7 +85,7 @@ const exampleBrand = exampleAmountMath.getBrand();
 Get the kind (`MathKind.NAT`, `MathKind.STRING_SET`, `MathKind.SET`) of the `amountMath`.
 
 ```js
-quatloosAmountMath.getMathHelpersName(); // For example, returns MathKind.NAT
+quatloosAmountMath.getAmountMathKind(); // For example, returns MathKind.NAT
 ```
 
 ## amountMath.make(allegedValue)
@@ -247,7 +254,11 @@ const combinedList = itemsAmountMath.add(listAmountA, listAmountB);
 - `rightAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Returns a new `amount` that is the `leftAmount` minus the `rightAmount` (i.e. everything in the `leftAmount` that is not in the `rightAmount`). If `leftAmount` doesn't include `rightAmount` (subtraction results in a negative), it throws an error. Because `leftAmount` must include `rightAmount`, this is **not** equivalent to set subtraction.
+Returns a new `amount` that is the `leftAmount` minus the `rightAmount` (i.e. 
+everything in the `leftAmount` that is not in the `rightAmount`). If `leftAmount` 
+doesn't include `rightAmount` (subtraction results in a negative), it throws an 
+error. Because `leftAmount` must include `rightAmount`, this is **not** 
+equivalent to set subtraction.
 
 `leftAmount` and `rightAmount` must be of the same `brand`.
 
@@ -271,7 +282,7 @@ const badList = itemsAmountMath.subtract(listAmountA, listAmountB)
 ## Related Methods
 
 The following methods on other ERTP components and objects also either operate
-on or return a brand. While a brief description is given for each, you should
+on or return an `amount` or `amountMath`. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
 
