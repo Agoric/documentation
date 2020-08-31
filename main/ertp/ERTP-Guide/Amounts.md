@@ -2,11 +2,11 @@
 
 ## Amounts
 
-![Amount methods](./assets/amount.svg)
-
+<router-link to="./assets/amount.svg">Amount methods</router-link>
 Amounts describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
-Use the `amountMath` (covered in-depth [here](./AmountMath.html)) API methods 
+Use the `amountMath` API methods(covered in-depth 
+<router-link to="./AmountMath.html">here</router-link>)
 to get information about and otherwise manipulate an `amount` as a whole.
 
 `amount` has two properties:
@@ -18,7 +18,7 @@ particular right, or an arbitrary object representing the rights at
 issue (e.g., a theatre ticket's date, time, row and seat positions).
 
 `amounts` and their `values` and `brands` are manipulated by
-the [`amountMath`](https://agoric.com/documentation/glossary/#amountmath)
+the `AmountMath`
 API. It executes the logic of how `amounts` change when digital 
 assets are merged, separated, or otherwise manipulated. For example, 
 you make an offer for something, which is declined. You want to change your 
@@ -26,8 +26,7 @@ offer, represented as an `amount`, to be of a greater `value` by adding to it.
 
 As fungible and non-fungible assets have different kinds of values,
 there are three different kinds of `amountMath` methods, one 
-for each kind of value. Each implements the same set of methods described
-below.
+for each kind of value. Each implements the same set of methods described below.
 
 When you create an `issuer` for a
 `brand`, you specify which kind of `amountMath` the brand uses. The
@@ -38,6 +37,7 @@ is used on an a`amount` with that `brand`. The possible values are:
 - `set`: Used with sets of objects, primarily non-fungible assets.
 
 Use
+
 [`makeIssuerKit(allegedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
  to specify which kind of `amountMath` your contract uses for the `brand`
  associated with the created `issuer`.  The second parameter,
@@ -143,8 +143,7 @@ return a `brand`.
 
 Values are the "how many" part of an `amount`. There are no `value`
 methods, but two `amountMath` methods use or return them. 
-
-- [`amountMath.getValue(amount)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-getvalue-amount)
+- <router-link to="./api/amount-math.html#amountmath-getvalue-amount">`amountMath.getValue(amount)`</router-link>
   - Return the `amount` argument's `value`
   - ```js
     const { quatloosAmountMath } = makeIssuerKit('quatloos');
@@ -152,7 +151,7 @@ methods, but two `amountMath` methods use or return them.
     // returns 123
     const value = quatloosAmountMath.getValue(quatloos123);
     ```
-- [`amountMath.make(allegedValue)`](https://agoric.com/documentation/ertp/api/amount-math.html#amountmath-make-allegedvalue)
+- <router-link to="./api/amount-math.html#amount-math-make-allegedvalue">`amountMath.make(allegedValue)`</router-link>
   - Make an `amount`from a `value` by adding the
   `amountMath` associated `brand` to the `value`. 
   - ```js
