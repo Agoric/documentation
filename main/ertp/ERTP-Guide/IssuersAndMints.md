@@ -2,50 +2,56 @@
 
 ## Issuers
 
-![Issuer methods](./assets/issuer2.svg)  
+<router-link to="./assets/issuer2.svg">Issuer methods</router-link>  
 
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
 Its special admin facet is a `mint` which it has a one-to-one
-relationship with. Only a `mint` can issue new digital assets.
+relationship with. Only a `mint` can issue new digital assets; an `issuer` cannot.
 
 An `issuer` also has a one-to-one relationship with a `brand`. So, if
-our `brand` is the imaginary currency *Quatloos*, only
+our `brand` is the imaginary currency Quatloos, only
 the `issuer` in the one-to-one relationship with the Quatloos `brand`
 can:
 - Create a new empty `purse` that can store Quatloos.
 - Manipulate a `payment` in Quatloos to be claimed, split, combined,
 burned, or have its amount gotten.
 
-An `issuer` cannot mint new assets, but it can create an empty `purse` and
-operate on a `payment`. An `issuer` should be obtained from a trusted source and
+An `issuer` should be obtained from a trusted source and
 then relied upon as the authority as to whether an untrusted `payment`
-is valid.
+of the same `brand` is valid.
 
-![Issuer methods](./assets/issuer1.svg)  
+<router-link to="./assets/issuer1.svg">Issuer methods</router-link>  
 
 An `issuer` has 13 methods. 4 return information about an
 `issuer`, 1 creates a new `issuer`, 1 creates a new `purse`, and 7
 which actually operate on their `payment` object argument.
 
 - **Create issuer operation**
-  - [`makeIssuerKit(allegedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#makeissuerkit-allegedname-mathhelpername)
-    - Makes an `issuer` and its related `mint`, `amountMath` and `brand`
-    that are in one-to-one relationships with each
-    other. Returns ` { mint, issuer, amountMath, brand }`. The `allegedName`
-    is available from the `brand` to describe assets, but should not
-    be trusted. `amountMathKind` specifies if the associated
-    `amountMath` is of kind `nat` (the default), `str`, or `strSet`;
+  - <router-link to="./api/issuer.html#makeissuerkit-allegedname-mathhelpername">`makeIssuerKit(allegedName, amountMathKind)`</router-link>
+  - Makes an `issuer` and its related `mint`, `amountMath` and `brand`.
+    Returns ` { mint, issuer, amountMath, brand }` The `mint` and
+    `brand` are in unchangeable one-to-one relationships with the `issuer`
+    and each other`. The `amountMath` is in a many-to-one relationship
+    with the `issuer`, `brand`, and `mint`.
+    
+    The `allegedName` is available from the `brand` to describe assets, but should not
+    be trusted. 
+    
+    `amountMathKind` specifies if the associated `amountMath` is of kind `MathKind.NAT` (`nat`) 
+    (the default value), `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`);
     see the [amountMath page](./amountMath.md) for details. 
     - ```js
-      const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('quatloos');
-      // This is merely an amount, describing assets.
+      const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath, brand: quatloosBrand } = 
+            makeIssuerKit('quatloos');
+      // This is merely an amount, describing assets. It does not create new assets.
       const quatloos2 = quatloosAmountMath.make(2);
       // Non-fungible asset, which needs an amountMath of kind 'strSet'
-      const { titleMint, titleIssuer, titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
+      const { mint: titleMint, issuer: titleIssuer, amountMath: titleAmountMath } = 
+            makeIssuerKit('alamedaCountyPropertyTitle', MathKind.STRING_SET);
 	```
 - **Get information about the issuer operations**
-  - [`issuer.getBrand()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getbrand) 
+  - <router-link to="./api/issuer.html#issuer-getbrand">`issuer.getBrand()`</router-link>
     - Returns the `brand` the `issuer` is in a one-to-one relationship with. The `brand` is not closely
       held, so it can be used by fake digital assets and amounts. Do
       not trust this method alone to identify an `issuer`. **tyg todo: Should this last be "brand" instead of "issuer"?**
@@ -54,7 +60,7 @@ which actually operate on their `payment` object argument.
       // myQuatloosBrand == quatloosBrand
       const myQuatloosBrand = quatloosIssuer.getBrand();
       ```
-  - [`issuer.getAllegedName()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getallegedname)
+  - <router-link to="./api/issuer.html#issuer-getallegedname">`issuer.getAllegedName()`</router-link>
     - Returns the `issuer`/`mint`'s
     [allegedName](https://agoric.com/documentation/glossary/#allegedname),
 	the non-trusted human-readable name of the `issuer`'s associated `brand`.
@@ -63,22 +69,22 @@ which actually operate on their `payment` object argument.
       const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
       // quatloosissuerAllegedName === 'quatloos'
        ```
-  - [`issuer.getAmountMath()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountmath) 
+  - <router-link to="./api/issuer.html#issuer-getamountmath">`issuer.getAmountMath()`</router-link>
     - Gets the `issuer`'s associated `AmountMath`. 
     - ```js
       const { quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
       const quatloosIssuerAmountMath = quatloosIssuer.getAmountMath();
       // quatloosAmountMath === quatloosIssuerAmountMath
       ```
-  - [`issuer.getAmountMathKind()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getmathhelpersname) 
+  - <router-link to="./api/issuer.html#issuer-getamountmathind">`issuer.getAmountMathKind()`</router-link>
     - Get the kind of `amountMath` for this `issuer`, either `nat`,
       `str`, or `strSet`.
     - ```js
       const { quatloosIssuer } = makeIssuerKit('quatloos');
       quatloosIssuer.getAmountMathKind; // 'nat', the default value for makeIssuerKit()
       ```
-- **Purse operations**
-  - [`issuer.makeEmptyPurse()`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-makeemptypurse) 
+- **Purse operation**
+  - <router-link to="./api/issuer.html#issuer-makeemptypurse">`issuer.makeEmptyPurse()`</router-link>
     - Returns an empty `purse` for the `brand` associated with the `issuer`. The `purse` only accepts valid 
     deposits of its associated `brand`, so you can retroactively identify a valid `payment` of that `brand`
     by successfully depositing it.
@@ -185,26 +191,26 @@ which actually operate on their `payment` object argument.
       (i.e. has not been used or burned and was issued by this `issuer`). If `payment` is a promise,
       the operation happens on its resolution.
 
-**Other objects' `issuer`-related methods:**
+**Related Methods:**
 
 **Note**: None of these methods return a canonical result. If the `issuer` itself doesn't acknowledge that
-the `mint`, `brand` or `purse` are from it, then they're invalid. These methods help you find the right `issuer`, 
-but aren't authoritative.
+the `mint`, `brand` or `purse` are associated with it, then they're invalid. These methods help you find 
+the right `issuer`, but aren't authoritative.
 
-- [`mint.getIssuer()`](https://agoric.com/documentation/ertp/api/mint.html#mint-getissuer)
-  - Return the `issuer` for the `mint`.
+- <router-link to="./api/mint.html#mint-getissuer">``mint.getIssuer()`</router-link> 
+  - Return the associated `issuer` for the `mint`.
   - ```js
-    const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
+    const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
     const quatloosMintIssuer = quatloosMint.getIssuer();
     // returns true
-    Object.is(issuer, quatloosMintIssuer);
+    issuer === quatloosMintIssuer);
     ```
-- [`brand.isMyIssuer(issuer)`](https://agoric.com/documentation/ertp/api/brand.html#brand-ismyissuer-issuer)
+- <router-link to="./api/brand.html#brand-ismyissuer-issuer">``brand.isMyIssuer(issuer)`</router-link> 
   - Returns `true` if the `brand` comes from this `issuer`.
   - ```js
     const isIssuer = brand.isMyIssuer(quatloosIssuer);
     ```
-- [`purse.getIssuer()`](https://agoric.com/documentation/ertp/api/purse.html#purse-getissuer)
+- <router-link to="./api/purse.html#purse-getissuer">`purse.getIssuer()`</router-link>
   - Returns the `issuer` associated with the `purse`.
   - ```js
     const purseIssuer = purse.getIssuer();
@@ -212,23 +218,25 @@ but aren't authoritative.
 
 ## Mints
 
-![Mint methods](./assets/mint.svg)  
+<router-link to="./assets/mint.svg">Mint methods</router-link> 
 
 A `mint` issues new digital assets of its associated `brand` as a new 
 `payment` object. These assets may be currency-like (our imaginary
 Quatloos currency), goods-like valuables (magic swords for games), or
 electronic rights (the right to participate in a contract). Only a`mint`object
-holder can create a new asset from it. 
+holder can create new assets from it. 
 
 In other words, let's say there
 are 1000 Quatloos in circulation. Only holders of the Quatloos associated
 `mint` can make any more Quatloos that'd boost the amount in circulation to, say, 2000.
 
-A `mint` has a one-to-one relationship with an `issuer`, which in turn has
-a one-to-one relationship with a `brand`. Thus, a `mint` has a one-to-one
-relationship with the `brand` of its `issuer`. So for Quatloos (or any other `brand`):
-- Only one `issuer` can create new Quatloos brand `purse` objects.
-- Only one `mint` can create a new `payment` that contains newly created Quatloos digital assets.
+Since these relationships are one-to-one and unchangeable:
+- A `mint` created to make an asset `brand`, say Quatloos, can only create that `brand` asset.
+For example, only Quatloos, not Moola or anything else.
+- A `mint` that creates an asset `brand` is the only `mint` that can create that `brand`. Only
+the one Quatloos `mint` can create new Quatloos.
+- A `mint` that creates an asset `brand` can never be changed to create a different `brand.
+So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
 
 **tyg todo: We should have information on how one
 creates/establishes a mint, and connects them to our `mint` objects both for our  currencies and for ones we've pegged from elsewhere. Who'd be good for getting info  on this from?"**  **Kate response: I think the concept of connecting a mint to "mint objects" is a wrong idea. Calling makeIssuerKit is what creates/establishes a mint, and that is it.**  **Tom response: Let me rephase the question. I'm about to write my first two contracts. One of them uses my personal digital currency, "tygs", over which I have control. How do I go about incorporating tygs into the contract/Agoric such that a contract transaction using tygs is the same as my doing a tygs using transaction outside of Agoric. In other words, I want to use "real" tygs, how do I get them into Agoric such that I can mint new ones, such that there's a valid issuer in the contract for them, etc.? For the other contract, I want to let people use an existing digital currency I don't control, say Bitcoin. Other than by the pegging method Pegasus did for the hackathon, how do I create/link Bitcoin within an Agoric contract? I just don't know of anywhere we explain how to set up "real currencies/digital rights" in our sandbox, as opposed to making up quatloos or similar that really don't have any value.**
@@ -237,16 +245,22 @@ There are two `mint` API commands:
 - [`mint.getIssuer()`](https://agoric.com/documentation/ertp/api/mint.html#mint-getissuer)
   - Returns the `issuer` uniquely associated with the `mint`.
   - ```js
-    const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
+    import { makeIssuerKit, getIssuer } from @agoric/ertp
+    const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
     const quatloosMintIssuer = quatloosMint.getIssuer();
     // returns true
-    Object.is(quatloosIssuer, quatloosMintIssuer);
+    quatloosIssuer === quatloosMintIssuer;
     ```
 - [`mint.mintPayment(newAmount)`](https://agoric.com/documentation/ertp/api/mint.html#mint-mintpayment-newamount)
   - Returns a new `payment` containing newly minted assets with a balance equal to `newAmount`. In other words,
-  it mints `newAmount` of digital assets and creates a `payment` to hold those assets.  
+    it mints `newAmount` of digital assets and creates a `payment` to hold those new assets. The assets are of
+    the `mint`'s associated `brand`.
+    
+    **Important**: mint.mintPayment() is the only way to create new digital assets. There is no other way.
   - ```js
-    const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
-    const quatloos1000 = quatloosAmountMath.make(1000);
+    import { MathKind, makeIssuerKit, makeLocalAmountMath, mintPayment } from '@agoric/ertp';    
+    const { issuer: quatloosIssuer, mint: quatloosMint} = makeIssuerKit('quatloos');
+    const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
+    const quatloos1000 = quatloosLocalAmountMath.make(1000);
     const newPayment = quatloosMint.mintPayment(quatloos1000);
     ```
