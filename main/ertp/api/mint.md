@@ -13,7 +13,7 @@ new assets of that `brand`.
 
 While not a method called on a `mint`, clearly it's important to know how to create a new `mint`. 
 `makeIssuerKit()` returns a new `issuer`, `mint`, `amountMath`, and `brand`. 
-See [here](./issuer.md#makeissuerkit-allegedname-amountmathkind) for details.
+See <router-link to="./issuer.md#makeissuerkit-allegedname-amountmathkind">here</router-link> for details.
 
 ## mint.getIssuer()
 - Returns: `{Issuer}`
