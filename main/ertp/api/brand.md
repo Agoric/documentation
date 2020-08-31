@@ -15,7 +15,7 @@ purported `amount` cannot use the `brand` by itself to verify its authenticity,
 since the `brand` can be reused by a misbehaving `issuer`
 
 All of these relationships are unchangable; if, say, a `mint` is created that makes new Quatloos, it
-can never create new assets of any other `brand`.`
+can never create new assets of any other `brand`.
 
 ## brand.isMyIssuer(issuer)
 - `issuer` `{Issuer}`
