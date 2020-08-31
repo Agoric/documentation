@@ -19,10 +19,6 @@ or `withdraw()` (to remove assets) on it. A `purse` can be empty, which if it ho
 a fungible currency means it has a value of 0. If it holds non-fungible theatre tickets, 
 it means it just doesn't have any tickets.
 
-meaning it
-has a balance value of 0 (which, for a ticket-holding `purse`, means that
-there just aren't any theater tickets in the `purse`).
-
 Unlike `payments`, `purses` are not meant to be sent to others. 
 To transfer digital assets, you should withdraw a `payment` from a `purse` and
 send the `payment` to another party.
