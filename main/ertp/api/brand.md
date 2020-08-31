@@ -37,9 +37,15 @@ const isIssuer = brand.isMyIssuer(issuer);
 Returns the alleged name of the `brand`. Should not be trusted as accurate.
 
 An alleged name is a human-readable string name of a kind of digital asset. 
-The alleged name should not be trusted as accurate, since it is not provided
-by a trusted source.
+It should not be trusted as accurate since there is no public registry or 
+expectation of uniqueness. This means there can be multiple issuers/mints/brands 
+with the same alleged name, and thus the name by itself does not uniquely 
+identify an issuer. Rather, the brand object does that.
 
+To put it another way, nothing stops different people from creating multiple 
+issuers with the alleged name Quatloos...but that doesn't make any of them the 
+Quatloos issuer. The alleged name is just a human readable version which is 
+helpful for debugging.
 ```js
 const name = brand.getAllegedName();
 ```
@@ -53,3 +59,4 @@ to use it.
 the `brand` for the `issuer`.  
 - <router-link to="./payment.html#payment-getallegedbrand">payment.getAllegedBrand()</router-link>: Returns
 the `payment`'s alleged `brand`.
+
