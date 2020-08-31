@@ -1,6 +1,6 @@
 # Issuer
 
-An `issuer` represents the identity of a specific kind of digital asset. 
+An `issuer` is the authority on what holds digital assets of its kind. 
 While it cannot create new value by creating digital assets like a `mint`, 
 it recognizes and identifies `purses` and `payments` that carry actual value.
 It can create empty `purses` and transform `payments` (by splitting, 
@@ -18,8 +18,11 @@ determine if an untrusted `payment` of that `brand` is valid.
 - Returns `{IssuerKit}`
 
 Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
-All are in unchangeable one-to-one relationships with each other. It also makes a new
-`amountMath`, which is in an unchangeable many-to-one relationship with the new `issuer`.
+All are in unchangeable one-to-one relationships with each other. 
+
+While this also returns an `amountMath`, we strongly urge that instead of using that one, which
+is asynchronous, you use `makeLocalAmountMath(issuer)` to create a local, synchronous, version
+and use that one. 
 
 The `allegedName` is available from the `brand` or the `issuer` in asset descriptions. The `allegedName` is 
 useful for debugging and double-checking assumptions, but should not be trusted.
@@ -58,10 +61,17 @@ const combinedProperty = titleAmountMath.make(harden['1292826', '1028393']);
 Returns the `allegedName` for this `issuer`.
 
 An alleged name is a human-readable string name 
-of a kind of digital asset. The alleged name 
-should not be trusted as accurate, since it 
-is not provided by a trusted source.
+of a kind of digital asset. An alleged name
+should not be trusted as accurate since there is
+no public registry or expectation of uniqueness. This
+means there can be multiple issuers/mints/brands with the
+same alleged name, and thus the name by itself does not
+uniquely identify an issuer. Rather, the `brand` object does that.
 
+To put it another way, nothing stops different people from creating
+multiple `issuers` with the alleged name `Quatloos`...but that doesn't
+make any of them **the** Quatloos `issuer`. The alleged name is just a 
+human readable version which is helpful for debugging. 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
