@@ -40,7 +40,7 @@ someAmount: {
 ## LocalAmountMath
 
 We encourage you to make and use local and thus synchronous versions of `AmountMaths`. 
-Their local or remote status is the only different between the two; each has the same methods, the
+Their local or remote status is the only difference between the two; each has the same methods, the
 same kinds (`MathKind.NAT`, etc.) and the same relationship with a `mint`, `issuer`, and `brand`.
 Both a local `amountMath` and a remote `amountMath` can exist and be associated with the same
 `mint`, `issuer`, and `brand`.
@@ -49,7 +49,7 @@ The advantage of making and using a local `amountMath` is that it's synchronous.
 
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
-Returns: `{ Promise<AmountMath> }`
+- Returns: `{ Promise<AmountMath> }`
 
 Creates and returns a local (synchronous) `amountMath` object. The new
 local copy uses the same remote `brand` as the `issuer` does.
@@ -68,9 +68,6 @@ a particular `amountMath` will always and only be used on `amounts` that have it
 initially associated `brand`. 
 
 ```js
-const { issuer } = makeIssuerKit('quatloos');
-//Get the issuer's associated amountMath.
-const exampleAmountMath = issuer.getAmountMath();
 //Get the amountMath's associated brand.
 const exampleBrand = exampleAmountMath.getBrand();
 ```
@@ -102,14 +99,12 @@ const amount837 = quatloosAmountMath.make(837);
 - Returns: `{Amount}`
 
 Make sure this `amount` is valid and if so, return it.
-If not valid, throws an exception. 
+If not valid, throws an exception. This checks if
+an `amount` coming from elsewhere is for the expected `brand`..
 
 ```js
 const quatloos50 = quatloosAmountMath.make(50);
 // Returns the same amount as quatloos50
-// allegedAmount is the argument to coerce. If it isn't
-// valid, this throws an exception. This checks if
-// an `amount` coming from elsewhere was made correctly.
 const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
 ```
 
@@ -120,7 +115,6 @@ const verifiedAmount = quatlooAmountMath.coerce(allegedAmount);
 Returns the `value` from the given `amount`.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloos123 = quatloosAmountMath.make(123);
 
 // returns 123
@@ -137,7 +131,6 @@ on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`),
 or `MathKind.STRING_SET` (`[]`).
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 // Returns an empty amount for this amountMath.
 // Since this is a fungible amount it returns an amount
 // with 0 as its value.
@@ -151,7 +144,6 @@ const empty = quatloosAmountMath.getEmpty();
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos1 = quatloosAmountMath.make(1);
 
@@ -174,10 +166,9 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 For non-fungible `values`, what "greater than or equal to" is depends on the 
 kind of `amountMath`. For example, { 'seat 1', 'seat 2' } is considered
 greater than { 'seat 2' } because the former both contains all of the latter's 
-contents and has more elements.
+contents and has additional elements.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos5 = quatloosAmountMath.make(5);
 const quatloos10 = quatloosAmountMath.make(10);
@@ -206,11 +197,10 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
 For example, { 'seat 1', 'seat 2' } is considered
 unequal to { 'seat 2' } because the number of items in the former is
-different from that of the latter. Similarly { 'seat 1',  'seat 2'  } and { 'seat 2' } 
-are considered unequal because the former has elements that are not contained in the latter.
+different from that of the latter. Similarly { 'seat 1',  'seat 3'  } and { 'seat 2' } 
+are considered unequal because the latter has elements that are not contained in the former.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const empty = quatloosAmountMath.getEmpty();
 const quatloos10 = quatloosAmountMath.make(10);
 const quatloos5 = quatloosAmountMath.make(5);
@@ -243,9 +233,10 @@ If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-const { amountMath: itemsAmountMath } = makeIssuerKit('myItems', MathKind.STRING_SET');
-const listAmountA = itemsAmountMath.make(harden['1','2','4']);
-const listAmountB = itemsAmountMath.make(harden['3']);
+const { issuer: myItemsIssuer } = makeIssuerKit('myItems', MathKind.STRING_SET');
+const myItemsAmountMath = makeLocalAmountMath(myItemsIssuer);
+const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
+const listAmountB = myItemsAmountMath.make(harden['3']);
 
 // Returns an amount whose value is ['1', '2', '4', '3']
 const combinedList = itemsAmountMath.add(listAmountA, listAmountB);
@@ -265,10 +256,11 @@ empty, it returns an empty `amount`.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-const { amountMath: itemsAmountMath } = makeIssuerKit('myItems', MathKind.STRING_SET);
-const listAmountA = itemsAmountMath.make(harden['1','2','4']);
-const listAmountB = itemsAmountMath.make(harden['3']);
-const listAmountC = itemsAmountMath.make(harden['2']);
+const { issuer: myItemsIssuer } = makeIssuerKit('myItems', MathKind.STRING_SET);
+const myItemsLocalAmountMath = makeLocalAmountMath(myItemsIssuer);
+const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
+const listAmountB = myItemsAmountMath.make(harden['3']);
+const listAmountC = myItemsAmountMath.make(harden['2']);
 
 // Returns ['1', '4']
 const subtractedList = itemsAmountMath.subtract(listAmountA, listAmountC)
