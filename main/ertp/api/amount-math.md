@@ -51,8 +51,8 @@ The advantage of making and using a local `amountMath` is that it's synchronous.
 - `issuer`: `{issuer}`
 Returns: `{ Promise<AmountMath> }`
 
-Creates and returns a local (synchronous) `amountMath` object. The new local copy has the same many-to-one
-relationship with the original's `issuer`, and thus also to the original's `brand` and `mint`.
+Creates and returns a local (synchronous) `amountMath` object. The new
+local copy uses the same remote `brand` as the `issuer` does.
 ```js
 import { makeLocalAmountMath } from '@agoric/ertp';
 const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
@@ -63,9 +63,8 @@ const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
 
 Return the `brand` the `amountMath` works on. 
 
-An `amountMath` has a many-to-one association with a `brand`, established when
-both are created by `makeIssuerKit()`. The association cannot be broken or changed;
-a particular `amountMath` will always and only be used on `amounts` with its
+The association cannot be broken or changed;
+a particular `amountMath` will always and only be used on `amounts` that have its
 initially associated `brand`. 
 
 ```js
@@ -82,8 +81,7 @@ const exampleBrand = exampleAmountMath.getBrand();
 Get the kind (`MathKind.NAT`, `MathKind.STRING_SET`, `MathKind.SET`) of the `amountMath`.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-quatloosAmountMath.getMathHelpersName(); // MathKind.NAT
+quatloosAmountMath.getMathHelpersName(); // For example, returns MathKind.NAT
 ```
 
 ## amountMath.make(allegedValue)
@@ -95,7 +93,6 @@ Make an `amount` from a `value` by adding the `brand` associated with
 the `amountMath`.
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 //amount837 = { value: 837, brand: quatloos }
 const amount837 = quatloosAmountMath.make(837);
 ```
@@ -108,12 +105,11 @@ Make sure this `amount` is valid and if so, return it.
 If not valid, throws an exception. 
 
 ```js
-const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const quatloos50 = quatloosAmountMath.make(50);
 // Returns the same amount as quatloos50
 // allegedAmount is the argument to coerce. If it isn't
-// valid, this throws an exception. This is often a useful
-// thing to do when an amount of a particular currency is required.
+// valid, this throws an exception. This checks if
+// an `amount` coming from elsewhere was made correctly.
 const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
 ```
 
@@ -286,9 +282,10 @@ The following methods on other ERTP components and objects also either operate
 on or return a brand. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
-- [`issuer.getAmountOf(payment)`](./issuer.html#issuer-getamountof-payment)
+
+- <router-link to="./issuer.html#issuer-getamountof-payment">`issuer.getAmountOf(payment)`</router-link>
   - Returns the `amount` description of the `payment`
-- [`issuer.getAmountMathKind()`](./issuer.html#issuer-getamountmathking)
+- <router-link to="./issuer.html#issuer-getamountmathkind">`issuer.getAmountMathKind()`</router-link>
   - Returns the kind of the `issuer`'s associated `amountMath`.
-- [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
+- <router-link to="./zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand">`zcf.getAmountMath(brand)`</router-link>
   - Returns the `amountMath` associated with the `brand`.
