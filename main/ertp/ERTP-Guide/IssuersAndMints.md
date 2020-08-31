@@ -241,7 +241,7 @@ Since these relationships are one-to-one and unchangeable:
 For example, only Quatloos, not Moola or anything else.
 - A `mint` that creates an asset `brand` is the only `mint` that can create that `brand`. Only
 the one Quatloos `mint` can create new Quatloos.
-- A `mint` that creates an asset `brand` can never be changed to create a different `brand.
+- A `mint` that creates an asset `brand` can never be changed to create a different `brand`.
 So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
 
 **tyg todo: We should have information on how one
@@ -262,7 +262,7 @@ There are two `mint` API commands:
     it mints `newAmount` of digital assets and creates a `payment` to hold those new assets. The assets are of
     the `mint`'s associated `brand`.
     
-    **Important**: mint.mintPayment() is the only way to create new digital assets. There is no other way.
+    **Important**: `mint.mintPayment()` is the only way to create new digital assets. There is no other way.
   - ```js
     import { MathKind, makeIssuerKit, makeLocalAmountMath, mintPayment } from '@agoric/ertp';    
     const { issuer: quatloosIssuer, mint: quatloosMint} = makeIssuerKit('quatloos');
