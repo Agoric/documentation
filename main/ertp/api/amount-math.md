@@ -289,5 +289,5 @@ what it does and how to use it.
   - Returns the `amount` description of the `payment`
 - <router-link to="./issuer.html#issuer-getamountmathkind">`issuer.getAmountMathKind()`</router-link>
   - Returns the kind of the `issuer`'s associated `amountMath`.
--  [`zcf.getAmountMath(brand)`](https://github.com/Agoric/documentation/master/main/zoe/api/zoe-contract-facet.md#zcfgetamountmathbrand)
+-  [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
   - Returns the `amountMath` associated with the `brand`.
