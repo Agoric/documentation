@@ -40,10 +40,9 @@ quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 - Returns: `{Amount}`
 
 Get an `amount` describing the current digital assets balance in the `purse`.
-This `amount` is confirmed by the `issuer` for the `brand` the `purse` can hold.
 Of course, the returned `amount` `value` might be different the next time you
 call `getCurrentAmount()` on the same `purse` if assets have been deposited or
-withdrawn from it in-between calls. . 
+withdrawn from it in-between calls. 
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -58,9 +57,6 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` - Optional. 
 - Returns: `{Amount}`
-
-All I came up with that is specific to deposit was this:
-1) you have to have a non-promise before you can call deposit(). When you call deposit() you'll get a response back (after waiting only for the round trip) telling you whether it succeeded. All calls that arrive later will see that the value has been transferred into the purse, and the payments are no longer valid.
 
 Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
 `payment`'s digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
