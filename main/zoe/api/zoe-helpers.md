@@ -12,10 +12,9 @@ import {
   assertProposalShape,
 } from '@agoric/zoe/src/contractSupport';
 ```
-
 Note that almost all ZoeHelpers require `zcf`, a `ContractFacet` as a first argument.
-Since they are contract helpers, they have access to the contract source code, which
-passes in `zcf`, the contract facet object, when it runs `start()`. 
+ZoeHelpers are contract helpers, in that they are useful to contract code. Contracts are started up by Zoe, 
+and `zcf` is passed in as a parameter to `start()`. 
 
 ## assertIssuerKeywords(zcf, keywords)
 - `zcf` `{ContractFacet}` 
@@ -36,15 +35,14 @@ import {
 assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
-## assertUsesNatMath
+## assertUsesNatMath(zcf, brand)
 - `zcf`- `{ContractFacet}`
 - `brand` - `{Brand}`
 
 This method always takes `zcf` as its first argument. 
 
-Assert that the `brand` argument's one-to-many associated `amountMath`
-uses the `MathKind.NAT` value of `amountMathKind` (i.e. the `brand`, and its 
-associated `issuer`, are for fungible assets).
+Assert that the `brand` corresponds to an `issuer` that uses `MathKind.NAT`. 
+This means the `issuer` creates fungible assets.
 
 If `false` throws with message `issuer must use NAT amountMath`.
 
@@ -102,7 +100,7 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
   - The `seats` have different keywords.
   - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
   - You want more interaction with the `seats`. 
-- Use `swap()` when any of these are true:
+- Use `swap()` when all of these are true:
   - Both `seats` use the same keywords.
   - The `seats`' wants can be fulfilled from the other `seat`.
   - No other `seat` interaction is wanted. 
@@ -112,6 +110,10 @@ This method always takes `zcf` as its first argument.
 The `keepLeft` and `tryRight` arguments are each `seats`
 with `seat`, `gains`, and optional `losses` properties. `gains` and `losses` are `amountKeywordRecords`
 describing declaratively what is added or removed from that `seat`'s allocation.
+
+Note that the reason the parameters are called `keepLeft` and `tryRight` is 
+if the offer fails, `keepLeft` remains unchanged, but `tryRight`
+is kicked out. This is true of both `swap` and `trade`.
 
 `trade()` does a trade between its two `seat` arguments. If the two `seats` can trade, 
 it swaps their compatible assets.
@@ -160,7 +162,7 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
   - The `seats` have different keywords.
   - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
   - You want more interaction with the `seats`. 
-- Use `swap()` when any of these are true:
+- Use `swap()` when all of these are true:
   - Both `seats` use the same keywords.
   - The `seats`' wants can be fulfilled from the other `seat`.
   - No other `seat` interaction is wanted. 
@@ -170,6 +172,10 @@ This method always takes `zcf` as its first argument.
 If the two `seats` can trade, then swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
+
+Note that the reason the parameters are called `keepLeft` and `tryRight` is 
+if the offer fails, `keepLeft` remains unchanged, but `tryRight`
+is kicked out. This is true of both `swap` and `trade`.
 
 In many contracts, we have a particular `seat` we want to find a
 match for. The contract iterates over potential matches, and 
