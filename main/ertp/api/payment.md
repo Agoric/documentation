@@ -13,8 +13,8 @@ However, you can split a `payment` into multiple `payments`, for example
 into two new `payments` of 3 Quatloos and 7 Quatloos.
 The `split()` operation *burns* (destroys) the original 10 Quatloos `payment`.
 
-`Payments` are often received from other actors and therefore should not be
-trusted themselves. To get the balance of a `payment`, use the `issuer` 
+`Payments` are often received from other actors. Since they are not self-verifying,
+you cannot trust `payments`. To get the verified balance of a `payment`, use the `issuer` 
 associated with the `payment`'s `brand`: `issuer.getAmountOf(payment)`.
 
 To convert a `payment` into a new `purse`: 
@@ -32,8 +32,6 @@ with it. Because `payments` are not trusted, any method calls on `payments`
 should be treated with suspicion and verified elsewhere.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, 
-        brand: quatloosBrand, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(10));
 //Should return 'quatloos'
 const allegedBrand = payment.getAllegedBrand();
