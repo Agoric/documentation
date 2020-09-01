@@ -21,7 +21,7 @@ Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint`
 All are in unchangeable one-to-one relationships with each other. It also returns an `amountMath`
 that can be used on `amounts` of the created `brand`.
 
-The `allegedName` is available from the `brand` or the `issuer` in asset descriptions. The `allegedName` is 
+The `allegedName` is available from the `brand` or the `issuer`. The `allegedName` is 
 useful for debugging and double-checking assumptions, but should not be trusted.
 
 The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
@@ -34,18 +34,18 @@ instead of using strings.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-makeIssuerKit('quatloos'); // Defaults to 'MathKind.NAT'
-makeIssuerKit('foobars', 'MathKind.STRING_SET');
+makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
+makeIssuerKit('foobars', MathKind.STRING_SET);
 makeIssuerKit('kitties', MathKind.SET);
 ```
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand amountMath: quatloosAmountMath } = 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand, amountMath: quatloosAmountMath } = 
       makeIssuerKit('quatloos');
 // This is merely an amount, describing assets.
 const quatloos2 = quatloosAmountMath.make(2);
 
-const { mint: titleMint, issuer: titleIssuer amountMath: titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', 'strSet');
+const { mint: titleMint, issuer: titleIssuer amountMath: titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.STRING_SET);
 // These are merely amounts describing digital assets, not minting assets.
 const cornerProperty = titleLocalAmountMath.make(harden['1292826']);
 const adjacentProperty = titleLocalAmountMath.make(harden['1028393']);
@@ -90,9 +90,9 @@ of API methods (i.e. `amountMath` methods are polymorphic).
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as 'MathKind.NAT', the default value.
-const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STR);
-moolaIssuer.getAmountMathKind(); // Returns 'str', also known as'MathKind.STR`
+quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as MathKind.NAT, the default value.
+const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STRING_SET);
+moolaIssuer.getAmountMathKind(); // Returns 'str', also known as'MathKind.STRING_SET`
 ```
 ## issuer.getAmountOf(payment)
 - `payment` `{Payment}`
@@ -114,7 +114,7 @@ quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloo
 Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
 and is the same for the `issuer`'s associated `mint`, and any `purses` and `payments` of this particular
 kind. The `brand` is not closely held, so this function should not be trusted to identify
-an `issuer` alone. Fake digital assets and amounts can use another `issuer's `brand`.
+an `issuer` alone. Fake digital assets and amounts can use another `issuer's` `brand`.
 
 ```js
 const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
