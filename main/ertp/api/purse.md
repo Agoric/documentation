@@ -59,9 +59,22 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 - `optAmount` `{Amount}` - Optional. 
 - Returns: `{Amount}`
 
+All I came up with that is specific to deposit was this:
+1) you have to have a non-promise before you can call deposit(). When you call deposit() you'll get a response back (after waiting only for the round trip) telling you whether it succeeded. All calls that arrive later will see that the value has been transferred into the purse, and the payments are no longer valid.
+
 Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
 `payment`'s digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
 `payment`, or if `payment` is an unresolved promise, it throws an error.
+
+There may be effects on this operation due to use of `promises` and asynchronousity. You 
+have to have a non-promise `payment` before calling `deposit()`. 
+When you call `deposit()` you get a response back (after waiting only for the round trip) 
+telling you if it succeeded. All later arriving calls see the value has been transferred 
+into the `purse`, and the `payment` is are no longer valid.
+
+If any withdrawals are waiting for `promises` to resolve, a deposit operation
+may pass them by. This is safe, as even if all the assets are withdrawn, the
+deposit still works on an empty `purse`.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = 
@@ -109,6 +122,10 @@ to a `purse` via its `depositFacet`, you use `depositFacet.receive()`.
 - Returns: `{Payment}`
 
 Withdraw the `amount` specified digital assets from this `purse` into a new `payment`.
+
+If the call succeeds, it immediately extracts the value into a new `payment`. 
+The caller won't get the new `payment` until a later turn, since the call is (nearly always) remote.
+But as soon as the message is processed, the value is gone from the `purse`.
 
 ```js
 // Create a purse and give it a balance of 10 Quatloos
