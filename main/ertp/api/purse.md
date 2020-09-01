@@ -62,7 +62,8 @@ Deposit all the contents of `payment` into this `purse`, returning an `amount` d
 `payment`'s digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
 `payment`, or if `payment` is an unresolved promise, it throws an error.
 
-There may be effects on this operation due to use of `promises` and asynchronousity. You 
+While the above applies to local and remote `purses`, for remote `purses` there may be effects on 
+this operation due to use of `promises` and asynchronicity. You 
 have to have a non-promise `payment` before calling `deposit()`. 
 When you call `deposit()` you get a response back (after waiting only for the round trip) 
 telling you if it succeeded. All later arriving calls see the value has been transferred 
