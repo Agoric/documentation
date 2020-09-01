@@ -19,7 +19,7 @@ For more information about using `E`, see the section on it in [Agoric's JavaScr
 - `instance` `{Instance}`
 - Returns: `{Promise<BrandKeywordRecord>}`
 
-Returns a `BrandKeywordRecord` containing all `brands` defined in the `instance`.
+Returns a `BrandKeywordRecord` containing all `brands` defined in the contract `instance`.
 ```js
 const brandKeywordRecord = await E(zoe).getBrands(instance);
 ```
@@ -32,7 +32,7 @@ Returns a `IssuerKeywordRecord` containing all `issuers` defined in the `instanc
 const issuerKeywordRecord = await E(zoe).getIssuers(instance);
 ```
 ## E(zoe).getTerms(instance)
-- `instance` `{Promise<Instance>}`
+- `instance` `{Instance}`
 - Returns: `{Object}` 
 
 Returns the terms of the `instance` argument, including its `issuers`, `brands` and any 
@@ -47,7 +47,7 @@ const terms = await E(zoe).getTerms(instance);
 
 A contract instance's `publicFacet` is an object available via Zoe to anyone knowing that `instance`. 
 You use it for general queries and actions, such as getting a current price or creating public invitations.
-Since a facet is defined just as any other object, you add methods to the `publicFacet` just like you would
+Since a facet is defined just as any other object, the contract adds methods to the `publicFacet` just like you would
 any object.
 
 Returns a `publicFacet` containing the public facet defined for `instance`.
@@ -55,7 +55,7 @@ Returns a `publicFacet` containing the public facet defined for `instance`.
 const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
 ## E(zoe).getInvitationIssuer()
-- Returns `{Promise<Issuer>}`
+- Returns `{Issuer}`
 
 Zoe has a single `invitationIssuer` for its entire
 lifetime. By having a reference to Zoe, a user can get the `invitationIssuer` and 
@@ -93,9 +93,9 @@ Takes an `invitation` as an argument and returns an object containing the follow
 details about the `invitation`:
 - `installation` `{Installation}`: The contract's installation in Zoe.
 - `instance` `{Instance}`: The contract instance this invitation is for.
-- `invitationHandle` `{Handle}`: A reference used to refer to this invitation.
-- `description` `{String}`: Serves as a name of the `invitation`. Use it
-   to find which part of the contract code created the `invitation`.
+- `invitationHandle` `{Handle}`: A handle used to refer to this invitation.
+- `description` `{String}`: describes the purpose of this `invitation`. Use it
+   to match the invitation to the role it plays in the contract.
 ```js
 const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
@@ -141,8 +141,8 @@ const installation = await E(zoe).getInstallation(invitation);
 
 Create an `instance` of the installed smart contract (specified by 
 the `installation` argument). You must also specify the 
-instance's `issuerKeywordRecord` and `terms` for the contract 
-(as key-value pairs). 
+instance's `issuerKeywordRecord` (as key-value pairs). and `terms` 
+for the contract.
 
 The `issuerKeywordRecord` is a record mapping string names (keywords) 
 to `issuers`, such as `{ Asset: quatlooIssuer}`. Keywords must begin 
@@ -160,10 +160,17 @@ It returns a `promise` for a `StartInstanceResult` object. The object consists o
 - `instance` `{Instance}`
 - `creatorInvitation` `{Payment | undefined}`
 
-A `publicFacet` and a `creatorFacet` are objects available via Zoe to anyone knowing 
+A `publicFacet` is an object available via Zoe to anyone knowing 
 the `instance` they are associated with. The `publicFacet` is used for general queries 
 and actions, such as getting a current price or creating public invitations. Since a 
-facet is defined just as any other object, you add methods to them just like you would any object.
+facet is defined just as any other object, 
+the contract developer can add methods to them just like they would any object.
+
+The `creatorFacet` is only available in this return value (i.e. only when starting
+a contract instance). The contract designer 
+should use it to encapsulate things that the contract runner might not want to share, 
+or might want to control the distribution of. The party who starts the contract 
+should carefully consider the impact before sharing access to the `creatorFacet`.
 
 `creatorInvitation` is an invitation that the contract instance creator can use. 
 It is usually used in contracts where the creator immediately sells 
@@ -187,8 +194,8 @@ const { invite, instanceRecord } = await E(zoe).startInstance(
 
 Used to redeem the `invitation` provided as the first argument.
 
-To redeem an `invitation`, a user normally provides a `proposal` (their
-rules for an offer) as well as `payments` to be escrowed by Zoe.  If
+To redeem an `invitation`, a user normally provides a `proposal` (the
+rules under which they want to exercise the offer) as well as `payments` to be escrowed by Zoe.  If
 either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
 empty record.
@@ -200,7 +207,7 @@ The `proposal` has three parts:
 
 `paymentKeywordRecord` is a record with keywords as keys, with
  values of the actual `payments` to be escrowed. A `payment` is
- expected for every rule under `give`.
+ expected for every entry under `give`.
  
  `offer()` returns a `promise` for a `userSeat`. 
  
