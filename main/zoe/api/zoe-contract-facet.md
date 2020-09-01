@@ -60,10 +60,8 @@ ERTP methods on a `ZCFMint`.
 
 `ZCFMints` have three methods:
 - `getIssuerRecord()` 
-  - Returns: `{Promise<IssuerRecord>}`
-  - If there is no `issuer`, `brand`, or `amountMath` associated with the `zcfMint`, it
-    creates them and returns an `issuerRecord` containing them. Otherwise, it just returns the
-   `issuerRecord`.
+  - Returns: `{IssuerRecord}`
+  - Returns an `issuerRecord` containing the `issuer`, `brand`, or `amountMath` associated with the `zcfMint`.
 - `mintGains`
   - `gains`: `AmountKeywordRecord` 
   - `zcfSeat` `{ZCFSeat}` - optional
