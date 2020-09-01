@@ -58,10 +58,10 @@ const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 - Returns `{Issuer}`
 
 Zoe has a single `invitationIssuer` for its entire
-lifetime. By having a reference to Zoe, a user can get the `invitationIssuer` and 
-validate any `invitation` they receive
-from someone else by calling `E(invitationIssuer).claim()` with the 
-untrusted invitation as the argument.
+lifetime. By having a reference to Zoe, a user can get the `invitationIssuer`. This lets them claim any
+invitation they receive from someone else by calling `E(invitationIssuer).claim()` with the
+untrusted invitation as the argument. During the claiming process, the `invitationIssuer` validates
+the invitation.
 
 The `mint` associated with the `invitationIssuer`
 creates `invitations` in the form of ERTP `payments` that represent the right to interact with
