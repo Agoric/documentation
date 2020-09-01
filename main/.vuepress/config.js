@@ -150,7 +150,6 @@ module.exports = {
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/amount-math',
-            '/ertp/api/math-helpers',
           ]
         }
       ],
