@@ -53,10 +53,14 @@ for sale in an auction or covered call.
 - Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
-instead of relying on an asynchronous `mint`.
+instead of relying on an asynchronous ERTP `mint`. 
 
 **Important**: `ZCFMints` do **not** have the same methods as an ERTP `mint`. Do not try to use
-ERTP methods on a `ZCFMint`.
+ERTP methods on a `ZCFMint` or vice versa.
+
+**Important**: On the other hand, the `issuer`, `brand`, and `amountMath` associated with a `zcfMint`
+do have the same methods as their ERTP-derived counterparts. Assets created by a `zcfMint` are treated
+the same as ERTP `mint`-created assets by ERTP methods.
 
 `ZCFMints` have three methods:
 - `getIssuerRecord()` 
