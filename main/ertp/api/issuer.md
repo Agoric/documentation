@@ -164,12 +164,17 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 
 Transfer all digital assets from `payment` to a new `payment` and burn the
 original. This allows the owner to be sure no other references to this
-payment survive, so they are the exclusive owner. `optAmount` is optional. 
-If `optAmount` is present, the code insists that `payment`'s balance is
+payment survive, so they are the exclusive owner. 
+
+`optAmount` is optional. 
+If `optAmount` is present, `payment`'s balance must be
 equal to `optAmount`, to prevent sending the wrong `payment` and other confusion. 
 If `optAmount` does not equal the balance in the original `payment`
-then it throws an error.  If `payment` is a promise for a `payment`, the operation will 
-proceed after the promise resolves.
+then it throws an error.  
+
+If a `payment` is a `promise` for a `payment`, the operation will 
+proceed after the `promise` resolves. Since you might also have a `promise` returned,
+it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -190,6 +195,10 @@ resolve. The `payments` in `paymentsArray` are burned.
 
 If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
 array must equal `optTotalAmount` or it throws an error.
+
+If a `payment` is a `promise` for a `payment`, the operation will 
+proceed after the `promise` resolves. Since you might also have a `promise` returned,
+it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -224,8 +233,11 @@ Split a single `payment` into two new `payments`, A and B, according to `payment
 For example, if the `payment` is for 10 Quatloos, and `paymentAmountA` is 3 Quatloos,
 it returns an array of two `payments` with balances of 3 Quatloos and 7 Quatloos.
 
-The original `payment` is burned. If the original `payment`
-is a `promise`, the operation proceeds after the `promise` resolves.
+The original `payment` is burned. 
+
+If the original `payment` is a `promise` for a `payment`, the operation will 
+proceed after the `promise` resolves. Since you might also have a `promise` returned,
+it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
