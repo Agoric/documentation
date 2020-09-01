@@ -107,7 +107,7 @@ const amount837 = quatloosAmountMath.make(837);
 
 Make sure this `amount` is valid and if so, return it.
 If not valid, throws an exception. This checks if
-an `amount` coming from elsewhere is for the expected `brand`..
+an `amount` coming from elsewhere is for the expected `brand`.
 
 ```js
 const quatloos50 = quatloosAmountMath.make(50);
