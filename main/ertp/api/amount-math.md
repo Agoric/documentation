@@ -6,7 +6,7 @@ Logic for manipulating `amounts`.
 
 There are three ways and circumstances you can get access to an `amountMath`:
 - You made its associated `mint` and `issuer` with `makeIssuerKit()`, so use the `amountMath` returned from the call. 
-- You are writing a Zoe contract and the `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`.. 
+- You are writing a Zoe contract and the `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`. 
 - You receive or learn about an `issuer` and are not writing a Zoe contract, so call `makeLocalAmountMath(issuer)`.
 
 ## AmountMath Kinds
@@ -24,7 +24,7 @@ kind your contract uses. The second parameter, `MathKind` is optional and
 defaults to `MathKind.NAT` if not given. For example
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
-makeIssuerKit('quatloos'); // Defaults to 'MathKind.NAT'
+makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
 makeIssuerKit('foobars', MathKind.STRING_SET);
 makeIssuerKit('kitties', MathKind.SET);
 ```
@@ -42,8 +42,7 @@ An empty `purse` has 0 Quatloos.
 ```js
 someAmount: {
   brand: someBrand,
-}
-  value: someValue,
+  value: someValue,}
 ```
 
 ## Value
@@ -58,7 +57,7 @@ Creates and returns a local `amountMath` object. The new
 local copy uses the same remote `brand` as the `issuer` does.
 
 This should be used when you need an `amountMath`, and receive or 
-learn about an `issuer`, and are not writing a Zoe contract,
+learn about an `issuer`, and are not writing a Zoe contract.
 ```js
 import { makeLocalAmountMath } from '@agoric/ertp';
 const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
