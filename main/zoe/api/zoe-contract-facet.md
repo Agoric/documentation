@@ -15,7 +15,10 @@ the handle for the running contract instance.
 This section covers the code you need to have at the start of your contract code.
 
 To warn if the correct return values for your contract are not being returned,
-add this right before the start of your contract code:
+add this right before the start of your contract code. It also lets TypeScript-aware 
+tools (IDEs like vsCode and WebStorm) inform the developer about required parameters 
+and return values and warn when methods are misused.
+
 ```js
 /**
  * @type {ContractStartFn}
@@ -50,7 +53,7 @@ for sale in an auction or covered call.
 - Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
-instead of importing and using ERTP-based `mints`.
+instead of relying on an asynchronous `mint`.
 
 **Important**: `ZCFMints` do **not** have the same methods as an ERTP `mint`. Do not try to use
 ERTP methods on a `ZCFMint`.
@@ -68,7 +71,7 @@ ERTP methods on a `ZCFMint`.
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
     The `gains`' keywords are in that seat's namespace.
     Add the `gains` to that seat's `allocation`, then
-    mint that `amount` of assets into the pooled `purse`.
+    mint that `amount` of assets and assign it to the contract.
     If a `seat` is provided, it is returned. Otherwise a new `seat` is
     returned.
   - `zcfMint.mintGains({ Token: amount }, seat);`
@@ -103,7 +106,7 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
-- `issuer` `{Issuer}``
+- `issuer` `{Issuer}`
 - `keyword` `{String}`
 - Returns: `{Promise<IssuerRecord>}`
 
@@ -111,7 +114,7 @@ Informs Zoe about an `issuer` and returns a `promise` for acknowledging
 when the `issuer` is added and ready. The `keyword` is the one associated
 with the new `issuer`. It returns a promise for `issuerRecord` of the new `issuer`
 
-This saves an `issuer` to Zoe such that Zoe has a local `amountMath` for the `issuer`
+This saves an `issuer` to Zoe.
 It also has saved the `issuer` information such that Zoe can handle offers involving 
 this `issuer` and ZCF can provide the `issuerRecord` (`amountMath`, `brand`, `issuer`) 
 synchronously on request.
@@ -220,7 +223,8 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 - Returns: Undefined
 
 Checks if a keyword is valid and not already used as a `brand` in this `instance` (i.e. unique)
-and could be used as a new `brand` to make an `issuer`.
+and could be used as a new `brand` to make an `issuer`. Throws an appropriate error if it's not 
+a valid keyword, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
