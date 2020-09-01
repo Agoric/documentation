@@ -183,7 +183,7 @@ const issuerKeywordRecord = {
   'Price' : quatlooIssuer 
 };
 const terms = { numBids: 3 };
-const { invite, instanceRecord } = await E(zoe).startInstance(
+const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
   creatorFacet, publicFacet, creatorInvitation);
 ```
 ## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
