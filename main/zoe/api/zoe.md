@@ -20,16 +20,35 @@ For more information about using `E`, see the section on it in [Agoric's JavaScr
 - Returns: `{Promise<BrandKeywordRecord>}`
 
 Returns a `BrandKeywordRecord` containing all `brands` defined in the contract `instance`.
+
+A `BrandKeywordRecord` is a record where the keys are keywords,
+and the values are the `brands` for particular `issuers`.
 ```js
 const brandKeywordRecord = await E(zoe).getBrands(instance);
+```
+```js
+const brandKeywordRecord = {
+  Asset: quatloosBrand,
+  Price: moolaBrand,
+};
 ```
 ## E(zoe).getIssuers(instance)
 - `instance` `{Instance}`
 - Returns: `{Promise<IssuerKeywordRecord>}`
 
 Returns a `IssuerKeywordRecord` containing all `issuers` defined in the `instance` argument.
+
+An `IssuerKeywordRecord` is a record where the keys are keywords,
+and the values are `issuers`.
+
 ```js
 const issuerKeywordRecord = await E(zoe).getIssuers(instance);
+```
+```js
+const issuerKeywordRecord = {
+  Asset: quatloosIssuer,
+  Price: moolaIssuer,
+};
 ```
 ## E(zoe).getTerms(instance)
 - `instance` `{Instance}`
@@ -210,4 +229,9 @@ The `proposal` has three parts:
  expected for every entry under `give`.
  
  `offer()` returns a `promise` for a `userSeat`. 
- 
+```js
+const paymentKeywordRecord = { 
+  'Asset' : moolaPayment, 
+  'Price' : quatlooPayment 
+};
+```
