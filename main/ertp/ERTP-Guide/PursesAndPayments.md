@@ -6,8 +6,10 @@ Digital assets exist in either a `purse` or a `payment`:
   all of them are withdrawn into a `payment` for use. A `purse` can only
   hold the same `brand` as that of the `issuer` that created it.
 - **[`payment`](https://agoric.com/documentation/glossary/#payment)**:
-  Hold a quantity of digital assets to send to another party. Created either
-  with new assets by a `mint` or by withdrawing assets from a `purse`.
+  Hold a quantity of same-branded digital assets to send to another party. Created either
+  with new assets by a `mint` or by withdrawing assets from a `purse`. If the former, 
+  it can only hold assets of that `mint`'s `brand`. If the latter, it can only
+  hold assets that are of that purse`'s `brand`.
 
 Assets in `purses` and `payments` do not have to be currency-like, but can
 be any kind of digital asset; swords to use in a game, rights to use 
@@ -51,7 +53,11 @@ sending object-containing messages between parties.
   2. Receive the message with the `payment` and deposit the `payment` in
      your `brand` appropriate `purse`. 
      
-In addition, you can create a *deposit facet* for a `purse`. These are sent
+
+
+## Purses
+
+You can create a *deposit facet* for a `purse`. These are sent
 to another party and lets the other party deposit a `payment` into the `purse` the 
 deposit facet object represents. The benefit of sending a deposit facet instead of 
 providing access to its `purse` is deposit facets only accept deposits; a party 
@@ -62,7 +68,8 @@ If you receive a deposit facet, you can make a deposit to its associated `purse`
 the associated `purse` object can contain. Otherwise it throws an error. If you send a party a 
 deposit facet object, you should also tell them what `brand` of assets it accepts.
 
-## Purses
+Note that you add a `payment` to a `purse` with a `deposit()` method, while you add a 
+payment to a `depositFacet` with a `receive()` method.
 
 ![Purse methods](./assets/purse.svg)  
 
