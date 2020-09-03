@@ -194,7 +194,8 @@ should carefully consider the impact before sharing access to the `creatorFacet`
 `creatorInvitation` is an invitation that the contract instance creator can use. 
 It is usually used in contracts where the creator immediately sells 
 something (auctions, swaps, etc.), so it's helpful for the creator to have 
-an invitation to escrow and sell goods.
+an invitation to escrow and sell goods. Remember that Zoe invitations are 
+represented as a `payment`.
 
 ```js
 const issuerKeywordRecord = { 
@@ -235,3 +236,37 @@ const paymentKeywordRecord = {
   'Price' : quatlooPayment 
 };
 ```
+### UserSeat
+
+The user can use the seat to get their payout and the result of their offer 
+The result is whatever the contract chooses to return. This varies, but examples
+are a `string` and an `invitation` for another user.
+
+Note that exit is only present if an immediate exit is possible. 
+
+A `userSeat` can be handed to an agent outside Zoe and the contract, letting
+them query or monitor the current state, access the payouts and result,
+and, if it's allowed for this seat, call `exit()`.
+
+A `UserSeat` has eight methods, six of which are accessor methods. Another is 
+a `boolean` returning test, and the last attempts an action.
+
+- `getCurrentAllocation()`
+  - Returns: `{ Promise<Allocation> }`
+- `getProposal()`
+  - Returns: `{ Promise<ProposalRecord> }
+- `getPayouts()`
+  - Returns: `{ Promise<PaymentPKeywordRecord> }`
+- `getPayout(keyword)`
+  - Returns: `{ Promise<Payment> }`
+- `getOfferResult()`
+  - Returns: `{ Promise<OfferResult> }`
+- `getNotifier()`
+  - Returns: `{ Promise<Notifier> }`
+- `hasExited()`
+  - Returns: `{ Promise<Boolean> }`
+- `tryExit()`
+  - Returns `{ Void }`
+
+
+
