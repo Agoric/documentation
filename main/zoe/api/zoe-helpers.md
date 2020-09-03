@@ -215,9 +215,9 @@ swap(zcf, firstSeat, secondSeat);
 
 This is the only ZoeHelper that does **not** take 'zcf' as its first argument.
 
-Checks the proposal of the seat against against an `expected` record that says
-what shape of proposal is acceptable.  
-
+Check the seat's proposal against an `expected` record that says
+what shape of proposal is acceptable.
+ 
 By "shape", we mean the `give`, `want`, and exit rule keywords of the proposal must be equal to 
 those in `expected`. Note that exit rule keywords are optional in `expected`. Also, none of the 
 values of those keywords are checked.
