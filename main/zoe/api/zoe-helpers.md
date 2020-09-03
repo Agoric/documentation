@@ -87,11 +87,23 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
     swap(zcf, seat, offer);
 ```
 
-## trade(zcf, keepLeft, tryRight)
+## trade(zcf, left, right, leftHasExitedMsg, rightHasExitedMsg)
 - `zcf` - `{ContractFacet}`
-- `keepLeft` - `{Seat}`
-- `tryRight` - `{Seat}`
-- Returns: Undefined.
+- `left` - `{SeatGainsLossesRecord}`
+- `right` - `{SeatGainsLossesRecord}`
+- `leftHasExitedMsg` - `{String}` - Optional
+- `rightHasExitedMsg` - `{String}` - Optional
+- Returns: void
+
+::: details SeatGainsLossesRecord
+ - `seat` - `{ZCFSeat}`
+ - `gains` - `{AmountKeywordRecord}`  - what the seat will
+gain as a result of this trade
+ - `losses` - `{AmountKeywordRecord=}`  - what the seat will give up
+   as a result of this trade. Losses is optional, but can only be
+   omitted if the keywords for both seats are the same. If losses is
+   not defined, the gains of the other seat is subtracted.
+:::
 
 **Note**: The `swap()` method is a specific use of `trade()`. In `swap()`, 
 for both `seats`, everything a `seat` wants is given to it, having been
@@ -107,26 +119,24 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
 
 This method always takes `zcf` as its first argument.
 
-The `keepLeft` and `tryRight` arguments are each `seats`
-with `seat`, `gains`, and optional `losses` properties. `gains` and `losses` are `amountKeywordRecords`
-describing declaratively what is added or removed from that `seat`'s allocation.
+The `left` and `right` arguments are each `SeatGainsLossesRecords`
+with `seat`, `gains`, and optional `losses` properties. `gains` and
+`losses` are `amountKeywordRecords` describing declaratively what is
+added or removed from that `seat`'s allocation.
 
-Note that the reason the parameters are called `keepLeft` and `tryRight` is 
-if the offer fails, `keepLeft` remains unchanged, but `tryRight`
-is kicked out. This is true of both `swap` and `trade`.
-
-`trade()` does a trade between its two `seat` arguments. If the two `seats` can trade, 
+`trade()` does a trade between the `seats` in `left` and `right`. If the two `seats` can trade, 
 it swaps their compatible assets.
 
 Any surplus remains with its original `seat`. For example if `seat` 
 A gives 5 Quatloos and `seat` B only wants 3 Quatloos, `seat` A retains 2 Quatloos.
 
-If the first `seat` argument has already exited and is no longer active, 
-the other `seat` is rejected with a message. `trade()` does **not** exit the `seats`.
+If either of the seats has exited, `trade` throws. `trade` itself does NOT
+`kickOut` or `exit` either seat for any reason.
 
-If the trade fails for any reason, it throws the message `The trade between 
-left and right failed. Please check the log for more 
-information`. It writes the specific error to the console.
+If the trade fails for reasons other than either seat exiting, it
+throws the message `The trade between left and right failed. Please
+check the log for more information`. It writes the specific error to
+the console.
 
 ```js
 import {
@@ -136,8 +146,8 @@ trade(
       zcf,
       {
         seat: poolSeat,
-        gains: {tokenA: amountIn},
-        losses: {tokenB: amountOut},
+        gains: { Central: amountIn },
+        losses: { Secondary: amountOut },
         },
       },
       {
@@ -148,11 +158,12 @@ trade(
     );
 ```
 
-## swap(zcf, keepSeat, trySeat, keepHandleInactiveMsg)
+## swap(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)
 - `zcf` `{ContractFacet}`
-- `keepSeat` `{ZCFSeat}`
-- `trySeat` `{ZCFSeat}`
-- `[keepHandleInactiveMsg]` `{String}`
+- `leftSeat` `{ZCFSeat}`
+- `rightSeat` `{ZCFSeat}`
+- `leftHasExitedMsg` - `{String}` - Optional
+- `rightHasExitedMsg` - `{String}` - Optional
 - Returns: `defaultAcceptanceMsg`
 
 **Note**: The `swap()` method is a specific use of `trade()`. In `swap(),` 
@@ -169,36 +180,19 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
 
 This method always takes `zcf` as its first argument.
 
+`leftHasExitedMsg` and `rightHasExitedMsg` are optional and are passed
+to `trade` within `swap` to add custom error messages in the case that
+either seat has exited.
+
 If the two `seats` can trade, then swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
-
-Note that the reason the parameters are called `keepLeft` and `tryRight` is 
-if the offer fails, `keepLeft` remains unchanged, but `tryRight`
-is kicked out. This is true of both `swap` and `trade`.
-
-In many contracts, we have a particular `seat` we want to find a
-match for. The contract iterates over potential matches, and 
-checks if the two `seats` are swappable. `keepSeat` is the `seat`
-we are trying to match, and `trySeat` is the `seat` being checked
-for a match with `keepSeat`
-
-If the `keepSeat` offer is no longer active, `swap()` rejects the `trySeat` offer
-with the `keepHandleInactiveMsg`, which defaults to `'prior offer is unavailable'` 
-
-If `satisfies()` returns `false` for the two `seats`, we reject the
-`trySeat` `seat`.
-
-If `satisfies()` is `true`, Zoe reallocates by swapping the
-amounts for the two `seats`, then both `seats` exit so the
-users receive their payout.
 
 Any surplus remains with whichever `seat` has the surplus. 
 For example if `seat` A gives 5 Quatloos and `seat` B only 
 wants 3 Quatloos, `seat` A retains 2 Quatloos.
 
-If the swap fails, no assets transfer, and `trySeat`
-is rejected as a possible match.
+If the swap fails, no assets transfer, and both left and right `seats` are exited.
 
 ```js
 import {
