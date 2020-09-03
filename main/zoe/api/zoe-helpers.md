@@ -208,15 +208,14 @@ import {
 swap(zcf, firstSeat, secondSeat);
 ```
 
-## assertProposalShape(offerHandler, expected)
-- `offerHandler` `{OfferHandler}`
+## assertProposalShape(seat, expected)
+- `seat` `{ZCFSeat}`
 - `expected` `{ExpectedRecord}`
-- Returns: `{OfferHandler}`
+- Returns: `{void}`
 
 This is the only ZoeHelper that does **not** take 'zcf' as its first argument.
 
-Makes an `offerHandler` that wraps the provided `offerHandler`, to first
-check the submitted proposal against an `expected` record that says
+Checks the proposal of the seat against against an `expected` record that says
 what shape of proposal is acceptable.  
 
 By "shape", we mean the `give`, `want`, and exit rule keywords of the proposal must be equal to 
@@ -228,9 +227,6 @@ and `give` should be `null`; the `exit` clause should specify a rule with
 `null` contents. If the client submits a `Proposal` which does not match
 these expectations, that `proposal` is rejected (and refunded). 
 
-The returned `offerHandler` performs the check. It then calls the `offerHandler`
-that was passed in as an argument.
-
 ```js
 import {
   assertProposalShape,
@@ -241,9 +237,8 @@ const sellAssetForPrice = harden({
     want: { Price: null },
   });
 const sell = seat => {
+  assertProposalShape(seat, sellAssetForPrice);
   buySeats = swapIfCanTradeAndUpdateBook(buySeats, sellSeats, seat);
   return 'Trade Successful';
 };
-
-const sellHandler = assertProposalShape(sell, sellAssetForPrice);
 ```
