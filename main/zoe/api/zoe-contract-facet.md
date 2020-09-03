@@ -139,8 +139,11 @@ with the new `issuer`. It returns a promise for `issuerRecord` of the new `issue
 
 This saves an `issuer` to Zoe.
 It also has saved the `issuer` information such that Zoe can handle offers involving 
-this `issuer` and ZCF can provide the `issuerRecord` (`amountMath`, `brand`, `issuer`) 
-synchronously on request.
+this `issuer` and ZCF can provide the `issuerRecord` synchronously on request.
+
+An `IssuerRecord` has three fields, each of which holds the namesake object
+associated with the `issuer` value of the record:
+`issuerRecord.amountMath`, `issuerRecord.brand`, and `issuerRecord.issuer`) 
 
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
@@ -180,7 +183,28 @@ there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`.
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ``` 
- 
+### ZCFSeat object
+
+A `UserSeat` has eight methods, six of which are 'get/accessor' methods. Another is 
+a `boolean` returning test, and the last attempts an action.
+
+- `getCurrentAllocation()`
+  - Returns: `{ Promise<Allocation> }`
+- `getProposal()`
+  - Returns: `{ Promise<ProposalRecord> }
+- `getPayouts()`
+  - Returns: `{ Promise<PaymentPKeywordRecord> }`
+- `getPayout(keyword)`
+  - Returns: `{ Promise<Payment> }`
+- `getOfferResult()`
+  - Returns: `{ Promise<OfferResult> }`
+- `getNotifier()`
+  - Returns: `{ Promise<Notifier> }`
+- `hasExited()`
+  - Returns: `{ Promise<Boolean> }`
+- `tryExit()`
+  - Returns `{ Void }`
+
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
 - Returns: `{Brand}`
