@@ -62,7 +62,7 @@ full details on what it does and how to use it.
   - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. 
 - <router-link to="./purse.html#purse-deposit-payment-optamount">`purse.deposit(payment, optAmount`)`</router-link> 
   - Deposit all of `payment` into this `purse`.
-- <router-link to="./purse.html#purse-makedepositfacet">`purse.makeDepositFacet()`</router-link> 
+- <router-link to="./purse.html#purse-makedepositfacet">`purse.getDepositFacet()`</router-link>
   - Creates a deposit-only facet on the `purse` that can be given to other parties to deposit `payments` in.
 - <router-link to="./purse.html#purse-withdraw-amount">`purse.withdraw(amount)`</router-link> 
   - Returns a new `payment` whose balance is described by the `amount` argument. 
