@@ -87,6 +87,27 @@ the same as ERTP `mint`-created assets by ERTP methods.
     burn that `amount` of assets from the pooled `purse`.
   - `zcfMint.burnLosses({ Token: amount }, seat);`
 
+`AmountKeywordRecord` is a record in which the keys are keywords, and
+the values are `amounts`. Keywords are unique identifiers per contract, 
+that tie together the `proposal`, `payments` to be escrowed, and `payouts`
+to the user. In the below example, `Asset` and `Price` are keywords. 
+
+Users should submit their`payments` using keywords: `const payments = `{ Asset: quatloosPayment };``
+
+And, users will receive their `payouts` with keywords as the keys of a `payout`: `quatloosPurse.deposit(payout.Asset);`
+
+For example:
+```js
+const quatloos5 = quatloosAmountMath.make(5);
+const quatloos9 = quatloosAmountMath.make(9);
+const myAmountKeywordRecord = 
+{
+  Asset: quatloos5,
+  Price: quatloos9
+}
+```
+The following demostrates `zcf.makeZCFMint`:
+
 **Note**: The call to make the `ZCFMint` is asynchronous, but 
 calls to the resulting `ZCFMint` are synchronous.
 ```js
