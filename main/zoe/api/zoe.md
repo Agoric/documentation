@@ -140,6 +140,15 @@ const installationP = await E(zoe).install(bundle);
 - Returns: `{Promise<Instance>}`
 
 Returns a `Promise` for the contract `instance` the `invitation` is part of.
+
+An `Instance` record has six properties: 
+- `instanceHandle`: Opaque `instance` identifier, used as the table key  **tyg todo: What table?**
+- `installationHandle`: Opaque identifier for the `installation` the `instance` is running in. 
+- `publicAPI`: Invite-free publicly accessible API for the contract. Developers can add methords to this.
+- `terms`: Contract parameters
+- `issuerKeywordRecord`: Record with keyword keys, `issuer` values
+- `brandKeywordRecord`: Record with keyword keys, `brand` values
+
 ```js
 const instance = await E(zoe).getInstance(invitation);
 ```
@@ -149,6 +158,11 @@ const instance = await E(zoe).getInstance(invitation);
 - Returns: `{Promise<Installation>}`
 
 Returns a `Promise` for the contract `installation` the `invitation`'s contract `instance` uses.
+
+An `installation` is an object with two properties:
+- `installationHandle`: An opaque identifier, used as the table key **tyg todo: What table?**
+- `bundle`:  The contract source code, accessible via `bundle.source`, and other info.
+
 ```js
 const installation = await E(zoe).getInstallation(invitation);
 ```
@@ -224,6 +238,32 @@ The `proposal` has three parts:
 - `want`: An object with keywords as keys and `amounts` as values.
 - `give`: An object with keywords as keys and `amounts` as values.
 - `exit`: Specifies the payout-liveness policy Zoe can guarantee for the offer.
+
+`exit`'s value should be an `exitRule`, an object with three possible keys for
+key:value pairs:
+- `waived`
+- `onDemand`
+- `afterDeadline`
+
+`waived` and `onDemand` both take `null` as the value. `afterDeadline` takes
+a two-pair key:value pair object. 
+* The possible keys are 'waived', 'onDemand', and 'afterDeadline'.
+ * `timer` and `deadline` only are used for the `afterDeadline` key.
+ * The possible records are:
+ * `{ waived: null }`
+ * `{ onDemand: null }`
+ * `{ afterDeadline: { timer :Timer<Deadline>, deadline :Deadline } }
+
+{
+  afterDeadline: {
+    timer: someTimer,
+    deadline: 1893459600
+  }
+}
+
+{
+  waived: null,
+}
 
 `paymentKeywordRecord` is a record with keywords as keys, with
  values of the actual `payments` to be escrowed. A `payment` is
