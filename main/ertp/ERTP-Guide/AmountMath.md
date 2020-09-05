@@ -2,26 +2,24 @@
 
 ![AmountMath methods](./assets/amountMath.svg) 
 
-You must be able to deposit and withdraw assets from a
-`purse` and manipulate `payment` amounts. This 
-requires adding and subtracting digital assets. To do this,
-and other operations on an `amount`, you use `amountMath`methods. 
+Depositing and withdrawing assets from a
+`purse` and manipulating `payment` amounts 
+all require adding and subtracting digital assets. ERTP
+uses `amountMath` methods for all these operations. 
 
-In addition to math operations, `amountMath` methods check the `brand`
-of their arguments, throwing an error if the wrong `brand` was used.
+`amountMath` methods also check their arguments' `brand`, 
+throwing an error if the wrong `brand` was used.
 
-There are three different kinds of `amountMath` methods, each of which
-implements the same methods. When you create an `issuer` for a specific
-`brand`, you also create an `amountMath` in a one-to-one relationship
-with that `brand`. 
+An `amountMath` is one of three different kinds, each of which
+implements the same methods. Which kind is 
 
 This means you have to specify which kind of`amountMath` to use
 on an `amount` of that `brand`. That 
 kind is automatically used whenever an `amountMath` method
 is used on an `amount` with that `brand`. The kinds are: 
-- `nat`: Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
-- `strSet`: Used with non-fungible assets. `amount` `values` are strings.
-- `set`: Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `MathKind.STRING_SET` (`strSet`: Used with non-fungible assets. `amount` `values` are strings.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 `makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`,
 `mint`, `brand`, and `amountMath`. 
@@ -31,14 +29,14 @@ association with the new `issuer`. It defaults to `nat`.
 
 For example: 
 ```js
-makeIssuerKit('Quatloos`); // Defaults to 'nat'
-makeIssuerKit('Quatloos', 'strSet');
-makeIssuerKit('Quatloos, 'set');
+makeIssuerKit('Quatloos`); // Defaults to MathKind.NAT
+makeIssuerKit('Quatloos', MathKind.STRING_SET);
+makeIssuerKit('Quatloos, MathKind.SET);
 ```
 `AmountMath` has:
-- Three information getting methods (get `brand`, get `value`, and get
+- Three information getting methods (get `brand`, `value`, and
 `amountMath` kind)
-- Four comparison methods (is an `amount` empty, is an `amount` valid,
+- Four comparison methods (is an `amount` empty or valid,
 are two `amounts` equal, and is one `amount` greater than or equal to another)
 - Two manipulator methods (`amount` addition and subtraction)
 - Two amount creation methods (create an `amount` with a specified `value`, and get a new, empty, `amount`)
