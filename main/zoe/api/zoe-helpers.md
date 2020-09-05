@@ -58,7 +58,7 @@ import {
 - `zcf`- `{ContractFacet}`
 - `seat` - `{ZCFSeat}`
 - `update` - `{AmountKeywordRecord}`
-- Returns: `{Boolean} 
+- Returns: `{Boolean}` 
 
 This method always takes `zcf` as its first argument.
 
