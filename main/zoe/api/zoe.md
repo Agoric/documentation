@@ -234,36 +234,24 @@ either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
 empty record.
 
-The `proposal` has three parts: 
-- `want`: An object with keywords as keys and `amounts` as values.
-- `give`: An object with keywords as keys and `amounts` as values.
-- `exit`: Specifies the payout-liveness policy Zoe can guarantee for the offer.
-
 `exit`'s value should be an `exitRule`, an object with three possible keys for
 key:value pairs:
-- `waived`
-- `onDemand`
-- `afterDeadline`
+- `waived`: The user can't cancel and relies entirely on the smart contract to promptly finish their offer. Takes a `null` value.
+- `onDemand`: The user can cancel on demand. Takes a `null` value.
+- `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties and
+  `deadline`'s value, which is denoted in number of seconds.
 
-`waived` and `onDemand` both take `null` as the value. `afterDeadline` takes
-a two-pair key:value pair object. 
-* The possible keys are 'waived', 'onDemand', and 'afterDeadline'.
- * `timer` and `deadline` only are used for the `afterDeadline` key.
- * The possible records are:
- * `{ waived: null }`
- * `{ onDemand: null }`
- * `{ afterDeadline: { timer :Timer<Deadline>, deadline :Deadline } }
 
-{
-  afterDeadline: {
-    timer: someTimer,
-    deadline: 1893459600
-  }
-}
-
-{
-  waived: null,
-}
+```js
+const myProposal = harden({
+  give: { Asset: quatloos(4 )},
+  want: { Price: simoleans(15) },
+  exit: { afterDeadline: {
+    timer,
+    deadline: 100,
+  }}
+})
+```
 
 `paymentKeywordRecord` is a record with keywords as keys, with
  values of the actual `payments` to be escrowed. A `payment` is
@@ -282,14 +270,14 @@ The user can use the seat to get their payout and the result of their offer
 The result is whatever the contract chooses to return. This varies, but examples
 are a `string` and an `invitation` for another user.
 
-Note that exit is only present if an immediate exit is possible. 
+Note that `exit` is only present if an immediate exit is possible. 
 
 A `userSeat` can be handed to an agent outside Zoe and the contract, letting
 them query or monitor the current state, access the payouts and result,
 and, if it's allowed for this seat, call `exit()`.
 
 A `UserSeat` has eight methods, six of which are accessor methods. Another is 
-a `boolean` returning test, and the last attempts an action.
+a `boolean` returning test, and the last attempts an exit action.
 
 - `getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
