@@ -1,19 +1,24 @@
 # Purses and Payments
-
+ 
 Digital assets exist in either a `purse` or a `payment`:
 - **[`purse`](https://agoric.com/documentation/glossary/#purse)**: Hold
   a quantity of same-branded digital assets until part or
   all of them are withdrawn into a `payment` for use. A `purse` can only
-  hold the same `brand` as that of the `issuer` that created it.
+  hold the same `brand` as that of the `issuer` that created it. 
 - **[`payment`](https://agoric.com/documentation/glossary/#payment)**:
-  Hold a quantity of same-branded digital assets to send to another party. Created either
-  with new assets by a `mint` or by withdrawing assets from a `purse`. If the former, 
-  it can only hold assets of that `mint`'s `brand`. If the latter, it can only
-  hold assets that are of that purse`'s `brand`.
+  Hold a quantity of same-branded digital assets to send to another party. 
+  A new `payment` is created either with new assets by a `mint` or by 
+  withdrawing assets from a `purse`. It can only hold assets of the same `brand` as
+  that `mint` or `purse`. .
 
-Assets in `purses` and `payments` do not have to be currency-like, but can
-be any kind of digital asset; swords to use in a game, rights to use 
-a particular contract, theatre tickets, etc.
+For any `brand`, there can be any number of `purses` or `payments` that hold assets
+of that `brand`. Neither a `purse` nor a `payment` can change the `brand` of assets 
+they can hold.
+
+Digital assets in `purses` and `payments` can be any of:
+- Currency-like, such as our imaginary Quatloos currency.
+- Goods-like digital assets, such as magic weapons for use in a game or theater tickets.
+- Other kinds of rights, such as the right to participate in a particular contract.
 
 Each non-empty `purse` and `payment` object contains exactly one
 quantity of its digital asset. 
@@ -53,9 +58,16 @@ sending object-containing messages between parties.
   2. Receive the message with the `payment` and deposit the `payment` in
      your `brand` appropriate `purse`. 
      
-
-
 ## Purses
+
+You change a purse's balance by calling either `deposit()` (to add assets) or
+`withdraw()` (to remove assets) on it. A purse can be empty, which if it holds
+a fungible currency means it has a value of 0. If it holds a non-fungible 
+asset, such as theatre tickets, it means it just doesn't have any tickets.
+
+Unlike `payments`, `purses` are not meant to be sent to others. To transfer 
+digital assets, you should withdraw a `payment` from a `purse` and send 
+the `payment` to another party.
 
 You can create a *deposit facet* for a `purse`. These are sent
 to another party and lets the other party deposit a `payment` into the `purse` the 
@@ -64,7 +76,7 @@ providing access to its `purse` is deposit facets only accept deposits; a party
 with a deposit facet object cannot use it to make a withdrawal or get a balance.
 
 If you receive a deposit facet, you can make a deposit to its associated `purse` by calling 
-`depositOnlyFacet.receive(payment);`. Note that the `payment` must be the same `brand` as what
+`depositFacet.receive(payment);`. Note that the `payment` must be the same `brand` as what
 the associated `purse` object can contain. Otherwise it throws an error. If you send a party a 
 deposit facet object, you should also tell them what `brand` of assets it accepts.
 
@@ -100,13 +112,13 @@ Purses have four API methods:
     // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
     quatloosurse.deposit(secondPayment, quatloos123);
     ```
-- [`purse.makeDepositFacet()`](https://agoric.com/documentation/ertp/api/purse.html#purse-makedepositfacet)
-  - Creates a deposit-only facet on the `purse` that can be given
+- [`purse.getDepositFacet()`](https://agoric.com/documentation/ertp/api/purse.html#purse-makedepositfacet)
+  - Returns a deposit-only facet on the `purse` that can be given
     to other parties. This lets them make a deposit to the `purse`, but not make
     withdrawals from it or get its balance. Note that the command to add a `payment`'s
     assets via a `DepositFacet` is not `deposit()` but `receive()` as shown here.
   - ```js
-     const depositOnlyFacet = purse.makeDepositFacet();
+     const depositOnlyFacet = purse.getDepositFacet();
      // Give depositOnlyFacet to someone else. They can pass a payment
      // that will be deposited:
      depositOnlyFacet.receive(payment);
@@ -132,33 +144,37 @@ There is **not** a `DepositFacet` deposit() method.
 Payments hold digital assets intended to be transferred to another party.
 They are linear, meaning that either a `payment` has its full
 original balance, or it is used up entirely. It is impossible to
-partially use a `payment`. In other words, if you create a `payment` containing
+partially use a `payment`. 
+
+In other words, if you create a `payment` containing
 10 Quatloos, the `payment` will always either contain 
 10 Quatloos or it will be deleted from its `issuer` records and no
 longer have any value. While a `payment` can be either combined with others or
-split into multiple `payments`, in both case the original `payment(s)`
-is/are deleted and the results put in one or more new `payments`.
+split into multiple `payments`, in both cases the original `payment(s)`
+is/are burned and the results put in one or more new `payments`.
 
 A `payment` can be deposited in purses, split into multiple 
 `payments`, combined, and claimed (getting an exclusive `payment` and
 revoking access from anyone else). 
 
-A `payment` is often received from other parties and therefore should not
-be trusted. To get the balance of a `payment`, use the
-`getAmountOf(payment)` method on the trusted `issuer` for the `brand`
-of the `payment`. To get the `issuer` for a `brand` you didn't create, 
+A `payment` is often received from other parties. Since they are not
+self-verifying, you cannot trust `payments`. To get the verified balance
+of a `payment`, use the `getAmountOf(payment)` method on the trusted `issuer` 
+for the `payment`'s `brand`. 
+
+To get the `issuer` for a `brand` you didn't create, 
 ask someone you trust. For example, the venue creating tickets for shows
 can be trusted to give you the tickets' `issuer`. Or, a friend might have 
 a cryptocurrency they like, and, if you trust them, you might accept 
 that the `issuer` they give you is valid.
 
-To convert a `payment` into a `purse`: 
-1. Access a trusted `issuer` for the `payment`'s `brand`. 
-2. Create an empty purse with `issuer.makeEmptyPurse()`.
-3. Transfer the digital assets from the `payment` to the `purse` with `purse.deposit(payment)`.
+To convert a `payment` into a new `purse`:
+1. Get the payment's trusted issuer.
+2. Use the issuer to create an empty purse for that brand.
+3. Deposit the payment into the new purse. `purse.deposit(payment)` burns the `payment`.
 
-Payments have one API method, but many methods for other ERTP components
-have `payment` objects as arguments and effectively operate on a `payment`.
+`Payments` have one API method, but many methods for other ERTP components
+have `payments` as arguments and effectively operate on a `payment`.
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
   `payment` purports to be. Since a `payment` is not trusted, this result should be treated with suspicion. Either verify 
