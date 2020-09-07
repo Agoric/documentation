@@ -144,8 +144,7 @@ split into multiple `payments`, in both cases the original `payment(s)`
 is/are burned and the results put in one or more new `payments`.
 
 A `payment` can be deposited in purses, split into multiple 
-`payments`, combined, and claimed (getting an exclusive `payment` and
-revoking access from anyone else). 
+`payments`, combined with other `payments`, and claimed (getting an exclusive `payment` and revoking access from anyone else). 
 
 A `payment` is often received from other parties. Since they are not
 self-verifying, you cannot trust `payments`. To get the verified balance
@@ -159,17 +158,18 @@ a cryptocurrency they like, and, if you trust them, you might accept
 that the `issuer` they give you is valid.
 
 To convert a `payment` into a new `purse`:
-1. Get the payment's trusted issuer.
-2. Use the issuer to create an empty purse for that brand.
-3. Deposit the payment into the new purse. `purse.deposit(payment)` burns the `payment`.
+1. Get the `payment`'s trusted `issuer`.
+2. Use the `issuer` to create an empty `purse` for that `brand`.
+3. Deposit the `payment` into the new `purse`. `purse.deposit(payment)` burns the `payment`.
 
-`Payments` have one API method, but many methods for other ERTP components
+`Payments` have only one API method, but many methods for other ERTP components
 have `payments` as arguments and effectively operate on a `payment`.
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
-  `payment` purports to be. Since a `payment` is not trusted, this result should be treated with suspicion. Either verify 
-  the value before holding on to it, or check the result when you use it. Any successful operation by 
-  the `issuer` for that `brand` done on the `payment` verifies the `payment`.
+  `payment` purports to be. Since a `payment` is not trusted, this result should be   
+   treated with suspicion. Either verify the value before holding on to it, or check 
+   the result when you use it. Any successful operation by 
+   the `issuer` for that `brand` done on the `payment` verifies the `payment`.
 
 Other objects' `payment`-related methods:
 
@@ -178,16 +178,14 @@ Other objects' `payment`-related methods:
     so you must use the `issuer` method associated with its `brand` to be sure of getting the
     true value. 
     ```js
-    const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('quatloos');
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
-    quatloosIssuer.getAmountOf(quatloosayment); // returns an amount with 100 value `quatloos` brand
+    quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount with 100 value `quatloos` brand
     ```
 - [`issuer.burn(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-burn-payment-optamount)
   - Burn all of the digital assets in the `payment`. `optAmount` is
     optional but if present, the `payment` balance must be equal to
     it. If `payment` is a promise, the operation proceeds after it resolves. 
   - ```js
-    const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('quatloos');
     const amountToBurn = quatloosAmountMath.make(10);
     const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
     // burntAmount should equal 10
@@ -200,7 +198,6 @@ Other objects' `payment`-related methods:
     present, the `payment` balance must be equal to it or it throws
     an error. If `payment` is a promise, the operation proceeds after it resolves. 
   - ```js
-    const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
     const amountExpectedToTransfer = quatloosAmountMath.make(2);
     const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
     const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
@@ -210,7 +207,6 @@ Other objects' `payment`-related methods:
   the array is a promise, the operation proceeds after every `payment`
   resolves. All `payments` in the array are burned on successful completion.
   - ```js
-    const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
     // create an array of 100 payments of 1 unit each
     const payments = [];
     for (let i = 0; i < 100; i += 1) {
@@ -229,7 +225,6 @@ Other objects' `payment`-related methods:
     argument is burned. If `payment` is a promise, the operation proceeds after
     the promise resolves. 
   - ```js
-    const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
     const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20));
     // Results in paymentA = 5 and paymentB = 15 (20 -5)
     const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, amountMath.make(5));
@@ -242,7 +237,6 @@ Other objects' `payment`-related methods:
     the `payment` value is not equal to the sum of `amountArray`'s
     values, the operation fails. On success, the original `payment` is burned.
   - ```js
-    const { quatloosMint, quatloosIssuer, quatloosAmountMath } = makeIssuerKit('quatloos');
     const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
     // Results in an array of 10 payments, each with value 10.
@@ -256,7 +250,6 @@ Other objects' `payment`-related methods:
     that unlike creating a new `payment` by withdrawing existing assets from a `purse`,
     this creates new digital assets of the specified in `newAmount` `brand`.
   - ```js
-    const { quatloosIssuer, quatloosMint } = makeIssuerKit('quatloos');
     const quatloos1000 = quatloosAmountMath.make(1000);
     const newPayment = quatloosMint.mintPayment(quatloos1000);
     ```
@@ -265,7 +258,6 @@ Other objects' `payment`-related methods:
     `amount` description. If optional `optAmount` does not equal the `payment`'s balance
      or if `payment` is an unresolved promise, it throws an error.
   - ```js
-    const { quatloosIssuer, quatloosMint, quatloosAmountMath } = makeIssuerKit('quatloos');
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
     const quatloos123 = quatloosAmountMath.make(123);
