@@ -127,9 +127,6 @@ In addition, the method to create a new, empty, `purse` is called on an `issuer`
     // The new purse can only contain assets of the Quatloos brand.
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     ```
-To add the assets from a `payment` to a `depositFacet`, use the receive() method.
-There is **not** a `DepositFacet` deposit() method.
-
 ## Payments
 
 ![Payment methods](./assets/payment.svg)   
