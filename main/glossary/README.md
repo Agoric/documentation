@@ -190,7 +190,7 @@ for more information.
 
 Zoe uses seats to represent offers, and has two seat [facets](#facet)  a ZCFSeat and a UserSeat.
 
-Seats represent active offers and let contracts and users interact with them. ZCFseats are used 
+Seats represent active offers and let contracts and users interact with them. ZCFSeats are used 
 within contracts and with `zcf.` methods. User seats represent offers external to Zoe and the 
 contract. The party who exercises an invitation and sends the `offer()` message to Zoe 
 gets a UserSeat that can check payouts' status or retrieve their results.
@@ -217,5 +217,4 @@ A physical machine can run one or several vats. A blockchain can run one or seve
 Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
-
 
