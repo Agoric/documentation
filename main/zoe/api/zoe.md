@@ -24,9 +24,11 @@ Returns a `BrandKeywordRecord` containing all `brands` defined in the contract `
 A `BrandKeywordRecord` is a record where the keys are keywords,
 and the values are the `brands` for particular `issuers`.
 ```js
+// Call example
 const brandKeywordRecord = await E(zoe).getBrands(instance);
 ```
 ```js
+// Record example
 const brandKeywordRecord = {
   Asset: quatloosBrand,
   Price: moolaBrand,
@@ -42,9 +44,11 @@ An `IssuerKeywordRecord` is a record where the keys are keywords,
 and the values are `issuers`.
 
 ```js
+// Call example
 const issuerKeywordRecord = await E(zoe).getIssuers(instance);
 ```
 ```js
+// Record example
 const issuerKeywordRecord = {
   Asset: quatloosIssuer,
   Price: moolaIssuer,
@@ -126,6 +130,10 @@ const invitationValue = await E(zoe).getInvitationDetails(invitation);
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
 Returns an `installation` object. 
+
+An `installation` is an object with two properties:
+- `installationHandle`: An opaque identifier, used as the table key **tyg todo: What table?**
+- `bundle`:  The contract source code, accessible via `bundle.source`, and other info.
 
 ```js
 // bundleSource takes source code files and 
@@ -211,14 +219,17 @@ something (auctions, swaps, etc.), so it's helpful for the creator to have
 an invitation to escrow and sell goods. Remember that Zoe invitations are 
 represented as a `payment`.
 
+**tyg todo: In the example call below, should the first argument to startInstance
+be better named "installation" or "installationHandle" i.e. should you call it with the object or a reference, or does it make a difference?**
+
 ```js
 const issuerKeywordRecord = { 
-  'Asset' : moolaIssuer, 
-  'Price' : quatlooIssuer 
+  'Asset': moolaIssuer, 
+  'Price': quatlooIssuer 
 };
 const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
-  creatorFacet, publicFacet, creatorInvitation);
+  installation, issuerKeywordRecord, terms);  
 ```
 ## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
 - `invitation` `{Invitation|Promise<Invitation>}`
@@ -244,8 +255,8 @@ key:value pairs:
 
 ```js
 const myProposal = harden({
-  give: { Asset: quatloos(4 )},
-  want: { Price: simoleans(15) },
+  give: { Asset: quatloos(4)},
+  want: { Price: moola(15) },
   exit: { afterDeadline: {
     timer,
     deadline: 100,
@@ -260,8 +271,8 @@ const myProposal = harden({
  `offer()` returns a `promise` for a `userSeat`. 
 ```js
 const paymentKeywordRecord = { 
-  'Asset' : moolaPayment, 
-  'Price' : quatlooPayment 
+  'Asset' : quatloosPayment, 
+  'Price' : moolaPayment 
 };
 ```
 ### UserSeat
@@ -279,22 +290,69 @@ and, if it's allowed for this seat, call `exit()`.
 A `UserSeat` has eight methods, six of which are accessor methods. Another is 
 a `boolean` returning test, and the last attempts an exit action.
 
+### UserSeat object
+
+A `UserSeat` has eight methods, six of which are 'get/accessor' methods. Another is 
+a `boolean` returning test, and the last attempts an action.
+
 - `getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
+  - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
+    the key is a keyword such as `Asset` or `Price` applicable to the
+    contract. The value is an `amount` with its `value` and `brand`. An
+    `Allocation` specifies the what is wanted and what is offered parts 
+    of a successful offer. These `amounts` are the reallocation of assets
+    to be given to a user. **tyg todo: We actually don't seem to have a good solid
+    definition of "allocation" in a Zoe context anywhere. Please correct
+    if this is missing any subtlties or intent, or way to better distinguish
+    it from a `proposal` other than the latter's use of an exit rule**
+ -  An `Allocation` example:
+   - ```js
+     {
+       Asset: amountMath.make(5),
+       Price: amountMath.make(9)
+     }
+     ```
 - `getProposal()`
-  - Returns: `{ Promise<ProposalRecord> }
+  - Returns: `{ Promise<ProposalRecord> }`
+  - A `Proposal` is represented by a `ProposalRecord`. It is the rules
+    accompaning the escrow of `payments` dictating what the user expects
+    to get back from Zoe. It has keys `give`, `want`, and
+   `exit`. `give` and `want` are records with keywords as keys and
+    `amounts` as values. The proposal is a user's understanding of the
+    contract that they are entering when they make an offer. See
+    `E(zoe).offer()` for full details.  **tyg todo: Add link**
+  - Example:
+    ```js
+    const { want, give, exit } = sellerSeat.getProposal();
+    ```
 - `getPayouts()`
   - Returns: `{ Promise<PaymentPKeywordRecord> }`
+  - A `payout` is a `payment` that goes to a party in a successful transaction, redirecting
+    escrowed assets in accordance with the result of the transaction. Returns a record
+    of all the `payout` `payments` associated with the `seat`'s offers.
 - `getPayout(keyword)`
   - Returns: `{ Promise<Payment> }`
+  - A `payout` is a `payment` that goes to a party in a successful transaction, redirecting
+    escrowed assets in accordance with the result of the transaction. Returns the `payout`
+    `payment` associated with the `keyword` argument.
 - `getOfferResult()`
-  - Returns: `{ Promise<OfferResult> }`
+  - Returns: `{ Promise<OfferResult> }
+  - The returned `OfferResult` can be literally anything. For example, in tests
+    for the Automated Refund Dapp, it's the string "The offer was accepted"`. In
+    the Covered Call example, it's a call option, which is an assayable `invitation`
+    to buy the underlying asset. Strings and invitations are the most common things returned.
+    **tyg: Unclear where/how the value is set. Somewhere in the contract, but how?**
 - `getNotifier()`
-  - Returns: `{ Promise<Notifier> }`
+  - Returns: `{ Promise<Notifier> }` **tyg todo: See distributed programmming for notifier details. Also see ZCFSeat for query about just 
+  how the notifer is used here.**
 - `hasExited()`
   - Returns: `{ Promise<Boolean> }`
+  - Returns `true` if the seat has exited, `false` if it still active.
 - `tryExit()`
   - Returns `{ Void }`
+  - Attempts to `exit` the `seat` after a successful completion. If it fails, or if the offer
+    was not successfully completed, throws an error. **tyg todo: This is a guess on my part**
 
 
 
