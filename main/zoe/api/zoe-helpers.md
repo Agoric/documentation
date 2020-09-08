@@ -111,11 +111,11 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
 - Use `trade()` when any of these are true:
   - The `seats` have different keywords.
   - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
-  - You want more interaction with the `seats`. 
+  - You want to continue to interact with the `seats` after the trade.
 - Use `swap()` when all of these are true:
   - Both `seats` use the same keywords.
   - The `seats`' wants can be fulfilled from the other `seat`.
-  - No other `seat` interaction is wanted. 
+  - No further `seat` interaction is desired.
 
 This method always takes `zcf` as its first argument.
 
@@ -172,11 +172,11 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
 - Use `trade()` when any of these are true:
   - The `seats` have different keywords.
   - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
-  - You want more interaction with the `seats`. 
+  - You want to continue interacting with the `seats` after the trade.
 - Use `swap()` when all of these are true:
   - Both `seats` use the same keywords.
   - The `seats`' wants can be fulfilled from the other `seat`.
-  - No other `seat` interaction is wanted. 
+  - No further `seat` interaction is desired.
 
 This method always takes `zcf` as its first argument.
 
