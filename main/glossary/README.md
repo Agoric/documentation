@@ -27,9 +27,13 @@ disappear from the total allocation.
 ## AmountMath
 AmountMath executes the logic of how amounts are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
-gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic
-[MathHelpers](#mathhelpers), which manipulate an `amount`'s [value](#value) or unbranded portion. 
-Standard natural number operations cannot be used on values, since they can be an array or object. 
+gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath has a single set of polymorphic
+methods of three different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
+[non-fungible](#non-fungible) assets (values are an array or object). The three AmountMathKinds are
+- `MathKind.NAT`: Used with fungible assets. `amount` values are natural numbers (non-negative integers). Default value.
+- `MathKind.STRING_SET`: Used with non-fungible assets. `amount` values are strings.
+- `MathKind.SET`: Used with non-fungible assets. `amount` values are objects or records with multiple properties.
+
 See the [ERTP Guide's AmountMath section](https://agoric.com/documentation/ertp/guide/amount-math.html) 
 and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) for more information.
 
@@ -112,13 +116,6 @@ its asset type is valid.
 
 See the [ERTP Guide's Issuer section](https://agoric.com/documentation/ertp/guide/issuer.html)
 and the [ERTP API's Issuer section](https://agoric.com/documentation/ertp/api/issuer.html) for more information.
-
-## MathHelpers
-MathHelpers are methods for performing arithmetic operations on an [amount's](#amount) [value](#value). 
-[AmountMath](#amountmath) uses MathHelpers to do value arithmetic, after which it [brands](#brand)
-the result to create a new [amount](#amount). For more information, see the 
-[MathHelpers ERTP Guide section](https://agoric.com/documentation/ertp/guide/math-helpers.html) and
-the [MathHelpers ERTP API section](https://agoric.com/documentation/ertp/api/math-helpers.html).
 
 ## Mint
 In ERTP, mints create digital assets and are the only objects with the authority to do so. 
