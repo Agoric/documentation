@@ -6,7 +6,7 @@ A Zoe Contract Facet is an API object for a running contract instance to access 
 for that instance. A Zoe Contract Facet is accessed synchronously from within the contract, 
 and usually is referred to in code as `zcf`. 
 
-The contract instance is launched by `E(zoe).startInstance`, and is given access to 
+The contract instance is launched by `E(zoe).startInstance()`, and is given access to 
 the `zcf` object during that launch. In the operations below, `instance` is 
 the handle for the running contract instance.
 
@@ -39,13 +39,13 @@ export { start };
 The contract must return a record with any (or none) of the following:
 
 - `creatorFacet` - an object, usually with admin authority. It is only given to the entity that 
-calls `E(zoe).startInstance(...)`; i.e. the party that was the creator of the current contract instance.
-It creates invitations for other parties, and takes actions that are unrelated to making offers.
-- `creatorInvitation` - a Zoe invitation only given to the entity that calls `E(zoe).startInstance(...)`; i.e. 
-the party that was the creator of the current contract instance.
+calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current contract `instance`.
+It creates `invitations` for other parties, and takes actions that are unrelated to making offers.
+- `creatorInvitation` - a Zoe `invitation` only given to the entity that calls `E(zoe).startInstance()`; i.e. 
+the party that was the creator of the current contract `instance`.
 This is usually used when a party has to make an offer first, such as escrowing the underlying good 
 for sale in an auction or covered call.
-- `publicFacet` - an object available through Zoe to anyone who knows the contract `instance`. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public invitations.
+- `publicFacet` - an object available through Zoe to anyone who knows the contract `instance`. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
 ## zcf.makeZCFMint(keyword, amountMathKind)
 - `keyword` `{String}`
@@ -68,11 +68,11 @@ the same as ERTP `mint`-created assets by ERTP methods.
   - Returns an `issuerRecord` containing the `issuer`, `brand`, or `amountMath` associated with the `zcfMint`.
 - `mintGains`
   - `gains`: `AmountKeywordRecord` 
-  - `zcfSeat` `{ZCFSeat}` - optional
+  - `zcfSeat`: `{ZCFSeat}` - optional
   - Returns: `{ZCFSeat}`
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
-    The `gains`' keywords are in that seat's namespace.
-    Add the `gains` to that seat's `allocation`, then
+    The `gains`' keywords are in that `seat`'s namespace.
+    Add the `gains` to that `seat`'s `allocation`, then
     mint that `amount` of assets and assign it to the contract.
     If a `seat` is provided, it is returned. Otherwise a new `seat` is
     returned.
@@ -92,9 +92,15 @@ the values are `amounts`. Keywords are unique identifiers per contract,
 that tie together the `proposal`, `payments` to be escrowed, and `payouts`
 to the user. In the below example, `Asset` and `Price` are keywords. 
 
-Users should submit their`payments` using keywords: `const payments = `{ Asset: quatloosPayment };``
+Users should submit their`payments` using keywords: 
+```js
+const payments = { Asset: quatloosPayment };
+```
 
-And, users will receive their `payouts` with keywords as the keys of a `payout`: `quatloosPurse.deposit(payout.Asset);`
+And, users will receive their `payouts` with keywords as the keys of a `payout`: 
+```js
+quatloosPurse.deposit(payout.Asset);
+```
 
 For example:
 ```js
@@ -257,8 +263,8 @@ two actions, and one creation of another object.
  - `exit()`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
-     are made, and the `seat` object can no longer interact with the contract. Note that     
-     `exit` is only present if an immediate exit is possible based on `'OnDemand` being the
+     are made, and the `seat` object can no longer interact with the contract. Note 
+     that `exit` is only present if an immediate exit is possible based on `'OnDemand` being the
      value of `exit:` in the `seat`'s `proposal`.
  - `kickOut(msg)` (`msg` is optional) 
    - Returns: `void`
@@ -319,7 +325,7 @@ zcf.shutdown();
 ## zcf.getTerms()
 - Returns: `{Object}`
 
-Returns the `issuers`, `brands`, and custom `terms` the current contract instance was instantiated with.
+Returns the `issuers`, `brands`, and custom `terms` the current contract `instance` was instantiated with.
 
 Note that there is also an `E(zoe).getTerms(instance)`. Often the choice of which to use is not which method 
 to use, but which of Zoe Service or ZCF you have access to. On the contract side, you more easily have access 
