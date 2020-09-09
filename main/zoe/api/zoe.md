@@ -275,7 +275,7 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment 
 };
 ```
-### UserSeat
+### UserSeat object
 
 Zoe uses `seats` to represent `offers`, and has two `seat` facets a `ZCFSeat` and a `UserSeat`.
 
@@ -292,12 +292,6 @@ and, if it's allowed for this `seat`, call `tryExit()`.
 
 Since you can potentially exit the `seat` if you have a reference to it, you should
 only share your `UserSeat` with very trusted parties.
-
-I would group these differently. Some of the getters are queries, getPayout/s and getOfferResult are extracting value or results.
-
-current state: getCurrentAllocation(), hasExited(), getNotifier()
-unchanging state: getProposal
-extract results: )
 
 A `UserSeat` has eight methods, six of which are 'get' methods. Of these six,
 three (`getCurrentAllocation()`, `hasExited()`, `getNotifier()`) return values
@@ -320,17 +314,17 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
     or a crash or freeze. There are several methods for finding out what `amount` 
     a current `allocation` is.
     
- -  An `Allocation` example:
-   - ```js
-     {
-       Asset: quatloosAmountMath.make(5),
-       Price: moolaAmountMath.make(9)
-     }
-     ```
+    An `Allocation` example:
+    - ```js
+      {
+        Asset: quatloosAmountMath.make(5),
+        Price: moolaAmountMath.make(9)
+      }
+      ```
 - `getProposal()`
   - Returns: `{ Promise<ProposalRecord> }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
-    accompaning the escrow of `payments` dictating what the user expects
+    accompanying the escrow of `payments` dictating what the user expects
     to get back from Zoe. It has keys `give`, `want`, and
    `exit`. `give` and `want` are records with keywords as keys and
     `amounts` as values. The proposal is a user's understanding of the
@@ -353,7 +347,7 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
 - `getOfferResult()`
   - Returns: `{ Promise<OfferResult> }`
   - The returned `OfferResult` can be literally anything. For example, in tests
-    for the Automated Refund Dapp, it's the string "The offer was accepted"`. In
+    for the Automated Refund Dapp, it's the string "The offer was accepted". In
     the Covered Call example, it's a call option, which is an assayable `invitation`
     to buy the underlying asset. Strings and invitations are the most common things returned.
     The value is set by the returned result of  the `offerHandlers` method argument to `zcf.makeInvitation()`. **tyg todo: Not sure what the
@@ -361,14 +355,13 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
 - `getNotifier()`
   - Returns: `{ Promise<Notifier> }` **tyg todo: See distributed programmming for notifier details. Also see ZCFSeat for query about just 
   how the notifer is used here.**
-  
-  You use a `notifier` wherever some piece of code has changing state that other code wants updates on. 
-  A `Notifier`'s framework can handle this interaction such that the publisher doesn't allocate storage, 
-  or track subscribers. Everyone wanting to be notified gets a promise that resolves when there is change.
-  The promise plumbing magically takes care of distributing the notifications.
+  - You use a `notifier` wherever some piece of code has changing state that other code wants updates on. 
+    A `Notifier`'s framework can handle this interaction such that the publisher doesn't allocate storage, 
+    or track subscribers. Everyone wanting to be notified gets a promise that resolves when there is change.
+    The promise plumbing magically takes care of distributing the notifications.
 
-  The updates can be anything the contract wants to publish. For example, you could notify about price changes,
-  new currency pools, etc.  
+    The updates can be anything the contract wants to publish. For example, you could notify about price changes,
+    new currency pools, etc.  
 - `hasExited()`
   - Returns: `{ Promise<Boolean> }`
   - Returns `true` if the seat has exited, `false` if it still active.
@@ -377,7 +370,7 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
   - Note: Only works if the `seat`'s `proposal` has an `OnDemand` `exit` clause. 
     Zoe's offer-safety guarantee applies no matter how a `seat`'s interaction with
     a contract ends. **tyg: SHould that be "contract instance"?** Under normal 
-    circumstances, the participant might be able to call `tryExist()`, or the 
+    circumstances, the participant might be able to call `tryExiProoft()`, or the 
     contract might do something explicitly. On existing, the contract **tyg todo: Should "contract" be "seat holder" or similar?**
     gets its current `allocation` and the `seat` can no longer interact with the contract.
 
