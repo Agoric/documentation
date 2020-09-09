@@ -77,7 +77,7 @@ the same as ERTP `mint`-created assets by ERTP methods.
     If a `seat` is provided, it is returned. Otherwise a new `seat` is
     returned.
   - `zcfMint.mintGains({ Token: amount }, seat);`
-- `burnlosses`
+- `burnLosses`
   - `losses`: `AmountKeyWordRecord` 
   - `zcfSeat` : `{ZCFSeat}`
   - Returns: void
@@ -106,7 +106,7 @@ const myAmountKeywordRecord =
   Price: quatloos9
 }
 ```
-The following demostrates `zcf.makeZCFMint`:
+The following demonstrates `zcf.makeZCFMint`:
 
 **Note**: The call to make the `ZCFMint` is asynchronous, but 
 calls to the resulting `ZCFMint` are synchronous.
@@ -204,8 +204,8 @@ two actions, and one creation of another object.
     wherever some piece of code has changing state that other code wants updates on. 
     
     A `Notifier`'s framework can handle this interaction such that the publisher doesn't 
-    allocate storage, or track subscribers. Everyone wanting to be notified gets a promise  
-    that resolves when there is changeThe promise plumbing magically takes care of 
+    allocate storage, or track subscribers. Everyone wanting to be notified gets a 
+    promise that resolves when there is change. The promise plumbing magically takes care of 
     distributing the notifications.
 
     The updates can be anything the contract wants to publish. For example, you could notify 
@@ -213,7 +213,7 @@ two actions, and one creation of another object.
 - `getProposal()`
   - Returns: `{ ProposalRecord }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
-    accompaning the escrow of `payments` dictating what the user expects
+    accompanying the escrow of `payments` dictating what the user expects
     to get back from Zoe. It has keys `give`, `want`, and
     `exit`. `give` and `want` are records with keywords as keys and
     `amounts` as values. The `proposal` is a user's understanding of the
@@ -256,7 +256,7 @@ two actions, and one creation of another object.
       ```
  - `exit()`
    - Returns: `void`
-   - Causes the `seat` to exit, concluding its existance. All `payouts`, if any,
+   - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
      are made, and the `seat` object can no longer interact with the contract. Note that     
      `exit` is only present if an immediate exit is possible based on `'OnDemand` being the
      value of `exit:` in the `seat`'s `proposal`.
@@ -270,7 +270,7 @@ two actions, and one creation of another object.
    - Returns: `{ SeatStaging }`
    - A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
      at least two `seatStagings` as arguments and does its reallocation based on them.
- -`isOfferSafe(newAllocation)`
+ - `isOfferSafe(newAllocation)`
    - Returns `{ Boolean }`
    - Takes an `allocation` as an argument and returns `true` if that `allocation`
      satisfies offer safety, `false` if is doesn't. Essentially, it checks
