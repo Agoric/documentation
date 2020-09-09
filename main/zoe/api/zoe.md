@@ -131,8 +131,7 @@ const invitationValue = await E(zoe).getInvitationDetails(invitation);
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
 Returns an `installation` object. 
 
-An `installation` is an object with two properties:
-- `installationHandle`: An opaque identifier, used as the table key **tyg todo: What table?**
+An `installation` is an object with one property:
 - `bundle`:  The contract source code, accessible via `bundle.source`, and other info.
 
 ```js
@@ -149,13 +148,12 @@ const installationP = await E(zoe).install(bundle);
 
 Returns a `Promise` for the contract `instance` the `invitation` is part of.
 
-An `Instance` record has six properties: 
-- `instanceHandle`: Opaque `instance` identifier, used as the table key  **tyg todo: What table?**
-- `installationHandle`: Opaque identifier for the `installation` the `instance` is running in. 
-- `publicAPI`: Invite-free publicly accessible API for the contract. Developers can add methords to this.
-- `terms`: Contract parameters
-- `issuerKeywordRecord`: Record with keyword keys, `issuer` values
-- `brandKeywordRecord`: Record with keyword keys, `brand` values
+While `instances` are opaque objects, you can get information about them via
+these methods:
+- `getBrands()`
+- `getTerms()`
+- `getIssuers()`
+- `getPublicFacet()`
 
 ```js
 const instance = await E(zoe).getInstance(invitation);
@@ -167,8 +165,7 @@ const instance = await E(zoe).getInstance(invitation);
 
 Returns a `Promise` for the contract `installation` the `invitation`'s contract `instance` uses.
 
-An `installation` is an object with two properties:
-- `installationHandle`: An opaque identifier, used as the table key **tyg todo: What table?**
+An `installation` is an object with one property:
 - `bundle`:  The contract source code, accessible via `bundle.source`, and other info.
 
 ```js
@@ -218,10 +215,6 @@ It is usually used in contracts where the creator immediately sells
 something (auctions, swaps, etc.), so it's helpful for the creator to have 
 an invitation to escrow and sell goods. Remember that Zoe invitations are 
 represented as a `payment`.
-
-**tyg todo: In the example call below, should the first argument to startInstance
-be better named "installation" or "installationHandle" i.e. should you call it with the object or a reference, or does it make a difference?**
-
 ```js
 const issuerKeywordRecord = { 
   'Asset': moolaIssuer, 
@@ -284,14 +277,14 @@ are used within contracts and with `zcf.` methods. `UserSeats` represent `offers
 Zoe and the contract. The party who exercises an `invitation` and sends the `offer()` message
 to Zoe gets a `UserSeat` that can check `payouts`' status or retrieve their `offer` result.
 The result is whatever the contract chooses to return. This varies, but examples
-are a `string` and an `invitation` for another user.
+are a `string` and an `invitation` for another `seat`.
 
 Also, a `userSeat` can be handed to an agent outside Zoe and the contract, letting
 them query or monitor the current state, access the `payouts` and result,
 and, if it's allowed for this `seat`, call `tryExit()`. 
 
-Since you can potentially exit the `seat` if you have a reference to it, you should
-only share your `UserSeat` with very trusted parties.
+Since anyone can attempt to exit the `seat` if they have a reference to it,
+you should only share a `UserSeat` with trusted parties.
 
 A `UserSeat` has eight methods, six of which are 'get' methods. Of these six,
 three (`getCurrentAllocation()`, `hasExited()`, `getNotifier()`) return values
@@ -300,19 +293,20 @@ unchanging state (i.e. You can't change the `proposal` associated with a `seat`)
 and three (`getPayouts()`, `getPayout()`, `getOfferResult()`) extract a result.
 
 Another is 
-a `boolean` returning test, and the last attempts an action. Note that `tryExit()` 
+a test that returns a `boolean`, and the last attempts an action. Note that `tryExit()` 
 only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.  
 
 - `getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
-    contract. The value is an `amount` with its `value` and `brand`. 
+    contract. The value is an `amount`. 
     
-    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. 
-    Possible exits are exercising an exit condition, the contract's explicit choice, 
-    or a crash or freeze. There are several methods for finding out what `amount` 
-    a current `allocation` is.
+    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. Normal    
+    reasons for exiting are the user requesting to exit or the contract explicitly chosing  
+    to close out the `seat`. The guarantees also hold if the contract encounters an error or 
+    misbehaves. There are several methods for finding out what `amount` a 
+    current `allocation` is.
     
     An `Allocation` example:
     - ```js
@@ -327,9 +321,11 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
     accompanying the escrow of `payments` dictating what the user expects
     to get back from Zoe. It has keys `give`, `want`, and
    `exit`. `give` and `want` are records with keywords as keys and
-    `amounts` as values. The proposal is a user's understanding of the
-    contract that they are entering when they make an offer. See
-    `E(zoe).offer()` for full details.  
+    `amounts` as values. If it is compatible with the contract, the 
+    contract tries to satisfy it. If not, the contract kicks the `seat` out.
+    Offer safety is always enforced; if kicked out, the user gets back
+    what they put in. If the contract attempts to satisfy it, they either
+    get what they asked for or Zoe ensures they get back their deposit.    
   - Example:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
@@ -338,7 +334,7 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
   - Returns: `{ Promise<PaymentPKeywordRecord> }`
   - A `payout` is a `payment` that goes to a party in a successful transaction, redirecting
     escrowed assets in accordance with the result of the transaction. Returns a record
-    of all the `payout` `payments` associated with the `seat`'s offers.
+    containing all the `payout` `payments` associated with the `seat`'s offers.
 - `getPayout(keyword)`
   - Returns: `{ Promise<Payment> }`
   - A `payout` is a `payment` that goes to a party in a successful transaction, redirecting
@@ -350,28 +346,24 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
     for the Automated Refund Dapp, it's the string "The offer was accepted". In
     the Covered Call example, it's a call option, which is an assayable `invitation`
     to buy the underlying asset. Strings and invitations are the most common things returned.
-    The value is set by the returned result of  the `offerHandlers` method argument to `zcf.makeInvitation()`. **tyg todo: Not sure what the
-    offerHandlers look like/are represented.**
+    The value is set by the returned result of  the `offerHandlers` function passed
+    as an argument to `zcf.makeInvitation()`. 
 - `getNotifier()`
-  - Returns: `{ Promise<Notifier> }` **tyg todo: See distributed programmming for notifier details. Also see ZCFSeat for query about just 
-  how the notifer is used here.**
-  - You use a `notifier` wherever some piece of code has changing state that other code wants updates on. 
-    A `Notifier`'s framework can handle this interaction such that the publisher doesn't allocate storage, 
-    or track subscribers. Everyone wanting to be notified gets a promise that resolves when there is change.
-    The promise plumbing magically takes care of distributing the notifications.
-
-    The updates can be anything the contract wants to publish. For example, you could notify about price changes,
-    new currency pools, etc.  
+  - Returns: `{ Promise<Notifier> }` 
+  - You use a `notifier` wherever some piece of code has changing state that other 
+    code wants updates on. The updates can be anything the contract wants to publish. 
+    For example, you could notify about price changes, new currency pools, etc. For
+    more about `notifiers`, see our [Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html#notifiers)
 - `hasExited()`
   - Returns: `{ Promise<Boolean> }`
-  - Returns `true` if the seat has exited, `false` if it still active.
+  - Returns `true` if the seat has exited, `false` if it is still active.
 - `tryExit()`
   - Returns `{ Void }`
   - Note: Only works if the `seat`'s `proposal` has an `OnDemand` `exit` clause. 
     Zoe's offer-safety guarantee applies no matter how a `seat`'s interaction with
-    a contract ends. **tyg: SHould that be "contract instance"?** Under normal 
-    circumstances, the participant might be able to call `tryExiProoft()`, or the 
-    contract might do something explicitly. On existing, the contract **tyg todo: Should "contract" be "seat holder" or similar?**
+    a contract ends. Under normal 
+    circumstances, the participant might be able to call `tryExit()`, or the 
+    contract might do something explicitly. On exiting, the seat holder 
     gets its current `allocation` and the `seat` can no longer interact with the contract.
 
 
