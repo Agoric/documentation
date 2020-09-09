@@ -5,7 +5,7 @@
 <router-link to="./assets/amount.svg">Amount methods</router-link>
 Amounts describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
-Use the `amountMath` API methods(covered in-depth 
+Use the `amountMath` API methods (covered in-depth 
 <router-link to="./AmountMath.html">here</router-link>)
 to get information about and otherwise manipulate an `amount` as a whole.
 
@@ -24,40 +24,7 @@ assets are merged, separated, or otherwise manipulated. For example,
 you make an offer for something, which is declined. You want to change your 
 offer, represented as an `amount`, to be of a greater `value` by adding to it.
 
-As fungible and non-fungible assets have different kinds of values,
-there are three different kinds of `amountMath` methods, one 
-for each kind of value. Each implements the same set of methods described below.
 
-When you create an `issuer` for a
-`brand`, you specify which kind of `amountMath` the brand uses. The
-correct kind is automatically used whenever an `amountMath` method
-is used on an a`amount` with that `brand`. The possible values are:
-- `nat`: Used with fungible assets (the values are natural numbers).
-- `strSet`: Used with non-fungible assets (the values are strings).
-- `set`: Used with sets of objects, primarily non-fungible assets.
-
-Use
-
-[`makeIssuerKit(allegedName, amountMathKind)`](https://agoric.com/documentation/ertp/api/issuer.html#produceissuer-allegedname-mathhelpername)
- to specify which kind of `amountMath` your contract uses for the `brand`
- associated with the created `issuer`.  The second parameter,
- `amountMathKind`, is optional and defaults to `nat` if not given. For
- example: 
-```js
-makeIssuerKit('quatloos`); // Defaults to 'nat'
-makeIssuerKit('quatloos', 'strSet');
-makeIssuerKit('quatloos, 'set');
-```
-You should make and use a local version of `AmountMath` for any `brand`
-your contract works with:
-```js
-const { issuer, brand } = makeIssuerKit('quatloos'); //Defaults to 'nat' 
-const amountMathName = issuer.getAmountMathKind(); // 'nat'
-const localAmountMath = makeAmountMath(brand, type)
-```
-
-From then on, use `localAmountMath.<method>()`, which will in turn use
-the appropriate kind of `amountMath` method.
 
 **Note**: Prior to July 2020, Agoric exposed the `mathHelpers` object
 type, and users referred to the three kinds of
