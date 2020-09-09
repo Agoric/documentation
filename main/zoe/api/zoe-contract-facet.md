@@ -72,10 +72,9 @@ the same as ERTP `mint`-created assets by ERTP methods.
   - Returns: `{ZCFSeat}`
   - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
     The `gains`' keywords are in that `seat`'s namespace.
-    Add the `gains` to that `seat`'s `allocation`, then
-    mint that `amount` of assets and assign it to the contract.
-    If a `seat` is provided, it is returned. Otherwise a new `seat` is
-    returned.
+    Mint the `gains` `amount` of assets and add them to 
+    that `seat`'s `allocation`. If a `seat` is provided, 
+    it is returned. Otherwise a new `seat` is returned.
   - `zcfMint.mintGains({ Token: amount }, seat);`
 - `burnLosses`
   - `losses`: `AmountKeyWordRecord` 
@@ -92,7 +91,7 @@ the values are `amounts`. Keywords are unique identifiers per contract,
 that tie together the `proposal`, `payments` to be escrowed, and `payouts`
 to the user. In the below example, `Asset` and `Price` are keywords. 
 
-Users should submit their`payments` using keywords: 
+Users should submit their `payments` using keywords: 
 ```js
 const payments = { Asset: quatloosPayment };
 ```
@@ -143,7 +142,7 @@ Informs Zoe about an `issuer` and returns a `promise` for acknowledging
 when the `issuer` is added and ready. The `keyword` is the one associated
 with the new `issuer`. It returns a promise for `issuerRecord` of the new `issuer`
 
-This saves an `issuer` to Zoe.
+This saves an `issuer` in Zoe's records for this contract `instance`. 
 It also has saved the `issuer` information such that Zoe can handle offers involving 
 this `issuer` and ZCF can provide the `issuerRecord` synchronously on request.
 
@@ -239,15 +238,16 @@ two actions, and one creation of another object.
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
     all the current `allocations` at once.
 - `getCurrentAllocation()`
-  - Returns: `{ Promise<Allocation> }`
+  - Returns: `{ <Allocation> }`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
     contract. The value is an `amount` with its `value` and `brand`. 
     
     `Allocations` represent the `amounts` to be paid out to each `seat` on exit. 
-    Possible exits are exercising an exit condition, the contract's explicit choice, 
-    or a crash or freeze. There are several methods for finding out what `amount` 
-    a current `allocation` is.
+    Normal reasons for exiting are the user requesting to exit or the contract
+    explicitly chosing to close out the `seat`. The guarantees also hold if the contract
+    encounters an error or misbehaves. There are several methods for finding out 
+    what `amount` a current `allocation` is.
     
     This is similar to the previous method, `getAmountAllocated()`. `getAmountAllocated()`
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
@@ -270,8 +270,8 @@ two actions, and one creation of another object.
    - Returns: `void`
    - The `seat` exits, displaying the `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
-     `kickOut()` is aborting the transaction attempt to signal an error. Still, the contract
-     gets its current `allocation` and the `seat` can no longer interact with the contract.
+     `kickOut()` aborts the transaction attempt and signals an error. The contract
+     still gets its current `allocation` and the `seat` can no longer interact with the contract.
  - `stage(newAllocation)`
    - Returns: `{ SeatStaging }`
    - A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
