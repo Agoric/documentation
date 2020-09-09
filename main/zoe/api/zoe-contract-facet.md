@@ -185,32 +185,40 @@ const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ``` 
 ### ZCFSeat object
 
+Zoe uses `seats` to represent `offers`, and has two `seat` facets 
+a `ZCFSeat` and a `UserSeat`.
+
+`Seats` represent active `offers` and let contracts and users interact with them. `ZCFSeats` 
+are used within contracts and with `zcf.` methods. `UserSeats` represent `offers` external to 
+Zoe and the contract. 
+
 A `ZCFSeat` has nine methods; Two boolean returning tests, four getters,
 two actions, and one creation of another object.
 
 - `hasExited()`
   - Returns: `{ Boolean }`
   - Returns `true` if the `seat` has exited, `false` if it is still active.
-- `isOfferSafe(newAllocation)`
-  - Returns `{ Boolean }`
-  - Takes an `allocation` as an argument and returns `true` if that `allocation`
-    satisfies offer safety, `false` if is doesn't. Essentially, it checks
-    offer safety for a single offer, in this case the `seat`'s `proposal`. It checks whether we fully satisfy
-    `proposal.give` (giving a refund) or whether we fully satisfy
-    `proposal.want`. Both can be fully satisfied. This is the equivalent of
-    it either returning `true` from `satisfies()` or giving a refund.    
 - `getNotifier()`
-  - Returns: `{ Notifier<Allocation> }` **tyg todo: This was from types; not sure what it actually means/is returning?
-  - Returns a `notifier` associated with the `seat`'s `allocation`. **tyg todo: Needs work. What is the notifer supposed to be used for?**
+  - Returns: `{ Notifier<Allocation> }`
+  - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
+    wherever some piece of code has changing state that other code wants updates on. 
+    
+    A `Notifier`'s framework can handle this interaction such that the publisher doesn't 
+    allocate storage, or track subscribers. Everyone wanting to be notified gets a promise  
+    that resolves when there is changeThe promise plumbing magically takes care of 
+    distributing the notifications.
+
+    The updates can be anything the contract wants to publish. For example, you could notify 
+    about price changes, new currency pools, etc.  
 - `getProposal()`
   - Returns: `{ ProposalRecord }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
     accompaning the escrow of `payments` dictating what the user expects
     to get back from Zoe. It has keys `give`, `want`, and
-   `exit`. `give` and `want` are records with keywords as keys and
-    `amounts` as values. The proposal is a user's understanding of the
+    `exit`. `give` and `want` are records with keywords as keys and
+    `amounts` as values. The `proposal` is a user's understanding of the
     contract that they are entering when they make an offer. See
-    `E(zoe).offer()` for full details.  **tyg todo: Add link**
+    `E(zoe).offer()` for full details. 
   - Example:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
@@ -220,28 +228,37 @@ two actions, and one creation of another object.
   - Returns the `amount` from the part of the `allocation` that matches the
     `keyword` and `brand`. If the `keyword` is not in the `allocation`, it
     returns an empty `amount` of the `brand` argument. 
+    
+    This is similar to the next method, `getCurrentAllocation()`. `getAmountAllocated()`
+    gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
+    all the current `allocations` at once.
 - `getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
-    contract. The value is an `amount` with its `value` and `brand`. An
-    `Allocation` specifies the what is wanted and what is offered parts 
-    of a successful offer. These `amounts` are the reallocation of assets
-    to be given to a user. **tyg todo: We actually don't seem to have a good solid
-    definition of "allocation" in a Zoe context anywhere. Please correct
-    if this is missing any subtlties or intent, or way to better distinguish
-    it from a `proposal` other than the latter's use of an exit rule**
- -  An `Allocation` example:
-   - ```js
-     {
-       Asset: amountMath.make(5),
-       Price: amountMath.make(9)
-     }
-     ```
+    contract. The value is an `amount` with its `value` and `brand`. 
+    
+    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. 
+    Possible exits are exercising an exit condition, the contract's explicit choice, 
+    or a crash or freeze. There are several methods for finding out what `amount` 
+    a current `allocation` is.
+    
+    This is similar to the previous method, `getAmountAllocated()`. `getAmountAllocated()`
+    gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
+    all the current `allocations` at once.
+    
+    An `Allocation` example:
+    - ```js
+      {
+        Asset: quatloosAmountMath.make(5),
+        Price: moolaAmountMath.make(9)
+      }
+      ```
  - `exit()`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existance. All `payouts`, if any,
-     are made, and the `seat` object is deleted. Note that `exit` is only present if an immediate exit is possible.
+     are made, and the `seat` object is deleted. Note that `exit` is only present if an 
+     immediate exit is possible.
  - `kickOut(msg)` (`msg` is optional) **tyg todo: Not clear on different between kickOut and exit?**
    - Returns: `void`
    - The `seat` kicks out, displaying the `msg` string, if there is one, on the console.
@@ -251,6 +268,16 @@ two actions, and one creation of another object.
    - Returns: `{ SeatStaging }`
    - A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
      at least two `seatStagings` as arguments and does its reallocation based on them.
+- -`isOfferSafe(newAllocation)`
+  - Returns `{ Boolean }`
+  - Takes an `allocation` as an argument and returns `true` if that `allocation`
+    satisfies offer safety, `false` if is doesn't. Essentially, it checks
+    offer safety for a single offer, in this case the `seat`'s `proposal`. It checks whether we fully satisfy
+    `proposal.give` (giving a refund) or whether we fully satisfy
+    `proposal.want`. Both can be fully satisfied. This is the equivalent of
+    it either returning `true` from `satisfies()` or giving a refund.    
+
+ 
 
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
