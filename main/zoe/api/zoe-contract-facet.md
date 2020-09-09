@@ -257,27 +257,28 @@ two actions, and one creation of another object.
  - `exit()`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existance. All `payouts`, if any,
-     are made, and the `seat` object is deleted. Note that `exit` is only present if an 
-     immediate exit is possible.
- - `kickOut(msg)` (`msg` is optional) **tyg todo: Not clear on different between kickOut and exit?**
+     are made, and the `seat` object can no longer interact with the contract. Note that     
+     `exit` is only present if an immediate exit is possible based on `'OnDemand` being the
+     value of `exit:` in the `seat`'s `proposal`.
+ - `kickOut(msg)` (`msg` is optional) 
    - Returns: `void`
-   - The `seat` kicks out, displaying the `msg` string, if there is one, on the console.
+   - The `seat` exits, displaying the `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
-     `kickOut()` is aborting the transaction attempt due to problems.
+     `kickOut()` is aborting the transaction attempt to signal an error. Still, the contract
+     gets its current `allocation` and the `seat` can no longer interact with the contract.
  - `stage(newAllocation)`
    - Returns: `{ SeatStaging }`
    - A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
      at least two `seatStagings` as arguments and does its reallocation based on them.
-- -`isOfferSafe(newAllocation)`
-  - Returns `{ Boolean }`
-  - Takes an `allocation` as an argument and returns `true` if that `allocation`
-    satisfies offer safety, `false` if is doesn't. Essentially, it checks
-    offer safety for a single offer, in this case the `seat`'s `proposal`. It checks whether we fully satisfy
-    `proposal.give` (giving a refund) or whether we fully satisfy
-    `proposal.want`. Both can be fully satisfied. This is the equivalent of
-    it either returning `true` from `satisfies()` or giving a refund.    
-
- 
+ -`isOfferSafe(newAllocation)`
+   - Returns `{ Boolean }`
+   - Takes an `allocation` as an argument and returns `true` if that `allocation`
+     satisfies offer safety, `false` if is doesn't. Essentially, it checks
+     offer safety for a single offer, in this case the `seat`'s `proposal`. 
+     It checks whether we fully satisfy
+     `proposal.give` (giving a refund) or whether we fully satisfy
+     `proposal.want`. Both can be fully satisfied. This is the equivalent of
+     it either returning `true` from `satisfies()` or giving a refund.    
 
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
