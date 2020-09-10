@@ -238,10 +238,10 @@ either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
 empty record.
 
-`exit`'s value should be an `exitRule`, an object with three possible keys for
+The optional `exit`'s value should be an `exitRule`, an object with three possible keys for
 key:value pairs:
 - `waived:null`: The user can't cancel and relies entirely on the smart contract to promptly finish their offer. 
-- `onDemand:null`: The user can cancel on demand.
+- `onDemand:null`:  (Default) The user can cancel on demand.
 - `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. The timer is a timer,
 and the `deadline` is with respect to the timer. Some example timers use Unix epoch time, while others count block height.
 
