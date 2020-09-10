@@ -40,7 +40,8 @@ But, Zoe only actually updates its records and gives me an event ticket
 payout if that update is offer-safe and conserves total supply.
 
 The offer safety enforcement code is in
-[offerSafety.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/offerSafety.js).
+[offerSafety.js](https://github.com/Agoric/agoric-sdk/packages/zoe/src/contractFacet/offerSafety.js).
+
 Tests, including edge cases, are in [test-offerSafety.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/unitTests/test-offerSafety.js).
 
 ## Implementation Questions
