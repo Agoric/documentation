@@ -16,7 +16,7 @@ having one gives you the right to participate in that contract `instance`, for e
 
 There are two main ways for contract users to get an `invitation`:
 - If you create the contract `instance`, you get a special creator `invitation`.
-- Someone who holds the right objects has created an `invatation` for a contract `instance` and given it to
+- Someone who holds the right objects has created an `invitation` for a contract `instance` and given it to
   you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
   doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
 
@@ -26,8 +26,8 @@ Proposals are objects with `give`, `want` and `exit` keys.
 
 ```js
 const myProposal = harden({
-  give: { Asset: moola(4 )},
-  want: { Price: simoleans(15) },
+  give: { Asset: quatloosAmountMath.make(4)},
+  want: { Price: moolaAmountMath.make(15) },
   exit: { 'onDemand'
 })
 ```
@@ -35,12 +35,18 @@ const myProposal = harden({
 Keywords are unique identifiers per contract, that tie together the proposal,
 payments to be escrowed, and payouts to the user.
 In the example above, `Asset` and `Price` are the keywords. However, in an auction contract,
-the keywords might be `Asset` and `Bid"`.
+the keywords might be `Asset` and `Bid`.
+
+The `quatloosAmountMath.make(4)` is just making an ERTP `amount`, or description of digital assets.
+In this case, 4 of our imaginary Quatloos currency. `moolaAmountMath.make(15)` is making an `amount` of 15 of our imaginary Moola currency. 
+
+**Note**: It's important to understand that `amounts` are just descriptions of assets with no
+intrinsic value. `payments` hold actual digital assets.
 
 `exit` determines how an offer can be can cancelled:
-- 'onDemand': Whenever the user wants.
-- 'waived': The user cannot cancel, relying on the contract to finish the offer.
-- 'afterDeadline': Cancelled automatically after a deadline. This requires two
+- `'onDemand'`: (Default) Whenever the user wants.
+- `'waived'`: The user cannot cancel, relying on the contract to finish the offer.
+- `'afterDeadline'`: Cancelled automatically after a deadline. This requires two
   more properties, a `timer` object and a deadline value.
 
 ## Escrowed Payments
