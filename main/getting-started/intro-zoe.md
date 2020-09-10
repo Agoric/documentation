@@ -80,7 +80,7 @@ const issuerKeywordRecord = harden({
   Price: moolaKit.issuer,
 });
 const atomicSwapInstance = zoe.startInstance(installation, issuerKeywordRecord);
-```js
+```
 
 Let’s work backwards from `startInstance()`’s arguments. As you’ll recall 
 from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints),
@@ -204,8 +204,10 @@ the price she’s willing to pay for it. Alice uses `zcf.makeInvitation()` to ma
 send to others, in this case Bob.
 
 `zcf.makeInvitation()` takes two required arguments and one optional:
-
-- `description`: A `String` that should include whatever information is needed for a recipient to know what they are getting in the optional `customProperties` argument
+- `offerHandler`: A function defined in the contract code that processes offers as the contract developer sees fit.
+- `description`: A `String` that should include whatever information is needed for a recipient to know what 
+  they are getting in the optional `customProperties` argument.
+- `customProperties`: Optional, any special properties to be included in this `invitation`.
 ```js
 const bobInvitation = zcf.makeInvitation(swapOfferHandler, atomicSwapDescription)
 
@@ -322,7 +324,7 @@ an Atomic Swap contract instance.
 </tr>
 <tr>
 <td><center>3</center></td>
-<td>Recipients use the InviteIssuer to validate their invitation.
+<td>Recipients use the InviteIssuer to claim and validate their invitation.
 </td>
 </tr>
 <tr>
@@ -332,7 +334,7 @@ an Atomic Swap contract instance.
 </tr>
 <tr>
 <td><center>5</center></td>
-<td>The contract instance hooks trigger, driving the contract behavior, which may request some reallocations as a result.</td>
+<td>The contract instance code processes the offers, which may request some reallocations as a result.</td>
 </tr>
 <tr>
 <td><center>6</center></td>
@@ -341,7 +343,7 @@ an Atomic Swap contract instance.
 </tr>
 <tr>
 <td><center>7</center></td>
-<td>The contract requests Zoe complete the satisfied offers, resolving their associated payout promises. Offer holders either get what they paid for, get their escrowed offer amount refunded, or in some cases, get both what they paid for and a refund of any overpayment.
+<td>The contract requests Zoe process the satisfied offers, resolving their associated payout promises. Offer holders either get what they paid for, get their escrowed offer amount refunded, or in some cases, get both what they paid for and a refund of any overpayment.
 </td>
 </tr>
 </tbody>
