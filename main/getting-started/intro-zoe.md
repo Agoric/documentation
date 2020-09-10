@@ -173,16 +173,17 @@ and payment `amounts`. Here, Alice is setting up the ability to use the Quatloos
 just descriptions of assets, and not the actual assets. The actual assets are contained in ERTP `'purses` and `payments`, not `amounts`.
 
 She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with
-keywords as keys and amounts as values. `exit` is an `ExitRule` record specifying how/when a user can exit the contract. In the above
-example, Alice wants at least 25 Moola, in exchange for giving at most 100 Quatloos, where she can exit the offer at any time just by
-asking, and get her assets back (or get her `want` value if the offer happened to be satisfied before then).
+keywords as keys and amounts as values. `exit` is an `ExitRule` record specifying how/when a user can exit the contract. 
 
-The `want` and `give` values are JavaScript records, objects with property names and values. The property names of these records are the
+The `want` and `give` values in Alice's `proposal` are JavaScript records, objects with property names and values. The property names of these records are the
 keywords in the `keywordRecord` from when you created the contract instance. The values of the records 
 are [ERTP amounts](https://agoric.com/documentation/ertp/guide/amounts.html) of how many of the asset the user either wants or
-is willing to give in exchange. 
+is willing to give in exchange. The optional `exit` is an `ExitRule` record specifying how/when a user can exit the contract. 
 
-The `harden()` command is how to build a defensible API surface around an object by freezing all reachable properties. It’s similar,
+In the above example, Alice wants at least 25 Moola, in exchange for giving at most 100 Quatloos, where she can exit the offer at any time just by
+asking, and get her assets back (or get her `want` value if the offer happened to be satisfied before then).
+
+The `harden()` command is how we build a defensible API surface around an object by freezing all reachable properties. It’s similar,
 but not identical, to JavaScript’s `Object.freeze`. For more information on `harden`, see [here](https://www.npmjs.com/package/@agoric/harden#background-why-do-we-need-to-harden-objects)
 
 Now, Alice is ready to use her `invitation`, `proposal`, and `payment` to make an offer and participate in the Atomic Swap
@@ -218,7 +219,8 @@ const bobExclusiveInvitation = await E(inviteIssuer).claim(bobInvitation);
 ```
 
 Bob decides to make his own offer, which happens to match up with Alice’s offer (assume his payments were constructed similar to Alice’s);
-```const bobProposal = harden({
+```js
+const bobProposal = harden({
   want: { Asset: quatloos100 },
   give: { Price: moola25 },
   exit: { onDemand: null },
@@ -231,13 +233,13 @@ const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
   bobPayments,
 );
 ```
-Bob has also gotten back a *promise* for a *payout*. His offer is also now an *active offer*.
+Bob has gotten back a *promise* for a *payout*. His offer is also now an *active offer*.
 
 ## Satisfying and completing offers
 
 At this point, both the offers that Alice and Bob made are active and known to the contract instance. The Atomic Swap contract 
 code determines that they are matching offers.  The contract instance calls `reallocate()`, which *reallocates* the amounts which 
-are the accounting records within Zoe. Payouts are not created here. 
+are the accounting records within Zoe. Payouts are not created yet. 
 
 The contract instance then *exits* the offers. **tyg todo: Not quite sure what the current implementation is here** makes the payouts to
 the offer holders.  This takes the amounts from the account records, and withdraws the offer-specified amounts from the 
@@ -250,7 +252,7 @@ offers from the contract instance.
 ## Auction example  
 
 Let’s look at a more complicated example: an auction, where many users
-might make a bid offer for something, but only one bid will win the 
+might make a bid for something, but only one bid will win the 
 auction. Assuming everything validated, Zoe would give the holder of 
 the auctioned item the escrowed assets from the winning bid, and give 
 the holder of the winning bid what they wanted, the asset up for bid.
@@ -309,8 +311,8 @@ The following table summarizes an Atomic Swap workflow:
 </td>
 </tr>
 <tr>
-<td colspan="2">At this point, everything is installed and set up and you’ve got a contract instance. The following rows cover what happens during
-an Atomic Swap contract instance.
+<td colspan="2">At this point, everything is installed and set up and you’ve got a contract instance. The following rows cover what happens while
+the Atomic Swap contract instance is active.
 </td>
 <tr>
 <tr>
@@ -334,7 +336,7 @@ an Atomic Swap contract instance.
 </tr>
 <tr>
 <td><center>5</center></td>
-<td>The contract instance code processes the offers, which may request some reallocations as a result.</td>
+<td>The contract code processes the offers, which may request some reallocations as a result.</td>
 </tr>
 <tr>
 <td><center>6</center></td>
