@@ -32,7 +32,7 @@ mutate these.
 
 If you add this type annotation at the start of your contract code, TypeScript-aware tools
 (IDEs like vsCode and WebStorm) will warn about mismatches in parameters and return values
-in calls to zcf methods.  Put this right before the start of your contract code.
+in calls to `zcf` methods.  Put this right before the start of your contract code.
 
 ```js
 /**
@@ -68,16 +68,16 @@ The contract can contain arbitrary JavaScript code, but there are a few things y
 to do in order to act as a contract, and interact with Zoe and zcf (the internal contract
 facet).
 
-In order to allow users to make offers, the contract has to include a handler that has the
-code for what to do when the invitation is used to make an offer. This handler is passed
-to zcf.makeInvitation(), and the resulting invitation is made available (using the
-creatorFacet, the publicFacet, or whatever makes sense for the particular contract.
+For users to make offers, the contract has to include a handler with the
+code for what to do when the `invitation` is used to make an offer. This handler is passed
+to `zcf.makeInvitation()`, and the resulting `invitation` is made available (using the
+`creatorFacet`, the `publicFacet`, or whatever makes sense for the particular contract.
 
-AtomicSwap, for instance, makes two invitations. The first is used to create the initial
-offer, so it defines the terms that the counterparty will respond to. The second party
+For instance, AtomicSwap makes two `invitations`. The first is used to create the initial
+offer, so it defines the terms that the counterparty responds to. The second party
 needs to make a matching offer, so there are more constraints.
 
-The invitation for the first party is created with makeInvitation:
+Use `zcf.makeInvitation()` to create the first party's `invitation`:
 
 ``` js
   const creatorInvitation = zcf.makeInvitation(
@@ -86,7 +86,7 @@ The invitation for the first party is created with makeInvitation:
   );
 ```
 
-The main thing makeMatchingInvitation does is create the second invitation.
+`makeMatchingInvitation()` creates the second `invitation`.
 
 ``` js
     const matchingSeatInvitation = zcf.makeInvitation(
@@ -99,15 +99,15 @@ The main thing makeMatchingInvitation does is create the second invitation.
     );
 ```
 
-The third argument (which is optional and wasn't needed for the first invitation) says
-that the counterparty has to offer an amount that matches the first party's `want.Price`,
+The third argument (which is optional and wasn't needed for the first `invitation`) says
+the counterparty has to offer an `amount` matching the first party's `want.Price`,
 and should ask for the first party's `give.Asset`. The optional third argument to
-`makeInvitation()` is included so the invitation will contain the terms so the recipient
-of the invitation can rely on them.
+`makeInvitation()` is included so the `invitation` will contain the `terms` so the `invitation`
+recipient can rely on them.
 
-The matchingSeatOfferHandler for this very simple contract calls `swap()`, a helper for
+The `matchingSeatOfferHandler` for this very simple contract calls `swap()`, a helper for
 the simple case that each party wants what the other offered. If the terms match, Zoe
-gives each the payout they asked for, and closes out the contract. If the terms don't
+gives each the `payout` they asked for, and closes out the contract. If the terms don't
 match, they each get back what they brought to the exchange, and it's still over.
 
 ``` js
@@ -118,7 +118,7 @@ match, they each get back what they brought to the exchange, and it's still over
     };
 ```
 
-If you study other contracts, you'll see that they all have this basic format. Depending
+If you study other contracts, you'll see they all have this basic format. Depending
 on their goals, they may do additional bookkeeping, or try to find compatible terms
 between multiple offers, or create new assets to order.
 
