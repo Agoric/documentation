@@ -36,10 +36,7 @@ To use Zoe, we put things in terms of "offers". An offer proposal is a
 statement about what you want and what you're willing to offer. It
 turns out, many smart contracts (apart from gifts and one-way
 payments) involve an exchange of digital assets that can be put in
-terms of offer proposals.
-
-In this version of Zoe, our offer proposals are simple (see [our
-roadmap](../roadmap/README.md) for more complex proposal types). We
+terms of offer proposals. We
 can say things like, "I'll give you [three wood for two
 bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the
 particulars of structuring an offer proposal here](./proposal.md).
@@ -47,11 +44,13 @@ particulars of structuring an offer proposal here](./proposal.md).
 Offers are a structured way of describing user intent. To a certain
 extent, an offer's rules (called a *proposal*) are the user's
 *contractual understanding* of the agreement they are entering into.
+
 You might have noticed that the offer doesn't specify the mechanism by
 which the exchange happens. The offer doesn't say whether the item you
 want is up for auction, in an exchange, or part of a private trade.
 The offer doesn't mention the particular mechanism because an
 important part of the design of Zoe is a __separation of concerns__.
+
 Zoe is responsible for enforcing what we call "offer safety", and the
 smart contract that runs on top of Zoe is responsible for figuring out
 a proposed reallocation of resources. To use an auction as an example,
@@ -64,47 +63,46 @@ handle the credit cards themselves.
 ### What is "offer safety"?
 
 Zoe guarantees offer safety, meaning that when a user makes an offer
-that is escrowed with Zoe, Zoe guarantees that the user will either
-get back why they said they wanted, or the user will get back what they
-originally offered.
+and it is escrowed with Zoe, Zoe guarantees that the user either
+gets back why they said they wanted, or gets back (refunded) what they
+originally offered and escrowed.
 
-When a user escrows with Zoe, they get a few things back immediately:
-an `outcome`, and a JavaScript promise for a future payout. The
-`outcome` is a promise for the return value of making the offer. Let's
+When a user escrows with Zoe, they get back
+a JavaScript promise for a future payout. Let's
 look a particular example to see how this works.
 
 ## An example: A swap
 
 I want to trade my three bricks for five wool. You realize you have
-five wool and agree to the deal. Without Zoe, though, you might send
+five wool and agree to the deal. Without Zoe, you might send
 me the five wool, and I might disappear without ever giving you the
-three bricks in return. With Zoe, we can safely trade with each other,
-even if we don't trust one another. We are assured that at worst, if
-the swap contract behaves badly, we will both get a refund, and at
-best, we'll get what we each wanted.
+three bricks. With Zoe, we can safely trade with each other,
+even if we don't trust each other. We are assured that at worst, if
+the swap contract behaves badly, we both get a refund, and at
+best, we get what we each wanted.
 
 Let's look at the basic `atomicSwap` contract ([full text of
 the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
 
-Here's a high-level overview of what would happen:
+Here's a high-level overview of what happens:
 1. I make an instance of the swap contract.
 2. I escrow my three bricks with Zoe and make my offer. In return, I
-   get an invite to join the contract as the matching offer, and  a
-   promise for a payout. I send you the invite.
-3. You inspect the invite and verify that it was created using the
+   get an invitation to join the contract instance as the matching offer, and  a
+   promise for a payout. 
+3. I make and send you an invitation to participate in this contract instance.
+4. You inspect the invitation and verify it was created using the
    `atomicSwap` contract code.
-4. You use your invite to escrow your offer (offering five wool for
-   three bricks) with Zoe, making a matching offer. You get an outcome
-   and a promise for a payout in return.
-5. The offer matches and both of our payout promises resolve, mine to
+5. You use your invitation to escrow your offer (offering five wool for
+   three bricks) with Zoe, making a matching offer. You get
+   a promise for a payout in return.
+6. The offer matches and both of our payout promises resolve, mine to
    the five wool that I wanted, and yours to the three bricks that you
    wanted. Success!
 
-
 ## How to write smart contracts
 
-Writing smart contracts that run on Zoe is easy, but let's look
-at a simple contract. This contract only does one thing, and
+Writing smart contracts that run on Zoe is easy. Let's look
+at a simple contract. It only does one thing, and
 it's pretty useless - it gives you back what you put in. Let's call it
 `automaticRefund`. Let's say the code of `automaticRefund` looks like
 this (see the [real contract code
