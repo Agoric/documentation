@@ -7,11 +7,9 @@ Zoe is currently at Alpha status. It has not yet been
 formally tested or hardened. It is not yet of production quality.
 :::
 
-
 This is an introduction to Zoe, Agoric's smart contract framework. 
-The [Zoe Guide](/zoe/guide/) has more complete and detailed information, 
+The [Zoe Guide](/zoe/guide/) has additional information, 
 including concepts not covered here. 
-
 
 You can run different types of smart contracts on Zoe. In this document, 
 for the most part we focus on Agoric’s Atomic Swap demo contract, but 
@@ -27,7 +25,7 @@ It provides a safety net so you can focus on what your smart contract does best,
 without worrying about users losing their assets due to a bug in your code. 
 
 Many contracts are installed on Zoe, including [several Agoric-written ones](https://agoric.com/documentation/zoe/guide/contracts/) 
-to get you started. 
+to help get you started. 
 
 ## The simple Atomic Swap contract
 
@@ -78,8 +76,8 @@ know what kind of ERTP assets the contract will work with. In Atomic Swap’s te
 code, the full instantiation call is something like:
 ```js
 const issuerKeywordRecord = harden({
-  Asset: moolaKit.issuer,
-  Price: simoleanKit.issuer,
+  Asset: quatloosKit.issuer,
+  Price: moolaKit.issuer,
 });
 const atomicSwapInstance = zoe.startInstance(installation, issuerKeywordRecord);
 ```js
@@ -93,9 +91,9 @@ they are the same names as are used in the contract code.
 In this case the key name `Price` is for what is wanted, and key name `Asset` is for
 what is being sold. `Price` is for what will be swapped for it (from the perspective
 of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). 
-The price is denominated in the imaginary currency simoleons, so that keyword needs the 
-Simoleon `Issuer` associated with it. The asset is denominated in the imaginary currency
-Moola, so that keyword needs the Moola `Issuer` as its value. 
+The price is denominated in the imaginary currency Moola, so that keyword needs the 
+Moola `Issuer` associated with it. The asset is denominated in the imaginary currency
+Quatloos, so that keyword needs the Quatloo `Issuer` as its value. 
 
 Finally, `E(zoe).startInstance()` can take an optional `terms` argument, another
 set of key:value pairs. Terms let an `instance` creator further
@@ -116,9 +114,9 @@ customized for the items being sold in each one.
 
 ## Invitations
 
-The `E(zoe).startInstance()` call returns an *invitation* to that `instance`.
+`E(zoe).startInstance()` returns an *invitation* to that new `instance`.
 An `invitation` is an [ERTP `payment`](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp) 
-that let its holder interact with that specific contract instance. If there
+that lets its holder interact with that specific contract instance. If there
 are ten instances of a contract running and you hold an `invitation` to, say, 
 the earliest created one, that’s the only one the `invitation` works with. 
 It doesn’t work with any of the nine later created `instances`. 
@@ -135,14 +133,14 @@ Users obtain an `invitation` to an `instance` in one (or more) of three ways:
     in most cases. You have to either already know of potential other parties, 
     for example, from past experience trading with them, or communicate 
     somewhere outside the contract to find them.
-- By the `instance` or someone with the authority to issue `invitations` for 
-it making open knowledge what’s needed to get a valid `invitation`. For example,
+- By the `instance`, or someone with the authority to issue `invitations` for 
+it, making open knowledge what’s needed to get a valid `invitation`. For example,
 an open exchange contract with an order book might welcome everyone who wants
 to participate, and so would make public how to get an `invitation` to it.
 
 `Invitations` are ERTP `payments`, so the same principles apply to them as 
 apply to other ERTP `payments`. You can send the same `payment` or `invitation` 
-to multiple parties...but when a party claims the `payment`/`invitation`, that `payment/invitations`
+to multiple parties...but when a party *claims* the `payment`/`invitation`, that `payment/invitation`
 is dead. The claimant gets a new `payment/invitation` they know was issued by the desired `issuer`, 
 and which they have exclusive access to. 
 
@@ -152,34 +150,43 @@ would work; any attempts to use that `invitation` after it’s been used fail. N
 is different from making multiple distinct `invitations` for an `instance`; that’s expected. 
 
 ## Offers
-**tyg todo: To here**
 
 Alice decides she wants to use her invite and make an *offer*. Before making an offer, an invite is all about *potentially* working with its associated contract instance. But the invite might never be used, and if so, it never actually interacts with the contract instance.
 
 Before making her offer, Alice has to do some prep work. Her offer will be *escrowed* with Zoe, so it needs to include the actual ERTP payments for the offer, and a *proposal* that defines the offer and is used to enforce both *offer safety* and *payout liveness*.  In code, it looks like:
 
 ```js
-const moola = moolaAmountMath.make;
-const simoleans = simoleanAmountMath.make;
+const quatloos100 = quatloosAmountMath.make(100);
+const moola25 = moolaAmountMath.make(25);
 
 const aliceProposal = harden({
-  give: { Asset: moola(3) },
-  want: { Price: simoleans(15) },
+  give: { Asset: quatloos100 },
+  want: { Price: moola25 },
   exit: { onDemand: null },
 })
 
-Const alicePayments = { Asset: aliceMoolaPayment }
+Const alicePayments = { Asset: aliceQuatloosPayment }
 ```
 
-`AmountMath` is an [ERTP API object ](https://agoric.com/documentation/ertp/guide/amount-math.html) whose methods manipulate asset and payment amounts. Here, Alice is setting up the ability to use the moola and simolean currencies.
+`AmountMath` is an [ERTP API object ](https://agoric.com/documentation/ertp/guide/amount-math.html) whose methods manipulate asset 
+and payment `amounts`. Here, Alice is setting up the ability to use the Quatloos and Moola currencies. Note the the `amounts` are
+just descriptions of assets, and not the actual assets. The actual assets are contained in ERTP `'purses` and `payments`, not `amounts`.
 
-She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with keywords as keys and amounts as values. `exit` is an `ExitRule` record. In the above example, Alice wants at least 15 simoleans, in exchange for giving at most 3 moola, where she can exit the offer at any time just by asking, and get her money back (or get her `want` if the offer happened to be satisfied before then).
+She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with
+keywords as keys and amounts as values. `exit` is an `ExitRule` record specifying how/when a user can exit the contract. In the above
+example, Alice wants at least 25 Moola, in exchange for giving at most 100 Quatloos, where she can exit the offer at any time just by
+asking, and get her assets back (or get her `want` value if the offer happened to be satisfied before then).
 
-The `want` and `give`values are JavaScript records, objects with property names and values. The property names of these records are the keywords in the `keywordRecord` from when you created the contract instance. The values of the records are [ERTP amounts](https://agoric.com/documentation/ertp/guide/amounts.html) of how many of the asset the user either wants or is willing to give in exchange. 
+The `want` and `give` values are JavaScript records, objects with property names and values. The property names of these records are the
+keywords in the `keywordRecord` from when you created the contract instance. The values of the records 
+are [ERTP amounts](https://agoric.com/documentation/ertp/guide/amounts.html) of how many of the asset the user either wants or
+is willing to give in exchange. 
 
-The `harden()` command is how to build a defensible API surface around an object by freezing all reachable properties. It’s similar, but not identical, to JavaScript’s `Object.freeze`. For more information on `harden`, see [here](https://www.npmjs.com/package/@agoric/harden#background-why-do-we-need-to-harden-objects)
+The `harden()` command is how to build a defensible API surface around an object by freezing all reachable properties. It’s similar,
+but not identical, to JavaScript’s `Object.freeze`. For more information on `harden`, see [here](https://www.npmjs.com/package/@agoric/harden#background-why-do-we-need-to-harden-objects)
 
-Now, Alice is ready to use her invite, proposal, and payment to make an offer and participate in the Atomic Swap instance. 
+Now, Alice is ready to use her `invitation`, `proposal`, and `payment` to make an offer and participate in the Atomic Swap
+contract `instance`. 
 
 ```js
 const { outcome, payout: alicePayoutP } = await E(zoe).offer(
@@ -188,47 +195,57 @@ const { outcome, payout: alicePayoutP } = await E(zoe).offer(
   alicePayments,
 );
 ```
-Zoe checks the invite for its validity for that contract instance. If it’s an invalid invite, the offer attempt fails, and Alice gets her refund in the payout. When she makes her offer, Alice receives an *outcome* and a *promise* that resolves to her *payout*. If the offer is valid, it's now an *active offer*.
+Zoe checks the invitation for its validity for that contract instance. If it’s an invalid invitation, the offer attempt fails, and Alice gets
+her refund in the payout. When she makes her offer, Alice receives a *promise* that resolves to her *payout*. If the
+offer is valid, it's now an *active offer*.
 
-Now, Alice needs to get someone else involved who potentially will also make an offer, hopefully one that offers what she wants for the price she’s willing to pay for it. For the Atomic Swap contract, the *outcome* from her offer resolves to an *invite* she can send to others, in this case Bob. This is specific to this Atomic Swap contract; the outcome is whatever the contract instance returns from its hook that was attached to the invite when it was created:
+Now, Alice needs to get someone else involved who potentially will also make an offer, hopefully one that offers what she wants for
+the price she’s willing to pay for it. Alice uses `zcf.makeInvitation()` to make an *invitation* she can 
+send to others, in this case Bob.
 
+`zcf.makeInvitation()` takes two required arguments and one optional:
+
+- `description`: A `String` that should include whatever information is needed for a recipient to know what they are getting in the optional `customProperties` argument
 ```js
-const newInviteP = outcome;
-const inviteIssuer = zoe.getInviteIssuer();
-const bobExclusiveInvite = await inviteIssuer.claim(newInviteP);
-const instanceHandle = await getInstanceHandle(bobExclusiveInvite);
+const bobInvitation = zcf.makeInvitation(swapOfferHandler, atomicSwapDescription)
 
-const {
-  installationHandle: bobInstallationId,
-  issuerKeywordRecord: bobIssuers,
-} = zoe.getInstance(instanceHandle);
+// Bob claims the invitation via the permanent Zoe inviteIssuer. The claim operation
+// also validates the invitation for this contract instance.
+const inviteIssuer = E(zoe).getInviteIssuer();
+const bobExclusiveInvitation = await E(inviteIssuer).claim(bobInvitation);
 ```
 
 Bob decides to make his own offer, which happens to match up with Alice’s offer (assume his payments were constructed similar to Alice’s);
 ```const bobProposal = harden({
-  want: { Asset: moola(3) },
-  give: { Price: simoleans(7) },
+  want: { Asset: quatloos100 },
+  give: { Price: moola25 },
   exit: { onDemand: null },
 })
 
 // Bob escrows with zoe and makes an offer
 const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
-  bobExclusiveInvite,
+  bobExclusiveInvitation,
   bobProposal,
   bobPayments,
 );
 ```
-Bob has also gotten back an *outcome* and a *promise* for a *payout*. His offer is also now an *active offer*.
+Bob has also gotten back a *promise* for a *payout*. His offer is also now an *active offer*.
 
 ## Satisfying and completing offers
 
-At this point, both the offers that Alice and Bob made are active and known to the contract instance. The Atomic Swap contract code determines that they are matching offers.  The contract instance calls `reallocate`, which *reallocates* the amounts which are the accounting records within Zoe. Payouts are not created here. 
+At this point, both the offers that Alice and Bob made are active and known to the contract instance. The Atomic Swap contract 
+code determines that they are matching offers.  The contract instance calls `reallocate()`, which *reallocates* the amounts which 
+are the accounting records within Zoe. Payouts are not created here. 
 
-The contract instance then *completes* the offers. A call to `zcf.complete()` with both offers as arguments, makes the payouts to the offer holders.  This takes the amounts from the account records, and withdraws the amounts specified by the offers from the digital assets escrowed within Zoe. It's only at the `complete` step that *amounts* are turned into real payments. This is when the payout *promise* resolves into payments. 
+The contract instance then *exits* the offers. **tyg todo: Not quite sure what the current implementation is here** makes the payouts to
+the offer holders.  This takes the amounts from the account records, and withdraws the offer-specified amounts from the 
+digital assets escrowed within Zoe. This is when 
+the payout *promise* resolves into payments. 
 
-The offers are now completed and no longer active. There is nothing more that can be done with them, so Zoe deletes completed offers from the contract instance.
+The offers are now exited and no longer active. There is nothing more that can be done with them, so Zoe deletes these 
+offers from the contract instance.
 
-## Auction example  **tyg todo: Done with this section**
+## Auction example  
 
 Let’s look at a more complicated example: an auction, where many users
 might make a bid offer for something, but only one bid will win the 
@@ -248,7 +265,7 @@ You win the auction, but your winning bid is only 8 Quatloos. The payout would
 resolve to both the item up for auction you get as the winning bidder and the 
 refund of the 2 extra Quatloos you escrowed in your bid. 
 
-## Other things to know about Zoe  **tyg todo: Done here, but check if should add anything else**
+## Other things to know about Zoe  
 
 A *Dapp (decentralized application)* is a combination of a Zoe contract and 
 a server that’s running the back and front ends, and a front end that may be 
@@ -263,6 +280,10 @@ see [here](https://agoric.com/documentation/distributed-programming.html#communi
 The other is the internal API object, referred to as `zcf` that each `instance` uses to
 interact with Zoe about that contract’s own offers and state (e.g., to
 do `reallocate`).
+
+Finally, there are also Zoe Helpers, functions that extract common contract code and patterns into reusable helpers.
+
+For details about all three APIs and their methods, see the [Zoe API](https://agoric.com/documentation/zoe/api/) documentation.
 
 ## Workflow summary
 
