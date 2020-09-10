@@ -3,12 +3,13 @@
 <Zoe-Version/>
 
 **Definition**: *Offer safety* means that the user is guaranteed to either
-get what they wanted or get back a full refund.
+get what they wanted or get back a full refund of what they offered.
 
 For Zoe to enforce offer safety, the user must
 give Zoe a `proposal`. This is a description of both what they want and what
 they are offering, and when and how the user can exit the contract. Zoe uses
-this last to enforce payout liveness). The exit specification is optional.
+this last to enforce payout liveness. The exit specification is optional. **tyg todo: Huh. Looking at types.js, and
+I'm not seeing a default for exit:?**
 
 For example, I want to buy an event ticket for which I offer $100. In Zoe, 
 my `proposal` is:
@@ -25,10 +26,10 @@ a proposal, payments escrowed with Zoe, and payouts received from Zoe.
 
 For example, the user escrows assets with Zoe by submitting payments
 using keywords. In this example, I would send Zoe a $100 payment to
-escrow my offer, as Zoe expects to be able to immediately escrow the payment.
+escrow my offer, as Zoe expects to be able to immediately escrow the `give:`-specified payment.
 
 After the user escrows, they get a promise for a payout from Zoe.
-This is the payout offer safety is enforced over. The payout *must*
+This is the payout that offer safety is enforced over. The payout *must*
 be either what the user wanted (an event ticket in the above example)
 or a full refund of what they escrowed ($100 in this example).
 
