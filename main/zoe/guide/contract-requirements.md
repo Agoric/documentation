@@ -13,7 +13,7 @@ code, including:
   for testing whether something is a natural number (natural numbers
   are recommended for currency-related programming in order to avoid
   rounding issues) and throwing if not.
-* @agoric/notifier: A package that provides updates through
+* [@agoric/notifier](https://www.npmjs.com/package/@agoric/zoe): A package that provides updates through
   smartly resolving promises rather than polling
 * [@agoric/zoe](https://www.npmjs.com/package/@agoric/zoe): Zoe has
   helpers that contracts can use by importing
@@ -27,8 +27,6 @@ A Zoe contract needs to be able to run under [Agoric's SES](https://github.com/A
 JavaScript code is incompatible with SES, because SES freezes the
 JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
 mutate these. 
-
---------------------------
 
 If you add this type annotation at the start of your contract code, TypeScript-aware tools
 (IDEs like vsCode and WebStorm) will warn about mismatches in parameters and return values
