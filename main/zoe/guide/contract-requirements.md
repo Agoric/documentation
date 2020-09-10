@@ -11,9 +11,8 @@ code, including:
 * [@agoric/harden](https://www.npmjs.com/package/@agoric/harden): a package for recursively deep-freezing
 * [@agoric/nat](https://www.npmjs.com/package/@agoric/nat): a package
   for testing whether something is a natural number (natural numbers
-  are recommended for currency-related programming in order to better
-  deal with rounding) and throwing if
-  not.
+  are recommended for currency-related programming in order to avoid
+  rounding issues) and throwing if not.
 * @agoric/notifier: A package that provides updates through
   smartly resolving promises rather than polling
 * [@agoric/zoe](https://www.npmjs.com/package/@agoric/zoe): Zoe has
@@ -31,16 +30,10 @@ mutate these.
 
 --------------------------
 
-**tyg todo: I think the text between the dashes is more up to date.
-But there may be aspects of the text between the %%%%%%%%%%%%%%%%%%% that is still valid. Also,
-pretty sure there should be something about what needs to be imported and/or exported; please provide.**
+If you add this type annotation at the start of your contract code, TypeScript-aware tools
+(IDEs like vsCode and WebStorm) will warn about mismatches in parameters and return values
+in calls to zcf methods.  Put this right before the start of your contract code.
 
-At the start of your contract code, you need the following.
-
-To warn if the correct return values for your contract are not being returned, put this
-right before the start of your contract code. It also lets TypeScript-aware tools (IDEs
-like vsCode and WebStorm) inform the developer about required parameters and return
-values and warn when methods are misused.
 ```js
 /**
  * @type {ContractStartFn}
@@ -60,8 +53,8 @@ export { start };
 
 The contract must return a record with any (or none) of the following:
 - `creatorFacet`: An object, usually with admin authority. It is only given to the entity
-that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current 
-contract `instance`. It creates `invitations` for other parties, and takes actions that 
+that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
+contract `instance`. It might create `invitations` for other parties, or take actions that
 are unrelated to making offers.
 - `creatorInvitation`: A Zoe `invitation` only given to the entity that 
 calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current 
@@ -71,35 +64,63 @@ such as escrowing the underlying good for sale in an auction or covered call.
 Use the `publicFacet` for general queries and actions, such as getting the current price 
 or creating public `invitations`.
 
------------------------
+The contract can contain arbitrary JavaScript code, but there are a few things you'll want
+to do in order to act as a contract, and interact with Zoe and zcf (the internal contract
+facet).
 
-%%%%%%%%%%%%%%%%%%%%%%%
+In order to allow users to make offers, the contract has to include a handler that has the
+code for what to do when the invitation is used to make an offer. This handler is passed
+to zcf.makeInvitation(), and the resulting invitation is made available (using the
+creatorFacet, the publicFacet, or whatever makes sense for the particular contract.
 
-The "main" contract file that potentially imports other files and
-packages needs to have the following structure:
+AtomicSwap, for instance, makes two invitations. The first is used to create the initial
+offer, so it defines the terms that the counterparty will respond to. The second party
+needs to make a matching offer, so there are more constraints.
 
-```js
-export const makeContract = harden(zcf => {
-  return harden({
-    invite, // required
-    publicAPI, // optional
-  });
-});
+The invitation for the first party is created with makeInvitation:
+
+``` js
+  const creatorInvitation = zcf.makeInvitation(
+    makeMatchingInvitation,
+    'firstOffer',
+  );
 ```
 
-* `zcf` is the <router-link
-  to="/zoe/api/zoe-contract-facet.html">Zoe Contract
-  Facet</router-link>.
-* `invite` must be a Zoe
-invite that will be provided to the user who instantiates the
-contract. 
-* `publicAPI` is an optional object whose methods will be
-available to anyone who knows the `instanceHandle` of the contract
-instance. `publicAPI` is a good place to put public queries (i.e.
-`getCurrentPrice` of Autoswap) and other
-requests that shouldn't require making an offer or having an invite.
+The main thing makeMatchingInvitation does is create the second invitation.
 
-%%%%%%%%%%%%%%%%%%%%%%
+``` js
+    const matchingSeatInvitation = zcf.makeInvitation(
+      matchingSeatOfferHandler,
+      'matchOffer',
+      {
+        asset: give.Asset,
+        price: want.Price,
+      },
+    );
+```
+
+The third argument (which is optional and wasn't needed for the first invitation) says
+that the counterparty has to offer an amount that matches the first party's `want.Price`,
+and should ask for the first party's `give.Asset`. The optional third argument to
+`makeInvitation()` is included so the invitation will contain the terms so the recipient
+of the invitation can rely on them.
+
+The matchingSeatOfferHandler for this very simple contract calls `swap()`, a helper for
+the simple case that each party wants what the other offered. If the terms match, Zoe
+gives each the payout they asked for, and closes out the contract. If the terms don't
+match, they each get back what they brought to the exchange, and it's still over.
+
+``` js
+    const matchingSeatOfferHandler = matchingSeat => {
+      const swapResult = swap(zcf, firstSeat, matchingSeat);
+      zcf.shutdown();
+      return swapResult;
+    };
+```
+
+If you study other contracts, you'll see that they all have this basic format. Depending
+on their goals, they may do additional bookkeeping, or try to find compatible terms
+between multiple offers, or create new assets to order.
 
 ## Making an Invitation
 
