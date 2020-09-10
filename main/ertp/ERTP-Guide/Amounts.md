@@ -2,12 +2,14 @@
 
 ## Amounts
 
-<router-link to="./assets/amount.svg">Amount methods</router-link>
-Amounts describe digital assets. There are no `amount` API methods.
+![Amount methods](./assets/amount.svg) 
+
+`Amounts` describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
 Use the `amountMath` API methods (covered in-depth 
 <router-link to="./AmountMath.html">here</router-link>)
 to get information about and otherwise manipulate an `amount` as a whole.
+`amountMath.make()` is how you make new `amounts`.
 
 `amount` has two properties:
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
@@ -24,21 +26,12 @@ assets are merged, separated, or otherwise manipulated. For example,
 you make an offer for something, which is declined. You want to change your 
 offer, represented as an `amount`, to be of a greater `value` by adding to it.
 
-
-
-**Note**: Prior to July 2020, Agoric exposed the `mathHelpers` object
-type, and users referred to the three kinds of
-`mathHelpers` and `mathHelpersName`. `mathHelpers` and its methods
-were no longer used by contract developers, their methods being
-subsumed by `amountMath` methods. References to `mathHelpersName` were
-changed to `amountMathKind` and the `mathHelpers` methods were deprecated.
-
 ## Brands
 
 ![Brand methods](./assets/brand.svg) 
 
 A `brand` object is an `amount` object's kind of digital asset, such as
-our imaginary quatloos currency or, in a game, a powerful magic
+our imaginary Quatloos currency or, in a game, a powerful magic
 sword.
 
 In ERTP, `mint` objects create new asset `payment`
@@ -76,12 +69,11 @@ return a `brand`.
     held, so this should not be trusted to identify an `issuer`
     alone. Fake digital assets and `amount`s can use the `brand` of another `issuer`.
   - ```js
-    const { quatloosIssuer, quatloosBrand } = makeIssuerKit('quatloos');
     const brand = quatloosIssuer.getBrand();
     // brand === quatloosBrand
     ```
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
-  - Return the `payment`s alleged `brand`. Because a `payment`
+  - Return the `payment`'s alleged `brand`. Because a `payment`
   is not trusted, this should be treated with suspicion and verified
   elsewhere. This example code determines if a `payment` we got from untrusted sources
   is valid. It uses the `brand` to find a `purse` we want to deposit it in, then verifies
@@ -99,7 +91,6 @@ return a `brand`.
   - Return the `brand` the `amountMath` object is using for its
   methods.
   - ```js
-    const { issuer } = makeIssuerKit('quatloos');
     const exampleAmountMath = quatloosIssuer.getAmountMath();
     const exampleBrand = exampleAmountMath.getBrand();
     ```
@@ -113,7 +104,6 @@ methods, but two `amountMath` methods use or return them.
 - <router-link to="./api/amount-math.html#amountmath-getvalue-amount">`amountMath.getValue(amount)`</router-link>
   - Return the `amount` argument's `value`
   - ```js
-    const { quatloosAmountMath } = makeIssuerKit('quatloos');
     const quatloos123 = quatloosAmountMath.make(123);
     // returns 123
     const value = quatloosAmountMath.getValue(quatloos123);
@@ -122,6 +112,5 @@ methods, but two `amountMath` methods use or return them.
   - Make an `amount`from a `value` by adding the
   `amountMath` associated `brand` to the `value`. 
   - ```js
-    const { quatloosAmountMath } = makeIssuerKit('quatloos');
     const quatloos837 = quatloosAmountMath.make(837);
     ```
