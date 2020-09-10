@@ -8,8 +8,9 @@ get what they wanted or get back a full refund of what they offered.
 For Zoe to enforce offer safety, the user must
 give Zoe a `proposal`. This is a description of both what they want and what
 they are offering, and when and how the user can exit the contract. Zoe uses
-this last to enforce payout liveness. The exit specification is optional. **tyg todo: Huh. Looking at types.js, and
-I'm not seeing a default for exit:?**
+this last to enforce payout liveness. The exit specification is optional, and
+defaults to `OnDemand`, meaning a user can exit the contract instance at their
+discretion. 
 
 For example, I want to buy an event ticket for which I offer $100. In Zoe, 
 my `proposal` is:
@@ -54,7 +55,9 @@ one is true. Both could also be true.
 
 If there are no rules or `give` is omitted, then you get a full refund
 of what you put in, fulfilling offer safety. It's just the case that
-you put in nothing, so you get back nothing. 
+you put in nothing, so you get back nothing. However, it may also be
+your lucky day; you *might* also get what you wanted, depending on whether your offer of
+nothing for it is accepted.
 
 **What if there are no rules under `want`**
 
