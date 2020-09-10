@@ -22,12 +22,12 @@ my `proposal` is:
 }
 ```
 `Asset` and `Price` are the `keywords` of a contract. Keywords
-let contract users easily refer to parts of
+let contract users easily and consistently refer to parts of
 a proposal, payments escrowed with Zoe, and payouts received from Zoe.
 
 For example, the user escrows assets with Zoe by submitting payments
 using keywords. In this example, I would send Zoe a $100 payment to
-escrow my offer, as Zoe expects to be able to immediately escrow the `give:`-specified payment.
+escrow my offer, as Zoe immediately escrows the `give:`-specified payment.
 
 After the user escrows, they get a promise for a payout from Zoe.
 This is the payout that offer safety is enforced over. The payout *must*
