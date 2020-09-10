@@ -16,13 +16,13 @@ having one gives you the right to participate in that contract `instance`, for e
 
 There are two main ways for contract users to get an `invitation`:
 - If you create the contract `instance`, you get a special creator `invitation`.
-- Someone who holds the right objects has created an `invitation` for a contract `instance` and given it to
+- Someone (possibly you) who holds the right objects has created an `invitation` for a contract `instance` and gives it to
   you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
   doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
 
 ## Proposals
 
-Proposals are objects with `give`, `want` and `exit` keys.
+Proposals are records with `give`, `want`, and `exit` keys.
 
 ```js
 const myProposal = harden({
@@ -53,7 +53,8 @@ intrinsic value. `payments` hold actual digital assets.
 
 Using the same keywords as your `proposal`, you must specify a `PaymentKeywordRecord`.
 This is a record with the keywords as keys, and `payments` containing digital assets as
-values. Zoe escrows these `payments` until the offer is completed or rejected. 
+values. Zoe escrows these `payments` on behalf of this seat until the offer is completed
+or rejected or the assets are reassigned to another seat. 
 ```js
 const paymentKeywordRecord = { 
   'Asset' : quatloosPayment, 
