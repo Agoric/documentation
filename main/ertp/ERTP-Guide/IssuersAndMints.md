@@ -1,8 +1,7 @@
 # Issuers and  Mints
 
 ## Issuers
-
-<router-link to="./assets/issuer2.svg">Issuer methods</router-link>  
+![Amount methods](./assets/issuer2.svg)
 
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
@@ -20,8 +19,8 @@ burned, or have its amount gotten.
 An `issuer` should be obtained from a trusted source and
 then relied upon as the authority as to whether an untrusted `payment`
 of the same `brand` is valid.
-
-<router-link to="./assets/issuer1.svg">Issuer methods</router-link>  
+ 
+![Amount methods](./assets/issuer1.svg)
 
 An `issuer` has 12 methods. 3 return information about an
 `issuer`, 1 creates a new `issuer`, 1 creates a new `purse`, and 7
@@ -50,11 +49,11 @@ which actually operate on their `payment` object argument.
       // Non-fungible asset, which needs an amountMath of kind 'strSet'
       const { mint: titleMint, issuer: titleIssuer, amountMath: titleAmountMath } = 
             makeIssuerKit('alamedaCountyPropertyTitle', MathKind.STRING_SET);
-	```
+      ```
 - **Get information about the issuer operations**
   - <router-link to="./api/issuer.html#issuer-getbrand">`issuer.getBrand()`</router-link>
     - Returns the `brand` the `issuer` is in a one-to-one relationship with. The `brand` is not closely
-      held, so it can be used by fake digital assets and amounts. Do
+      held, so it can be used by fake digital assets and `amounts`. Do
       not trust this method alone to identify an `brand`.
     - ```js
       import { makeIssuerKit, getBrand } from '@agoric/ertp';
@@ -64,7 +63,7 @@ which actually operate on their `payment` object argument.
       ```
   - <router-link to="./api/issuer.html#issuer-getallegedname">`issuer.getAllegedName()`</router-link>
     - Returns the `issuer`/`mint`'s
-      <router-link to="../documentation/glossary/#allegedname">`allegedName`</router-link>
+      <router-link to="../documentation/glossary/#allegedname">`allegedName`</router-link>,
 	the non-trusted human-readable name of the `issuer`'s associated `brand`.
     - ```js
       import { makeIssuerKit, getAllegedName } from '@agoric/ertp';
@@ -223,8 +222,7 @@ the right `issuer`, but aren't authoritative.
     ```
 
 ## Mints
-
-<router-link to="./assets/mint.svg">Mint methods</router-link> 
+![Mint methods](./assets/mint.svg)
 
 A `mint` issues new digital assets of its associated `brand` as a new 
 `payment` object. These assets may be currency-like (our imaginary
@@ -262,7 +260,8 @@ There are two `mint` API commands:
     it mints `newAmount` of digital assets and creates a `payment` to hold those new assets. The assets are of
     the `mint`'s associated `brand`.
     
-    **Important**: `mint.mintPayment()` is the only way to create new digital assets. There is no other way.
+    **Important**: `mint.mintPayment()` is the only way in ERTP to create new digital assets. There is no other way.
+    The Zoe Contract Facet (`zcf`) can also create a mint in Zoe that can create new digital assets.
   - ```js
     import { MathKind, makeIssuerKit, makeLocalAmountMath, mintPayment } from '@agoric/ertp';    
     const { issuer: quatloosIssuer, mint: quatloosMint} = makeIssuerKit('quatloos');
