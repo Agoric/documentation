@@ -285,8 +285,8 @@ and, if it's allowed for this seat, call `tryExit()`.
 Since anyone can attempt to exit the seat if they have a reference to it,
 you should only share a `UserSeat` with trusted parties.
 
-`UserSeat` includes queries for the current state of the
-associated offer and operation to request that the offer exit, as follows:
+`UserSeat` includes queries for the associated offer's current state
+and an operation to request that the offer exit, as follows:
 
 - `getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
@@ -315,6 +315,7 @@ associated offer and operation to request that the offer exit, as follows:
    `exit`. `give` and `want` are records with keywords as keys and
     `amounts` as values. If it is compatible with the contract, the
     contract tries to satisfy it. If not, the contract kicks the `seat` out.
+    
     Offer safety is always enforced; if kicked out, the user gets back
     what they put in. If the contract attempts to satisfy it, they either
     get what they asked for or Zoe ensures they get back their deposit.
