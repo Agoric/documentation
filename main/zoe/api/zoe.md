@@ -268,7 +268,7 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment
 };
 ```
-### UserSeat object
+## UserSeat Object
 
 Zoe uses `seats` to access or manipulate offers. They let contracts and users interact
 with them. Zoe has two kinds of seats. `ZCFSeats`
