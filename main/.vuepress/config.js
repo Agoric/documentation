@@ -194,7 +194,6 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/zoe/api/zoe',
-            '/zoe/api/records',
             '/zoe/api/zoe-contract-facet',
             '/zoe/api/zoe-helpers'
           ],
