@@ -127,7 +127,8 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
 validates user-received `invitations` to participate
-in contract instances.
+in contract instances. It has a one-to-one association with a
+`mint` devoted to minting `invitations`. 
 
 ```js
 const invitationIssuer = await zcf.getInvitationIssuer();
@@ -161,7 +162,9 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
 of an ERTP `payment`. They are in a one-to-one relationship with the `invitationIssuer`, which is used
-to validate invitations and their `amounts`.
+to validate invitations and their `amounts`. They are also in a one-to-one relationship with
+a `mint` devoted to minting new `invitations`. `zcf.makeInvitation()` serves as an interface to
+the `invitation` `mint`.
 
 The `invitation`'s
 `value` specifies:
