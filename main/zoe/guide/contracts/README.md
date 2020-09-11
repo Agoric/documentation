@@ -2,6 +2,10 @@
 
 <Zoe-Version/>
 
+::: tip Out-of-date status
+Zoe's master branch is currently an Alpha release candidate. This doc is in the process of being updated, and should be current with the release candidate in another few days. What you see here is out of date. We apologize for any inconvenience this may cause.
+:::
+
 While Zoe provides the means to build custom smart contracts, there is a good chance you will want to use one that follows a commonly-used structure. Therefore, we currently provide five pre-built contracts that can be imported and run on Zoe:
 
 - [Atomic Swap](./atomic-swap) - A basic trade of digital assets between two parties.
