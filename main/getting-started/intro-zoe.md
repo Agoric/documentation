@@ -243,7 +243,7 @@ At this point, both the offers that Alice and Bob made are active and known to t
 code determines that they are matching offers.  The contract instance calls `reallocate()`, which *reallocates* the amounts which 
 are the accounting records within Zoe. Payouts are not created yet. 
 
-The contract instance then *exits* the offers. **tyg todo: Not quite sure what the current implementation is here** makes the payouts to
+The contract instance then *exits* the offers and makes the payouts to
 the offer holders.  This takes the amounts from the account records, and withdraws the offer-specified amounts from the 
 digital assets escrowed within Zoe. This is when 
 the payout *promise* resolves into payments. 
