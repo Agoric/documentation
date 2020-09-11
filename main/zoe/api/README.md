@@ -20,5 +20,3 @@ The Zoe API is divided into the following sections:
   These Zoe methods can be called synchronously by contract code. A contract can use the Zoe Contract Facet (zcf) to do things like reallocate among offers or complete an offer.
 - [ZoeHelpers for writing contracts](./zoe-helpers.md) -
   Functions that extract common contract code and patterns into reusable helpers.
-- [Records in Zoe](./records.md) -
-  Javascript objects specific to Zoe. 
