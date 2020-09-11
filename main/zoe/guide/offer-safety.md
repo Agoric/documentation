@@ -55,8 +55,8 @@ one is true. Both could also be true.
 
 If there are no rules or `give` is omitted, then you get a full refund
 of what you put in, fulfilling offer safety. It's just the case that
-you put in nothing, so you get back nothing. However, it may also be
-your lucky day; you *might* also get what you wanted, depending on whether your offer of
+you put in nothing, so you get back nothing. However, you *might* also 
+get what you wanted, depending on whether your offer of
 nothing for it is accepted.
 
 **What if there are no rules under `want`**
