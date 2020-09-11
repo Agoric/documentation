@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/958a2c0a3dec38bdba2234934119ea2c28958262/packages/zoe/src/contracts/atomicSwap.js) (Last updated: 4/22/2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js) (Last updated: 9/12/2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 ::: tip Out-of-date status
@@ -17,119 +17,113 @@ securely trade one kind of digital asset for another kind, leveraging Zoe for
 escrow and offer safety. At no time does any user have the ability to
 behave opportunistically.
 
-In the `atomicSwap` contract, anyone can securely swap with a counterparty by escrowing digital assets with Zoe and sending an invite to the swap to the counterparty.
+In the `atomicSwap` contract, anyone can securely swap with a counterparty by escrowing digital assets with Zoe and sending an invitation to the counterparty.
 
 Let's say that Alice wants to swap with Bob as the counterparty. She
-knows that the code for the swap has already been installed, so she
-can create a swap instance from the swap installation (`handle` is the
-unique, unforgeable identifier):
+already has access to the installation of the contract, so she
+can create a swap instance:
 
 ```js
 const issuerKeywordRecord = harden({
   Asset: moolaIssuer,
   Price: simoleanIssuer,
 });
-const newInvite = await zoe.makeInstance(
-  installationHandle,
-  issuerKeywordRecord,
-);
+const { creatorInvitation } =
+  await E(zoe).startInstance(installation, issuerKeywordRecord);
 ```
 
-Then she escrows her offer with Zoe. When she escrows, she passes in
-two things, the actual ERTP payments that are part of her offer, and
-an object called `Proposal`. The `Proposal` will be used by Zoe to
-protect Alice from the smart contract and other participants. The
-`Proposal` has three parts: `give` and `want`, which is used for
-enforcing offer safety, and `exit`, which is used to enforce
-exit safety. In this case, Alice's exit rule is `onDemand`, meaning
-that she can exit at any time.
+Then she escrows her offer with Zoe. When she escrows, she passes in two
+things, the actual ERTP payments that are part of her offer, and a
+`proposal`. The proposal will be used by Zoe to protect Alice from the
+smart contract and other participants. The proposal has three parts:
+`give` and `want`, which are used for enforcing offer safety, and `exit`,
+which is used to enforce exit safety. In this case, Alice's exit rule is
+`onDemand`, meaning that she can exit at any time.
 
 ```js
-const moola = moolaAmountMath.make;
-const simoleans = simoleanAmountMath.make;
-
+const threeMoola = moolaAmountMath.make(3);
 const aliceProposal = harden({
-  give: { Asset: moola(3) },
-  want: { Price: simoleans(15) },
+  give: { Asset: threeMoola },
+  want: { Price: simoleanAmountMath.make(15) },
   exit: { onDemand: null },
-})
+});
 
-const alicePayments = { Asset: aliceMoolaPayment }
+const aliceMoola = await E(aliceMoolaPurse).withdraw(threeMoola);
+const alicePayment = { Asset: aliceMoola };
 ```
 
-In order for Alice to escrow with Zoe she needs to use her invite.
-Once Alice uses her invite and makes her offer she will receive an `outcome` and a
-promise that resolves to her payout.
+In order for Alice to escrow with Zoe she needs to use her invite.  Once
+Alice uses her invite and makes her offer she will receive a `seat`, which
+gives her access to the outcome of the offer and to her payouts.
 
 ```js
-const { outcome, payout: alicePayoutP } = await E(zoe).offer(
-  aliceInvite,
-  aliceProposal,
-  alicePayments,
-);
+const aliceSeat = await E(zoe).offer(aliceInvite, aliceProposal, alicePayments);
 ```
 
-Alice's outcome, the result of the offer, is an invite she can send to
-someone else:
+The outcome of the first offer is an invite Alice can send to Bob:
 
 ```js
-const newInviteP = outcome;
+const invitationP = aliceSeat.getOfferResult();
 ```
 
-She then sends the invite to Bob and he looks up the invite to see if it matches Alice's claims.
+She then sends the invite to Bob and he examines the invite to see if it
+matches Alice's claims.
 
 ```js
-const inviteIssuer = zoe.getInviteIssuer();
-const bobExclusiveInvite = await inviteIssuer.claim(newInviteP);
-const bobInviteValue = inviteIssuer.getAmountOf(bobExclusiveInvite)
-  .value[0];
-
 const {
-  installationHandle: bobInstallationId,
-  issuerKeywordRecord: bobIssuers,
-} = zoe.getInstance(bobInviteValue.instanceHandle);
+  installation: bobInstallationId,
+  instance,
+} = E(zoe).getInvitationDetails(invitationP);
+  const bobIssuers = E(zoe).getIssuers(instance);
 
+const bobExclusiveInvitation = await invitationIssuer.claim(invitationP);
+const bobInvitationValue = await E(zoe).getInvitationDetails(bobExclusiveInvitation);
 
 // Bob does checks
-assert(bobInstallationId === installationHandle, details`wrong installation`);
+assert(bobInstallationId === installation, details`wrong installation`);
 assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
-assert(moolaAmountMath.isEqual(bobInviteValue.asset, moola(3)), details`wrong asset`);
-assert(simoleanAmountMath.isEqual(bobInviteValue.price, simoleans(7)), details`wrong price`);
+assert(moolaAmountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
+assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
+
 ```
 
-Bob decides to be the counter-party. He also escrows his payments and uses his invite to
-make an offer in the same way as Alice, but his `Proposal` match Alice's:
+Bob decides to exercise the invitation. He escrows his payments and uses
+his invite to make an offer in the same way as Alice, but his `Proposal` is
+designed to match Alice's (notice that the `give` and `want` clauses are
+reversed from Alice's proposal):
 
 ```js
+const sevenSimoleans = simoleanAmountMath.make(7);
 const bobProposal = harden({
-  want: { Asset: moola(3) },
-  give: { Price: simoleans(7) },
+  want: { Asset: moolaAmountMath.make(3) },
+  give: { Price: sevenSimoleans },
   exit: { onDemand: null },
-})
+});
 
+const bobPayment = bobSimPurse.withdraw(sevenSimoleans);
 // Bob escrows with zoe and makes an offer
-const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
-  bobExclusiveInvite,
+const bobSeat = await E(zoe).offer(
+  bobExclusiveInvitation,
   bobProposal,
-  bobPayments,
+  harden({ Price: bobPayment }),
 );
+```
 
-
-Now that Bob has made his offer, the contract executes and Alice's
-payout resolves to a a record with keyword keys
-of ERTP payments `{ Asset: moola(0), Price: simoleans(7) }` where the
-moolaPayment is empty, and the simoleanPayment has a balance of 7.
-
-The same is true for Bob, but for his specific payout.
+Now that Bob has made his offer, the contract executes and Alice's payouts
+resolve. She can retrieve them using the seat. She deposits the moola
+payout to find out if zoe returned some of it.
 
 ```js
-const bobPayout = await bobPayoutP;
-const alicePayout = await alicePayoutP;
+const aliceAssetPayout = await aliceSeat.getPayout('Asset');
+const alicePricePayout = await aliceSeat.getPayout('Price');
+const moolaRefundAmount = aliceMoolaPurse.deposit(alicePricePayout);
+const simoleanGainAmount = aliceSimPurse.deposit(aliceAssetPayout);
+```
 
-const bobMoolaPayout = await bobPayout.Asset;
-const bobSimoleanPayout = await bobPayout.Price;
+Bob's payout is also available. Since he already knows what Alice's offer was, he doesn't have to look for a simolean refund.
 
-const aliceMoolaPayout = await alicePayout.Asset;
-const aliceSimoleanPayout = await alicePayout.Price;
+```js
+const bobAssetPayout = await bobSeat.getPayout('Asset');
+const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
 ```
