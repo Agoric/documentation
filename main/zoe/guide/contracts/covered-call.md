@@ -2,25 +2,88 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/958a2c0a3dec38bdba2234934119ea2c28958262/packages/zoe/src/contracts/coveredCall.js) (Last updated: 4/22/2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/coveredCall.js) (Last updated: 9/12/2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-::: tip Out-of-date status
-Zoe's master branch is currently an Alpha release candidate. This doc
-and its underlying contract are in the process of being updated, and should be current with the release candidate in another few days. What you see here is out of date. We apologize for any inconvenience this may cause.
-:::
+In a covered call, the owner of a digital asset sells a call option. A call
+option is the right to buy the digital asset at a certain price, called the
+strike price. The call option has an expiry date, at which point the
+contract is cancelled. It is "covered", meaning that the assets it
+describes is in the seller's possession, and the actual asset will be
+transfered when the exchange takes place.
 
-In a covered call, the owner of a digital asset sells a call option. A call option is the right to buy the digital asset at a certain price, called the strike price. The call option has an expiry date, at which point the contract is cancelled.
+In this contract, the expiry date is represented by the deadline at which
+the owner of the digital asset's offer is cancelled. Therefore, the owner
+of the digital asset's proposal must have an `exit` of "afterDeadline".
 
-In this contract, the expiry date is represented by the deadline at which the owner of the digital asset's offer is cancelled. Therefore, the owner of the digital asset's proposal `exit` must be "afterDeadline".
+The offer result from the creation of the covered call is another
+invitation that serves as the call option. The invitation includes details
+of the transaction for the benefit of the counter-party. Their assured
+presence in the invitation allows the recipient of the invitation to verify
+what has been escrowed: `{ expirationDate, timerAuthority, underlyingAsset,
+strikePrice }`.
 
-The invite that the creator of the covered call receives is the call option and has the following additional information in the value of the invite: `{ expirationDate, timerAuthority, underlyingAsset, strikePrice }`.
+## The Contract's API
+
+A call option is the right (but not the obligation) to buy digital assets
+at a pre-determined price, called the strike price. This call option is
+"covered," meaning that the invitation to accept the offer won't be issued
+until the assets have been put in escrow. This guarantees that the assets
+can be transferred without relying on the owner of the digital assets to
+keep their promise later.
+
+The call option has an expiration date, when the opportunity is
+cancelled. The owner of the digital assets cannot remove the assets from
+escrow before the expiration date.
+
+The `creatorInvitation` of this contract is an invitation to escrow the
+underlying assets. The proposal to escrow assets can have any `give` and
+`want` with any keywords. Any number of assets of different brands can be
+escrowed under different keywords. The proposal must have an exit condition
+with the key "afterDeadline":
+
+``` js
+{
+  give: { ... },
+  want: { ... },
+  exit: {afterDeadline: { deadline: time, timer: chainTimer } },
+}
+```
+
+The deadline serves as the expiration date for the covered call
+option. After this deadline, if the option has not been exercised, the
+underlying assets are automatically returned to the creator of the contract
+as a refund.
+
+After the owner of the digital assets escrows the assets in the initial
+offer, they receive a seat. The payout for this seat will either be a
+refund of the underlying assets (as mentioned above) or payments in the
+amount of the strike price. Zoe's enforcement of offer safety guarantees
+that the payout is either a refund or payments in the amount of the strike
+price, regardless of whether the contract is buggy.
+
+The offerResult of the initial seat resolves to the call option itself: an
+inspectable invitation to buy the underlying assets. The call option
+invitation has this additional information in the value: `{ expirationDate,
+timeAuthority, underlyingAssets, strikePrice }`.
+
+The invitation itself can be traded as a valuable digital asset: a
+covered call option.
+
+The recipient of a covered call option (whether received as a gift, or
+bought on an exchange or through a contract) can exercise the option before
+the deadline by using it as an invitation to this contract, paying the
+strike price and receiving the underlying assets. The recipient of a
+covered call option can use whatever keywords they wish, as long as they
+specify that they `give` the strike price as specified in the invitation
+value, and `want` the underlying assets exactly.
 
 
 ## Making A Call Option
 
 Let's say Alice wants to create a covered call. She creates the first proposal
-just like she would create the first proposal in the atomic swap.
+just like she would create the first proposal in the atomic swap. She creates an
+issuerKeywordRecord to specify the issuers to be used with each keyword.
 
 ```js
 const issuerKeywordRecord = harden({
@@ -28,93 +91,100 @@ const issuerKeywordRecord = harden({
   StrikePrice: simoleanIssuer,
 });
 
-const aliceInvite = await zoe.makeInstance(
-  coveredCallInstallationHandle,
+const { creatorInvitation } = await E(zoe).startInstance(
+  coveredCallInstallation,
   issuerKeywordRecord,
 );
-
-// Alice escrows with Zoe
-const moola = moolaAmountMath.make;
-const simoleans = simoleanAmountMath.make;
-const aliceProposal = harden({
-  give: { UnderlyingAsset: moola(3) },
-  want: { StrikePrice: simoleans(7) },
-  exit: { afterDeadline: { deadline: 1, timer } },
-});
-
-const alicePayments = { UnderlyingAsset: aliceMoolaPayment };
-
-  // Alice makes an offer and gets an option as the outcome
-const { outcome: optionP, payout: alicePayoutP } = await E(zoe).offer(
-  aliceInvite,
-  aliceProposal,
-  alicePayments,
-);
-
-const option = await optionP;
 ```
 
-This option is a full ERTP payment and can be escrowed and used in other
-contracts. For instance, if Alice is the user to makes the first
-proposal and gets the option (a Zoe invite) in return, she can send it to Bob, who can
-either exercise the call option or sell it in another contract, say, an atomic
-swap:
+Then Alice creates a proposal, and  escrows the funds she is depositing.
 
 ```js
-const inviteIssuer = zoe.getInviteIssuer();
-const bobExclOption = await inviteIssuer.claim(option);
+const threeMoola = moolaAmountMath.make(3);
+const aliceProposal = harden({
+  give: { UnderlyingAsset: threeMoola },
+  want: { StrikePrice: simoleanAmountMath.make(7) },
+  exit: { afterDeadline: { deadline: 1599856578, timer: chainTimer } },
+});
 
-// Let's imagine that Bob wants to sell the invite for the call option.
-// He can create a swap to trade this invite for bucks.
+const alicePayment = { UnderlyingAsset: aliceMoolaPurse.withdraw(threeMoola) };
+```
+
+Alice makes an offer and gets a seat.
+
+```js
+const aliceSeat = await E(zoe).offer(
+  creatorInvitation,
+  aliceProposal,
+  alicePayment,
+);
+
+const coveredCall = aliceSeat.getOfferResult()
+```
+
+The offerResult obtained from the seat is a zoe invitation that serves as the
+covered call she wants.  This invitation is a full ERTP payment and can be
+escrowed and used in other contracts. For instance, Alice can send it to Bob,
+who can either exercise the call option or sell it in another contract, say, an
+atomic swap:
+
+```js
+const invitationIssuer = E(zoe).getInvitationIssuer();
+const bobExclOption = await invitationIssuer.claim(coveredCall);
+```
+
+Let's imagine that Bob wants to sell the invitation.  He can start a swap
+instance to trade this invitation for bucks.
+
+```js
 const swapIssuerKeywordRecord = harden({
-  Asset: inviteIssuer,
+  Asset: invitationIssuer,
   Price: bucksR.issuer,
 });
-const bobSwapInvite = await zoe.makeInstance(swapInstallationId, swapIssuerKeywordRecord);
+const bobSwapSeat =
+  await E(zoe).startInstance(swapInstallation, swapIssuerKeywordRecord);
+```
+  
+Bob specifies that he wants to swap the invitation for 1 buck, and escrows
+the covered call invitation. In exchange, he gets a swap invitation he can
+share.
 
-// Bob wants to swap the invite with the same units as his
-// current invite from Alice. He wants 1 buck in return.
+```js
 const bobProposalSwap = harden({
-  give: { Asset: inviteIssuer.getAmountOf(bobExclOption) },
+  give: { Asset: invitationIssuer.getAmountOf(bobExclOption) },
   want: { Price: bucks(1) },
 });
 
 const bobPayments = harden({ Asset: bobExclOption });
+const bobSwapSeat = await E(zoe).offer(bobSwapInvitation, bobProposalSwap, bobPayments);
 
-// Bob escrows his option in the swap and gets an invite as the outcome that he can send to Dave
-const { outcome: bobSwapInviteP, payout: bobPayoutP } = await E(zoe).offer(
-  bobSwapInvite,
-  bobProposalSwap,
-  bobPayments,
-);
-
-const daveSwapInvite = await bobSwapInviteP;
+const daveSwapInvitation = bobSwapSeat.getOfferResult();
 ```
 
-Bob now has a call option, in the form of an invite, ready to sell via an atomic swap contract.
+Bob now has a call option that he can sell via an atomic swap contract.
 
 ## Buying An Option
 
-Another user, let's call him Dave, is looking to buy the option to trade his 7 simoleans for 3 moola, and is willing to pay 1 buck for the option. He is interested in Bob's swap invite so he checks that this instance matches what he wants. He can check the
-balance of the invite to see what contract it is for, and any
-contract-provided information about what the invite can be used for.
+Another user, let's call him Dave, is looking to buy the option to trade
+his 7 simoleans for 3 moola, and is willing to pay 1 buck for the
+option. He is interested in Bob's swap invitation so he checks that this
+instance matches what he wants. He can check the amount of the invitation
+to see what contract it is for, and any contract-provided information about
+what the invitation can be used for.
 
 ```js
-// Check the balance
 const {
-  value: [{ instanceHandle: swapInstanceHandle }],
-} = inviteIssuer.getAmountOf(daveSwapInvite);
-
-const {
-  installationHandle: daveSwapInstallId,
-  issuerKeywordRecord: daveSwapIssuers,
-} = zoe.getInstance(swapInstanceHandle);
+  installation: daveSwapInstall,
+  instance,
+} = await E(zoe).getInvitationDetails(daveSwapInvitation);
+const daveSwapIssuers = await E(zoe).getIssuers(instance);
 ```
 
-Dave can safely proceed with the swap because he knows that if Bob has lied about the swap then Dave's offer will be rejected and he will get a refund.
+Dave can safely proceed with the swap because he knows that if Bob has lied
+about the swap then Dave's offer will be rejected and he will get a refund.
+Dave escrows his 1 buck with Zoe and forms his proposal.
 
 ```js
-// Dave escrows his 1 buck with Zoe and forms his proposal
 const daveSwapProposal = harden({
   want: { Asset: optionAmount },
   give: { Price: bucks(1) },
@@ -122,40 +192,37 @@ const daveSwapProposal = harden({
 
 const daveSwapPayments = harden({ Price: daveBucksPayment });
 
-const { outcome, payout: daveSwapPayoutP } = await E(zoe).offer(
-  daveSwapInvite,
+const daveSwapSeat = await E(zoe).offer(
+  daveSwapInvitation,
   daveSwapProposal,
   daveSwapPayments,
 );
-
-const daveSwapPayout = await daveSwapPayoutP;
-const daveOption = await daveSwapPayout.Asset;
-const daveBucksPayout = await daveSwapPayout.Price;
 ```
 
 ## Exercising the Option
 
-Now that Dave owns the option he can exercise the option. He can
-exercise the option by submitting an offer that pays the required
-exercise price in exchange for the underlying asset:
+Now that Dave owns the covered call he can exercise it. He exercises the
+option by submitting an offer that pays the required exercise price in
+exchange for the underlying asset:
 
 ```js
+const daveOption = await daveSwapSeat.getPayout('Asset');
+
 const daveCoveredCallProposal = harden({
-  want: { UnderlyingAsset: moola(3) },
-  give: { StrikePrice: simoleans(7) },
+  want: { UnderlyingAsset: moolaAmountMath.make(3) },
+  give: { StrikePrice: simoleanAmountMath.make(7) },
 });
 
 const daveCoveredCallPayments = harden({
   StrikePrice: daveSimoleanPayment,
 });
 
-const {
-  outcome,
-  payout: daveCoveredCallPayoutP,
-} = await E(zoe).offer(
+const daveCallSeat = await E(zoe).offer(
   daveOption,
   daveCoveredCallProposal,
   daveCoveredCallPayments,
 );
 
+const simoleansForDave = await daveCallSeat.getPayout('StrikePrice');
+daveSimoleanPurse.deposit(simoleansForDave);
 ```
