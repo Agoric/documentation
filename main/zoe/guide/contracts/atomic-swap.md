@@ -29,7 +29,7 @@ const issuerKeywordRecord = harden({
   Price: simoleanIssuer,
 });
 const { creatorInvitation } =
-  await zoe.startInstance(installation, issuerKeywordRecord);
+  await E(zoe).startInstance(installation, issuerKeywordRecord);
 ```
 
 Then she escrows her offer with Zoe. When she escrows, she passes in two
@@ -48,7 +48,8 @@ const aliceProposal = harden({
   exit: { onDemand: null },
 });
 
-const alicePayment = { Asset: aliceMoolaPurse.withdraw(threeMoola) };
+const aliceMoola = await E(aliceMoolaPurse).withdraw(threeMoola);
+const alicePayment = { Asset: aliceMoola };
 ```
 
 In order for Alice to escrow with Zoe she needs to use her invite.  Once
@@ -72,17 +73,19 @@ matches Alice's claims.
 const {
   installation: bobInstallationId,
   instance,
-} = zoe.getInvitationDetails(invitationP);
-  const bobIssuers = zoe.getIssuers(instance);
+} = E(zoe).getInvitationDetails(invitationP);
+  const bobIssuers = E(zoe).getIssuers(instance);
+
+const bobExclusiveInvitation = await invitationIssuer.claim(invitationP);
+const bobInvitationValue = await E(zoe).getInvitationDetails(bobExclusiveInvitation);
 
 // Bob does checks
 assert(bobInstallationId === installation, details`wrong installation`);
 assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
-assert(moolaAmountMath.isEqual(bobInviteValue.asset, moola(3)), details`wrong asset`);
-assert(simoleanAmountMath.isEqual(bobInviteValue.price, simoleans(7)), details`wrong price`);
+assert(moolaAmountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
+assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
 
-const bobExclusiveInvite = await inviteIssuer.claim(newInviteP);
 ```
 
 Bob decides to exercise the invitation. He escrows his payments and uses
@@ -101,7 +104,7 @@ const bobProposal = harden({
 const bobPayment = bobSimPurse.withdraw(sevenSimoleans);
 // Bob escrows with zoe and makes an offer
 const bobSeat = await E(zoe).offer(
-  bobExclusiveInvite,
+  bobExclusiveInvitation,
   bobProposal,
   harden({ Price: bobPayment }),
 );
