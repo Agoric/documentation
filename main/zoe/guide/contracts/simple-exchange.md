@@ -2,80 +2,95 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/958a2c0a3dec38bdba2234934119ea2c28958262/packages/zoe/src/contracts/simpleExchange.js) (Last updated: 4/22/2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/simpleExchange.js) (Last updated: 9/12/2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-::: tip Out-of-date status
-Zoe's master branch is currently an Alpha release candidate. This doc
-and its underlying contract are in the process of being updated, and should be current with the release candidate in another few days. What you see here is out of date. We apologize for any inconvenience this may cause.
-:::
+The "simple exchange" is a very basic, un-optimized exchange. The simple
+exchange has an order book for one asset, priced in a second asset. The order
+book is naively kept as an array that is iterated over to look for matches
+every time a new order arrives.
 
-The "simple exchange" is a very basic, un-optimized exchange. The
-simple exchange has an order book for one asset, priced in a second
-asset. The order book is naively kept as an array that is iterated over
-to look for matches every time a new order arrives.
+## Contract API
 
-## Offer rules
+SimpleExchange is an exchange with a simple matching algorithm, which allows
+an unlimited number of parties to create new orders or accept existing
+orders. The notifier allows callers to find the current list of orders.
 
-The exchange accepts buy and sell limit orders only.
+The SimpleExchange uses Asset and Price as its keywords. The contract treats
+the two keywords symmetrically. New offers can be created and existing offers
+can be accepted in either direction.
 
-The Asset is treated as an exact amount to be exchanged, while the Price is a limit that may be improved on. This simple exchange does not support partial fills of orders.
+```js
+{ give: { Asset: simoleans(5) }, want: { Price: quatloos(3) } }
+{ give: { Price: quatloos(8) }, want: { Asset: simoleans(3) } }
+```
+
+The `want` term is treated as an exact amount to be exchanged, while the
+`give` term is a limit that may be improved on. This simple exchange does not
+partially fill orders.
+
+The publicFacet is returned when the contract is started.
 
 ## Instantiating the simple exchange
 
 ```js
-const simpleExchangeInvite = await zoe.makeInstance(installationHandle, {
+const { publicFacet } = await E(zoe).startInstance(installation, {
    Asset: moolaIssuer,
    Price: simoleanIssuer,
-  });
-const { instanceHandle } = inviteIssuer.getAmountOf(simpleExchangeInvite).value[0];
-const { publicAPI } = zoe.getInstance(instanceHandle);
-const aliceInvite = publicAPI.makeInvite()
+   });
+const simpleExchangeInvitation = await E(publicFacet).makeInvitation();
+const { instance } = await E(zoe).getInvitationDetails(simpleExchangeInvitation);
+const aliceInvitation = await E(publicFacet).makeInvitation();
 ```
 
 ## Adding an order
 
-A user, Alice, can escrow with zoe to create a sell order. She wants to sell 3 moola and receive at least 4 simoleans in return:
+A user, Alice, can escrow with zoe to create a sell order. She wants to sell 3
+moola and receive at least 4 simoleans in return:
 
 ```js
 const aliceSellOrderProposal = harden({
-  give: { Asset: moola(3) },
-  want: { Price: simoleans(4) },
+  give: { Asset: moolaAmountMath.make(3) },
+  want: { Price: simoleanAmountMath(4) },
   exit: { onDemand: null },
 });
 
-const alicePayments = { Asset: aliceMoolaPayment };
+const alicePayment = { Asset: aliceMoolaPayment };
+```
 
-// Alice escrows with Zoe and adds her sell order to the exchange
-const { outcome: aliceOfferResult, payout: alicePayoutP } = await E(zoe).offer(
-  aliceInvite,
+Alice escrows her payment with Zoe to add her sell order to the exchange.
+
+```js
+const aliceSeat = await E(zoe).offer(
+  aliceInvitation,
   aliceSellOrderProposal,
-  alicePayments,
+  alicePayment,
 );
-
-// Alice creates an invite for another party to participate in the exchange
-const bobInvite = publicAPI.makeInvite();
 ```
 
 ## Buying an order
 
-Let's say that Bob hears about Alice's invite and decides he wants to
-join. He will check the `installationHandle` and see that the exchange
-is trading what he
-expects:
+Let's say that Bob knows about the simple exchange, and hears about Alice's
+offer, which sounds like a good deal to him. He will check the installation
+with zoe and see that the exchange is trading what he expects:
 
 ```js
-// Bob collects information
-const inviteIssuer = zoe.getInviteIssuer();
-const bobExclusiveInvite = await inviteIssuer.claim(bobInvite);
-const { instanceHandle } = inviteIssuer.getAmountOf(bobExclusiveInvite).value[0];
+const bobInvitation = E(publicFacet).makeInvitation();
+const invitationIssuer = E(zoe).getInvitationIssuer();
+const bobExclusiveInvitation = E(invitationIssuer).claim(bobInvitation);
 const {
-  installationHandle: bobInstallationId,
-  issuerKeywordRecord: bobIssuers,
-} = zoe.getInstance(instanceHandle);
+  instance,
+  installation,
+} = await E(zoe).getInvitationDetails(bobExclusiveInvitation);
+const bobIssuers = await E(zoe).getIssuers(instance);
+```
 
-// Bob checks the information is what he expects
-assert(bobInstallationId === installationHandle, details`wrong installation`);
+Bob verifies that the information is what he expects. He can compare the
+installation he gets from the invitation with a canonical link he found in a
+public directory he trusts.
+
+```js
+assert(installation === simpleExchangeInstallation, details`wrong installation`);
 assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`);
 ```
@@ -83,35 +98,39 @@ assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`);
 Now that Bob has checked to make sure everything is in order, he proceeds to fulfill the buy order:
 
 ```js
-// Bob creates his proposal
 const bobBuyOrderProposal = harden({
-  give: { Price: simoleans(7) },
-  want: { Asset: moola(3) },
+  give: { Price: simoleanAmountMath(7) },
+  want: { Asset: moolaAmountMath.make(3) },
   exit: { onDemand: null },
 });
 
-const bobPayments = { Price: bobSimoleanPayment };
+const bobSimPayment = await E(bobSimoleanPurse).withdraw(simoleanAmountMath(7));
+onst bobPayments = { Price: bobSimPayment };
 
-// Bob escrows with zoe and adds an order to the exchange
-const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
-  bobExclusiveInvite,
+const bobSeat = await E(zoe).offer(
+  bobExclusiveInvitation,
   bobBuyOrderProposal,
   bobPayments,
 );
-
 ```
 
 ## Payout
 
-If a match is made, the payout promise that the user receives when
-they escrow with Zoe is resolved to a record of promises for payments with keyword keys:
+When a match is made, the payout promise that the user can get from their seat
+is resolved to a promises for payment.
 
 ```js
-const bobPayout = await bobPayoutP;
-const alicePayout = await alicePayoutP;
+const { Asset: bobAssetPayout, Price: bobPricePayout } = await bobSeat.getPayouts();
+const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
+const bobSimGainAmount = bobSimPurse.deposit(bobPricePayout);
+```
 
-const bobMoolaPayout = await bobPayout.Asset;
-const bobSimoleanPayout = await bobPayout.Price;
-const aliceMoolaPayout = await alicePayout.Asset;
-const aliceSimoleanPayout = await alicePayout.Price;
+And Alice gets her payouts the same way. (The choice of getPayouts() vs
+getPayout(keyword) is purely for convenience).
+
+```js
+const aliceAssetPayout = await aliceSeat.getPayout('Asset');
+const aliceMoolaGainAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
+const alicePricePayout = await aliceSeat.getPayout('Price');
+const aliceSimGainAmount = aliceSimPurse.deposit(alicePricePayout);
 ```
