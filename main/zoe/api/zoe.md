@@ -2,17 +2,17 @@
 
 <Zoe-Version/>
 
-Zoe provides a framework for deploying and working with smart contracts. It is accessed 
+Zoe provides a framework for deploying and working with smart contracts. It is accessed
 as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe has a single `invitationIssuer` for the entirety of its lifetime. By having a reference to Zoe, a user can get the `invitationIssuer` and thus validate any `invitation` they receive from someone else.
 
 ::: tip Zoe is accessed asynchronously
 The Zoe service is accessed asynchronously, using a standards-track library extension
-to JavaScript that uses promises as remote references. In code, the Zoe service instance 
-is referred to via `zoe`, which only supports asynchronous invocation. Operations are 
-invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies). 
-All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences. 
+to JavaScript that uses promises as remote references. In code, the Zoe service instance
+is referred to via `zoe`, which only supports asynchronous invocation. Operations are
+invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies).
+All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences.
 
-For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html). 
+For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html).
 :::
 
 ## E(zoe).getBrands(instance)
@@ -56,9 +56,9 @@ const issuerKeywordRecord = {
 ```
 ## E(zoe).getTerms(instance)
 - `instance` `{Instance}`
-- Returns: `{Object}` 
+- Returns: `{Object}`
 
-Returns the terms of the `instance` argument, including its `issuers`, `brands` and any 
+Returns the terms of the `instance` argument, including its `issuers`, `brands` and any
 custom terms.
 ```js
 const terms = await E(zoe).getTerms(instance);
@@ -66,9 +66,9 @@ const terms = await E(zoe).getTerms(instance);
 
 ## E(zoe).getPublicFacet(instance)
 - `instance` `{Instance}`
-- Returns: `{Promise<PublicFacet>}` 
+- Returns: `{Promise<PublicFacet>}`
 
-A contract instance's `publicFacet` is an object available via Zoe to anyone knowing that `instance`. 
+A contract instance's `publicFacet` is an object available via Zoe to anyone knowing that `instance`.
 You use it for general queries and actions, such as getting a current price or creating public invitations.
 Since a facet is defined just as any other object, the contract adds methods to the `publicFacet` just like you would
 any object.
@@ -104,15 +104,15 @@ const invitationIssuer = await E(zoe).getInvitationIssuer();
 // Bob uses the trusted `invitationIssuer` from Zoe to
 // transform the untrusted invitation to a trusted one
 const invitation = await invitationIssuer.claim(untrustedInvitation);
-const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
-        invitation);
+const { value: invitationValue } =
+    await E(invitationIssuer).getAmountOf(invitation);
 ```
 
 ## E(zoe).getInvitationDetails(invitation)
 - `invitation` `{Invitation}`
 - Returns `{Promise<Object>}`
 
-Takes an `invitation` as an argument and returns an object containing the following 
+Takes an `invitation` as an argument and returns an object containing the following
 details about the `invitation`:
 - `installation` `{Installation}`: The contract's installation in Zoe.
 - `instance` `{Instance}`: The contract instance this invitation is for.
@@ -129,13 +129,13 @@ const invitationValue = await E(zoe).getInvitationDetails(invitation);
 - Returns: `{Promise<Installation>}`
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
-Returns an `installation` object. 
+Returns an `installation` object.
 
 An `installation` is an object with one property:
 - `bundle`:  The contract source code, accessible via `bundle.source`, and other info.
 
 ```js
-// bundleSource takes source code files and 
+// bundleSource takes source code files and
 // bundles them together in the format install expects.
 import bundleSource from '@agoric/bundle-source';
 const bundle = await bundleSource(pathResolve(`./src/contract.js`));
@@ -158,12 +158,12 @@ these methods:
 ```js
 const instance = await E(zoe).getInstance(invitation);
 ```
-      
+
 ## E(zoe).getInstallation(invitation)
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Installation>}`
 
-Returns a `Promise` for the contract `installation` the `invitation`'s contract `instance` uses.
+Returns a `Promise` for the contract `installation` the `invitation`'s contract instance uses.
 
 An `installation` is an object with one property:
 - `bundle`:  The contract source code, accessible via `bundle.source`, and other info.
@@ -177,52 +177,52 @@ const installation = await E(zoe).getInstallation(invitation);
 - `terms` `{Object}`
 - Returns: `{Promise<StartInstanceResult>}`
 
-Create an `instance` of the installed smart contract (specified by 
-the `installation` argument). You must also specify the 
-instance's `issuerKeywordRecord` (as key-value pairs). and `terms` 
+Create an instance of the installed smart contract (specified by
+the `installation` argument). You must also specify the
+instance's `issuerKeywordRecord` (as key-value pairs) and `terms`
 for the contract.
 
-The `issuerKeywordRecord` is a record mapping string names (keywords) 
-to `issuers`, such as `{ Asset: quatlooIssuer}`. Keywords must begin 
-with a capital letter and must be ASCII. Parties to the contract will 
-use the keywords to index their proposal and their payments. 
+The `issuerKeywordRecord` is a record mapping string names (keywords)
+to issuers, such as `{ Asset: quatlooIssuer}`. Keywords must begin
+with a capital letter and must be ASCII. Parties to the contract will
+use the keywords to index their proposal and their payments.
 
-`terms` are values used by this contract instance, such as the 
+The `terms` are values used by this contract instance, such as the
 number of bids an auction will wait for before closing. These values may
 be different for different instances of the same contract, but the contract
-defines what variables need their values passed in as `terms`. 
+defines what variables need their values passed in as `terms`.
 
-It returns a `promise` for a `StartInstanceResult` object. The object consists of:
+It returns a promise for a `StartInstanceResult` object. The object consists of:
 - `creatorFacet` `{any}`
 - `publicFacet` `{any}`
 - `instance` `{Instance}`
 - `creatorInvitation` `{Payment | undefined}`
 
-A `publicFacet` is an object available via Zoe to anyone knowing 
-the `instance` they are associated with. The `publicFacet` is used for general queries 
-and actions, such as getting a current price or creating public invitations. Since a 
-facet is defined just as any other object, 
+A `publicFacet` is an object available via Zoe to anyone knowing
+the instance they are associated with. The `publicFacet` is used for general queries
+and actions, such as getting a current price or creating public invitations. Since a
+facet is defined just as any other object,
 the contract developer can add methods to them just like they would any object.
 
 The `creatorFacet` is only available in this return value (i.e. only when starting
-a contract instance). The contract designer 
-should use it to encapsulate things that the contract runner might not want to share, 
-or might want to control the distribution of. The party who starts the contract 
+a contract instance). The contract designer
+should use it to encapsulate things that the contract runner might not want to share,
+or might want to control the distribution of. The party who starts the contract
 should carefully consider the impact before sharing access to the `creatorFacet`.
 
-`creatorInvitation` is an invitation that the contract instance creator can use. 
-It is usually used in contracts where the creator immediately sells 
-something (auctions, swaps, etc.), so it's helpful for the creator to have 
-an invitation to escrow and sell goods. Remember that Zoe invitations are 
-represented as a `payment`.
+`creatorInvitation` is an invitation that the contract instance creator can use.
+It is usually used in contracts where the creator immediately sells
+something (auctions, swaps, etc.), so it's helpful for the creator to have
+an invitation to escrow and sell goods. Remember that Zoe invitations are
+represented as a `Payment`.
 ```js
-const issuerKeywordRecord = { 
-  'Asset': moolaIssuer, 
-  'Price': quatlooIssuer 
+const issuerKeywordRecord = {
+  'Asset': moolaIssuer,
+  'Price': quatlooIssuer
 };
 const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
-  installation, issuerKeywordRecord, terms);  
+  installation, issuerKeywordRecord, terms);
 ```
 ## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
 - `invitation` `{Invitation|Promise<Invitation>}`
@@ -230,18 +230,19 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInsta
 - `paymentKeywordRecord` `{PaymentKeywordRecord}`
 - Returns: `{Promise<UserSeat>}`
 
-Used to redeem the `invitation` provided as the first argument.
+Used to make an offer to the contract that created the `invitation` that is
+provided as the first argument.
 
-To redeem an `invitation`, a user normally provides a `proposal` (the
-rules under which they want to exercise the offer) as well as `payments` to be escrowed by Zoe.  If
+The invocation normally includes a `proposal` (the
+rules under which they want to exercise the offer) and `payments` that correspond to the `give` property of the `proposal`. The payments will be escrowed by Zoe. If
 either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
 empty record.
 
 The optional `exit`'s value should be an `exitRule`, an object with three possible keys for
 key:value pairs:
-- `waived:null`: The user can't cancel and relies entirely on the smart contract to promptly finish their offer. 
 - `onDemand:null`:  (Default) The user can cancel on demand.
+- `waived:null`: The user can't cancel and relies entirely on the smart contract to promptly finish their offer.
 - `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. The timer is a timer,
 and the `deadline` is with respect to the timer. Some example timers use Unix epoch time, while others count block height.
 
@@ -259,54 +260,46 @@ const myProposal = harden({
 `paymentKeywordRecord` is a record with keywords as keys, with
  values of the actual `payments` to be escrowed. A `payment` is
  expected for every entry under `give`.
- 
- `offer()` returns a `promise` for a `userSeat`. 
+
+ `offer()` returns a promise for a `UserSeat`.
 ```js
-const paymentKeywordRecord = { 
-  'Asset' : quatloosPayment, 
-  'Price' : moolaPayment 
+const paymentKeywordRecord = {
+  'Asset' : quatloosPayment,
+  'Price' : moolaPayment
 };
 ```
 ### UserSeat object
 
-Zoe uses `seats` to represent `offers`, and has two `seat` facets a `ZCFSeat` and a `UserSeat`.
+Zoe uses `seats` to access or manipulate offers. They let contracts and users interact
+with them. Zoe has two kinds of seats. `ZCFSeats`
+are used within contracts and with `zcf` methods. `UserSeats` represent offers external to
+Zoe and the contract. The party who exercises an invitation and sends the `offer()` message
+to Zoe gets a `UserSeat` that can check payouts' status or retrieve the result of
+processing the offer in the contract. This varies, but examples
+are a `string` and an `invitation` for another seat.
 
-`Seats` represent active `offers` and let contracts and users interact with them. `ZCFSeats` 
-are used within contracts and with `zcf.` methods. `UserSeats` represent `offers` external to 
-Zoe and the contract. The party who exercises an `invitation` and sends the `offer()` message
-to Zoe gets a `UserSeat` that can check `payouts`' status or retrieve their `offer` result.
-The result is whatever the contract chooses to return. This varies, but examples
-are a `string` and an `invitation` for another `seat`.
+Also, a `UserSeat` can be handed to an agent outside Zoe and the contract, letting
+them query or monitor the current state, access the payouts and result,
+and, if it's allowed for this seat, call `tryExit()`.
 
-Also, a `userSeat` can be handed to an agent outside Zoe and the contract, letting
-them query or monitor the current state, access the `payouts` and result,
-and, if it's allowed for this `seat`, call `tryExit()`. 
-
-Since anyone can attempt to exit the `seat` if they have a reference to it,
+Since anyone can attempt to exit the seat if they have a reference to it,
 you should only share a `UserSeat` with trusted parties.
 
-A `UserSeat` has eight methods, six of which are 'get' methods. Of these six,
-three (`getCurrentAllocation()`, `hasExited()`, `getNotifier()`) return values
-from the `seat`'s current state, one (`getProposal()`) returns a value from an
-unchanging state (i.e. You can't change the `proposal` associated with a `seat`),
-and three (`getPayouts()`, `getPayout()`, `getOfferResult()`) extract a result.
-
-Another is 
-a test that returns a `boolean`, and the last attempts an action. Note that `tryExit()` 
-only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.  
+`UserSeat` includes queries for the current state of the
+associated offer and operation to request that the offer exit, as follows:
 
 - `getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
-    contract. The value is an `amount`. 
-    
-    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. Normal    
-    reasons for exiting are the user requesting to exit or the contract explicitly chosing  
-    to close out the `seat`. The guarantees also hold if the contract encounters an error or 
-    misbehaves. There are several methods for finding out what `amount` a 
+    contract. The value is an `amount`.
+
+    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. Normal
+    reasons for exiting are the user requesting to exit or the contract explicitly chosing
+    to close out the `seat`. The guarantees also hold if the contract encounters an error or
+    misbehaves. There are several methods for finding out what `amount` a
     current `allocation` is.
-    
+
     An `Allocation` example:
     - ```js
       {
@@ -320,11 +313,11 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
     accompanying the escrow of `payments` dictating what the user expects
     to get back from Zoe. It has keys `give`, `want`, and
    `exit`. `give` and `want` are records with keywords as keys and
-    `amounts` as values. If it is compatible with the contract, the 
+    `amounts` as values. If it is compatible with the contract, the
     contract tries to satisfy it. If not, the contract kicks the `seat` out.
     Offer safety is always enforced; if kicked out, the user gets back
     what they put in. If the contract attempts to satisfy it, they either
-    get what they asked for or Zoe ensures they get back their deposit.    
+    get what they asked for or Zoe ensures they get back their deposit.
   - Example:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
@@ -346,11 +339,11 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
     the Covered Call example, it's a call option, which is an assayable `invitation`
     to buy the underlying asset. Strings and invitations are the most common things returned.
     The value is set by the returned result of  the `offerHandlers` function passed
-    as an argument to `zcf.makeInvitation()`. 
+    as an argument to `zcf.makeInvitation()`.
 - `getNotifier()`
-  - Returns: `{ Promise<Notifier> }` 
-  - You use a `notifier` wherever some piece of code has changing state that other 
-    code wants updates on. The updates can be anything the contract wants to publish. 
+  - Returns: `{ Promise<Notifier> }`
+  - You use a `notifier` wherever some piece of code has changing state that other
+    code wants updates on. The updates can be anything the contract wants to publish.
     For example, you could notify about price changes, new currency pools, etc. For
     more about `notifiers`, see our [Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html#notifiers)
 - `hasExited()`
@@ -358,11 +351,11 @@ only works if the `seat`'s `proposal` has `OnDemand` for its `exit` clause.
   - Returns `true` if the seat has exited, `false` if it is still active.
 - `tryExit()`
   - Returns `{ Void }`
-  - Note: Only works if the `seat`'s `proposal` has an `OnDemand` `exit` clause. 
+  - Note: Only works if the `seat`'s `proposal` has an `OnDemand` `exit` clause.
     Zoe's offer-safety guarantee applies no matter how a `seat`'s interaction with
-    a contract ends. Under normal 
-    circumstances, the participant might be able to call `tryExit()`, or the 
-    contract might do something explicitly. On exiting, the seat holder 
+    a contract ends. Under normal
+    circumstances, the participant might be able to call `tryExit()`, or the
+    contract might do something explicitly. On exiting, the seat holder
     gets its current `allocation` and the `seat` can no longer interact with the contract.
 
 
