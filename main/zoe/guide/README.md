@@ -11,7 +11,7 @@ formally tested or hardened. It is not yet of production quality.
 Zoe's master branch is currently an Alpha release candidate. The docs
 are in the process of being updated, and should be current with
 the release candidate in another few days. What you see here is out of
-date. We apologize for any inconvenience this may cause. 
+date. We apologize for any inconvenience this may cause.
 :::
 
 This guide assumes some knowledge of the [ERTP
@@ -85,19 +85,23 @@ Let's look at the basic `atomicSwap` contract ([full text of
 the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what happens:
-1. I make an instance of the swap contract.
-2. I escrow my three bricks with Zoe and make my offer. In return, I
-   get an invitation to join the contract instance as the matching offer, and  a
-   promise for a payout. 
-3. I make and send you an invitation to participate in this contract instance.
+1. I make an instance of the swap contract, and get an invitation to
+   participate in the contract.
+2. I make an offer through Zoe by presenting my invitation, a proposal
+   of 3 bricks for 5 wool, and a payment with the 3 bricks. Zoe escrows
+   the bricks and returns me a seat (a `UserSeat` to be precise) in the
+   contract, from which I can get the results of my offer, the payouts, etc.
+3. The result of processing my offer is an invitation for my counterparty.
+   I send you that invitation to participate in this contract instance.
 4. You inspect the invitation and verify it was created using the
    `atomicSwap` contract code.
-5. You use your invitation to escrow your offer (offering five wool for
-   three bricks) with Zoe, making a matching offer. You get
-   a promise for a payout in return.
-6. The offer matches and both of our payout promises resolve, mine to
-   the five wool that I wanted, and yours to the three bricks that you
-   wanted. Success!
+5. You use your invitation to make your offer (offering five wool for
+   three bricks) with Zoe, making a matching offer. You get your own seat
+   to with which to access your payout and offer results.
+6. The contract confirms that our offers match, and reallocates our bricks
+   and wool and exits our offers. That will resolve our respective payout
+   promises, mine to the five wool that I wanted, and yours to the three
+   bricks that you wanted. Success!
 
 ## How to write smart contracts
 
@@ -109,66 +113,55 @@ this (see the [real contract code
 here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
 
 ```js
-export const makeContract = harden(zcf => {
-  const refundOfferHook = offerHandle => {
-    zcf.complete(harden([offerHandle]));
+export const start = zcf => {
+  const refund = seat => {
+    seat.exit();
     return `The offer was accepted`;
   };
-  const makeRefundInvite = () =>
-    zcf.makeInvitation({
-      offerHook: refundOfferHook,
-      customProperties: {
-        inviteDesc: 'getRefund',
-      },
-    });
-  return {
-    invite: makeRefundInvite(),
-    publicAPI: {
-      makeInvite: makeRefundInvite,
-    },
-  });
-});
+  const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund');
+
+  const publicFacet = {
+    makeInvitation: makeRefundInvitation,
+  };
+  const creatorInvitation = makeRefundInvitation();
+  return { creatorInvitation, publicFacet };
+};
 ```
 (In a real contract, whenever we create a new object or array, we recursively
 deep-freeze it with `@agoric/harden`. You can [learn more about `harden` here](https://agoric.com/documentation/distributed-programming.html#harden).)
 
-The `automaticRefund` contract behavior is implemented in `refundOfferHook`. 
-It just tells Zoe to complete the offer, which gives the user their payout 
+The `automaticRefund` contract behavior is implemented in `refund`.
+It just tells Zoe to exit the offer, which gives the user their payout
 through Zoe.
 
-A smart contract on Zoe must export a function `makeContract` that
+A smart contract on Zoe must export a function named `start` that
 takes a single parameters: `zcf`, which is the contract-internal API
-for Zoe. The smart contract must return an
-`invite`, an invite to join the contract, which will be given to the
-user who instantiated the contract.
-
-If you want your contract to have a public API, add one via
-`zcf.initPublicAPI()`
+for Zoe. The `start` function must return an object with any of
+several optional properties:
+- `creatorInvitation`: an invitation only available to the creator of the contract instance.
+- `creatorFacet`: an object with operations made accessible only to the creator.
+- `publicFacet`: and object with operatiosn available to any client with access to the instance.
 
 ## Diving Deeper
 
 To get a better idea of the usual control flow, let's look at a more
 complex smart contract, such as the `atomicSwap` contract that we
-mentioned earlier. Someone needs to make the first offer, so let's
-make sure our user-facing API has a method for that:
+mentioned earlier. The creator needs to make the first offer, and so
+uses the `creatorInvitation` to get the first offer:
 
 ```js
-const makeFirstOfferInvite = () =>
-  inviteAnOffer({
-    offerHook: makeMatchingInvite,
-    customProperties: {
-      inviteDesc: 'firstOffer',
-    },
-    expected: {
-      give: { Asset: null },
-      want: { Price: null },
-    },
-  });
+  ...
+  const creatorInvitation = zcf.makeInvitation(
+    makeMatchingInvitation,
+    'firstOffer',
+  );
+
+  return { creatorInvitation };
 ```
 
 This is pretty similar in format to the `automaticRefund`, but there
-are a few changes. First, in this contract, we use the 
-[`inviteAnOffer` helper function](../api/zoe-helpers.html#zoehelper-inviteanoffer-options) to 
+are a few changes. First, in this contract, we use the
+[`inviteAnOffer` helper function](../api/zoe-helpers.html#assertproposalshape-seat-expected) to
 make an invite that will actually check what was
 escrowed with Zoe to see if it's the kind of offer that we want to
 accept. In this case, we only want to accept offers that have a
@@ -180,7 +173,7 @@ where `amount1` and `amount2` are amounts with the correct issuers.
 
 Also, this is a swap, so we can't immediately return a payout to the
 user who puts in the first offer; we have to wait for a valid matching
-offer. So, if we get a valid first offer, we create an invite which can 
+offer. So, if we get a valid first offer, we create an invite which can
 be shared with other parties to create a matching offer.
 
 So, how does the matching happen? We can look at another user-facing
@@ -224,9 +217,9 @@ In the `makeMatchingInvite` method we call the [`swap` helper function](../api/z
     return defaultAcceptanceMsg;
   }
 ```
-First, `swap` checks if the offer is still 
-active. If not, we reject the offer at hand. Second, if the offer 
-at hand isn't a match for the first offer, we want to reject it 
+First, `swap` checks if the offer is still
+active. If not, we reject the offer at hand. Second, if the offer
+at hand isn't a match for the first offer, we want to reject it
 for that reason as well.
 
 Once we're sure that we *do* have a matching offer, we can do the most
