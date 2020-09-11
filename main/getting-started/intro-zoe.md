@@ -88,7 +88,7 @@ from the [Introduction to ERTP](https://agoric.com/documentation/getting-started
 made up of two key:value pairs. The key names must be ASCII and capitalized; 
 they are the same names as are used in the contract code. 
 
-In this case the key name `Price` is for what is wanted, and key name `Asset` is for
+In this case the key name `Price` is for what the seller wants, and key name `Asset` is for
 what is being sold. `Price` is for what will be swapped for it (from the perspective
 of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). 
 The price is denominated in the imaginary currency Moola, so that keyword needs the 
@@ -140,9 +140,9 @@ to participate, and so would make public how to get an `invitation` to it.
 
 `Invitations` are ERTP `payments`, so the same principles apply to them as 
 apply to other ERTP `payments`. You can send the same `payment` or `invitation` 
-to multiple parties...but when a party *claims* the `payment`/`invitation`, that `payment/invitation`
-is dead. The claimant gets a new `payment/invitation` they know was issued by the desired `issuer`, 
-and which they have exclusive access to. 
+to multiple parties...but when a party *claims* the `payment`/`invitation`, 
+the other copies of the `payment/invitation` are dead. The claimant gets 
+a new `payment/invitation` they can be sure was issued by the desired `issuer`, 
 
 `Invitations` are single use objects. Once used, an `invitation` is destroyed or *burned*.
 If someone shared a valid `invitation` with many parties, only the first one to be used 
@@ -170,17 +170,11 @@ Const alicePayments = { Asset: aliceQuatloosPayment }
 
 `AmountMath` is an [ERTP API object ](https://agoric.com/documentation/ertp/guide/amount-math.html) whose methods manipulate asset 
 and payment `amounts`. Here, Alice is setting up the ability to use the Quatloos and Moola currencies. Note the the `amounts` are
-just descriptions of assets, and not the actual assets. The actual assets are contained in ERTP `'purses` and `payments`, not `amounts`.
+just descriptions of assets, and not the actual assets. The actual assets are contained in ERTP `purses` and `payments`, not `amounts`.
 
-She then creates her proposal, using an object with `give`, `want`, and `exit` (optional) properties. `give` and `want` are objects with
-keywords as keys and amounts as values. `exit` is an `ExitRule` record specifying how/when a user can exit the contract. 
-
-The `want` and `give` values in Alice's `proposal` are JavaScript records, objects with property names and values. The property names of these records are the
-keywords in the `keywordRecord` from when you created the contract instance. The values of the records 
-are [ERTP amounts](https://agoric.com/documentation/ertp/guide/amounts.html) of how many of the asset the user either wants or
-is willing to give in exchange. The optional `exit` is an `ExitRule` record specifying how/when a user can exit the contract. 
-
-In the above example, Alice wants at least 25 Moola, in exchange for giving at most 100 Quatloos, where she can exit the offer at any time just by
+She then creates her proposal, using a record with `give`, `want`, and `exit` (optional) properties. `give` and `want` are `KeywordAmount` records with
+keywords as keys and `amounts` as values. `exit` is an `ExitRule` record specifying how/when a user can exit the contract. In the above,
+Alice wants at least 25 Moola, in exchange for giving at most 100 Quatloos, where she can exit the offer at any time just by
 asking, and get her assets back (or get her `want` value if the offer happened to be satisfied before then).
 
 The `harden()` command is how we build a defensible API surface around an object by freezing all reachable properties. It’s similar,
