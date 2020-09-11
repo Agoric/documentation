@@ -223,8 +223,6 @@ the contract's `creatorInvitation`.
 The `creatorInvitation` is only available to the contract instance's creator.
 (see [`startInstance`](../api/zoe.html#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
 The creator can use it (by making an offer with it) or send it to some other party.
-**tyg todo: I think the comment below is missing a close comment? Or does it just not recognize the
-next start comment and use what was its close comment to inclusively close the outer start?**
 <!--
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
