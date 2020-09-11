@@ -12,10 +12,10 @@ object. If it doesn't have a reference, it can't.
 
 ## Creating assets with ERTP
 
-In ERTP, *mints* create *digital assets*. Access to an asset kind's
+In ERTP, *mints* create *digital assets*. Access to an asset's
 `mint` lets you create more digital assets of that kind. You can then
 store new assets in a *payment* or a *purse*. 
-- `Payments`: Assets you intend to send to someone else.
+- `Payments`: Assets you intend to move between `purses` or to other destinations..
 - `Purses`: Store assets until you withdraw them into a payment for use
 
 To send assets in ERTP:
@@ -23,14 +23,9 @@ To send assets in ERTP:
 2. Send this `payment` to a recipient object as a message.
 
 To receive assets in ERTP:
-
-**Note**: Since an empty `purse` conveys no asset rights, you create it with
-a less powerful `Issuer` instead of a `Mint`. We'll cover `issuers` a bit
-further down. 
-
-1. Get access to the *issuer* for the asset kind you'll receive.
-2. Use the `issuer` to create a `purse` for the asset kind you'll receive. 
-3. Receive the message with the `payment` and deposit the `payment` in
+1. Create a `purse` for the asset kind you'll receive. **Note:** You
+do not need access to the kind's `mint` to do this. 
+2. Receive the message with the `payment` and deposit the `payment` in
 your `purse`.
 
 ## Security properties
@@ -64,7 +59,6 @@ in a 7 Quatloo `purse` means the `payment` continues to exist and hold
 ## Issuers and mints
 
 Other key ERTP components are:
-
 - **Mints**: Make new digital assets as a new `Payment`. `Mints` only
 make one kind of asset (these can be currencies, objects for use in games, property rights, etc.
 In these docs, we use an imaginary currency, Quatloos, for our examples).
@@ -74,25 +68,26 @@ Quatloo `brand` `mint`.  Only `mints` can issue new digital assets. To mint
 new assets of a particular kind, you must have a reference to that
 kind's `mint`. 
 
-- **Issuers**: Create empty `purses`, and manipulate and operate on
- `payments`. `Issuers` are the authority on which `payments` and `purses`
- hold what digital assets.
+- **Issuers**: Create empty `purses` and manipulate and operate on
+`payments`. `Issuers` verify and move digital assets and are
+the authority on which `payments` and `purses` hold what digital assets.
 
-An `issuer`'s special admin facet is a `mint`, and that `mint` and `issuer`
-have a one-to-one relationship. With a reference to an `issuer`, you can
-check the validity of a `payment` whose asset `brand` is associated with that `issuer`;
+An `issuer`'s special admin facet is a `Mint`, and that `Mint` and `Issuer`
+have a one-to-one relationship. With a reference to an `Issuer`, you can
+check the validity of a `payment` in that `issuer`'s assets;
 i.e. If you have a reference to the Quatloos `issuer`, you can validate
 any `payment` made in Quatloos. You can also claim the `payment` either 
-as a new `payment` to yourself or a `purse` you control. 
+as a new `payment` to yourself or a `purse` you control.
 
 `Issuers` should be gotten from a trusted source
-and then relied upon as the decider of whether an untrusted `payment` is valid. 
+and then relied upon as the decider of whether an untrusted `payment` is
+valid  
 
 **Note**: There is a one-to-one correspondence between a `brand`, a
-  `mint`, and an `issuer`. In other words:
-  - A `mint` associated with a Quatloos `brand` can only create new Quatloos
+`mint`, and an `issuer`. In other words:
+- A `mint` associated with a Quatloos `brand` can only create new Quatloos
   and is the only `mint` that can create new Quatloos. 
-  - A `issuer` associated with a Quatloos `mint` can only operate on Quatloos
+- An `issuer` associated with a Quatloos `mint` can only operate on Quatloos
   asset holders. It is the only `issuer` that can operate on them. 
 
 ## Amounts
