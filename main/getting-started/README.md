@@ -1,10 +1,8 @@
 # Agoric Documentation Guide
 
-::: tip Out-of-date status
-Zoe's master branch is currently an Alpha release candidate. The docs
-are in the process of being updated, and should be current with
-the release candidate in another few days. What you see here is out of
-date. We apologize for any inconvenience this may cause. 
+::: tip Alpha status
+The Agoric platform is at the alpha stage. It has not yet been 
+formally tested or hardened. Do not use for production purposes. 
 :::
 
 Agoric provides three main types of documentation, as well as links to
