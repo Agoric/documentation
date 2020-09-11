@@ -223,36 +223,3 @@ the contract's `creatorInvitation`.
 The `creatorInvitation` is only available to the contract instance's creator.
 (see [`startInstance`](../api/zoe.html#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
 The creator can use it (by making an offer with it) or send it to some other party.
-<!--
-Smart contracts on Zoe have no access to the underlying
-digital assets, but they can ask Zoe for information on what was
-escrowed for each offer. That information is in the form of an
-`amount`, which is a branded value. For instance, in "3 bricks", "3" is
-the value, and "bricks" is the brand. ([See more about ERTP fundamentals here](../../ertp/guide/)).
-
-Because this is a swap, we want to literally swap the amounts for the
-first offer and the matching offer. That is, the user who put in the
-first offer will get what the second user put in and vice versa. `swap` makes a call to `zoe.reallocate` in order to tell Zoe about this reallocation for the two offers.
-
-Zoe checks two invariants before changing its bookkeeping. First, Zoe
-checks that offer safety holds for these offers. In other words, does
-this reallocation either give a refund or give the user what they
-wanted? Second, Zoe checks that asset supply is conserved. This means
-that we haven't lost or added any digital assets on the whole as a
-result of this reallocation.
-
-If the reallocation passes, we can tell Zoe to complete the offers and
-send out payouts with a call to `zoe.complete`. Note that we can
-reallocate without completing offers, or complete without
-reallocating, depending on the logic of the contract.
-
-More:
-
-* [How do I write a smart contract on Zoe and upload and install it?](/TODO)
-
-* [How can I build an application with my Zoe smart contract?](/TODO)
-
-* [What is the API of the contract facet for Zoe?](../api/TODO)
-
-* [What is the API of the user-facing facet for Zoe](../api/TODO)
--->
