@@ -1,5 +1,11 @@
 # ERTP Introduction
 
+::: tip Alpha status
+ALPHA. The Agoric platform is at the alpha stage.
+It has not yet been formally tested or hardened.
+Do not use for production purposes.
+:::
+
 ERTP (*Electronic Rights Transfer Protocol*) is Agoric's token
 standard for digital assets in
 JavaScript. Using ERTP, you can easily create a wide variety of digital assets,
