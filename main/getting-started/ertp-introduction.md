@@ -1,7 +1,7 @@
 # ERTP Introduction
 
 ::: tip Alpha status
-ALPHA. The Agoric platform is at the alpha stage.
+The Agoric platform is at the alpha stage.
 It has not yet been formally tested or hardened.
 Do not use for production purposes.
 :::
