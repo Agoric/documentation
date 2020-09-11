@@ -93,7 +93,7 @@ Here's a high-level overview of what happens:
    contract, from which I can get the results of my offer, the payouts, etc.
 3. The result of processing my offer is an invitation for my counterparty.
    I send you that invitation to participate in this contract instance.
-4. You inspect the invitation and verify it was created using the
+4. You inspect the invitation and verify it was created by the
    `atomicSwap` contract code.
 5. You use your invitation to make your offer (offering five wool for
    three bricks) with Zoe, making a matching offer. You get your own seat
@@ -135,96 +135,94 @@ It just tells Zoe to exit the offer, which gives the user their payout
 through Zoe.
 
 A smart contract on Zoe must export a function named `start` that
-takes a single parameters: `zcf`, which is the contract-internal API
+takes a single parameter: `zcf`, which is the contract-internal API
 for Zoe. The `start` function must return an object with any of
 several optional properties:
 - `creatorInvitation`: an invitation only available to the creator of the contract instance.
 - `creatorFacet`: an object with operations made accessible only to the creator.
-- `publicFacet`: and object with operatiosn available to any client with access to the instance.
+- `publicFacet`: and object with operations available to any client with access to the instance.
 
 ## Diving Deeper
 
-To get a better idea of the usual control flow, let's look at a more
-complex smart contract, such as the `atomicSwap` contract that we
-mentioned earlier. The creator needs to make the first offer, and so
-uses the `creatorInvitation` to get the first offer:
+With that as background, let's dive back into the `atomicSwap` contract. As with `automaticRefund`, see the [real contract code
+here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
 
-```js
-  ...
+The first thing the contract does is confirm that issuers are setup
+for the Asset and Price. Those are the two items that will be swapped.
+this uses the [`assertIssuerKeywords` helper function](../api/zoe-helpers.html#assertissuerkeywords-zcf-keywords), which checks properties of the running contract's terms (retrieved via `zcf.getTerms() in the `automaticRefund` contract).
+```javascript
+const start = zcf => {
+  assertIssuerKeywords(zcf, ['Asset', 'Price']);
+```
+
+The first handler is for the creator of the contract, and it
+will make the invitation for the other party. We will see how it
+gets wired up at the end of the contract. When the associated
+invitation is used to make an offer, this handler will be invoked
+with the seat for that offer. This contract uses the
+[`assertProposalShape` helper function](../api/zoe-helpers.html#assertproposalshape-seat-expected) to check that the offer proposes the kind of trade that the
+contract will accept. In this case, it only accepts offers that
+have a proposal of the form:
+
+> `{ give: { Asset: amount1, want: { Price: amount2 } }`"
+
+where `amount1` and `amount2` are amounts with the correct issuers.
+It then pulls out the elements of the proposal in order to later
+match them.
+
+```javascript
+  const makeMatchingInvitation = firstSeat => {
+    assertProposalShape(firstSeat, {
+      give: { Asset: null },
+      want: { Price: null },
+    });
+    const { want, give } = firstSeat.getProposal();
+```
+
+The first handler then constructs a handler for the second offer,
+with the first offer's `want` and `give` in scope. This second
+handler does the final step: use the [`swap` helper function](../api/zoe-helpers.html#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg),
+which handles a lot of the logic. Once the swap succeeds,
+it exits both seats and the contract shuts down.
+```javascript
+    const matchingSeatOfferHandler = matchingSeat => {
+      const swapResult = swap(zcf, firstSeat, matchingSeat);
+      zcf.shutdown();
+      return swapResult;
+    };
+```
+Now let's wire it up. The last step of the first handler is to
+create and return the second party's invitation, using
+`matchingSeatOfferHandler` and including custom properties
+for the expected proposal.
+```javascript
+    const matchingSeatInvitation = zcf.makeInvitation(
+      matchingSeatOfferHandler,
+      'matchOffer',
+      {
+        asset: give.Asset,
+        price: want.Price,
+      },
+    );
+    return matchingSeatInvitation;
+  };
+```
+Finally, we make the invitation for the first party, and return it as
+the `creatorInvitation` of the contract.
+```javascript
   const creatorInvitation = zcf.makeInvitation(
     makeMatchingInvitation,
     'firstOffer',
   );
-
   return { creatorInvitation };
-```
-
-This is pretty similar in format to the `automaticRefund`, but there
-are a few changes. First, in this contract, we use the
-[`inviteAnOffer` helper function](../api/zoe-helpers.html#assertproposalshape-seat-expected) to
-make an invite that will actually check what was
-escrowed with Zoe to see if it's the kind of offer that we want to
-accept. In this case, we only want to accept offers that have a
-proposal of the form:
-```js
-{ give: { Asset: amount1, want: { Price: amount2 } }
-```
-where `amount1` and `amount2` are amounts with the correct issuers.
-
-Also, this is a swap, so we can't immediately return a payout to the
-user who puts in the first offer; we have to wait for a valid matching
-offer. So, if we get a valid first offer, we create an invite which can
-be shared with other parties to create a matching offer.
-
-So, how does the matching happen? We can look at another user-facing
-method, `makeMatchingInvite`, and a helper function, `swap`:
-
-```js
-const makeMatchingInvite = firstOfferHandle => {
-  const {
-    proposal: { want, give },
-  } = zcf.getOffer(firstOfferHandle);
-  return inviteAnOffer({
-    offerHook: offerHandle => swap(firstOfferHandle, offerHandle),
-    customProperties: {
-      asset: give.Asset,
-      price: want.Price,
-      inviteDesc: 'matchOffer',
-    },
-  });
 };
 ```
-In the `makeMatchingInvite` method we call the [`swap` helper function](../api/zoe-helpers.html#zoehelper-swap-keephandle-tryhandle-keephandleinactivemsg), which handles a lot of the logic. The code for `swap` is:
+The `creatorInvitation` is only available only to the
+creator of the contract instance (see [`startInstance`](../api/zoe.html#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
+The creator can use the invitation (by making an offer with it)
+or send to some other party.
 
-```js
-  swap: (
-    keepHandle,
-    tryHandle,
-    keepHandleInactiveMsg = 'prior offer is unavailable',
-  ) => {
-    if (!zcf.isOfferActive(keepHandle)) {
-      throw helpers.rejectOffer(tryHandle, keepHandleInactiveMsg);
-    }
-    if (!helpers.canTradeWith(keepHandle, tryHandle)) {
-      throw helpers.rejectOffer(tryHandle);
-    }
-    const keepAmounts = zcf.getCurrentAllocation(keepHandle);
-    const tryAmounts = zcf.getCurrentAllocation(tryHandle);
-    // reallocate by switching the amount
-    const handles =         harden([keepHandle, tryHandle]);
-    zcf.reallocate(handles, harden([tryAmounts, keepAmounts]));
-    zcf.complete(handles);
-    return defaultAcceptanceMsg;
-  }
-```
-First, `swap` checks if the offer is still
-active. If not, we reject the offer at hand. Second, if the offer
-at hand isn't a match for the first offer, we want to reject it
-for that reason as well.
-
-Once we're sure that we *do* have a matching offer, we can do the most
-exciting part, the reallocation.
-
+<!--
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
 escrowed for each offer. That information is in the form of an
