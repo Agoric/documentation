@@ -189,7 +189,7 @@ there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`.
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
-### ZCFSeat object
+## ZCFSeat object
 
 Zoe uses `seats` to access or manipulate offers. Seats represent active
 offers and let contracts and users interact with them. Zoe has two kinds
