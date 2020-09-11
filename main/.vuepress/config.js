@@ -150,7 +150,6 @@ module.exports = {
             '/ertp/api/purse',
             '/ertp/api/payment',
             '/ertp/api/amount-math',
-            '/ertp/api/math-helpers',
           ]
         }
       ],
@@ -207,8 +206,8 @@ module.exports = {
       ],
     },
 
-    zoeVersion: 'v0.5.0',
-    zoeDocsUpdated: '4/20/2020'
+    zoeVersion: 'Alpha Release Candidate v0.8.1',
+    zoeDocsUpdated: '10-SEP-2020'
 
 
     /* --- SEARCH --- */
