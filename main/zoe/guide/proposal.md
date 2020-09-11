@@ -53,8 +53,8 @@ intrinsic value. `payments` hold actual digital assets.
 
 Using the same keywords as your `proposal`, you must specify a `PaymentKeywordRecord`.
 This is a record with the keywords as keys, and `payments` containing digital assets as
-values. Zoe escrows these `payments` on behalf of this seat until the offer is completed
-or rejected or the assets are reassigned to another seat. 
+values. Zoe escrows these `payments` on behalf of this offer until the offer is completed
+or rejected or the assets are reassigned to another offer. 
 ```js
 const paymentKeywordRecord = { 
   'Asset' : quatloosPayment, 
