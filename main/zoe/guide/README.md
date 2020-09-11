@@ -144,33 +144,36 @@ several optional properties:
 
 ## Diving Deeper
 
-With that as background, let's dive back into the `atomicSwap` contract. As with `automaticRefund`, see the [real contract code
+Let's dive back into the `atomicSwap` contract. As with `automaticRefund`, see the [real contract code
 here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
 
-The first thing the contract does is confirm that issuers are setup
-for the Asset and Price. Those are the two items that will be swapped.
-this uses the [`assertIssuerKeywords` helper function](../api/zoe-helpers.html#assertissuerkeywords-zcf-keywords), which checks properties of the running contract's terms (retrieved via `zcf.getTerms() in the `automaticRefund` contract).
+The contract first confirms that `issuers` are setup for the `Asset` and `Price` keywords. Those are the two items that will be swapped.
+
+The following uses the [`assertIssuerKeywords` helper function](../api/zoe-helpers.html#assertissuerkeywords-zcf-keywords). It
+checks properties of the running contract instance's terms. The terms were retrieved via `zcf.getTerms()`
+in the `automaticRefund` contract.
 ```javascript
 const start = zcf => {
   assertIssuerKeywords(zcf, ['Asset', 'Price']);
 ```
 
-The first handler is for the creator of the contract, and it
-will make the invitation for the other party. We will see how it
-gets wired up at the end of the contract. When the associated
-invitation is used to make an offer, this handler will be invoked
-with the seat for that offer. This contract uses the
-[`assertProposalShape` helper function](../api/zoe-helpers.html#assertproposalshape-seat-expected) to check that the offer proposes the kind of trade that the
-contract will accept. In this case, it only accepts offers that
+The first handler defined below, `makeMatchingInvitation()` is for the contract instance's creator, and it
+makes the `invitation` for the other party to use. At the end of this section, we'll see how it's incorporated into
+the contract. When the associated `invitation` is used to make an offer, `makeMatchingInvitation()` is invoked
+with the `seat` for that offer. 
+
+This contract uses the
+[`assertProposalShape` helper function](../api/zoe-helpers.html#assertproposalshape-seat-expected) to 
+check that the offer proposes the kind of trade the contract accepts. In this case, offers must
 have a proposal of the form:
+```js
+{ give: { Asset: amount1 }, want: { Price: amount2 } }
+```
+`amount1` and `amount2` are amounts with the correct issuers for the keywords.
+`assertProposalShape()` then pulls out the elements **tyg todo: Which are the elements? The amounts?** of the 
+proposal so it can later match them.
 
-> `{ give: { Asset: amount1, want: { Price: amount2 } }`"
-
-where `amount1` and `amount2` are amounts with the correct issuers.
-It then pulls out the elements of the proposal in order to later
-match them.
-
-```javascript
+```js
   const makeMatchingInvitation = firstSeat => {
     assertProposalShape(firstSeat, {
       give: { Asset: null },
@@ -179,23 +182,24 @@ match them.
     const { want, give } = firstSeat.getProposal();
 ```
 
-The first handler then constructs a handler for the second offer,
+`makeMatchingInvitation()`, our first handler, then constructs a handler for the second offer,
 with the first offer's `want` and `give` in scope. This second
-handler does the final step: use the [`swap` helper function](../api/zoe-helpers.html#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg),
-which handles a lot of the logic. Once the swap succeeds,
-it exits both seats and the contract shuts down.
-```javascript
+handler, `matchingSeatOfferHandler()` does the final step.
+It uses the [`swap` helper  function](../api/zoe-helpers.html#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg),
+a powerful Zoe Helper that handles a lot of the logic of doing a basic swap of assets.
+
+When the swap succeeds, it exits both seats and the contract shuts down. **tyg todo: Should we mention reallocation of assets between the parties?**
+```js
     const matchingSeatOfferHandler = matchingSeat => {
       const swapResult = swap(zcf, firstSeat, matchingSeat);
       zcf.shutdown();
       return swapResult;
     };
 ```
-Now let's wire it up. The last step of the first handler is to
-create and return the second party's invitation, using
-`matchingSeatOfferHandler` and including custom properties
-for the expected proposal.
-```javascript
+Now let's put it together. The last step of the first handler, `makeMatchingInvitation()`
+is to create and return the second party's invitation, using
+`matchingSeatOfferHandler()` and including custom properties for the expected proposal.  **tyg todo: Maybe "offer proposal" to reinforce the connection?**
+```js
     const matchingSeatInvitation = zcf.makeInvitation(
       matchingSeatOfferHandler,
       'matchOffer',
@@ -208,8 +212,8 @@ for the expected proposal.
   };
 ```
 Finally, we make the invitation for the first party, and return it as
-the `creatorInvitation` of the contract.
-```javascript
+the contract's `creatorInvitation`.
+```js
   const creatorInvitation = zcf.makeInvitation(
     makeMatchingInvitation,
     'firstOffer',
@@ -217,11 +221,11 @@ the `creatorInvitation` of the contract.
   return { creatorInvitation };
 };
 ```
-The `creatorInvitation` is only available only to the
-creator of the contract instance (see [`startInstance`](../api/zoe.html#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
-The creator can use the invitation (by making an offer with it)
-or send to some other party.
-
+The `creatorInvitation` is only available to the contract instance's creator.
+(see [`startInstance`](../api/zoe.html#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
+The creator can use it (by making an offer with it) or send it to some other party.
+**tyg todo: I think the comment below is missing a close comment? Or does it just not recognize the
+next start comment and use what was its close comment to inclusively close the outer start?**
 <!--
 Smart contracts on Zoe have no access to the underlying
 digital assets, but they can ask Zoe for information on what was
