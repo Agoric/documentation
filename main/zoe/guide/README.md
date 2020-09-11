@@ -170,9 +170,7 @@ have a proposal of the form:
 { give: { Asset: amount1 }, want: { Price: amount2 } }
 ```
 `amount1` and `amount2` are amounts with the correct issuers for the keywords.
-`assertProposalShape()` then pulls out the elements **tyg todo: Which are the elements? The amounts?** of the 
-proposal so it can later match them.
-
+The contract then uses `getProposal()` to extract the properties of the proposal for later matching.
 ```js
   const makeMatchingInvitation = firstSeat => {
     assertProposalShape(firstSeat, {
@@ -188,7 +186,8 @@ handler, `matchingSeatOfferHandler()` does the final step.
 It uses the [`swap` helper  function](../api/zoe-helpers.html#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg),
 a powerful Zoe Helper that handles a lot of the logic of doing a basic swap of assets.
 
-When the swap succeeds, it exits both seats and the contract shuts down. **tyg todo: Should we mention reallocation of assets between the parties?**
+If the swap succeeds, it reallocates the assets between the parties, as described above. The handler then exits 
+both seats (causing payouts to be made available to both parties) and shuts down the contract.
 ```js
     const matchingSeatOfferHandler = matchingSeat => {
       const swapResult = swap(zcf, firstSeat, matchingSeat);
@@ -198,7 +197,7 @@ When the swap succeeds, it exits both seats and the contract shuts down. **tyg t
 ```
 Now let's put it together. The last step of the first handler, `makeMatchingInvitation()`
 is to create and return the second party's invitation, using
-`matchingSeatOfferHandler()` and including custom properties for the expected proposal.  **tyg todo: Maybe "offer proposal" to reinforce the connection?**
+`matchingSeatOfferHandler` and including custom properties for the proposal of the invited offer.
 ```js
     const matchingSeatInvitation = zcf.makeInvitation(
       matchingSeatOfferHandler,
@@ -249,7 +248,6 @@ send out payouts with a call to `zoe.complete`. Note that we can
 reallocate without completing offers, or complete without
 reallocating, depending on the logic of the contract.
 
-<!--
 More:
 
 * [How do I write a smart contract on Zoe and upload and install it?](/TODO)
