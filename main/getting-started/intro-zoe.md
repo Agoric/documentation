@@ -184,18 +184,26 @@ Now, Alice is ready to use her `invitation`, `proposal`, and `payment` to make a
 contract `instance`. 
 
 ```js
-const { outcome, payout: alicePayoutP } = await E(zoe).offer(
+const userSeat = E(zoe).offer(
   aliceInvite,
   aliceProposal,
   alicePayments,
 );
+const outcome = await E(userSeat).getOfferResult();
+const payouts = await E(userSeat).getPayouts();
 ```
-Zoe checks the invitation for its validity for that contract instance. If it’s an invalid invitation, the offer attempt fails, and Alice gets
-her refund in the payout. When she makes her offer, Alice receives a *promise* that resolves to her *payout*. If the
+Zoe checks the invitation for its validity for that contract instance. When
+she makes her offer, Alice receives a (promise for) a `UserSeat` that lets
+her monitor or control her offer. This includes getting payouts or offer results,
+or exiting the offer altogether. If her offer was invalid, the
+offer attempt fails, and Alice gets her refund in the *payout*. If the
 offer is valid, it's now an *active offer*.
 
-Now, Alice needs to get someone else involved who potentially will also make an offer, hopefully one that offers what she wants for
-the price she’s willing to pay for it. Alice uses `zcf.makeInvitation()` to make an *invitation* she can 
+Now, Alice needs to get someone else involved who potentially will also
+make an offer, hopefully one that offers what she wants for
+the price she’s willing to pay for it. The *offer result* is the object
+returned by the contract when it processes an offer. In the case of
+atomicSwap, it used *zcf.makeInvitation()* to make and return an invitation Alice can
 send to others, in this case Bob.
 
 `zcf.makeInvitation()` takes two required arguments and one optional:
