@@ -51,7 +51,7 @@ moola and receive at least 4 simoleans in return:
 ```js
 const aliceSellOrderProposal = harden({
   give: { Asset: moolaAmountMath.make(3) },
-  want: { Price: simoleanAmountMath(4) },
+  want: { Price: simoleanAmountMath.make(4) },
   exit: { onDemand: null },
 });
 
@@ -99,7 +99,7 @@ Now that Bob has checked to make sure everything is in order, he proceeds to ful
 
 ```js
 const bobBuyOrderProposal = harden({
-  give: { Price: simoleanAmountMath(7) },
+  give: { Price: simoleanAmountMath.make(7) },
   want: { Asset: moolaAmountMath.make(3) },
   exit: { onDemand: null },
 });
@@ -120,9 +120,11 @@ When a match is made, the payout promise that the user can get from their seat
 is resolved to a promises for payment.
 
 ```js
-const { Asset: bobAssetPayout, Price: bobPricePayout } = await bobSeat.getPayouts();
-const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
-const bobSimGainAmount = bobSimPurse.deposit(bobPricePayout);
+const { Asset: bobAssetPayoutP, Price: bobPricePayoutP } = await bobSeat.getPayouts();
+const bobAssetPayout = await bobAssetPayoutP;
+const bobMoolaGainAmount = await E(bobMoolaPurse).deposit(bobAssetPayout);
+const bobPricePayout = await bobPricePayoutP;
+const bobSimGainAmount = await E(bobSimPurse).deposit(bobPricePayout);
 ```
 
 And Alice gets her payouts the same way. (The choice of getPayouts() vs
