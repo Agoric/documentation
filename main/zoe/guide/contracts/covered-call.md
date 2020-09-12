@@ -5,22 +5,26 @@
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/coveredCall.js) (Last updated: 9/12/2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-In a covered call, the owner of a digital asset sells a call option. A call
-option is the right to buy the digital asset at a certain price, called the
-strike price. The call option has an expiry date, at which point the
-contract is cancelled. It is "covered", meaning that the assets it
-describes is in the seller's possession, and the actual asset will be
-transfered when the exchange takes place.
+The owner of an asset can use a covered call to give someone else the right
+to buy the asset at a certain price, called the strike price. That right
+can then be treated as an asset in its own right. This contract creates
+those derivative rights, and makes it possible for someone else to tell
+what they would get if they successfully exercise that right. The call
+option has an expiry date, at which point the contract is cancelled. It is
+"covered", meaning that the assets it describes is in the seller's
+possession, and the actual asset will be transfered when the exchange takes
+place.
 
 In this contract, the expiry date is represented by the deadline at which
 the owner of the digital asset's offer is cancelled. Therefore, the owner
 of the digital asset's proposal must have an `exit` of "afterDeadline".
 
-The offer result from the creation of the covered call is another
-invitation that serves as the call option. The invitation includes details
-of the transaction for the benefit of the counter-party. Their assured
-presence in the invitation allows the recipient of the invitation to verify
-what has been escrowed: `{ expirationDate, timerAuthority, underlyingAsset,
+The party that calls `startInstance()` gets an invitation that they can use
+to deposit assets. When they do so, the offer result is another invitation
+that serves as the call option. The invitation includes details of the
+transaction for the benefit of the counter-party. Their assured presence in
+the invitation allows the recipient of the invitation to verify what has
+been escrowed: `{ expirationDate, timerAuthority, underlyingAsset,
 strikePrice }`.
 
 ## The Contract's API
@@ -161,8 +165,6 @@ const bobSwapSeat = await E(zoe).offer(bobSwapInvitation, bobProposalSwap, bobPa
 const daveSwapInvitation = bobSwapSeat.getOfferResult();
 ```
 
-Bob now has a call option that he can sell via an atomic swap contract.
-
 ## Buying An Option
 
 Another user, let's call him Dave, is looking to buy the option to trade
@@ -178,6 +180,11 @@ const {
   instance,
 } = await E(zoe).getInvitationDetails(daveSwapInvitation);
 const daveSwapIssuers = await E(zoe).getIssuers(instance);
+
+// Dave does some checks
+assert(daveSwapInstall === swapInstallation, details`wrong installation`);
+assert(daveIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
+assert(daveIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
 ```
 
 Dave can safely proceed with the swap because he knows that if Bob has lied
