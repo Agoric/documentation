@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js) (Last updated: 12-SEP-2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js) (Last updated: 2020-9-12)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 If I want to trade one kind of asset for another kind, I could send
@@ -86,8 +86,8 @@ assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), detai
 ```
 
 Bob exercises the invitation. He escrows his payments and uses
-his invitation to make an offer the same way as Alice, but his `Proposal` matches
-Alice's (note that the `give` and `want` clauses are reversed from Alice's proposal):
+his invitation to make an offer the same way as Alice, but he designs his `Proposal` 
+to match Alice's (note that the `give` and `want` clauses are reversed from Alice's proposal):
 
 ```js
 const sevenSimoleans = simoleanAmountMath.make(7);
