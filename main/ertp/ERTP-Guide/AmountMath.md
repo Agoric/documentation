@@ -11,14 +11,11 @@ uses `amountMath` methods for all these operations.
 throwing an error if the wrong `brand` was used.
 
 An `amountMath` is one of three different kinds, each of which
-implements the same methods. Which kind is 
-
-This means you have to specify which kind of`amountMath` to use
-on an `amount` of that `brand`. That 
-kind is automatically used whenever an `amountMath` method
-is used on an `amount` with that `brand`. The kinds are: 
+implements the same methods. Which kind is used for a particular `brand` depends
+on what was specified when the `brand` and its `issuer` were 
+created. The kinds are: 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
-- `MathKind.STRING_SET` (`strSet`: Used with non-fungible assets. `amount` `values` are strings.
+- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 `makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`,
@@ -33,6 +30,16 @@ makeIssuerKit('Quatloos`); // Defaults to MathKind.NAT
 makeIssuerKit('Quatloos', MathKind.STRING_SET);
 makeIssuerKit('Quatloos, MathKind.SET);
 ```
+On the other hand, if you are not writing a Zoe contract and need to
+use `amountMath`, you probably want to
+make and use a local `amountMath` whose methods will work synchronously. 
+
+`makeLocalAmountMath(issuer)` returns a promise for a local `AmountMath` 
+that works on the same `brand` as the one associated with the `issuer` argument.
+```js
+const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
+````
+
 `AmountMath` has:
 - Three information getting methods (get `brand`, `value`, and
 `amountMath` kind)
