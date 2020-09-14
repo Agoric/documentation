@@ -26,12 +26,13 @@ quantity of its digital asset.
 For example, a single `purse` can contain assets of
 5 Quatloos, but not two separated assets of 2 Quatloos and 3 Quatloos. To
 hold multiple, separated, quantities of same-branded assets you have to have multiple
-`purses`. This is similar to how, in the real world, you might have two bank accounts for dollars. One is for everyday expenses, and the other is an emergency fund.
+`purses`. This is similar to how, in the real world, you might have two bank accounts 
+for dollars. One is for everyday expenses, and the other is an emergency fund.
 
 When you deposit assets into a `purse` or `payment`, they are added to
 whatever assets already exist there. So a 3 Quatloos deposit 
 into a `purse` with 8 Quatloos, results in a `purse` with 11 Quatloos. Similarly, 
-a 6 Quatloos withdrawal from that `purse` into a new `payment` leaves the `purse` 
+then withdrawing 6 Quatloos from that `purse` into a new `payment` leaves the `purse` 
 with 5 Quatloos and the new `payment` has 6 Quatloos. 
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. To
@@ -39,7 +40,9 @@ only add part of a `payment`, you must first use `payment.split()`
 or `payment.splitMany()` to split the `payment` into two or more new `payments`.
 
 `mints` create entirely new digital assets and put them in a new `payment`. 
-You also create a `payment` by withdrawing assets from a `purse`, by splitting an existing `payment`, or by combining multiple `payments` into one new one. Note the `brand` of the new `payment` is the same as the associated `brand` of its originating `mint`, `purse` or `payment`. 
+You also create a `payment` by withdrawing assets from a `purse`, by splitting an 
+existing `payment`, or by combining multiple `payments` into one new one. Note 
+the `brand` of the new `payment` is the same as the associated `brand` of its originating `mint`, `purse` or `payment`. 
 
 You don't transfer assets directly from one `purse` to
 another `purse`. Instead, in ERTP you do something like these steps to send and receive assets. The actual send operation is up to you; ERTP does not 
@@ -93,20 +96,24 @@ Purses have four API methods:
 - [`purse.withdraw(amount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-withdraw-amount)
   - Withdraw the assets described by `amount` from this `purse` into a new
     `payment`. Returns the new `payment`.
+  - ```js
+    // Withdraw 3 Quatloos from a purse.
+    const newPayment = quatloosPurse.withdraw(quatloosAmountMath.make(3));
+    ```
 - [`purse.deposit(payment, optAmount)`](https://agoric.com/documentation/ertp/api/purse.html#purse-deposit-payment-optamount)
   - Deposit the digital asset contents of the `payment` into this `purse`,
     returning a description of the `payment` balance as an `amount`. If the optional argument
     `optAmount` does not equal the `payment` balance,  or if `payment`
     is an unresolved promise, it throws an error.
   - ```js
-    const quatloosPurse = quatloos.Issuer.makeEmptyPurse();
+    const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
     const quatloos123 = quatloosmountMath.make(123);
     // Deposit a payment for 123 quatloos into the purse. Ensure that this is the amount you expect.
     quatloosPurse.deposit(quatloosPayment, quatloos123);
     const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
-    quatloosurse.deposit(secondPayment, quatloos123);
+    quatloosPurse.deposit(secondPayment, quatloos123);
     ```
 - [`purse.getDepositFacet()`](https://agoric.com/documentation/ertp/api/purse.html#purse-makedepositfacet)
   - Returns a deposit-only facet on the `purse` that can be given
