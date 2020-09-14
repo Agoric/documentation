@@ -45,7 +45,11 @@ for one specific `brand`.
 - An `amount` is either *fungible* or *non-fungible*, as determined by which
 its `issuer`, and thus its `brand`, was created to be. 
 
-A `brand` has two associated methods:
+A `brand` has two associated methods. The following is a brief description 
+and example of each `brand` method. For more detail, click the method's name 
+to go to its entry in the [ERTP
+API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
+
 - [`brand.isMyIssuer(issuer)`](https://agoric.com/documentation/ertp/api/brand.html#brand-ismyissuer-issuer)
   - Returns `true` if the `issuer` argument matches the `issuer` associated with the `brand`.
     We have this method because the `issuer` is authoritative and the `brand` is not. You can
