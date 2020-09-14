@@ -53,26 +53,30 @@ So, using the fictional currency Quatloos, you could have an asset described as 
 where `400` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
 whose values have to be non-negative integers. 
 
-The `brand` is a very important component. Most ERTP component instances are defined to work with or on one specific `brand`.
-In fact, instances of these next three components are all in one-to-one relationships with each other and a `brand`.
+The `brand` is a very important component. Most ERTP component instances work with or on one specific `brand`.
+In fact, instances of these next three components all only work on one `brand`. Note also that their
+relationships with a `brand` are established at their creation and can never be changed. If they are 
+initially associated with Quatloos, they will always be associated with Quatloos and Quatloos only. 
  
 - **[Mint](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#mint)): 
   The only way to create digital assets of a particular `brand`. Each `brand` has
   a one to one relationship with a `mint` and vice versa. The created assets are stored in `payments`.   
 - **[Issuer](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#issuer)): 
   The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
-  is used to validate `payments` received from untrusted parties. Has a one-to-one relationship
+  is used to validate `payments` received from untrusted parties. Specifically, it validates
+  `payments` of the `brand` the `issuer` is associated with. Has a one-to-one relationship
   with both a `brand` and a `mint`. 
 - **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
-  Methods to do math operations on `amounts`. Each `brand` has its own `amountMath` in a one-to-one relationship.
+  Methods to do math operations on `amounts`. Each `brand` can be associated with many `amountMaths`,
+  but each `amountMath` is permanently associated with only one `brand`.
 
 ![ERTP object relationships](./assets/relationships1.svg) 
 
 Let's look at an example. Suppose there is the "Quatloos" `brand`. That means there is also:
-- A "Quatloos `mint`" that is the only `mint` that can create new Quatloos assets.
+- A "Quatloos `mint`" that is the only ERTP `mint` that can ever create new Quatloos assets.
 - A "Quatloos `issuer`" that is the only `issuer` that can create a new `purse` to contain Quatloos and 
   operate on a `payment` containing Quatloos.
-- A "Quatloos `amountMath`" that is the only `amountMath` whose operations work on an `amount` whose `brand` is Quatloos.
+- "Quatloos `amountMaths`" whose operations only work on an `amount` whose `brand` is Quatloos.
 
 ![ERTP object relationships 2](./assets/relationships2.svg) 
 
@@ -87,7 +91,7 @@ Similar to other component instances, a `purse` and a `payment` only work with o
 You cannot change the `brand` a `purse` or `payment` was originally associated with. Once you create a
 "Quatloos `purse`" or "Quatloos `payment`", they can never hold anything other than Quatloos.
 
-However, unlike the other components, these are not one-to-one relationships. There can be thousands or more
+However, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
 
 ## Method Naming Structure
@@ -98,16 +102,17 @@ can help you when reading code.
 - `make<Foo>()`: Creates a new Foo object and returns only that object.
 - `make<Foo>Kit()`: Creates a new Foo object as well as other things. It returns some combination of useful things, usually including the new
   Foo object. But not always; sometimes Foo is conceptual, and, for example, instead of a single object, two facets are returned.
-`create<Foo>()`: Creates a new Foo, but doesn't return it. 
-`get<Foo>()`: Returns a Foo that already existed. 
-`provide<Foo>()`: If Foo already exists, it returns it. If not, it creates a new Foo and returns that.
+- `create<Foo>()`: Creates a new Foo, but doesn't return it. 
+- `get<Foo>()`: Returns a Foo that already existed. 
+- `provide<Foo>()`: If Foo already exists, it returns it. If not, it creates a new Foo and returns that.
 
 ## Life of Assets
 
-Let's look at some asset "lifecycles". While it's very rare for an asset to be destroyed, these "lifecycles"
-show assets from their creation through common usage patterns. These are deliberately stripped down to their
-basic, core, functionality. Optional parameters and non-core operations are not shown, nor are some significant
-concepts which would make this introduction more confusing. These are covered on the component-specific pages.
+Let's look at some asset "lifecycles". While it's very rare for an asset to be destroyed, as opposed to being
+redistributed, these "lifecycles" show assets from their creation through common usage patterns. These are 
+deliberately stripped down to their basic, core, functionality. Optional parameters and non-core operations 
+are not shown, nor are some significant concepts which would make this introduction more confusing. Those 
+are covered on the component-specific pages.
 
 ### Asset creation and storage
 
@@ -120,6 +125,8 @@ First, you pass a string naming a new `brand` to
 Here it also creates a new `mint`, `amountMath`, and formal `brand` 
 for the argument, and returns all four new objects. All are in one-to-one associations with each other. 
 
+Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./AmountMath.md).
+
 In this case, you used the string 'quatloos' to name the `brand`. As good programming style, you
 included the `brand` name in the variable names where you store the new `issuer`, `mint`, `amountMath`, and `brand`.
 
@@ -127,7 +134,7 @@ included the `brand` name in the variable names where you store the new `issuer`
 const quatloosSeven = quatloosAmountMath.make(7);;
 ```
 Here you use the Quatloos `amountMath` to make a new `amount` description of the asset you want to create.
-Since `amountMath` objects are always one-to-one associated with a `brand`, in this case Quatloos, you 
+Since `amountMath` objects are always associated with a single `brand`, in this case Quatloos, you 
 only have to specify what you want for the `value` of the new `amount`, in this case `7`.
 
 This returns an `amount` description stored in `quatloosSeven`. Remember, an `amount` is only a description
@@ -136,12 +143,15 @@ of an asset, not an asset itself. `quatloosSeven` has no worth or intrinsic valu
 ```js
 const quatloosPayment = quatloosMint.mintPayment(quatloosSeven);
 ```
-This creates a new asset of 7 Quatloos. It's returned as a `payment`, so you want a place to store it.
+This mints a new asset of 7 Quatloos. In this case, since it's a `mint` operation, you are creating
+a new digital asset of 7 Quatloos. It's returned as a `payment`, so you want a place to store it for 
+the longer term. 
 ```js
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 quatloosPurse.deposit(quatloosPayment);
 ```
-For long term storage, we prefer using a `purse`. First you create a new empty `purse` for Quatloos using
+For long term storage, we prefer using a `purse`. `payments` are generally used to transfer assets rather than
+hold them for extended periods. First you create a new empty `purse` for Quatloos using
 the Quatloos associated `issuer`. Then you deposit the `payment` into the `purse`. When this happens,
 the `payment` is automatically *burned*, such that it no longer exists, and the 7 Quatloos are now resident
 in the `purse`. If you'd used an existing `purse` that contained, say, 17 Quatloos, these 7 would have been
@@ -260,27 +270,29 @@ an `amount` describing the asset of 5 Quatloos I'm willing to trade for your swo
 5 Quatloos; that only happens when we agree on the trade terms and I send you a `payment` of 5 Quatloos, the
 actual asset.
 
-Some analogies may be helpful in understanding this:
+If you reject my offer, I can change it so that the `amount` I specify is for 10 Quatloos. I haven't added actual 
+assets of 5 Quatloos to what I send you, only the description of assets in the offer I'm making for the sword.
+
+An analogy may be helpful in understanding this:
 
 - Let's say Caltech replicates its [famous hack of the Rose Bowl scoreboard](https://www.admissions.caltech.edu/pranks).
 But this time, instead of changing the team names, they change the score display from 14-7 to 0-21. This does not change
 the actual game score (the "asset"); that's part of the game itself and based on record keeping of what's happened
 during the game. The score on the scoreboard is just a description of the game's "asset", post-hack an incorrect one.
-- A typo in the Wall Street Journal's stock listings results in Google stock being shown as having closed the
-previous day at 15 dollars per share rather than the correct 1507 dollars. This does not cause Google stock to be valued at
-15; it's not the actual asset, but a description of its value (again, in this case, an incorrect one).
 
 Making a new `amount` does not create any new assets. Nor does adding two `amounts`; since an `amount` is immutable, the
 addition just creates a new `amount` while the original two still exist. Since an `amount` is just a description of an 
 asset, it's the same as how you can't create a new ten dollar
 bill by drawing one; a new one has to be minted (printed) by an authorized government-run facility with its asset status
-derived from its government backing. Similarly, new assets in ERTP are created by using 
-a `mint` to create a new `payment` that contains a newly created asset. 
+derived from its government backing. Similarly, `mints` create new assets in ERTP 
+by creating a new `payment` that contains a newly created asset. 
 
 So an `amount` just describes an asset along the two axes of how many and
 what units it's in (`value` and `brand`). They're used as a way of negotiating
 with parties that doesn't involve sending/sharing the actual asset
-until a deal is made. In other words, I don't make you an offer that I'll swap you a ticket to *Hamilton* for $300
+until a deal is made. 
+
+In other words, I don't make you an offer that I'll swap you a ticket to *Hamilton* for $300
 by sending you an actual ticket any more than you sent me $300 before finding out what I'd give you for it. Instead, 
 I make you an offer by sending you a written description
 of what I'm willing to swap ("I will swap a *Hamilton* ticket for $300"). If the offer is accepted, then I send you the actual asset, 
@@ -288,7 +300,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP implements [*object capabilities*](https://agoric.com/documentation/glossary/#object-capabilities). You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual object that is a `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
+ERTP implements [*object capabilities*](https://agoric.com/documentation/glossary/#object-capabilities). You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 
 ## Security properties
@@ -301,7 +313,7 @@ If everything passes the checks, the asset moves from
 the `payment` to the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
-- The `payment` is deleted from its `issuer`'s records and no longer has any assets associated with it.
+- The `payment` is deleted from its `issuer`'s records and no longer has any assets associated with it. It is *burned*.
 - Its `issuer` no longer recognizes that `payment`.
 - The `purse` contains all digital assets that were in the `payment`.
 
@@ -320,6 +332,3 @@ Several ERTP methods are *asynchronous* and instead of immediately returning the
 JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see either:
 - [javascript.info](https://javascript.info/async)
 - [Mozilla's Developer Docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
-
-**tyg todo: Could use beefing up about how and when Promises, async, and await are
-  actually used in contracts**
