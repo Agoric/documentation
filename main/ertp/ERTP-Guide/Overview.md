@@ -84,7 +84,7 @@ We've already mentioned our final two components:
 - **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): An
   object for holding digital assets of a specific `brand`.
 - **[Payment](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
-  An object for transfering digital assets of a specific `brand` to another party.
+  An object for transferring digital assets of a specific `brand` to another party.
   
 Similar to other component instances, a `purse` and a `payment` only work with one
 `brand`. So a `purse` or `payment` that holds Quatloos cannot hold an asset of `brand` Moola or vice versa. 
@@ -253,7 +253,7 @@ const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount => agoricThea
 ```
 First you define an `amount` description for each ticket you want to issue. 
 
-Then you use your `mint` for the approprirate `brand` to create an asset for each ticket. Each ticket asset
+Then you use your `mint` for the appropriate `brand` to create an asset for each ticket. Each ticket asset
 is a separate `payment`. You can transfer and deposit a non-fungible asset `payment` just like a fungible one.
 
 ## Amounts are not assets
