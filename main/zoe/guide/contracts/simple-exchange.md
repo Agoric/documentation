@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/simpleExchange.js) (Last updated: 12-SEP-2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/simpleExchange.js) (Last updated: 2020-9-12)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The "simple exchange" is a very basic, un-optimized exchange. It
@@ -24,8 +24,14 @@ accepted in either direction.
 { give: { Asset: simoleans(5) }, want: { Price: quatloos(3) } }
 { give: { Price: quatloos(8) }, want: { Asset: simoleans(3) } }
 ```
+Note: Here we used a shorthand for assets whose values are 5 simoleons, 3 
+quatloos, 8 quatloos, and 3 simoleons. Elsewhere this might have been done 
+by creating `amounts` inline (i.e. `quatloosAmountMath.make(8)`). Or by
+creating `amounts` outside the proposal and assigning them to variables.
+For example, `const quatloos8 = quatloosAmountMath.make(8);` and then using
+`quatloos8` as the value for `Price` in the second clause above.
 
-The `want` term is an exact amount to exchang, while the
+The `want` term is an exact amount to exchange, while the
 `give` term is a limit that may be improved on. This simple exchange does not
 partially fill orders.
 
@@ -116,7 +122,7 @@ const bobSeat = await E(zoe).offer(
 
 ## Payout
 
-When a match is made, the payout promise in a user's seat
+When a match is made, the payout promise from a user's seat
 resolves to a promise for payment. For Bob:
 
 ```js
@@ -126,9 +132,8 @@ const bobMoolaGainAmount = await E(bobMoolaPurse).deposit(bobAssetPayout);
 const bobPricePayout = await bobPricePayoutP;
 const bobSimGainAmount = await E(bobSimPurse).deposit(bobPricePayout);
 ```
-
-Alice gets her payouts the same way. (The choice of `getPayouts()` vs
-`getPayout(keyword)` is purely for convenience).
+Alice gets her payouts the same way. (The choice between `getPayouts()` and
+`getPayout(keyword)` is based on which is more convenient in each circumstance).
 
 ```js
 const aliceAssetPayout = await aliceSeat.getPayout('Asset');
