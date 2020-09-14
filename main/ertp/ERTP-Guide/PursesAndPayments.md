@@ -81,7 +81,9 @@ deposit facet object, you should tell them what assets `brand` it accepts.
 
 ![Purse methods](./assets/purse.svg)  
 
-Purses have four API methods:
+Purses have four API methods. The following is a brief description and example of each `purse` method. For
+more detail, click the method's name to go to its entry in the [ERTP
+API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - [`purse.getCurrentAmount()`](https://agoric.com/documentation/ertp/api/purse.html#purse-getcurrentamount)
   - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
   - ```js
@@ -170,7 +172,10 @@ To convert a `payment` into a new `purse`:
 3. Deposit the `payment` into the new `purse`. `purse.deposit(payment)` burns the `payment`.
 
 `Payments` have only one API method, but many methods for other ERTP components
-have `payments` as arguments and effectively operate on a `payment`.
+have `payments` as arguments and effectively operate on a `payment`. The following is a 
+brief description and example of each `payment`-related method. For
+more detail, click the method's name to go to its entry in the [ERTP
+API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
   `payment` purports to be. Since a `payment` is not trusted, this result should be   
