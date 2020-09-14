@@ -74,7 +74,7 @@ const {
   installation: bobInstallationId,
   instance,
 } = E(zoe).getInvitationDetails(invitationP);
-  const bobIssuers = E(zoe).getIssuers(instance);
+const bobIssuers = E(zoe).getIssuers(instance);
 
 const bobExclusiveInvitation = await invitationIssuer.claim(invitationP);
 const bobInvitationValue = await E(zoe).getInvitationDetails(bobExclusiveInvitation);
