@@ -22,5 +22,6 @@ pre-built contracts that can be imported and run on Zoe:
   of second price auctions), therefore, <b>it should not be used in production.</b>
 - [Simple Exchange](./simple-exchange) - A basic exchange with an order book for one asset,
   priced in a second asset.
+- [Barter Exchange](./barter-exchange) - An exchange with an order book that allows all kinds of goods to be offered for explicit barter swaps.
 
 If you want to build your own smart contract, start with the [Zoe API](../../api/README.md)
