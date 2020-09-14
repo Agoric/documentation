@@ -1,7 +1,7 @@
 # Issuers and  Mints
 
 ## Issuers
-![Amount methods](./assets/issuer2.svg)
+![Issuer structure](./assets/issuer2.svg)
 
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
@@ -20,11 +20,14 @@ An `issuer` should be obtained from a trusted source and
 then relied upon as the authority as to whether an untrusted `payment`
 of the same `brand` is valid.
  
-![Amount methods](./assets/issuer1.svg)
+![Issuer methods](./assets/issuer1.svg)
 
 An `issuer` has 12 methods. 3 return information about an
 `issuer`, 1 creates a new `issuer`, 1 creates a new `purse`, and 7
-which actually operate on their `payment` object argument.
+which actually operate on their `payment` object argument. The following is
+a brief description and example of each `Issuer` method. For
+more detail, click the method's name to go to its entry in the [ERTP
+API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 
 - **Create issuer operation**
   - <router-link to="./api/issuer.html#makeissuerkit-allegedname-mathhelpername">`makeIssuerKit(allegedName, amountMathKind)`</router-link>
@@ -245,7 +248,8 @@ So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos 
 **tyg todo: We should have information on how one
 creates/establishes a mint, and connects them to our `mint` objects both for our  currencies and for ones we've pegged from elsewhere. Who'd be good for getting info  on this from?"**  **Kate response: I think the concept of connecting a mint to "mint objects" is a wrong idea. Calling makeIssuerKit is what creates/establishes a mint, and that is it.**  **Tom response: Let me rephase the question. I'm about to write my first two contracts. One of them uses my personal digital currency, "tygs", over which I have control. How do I go about incorporating tygs into the contract/Agoric such that a contract transaction using tygs is the same as my doing a tygs using transaction outside of Agoric. In other words, I want to use "real" tygs, how do I get them into Agoric such that I can mint new ones, such that there's a valid issuer in the contract for them, etc.? For the other contract, I want to let people use an existing digital currency I don't control, say Bitcoin. Other than by the pegging method Pegasus did for the hackathon, how do I create/link Bitcoin within an Agoric contract? I just don't know of anywhere we explain how to set up "real currencies/digital rights" in our sandbox, as opposed to making up quatloos or similar that really don't have any value.**
 
-There are two `mint` API commands:
+There are two `mint` API commands. Click the method's name to go to its entry in the [ERTP
+API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - [`mint.getIssuer()`](https://agoric.com/documentation/ertp/api/mint.html#mint-getissuer)
   - Returns the `issuer` uniquely associated with the `mint`.
   - ```js
