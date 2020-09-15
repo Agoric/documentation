@@ -26,9 +26,9 @@ association with the new `issuer`. It defaults to `nat`.
 
 For example: 
 ```js
-makeIssuerKit('Quatloos`); // Defaults to MathKind.NAT
+makeIssuerKit('Quatloos'); // Defaults to MathKind.NAT
 makeIssuerKit('Quatloos', MathKind.STRING_SET);
-makeIssuerKit('Quatloos, MathKind.SET);
+makeIssuerKit('Quatloos', MathKind.SET);
 ```
 On the other hand, if you are not writing a Zoe contract and need to
 use `amountMath`, you probably want to
