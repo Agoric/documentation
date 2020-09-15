@@ -9,8 +9,13 @@ Instead, an `amount` has two properties, `value` and `brand` with their own API 
 Use the `amountMath` API methods (covered in-depth 
 <router-link to="./AmountMath.html">here</router-link>)
 to get information about and otherwise manipulate an `amount` as a whole.
-`amountMath.make()` is how you make new `amounts`.
+`amountMath.make()` is generally how you make new `amounts`.
 
+However, you can also make an `amount` as an object literal by making a record of
+a `brand` and a `value`. While `amountMath.make()` is recommended for proper object-oriented programming (it also checks the `brand`'s validity), this produces the same result:
+```js
+const newAmount = { brand: quatloosBrand, value: 5 }
+```
 `amount` has two properties:
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
@@ -55,7 +60,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
     We have this method because the `issuer` is authoritative and the `brand` is not. You can
     create a `payment`, `purse`, or `amount` with a `brand` that claims a particular `issuer`,
     without that `issuer` having been involved. But if you use that `payment` or `purse`, it won't be 
-    accepted by genuine ones. So to know, you have to verify with the `issuer` to see if it agrees
+    accepted by genuine ones. So to know, you have to verify with the `issuer` to see if it agrees.
   - ```js
     const isIssuer = brand.isMyIssuer(issuer);
     ```
@@ -86,8 +91,7 @@ return a `brand`.
     function depositSomewhere(payment) {
       const allegedBrand = payment.getAllegedBrand();
       const probablyAppropriatePurse = brandToPurse.get(allegedBrand);
-      if (allegedBrand === probablyAppropriatePurse.getAllegedBrand()) {
-         probablyAppropriatePurse.deposit(payment);
+      const depositAmount = probablyAppropriatePurse.deposit(payment);
       }
     }  
     ```
