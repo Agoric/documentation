@@ -1,6 +1,6 @@
 # ERTP Guide
 
-[ERTP](https://agoric.com/documentation/glossary/#ertp) (*Electronic
+ERTP (*Electronic
 Rights Transfer Protocol*)
 is Agoric's token standard for transferring tokens and other digital assets in
 JavaScript. Using the
@@ -31,21 +31,21 @@ theatre tickets. But someone wanting to buy even a General Admission ticket from
 for a specific date and time. This might also affect the price; you'll want to charge more
 for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
 
-## Components Overview
+## ERTP Concepts Overview
 
 There are eight fundamental ERTP components, two of which are parts of
 another, and one which is used by that same component. For each entry,
 the name is linked to its primary page in this Guide. 
 
 Asset descriptions have two parts:
- - **[Value](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#value)):  An
+ - **[Value](./Amounts.md)**:  An
   asset's size. You can think of this as the answer to the questions "how many?" or "how much?" about
   an asset.
- - **[Brand](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#brand)): An
+ - **[Brand](./Amounts.md)**: An
   asset's kind. You can think of this as the answer to the question "What is it?" about an asset.
   
-These are combined into:
-- **[Amount](./Amounts.md)** ([glossary](https://agoric.com/documentation/glossary/#amount)):
+These two make up:
+- **[Amount](./Amounts.md)**:
   Consists of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
   as it has no economic scarcity or economic value.
   
@@ -53,20 +53,20 @@ So, using the fictional currency Quatloos, you could have an asset described as 
 where `400` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
 whose values have to be non-negative integers. 
 
-The `brand` is a very important component. Most ERTP component instances work with or on one specific `brand`.
+The `brand` is a very important component. Most ERTP objects work with or on one specific `brand`.
 In fact, instances of these next three components all only work on one `brand`. Note also that their
 relationships with a `brand` are established at their creation and can never be changed. If they are 
 initially associated with Quatloos, they will always be associated with Quatloos and Quatloos only. 
  
-- **[Mint](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#mint)): 
+- **[Mint](./IssuersAndMints.md)**: 
   The only way to create digital assets of a particular `brand`. Each `brand` has
   a one to one relationship with a `mint` and vice versa. The created assets are stored in `payments`.   
-- **[Issuer](./IssuersAndMints.md)** ([glossary](https://agoric.com/documentation/glossary/#issuer)): 
+- **[Issuer](./IssuersAndMints.md)**: 
   The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
   is used to validate `payments` received from untrusted parties. Specifically, it validates
   `payments` of the `brand` the `issuer` is associated with. Has a one-to-one relationship
   with both a `brand` and a `mint`. 
-- **[AmountMath](./AmountMath.md)** ([glossary](https://agoric.com/documentation/glossary/#amountmath)):
+- **[AmountMath](./AmountMath.md)**:
   Methods to do math operations on `amounts`. Each `brand` can be associated with many `amountMaths`,
   but each `amountMath` is permanently associated with only one `brand`.
 
@@ -81,9 +81,9 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 ![ERTP object relationships 2](./assets/relationships2.svg) 
 
 We've already mentioned our final two components:
-- **[Purse](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#purse)): An
+- **[Purse](./PursesAndPayments.md)**: An
   object for holding digital assets of a specific `brand`.
-- **[Payment](./PursesAndPayments.md)** ([glossary](https://agoric.com/documentation/glossary/#payment)):
+- **[Payment](./PursesAndPayments.md)**:
   An object for transferring digital assets of a specific `brand` to another party.
   
 Similar to other component instances, a `purse` and a `payment` only work with one
@@ -103,13 +103,13 @@ can help you when reading code.
 - `make<Foo>Kit()`: Creates a new Foo object as well as other things. It returns some combination of useful things, usually including the new
   Foo object. But not always; sometimes Foo is conceptual, and, for example, instead of a single object, two facets are returned.
 - `create<Foo>()`: Creates a new Foo, but doesn't return it. 
-- `get<Foo>()`: Returns a Foo that already existed. 
+- `get<Foo>()`: Returns a Foo that already exists. 
 - `provide<Foo>()`: If Foo already exists, it returns it. If not, it creates a new Foo and returns that.
 
 ## Life of Assets
 
-Let's look at some asset "lifecycles". While it's very rare for an asset to be destroyed, as opposed to being
-redistributed, these "lifecycles" show assets from their creation through common usage patterns. These are 
+Let's look at some asset operation lifecycles. While it's very rare for an asset to be destroyed, as opposed to being
+redistributed, these lifecycles show assets from their creation through common usage patterns. These are 
 deliberately stripped down to their basic, core, functionality. Optional parameters and non-core operations 
 are not shown, nor are some significant concepts which would make this introduction more confusing. Those 
 are covered on the component-specific pages.
@@ -123,7 +123,8 @@ const { quatloosIssuer, quatloosMint, quatloosAmountMath, quatloosBrand } = make
 First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
 Here it also creates a new `mint`, `amountMath`, and formal `brand` 
-for the argument, and returns all four new objects. All are in one-to-one associations with each other. 
+for the argument, and returns all four new objects. The `mint`, `issuer`, and `brand` 
+are in one-to-one associations with each other. 
 
 Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./AmountMath.md).
 
@@ -153,7 +154,7 @@ quatloosPurse.deposit(quatloosPayment);
 For long term storage, we prefer using a `purse`. `payments` are generally used to transfer assets rather than
 hold them for extended periods. First you create a new empty `purse` for Quatloos using
 the Quatloos associated `issuer`. Then you deposit the `payment` into the `purse`. When this happens,
-the `payment` is automatically *burned*, such that it no longer exists, and the 7 Quatloos are now resident
+the `payment` is automatically deleted and the 7 Quatloos are now resident
 in the `purse`. If you'd used an existing `purse` that contained, say, 17 Quatloos, these 7 would have been
 added to them so the `purse` balance would be 24 Quatloos. 
 
@@ -186,7 +187,7 @@ assets to its `purse` but cannot either make a withdrawal from the `purse` or ge
 being able to send money to a friend via their email address; you can't then take money out
 of your friend's accounts or find out how much is in them.
 ```js
-Const aliceQuatloosDepositFacet = 
+const aliceQuatloosDepositFacet = 
       await E(board).getValue(aliceQuatloosDepositFacetBoardId);
 E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
 ```
@@ -203,7 +204,7 @@ which gives you the reference to that deposit facet. You then just tell the face
 of 5 Quatloos. 
 
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
-in it, and the 5 Quatloos `payment` burned when the transfer happened. 
+in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
 
 The [`E()` notation](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e)
 is a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
@@ -233,23 +234,29 @@ const ticketValues = Array(1114).fill().map((_, i) => ({
 }))
 ```
 To create tickets, you first create JavaScript objects that each represent a ticket.
-Then, since only units can be minted, you create units from the JavaScript objects and then
-mint the tickets. In this case, you're making tickets for one performance of *Hamilton*.
+Then, because you need to specify the amount of digital assets to be minted, 
+you can use `amountMath` to make an amount. In this case, you're making tickets
+for one performance of *Hamilton*.
 ```js
-const { mint: agoricTheatreTicketMint, agoricTheatreAmountMath: agoricTheatreTicketAmountMath } = makeIssuerKit('Agoric Theater tickets', 'set');
+const { 
+    mint: agoricTheatreTicketMint, 
+    amountMath: agoricTheatreTicketAmountMath 
+ } = makeIssuerKit('Agoric Theater tickets', MathKind.SET);
 ```
 As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
 The difference from when you created the fungible asset is that you have to use a second argument,
-in this case `set`.
+in this case `MathKind.SET`.
 
 There are three kinds of `amountMath`. Each kind polymorphicly implements the same set of methods. 
-- `nat`: Works with natural number `value` and fungible assets. Default value for `makeIssuerKit()`.
-- `strSet`: Used with non-fungible assets, operates on an array of string identifiers
-- `set`: Used with non-fungible assets, operates on an array of records (objects) with keys and values
+- `MathKind.NAT`: Works with natural number `value` and fungible assets. Default value for `makeIssuerKit()`.
+- `MathKind.STRING_SET`: Used with non-fungible assets, operates on an array of string identifiers
+- `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values
 
 ```js
-const ticketAmounts = ticketValues.map(ticketValue => agoricTheatreTicketAmountMath.make(ticketValue));
-const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount => agoricTheatreTicketMint.mintPayment(ticketAmount))
+const ticketAmounts = ticketValues.map(ticketValue =>
+      agoricTheatreTicketAmountMath.make(ticketValue));
+const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount =>
+      agoricTheatreTicketMint.mintPayment(ticketAmount))
 ```
 First you define an `amount` description for each ticket you want to issue. 
 
@@ -273,13 +280,6 @@ actual asset.
 If you reject my offer, I can change it so that the `amount` I specify is for 10 Quatloos. I haven't added actual 
 assets of 5 Quatloos to what I send you, only the description of assets in the offer I'm making for the sword.
 
-An analogy may be helpful in understanding this:
-
-- Let's say Caltech replicates its [famous hack of the Rose Bowl scoreboard](https://www.admissions.caltech.edu/pranks).
-But this time, instead of changing the team names, they change the score display from 14-7 to 0-21. This does not change
-the actual game score (the "asset"); that's part of the game itself and based on record keeping of what's happened
-during the game. The score on the scoreboard is just a description of the game's "asset", post-hack an incorrect one.
-
 Making a new `amount` does not create any new assets. Nor does adding two `amounts`; since an `amount` is immutable, the
 addition just creates a new `amount` while the original two still exist. Since an `amount` is just a description of an 
 asset, it's the same as how you can't create a new ten dollar
@@ -300,7 +300,9 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP implements [*object capabilities*](https://agoric.com/documentation/glossary/#object-capabilities). You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
+ERTP uses [*object capabilities*](https://agoric.com/documentation/glossary/#object-capabilities). 
+You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
+mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 
 ## Security properties
@@ -313,7 +315,7 @@ If everything passes the checks, the asset moves from
 the `payment` to the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
-- The `payment` is deleted from its `issuer`'s records and no longer has any assets associated with it. It is *burned*.
+- The `payment` is deleted from its `issuer`'s records and no longer has any assets associated with it.
 - Its `issuer` no longer recognizes that `payment`.
 - The `purse` contains all digital assets that were in the `payment`.
 
