@@ -104,7 +104,15 @@ module.exports = {
           sideBarDepth: 3,
           children: [
           ]
-         },      
+         }, 
+         {
+          title: 'Agoric Alpha',
+          path: '/getting-started/alpha.html',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+         },       
          {
           title: 'Agoric CLI Guide',
           path: '/getting-started/agoric-cli-guide.html',
