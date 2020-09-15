@@ -7,27 +7,23 @@ Digital assets can be any of:
 
 In ERTP, digital assets exist in either a `purse` or a `payment`:
 - **[`purse`](https://agoric.com/documentation/glossary/#purse)**: Holds
-  a quantity of same-branded digital assets until part or
+  an amount of same-branded digital assets until part or
   all of them are withdrawn into a `payment`. A new `purse` is created
   by an `issuer` and can only hold assets of that `issuer`'s `brand`. 
 - **[`payment`](https://agoric.com/documentation/glossary/#payment)**:
   Holds a quantity of same-branded digital assets to transfer to another party. 
   A new `payment` is created either with new assets by a `mint` or by 
   withdrawing assets from a `purse`. It can only hold assets of the same `brand` as
-  that `mint` or `purse`. .
+  that `mint` or `purse`.
 
 For any `brand`, any number of `purses` or `payments` can hold assets
 of that `brand`. Neither a `purse` nor a `payment` can ever change their
 associated `brand`.
 
-Each non-empty `purse` and `payment` object contains exactly one
-quantity of its digital asset. 
-
-For example, a single `purse` can contain assets of
-5 Quatloos, but not two separated assets of 2 Quatloos and 3 Quatloos. To
-hold multiple, separated, quantities of same-branded assets you have to have multiple
-`purses`. This is similar to how, in the real world, you might have two bank accounts 
-for dollars. One is for everyday expenses, and the other is an emergency fund.
+Each `purse` and `payment` object contains a specific single amount of digital assets, which may be none at all (`empty` in amountMath terms). In the same way 
+you might have separate bank accounts for different purposes, 
+you can have different purses for the same brand of digital asset. 
+One purse might hold 2 Quatloos and another purse might hold 3 Quatloos. 
 
 When you deposit assets into a `purse` or `payment`, they are added to
 whatever assets already exist there. So a 3 Quatloos deposit 
@@ -81,7 +77,7 @@ deposit facet object, you should tell them what assets `brand` it accepts.
 
 ![Purse methods](./assets/purse.svg)  
 
-Purses have four API methods. The following is a brief description and example of each `purse` method. For
+The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - [`purse.getCurrentAmount()`](https://agoric.com/documentation/ertp/api/purse.html#purse-getcurrentamount)
@@ -150,7 +146,7 @@ In other words, if you create a `payment` containing
 10 Quatloos or it will be deleted from its `issuer` records and no
 longer have any value. While a `payment` can be either combined with others or
 split into multiple `payments`, in both cases the original `payment(s)`
-is/are burned and the results put in one or more new `payments`.
+is/are deleted and the results put in one or more new `payments`.
 
 A `payment` can be deposited in purses, split into multiple 
 `payments`, combined with other `payments`, and claimed (getting an exclusive `payment` and revoking access from anyone else). 
@@ -169,7 +165,7 @@ that the `issuer` they give you is valid.
 To convert a `payment` into a new `purse`:
 1. Get the `payment`'s trusted `issuer`.
 2. Use the `issuer` to create an empty `purse` for that `brand`.
-3. Deposit the `payment` into the new `purse`. `purse.deposit(payment)` burns the `payment`.
+3. Deposit the `payment` into the new `purse`. `purse.deposit(payment)` deletes the `payment`.
 
 `Payments` have only one API method, but many methods for other ERTP components
 have `payments` as arguments and effectively operate on a `payment`. The following is a 
@@ -179,16 +175,16 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - [`payment.getAllegedBrand()`](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
   `payment` purports to be. Since a `payment` is not trusted, this result should be   
-   treated with suspicion. Either verify the value before holding on to it, or check 
+   treated with suspicion. Either verify the value, or check 
    the result when you use it. Any successful operation by 
    the `issuer` for that `brand` done on the `payment` verifies the `payment`.
 
 Other objects' `payment`-related methods:
 
 - [`issuer.getAmountOf(payment)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-getamountof-payment)
-  - Get a description of a `payment` balance as an `amount`. The `payment` itself is not trusted,
-    so you must use the `issuer` method associated with its `brand` to be sure of getting the
-    true value. 
+  - Get the amount of digital assets in the `payment` as an `amount`. 
+    The `payment` itself is not trusted, so you must use the `issuer` method associated
+    with its `brand` to be sure of getting the true value. 
     ```js
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount with 100 value `quatloos` brand
@@ -205,8 +201,11 @@ Other objects' `payment`-related methods:
     ```
 - [`issuer.claim(payment, optAmount)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-claim-payment-optamount)
   - Transfer all assets from the `payment` to a returned new `payment`
-    and burn the original. No other references to the argument `payment` survive, so 
-    the new `payment` is the exclusive one. If `optAmount` is
+    and delete the original from the `issuer`'s records. Any references to the old
+    `payment` outside the `issuer` will still exist, but if anyone attempts to use the
+    old `paymen`t, an error is thrown.  
+    
+    If `optAmount` is
     present, the `payment` balance must be equal to it or it throws
     an error. If `payment` is a promise, the operation proceeds after it resolves. 
   - ```js
@@ -233,9 +232,8 @@ Other objects' `payment`-related methods:
     left of the original `payment` after subtracting A is B's value. 
     If `paymentAmountA` has a larger `value` than `payment`, it throws an error.
     
-    The `payment`
-    argument is burned. If `payment` is a promise, the operation proceeds after
-    the promise resolves. 
+    The `payment` argument is deleted from the issuer's records. If `payment` is
+    a promise, the operation proceeds after the promise for a payment resolves. 
   - ```js
     const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20));
     // Results in paymentA = 5 and paymentB = 15 (20 -5)
@@ -245,9 +243,10 @@ Other objects' `payment`-related methods:
   - Split `payment` into multiple `payments`, returned as an array the
     same length as `amountArray` and with its `payments` having the
     same values as specified for `amountArray`'s elements. If `payment`
-    is a promise, the operation proceeds after it resolves. If
+    is a promise for a payment, the operation proceeds after it resolves. If
     the `payment` value is not equal to the sum of `amountArray`'s
-    values, the operation fails. On success, the original `payment` is burned.
+    values, the operation fails. On success, the original `payment` is 
+    deleted from the issuer's records.
   - ```js
     const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
@@ -255,7 +254,7 @@ Other objects' `payment`-related methods:
     const arrayOfNewPayments = quatloosIssuer.splitMany(oldPayment, goodAmounts);
     ```
 - [`issuer.isLive(payment)`](https://agoric.com/documentation/ertp/api/issuer.html#issuer-islive-payment)
-  - Returns `true` if `payment` has value. If `payment` is a promise,
+  - Returns `true` if `payment` has value. If `payment` is a promise for payment,
     the operation proceeds upon resolution.
 - [`mint.mintPayment(newAmount)`](https://agoric.com/documentation/ertp/api/mint.html#mint-mintpayment-newamount)
   - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. Note
@@ -297,7 +296,9 @@ The following code creates a new `purse` for the `quatloos` brand, deposits
 
 ```js
 // Create a purse with a balance of 10 Quatloos
-const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint 
+        amountMath: quatloosAmountMath } = 
+      makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(10));
 const quatloos10 = quatloosAmountMath.make(10);
