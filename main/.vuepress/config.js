@@ -182,6 +182,7 @@ module.exports = {
           children: [
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/autoswap',
+            '/zoe/guide/contracts/barter-exchange',
             '/zoe/guide/contracts/covered-call',
             '/zoe/guide/contracts/second-price-auction',
             '/zoe/guide/contracts/simple-exchange'
