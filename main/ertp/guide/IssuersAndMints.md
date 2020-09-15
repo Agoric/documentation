@@ -1,7 +1,7 @@
 # Issuers and  Mints
 
 ## Issuers
-![Issuer structure](./assets/issuer2.svg)
+![Issuer structure](./assets/issuersAndAssets.svg)
 
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
