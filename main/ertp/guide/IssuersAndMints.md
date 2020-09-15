@@ -22,9 +22,13 @@ of the same `brand` is valid.
  
 ![Issuer methods](./assets/issuer1.svg)
 
-An `issuer` has 12 methods. 3 return information about an
-`issuer`, 1 creates a new `issuer`, 1 creates a new `purse`, and 7
-which actually operate on their `payment` object argument. The following is
+`Issuer` methods:
+- Return information about an `issuer`.
+- Create a new `issuer`.
+- Create a new `purse`. 
+- Operate on `payment` arguments.
+
+The following is
 a brief description and example of each `Issuer` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
@@ -44,22 +48,30 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
     (the default value), `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`);
     see the <router-link to="./amount-math.html">`amountMath` page</router-link> for details. 
     - ```js
-      import { makeIssuerKit, make } from '@agoric/ertp';
-      const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath, brand: quatloosBrand } = 
+      import { makeIssuerKit } from '@agoric/ertp';
+      const { 
+          issuer: quatloosIssuer, mint: quatloosMint, 
+	  amountMath: quatloosAmountMath, brand: quatloosBrand 
+	  } = 
             makeIssuerKit('quatloos');
-      // This is merely an amount, describing assets. It does not create new assets.
+      // This is merely an amount, describing assets. 
+      // It does not create new assets.
       const quatloos2 = quatloosAmountMath.make(2);
-      // Non-fungible asset, which needs an amountMath of kind 'strSet'
-      const { mint: titleMint, issuer: titleIssuer, amountMath: titleAmountMath } = 
+      // Non-fungible asset, which needs an amountMath 
+      // of kind 'MathKind.STRING_SET'
+      const { 
+          mint: titleMint, issuer: titleIssuer, 
+	  amountMath: titleAmountMath 
+	  } = 
             makeIssuerKit('alamedaCountyPropertyTitle', MathKind.STRING_SET);
       ```
 - **Get information about the issuer operations**
   - <router-link to="./api/issuer.html#issuer-getbrand">`issuer.getBrand()`</router-link>
     - Returns the `brand` the `issuer` is in a one-to-one relationship with. The `brand` is not closely
       held, so it can be used by fake digital assets and `amounts`. Do
-      not trust this method alone to identify an `brand`.
+      not trust this method alone to ensure the `issuer` has the right `brand`.
     - ```js
-      import { makeIssuerKit, getBrand } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
       // myQuatloosBrand == quatloosBrand
       const myQuatloosBrand = quatloosIssuer.getBrand();
@@ -69,7 +81,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       <router-link to="../documentation/glossary/#allegedname">`allegedName`</router-link>,
 	the non-trusted human-readable name of the `issuer`'s associated `brand`.
     - ```js
-      import { makeIssuerKit, getAllegedName } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
       const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
       // quatloosissuerAllegedName === 'quatloos'
@@ -96,34 +108,34 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - **Payment operations**
   - <router-link to="./api/issuer.html#issuer-getamountof-payment">`issuer.getAmountOf(payment)`</router-link>
     -  Returns the `payment` balance, an `amount`. Using the `issuer` rather than the `payment` lets us trust
-      the result even if someone else sent us the `payment`.
+      the result even if someone we do not trust sent us the `payment`.
     - ```js
-      import { makeIssuerKit, mintPayment, getAmountOf } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
       const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
       quatloosIssuer.getAmountOf(quatloosPayment); // returns 100 quatloos
       ```
   - <router-link to="./api/issuer.html#issuer-burn-payment-optamount">`issuer.burn(payment, optAmount)`</router-link>
-    - Burns (deletes) all of the `payment` argument's digital assets and deletes all mention of the `payment` from the `issuer`.
+    - Burns (destroys) all of the `payment` argument's digital assets and deletes all mention of the `payment` from the `issuer`.
        If optional argument `optAmount` is present, the `payment`
        balance must be equal to `optAmount`'s value.  If `payment` is a promise, the operation 
        happens after the promise resolves. Returns the value of the burned `payment`.
     - ```js
-      import { makeIssuerKit, make, mintPayment, burn } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
       const amountToBurn = quatloosAmountMath.make(10);
       const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
       // burntAmountValue equals 10
       const burntAmountValue = quatloosIssuer.burn(paymentToBurn, amountToBurn);
       ```
-  - <router-link to="./api/issuer.html#issuer-claim-payment-optamount">`issuer.getClaim(payment, optAmount)`</router-link>
+  - <router-link to="./api/issuer.html#issuer-claim-payment-optamount">`issuer.claim(payment, optAmount)`</router-link>
     - Transfer all digital assets from the `payment` argument to a new `payment` and
       burn the original so no other references to this `payment` survive. Returns the new `payment`
       If optional argument `optAmount` is present, the `payment` balance
       must be equal to `optAmount`'s balance, otherwise it throws an error. If `payment`
-      is a promise, the operation happens after the promise resolves.
+      is a promise for a payment, the operation happens after the promise resolves.
     - ```js
-      import { makeIssuerKit, make, mintPayment, claim } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
       const amountExpectedToTransfer = quatloosAmountMath.make(2);
       const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
@@ -131,12 +143,12 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       ```
   - <router-link to="./api/issuer.html#issuer-combine-paymentsarray">`issuer.combine(paymentsArray)`</router-link>
     - Combine multiple `payments` into one `payment`. If any `payment`
-      in `paymentsArray` is a promise, the operation happens after all
-      `payments` resolve. Every `payment` is burned except for the
+      in `paymentsArray` is a promise for a payment, the operation happens after all
+      promises resolve. Every `payment` is burned except for the
       returned one. If you try to combine `payments` of different `brands`,
       it throws an exception and each `payment` is unaffected.
     - ```js
-      import { makeIssuerKit, mintPayment, combine } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } 
             = makeIssuerKit('quatloos');
       // create an array of 100 payments of 1 unit each
@@ -148,7 +160,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       const combinedPayment = quatloosIssuer.combine(payments);
       ```
 
-  - <router-link to="./api/issuer.html#issuer-split-payment-paymentamounta">`issuer.split(payment, paymentAmountA`</router-link>
+  - <router-link to="./api/issuer.html#issuer-split-payment-paymentamounta">`issuer.split(payment, paymentAmountA`)</router-link>
     - Split a single `payment` into two new `payments`, A and B, according
       to the `paymentAmountA` argument's value. In other words, the result
       has A equal to `paymentAmountA` and B equal to the original `payment`
@@ -157,7 +169,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       `payment` is a promise, the operation happens when the promise
       resolves. 
     - ```js
-      import { makeIssuerKit, mintPayment, split} from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } 
             = makeIssuerKit('quatloos');
       const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(30));
@@ -175,7 +187,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
        the original `payment` is burned. If the operation fails, the
        original `payment` is *not* burned.
      - ```js     
-       import { makeIssuerKit, mintPayment, make, splitMany } from '@agoric/ertp';
+       import { makeIssuerKit } from '@agoric/ertp';
        const { mint: quatloosMint, issuer: quatloosIssuer, amountMath: quatloosAmountMath } = 
              makeIssuerKit('quatloos');
        const oldQuatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
@@ -196,7 +208,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       (i.e. has not been used or burned and was issued by this `issuer`). If `payment` is a promise,
       the operation happens on its resolution.
     - ```
-      import { makeIssuerKit, isLive } from '@agoric/ertp';
+      import { makeIssuerKit } from '@agoric/ertp';
       const isItLive = issuer.isLive(payment);
 
 **Related Methods:**
@@ -230,8 +242,8 @@ the right `issuer`, but aren't authoritative.
 A `mint` issues new digital assets of its associated `brand` as a new 
 `payment` object. These assets may be currency-like (our imaginary
 Quatloos currency), goods-like valuables (magic swords for games), or
-electronic rights (the right to participate in a contract). Only a`mint`object
-holder can create new assets from it. 
+electronic rights (the right to participate in a contract). Only a
+holder of a `mint`object can create new assets from it. 
 
 In other words, let's say there
 are 1000 Quatloos in circulation. Only holders of the Quatloos associated
@@ -253,7 +265,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
 - [`mint.getIssuer()`](https://agoric.com/documentation/ertp/api/mint.html#mint-getissuer)
   - Returns the `issuer` uniquely associated with the `mint`.
   - ```js
-    import { makeIssuerKit, getIssuer } from '@agoric/ertp';
+    import { makeIssuerKit } from '@agoric/ertp';
     const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
     const quatloosMintIssuer = quatloosMint.getIssuer();
     // returns true
@@ -267,7 +279,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
     **Important**: `mint.mintPayment()` is the only way in ERTP to create new digital assets. There is no other way.
     The Zoe Contract Facet (`zcf`) can also create a mint in Zoe that can create new digital assets.
   - ```js
-    import { MathKind, makeIssuerKit, makeLocalAmountMath, mintPayment } from '@agoric/ertp';    
+    import { MathKind, makeIssuerKit, makeLocalAmountMath } from '@agoric/ertp';    
     const { issuer: quatloosIssuer, mint: quatloosMint} = makeIssuerKit('quatloos');
     const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
     const quatloos1000 = quatloosLocalAmountMath.make(1000);
