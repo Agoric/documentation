@@ -4,7 +4,7 @@ ERTP (*Electronic
 Rights Transfer Protocol*)
 is Agoric's token standard for transferring tokens and other digital assets in
 JavaScript. Using the
-[ERTP API](https://agoric.com/documentation/ertp/api/),
+[ERTP API](../api/),
 you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
@@ -25,17 +25,12 @@ Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
 which five of your one-dollar bills you give them. 
 
-Non-fungible assets are of the same kind, but are not interchangeable
-and specific items must be used. For example, you might have 100
+Non-fungible assets have the same brand, but are not interchangeable. For example, you might have 100
 theatre tickets. But someone wanting to buy even a General Admission ticket from you will want one
 for a specific date and time. This might also affect the price; you'll want to charge more
 for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
 
 ## ERTP Concepts Overview
-
-There are eight fundamental ERTP components, two of which are parts of
-another, and one which is used by that same component. For each entry,
-the name is linked to its primary page in this Guide. 
 
 Asset descriptions have two parts:
  - **[Value](./Amounts.md)**:  An
@@ -89,7 +84,7 @@ We've already mentioned our final two components:
 Similar to other component instances, a `purse` and a `payment` only work with one
 `brand`. So a `purse` or `payment` that holds Quatloos cannot hold an asset of `brand` Moola or vice versa. 
 You cannot change the `brand` a `purse` or `payment` was originally associated with. Once you create a
-"Quatloos `purse`" or "Quatloos `payment`", they can never hold anything other than Quatloos.
+Quatloos purse or Quatloos payment, they can never hold anything other than Quatloos.
 
 However, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
@@ -118,7 +113,12 @@ are covered on the component-specific pages.
 
 ![Asset creation](./assets/assetCreation.svg)
 ```js
-const { quatloosIssuer, quatloosMint, quatloosAmountMath, quatloosBrand } = makeIssuerKit('quatloos');
+const { 
+    issuer: quatloosIssuer, 
+    mint: quatloosMint, 
+    amountMath: quatloosAmountMath, 
+    brand: quatloosBrand 
+} = makeIssuerKit('quatloos');
 ```
 First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
@@ -128,8 +128,7 @@ are in one-to-one associations with each other.
 
 Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./AmountMath.md).
 
-In this case, you used the string 'quatloos' to name the `brand`. As good programming style, you
-included the `brand` name in the variable names where you store the new `issuer`, `mint`, `amountMath`, and `brand`.
+In this case, you used the string 'quatloos' to name the `brand`.
 
 ```js
 const quatloosSeven = quatloosAmountMath.make(7);;
@@ -187,18 +186,23 @@ assets to its `purse` but cannot either make a withdrawal from the `purse` or ge
 being able to send money to a friend via their email address; you can't then take money out
 of your friend's accounts or find out how much is in them.
 ```js
-const aliceQuatloosDepositFacet = 
-      await E(board).getValue(aliceQuatloosDepositFacetBoardId);
-E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
+const aliceQuatloosDepositFacetId = E(board).getId(aliceQuatloosDepositFacet);
 ```
-Remember, ERTP's use of OCaps requires that you have access to an object in order to run methods on
-it. Alice uses Agoric's *Board* to make her Quatloos `purse` deposit facet generally available for use.
- 
+Alice puts her deposit facet on Agoric's *Board*, a key-value "bulletin board" that lets her make it generally available for use.
+
 The Board is a basic bulletin board type system where users can post an Id for a value and
 others can get the value just by knowing the Id. Alice can make her Id(s) known by any
 communication method she likes; private email, an email blast to a mailing list or many individuals,
 buying an ad on a website, tv program, or newspaper, listing it on her website, etc.
-
+```js
+const aliceQuatloosDepositFacet = 
+      await E(board).getValue(aliceQuatloosDepositFacetBoardId);
+E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
+```
+Remember, ERTP's use of OCaps requires that you have access to an object in order 
+to run methods on it. So someone who wants to use Alice's deposit facet 
+has to first get it off the Board.
+ 
 Alice tells you the Board Id associated with her Quatloos `purse` deposit facet. You get the Id associated value,
 which gives you the reference to that deposit facet. You then just tell the facet to receive your `payment`
 of 5 Quatloos. 
