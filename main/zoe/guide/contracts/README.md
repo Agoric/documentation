@@ -12,6 +12,9 @@ pre-built contracts that can be imported and run on Zoe:
 - [Barter Exchange](./barter-exchange) - An exchange with an order book that allows all kinds of goods to be offered for explicit barter swaps.
 - [Covered Call](./covered-call) - This type of contract oversees the sale and execution of a
   call option.
+- [Multipool Autoswap](./multipoolAutoswap) - An automated market maker implementing
+  Uniswap v1. It has multiple liquidity pools and can trade between any pair of funded
+  currencies.
 - [Second-price Auction](./second-price-auction) - An auction in which the highest bidder wins
   and pays the second-highest bid. This version doesn't conceal the bids (an essential aspect
   of second price auctions), therefore, <b>it should not be used in production.</b>
