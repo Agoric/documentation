@@ -130,10 +130,10 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/guide/',
-            '/ertp/guide/Amount',
-            '/ertp/guide/AmountMath',
-            '/ertp/guide/IssuersAndMints',
-            '/ertp/guide/PursesAndPayments',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
+            '/ertp/guide/issuers-and-mints',
+            '/ertp/guide/purses-and-payments',
           ]
         },
         {

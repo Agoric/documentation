@@ -1,6 +1,6 @@
 # Amount Math
 
-![AmountMath methods](./assets/amountMath.svg) 
+![AmountMath methods](./assets/amount-math.svg) 
 
 Depositing and withdrawing assets from a
 `purse` and manipulating `payment` amounts 
