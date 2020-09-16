@@ -49,6 +49,11 @@ module.exports = [
         ariaLabel: 'Agoric CLI Guide Menu',
         link: '/getting-started/agoric-cli-guide',
       },
+      {
+        text: 'Agoric Alpha',
+        ariaLabel: 'Agoric Alpha',
+        link: '/getting-started/alpha',
+      },
     ]
   },
   {

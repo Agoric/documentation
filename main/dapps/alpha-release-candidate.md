@@ -1,4 +1,4 @@
-# The Dapp developer's guide to changes in the Alpha Release Candidate
+# The Dapp developer's guide to changes in the Agoric Alpha Release
 
 ## Zoe Changes
 
@@ -32,7 +32,7 @@ and example
 The issuers associated with the synchronous mints are already saved in
 Zoe, so there is no need to `addNewIssuer` (renamed to `saveIssuer` in
 this version) for synchronous mints. Note that the first call to *make*
-the ZCFMint is asynchronous, but the following calls are synchronous. 
+the ZCFMint is asynchronous, but the following calls are synchronous.
 
 ### ZoeHelpers
 
@@ -101,9 +101,9 @@ approach and created a new `seat` per `E(zoe).offer(...)` call. These seats
 have methods such as `getProposal()`, `getCurrentAllocation()`, and `exit()`. There
 are two important "facets" for seats (a facet is a particular view or API of
 an object; there may be multiple such APIs per object): the ZCFSeat
-and the UserSeat. 
+and the UserSeat.
 
-### ZCFSeat Facet 
+### ZCFSeat Facet
 
 The ZCFSeat is what is passed to the
 `offerHandlers`, like this one:
