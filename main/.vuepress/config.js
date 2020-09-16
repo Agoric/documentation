@@ -49,23 +49,31 @@ module.exports = {
     // Trailing slash implies it is looking for a .md file
     sidebar: {
       '/getting-started/': [
-         {
+        {
+          title: 'Agoric Alpha',
+          path: '/getting-started/alpha.html',
+          collapsable: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+        },
+        {
           title: 'Documentation Guide',
           path: '/getting-started/',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-         },       
-         {
+        },
+        {
           title: 'Before Using Agoric',
           path: '/getting-started/before-using-agoric.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-	       },
-         {
+        },
+        {
           title: 'Starting A Project',
           path: '/getting-started/start-a-project.html',
           collapsable: false,
@@ -89,49 +97,41 @@ module.exports = {
           children: [
           ]
         },
-         {
+        {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-         },
-         {
+        },
+        {
           title: 'Zoe Introduction',
           path: '/getting-started/intro-zoe.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-         }, 
-         {
-          title: 'Agoric Alpha',
-          path: '/getting-started/alpha.html',
-          collapsable: false,
-          sideBarDepth: 3,
-          children: [
-          ]
-         },       
-         {
+        },
+        {
           title: 'Agoric CLI Guide',
           path: '/getting-started/agoric-cli-guide.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-	       },
-        ],
+        },
+      ],
       '/ertp/': [
-         {
+        {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.html',
           collapsable: false,
           sideBarDepth: 3,
           children: [
           ]
-	 },
-         {
+        },
+        {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
           collapsable: false,
@@ -167,7 +167,7 @@ module.exports = {
           sideBarDepth: 3,
           children: [
           ]
-        },  
+        },
         {
           title: 'Zoe Guide',
           path: '/zoe/guide/',
@@ -179,7 +179,7 @@ module.exports = {
             '/zoe/guide/proposal',
             '/zoe/guide/contract-requirements'
           ]
-        },  
+        },
         {
           title: 'Zoe Contracts',
           path: '/zoe/guide/contracts/',
@@ -212,8 +212,8 @@ module.exports = {
       ],
     },
 
-    zoeVersion: 'Alpha Release Candidate v0.8.1',
-    zoeDocsUpdated: '2020-9-10'
+    zoeVersion: 'Alpha Release v0.8.1',
+    zoeDocsUpdated: '2020-9-15'
 
 
     /* --- SEARCH --- */
