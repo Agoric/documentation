@@ -21,7 +21,7 @@ shared as much as possible. Each secondary currency has a separate pool of liqui
 When the contract is instantiated, the central token is specified in the
 terms. Separate invitations are available by calling methods on the publicFacet for
 adding and removing liquidity and for making trades. Other publicFacet operations
-support querying prices and the sizes of pools. New Pools can be created with
+support querying prices and the sizes of pools. New pools can be created with
 `addPool()`.
 
 When making trades or requesting prices, the caller must specify that either the
@@ -32,16 +32,19 @@ take an amount for the currency that is being specified, and a brand to indicate
 currency of the desired amount.
 
 When adding and removing liquidity, the keywords are `Central`, `Secondary`, and
-`Liquidity`. Adding liquidity uses `Central` and `Secondary` in the `give` section,
-while to remove liquidity the `give` section only needs the particular liquidity
-token specified for `give`, and it will figure out the appropriate amounts to pay
-out.
+`Liquidity`. Adding liquidity uses `Central` and `Secondary` in the `give` section
+and `Liquidity` in the `want` section. Removing liquidity uses these same
+keywords, reversed: `Liquidity` in the `give` section, and `Central` and
+`Secondary` in the want section. If the proposal specifies amounts directly taken
+from a recent quote, and any trading has intervened, the trade is unlikely to be
+accepted. You can either specify limits on how far the price may have moved, or
+specify limits of zero and trust the contract to trade fairly.
 
 Transactions that don't require an invitation include `addPool()` and the queries
 (`getInputPrice()`, `getOutputPrice()`, `getPoolAllocation()`,
 `getLiquidityIssuer()`, and `getLiquiditySupply()`).
 
-This contract follows the design of [UniSwap](https://uniswap.org/).
+This contract follows the design of [UniSwap V1](https://uniswap.org/).
 
 ## The MultipoolAutoswap API
 
@@ -51,48 +54,53 @@ secondary currencies.
 ### Trading with MultipoolAutoswap
 
 Once trading pools have been set up, a new trader can interact by asking for the
-current price, making an invitation, and making an offer. If Sara needs 275 moola for
-a deal she has negotiated and has simoleans she can spend, she can use
-getOutputPrice() to get a quote.
+current price, making an invitation, and making an offer. If Sara has simoleans
+and needs 275 moola for a deal she has negotiated, she can use getOutputPrice() to
+get a quote.
 
 ```js
 const quote = E(publicFacet).getOutputPrice(
   moolaAmountMath.make(275), simoleansBrand);
   ```
   
-Let's assume the quote is for 216 simoleans. Sara believes the price is somewhat
-volatile, and she doesn't want to make repeated calls, so she pads her offer. If the
-appropriate pools don't exist, she'll get an error (`brands were not recognized`).
+Let's assume the quote says she needs to provide 216 simoleans. Sara believes the
+price is somewhat volatile, and she doesn't want to make repeated calls, so she pads
+her offer. If the appropriate pools don't exist, she'll get an error (`brands were
+not recognized`). If someone sells a lot of simoleans into the pool just ahead of
+her, the price will increase, and she'll have to decide whether to deposit more or
+wait for the price to stabilize. If someone buys a lot of simoleans just ahead of her
+order, she'll get the 275 moola for less and will get some simoleans back.
 
 ```js
 const saraProposal = harden({
-  want: { out: simoleans(275) },
-  give: { in: moola(220) },
+  want: { Out: moolaAmountMath.make(275) },
+  give: { In: simoleanAmountMath.make(220) },
 });
 
 const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
-const moolaPayment = harden({ In: sMoolaPurse.withdraw(220) });
+const simoleanPayment =
+  harden({ In: saraSimoleanPurse.withdraw(simoleanAmountMath.make(220)) });
 
-const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, moolaPayment);
+const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, simoleanPayment);
 const saraResult = await saraSeat.getOfferResult();
 ```
 
-If the result is `Swap successfully completed.`, she got the simoleans for 220 or
-less (she'll want to deposit any refund). Otherwise the market price moved against
+If the result is `Swap successfully completed.`, she got the moola for 220 simoleans
+or less (she'll want to deposit any refund). Otherwise the market price moved against
 her, and she'll have to check the price again and make another offer.
 
 ```js
-const moolaRefund = await E(saraSeat).getPayout('In');
-const simoleanProceeds = await E(saraSeat).getPayout('Out');
+const moolaProceeds = await E(saraSeat).getPayout('In');
+const simoleanRefund = await E(saraSeat).getPayout('Out');
 
-const moolaRefundAmount = E(sMoolaPurse).deposit(moolaRefund);
-E(simoleanPurse).deposit(simoleanProceeds);
+const moolaProceedsAmount = E(saraMoolaPurse).deposit(moolaProceeds);
+E(saraSimoleanPurse).deposit(simoleanRefund);
 ```
 
 ###  Creating a new Pool
 
 When the contract is first instantiated, there won't be any pools ready for
- trading. `addPool()` adds a new currency, which can then be funded. When a pool is
+trading. `addPool()` adds a new currency, which can then be funded. When a pool is
 first funded, there's no other basis on which to decide how much liquidity to create,
 so the liquidity amount equals the amount of the central token in the offer.
 
@@ -143,26 +151,26 @@ const bucksValue = moolaPoolAlloc.Central.value;
 const moolaValue = moolaPoolAlloc.secondary.value;
 ```
 
-Then he can add liquidity. The price ratio changes when anyone trades with the pool,
-and the pool calculates the amount of `secondary` currency required based on the
-amount of `central` currency provided, so he'll bump up the amount of moola
-contributed. If he was concerned about how much liquidity this would produce, he
-could calcuate it and specify a ballpark figure, but there's usually no need to do
-that.
+Then he can add liquidity.  The price ratio changes when anyone trades with the pool,
+so it pays to leave some flexibility in the proposal. The pool calculates the amount
+of `secondary` currency required based on the amount of `central` currency provided.
+Bob bumps up the amount of moola he'll contribute by a little. If he was concerned
+about how much liquidity this would produce, he would calcuate it and specify a rough
+figure, but there's no need in this case.
 
 ```js
 const bobProposal = harden({
   give: {
-    TokenA: moola(1200),
-    TokenB: bucks(1800)
+    Central: moolaAmountMath.make(1200),
+    Secondary: bucksAmountMath.make(1800)
   },
-  want: { Liquidity: liquidity(0) },
+  want: { Liquidity: liquidityAmountMath.make(0) },
   exit: { onDemand: null },
 ]);
 
 const bobPayments = {
-  TokenA: bobMoolaPayment,
-  TokenB: bobBucksPayment,
+  Central: bobMoolaPayment,
+  Secondary: bobBucksPayment,
 }
 
 const seat = await E(zoe).offer(addLiquidityInvite, bobProposal, bobPayments);
