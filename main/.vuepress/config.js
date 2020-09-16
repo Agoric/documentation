@@ -138,12 +138,10 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/ertp/guide/',
-            '/ertp/guide/issuer',
-            '/ertp/guide/brand',
             '/ertp/guide/amounts',
             '/ertp/guide/amount-math',
-            '/ertp/guide/math-helpers',
-            '/ertp/guide/other-concepts'
+            '/ertp/guide/issuers-and-mints',
+            '/ertp/guide/purses-and-payments',
           ]
         },
         {
@@ -190,6 +188,7 @@ module.exports = {
           children: [
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/autoswap',
+            '/zoe/guide/contracts/barter-exchange',
             '/zoe/guide/contracts/covered-call',
             '/zoe/guide/contracts/second-price-auction',
             '/zoe/guide/contracts/simple-exchange'
@@ -214,7 +213,7 @@ module.exports = {
     },
 
     zoeVersion: 'Alpha Release Candidate v0.8.1',
-    zoeDocsUpdated: '10-SEP-2020'
+    zoeDocsUpdated: '2020-9-10'
 
 
     /* --- SEARCH --- */
