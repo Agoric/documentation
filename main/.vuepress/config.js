@@ -9,6 +9,15 @@ module.exports = {
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
+    ['style', { type: 'text/css'}, `
+    .two-col-table td {
+        width: 50%;
+    }
+    .two-col-table table {
+        table-layout: fixed;
+    }`],
+    ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1' }],
+    ['script', {}, "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); "],
     ["script",
       {},
       `

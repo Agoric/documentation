@@ -8,29 +8,26 @@ Decentralized Finance (DeFi) is the new frontier of financial services. Like man
 The Agoric alpha release introduces our smart contract platform. It enables JavaScript developers to start working on DeFi quickly and easily. Our object-based approach to smart contracts enables DeFi legos that are directly reusable. The smart contract framework leapfrogs existing technologies while providing a secure, stable infrastructure. Now developers can build, deploy, and operate sophisticated dApps and DeFi markets. It's live now, so get started.
 
 [Start Coding](https://agoric.com/documentation/getting-started/)
+
 [Join Our Community](https://discord.gg/gC9z6US)
 
 ## What You Can Build in Alpha
 
-![Non Fungible Token](./assets/nft.png)
-### Fungible and non-fungible tokens
-Create and use either fungible or non-fungible digital assets with your contracts.
+<div class="two-col-table">
 
-![Autoswap](./assets/autoswap.png)
-### Atomic swap
-Enable the exchange of one cryptocurrency for another without using centralized intermediaries.
+| Fungible and non-fungible tokens | Atomic swap |
+| ------ | ----------- |
+| <div style="text-align: center">![Non Fungible Token](./assets/nft-small.png) </div> <br>Create and use either fungible or non-fungible digital assets with your contracts. | <div style="text-align: center">![Atomic Swap](./assets/autoswap-small.png) </div> <br>Enable the exchange of one cryptocurrency for another without using centralized intermediaries. |
 
-![Covered Call](./assets/covered-call.png)
-### Covered call
-Create an option contract that enables the holder to buy a specific, previously escrowed, asset at a predetermined strike price (before expiration).
+| Covered call | Simple exchange |
+| ------ | ----------- |
+| <div style="text-align: center">![Covered Call](./assets/covered-call-small.png) </div> <br>Create an option contract that enables the holder to buy a specific, previously escrowed, asset at a predetermined strike price (before expiration). | <div style="text-align: center">![Simple Exchange](./assets/simple-exchange-small.png) </div> <br>A basic exchange with an order book for one asset, priced in a second asset. |
 
-![Simple Exchange](./assets/simple-exchange.png)
-### Simple exchange
-A basic exchange with an order book for one asset, priced in a second asset.
+| Automated market maker (“autoswap”) |
+| ------ |
+| <div style="text-align: center">![Automated Market Maker](./assets/amm-small.png) </div> <br>Build a smart contract that acts as an on-chain automated DEX with liquidity. |
 
-![Automated Market Maker](./assets/amm.png)
-### Automated market maker (“autoswap”)
-Build a smart contract that acts as an on-chain automated DEX with liquidity.
+</div>
 
 ## Smart Contract Code Sample: Call Option
 
