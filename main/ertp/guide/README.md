@@ -18,8 +18,8 @@ reference, it can't. For more on object capabilities, see
 ## Fungible and Non-Fungible Assets
 
 There are two kinds of assets,
-*[fungible](../documentation/glossary/#fungible)* and
-*[non-fungible](../documentation/glossary/#non-fungible)*. 
+*[fungible](././documentation/glossary/#fungible)* and
+*[non-fungible](././documentation/glossary/#non-fungible)*. 
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
