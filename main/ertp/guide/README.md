@@ -9,7 +9,7 @@ you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
 ERTP uses
-*[OCaps (object capabilities)](https://agoric.com/documentation/glossary/#object-capabilities)*
+*[OCaps (object capabilities)](../../glossary/#object-capabilities)*
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -18,8 +18,8 @@ reference, it can't. For more on object capabilities, see
 ## Fungible and Non-Fungible Assets
 
 There are two kinds of assets,
-*[fungible](https://agoric.com/documentation/glossary/#fungible)* and
-*[non-fungible](https://agoric.com/documentation/glossary/#non-fungible)*. 
+*[fungible](../../glossary/#fungible)* and
+*[non-fungible](../../glossary/#non-fungible)*. 
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
@@ -33,14 +33,14 @@ for a Friday evening ticket than a Wednesday matinee ticket, even if it's for th
 ## ERTP Concepts Overview
 
 Asset descriptions have two parts:
- - **[Value](./Amounts.md)**:  An
+ - **[Value](./amounts.md#values)**:  An
   asset's size. You can think of this as the answer to the questions "how many?" or "how much?" about
   an asset.
- - **[Brand](./Amounts.md)**: An
+ - **[Brand](./amounts.md#brands)**: An
   asset's kind. You can think of this as the answer to the question "What is it?" about an asset.
   
 These two make up:
-- **[Amount](./Amounts.md)**:
+- **[Amount](./amounts.md)**:
   Consists of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
   as it has no economic scarcity or economic value.
   
@@ -53,15 +53,15 @@ In fact, instances of these next three components all only work on one `brand`. 
 relationships with a `brand` are established at their creation and can never be changed. If they are 
 initially associated with Quatloos, they will always be associated with Quatloos and Quatloos only. 
  
-- **[Mint](./IssuersAndMints.md)**: 
+- **[Mint](./issuers-and-mints.md#mints)**: 
   The only way to create digital assets of a particular `brand`. Each `brand` has
   a one to one relationship with a `mint` and vice versa. The created assets are stored in `payments`.   
-- **[Issuer](./IssuersAndMints.md)**: 
+- **[Issuer](./issuers-and-mints.md#issuers)**: 
   The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
   is used to validate `payments` received from untrusted parties. Specifically, it validates
   `payments` of the `brand` the `issuer` is associated with. Has a one-to-one relationship
   with both a `brand` and a `mint`. 
-- **[AmountMath](./AmountMath.md)**:
+- **[AmountMath](./amount-math.md)**:
   Methods to do math operations on `amounts`. Each `brand` can be associated with many `amountMaths`,
   but each `amountMath` is permanently associated with only one `brand`.
 
@@ -76,9 +76,9 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 ![ERTP object relationships 2](./assets/relationships2.svg) 
 
 We've already mentioned our final two components:
-- **[Purse](./PursesAndPayments.md)**: An
+- **[Purse](./purses-and-payments.md#purses)**: An
   object for holding digital assets of a specific `brand`.
-- **[Payment](./PursesAndPayments.md)**:
+- **[Payment](./purses-and-payments.md#payments)**:
   An object for transferring digital assets of a specific `brand` to another party.
   
 Similar to other component instances, a `purse` and a `payment` only work with one
@@ -304,7 +304,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP uses [*object capabilities*](https://agoric.com/documentation/glossary/#object-capabilities). 
+ERTP uses [*object capabilities*](../glossary/#object-capabilities). 
 You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
 mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
