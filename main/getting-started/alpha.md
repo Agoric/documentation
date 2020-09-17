@@ -58,7 +58,7 @@ Agoric is a team of engineers. We've based our developer experience on our decad
 [Start Coding](https://agoric.com/documentation/getting-started/)
 
 ### Stuck on something?
-Chat with our engineers on [Agorc Discord](https://discord.gg/gC9z6US).
+Chat with our engineers on [Agoric Discord](https://discord.gg/gC9z6US).
 
 ### Want to connect on socials?
 Follow us on [Twitter](https://twitter.com/agoric), [Telegram](https://t.me/agoricsystems) and [LinkedIn](https://www.linkedin.com/company/agoric/).
