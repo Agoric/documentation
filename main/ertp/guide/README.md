@@ -9,7 +9,7 @@ you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
 ERTP uses
-*[OCaps (object capabilities)](../glossary/#object-capabilities)*
+*[OCaps (object capabilities)](../../glossary/#object-capabilities)*
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
