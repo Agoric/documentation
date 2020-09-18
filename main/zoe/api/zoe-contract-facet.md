@@ -157,7 +157,7 @@ associated with the `issuer` value of the record:
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 ## zcf.makeInvitation(offerHandler, description, customProperties)
-- `offerHandler` `{OfferHandle => Object}`
+- `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
