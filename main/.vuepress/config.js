@@ -4,8 +4,8 @@ module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
   base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Documentation', // title for the site. prefix for all page titles and displayed in the navbar
-  description: 'Secure smart contracts', // desc for the site; rendered as a <meta> tag in the page HTML
+  title: 'Alpha', // title for the site. prefix for all page titles and displayed in the navbar
+  description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
