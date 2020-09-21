@@ -7,8 +7,8 @@
 home: true # use default home page layout (hero image with text, features section)
 heroImage: https://agoric.com/assets/images/logo.svg
 ## Action button
-actionText: Get Started → # text that goes in the button
-actionLink: /getting-started/ # go-to link when clicking on button
+actionText: Try Alpha → # text that goes in the button
+actionLink: /getting-started/alpha.html # go-to link when clicking on button
 features:
   - title: New Protocol
     details: Agoric empowers individuals to securely execute transactions, establish new markets, and craft novel patterns of exchange — without centralized control.
