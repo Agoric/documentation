@@ -79,7 +79,7 @@ definitions to (i.e. what does *mint* mean in an Agoric context?).
 
 For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
 
-Our **[Papers](../../../papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+Our **[Papers](../../../../papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
