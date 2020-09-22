@@ -224,6 +224,13 @@ module.exports = {
         }
       ],
     },
+    repo: 'Agoric/documentation',
+    // if your docs are not at the root of the repo:
+    docsDir: 'main',
+    // defaults to false, set to true to enable
+    editLinks: true,
+    // custom text for edit link. Defaults to "Edit this page"
+    editLinkText: 'Help us improve this page!',
 
     zoeVersion: 'Alpha Release v0.8.1',
     zoeDocsUpdated: '2020-9-15'
