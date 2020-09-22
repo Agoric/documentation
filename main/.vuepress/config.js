@@ -44,6 +44,7 @@ module.exports = {
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
+    lastUpdated: 'Last Updated', 
     logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
     nav,
