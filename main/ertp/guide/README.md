@@ -41,7 +41,7 @@ Asset descriptions have two parts:
   
 These two make up:
 - **[Amount](./amounts.md)**:
-  Consists of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
+A record consisting of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
   as it has no economic scarcity or economic value.
   
 So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
@@ -51,7 +51,7 @@ whose values have to be non-negative integers.
 The `brand` is a very important component. Most ERTP objects work with or on one specific `brand`.
 In fact, instances of these next three components all only work on one `brand`. Note also that their
 relationships with a `brand` are established at their creation and can never be changed. If they are 
-initially associated with Quatloos, they will always be associated with Quatloos and Quatloos only. 
+initially associated with Quatloos, they are always associated with Quatloos and Quatloos only. 
  
 - **[Mint](./issuers-and-mints.md#mints)**: 
   The only way to create digital assets of a particular `brand`. Each `brand` has
@@ -71,7 +71,7 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 - A "Quatloos `mint`" that is the only ERTP `mint` that can ever create new Quatloos assets.
 - A "Quatloos `issuer`" that is the only `issuer` that can create a new `purse` to contain Quatloos and 
   operate on a `payment` containing Quatloos.
-- "Quatloos `amountMaths`" whose operations only work on an `amount` whose `brand` is Quatloos.
+- "Quatloos `amountMaths`" whose operations only work on `amounts` whose `brand` is Quatloos.
 
 ![ERTP object relationships 2](./assets/relationships2.svg) 
 
@@ -92,14 +92,15 @@ However, these are not one-to-one relationships. There can be thousands or more
 ## Method Naming Structure
 
 ERTP methods use a template for their names. Knowing what a particular method name prefix represents
-can help you when reading code.
+can help you when reading code. For consistency, you may want to also use this template for your Agoric
+code.
 
 - `make<Foo>()`: Creates a new Foo object and returns only that object.
 - `make<Foo>Kit()`: Creates a new Foo object as well as other things. It returns some combination of useful things, usually including the new
   Foo object. But not always; sometimes Foo is conceptual, and, for example, instead of a single object, two facets are returned.
 - `create<Foo>()`: Creates a new Foo, but doesn't return it. 
 - `get<Foo>()`: Returns a Foo that already exists. 
-- `provide<Foo>()`: If Foo already exists, it returns it. If not, it creates a new Foo and returns that.
+- `provide<Foo>()`: If Foo already exists, returns it. If not, it creates a new Foo and returns that.
 
 ## Life of Assets
 
@@ -126,7 +127,7 @@ Here it also creates a new `mint`, `amountMath`, and formal `brand`
 for the argument, and returns all four new objects. The `mint`, `issuer`, and `brand` 
 are in one-to-one associations with each other. 
 
-Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./AmountMath.md).
+Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./amount-math.md).
 
 In this case, you used the string 'quatloos' to name the `brand`.
 
@@ -210,13 +211,13 @@ of 5 Quatloos.
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
 in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
 
-The [`E()` notation](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e)
+The [`E()` notation](././distributed-programming.html#communicating-with-remote-objects-using-e)
 is a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
 representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy 
 forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
 is explained in more detail at the preceding link.
 
-### Creating and using non-fungible assets
+## Creating and using non-fungible assets
 
 Say you own the Agoric Theatre and want to sell tickets to seats for a play. Tickets are non-fungible assets, 
 as they refer to a specific seat for a specific show at a specific time and date. It matters to
@@ -248,13 +249,13 @@ const {
  } = makeIssuerKit('Agoric Theater tickets', MathKind.SET);
 ```
 As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
-The difference from when you created the fungible asset is that you have to use a second argument,
+The difference from when you created a fungible asset is that you have to use a second argument,
 in this case `MathKind.SET`.
 
 There are three kinds of `amountMath`. Each kind polymorphicly implements the same set of methods. 
-- `MathKind.NAT`: Works with natural number `value` and fungible assets. Default value for `makeIssuerKit()`.
-- `MathKind.STRING_SET`: Used with non-fungible assets, operates on an array of string identifiers
-- `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values
+- `MathKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
+- `MathKind.STRING_SET`: Used with non-fungible assets, operates on an array of string identifiers.
+- `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
 
 ```js
 const ticketAmounts = ticketValues.map(ticketValue =>
@@ -281,7 +282,7 @@ an `amount` describing the asset of 5 Quatloos I'm willing to trade for your swo
 5 Quatloos; that only happens when we agree on the trade terms and I send you a `payment` of 5 Quatloos, the
 actual asset.
 
-If you reject my offer, I can change it so that the `amount` I specify is for 10 Quatloos. I haven't added actual 
+If you reject my offer, I can change it so the `amount` I specify is for 10 Quatloos. I haven't added actual 
 assets of 5 Quatloos to what I send you, only the description of assets in the offer I'm making for the sword.
 
 Making a new `amount` does not create any new assets. Nor does adding two `amounts`; since an `amount` is immutable, the
@@ -305,8 +306,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
 ## Object capabilities and ERTP
 
 ERTP uses [*object capabilities*](../glossary/#object-capabilities). 
-You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million `quatloos` and bet
+You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million Quatloos and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 
 ## Security properties
