@@ -69,7 +69,7 @@ their respective commands.
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
 to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
-See our **[dIBC Guide](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md)** for more information. 
+See our **[dIBC Guide](../../../agoric-sdk/packages/SwingSet/docs/networking.md)** for more information. 
 
 To familiarize yourself with working Agoric smart contracts, take a look at our 
 **[Sample Contracts](../../zoe/guide/contracts/)**. 
@@ -79,7 +79,7 @@ definitions to (i.e. what does *mint* mean in an Agoric context?).
 
 For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
 
-Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+Our **[Papers](../../../papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
