@@ -19,7 +19,7 @@ features:
   - title: Securely Create and Transfer
     details: All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
 
-footer: Apache-2.0 Licensed | Copyright © 2019-Agoric
+footer: Apache-2.0 Licensed | Copyright © 2020 - Agoric
 ---
 
 <div class="flex flex--column flex--center">
@@ -36,7 +36,7 @@ footer: Apache-2.0 Licensed | Copyright © 2019-Agoric
   <p>Ready for more? Check out <router-link to="/zoe/guide/">Zoe</router-link>. Zoe is responsible for enforcing what we call "offer safety", and the smart contract that runs on top of Zoe is responsible for figuring out a proposed reallocation of resources.
   </p>
   <Button-Action-Link
-    text="Use with  Zoe"
+    text="Build on Zoe"
     link="/zoe/guide/"
   />
 </div>
