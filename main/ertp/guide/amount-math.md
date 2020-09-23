@@ -42,7 +42,7 @@ const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
 ## AmountMath Methods
 The following is a brief description and example of each `amountMath` method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](../api/#ertp-api).
+API Reference](./api/#ertp-api).
 
 - **Information Getting Methods**
   - [`amountMath.getBrand()`](../api/amount-math.html#amountmath-getbrand)
@@ -180,15 +180,14 @@ API Reference](../api/#ertp-api).
 ## Methods on other objects
 
 These methods either use or return `amountMath` objects:
-
-- [`makeIssuerKit(allegedName, amountMathKind)`](../api/issuer.html#makeissuerkit-allegedname-mathhelpername)
+- [`makeIssuerKit(allegedName, amountMathKind)`](../api/issuer.html#makeissuerkit-allegedname-amountmathkind)
   - Creates a new `amountMath` that uses the `amountMath` kind
     designated by the `amountMathKind` argument (`MathKind.NAT`, `MathKind.STR`,
     `MathKind.STRING_SET`). Also creates a new `mint`, `issuer`, and `brand`.
   - ```js
     const (issuer, mint, brand, amountMath) = makeIssuerKit(quatloos);
     ```
-- [`issuer.getAmountMathKind()`](../api/issuer.html#issuer-getmathhelpersname)
+- [`issuer.getAmountMathKind()`](../api/issuer.html#issuer-getamountmathkind)
   - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
   - ```js
     const myAmountMathKind = quatloosIssuer.getAmountMathKind();
