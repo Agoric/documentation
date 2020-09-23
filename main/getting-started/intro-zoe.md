@@ -298,17 +298,17 @@ The following table summarizes an Atomic Swap workflow:
 <table>
 <tbody>
 <tr>
-<td><center>1</center></td>
+<td>1</td>
 <td>Write your contract
 </td>
 </tr>
 <tr>
-<td><center>2</center></td>
+<td>2</td>
 <td>Install your contract’s source code on Zoe. 
 </td>
 </tr>
 <tr>
-<td><center>3</center></td>
+<td>3</td>
 <td>Start a contract instance based on an installed contract. 
 </td>
 </tr>
@@ -318,35 +318,35 @@ the Atomic Swap contract instance is active.
 </td>
 <tr>
 <tr>
-<td><center>1</center></td>
+<td>1</td>
 <td>A holder of an invitation to this contract instance uses it to get a seat. The assets used in the offer are escrowed with Zoe.
 </td>
 </tr>
 <tr>
-<td><center>2</center></td>
+<td>2</td>
 <td>Likely via means outside of the contract, invitations are distributed to potential users of this contract instance).</td>
 </tr>
 <tr>
-<td><center>3</center></td>
+<td>3</td>
 <td>Recipients use the InviteIssuer to claim and validate their invitation.
 </td>
 </tr>
 <tr>
-<td><center>4</center></td>
+<td>4</td>
 <td>Invitation holders make their offers.
 </td>
 </tr>
 <tr>
-<td><center>5</center></td>
+<td>5</td>
 <td>The contract code processes the offers, which may request some reallocations as a result.</td>
 </tr>
 <tr>
-<td><center>6</center></td>
+<td>6</td>
 <td>Zoe reallocates the assets among the offers, preserving offer safety.
 </td>
 </tr>
 <tr>
-<td><center>7</center></td>
+<td>7</td>
 <td>The contract requests Zoe process the satisfied offers, resolving their associated payout promises. Offer holders either get what they paid for, get their escrowed offer amount refunded, or in some cases, get both what they paid for and a refund of any overpayment.
 </td>
 </tr>
