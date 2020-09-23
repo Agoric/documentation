@@ -42,6 +42,8 @@ module.exports = {
     ]
   ],
 
+  plugins: ['check-md'],
+
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     lastUpdated: 'Last Updated', 
