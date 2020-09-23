@@ -1,11 +1,6 @@
 <template>
-  <router-link :to="link">
-    <button
-      class="ag-btn ag-btn--large"
-      type="button"
-    >
-      {{ text }}
-    </button>
+  <router-link tag="button" class="ag-btn ag-btn--large" :to="link">
+    {{ text }}
   </router-link>
 </template>
 

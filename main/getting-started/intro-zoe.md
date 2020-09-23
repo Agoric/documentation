@@ -316,7 +316,7 @@ The following table summarizes an Atomic Swap workflow:
 <td colspan="2">At this point, everything is installed and set up and you’ve got a contract instance. The following rows cover what happens while
 the Atomic Swap contract instance is active.
 </td>
-<tr>
+</tr>
 <tr>
 <td>1</td>
 <td>A holder of an invitation to this contract instance uses it to get a seat. The assets used in the offer are escrowed with Zoe.

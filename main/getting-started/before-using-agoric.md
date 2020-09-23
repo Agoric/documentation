@@ -4,7 +4,7 @@
 Before working with the Agoric CLI, Zoe, and other Agoric tools and
 software, you need to install the following.
 
-<table border="1">
+<table>
   <tbody>
   <th><b>Step</b></th>
   <th><b>Action</b></th>
