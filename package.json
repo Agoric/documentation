@@ -8,7 +8,8 @@
   "scripts": {
     "docs:dev": "vuepress dev main",
     "docs:build": "vuepress build main",
-    "check-links": "vuepress check-md main"
+    "check-links": "vuepress check-md main",
+    "test": "node -r esm test/no-errors.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,9 @@
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {},
   "devDependencies": {
+    "esm": "^3.2.25",
     "vuepress": "^1.5.4",
-    "vuepress-plugin-check-md": "0.0.2"
+    "vuepress-plugin-check-md": "0.0.2",
+    "puppeteer": "^5.3.1"
   }
 }
