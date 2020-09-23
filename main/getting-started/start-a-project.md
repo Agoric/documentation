@@ -20,8 +20,9 @@ For starting a local chain with multiple users, making it possible to develop an
  [Agoric CLI Guide](https://github.com/Agoric/documentation/blob/cli-multiuser/main/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
 
 Also, for what needs to be done after you modify a project's code, see 
-[Development Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
-<br><br>
+[Development
+Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
+
 <table>
   <tbody>
   <tr>

@@ -6,9 +6,11 @@ software, you need to install the following.
 
 <table>
   <thead>
-    <th><b>Step</b></th>
-    <th><b>Action</b></th>
-    <th><b>Explanation</b></th>
+    <tr>
+      <th><b>Step</b></th>
+      <th><b>Action</b></th>
+      <th><b>Explanation</b></th>
+    </tr>
   </thead>
   <tbody>
     <tr>
