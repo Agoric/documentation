@@ -211,7 +211,7 @@ of 5 Quatloos.
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
 in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
 
-The [`E()` notation](././distributed-programming.html#communicating-with-remote-objects-using-e)
+The [`E()` notation](../../distributed-programming.md#communicating-with-remote-objects-using-e)  (../../glossary/#object-capabilities)
 is a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
 representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy 
 forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
@@ -305,7 +305,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP uses [*object capabilities*](../glossary/#object-capabilities). 
+ERTP uses [*object capabilities*](../../glossary/#object-capabilities).
 You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million Quatloos and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 
