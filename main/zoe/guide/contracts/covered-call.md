@@ -12,7 +12,7 @@ those derivative rights, and makes it possible for someone else to tell
 what they would get if they successfully exercise that right. The call
 option has an expiry date, at which point the contract is cancelled. It is
 "covered", meaning that the assets it describes is in the seller's
-possession, and the actual asset will be transfered when the exchange takes
+possession, and the actual asset will be transferred when the exchange takes
 place.
 
 In this contract, the expiry date is represented by the deadline at which

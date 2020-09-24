@@ -130,17 +130,6 @@ The possible records are:
 }
 ```
 
-## OfferStatuses Record
-
-`active` and `inactive` lists of offerHandles.
-
-```js
-{
-  active: someListOfOfferHandles,
-  inactive: anotherListOfOfferHandles
-}
-```
-
 ## Installation Record
 ```js
 {

@@ -244,7 +244,7 @@ to manipulate the offer. The queries and operations are as follows:
 
     `Allocations` represent the `amounts` to be paid out to each `seat` on exit.
     Normal reasons for exiting are the user requesting to exit or the contract
-    explicitly chosing to close out the `seat`. The guarantees also hold if the contract
+    explicitly choosing to close out the `seat`. The guarantees also hold if the contract
     encounters an error or misbehaves. There are several methods for finding out
     what `amount` a current `allocation` is.
 

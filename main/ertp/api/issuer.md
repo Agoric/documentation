@@ -92,7 +92,7 @@ of API methods (i.e. `amountMath` methods are polymorphic).
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as MathKind.NAT, the default value.
 const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STRING_SET);
-moolaIssuer.getAmountMathKind(); // Returns 'str', also known as'MathKind.STRING_SET`
+moolaIssuer.getAmountMathKind(); // Returns 'str', also known as 'MathKind.STRING_SET`
 ```
 ## issuer.getAmountOf(payment)
 - `payment` `{Payment}`
@@ -266,7 +266,7 @@ const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
-// Set original amout to 1000
+// Set original amount to 1000
 const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
 
 // Total amounts in badAmounts equal 20, when it should equal 1000

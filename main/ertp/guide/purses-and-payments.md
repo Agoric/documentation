@@ -106,7 +106,7 @@ API Reference](./api/#ertp-api).
   - ```js
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(123));
-    const quatloos123 = quatloosmountMath.make(123);
+    const quatloos123 = quatloosAmountMath.make(123);
     // Deposit a payment for 123 quatloos into the purse. Ensure that this is the amount you expect.
     quatloosPurse.deposit(quatloosPayment, quatloos123);
     const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
@@ -203,7 +203,7 @@ Other objects' `payment`-related methods:
   - Transfer all assets from the `payment` to a returned new `payment`
     and delete the original from the `issuer`'s records. Any references to the old
     `payment` outside the `issuer` will still exist, but if anyone attempts to use the
-    old `paymen`t, an error is thrown.  
+    old `payment`, an error is thrown.  
     
     If `optAmount` is
     present, the `payment` balance must be equal to it or it throws
@@ -274,7 +274,7 @@ Other objects' `payment`-related methods:
     const quatloos123 = quatloosAmountMath.make(123);
     // Deposit a payment for 123 quatloos into the purse. Ensure that this is what you expect.
     quatloosPurse.deposit(quatloosPayment, quatloos123);
-    const secondPayment = quatloosint.mintPayment(quatloosmountMath.make(100));
+    const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     // Throws error
     quatloosPurse.deposit(secondPayment, quatloos123);
     ```
