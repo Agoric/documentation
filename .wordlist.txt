@@ -159,6 +159,7 @@ cd
 chainTimer
 chainTimerService
 changeColorAll
+cli
 CLI
 closesAfter
 collectFromGallery
@@ -236,6 +237,7 @@ ERTP
 ERTP's
 escrowed
 Escrowing
+escrowing
 Eval
 exampleAmountMath
 exampleBrand
@@ -346,6 +348,7 @@ isGTE
 isIssuer
 isItLive
 isLive
+islive
 isMyIssuer
 isOfferSafe
 issuerKeywordRecord
@@ -356,6 +359,7 @@ itemsAmountMath
 javascript
 js
 JSON
+json
 KeywordAmount
 kickOut
 lastHandle
@@ -497,6 +501,7 @@ PaymentPKeywordRecord
 paymentsArray
 paymentToBurn
 Petname
+petname
 petnameOrPath
 petnames
 png
@@ -560,6 +565,7 @@ saraSeat
 saraSimoleanPurse
 satisfiedBy
 saveIssuer
+sdk
 SDK
 seatAAllocation
 seatBAllocation
@@ -713,6 +719,7 @@ YAML
 yourFunction
 ySeat
 zcf
+zcfMint
 ZCFMint
 ZCFMints
 ZCFSeat
