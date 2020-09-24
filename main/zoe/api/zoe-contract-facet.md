@@ -222,7 +222,7 @@ to manipulate the offer. The queries and operations are as follows:
     `exit`. `give` and `want` are records with keywords as keys and
     `amounts` as values. The `proposal` is a user's understanding of the
     contract that they are entering when they make an offer. See
-    [`E(zoe).offer()`](./zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord) for full details.
+    [`E(zoe).offer()`](./zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord) for full details.
   - Example:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
@@ -281,7 +281,7 @@ to manipulate the offer. The queries and operations are as follows:
      same `amounts`. All keywords mentioned in the `newAllocation` have their `amounts`
      replaced with the corresponding `amount` from `newAllocation`.
 
-     Note that ZoeHelpers [`trade()`](./zoe-helpers.html#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) and [`swap()`](./zoe-helpers.html#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might be easier to use for simple
+     Note that ZoeHelpers [`trade()`](./zoe-helpers.md#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might be easier to use for simple
      cases.
  - `isOfferSafe(newAllocation)`
    - Returns `{ Boolean }`
@@ -291,7 +291,7 @@ to manipulate the offer. The queries and operations are as follows:
      It checks whether `newAllocation` fully satisfies
      `proposal.give` (giving a refund) or whether it fully satisfies
      `proposal.want`. Both can be fully satisfied. See the ZoeHelper
-     [`satisfies()`](./zoe-helpers.html#satisfies-zcf-seat-update) method for more details.
+     [`satisfies()`](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
 
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
@@ -345,7 +345,7 @@ const { brands, issuers, terms } = zcf.getTerms()
 ## zcf.getZoeService()
 - Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
 
-This is the only way to get the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to
+This is the only way to get the user-facing <router-link to="/zoe/api/zoe.md#zoe">Zoe Service API</router-link> to
 the contract code as well.
 ```js
 // Making an offer to another contract instance in the contract.
