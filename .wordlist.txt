@@ -765,3 +765,5 @@ ZoeHelpers
 zoeHelpers
 ZoeService
 zoeService
+txt
+wordlist
