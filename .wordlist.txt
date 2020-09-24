@@ -14,6 +14,7 @@ adjacentProperty
 affordances
 afterDeadline
 ag
+agoric
 Agoric
 Agoric's
 agoricTheatreTicketAmountMath
@@ -50,6 +51,7 @@ aliceSimoleanPayout
 aliceSimPurse
 allegedAmount
 allegedBrand
+allegedName
 AllegedName
 allegedValue
 amm
@@ -58,6 +60,7 @@ amountExpectedToTransfer
 amountIn
 AmountKeywordRecord
 amountKeywordRecords
+amountMath
 AmountMath
 amountMath's
 AmountMathKeywordRecord
@@ -228,6 +231,7 @@ EcmaScript
 encourageMe
 encouragementBot
 enduser
+ertp
 ERTP
 ERTP's
 escrowed
@@ -608,6 +612,7 @@ startDateString
 startInstance
 StartInstanceResult
 stopTracking
+str
 STR
 StrikePrice
 stringify
