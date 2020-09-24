@@ -6,11 +6,11 @@ Digital assets can be any of:
 - Other kinds of rights, such as the right to participate in a particular contract.
 
 In ERTP, digital assets exist in either a `purse` or a `payment`:
-- **[`purse`]**: Holds
+- **`purse`**: Holds
   an amount of same-branded digital assets until part or
   all of them are withdrawn into a `payment`. A new `purse` is created
   by an `issuer` and can only hold assets of that `issuer`'s `brand`. 
-- **[`payment`]**:
+- **`payment`**:
   Holds a quantity of same-branded digital assets to transfer to another party. 
   A new `payment` is created either with new assets by a `mint` or by 
   withdrawing assets from a `purse`. It can only hold assets of the same `brand` as
@@ -80,7 +80,7 @@ deposit facet object, you should tell them what assets `brand` it accepts.
 The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](./api/#ertp-api).
-- [`purse.getCurrentAmount()`](./api/purse.html#purse-getcurrentamount)
+- [`purse.getCurrentAmount()`](../api/purse.md#purse-getcurrentamount)
 - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
   - ```js
     const quatloosPurse = quatloosIssuer.makeEmptyPurse();
@@ -91,14 +91,14 @@ API Reference](./api/#ertp-api).
     // Balance should be 5 Quatloos
     const newBalance = quatloosPurse.getCurrentAmount());
     ``` 
-- [`purse.withdraw(amount)`](./api/purse.html#purse-withdraw-amount)
+- [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
   - Withdraw the assets described by `amount` from this `purse` into a new
     `payment`. Returns the new `payment`.
   - ```js
     // Withdraw 3 Quatloos from a purse.
     const newPayment = quatloosPurse.withdraw(quatloosAmountMath.make(3));
     ```
-- [`purse.deposit(payment, optAmount)`](./api/purse.html#purse-deposit-payment-optamount)
+- [`purse.deposit(payment, optAmount)`](../api/purse.md#purse-deposit-payment-optamount)
   - Deposit the digital asset contents of the `payment` into this `purse`,
     returning a description of the `payment` balance as an `amount`. If the optional argument
     `optAmount` does not equal the `payment` balance,  or if `payment`
@@ -113,7 +113,7 @@ API Reference](./api/#ertp-api).
     // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
     quatloosPurse.deposit(secondPayment, quatloos123);
     ```
-- [`purse.getDepositFacet()`](./api/purse.html#purse-makedepositfacet)
+- [`purse.getDepositFacet()`](../api/purse.md#purse-makedepositfacet)
   - Returns a deposit-only facet on the `purse` that can be given
     to other parties. This lets them make a deposit to the `purse`, but not make
     withdrawals from it or get its balance. Note that the command to add a `payment`'s
@@ -126,7 +126,7 @@ API Reference](./api/#ertp-api).
      ```
 
 In addition, the method to create a new, empty, `purse` is called on an `issuer`:
-- [`issuer.makeEmptyPurse()`](./api/issuer.html#issuer-makeemptypurse)
+- [`issuer.makeEmptyPurse()`](../api/issuer.md#issuer-makeemptypurse)
   - Returns a new empty `purse` for storing digital assets of the `brand` the `issuer` is associated with.
   - ```js
     // The new purse can only contain assets of the Quatloos brand.
@@ -171,8 +171,8 @@ To convert a `payment` into a new `purse`:
 have `payments` as arguments and effectively operate on a `payment`. The following is a 
 brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](./api/#ertp-api).
-- [`payment.getAllegedBrand()`](./api/payment.html#payment-getallegedbrand)
+API Reference](../api/#ertp-api).
+- [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
   `payment` purports to be. Since a `payment` is not trusted, this result should be   
    treated with suspicion. Either verify the value, or check 
@@ -181,7 +181,7 @@ API Reference](./api/#ertp-api).
 
 Other objects' `payment`-related methods:
 
-- [`issuer.getAmountOf(payment)`](./api/issuer.html#issuer-getamountof-payment)
+- [`issuer.getAmountOf(payment)`](../api/issuer.md#issuer-getamountof-payment)
   - Get the amount of digital assets in the `payment` as an `amount`. 
     The `payment` itself is not trusted, so you must use the `issuer` method associated
     with its `brand` to be sure of getting the true value. 
@@ -189,7 +189,7 @@ Other objects' `payment`-related methods:
     const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
     quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount with 100 value `quatloos` brand
     ```
-- [`issuer.burn(payment, optAmount)`](./api/issuer.html#issuer-burn-payment-optamount)
+- [`issuer.burn(payment, optAmount)`](../api/issuer.md#issuer-burn-payment-optamount)
   - Burn all of the digital assets in the `payment`. `optAmount` is
     optional but if present, the `payment` balance must be equal to
     it. If `payment` is a promise, the operation proceeds after it resolves. 
@@ -199,11 +199,11 @@ Other objects' `payment`-related methods:
     // burntAmount should equal 10
     const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
     ```
-- [`issuer.claim(payment, optAmount)`](./api/issuer.html#issuer-claim-payment-optamount)
+- [`issuer.claim(payment, optAmount)`](../api/issuer.md#issuer-claim-payment-optamount)
   - Transfer all assets from the `payment` to a returned new `payment`
     and delete the original from the `issuer`'s records. Any references to the old
     `payment` outside the `issuer` will still exist, but if anyone attempts to use the
-    old `paymen`t, an error is thrown.  
+    old `payment`, an error is thrown.  
     
     If `optAmount` is
     present, the `payment` balance must be equal to it or it throws
@@ -213,7 +213,7 @@ Other objects' `payment`-related methods:
     const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
     const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
     ```
-- [`issuer.combine(paymentsArray)`](./api/issuer.html#issuer-combine-paymentsarray)
+- [`issuer.combine(paymentsArray)`](../api/issuer.md#issuer-combine-paymentsarray)
   - Combine multiple `payments` into one, returned, `payment`. If any `payment` in
   the array is a promise, the operation proceeds after every `payment`
   resolves. All `payments` in the array are burned on successful completion.
@@ -226,7 +226,7 @@ Other objects' `payment`-related methods:
     // combinedPayment equals 100
     const combinedPayment = quatloosIssuer.combine(payments);
     ```
-- [`issuer.split(payment, paymentAmountA)`](./api/issuer.html#issuer-split-payment-paymentamounta)
+- [`issuer.split(payment, paymentAmountA)`](../api/issuer.md#issuer-split-payment-paymentamounta)
   - Split one `payment` into two new ones, A and B, returned in
     an array. `paymentAmountA` determines A's value, and whatever is
     left of the original `payment` after subtracting A is B's value. 
@@ -239,7 +239,7 @@ Other objects' `payment`-related methods:
     // Results in paymentA = 5 and paymentB = 15 (20 -5)
     const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, amountMath.make(5));
     ```
-- [`issuer.splitMany(payment, amountArray)`](./api/issuer.html#issuer-splitmany-payment-amountarray)
+- [`issuer.splitMany(payment, amountArray)`](../api/issuer.md#issuer-splitmany-payment-amountarray)
   - Split `payment` into multiple `payments`, returned as an array the
     same length as `amountArray` and with its `payments` having the
     same values as specified for `amountArray`'s elements. If `payment`
@@ -253,10 +253,10 @@ Other objects' `payment`-related methods:
     // Results in an array of 10 payments, each with value 10.
     const arrayOfNewPayments = quatloosIssuer.splitMany(oldPayment, goodAmounts);
     ```
-- [`issuer.isLive(payment)`](./api/issuer.html#issuer-islive-payment)
+- [`issuer.isLive(payment)`](../api/issuer.md#issuer-islive-payment)
   - Returns `true` if `payment` has value. If `payment` is a promise for payment,
     the operation proceeds upon resolution.
-- [`mint.mintPayment(newAmount)`](./api/mint.html#mint-mintpayment-newamount)
+- [`mint.mintPayment(newAmount)`](../api/mint.md#mint-mintpayment-newamount)
   - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. Note
     that unlike creating a new `payment` by withdrawing existing assets from a `purse`,
     this creates new digital assets of the specified in `newAmount` `brand`.
@@ -264,7 +264,7 @@ Other objects' `payment`-related methods:
     const quatloos1000 = quatloosAmountMath.make(1000);
     const newPayment = quatloosMint.mintPayment(quatloos1000);
     ```
-- [`purse.deposit(payment, optAmount)`](./api/purse.html#purse-deposit-payment-optamount)
+- [`purse.deposit(payment, optAmount)`](../api/purse.md#purse-deposit-payment-optamount)
   - Deposit all of `payment` into this `purse`, returning the deposit
     `amount` description. If optional `optAmount` does not equal the `payment`'s balance
      or if `payment` is an unresolved promise, it throws an error.
@@ -278,7 +278,7 @@ Other objects' `payment`-related methods:
     // Throws error
     quatloosPurse.deposit(secondPayment, quatloos123);
     ```
-- [`purse.makeDepositFacet()`](./api/purse.html#purse-makedepositfacet)
+- [`purse.makeDepositFacet()`](../api/purse.md#purse-makedepositfacet)
   - Creates a deposit-only facet on the `purse` that can be given to
     other parties that lets them deposit a `payment` (but not
     withdraw) into the `purse`.
