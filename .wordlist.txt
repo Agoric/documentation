@@ -50,18 +50,22 @@ aliceSimoleanPayment
 aliceSimoleanPayout
 aliceSimPurse
 allegedAmount
+allegedamount
 allegedBrand
 allegedName
 AllegedName
 allegedValue
+allegedvalue
 amm
 amountArray
 amountExpectedToTransfer
 amountIn
 AmountKeywordRecord
+amountKeywordRecord
 amountKeywordRecords
 amountMath
 AmountMath
+amountmath
 amountMath's
 AmountMathKeywordRecord
 amountMathKind
@@ -154,7 +158,9 @@ burntAmount
 burntAmountValue
 buySeats
 cancelOffer
+canvasStatePublisher
 captp
+CapTP
 cd
 chainTimer
 chainTimerService
@@ -174,12 +180,14 @@ config
 const
 ContractFacet
 ContractHost
+contractHost
 contractOfferPromise
 ContractStartFn
 contractSupport
 cornerProperty
 counterparty
 CoveredCall
+coveredCall
 coveredCallInstallation
 createRepeater
 createSharedMap
@@ -195,8 +203,10 @@ currentAllocation
 currentBalance
 customProperties
 Dapp
+dapp
 Dapp's
 dapps
+dApps
 daveBucksPayment
 daveCallSeat
 daveCoveredCallPayments
@@ -226,11 +236,13 @@ depositSomewhere
 dev
 DEX
 dIBC
+dibc
 disjuncts
 DOM
 EcmaScript
 encourageMe
 encouragementBot
+encouragementinstallation
 enduser
 ertp
 ERTP
@@ -242,6 +254,7 @@ Eval
 exampleAmountMath
 exampleBrand
 ExitRule
+exitRule
 ExpectedRecord
 expirationDate
 finalState
@@ -268,6 +281,7 @@ getCurrentAmount
 getCurrentTimestamp
 getDepositFacet
 getEmpty
+getempty
 getId
 getInputPrice
 getInstallation
@@ -290,6 +304,7 @@ getOfferNotifier
 getOfferResult
 getOffers
 getOutPutPrice
+getOutputPrice
 getPayout
 getPayouts
 getPoolAllocation
@@ -355,6 +370,7 @@ issuerKeywordRecord
 IssuerKit
 issuerPetname
 IssuerRecord
+issuerRecord
 itemsAmountMath
 javascript
 js
@@ -364,6 +380,7 @@ KeywordAmount
 kickOut
 lastHandle
 leftAmount
+leftamount
 leftHasExitedMsg
 leftSeat
 legos
@@ -382,6 +399,7 @@ localhost
 localTimerService
 lockdown
 MacOS
+Mainnet
 makeAddLiquidityInvitation
 makeBidInvitation
 makeCallOption
@@ -431,6 +449,7 @@ Morningstar's
 msg
 Multipool
 MultipoolAutoswap
+multipoolAutoswap
 multiuser
 myAmountKeywordRecord
 myAmountMathKind
@@ -465,6 +484,7 @@ numBids
 numBidsAllowed
 ocap
 OCaps
+OCAPs
 offerHandle
 offerHandlePromise
 offerHandler
@@ -472,6 +492,7 @@ offerHandlers
 offerHandles
 offerNotifier
 OfferResult
+offerResult
 OfferResultRecord
 offerSafety
 OfferStatuses
@@ -505,6 +526,7 @@ petname
 petnameOrPath
 petnames
 png
+polymorphically
 poolSeat
 pre
 primordials
@@ -516,6 +538,7 @@ publicAPI
 publicFacet
 purseIssuer
 pursePetname
+pursePetName
 px
 pxPurse
 quatloo
@@ -549,10 +572,12 @@ remoteServiceP
 removeWakeup
 REPL
 REPL’s
+REPL’s
 repo
 respondToNewValue
 reusability
 rightAmount
+rightamount
 rightHasExitedMsg
 rightSeat
 rl
@@ -572,6 +597,7 @@ seatBAllocation
 SeatGainsLossesRecord
 SeatGainsLossesRecords
 SeatStaging
+seatStaging
 seatStagings
 secondaryIssuer
 secondPayment
@@ -583,6 +609,7 @@ sellItemsInstance
 sellSeats
 sellToGallery
 SES
+ses
 setWakeup
 sevenSimoleans
 SharedMap
@@ -621,6 +648,7 @@ stopTracking
 str
 STR
 StrikePrice
+strikePrice
 stringify
 strSet
 subdirectories
@@ -640,6 +668,7 @@ swapOut
 swapResult
 swapSeat
 Swingset
+SwingSet
 SwingSets
 tapFaucet
 targetName
@@ -647,6 +676,7 @@ tc
 TCP
 Tendermint
 testnet
+TestNet
 themeConfig
 threeMoola
 ticketAmount
@@ -684,7 +714,9 @@ underlyingAssets
 unforgeable
 ungranted
 UniSwap
+Uniswap
 UnitOps
+unitOps
 untrusted
 untrustedInvitation
 updateHandle
@@ -693,6 +725,7 @@ updateStateOnChanges
 url
 USDollar
 UserSeat
+userSeat
 UserSeats
 userStage
 useTheService
@@ -702,6 +735,7 @@ vm
 VM's
 vsCode
 VuePress
+vuepress
 waitForNextUpdate
 wakeups
 walletSend
@@ -723,8 +757,11 @@ zcfMint
 ZCFMint
 ZCFMints
 ZCFSeat
+zcfSeat
 ZCFSeats
 zoe
 ZoeHelper
 ZoeHelpers
+zoeHelpers
 ZoeService
+zoeService

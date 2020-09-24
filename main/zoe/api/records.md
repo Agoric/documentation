@@ -134,7 +134,7 @@ The possible records are:
 ```js
 {
   installationHandle, // opaque identifier, used as the table key
-  bundle, // contains source code (accesible via bundle.source) and other info. 
+  bundle, // contains source code (accessible via bundle.source) and other info. 
 }
 ```
 
