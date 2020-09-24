@@ -7,7 +7,7 @@
 `Amounts` describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
 Use the `amountMath` API methods (covered in-depth 
-<router-link to="./api/amount-math.html">here</router-link>)
+<router-link to="../api/amount-math.html">here</router-link>)
 to get information about and otherwise manipulate an `amount` as a whole.
 `amountMath.make()` is generally how you make new `amounts`.
 
@@ -53,9 +53,9 @@ its `issuer`, and thus its `brand`, was created to be.
 A `brand` has two associated methods. The following is a brief description 
 and example of each `brand` method. For more detail, click the method's name 
 to go to its entry in the [ERTP
-API Reference](./api/#ertp-api).
+API Reference](../api/). 
 
-- [`brand.isMyIssuer(issuer)`](./api/brand.html#brand-ismyissuer-issuer)
+- [`brand.isMyIssuer(issuer)`](../api/brand.md#brand-ismyissuer-issuer)
   - Returns `true` if the `issuer` argument matches the `issuer` associated with the `brand`.
     We have this method because the `issuer` is authoritative and the `brand` is not. You can
     create a `payment`, `purse`, or `amount` with a `brand` that claims a particular `issuer`,
@@ -64,7 +64,7 @@ API Reference](./api/#ertp-api).
   - ```js
     const isIssuer = brand.isMyIssuer(issuer);
     ```
-- [`brand.getAllegedName()`](./api/brand.html#brand-getallegedname)
+- [`brand.getAllegedName()`](../api/brand.md#brand-getallegedname)
   - Return the `brand`'s alleged name, but should not be trusted as accurate.
   - ```js
     const name = brand.getAllegedName();
@@ -73,7 +73,7 @@ API Reference](./api/#ertp-api).
 The following methods on other ERTP components also either operate on or
 return a `brand`.
 
-- [`issuer.getBrand()`](./api/issuer.html#issuer-getBrand)
+- [`issuer.getBrand()`](../api/issuer.md#issuer-getBrand)
   - Returns the `brand` for the `issuer`. The `brand` is not closely
     held, so this should not be trusted to identify an `issuer`
     alone. Fake digital assets and `amount`s can use the `brand` of another `issuer`.
@@ -81,7 +81,7 @@ return a `brand`.
     const brand = quatloosIssuer.getBrand();
     // brand === quatloosBrand
     ```
-- [`payment.getAllegedBrand()`](./api/payment.html#payment-getallegedbrand)
+- [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
   - Return the `payment`'s alleged `brand`. Because a `payment`
   is not trusted, this should be treated with suspicion and verified
   elsewhere. This example code determines if a `payment` we got from untrusted sources
@@ -95,7 +95,7 @@ return a `brand`.
       }
     }  
     ```
-- [`amountMath.getBrand()`](./api/amount-math.html#amountmath-getbrand)
+- [`amountMath.getBrand()`](../api/amount-math.md#amountmath-getbrand)
   - Return the `brand` the `amountMath` object is using for its
   methods.
   - ```js
@@ -109,14 +109,14 @@ return a `brand`.
 
 Values are the "how many" part of an `amount`. There are no `value`
 methods, but two `amountMath` methods use or return them. 
-- <router-link to="./api/amount-math.html#amountmath-getvalue-amount">`amountMath.getValue(amount)`</router-link>
+- <router-link to="../api/amount-math.html#amountmath-getvalue-amount">`amountMath.getValue(amount)`</router-link>
   - Return the `amount` argument's `value`
   - ```js
     const quatloos123 = quatloosAmountMath.make(123);
     // returns 123
     const value = quatloosAmountMath.getValue(quatloos123);
     ```
-- <router-link to="./api/amount-math.html#amount-math-make-allegedvalue">`amountMath.make(allegedValue)`</router-link>
+- <router-link to="../api/amount-math.html#amount-math-make-allegedvalue">`amountMath.make(allegedValue)`</router-link>
   - Make an `amount`from a `value` by adding the
   `amountMath` associated `brand` to the `value`. 
   - ```js
