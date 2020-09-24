@@ -571,8 +571,7 @@ remoteObj
 remoteServiceP
 removeWakeup
 REPL
-REPL’s
-REPL’s
+REPL's
 repo
 respondToNewValue
 reusability
@@ -667,6 +666,7 @@ swapOfferHandler
 swapOut
 swapResult
 swapSeat
+swingset
 Swingset
 SwingSet
 SwingSets

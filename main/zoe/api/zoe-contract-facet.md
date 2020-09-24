@@ -77,7 +77,7 @@ the same as ERTP `mint`-created assets by ERTP methods.
     it is returned. Otherwise a new `seat` is returned.
   - `zcfMint.mintGains({ Token: amount }, seat);`
 - `burnLosses`
-  - `losses`: `AmountKeyWordRecord`
+  - `losses`: `AmountKeywordRecord`
   - `zcfSeat` : `{ZCFSeat}`
   - Returns: void
   - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.

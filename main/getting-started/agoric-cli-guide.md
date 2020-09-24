@@ -87,7 +87,7 @@ that doesn’t share cookies with any other ag-solo’s browser. For example, if
 create a new Chrome profile, or open a Firefox or Safari window. Navigate to `https://local.agoric.com/` and, 
 in the resulting page, set the address to `http://localhost:8001` Click **Save**. Then click **Open** and 
 verify that it opens a different wallet and REPL (the REPL history will be blank). Type `console.log(8001)` 
-in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL’s history.
+in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL's history.
 
 ![REPL](./assets/REPL-2.png)
 
