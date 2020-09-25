@@ -64,7 +64,7 @@ module.exports = {
         {
           title: 'Agoric Alpha',
           path: '/getting-started/alpha.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -72,7 +72,7 @@ module.exports = {
         {
           title: 'Documentation Guide',
           path: '/getting-started/',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -80,7 +80,7 @@ module.exports = {
         {
           title: 'Before Using Agoric',
           path: '/getting-started/before-using-agoric.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -88,7 +88,7 @@ module.exports = {
         {
           title: 'Starting A Project',
           path: '/getting-started/start-a-project.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -96,7 +96,7 @@ module.exports = {
         {
           title: 'Development Cycle',
           path: '/getting-started/development-cycle.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -104,7 +104,7 @@ module.exports = {
         {
           title: 'Deploying Smart Contracts',
           path: '/getting-started/deploying.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -112,7 +112,7 @@ module.exports = {
         {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -120,7 +120,7 @@ module.exports = {
         {
           title: 'Zoe Introduction',
           path: '/getting-started/intro-zoe.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -128,7 +128,7 @@ module.exports = {
         {
           title: 'Agoric CLI Guide',
           path: '/getting-started/agoric-cli-guide.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -138,7 +138,7 @@ module.exports = {
         {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -146,7 +146,7 @@ module.exports = {
         {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
             '/ertp/guide/',
@@ -159,7 +159,7 @@ module.exports = {
         {
           title: 'ERTP API',
           path: '/ertp/api/',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
             '/ertp/api/issuer',
@@ -175,7 +175,7 @@ module.exports = {
         {
           title: 'Zoe Introduction',
           path: '/getting-started/intro-zoe.html',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
           ]
@@ -183,7 +183,7 @@ module.exports = {
         {
           title: 'Zoe Guide',
           path: '/zoe/guide/',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 5,
           children: [
             '/zoe/guide/',
@@ -195,7 +195,7 @@ module.exports = {
         {
           title: 'Zoe Contracts',
           path: '/zoe/guide/contracts/',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
             '/zoe/guide/contracts/atomic-swap',
@@ -210,7 +210,7 @@ module.exports = {
         {
           title: 'Zoe API',
           path: '/zoe/api/',
-          collapsable: false,
+          collapsible: false,
           sideBarDepth: 3,
           children: [
             '/zoe/api/zoe',

@@ -130,22 +130,11 @@ The possible records are:
 }
 ```
 
-## OfferStatuses Record
-
-`active` and `inactive` lists of offerHandles.
-
-```js
-{
-  active: someListOfOfferHandles,
-  inactive: anotherListOfOfferHandles
-}
-```
-
 ## Installation Record
 ```js
 {
   installationHandle, // opaque identifier, used as the table key
-  bundle, // contains source code (accesible via bundle.source) and other info. 
+  bundle, // contains source code (accessible via bundle.source) and other info. 
 }
 ```
 

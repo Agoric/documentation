@@ -295,7 +295,7 @@ and an operation to request that the offer exit, as follows:
     contract. The value is an `amount`.
 
     `Allocations` represent the `amounts` to be paid out to each `seat` on exit. Normal
-    reasons for exiting are the user requesting to exit or the contract explicitly chosing
+    reasons for exiting are the user requesting to exit or the contract explicitly choosing
     to close out the `seat`. The guarantees also hold if the contract encounters an error or
     misbehaves. There are several methods for finding out what `amount` a
     current `allocation` is.

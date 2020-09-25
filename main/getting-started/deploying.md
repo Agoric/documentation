@@ -19,7 +19,7 @@ Remember, your Dapp has three primary subdirectories:
 ## How it works
 
 All deployment happens via the local running Agoric process. This is usually the `ag-solo` process, 
-and frequently refered to as that or just as `ag-solo`. It is also sometimes described as/called an Agoric VM or a local server.
+and frequently referred to as that or just as `ag-solo`. It is also sometimes described as/called an Agoric VM or a local server.
 
 `ag-solo` communicates with either a locally running or remote chain. The local process has a `home` object, which contains 
 references to services on-chain, including `zoe`, the default `registry`, and an application user's `wallet`. Developers can

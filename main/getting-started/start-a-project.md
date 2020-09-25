@@ -80,7 +80,7 @@ Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
   <tr>
     <td>6</td>
     <td>Open another shell, go to your <code>demo</code> directory</td>
-    <td>For the remainer of this table, we call this the <i>deploy shell</i>.
+    <td>For the remainder of this table, we call this the <i>deploy shell</i>.
     <br><br>Use the same project directory name and location as you used in Step 2. In
       this example, we used <code>demo</code> but you may have used a
       different name in Step 2.</td>
