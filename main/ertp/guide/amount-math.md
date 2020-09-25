@@ -42,7 +42,7 @@ const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
 ## AmountMath Methods
 The following is a brief description and example of each `amountMath` method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](./api/#ertp-api).
+API Reference](../api/).
 
 - **Information Getting Methods**
   - [amountMath.getBrand()](../api/amount-math.md#amountmath-getbrand)
@@ -192,7 +192,7 @@ These methods either use or return `amountMath` objects:
   - ```js
     const myAmountMathKind = quatloosIssuer.getAmountMathKind();
     ```
-- [zcf.getAmountMath(brand)](../../zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
+- [zcf.getAmountMath(brand)](../../zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
   - Returns the `amountMath` object associated with the `brand` argument.
   - ```js
     const quatloosAmountMath = zcf.getAmountMath(quatloosBrand);
