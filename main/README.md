@@ -1,7 +1,7 @@
 ---
 ####
 # YAML section setting up the home page
-# run `npm run docs:dev` at any time to start local dev server and access
+# run `yarn docs:dev` at any time to start local dev server and access
 # website at localhost:8080 by default
 ####
 home: true # use default home page layout (hero image with text, features section)
