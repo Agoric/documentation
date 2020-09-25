@@ -20,28 +20,27 @@ npm run docs:build
 On every pull request and on every commit to master, the following
 Github Actions run:
 
-* Test the build - tests that a build does not error and that the
-  result passes html5 validation
-* Spellcheck - checks against a dictionary and a local wordlist
+* Test the build - This tests that the build does not have any errors and
+  that the result passes HTML5 validation
+* Spellcheck - This checks the Markdown documents against a dictionary and a local wordlist
 
 ## Spellcheck
 
 This is currently only available in Github Actions on Pull Requests.
 Any words that do not pass spell check will be shown in the logs of
 the Github Action. Please either fix the words or add them to the list
-in `.wordlist.txt`. 
+in `Agoric/documentation/.wordlist.txt`. Please maintain the list's alphabetical order when entering new words for the convenience of future maintainers.
 
 ![](./contributing-assets/spellcheck-results.png)
 
 ## Check Links
 
-This is not yet hooked up to continuous integration, but to check the
-internal Vuepress links locally (this does not test external links or
-router-links), run:
+To check internal Vuepress links locally, run the following shell command. It does *not* check either external links or router-links. Output consists of the text of any broken links, what file they're in, and what line number they occur on.
 
 ```shell
 npm run check-links
 ```
 
 Links should be relative and in [this format](https://vuepressbook.com/tutorial/tutorial2.html#linking-to-headers-inside-a-file).
+
 
