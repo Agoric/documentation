@@ -29,7 +29,7 @@
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {},
   "devDependencies": {
-    "vuepress": "^1.5.4",
+    "vuepress": "^1.6.0",
     "vuepress-plugin-check-md": "0.0.2"
   }
 }
