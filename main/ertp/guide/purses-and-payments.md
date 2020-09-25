@@ -213,7 +213,7 @@ Other objects' `payment`-related methods:
     const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
     const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
     ```
-- [`issuer.combine(paymentsArray)`](../api/issuer.md#issuer-combine-paymentsarray)
+- [`issuer.combine(paymentsArray)`](../api/issuer.md#issuer-combine-paymentsarray-opttotalamount)
   - Combine multiple `payments` into one, returned, `payment`. If any `payment` in
   the array is a promise, the operation proceeds after every `payment`
   resolves. All `payments` in the array are burned on successful completion.
@@ -278,12 +278,12 @@ Other objects' `payment`-related methods:
     // Throws error
     quatloosPurse.deposit(secondPayment, quatloos123);
     ```
-- [`purse.makeDepositFacet()`](../api/purse.md#purse-makedepositfacet)
+- [`purse.getDepositFacet()`](../api/purse.md#purse-getdepositfacet)
   - Creates a deposit-only facet on the `purse` that can be given to
     other parties that lets them deposit a `payment` (but not
     withdraw) into the `purse`.
   - ```js
-    const depositOnlyFacet = purse.makeDepositFacet();
+    const depositOnlyFacet = purse.getDepositFacet();
     // Give depositOnlyFacet to someone else. 
     // They can pass a payment that will be deposited:
     depositOnlyFacet.receive(payment);
