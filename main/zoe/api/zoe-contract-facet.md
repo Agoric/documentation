@@ -343,7 +343,7 @@ const { brands, issuers, terms } = zcf.getTerms()
 ```
 
 ## zcf.getZoeService()
-- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
+- Returns: [ZoeService](./zoe.md)
 
 This is the only way to get the user-facing <router-link to="/zoe/api/zoe.md#zoe">Zoe Service API</router-link> to
 the contract code as well.
