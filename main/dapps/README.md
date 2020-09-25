@@ -11,7 +11,7 @@ A Dapp is a *distributed application* which typically has a browser-based user i
 
 ## Using a Dapp
 
-If you have installed the [Agoric CLI](././getting-started/before-using-agoric.html) and you just want to try running a Dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
+If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a Dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
 
 ```sh
 # Clone a local version of the dapp. Here we chose the encouragement dapp
@@ -86,4 +86,4 @@ The `ui` directory is almost completely under your control.  The only files and 
 
 ## More information
 
-You can [learn more about the Agoric smart contract platform](https://agoric.com) and how to [create Agoric Dapps](././getting-started).
+You can [learn more about the Agoric smart contract platform](https://agoric.com) and how to [create Agoric Dapps](../getting-started).
