@@ -211,7 +211,7 @@ of 5 Quatloos.
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
 in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
 
-The [`E()` notation](../../distributed-programming.md#communicating-with-remote-objects-using-e)  (../../glossary/#object-capabilities)
+The [`E()` notation](../../distributed-programming.md#communicating-with-remote-objects-using-e)  
 is a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
 representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy 
 forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
