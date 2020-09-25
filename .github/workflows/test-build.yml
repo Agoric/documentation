@@ -17,8 +17,8 @@ jobs:
 
     - name: Install and Build
       run: |
-        npm install
-        npm run docs:build
+        yarn install
+        yarn docs:build
   
     - name: HTML5 Validator
       uses: Cyb3r-Jak3/html5validator-action@master

@@ -11,12 +11,12 @@ $ git clone https://github.com/Agoric/documentation
 
 1. Install dependencies
 ```sh
-$ npm install
+$ yarn install
 ```
 
 1. Build dev docs
 ```sh
-$ npm run docs:dev
+$ yarn docs:dev
 ```
 
 1. View documentation site at `localhost:8080`. Any changes triggers a hot reload.
