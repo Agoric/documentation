@@ -1,8 +1,8 @@
 ## Agoric CLI
 
 You use the Agoric CLI to install dependencies, initialize, deploy, and start Agoric projects. This Guide has two parts:
-1. How to use the Agoric CLI to deploy and start a local-chain-multiuser scenario, for development and and testing of multiuser Dapps
-2. Reference material for the five `agoric` CLI commands.
+1. [Starting Multiuser Dapps](#starting-multiuser-dapps): How to use the Agoric CLI to deploy and start a local-chain-multiuser scenario, for development and and testing of multiuser Dapps
+2. [Agoric CLI Command Reference](#agoric-cli-command-reference): Reference material for the five `agoric` CLI commands.
 
 ### Starting Multiuser Dapps
 
@@ -135,7 +135,10 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 
 #### `agoric install`
 - **Function**:
-  - Install Dapp JavaScript dependencies. This may take a while.
+  - Install Dapp JavaScript dependencies. This may take a while. You use this instead of established npm install tools.
+  The reason is that there is both an SDK (`--sdk`) and NPM mode. Currently we only support SDK mode, which allows you to link your Dapp 
+  against the SDK dependencies. This lets you modify in any package in the SDK against the SDK dependencies (and see the changes)
+  and not have to register those packages with Yarn or NPM.
 - **Required Arguments**:
   - None.
 - **Optional Arguments**:
