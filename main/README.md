@@ -1,14 +1,14 @@
 ---
 ####
 # YAML section setting up the home page
-# run `npm run docs:dev` at any time to start local dev server and access
+# run `yarn docs:dev` at any time to start local dev server and access
 # website at localhost:8080 by default
 ####
 home: true # use default home page layout (hero image with text, features section)
 heroImage: https://agoric.com/assets/images/logo.svg
 ## Action button
-actionText: Get Started → # text that goes in the button
-actionLink: /getting-started/ # go-to link when clicking on button
+actionText: Try Alpha → # text that goes in the button
+actionLink: /getting-started/alpha.html # go-to link when clicking on button
 features:
   - title: New Protocol
     details: Agoric empowers individuals to securely execute transactions, establish new markets, and craft novel patterns of exchange — without centralized control.
@@ -19,7 +19,7 @@ features:
   - title: Securely Create and Transfer
     details: All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
 
-footer: Apache-2.0 Licensed | Copyright © 2019-Agoric
+footer: Apache-2.0 Licensed | Copyright © 2020 - Agoric
 ---
 
 <div class="flex flex--column flex--center">
@@ -36,7 +36,7 @@ footer: Apache-2.0 Licensed | Copyright © 2019-Agoric
   <p>Ready for more? Check out <router-link to="/zoe/guide/">Zoe</router-link>. Zoe is responsible for enforcing what we call "offer safety", and the smart contract that runs on top of Zoe is responsible for figuring out a proposed reallocation of resources.
   </p>
   <Button-Action-Link
-    text="Use with  Zoe"
+    text="Build on Zoe"
     link="/zoe/guide/"
   />
 </div>

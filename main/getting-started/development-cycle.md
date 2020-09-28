@@ -8,22 +8,22 @@ Then go to that row's second column and do the action specified there. You then 
 
 You don’t have to do any of the second column actions in rows above where you started.
 
-<table border="1">
+<table>
 <tbody>
 <tr>
-<td colspan="3"><b>How to use this table:<br><br>
-<ol><li>Go down the first column until you encounter the type of change you made.</li>
-<li>Go to that row’s second column and do the action specified there (if you want to know more about what and why you’re doing, see the row’s third column).</li>
-<li>Go down to the next row and do the action in its second column.</li>
-<li>Repeat 3. until you reach the bottom of the table and do the action in the bottom row’s second column.</li>
-</ol></b>
+<td colspan="3"><b>How to use this table:</b><br><br>
+<ol><li><b>Go down the first column until you encounter the type of change you made.</b></li>
+<li><b>Go to that row’s second column and do the action specified there (if you want to know more about what and why you’re doing, see the row’s third column).</b></li>
+<li><b>Go down to the next row and do the action in its second column.</b></li>
+<li><b>Repeat 3. until you reach the bottom of the table and do the action in the bottom row’s second column.</b></li>
+</ol>
 For example, let’s say you changed code in <code>agoric-sdk</code>. Going down the first column, you find it and look at the action in the second column of that row. It says you need to run <code>agoric start --reset</code>. Then go to the next row and its second column to find out you need to run <code>agoric deploy contract/deploy.js</code> Continue doing the action specified in each following row’s second column until the “refresh your browser” instruction in the bottom row.
 </td>
 </tr>
 <tr>
-<th><center><b>If you...</b></center></td></th>
-<th><center><b>Then you must...</b></center></td></th>
-<th><center><b>Notes</b></center></td></th>
+<th><b>If you...</b></td></th>
+<th><b>Then you must...</b></td></th>
+<th><b>Notes</b></td></th>
 </tr>
 <tr>
 <td>Change which npm packages are used in <code>agoric-sdk</code></td>

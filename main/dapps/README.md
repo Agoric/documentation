@@ -73,7 +73,7 @@ In the `api` directory, you can find the following files to edit:
 
 - `src` /api endpoint handler, starting with `src/handler.js`
 
-Other files and folders that you don't typicaly need to edit:
+Other files and folders that you don't typically need to edit:
 
 - `deploy.js` generic Agoric API handler deployment script
 

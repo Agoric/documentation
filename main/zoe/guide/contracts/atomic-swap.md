@@ -2,6 +2,7 @@
 
 <Zoe-Version/>
 
+
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js) (Last updated: 12-SEP-2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
@@ -62,6 +63,7 @@ const alicePayment = { Asset: aliceMoola };
 For Alice to escrow with Zoe, she needs to use her invitation.  
 Then she makes her offer and receives a `seat`. The `seat`
 gives her access to the offer's result and her payouts.
+
 ```js
 const aliceSeat = await E(zoe).offer(aliceInvite, aliceProposal, alicePayments);
 ```
@@ -80,7 +82,7 @@ const {
   installation: bobInstallationId,
   instance,
 } = E(zoe).getInvitationDetails(invitationP);
-  const bobIssuers = E(zoe).getIssuers(instance);
+const bobIssuers = E(zoe).getIssuers(instance);
 
 const bobExclusiveInvitation = await invitationIssuer.claim(invitationP);
 const bobInvitationValue = await E(zoe).getInvitationDetails(bobExclusiveInvitation);
@@ -91,7 +93,6 @@ assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
 assert(moolaAmountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
 assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
-
 ```
 
 Bob decides to exercise the invitation, and to escrow his payments. He then

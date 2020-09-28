@@ -77,7 +77,7 @@ the same as ERTP `mint`-created assets by ERTP methods.
     it is returned. Otherwise a new `seat` is returned.
   - `zcfMint.mintGains({ Token: amount }, seat);`
 - `burnLosses`
-  - `losses`: `AmountKeyWordRecord`
+  - `losses`: `AmountKeywordRecord`
   - `zcfSeat` : `{ZCFSeat}`
   - Returns: void
   - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
@@ -157,7 +157,7 @@ associated with the `issuer` value of the record:
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 ## zcf.makeInvitation(offerHandler, description, customProperties)
-- `offerHandler` `{OfferHandle => Object}`
+- `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
 - Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
@@ -244,7 +244,7 @@ to manipulate the offer. The queries and operations are as follows:
 
     `Allocations` represent the `amounts` to be paid out to each `seat` on exit.
     Normal reasons for exiting are the user requesting to exit or the contract
-    explicitly chosing to close out the `seat`. The guarantees also hold if the contract
+    explicitly choosing to close out the `seat`. The guarantees also hold if the contract
     encounters an error or misbehaves. There are several methods for finding out
     what `amount` a current `allocation` is.
 

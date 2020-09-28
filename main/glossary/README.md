@@ -67,7 +67,7 @@ synchronously compared for structural equivalence.
 
 A comparable is a JavaScript object containing no promises, and can
 thus be locally compared for equality with another object. If either object
-contains promises, equality is indeterminable. If both are fullfilled down
+contains promises, equality is indeterminable. If both are fulfilled down
 to Presences and local state, then either they're the same all the way
 down, or they represent different objects.
 
@@ -94,7 +94,7 @@ see the [ERTP Introduction](https://agoric.com/documentation/getting-started/ert
 A particular view or API of an object. An object can have many facets.
 
 ## Fungible
-A fungible asset is one where all exemplars of the asset are interchangable. For example, if you 
+A fungible asset is one where all exemplars of the asset are interchangeable. For example, if you 
 have 100 one dollar bills and need to pay someone five dollars, it does not matter which
 five one dollar bills you use. Also see [non-fungible](#non-fungible).
 
@@ -130,10 +130,10 @@ and the [ERTP API's Mint section](https://agoric.com/documentation/ertp/api/mint
 
 ## Non-fungible
 A non-fungible asset is one where each incidence of the asset has unique individual properties and
-is not interchangable with another incidence. For example, if your asset is show tickets, it matters to the buyer 
+is not interchangeable with another incidence. For example, if your asset is show tickets, it matters to the buyer 
 what the date and time of the show is, which row the seat is in, and where in the row the 
 seat is (and likely other factors as well). You can't just give them any ticket in your supply,
-as they are not interchangable (and may even have different prices). See also [fungible](#fungible).
+as they are not interchangeable (and may even have different prices). See also [fungible](#fungible).
 
 ## Notifier
 
@@ -144,12 +144,12 @@ See more: [Notifier](/distributed-programming.md)
 
 ## Object Capabilities
 
-Objects have state, behavior, and references. Lets say Object A has references to Objects B and C, while B and C do not have references to each other. Thus, A can communicate with B and C, and B and C cannot commuicate with each other.
+Objects have state, behavior, and references. Lets say Object A has references to Objects B and C, while B and C do not have references to each other. Thus, A can communicate with B and C, and B and C cannot communicate with each other.
 There is an effective zero-cost firewall between B and C.
 
 An *object capability system* constrains how references are obtained. You can't get one just by knowing the name of a global variable or a public class. You can get a reference in only three ways. 
 - Creation: Functions that create objects get a reference to them.
-- Construction: Constuctors can endow their constructed objects with  references, including inherited references. 
+- Construction: Constructors can endow their constructed objects with references, including inherited references. 
 - Introduction: 
   - A has references to B and C. 
   - B and C  do *not* have references to each other

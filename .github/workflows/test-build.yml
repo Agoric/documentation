@@ -1,0 +1,28 @@
+name: Test the build
+
+# run CI on pushes to master, and on all PRs (even the ones that target other
+# branches)
+
+on:
+ push:
+   branches: [master]
+ pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install and Build
+      run: |
+        yarn install
+        yarn docs:build
+  
+    - name: HTML5 Validator
+      uses: Cyb3r-Jak3/html5validator-action@master
+      with:
+        root: main/.vuepress/dist
+        extra: --ignore_re r'\ADuplicate ID "outbound-link-title".*'
+
