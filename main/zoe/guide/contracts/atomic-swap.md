@@ -40,8 +40,9 @@ smart contract (which may have been written by someone else)
 and other participants. 
 
 A proposal has three parts:
-- `give` and `want` enforce offer safety.
-- `exit` enforces exit safety. 
+- `give`: What this party will give to the swap. Used by Zoe to enforce offer safety (Alice will get back what she gave or what she wanted).
+- `want`: What this party wants to get from the swap. Used by Zoe to enforce offer safety (Alice will get back what she gave or what she wanted).
+- `exit`: How this party can exit from the contract instance. Used by Zoe to enforce payout liveness (Alice will be able to get a payout according to the exit rule she specifies)
 
 In this case, Alice's exit rule is `onDemand`, meaning she
 can exit the contract instance at any time.
@@ -60,8 +61,7 @@ const alicePayment = { Asset: aliceMoola };
 
 For Alice to escrow with Zoe, she needs to use her invitation.  
 Then she makes her offer and receives a `seat`. The `seat`
-gives her access to the offer's outcome and her payouts.
-
+gives her access to the offer's result and her payouts.
 ```js
 const aliceSeat = await E(zoe).offer(aliceInvite, aliceProposal, alicePayments);
 ```
@@ -96,7 +96,7 @@ assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), detai
 
 Bob decides to exercise the invitation, and to escrow his payments. He then
 uses his invitation to make an offer, the same way that Alice used hers. 
-But Bob's written his proposal to match Alice's (notice that the `give` 
+But Bob has written his proposal to match Alice's (notice that the `give` 
 and `want` clauses are reversed from Alice's proposal):
 
 ```js
