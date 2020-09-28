@@ -2,156 +2,177 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/958a2c0a3dec38bdba2234934119ea2c28958262/packages/zoe/src/contracts/autoswap.js) (Last updated: 4/22/2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/2a8b0fc2ece7344604bcc23b295367cd871f6995/packages/zoe/src/contracts/autoswap.js) (Last updated: 2020-9-14)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-An Autoswap is like a swap, except instead of having to find a
-matching offer, an offer is always matched against the existing
-liquidity pool. The Autoswap contract checks whether your offer will
-keep the [constant product
-invariant](https://github.com/runtimeverification/verified-smart-contracts/blob/uniswap/uniswap/x-y-k.pdf)
-before accepting.
+Autoswap is a contract that maintains a pool of assets (the 'liquidity pool') that
+can always trade against any incoming offer. It can do this because the
+[constant product rule](https://medium.com/scalar-capital/uniswap-a-unique-exchange-f4ef44f807bf)
+ensures that it will never run out of assets and will always be able to quote a
+price it can trade at.
 
-An implementation of [UniSwap](https://uniswap.org/).
+This contract follows the design of [UniSwap](https://uniswap.org/), with a single
+pool. This means any autoswap installation can make exchanges between two
+issuers. `multipoolAutoswap` generalizes this to many pools, all of which share a
+common intermediate pool. We make this single autoswap contract available because it's
+simpler and therefore easier to read. We expect all practical usage to migrate to
+multipoolAutoswap.
+
+## The Autoswap API
+
+When the contract is instantiated, its two tokens (`Central` and `Secondary`) are
+specified in the `issuerKeywordRecord`. There is no behavioral difference between the
+two when trading; the names were chosen for consistency with multipoolAutoswap. When
+trading, use the keywords `In` and `Out` to specify the amount to be paid in and the
+amount to be received.
+
+When adding or removing liquidity, the amounts deposited must be in proportion to the
+current balances in the pool. The amount of the `Central` asset is used as the
+basis. The `Secondary` assets must be added in proportion.  If less `Secondary` is
+provided than required, we refuse the offer by calling `seat.kickOut()`. If more is
+provided than is required, we return the excess.
+
+Before trading can take place, someone must add liquidity using
+`makeAddLiquidityInvitation()`. Separate invitations are available that distinguish
+adding and removing liquidity, and swaps with input and output specified. Other API
+operations support price checks and checking the size of the liquidity pool.
+
+The `swap()` operation requires either the input amount or the output amount to be
+specified. `makeSwapInInvitation()` treats the give amount as definitive, while
+`makeSwapOutInvitation()` honors the want amount. With swapIn, a want amount can be
+specified, and if the offer can't be satisfied, the offer will be refunded. Similarly
+with swapOut, the want amount will be satisfied if possible. If more is provided as the
+give amount than necessary, the excess will be refunded. If not enough is provided, the
+offer will be refunded.
+
+The `publicFacet` has methods to
+ * get price quotes
+   * for a specified input: `getInputPrice()`
+   * for a specified output: `getOutputPrice()`
+ * make new invitations
+   * swap with input specified:`makeSwapInInvitation()`
+   * swap with output specified:`makeSwapOutInvitation()`
+   * add liquidity: `makeAddLiquidityInvitation()`
+   * remove liquidity: `makeRemoveLiquidityInvitation()`
+ * query about the state of liquidity pools
+   * the current outstanding liquidity: `getLiquiditySupply()`
+   * the current balances in the pool: `getPoolAllocation()`
+ * get the shared liquidity issuer
+    * Liquidity issuer: `getLiquidityIssuer()`
 
 ## Initialization
 
-Create an instance of the Autoswap code, and receive an invite that
-when used, will let you add liquidity to Autoswap.
+When someone creates an instance of the Autoswap code, they receive only the public
+facet. The creator has no special access or privileges.
 
 ```js
 const issuerKeywordRecord = harden({
-  TokenA: moolaIssuer,
-  TokenB: simoleanIssuer,
+  Central: moolaIssuer,
+  Secondary: simoleanIssuer,
 });
 
-const addLiquidityInvite = await E(zoe).makeInstance(
-  autoswapInstallationHandle,
+const publicFacet = await E(zoe).startInstance(
+  autoswapInstallation,
   issuerKeywordRecord,
 );
 ```
 
 ## Adding liquidity to the pool
 
-We can contribute to the Autoswap liquidity pool by making an offer by
-using an addLiquidityInvite. For instance, let's say that Alice
-creates a proposal with the associated payments of moola and simoleans
-and escrows them:
+We can contribute to the Autoswap liquidity pool by making an offer using an
+invitation to add liquidity. For instance, let's say that Alice creates a proposal
+with the associated payments of moola and simoleans and escrows them. At the time she
+creates the pool, the market price is 2 moola for 1 simolean, so that's the rate she
+sets up.
 
 ```js
-// Alice adds liquidity
-// 10 moola = 5 simoleans at the time of the liquidity adding
-// aka 2 moola = 1 simolean
-
 const moola = moolaAmountMath.make;
 const simoleans = simoleanAmountMath.make;
 const liquidity = liquidityAmountMath.make;
+const liquidityIssuer = await E(zoe).getLiquidityIssuer();
+const aliceLiquidityPurse = E(liquidityIssuer).makeEmptyPurse();
 
 const aliceProposal = harden({
   give: {
-    TokenA: moola(10),
-    TokenB: simolean(5)
+    Central: moola(10),
+    Secondary: simolean(5)
   },
   want: { Liquidity: liquidity(10) },
   exit: { onDemand: null },
 ]);
 
 const alicePayments = {
-  TokenA: aliceMoolaPayment,
-  TokenB: aliceSimoleanPayment
+  Central: aliceMoolaPayment,
+  Secondary: aliceSimoleanPayment
 }
 
-const {
-  outcome,
-  payout: aliceAddLiquidityPayoutP,
-} = await E(zoe).offer(addLiquidityInvite, aliceProposal, alicePayments);
+const seat =
+  await E(zoe).offer(addLiquidityInvitation, aliceProposal, alicePayments);
+const liquidityPayment = await E(seat).getPayout('Liquidity');
 
+E(aliceLiquidityPurse).deposit(liquidityPayment);
 ```
-She is able to ensure that she will get a minimum number of liquidity
-tokens back by specifying a rule for the liquidity token slot with
-`want`. In this case, Alice is stating that she wants at least
-10 liquidity tokens back.
 
 ## Making a swap offer
 
-Let's say that Bob wants to use the moola<->simolean Autoswap
-to exchange 2 moola. First he will check the price using the public
-API:
-
-#### Public API:
-1. `getCurrentPrice`
-2. `getLiquidityIssuer`
-3. `getPoolAllocation`
-4. `makeInvite`
+Let's say that Bob wants to use the moola-to-simolean Autoswap to sell 2 moola for
+simolean. First he uses the `publicFacet` to check the price:
 
 ```js
-const simoleanAmounts = E(publicAPI).getCurrentPrice(harden({ TokenA: moola(2) }));
+const simoleanAmounts = E(publicFacet).getInputPrice(moola(2), simoleanBrand);
 ```
-By using `getCurrentPrice`, he learns that the current price for 2 moola is 1
-simolean. Because other people may make offers before Bob does, he
-can't rely on this price. However, he can make his offer conditional
-on getting at least 1 simolean back. If the price has moved, he will
-get a refund:
+
+He learns that the current value of 2 moola is 1 simolean. Because other people may
+make offers before Bob does, he can't rely on this price lasting. However, he can make
+his offer conditional on getting at least 1 simolean back. If the price has moved
+against him, he will get his money back:
 
 ```js
  const bobMoolaForSimProposal = harden({
-  want: { TokenB: simoleans(1) },
-  give: { TokenA: moola(2) },
+  want: { Secondary: simoleans(1) },
+  give: { Central: moola(2) },
 });
 ```
 
-Now Bob uses the publicAPI to get an invite specifically for swapping.
+Bob uses the `publicFacet` to get an invitation for the swap he wants to make.
 
 ```js
-const swapInvite = await E(publicAPI).makeSwapInvite();
+const swapInvitation = await E(publicFacet).makeSwapInInvitation();
 ```
 
-He escrows 2 moola with Zoe and uses his invite to make an offer:
+He escrows 2 moola with Zoe and uses his invitation to make an offer:
 
 ```js
-const bobMoolaForSimPayments = harden({ TokenA: bobMoolaPayment });
+const bobMoolaPayment = harden({ Central: bobMoolaPayment });
 
-const { outcome, payout: bobPayoutP } = await E(zoe).offer(
-  swapInvite,
-  bobMoolaForSimProposal,
-  bobMoolaForSimPayments,
-);
+const swapSeat = await E(zoe).offer(swapInvitation, bobMoolaProposal, bobMoolaPayment);
 ```
 
 Now Bob can get his payout:
 
 ```js
-const bobPayout = await bobPayoutP;
-
-const bobMoolaPayout1 = await bobPayout.TokenA;
-const bobSimoleanPayout1 = await bobPayout.TokenB;
+const bobMoolaPayout = await E(swapSeat).getPayout('Central');
+const bobSimoleanPayout = await E(swapSeat).getPayout('Secondary');
 ```
 
 ## Removing Liquidity
 
-If Alice wants to remove liquidity and get moola and simoleans back,
-she can do that by making a new proposal and escrowing a payment of
-liquidity tokens:
+When Alice wants to remove liquidity to get moola and simoleans back, she makes a new
+proposal and escrows a payment of liquidity tokens:
 
 ```js
-const aliceRemoveLiquidityInvite = await E(publicAPI).makeRemoveLiquidityInvite();
+const aliceRemoveLiquidityInvitation = await E(publicFacet).makeRemoveLiquidityInvitation();
 
 const aliceRemoveLiquidityProposal = harden({
-  give: { Liquidity: liquidity(10) },
+  give: { Liquidity: liquidity(5) },
 });
 
-const {
-  outcome: removeLiquidityResult,
-  payout: aliceRemoveLiquidityPayoutP,
-} = await E(zoe).offer(
-  aliceRemoveLiquidityInvite,
+const aliceSeat = await E(zoe).offer(
+  aliceRemoveLiquidityInvitation,
   aliceRemoveLiquidityProposal,
-  harden({ Liquidity: liquidityPayout }),
+  harden({ Liquidity: E(aliceLiquidityPurse).withdraw(liquidity(5)) }),
 );
 
-const aliceRemoveLiquidityPayout = await aliceRemoveLiquidityPayoutP;
-
-const aliceMoolaPayout = await aliceRemoveLiquidityPayout.TokenA;
-const aliceSimoleanPayout = await aliceRemoveLiquidityPayout.TokenB;
-const aliceLiquidityPayout = await aliceRemoveLiquidityPayout.Liquidity;
+const aliceMoolaPayout = await E(aliceSeat).getPayout('Central');
+const aliceSimoleanPayout = await E(aliceSeat).getPayout('Secondary');
 ```

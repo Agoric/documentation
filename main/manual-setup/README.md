@@ -8,7 +8,7 @@ This document gives an overview of the process of setting up
 1.  a local environment that will allow you to build and debug
 2.  an environment that emulates a remote setup for testing
 3.  deploying to the TestNet
-4.  (not available yet) deploying to MainNet
+4.  (not available yet) deploying to Mainnet
 
 In order to build a DeFi app in the SwingSet environment, your team will have to write code for three things:
 
@@ -19,7 +19,7 @@ In order to build a DeFi app in the SwingSet environment, your team will have to
       other chains
 
 
-To develop and deploy new code, you'll have to clone our [Cosmic SwingSet](https://github.com/Agoric/cosmic-swingset) repo from GitHib
+To develop and deploy new code, you'll have to clone our [Cosmic SwingSet](https://github.com/Agoric/cosmic-swingset) repo from GitHub
 
 ```sh
 $ git clone https://github.com/Agoric/cosmic-swingset
@@ -86,7 +86,7 @@ In this scenario, you run:
 
 The solo nodes communicate with the testnet node
 
-Before using this scenario, it is recommanded that you test your code with Scenario 3.
+Before using this scenario, it is recommended that you test your code with Scenario 3.
 
 Prepare the chain and solo nodes:
 ```sh

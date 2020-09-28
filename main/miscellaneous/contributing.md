@@ -11,12 +11,12 @@ $ git clone https://github.com/Agoric/documentation
 
 1. Install dependencies
 ```sh
-$ npm install
+$ yarn install
 ```
 
 1. Build dev docs
 ```sh
-$ npm run docs:dev
+$ yarn docs:dev
 ```
 
 1. View documentation site at `localhost:8080`. Any changes triggers a hot reload.
@@ -69,7 +69,7 @@ If we are using child routes, we must use the Object form as child routes are sp
   {
     title: 'API',
     path: '/api/',
-    collapsable: false,
+    collapsible: false,
     sidebarDepth: 2,
     children: [
       { title: 'Mint', path: '/api/mint' },

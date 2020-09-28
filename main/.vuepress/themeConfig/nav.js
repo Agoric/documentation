@@ -8,7 +8,6 @@ module.exports = [
   {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
-    link: '/getting-started/',
     items: [
       {
         text: 'Documentation Guide',
@@ -50,12 +49,16 @@ module.exports = [
         ariaLabel: 'Agoric CLI Guide Menu',
         link: '/getting-started/agoric-cli-guide',
       },
+      {
+        text: 'Agoric Alpha',
+        ariaLabel: 'Agoric Alpha',
+        link: '/getting-started/alpha',
+      },
     ]
   },
   {
     text: 'Guides',
     ariaLabel: 'Guides',
-    link: '/getting-started/',
     items: [
       {
         text: 'Documentation',

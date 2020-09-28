@@ -9,12 +9,31 @@ the maker of the mint and could be deceptive, but is useful for debugging and do
 
 The AllegedName must be a string.
 
+## Allocation
+
+Allocations represent the amounts to be paid out to each [seat](#seat) on exit. Possible exits are exercising 
+an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
+out what amount a current allocation is. 
+
+In more detail, Zoe's guarantee is each seat will either get what it asked for in its offer, or the return of what was deposited.
+The contract can reallocate fairly arbitrarily to achieve that. As contract code is visible to its clients, users can see
+what the contract intends to do.
+
+Zoe enforces those terms by keeping track of a current allocation for each seat. The initial allocation is the deposit. 
+The contract can modify a seat's allocation as long as it never violates offer safety or rights conservation. i.e. it can't 
+assign assets that weren't already in some allocation and it can't assign them to more than one seat. Also, goods can't 
+disappear from the total allocation.
+
 ## AmountMath
 AmountMath executes the logic of how amounts are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
-gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic
-[MathHelpers](#mathhelpers), which manipulate an `amount`'s [extent](#extent) or unbranded portion. 
-Standard natural number operations cannot be used on extents, since they can be an array or object. 
+gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath has a single set of polymorphic
+methods of three different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
+[non-fungible](#non-fungible) assets (values are an array or object). The three AmountMathKinds are
+- `MathKind.NAT`: Used with fungible assets. `amount` values are natural numbers (non-negative integers). Default value.
+- `MathKind.STRING_SET`: Used with non-fungible assets. `amount` values are strings.
+- `MathKind.SET`: Used with non-fungible assets. `amount` values are objects or records with multiple properties.
+
 See the [ERTP Guide's AmountMath section](https://agoric.com/documentation/ertp/guide/amount-math.html) 
 and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) for more information.
 
@@ -24,8 +43,8 @@ by [issuers](#issuer) and [mints](#mint), and represent the goods and currency c
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-An amount is comprised of a [brand](#brand) with an [extent](#extent). For example, "4 quatloos"
-is an amount with an extent value of "4" and a brand value of the imaginary currency "quatloos".
+An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 quatloos"
+is an amount with a value of "4" and a brand of the imaginary currency "quatloos".
 
 See the [ERTP Guide's Amounts section](https://agoric.com/documentation/ertp/guide/amounts.html) 
 and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) 
@@ -48,7 +67,7 @@ synchronously compared for structural equivalence.
 
 A comparable is a JavaScript object containing no promises, and can
 thus be locally compared for equality with another object. If either object
-contains promises, equality is indeterminable. If both are fullfilled down
+contains promises, equality is indeterminable. If both are fulfilled down
 to Presences and local state, then either they're the same all the way
 down, or they represent different objects.
 
@@ -70,18 +89,12 @@ Key ERTP concepts include [Issuers](#issuer), [mints](#mint),
 see the [ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction.html),
 [ERTP Guide](https://agoric.com/documentation/ertp/guide/), and [ERTP API](https://agoric.com/documentation/ertp/api/).
 
-## Extent
-Extents are the part of an [amount](#amount) that describe the extent of something
-that can be owned or shared: How much, how many, or a description of a unique asset, such as
-Pixel(3,2), $3, or ‘Right to occupy on Tuesdays’. [Fungible](#fungible) extents are usually 
-represented by natural numbers. Other extents may be represented as strings naming a particular
-right, or an arbitrary object representing the rights at issue. The latter two examples 
-are usually [non-fungible](#nonfungible) assets. Extents must be [Comparable](#comparable).
+## Facet
 
-See the [ERTP Guide's Extent section](https://agoric.com/documentation/ertp/guide/extent.html) for more information.
+A particular view or API of an object. An object can have many facets.
 
 ## Fungible
-A fungible asset is one where all exemplars of the asset are interchangable. For example, if you 
+A fungible asset is one where all exemplars of the asset are interchangeable. For example, if you 
 have 100 one dollar bills and need to pay someone five dollars, it does not matter which
 five one dollar bills you use. Also see [non-fungible](#non-fungible).
 
@@ -104,13 +117,6 @@ its asset type is valid.
 See the [ERTP Guide's Issuer section](https://agoric.com/documentation/ertp/guide/issuer.html)
 and the [ERTP API's Issuer section](https://agoric.com/documentation/ertp/api/issuer.html) for more information.
 
-## MathHelpers
-MathHelpers are methods for performing arithmetic operations on an [amount's](#amount) [extent](#extent). 
-[AmountMath](#amountmath) uses MathHelpers to do extent arithmetic, after which it [brands](#brand)
-the result to create a new [amount](#amount). For more information, see the 
-[MathHelpers ERTP Guide section](https://agoric.com/documentation/ertp/guide/math-helpers.html) and
-the [MathHelpers ERTP API section](https://agoric.com/documentation/ertp/api/math-helpers.html).
-
 ## Mint
 In ERTP, mints create digital assets and are the only objects with the authority to do so. 
 Access to a mint gives you the power to create more digital assets of its type at will. Mints
@@ -124,10 +130,10 @@ and the [ERTP API's Mint section](https://agoric.com/documentation/ertp/api/mint
 
 ## Non-fungible
 A non-fungible asset is one where each incidence of the asset has unique individual properties and
-is not interchangable with another incidence. For example, if your asset is show tickets, it matters to the buyer 
+is not interchangeable with another incidence. For example, if your asset is show tickets, it matters to the buyer 
 what the date and time of the show is, which row the seat is in, and where in the row the 
 seat is (and likely other factors as well). You can't just give them any ticket in your supply,
-as they are not interchangable (and may even have different prices). See also [fungible](#fungible).
+as they are not interchangeable (and may even have different prices). See also [fungible](#fungible).
 
 ## Notifier
 
@@ -138,12 +144,12 @@ See more: [Notifier](/distributed-programming.md)
 
 ## Object Capabilities
 
-Objects have state, behavior, and references. Lets say Object A has references to Objects B and C, while B and C do not have references to each other. Thus, A can communicate with B and C, and B and C cannot commuicate with each other.
+Objects have state, behavior, and references. Lets say Object A has references to Objects B and C, while B and C do not have references to each other. Thus, A can communicate with B and C, and B and C cannot communicate with each other.
 There is an effective zero-cost firewall between B and C.
 
 An *object capability system* constrains how references are obtained. You can't get one just by knowing the name of a global variable or a public class. You can get a reference in only three ways. 
 - Creation: Functions that create objects get a reference to them.
-- Construction: Constuctors can endow their constructed objects with  references, including inherited references. 
+- Construction: Constructors can endow their constructed objects with references, including inherited references. 
 - Introduction: 
   - A has references to B and C. 
   - B and C  do *not* have references to each other
@@ -177,6 +183,26 @@ See the [ERTP Guide's Purses section](https://agoric.com/documentation/ertp/guid
 [ERTP API's Purses section](https://agoric.com/documentation/ertp/api/purse.html)
 for more information.
 
+## Seat
+
+Zoe uses seats to represent offers, and has two seat [facets](#facet)  a ZCFSeat and a UserSeat.
+
+Seats represent active offers and let contracts and users interact with them. ZCFSeats are used 
+within contracts and with `zcf.` methods. User seats represent offers external to Zoe and the 
+contract. The party who exercises an invitation and sends the `offer()` message to Zoe 
+gets a UserSeat that can check payouts' status or retrieve their results.
+
+## Value
+
+Values are the part of an [amount](#amount) that describe the value of something
+that can be owned or shared: How much, how many, or a description of a unique asset, such as
+Pixel(3,2), $3, or ‘Right to occupy on Tuesdays’. [Fungible](#fungible) values are usually 
+represented by natural numbers. Other values may be represented as strings naming a particular
+right, or an arbitrary object representing the rights at issue. The latter two examples 
+are usually [non-fungible](#nonfungible) assets. Values must be [Comparable](#comparable).
+
+See the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/value.html) for more information.
+
 ## Vat
 
 A vat is a *unit of synchrony*. This means that within a JavaScript vat, objects and functions can communicate with one another synchronously.
@@ -188,5 +214,4 @@ A physical machine can run one or several vats. A blockchain can run one or seve
 Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
-
 

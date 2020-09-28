@@ -1,113 +1,163 @@
 # Amount Math
 
-Logic for manipulating amounts.
+Logic for manipulating `amounts`.
+
+## Obtaining an AmountMath
+
+There are three ways and circumstances you can get access to an `amountMath`:
+- You made its associated `mint` and `issuer` with `makeIssuerKit()`, so use the `amountMath` returned from the call. 
+- You are writing a Zoe contract and the `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`. 
+- You receive or learn about an `issuer` and are not writing a Zoe contract, so call `makeLocalAmountMath(issuer)`.
+
+## AmountMath Kinds
+
+There are three different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
+
+The three kinds of `amountMath` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
+
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+
+Use `makeIssuerKit(allegedName, MathKind)` to specify which `amountMath` 
+kind your contract uses. The second parameter, `MathKind` is optional and 
+defaults to `MathKind.NAT` if not given. For example
+```js
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
+makeIssuerKit('foobars', MathKind.STRING_SET);
+makeIssuerKit('kitties', MathKind.SET);
+```
 
 ## Amount
 
-Amounts are descriptions of digital assets, answering the questions "how much" and "of what kind". Amounts are extents labeled with a brand. AmountMath executes the logic of how amounts are changed when digital assets are merged, separated, or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks gives a new balance of 5 bucks. An empty purse has 0 bucks. AmountMath relies heavily on polymorphic MathHelpers, which manipulate the unbranded portion.
+An `amount` is a description of digital assets, answering the 
+questions "how much?" and "of what kind?". It is a `value` ("how much") 
+labeled with a `brand` ("of what kind"). `AmountMath` executes the logic 
+of how an `amount` changes when digital assets are merged, separated, or 
+otherwise manipulated. For example, a deposit of 2 Quatloos into a `purse` 
+that already has 3 Quatloos gives a new balance of 5 Quatloos. 
+An empty `purse` has 0 Quatloos. 
 
 ```js
 someAmount: {
-  brand,
-  extent: someExtent
-}
+  brand: someBrand,
+  value: someValue,}
 ```
 
-## Extent
+## Value
 
-Extents describe the extent of something that can be owned or shared. Fungible extents are normally represented by natural numbers. Other extents may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+`values` describe how much of something can be owned or shared. A fungible `value` is normally represented by a natural number. Other `values` may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
 
-Extent must be Comparable.
+## makeLocalAmountMath(issuer)
+- `issuer`: `{issuer}`
+- Returns: `{ Promise<AmountMath> }`
+
+Creates and returns a local `amountMath` object. The new
+local copy uses the same remote `brand` as the `issuer` does.
+
+This should be used when you need an `amountMath`, and receive or 
+learn about an `issuer`, and are not writing a Zoe contract.
+```js
+import { makeLocalAmountMath } from '@agoric/ertp';
+const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
+```
 
 ## amountMath.getBrand()
 - Returns: `{Brand}`
 
-Return the brand.
+Return the `brand` the `amountMath` works on. 
+
+The association cannot be broken or changed;
+a particular `amountMath` and its methods 
+will always and only be used on `amounts` that have that
+`amountMath`'s initially associated `brand`. 
 
 ```js
-const { issuer } = produceIssuer('bucks');
-const exampleAmountMath = issuer.getAmountMath();
-
+//Get the amountMath's associated brand.
 const exampleBrand = exampleAmountMath.getBrand();
 ```
 
-## amountMath.getMathHelpersName()
+## amountMath.getAmountMathKind()
 - Returns: `{String}`
 
-Get the name of the mathHelpers used.
+Get the kind (`MathKind.NAT`, `MathKind.STRING_SET`, `MathKind.SET`) of the `amountMath`.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
-amountMath.getMathHelpersName(); // 'nat'
+quatloosAmountMath.getAmountMathKind(); // For example, returns MathKind.NAT
 ```
 
-## amountMath.make(allegedExtent)
+## amountMath.make(allegedValue)
 
-- `allegedExtent` `{Extent}`
+- `allegedValue` `{Value}`
 - Returns: `{Amount}`
 
-Make an amount from an extent by adding the brand.
+Make an `amount` from a `value` by adding the `brand` associated with
+the `amountMath`.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
-const amount837 = amountMath.make(837);
+//amount837 = { value: 837, brand: quatloos }
+const amount837 = quatloosAmountMath.make(837);
 ```
 
-## amountMath.coerce(allegedAmountOrExtent)
-- `allegedAmountOrExtent` `{Amount}`
+## amountMath.coerce(allegedAmount)
+- `allegedAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Make sure this amount (or extent) is valid and return it as an amount if so.
+Make sure this `amount` is valid and if so, return it.
+If not valid, throws an exception. This checks if
+an `amount` coming from elsewhere is for the expected `brand`.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
-const bucks50 = amountMath.make(50);
-
-amountMath.coerce(bucks50); // equal to bucks50
+const quatloos50 = quatloosAmountMath.make(50);
+// Returns the same amount as quatloos50
+const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
 ```
 
-## amountMath.extent(amount)
-- Returns: `{Extent}`
+## amountMath.getValue(amount)
+- `amount` `{Amount}`
+- Returns: `{Value}`
 
-Extract and return the extent.
+Returns the `value` from the given `amount`.
 
 ```js
-const { amountMath } = produceIssuer('bucks');
-const fungible123 = amountMath.make(123);
+const quatloos123 = quatloosAmountMath.make(123);
 
 // returns 123
-const extent = amountMath.extent(amount);
+const myValue = quatloosAmountMath.getValue(quatloos123);
 ```
 
 ## amountMath.getEmpty()
 - Returns: `{Amount}`
 
-Return the amount representing an empty amount. This is the identity element for `MathHelpers.add()` and `MatHelpers.subtract()`.
+Returns the `amount` representing an empty `amount` for the `amountMath`'s 
+associated `brand`. This is the identity element for `AmountMath.add()` 
+and `AmountMath.subtract()`. The empty `value` depends 
+on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`), 
+or `MathKind.STRING_SET` (`[]`).
 
 ```js
-const { amountMath } = produceIssuer('bucks');
-
-// Returns an empty amount for this issuer.
-// Since this is a fungible amount it returns 0
-const empty = amountMath.getEmpty();
+// Returns an empty amount for this amountMath.
+// Since this is a fungible amount it returns an amount
+// with 0 as its value.
+const empty = quatloosAmountMath.getEmpty();
 ```
 
 ## amountMath.isEmpty(amount)
 - `amount` `{Amount}`
-- Returns: `{boolean}`
+- Returns: `{Boolean}`
 
-Return true if the amount is empty. Otherwise false.
+Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
-const empty = amountMath.getEmpty();
-const fungible1 = amountMath.make(1);
+const empty = quatloosAmountMath.getEmpty();
+const quatloos1 = quatloosAmountMath.make(1);
 
 // returns true
-amountMath.isEmpty(empty)
+quatloosAmountMath.isEmpty(empty)
 
 // returns false
-amountMath.isEmpty(fungible1)
+quatloosAmountMath.isEmpty(quatloos1)
 ```
 
 ## amountMath.isGTE(leftAmount, rightAmount)
@@ -115,18 +165,30 @@ amountMath.isEmpty(fungible1)
 - `rightAmount` `{Amount}`
 - Returns: `{boolean}`
 
-Returns true if the leftAmount is greater than or equal to the rightAmount. For non-scalars, "greater than or equal to" depends on the kind of amount, as defined by the MathHelpers. For example, whether rectangle A is greater than rectangle B depends on whether rectangle A includes rectangle B as defined by the logic in MathHelpers.
+Returns `true` if the `value` of `leftAmount` is greater than or equal to
+the `value` of `rightAmount`. Both `amount` arguments must have the same
+`brand` as this `amountMath`.
+
+For non-fungible `values`, what "greater than or equal to" is depends on the 
+kind of `amountMath`. For example, { 'seat 1', 'seat 2' } is considered
+greater than { 'seat 2' } because the former both contains all of the latter's 
+contents and has additional elements.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
-const empty = amountMath.getEmpty();
-const fungible1 = amountMath.make(1);
+const empty = quatloosAmountMath.getEmpty();
+const quatloos5 = quatloosAmountMath.make(5);
+const quatloos10 = quatloosAmountMath.make(10);
 
 // Returns true
-amountMath.isGTE(fungible1, empty);
-
+quatloosAmountMath.isGTE(quatloos5, empty);
 // Returns false
-amountMath.isGTE(empty, fungible1);
+quatloosAmountMath.isGTE(empty, quatloos5);
+// Returns true
+quatloosAmountMath.isGTE(quatloos10, quatloos5);
+// Returns false
+quatloosAmountMath.isGTE(quatloos5, quatloos10);
+// Returns true
+quatloosAmountMath.isGTE(quatloos5, quatloos5);
 ```
 
 ## amountMath.isEqual(leftAmount, rightAmount)
@@ -134,19 +196,30 @@ amountMath.isGTE(empty, fungible1);
 - `rightAmount` `{Amount}`
 - Returns: `{boolean}`
 
-Returns true if the leftAmount equals the rightAmount. We assume that if isGTE is true in both directions, isEqual is also true.
+Returns `true` if the `value` of `leftAmount` is equal to
+the `value` of `rightAmount`. Both `amount` arguments must have the same
+`brand`.
+
+For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
+For example, { 'seat 1', 'seat 2' } is considered
+unequal to { 'seat 2' } because the number of items in the former is
+different from that of the latter. Similarly { 'seat 1',  'seat 3'  } and { 'seat 2' } 
+are considered unequal because the latter has elements that are not contained in the former.
 
 ```js
-const { amountMath } = produceIssuer('fungible');
-const empty = amountMath.getEmpty();
-const fungible1 = amountMath.make(1);
-const anotherFungible1 = amountMath.make(1);
+const empty = quatloosAmountMath.getEmpty();
+const quatloos10 = quatloosAmountMath.make(10);
+const quatloos5 = quatloosAmountMath.make(5);
+const quatloos5b = quatloosAmountMath.make(5);
 
 // Returns true
-amountMath.isEqual(fungible1, anotherFungible1);
-
+quatloosAmountMath.isEqual(quatloos10, quatloos10);
+// Returns true
+quatloosAmountMath.isEqual(quatloos5, quatloos5b);
 // Returns false
-amountMath.isEqual(empty, fungible1);
+quatloosAmountMath.isEqual(quatloos10, quatloos5);
+// Returns false
+quatloosAmountMath.isEqual(empty, quatloos10);
 ```
 
 ## amountMath.add(leftAmount, rightAmount)
@@ -154,17 +227,25 @@ amountMath.isEqual(empty, fungible1);
 - `rightAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Returns a new amount that is the union of both leftAmount and rightAmount.
+Returns a new `amount` that is the union of `leftAmount` and `rightAmount`. Both
+arguments must be of the same `brand`.
 
-For fungible amount this means adding the extents. For other kinds of amount, it usually means including all of the elements from both left and right.
+For fungible `amounts` this means adding their `values`. For non-fungible
+`amounts`, it usually means including all of the elements from `leftAmount`
+and `rightAmount`.
+
+If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty 
+`amount` argument. If both are empty, it returns an empty `amount`.
 
 ```js
-const { amountMath } = produceIssuer('myItems', 'strSet');
-const listAmountA = amountMath.make(harden['1','2','4']);
-const listAmountB = amountMath.make(harden['3']);
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+const { issuer: myItemsIssuer } = makeIssuerKit('myItems', MathKind.STRING_SET');
+const myItemsAmountMath = makeLocalAmountMath(myItemsIssuer);
+const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
+const listAmountB = myItemsAmountMath.make(harden['3']);
 
-// Returns ['1', '2', '4', '3']
-const combinedList = amountMath.add(listAmountA, listAmountB);
+// Returns an amount whose value is ['1', '2', '4', '3']
+const combinedList = itemsAmountMath.add(listAmountA, listAmountB);
 ```
 
 ## amountMath.subtract(leftAmount, rightAmount)
@@ -172,17 +253,41 @@ const combinedList = amountMath.add(listAmountA, listAmountB);
 - `rightAmount` `{Amount}`
 - Returns: `{Amount}`
 
-Returns a new amount that is the leftAmount minus the rightAmount (i.e. everything in the leftAmount that is not in the rightAmount). If leftAmount doesn't include rightAmount (subtraction results in a negative), throw  an error. Because the left amount must include the right amount, this is NOT equivalent to set subtraction.
+Returns a new `amount` that is the `leftAmount` minus the `rightAmount` (i.e. 
+everything in the `leftAmount` that is not in the `rightAmount`). If `leftAmount` 
+doesn't include `rightAmount` (subtraction results in a negative), it throws an 
+error. Because `leftAmount` must include `rightAmount`, this is **not** 
+equivalent to set subtraction.
+
+`leftAmount` and `rightAmount` must be of the same `brand`.
+
+If the `rightAmount` is empty, it returns the `leftAmount`. If both arguments are
+empty, it returns an empty `amount`.
 
 ```js
-const { amountMath } = produceIssuer('myItems', 'strSet');
-const listAmountA = amountMath.make(harden['1','2','4']);
-const listAmountB = amountMath.make(harden['3']);
-const listAmountC = amountMath.make(harden['2']);
+import { MathKind, makeIssuerKit } from '@agoric/ertp';
+const { issuer: myItemsIssuer } = makeIssuerKit('myItems', MathKind.STRING_SET);
+const myItemsLocalAmountMath = makeLocalAmountMath(myItemsIssuer);
+const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
+const listAmountB = myItemsAmountMath.make(harden['3']);
+const listAmountC = myItemsAmountMath.make(harden['2']);
 
 // Returns ['1', '4']
-const subtractedList = amountMath.subtract(listAmountA, listAmountC)
+const subtractedList = itemsAmountMath.subtract(listAmountA, listAmountC)
 
 // Throws error
-const badList = amountMath.subtract(listAmountA, listAmountB)
+const badList = itemsAmountMath.subtract(listAmountA, listAmountB)
 ```
+## Related Methods
+
+The following methods on other ERTP components and objects also either operate
+on or return an `amount` or `amountMath`. While a brief description is given for each, you should
+click through to a method's main documentation entry for full details on
+what it does and how to use it.
+
+- <router-link to="./issuer.html#issuer-getamountof-payment">`issuer.getAmountOf(payment)`</router-link>
+  - Returns the `amount` description of the `payment`
+- <router-link to="./issuer.html#issuer-getamountmathkind">`issuer.getAmountMathKind()`</router-link>
+  - Returns the kind of the `issuer`'s associated `amountMath`.
+- [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
+  - Returns the `amountMath` associated with the `brand`.

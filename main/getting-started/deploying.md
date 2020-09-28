@@ -19,7 +19,7 @@ Remember, your Dapp has three primary subdirectories:
 ## How it works
 
 All deployment happens via the local running Agoric process. This is usually the `ag-solo` process, 
-and frequently refered to as that or just as `ag-solo`. It is also sometimes described as/called an Agoric VM or a local server.
+and frequently referred to as that or just as `ag-solo`. It is also sometimes described as/called an Agoric VM or a local server.
 
 `ag-solo` communicates with either a locally running or remote chain. The local process has a `home` object, which contains 
 references to services on-chain, including `zoe`, the default `registry`, and an application user's `wallet`. Developers can
@@ -31,7 +31,7 @@ The deployment script then uses the `home` object to access `zoe` which installs
 Via the REPL associated with the wallet, developers can use all the on-chain commands that deployment scripts use to deploy 
 contracts and Dapps.
 
-Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, through which it can reach the chain."
+Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, through which it can reach the chain.
 
 ## Contract deployment
 

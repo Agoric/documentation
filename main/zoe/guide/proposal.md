@@ -1,41 +1,69 @@
-# The Structure of Proposals
+# The Structure of Offers
 
 <Zoe-Version/>
 
-## Making an offer
+## Making An offer
 
-In order to make an offer, you must provide two things: the payments
-that will be escrowed as part of the offer, and a statement of the
-conditions of the offer. This statement, which is approved by the user
-in their wallet, is known as the proposal.
+To make an offer, you use [`E(zoe).offer()`](https://github.com/Agoric/documentation/blob/Alpha-Zoe-Objects/main/zoe/api/zoe.md#ezoeofferinvitation-proposal-paymentkeywordrecord), which takes three arguments:
+- An `invitation` to participate in this contract instance.
+- A `proposal` stating your offer conditions.
+- The `payments` escrowed for the offer, each in association with a `proposal`-specified keyword.
 
-## Structure of the proposal
+## Invitations
 
-Proposals are objects with `give`, `want` and `exit` keys.
+`Invitations` are a special case of ERTP `payments`. They are linked to a specific contract `instance`, and
+having one gives you the right to participate in that contract `instance`, for example, by making offers in it.
 
-`give` and `want` utilize keywords defined by the contract.
-Keywords are unique identifiers per contract, that tie together the proposal,
-payments to be escrowed, and payouts to the user.
-In the example below, "Asset" and "Price" are the keywords. In an auction, however,
-the keywords might be "Asset" and "Bid".
+There are two main ways for contract users to get an `invitation`:
+- If you create the contract `instance`, you get a special creator `invitation`.
+- Someone (possibly you) who holds the right objects has created an `invitation` for a contract `instance` and gives it to
+  you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
+  doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
 
-`exit` determines when the user can cancel their offer. The possible kinds are:
-1. 'onDemand': the user can cancel on demand
-2. 'afterDeadline': the user's offer is automatically cancelled after
-   a deadline. This option requires additional properties: a timer
-   object and a deadline.
-3. 'waived': the user agrees that they can't cancel and they are
-   relying entirely on the smart contract to complete their offer
-   promptly.
+## Proposals
+
+Proposals are records with `give`, `want`, and `exit` keys.
 
 ```js
-const carolsProposal = harden({
-  give: { Asset: moola(4 )},
-  want: { Price: simoleans(15) },
-  exit: { afterDeadline: {
-    timer,
-    deadline: 100,
-  }}
+const myProposal = harden({
+  give: { Asset: quatloosAmountMath.make(4)},
+  want: { Price: moolaAmountMath.make(15) },
+  exit: { 'onDemand'
 })
 ```
+`give` and `want` use keywords defined by the contract.
+Keywords are unique identifiers per contract, that tie together the proposal,
+payments to be escrowed, and payouts to the user.
+In the example above, `Asset` and `Price` are the keywords. However, in an auction contract,
+the keywords might be `Asset` and `Bid`.
+
+The `quatloosAmountMath.make(4)` is just making an ERTP `amount`, or description of digital assets.
+In this case, 4 of our imaginary Quatloos currency. `moolaAmountMath.make(15)` is making an `amount` of 15 of our imaginary Moola currency. 
+
+**Note**: It's important to understand that `amounts` are just descriptions of assets with no
+intrinsic value. `payments` hold actual digital assets.
+
+`exit` determines how an offer can be can cancelled:
+- `'onDemand'`: (Default) Whenever the user wants.
+- `'waived'`: The user cannot cancel, relying on the contract to finish the offer.
+- `'afterDeadline'`: Cancelled automatically after a deadline. This requires two
+  more properties, a `timer` object and a deadline value.
+
+## Escrowed Payments
+
+Using the same keywords as your `proposal`, you must specify a `PaymentKeywordRecord`.
+This is a record with the keywords as keys, and `payments` containing digital assets as
+values. Zoe escrows these `payments` on behalf of this offer until the offer is completed
+or rejected or the assets are reassigned to another offer. 
+```js
+const paymentKeywordRecord = { 
+  'Asset' : quatloosPayment, 
+  'Price' : moolaPayment 
+};
+```
+## Returned Value
+
+`offer()` returns a `UserSeat` object. Its name comes from the concept of "having a seat at the table" 
+for the contract's execution. 
+
 

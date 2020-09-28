@@ -7,7 +7,8 @@
   },
   "scripts": {
     "docs:dev": "vuepress dev main",
-    "docs:build": "vuepress build main"
+    "docs:build": "vuepress build main",
+    "check-links": "vuepress check-md main"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {},
   "devDependencies": {
-    "vuepress": "^1.2.0"
+    "vuepress": "^1.5.4",
+    "vuepress-plugin-check-md": "0.0.2"
   }
 }

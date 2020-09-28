@@ -130,22 +130,11 @@ The possible records are:
 }
 ```
 
-## OfferStatuses Record
-
-`active` and `inactive` lists of offerHandles.
-
-```js
-{
-  active: someListOfOfferHandles,
-  inactive: anotherListOfOfferHandles
-}
-```
-
 ## Installation Record
 ```js
 {
-  handle, // opaque identifier, used as the table key
-  installation, // contract code
+  installationHandle, // opaque identifier, used as the table key
+  bundle, // contains source code (accessible via bundle.source) and other info. 
 }
 ```
 
@@ -153,7 +142,7 @@ The possible records are:
 
 ```js
 { 
-  handle, // opaque identifier for the instance, used as the table key
+  instanceHandle, // opaque identifier for the instance, used as the table key
   installationHandle, // opaque identifier for the installation
   publicAPI, // the invite-free publicly accessible API for the contract
   terms, // contract parameters
@@ -165,7 +154,7 @@ The possible records are:
 ## Offer Record
 ```js
 { 
-  handle, // opaque identifier for the offer, used as the table key
+  offerHandle, // opaque identifier for the offer, used as the table key
   instanceHandle, // opaque identifier for the instance
   proposal, // the offer proposal (including want, give, exit)
   currentAllocation, // the amountKeywordRecord that will be turned into payouts
