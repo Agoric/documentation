@@ -1,6 +1,3 @@
-// WARNING: THE CODE IN THIS FILE WILL BE SHOWN ON THE AGORIC
-// DOCUMENTATION SITE.
-
 import '@agoric/install-ses';
 import test from 'ava';
 import { E } from '@agoric/eventual-send';

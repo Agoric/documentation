@@ -1,6 +1,3 @@
-// WARNING: THE CODE IN THIS FILE WILL BE SHOWN ON THE AGORIC
-// DOCUMENTATION SITE.
-
 // #region contractFormat
 // @ts-check
 // Checks the types as defined in JSDoc comments
