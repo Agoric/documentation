@@ -349,6 +349,7 @@ installationP
 instanceHandle
 instantiation
 Interchain
+interoperability
 interoperable
 invitationHandle
 invitationIssuer
@@ -670,6 +671,7 @@ swingset
 Swingset
 SwingSet
 SwingSets
+synchrony
 tapFaucet
 targetName
 tc

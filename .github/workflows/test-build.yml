@@ -26,6 +26,18 @@ jobs:
         root: main/.vuepress/dist
         extra: --ignore_re r'\ADuplicate ID "outbound-link-title".*'
 
-    - name: Spellcheck
-      uses: rojopolis/spellcheck-github-actions@0.5.0
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools
+        python -m pip install pyspelling
+    - name: Install Aspell
+      run: |
+        sudo apt-get install aspell aspell-en
 
+    - name: Spell check
+      run: |
+        python -m pyspelling
