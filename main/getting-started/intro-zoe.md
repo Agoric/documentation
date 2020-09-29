@@ -61,10 +61,10 @@ contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/cont
 
 ## Using an example Zoe smart contract
 
-Let's imagine that our friend Alice has sent a `Zoe invitation` to
-[our wallet](/wallet-api.md). This invitation will let us join Alice's
-running contract instance in a particular role. Without an invitation,
-we are not able to join.
+Let's imagine your friend Alice has sent you a `Zoe invitation` for a contract instance to
+your [wallet](/wallet-api.md). You must have a Zoe invitation to a
+specific contract instance to join and participate in it. 
+
 
 Compare this to a smart contract on Ethereum. On Ethereum, the smart
 contract developer must guard against malicious calls and store an
