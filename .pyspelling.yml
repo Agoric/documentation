@@ -1,5 +1,5 @@
 matrix:
-- name: Markdown
+- name: html
   aspell:
     lang: en
   dictionary:
@@ -9,9 +9,7 @@ matrix:
   pipeline:
   - pyspelling.filters.html:
     ignores:
-    - code
-    - pre
-    - pre.language-js
+    - :matches(code, pre)
   sources:
   - 'main/.vuepress/dist/**/*.html'
   default_encoding: utf-8
