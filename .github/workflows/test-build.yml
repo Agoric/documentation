@@ -39,5 +39,5 @@ jobs:
         sudo apt-get install aspell aspell-en
 
     - name: Spell check
-       run: |
-         python -m pyspelling
+      run: |
+        python -m pyspelling
