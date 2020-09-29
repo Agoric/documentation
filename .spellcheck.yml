@@ -14,5 +14,5 @@ matrix:
     - code
     - pre
   sources:
-  - '**/*.md'
+  - 'main/.vuepress/dist/**/*.html'
   default_encoding: utf-8

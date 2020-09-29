@@ -26,3 +26,6 @@ jobs:
         root: main/.vuepress/dist
         extra: --ignore_re r'\ADuplicate ID "outbound-link-title".*'
 
+    - name: Spellcheck
+      uses: rojopolis/spellcheck-github-actions@0.5.0
+
