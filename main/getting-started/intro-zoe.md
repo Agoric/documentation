@@ -59,7 +59,7 @@ Desk market maker
 contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/otcDesk.js)
 * contracts for [minting fungible](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintPayments.js) and [non-fungible tokens](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintAndSellNFT.js)
 
-## Using a Zoe smart contract: an example
+## Using an example Zoe smart contract
 
 Let's imagine that our friend Alice has sent a `Zoe invitation` to
 [our wallet](/wallet-api.md). This invitation will let us join Alice's
