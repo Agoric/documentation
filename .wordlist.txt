@@ -32,8 +32,10 @@ aliceMoolaGainAmount
 aliceMoolaPayment
 aliceMoolaPayout
 aliceMoolaPurse
+aliceOffer
 alicePayment
 alicePayments
+alicePayout
 alicePricePayout
 aliceProposal
 aliceQuatloosDepositFacet
@@ -95,7 +97,9 @@ assuranceMath
 async
 asynchronicity
 atomicSwap
+atomicSwapBundle
 atomicSwapDescription
+atomicSwapInstallation
 atomicSwapInstance
 automaticRefund
 autoswap
@@ -179,6 +183,7 @@ conf
 config
 const
 ContractFacet
+contractFormat
 ContractHost
 contractHost
 contractOfferPromise
@@ -244,12 +249,14 @@ encourageMe
 encouragementBot
 encouragementinstallation
 enduser
+endregion
 ertp
 ERTP
 ERTP's
 escrowed
 Escrowing
 escrowing
+Ethereum
 Eval
 exampleAmountMath
 exampleBrand
@@ -275,6 +282,7 @@ getBalance
 getBrand
 getBrandForIssuer
 getBrands
+getBundle
 getCalls
 getCurrentAllocation
 getCurrentAmount
@@ -305,6 +313,7 @@ getOfferResult
 getOffers
 getOutPutPrice
 getOutputPrice
+getPayments
 getPayout
 getPayouts
 getPoolAllocation
@@ -341,8 +350,10 @@ IDEs
 idToOfferHandle
 iframe
 implementating
+importBundleSource
 init
 inspectable
+inspectCode
 installationConstants
 installationHandle
 installationP
@@ -358,6 +369,7 @@ invitationP
 invitationValue
 inviteIssuer
 inviteP
+isCorrectCode
 isEmpty
 isEqual
 isGTE
@@ -479,6 +491,7 @@ newPayment
 newState
 nft
 NFTs
+nonfungible
 npm
 NUM
 numBids
@@ -510,6 +523,7 @@ otherAmountMath
 otherIssuer
 otherMint
 otherPayment
+ourProposal
 overpayment
 params
 pathResolve
@@ -522,6 +536,7 @@ paymentKeywordRecordPromise
 PaymentPKeywordRecord
 paymentsArray
 paymentToBurn
+permalink
 Petname
 petname
 petnameOrPath
@@ -707,6 +722,7 @@ tradable
 Triskelion
 tryExit
 tv
+txt
 TypeError
 TypeScript
 ui
@@ -749,6 +765,7 @@ WebSockets
 WebStorm
 withdrawalPayment
 Woohoo
+wordlist
 wsl
 xSeat
 YAML
@@ -767,5 +784,3 @@ ZoeHelpers
 zoeHelpers
 ZoeService
 zoeService
-txt
-wordlist
