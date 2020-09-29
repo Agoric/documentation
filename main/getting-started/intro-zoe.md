@@ -252,8 +252,8 @@ her offer.
 
 As per the [Atomic Swap contract
 code](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L50),
-Alice gets an invitation as a result of her offer. It was this
-invitation that she sends to the counter-party.
+Alice gets an invitation as a result of her offer. This
+is the invitation she sends to the counter-party.
 
 <<< @/snippets/test-intro-zoe.js#aliceOffer
 
@@ -264,7 +264,7 @@ parameter called `zcf`. This is the Zoe Contract Facet. Zoe actually
 has two sides: the Zoe Service, which we've seen the users interact with, and
 the Zoe Contract Facet (ZCF), which is accessible to the contract
 code. Note that users do not have access to ZCF, but contract code
-does have access to the Zoe Service.
+can get access to the Zoe Service.
 
 To learn more about the Zoe Service and Zoe Contract Facet APIs, [see
 our Zoe API documentation](/zoe/api/).

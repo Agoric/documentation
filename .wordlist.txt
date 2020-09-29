@@ -183,6 +183,7 @@ conf
 config
 const
 ContractFacet
+contractFormat
 ContractHost
 contractHost
 contractOfferPromise
