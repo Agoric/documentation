@@ -6,11 +6,12 @@ import test from 'ava';
 import { E } from '@agoric/eventual-send';
 import { makeZoe } from '@agoric/zoe';
 import { makeIssuerKit } from '@agoric/ertp';
-import bundleSource from '@agoric/bundle-source';
-import { makeFakeVatAdmin } from './tools/fakeVatAdmin';
 
 // #region importBundleSource
+import bundleSource from '@agoric/bundle-source';
 // #endregion importBundleSource
+
+import { makeFakeVatAdmin } from './tools/fakeVatAdmin';
 
 test('intro to zoe', async t => {
   const fakeVatAdmin = makeFakeVatAdmin();

@@ -213,7 +213,7 @@ here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contract
 Note: All Zoe contracts must have a certain format, shown below.
 
 ::: details Show contract format
-<<< @/snippets/contract-format.js
+<<< @/snippets/contract-format.js#contractFormat
 :::
 
 
