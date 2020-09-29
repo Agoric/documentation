@@ -7,7 +7,7 @@ formally tested or hardened. It is not yet of production quality.
 
 ## What is Zoe?
 
-Zoe is Agoric's smart contract framework. You should use Zoe to:
+Zoe is Agoric's smart contract framework. Use Zoe to:
 
 * **Run your code on-chain**
 * **Mint new digital assets**
@@ -16,29 +16,28 @@ Zoe is Agoric's smart contract framework. You should use Zoe to:
 Zoe relies on [ERTP](./ertp-introduction.md), our token standard for fungible and non-fungible
 tokens. 
 
-## Why should I use Zoe?
+## Why use Zoe?
 
 ### For Users ###
 
-**Zoe is safer.** Putting digital assets in a smart contract has
-traditionally meant you might lose them. But Zoe guarantees that you
-will either get what you wanted or get a full refund. You will never
-leave a contract empty-handed, even if the smart contract is buggy or
-malicious. 
+**Zoe is safer.** Traditionally, putting digital assets in a smart
+contract has risked losing them. But Zoe guarantees you get either
+what you wanted or a full refund of the assets you put in. You will
+never leave a contract empty-handed, even if the smart contract is
+buggy or malicious. 
 
 ### For Developers ###
 
-**Zoe is easier.**  Writing a smart contract has traditionally meant
-learning a completely new, untried language. And let's hope you don't
-make any mistakes - if you do, your users might lose millions.
+**Zoe is easier.**  Traditionally, writing a smart contract meant
+learning a new, untried language. And don't make any mistakes - if you
+do, your users might lose millions.
 
-Zoe smart contracts, on the other hand, are written in a secure subset
-of JavaScript. Moreover, Zoe handles all of the escrowing of digital
-assets provided by your users and the subsequent payout of digital
-assets to your users. **Your contract, even if it's buggy, can't cause
-your users to lose their assets.**
+However, you write Zoe contracts in a secure subset of JavaScript.
+Moreover, Zoe automatically escrows all user digital assets and
+handles their subsequent payout. **Even a buggy contract can't cause
+users to lose their assets.**
 
-## How do I use Zoe?
+## How to use Zoe
 
 There are three ways you can get started using Zoe:
 
@@ -70,21 +69,21 @@ Compare this to a smart contract on Ethereum. On Ethereum, the smart
 contract developer must guard against malicious calls and store an
 internal access control list to check whether the message sender is
 allowed to send such a message. Zoe, built on Agoric's [object
-capability](/glossary/#object-capabilities) security model, is simply
+capability](/glossary/#object-capabilities) security model, is just
 easier.
 
-Let's also imagine that this particular invitation is for an
-[AtomicSwap
-contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js),
-in which one party puts up some digital assets and sends an invitation
-to a second party to complete the exchange. In this case, Alice has
-already escrowed her side and is asking us to pay a particular price
-to receive her digital assets.
+This particular invitation is for an [AtomicSwap
+contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+In an AtomicSwap, one party puts up digital assets they want to
+exchange and sends an invitation to a second party for them to
+possibly complete the exchange. In this example, Alice has already
+escrowed the assets she wants to swap and is asking you to pay a
+specified price to receive her digital assets.
 
 ### Inspecting an invitation
 
-So we have an invitation, but how do we use it? We can use Zoe to
-inspect the invitation.
+So you have an invitation, but how do you use it? First, you use Zoe to
+inspect and validate the invitation.
 
 <<< @/snippets/test-intro-zoe.js#details
 
