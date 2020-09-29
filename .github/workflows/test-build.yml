@@ -40,4 +40,4 @@ jobs:
 
     - name: Spell check
        run: |
-         python -m pyspelling -c .spellcheck.yml
+         python -m pyspelling
