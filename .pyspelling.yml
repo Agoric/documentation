@@ -11,6 +11,7 @@ matrix:
     ignores:
     - code
     - pre
+    - pre.language-js
   sources:
   - 'main/.vuepress/dist/**/*.html'
   default_encoding: utf-8
