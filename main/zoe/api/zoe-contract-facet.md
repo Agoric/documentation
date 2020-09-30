@@ -345,7 +345,7 @@ const { brands, issuers, terms } = zcf.getTerms()
 ## zcf.getZoeService()
 - Returns: [ZoeService](./zoe.md)
 
-This is the only way to get the user-facing <router-link to="/zoe/api/zoe.md#zoe">Zoe Service API</router-link> to
+This is the only way to get the user-facing [Zoe Service API](/zoe/api/zoe.md#zoe) to
 the contract code as well.
 ```js
 // Making an offer to another contract instance in the contract.
