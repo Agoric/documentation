@@ -51,11 +51,11 @@ and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/ap
 for more information.
 
 ## AssetHolder
-[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amount).
+[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amounts).
 
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
-make up an [amount](#amount).
+make up an [amount](#amounts).
 See the [ERTP Guide's Brand section](https://agoric.com/documentation/ertp/guide/brand.html)
 and the [ERTP API's Brand section](https://agoric.com/documentation/ertp/api/brand.html) for more information.
 
@@ -77,7 +77,7 @@ In Agoric documentation, *contract* usually refers to a contract's source code t
 For example, a realtor has a standard house selling agreement. The contract is the code defining how that agreement works. When the realtor has a new house to sell, they instantiate a new instance of their standard contract for that specific property. If they have ten houses for sale, they have ten different contract instances.
 
 ## ERTP
-*Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, both [fungible](#fungible) and [non-fungible](#non-fungable), in JavaScript. All kinds of digital assets can easily be created and they can be all be transferred in exactly the same ways, with exactly the same security properties.
+*Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, both [fungible](#fungible) and [non-fungible](#non-fungible), in JavaScript. All kinds of digital assets can easily be created and they can be all be transferred in exactly the same ways, with exactly the same security properties.
 
 It uses [object capabilities](#object-capabilities) to enforce access control. Instead of having 
 to prove ownership of a corresponding private key, if your program has a 
@@ -85,7 +85,7 @@ reference to an object, it can call methods on that object. If it doesn't
 have a reference, it can't. For more on object capabilities, see [this post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 
 Key ERTP concepts include [Issuers](#issuer), [mints](#mint), 
-[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also 
+[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amounts). Also 
 see the [ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction.html),
 [ERTP Guide](https://agoric.com/documentation/ertp/guide/), and [ERTP API](https://agoric.com/documentation/ertp/api/).
 
@@ -107,7 +107,7 @@ For example, Zoe often uses `offerHandle` to refer to offers. Zoe contracts can 
 Issuers are linked to a single [mint](#mint) and vice versa, so each issuer works
 with one and only one asset type, such as only working with quatloos or only working
 with moola. They can create empty [purses](#purse) and [payments](#payment) for
-their asset type, but cannot mint new [amounts](#amount). 
+their asset type, but cannot mint new [amounts](#amounts). 
 
 Issuers can also transform
 payments of their asset type (splitting, combining, burning, and exclusively claiming
@@ -161,7 +161,7 @@ If references can only be obtained by creation, construction, or introduction, y
 For more information, see [Douglas Crockford on Object Capabilities](https://frontendmasters.com/courses/good-parts-javascript-web/object-capabilities/).
 
 ## Payment
-Payments hold [amounts](#amount) of certain assets 
+Payments hold [amounts](#amounts) of certain assets 
 issued by [Mints](#mint). Specifically amounts that are *in transit* from one party to another. 
 Amounts from payments can be deposited in [purses](#purse), but otherwise, the entire amount is 
 available when the payment is transferred. Payments can be converted to [Purses](#purse). All contents 
@@ -177,7 +177,7 @@ If `obj` is a presence of a remote object, you can send messages to the remote o
 See the [JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html) for more information. 
 
 ## Purse
-Purses hold [amounts](#amount) of certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
+Purses hold [amounts](#amounts) of certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
 
 See the [ERTP Guide's Purses section](https://agoric.com/documentation/ertp/guide/issuer.html#purses) and the
 [ERTP API's Purses section](https://agoric.com/documentation/ertp/api/purse.html)
@@ -194,12 +194,12 @@ gets a UserSeat that can check payouts' status or retrieve their results.
 
 ## Value
 
-Values are the part of an [amount](#amount) that describe the value of something
+Values are the part of an [amount](#amounts) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
 Pixel(3,2), $3, or ‘Right to occupy on Tuesdays’. [Fungible](#fungible) values are usually 
 represented by natural numbers. Other values may be represented as strings naming a particular
 right, or an arbitrary object representing the rights at issue. The latter two examples 
-are usually [non-fungible](#nonfungible) assets. Values must be [Comparable](#comparable).
+are usually [non-fungible](#non-fungible) assets. Values must be [Comparable](#comparable).
 
 See the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/value.html) for more information.
 
