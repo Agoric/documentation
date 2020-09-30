@@ -206,7 +206,7 @@ similar methods. This method provides a long-lived notifier object associated
 with a particular stream of updates.
 
 ```js
-const offerNotifer = zoe.getOfferNotifier(offerHandle);
+const offerNotifier = zoe.getOfferNotifier(offerHandle);
   const { value, updateHandle, done } = offerNotifier.getUpdateSince();
   if (done) {
    <drop offer from list>
@@ -284,7 +284,7 @@ contract calls `complete()` on the offer, its notifier is marked `done`.
 
 Contract instances use a notifier to provide updates to people who
 want to follow changes. They import and call
-`produceNotifer()`, which returns two facets, a notifier and an updater. You can 
+`produceNotifier()`, which returns two facets, a notifier and an updater. You can 
 pass the notifier object to anyone allowed to see that contract
 instance's state changes.
 

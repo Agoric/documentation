@@ -1,0 +1,15 @@
+matrix:
+- name: html
+  aspell:
+    lang: en
+  dictionary:
+    wordlists:
+    - .wordlist.txt
+    encoding: utf-8
+  pipeline:
+  - pyspelling.filters.html:
+    ignores:
+    - div
+  sources:
+  - 'main/.vuepress/dist/**/*.html'
+  default_encoding: utf-8

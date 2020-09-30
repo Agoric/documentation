@@ -1,12 +1,12 @@
 ## Agoric CLI
 
 You use the Agoric CLI to install dependencies, initialize, deploy, and start Agoric projects. This Guide has two parts:
-1. How to use the Agoric CLI to deploy and start a local-chain-multiuser scenario, for development and and testing of multiuser Dapps
-2. Reference material for the five `agoric` CLI commands.
+1. [Starting Multiuser Dapps](#starting-multiuser-dapps): How to use the Agoric CLI to deploy and start a local-chain-multiuser scenario, for development and and testing of multiuser Dapps
+2. [Agoric CLI Command Reference](#agoric-cli-command-reference): Reference material for the five `agoric` CLI commands.
 
 ### Starting Multiuser Dapps
 
-When developing a Dapp, you may need to test how it behaves with multiple users before deploying it publically.
+When developing a Dapp, you may need to test how it behaves with multiple users before deploying it publicly.
 These users could have different roles, such as the contract deployer, an auctioneer, a bidder, a buyer, a seller, etc. 
 The Agoric CLI implements a local-chain-multiuser scenario for developing and testing multiuser Dapps.
 
@@ -87,7 +87,7 @@ that doesn’t share cookies with any other ag-solo’s browser. For example, if
 create a new Chrome profile, or open a Firefox or Safari window. Navigate to `https://local.agoric.com/` and, 
 in the resulting page, set the address to `http://localhost:8001` Click **Save**. Then click **Open** and 
 verify that it opens a different wallet and REPL (the REPL history will be blank). Type `console.log(8001)` 
-in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL’s history.
+in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL's history.
 
 ![REPL](./assets/REPL-2.png)
 
@@ -135,7 +135,10 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
 
 #### `agoric install`
 - **Function**:
-  - Install Dapp JavaScript dependencies. This may take a while.
+  - Install Dapp JavaScript dependencies. This may take a while. You use this instead of established npm install tools.
+  The reason is that there is both an SDK (`--sdk`) and NPM mode. Currently we only support SDK mode, which allows you to link your Dapp 
+  against the SDK dependencies. This lets you modify in any package in the SDK against the SDK dependencies (and see the changes)
+  and not have to register those packages with Yarn or NPM.
 - **Required Arguments**:
   - None.
 - **Optional Arguments**:
@@ -192,7 +195,7 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
   - `-v`, `--verbose`: Output a more detailed version of help (note: only for some commands)
   - `-h`, `--help`: display help for command
 - **Examples**:
-  - Display Agoric CLI commmands with brief descriptions.
+  - Display Agoric CLI commands with brief descriptions.
     - `agoric help`
   - Display current Agoric version number
     - `agoric -V help`

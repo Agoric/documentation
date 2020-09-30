@@ -19,7 +19,7 @@ See <router-link to="./issuer.md#makeissuerkitallegedname-amountmathkind">here</
 - Returns: `{Issuer}`
 
 Get the `Issuer` associated with this `mint`. From their creation, a `mint` is always
-in an unchangable one-to-one relationship with an `issuer`. 
+in an unchangeable one-to-one relationship with an `issuer`. 
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
@@ -37,7 +37,7 @@ issuer === quatloosMintIssuer;
 to create new digital assets. There is no other way.
 
 Create new digital assets of the `mint`'s associated `brand`.
-From their creation, a `mint` is always in an unchangable
+From their creation, a `mint` is always in an unchangeable
 one-to-one relationship with a `brand`.
 
 Returns a `payment` containing the newly minted assets. 

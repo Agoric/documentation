@@ -156,7 +156,7 @@ Now he can add liquidity.  The price ratio changes when anyone trades with the p
 so he should leave some flexibility in the proposal. The pool calculates the amount
 of `secondary` currency required based on the amount of `central` currency provided.
 Bob bumps up the amount of Moola he'll contribute by a little. If he was concerned
-about how much liquidity this would produce, he would calcuate it and specify a rough
+about how much liquidity this would produce, he would calculate it and specify a rough
 figure, but there's no need in this case.
 
 ```js

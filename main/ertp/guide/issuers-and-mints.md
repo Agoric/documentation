@@ -84,7 +84,7 @@ API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
       import { makeIssuerKit } from '@agoric/ertp';
       const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
       const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
-      // quatloosissuerAllegedName === 'quatloos'
+      // quatloosIssuerAllegedName === 'quatloos'
       ```
   - <router-link to="./api/issuer.html#issuer-getamountmathind">`issuer.getAmountMathKind()`</router-link>
     - Get the kind of `amountMath` for this `issuer`, either `MathKind.NAT` (`nat`),

@@ -14,7 +14,7 @@ each other, it exchanges the specified amounts in each side's want clause.
 Since it pays no attention to keywords, and doesn't require
 registration of issuers, it can handle trades between goods of any
 type. It's like conventional "barter" in that there's no common
-currency. "I have cantelopes and am looking for pillow cases." It
+currency. "I have cantaloupes and am looking for pillow cases." It
 keeps an order book, and each time it receives a new offer, it looks
 for matches throughout the order book. 
 

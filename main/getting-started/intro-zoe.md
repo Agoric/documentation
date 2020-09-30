@@ -1,358 +1,292 @@
 # Introduction to Zoe
 
-**Note:** Before reading this, you should be familiar with [ERTP basics](/getting-started/ertp-introduction/). 
-
 ::: tip Alpha status
 Zoe is currently at Alpha status. It has not yet been
 formally tested or hardened. It is not yet of production quality.
 :::
 
-This is an introduction to Zoe, Agoric's smart contract framework. 
-The [Zoe Guide](/zoe/guide/) has additional information, 
-including concepts not covered here. 
-
-You can run different types of smart contracts on Zoe. In this document, 
-for the most part we focus on Agoric’s Atomic Swap demo contract, but 
-sometimes refer to how Zoe works with other contract types.
-
 ## What is Zoe?
 
-**For users**: Zoe guarantees smart contract users either get what 
-they wanted or get a full refund. Even if the smart contract is buggy or malicious. 
+Zoe is Agoric's smart contract framework. Use Zoe to:
 
-**For developers**: Zoe is a framework for writing and running smart contracts. 
-It provides a safety net so you can focus on what your smart contract does best, 
-without worrying about users losing their assets due to a bug in your code. 
+* **Run your code on-chain**
+* **Mint new digital assets**
+* **Credibly trade assets**
 
-Many contracts are installed on Zoe, including [several Agoric-written ones](https://agoric.com/documentation/zoe/guide/contracts/) 
-to help get you started. 
+Zoe relies on Agoric's [*Electronic Rights Transfer Protocol
+(ERTP)*](./ertp-introduction.md), our token standard.
 
-## The simple Atomic Swap contract
+## Why use Zoe?
 
-In this document, we’ll mostly be looking at Agoric’s [Atomic Swap contract](https://agoric.com/documentation/zoe/guide/contracts/atomic-swap.html) to illustrate how contracts use Zoe. 
+### For Users ###
 
-Atomic Swap has two users swapping for each other’s assets. We’ll 
-try to let you know when aspects of the contract are specific to 
-a basic swap operation. Other types of contracts, such as auctions, may do 
-things differently. 
+**Zoe is safer.** Traditionally, putting digital assets in a smart
+contract has risked losing them. But Zoe guarantees you get either
+what you wanted or a full refund of the assets you put in. You will
+never leave a contract empty-handed, even if the smart contract is
+buggy or malicious. 
 
-The annotated code for our example is [here](https://agoric.com/documentation/zoe/guide/contracts/atomic-swap.html). 
-The source code is [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js), 
-Tests are [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/test/unitTests/contracts/test-atomicSwap.js). The tests have two “characters”, Alice, who makes the initial offer, and Bob, who responds to that offer. 
+### For Developers ###
 
-## Installing and instantiating contracts on Zoe
+**Zoe is easier.**  Traditionally, writing a smart contract meant
+learning a new, untried language. And don't make any mistakes - if you
+do, your users might lose millions.
 
-To use a contract, it needs to be *installed* on Zoe. This is putting
-the contract’s source code, consisting of JavaScript plus ERTP and Zoe API 
-methods, on Zoe. 
+However, you write Zoe contracts in a secure subset of JavaScript.
+Moreover, Zoe automatically escrows all user digital assets and
+handles their subsequent payout. **Even a buggy contract can't cause
+users to lose their assets.**
 
-When you install a contract on Zoe, you receive an `installation`, which 
-is an *opaque JavaScript object*  used to refer to the installed contract 
-source code. Agoric uses such objects as references since they cannot be 
-forged. For example
-```js
-// bundleSource takes source code files and 
-// bundles them together in the format install expects.
-import bundleSource from '@agoric/bundle-source';
-const bundle = await bundleSource(pathResolve(`./src/contract.js`));
-const installationP = await E(zoe).install(bundle);
-```
+### Contracts on Zoe
 
-To actually use a contract, you have to *instantiate* it by 
-calling `E(zoe).startInstance(installation, issuerKeywordRecord, terms)`. 
-Multiple *instances* of any Zoe-installed contract can execute simultaneously. 
-For clarity, in our documentation a *contract* is the installed code that 
-defines how the contract works. A *contract instance* or *instance* is an active 
-execution of the contract code. 
+Agoric has written [a number of example contracts that you can
+use](/zoe/guide/contracts/), including:
+* a [Uniswap
+  implementation](/zoe/guide/contracts/multipoolAutoswap.md)
+* a [covered call option
+  contract](/zoe/guide/contracts/covered-call.md)
+* an [OTC Desk market maker
+  contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/otcDesk.js)
+* contracts for [minting fungible](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintPayments.js) and [non-fungible tokens](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintAndSellNFT.js)
 
-For example, let’s say a realtor has a standard agreement they use when selling
-a client’s house. The contract would be the code that defines how that standard
-agreement works. Every time the realtor has a new house to sell, they instantiate
-a new instance of their standard contract to use for that specific property. If 
-they have ten houses up for sale, they have ten different contract instances.
+## Using an example Zoe smart contract
 
-In addition to an `installation`, when a contract is instantiated, Zoe needs to 
-know what kind of ERTP assets the contract will work with. In Atomic Swap’s test 
-code, the full instantiation call is something like:
-```js
-const issuerKeywordRecord = harden({
-  Asset: quatloosKit.issuer,
-  Price: moolaKit.issuer,
-});
-const atomicSwapInstance = zoe.startInstance(installation, issuerKeywordRecord);
-```
+You must have a Zoe invitation to a specific contract instance to join
+and participate in it. Let's imagine your friend Alice has sent you a
+`Zoe invitation` for a contract instance to your
+[wallet](/wallet-api.md). 
 
-Let’s work backwards from `startInstance()`’s arguments. As you’ll recall 
-from the [Introduction to ERTP](https://agoric.com/documentation/getting-started/ertp-introduction.html#issuers-and-mints),
-`issuers` map minted assets to `purses` and `payments`. The *keyword record* is
-made up of two key:value pairs. The key names must be ASCII and capitalized; 
-they are the same names as are used in the contract code. 
+Compare this to a smart contract on Ethereum. On Ethereum, the smart
+contract developer must guard against malicious calls and store an
+internal access control list to check whether the message sender is
+allowed to send such a message. Zoe, built on Agoric's [object
+capability](/glossary/#object-capabilities) security model, is just
+easier.
 
-In this case the key name `Price` is for what the seller wants, and key name `Asset` is for
-what is being sold. `Price` is for what will be swapped for it (from the perspective
-of the user making the instance; it’d be the opposite for someone who wanted what Alice is offering). 
-The price is denominated in the imaginary currency Moola, so that keyword needs the 
-Moola `Issuer` associated with it. The asset is denominated in the imaginary currency
-Quatloos, so that keyword needs the Quatloo `Issuer` as its value. 
+This particular invitation is for an [AtomicSwap
+contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+In an AtomicSwap, one party puts up digital assets they want to
+exchange and sends an invitation to a second party for them to
+possibly complete the exchange. In this example, Alice has already
+escrowed the assets she wants to swap and is asking you to pay a
+specified price to receive her digital assets.
 
-Finally, `E(zoe).startInstance()` can take an optional `terms` argument, another
-set of key:value pairs. Terms let an `instance` creator further
-customize the contract operations, as enabled by the contract code. 
-Contract terms can be expressed without specific values. For example, 
-an auction contract may define minimum bid and minimum raise variables 
-and use them in its code, but the variables are not given values in the 
-code. Instead, the `terms` argument provides the variables’ values.
+### Inspecting an invitation
 
-Why parameterize a contract with terms? Well, the minimum raise should be 
-quite different if an auction is for a used Harry Potter paperback vs. a 
-signed first British hardback edition of *Harry Potter and the Philosopher’s 
-Stone*. The `terms` value for the used paperback auction might 
-be `{ Currency: 'USDollar', MinRaise: 1 }`. For the first edition 
-auction, `terms`’ value might be  `{ Currency: 'USDollar', MinRaise: 500 }`. 
-With the different `terms` values, there are now contract instances 
-customized for the items being sold in each one.
+So you have an invitation, but how do you use it? First, you use Zoe
+to inspect and validate the invitation.
 
-## Invitations
+<<< @/snippets/test-intro-zoe.js#details
 
-`E(zoe).startInstance()` returns an *invitation* to that new `instance`.
-An `invitation` is an [ERTP `payment`](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp) 
-that lets its holder interact with that specific contract instance. If there
-are ten instances of a contract running and you hold an `invitation` to, say, 
-the earliest created one, that’s the only one the `invitation` works with. 
-It doesn’t work with any of the nine later created `instances`. 
+::: warning Note
 
-And while whoever instantiated the contract gets the initial `invitation`
-to that `instance`, as with all `invitations`, they can transfer it to 
-another party before it’s used. Who created or first held an `invitation`
-doesn’t matter. Whoever possesses an `invitation` has control and use of it. 
+E() is part of the Agoric platform and is used to [call methods on
+remote objects and receive a promise for the
+result](/distributed-programming.md#communicating-with-remote-objects-using-e).
+Code on the Agoric platform is put in separate environments, called
+[vats](/glossary/#vat), for security. Zoe is in a different vat,
+making it a remote object, so we must use E().
+:::
 
-Users obtain an `invitation` to an `instance` in one (or more) of three ways:
-- Instantiate a contract, which returns an `invitation` object for that `instance`.
-- Receive an `invitation` from someone who already had it. 
-  - Note: Finding other parties to invite is out of Zoe or the contract’s scope
-    in most cases. You have to either already know of potential other parties, 
-    for example, from past experience trading with them, or communicate 
-    somewhere outside the contract to find them.
-- By the `instance`, or someone with the authority to issue `invitations` for 
-it, making open knowledge what’s needed to get a valid `invitation`. For example,
-an open exchange contract with an order book might welcome everyone who wants
-to participate, and so would make public how to get an `invitation` to it.
+Invitations include information about their contract's installation.
+Essentially, this is the contract's source code as installed on Zoe.
+From this overall contract installation, people use Zoe to create and
+run specific instances of the contract. For example, if a real estate
+company has a contract for selling a house, they would create an
+instance of the contract for each individual house they have up for
+sale.
 
-`Invitations` are ERTP `payments`, so the same principles apply to them as 
-apply to other ERTP `payments`. You can send the same `payment` or `invitation` 
-to multiple parties...but when a party *claims* the `payment`/`invitation`, 
-the other copies of the `payment/invitation` are dead. The claimant gets 
-a new `payment/invitation` they can be sure was issued by the desired `issuer`, 
+You use object identity comparison to quickly check that you recognize
+this contract installation, without having to check source code
+line-by-line to ensure the code is the same. In other words, you're
+sure this invitation is for participating in an instance of the
+contract it says it is, and not an unknown and possibly malicious one.
 
-`Invitations` are single use objects. Once used, an `invitation` is destroyed or *burned*.
-If someone shared a valid `invitation` with many parties, only the first one to be used 
-would work; any attempts to use that `invitation` after it’s been used fail. Note that this
-is different from making multiple distinct `invitations` for an `instance`; that’s expected. 
+<<< @/snippets/test-intro-zoe.js#isCorrectCode
 
-## Offers
+However, if you don't recognize the installation, you can inspect the
+code directly by calling:
 
-Alice decides she wants to use her invite and make an *offer*. Before making an offer, an invite is all about *potentially* working with its associated contract instance. But the invite might never be used, and if so, it never actually interacts with the contract instance.
+<<< @/snippets/test-intro-zoe.js#inspectCode
 
-Before making her offer, Alice has to do some prep work. Her offer will be *escrowed* with Zoe, so it needs to include the actual ERTP payments for the offer, and a *proposal* that defines the offer and is used to enforce both *offer safety* and *payout liveness*.  In code, it looks like:
+Contracts can add their own specific information to invitations. In
+this case, the Atomic Swap contract adds information about what is
+being traded: the `asset`, the amount Alice has escrowed, and the
+`price`, what you must pay to get the asset. Let's say `asset` is an
+`amount` of 3 moola, and `price` is an `amount` of 7 simoleans. (Moola
+and simoleans are made-up currencies for this example.) Amounts are
+descriptions of digital assets, but have no value themselves. Please
+see the ERTP guide for more on
+[amounts](/ertp/guide/amounts.html#amounts-values-and-brands).
 
-```js
-const quatloos100 = quatloosAmountMath.make(100);
-const moola25 = moolaAmountMath.make(25);
+### Making an offer
 
-const aliceProposal = harden({
-  give: { Asset: quatloos100 },
-  want: { Price: moola25 },
-  exit: { onDemand: null },
-})
+You've successfully checked out the invitation, so now you can make an
+offer.
 
-Const alicePayments = { Asset: aliceQuatloosPayment }
-```
+An offer has three required parts:
+* a Zoe invitation
+* a proposal
+* the digital assets you're offering to swap
 
-`AmountMath` is an [ERTP API object ](https://agoric.com/documentation/ertp/guide/amount-math.html) whose methods manipulate asset 
-and payment `amounts`. Here, Alice is setting up the ability to use the Quatloos and Moola currencies. Note the the `amounts` are
-just descriptions of assets, and not the actual assets. The actual assets are contained in ERTP `purses` and `payments`, not `amounts`.
+The `proposal` states what you want from the offer, and what you will
+give in return. Zoe uses the proposal as an invariant to ensure you
+don't lose your assets in the trade. This invariant is known as **offer
+safety**.
 
-She then creates her proposal, using a record with `give`, `want`, and `exit` (optional) properties. `give` and `want` are `KeywordAmount` records with
-keywords as keys and `amounts` as values. `exit` is an `ExitRule` record specifying how/when a user can exit the contract. In the above,
-Alice wants at least 25 Moola, in exchange for giving at most 100 Quatloos, where she can exit the offer at any time just by
-asking, and get her assets back (or get her `want` value if the offer happened to be satisfied before then).
+You use the invitation's `asset` and `price` amounts to make your
+proposal: 
 
-The `harden()` command is how we build a defensible API surface around an object by freezing all reachable properties. It’s similar,
-but not identical, to JavaScript’s `Object.freeze`. For more information on `harden`, see [here](https://www.npmjs.com/package/@agoric/harden#background-why-do-we-need-to-harden-objects)
+<<< @/snippets/test-intro-zoe.js#ourProposal
 
-Now, Alice is ready to use her `invitation`, `proposal`, and `payment` to make an offer and participate in the Atomic Swap
-contract `instance`. 
+Proposals must use Keywords, which are capitalized ASCII keys. Here,
+the specific keywords, `Asset` and `Price`, are [determined by the
+contract
+code](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L29).
 
-```js
-const userSeat = E(zoe).offer(
-  aliceInvite,
-  aliceProposal,
-  alicePayments,
-);
-const outcome = await E(userSeat).getOfferResult();
-const payouts = await E(userSeat).getPayouts();
-```
-Zoe checks the invitation for its validity for that contract instance. When
-she makes her offer, Alice receives a (promise for) a `UserSeat` that lets
-her monitor or control her offer. This includes getting payouts or offer results,
-or exiting the offer altogether. If her offer was invalid, the
-offer attempt fails, and Alice gets her refund in the *payout*. If the
-offer is valid, it's now an *active offer*.
+You said you would give 7 simoleans, so you must send 7 simoleans as
+an [ERTP payment](/ertp/guide/purses-and-payments.md). ([ERTP
+payments](/ertp/guide/purses-and-payments.md) are how the Agoric
+platform transfers fungible and nonfungible digital assets.) You
+happen to have some simoleans lying around in a simolean
+[purse](/ertp/guide/purses-and-payments.md) (used to hold digital
+assets of a specific type). You withdraw a payment of 7 simoleans from
+the purse for your offer, and construct an object using the same
+Keyword as your `proposal.give`:
 
-Now, Alice needs to get someone else involved who potentially will also
-make an offer, hopefully one that offers what she wants for
-the price she’s willing to pay for it. The *offer result* is the object
-returned by the contract when it processes an offer. In the case of
-atomicSwap, it used *zcf.makeInvitation()* to make and return an invitation Alice can
-send to others, in this case Bob.
+<<< @/snippets/test-intro-zoe.js#getPayments
 
-`zcf.makeInvitation()` takes two required arguments and one optional:
-- `offerHandler`: A function defined in the contract code that processes offers as the contract developer sees fit.
-- `description`: A `String` that should include whatever information is needed for a recipient to know what 
-  they are getting in the optional `customProperties` argument.
-- `customProperties`: Optional, any special properties to be included in this `invitation`.
-```js
-const bobInvitation = zcf.makeInvitation(swapOfferHandler, atomicSwapDescription)
+Now  you need to [harden](/distributed-programming.md#harden) your
+just created `proposal` and `payments` objects. Hardening is
+transitively freezing an object. For security reasons, we must harden
+any objects that will be passed to a remote object like Zoe.
 
-// Bob claims the invitation via the permanent Zoe inviteIssuer. The claim operation
-// also validates the invitation for this contract instance.
-const inviteIssuer = E(zoe).getInviteIssuer();
-const bobExclusiveInvitation = await E(inviteIssuer).claim(bobInvitation);
-```
+<<< @/snippets/test-intro-zoe.js#harden
 
-Bob decides to make his own offer, which happens to match up with Alice’s offer (assume his payments were constructed similar to Alice’s);
-```js
-const bobProposal = harden({
-  want: { Asset: quatloos100 },
-  give: { Price: moola25 },
-  exit: { onDemand: null },
-})
+You've put the required pieces together, so now you can make an offer:
 
-// Bob escrows with zoe and makes an offer
-const { outcome: bobOfferResult, payout: bobPayoutP } = await E(zoe).offer(
-  bobExclusiveInvitation,
-  bobProposal,
-  bobPayments,
-);
-```
-Bob has gotten back a *promise* for a *payout*. His offer is also now an *active offer*.
+<<< @/snippets/test-intro-zoe.js#offer
 
-## Satisfying and completing offers
+At this point, Zoe burns your invitation and confirms its validity.
+Zoe also escrows all of your payments, representing their value in
+amounts as your `current allocation` in the contract.
 
-At this point, both the offers that Alice and Bob made are active and known to the contract instance. The Atomic Swap contract 
-code determines that they are matching offers.  The contract instance calls `reallocate()`, which *reallocates* the amounts which 
-are the accounting records within Zoe. Payouts are not created yet. 
+### Using your UserSeat
 
-The contract instance then *exits* the offers and makes the payouts to
-the offer holders.  This takes the amounts from the account records, and withdraws the offer-specified amounts from the 
-digital assets escrowed within Zoe. This is when 
-the payout *promise* resolves into payments. 
+Making an offer as a user returns a `UserSeat`. This seat represents
+your position in the ongoing contract instance (your "seat at the
+table"). You can use this seat to:
 
-The offers are now exited and no longer active. There is nothing more that can be done with them, so Zoe deletes these 
-offers from the contract instance.
+1. Exit the contract.
+2. Get information about your position such as your current allocation.
+3. Get your payouts from Zoe.
 
-## Auction example  
+Check that your offer was successful:
 
-Let’s look at a more complicated example: an auction, where many users
-might make a bid for something, but only one bid will win the 
-auction. Assuming everything validated, Zoe would give the holder of 
-the auctioned item the escrowed assets from the winning bid, and give 
-the holder of the winning bid what they wanted, the asset up for bid.
+<<< @/snippets/test-intro-zoe.js#offerResult
 
-But what about all those other bidders who escrowed their bids with Zoe
-and didn’t win? Zoe guarantees they all get a *refund* of their escrowed assets. 
-Zoe’s *offer safety* guarantees offer makers either get what they wanted or 
-get refunded whatever they put in Zoe’s escrow with their offer.
+In response to your offer, the AtomicSwap contract returns the
+message: "The offer has been accepted. Once the contract has been
+completed, please check your payout." Other contracts and offers may
+return something different. The offer's result is entirely up to the
+contract.
 
-It’s even possible to get both what you wanted, and at least a partial refund.
-Consider an auction where you make a bid where you’re willing to pay up to 10 
-Quatloos (an imaginary currency), but if you can win for less, that’s your bid. 
-You win the auction, but your winning bid is only 8 Quatloos. The payout would
-resolve to both the item up for auction you get as the winning bidder and the 
-refund of the 2 extra Quatloos you escrowed in your bid. 
+### Getting payouts
 
-## Other things to know about Zoe  
+Because this was an AtomicSwap contract, it is over once the second
+party escrows the correct assets. You can get your payout of moola
+with the Keyword you used ('Asset'):
 
-A *Dapp (decentralized application)* is a combination of a Zoe contract and 
-a server that’s running the back and front ends, and a front end that may be 
-connected to the user’s wallet.
+<<< @/snippets/test-intro-zoe.js#getPayout
 
-Zoe has two distinct APIs. One is the widely accessible, singular Zoe service object
-that smart contract clients use to provide offers and otherwise interface with contracts. 
-The Zoe service object is a remote object, and so should be accessed with `E(zoe).<api_method>`, 
-which returns a `promise`. For more on E() 
-see [here](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-via-e). 
+Alice also receives her payouts:
 
-The other is the internal API object, referred to as `zcf` that each `instance` uses to
-interact with Zoe about that contract’s own offers and state (e.g., to
-do `reallocate`).
+<<< @/snippets/test-intro-zoe.js#alicePayout
 
-Finally, there are also Zoe Helpers, functions that extract common contract code and patterns into reusable helpers.
+## Writing and installing a contract
 
-For details about all three APIs and their methods, see the [Zoe API](https://agoric.com/documentation/zoe/api/) documentation.
+Now that you've seen how to participate in a contract instance, let's
+look at how you'd create a contract and its instances.
 
-## Workflow summary
+Let's pretend Alice wrote that contract from scratch, even though
+AtomicSwap is one of Agoric's example contracts ([see the full
+AtomicSwap code
+here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
+Note: All Zoe contracts must have this format:
 
-The following table summarizes an Atomic Swap workflow:
+::: details Show contract format
+<<< @/snippets/contract-format.js#contractFormat
+:::
 
-<table>
-<tbody>
-<tr>
-<td><center>1</center></td>
-<td>Write your contract
-</td>
-</tr>
-<tr>
-<td><center>2</center></td>
-<td>Install your contract’s source code on Zoe. 
-</td>
-</tr>
-<tr>
-<td><center>3</center></td>
-<td>Start a contract instance based on an installed contract. 
-</td>
-</tr>
-<tr>
-<td colspan="2">At this point, everything is installed and set up and you’ve got a contract instance. The following rows cover what happens while
-the Atomic Swap contract instance is active.
-</td>
-<tr>
-<tr>
-<td><center>1</center></td>
-<td>A holder of an invitation to this contract instance uses it to get a seat. The assets used in the offer are escrowed with Zoe.
-</td>
-</tr>
-<tr>
-<td><center>2</center></td>
-<td>Likely via means outside of the contract, invitations are distributed to potential users of this contract instance).</td>
-</tr>
-<tr>
-<td><center>3</center></td>
-<td>Recipients use the InviteIssuer to claim and validate their invitation.
-</td>
-</tr>
-<tr>
-<td><center>4</center></td>
-<td>Invitation holders make their offers.
-</td>
-</tr>
-<tr>
-<td><center>5</center></td>
-<td>The contract code processes the offers, which may request some reallocations as a result.</td>
-</tr>
-<tr>
-<td><center>6</center></td>
-<td>Zoe reallocates the assets among the offers, preserving offer safety.
-</td>
-</tr>
-<tr>
-<td><center>7</center></td>
-<td>The contract requests Zoe process the satisfied offers, resolving their associated payout promises. Offer holders either get what they paid for, get their escrowed offer amount refunded, or in some cases, get both what they paid for and a refund of any overpayment.
-</td>
-</tr>
-</tbody>
-</table>
+Alice fills in this code template with [AtomicSwap's
+particulars](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+To install this particular code, Alice first must bundle it off-chain,
+meaning the code and its imports are flattened together:
+
+<<< @/snippets/test-intro-zoe.js#importBundleSource
+
+<<< @/snippets/test-intro-zoe.js#bundle
+
+Then Alice must install it on Zoe:
+
+<<< @/snippets/test-intro-zoe.js#install
+
+The return value is an `installation`, which we saw earlier. It is an
+object identifying a particular piece of code installed on Zoe. It can
+be compared to other installations, and you can call
+`E(atomicSwapInstallation).getBundle()` to see the code itself.
+
+### Creating an instance
+
+Now Alice uses the installation to create a new instance. She must
+also tell Zoe about the ERTP issuers she wants to use, by specifying
+their role with Keywords. Alice was escrowing moola, so she uses the
+keyword `Asset` to label the `moolaIssuer`. She wanted simoleans, so
+she uses the keyword `Price` to label the `simoleanIssuer`. When you
+create a new instance of the contract ([see permalink to line
+58](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L58))
+by calling `startInstance()`, it returns a `creatorInvitation`. Alice
+uses this to make her offer; even the instance's creator needs to have
+an invitation to it to participate in it.
+
+<<< @/snippets/test-intro-zoe.js#startInstance
+
+As per the [Atomic Swap contract
+code](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L50),
+Alice gets an invitation as a result of her offer. This is the
+invitation she sends to the counter-party.
+
+<<< @/snippets/test-intro-zoe.js#aliceOffer
+
+## Zoe's two sides: Zoe Service and Zoe Contract Facet (ZCF)
+
+You may have noticed the contract code's `start` method had a `zcf`
+parameter. This is the Zoe Contract Facet. Zoe has two sides: the Zoe
+Service, which you've seen users interact with, and the Zoe Contract
+Facet (ZCF), which is accessible to the contract code. Note that users
+have access to the Zoe Service, but do not have access to ZCF.
+Contract code has access to ZCF *and* can get access to the Zoe
+Service. 
+
+To learn more about the Zoe Service, Zoe Contract Facet, and Zoe
+Helper APIs, [see our Zoe API documentation](/zoe/api/).
 
 ## Next steps
 
-If you want to dive deeper into how Zoe works and what you can do, go to the [Zoe Guide](https://agoric.com/documentation/zoe/guide/#what-is-zoe). 
+If you want to dive deeper into how Zoe works and what you can do, go
+to the [Zoe Guide](/zoe/guide/README.md). 
+
+To learn more about the AtomicSwap contract, you can [read its
+documentation](/zoe/guide/contracts/atomic-swap.md) and [look at its
+source
+code](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+There are several other example contracts for different transaction
+types in the [Contracts folder](/zoe/guide/contracts/)
+
+To start building Zoe contracts and applications (dapps), follow the
+instructions in [Starting a
+Project](/getting-started/start-a-project.md) after [installing the
+prerequisites](/getting-started/before-using-agoric.md).
+
+To explore the Zoe Service and Zoe Contract Facet APIs, see the [Zoe
+API documentation here](/zoe/api/).
