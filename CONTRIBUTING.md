@@ -67,7 +67,7 @@ not outdated.
 To check internal Vuepress links locally, run the following shell command. It does *not* check either external links or router-links. Output consists of the text of any broken links, what file they're in, and what line number they occur on.
 
 ```shell
-npm run check-links
+yarn check-links
 ```
 
 Links should be relative and in [this format](https://vuepressbook.com/tutorial/tutorial2.html#linking-to-headers-inside-a-file).

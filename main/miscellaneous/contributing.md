@@ -11,7 +11,7 @@ $ git clone https://github.com/Agoric/documentation
 
 1. Install dependencies
 ```sh
-$ yarn install
+$ agoric install
 ```
 
 1. Build dev docs
