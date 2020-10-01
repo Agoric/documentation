@@ -6,5 +6,11 @@
     {
       "pattern": "^http://localhost:*"
     }
+  ],
+  "replacementPatterns": [
+      {
+          "pattern": "^/",
+          "replacement": "/Users/katesills/code/documentation/main/"
+      }
   ]
 }
