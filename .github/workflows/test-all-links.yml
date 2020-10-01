@@ -16,8 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Print Workspace
-        run: echo $GITHUB_WORKSPACE
       - uses: gaurav-nelson/github-action-markdown-link-check@1.0.7
         with:
           use-quiet-mode: 'yes'

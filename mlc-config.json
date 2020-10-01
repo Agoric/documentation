@@ -10,7 +10,7 @@
   "replacementPatterns": [
       {
           "pattern": "^/",
-          "replacement": "main/"
+          "replacement": "/home/runner/work/documentation/documentation/main/"
       }
   ]
 }
