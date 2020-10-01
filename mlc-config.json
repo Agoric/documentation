@@ -1,0 +1,16 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://www.linkedin.com/company/agoric/"
+    },
+    {
+      "pattern": "^http://localhost:*"
+    }
+  ],
+  "replacementPatterns": [
+      {
+          "pattern": "^/",
+          "replacement": "main/"
+      }
+  ]
+}
