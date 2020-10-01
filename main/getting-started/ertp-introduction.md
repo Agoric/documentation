@@ -129,9 +129,9 @@ its `issuer`.
 ## Next Steps
 
 If you are Getting Started, you should go to the 
-<router-link to="/getting-started/intro-zoe.html">Introduction to Zoe</router-link>.
+[Introduction to Zoe](/getting-started/intro-zoe.md).
 
 If you've finished the Getting Started material, you should go to the
-<router-link to="/ertp/guide/">ERTP Guide</router-link>
+[ERTP Guide](/ertp/guide/)
 for a fuller explanation of ERTP
 concepts, including ones not covered in this Introduction. 

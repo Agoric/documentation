@@ -122,7 +122,7 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
+- Returns: [`{Issuer}`](/ertp/api/issuer.md)
 
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
@@ -160,7 +160,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
-- Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
+- Returns: [`{Promise<Invitation>}`](/ertp/api/payment.md#payment)
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
 of an ERTP `payment`. They are associated with the `invitationIssuer` and its `mint`, which 

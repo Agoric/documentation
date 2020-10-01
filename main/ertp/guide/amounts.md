@@ -7,7 +7,7 @@
 `Amounts` describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
 Use the `amountMath` API methods (covered in-depth 
-<router-link to="../api/amount-math.html">here</router-link>)
+[here](../api/amount-math.md))
 to get information about and otherwise manipulate an `amount` as a whole.
 `amountMath.make()` is generally how you make new `amounts`.
 
@@ -109,14 +109,14 @@ return a `brand`.
 
 Values are the "how many" part of an `amount`. There are no `value`
 methods, but two `amountMath` methods use or return them. 
-- <router-link to="../api/amount-math.html#amountmath-getvalue-amount">`amountMath.getValue(amount)`</router-link>
+- [`amountMath.getValue(amount)`](../api/amount-math.md#amountmath-getvalue-amount)
   - Return the `amount` argument's `value`
   - ```js
     const quatloos123 = quatloosAmountMath.make(123);
     // returns 123
     const value = quatloosAmountMath.getValue(quatloos123);
     ```
-- <router-link to="../api/amount-math.html#amount-math-make-allegedvalue">`amountMath.make(allegedValue)`</router-link>
+- [`amountMath.make(allegedValue)`](../api/amount-math.md#amountmath-make-allegedvalue)
   - Make an `amount`from a `value` by adding the
   `amountMath` associated `brand` to the `value`. 
   - ```js
