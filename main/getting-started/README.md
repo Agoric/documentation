@@ -41,30 +41,30 @@ How to install software that the Agoric SDK depends on.
   A Getting Started document that briefly explains the concepts and components of Zoe, our reusable smart contract 
   for writing other smart contracts in JavaScript. Zoe implements our guarantee that users
   either get what they wanted from the contract or a full refund of what they put up for it. 
-5. **[Agoric Platform/Stack](../../platform/)**: A brief introduction to the complete Agoric platform/technical stack.
-6. **[Agoric Dapp Guide](../../dapps/)**: 
+5. **[Agoric Platform/Stack](/platform/README.md)**: A brief introduction to the complete Agoric platform/technical stack.
+6. **[Agoric Dapp Guide](/dapps/README.md)**: 
    A Dapp is a distributed application, typically with a browser-based user interface, a public
    API server, and a contract running on the Agoric blockchain. This document explains a Dapp's
    basic directory and file structure.
 7. **[Deploying Smart Contracts](./deploying.md)**: 
   A brief description of the tools and processes for deploying contracts to the chain and
   application code to the application server.
-8. **[JavaScript Distributed Programming Guide](../../distributed-programming.md)**: 
+8. **[JavaScript Distributed Programming Guide](/distributed-programming.md)**: 
   We've made some Agoric-specific additions at various layers, including concepts, syntax, 
   and additions to the Agoric library. You should know about and understand these before 
   programming on the Agoric platform.
-8. **[ERTP Guide](../../ertp/guide/)**: 
+8. **[ERTP Guide](/ertp/guide/README.md)**: 
   A detailed description of ERTP concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the ERTP API 
   documentation, accessible from the ERTP documentation sidebar menu.
-9. **[Zoe Guide](../../zoe/guide/)**: 
+9. **[Zoe Guide](/zoe/guide/README.md)**: 
   A detailed description of Zoe concepts, design, components, and commands. 
   Includes examples of command usage. You should also look at the Zoe API 
   documentation, accessible from the Zoe documentation sidebar menu.
 
-When needed, refer to the **[ERTP API Reference](../../ertp/api/)**, **[Zoe API
-Reference](../../zoe/api/)**, **[Wallet API Reference](../../wallet-api.md)**,
-and **[Agoric CLI Guide](./agoric-cli-guide)** for details about 
+When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
+Reference](/zoe/api/)**, **[Wallet API Reference](/wallet-api.md)**,
+and **[Agoric CLI Guide](/getting-started/agoric-cli-guide.md)** for details about 
 their respective commands. 
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
@@ -72,9 +72,9 @@ to connect to services on other blockchains or make services on the Agoric block
 See our **[dIBC Guide](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md)** for more information. 
 
 To familiarize yourself with working Agoric smart contracts, take a look at our 
-**[Sample Contracts](../../zoe/guide/contracts/)**. 
+**[Sample Contracts](/zoe/guide/contracts/README.md)**. 
 
-We also have an **[Agoric Glossary](../../glossary/)** for terms we've given Agoric-context
+We also have an **[Agoric Glossary](/glossary/)** for terms we've given Agoric-context
 definitions to (i.e. what does *mint* mean in an Agoric context?).
 
 For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 

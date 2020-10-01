@@ -117,7 +117,7 @@ being traded: the `asset`, the amount Alice has escrowed, and the
 and simoleans are made-up currencies for this example.) Amounts are
 descriptions of digital assets, but have no value themselves. Please
 see the ERTP guide for more on
-[amounts](/ertp/guide/amounts.html#amounts-values-and-brands).
+[amounts](/ertp/guide/amounts.md#amounts-values-and-brands).
 
 ### Making an offer
 

@@ -73,7 +73,7 @@ API Reference](../api/).
 The following methods on other ERTP components also either operate on or
 return a `brand`.
 
-- [`issuer.getBrand()`](../api/issuer.md#issuer-getBrand)
+- [`issuer.getBrand()`](/ertp/api/issuer.md#issuer-getbrand)
   - Returns the `brand` for the `issuer`. The `brand` is not closely
     held, so this should not be trusted to identify an `issuer`
     alone. Fake digital assets and `amount`s can use the `brand` of another `issuer`.

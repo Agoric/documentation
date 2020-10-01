@@ -285,9 +285,9 @@ on or return an `amount` or `amountMath`. While a brief description is given for
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
 
-- <router-link to="./issuer.html#issuer-getamountof-payment">`issuer.getAmountOf(payment)`</router-link>
+- [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment)
   - Returns the `amount` description of the `payment`
-- <router-link to="./issuer.html#issuer-getamountmathkind">`issuer.getAmountMathKind()`</router-link>
+- [`issuer.getAmountMathKind()`](./issuer.md#issuer-getamountmathkind)
   - Returns the kind of the `issuer`'s associated `amountMath`.
-- [`zcf.getAmountMath(brand)`](https://agoric.com/documentation/zoe/api/zoe-contract-facet.html#zcf-getamountmath-brand)
+- [`zcf.getAmountMath(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
   - Returns the `amountMath` associated with the `brand`.

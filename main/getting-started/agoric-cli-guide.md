@@ -12,7 +12,7 @@ The Agoric CLI implements a local-chain-multiuser scenario for developing and te
 
 #### Usage
 
-Develop your Dapp as described in the [Agoric Getting Started Guide](https://agoric.com/documentation/getting-started/).
+Develop your Dapp as described in the [Agoric Getting Started Guide](/getting-started/).
 After using `agoric start` to test with the simulated chain, stop the simulated chain with Control-C.  Then start a real
 local chain by running the following command. If you want to start the Agoric process afresh, add the `--reset` option at the end.
 ```js
