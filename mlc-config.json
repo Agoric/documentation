@@ -6,11 +6,5 @@
     {
       "pattern": "^http://localhost:*"
     }
-  ],
-  "replacementPatterns": [
-      {
-          "pattern": "^/",
-          "replacement": "/home/runner/work/documentation/documentation/main/"
-      }
   ]
 }
