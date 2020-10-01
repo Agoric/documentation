@@ -123,5 +123,4 @@ between multiple offers, or create new assets to order.
 ## Making an Invitation
 
 To create an invitation in the contract, use the Zoe Contract
-Facet method (<router-link
-to="/zoe/api/zoe-contract-facet.html#zcf-makeinvitation-offerhook-customproperties">`zcf.makeInvitation`</router-link>).
+Facet method [`zcf.makeInvitation`](/zoe/api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties).
