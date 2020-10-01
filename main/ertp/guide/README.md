@@ -9,7 +9,7 @@ you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
 ERTP uses
-*[OCaps (object capabilities)](../../glossary/#object-capabilities)*
+*[OCaps (object capabilities)](/glossary/#object-capabilities)*
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -18,8 +18,8 @@ reference, it can't. For more on object capabilities, see
 ## Fungible and Non-Fungible Assets
 
 There are two kinds of assets,
-*[fungible](../../glossary/#fungible)* and
-*[non-fungible](../../glossary/#non-fungible)*. 
+*[fungible](/glossary/#fungible)* and
+*[non-fungible](/glossary/#non-fungible)*. 
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
@@ -305,7 +305,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP uses [*object capabilities*](../../glossary/#object-capabilities).
+ERTP uses [*object capabilities*](/glossary/#object-capabilities).
 You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million Quatloos and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 

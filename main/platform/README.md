@@ -1,6 +1,6 @@
 # The Agoric Platform
 
-![agoric stack](./assets/stack.svg "The Agoric Stack")
+![agoric stack](./assets/stack.svg)
 
 This document focuses on the layers beneath Zoe and ERTP, what we call
 the Agoric Platform. This includes "Swingset", which can be thought of

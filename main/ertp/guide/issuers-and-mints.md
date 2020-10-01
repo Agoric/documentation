@@ -31,7 +31,7 @@ of the same `brand` is valid.
 The following is
 a brief description and example of each `Issuer` method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](https://agoric.com/documentation/ertp/api/#ertp-api).
+API Reference](/ertp/api/#ertp-api).
 
 - **Create issuer operation**
   - <router-link to="./api/issuer.html#makeissuerkit-allegedname-mathhelpername">`makeIssuerKit(allegedName, amountMathKind)`</router-link>
@@ -258,8 +258,8 @@ the one Quatloos `mint` can create new Quatloos.
 So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
 
 There are two `mint` API commands. Click the method's name to go to its entry in the [ERTP
-API Reference](./api/#ertp-api).
-- [`mint.getIssuer()`](./api/mint.html#mint-getissuer)
+API Reference](/ertp/api/#ertp-api).
+- [`mint.getIssuer()`](/ertp/api/mint.md#mint-getissuer)
   - Returns the `issuer` uniquely associated with the `mint`.
   - ```js
     import { makeIssuerKit } from '@agoric/ertp';
@@ -268,7 +268,7 @@ API Reference](./api/#ertp-api).
     // returns true
     quatloosIssuer === quatloosMintIssuer;
     ```
-- [`mint.mintPayment(newAmount)`](./api/mint.html#mint-mintpayment-newamount)
+- [`mint.mintPayment(newAmount)`](/ertp/api/mint.md#mint-mintpayment-newamount)
   - Returns a new `payment` containing newly minted assets with a balance equal to `newAmount`. In other words,
     it mints `newAmount` of digital assets and creates a `payment` to hold those new assets. The assets are of
     the `mint`'s associated `brand`.

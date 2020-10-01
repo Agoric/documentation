@@ -9,7 +9,7 @@ Wallet API commands work with the following object types:
 - `issuer`: Creates empty purses and payments and maps minted assets
   to them when assets are added or removed. Issuers verify and move
   digital assets.
-- `offer`: Consists of what amount of what [brand](https://agoric.com/documentation/ertp/guide/brand.html#allegedname)
+- `offer`: Consists of what amount of what [brand](/ertp/guide/amounts.md#brands)
   you're willing to
   give, and what amount of what brand you want, as well as the
   conditions under which the offer holder can cancel it.## Petnames

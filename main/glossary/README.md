@@ -34,8 +34,8 @@ methods of three different kinds to deal with [fungible](#fungible) assets (valu
 - `MathKind.STRING_SET`: Used with non-fungible assets. `amount` values are strings.
 - `MathKind.SET`: Used with non-fungible assets. `amount` values are objects or records with multiple properties.
 
-See the [ERTP Guide's AmountMath section](https://agoric.com/documentation/ertp/guide/amount-math.html) 
-and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) for more information.
+See the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md) 
+and the [ERTP API's AmountMath section](/ertp/api/amount-math.md) for more information.
 
 ## Amounts
 Amounts are the canonical description of tradable goods. They are manipulated
@@ -46,8 +46,8 @@ abstract right to participate in a particular exchange.
 An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 quatloos"
 is an amount with a value of "4" and a brand of the imaginary currency "quatloos".
 
-See the [ERTP Guide's Amounts section](https://agoric.com/documentation/ertp/guide/amounts.html) 
-and the [ERTP API's AmountMath section](https://agoric.com/documentation/ertp/api/amount-math.html) 
+See the [ERTP Guide's Amounts section](/ertp/guide/amounts.md) 
+and the [ERTP API's AmountMath section](/ertp/api/amount-math.md) 
 for more information.
 
 ## AssetHolder
@@ -56,8 +56,8 @@ for more information.
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
 make up an [amount](#amounts).
-See the [ERTP Guide's Brand section](https://agoric.com/documentation/ertp/guide/brand.html)
-and the [ERTP API's Brand section](https://agoric.com/documentation/ertp/api/brand.html) for more information.
+See the [ERTP Guide's Brand section](/ertp/guide/amounts.md#brands)
+and the [ERTP API's Brand section](/ertp/api/brand.md) for more information.
 
 ## Comparable
 
@@ -86,8 +86,8 @@ have a reference, it can't. For more on object capabilities, see [this post](htt
 
 Key ERTP concepts include [Issuers](#issuer), [mints](#mint), 
 [Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amounts). Also 
-see the [ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction.html),
-[ERTP Guide](https://agoric.com/documentation/ertp/guide/), and [ERTP API](https://agoric.com/documentation/ertp/api/).
+see the [ERTP Introduction](/getting-started/ertp-introduction.md),
+[ERTP Guide](/ertp/guide/), and [ERTP API](/ertp/api/).
 
 ## Facet
 
@@ -114,8 +114,8 @@ payments of their asset type (splitting, combining, burning, and exclusively cla
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid. 
 
-See the [ERTP Guide's Issuer section](https://agoric.com/documentation/ertp/guide/issuer.html)
-and the [ERTP API's Issuer section](https://agoric.com/documentation/ertp/api/issuer.html) for more information.
+See the [ERTP Guide's Issuer section](/ertp/guide/issuers-and-mints.md)
+and the [ERTP API's Issuer section](/ertp/api/issuer.md) for more information.
 
 ## Mint
 In ERTP, mints create digital assets and are the only objects with the authority to do so. 
@@ -125,8 +125,8 @@ can only create one type of asset.
 Mints are [issuer's](#issuer) admin facets, and there is a one-to-one relationship between an issuer and
 its mint.
 
-See the [ERTP Guide's Mint section](https://agoric.com/documentation/ertp/guide/mint.html) 
-and the [ERTP API's Mint section](https://agoric.com/documentation/ertp/api/mint.html) for more information.
+See the [ERTP Guide's Mint section](/ertp/guide/issuers-and-mints.md#mints) 
+and the [ERTP API's Mint section](/ertp/api/mint.md) for more information.
 
 ## Non-fungible
 A non-fungible asset is one where each incidence of the asset has unique individual properties and
@@ -167,20 +167,20 @@ Amounts from payments can be deposited in [purses](#purse), but otherwise, the e
 available when the payment is transferred. Payments can be converted to [Purses](#purse). All contents 
 of a purse must be of the same [brand](#brand).
 
-See the [ERTP Guide's Payments section](https://agoric.com/documentation/ertp/guide/issuer.html#payments)
-and the [ERTP API's Payments section](https://agoric.com/documentation/ertp/api/payment.html#payment-getallegedbrand) 
+See the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#payments)
+and the [ERTP API's Payments section](/ertp/api/payment.md#payment-getallegedbrand) 
 for more information.
 
 ## Presence
 A local version of a remote object that serves as a proxy for the remote object. 
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`. 
-See the [JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html) for more information. 
+See the [JavaScript Distributed Programming Guide](/distributed-programming.md) for more information. 
 
 ## Purse
 Purses hold [amounts](#amounts) of certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
 
-See the [ERTP Guide's Purses section](https://agoric.com/documentation/ertp/guide/issuer.html#purses) and the
-[ERTP API's Purses section](https://agoric.com/documentation/ertp/api/purse.html)
+See the [ERTP Guide's Purses section](/ertp/guide/purses-and-payments.md#purses) and the
+[ERTP API's Purses section](/ertp/api/purse.md)
 for more information.
 
 ## Seat
@@ -201,7 +201,7 @@ represented by natural numbers. Other values may be represented as strings namin
 right, or an arbitrary object representing the rights at issue. The latter two examples 
 are usually [non-fungible](#non-fungible) assets. Values must be [Comparable](#comparable).
 
-See the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/value.html) for more information.
+See the [ERTP Guide's Value section](/ertp/guide/amounts.md#values) for more information.
 
 ## Vat
 

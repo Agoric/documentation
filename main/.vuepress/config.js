@@ -111,7 +111,7 @@ module.exports = {
         },
         {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.html',
+          path: '/getting-started/ertp-introduction.md',
           collapsible: false,
           sideBarDepth: 3,
           children: [
@@ -119,7 +119,7 @@ module.exports = {
         },
         {
           title: 'Zoe Introduction',
-          path: '/getting-started/intro-zoe.html',
+          path: '/getting-started/intro-zoe.md',
           collapsible: false,
           sideBarDepth: 3,
           children: [
@@ -137,7 +137,7 @@ module.exports = {
       '/ertp/': [
         {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.html',
+          path: '/getting-started/ertp-introduction.md',
           collapsible: false,
           sideBarDepth: 3,
           children: [
@@ -174,7 +174,7 @@ module.exports = {
       '/zoe/': [
         {
           title: 'Zoe Introduction',
-          path: '/getting-started/intro-zoe.html',
+          path: '/getting-started/intro-zoe.md',
           collapsible: false,
           sideBarDepth: 3,
           children: [

@@ -1,6 +1,6 @@
 # Deploying Smart Contracts
 
-The `agoric deploy` command in the [agoric command line tool](https://agoric.com/documentation/getting-started/agoric-cli-guide.html#agoric-deploy) 
+The `agoric deploy` command in the [agoric command line tool](/getting-started/agoric-cli-guide.md#agoric-deploy) 
 supports deploying contracts and off-chain web applications that talk to them. The command 
 has two primary uses:
 
@@ -37,10 +37,10 @@ Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, thro
 
 First, let's look at *contract deployment*. `contract/deploy.js`bundles up a contract's source code
 (which may consist of multiple files and modules) and "installs" 
-it on the blockchain as source code, using [`Zoe`](https://agoric.com/documentation/getting-started/intro-zoe.html). 
+it on the blockchain as source code, using [`Zoe`](/getting-started/intro-zoe.md). 
 This does _not_ execute contract code; it just makes the code available on-chain.
 
-The contract deployment process uses [`zoe.install()`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-install-code-moduleformat) 
+The contract deployment process uses [`zoe.install()`](/zoe/api/zoe.md#e-zoe-install-bundle) 
 to install the contract source code on-chain. This returns an *installation handle* associated with the 
 source code. In a typical contract deployment, the deploy script adds the installation handle  
 to the default shared registry so it is broadly accessible on the chain. The script then writes

@@ -2,7 +2,7 @@
 
 ::: warning Changes in the Alpha Release Candidate
 [Learn more about the changes to Zoe, contracts, and dapps in the
-Alpha Release Candidate](./alpha-release-candidate).
+Alpha Release Candidate](./alpha-release-candidate.md).
 :::
 
 **This is a generic guide to Agoric Dapp projects**
