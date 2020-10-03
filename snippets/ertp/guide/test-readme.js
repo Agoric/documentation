@@ -5,7 +5,7 @@ import { makeBoard } from '@agoric/cosmic-swingset/lib/ag-solo/vats/lib-board';
 
 import { makeIssuerKit, MathKind } from '@agoric/ertp';
 
-test('intro to zoe', async t => {
+test('ertp guide readme', async t => {
   // #region makeIssuerKit
   const {
     issuer: quatloosIssuer,
