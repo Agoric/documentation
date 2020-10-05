@@ -259,11 +259,19 @@ to manipulate the offer. The queries and operations are as follows:
         Price: moolaAmountMath.make(9)
       }
       ```
- - `exit()`
+ - `exit(completion)`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
-     are made, and the `seat` object can no longer interact with the contract. .
- - `kickOut(msg)` (`msg` is optional)
+     are made, and the `seat` object can no longer interact with the contract.
+     The `completion` argument is usually a string, but this is not required. **tyg todo:
+     What else can it be and what is it used for/does it do?**
+ - `fail(msg)` (`msg` is optional)
+   - Returns: `void`
+   - The `seat` exits, displaying the `msg` string, if there is one, on the console.
+     This is equivalent to exiting, except that `exit` is for a successful transaction while
+     `fail()` aborts the transaction attempt and signals an error. The contract
+     still gets its current `allocation` and the `seat` can no longer interact with the contract.     
+ - `kickOut(msg)` (`msg` is optional) **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
    - Returns: `void`
    - The `seat` exits, displaying the `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
@@ -313,9 +321,14 @@ Returns the `amountMath` object associated with the `brand` argument.
 ```js
 const assetAmountMath = zcf.getAmountMath(assetAmount.brand);
 ```
-## zcf.shutdown()
+## zcf.stopAcceptingOffers()
+- The contract requests Zoe to not accept offers for this contract instance. **tyg todo: No way of 
+starting it back up and accepting again?** It can't be called from outside the contract 
+unless the contract explicitly makes it accessible.
 
-**Note**: Still in development, use at your own risk.
+## zcf.shutdown(completion)
+
+**Note**: Still in development, use at your own risk. **tyg todo: Is this warning still valid?**
 
 Shuts down the entire vat and gives payouts.
 
@@ -325,6 +338,9 @@ giving them their payouts.
 Call when:
 - You want nothing more to happen in the contract, and
 - You don't want to take any more offers
+
+The `completion` argument is usually a string, but this 
+is not required. **tyg todo: What else can it be and what is it used for/does it do?**
 
 ```js
 zcf.shutdown();
