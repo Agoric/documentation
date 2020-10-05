@@ -42,7 +42,7 @@ For example, if you have a `process.svg` image file with a diagram for the Zoe G
 like `main/zoe/guide/assets/process.svg` and it would appear via an image link of `./assets/process.svg` in the page 
 rendered from `main/zoe/guide/invitations.md`. 
 
-Note that `assets` should store all the auxillary files for the files in its parent folder. You don't make an `assets` folder
+Note that `assets` should store all the auxiliary files for the files in its parent folder. You don't make an `assets` folder
 or similar for individual files/pages.
 
 ### README files
@@ -173,15 +173,16 @@ development?**
 
 ### Check Links
 
-To check internal Vuepress links locally, run the shell command `yarn check-links` **tyg todo: From where?**
+To check internal VuePress links locally, run the shell command `yarn check-links` **tyg todo: From where?**
 Note this does **not** check either external links or router-links. Output is the text of any 
 broken links, and what file and line number they're at.
 
 ## Local Install, Build, and Run
 
-1. Clone the Documentation repo to your local machine. We suggest using 
+1. **Clone**: Clone the Documentation repo to your local machine. We suggest using 
 Sourcetree to manage your local and remote copies and the various commits
-and pull requests you'll make while debugging.
+and pull requests you'll make while debugging. The following steps should all
+be run from the directory you cloned the repo into.
 
 2. **Install**: To ensure using the latest agoric-sdk 
 version when running code snippets, from a shell, run
@@ -218,7 +219,7 @@ But if you're viewing "Introduction to Zoe" itself, you'll always see the Gettin
 no way to have it sometimes (appropriately) display the Zoe sidebar menu instead.
 
 ### Configuration and navigation
-All configuration is handled in `[/main/.vuepress/config.js](/.vuepress/config.js)`. Here you can:
+All configuration is handled in [`/main/.vuepress/config.js`](/.vuepress/config.js). Here you can:
 - Set and modify the website title and description.
 - Configure the top navigation bar.
 - Configure the various sidebar menus
@@ -351,7 +352,7 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
   starting at `main`. Note the full file name is given, including the `.md` suffix (which VuePress
   will change to `.html` during its processing).
 - `collapsible`: Can this item be collapsed? So far, we don't have any collapsible items, so 
-  also give this property the value `false`.
+  always give this property the value `false`.
 - `sideBarDepth`: How many levels can the sidebar show? So far, we've not gone deeper than 3.
 - `children`: An array of submenu items for this sidebar menu item. You just need to specify
   the file paths to where you want to go when the submenu item is clicked. VuePress uses the
@@ -383,6 +384,6 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
         },
       ],
 ```
-When viewing a page, VuePress has automatically constucted a sidebar menu entry for that page 
+When viewing a page, VuePress has automatically constructed a sidebar menu entry for that page 
 consisting of all `h1`, `h2`, and `h3` header titles on the page.
 
