@@ -1,18 +1,23 @@
 # Contributing to Agoric's Documentation Repo
 
 Agoric's public-facing technical documentation is mostly in the [Agoric Documentation](../documentation) GitHub repo.
-(The complete documentation set also includes some external items such as papers, presentations, videos, etc.). The simple
-version of document processing is that docs are written in Markdown, with most image files in `.svg` format and also stored in 
-the Documentation repo. Some processing is done when a file in the repo is committed. When a Pull Request is merged with the
-master branch, [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically processes any new or 
-changed files. The processed files are displayed in the [Agoric website's
-Documentation Section](https://agoric.com/documentation/getting-started/alpha.html)
+The complete documentation set also includes external items such as papers, presentations, videos, etc. Our document
+process is:
+1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo. 
+2. Before doing a Pull Request, check your changed docs in a local copy of the repo and local documentation 
+   server. Includes link checking and (for now) spellchecking. 
+3. Have the changed docs reviewed and approved by others.
+4. Pull Request merges with the Master branch automatically run tests on their committed files.
+5. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically 
+   processes any new or changed files for display. 
+6. The [Agoric website's Documentation Section](https://agoric.com/documentation/getting-started/alpha.html) displays
+   the VuePress processed files, which have been converted to HTML.
 
 This doc explains:
 - The overall documentation structure.
 - Our preferred way of writing links.
 - How to import code snippets into docs.
-- What happens when you make a commit.
+- What happens when you make a PR merge with Master.
 - How to build and run a local doc server for testing.
 - How to edit the top menubar and sidebars of the Agoric documentation site.
 
@@ -30,95 +35,184 @@ Each project gets its own folder, often with `/api` and `/guide` subfolders as w
 well as `/main/zoe/api/` and `/main/zoe/guide/`. Projects can have additional subfolders as needed. 
 
 Each folder should have its own `README.md`, which is an effective `index.js` equivalent in terms of rendering when someone navigates to
-the folder's URL. For example, navigating to `https://agoric.com/documentation/ertp` displays the VuePress processed `/main/ertp/README.md`.
-While it may seem odd, VuePress expects multiple `README.md` files in a repo, one each for most folders in it.
+the folder's URL. See the next section for how what VuePress expects from and does to READMEs. 
 
 Images, diagrams, and similar content-supporting files should go in an `assets` subfolder under the appropriate project folder.
-For example, if you have a `process.svg` image file with a diagram for an page in the Zoe Guide about Invitations, it's path should look
-like `main/zoe/guide/assets/process.svg` and it would appear via an image link in the page rendered from `main/zoe/guide/invitations.md`.
-Note that `assets` should store all the auxillary files to its parent folder. You don't make an `assets` folder or similar for
-individual files/pages.
+For example, if you have a `process.svg` image file with a diagram for the Zoe Guide's Invitations page, its path should look
+like `main/zoe/guide/assets/process.svg` and it would appear via an image link of `./assets/process.svg` in the page 
+rendered from `main/zoe/guide/invitations.md`. 
+
+Note that `assets` should store all the auxillary files for the files in its parent folder. You don't make an `assets` folder
+or similar for individual files/pages.
+
+### README files
+
+VuePress converts Markdown files to same named HTML file. `README.md` files are an exception; they're 
+renamed `index.html`, since that's how web servers find a website's root file. Navigating 
+to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/README.md`.
+While it may seem odd, VuePress expects multiple `README.md` files in a repo, one each for most folders in it.
+
+The root README.md file must start with a header. Any of H1, H2, or H3 (`#`, `##`, or `###` in Markdown) will do.
+This is needed to generate search indexes and sidebars.
+
+A subdirectory is invisible to VuePress unless it has a `README.md`. Empty `README.md` files are acceptable.
+
+Lines with no special treatment are converted into standard HTML paragraph tags.
 
 ### Sectioning Pages
 
 VuePress automatically builds search functionality and individual page menus from `h1`, `h2`, and `h3` headers (i.e Markdown's `#`, `##`, and `###` commands). 
-You must have only **ONE** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers on one page.
+You must have only **one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers on one page.
+
+## Writing Links
+
+VuePress turns Markdown links into HTML links. There are some quirks about how you should write Markdown links.
+
+First, our link checker does **not** check `router-link` style links. Please only use Markdown style links.
+
+Next, your Markdown links should be to the `.md` Markdown files in the Doc repo. VuePress processing will change
+both the `.md` files and links to them to be `.html`.
+
+Use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
+open in the same browser tab when clicked on, absolute links open a new tab. 
+
+Use this trick to make writing relative links easier. While it's easy enough to, say, write a relative link to something in
+the same folder as the file you're writing (something like `(./assets/my-diagram.svg)` to include an image), it can be
+tricky to remember/figure out what the right syntax is for linking to a file two folders up, in a different upper folder, and then
+two levels down from there on a different branch of the file structure. 
+
+Instead, `main` is considered the top of the file hierarchy. So you can always get to, say, a Glossary entry 
+by just linking to `(/glossary/#allocation)`; its path relative to `main`.
+
+VuePress turns every header in a Markdown file to a named file location you can link to so clicking take you directly to
+that file location. At the end of the link, append a `#` to the file name, followed by the header text. The header text
+must be altered to be 1) all lower case. 2) All punctuation and spaces are replaced by hyphens.
+
+So, for example, the header `E(zoe).getBrands(instance)` is linked to by `zoe.md#e-zoe-getbrands-instance)` and the header
+`Contract and Contract Instance` by `glossary/#contract-and-contract-instance`. Note that no specific file is specified in
+the latter, as it defaults to the `glossary` folder's `README.md` file
 
 ## Github Actions and Continuous Integration
 
-On every pull request and on every commit to master, the following
-Github Actions run:
+These GitHub Actions run on every pull request and commit to master:
 
-* Test the build - This tests that the build does not have any errors and
-  that the result passes HTML5 validation
-* Spellcheck - This checks the Markdown documents against a dictionary
-  and a local wordlist
-* Lint and Test Snippets - This tests the code snippets that are
-  imported into the documentation. Note that code included inline does
-  not get tested or run. 
+- Test the build
+  - Tests for build errors and does HTML5 validation. 
+- Lint and Test Snippets
+  - Tests the imported code snippets. Code included inline is **not** tested or run.
+- Spellcheck - **Does not work yet. Until finished, please check your docs in an external spellchecker before merging.**
+  - Checks Markdown files against a dictionary and a local wordlist. 
 
-## Spellcheck
+### Spellcheck
+
+**Does not work yet. Until finished, please check your docs in an external spellchecker before merging.**
 
 This is currently only available in Github Actions on Pull Requests.
-Any words that do not pass spell check will be shown in the logs of
+Any words that do fail spell check are shown in the logs of
 the Github Action. Please either fix the words or add them to the list
-in `Agoric/documentation/.wordlist.txt`. Please maintain the list's alphabetical order when entering new words for the convenience of future maintainers.
+in `Agoric/documentation/.wordlist.txt`. When entering new words, please keep the list 
+in alphabetical order for the convenience of future maintainers.
 
 ![](./contributing-assets/spellcheck-results.png)
 
-## Importing and testing snippets
+### Importing and testing code snippets
 
-To import code snippets into the documentation, you can write up the
-code in a separate file under `snippets/`, then include it by adding a
-line like `<<< @/snippets/test-intro-zoe.js#install` to your document.
-The section `test-intro-zoe.js` should be replaced with your
-particular filename. `#install` is an example of a specific code
-region in the file to import. For example, it might look like:
+**tyg todo: Note: There was a lot of this that I found possibly ambiguous. I've tried
+to specify a few more things to make it clearer, but you should probably review
+this section carefully make sure my interpretations are correct or not**
 
-```js
-  // #region install
-  const atomicSwapInstallation = await E(zoe).install(atomicSwapBundle);
-  // #endregion install
+Code snippets are not short inline code bits like `const x = 2 + 2;`. Or 
+code blocks denoted in Markdown by starting with a line consisting of three backquotes with 
+`js` appended and ending with a line consisting of three backquotes. 
+
+Rather, code snippets are actual development or test code from the Agoric-SDK repo,
+or code held to a similar standard of correctness. They should pass `lint` and run with no
+errors. This ensures our documents use real code that works
+with the current agoric-sdk version (whatever is on master) and is
+not outdated. **tyg todo: I'm not quite seeing this guaranteeing things,
+since we're not extracting the code directly from agoric-sdk. It'd seem
+if we don't check and manually update the snippets file after each upgrade, we risk
+falling out of sync with the agoric-sdk repo.**
+
+To import code snippets into the documentation, create a file
+under `Agoric/documentation/snippets/`. **tyg todo: It appears there should be only one 
+snippets folder for the whole doc repo?** Put your code in the new file.
+Remember, it must be able to run without errors. 
+
+You can make an entire code file, or any part of it, into a snippet (each
+of which can be used multiple times in the docs). Just surround the part
+you want to be a snippet with `#region` and `#endregion` comments:
 ```
+// #region regionName
+...
+// #endregion regionName
 
-Write tests using AVA, and then run them with `yarn test`. The code
-files can also be linted with `yarn lint-fix`. Testing code snippets
-allows us to ensure that our documents are using real code that works
-with the current version of agoric-sdk (whatever is on master) and is
-not outdated.
+`regionName` in the above is any name you want to give this snippet.
 
-## Check Links
+If you want the whole file to be a snippet, just put the `#region` / `#endregion`
+pair at the start and end of the file. You can define any number of snippet
+regions in a file, including defining one region inside of another. Just be sure to give
+all the ones in a file different names. **tyg todo: Is this all right?**
 
-To check internal Vuepress links locally, run the following shell command. It does *not* check either external links or router-links. Output consists of the text of any broken links, what file they're in, and what line number they occur on.
+To include a defined snippet in a Markdown file, put a
+line like `<<< @/snippets/test-intro-zoe.js#install` in it..
+Replace the `test-intro-zoe.js` with the filename in the snippets file.
+Replace the `install` with the name of the region you want included from
+the file. 
 
+To test your snippets files:
+1. Write tests using AVA.
+2. Run the tests with `yarn test`. **tyg todo: (Do all the tests have to be in the snippets directory? And do you run `yarn test` from there?)**
+3. Lint the files with `yarn lint-fix` **tyg todo: See above re: what directory you run this from**
+
+**tyg todo: If they're being tested and linted during the merge to master, is this just how you personally test things during 
+development?**
+
+### Check Links
+
+To check internal Vuepress links locally, run the shell command `yarn check-links` **tyg todo: From where?**
+Note this does **not** check either external links or router-links. Output is the text of any 
+broken links, and what file and line number they're at.
+
+## Local Install, Build, and Run
+
+1. Clone the Documentation repo to your local machine. We suggest using 
+Sourcetree to manage your local and remote copies and the various commits
+and pull requests you'll make while debugging.
+
+2. **Install**: To ensure using the latest agoric-sdk 
+version when running code snippets, from a shell, run
 ```shell
-yarn check-links
+agoric install
 ```
-
-Links should be relative and in [this format](https://vuepressbook.com/tutorial/tutorial2.html#linking-to-headers-inside-a-file).
-
-## Install
-Run `agoric install` to ensure that we are using the latest version of
-agoric-sdk when we run our code snippets.
-
-## Build Locally
-
-To run a local server to see the changes in real time, run:
-
-```shell
-yarn docs:dev
-```
-
-Note that changes to the site config may require stopping this program
-and restarting.
-
-To build the site as it will be built for production, run:
-
+3. **Build**: To build the site as it will be built for production, run:
 ```shell
 yarn docs:build
 ```
+4. **Run**: To run a local server and see your changes in real time, run:
+```shell
+yarn docs:dev
+```
+Note that site config changes may require stopping and restarting this program.
 
-## Site Menus
+View your local documentation site at `localhost:8080/documentation/`
+
+## Editing Site Menus
+
+VuePress processing adds a top menubar to all Documentation site pages. When viewing a doc in an
+overall grouping, such as Zoe docs or Getting Started docs, VuePress adds a specified sidebar menu of
+other docs in that grouping. This section describes how to edit the top menubar and sidebar menus.
+
+**Note**: We do not know how to specify which sidebar menu to display based on how a user got to
+a particular doc. While a doc can be in more than one sidebar menu, it can only display one fixed
+sidebar menu.
+
+For example, "Introduction to Zoe" appears in two sidebar menus. One for Zoe docs, and one for
+Getting Started docs. So if you're viewing either a Zoe API doc or the "Before Starting an Agoric Project"
+doc in Getting Started, you'll see "Introduction to Zoe" as an item in both of the two different sidebar menus. 
+
+But if you're viewing "Introduction to Zoe", you'll always see the Getting Started sidebar menu. There's
+no way to have it sometimes (appropriately) display the Zoe sidebar menu instead.
 
 ### Configuration and navigation
 All configuration is handled in `[/main/.vuepress/config.js](/.vuepress/config.js)`. Here you can:
