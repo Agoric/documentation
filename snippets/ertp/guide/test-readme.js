@@ -54,7 +54,7 @@ test('ertp guide readme', async t => {
 
   // #region getValue
   const depositFacet = await E(board).getValue(aliceQuatloosDepositFacetId);
-  E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
+  await E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
   // #endregion getValue
 
   t.is(depositFacet, aliceQuatloosDepositFacet);
