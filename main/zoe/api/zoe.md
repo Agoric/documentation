@@ -202,7 +202,8 @@ It returns a promise for a `StartInstanceResult` object. The object consists of:
 
 The `adminFacet` has two methods:
 - `getVatShutdownPromise()
-  - Returns a promise that resolves (to reason or completion) when this newly started instance terminates. **tyg todo: Not sure what "resolves to reason" does? Thrown error?**
+  - Returns a promise that resolves to reason (the Error generated with `fail(reason)`) or 
+    completion (the name passed with `exit(completion)`) when this newly started instance terminates. 
 - `getVatStats()`
   - Returns statistics about vat activity. These are the number of different types
     of items in the vat's C-List, which tracks what this vat can reach on other vats
