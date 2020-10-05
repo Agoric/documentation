@@ -1,7 +1,5 @@
 import '@agoric/install-ses';
 import test from 'ava';
-import { E } from '@agoric/eventual-send';
-import { makeBoard } from '@agoric/cosmic-swingset/lib/ag-solo/vats/lib-board';
 
 import { makeIssuerKit, makeLocalAmountMath, MathKind } from '@agoric/ertp';
 import { setupZCFTest } from '../../tools/setupZcfTest';
