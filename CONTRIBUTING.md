@@ -82,13 +82,16 @@ tricky to remember/figure out what the right syntax is for linking to a file two
 two levels down from there on a different branch of the file structure. 
 
 Instead, `main` is considered the top of the file hierarchy. So you can always get to, say, a Glossary entry 
-by just linking to `(/glossary/#allocation)`; its path relative to `main`.
+by just linking to `(/glossary/#allocation)`; its path relative to `main`. Any path starting with just `/` is considered
+to start at `main`.
 
 VuePress turns every header in a Markdown file to a named file location you can link to so clicking take you directly to
 that file location. At the end of the link, append a `#` to the file name, followed by the header text. The header text
-must be altered to be 1) all lower case. 2) All punctuation and spaces are replaced by hyphens.
+must be altered to be 1) all lower case. 2) All punctuation and spaces are replaced by hyphens (except there aren't any
+trailing hyphens at the end)
 
-So, for example, the header `E(zoe).getBrands(instance)` is linked to by `zoe.md#e-zoe-getbrands-instance)` and the header
+So, for example, the header `E(zoe).getBrands(instance)` is linked to by `zoe.md#e-zoe-getbrands-instance` (note the last `)` was
+not turned into a hyphen) and the header
 `Contract and Contract Instance` by `glossary/#contract-and-contract-instance`. Note that no specific file is specified in
 the latter, as it defaults to the `glossary` folder's `README.md` file
 
@@ -142,11 +145,11 @@ Remember, it must be able to run without errors.
 You can make an entire code file, or any part of it, into a snippet (each
 of which can be used multiple times in the docs). Just surround the part
 you want to be a snippet with `#region` and `#endregion` comments:
-```
+```js
 // #region regionName
 ...
 // #endregion regionName
-
+```
 `regionName` in the above is any name you want to give this snippet.
 
 If you want the whole file to be a snippet, just put the `#region` / `#endregion`
@@ -203,15 +206,15 @@ VuePress processing adds a top menubar to all Documentation site pages. When vie
 overall grouping, such as Zoe docs or Getting Started docs, VuePress adds a specified sidebar menu of
 other docs in that grouping. This section describes how to edit the top menubar and sidebar menus.
 
-**Note**: We do not know how to specify which sidebar menu to display based on how a user got to
-a particular doc. While a doc can be in more than one sidebar menu, it can only display one fixed
+**Note**: We do not know how to specify which sidebar menu to display if a document is in
+multiple groups. While a doc can be in more than one sidebar menu, it can only display one fixed
 sidebar menu.
 
 For example, "Introduction to Zoe" appears in two sidebar menus. One for Zoe docs, and one for
 Getting Started docs. So if you're viewing either a Zoe API doc or the "Before Starting an Agoric Project"
 doc in Getting Started, you'll see "Introduction to Zoe" as an item in both of the two different sidebar menus. 
 
-But if you're viewing "Introduction to Zoe", you'll always see the Getting Started sidebar menu. There's
+But if you're viewing "Introduction to Zoe" itself, you'll always see the Getting Started sidebar menu. There's
 no way to have it sometimes (appropriately) display the Zoe sidebar menu instead.
 
 ### Configuration and navigation
@@ -220,20 +223,31 @@ All configuration is handled in `[/main/.vuepress/config.js](/.vuepress/config.j
 - Configure the top navigation bar.
 - Configure the various sidebar menus
 
-#### themeConfig.nav --> `[Array]`
+#### Configuring the top menubar
 Go to `[main/.vuepress/themeConfig/nav.js](/.vuepress/themeConfig/nav.js)` to configure the top
 navigation bar. `/main/.vuepress/config.js`, the overall VuePress configuration file, imports `nav.js`.
 
-Below is an abridged configuration of the top navigation bar showing an array of only two entries.
-Each entry is an object with three properties:
+Below is an abridged configuration of the top navigation bar showing an array of only two entries,
+Getting Started and Learn More.
+Each entry is an object with three or four properties:
 - `text`: The text shown in the nav bar.
 - `ariaLabel`: Labels this page element. Used to access it if the text is not visible.
-- `items`: An array of submenu item objects, each of which is a single submenu item of its parent navbar item.
+- `link`: Optional. Link to where the browser goes if you click the top menubar item itself, instead of a
+  submenu item. Of the form `link: '/zoe/guide'` where the opening `/` starts the path at `main/`. In this
+  case, no filename was given, so it defaults to `guide`'s `README.md` file. If not present, the menubar
+  entry is not clickable.
+- `items`: Optional. An array of submenu item objects, each of which is a single submenu item of its 
+  parent navbar item. Not present if the item doesn't have a submenu.
+  
+To add an entry to the top menubar, just add a menu item object to the array. We suggest copying a
+similar one, adding the copy, and editing the copy's property values to be those of the new item and
+its submenus. To delete an entry, just remove its object from the menubar item array.
 ```js
 module.exports = [
   {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
+    link: '/getting-started`
     items: [
       {
         // Submenu item
@@ -257,11 +271,32 @@ module.exports = [
   },  
 ]
 ```
+#### Configuring the top menubar submenus
 
-This is an abridged configuration of the **ERTP** entry and its submenu:
+A top menubar item without a submenu, such as Glossary, has no
+`items` property and must have a `link` property (otherwise there's
+nothing to click, so it's really not a good navigation menu item).
+```js
+ {
+    text: 'Glossary',
+    ariaLabel: 'Glossary Menu',
+    link: '/glossary/'
+  },
+```
+
+This is an abridged configuration of the `ERTP` entry and its submenu.
+Each submenu item has the same structure and properties as a top menubar item,
+except they do not have an `items` property. Note that for links to files, instead of folders, such as
+the ERTP Introduction, you leave off the file's suffix. So in that case, the
+link value is `'/getting-started/ertp-introduction/'` and not `'/getting-started/ertp-introduction.md'`
+All links must end with a trailing `/`, even if the link is to a file.
+
+To add a submenu item, just copy an appropriate one, add it to the `items` array, and edit its
+property values to be what you want for the new item. To delete a submenu item, just remove its
+entry from the `items` array.
 ```js
 {
-    text: 'ERTP', // spaces to add some distance to next link
+    text: 'ERTP', 
     ariaLabel: 'ERTP Menu',
     link: '/ertp/guide/',
     items: [
@@ -284,32 +319,70 @@ This is an abridged configuration of the **ERTP** entry and its submenu:
   }
 ```
 
-This is where the top navigation bar is configured. An additional link can be added by adding a new Object with `text` (display text) and `link` (where the link should go) properties. Internal site links must be absolute with a trailing slash: `/zoe/guide/`.
+#### Configuring sidebar menus.
+Sidebar menus are configured in [`/.vuepress/config.js`](/.vuepress/config.js). There,
+sidebars are configured where it starts: `sidebar: {`.
 
-#### themeConfig.sidebar --> `[Object]`
-This is where the sidebar is configured.
-
-There are multiple ways to write a link, with the simplest way as `[path]`, with the title being automatically pulled from the header.
-
-We should prefer the long form of writing links using an Object with `{ title, path }`, as it is more explicit and allows us to more easily add additional properties.
-
-If we are using child routes, we must use the Object form as child routes are specified under the `children` property.
-
+Here's an abridged version of the overall sidebar configuration, only showing the Getting Started
+and ERTP sidebars, and leaving out their specific items:
 ```js
-'/api/': [
-  {
-    title: 'API',
-    path: '/api/',
-    collapsible: false,
-    sidebarDepth: 2,
-    children: [
-      { title: 'Mint', path: '/api/mint' },
-      { title: 'UnitOps', path: '/api/unitOps' }
-    ]
-  }
+sidebar: {
+      '/getting-started/': [
+        {
+          // item configuration
+        },
+        {
+          // item configuration
+        },
+      ],
+      '/ertp/': [
+        {
+          // item configuration
+        },
+        {
+          // item configuration
+        },
+      ],
+    }
 ```
-
-All `h1`, `h2`, and `h3` titles are automatically rendered in the sidebar for navigation.
-
-**NOTE**: Completely separate sidebars can be built for different project folders if needed, allowing for additional customization. Currently we are using the same sidebar for everything.
+Below is an abridged version of the ERTP sidebar. Each item entry has five properties:
+- `title`: The string that appears in the sidebar menu for this item.
+- `path`: Where you go if you click on this menu item. As usual, the leading `/` denotes a path
+  starting at `main`. Note the full file name is given, including the `.md` suffix (which VuePress
+  will change to `.html` during its processing).
+- `collapsible`: Can this item be collapsed? So far, we don't have any collapsible items, so 
+  also give this property the value `false`.
+- `sideBarDepth`: How many levels can the sidebar show? So far, we've not gone deeper than 3.
+- `children`: An array of submenu items for this sidebar menu item. You just need to specify
+  the file paths to where you want to go when the submenu item is clicked. VuePress uses the
+  file's (including default README.md files for folders) H1 level header text for the sidebar text.
+  You can also specify what text to use using the form `{ title: 'Mint', path: '/api/mint' }`.
+  
+```js
+      '/ertp/': [
+        {
+          title: 'ERTP Introduction',
+          path: '/getting-started/ertp-introduction.md',
+          collapsible: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+        },
+        {
+          title: 'ERTP Guide',
+          path: '/ertp/guide/',
+          collapsible: false,
+          sideBarDepth: 3,
+          children: [
+            '/ertp/guide/',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
+            '/ertp/guide/issuers-and-mints',
+            '/ertp/guide/purses-and-payments',
+          ]
+        },
+      ],
+```
+When viewing a page, VuePress has automatically constucted a sidebar menu entry for that page 
+consisting of all `h1`, `h2`, and `h3` header titles on the page.
 
