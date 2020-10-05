@@ -56,7 +56,7 @@ The following methods on other ERTP components also either operate on or
 return a `brand`. While a brief description is given for each, you should click through
 to a method's main documentation entry for full details on what it does and how
 to use it. 
-- <router-link to="./issuer.html#issuer-getbrand">`issuer.getBrand()`</router-link>: Returns
+- [`issuer.getBrand()`](./issuer.md#issuer-getbrand): Returns
 the `brand` for the `issuer`.  
-- <router-link to="./payment.html#payment-getallegedbrand">`payment.getAllegedBrand()`</router-link>: Returns
+- [`payment.getAllegedBrand()`](./payment.md#payment-getallegedbrand): Returns
 the `payment`'s alleged `brand`.

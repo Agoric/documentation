@@ -1,6 +1,6 @@
 # The Agoric Platform
 
-![agoric stack](./assets/stack.svg "The Agoric Stack")
+![agoric stack](./assets/stack.svg)
 
 This document focuses on the layers beneath Zoe and ERTP, what we call
 the Agoric Platform. This includes "Swingset", which can be thought of
@@ -14,8 +14,7 @@ it's very important to ensure that one user cannot prevent another
 user's code from executing and that the way in which code is
 interleaved doesn't open up hazards such as reentrancy. Swingset
 solves that problem by dividing up the execution environment into
-*vats*. A <router-link
-to="/distributed-programming.html#vats">vat</router-link> is a *unit
+*vats*. A [vat](/distributed-programming.md#vats) is a *unit
 of synchrony*. This means that within a JavaScript vat, objects and
 functions can communicate with one another synchronously. Between
 vats, objects and functions communicate asynchronously, by design.

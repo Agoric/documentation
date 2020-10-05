@@ -79,7 +79,7 @@ deposit facet object, you should tell them what assets `brand` it accepts.
 
 The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](./api/#ertp-api).
+API Reference](/ertp/api/#ertp-api).
 - [`purse.getCurrentAmount()`](../api/purse.md#purse-getcurrentamount)
 - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
   - ```js
@@ -113,7 +113,7 @@ API Reference](./api/#ertp-api).
     // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
     quatloosPurse.deposit(secondPayment, quatloos123);
     ```
-- [`purse.getDepositFacet()`](../api/purse.md#purse-makedepositfacet)
+- [`purse.getDepositFacet()`](/ertp/api/purse.md#purse-getdepositfacet)
   - Returns a deposit-only facet on the `purse` that can be given
     to other parties. This lets them make a deposit to the `purse`, but not make
     withdrawals from it or get its balance. Note that the command to add a `payment`'s
@@ -171,7 +171,7 @@ To convert a `payment` into a new `purse`:
 have `payments` as arguments and effectively operate on a `payment`. The following is a 
 brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](../api/#ertp-api).
+API Reference](/ertp/api/#ertp-api).
 - [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
   `payment` purports to be. Since a `payment` is not trusted, this result should be   
@@ -256,7 +256,7 @@ Other objects' `payment`-related methods:
 - [`issuer.isLive(payment)`](../api/issuer.md#issuer-islive-payment)
   - Returns `true` if `payment` has value. If `payment` is a promise for payment,
     the operation proceeds upon resolution.
-- [`mint.mintPayment(newAmount)`](../api/mint.md#mint-mintpayment-newamount)
+- [`mint.mintPayment(newAmount)`](/ertp/api/mint.md#mint-mintpayment-newamount)
   - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. Note
     that unlike creating a new `payment` by withdrawing existing assets from a `purse`,
     this creates new digital assets of the specified in `newAmount` `brand`.

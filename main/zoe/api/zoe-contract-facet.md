@@ -122,7 +122,7 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
+- Returns: [`{Issuer}`](/ertp/api/issuer.md)
 
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
@@ -160,7 +160,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
-- Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
+- Returns: [`{Promise<Invitation>}`](/ertp/api/payment.md#payment)
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
 of an ERTP `payment`. They are associated with the `invitationIssuer` and its `mint`, which 
@@ -213,7 +213,7 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
-    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html#notifiers).
+    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/distributed-programming.md#notifiers).
 - `getProposal()`
   - Returns: `{ ProposalRecord }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules

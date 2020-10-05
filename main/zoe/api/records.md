@@ -90,7 +90,7 @@ payout object: `moolaPurse.deposit(payout.Asset);`
 
 ## AmountMathKeywordRecord
 
-The keys are keywords, and the values are the [amountMath](/ertp/guide/amount-math.html) for
+The keys are keywords, and the values are the [amountMath](/ertp/guide/amount-math.md) for
 particular issuers.
 
 ```js

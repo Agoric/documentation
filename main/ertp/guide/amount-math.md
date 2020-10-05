@@ -192,7 +192,7 @@ These methods either use or return `amountMath` objects:
   - ```js
     const myAmountMathKind = quatloosIssuer.getAmountMathKind();
     ```
-- [zcf.getAmountMath(brand)](../../zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
+- [zcf.getAmountMath(brand)](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
   - Returns the `amountMath` object associated with the `brand` argument.
   - ```js
     const quatloosAmountMath = zcf.getAmountMath(quatloosBrand);

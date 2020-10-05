@@ -11,17 +11,17 @@ applications)</i>, which typically have a browser-based user interface,
 a public API server, and a contract running on the Agoric blockchain.
 
 Before doing the steps given in this document, be sure you have done the necessary prerequisites
-specified in [Before Using Agoric](https://agoric.com/documentation/getting-started/before-using-agoric/).
+specified in [Before Using Agoric](/getting-started/before-using-agoric.md).
 
 For complete documentation on the Agoric CLI commands (those starting with `agoric`) used here, 
-see the [Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/).
+see the [Agoric CLI Guide](/getting-started/agoric-cli-guide.md).
 
 For starting a local chain with multiple users, making it possible to develop and test multiuser Dapps, also see the 
- [Agoric CLI Guide](https://github.com/Agoric/documentation/blob/cli-multiuser/main/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
+ [Agoric CLI Guide](/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
 
 Also, for what needs to be done after you modify a project's code, see 
 [Development
-Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
+Cycle](/getting-started/development-cycle.md)
 
 <table>
   <tbody>
