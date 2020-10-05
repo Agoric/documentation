@@ -263,17 +263,19 @@ to manipulate the offer. The queries and operations are as follows:
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
      are made, and the `seat` object can no longer interact with the contract.
-     The `completion` argument is usually a string, but this is not required. **tyg todo:
-     What else can it be and what is it used for/does it do?**
- - `fail(msg)` (`msg` is optional)
+     The `completion` argument is usually a string, but this is not required. Its
+     only use is for the notification sent to the contract instance's `done()` function. 
+     Any still open seats or other outstanding promises are closed with a generic 'vat terminated' 
+     message.
+ - `fail(msg)`
    - Returns: `void`
-   - The `seat` exits, displaying the `msg` string, if there is one, on the console.
-     This is equivalent to exiting, except that `exit` is for a successful transaction while
-     `fail()` aborts the transaction attempt and signals an error. The contract
-     still gets its current `allocation` and the `seat` can no longer interact with the contract.     
- - `kickOut(msg)` (`msg` is optional) **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
+   - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
+     This is equivalent to exiting, except that `exit` is successful while
+     `fail()` signals an error occured while processing the offer. The contract
+     still gets its current `allocation` and the `seat` can no longer interact with the contract. 
+ - `kickOut(msg)` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
    - Returns: `void`
-   - The `seat` exits, displaying the `msg` string, if there is one, on the console.
+   - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
      `kickOut()` aborts the transaction attempt and signals an error. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
@@ -322,13 +324,10 @@ Returns the `amountMath` object associated with the `brand` argument.
 const assetAmountMath = zcf.getAmountMath(assetAmount.brand);
 ```
 ## zcf.stopAcceptingOffers()
-- The contract requests Zoe to not accept offers for this contract instance. **tyg todo: No way of 
-starting it back up and accepting again?** It can't be called from outside the contract 
-unless the contract explicitly makes it accessible.
+- The contract requests Zoe to not accept offers for this contract instance. 
+It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
 ## zcf.shutdown(completion)
-
-**Note**: Still in development, use at your own risk. **tyg todo: Is this warning still valid?**
 
 Shuts down the entire vat and gives payouts.
 
@@ -340,8 +339,10 @@ Call when:
 - You don't want to take any more offers
 
 The `completion` argument is usually a string, but this 
-is not required. **tyg todo: What else can it be and what is it used for/does it do?**
-
+is not required. It is used for the notification sent to the
+contract instance's `done()` function. Any still open seats or
+other outstanding promises are closed with a generic 'vat terminated' 
+message.
 ```js
 zcf.shutdown();
 ```
