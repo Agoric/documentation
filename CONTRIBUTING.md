@@ -1,6 +1,6 @@
 # Contributing to Agoric's Documentation Repo
 
-Agoric's public-facing technical documentation is mostly in the [Agoric Documentation](../documentation) GitHub repo.
+Agoric's public-facing technical documentation is mostly in the [Agoric Documentation](https://github.com/Agoric/documentation) GitHub repo.
 The complete documentation set also includes external items such as papers, presentations, videos, etc. Our document
 process is:
 1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo. 
@@ -17,7 +17,7 @@ This doc explains:
 - The overall documentation structure.
 - Our preferred way of writing links.
 - How to import code snippets into docs.
-- What happens when you make a PR merge with Master.
+- What happens when you make a PR.
 - How to build and run a local doc server for testing.
 - How to edit the top menubar and sidebars of the Agoric documentation site.
 
@@ -34,7 +34,7 @@ section of the Agoric website. The homepage uses the default VuePress homepage t
 Each project gets its own folder, often with `/api` and `/guide` subfolders as warranted. For example, we have `/main/ertp/api/` and `/main/ertp/guide/` as
 well as `/main/zoe/api/` and `/main/zoe/guide/`. Projects can have additional subfolders as needed. 
 
-Each folder should have its own `README.md`, which is an effective `index.js` equivalent in terms of rendering when someone navigates to
+Each folder should have its own `README.md`, which is an effective `index.html` equivalent in terms of rendering when someone navigates to
 the folder's URL. See the next section for how what VuePress expects from and does to READMEs. 
 
 Images, diagrams, and similar content-supporting files should go in an `assets` subfolder under the appropriate project folder.
@@ -42,7 +42,7 @@ For example, if you have a `process.svg` image file with a diagram for the Zoe G
 like `main/zoe/guide/assets/process.svg` and it would appear via an image link of `./assets/process.svg` in the page 
 rendered from `main/zoe/guide/invitations.md`. 
 
-Note that `assets` should store all the auxiliary files for the files in its parent folder. You don't make an `assets` folder
+Note that `assets` should store all the auxiliary files for the files in its parent folder. Don't make an `assets` folder
 or similar for individual files/pages.
 
 ### README files
@@ -61,8 +61,9 @@ Lines with no special treatment are converted into standard HTML paragraph tags.
 
 ### Sectioning Pages
 
-VuePress automatically builds search functionality and individual page menus from `h1`, `h2`, and `h3` headers (i.e Markdown's `#`, `##`, and `###` commands). 
-You must have only **one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers on one page.
+VuePress automatically builds search functionality and individual page menus from `h1`, `h2`, and `h3` headers (i.e. Markdown's `#`, `##`, and `###` commands). 
+You must have only **one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers 
+on one page and that they aren't too long. Otherwise the sidebar menu for the page will be cluttered and hard to read and use.
 
 ## Writing Links
 
@@ -76,19 +77,19 @@ both the `.md` files and links to them to be `.html`.
 Use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
 open in the same browser tab when clicked on, absolute links open a new tab. 
 
-Use this trick to make writing relative links easier. While it's easy enough to, say, write a relative link to something in
+Use this trick to make writing links easier. While it's easy enough to, say, write a relative link to something in
 the same folder as the file you're writing (something like `(./assets/my-diagram.svg)` to include an image), it can be
-tricky to remember/figure out what the right syntax is for linking to a file two folders up, in a different upper folder, and then
+tricky to remember/figure out what the right syntax is for relative linking to a file two folders up, in a different upper folder, and then
 two levels down from there on a different branch of the file structure. 
 
-Instead, `main` is considered the top of the file hierarchy. So you can always get to, say, a Glossary entry 
-by just linking to `(/glossary/#allocation)`; its path relative to `main`. Any path starting with just `/` is considered
-to start at `main`.
+Instead, VuePress considers `main` the top of the file hierarchy. So you can always get to, say, a Glossary entry 
+by just linking to `(/glossary/#allocation)`; its path starting at `main`. Any path starting with just `/` starts
+at `main`. These links also open in the same browser tab. 
 
-VuePress turns every header in a Markdown file to a named file location you can link to so clicking take you directly to
+VuePress turns every header in a Markdown file to an HTML anchor you can link to so clicking take you directly to
 that file location. At the end of the link, append a `#` to the file name, followed by the header text. The header text
-must be altered to be 1) all lower case. 2) All punctuation and spaces are replaced by hyphens (except there aren't any
-trailing hyphens at the end)
+must be altered to be 1) all lower case. 2) All non-alphanumerics, including spaces, are replaced by hyphens (except there aren't any
+trailing hyphens at the end).
 
 So, for example, the header `E(zoe).getBrands(instance)` is linked to by `zoe.md#e-zoe-getbrands-instance` (note the last `)` was
 not turned into a hyphen) and the header
@@ -120,22 +121,18 @@ in alphabetical order for the convenience of future maintainers.
 
 ### Importing and testing code snippets
 
-**tyg todo: Note: There was a lot of this that I found possibly ambiguous. I've tried
-to specify a few more things to make it clearer, but you should probably review
-this section carefully make sure my interpretations are correct or not**
-
 Code snippets are not short inline code bits like `const x = 2 + 2;`. Or 
 code blocks denoted in Markdown by starting with a line consisting of three backquotes with 
 `js` appended and ending with a line consisting of three backquotes. 
 
 Rather, code snippets are actual development or test code from the Agoric-SDK repo,
 or code held to a similar standard of correctness. They should pass `lint` and run with no
-errors. This ensures our documents use real code that works
+errors. This provides assurance our documents use real code that works
 with the current agoric-sdk version (whatever is on master) and is
-not outdated. **tyg todo: I'm not quite seeing this guaranteeing things,
-since we're not extracting the code directly from agoric-sdk. It'd seem
-if we don't check and manually update the snippets file after each upgrade, we risk
-falling out of sync with the agoric-sdk repo.**
+not outdated. However, you do need to remember to, after any new SDK release,
+do any needed snippet updates to the new release. The `yarn `test` command
+run during CI over documentation will test if snippets work with the current
+agoric-sdk release.
 
 To import code snippets into the documentation, create a file
 under `Agoric/documentation/snippets/`. **tyg todo: It appears there should be only one 
