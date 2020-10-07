@@ -1,16 +1,16 @@
 # Contributing to Agoric's Documentation Repo
 
-Agoric's public-facing technical documentation is mostly in the [Agoric Documentation](https://github.com/Agoric/documentation) GitHub repo.
+Agoric's public-facing technical documentation is mostly in the [Agoric Documentation GitHub repo](https://github.com/Agoric/documentation).
 The complete documentation set also includes external items such as papers, presentations, videos, etc. Our document
 process is:
 1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo. 
 2. Before doing a Pull Request, check your changed docs in a local copy of the repo and local documentation 
    server. Includes link checking and (for now) spellchecking. 
 3. Have the changed docs reviewed and approved by others.
-4. Pull Request merges with the Master branch automatically run tests on their committed files.
+4. Pull Requests automatically run tests on their committed files.
 5. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically 
    processes any new or changed files for display. 
-6. The [Agoric website's Documentation Section](https://agoric.com/documentation/getting-started/alpha.html) displays
+6. The [Agoric website's Documentation Section](https://agoric.com/documentation/) displays
    the VuePress processed files, which have been converted to HTML.
 
 This doc explains:
@@ -71,23 +71,25 @@ VuePress turns Markdown links into HTML links. There are some quirks about how y
 
 First, our link checker does **not** check `router-link` style links. Please only use Markdown style links.
 
-Next, your Markdown links should be to the `.md` Markdown files in the Doc repo. VuePress processing will change
+Next, your Markdown links should be to the `.md` Markdown files in the Doc repo. VuePress processing changes
 both the `.md` files and links to them to be `.html`.
 
 Use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
 open in the same browser tab when clicked on, absolute links open a new tab. 
 
-Use this trick to make writing links easier. While it's easy enough to, say, write a relative link to something in
+However, there's a trick you can use that's easier than writing a complicated relative link. 
+While it's easy enough to, say, write a relative link to something in
 the same folder as the file you're writing (something like `(./assets/my-diagram.svg)` to include an image), it can be
-tricky to remember/figure out what the right syntax is for relative linking to a file two folders up, in a different upper folder, and then
+difficult to remember/figure out what the right syntax is for relative linking to a file two folders up, in a different upper folder, and then
 two levels down from there on a different branch of the file structure. 
 
 Instead, VuePress considers `main` the top of the file hierarchy. So you can always get to, say, a Glossary entry 
 by just linking to `(/glossary/#allocation)`; its path starting at `main`. Any path starting with just `/` starts
 at `main`. These links also open in the same browser tab. 
 
-VuePress turns every header in a Markdown file to an HTML anchor you can link to so clicking take you directly to
-that file location. At the end of the link, append a `#` to the file name, followed by the header text. The header text
+VuePress turns every header in a Markdown file to an HTML anchor you can link to, so clicking such a link takes you directly to
+that file location (called *slugifying* by WordPress and other blogging platforms). At the end of the link, 
+append a `#` to the file name, followed by the header text. The header text
 must be altered to be 1) all lower case. 2) All non-alphanumerics, including spaces, are replaced by hyphens (except there aren't any
 trailing hyphens at the end).
 
@@ -100,6 +102,7 @@ the latter, as it defaults to the `glossary` folder's `README.md` file
 
 These GitHub Actions run on every pull request and commit to master:
 
+- Check links
 - Test the build
   - Tests for build errors and does HTML5 validation. 
 - Lint and Test Snippets
@@ -121,9 +124,10 @@ in alphabetical order for the convenience of future maintainers.
 
 ### Importing and testing code snippets
 
-Code snippets are not short inline code bits like `const x = 2 + 2;`. Or 
-code blocks denoted in Markdown by starting with a line consisting of three backquotes with 
-`js` appended and ending with a line consisting of three backquotes. 
+Code snippets are not short inline code bits like `const x = 2 + 2;`. In fact,
+you cannot insert a code snippet in line. They are for where you wnat to
+do an effective code block (i.e. one that starts with a line consisting of 
+three backquotes and an appended 'js' and ends with a line consisting of three backquotes).
 
 Rather, code snippets are actual development or test code from the Agoric-SDK repo,
 or code held to a similar standard of correctness. They should pass `lint` and run with no
@@ -134,10 +138,18 @@ do any needed snippet updates to the new release. The `yarn `test` command
 run during CI over documentation will test if snippets work with the current
 agoric-sdk release.
 
-To import code snippets into the documentation, create a file
-under `Agoric/documentation/snippets/`. **tyg todo: It appears there should be only one 
-snippets folder for the whole doc repo?** Put your code in the new file.
-Remember, it must be able to run without errors. 
+To import code snippets into the documentation, if theres isn't
+already an appropriate file, create a file
+under the top-level `Agoric/documentation/snippets/` directory. 
+Essentially, you want a similar structure to the docs file structure
+under `main`, with a separate snippets subfolder under `snippets` for each doc content
+subfolder. This is similar to having one test directory. 
+
+As more files are converted to using snippets, you'll increasingly just
+modify existing snippet files instead of creating new ones. 
+
+Put the agoric-sdk code you want to use in its appropriate snippets file.
+Remember, the code must be able to run without errors.
 
 You can make an entire code file, or any part of it, into a snippet (each
 of which can be used multiple times in the docs). Just surround the part
@@ -150,9 +162,13 @@ you want to be a snippet with `#region` and `#endregion` comments:
 `regionName` in the above is any name you want to give this snippet.
 
 If you want the whole file to be a snippet, just put the `#region` / `#endregion`
-pair at the start and end of the file. You can define any number of snippet
+pair at the start and end of the file. Or if the file has no defined regions, the
+whole file is also used as a single snippet. For the latter, just don't include a
+region name with the import command.
+
+You can define any number of snippet
 regions in a file, including defining one region inside of another. Just be sure to give
-all the ones in a file different names. **tyg todo: Is this all right?**
+all the ones in a file different names.
 
 To include a defined snippet in a Markdown file, put a
 line like `<<< @/snippets/test-intro-zoe.js#install` in it..
@@ -160,17 +176,19 @@ Replace the `test-intro-zoe.js` with the filename in the snippets file.
 Replace the `install` with the name of the region you want included from
 the file. 
 
-To test your snippets files:
-1. Write tests using AVA.
-2. Run the tests with `yarn test`. **tyg todo: (Do all the tests have to be in the snippets directory? And do you run `yarn test` from there?)**
-3. Lint the files with `yarn lint-fix` **tyg todo: See above re: what directory you run this from**
+To test your snippets files while writing your docs:
+1. Write tests using AVA. They should be in the snippets directory and named `test-original-filename.js` `original-filename` is
+   the Markdown filename. For example, `amounts` for `ertp/guide/amounts.md`
+2. Run the tests with `yarn test` (run from anywhere, but usually from the root of the repo).
+3. Lint the files with `yarn lint-fix` (run from anywhere, but usually from the root of the repo).
 
-**tyg todo: If they're being tested and linted during the merge to master, is this just how you personally test things during 
-development?**
+Note that the PR will automatically test and lint files. The above is for local testing while you're writing the docs.
 
 ### Check Links
 
-To check internal VuePress links locally, run the shell command `yarn check-links` **tyg todo: From where?**
+To check internal VuePress links locally, run the shell command `yarn check-links` from anywhere in the 
+root of the local repo folder or below.
+
 Note this does **not** check either external links or router-links. Output is the text of any 
 broken links, and what file and line number they're at.
 
