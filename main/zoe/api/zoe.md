@@ -201,9 +201,9 @@ It returns a promise for a `StartInstanceResult` object. The object consists of:
 - `creatorInvitation` `{Payment | undefined}`
 
 The `adminFacet` has two methods:
-- `getVatShutdownPromise()
-  - Returns a promise that resolves to reason (the Error generated with `fail(reason)`) or 
-    completion (the name passed with `exit(completion)`) when this newly started instance terminates. 
+- `getVatShutdownPromise()    
+  - Returns a promise that resolves to reason (the value passed to `fail(reason)`) or 
+    completion (the value passed to `exit(completion)`) when this newly started instance terminates. 
 - `getVatStats()`
   - Returns statistics about vat activity. These are the number of different types
     of items in the vat's C-List, which tracks what this vat can reach on other vats
