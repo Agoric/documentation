@@ -3,9 +3,19 @@
 Agoric's public-facing technical documentation is mostly in the [Agoric Documentation GitHub repo](https://github.com/Agoric/documentation).
 The complete documentation set also includes external items such as papers, presentations, videos, etc. Our document
 process is:
-1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo. 
-2. Before doing a Pull Request, check your changed docs in a local copy of the repo and local documentation 
-   server. Includes link checking and (for now) spellchecking. 
+1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo.
+2. Proofread your docs. However, be aware that everyone is their own worst proofreader and this is especially
+   true if you try to do it immediately or very soon after you finish writing it. Given our frequent time pressure, while
+   self-proofreading is required, later reviewers should not expect perfection. 
+2. Check your changed docs in a local copy of the repo and local documentation 
+   server. Includes that they build and run successfully, pass link checking and (for now) spellchecking. 
+4. If you deleted or added docs that either need to be removed from or added to the site menus (top menubar or sidebars),
+   edit the menus and test on your local server.
+5. The PR body describes what the purpose of the PR is, which files are being altered for what reasons, and any related material still outstanding(so that reviewers know whether the PR is meant to be comprehensive or whether it is part of a series of PRs).
+6. Component version tags (e.g., Zoe version, ERTP version) have been updated appropriately.
+7. PR contains only the files to be reviewed. No additional files are in the PR that are not intended to be changed or reviewed. 
+8. PRs contain no meta-comments or open questions. They can appear in DRAFT PRs but not real PRs. Such questions can also just be added as comments on a newly opened PR.
+9 If the PR cannot be approved as is (because there's known issues) then it must be a draft PR
 3. Have the changed docs reviewed and approved by others.
 4. Pull Requests automatically run tests on their committed files.
 5. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically 
@@ -35,22 +45,22 @@ Each project gets its own folder, often with `/api` and `/guide` subfolders as w
 well as `/main/zoe/api/` and `/main/zoe/guide/`. Projects can have additional subfolders as needed. 
 
 Each folder should have its own `README.md`, which is an effective `index.html` equivalent in terms of rendering when someone navigates to
-the folder's URL. See the next section for how what VuePress expects from and does to READMEs. 
+the folder's URL. See the next section for an explanation of how VuePress uses READMEs. 
 
 Images, diagrams, and similar content-supporting files should go in an `assets` subfolder under the appropriate project folder.
-For example, if you have a `process.svg` image file with a diagram for the Zoe Guide's Invitations page, its path should look
-like `main/zoe/guide/assets/process.svg` and it would appear via an image link of `./assets/process.svg` in the page 
-rendered from `main/zoe/guide/invitations.md`. 
+For example, if you have a `process.svg` image file with a diagram for the Zoe Guide's Invitations page, it 
+should be stored in `main/zoe/guide/assets/process.svg` and appear in the page via an image link of `./assets/process.svg` 
 
 Note that `assets` should store all the auxiliary files for the files in its parent folder. Don't make an `assets` folder
 or similar for individual files/pages.
 
 ### README files
 
-VuePress converts Markdown files to same named HTML file. `README.md` files are an exception; they're 
-renamed `index.html`, since that's how web servers find a website's root file. Navigating 
+VuePress converts Markdown files to an HTML file with the same base name. `README.md` files are an exception; they're 
+renamed `index.html`, since that's the default file web servers expect to find in each directory. Navigating 
+
 to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/README.md`.
-While it may seem odd, VuePress expects multiple `README.md` files in a repo, one each for most folders in it.
+While it may seem odd, VuePress expects multiple `README.md` files in a repo; most folders will have one. 
 
 The root README.md file must start with a header. Any of H1, H2, or H3 (`#`, `##`, or `###` in Markdown) will do.
 This is needed to generate search indexes and sidebars.
@@ -125,12 +135,12 @@ in alphabetical order for the convenience of future maintainers.
 ### Importing and testing code snippets
 
 Code snippets are not short inline code bits like `const x = 2 + 2;`. In fact,
-you cannot insert a code snippet in line. They are for where you wnat to
+you cannot insert a code snippet in line. They are for where you want to
 do an effective code block (i.e. one that starts with a line consisting of 
 three backquotes and an appended 'js' and ends with a line consisting of three backquotes).
 
-Rather, code snippets are actual development or test code from the Agoric-SDK repo,
-or code held to a similar standard of correctness. They should pass `lint` and run with no
+The code used for code snippets is held to a similar standard of correctness as actual
+development or test code from the agoric-sdk repo. It should pass `lint` and run with no
 errors. This provides assurance our documents use real code that works
 with the current agoric-sdk version (whatever is on master) and is
 not outdated. However, you do need to remember to, after any new SDK release,
@@ -138,18 +148,22 @@ do any needed snippet updates to the new release. The `yarn `test` command
 run during CI over documentation will test if snippets work with the current
 agoric-sdk release.
 
-To import code snippets into the documentation, if theres isn't
+To import code snippets into the documentation, if there isn't
 already an appropriate file, create a file
-under the top-level `Agoric/documentation/snippets/` directory. 
-Essentially, you want a similar structure to the docs file structure
+somewhere under the top-level `Agoric/documentation/snippets/` directory,
+possibly in a subdirectory. 
+Essentially, you want a parallel structure to the docs file structure
 under `main`, with a separate snippets subfolder under `snippets` for each doc content
-subfolder. This is similar to having one test directory. 
+subfolder. This is similar to having one test hierarchy. 
 
 As more files are converted to using snippets, you'll increasingly just
 modify existing snippet files instead of creating new ones. 
 
 Put the agoric-sdk code you want to use in its appropriate snippets file.
-Remember, the code must be able to run without errors.
+Remember, the code must be able to run without errors. For it to do so,
+you'll often have set up its context by including code above the snippet you
+want to use. This additional code doesn't have to be included in the snippet
+displayed in a doc.
 
 You can make an entire code file, or any part of it, into a snippet (each
 of which can be used multiple times in the docs). Just surround the part
@@ -212,7 +226,8 @@ yarn docs:build
 ```shell
 yarn docs:dev
 ```
-Note that site config changes may require stopping and restarting this program.
+Most edit changes are immediately reflected in the browser, but 
+applying site config changes may require stopping and restarting this program.
 
 View your local documentation site at `localhost:8080/documentation/`
 
