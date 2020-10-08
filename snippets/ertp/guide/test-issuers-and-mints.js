@@ -86,7 +86,8 @@ test('ertp guide issuers and mints payment methods', async t => {
   const quatloosPayment = quatloosMint.mintPayment(
     quatloosAmountMath.make(100),
   );
-  quatloosIssuer.getAmountOf(quatloosPayment); // returns 100 quatloos
+  // returns an amount with a value of 100 and the quatloos brand
+  quatloosIssuer.getAmountOf(quatloosPayment);
   // #endregion getAmountOf
 
   // #region burn
@@ -139,6 +140,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   t.deepEqual(paymentBAmount, quatloosAmountMath.make(20));
 
   // #region splitMany
+  // #region splitManyConcise
   const oldQuatloosPayment = quatloosMint.mintPayment(
     quatloosAmountMath.make(100),
   );
@@ -148,6 +150,7 @@ test('ertp guide issuers and mints payment methods', async t => {
     oldQuatloosPayment,
     goodQuatloosAmounts,
   );
+  // #endregion splitManyConcise
   // Note that the total amount in the amountArray must equal the
   // amount in the original payment, in the above case, 100 Quatloos in each.
 
