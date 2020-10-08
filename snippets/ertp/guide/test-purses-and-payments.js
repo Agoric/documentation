@@ -2,7 +2,7 @@ import '@agoric/install-ses';
 import test from 'ava';
 
 // #region import
-import { makeIssuerKit, MathKind } from '@agoric/ertp';
+import { makeIssuerKit } from '@agoric/ertp';
 // #endregion import
 
 test('ertp guide purse getCurrentAmount', async t => {
