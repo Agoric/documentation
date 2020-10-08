@@ -13,6 +13,7 @@ to get information about and otherwise manipulate an `amount` as a whole.
 
 However, you can also make an `amount` as an object literal by making a record of
 a `brand` and a `value`. While `amountMath.make()` is recommended for proper object-oriented programming (it also checks the `brand`'s validity), this produces the same result:
+
 <<< @/snippets/ertp/guide/test-amounts.js#manualMake
 `amount` has two properties:
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,

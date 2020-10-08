@@ -51,8 +51,8 @@ test('ertp guide issuers and mints getAllegedName', async t => {
   const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
   const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
   // quatloosIssuerAllegedName === 'quatloos'
-  t.is(quatloosIssuerAllegedName, 'quatloos');
   // #endregion getAllegedName
+  t.is(quatloosIssuerAllegedName, 'quatloos');
 });
 
 test('ertp guide issuers and mints getAmountMathKind', async t => {
