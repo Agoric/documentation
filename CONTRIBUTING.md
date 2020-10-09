@@ -62,10 +62,11 @@ renamed `index.html`, since that's the default file web servers expect to find i
 to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/README.md`.
 While it may seem odd, VuePress expects multiple `README.md` files in a repo; most folders will have one. 
 
-The root README.md file must start with a header. Any of H1, H2, or H3 (`#`, `##`, or `###` in Markdown) will do.
-This is needed to generate search indexes and sidebars.
+The root README.md file must start with an H1 (`#` in Markdown) header. In fact, all our doc pages should start
+with that. But for READMEs, it's needed to generate search indexes and sidebars.
 
-A subdirectory is invisible to VuePress unless it has a `README.md`. Empty `README.md` files are acceptable.
+All directories/folders should have a `README.md` file, even if it's empty. They provide a landing page for
+the folder in the VuePress processed documentation structure. 
 
 Lines with no special treatment are converted into standard HTML paragraph tags.
 
