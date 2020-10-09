@@ -6,21 +6,25 @@ process is:
 1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo.
 2. Proofread your docs. However, be aware that everyone is their own worst proofreader and this is especially
    true if you try to do it immediately or very soon after you finish writing it. Given our frequent time pressure, while
-   self-proofreading is required, later reviewers should not expect perfection. 
-2. Check your changed docs in a local copy of the repo and local documentation 
-   server. Includes that they build and run successfully, pass link checking and (for now) spellchecking. 
-4. If you deleted or added docs that either need to be removed from or added to the site menus (top menubar or sidebars),
+   self-proofreading is required, later reviewers should not expect perfection.
+3. If you deleted or added docs that either need to be removed from or added to the site menus (top menubar or sidebars),
    edit the menus and test on your local server.
-5. The PR body describes what the purpose of the PR is, which files are being altered for what reasons, and any related material still outstanding(so that reviewers know whether the PR is meant to be comprehensive or whether it is part of a series of PRs).
-6. Component version tags (e.g., Zoe version, ERTP version) have been updated appropriately.
-7. PR contains only the files to be reviewed. No additional files are in the PR that are not intended to be changed or reviewed. 
-8. PRs contain no meta-comments or open questions. They can appear in DRAFT PRs but not real PRs. Such questions can also just be added as comments on a newly opened PR.
-9 If the PR cannot be approved as is (because there's known issues) then it must be a draft PR
-3. Have the changed docs reviewed and approved by others.
-4. Pull Requests automatically run tests on their committed files.
-5. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically 
+4. Check your changed docs in a local copy of the repo and local documentation 
+   server. Includes that they build and run successfully, pass link checking and (for now) spellchecking. 
+5. Do a Draft PR and have it reviewed by others. The PR body describes what the purpose of the PR is, which
+   files are being altered for what reasons, and any related material still outstanding (so reviewers know 
+   if the PR is meant to be comprehensive or if it is part of a series of PRs).
+   1. Component version tags (e.g., Zoe version, ERTP version) have been updated appropriately.
+   2. PR contains only the files to be reviewed. No additional files are in the PR that are not intended to be changed or reviewed. 
+   3. PRs contain no meta-comments or open questions. They can appear in DRAFT PRs but not real PRs. 
+      Such questions can also just be added as comments on a newly opened PR.
+   4. If the PR cannot be approved as is (because there's known issues) then it must be a draft PR
+6. When all issues from the initial review are resolved, convert the PR from Draft to Ready For Review.
+7. Reviewers approve PR, you merge it with Master.
+8. Pull Requests automatically run tests on their committed files.
+9. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically 
    processes any new or changed files for display. 
-6. The [Agoric website's Documentation Section](https://agoric.com/documentation/) displays
+10. The [Agoric website's Documentation Section](https://agoric.com/documentation/) displays
    the VuePress processed files, which have been converted to HTML.
 
 This doc explains:
@@ -58,7 +62,6 @@ or similar for individual files/pages.
 
 VuePress converts Markdown files to an HTML file with the same base name. `README.md` files are an exception; they're 
 renamed `index.html`, since that's the default file web servers expect to find in each directory. Navigating 
-
 to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/README.md`.
 While it may seem odd, VuePress expects multiple `README.md` files in a repo; most folders will have one. 
 
@@ -85,7 +88,7 @@ First, our link checker does **not** check `router-link` style links. Please onl
 Next, your Markdown links should be to the `.md` Markdown files in the Doc repo. VuePress processing changes
 both the `.md` files and links to them to be `.html`.
 
-Use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
+In general, use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
 open in the same browser tab when clicked on, absolute links open a new tab. 
 
 However, there's a trick you can use that's easier than writing a complicated relative link. 
@@ -98,11 +101,12 @@ Instead, VuePress considers `main` the top of the file hierarchy. So you can alw
 by just linking to `(/glossary/#allocation)`; its path starting at `main`. Any path starting with just `/` starts
 at `main`. These links also open in the same browser tab. 
 
-VuePress turns every header in a Markdown file to an HTML anchor you can link to, so clicking such a link takes you directly to
-that file location (called *slugifying* by WordPress and other blogging platforms). At the end of the link, 
-append a `#` to the file name, followed by the header text. The header text
-must be altered to be 1) all lower case. 2) All non-alphanumerics, including spaces, are replaced by hyphens (except there aren't any
-trailing hyphens at the end).
+VuePress turns every header in a Markdown file into an HTML anchor you can link to, so clicking such a link takes you directly to
+that file location (called *slugifying* by WordPress and other blogging platforms). A header link consists of its file
+name, with an appended `#` and appended altered header text. The header text in a link has been converted to
+to lower case and all non-alphanumerics, including spaces, have been replaced by hyphens. The two exceptions to the latter
+are, first, all consecutive non-alphanumbers are converted to a single hyphen; i.e. "Foo&$ Bar" is converted to "foo-bar".
+Second, all trailing non-alphanumerics are just dropped; i.e. "Foo Bar)))" is converted to "foo-bar".
 
 So, for example, the header `E(zoe).getBrands(instance)` is linked to by `zoe.md#e-zoe-getbrands-instance` (note the last `)` was
 not turned into a hyphen) and the header
@@ -186,14 +190,16 @@ regions in a file, including defining one region inside of another. Just be sure
 all the ones in a file different names.
 
 To include a defined snippet in a Markdown file, put a
-line like `<<< @/snippets/test-intro-zoe.js#install` in it..
+line like `<<< @/snippets/test-intro-zoe.js#install` in it.
 Replace the `test-intro-zoe.js` with the filename in the snippets file.
 Replace the `install` with the name of the region you want included from
 the file. 
 
+The tests should be in the snippets directory. Actually the snippet files and the test files ended up being the same file because that was the cleanest way to go. The snippet files should all be named test-original-filename.js where original-filename is the markdown filename, like amounts of ertp/guide/amounts.md
+
 To test your snippets files while writing your docs:
-1. Write tests using AVA. They should be in the snippets directory and named `test-original-filename.js` `original-filename` is
-   the Markdown filename. For example, `amounts` for `ertp/guide/amounts.md`
+1. Write tests using AVA. They should be in the appropriate file in the snippets directory, with files named `test-original-filename.js` `original-filename` is
+   the Markdown filename. For example, `test-amounts.js` for `ertp/guide/amounts.md` See [this Snippets file](/snippets/ertp/guide/test-amounts.js)
 2. Run the tests with `yarn test` (run from anywhere, but usually from the root of the repo).
 3. Lint the files with `yarn lint-fix` (run from anywhere, but usually from the root of the repo).
 
@@ -321,7 +327,6 @@ Each submenu item has the same structure and properties as a top menubar item,
 except they do not have an `items` property. Note that for links to files, instead of folders, such as
 the ERTP Introduction, you leave off the file's suffix. So in that case, the
 link value is `'/getting-started/ertp-introduction/'` and not `'/getting-started/ertp-introduction.md'`
-All links must end with a trailing `/`, even if the link is to a file.
 
 To add a submenu item, just copy an appropriate one, add it to the `items` array, and edit its
 property values to be what you want for the new item. To delete a submenu item, just remove its
