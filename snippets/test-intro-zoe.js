@@ -28,10 +28,10 @@ test('intro to zoe', async t => {
     Asset: moolaKit.mint.mintPayment(moolaKit.amountMath.make(3)),
   });
 
-  const atomicSwapFile = `${__dirname}/../node_modules/@agoric/zoe/src/contracts/atomicSwap`;
-
   // #region bundle
-  const atomicSwapBundle = await bundleSource(atomicSwapFile);
+  const atomicSwapBundle = await bundleSource(
+    require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
+  );
   // #endregion bundle
 
   // #region install

@@ -13,9 +13,8 @@ to get information about and otherwise manipulate an `amount` as a whole.
 
 However, you can also make an `amount` as an object literal by making a record of
 a `brand` and a `value`. While `amountMath.make()` is recommended for proper object-oriented programming (it also checks the `brand`'s validity), this produces the same result:
-```js
-const newAmount = { brand: quatloosBrand, value: 5 }
-```
+
+<<< @/snippets/ertp/guide/test-amounts.js#manualMake
 `amount` has two properties:
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
@@ -61,14 +60,10 @@ API Reference](../api/).
     create a `payment`, `purse`, or `amount` with a `brand` that claims a particular `issuer`,
     without that `issuer` having been involved. But if you use that `payment` or `purse`, it won't be 
     accepted by genuine ones. So to know, you have to verify with the `issuer` to see if it agrees.
-  - ```js
-    const isIssuer = brand.isMyIssuer(issuer);
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#isMyIssuer
 - [`brand.getAllegedName()`](../api/brand.md#brand-getallegedname)
   - Return the `brand`'s alleged name, but should not be trusted as accurate.
-  - ```js
-    const name = brand.getAllegedName();
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#getAllegedName
 
 The following methods on other ERTP components also either operate on or
 return a `brand`.
@@ -77,31 +72,18 @@ return a `brand`.
   - Returns the `brand` for the `issuer`. The `brand` is not closely
     held, so this should not be trusted to identify an `issuer`
     alone. Fake digital assets and `amount`s can use the `brand` of another `issuer`.
-  - ```js
-    const brand = quatloosIssuer.getBrand();
-    // brand === quatloosBrand
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#getBrand
 - [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
   - Return the `payment`'s alleged `brand`. Because a `payment`
   is not trusted, this should be treated with suspicion and verified
   elsewhere. This example code determines if a `payment` we got from untrusted sources
   is valid. It uses the `brand` to find a `purse` we want to deposit it in, then verifies
   that it's genuine.
-  - ```js
-    function depositSomewhere(payment) {
-      const allegedBrand = payment.getAllegedBrand();
-      const probablyAppropriatePurse = brandToPurse.get(allegedBrand);
-      const depositAmount = probablyAppropriatePurse.deposit(payment);
-      }
-    }  
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#depositSomewhere
 - [`amountMath.getBrand()`](../api/amount-math.md#amountmath-getbrand)
   - Return the `brand` the `amountMath` object is using for its
   methods.
-  - ```js
-    const exampleAmountMath = quatloosIssuer.getAmountMath();
-    const exampleBrand = exampleAmountMath.getBrand();
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#amountMathGetBrand
 
 ## Values
 
@@ -111,15 +93,9 @@ Values are the "how many" part of an `amount`. There are no `value`
 methods, but two `amountMath` methods use or return them. 
 - [`amountMath.getValue(amount)`](../api/amount-math.md#amountmath-getvalue-amount)
   - Return the `amount` argument's `value`
-  - ```js
-    const quatloos123 = quatloosAmountMath.make(123);
-    // returns 123
-    const value = quatloosAmountMath.getValue(quatloos123);
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#getValue
 - [`amountMath.make(allegedValue)`](../api/amount-math.md#amountmath-make-allegedvalue)
   - Make an `amount`from a `value` by adding the
   `amountMath` associated `brand` to the `value`. 
-  - ```js
-    const quatloos837 = quatloosAmountMath.make(837);
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#make
     
