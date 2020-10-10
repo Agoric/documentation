@@ -11,9 +11,7 @@ import bundleSource from '@agoric/bundle-source';
 import { makeFakeVatAdmin } from './tools/fakeVatAdmin';
 
 test('intro to zoe', async t => {
-  const fakeVatAdmin = makeFakeVatAdmin();
-
-  const zoe = makeZoe(fakeVatAdmin);
+  const zoe = makeZoe(makeFakeVatAdmin().admin);
 
   const moolaKit = makeIssuerKit('moola');
   const simoleanKit = makeIssuerKit('simoleans');
@@ -30,10 +28,10 @@ test('intro to zoe', async t => {
     Asset: moolaKit.mint.mintPayment(moolaKit.amountMath.make(3)),
   });
 
-  const atomicSwapFile = `${__dirname}/../node_modules/@agoric/zoe/src/contracts/atomicSwap`;
-
   // #region bundle
-  const atomicSwapBundle = await bundleSource(atomicSwapFile);
+  const atomicSwapBundle = await bundleSource(
+    require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
+  );
   // #endregion bundle
 
   // #region install
@@ -123,8 +121,7 @@ test('intro to zoe', async t => {
 });
 
 test('intro to zoe - contract-format', async t => {
-  const fakeVatAdmin = makeFakeVatAdmin();
-  const zoe = makeZoe(fakeVatAdmin);
+  const zoe = makeZoe(makeFakeVatAdmin().admin);
   const atomicSwapBundle = await bundleSource(`${__dirname}/contract-format`);
   const atomicSwapInstallation = await E(zoe).install(atomicSwapBundle);
   const { creatorInvitation } = await E(zoe).startInstance(
