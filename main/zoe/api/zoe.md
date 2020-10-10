@@ -171,6 +171,7 @@ An `installation` is an object with one property:
 ```js
 const installation = await E(zoe).getInstallation(invitation);
 ```
+
 ## E(zoe).startInstance(installation, issuerKeywordRecord, terms)
 - `installation` `{Installation}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
@@ -193,10 +194,27 @@ be different for different instances of the same contract, but the contract
 defines what variables need their values passed in as `terms`.
 
 It returns a promise for a `StartInstanceResult` object. The object consists of:
+- `adminFacet` `{any}`
 - `creatorFacet` `{any}`
 - `publicFacet` `{any}`
 - `instance` `{Instance}`
 - `creatorInvitation` `{Payment | undefined}`
+
+The `adminFacet` has two methods:
+- `getVatShutdownPromise()    
+  - Returns a promise that resolves to reason (the value passed to `fail(reason)`) or 
+    completion (the value passed to `exit(completion)`) when this newly started instance terminates. 
+- `getVatStats()`
+  - Returns statistics about vat activity. These are the number of different types
+    of items in the vat's C-List, which tracks what this vat can reach on other vats
+    and how many entries are in the vat's transcript. The last gives an idea of
+    how many messages this vat has executed. A vat's transcript of messages it has 
+    executed lets it replay those messages if restarted and restore its pre-shutdown
+    state.
+    - `objectCount`
+    - `promiseCount`
+    - `deviceCount`
+    - `transcriptCount`
 
 A `publicFacet` is an object available via Zoe to anyone knowing
 the instance they are associated with. The `publicFacet` is used for general queries
