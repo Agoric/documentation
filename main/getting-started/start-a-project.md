@@ -94,7 +94,7 @@ Cycle](/getting-started/development-cycle.md)
   </tr>
   <tr>
     <td>8</td>
-    <td>In the deploy shell, <code>(cd ui && yarn start)</code></td>
+    <td>In the deploy shell, <code>(cd ui && yarn install && yarn start)</code></td>
     <td>This starts the demo project's UI development server.</td></td>
   </tr>
   <tr>
