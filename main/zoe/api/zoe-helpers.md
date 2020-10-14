@@ -202,6 +202,57 @@ import {
 swap(zcf, firstSeat, secondSeat);
 ```
 
+## swapExact(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)
+- `zcf` `{ContractFacet}`
+- `leftSeat` `{ZCFSeat}`
+- `rightSeat` `{ZCFSeat}`
+- `leftHasExitedMsg` - `{String}` - Optional
+- `rightHasExitedMsg` - `{String}` - Optional
+- Returns: `defaultAcceptanceMsg`
+
+**Note**: `swapExact()` uses the `swap()` method which is a specific use of `trade()`. In `swap(),` 
+for both `seats`, everything a `seat` wants is given to it, having been
+taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
+- Use `trade()` when any of these are true:
+  - The `seats` have different keywords.
+  - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
+  - You want to continue interacting with the `seats` after the trade.
+- Use `swap()` when all of these are true:
+  - Both `seats` use the same keywords.
+  - The `seats`' wants can be fulfilled from the other `seat`.
+  - No further `seat` interaction is desired.
+
+This method always takes `zcf` as its first argument.
+
+`leftHasExitedMsg` and `rightHasExitedMsg` are optional and are passed
+to `trade` within `swap` to add custom error messages in the case that
+either seat has exited. They default to 'the left seat in swapExact() has exited',
+and 'the right seat in swapExact() has exited' respectively. 
+
+`exactSwap()` is a special case of `swap()` such that it is successful only
+if both seats gain everything they want and lose everything they were willing to give.
+Only good for exact and entire swaps where each
+seat wants everything that the other seat has. The benefit of using
+this method is that the keywords of each seat do not matter.
+
+If the two `seats` can trade, then swap their compatible assets,
+exiting both `seats`. It returns the message `The offer has been accepted. 
+Once the contract has been completed, please check your payout`.
+
+Any surplus remains with whichever `seat` has the surplus. 
+For example if `seat` A gives 5 Quatloos and `seat` B only 
+wants 3 Quatloos, `seat` A retains 2 Quatloos.
+
+If the swap fails, no assets transfer, and both left and right `seats` are exited.
+
+```js
+import {
+  swap,
+} from '@agoric/zoe/src/contractSupport';
+
+swap(zcf, firstSeat, secondSeat);
+```
+
 ## assertProposalShape(seat, expected)
 - `seat` `{ZCFSeat}`
 - `expected` `{ExpectedRecord}`
