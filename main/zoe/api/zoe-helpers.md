@@ -287,3 +287,53 @@ const sell = seat => {
   return 'Trade Successful';
 };
 ```
+ 
+## depositToSeat(zcf, recipientSeat, amounts, payments)
+- `zcf` `{ContractFacet }`
+- `recipientSeat` `{ZCFSeat}`
+- `amounts` `{AmountKeywordRecord}`
+- `payments` `{PaymentPKeywordRecord}`
+- Returns: `{Promise<string>}`
+Deposit payments such that their amounts are reallocated to a seat.
+The `amounts` and `payments` records must have corresponding
+keywords.
+
+If the seat has exited, aborts with the message `The recipientSeat cannot have exited.`
+
+On success, returns the exported and settable `depositToSeatSuccessMsg` which
+defaults to `Deposit and reallocation successful.`
+
+## withdrawFromSeat(zcf, seat, amounts)
+- `zcf` `{ContractFacet }`
+- `seat` `{ZCFSeat}`
+- `amounts` `{AmountKeywordRecord}`
+- Returns: `{Promise<PaymentPKeywordRecord>}`
+
+Withdraw payments from a seat. Note that withdrawing the amounts of
+the payments must not and cannot violate offer safety for the seat. The
+`amounts` and `payments` records must have corresponding keywords.
+
+If the seat has exited, aborts with the message `The recipientSeat cannot have exited.`
+
+Unlike `depositToSeat()`, there is no message on a successful completion.
+
+## saveAllIssuers(zcf, issuerKeywordRecord)
+- `zcf` `{ContractFacet }`
+- `issuerKeywordRecord` `{IssuerKeywordRecord}`
+- Returns: `{Promise<PaymentPKeywordRecord>}`
+
+Save all of the issuers in an `issuersKeywordRecord` to ZCF, using
+the method [`zcf.saveIssuer()`](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
+
+
+This does not error if any of the keywords already exist. If the keyword is
+already present, it is ignored.
+
+---------------
+Informs Zoe about an issuer and returns a promise for acknowledging when the issuer is added and ready. The keyword is the one associated with the new issuer. It returns a promise for issuerRecord of the new issuer
+
+This saves an issuer in Zoe's records for this contract instance. It also has saved the issuer information such that Zoe can handle offers involving this issuer and ZCF can provide the issuerRecord synchronously on request.
+
+An IssuerRecord has three fields, each of which holds the namesake object associated with the issuer value of the record: issuerRecord.amountMath, issuerRecord.brand, and issuerRecord.issuer)
+---------------
+
