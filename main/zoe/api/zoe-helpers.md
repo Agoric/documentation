@@ -217,7 +217,7 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
   - The `seats` have different keywords.
   - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
   - You want to continue interacting with the `seats` after the trade.
-- Use `swap()` when all of these are true:
+- Use `swap()` or `swapExact()` when all of these are true:
   - Both `seats` use the same keywords.
   - The `seats`' wants can be fulfilled from the other `seat`.
   - No further `seat` interaction is desired.
@@ -231,7 +231,7 @@ and 'the right seat in swapExact() has exited' respectively.
 
 `exactSwap()` is a special case of `swap()` such that it is successful only
 if both seats gain everything they want and lose everything they were willing to give.
-Only good for exact and entire swaps where each
+It is only good for exact and entire swaps where each
 seat wants everything that the other seat has. The benefit of using
 this method is that the keywords of each seat do not matter.
 
@@ -239,18 +239,14 @@ If the two `seats` can trade, then swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
 
-Any surplus remains with whichever `seat` has the surplus. 
-For example if `seat` A gives 5 Quatloos and `seat` B only 
-wants 3 Quatloos, `seat` A retains 2 Quatloos.
-
 If the swap fails, no assets transfer, and both left and right `seats` are exited.
 
 ```js
 import {
-  swap,
+  swapExact,
 } from '@agoric/zoe/src/contractSupport';
 
-swap(zcf, firstSeat, secondSeat);
+const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 ```
 
 ## assertProposalShape(seat, expected)
@@ -302,6 +298,12 @@ If the seat has exited, aborts with the message `The recipientSeat cannot have e
 
 On success, returns the exported and settable `depositToSeatSuccessMsg` which
 defaults to `Deposit and reallocation successful.`
+```js
+import {
+  depositToSeat,
+} from '@agoric/zoe/src/contractSupport';
+await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2) }, { Dep: newQuatloos });
+```
 
 ## withdrawFromSeat(zcf, seat, amounts)
 - `zcf` `{ContractFacet }`
@@ -316,6 +318,12 @@ the payments must not and cannot violate offer safety for the seat. The
 If the seat has exited, aborts with the message `The recipientSeat cannot have exited.`
 
 Unlike `depositToSeat()`, there is no message on a successful completion.
+```js
+import {
+  withdrawFromSeat,
+} from '@agoric/zoe/src/contractSupport';
+const promises = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2) });
+```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
 - `zcf` `{ContractFacet }`
@@ -325,15 +333,12 @@ Unlike `depositToSeat()`, there is no message on a successful completion.
 Save all of the issuers in an `issuersKeywordRecord` to ZCF, using
 the method [`zcf.saveIssuer()`](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
 
-
-This does not error if any of the keywords already exist. If the keyword is
+This does **not** error if any of the keywords already exist. If the keyword is
 already present, it is ignored.
 
----------------
-Informs Zoe about an issuer and returns a promise for acknowledging when the issuer is added and ready. The keyword is the one associated with the new issuer. It returns a promise for issuerRecord of the new issuer
-
-This saves an issuer in Zoe's records for this contract instance. It also has saved the issuer information such that Zoe can handle offers involving this issuer and ZCF can provide the issuerRecord synchronously on request.
-
-An IssuerRecord has three fields, each of which holds the namesake object associated with the issuer value of the record: issuerRecord.amountMath, issuerRecord.brand, and issuerRecord.issuer)
----------------
-
+```js
+import {
+  saveAllIssuers,
+} from '@agoric/zoe/src/contractSupport';
+await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
+```
