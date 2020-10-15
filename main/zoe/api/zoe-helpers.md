@@ -225,9 +225,9 @@ taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not
 This method always takes `zcf` as its first argument.
 
 `leftHasExitedMsg` and `rightHasExitedMsg` are optional and are passed
-to `trade` within `swap` to add custom error messages in the case that
-either seat has exited. They default to 'the left seat in swapExact() has exited',
-and 'the right seat in swapExact() has exited' respectively. 
+to `trade()` within `swapExact()` to add custom error messages in the case that
+either seat has exited. They default to `the left seat in swapExact() has exited`,
+and `the right seat in swapExact() has exited` respectively. 
 
 `exactSwap()` is a special case of `swap()` such that it is successful only
 if both seats gain everything they want and lose everything they were willing to give.
@@ -302,7 +302,7 @@ defaults to `Deposit and reallocation successful.`
 import {
   depositToSeat,
 } from '@agoric/zoe/src/contractSupport';
-await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2) }, { Dep: newQuatloos });
+await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2) }, { Dep: quatloosPayment });
 ```
 
 ## withdrawFromSeat(zcf, seat, amounts)
@@ -315,7 +315,7 @@ Withdraw payments from a seat. Note that withdrawing the amounts of
 the payments must not and cannot violate offer safety for the seat. The
 `amounts` and `payments` records must have corresponding keywords.
 
-If the seat has exited, aborts with the message `The recipientSeat cannot have exited.`
+If the seat has exited, aborts with the message `The seat cannot have exited.`
 
 Unlike `depositToSeat()`, there is no message on a successful completion.
 ```js
