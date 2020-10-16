@@ -210,9 +210,9 @@ swap(zcf, firstSeat, secondSeat);
 - `rightHasExitedMsg` - `{String}` - Optional
 - Returns: `defaultAcceptanceMsg`
 
-**Note**: `swapExact()` uses the `swap()` method which is a specific use of `trade()`. In `swap(),` 
-for both `seats`, everything a `seat` wants is given to it, having been
-taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
+**Note**: `swapExact()` and `swap()` are specific uses of `trade()`. In `swap()` and `swapExact()`,
+for both seats, everything a seat wants is given to it, having been
+taken from the other seat. `swap()` and `swapExact()` exit both seats, but `trade()` does not.
 - Use `trade()` when any of these are true:
   - The `seats` have different keywords.
   - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
@@ -317,12 +317,12 @@ the payments must not and cannot violate offer safety for the seat. The
 
 If the seat has exited, aborts with the message `The seat cannot have exited.`
 
-Unlike `depositToSeat()`, there is no message on a successful completion.
+Unlike `depositToSeat()`, a `PaymentKeywordRecord` is returned, not a success message.
 ```js
 import {
   withdrawFromSeat,
 } from '@agoric/zoe/src/contractSupport';
-const promises = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2) });
+const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2) });
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
