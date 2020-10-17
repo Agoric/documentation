@@ -108,6 +108,9 @@ or profile’s `https://local.agoric.com` page.
 ### Agoric CLI Command Reference
 Add a command name to `agoric` to specify what command to run. **Note**: Required argument names need not be given, only their values. Optional argument names must be given, along with their values. See the command's examples if you're not sure if a name is needed.
 
+The `agoric` commands documented here are the ones useful for dapp developers. Other `agoric` commands you may see listed
+are not covered in this document.
+
 In general, you want to issue these Agoric CLI commands in this order:
 1. `agoric init`
 2. `agoric install`
@@ -126,7 +129,7 @@ They are:
 - `--sdk`
   - Use the Agoric SDK containing this program.
 - `-v`, `--verbose`
-  - Verbosity that can be increased.
+  - Be verbose.  Multiple occurrences increase verbosity.
 - `-h`, `--help`
   - Display help for the command.
 
