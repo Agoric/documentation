@@ -106,15 +106,29 @@ When the UI opens your wallet, the browser should navigate to the same URL you e
 or profile’s `https://local.agoric.com` page.
 
 ### Agoric CLI Command Reference
-Add one of five command names to `agoric` to specify what command to run. **Note**: Required argument names need not be given, only their values. Optional argument names must be given, along with their values. See the command's examples if you're not sure if a name is needed.
+Add a command name to `agoric` to specify what command to run. **Note**: Required argument names need not be given, only their values. Optional argument names must be given, along with their values. See the command's examples if you're not sure if a name is needed.
 
-In general, you want to issue Agoric CLI commands in this order:
+In general, you want to issue these Agoric CLI commands in this order:
 1. `agoric init`
 2. `agoric install`
 3. `agoric start` (Usually with `--reset`)
 4. `agoric deploy`
 
 Use `agoric help` whenever you need help with one of the above Agoric CLI commands.
+
+There are four general options for all commands, whose usage is:
+```js
+agoric [options] [command]
+```
+They are:
+- `-V`, `--version`                                  
+  - Output the version number.
+- `--sdk`
+  - Use the Agoric SDK containing this program.
+- `-v`, `--verbose`
+  - Verbosity that can be increased.
+- `-h`, `--help`
+  - Display help for the command.
 
 #### `agoric init`
 - **Function**: 
@@ -183,6 +197,24 @@ Use `agoric help` whenever you need help with one of the above Agoric CLI comman
   - Run the specified `deploy.js` scripts on VM host 128.7.3.139 and
     port 99.
     - `agoric deploy --hostport 128.7.3.139:99 ./contract/deploy.js`
+    
+#### `agoric open`
+- **Function**:
+  - Launch the Agoric UI
+- **Required Arguments**
+  - None
+- **Optional Arguments**
+  - `--hostport <host:port>`: Host and port on which to connect to the VM (default: "127.0.0.1:8000").
+  - `--no-browser`: Display the UI's URL, but don't open a browser.
+  - `--repl [yes | only | no]`:  Whether to show the Read-Eval-Print loop. Defaults to `yes`.
+  - `-h`, `--help`: Display help for `open` command.
+- **Examples**
+  - Launch the Agoric UI in a browser
+    - `agoric open`
+  - Display the Agoric UI's URL, but don't open it in a browser.
+    - `agoric open --no-browser`
+  - Display only the REPL for the Agoric UI in a browser.
+    - `agoric open --repl only`
 
 #### `agoric help`
 - **Function**:
