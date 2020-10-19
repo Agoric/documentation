@@ -245,9 +245,6 @@ dibc
 disjuncts
 DOM
 EcmaScript
-encourageMe
-encouragementBot
-encouragementinstallation
 enduser
 endregion
 ertp
