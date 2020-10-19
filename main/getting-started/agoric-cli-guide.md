@@ -139,7 +139,7 @@ They are:
 - **Required Arguments**:
     - `project`: Name of the new project to initialize.
 - **Optional Arguments**:
-    - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-encouragement`.
+    - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-fungible-faucet`.
     - `--dapp-base <base-url>`: Look under this directory for the Dapp template. Defaults to `git://github.com/Agoric/`
     - `-h`, `--help`: Display help for `init` command.
 - **Examples**:

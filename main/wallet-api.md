@@ -148,8 +148,10 @@ Uses the `hooks` data from the offer to create a function call with arguments. F
 
 The wallet now prompts the user to accept the Dapp after your Dapp sends the first message over the wallet bridge, postponing your Dapp's wallet interactions until the user approves the connection.  If you aren't receiving responses from the wallet bridge, it is probably because your Dapp has not yet been approved.
 
-If you want to suggest a particular name for your Dapp, you will have to add `?suggestedDappPetname=XXX` to the `wallet-bridge.html` iframe src URL, as done in the [Encouragement Dapp](https://github.com/Agoric/dapp-encouragement/commit/489ea8c03eeb2b71b7b7c539e677bccd161ad4aa#diff-a150226f082dfb9f386abdcabff01350).
-
+If you want to suggest a particular name for your Dapp, you will have
+to add `?suggestedDappPetname=XXX` to the `wallet-bridge.html` iframe
+src URL, as done in the [Fungible
+Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L137).
 
 ### Petname to path migration
 
@@ -161,25 +163,25 @@ A simple way to do this is to `JSON.stringify(petnameOrPath)` before using them 
 
 Your Dapp should suggest names for any Installations, Instances, or Issuers that the wallet user will interact with.  Once accepted, these will be returned to your Dapp as paths (arrays of strings, above) beginning with the user's petname for the Dapp.
 
-For example, here are [the messages that the Encouragement Dapp sends](https://github.com/Agoric/dapp-encouragement/blob/7f41c1bc09fc5f22707f6bdc2fb656fcb2cddbfa/ui/public/src/main.js#L97) over the wallet bridge:
+For example, here are [the messages that the Fungible Faucet Dapp sends](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L145) over the wallet bridge:
 
 ```js
-    // Our issuer will default to something like `Encouragement.Installation`.
+    // Our issuer will default to something like `FungibleFaucet.Installation`.
     walletSend({
       type: 'walletSuggestInstallation',
       petname: 'Installation',
-      boardId: INSTALLATION_HANDLE_BOARD_ID,
+      boardId: INSTALLATION_BOARD_ID,
     });
-    // Our issuer will default to something like `Encouragement.Instance`.
+    // Our issuer will default to something like `FungibleFaucet.Instance`.
     walletSend({
       type: 'walletSuggestInstance',
       petname: 'Instance',
-      boardId: INSTANCE_HANDLE_BOARD_ID,
+      boardId: INSTANCE_BOARD_ID,
     });
-    // Our issuer will default to something like `Encouragement.Assurance`.
+    // Our issuer will default to something like `FungibleFaucet.Assurance`.
     walletSend({
       type: 'walletSuggestIssuer',
-      petname: 'Assurance',
-      boardId: ASSURANCE_ISSUER_BOARD_ID,
+      petname: 'Token',
+      boardId: TOKEN_ISSUER_BOARD_ID,
     });
  ``
