@@ -8,7 +8,7 @@ import { makeIssuerKit } from '@agoric/ertp';
 import bundleSource from '@agoric/bundle-source';
 // #endregion importBundleSource
 
-import { makeFakeVatAdmin } from './tools/fakeVatAdmin';
+import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
 
 test('intro to zoe', async t => {
   const zoe = makeZoe(makeFakeVatAdmin().admin);
