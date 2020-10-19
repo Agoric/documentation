@@ -7,11 +7,11 @@ Alpha Release Candidate](./alpha-release-candidate.md).
 
 **This is a generic guide to Agoric Dapp projects**
 
-A Dapp is a *distributed application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
+A dapp is a *distributed application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
 
 ## Using a Dapp
 
-If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a Dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
+If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
 
 ```sh
 # Use `agoric init` to make a new local copy of a dapp template. Here we chose the Fungible Faucet Dapp. You can replace `my-fungible-faucet` with a name of your choice.
@@ -40,7 +40,7 @@ Then in a third terminal:
 cd ui && yarn start
 ```
 
-You can then navigate to http://localhost:3000 to view your Dapp.
+You can then navigate to http://localhost:3000 to view your dapp.
 
 ## Modifying this Dapp
 
