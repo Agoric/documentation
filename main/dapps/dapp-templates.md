@@ -30,30 +30,24 @@ Components](https://material-components.github.io/material-components-web-catalo
 [Github: dapp-otc](https://github.com/Agoric/dapp-otc)
 
 Gives custom quotes to users, in the form of an exercisable call
-option. This dapp has no frontend, but does have a video tutorial to
-walk through the development.
+option. This dapp has no frontend, but does have [a video
+tutorial](https://www.youtube.com/watch?v=faxrecQgEio) that walks
+through the development.
 
 ### Oracle Dapp
 
 [Github: dapp-oracle](https://github.com/Agoric/dapp-oracle)
 
-A generic way to interact with oracles such as the Chainlink
+A generic way to interact with oracles such as the [Chainlink](https://chain.link)
 decentralized oracle network. Frontend is raw JavaScript.
 
 ### Pegasus Dapp
 
 [Github: dapp-pegasus](https://github.com/Agoric/dapp-pegasus)
 
-Peg/transfer Agoric digital assets to or from remote entities via the
-Agoric Network API. The Network API notably allows smart contracts
-written in Javascript to communicate between blockchains via dIBC (our
-dynamic flavour of IBC, the Inter-Blockchain Communication protocol).
+Peg/transfer Agoric digital assets to or from remote entities via the [Agoric Network API](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md).  The Network API notably allows smart contracts written in Javascript to communicate between blockchains via _dIBC_ (our dynamic flavour of [IBC](https://cosmos.network/ibc), the Inter-Blockchain Communication protocol).
 
-Pegasus currently uses the packet data JSON format of the Interchain
-Standard fungible asset transfer protocol (ics20-1). The combination
-of ICS20 and IBC provides compatibility with any conforming
-implementation such as pegging Cosmos Atoms via (an upcoming version
-of) the Gaia hub.
+Pegasus currently uses the packet data JSON format of the Interchain Standard fungible asset transfer protocol ([ics20-1](https://github.com/cosmos/ics/tree/master/spec/ics-020-fungible-token-transfer)).  The combination of ICS20 and IBC provides compatibility with any conforming implementation such as pegging [Cosmos](https://cosmos.network) Atoms via (an upcoming version of) the Gaia hub.
 
 Frontend is React.
 
