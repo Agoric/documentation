@@ -170,7 +170,7 @@ script is given access to a `zoe` *presence*. To call methods on the
 actual Zoe object, the deploy code can do:
 
 ```js
-const installationHandle = await E(zoe).install(bundle);
+const installation = await E(zoe).install(bundle);
 ```
 
 The `E()` function is a local "bridge" that lets you invoke methods on
