@@ -2,6 +2,10 @@
 
 This page lists words, expressions, or concepts used by the Agoric technology stack.
 
+## Agoric CLI
+A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
+See the [Agoric CLI Guide](./getting-started/agoric-cli-guide.md).
+
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
 not be trusted as an accurate depiction, since it is provided by
@@ -59,6 +63,23 @@ make up an [amount](#amount).
 For more information, see the [ERTP Guide's Brand section](./ertp/guide/brand.md)
 and the [ERTP API's Brand section](./ertp/api/brand.md).
 
+## Bundle
+
+Before a contract can be installed on Zoe, its source code must be bundled. This is done by:
+```
+import bundleSource from '@agoric/bundle-source';
+const atomicSwapBundle = await bundleSource(
+    require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
+);
+```
+The installation operation returns
+an `installation`, which is an object with one property; `bundle`. You can access an installed contract's source
+code via `invitation.bundle.source`.
+
+## Burn
+
+Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount) 
+
 ## Comparable
 
 A *passable* is something that can be marshalled. A *comparable* is a
@@ -76,6 +97,16 @@ In Agoric documentation, *contract* usually refers to a contract's source code t
 
 For example, a realtor has a standard house selling agreement. The contract is the code defining how that agreement works. When the realtor has a new house to sell, they instantiate a new instance of their standard contract for that specific property. If they have ten houses for sale, they have ten different contract instances.
 
+## CreatorInvitation
+
+An invitation returned by `startInstance()` that the contract instance creator can use. It is usually used in contracts where the creator immediately sells something (auctions, swaps, etc.). 
+
+## dIBC
+
+Dynamic version of the [Inter-Blockchain Communication](#ibc) protocol. See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md) for more details.
+
+## E()
+
 ## ERTP
 *Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, 
 both [fungible](#fungible) and [non-fungible](#non-fungable), in JavaScript. All kinds of digital assets
@@ -90,6 +121,12 @@ Key ERTP concepts include [Issuers](#issuer), [Mints](#mint),
 [Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also 
 see the [ERTP Introduction](./getting-started/ertp-introduction.md),
 [ERTP Guide](./ertp/guide/), and [ERTP API](./ertp/api/).
+
+## Escrow
+
+## Eventual Send
+
+## Exit Rule
 
 ## Facet
 
@@ -108,6 +145,13 @@ A handle is a unique identifier implemented as a JavaScript object. Only its ide
 
 For example, Zoe often uses `offerHandle` to refer to offers. Zoe contracts can use an offer's `offerHandle` as the key for requesting the current allocation of an offer or reallocating the offer's assets.
 
+## Harden
+
+## IBC
+
+The Inter-Blockchain Communication protocol, used to by blockchains to communicate with each other. A short article about IBC
+is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
+
 ## Issuer
 Issuers are a one-to-one relationshp with both a [mint](#mint) and a [brand](#brand), so each issuer works
 with one and only one asset type, such as only working with quatloos or only working
@@ -121,6 +165,12 @@ its asset type is valid.
 
 For more information, see the [ERTP Guide's Issuer section](./ertp/guide/issuer.md)
 and the [ERTP API's Issuer section](./ertp/api/issuer.md).
+
+## Invitation
+
+## InvitationIssuer
+
+## Keywords
 
 ## Mint
 Agoric has two mint objects, *ERTP mints* and *Zoe Contract Facet mints (ZCFMints)*. They both create
@@ -181,6 +231,10 @@ If references can only be obtained by creation, construction, or introduction, y
 
 For more information, see [Douglas Crockford on Object Capabilities](https://frontendmasters.com/courses/good-parts-javascript-web/object-capabilities/).
 
+## Offer
+
+## Offer Safety
+
 ## Payment   **tyg**
 Payments hold [amounts](#amount) of certain assets 
 issued by [Mints](#mint). Specifically amounts from one party to another. 
@@ -191,10 +245,14 @@ of a purse must be of the same [brand](#brand).
 For more information, see the [ERTP Guide's Payments section](./ertp/guide/purses-and-payments.md#purses-and-payments)
 and the [ERTP API's Payments section](./ertp/api/payment.md).
 
+## Payout
+
 ## Presence **tyg**
 A local version of a remote object that serves as the remote object's proxy. 
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`. 
 For more information, see the [JavaScript Distributed Programming Guide](./distributed-programming.md). 
+
+## Proposal
 
 ## Purse **tyg**
 Purses hold [amounts](#amount) of certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
@@ -204,7 +262,9 @@ For more information, see the [ERTP Guide's Purses section](https://agoric.com/d
 
 ## Quatloos
 An imaginary currenty Agoric docmentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek 
-episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)
+episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
+
+## Reallocate
 
 ## Seat  **tyg**
 
@@ -215,8 +275,12 @@ within contracts and with `zcf.` methods. User seats represent offers external t
 contract. The party who exercises an invitation and sends the `offer()` message to Zoe 
 gets a UserSeat that can check payouts' status or retrieve their results.
 
+## SeatStagings
+
 ## Simoleons
 An imaginary currency Agoric docmentation uses in examples.
+
+## Terms
 
 ## Value
 
@@ -242,7 +306,12 @@ Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
 
+## ZCF
+
 ## ZCFMint
 
 See [Mint](#mint).
 
+## Zoe Helpers
+
+## Zoe Service
