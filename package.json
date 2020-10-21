@@ -11,7 +11,8 @@
     "check-links": "vuepress check-md main",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
-    "lint": "eslint 'snippets/**/*.js'"
+    "lint": "eslint 'snippets/**/*.js'",
+    "build": "exit 0"
   },
   "repository": {
     "type": "git",
