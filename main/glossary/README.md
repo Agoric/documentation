@@ -107,6 +107,12 @@ Dynamic version of the [Inter-Blockchain Communication](#ibc) protocol. See [her
 
 ## E()
 
+(Also referred to as *eventual send*) `E()` is a local "bridge" function that invokes methods on remote objects, for example
+in another vat, machine, or blockchain. It takes a local representative (a proxy) for a remote object as an argument and 
+sends messages to it using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with. 
+All `E()` calls return a promise for the eventual returned value. For more detail, see 
+the [`E()` section in the Distributed JavaScript page](/distributed-programming.html#communicating-with-remote-objects-using-e).
+
 ## ERTP
 *Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, 
 both [fungible](#fungible) and [non-fungible](#non-fungable), in JavaScript. All kinds of digital assets
@@ -124,9 +130,21 @@ see the [ERTP Introduction](./getting-started/ertp-introduction.md),
 
 ## Escrow
 
+Giving assets for a possible transaction to an impartial third party, who keeps them until specified conditions are satisfied. 
+For example, Alice wants to sell Bob a ticket for $100. Alice escrows the ticket, and Bob escrows the $100, with Carol. Carol
+does not give Alice the $100 or Bob the ticket until she has both items. Since neither Alice nor Bob ever holds both items at
+once, they don't have to trust each other to do the transaction. Zoe automatically escrows payments for transaction offers.
+
 ## Eventual Send
 
+See [`E()`](#e) above.
+
 ## Exit Rule
+
+Part of an offer specifying how the offer can be cancelled/exited. There are three values:
+- `onDemand:null`: (Default) The offering party can cancel on demand.
+- `waived:null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its timer and deadline properties.
 
 ## Facet
 
@@ -147,10 +165,18 @@ For example, Zoe often uses `offerHandle` to refer to offers. Zoe contracts can 
 
 ## Harden
 
+A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
+`harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
+its [section in the JavaScript Distributeed Programming Guide](/distributed-programming.md#harden)
+
 ## IBC
 
 The Inter-Blockchain Communication protocol, used to by blockchains to communicate with each other. A short article about IBC
 is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
+
+## Invitation
+
+## InvitationIssuer
 
 ## Issuer
 Issuers are a one-to-one relationshp with both a [mint](#mint) and a [brand](#brand), so each issuer works
@@ -166,11 +192,11 @@ its asset type is valid.
 For more information, see the [ERTP Guide's Issuer section](./ertp/guide/issuer.md)
 and the [ERTP API's Issuer section](./ertp/api/issuer.md).
 
-## Invitation
-
-## InvitationIssuer
-
 ## Keywords
+
+Keywords are unique identifiers per contract. They tie together the proposal, payments 
+to be escrowed, and payouts to the user by serving as keys for key-value pairs in various 
+records with values of amounts, issuers, etc.
 
 ## Mint
 Agoric has two mint objects, *ERTP mints* and *Zoe Contract Facet mints (ZCFMints)*. They both create
@@ -233,7 +259,15 @@ For more information, see [Douglas Crockford on Object Capabilities](https://fro
 
 ## Offer
 
+Offers are a structured way of describing user intent. In Zoe, an offer consists of a proposal (the 
+rules under which the party wants to exercise the offer) and payments corresponding to what the proposal specifies as what the
+party will give if the offer is satisfied. The payments are automatically escrowed by Zoe, and appropriately reallocated when
+the offer exits with either success or rejection. See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord).
+
 ## Offer Safety
+
+Zoe guarantees offer safety. When a user makes an offer and it is escrowed with Zoe, Zoe guarantees that 
+the user either gets what they said they wanted, or gets back (refunded) what they originally offered and escrowed.
 
 ## Payment   **tyg**
 Payments hold [amounts](#amount) of certain assets 
@@ -254,8 +288,21 @@ For more information, see the [JavaScript Distributed Programming Guide](./distr
 
 ## Proposal
 
+Proposals are records with give, want, and exit keys. Offers must include a proposal, which states
+what asset you want, what asset you will give for it, and how/when the offer maker can cancel the offer
+(see [Exit Rule](#exit-rule) for details on the last). For example:
+```
+const myProposal = harden({
+  give: { Asset: quatloosAmountMath.make(4)},
+  want: { Price: moolaAmountMath.make(15) },
+  exit: { 'onDemand'
+})
+```
+give and want use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
+asset they are willing to give/want to get, and how much of it. 
+
 ## Purse **tyg**
-Purses hold [amounts](#amount) of certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
+Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
 
 For more information, see the [ERTP Guide's Purses section](https://agoric.com/documentation/ertp/guide/purses-and-payments.md#purses-and-payments) and the
 [ERTP API's Purses section](./ertp/api/purse.md).
@@ -265,6 +312,13 @@ An imaginary currenty Agoric docmentation uses in examples. For its origins, see
 episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
 ## Reallocate
+
+When an offer exits due either to success or rejection, the associated payments that were escrowed with Zoe are automatically
+appropriately reallocated to the offer participants. If the offer was rejected or otherwise failed, Zoe gives the offer-making party back what
+they escrowed. If the offer was accepted, Zoe allocates the user what they said they wanted. There are cases where the reallocation both
+gives a party what they wanted and some of what they escrowed. For example, in an auction a party might have escrowed 10 Quatloos to make their
+highest bid if necessary, but they won the item with a bid of just 8 Quatloos. The reallocation would give them both the item they won and
+a refund of the 2 Quatloos that weren't needed to purchase it. 
 
 ## Seat  **tyg**
 
@@ -306,7 +360,10 @@ Different vats can communicate by sending asynchronous messages to other vats.
 
 A vat is the moral equivalent of a Unix Process.
 
-## ZCF
+## ZCF (Zoe Contract Facet)
+
+A set of Zoe API methods made visible on a Zoe facet. They can be called synchronously by contract code. 
+See the [ZCF API](/zoe/api/zoe-contract-facet.md).
 
 ## ZCFMint
 
@@ -314,4 +371,9 @@ See [Mint](#mint).
 
 ## Zoe Helpers
 
+A set of API helper methods for writing contracts. These methods extract common contract code and
+patterns into reusable helpers. See the [Zoe Helpers API](/zoe/api/zoe-helpers.md).
+
 ## Zoe Service
+
+A set of API methods for deploying and working with smart contracts. See [Zoe Service API](/zoe/api/zoe.md).
