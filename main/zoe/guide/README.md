@@ -57,7 +57,7 @@ handle the credit cards themselves.
 
 Zoe guarantees offer safety, meaning that when a user makes an offer
 and it is escrowed with Zoe, Zoe guarantees that the user either
-gets back why they said they wanted, or gets back (refunded) what they
+gets back what they said they wanted, or gets back (refunded) what they
 originally offered and escrowed.
 
 When a user escrows with Zoe, they get back
