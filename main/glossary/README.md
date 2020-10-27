@@ -241,7 +241,7 @@ payments of their asset type (splitting, combining, burning, and exclusively cla
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid. 
 
-For more information, see the [ERTP Guide's Issuer section](/ertp/guide/issuer.md)
+For more information, see the [ERTP Guide's Issuer section](/ertp/guide/issuers-and-mints.md)
 and the [ERTP API's Issuer section](/ertp/api/issuer.md).
 
 ## Keywords
@@ -269,7 +269,7 @@ indistinguishable from quatloos created by a ZCFMint.
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
 However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
 
-For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/mint.md) 
+For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/issuers-and-mints.md) 
 and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about ZCFMints, 
 see the [zcfMakeZCFMint() API entry](/zoe/api/zoe-contract-facet.md#zcf-makezcfmint-keyword-amountmathkind) in the Zoe Contract Facet API.
 
