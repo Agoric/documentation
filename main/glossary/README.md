@@ -74,7 +74,7 @@ buying an ad on a website, tv program, or newspaper, listing it on a website, et
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
 
 make up an [amount](#amount).
-For more information, see the [ERTP Guide's Brand section](/ertp/guide/brand.md)
+For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md)
 and the [ERTP API's Brand section](/ertp/api/brand.md).
 
 ## Bundle
