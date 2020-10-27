@@ -15,11 +15,11 @@ The AllegedName must be a string.
 
 ## Allocation
 
-Allocations represent the amounts to be paid out to each [seat](#seat) on exit from a contract instance. Possible exits are exercising 
+Allocations represent the [amounts](#amount) to be paid out to each [seat](#seat) on exit from a contract instance. Possible exits are exercising 
 an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
 out what amount a current allocation is. 
 
-In more detail, Zoe's guarantee is each seat will either get what it asked for in its offer, or the return of what was deposited.
+In more detail, Zoe's guarantee is each [seat](#seat) will either get what it asked for in its offer, or the return of what was [escrowed](escrow).
 The contract can reallocate fairly arbitrarily to achieve that. As contract code is visible to its clients, users can see
 what the contract intends to do.
 
