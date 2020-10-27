@@ -29,7 +29,7 @@ assign assets that weren't already in some allocation and it can't assign them t
 disappear from the total allocation.
 
 ## AmountMath
-AmountMath executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
+AmountMath executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
 gives a new balance of 5 bucks. But, a deposit of a non-fungible theater ticket into a purse that already holds
 five tickets isn't done by numeric addition. AmountMath has a single set of polymorphic
@@ -42,7 +42,7 @@ methods of three different kinds to deal with [fungible](#fungible) assets (valu
 For more information, see the [ERTP Guide's AmountMath section](./ertp/guide/amount-math.md) 
 and the [ERTP API's AmountMath section](./ertp/api/amount-math.md).
 
-## Amounts
+## Amount
 Amounts are the canonical description of tradable goods. They are manipulated
 by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
@@ -50,6 +50,13 @@ abstract right to participate in a particular exchange.
 
 An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 quatloos"
 is an amount with a value of "4" and a brand of the imaginary currency "quatloos".
+
+**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
+intrinsic value. For example, to make you an offer to buy a magic sword in a game, 
+a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
+sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
+trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
+a new `amount` does **not** create new assets.
 
 For more information, see the [ERTP Guide's Amounts section](./ertp/guide/amounts.md) 
 and the [ERTP API's AmountMath section](./ertp/api/amount-math.md).
@@ -99,17 +106,31 @@ to Presences and local state, then either they're the same all the way
 down, or they represent different objects.
 
 ## Contract and Contract Instance
-In Agoric documentation, *contract* usually refers to a contract's source code that defines how the contract works. A contract's source code is *installed* on Zoe. A contract is *instantiated* to create *contract instances*, which are the active execution of a contract's code running on Zoe.  
+In Agoric documentation, *contract* usually refers to a contract's source code that 
+defines how the contract works. A contract's source code is *installed* on Zoe. A 
+contract is *instantiated* to create *contract instances*, which are the active 
+execution of a contract's code running on Zoe.  
 
-For example, a realtor has a standard house selling agreement. The contract is the code defining how that agreement works. When the realtor has a new house to sell, they instantiate a new instance of their standard contract for that specific property. If they have ten houses for sale, they have ten different contract instances.
+For example, a realtor has a standard house selling agreement. The contract is the 
+code defining how that agreement works. When the realtor has a new house to sell, 
+they instantiate a new instance of their standard contract for that specific property. 
+If they have ten houses for sale, they have ten different contract instances.
 
 ## CreatorInvitation
 
-An invitation returned by `startInstance()` that the contract instance creator can use. It is usually used in contracts where the creator immediately sells something (auctions, swaps, etc.). 
+An [invitation](#invitation) returned by `startInstance()` that the contract instance
+creator can use. It is usually used in contracts where the creator immediately 
+sells something (auctions, swaps, etc.). 
+
+## Deposit Facet
+
+A [facet](#facet) of a [purse](#purse). Anyone with a reference to its deposit facet object can add 
+appropriately branded assets to the purse, but cannot withdraw assets from the purse or find out its balance.
 
 ## dIBC
 
-Dynamic version of the [Inter-Blockchain Communication](#ibc) protocol. See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md) for more details.
+Dynamic version of the [Inter-Blockchain Communication](#ibc) protocol. 
+See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md) for more details.
 
 ## E()
 
@@ -136,7 +157,7 @@ see the [ERTP Introduction](./getting-started/ertp-introduction.md),
 
 ## Escrow
 
-Giving assets for a possible transaction to an impartial third party, who keeps them until specified conditions are satisfied. 
+To give assets for a possible transaction to an impartial third party, who keeps them until specified conditions are satisfied. 
 For example, Alice wants to sell Bob a ticket for $100. Alice escrows the ticket, and Bob escrows the $100, with Carol. Carol
 does not give Alice the $100 or Bob the ticket until she has both items. Since neither Alice nor Bob ever holds both items at
 once, they don't have to trust each other to do the transaction. Zoe automatically escrows payments for transaction offers.
@@ -147,7 +168,7 @@ See [`E()`](#e) above.
 
 ## Exit Rule
 
-Part of an offer specifying how the offer can be cancelled/exited. There are three values:
+Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
 - `onDemand:null`: (Default) The offering party can cancel on demand.
 - `waived:null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
 - `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its timer and deadline properties.
@@ -165,7 +186,10 @@ have 100 one dollar bills and need to pay someone five dollars, it does not matt
 five one dollar bills you use. Also see [non-fungible](#non-fungible).
 
 ## Handle
-A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means the only way to know a handle identity is being given an object reference, and no identity can be guessed and no fake identity will succeed. 
+A handle is a unique identifier implemented as a JavaScript object. Only its identity 
+is meaningful, so handles do not have properties. Unlike number or string identifiers, 
+handles are unforgeable. This means the only way to know a handle identity is being given 
+an object reference, and no identity can be guessed and no fake identity will succeed. 
 
 ## Harden
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
@@ -177,14 +201,17 @@ The Inter-Blockchain Communication protocol, used to by blockchains to communica
 is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
 ## Invitation
-To participate in a contract instance, one must hold an invitation to do so. Contracts often return a creator invitation on their instantiation, 
-in case the contract instantiator wants to immediately participate. Otherwise, the contract instance must create any additional invitations. These, or any
-invitation held by a party, can be distributed via any means the holder wishes. An invitation could be emailed directly to a friend, posted on a bulletin
-board, etc. When you receive an invitation, you should validate it via the InvitationIssuer. Note that the invitation is a special case of `Payment`, and so is associated with a specific `Issuer`.
+To participate in a contract instance, one must hold an invitation to do so. Contracts often 
+return a creator invitation on their instantiation, in case the contract instantiator wants 
+to immediately participate. Otherwise, the contract instance must create any additional invitations. 
+These, or any invitation held by a party, can be distributed via any means the holder wishes. An
+invitation could be emailed directly to a friend, posted on a bulletin board, etc. When you receive 
+an invitation, you should validate it via the [InvitationIssuer](#invitationissuer). Note that 
+the invitation is a special case of [`Payment`](#payment), and so is associated with a specific [`Issuer`](#issuer).
 
-To participate in a contract instance by making an offer, an invitation to that instance must accompany the offer.
+To participate in a contract instance by making an [offer](#offer), an invitation to that instance must accompany the offer.
 
-An `installation`'s properties are:
+An `invitation`'s properties are:
 - The contract's installation in Zoe, including access to its source code.
 - The contract instance this invitation is for.
 - A handle used to refer to this invitation.
@@ -192,9 +219,14 @@ An `installation`'s properties are:
 
 ## InvitationIssuer
 
-Since invitations are special cases of payments, invitations must have a dedicated issuer, which is the InvitationIssuer.
+Since [invitations](#invitation) are special cases of [payments](#payment), invitations 
+must have a dedicated [issuer](#issuer), which is the InvitationIssuer.
 
-Zoe has a single `InvitationIssuer` for its entire lifetime. By having a reference to Zoe, a user can get the `InvitationIssuer`. This lets them claim any invitation they receive from someone else by calling `E(invitationIssuer).claim()` with the untrusted invitation as the argument. During the claiming process, the invitationIssuer validates the invitation. A successful claim also means that invitation is exclusively yours.
+Zoe has a single `InvitationIssuer` for its entire lifetime. By having a reference to Zoe, 
+a user can get the `InvitationIssuer`. This lets them claim any invitation they 
+receive from someone else by calling `E(invitationIssuer).claim()` with the untrusted
+invitation as the argument. During the claiming process, the invitationIssuer validates
+the invitation. A successful claim also means that invitation is exclusively yours.
 
 ## Issuer
 Issuers are a one-to-one relationship with both a [mint](#mint) and a [brand](#brand), so each issuer works
@@ -212,13 +244,13 @@ and the [ERTP API's Issuer section](./ertp/api/issuer.md).
 
 ## Keywords
 
-Keywords are unique identifiers per contract. They tie together the proposal, payments 
-to be escrowed, and payouts to the user by serving as keys for key-value pairs in various 
-records with values of amounts, issuers, etc.
+Keywords are unique identifiers per contract. They tie together the [proposal](#proposal), [payments](#payment) 
+to be [escrowed](#escrow), and [payouts](#payout) to the user by serving as keys for key-value pairs in various 
+records with values of [amounts](#amount), [issuers](#issuer), etc.
 
 ## Mint
 Agoric has two mint objects, *ERTP mints* and *Zoe Contract Facet mints (ZCFMints)*. They both create
-digital assets. Which mint type creates an asset doesn't matter; quatloos created by an ERTP mint and 
+digital assets. Which mint type creates an asset doesn't matter; quatloos created by an ERTP mint are 
 indistinguishable from quatloos created by a ZCFMint. 
 
 - ERTP mints create digital assets asynchronously and are the only ERTP objects with the authority to do so. 
@@ -233,7 +265,7 @@ indistinguishable from quatloos created by a ZCFMint.
   with an issuer and its associated brand.
   
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
-However, issuers, brands, and amountMaths associated with either an ERTP mint or a ZCFMint do have the same methods.
+However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
 
 For more information on ERTP mints, see the [ERTP Guide's Mint section](./ertp/guide/mint.md) 
 and the [ERTP API's Mint section](./ertp/api/mint.md). For more information about ZCFMints, 
@@ -251,8 +283,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 
 ## Notifier
 
-A notifier provides a stream of updates describing changes to the state of an offer.
-
+A notifier provides a stream of updates describing changes to the state of an [offer](#offer).
 For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](./distributed-programming.md#notifiers).
 
 ## Object Capabilities
@@ -271,20 +302,21 @@ knowing the name of a global variable or a public class. You can only get a refe
   - A sends B a reference to C. 
     - B now has a reference to C and can communicate with C. 
 
-If references can only be obtained by creation, construction, or introduction, you may have a safe system. If they can be obtained in any other way, your system is unsafe.
+If references can only be obtained by creation, construction, or introduction, you may have a safe 
+system. If they can be obtained in any other way, your system is unsafe.
 
 For more information, see [Douglas Crockford on Object Capabilities](https://frontendmasters.com/courses/good-parts-javascript-web/object-capabilities/).
 
 ## Offer
 
-Offers are a structured way of describing user intent. In Zoe, an offer consists of a proposal (the 
-rules under which the party wants to exercise the offer) and payments corresponding to what the proposal specifies as what the
-party will give if the offer is satisfied. The payments are automatically escrowed by Zoe, and appropriately reallocated when
+Offers are a structured way of describing user intent. In Zoe, an offer consists of a [proposal](#proposal) (the 
+rules under which the party wants to exercise the offer) and [payments](#payment) corresponding to what the proposal specifies as what the
+party will give if the offer is satisfied. The payments are automatically [escrowed](#escrow) by Zoe, and appropriately reallocated when
 the offer exits with either success or rejection. See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord).
 
 ## Offer Safety
 
-Zoe guarantees offer safety. When a user makes an offer and it is escrowed with Zoe, Zoe guarantees that 
+Zoe guarantees offer safety. When a user makes an [offer](#offer) and it is [escrowed](#escrow) with Zoe, Zoe guarantees that 
 the user either gets what they said they wanted, or gets back (refunded) what they originally offered and escrowed.
 
 ## Payment
@@ -295,16 +327,16 @@ For more information, see the [ERTP Guide's Payments section](./ertp/guide/purse
 and the [ERTP API's Payments section](./ertp/api/payment.md).
 
 ## Payout
-The assets reallocated to a user when an offer exits, either successfully or not. If an offer isn't successful, a
-payout is a party's escrowed assets. If an offer is successful, a party's payout is what they wanted, and possibly the 
+The assets reallocated to a user when an [offer](#offer) exits, either successfully or not. If an offer isn't successful, a
+payout is a party's [escrowed](#escrow) assets. If an offer is successful, a party's payout is what they wanted, and possibly the 
 return of any escrowed assets in excess of the final cost. 
 
 ## Petname
 
 Petnames are your personal names for objects. No one else can see or modify a petname without your permission. 
-You can think of them as your phone's contacts list. The actual phone number is what your phone uses to call 
-someone, but for you to more easily tell who a number is associated with, you've assigned a petname to it, such 
-as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in wallets.
+Think of them as similar to a phone's contacts list. The actual phone number is what a phone uses to call 
+someone, but to more easily tell who a number is associated with, it's assigned a petname, such 
+as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in [wallets](#wallet).
 
 ## Presence 
 A local version of a remote object that serves as the remote object's proxy. 
@@ -313,7 +345,7 @@ For more information, see the [JavaScript Distributed Programming Guide](./distr
 
 ## Proposal
 
-Proposals are records with give, want, and exit keys. Offers must include a proposal, which states
+Proposals are records with `give`, `want`, and `exit` keys. [Offers](#offer) must include a proposal, which states
 what asset you want, what asset you will give for it, and how/when the offer maker can cancel the offer
 (see [Exit Rule](#exit-rule) for details on the last). For example:
 ```
@@ -323,11 +355,13 @@ const myProposal = harden({
   exit: { 'onDemand'
 })
 ```
-give and want use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
+`give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amount), a description of what
 asset they are willing to give/want to get, and how much of it. 
 
 ## Purse 
-Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
+Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_.
+Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. 
+A purse's contents are all of the same [brand](#brand).
 
 For more information, see the [ERTP Guide's Purses section](./ertp/guide/purses-and-payments.md#purses-and-payments) and the
 [ERTP API's Purses section](./ertp/api/purse.md).
@@ -338,16 +372,16 @@ episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamester
 
 ## Reallocate/Reallocation
 
-When an offer exits due either to success or rejection, the associated payments that were escrowed with Zoe are automatically
+When an [offer](#offer) exits due either to success or rejection, the associated [payments](#payment) that were [escrowed](#escrow) with Zoe are automatically
 appropriately reallocated to the offer participants. If the offer was rejected or otherwise failed, Zoe gives the offer-making party back what
-they escrowed. If the offer was accepted, Zoe allocates the user what they said they wanted. There are cases where the reallocation both
+they escrowed. If the offer was accepted, Zoe allocates to each party what they said they wanted. There are cases where the reallocation both
 gives a party what they wanted and some of what they escrowed. For example, in an auction a party might have escrowed 10 Quatloos to make their
 highest bid if necessary, but they won the item with a bid of just 8 Quatloos. The reallocation would give them both the item they won and
 a refund of the 2 Quatloos that weren't needed to purchase it. 
 
 ## Seat
 
-Zoe uses seats to represent offers, and has two seat [facets](#facet); a `ZCFSeat` and a `UserSeat`.
+Zoe uses seats to represent [offers](#offer), and has two seat [facets](#facet); a `ZCFSeat` and a `UserSeat`.
 The term comes from the expression "having a seat at the table" with regards to participating in a
 negotiation.
 
@@ -355,6 +389,9 @@ Seats represent active offers and let contracts and users interact with them. ZC
 within contracts and with `zcf.` methods. User seats represent offers external to Zoe and the 
 contract. The party who exercises an invitation and sends the `offer()` message to Zoe 
 gets a UserSeat that can check payouts' status or retrieve their results.
+
+For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.html#zcfseat-object) and 
+the [UserSeat documentation](/zoe/api/zoe.html#userseat-object).
 
 ## SeatStagings
 `seatStagings` are associations of seats with reallocations.
@@ -371,12 +408,12 @@ more details.
 An imaginary currency Agoric documentation uses in examples.
 
 ## Terms
-Contract instances have associated terms, gotten via `E(zoe).getTerms(instance)`
-and include the instance's associated issuers, brands, and any custom terms. For 
+Contract instances have associated terms, gotten via `E(zoe).getTerms(instance)`,
+which include the instance's associated [issuers](#issuer), [brands](#brand), and any custom terms. For 
 example, you might have a general auction contract. When someone instantiates it,
-they provide terms applicable only to this instance. For example, for some instances of 
-the auction, you want the minimum bid set at $1000. At other instances, you'd like
-it set at $10. You can specify the instance's minimum bid amount in its terms.
+they provide terms applicable only to that instance. For example, for some instances of 
+the auction, they want the minimum bid set at $1000. At other instances, they'd like
+it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
@@ -400,12 +437,13 @@ For more information, see the [Vat section in the Distributed JS Programming Gui
 ## Wallet
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
-purses, 8 Moola purses, and 2 Simoleons purses. You can also keep Issuers in a wallet. Offers are associated with the wallets 
+[purses](#purses), 8 Moola purses, and 2 Simoleons purses. You can also keep [Issuers](#issuer) in a 
+wallet. [Offers](#offer) are associated with the wallets 
 from which their associated payments come from. See the [Wallet API](./wallet-api.md).
 
 ## ZCF (Zoe Contract Facet)
 
-A set of Zoe API methods made visible on a Zoe facet. They can be called synchronously by contract code. 
+A set of Zoe API methods made visible on a Zoe [facet](#facet). They can be called synchronously by contract code. 
 See the [ZCF API](/zoe/api/zoe-contract-facet.md).
 
 ## ZCFMint
