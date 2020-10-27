@@ -121,7 +121,7 @@ the [`E()` section in the Distributed JavaScript page](/distributed-programming.
 
 ## ERTP
 *Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, 
-both [fungible](#fungible) and [non-fungible](#non-fungable), in JavaScript. All kinds of digital assets
+both [fungible](#fungible) and [non-fungible](#non-fungible), in JavaScript. All kinds of digital assets
 can easily be created and they can be all be transferred in exactly the same ways, with exactly the same security properties.
 
 It uses [object capabilities](#object-capabilities) to enforce access control. Instead of having 
@@ -167,21 +167,16 @@ five one dollar bills you use. Also see [non-fungible](#non-fungible).
 ## Handle
 A handle is a unique identifier implemented as a JavaScript object. Only its identity is meaningful, so handles do not have properties. Unlike number or string identifiers, handles are unforgeable. This means the only way to know a handle identity is being given an object reference, and no identity can be guessed and no fake identity will succeed. 
 
-For example, Zoe often uses `offerHandle` to refer to offers. Zoe contracts can use an offer's `offerHandle` as the key for requesting the current allocation of an offer or reallocating the offer's assets.
-
 ## Harden
-
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
-its [section in the JavaScript Distributeed Programming Guide](/distributed-programming.md#harden)
+its [section in the JavaScript Distributed Programming Guide](/distributed-programming.md#harden)
 
 ## IBC
-
 The Inter-Blockchain Communication protocol, used to by blockchains to communicate with each other. A short article about IBC
 is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
 ## Invitation
-
 To participate in a contract instance, one must hold an invitation to do so. Contracts often return a creator invitation on their instantiation, 
 in case the contract instantiator wants to immediately participate. Otherwise, the contract instance must create any additional invitations. These, or any
 invitation held by a party, can be distributed via any means the holder wishes. An invitation could be emailed directly to a friend, posted on a bulletin
@@ -202,7 +197,7 @@ Since invitations are special cases of payments, invitations must have a dedicat
 Zoe has a single `InvitationIssuer` for its entire lifetime. By having a reference to Zoe, a user can get the `InvitationIssuer`. This lets them claim any invitation they receive from someone else by calling `E(invitationIssuer).claim()` with the untrusted invitation as the argument. During the claiming process, the invitationIssuer validates the invitation. A successful claim also means that invitation is exclusively yours.
 
 ## Issuer
-Issuers are a one-to-one relationshp with both a [mint](#mint) and a [brand](#brand), so each issuer works
+Issuers are a one-to-one relationship with both a [mint](#mint) and a [brand](#brand), so each issuer works
 with one and only one asset type, such as only working with quatloos or only working
 with moola. This association cannot change to another type. 
 
@@ -245,7 +240,7 @@ and the [ERTP API's Mint section](./ertp/api/mint.md). For more information abou
 see the [zcfMakeZCFMint() API entry](./zoe/api/zoe-contract-facet.html#zcf-makezcfmint-keyword-amountmathkind) in the Zoe Contract Facet API.
 
 ## Moola
-An imaginary currency Agoric docmentation uses in examples.
+An imaginary currency Agoric documentation uses in examples.
 
 ## Non-fungible
 A non-fungible asset is one where each incidence of the asset has unique individual properties and
@@ -267,7 +262,7 @@ and C, while B and C do not have references to each other. Thus, A can communica
 and B and C cannot communicate with each other. There is an effective zero-cost firewall between B and C.
 
 An *object capability system* constrains how references are obtained. You can't get one just by 
-knowing the name of a global variable or a public class. You can pnly get a reference via: 
+knowing the name of a global variable or a public class. You can only get a reference via: 
 - Creation: Functions that create objects get a reference to them.
 - Construction: Constructors can endow their constructed objects with references, including inherited references. 
 - Introduction: 
@@ -331,14 +326,14 @@ const myProposal = harden({
 give and want use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
 asset they are willing to give/want to get, and how much of it. 
 
-## Purse **tyg**
+## Purse 
 Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
 
 For more information, see the [ERTP Guide's Purses section](./ertp/guide/purses-and-payments.md#purses-and-payments) and the
 [ERTP API's Purses section](./ertp/api/purse.md).
 
 ## Quatloos
-An imaginary currenty Agoric docmentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek 
+An imaginary currency Agoric documentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek 
 episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
 ## Reallocate/Reallocation
@@ -373,11 +368,11 @@ See the [SES section of the Distributed JavaScript Programming Guide](./distribu
 more details. 
 
 ## Simoleons
-An imaginary currency Agoric docmentation uses in examples.
+An imaginary currency Agoric documentation uses in examples.
 
 ## Terms
 Contract instances have associated terms, gotten via `E(zoe).getTerms(instance)`
-and include the instance's assocated issuers, brands, and any custom terms. For 
+and include the instance's associated issuers, brands, and any custom terms. For 
 example, you might have a general auction contract. When someone instantiates it,
 they provide terms applicable only to this instance. For example, for some instances of 
 the auction, you want the minimum bid set at $1000. At other instances, you'd like
