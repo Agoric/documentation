@@ -57,6 +57,12 @@ and the [ERTP API's AmountMath section](./ertp/api/amount-math.md).
 ## AssetHolder
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amount).
 
+## Board (Agoric Board)
+The Board is a basic bulletin board type system where users can post an Id for a value
+and others can get the value just by knowing the Id. You can make an Id known by any 
+communication method; private email, an email blast to a mailing list or many individuals, 
+buying an ad on a website, tv program, or newspaper, listing it on a website, etc.
+
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
 make up an [amount](#amount).
@@ -176,7 +182,24 @@ is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What
 
 ## Invitation
 
+To participate in a contract instance, one must hold an invitation to do so. Contracts often return a creator invitation on their instantiation, 
+in case the contract instantiator wants to immediately participate. Otherwise, the contract instance must create any additional invitations. These, or any
+invitation held by a party, can be distributed via any means the holder wishes. An invitation could be emailed directly to a friend, posted on a bulletin
+board, etc. When you receive an invitation, you should validate it via the InvitationIssuer. Note that the invitation is a special case of `Payment`, and so is associated with a specific `Issuer`.
+
+To participate in a contract instance by making an offer, an invitation to that instance must accompany the offer.
+
+An `installation`'s properties are:
+- The contract's installation in Zoe, including access to its source code.
+- The contract instance this invitation is for.
+- A handle used to refer to this invitation.
+- A description of this invitation's purpose.
+
 ## InvitationIssuer
+
+Since invitations are special cases of payments, invitations must have a dedicated issuer, which is the InvitationIssuer.
+
+Zoe has a single `InvitationIssuer` for its entire lifetime. By having a reference to Zoe, a user can get the `InvitationIssuer`. This lets them claim any invitation they receive from someone else by calling `E(invitationIssuer).claim()` with the untrusted invitation as the argument. During the claiming process, the invitationIssuer validates the invitation. A successful claim also means that invitation is exclusively yours.
 
 ## Issuer
 Issuers are a one-to-one relationshp with both a [mint](#mint) and a [brand](#brand), so each issuer works
@@ -235,7 +258,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 
 A notifier provides a stream of updates describing changes to the state of an offer.
 
-For more information, see [here](./distributed-programming.md#notifiers).
+For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](./distributed-programming.md#notifiers).
 
 ## Object Capabilities
 
@@ -269,19 +292,26 @@ the offer exits with either success or rejection. See [`E(Zoe).offer(invitation,
 Zoe guarantees offer safety. When a user makes an offer and it is escrowed with Zoe, Zoe guarantees that 
 the user either gets what they said they wanted, or gets back (refunded) what they originally offered and escrowed.
 
-## Payment   **tyg**
-Payments hold [amounts](#amount) of certain assets 
-issued by [Mints](#mint). Specifically amounts from one party to another. 
-Amounts from payments can be deposited in [purses](#purse), but otherwise, the entire amount is 
-available when the payment is transferred. Payments can be converted to [Purses](#purse). All contents 
-of a purse must be of the same [brand](#brand).
+## Payment
+Payments hold assets issued by [Mints](#mint). Specifically assets intended for transfer 
+from one party to another. All assets of a payment must be of the same [brand](#brand).
 
 For more information, see the [ERTP Guide's Payments section](./ertp/guide/purses-and-payments.md#purses-and-payments)
 and the [ERTP API's Payments section](./ertp/api/payment.md).
 
 ## Payout
+The assets reallocated to a user when an offer exits, either successfully or not. If an offer isn't successful, a
+payout is a party's escrowed assets. If an offer is successful, a party's payout is what they wanted, and possibly the 
+return of any escrowed assets in excess of the final cost. 
 
-## Presence **tyg**
+## Petname
+
+Petnames are your personal names for objects. No one else can see or modify a petname without your permission. 
+You can think of them as your phone's contacts list. The actual phone number is what your phone uses to call 
+someone, but for you to more easily tell who a number is associated with, you've assigned a petname to it, such 
+as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in wallets.
+
+## Presence 
 A local version of a remote object that serves as the remote object's proxy. 
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`. 
 For more information, see the [JavaScript Distributed Programming Guide](./distributed-programming.md). 
@@ -304,14 +334,14 @@ asset they are willing to give/want to get, and how much of it.
 ## Purse **tyg**
 Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_. Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. A purse's contents are all of the same [brand](#brand).
 
-For more information, see the [ERTP Guide's Purses section](https://agoric.com/documentation/ertp/guide/purses-and-payments.md#purses-and-payments) and the
+For more information, see the [ERTP Guide's Purses section](./ertp/guide/purses-and-payments.md#purses-and-payments) and the
 [ERTP API's Purses section](./ertp/api/purse.md).
 
 ## Quatloos
 An imaginary currenty Agoric docmentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek 
 episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
-## Reallocate
+## Reallocate/Reallocation
 
 When an offer exits due either to success or rejection, the associated payments that were escrowed with Zoe are automatically
 appropriately reallocated to the offer participants. If the offer was rejected or otherwise failed, Zoe gives the offer-making party back what
@@ -320,9 +350,11 @@ gives a party what they wanted and some of what they escrowed. For example, in a
 highest bid if necessary, but they won the item with a bid of just 8 Quatloos. The reallocation would give them both the item they won and
 a refund of the 2 Quatloos that weren't needed to purchase it. 
 
-## Seat  **tyg**
+## Seat
 
-Zoe uses seats to represent offers, and has two seat [facets](#facet); a [ZCFSeat](#zcfseat) and a [UserSeat](#userseat).
+Zoe uses seats to represent offers, and has two seat [facets](#facet); a `ZCFSeat` and a `UserSeat`.
+The term comes from the expression "having a seat at the table" with regards to participating in a
+negotiation.
 
 Seats represent active offers and let contracts and users interact with them. ZCFSeats are used 
 within contracts and with `zcf.` methods. User seats represent offers external to Zoe and the 
@@ -330,11 +362,26 @@ contract. The party who exercises an invitation and sends the `offer()` message 
 gets a UserSeat that can check payouts' status or retrieve their results.
 
 ## SeatStagings
+`seatStagings` are associations of seats with reallocations.
+
+## SES (Secure ECMAScript)
+
+SES is a standards-track extension to the JavaScript standard. It
+provides a secure platform for executing programs. With SES, you can run code you don't
+completely trust, without being vulnerable to bugs or bad intentions. 
+See the [SES section of the Distributed JavaScript Programming Guide](./distributed-programming.md#secure-ecmascript-ses) for 
+more details. 
 
 ## Simoleons
 An imaginary currency Agoric docmentation uses in examples.
 
 ## Terms
+Contract instances have associated terms, gotten via `E(zoe).getTerms(instance)`
+and include the instance's assocated issuers, brands, and any custom terms. For 
+example, you might have a general auction contract. When someone instantiates it,
+they provide terms applicable only to this instance. For example, for some instances of 
+the auction, you want the minimum bid set at $1000. At other instances, you'd like
+it set at $10. You can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
@@ -348,17 +395,18 @@ are usually [non-fungible](#nonfungible) assets. Values must be [Comparable](#co
 
 For more information, see the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/amounts.html#values).
 
-## Vat **tyg**
+## Vat 
+A vat is a unit of isolation. To paraphrase the Las Vegas advertising slogan, what happens in a vat stays in that vat.
+Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
+communicate with other vats and their objects and functions, but have to manage asynchronous messages and responses.
 
-A vat is a *unit of synchrony*. This means that within a JavaScript vat, objects and functions can communicate with one another synchronously.
+For more information, see the [Vat section in the Distributed JS Programming Guide](https://agoric.com/documentation/distributed-programming.html#vats)
 
-A vat runs a single *event loop*.
+## Wallet
 
-A physical machine can run one or several vats. A blockchain can run one or several communicating vats.
-
-Different vats can communicate by sending asynchronous messages to other vats.
-
-A vat is the moral equivalent of a Unix Process.
+The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
+purses, 8 Moola purses, and 2 Simoleons purses. You can also keep Issuers in a wallet. Offers are associated with the wallets 
+from which their associated payments come from. See the [Wallet API](./wallet-api.md).
 
 ## ZCF (Zoe Contract Facet)
 
