@@ -4,7 +4,7 @@ This page lists words, expressions, or concepts used by the Agoric technology st
 
 ## Agoric CLI
 A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
-See the [Agoric CLI Guide](./getting-started/agoric-cli-guide.md).
+See the [Agoric CLI Guide](/getting-started/agoric-cli-guide.md).
 
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
@@ -19,7 +19,7 @@ Allocations represent the [amounts](#amount) to be paid out to each [seat](#seat
 an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
 out what amount a current allocation is. 
 
-In more detail, Zoe's guarantee is each [seat](#seat) will either get what it asked for in its offer, or the return of what was [escrowed](escrow).
+In more detail, Zoe's guarantee is each [seat](#seat) will either get what it asked for in its offer, or the return of what was [escrowed](#escrow).
 The contract can reallocate fairly arbitrarily to achieve that. As contract code is visible to its clients, users can see
 what the contract intends to do.
 
@@ -39,8 +39,8 @@ methods of three different kinds to deal with [fungible](#fungible) assets (valu
 - `MathKind.STRING_SET`: Used with non-fungible assets. Amount values are strings.
 - `MathKind.SET`: Used with non-fungible assets. Amount values are objects or records with multiple properties.
 
-For more information, see the [ERTP Guide's AmountMath section](./ertp/guide/amount-math.md) 
-and the [ERTP API's AmountMath section](./ertp/api/amount-math.md).
+For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md) 
+and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
 ## Amount
 Amounts are the canonical description of tradable goods. They are manipulated
@@ -58,11 +58,11 @@ sword. They don't send you the actual 5 Quatloos; that only happens when there i
 trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
 a new `amount` does **not** create new assets.
 
-For more information, see the [ERTP Guide's Amounts section](./ertp/guide/amounts.md) 
-and the [ERTP API's AmountMath section](./ertp/api/amount-math.md).
+For more information, see the [ERTP Guide's Amounts section](/ertp/guide/amounts.md) 
+and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
 ## AssetHolder
-[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amounts).
+[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amount).
 
 ## Board (Agoric Board)
 The Board is a basic bulletin board type system where users can post an Id for a value
@@ -74,8 +74,8 @@ buying an ad on a website, tv program, or newspaper, listing it on a website, et
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
 
 make up an [amount](#amount).
-For more information, see the [ERTP Guide's Brand section](./ertp/guide/brand.md)
-and the [ERTP API's Brand section](./ertp/api/brand.md).
+For more information, see the [ERTP Guide's Brand section](/ertp/guide/brand.md)
+and the [ERTP API's Brand section](/ertp/api/brand.md).
 
 ## Bundle
 
@@ -139,7 +139,7 @@ See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/do
 in another vat, machine, or blockchain. It takes a local representative (a proxy) for a remote object as an argument and 
 sends messages to it using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with. 
 All `E()` calls return a promise for the eventual returned value. For more detail, see 
-the [`E()` section in the Distributed JavaScript page](/distributed-programming.html#communicating-with-remote-objects-using-e).
+the [`E()` section in the Distributed JavaScript page](/distributed-programming.md#communicating-with-remote-objects-using-e).
 
 ## ERTP
 
@@ -154,8 +154,8 @@ have a reference, it can't. For more on object capabilities, see [this post](htt
 
 Key ERTP concepts include [Issuers](#issuer), [Mints](#mint), 
 [Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also 
-see the [ERTP Introduction](./getting-started/ertp-introduction.md),
-[ERTP Guide](./ertp/guide/), and [ERTP API](./ertp/api/).
+see the [ERTP Introduction](/getting-started/ertp-introduction.md),
+[ERTP Guide](/ertp/guide/), and [ERTP API](/ertp/api/).
 
 ## Escrow
 
@@ -241,8 +241,8 @@ payments of their asset type (splitting, combining, burning, and exclusively cla
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid. 
 
-For more information, see the [ERTP Guide's Issuer section](./ertp/guide/issuer.md)
-and the [ERTP API's Issuer section](./ertp/api/issuer.md).
+For more information, see the [ERTP Guide's Issuer section](/ertp/guide/issuer.md)
+and the [ERTP API's Issuer section](/ertp/api/issuer.md).
 
 ## Keywords
 
@@ -269,9 +269,9 @@ indistinguishable from quatloos created by a ZCFMint.
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
 However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
 
-For more information on ERTP mints, see the [ERTP Guide's Mint section](./ertp/guide/mint.md) 
-and the [ERTP API's Mint section](./ertp/api/mint.md). For more information about ZCFMints, 
-see the [zcfMakeZCFMint() API entry](./zoe/api/zoe-contract-facet.html#zcf-makezcfmint-keyword-amountmathkind) in the Zoe Contract Facet API.
+For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/mint.md) 
+and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about ZCFMints, 
+see the [zcfMakeZCFMint() API entry](/zoe/api/zoe-contract-facet.md#zcf-makezcfmint-keyword-amountmathkind) in the Zoe Contract Facet API.
 
 ## Moola
 An imaginary currency Agoric documentation uses in examples.
@@ -286,7 +286,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 ## Notifier
 
 A notifier provides a stream of updates describing changes to the state of an [offer](#offer).
-For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](./distributed-programming.md#notifiers).
+For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](/distributed-programming.md#notifiers).
 
 ## Object Capabilities
 
@@ -326,8 +326,8 @@ the user either gets what they said they wanted, or gets back (refunded) what th
 Payments hold assets issued by [Mints](#mint). Specifically assets intended for transfer 
 from one party to another. All assets of a payment must be of the same [brand](#brand).
 
-For more information, see the [ERTP Guide's Payments section](./ertp/guide/purses-and-payments.md#purses-and-payments)
-and the [ERTP API's Payments section](./ertp/api/payment.md).
+For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#purses-and-payments)
+and the [ERTP API's Payments section](/ertp/api/payment.md).
 
 ## Payout
 The assets reallocated to a user when an [offer](#offer) exits, either successfully or not. If an offer isn't successful, a
@@ -344,7 +344,7 @@ as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in [wal
 ## Presence 
 A local version of a remote object that serves as the remote object's proxy. 
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`. 
-For more information, see the [JavaScript Distributed Programming Guide](./distributed-programming.md). 
+For more information, see the [JavaScript Distributed Programming Guide](/distributed-programming.md). 
 
 ## Proposal
 
@@ -366,8 +366,8 @@ Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifi
 Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. 
 A purse's contents are all of the same [brand](#brand).
 
-For more information, see the [ERTP Guide's Purses section](./ertp/guide/purses-and-payments.md#purses-and-payments) and the
-[ERTP API's Purses section](./ertp/api/purse.md).
+For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-and-payments.md#purses-and-payments) and the
+[ERTP API's Purses section](/ertp/api/purse.md).
 
 ## Quatloos
 An imaginary currency Agoric documentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek 
@@ -393,8 +393,8 @@ within contracts and with `zcf.` methods. User seats represent offers external t
 contract. The party who exercises an invitation and sends the `offer()` message to Zoe 
 gets a UserSeat that can check payouts' status or retrieve their results.
 
-For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.html#zcfseat-object) and 
-the [UserSeat documentation](/zoe/api/zoe.html#userseat-object).
+For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.md#zcfseat-object) and 
+the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 
 ## SeatStagings
 `seatStagings` are associations of seats with reallocations.
@@ -404,7 +404,7 @@ the [UserSeat documentation](/zoe/api/zoe.html#userseat-object).
 SES is a standards-track extension to the JavaScript standard. It
 provides a secure platform for executing programs. With SES, you can run code you don't
 completely trust, without being vulnerable to bugs or bad intentions. 
-See the [SES section of the Distributed JavaScript Programming Guide](./distributed-programming.md#secure-ecmascript-ses) for 
+See the [SES section of the Distributed JavaScript Programming Guide](/distributed-programming.md#secure-ecmascript-ses) for 
 more details. 
 
 ## Simoleons
@@ -420,7 +420,7 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
-Values are the part of an [amount](#amounts) that describe the value of something
+Values are the part of an [amount](#amount) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
 Pixel(3,2), $3, or 'Seat J12 for the show September 27th at 9:00pm'.
 [Fungible](#fungible) values are usually 
@@ -428,21 +428,21 @@ represented by natural numbers. Other values may be represented as strings namin
 right, or an arbitrary object representing the rights at issue. The latter two examples 
 are usually [non-fungible](#non-fungible) assets. Values must be [Comparable](#comparable).
 
-For more information, see the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/amounts.html#values).
+For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
 
 ## Vat 
 A vat is a unit of isolation. To paraphrase the Las Vegas advertising slogan, what happens in a vat stays in that vat.
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
 communicate with other vats and their objects and functions, but have to manage asynchronous messages and responses.
 
-For more information, see the [Vat section in the Distributed JS Programming Guide](https://agoric.com/documentation/distributed-programming.html#vats)
+For more information, see the [Vat section in the Distributed JS Programming Guide](/distributed-programming.md#vats)
 
 ## Wallet
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
-[purses](#purses), 8 Moola purses, and 2 Simoleons purses. You can also keep [Issuers](#issuer) in a 
+[purses](#purse), 8 Moola purses, and 2 Simoleons purses. You can also keep [Issuers](#issuer) in a 
 wallet. [Offers](#offer) are associated with the wallets 
-from which their associated payments come from. See the [Wallet API](./wallet-api.md).
+from which their associated payments come from. See the [Wallet API](/wallet-api.md).
 
 ## ZCF (Zoe Contract Facet)
 
