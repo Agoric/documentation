@@ -7,15 +7,14 @@
 `Amounts` describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
 Use the `amountMath` API methods (covered in-depth 
-<router-link to="./api/amount-math.html">here</router-link>)
+[here](../api/amount-math.md))
 to get information about and otherwise manipulate an `amount` as a whole.
 `amountMath.make()` is generally how you make new `amounts`.
 
 However, you can also make an `amount` as an object literal by making a record of
 a `brand` and a `value`. While `amountMath.make()` is recommended for proper object-oriented programming (it also checks the `brand`'s validity), this produces the same result:
-```js
-const newAmount = { brand: quatloosBrand, value: 5 }
-```
+
+<<< @/snippets/ertp/guide/test-amounts.js#manualMake
 `amount` has two properties:
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
@@ -53,55 +52,38 @@ its `issuer`, and thus its `brand`, was created to be.
 A `brand` has two associated methods. The following is a brief description 
 and example of each `brand` method. For more detail, click the method's name 
 to go to its entry in the [ERTP
-API Reference](./api/#ertp-api).
+API Reference](../api/). 
 
-- [`brand.isMyIssuer(issuer)`](./api/brand.html#brand-ismyissuer-issuer)
+- [`brand.isMyIssuer(issuer)`](../api/brand.md#brand-ismyissuer-issuer)
   - Returns `true` if the `issuer` argument matches the `issuer` associated with the `brand`.
     We have this method because the `issuer` is authoritative and the `brand` is not. You can
     create a `payment`, `purse`, or `amount` with a `brand` that claims a particular `issuer`,
     without that `issuer` having been involved. But if you use that `payment` or `purse`, it won't be 
     accepted by genuine ones. So to know, you have to verify with the `issuer` to see if it agrees.
-  - ```js
-    const isIssuer = brand.isMyIssuer(issuer);
-    ```
-- [`brand.getAllegedName()`](./api/brand.html#brand-getallegedname)
+  - <<< @/snippets/ertp/guide/test-amounts.js#isMyIssuer
+- [`brand.getAllegedName()`](../api/brand.md#brand-getallegedname)
   - Return the `brand`'s alleged name, but should not be trusted as accurate.
-  - ```js
-    const name = brand.getAllegedName();
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#getAllegedName
 
 The following methods on other ERTP components also either operate on or
 return a `brand`.
 
-- [`issuer.getBrand()`](./api/issuer.html#issuer-getBrand)
+- [`issuer.getBrand()`](/ertp/api/issuer.md#issuer-getbrand)
   - Returns the `brand` for the `issuer`. The `brand` is not closely
     held, so this should not be trusted to identify an `issuer`
     alone. Fake digital assets and `amount`s can use the `brand` of another `issuer`.
-  - ```js
-    const brand = quatloosIssuer.getBrand();
-    // brand === quatloosBrand
-    ```
-- [`payment.getAllegedBrand()`](./api/payment.html#payment-getallegedbrand)
+  - <<< @/snippets/ertp/guide/test-amounts.js#getBrand
+- [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
   - Return the `payment`'s alleged `brand`. Because a `payment`
   is not trusted, this should be treated with suspicion and verified
   elsewhere. This example code determines if a `payment` we got from untrusted sources
   is valid. It uses the `brand` to find a `purse` we want to deposit it in, then verifies
   that it's genuine.
-  - ```js
-    function depositSomewhere(payment) {
-      const allegedBrand = payment.getAllegedBrand();
-      const probablyAppropriatePurse = brandToPurse.get(allegedBrand);
-      const depositAmount = probablyAppropriatePurse.deposit(payment);
-      }
-    }  
-    ```
-- [`amountMath.getBrand()`](./api/amount-math.html#amountmath-getbrand)
+  - <<< @/snippets/ertp/guide/test-amounts.js#depositSomewhere
+- [`amountMath.getBrand()`](../api/amount-math.md#amountmath-getbrand)
   - Return the `brand` the `amountMath` object is using for its
   methods.
-  - ```js
-    const exampleAmountMath = quatloosIssuer.getAmountMath();
-    const exampleBrand = exampleAmountMath.getBrand();
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#amountMathGetBrand
 
 ## Values
 
@@ -109,17 +91,11 @@ return a `brand`.
 
 Values are the "how many" part of an `amount`. There are no `value`
 methods, but two `amountMath` methods use or return them. 
-- <router-link to="./api/amount-math.html#amountmath-getvalue-amount">`amountMath.getValue(amount)`</router-link>
+- [`amountMath.getValue(amount)`](../api/amount-math.md#amountmath-getvalue-amount)
   - Return the `amount` argument's `value`
-  - ```js
-    const quatloos123 = quatloosAmountMath.make(123);
-    // returns 123
-    const value = quatloosAmountMath.getValue(quatloos123);
-    ```
-- <router-link to="./api/amount-math.html#amount-math-make-allegedvalue">`amountMath.make(allegedValue)`</router-link>
+  - <<< @/snippets/ertp/guide/test-amounts.js#getValue
+- [`amountMath.make(allegedValue)`](../api/amount-math.md#amountmath-make-allegedvalue)
   - Make an `amount`from a `value` by adding the
   `amountMath` associated `brand` to the `value`. 
-  - ```js
-    const quatloos837 = quatloosAmountMath.make(837);
-    ```
+  - <<< @/snippets/ertp/guide/test-amounts.js#make
     

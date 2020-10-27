@@ -62,7 +62,7 @@ For more information, see the [ERTP Guide's Amounts section](./ertp/guide/amount
 and the [ERTP API's AmountMath section](./ertp/api/amount-math.md).
 
 ## AssetHolder
-[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amount).
+[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amounts).
 
 ## Board (Agoric Board)
 The Board is a basic bulletin board type system where users can post an Id for a value
@@ -72,6 +72,7 @@ buying an ad on a website, tv program, or newspaper, listing it on a website, et
 
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
+
 make up an [amount](#amount).
 For more information, see the [ERTP Guide's Brand section](./ertp/guide/brand.md)
 and the [ERTP API's Brand section](./ertp/api/brand.md).
@@ -91,7 +92,7 @@ code via `invitation.bundle.source`.
 
 ## Burn
 
-Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount) 
+Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
 
 ## Comparable
 
@@ -141,6 +142,7 @@ All `E()` calls return a promise for the eventual returned value. For more detai
 the [`E()` section in the Distributed JavaScript page](/distributed-programming.html#communicating-with-remote-objects-using-e).
 
 ## ERTP
+
 *Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets, 
 both [fungible](#fungible) and [non-fungible](#non-fungible), in JavaScript. All kinds of digital assets
 can easily be created and they can be all be transferred in exactly the same ways, with exactly the same security properties.
@@ -320,6 +322,7 @@ Zoe guarantees offer safety. When a user makes an [offer](#offer) and it is [esc
 the user either gets what they said they wanted, or gets back (refunded) what they originally offered and escrowed.
 
 ## Payment
+
 Payments hold assets issued by [Mints](#mint). Specifically assets intended for transfer 
 from one party to another. All assets of a payment must be of the same [brand](#brand).
 
@@ -417,13 +420,13 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
-Values are the part of an [amount](#amount) that describe the value of something
+Values are the part of an [amount](#amounts) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
 Pixel(3,2), $3, or 'Seat J12 for the show September 27th at 9:00pm'.
 [Fungible](#fungible) values are usually 
 represented by natural numbers. Other values may be represented as strings naming a particular
 right, or an arbitrary object representing the rights at issue. The latter two examples 
-are usually [non-fungible](#nonfungible) assets. Values must be [Comparable](#comparable).
+are usually [non-fungible](#non-fungible) assets. Values must be [Comparable](#comparable).
 
 For more information, see the [ERTP Guide's Value section](https://agoric.com/documentation/ertp/guide/amounts.html#values).
 

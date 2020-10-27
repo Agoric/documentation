@@ -68,7 +68,7 @@ module.exports = [
       {
         text: 'Agoric CLI',
         ariaLabel: 'Agoric CLI Guide',
-        link: '/getting-started/agoric-cli-guide/',
+        link: '/getting-started/agoric-cli-guide.md',
       },
       {
         text: 'Agoric Dapps',

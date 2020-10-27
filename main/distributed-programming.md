@@ -35,7 +35,7 @@ about changes to their subscribed-to contracts or offers' state.
 ## Vats
 
 A vat is a *unit of isolation*. To paraphrase the Las Vegas advertising slogan, what happens in the vat stays in the vat. Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can communicate with other vats and their objects and functions, but have to
-[manage asynchronous messages and responses](#Communicating-with-remote-objects-via-E).
+[manage asynchronous messages and responses](#communicating-with-remote-objects-using-e).
 
 There are no tools for telling what vat something is in, or if two things are in the same or different vats. In general, you/your code should know if things are local (in the same vat) because you created them or they were passed to you by something guaranteeing that’s the case. Other objects you should treat as if they might be distant (in different vats). In practice, you will know that your normal method calls (`obj.method()`) fails because the method doesn't exist and that's usually when you slap your forehead and go "Of course, it's remote!".
 
@@ -186,7 +186,7 @@ remote object complains that it doesn't know that method.
 objects in the current vat or presences for objects in other vats as arguments.
 
 `E()` is frequently used in code to call
-[Zoe Service API methods](https://agoric.com/documentation/zoe/api/zoe.html).
+[Zoe Service API methods](./zoe/api/zoe.md).
 
 ## Notifiers
 

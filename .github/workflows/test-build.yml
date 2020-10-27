@@ -26,3 +26,6 @@ jobs:
         root: main/.vuepress/dist
         extra: --ignore_re r'\ADuplicate ID "outbound-link-title".*'
 
+    - name: Vuepress checkmd
+      run: |
+        yarn check-links

@@ -11,17 +11,17 @@ applications)</i>, which typically have a browser-based user interface,
 a public API server, and a contract running on the Agoric blockchain.
 
 Before doing the steps given in this document, be sure you have done the necessary prerequisites
-specified in [Before Using Agoric](https://agoric.com/documentation/getting-started/before-using-agoric/).
+specified in [Before Using Agoric](/getting-started/before-using-agoric.md).
 
 For complete documentation on the Agoric CLI commands (those starting with `agoric`) used here, 
-see the [Agoric CLI Guide](https://agoric.com/documentation/getting-started/agoric-cli-guide/).
+see the [Agoric CLI Guide](/getting-started/agoric-cli-guide.md).
 
 For starting a local chain with multiple users, making it possible to develop and test multiuser Dapps, also see the 
- [Agoric CLI Guide](https://github.com/Agoric/documentation/blob/cli-multiuser/main/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
+ [Agoric CLI Guide](/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
 
 Also, for what needs to be done after you modify a project's code, see 
 [Development
-Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
+Cycle](/getting-started/development-cycle.md)
 
 <table>
   <tbody>
@@ -39,8 +39,8 @@ Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
     <td>2</td>
     <td>Run <code>agoric init demo</code>
     <td>Initializes a <i>Dapp</i> (<i>Distributed application</i>)
-	project.
-	<br><br>
+  project.
+  <br><br>
     <code>init</code> creates a sub-directory with the specified name
     (<code>demo</code> in this case) in your current directory and copies an existing project's files
     into it. You can give the project any name you like. This
@@ -48,10 +48,11 @@ Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
     <br><br>
     There are optional arguments that let you specify which project
     you want copied into the specified directory. By default, their values are set to
-    use the Encouragement Dapp we wrote to provide a simple skeleton for a smart contract.
+    use the Fungible Faucet Dapp we wrote to provide a simple skeleton for a smart contract.
     To specify a different project, use the optional arguments:<br>
     <code>--dapp-template &lt;name&gt;</code> Use the project specified by this &lt;name&gt; as the template copied into your current directory.<br> 
-	    <code>--dapp-base &lt;base-url&gt;</code> Look under this directory for the Dapp template. 
+      <code>--dapp-base &lt;base-url&gt;</code> Look under this directory for the Dapp template. 
+  <br><br> <a href="/documentation/dapps/dapp-templates">Learn more about the available dapp templates.</a>
   <br><br>If this 
   doesn't work, use <code>echo $PATH</code> to check that your Agoric
       CLI install directory is in your <code>$PATH</code> If not, add
@@ -71,7 +72,7 @@ Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
   <tr>
     <td>5</td>
     <td><code>agoric start --reset</code><br>
-	(leave this shell up with the process running)</td>
+  (leave this shell up with the process running)</td>
     <td>Start the Agoric VM. <code>--reset</code> discards any prior Agoric
   state. This creates the <i>vats</i> in which smart contract code runs.
   The VM continues to run in this shell, making it unusable for
@@ -100,12 +101,11 @@ Cycle](https://agoric.com/documentation/getting-started/development-cycle/)
   <tr>
     <td>9</td>
     <td>Go to a browser and open <code>http://localhost:3000</code> to
-	    see the Dapp. If you used the default values for <code>agoric init</code>
-	in Step 2, you'll see the Encouragement demo Dapp, described in the next cell.</td>
-	<td>If you used the <code>agoric init</code> defaults in Step 2, 
-		you'll see our Encouragement Dapp, which lets you get encouragement, 
-	either for free or by making a tip. The latter requires interaction
-	with your wallet where your assets are stored (which was started with the Agoric VM).</td>
+      see the Dapp. If you used the default values for <code>agoric init</code>
+  in Step 2, you'll see the Fungible Faucet demo Dapp, described in the next cell.</td>
+  <td>If you used the <code>agoric init</code> defaults in Step 2, 
+    you'll see our Fungible Faucet Dapp, which lets you get 1000 fungible tokens at a time for free. Receiving the tokens requires interaction
+  with your wallet where your assets are stored (which was started with the Agoric VM).</td>
   </tr>
 </tbody>
 </table>

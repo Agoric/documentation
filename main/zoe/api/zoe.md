@@ -12,7 +12,7 @@ is referred to via `zoe`, which only supports asynchronous invocation. Operation
 invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies).
 All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences.
 
-For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html).
+For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/distributed-programming.md).
 :::
 
 ## E(zoe).getBrands(instance)
@@ -171,6 +171,7 @@ An `installation` is an object with one property:
 ```js
 const installation = await E(zoe).getInstallation(invitation);
 ```
+
 ## E(zoe).startInstance(installation, issuerKeywordRecord, terms)
 - `installation` `{Installation}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
@@ -193,10 +194,27 @@ be different for different instances of the same contract, but the contract
 defines what variables need their values passed in as `terms`.
 
 It returns a promise for a `StartInstanceResult` object. The object consists of:
+- `adminFacet` `{any}`
 - `creatorFacet` `{any}`
 - `publicFacet` `{any}`
 - `instance` `{Instance}`
 - `creatorInvitation` `{Payment | undefined}`
+
+The `adminFacet` has two methods:
+- `getVatShutdownPromise()    
+  - Returns a promise that resolves to reason (the value passed to `fail(reason)`) or 
+    completion (the value passed to `exit(completion)`) when this newly started instance terminates. 
+- `getVatStats()`
+  - Returns statistics about vat activity. These are the number of different types
+    of items in the vat's C-List, which tracks what this vat can reach on other vats
+    and how many entries are in the vat's transcript. The last gives an idea of
+    how many messages this vat has executed. A vat's transcript of messages it has 
+    executed lets it replay those messages if restarted and restore its pre-shutdown
+    state.
+    - `objectCount`
+    - `promiseCount`
+    - `deviceCount`
+    - `transcriptCount`
 
 A `publicFacet` is an object available via Zoe to anyone knowing
 the instance they are associated with. The `publicFacet` is used for general queries
@@ -346,7 +364,7 @@ and an operation to request that the offer exit, as follows:
   - You use a `notifier` wherever some piece of code has changing state that other
     code wants updates on. The updates can be anything the contract wants to publish.
     For example, you could notify about price changes, new currency pools, etc. For
-    more about `notifiers`, see our [Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html#notifiers)
+    more about `notifiers`, see our [Distributed Programming Guide](/distributed-programming.md#notifiers)
 - `hasExited()`
   - Returns: `{ Promise<Boolean> }`
   - Returns `true` if the seat has exited, `false` if it is still active.

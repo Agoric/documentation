@@ -122,7 +122,7 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: <router-link to="/ertp/api/issuer.html">`{Issuer}`</router-link>
+- Returns: [`{Issuer}`](/ertp/api/issuer.md)
 
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
@@ -160,7 +160,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
-- Returns: <router-link to="/ertp/api/payment.html#payment">`{Promise<Invitation>}`</router-link>
+- Returns: [`{Promise<Invitation>}`](/ertp/api/payment.md#payment)
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
 of an ERTP `payment`. They are associated with the `invitationIssuer` and its `mint`, which 
@@ -213,7 +213,7 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
-    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](https://agoric.com/documentation/distributed-programming.html#notifiers).
+    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/distributed-programming.md#notifiers).
 - `getProposal()`
   - Returns: `{ ProposalRecord }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
@@ -222,7 +222,7 @@ to manipulate the offer. The queries and operations are as follows:
     `exit`. `give` and `want` are records with keywords as keys and
     `amounts` as values. The `proposal` is a user's understanding of the
     contract that they are entering when they make an offer. See
-    [`E(zoe).offer()`](./zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord) for full details.
+    [`E(zoe).offer()`](./zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord) for full details.
   - Example:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
@@ -259,13 +259,23 @@ to manipulate the offer. The queries and operations are as follows:
         Price: moolaAmountMath.make(9)
       }
       ```
- - `exit()`
+ - `exit(completion)`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
-     are made, and the `seat` object can no longer interact with the contract. .
- - `kickOut(msg)` (`msg` is optional)
+     are made, and the `seat` object can no longer interact with the contract.
+     The `completion` argument is usually a string, but this is not required. Its
+     only use is for the notification sent to the contract instance's `done()` function. 
+     Any other still open seats or outstanding promises and the contract instance continue.
+ - `fail(msg)`
    - Returns: `void`
-   - The `seat` exits, displaying the `msg` string, if there is one, on the console.
+   - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
+     This is equivalent to exiting, except that `exit` is successful while
+     `fail()` signals an error occured while processing the offer. The contract
+     still gets its current `allocation` and the `seat` can no longer interact with the contract.
+     Any other still open seats or outstanding promises and the contract instance continue.
+ - `kickOut(msg)` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
+   - Returns: `void`
+   - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
      `kickOut()` aborts the transaction attempt and signals an error. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
@@ -281,8 +291,8 @@ to manipulate the offer. The queries and operations are as follows:
      same `amounts`. All keywords mentioned in the `newAllocation` have their `amounts`
      replaced with the corresponding `amount` from `newAllocation`.
 
-     Note that ZoeHelpers [`trade()`](./zoe-helpers.html#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) and [`swap()`](./zoe-helpers.html#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might be easier to use for simple
-     cases.
+     Note that ZoeHelpers [`trade()`](./zoe-helpers.md#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might
+     be easier to use for simple cases.
  - `isOfferSafe(newAllocation)`
    - Returns `{ Boolean }`
    - Takes an `allocation` as an argument and returns `true` if that `allocation`
@@ -291,7 +301,7 @@ to manipulate the offer. The queries and operations are as follows:
      It checks whether `newAllocation` fully satisfies
      `proposal.give` (giving a refund) or whether it fully satisfies
      `proposal.want`. Both can be fully satisfied. See the ZoeHelper
-     [`satisfies()`](./zoe-helpers.html#satisfies-zcf-seat-update) method for more details.
+     [`satisfies()`](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
 
 ## zcf.getBrandForIssuer(issuer)
 - `issuer` `{Issuer}`
@@ -313,19 +323,26 @@ Returns the `amountMath` object associated with the `brand` argument.
 ```js
 const assetAmountMath = zcf.getAmountMath(assetAmount.brand);
 ```
-## zcf.shutdown()
+## zcf.stopAcceptingOffers()
+- The contract requests Zoe to not accept offers for this contract instance. 
+It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
-**Note**: Still in development, use at your own risk.
+## zcf.shutdown(completion)
+     
+Shuts down the entire vat and contract instance and gives payouts.
 
-Shuts down the entire vat and gives payouts.
-
-This exits all `seats` associated with the current `instance`,
-giving them their payouts.
+All open `seats` associated with the current `instance` have `fail()`
+called on them.
 
 Call when:
 - You want nothing more to happen in the contract, and
 - You don't want to take any more offers
 
+The `completion` argument is usually a string, but this 
+is not required. It is used for the notification sent to the
+contract instance's `done()` function. Any still open seats or
+other outstanding promises are closed with a generic 'vat terminated' 
+message.
 ```js
 zcf.shutdown();
 ```
@@ -343,9 +360,9 @@ const { brands, issuers, terms } = zcf.getTerms()
 ```
 
 ## zcf.getZoeService()
-- Returns: <router-link to="/zoe/api/zoe.html#zoe">`{ZoeService}`</router-link>
+- Returns: [ZoeService](./zoe.md)
 
-This is the only way to get the user-facing <router-link to="/zoe/api/zoe.html#zoe">Zoe Service API</router-link> to
+This is the only way to get the user-facing [Zoe Service API](/zoe/api/zoe.md#zoe) to
 the contract code as well.
 ```js
 // Making an offer to another contract instance in the contract.

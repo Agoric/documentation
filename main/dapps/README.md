@@ -2,35 +2,29 @@
 
 ::: warning Changes in the Alpha Release Candidate
 [Learn more about the changes to Zoe, contracts, and dapps in the
-Alpha Release Candidate](./alpha-release-candidate).
+Alpha Release Candidate](./alpha-release-candidate.md).
 :::
 
 **This is a generic guide to Agoric Dapp projects**
 
-A Dapp is a *distributed application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
+A dapp is a *distributed application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
 
 ## Using a Dapp
 
-If you have installed the [Agoric CLI](https://agoric.com/documentation/getting-started#prerequisites) and you just want to try running a Dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
+If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
 
 ```sh
-# Clone a local version of the dapp. Here we chose the encouragement dapp
-git clone https://github.com/Agoric/dapp-encouragement.git
-cd dapp-encouragement
+# Use `agoric init` to make a new local copy of a dapp template. Here we chose the Fungible Faucet Dapp. You can replace `my-fungible-faucet` with a name of your choice.
+agoric init --dapp-template dapp-fungible-faucet my-fungible-faucet
+cd my-fungible-faucet
 # Install the project dependencies
 agoric install
 # Start the Agoric VM
 agoric start --reset
 ```
 
-Leave this command running (it is your simulated environment).  Then, in a separate terminal:
-
-```sh
-# Start the user interface
-cd ui && yarn start
-```
-
-Then in a third terminal, deploy the contract and API to the VM.
+Leave this command running (it is your simulated environment).  Then,
+in a separate terminal, deploy the contract and API to the VM.
 
 ```sh
 # Deploy a new instance of the contract to the VM
@@ -39,7 +33,14 @@ agoric deploy contract/deploy.js
 agoric deploy api/deploy.js
 ```
 
-You can then navigate to http://localhost:3000 to view your Dapp.
+Then in a third terminal:
+
+```sh
+# Start the user interface
+cd ui && yarn start
+```
+
+You can then navigate to http://localhost:3000 to view your dapp.
 
 ## Modifying this Dapp
 
@@ -49,7 +50,7 @@ In the Agoric system, components are written in Javascript.
 
 The following are the important directories in an Agoric Dapp project:
 
-- [`contract`](#contract) define and deploy the on-chain contract
+- [`contract`](#contract-directory) define and deploy the on-chain contract
 - [`api`](#api) define and deploy the chain-connected server's `/api` HTTP endpoint
 - [`ui`](#ui) the browser user interface that connects between the user's personal wallet and the API server
 
@@ -86,4 +87,4 @@ The `ui` directory is almost completely under your control.  The only files and 
 
 ## More information
 
-You can [learn more about the Agoric smart contract platform](https://agoric.com) and how to [create Agoric Dapps](https://agoric.com/documentation/getting-started).
+You can [learn more about the Agoric smart contract platform](https://agoric.com) and how to [create Agoric Dapps](../getting-started).

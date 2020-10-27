@@ -1,6 +1,6 @@
 # Deploying Smart Contracts
 
-The `agoric deploy` command in the [agoric command line tool](https://agoric.com/documentation/getting-started/agoric-cli-guide.html#agoric-deploy) 
+The `agoric deploy` command in the [agoric command line tool](/getting-started/agoric-cli-guide.md#agoric-deploy) 
 supports deploying contracts and off-chain web applications that talk to them. The command 
 has two primary uses:
 
@@ -22,7 +22,8 @@ All deployment happens via the local running Agoric process. This is usually the
 and frequently referred to as that or just as `ag-solo`. It is also sometimes described as/called an Agoric VM or a local server.
 
 `ag-solo` communicates with either a locally running or remote chain. The local process has a `home` object, which contains 
-references to services on-chain, including `zoe`, the default `registry`, and an application user's `wallet`. Developers can
+references to services on-chain, including `zoe`, the `board` for
+sharing objects, and an application user's `wallet`. Developers can
 use these service references to call the service's associated API commands.
 
 Deploying to the chain first uploads the bundled contract source code to the local Agoric process (`ag-solo`).
@@ -37,31 +38,31 @@ Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, thro
 
 First, let's look at *contract deployment*. `contract/deploy.js`bundles up a contract's source code
 (which may consist of multiple files and modules) and "installs" 
-it on the blockchain as source code, using [`Zoe`](https://agoric.com/documentation/getting-started/intro-zoe.html). 
+it on the blockchain as source code, using [`Zoe`](/getting-started/intro-zoe.md). 
 This does _not_ execute contract code; it just makes the code available on-chain.
 
-The contract deployment process uses [`zoe.install()`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-install-code-moduleformat) 
-to install the contract source code on-chain. This returns an *installation handle* associated with the 
-source code. In a typical contract deployment, the deploy script adds the installation handle  
-to the default shared registry so it is broadly accessible on the chain. The script then writes
-the registry key to a config file in the Dapp's `ui` directory as shown below.
+The contract deployment process uses [`zoe.install()`](/zoe/api/zoe.md#e-zoe-install-bundle) 
+to install the contract source code on-chain. This returns an *installation* associated with the 
+source code. In a typical contract deployment, the deploy script adds the installation 
+to the default shared board so it is broadly accessible on the chain. The script then writes
+the board id to a config file in the Dapp's `ui` directory as shown below.
 
 By default, when you run `agoric init`, your Dapp gets 
-the [`dapp-encouragement` `contract/deploy.js` file](https://github.com/Agoric/dapp-encouragement/blob/master/contract/deploy.js), 
+the [`dapp-fungible-faucet` `contract/deploy.js` file](https://github.com/Agoric/dapp-fungible-faucet/blob/master/contract/deploy.js), 
 which is our example of a typical contract deploy script.
 
-Deploying the `dapp-encouragement` contract (e.g., with `agoric deploy contract/deploy.js` after `agoric init` 
+Deploying the `dapp-fungible-faucet` contract (e.g., with `agoric deploy contract/deploy.js` after `agoric init` 
 copied it into a local directory) installs it on chain, and generates the 
 file `./ui/public/conf/installationConstants.js`with contents like:
 ```js
-// GENERATED FROM dapp-encouragement/contract/deploy.js
+// GENERATED FROM dapp-fungible-faucet/contract/deploy.js
 export default {
-    "CONTRACT_NAME": "encouragement",
-    "INSTALLATION_REG_KEY": "encouragementinstallation_9794"
+    "CONTRACT_NAME": "fungibleFaucet",
+    "INSTALLATION_BOARD_ID": "1456154132"
 };
 ```
-The Registry determines the installation registry key, in this case
-`"encouragementinstallation_9794"`, so it is different for each contract deployment.
+The board provides a unique ID per object, in this case
+`"1456154132"`, so it is different for each contract deployment.
 
 ## Application service deployment and setup
 
@@ -79,7 +80,8 @@ A singleton potentially must:
 
 These example contract `api/deploy.js` scripts  show some of the 
 range of the above custom setup actions:
-* [`dapp-encouragement`](https://github.com/Agoric/dapp-encouragement/blob/master/api/deploy.js)
+* [`dapp-fungible-faucet`](https://github.com/Agoric/dapp-fungible-faucet/blob/master/api/deploy.js)
+* [`dapp-card-store`](https://github.com/Agoric/dapp-card-store/blob/main/api/deploy.js)
 * [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/master/api/deploy.js)
 * [`dapp-autoswap`](https://github.com/Agoric/dapp-autoswap/blob/master/api/deploy.js)
 
@@ -93,6 +95,6 @@ Application deployment steps may include:
 Steps for contracts that use a singleton instance for all clients may further include:
 * Instantiate a contract instance using the installation created when the contract deployed
 * Use the invitation from that instance creation to configure the new instance
-* Register the contract instance's `instanceHandle` with the Registry
-* Record the contract instance's Registry key in a configuration file
+* Register the contract instance's `instance` with the Board
+* Record the contract instance's Board ID in a configuration file
 

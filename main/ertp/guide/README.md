@@ -9,7 +9,7 @@ you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
 ERTP uses
-*[OCaps (object capabilities)](../../glossary/#object-capabilities)*
+*[OCaps (object capabilities)](/glossary/#object-capabilities)*
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -18,8 +18,8 @@ reference, it can't. For more on object capabilities, see
 ## Fungible and Non-Fungible Assets
 
 There are two kinds of assets,
-*[fungible](../../glossary/#fungible)* and
-*[non-fungible](../../glossary/#non-fungible)*. 
+*[fungible](/glossary/#fungible)* and
+*[non-fungible](/glossary/#non-fungible)*. 
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
@@ -113,14 +113,9 @@ are covered on the component-specific pages.
 ### Asset creation and storage
 
 ![Asset creation](./assets/asset-creation.svg)
-```js
-const { 
-    issuer: quatloosIssuer, 
-    mint: quatloosMint, 
-    amountMath: quatloosAmountMath, 
-    brand: quatloosBrand 
-} = makeIssuerKit('quatloos');
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#makeIssuerKit
+
 First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
 Here it also creates a new `mint`, `amountMath`, and formal `brand` 
@@ -131,9 +126,8 @@ Note: Usually you'd want to create a `localAmountMath` via other means. See the 
 
 In this case, you used the string 'quatloos' to name the `brand`.
 
-```js
-const quatloosSeven = quatloosAmountMath.make(7);;
-```
+<<< @/snippets/ertp/guide/test-readme.js#seven
+
 Here you use the Quatloos `amountMath` to make a new `amount` description of the asset you want to create.
 Since `amountMath` objects are always associated with a single `brand`, in this case Quatloos, you 
 only have to specify what you want for the `value` of the new `amount`, in this case `7`.
@@ -141,16 +135,14 @@ only have to specify what you want for the `value` of the new `amount`, in this 
 This returns an `amount` description stored in `quatloosSeven`. Remember, an `amount` is only a description
 of an asset, not an asset itself. `quatloosSeven` has no worth or intrinsic value.
 
-```js
-const quatloosPayment = quatloosMint.mintPayment(quatloosSeven);
-```
+<<< @/snippets/ertp/guide/test-readme.js#mintPayment
+
 This mints a new asset of 7 Quatloos. In this case, since it's a `mint` operation, you are creating
 a new digital asset of 7 Quatloos. It's returned as a `payment`, so you want a place to store it for 
 the longer term. 
-```js
-const quatloosPurse = quatloosIssuer.makeEmptyPurse();
-quatloosPurse.deposit(quatloosPayment);
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#deposit
+
 For long term storage, we prefer using a `purse`. `payments` are generally used to transfer assets rather than
 hold them for extended periods. First you create a new empty `purse` for Quatloos using
 the Quatloos associated `issuer`. Then you deposit the `payment` into the `purse`. When this happens,
@@ -163,43 +155,41 @@ added to them so the `purse` balance would be 24 Quatloos.
 ![Asset transfer](./assets/asset-transfer.svg)
 Start with your `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
 another party named Alice.
-```js
-const quatloosFive = quatloosAmountMath.make(5);
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#five
+
 First you create a new Quatloos branded `amount` with a `value` of 5 to describe what you want to withdraw.
 Remember, an `amount` is just a description of assets, not the actual assets.
-```js
-const myQuatloosPayment = quatloosPurse.withdraw(quatloosFive);
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#withdraw
+
 Now you tell your Quatloos containing `purse` that you want to withdraw the specified `amount` from 
 it. The withdrawn 5 Quatloos goes into a `payment`
 
 You've got your `payment` for 5 Quatloos, but how do you get it to Alice? She needs to
 have done some work first so there's somewhere for her to put it and a way of getting it to
 her rather than someone else.
-```
-const aliceQuatloosDepositFacet = aliceQuatloosPurse.makeDepositFacet()
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#depositFacet
+
 Assume Alice already has a Quatloos containing `purse` of her own. To let other
 parties safely deposit Quatloos into it, she creates
 a *deposit facet* for that `purse`. Anyone who has access to a deposit facet can deposit
 assets to its `purse` but cannot either make a withdrawal from the `purse` or get its balance. It's like
 being able to send money to a friend via their email address; you can't then take money out
 of your friend's accounts or find out how much is in them.
-```js
-const aliceQuatloosDepositFacetId = E(board).getId(aliceQuatloosDepositFacet);
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#getId
+
 Alice puts her deposit facet on Agoric's *Board*, a key-value "bulletin board" that lets her make it generally available for use.
 
 The Board is a basic bulletin board type system where users can post an Id for a value and
 others can get the value just by knowing the Id. Alice can make her Id(s) known by any
 communication method she likes; private email, an email blast to a mailing list or many individuals,
 buying an ad on a website, tv program, or newspaper, listing it on her website, etc.
-```js
-const aliceQuatloosDepositFacet = 
-      await E(board).getValue(aliceQuatloosDepositFacetBoardId);
-E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#getValue
+
 Remember, ERTP's use of OCaps requires that you have access to an object in order 
 to run methods on it. So someone who wants to use Alice's deposit facet 
 has to first get it off the Board.
@@ -211,8 +201,8 @@ of 5 Quatloos.
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
 in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
 
-The [`E()` notation](././distributed-programming.html#communicating-with-remote-objects-using-e)
-is a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
+The [`E()` notation](../../distributed-programming.md#communicating-with-remote-objects-using-e) is
+a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
 representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy 
 forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
 is explained in more detail at the preceding link.
@@ -229,25 +219,15 @@ Objects representing valid tickets have the properties:
 - `show`: A string describing the show
 - `start`: A string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
 
-```js
-const startDateString = (new Date(2019, 11, 9, 20, 30)).toISOString();
+<<< @/snippets/ertp/guide/test-readme.js#ticketValues
 
-const ticketValues = Array(1114).fill().map((_, i) => ({
-  seat: i+1,
-  show: 'Hamilton',
-  start: startDateString,
-}))
-```
 To create tickets, you first create JavaScript objects that each represent a ticket.
 Then, because you need to specify the amount of digital assets to be minted, 
 you can use `amountMath` to make an amount. In this case, you're making tickets
 for one performance of *Hamilton*.
-```js
-const { 
-    mint: agoricTheatreTicketMint, 
-    amountMath: agoricTheatreTicketAmountMath 
- } = makeIssuerKit('Agoric Theater tickets', MathKind.SET);
-```
+
+<<< @/snippets/ertp/guide/test-readme.js#makeTicketIssuer
+
 As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
 The difference from when you created a fungible asset is that you have to use a second argument,
 in this case `MathKind.SET`.
@@ -257,12 +237,8 @@ There are three kinds of `amountMath`. Each kind polymorphically implements the 
 - `MathKind.STRING_SET`: Used with non-fungible assets, operates on an array of string identifiers.
 - `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
 
-```js
-const ticketAmounts = ticketValues.map(ticketValue =>
-      agoricTheatreTicketAmountMath.make(ticketValue));
-const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount =>
-      agoricTheatreTicketMint.mintPayment(ticketAmount))
-```
+<<< @/snippets/ertp/guide/test-readme.js#ticketPayments
+
 First you define an `amount` description for each ticket you want to issue. 
 
 Then you use your `mint` for the appropriate `brand` to create an asset for each ticket. Each ticket asset
@@ -305,7 +281,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP uses [*object capabilities*](../glossary/#object-capabilities). 
+ERTP uses [*object capabilities*](/glossary/#object-capabilities).
 You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million Quatloos and bet
 them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 

@@ -8,7 +8,11 @@
   "scripts": {
     "docs:dev": "vuepress dev main",
     "docs:build": "vuepress build main",
-    "check-links": "vuepress check-md main"
+    "check-links": "vuepress check-md main",
+    "test": "ava",
+    "lint-fix": "yarn lint --fix",
+    "lint": "eslint 'snippets/**/*.js'",
+    "build": "exit 0"
   },
   "repository": {
     "type": "git",
@@ -27,9 +31,100 @@
     "url": "https://github.com/Agoric/documentation/issues"
   },
   "homepage": "https://github.com/Agoric/documentation#readme",
-  "dependencies": {},
+  "dependencies": {
+    "typescript": "^4.0.3"
+  },
   "devDependencies": {
+    "@agoric/bundle-source": "*",
+    "@agoric/ertp": "*",
+    "@agoric/eventual-send": "*",
+    "@agoric/install-ses": "*",
+    "@agoric/zoe": "*",
+    "@agoric/promise-kit": "*",
+    "@agoric/cosmic-swingset": "*",
+    "@typescript-eslint/parser": "^4.1.0",
+    "ava": "^3.12.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-jessie": "^0.0.4",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jsdoc": "^30.4.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.18.2",
+    "ses": "^0.10.1",
     "vuepress": "^1.5.4",
     "vuepress-plugin-check-md": "0.0.2"
+  },
+  "globals": {
+    "harden": "readonly"
+  },
+  "ava": {
+    "files": [
+      "snippets/**/test-*.js"
+    ],
+    "require": [
+      "esm"
+    ],
+    "timeout": "10m"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "plugin:prettier/recommended",
+      "plugin:jsdoc/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "env": {
+      "es6": true
+    },
+    "globals": {
+      "harden": "readonly"
+    },
+    "rules": {
+      "implicit-arrow-linebreak": "off",
+      "function-paren-newline": "off",
+      "arrow-parens": "off",
+      "strict": "off",
+      "prefer-destructuring": "off",
+      "no-else-return": "off",
+      "no-console": "off",
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_"
+        }
+      ],
+      "no-return-assign": "off",
+      "no-param-reassign": "off",
+      "no-restricted-syntax": [
+        "off",
+        "ForOfStatement"
+      ],
+      "no-unused-expressions": "off",
+      "no-loop-func": "off",
+      "no-inner-declarations": "off",
+      "import/prefer-default-export": "off",
+      "jsdoc/no-undefined-types": "off",
+      "jsdoc/require-jsdoc": "off",
+      "jsdoc/require-property-description": "off",
+      "jsdoc/require-param-description": "off",
+      "jsdoc/require-returns": "off",
+      "jsdoc/require-returns-description": "off",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": true
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "bundle-*.js"
+  ],
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true
   }
 }

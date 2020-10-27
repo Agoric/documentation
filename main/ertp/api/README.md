@@ -8,9 +8,9 @@ Do not use for production purposes.
 
 The ERTP API documentation is divided into these sections:
 
-- [Issuer](./issuer)
-- [Mint](./mint)
-- [Brand](./brand)
-- [Purse](./purse)
-- [Payment](./payment)
-- [AmountMath](./amount-math)
+- [Issuer](./issuer.md)
+- [Mint](./mint.md)
+- [Brand](./brand.md)
+- [Purse](./purse.md)
+- [Payment](./payment.md)
+- [AmountMath](./amount-math.md)

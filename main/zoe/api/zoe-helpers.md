@@ -202,6 +202,53 @@ import {
 swap(zcf, firstSeat, secondSeat);
 ```
 
+## swapExact(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)
+- `zcf` `{ContractFacet}`
+- `leftSeat` `{ZCFSeat}`
+- `rightSeat` `{ZCFSeat}`
+- `leftHasExitedMsg` - `{String}` - Optional
+- `rightHasExitedMsg` - `{String}` - Optional
+- Returns: `defaultAcceptanceMsg`
+
+**Note**: `swapExact()` and `swap()` are specific uses of `trade()`. In `swap()` and `swapExact()`,
+for both seats, everything a seat wants is given to it, having been
+taken from the other seat. `swap()` and `swapExact()` exit both seats, but `trade()` does not.
+- Use `trade()` when any of these are true:
+  - The `seats` have different keywords.
+  - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
+  - You want to continue interacting with the `seats` after the trade.
+- Use `swap()` or `swapExact()` when all of these are true:
+  - Both `seats` use the same keywords.
+  - The `seats`' wants can be fulfilled from the other `seat`.
+  - No further `seat` interaction is desired.
+
+This method always takes `zcf` as its first argument.
+
+`leftHasExitedMsg` and `rightHasExitedMsg` are optional and are passed
+to `trade()` within `swapExact()` to add custom error messages in the case that
+either seat has exited. They default to `the left seat in swapExact() has exited`,
+and `the right seat in swapExact() has exited` respectively. 
+
+`exactSwap()` is a special case of `swap()` such that it is successful only
+if both seats gain everything they want and lose everything they were willing to give.
+It is only good for exact and entire swaps where each
+seat wants everything that the other seat has. The benefit of using
+this method is that the keywords of each seat do not matter.
+
+If the two `seats` can trade, then swap their compatible assets,
+exiting both `seats`. It returns the message `The offer has been accepted. 
+Once the contract has been completed, please check your payout`.
+
+If the swap fails, no assets transfer, and both left and right `seats` are exited.
+
+```js
+import {
+  swapExact,
+} from '@agoric/zoe/src/contractSupport';
+
+const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
+```
+
 ## assertProposalShape(seat, expected)
 - `seat` `{ZCFSeat}`
 - `expected` `{ExpectedRecord}`
@@ -235,4 +282,63 @@ const sell = seat => {
   buySeats = swapIfCanTradeAndUpdateBook(buySeats, sellSeats, seat);
   return 'Trade Successful';
 };
+```
+ 
+## depositToSeat(zcf, recipientSeat, amounts, payments)
+- `zcf` `{ContractFacet }`
+- `recipientSeat` `{ZCFSeat}`
+- `amounts` `{AmountKeywordRecord}`
+- `payments` `{PaymentPKeywordRecord}`
+- Returns: `{Promise<string>}`
+Deposit payments such that their amounts are reallocated to a seat.
+The `amounts` and `payments` records must have corresponding
+keywords.
+
+If the seat has exited, aborts with the message `The recipientSeat cannot have exited.`
+
+On success, returns the exported and settable `depositToSeatSuccessMsg` which
+defaults to `Deposit and reallocation successful.`
+```js
+import {
+  depositToSeat,
+} from '@agoric/zoe/src/contractSupport';
+await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2) }, { Dep: quatloosPayment });
+```
+
+## withdrawFromSeat(zcf, seat, amounts)
+- `zcf` `{ContractFacet }`
+- `seat` `{ZCFSeat}`
+- `amounts` `{AmountKeywordRecord}`
+- Returns: `{Promise<PaymentPKeywordRecord>}`
+
+Withdraw payments from a seat. Note that withdrawing the amounts of
+the payments must not and cannot violate offer safety for the seat. The
+`amounts` and `payments` records must have corresponding keywords.
+
+If the seat has exited, aborts with the message `The seat cannot have exited.`
+
+Unlike `depositToSeat()`, a `PaymentKeywordRecord` is returned, not a success message.
+```js
+import {
+  withdrawFromSeat,
+} from '@agoric/zoe/src/contractSupport';
+const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2) });
+```
+
+## saveAllIssuers(zcf, issuerKeywordRecord)
+- `zcf` `{ContractFacet }`
+- `issuerKeywordRecord` `{IssuerKeywordRecord}`
+- Returns: `{Promise<PaymentPKeywordRecord>}`
+
+Save all of the issuers in an `issuersKeywordRecord` to ZCF, using
+the method [`zcf.saveIssuer()`](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
+
+This does **not** error if any of the keywords already exist. If the keyword is
+already present, it is ignored.
+
+```js
+import {
+  saveAllIssuers,
+} from '@agoric/zoe/src/contractSupport';
+await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 ```

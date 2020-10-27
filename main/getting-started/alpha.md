@@ -7,7 +7,7 @@ Decentralized Finance (DeFi) is the new frontier of financial services. Like man
 
 The Agoric alpha release introduces our smart contract platform. It enables JavaScript developers to start working on DeFi quickly and easily. Our object-based approach to smart contracts enables DeFi legos that are directly reusable. The smart contract framework leapfrogs existing technologies while providing a secure, stable infrastructure. Now developers can build, deploy, and operate sophisticated dApps and DeFi markets. It's live now, so get started.
 
-[Start Coding](https://agoric.com/documentation/getting-started/)
+[Start Coding](/getting-started/)
 
 [Join Our Community](https://discord.gg/gC9z6US)
 
@@ -52,7 +52,7 @@ Agoric is a team of engineers. We've based our developer experience on our decad
 * Rapid testing iteration with the Ava test infrastructure
 
 ### Ready to get started?
-[Start Coding](https://agoric.com/documentation/getting-started/)
+[Start Coding](/getting-started/)
 
 ### Stuck on something?
 Chat with our engineers on [Agoric Discord](https://discord.gg/gC9z6US).
