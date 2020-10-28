@@ -15,7 +15,7 @@ The AllegedName must be a string.
 
 ## Allocation
 
-Allocations represent the [amounts](#amount) to be paid out to each [seat](#seat) on exit from a contract instance. Possible exits are exercising 
+Allocations represent the [amounts](#amounts) to be paid out to each [seat](#seat) on exit from a contract instance. Possible exits are exercising 
 an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
 out what amount a current allocation is. 
 
@@ -29,7 +29,7 @@ assign assets that weren't already in some allocation and it can't assign them t
 disappear from the total allocation.
 
 ## AmountMath
-AmountMath executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
+AmountMath executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
 gives a new balance of 5 bucks. But, a deposit of a non-fungible theater ticket into a purse that already holds
 five tickets isn't done by numeric addition. Instead, you have to add a string or object to an array or record.
