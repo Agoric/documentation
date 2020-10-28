@@ -32,7 +32,9 @@ disappear from the total allocation.
 AmountMath executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
 gives a new balance of 5 bucks. But, a deposit of a non-fungible theater ticket into a purse that already holds
-five tickets isn't done by numeric addition. AmountMath has a single set of polymorphic
+five tickets isn't done by numeric addition. Instead, you have to add a string or object to an array or record.
+
+AmountMath has a single set of polymorphic
 methods of three different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
 [non-fungible](#non-fungible) assets (values are an array or object). The three AmountMathKinds are
 - `MathKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
@@ -177,10 +179,17 @@ Part of an [offer](#offer) specifying how the offer can be cancelled/exited. The
 
 ## Facet
 
-A particular view or API of an object. An object can have many facets. Two Agoric uses are:
-- Deposit Facet: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add 
+A *facet* is an object that exposes an API or particular view of some larger entity, which may be an object itself. 
+You can make any number of facets of an entity. In JavaScript, you often make a facet by selecting methods from the entity,
+either directly or by destructuring:
+```
+const facet = {
+  myMethod: oldObject.method,
+```
+Two Agoric uses are:
+- *Deposit Facet*: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add 
   appropriately branded assets to the purse, but cannot withdraw assets from the purse or find out its balance.
-- Public Facet: A set of methods and properties for an object that a developer chooses to be publicly visible and usable.
+- *Public Facet*: A set of methods and properties for an object that a developer chooses to be publicly visible and usable.
 
 ## Fungible
 A fungible asset is one where all exemplars of the asset are interchangeable. For example, if you 
@@ -206,8 +215,7 @@ is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What
 To participate in a contract instance, one must hold an invitation to do so. Contracts often 
 return a creator invitation on their instantiation, in case the contract instantiator wants 
 to immediately participate. Otherwise, the contract instance must create any additional invitations. 
-These, or any invitation held by a party, can be distributed via any means the holder wishes. An
-invitation could be emailed directly to a friend, posted on a bulletin board, etc. When you receive 
+These, or any invitation held by a party, are distributed by sending it to someone's wallet. When you receive 
 an invitation, you should validate it via the [InvitationIssuer](#invitationissuer). Note that 
 the invitation is a special case of [`Payment`](#payment), and so is associated with a specific [`Issuer`](#issuer).
 
@@ -230,6 +238,9 @@ receive from someone else by calling `E(invitationIssuer).claim()` with the untr
 invitation as the argument. During the claiming process, the invitationIssuer validates
 the invitation. A successful claim also means that invitation is exclusively yours.
 
+**Note**: Depositing into an invitation-branded purse also claims an invitation. This is
+what the [wallet](#wallet) does.
+
 ## Issuer
 Issuers are a one-to-one relationship with both a [mint](#mint) and a [brand](#brand), so each issuer works
 with one and only one asset type, such as only working with quatloos or only working
@@ -251,20 +262,21 @@ to be [escrowed](#escrow), and [payouts](#payout) to the user by serving as keys
 records with values of [amounts](#amounts), [issuers](#issuer), etc.
 
 ## Mint
+
 [ERTP](#ertp) has a *mint* object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
 *ZCFMint*. It doesn't matter whether you use the ERTP mint interface (henceforth called an *ERTP mint*) or the ZCFMint interface;
 quatloos created by an ERTP mint are indistinguishable from quatloos created by a ZCFMint. 
 
-- ERTP mints create digital assets asynchronously and are the only ERTP objects with the authority to do so. 
+- ERTP mints create digital assets and are the only ERTP objects with the authority to do so. 
   Access to an ERTP mint gives you the power to create more digital assets of its type at will. Mints
   can only create one type of asset and cannot change to create a different type.
 
   ERTP mints are [issuer's](#issuer) admin [facets](#facet), and there is a one-to-one relationship between an issuer and
   its mint. ERTP mints are also in a one-to-one relationship with that issuer's associated [brand](#brand).
 
-- ZCFMints are synchronous Zoe mints, which mint and reallocate digital assets synchronously 
-  instead of asynchronously like ERTP mints. Similar to ERTP mints, they have one-to-one relationships
-  with an issuer and its associated brand.
+- ZCFMints are Zoe mints. Similar to ERTP mints, they have one-to-one relationships
+  with an issuer and its associated brand. A ZCFMint can mint assets that get associated with a seat without having to escrow
+  payments, and burn assets that used to be associated with a seat without having to payout assets.
   
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
 However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
@@ -330,9 +342,11 @@ For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses
 and the [ERTP API's Payments section](/ertp/api/payment.md).
 
 ## Payout
-The assets paid out to a user when an [offer](#offer) exits, either successfully or not. If an offer isn't successful, a
-payout is a party's [escrowed](#escrow) assets. If an offer is successful, a party's payout is what they wanted, and possibly the 
-return of any escrowed assets in excess of the final cost. 
+The assets paid out to a user when an [seat](#seat) exits, either successfully or not. The payout is always
+what the seat's current [allocation](#allocation) is. 
+
+If there was a previous reallocation, the payout is different than what the user escrowed. If there is no reallocation
+before the seat exits, the payout is the same as what they escrowed.
 
 ## Petname
 
@@ -375,12 +389,8 @@ episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamester
 
 ## Reallocate/Reallocation
 
-When an [offer](#offer) exits due either to success or rejection, the associated [payments](#payment) that were [escrowed](#escrow) with Zoe are automatically
-appropriately reallocated to the offer participants. If the offer was rejected or otherwise failed, Zoe gives the offer-making party back what
-they escrowed. If the offer was accepted, Zoe allocates to each party what they said they wanted. There are cases where the reallocation both
-gives a party what they wanted and some of what they escrowed. For example, in an auction a party might have escrowed 10 Quatloos to make their
-highest bid if necessary, but they won the item with a bid of just 8 Quatloos. The reallocation would give them both the item they won and
-a refund of the 2 Quatloos that weren't needed to purchase it. 
+A transfer of [amounts](#amounts) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
+current allocation as a [payout](#payout). 
 
 ## Seat
 
@@ -451,6 +461,14 @@ Contract Facet methods can be called synchronously by contract code.
 See the [ZCF API](/zoe/api/zoe-contract-facet.md).
 
 ## ZCFMint
+
+ZCFMints are Zoe mints. Similar to ERTP mints, they have one-to-one relationships
+with an [issuer](#issuer) and its associated [brand](#brand). A ZCFMint can mint assets that get associated with a [seat](#seat)
+without having to [escrow](#escrow) [payments](#payment), and [burn](#burn) assets that used 
+to be associated with a seat without having to payout assets.
+  
+ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
+However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
 
 See [Mint](#mint).
 
