@@ -42,7 +42,7 @@ methods of three different kinds to deal with [fungible](#fungible) assets (valu
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md) 
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
-## Amount
+## Amounts
 Amounts are the canonical description of tradable goods. They are manipulated
 by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
@@ -62,18 +62,19 @@ For more information, see the [ERTP Guide's Amounts section](/ertp/guide/amounts
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
 ## AssetHolder
-[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain [amounts](#amount).
+[Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
+digital assets in the quantity specified by an [amount](#amounts).
 
 ## Board (Agoric Board)
-The Board is a basic bulletin board type system where users can post an Id for a value
+
+The Board is a shared, on-chain location where users can post an Id for a value
 and others can get the value just by knowing the Id. You can make an Id known by any 
 communication method; private email, an email blast to a mailing list or many individuals, 
 buying an ad on a website, tv program, or newspaper, listing it on a website, etc.
 
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
-
-make up an [amount](#amount).
+make up an [amount](#amounts).
 For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md)
 and the [ERTP API's Brand section](/ertp/api/brand.md).
 
@@ -87,9 +88,8 @@ const atomicSwapBundle = await bundleSource(
 );
 ```
 The installation operation returns
-an `installation`, which is an object with one property; `bundle`. You can access an installed contract's source
-code via `invitation.bundle.source`.
-
+an `installation`, which is an object with one method; `getBundle()`. You can access an installed contract's source
+code via `E(installation).getBundle().source`.
 ## Burn
 
 Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
@@ -119,7 +119,7 @@ If they have ten houses for sale, they have ten different contract instances.
 
 ## CreatorInvitation
 
-An [invitation](#invitation) returned by `startInstance()` that the contract instance
+An [invitation](#invitation) optionally returned by `startInstance()` that the contract instance
 creator can use. It is usually used in contracts where the creator immediately 
 sells something (auctions, swaps, etc.). 
 
@@ -153,15 +153,15 @@ reference to an object, it can call methods on that object. If it doesn't
 have a reference, it can't. For more on object capabilities, see [this post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 
 Key ERTP concepts include [Issuers](#issuer), [Mints](#mint), 
-[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also 
+[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amounts). Also 
 see the [ERTP Introduction](/getting-started/ertp-introduction.md),
 [ERTP Guide](/ertp/guide/), and [ERTP API](/ertp/api/).
 
 ## Escrow
 
 To give assets for a possible transaction to an impartial third party, who keeps them until specified conditions are satisfied. 
-For example, Alice wants to sell Bob a ticket for $100. Alice escrows the ticket, and Bob escrows the $100, with Carol. Carol
-does not give Alice the $100 or Bob the ticket until she has both items. Since neither Alice nor Bob ever holds both items at
+For example, Alice wants to sell Bob a ticket for $100. Alice escrows the ticket, and Bob escrows the $100, with Zoe. Zoe
+does not give Alice the $100 or Bob the ticket until it has both items. Since neither Alice nor Bob ever holds both items at
 once, they don't have to trust each other to do the transaction. Zoe automatically escrows payments for transaction offers.
 
 ## Eventual Send
@@ -171,8 +171,8 @@ See [`E()`](#e) above.
 ## Exit Rule
 
 Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
-- `onDemand:null`: (Default) The offering party can cancel on demand.
-- `waived:null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `onDemand: null`: (Default) The offering party can cancel on demand.
+- `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
 - `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its timer and deadline properties.
 
 ## Facet
@@ -235,8 +235,8 @@ Issuers are a one-to-one relationship with both a [mint](#mint) and a [brand](#b
 with one and only one asset type, such as only working with quatloos or only working
 with moola. This association cannot change to another type. 
 
-Issuers can create empty [purses](#purse) and [payments](#payment) for
-their asset type, but cannot mint new [amounts](#amount). Issuers can also transform
+Issuers can create empty [purses](#purse) for
+their asset type, but cannot mint new [amounts](#amounts). Issuers can also transform
 payments of their asset type (splitting, combining, burning, and exclusively claiming
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid. 
@@ -248,12 +248,12 @@ and the [ERTP API's Issuer section](/ertp/api/issuer.md).
 
 Keywords are unique identifiers per contract. They tie together the [proposal](#proposal), [payments](#payment) 
 to be [escrowed](#escrow), and [payouts](#payout) to the user by serving as keys for key-value pairs in various 
-records with values of [amounts](#amount), [issuers](#issuer), etc.
+records with values of [amounts](#amounts), [issuers](#issuer), etc.
 
 ## Mint
-Agoric has two mint objects, *ERTP mints* and *Zoe Contract Facet mints (ZCFMints)*. They both create
-digital assets. Which mint type creates an asset doesn't matter; quatloos created by an ERTP mint are 
-indistinguishable from quatloos created by a ZCFMint. 
+[ERTP](#ertp) has a *mint* object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
+*ZCFMint*. It doesn't matter whether you use the ERTP mint interface (henceforth called an *ERTP mint*) or the ZCFMint interface;
+quatloos created by an ERTP mint are indistinguishable from quatloos created by a ZCFMint. 
 
 - ERTP mints create digital assets asynchronously and are the only ERTP objects with the authority to do so. 
   Access to an ERTP mint gives you the power to create more digital assets of its type at will. Mints
@@ -330,7 +330,7 @@ For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses
 and the [ERTP API's Payments section](/ertp/api/payment.md).
 
 ## Payout
-The assets reallocated to a user when an [offer](#offer) exits, either successfully or not. If an offer isn't successful, a
+The assets paid out to a user when an [offer](#offer) exits, either successfully or not. If an offer isn't successful, a
 payout is a party's [escrowed](#escrow) assets. If an offer is successful, a party's payout is what they wanted, and possibly the 
 return of any escrowed assets in excess of the final cost. 
 
@@ -358,11 +358,11 @@ const myProposal = harden({
   exit: { 'onDemand'
 })
 ```
-`give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amount), a description of what
+`give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
 asset they are willing to give/want to get, and how much of it. 
 
 ## Purse 
-Purses hold [amounts](#amount) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_.
+Purses hold [amounts](#amounts) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_.
 Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value. 
 A purse's contents are all of the same [brand](#brand).
 
@@ -420,7 +420,7 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
-Values are the part of an [amount](#amount) that describe the value of something
+Values are the part of an [amount](#amounts) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
 Pixel(3,2), $3, or 'Seat J12 for the show September 27th at 9:00pm'.
 [Fungible](#fungible) values are usually 
@@ -444,9 +444,10 @@ The overall place a party keeps their assets of all brands. For example, your wa
 wallet. [Offers](#offer) are associated with the wallets 
 from which their associated payments come from. See the [Wallet API](/wallet-api.md).
 
-## ZCF (Zoe Contract Facet)
+## ZCF
+*ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe 
+Contract Facet methods can be called synchronously by contract code. 
 
-A set of Zoe API methods made visible on a Zoe [facet](#facet). They can be called synchronously by contract code. 
 See the [ZCF API](/zoe/api/zoe-contract-facet.md).
 
 ## ZCFMint
