@@ -15,8 +15,8 @@ The AllegedName must be a string.
 
 ## Allocation
 
-Allocations represent the [amounts](#amounts) to be paid out to each [seat](#seat) on exit from a contract instance. Possible exits are exercising 
-an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
+Allocations represent the [amounts](#amounts) to be paid out to each [seat](#seat) on exit from a contract instance. Possible 
+exit causes are exercising an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
 out what amount a current allocation is. 
 
 In more detail, Zoe's guarantee is each [seat](#seat) will either get what it asked for in its offer, or the return of what was [escrowed](#escrow).
@@ -71,8 +71,8 @@ digital assets in the quantity specified by an [amount](#amounts).
 
 The Board is a shared, on-chain location where users can post an Id for a value
 and others can get the value just by knowing the Id. You can make an Id known by any 
-communication method; private email, an email blast to a mailing list or many individuals, 
-buying an ad on a website, tv program, or newspaper, listing it on a website, etc.
+communication method; private email, a DM or other private message, a phone call/voicemail,
+an email blast to a mailing list or many individuals, listing it on a website, etc.
 
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that 
@@ -208,7 +208,7 @@ A hardened object’s properties cannot be changed, so the only way to interact 
 its [section in the JavaScript Distributed Programming Guide](/distributed-programming.md#harden)
 
 ## IBC
-The Inter-Blockchain Communication protocol, used to by blockchains to communicate with each other. A short article about IBC
+The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC
 is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
 ## Invitation
@@ -331,7 +331,7 @@ the offer exits with either success or rejection. See [`E(Zoe).offer(invitation,
 ## Offer Safety
 
 Zoe guarantees offer safety. When a user makes an [offer](#offer) and it is [escrowed](#escrow) with Zoe, Zoe guarantees that 
-the user either gets what they said they wanted, or gets back (refunded) what they originally offered and escrowed.
+the user either gets what they said they wanted, or gets back (gets a refund) what they originally offered and escrowed.
 
 ## Payment
 
