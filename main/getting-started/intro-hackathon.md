@@ -8,7 +8,7 @@ Conceptually, you want to look at these docs:
 1. **[ERTP Introduction](./ertp-introduction.md)**:
   A quick introduction to the concepts and components of Agoric's Electronic
   Rights Transfer Protocol (ERTP). Its components and methods create, store,
-  transfer, and maninpulate digital assets. 
+  transfer, and manipulate digital assets. 
 2. **[Zoe Introduction](./intro-zoe.md)**: 
   This explains the concepts and components of Zoe, Agoric's reusable smart contract 
   for writing other smart contracts in JavaScript. Zoe implements our offer safety 
@@ -39,11 +39,6 @@ We have two videos of talks given to external audiences that are particularly us
   
 - [Building a Composable DeFi Contract](https://www.youtube.com/watch?v=faxrecQgEio) by Kate Sills walks through programming first a covered call option contract,
 and then writing an OTC Desk contract that uses the covered call contract.
-
-- [](https://www.youtube.com/watch?v=yeXliRBTsRk)
-The workshop will introduce you to existing DeFi components that you can build on, including NFTs, atomic swap, 
-covered call options, and AMMs. It will further show how to produce your own components and combine components
-into new DeFi dApps in the Cosmos ecosystem.
 
 ## ERTP and Zoe Guides and APIs
 
