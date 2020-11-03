@@ -35,7 +35,6 @@ There are several ways you can go from here:
 - Watch videos showing how to write smart contracts on the Agoric platform.
 - Read the more detailed Guides and look at our APIs.
 - Look at our already written sample contracts. 
-- Install the Agoric platform and run an example contract.
 
 For general help, you should be aware of and make use of:
 - **[Agoric Glossary](/glossary/)**: Our Glossary focuses on terms we've given Agoric-context
