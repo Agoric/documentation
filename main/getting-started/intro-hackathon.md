@@ -1,7 +1,18 @@
-# Getting Started for the Agoric Hackathon
+# Getting Started for HackTheOrb, The Agoric x Chainlink Hackathon!
 
 Welcome to the Agoric Platform! This doc is a guide to what you should
 look at and do to get started developing smart contracts and DeFi components.
+
+## Install and run the Agoric platform
+
+1. Follow the steps in **[Before Using the Agoric SDK](./before-using-agoric.md)** 
+to install the software the Agoric SDK depends on.
+
+2. Follow the steps in **[Start a Project](./start-a-project.md)** to
+create a new Agoric SDK project from scratch. As part of this, you'll install
+the Fungible Faucet Dapp we wrote to provide a simple skeleton for a smart contract.
+
+## Introduction to Agoric concepts and design
 
 Conceptually, you want to look at these docs:
 
@@ -52,15 +63,6 @@ and what Agoric API commands do, read the following:
   Zoe concepts, design, components, and commands. The Zoe API is documented
   [here](/zoe/api/#zoe-api).
   
-## Install and run the Agoric platform
-
-1. Follow the steps in **[Before Using the Agoric SDK](./before-using-agoric.md)** 
-to install the software the Agoric SDK depends on.
-
-2. Follow the steps in **[Start a Project](./start-a-project.md)** to
-create a new Agoric SDK project from scratch. As part of this, you'll install
-the Fungible Faucet Dapp we wrote to provide a simple skeleton for a smart contract.
-
 ## Example contracts
 
 To familiarize yourself with working Agoric smart contracts, take a look at our 
