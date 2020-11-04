@@ -149,7 +149,7 @@ development or test code from the agoric-sdk repo. It should pass `lint` and run
 errors. This provides assurance our documents use real code that works
 with the current agoric-sdk version (whatever is on master) and is
 not outdated. However, you do need to remember to, after any new SDK release,
-do any needed snippet updates to the new release. The `yarn `test` command
+do any needed snippet updates to the new release. The `yarn test` command
 run during CI over documentation will test if snippets work with the current
 agoric-sdk release.
 
