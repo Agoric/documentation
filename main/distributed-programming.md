@@ -210,7 +210,7 @@ undefined updateCount.
 Notifiers are the facet of the protocol that provides updates to consumers. The other side is an
 updater, which is how information providers supply information.  The object that wants to publish
 information starts by calling `makeNotifierKit()`, which returns `{ notifier, updater }`. The
-notifier is provided to clients, while the updater is retained internally. The udpater has three
+notifier is provided to clients, while the updater is retained internally. The updater has three
 methods, `updateState(state)`, `finish(finalState)`, and `fail(reason)`. `updateState` supplies a
 new state that will be used to resolve all the outstanding promises. `finish` and `fail` both close
 the stream, one with a final state, the other by rejecting the promise, so that clients' Promises
@@ -253,7 +253,7 @@ contract facet, where it often makes sense to put a `getNotifier()` method.
 ### Providing updates
 
 Objects that want to share info about changes to their state can use a notifier to provide
-updates. Publishers import and call `produceNotifier()`, which returns two facets, a notifier
+updates. Publishers import and call `makeNotifierKit()`, which returns two facets, a notifier
 and an updater. The notifier object can be shared to provide the ability to see the object's state
 changes.
 
@@ -275,8 +275,8 @@ notifiers:
 Zoe provides updates on the state of seats within a contract. The updates from Zoe indicate changes
 to the allocation of a seat and seats exiting. These are available from `E(userSeat).getNotifier()`
 and `zcfSeat.getNotifier()`, which provide long-lived notifier objects associated with a particular
-seat. zcfSeat is available within contracts while useSeat is accessible from the REPL, deploy
-scripts, and other code outside contracts.
+seat. `zcfSeat`s are available within contracts while `userSeat`s are accessible from the REPL,
+deploy scripts, and other code outside contracts.
 
 Individual contracts can also use notifiers to provide updates giving current prices or other
 contract-specific details.
