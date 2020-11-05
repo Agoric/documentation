@@ -20,7 +20,7 @@ process is:
       Such questions can also just be added as comments on a newly opened PR.
    4. If the PR cannot be approved as is (because there's known issues) then it must be a draft PR
 6. When all issues from the initial review are resolved, convert the PR from Draft to Ready For Review.
-7. Reviewers approve PR, you merge it with Master.
+7. Reviewers approve PR, you merge it with `main`.
 8. Pull Requests automatically run tests on their committed files.
 9. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically 
    processes any new or changed files for display. 
@@ -115,7 +115,7 @@ the latter, as it defaults to the `glossary` folder's `README.md` file
 
 ## Github Actions and Continuous Integration
 
-These GitHub Actions run on every pull request and commit to master:
+These GitHub Actions run on every pull request and commit to `main`:
 
 - Check links
 - Test the build
@@ -147,7 +147,7 @@ three backquotes and an appended 'js' and ends with a line consisting of three b
 The code used for code snippets is held to a similar standard of correctness as actual
 development or test code from the agoric-sdk repo. It should pass `lint` and run with no
 errors. This provides assurance our documents use real code that works
-with the current agoric-sdk version (whatever is on master) and is
+with the current agoric-sdk version (whatever is on `master`) and is
 not outdated. However, you do need to remember to, after any new SDK release,
 do any needed snippet updates to the new release. The `yarn test` command
 run during CI over documentation will test if snippets work with the current
