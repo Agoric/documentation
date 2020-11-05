@@ -62,6 +62,14 @@ module.exports = {
     sidebar: {
       '/getting-started/': [
         {
+          title: 'Hackathon',
+          path: '/getting-started/intro-hackathon.html',
+          collapsible: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+        },
+        {
           title: 'Agoric Alpha',
           path: '/getting-started/alpha.html',
           collapsible: false,

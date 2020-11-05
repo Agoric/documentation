@@ -6,6 +6,11 @@
 
 module.exports = [
   {
+    text: 'Hackathon',
+    ariaLabel: 'Hackathon',
+    link: '/getting-started/intro-hackathon',
+  },
+  {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
     items: [
