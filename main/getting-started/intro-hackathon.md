@@ -3,37 +3,22 @@
 Welcome to the Agoric Platform! This doc is a guide to what you should
 do to get started developing smart contracts and DeFi components.
 
-## Install and run the Agoric platform
+## Get set up to hack!
 
-1. Follow the steps in **[Before Using the Agoric SDK](./before-using-agoric.md)** 
-to install the software the Agoric SDK depends on.
+1. Make sure you've got our dependencies here: **[Before Using the Agoric SDK](./before-using-agoric.md)** 
 
-2. Follow the steps in **[Start a Project](./start-a-project.md)** to
+2. [Kate - add your stuff here] Follow the steps in **[Start a Project](./start-a-project.md)** to
 create a new Agoric SDK project from scratch. As part of this, you'll install
 the Fungible Faucet Dapp we wrote to provide a simple skeleton for a smart contract.
 
-## Introduction to Agoric concepts and design
-
-Conceptually, you want to look at these docs:
+## Dig into our architecture
 
 1. **[ERTP Introduction](./ertp-introduction.md)**:
-  A quick introduction to the concepts and components of Agoric's Electronic
-  Rights Transfer Protocol (ERTP). Its components and methods create, store,
-  transfer, and manipulate digital assets. 
+  The Electronic Rights Transfer Protocol (ERTP) is Agoric's framework for managing things under the hood.
 2. **[Zoe Introduction](./intro-zoe.md)**: 
-  This explains the concepts and components of Zoe, Agoric's reusable smart contract 
-  for writing other smart contracts in JavaScript. Zoe implements our offer safety 
-  guarantee that users either get what they wanted from the contract or a full refund
-  of what they put up for it. 
-3. **[Agoric Platform/Stack](/platform/README.md)**: A brief introduction to the complete Agoric platform/technical stack.
+  Zoe sits on top of ERTP.  Your contracts will primarily interact with Zoe.
+3. **[Agoric Platform/Stack](/platform/README.md)**: See our full stack here.
 4. **[Agoric Dapp Guide](/dapps/README.md)** and **[Agoric Dapp Templates](/dapps/dapp-templates.md)**
-   A Dapp is a distributed application, typically with a browser-based user interface, a public
-   API server, and a contract running on the Agoric blockchain. 
-   1. The Guide explains a Dapp's basic directory and file structure. 
-   2. The Templates page lists and briefly describes pre-written Dapp templates you can install. 
-      Each template description includes a link to its source code. Of likely interest to hackathon
-      participants is the Oracle Dapp, a generic way to interact with oracles such as the Chainlink
-      decentralized oracle network.
    
 There are several ways you can go from here:
 - [Watch](#videos) videos showing how to write smart contracts on the Agoric platform.
@@ -73,7 +58,7 @@ and what Agoric API commands do, read the following:
 To familiarize yourself with working Agoric smart contracts, take a look at our 
 [documented sample contracts](/zoe/guide/contracts/README.md). They are:
 - [Atomic Swap](/zoe/guide/contracts/atomic-swap.md)
-- [Autoswap](/zoe/guide/contracts/autoswap.md)
+- [Autoswap](/zoe/guide/contracts/autoswap.md) - Our Uniswap-style implementation
 - [Barter Exchange](/zoe/guide/contracts/barter-exchange.md)
 - [Covered Call](/zoe/guide/contracts/covered-call.md)
 - [Multipool Autoswap](/zoe/guide/contracts/multipoolAutoswap.md)
