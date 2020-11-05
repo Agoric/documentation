@@ -2,7 +2,7 @@
 
 Welcome to the Agoric Platform! This doc is a guide for developing smart contracts and DeFi components.
 
-## Install and Run the Starter Dapp
+## Get set up to hack!
 
 1. [Install the prerequisites](./before-using-agoric.md)
 
@@ -22,9 +22,7 @@ cd ui && yarn start
 
 Having trouble? Chat with our engineers on [Agoric Discord](https://discord.gg/gC9z6US). Also, check out our more [detailed documentation](./start-a-project.md).
 
-## Introduction to Agoric
-
-You'll want to take look at these docs:
+## Dig into our architecture
 
 1. **[ERTP](./ertp-introduction.md)**: An intro to ERTP, our token standard for fungible and non-fungible tokens.
 2. **[Zoe](./intro-zoe.md)**: An intro to Zoe, our smart contract runner. Zoe escrows and
