@@ -40,6 +40,7 @@
     "@agoric/eventual-send": "*",
     "@agoric/install-ses": "*",
     "@agoric/zoe": "*",
+    "@agoric/notifier": "*",
     "@agoric/promise-kit": "*",
     "@agoric/cosmic-swingset": "*",
     "@typescript-eslint/parser": "^4.1.0",

@@ -29,8 +29,9 @@ to it using normal message-sending syntax. The local proxy forwards all messages
 object to deal with. Sending a message to the remote object must be done by 
 using `E` (`E(remoteObj).myMethod()`), or the "tildot" operator `remoteObj~.myMethod()``
 
-- **[Notifiers](#notifiers):** Our Promise-based Notifier notifies Dapps and other tools
-about changes to their subscribed-to contracts or offers' state.
+- **[Notifiers](#notifiers):** The Agoric platform uses Notifiers to distribute state change
+updates. Notifiers rely on promises to deliver a stream of messages as a publish-subscribe system
+might, without requiring explicit management of lists of subscribers.
 
 ## Vats
 
@@ -190,113 +191,96 @@ objects in the current vat or presences for objects in other vats as arguments.
 
 ## Notifiers
 
-Dapps and other tools may want to be notified about state changes of a Zoe
-contract or offer. Agoric uses a Notifier based on Promises, allowing
-many subscribers to receive notifications without the publisher 
-having to track a subscription list.
+Agoric uses a Notifier based on Promises to distribute state change updates. Notifiers rely on
+promises to deliver a stream of messages allowing many subscribers to receive notifications without
+the publisher having to track a subscription list.
 
-Zoe supports the Notifier, which publishes updates to offer state
-(reallocations and completions). Some contracts also use it, and
-can publish current prices or other contract-specific details.
+An object that wants to publish updates to interested clients would make a `notifier` available to
+them. The clients request the current state by calling `notifier.getUpdateSince()`, which returns
+(a promise for) a record containing `{ value, updateCount }`. From that point on, the next update
+can be retrieved by calling
 
-### Getting notifications
+<<< @/snippets/test-distributed-programming.js#getUpdateSince
 
-Zoe has a public method `getOfferNotifier()`, and contracts will have
-similar methods. This method provides a long-lived notifier object associated 
-with a particular stream of updates.
+On each call, if updateCount is the same as the current count, the promise won't be resolved until
+a new value is reported to the notifier. If updateCount is different, the promise is resolved
+immediately with the current state. If the stream is completed, the record will contain an
+undefined updateCount.
 
-```js
-const offerNotifier = zoe.getOfferNotifier(offerHandle);
-  const { value, updateHandle, done } = offerNotifier.getUpdateSince();
-  if (done) {
-   <drop offer from list>
-  }
-  waitForNextUpdate(offerNotifier, updateHandle);
-```
+Notifiers are the facet of the protocol that provides updates to consumers. The other side is an
+updater, which is how information providers supply information.  The object that wants to publish
+information starts by calling `makeNotifierKit()`, which returns `{ notifier, updater }`. The
+notifier is provided to clients, while the updater is retained internally. The updater has three
+methods, `updateState(state)`, `finish(finalState)`, and `fail(reason)`. `updateState` supplies a
+new state that will be used to resolve all the outstanding promises. `finish` and `fail` both close
+the stream, one with a final state, the other by rejecting the promise, so that clients' Promises
+will also be rejected.
 
-Note: There is both a `zoe.getOfferNotifier()` and a `zcf.getOfferNotifier()`. Use the `zcf.` version 
-within contracts and the `zoe.` version in the REPL, deploy scripts, and similar outside of a contract cases. 
+`notifier.getUpdateSince()` returns `{ value, updateCount }`.
+- `value` represents the state, and the format is up to the publisher.
+- `updateCount` is used to request notification the next time there's a change to the state. If the
+  state becomes final (e.g. a seat exits), updateCount will be `undefined`.  If there's an error,
+  the promise for the record is rejected and there isn't a next state.
 
-When called on a notifier object`notifier.getUpdateSince()` returns
-the record `{ value, updateHandle, done }`. `value` represents 
-the state of an offer or contract. If you want a notifier from Zoe, you have to 
-identify the offer. 
-- `value` is the current state, according to the source. 
-- `done` is `false` until the stream of updates reaches a final state. Then 
-`value` never changes and `getUpdateSince()` always returns the
-same record. A contract calling `complete()` on an offer causes that
-offer's notifier to be marked as done.
-- `updateHandle` is used to request to be notified the next
-time there's a change to the state.
+If you call `getUpdateSince(oldUpdateCount)`:
+- With no count, or any `updateCount` other than the most recent one:
+  - The notifier immediately returns a promise for a record with the current state.
+- With the most-recently generated `updateCount`:
+  - The notifier returns a promise for the next record, which is resolved on the next state change.
+- If you haven't called `getUpdateSince()` before, you won't have a previous updateCount to use.
 
-If you call `getUpdateSince(oldUpdateHandle)`:
-- With no handle, or any `updateHandle` other than the most recent
-one:
-  - The notifier immediately returns a record with the current state. 
-- With the most-recently generated `updateHandle`:
-  - The notifier returns a promise for the next record, which is resolved
-on the next state change.
-- If you haven't called `getUpdateSince()` before, there is no previous update handle to use.
+Some notification systems also provide access to a complete history of an object's state
+changes. The Agoric Notifier API only directly supports the single state change notification
+style. The client can't work around this by keeping lists of changes, since the service doesn't
+guarantee that clients will see all the changes.
 
-Some notification systems also provide access to a complete list of
-an object's state changes. The Agoric Notifier API only directly supports
-the single state change notification style. The client can't work around this
-by keeping lists of changes, since the service doesn't send out all the changes
-by default. The alternative approach is for the service to represent its state
-as the set of changes leading up to the present. A use case for this is an 
-editor with an undo function, or an application with rollback ability.
+An alternative approach for services that want to ensure their clients receive a more complete
+history is to represent the state as a set of changes leading up to the present. Use cases for this
+include an editor with an undo function, or an application with rollback ability.
 
-Rather than sending `"the current state is 'blue'."`, a contract could send 
-`"the current state is 'blue', the most recent update was { ''blah' => 'blue' }"`. 
-That requires the contract to determine that clients want redundant info, and 
-package and send it.
+Rather than sending `"the current state is 'blue'."`, a contract could send `"the current state is
+'blue', the most recent update was { ''blah' => 'blue' }"`.  If you, as a contract author,
+determine that clients want this much detail, you would have to package and send it.
 
-A common pattern for following updates to a notifier until it's done is the following. 
-Note that the notifier object is outside the contract facet, and so uses `E()`.* 
-Also, `PublicAPI` is a widely available contract facet, where it often makes sense to 
-put the `getNotifier()` method.
+### Follower pattern
 
-```js
-  function updateStateOnChanges(notifier, lastHandle) {
-    E(notifier)
-      .getUpdateSince(lastHandle)
-      .then({ value, updateHandle, done } => {
-        if (done) {
-          stopTracking(notifier);
-        } else {
-          respondToNewValue(value);
-          // resubscribe for more updates
-          updateStateOnChanges(notifier, updateHandle);
-        };
-    });
-  }
+A common pattern for following updates to a notifier until it's done is the following.  Note that
+the notifier object is remote, and so we use `E()`.  Also, `PublicAPI` is a widely available
+contract facet, where it often makes sense to put a `getNotifier()` method.
 
-  E(publicAPI)
-    .getNotifier(offerHandle)
-    .then(notifier => updateStateOnChanges(notifier );
-```
-
-Zoe's updates for an offer show the current allocation to be
-paid if the contract completes without further changes. When the
-contract calls `complete()` on the offer, its notifier is marked `done`.
+<<< @/snippets/test-distributed-programming.js#follower
 
 ### Providing updates
 
-Contract instances use a notifier to provide updates to people who
-want to follow changes. They import and call
-`produceNotifier()`, which returns two facets, a notifier and an updater. You can 
-pass the notifier object to anyone allowed to see that contract
-instance's state changes.
+Objects that want to share info about changes to their state can use a notifier to provide
+updates. Publishers import and call `makeNotifierKit()`, which returns two facets, a notifier
+and an updater. The notifier object can be shared to provide the ability to see the object's state
+changes.
 
-The updater has two methods, which both send a notification with the
-new state to any waiting notifiers:
-- `updateState(newState)`
-- `resolve(finalState)`
-  - `resolve()` also resolves the promise to a record with `done: true, 
-updateHandle: undefined`, and ensures that the answer will never change. 
+<<< @/snippets/test-distributed-programming.js#importNotifier
+<<< @/snippets/test-distributed-programming.js#makeNotifierKit
 
-```js
-import { produceNotifier } from '@agoric/notifier';
+The updater has three methods, which send a notification with the new state to any waiting
+notifiers:
+- `updateState(newState)` provides a new state, so all active Promises produced by
+  `getUpdateSince()` are resolved to the next record.
+- `finish(finalState)` provides a new state, and terminates the stream. The record that the
+  Promises resolve to doesn't include an updateCount (i.e. it is `undefined`), which can be used to
+  detect the final state.
+- `fail(reason)` doesn't provide a next state. Instead, it causes the Promise to be rejected with
+    the `reason`, signalling that the monitored object hit an error condition.
 
-const { notifier, updater } = produceNotifier();
-```
+### Use of Notifiers in Zoe
+
+Zoe provides updates on the state of seats within a contract. The updates from Zoe indicate changes
+to the allocation of a seat and seats exiting. These are available from `E(userSeat).getNotifier()`
+and `zcfSeat.getNotifier()`, which provide long-lived notifier objects associated with a particular
+seat. `zcfSeat`s are available within contracts while `userSeat`s are accessible from the REPL,
+deploy scripts, and other code outside contracts.
+
+Individual contracts can also use notifiers to provide updates giving current prices or other
+contract-specific details.
+
+Zoe's updates for an offer show the current allocation that will be paid if the contract completes
+without further changes.
+
