@@ -38,7 +38,7 @@ Cycle](/getting-started/development-cycle.md)
   <tr>
     <td>2</td>
     <td>Run <code>agoric init demo</code>
-    <td>Initializes a <i>Dapp</i> (<i>Distributed application</i>)
+    <td>Initializes a <i>Dapp</i> (<i>Decentralized application</i>)
   project.
   <br><br>
     <code>init</code> creates a sub-directory with the specified name
