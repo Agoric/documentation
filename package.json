@@ -43,6 +43,7 @@
     "@agoric/notifier": "*",
     "@agoric/promise-kit": "*",
     "@agoric/cosmic-swingset": "*",
+    "@agoric/assert": "*",
     "@typescript-eslint/parser": "^4.1.0",
     "ava": "^3.12.1",
     "eslint": "^6.8.0",
