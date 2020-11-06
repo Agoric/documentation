@@ -197,7 +197,8 @@ module.exports = {
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
             '/zoe/guide/proposal',
-            '/zoe/guide/contract-requirements'
+            '/zoe/guide/contract-requirements',
+            '/zoe/guide/price-authority'
           ]
         },
         {
@@ -206,13 +207,14 @@ module.exports = {
           collapsible: false,
           sideBarDepth: 3,
           children: [
+            '/zoe/guide/contracts/oracle',
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/barter-exchange',
             '/zoe/guide/contracts/covered-call',
             '/zoe/guide/contracts/multipoolAutoswap',
             '/zoe/guide/contracts/second-price-auction',
-            '/zoe/guide/contracts/simple-exchange'
+            '/zoe/guide/contracts/simple-exchange',
           ]
         },
         {
