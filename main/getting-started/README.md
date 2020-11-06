@@ -43,7 +43,7 @@ How to install software that the Agoric SDK depends on.
   either get what they wanted from the contract or a full refund of what they put up for it. 
 5. **[Agoric Platform/Stack](/platform/README.md)**: A brief introduction to the complete Agoric platform/technical stack.
 6. **[Agoric Dapp Guide](/dapps/README.md)**: 
-   A Dapp is a distributed application, typically with a browser-based user interface, a public
+   A Dapp is a decentralized application, typically with a browser-based user interface, a public
    API server, and a contract running on the Agoric blockchain. This document explains a Dapp's
    basic directory and file structure.
 7. **[Deploying Smart Contracts](./deploying.md)**: 

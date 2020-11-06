@@ -22,7 +22,7 @@ software, you need to install the following.
         <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (wsl)</a>.</td>
     <tr>
       <td>1</td>
-      <td><a href="https://nodejs.org/">Install Node.js</a>, version 12.16.1 or higher</td>
+      <td><a href="https://nodejs.org/">Install Node.js</a>, version 12.14.1 or higher</td>
       <td></td>
     </tr>
     <tr>
