@@ -197,7 +197,8 @@ module.exports = {
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
             '/zoe/guide/proposal',
-            '/zoe/guide/contract-requirements'
+            '/zoe/guide/contract-requirements',
+            '/zoe/guide/price-authority'
           ]
         },
         {
