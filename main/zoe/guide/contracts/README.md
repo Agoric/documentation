@@ -6,6 +6,8 @@ While Zoe provides the means to build custom smart contracts, there is a good ch
 want to use one that follows a commonly-used structure. Therefore, we currently provide several
 pre-built contracts that can be imported and run on Zoe:
 
+- [Oracle Contract](./oracle.md) - the low-level oracle contract that
+  can be used for querying [Chainlink oracles](https://docs.chain.link/docs/request-and-receive-data#config) or other oracles.
 - [Atomic Swap](./atomic-swap.md) - A basic trade of digital assets between two parties.
 - [Autoswap](./autoswap.md) - An automated market maker (implementating Uniswap v1) that
   can always trade between the two currencies in its liquidity pool.
