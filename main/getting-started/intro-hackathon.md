@@ -1,6 +1,6 @@
 # Getting Started for HackTheOrb, The Agoric x Chainlink Hackathon!
 
-Welcome to the Agoric Platform! This doc is a guide for getting started developing smart contracts and DeFi components.
+Welcome to the Agoric Platform! This doc is a guide for developing smart contracts and DeFi components.
 
 ## Get set up to hack!
 
@@ -20,7 +20,8 @@ agoric deploy api/deploy.js
 cd ui && yarn start
 ```
 
-Having trouble? Chat with our engineers on [Agoric Discord](https://discord.gg/gC9z6US). Also, check out our more [detailed documentation on starting a project](./start-a-project.md).
+Having trouble? Chat with our engineers on [Agoric Discord](https://discord.gg/gC9z6US). Also, check 
+out our more [detailed documentation](./start-a-project.md).
 
 ## Dig into our architecture
 
