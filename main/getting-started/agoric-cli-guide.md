@@ -13,9 +13,15 @@ The Agoric CLI implements a local-chain-multiuser scenario for developing and te
 #### Usage
 
 Develop your Dapp as described in the [Agoric Getting Started Guide](/getting-started/).
-After using `agoric start` to test with the simulated chain, stop the simulated chain with Control-C.  Then start a real
-local chain by running the following command. If you want to start the Agoric process afresh, add the `--reset` option at the end.
-```js
+After using `agoric start` to test with the simulated chain, stop the simulated
+chain with Control-C.
+
+You must first compile the Golang dependencies in the Agoric SDK.  Run `cd
+agoric-sdk/packages/cosmic-swingset && make`.
+
+Then start a real local chain by running the following command. If you want to
+start the Agoric process afresh, add the `--reset` option at the end.
+```sh
 agoric start local-chain
 ```
 There won’t be any running clients yet, but the chain will start and be fully functional.
@@ -55,6 +61,8 @@ This section shows how you do the above steps.
 
 Start the local chain and ag-solos
 ```sh
+# Build the Golang dependencies.
+(cd agoric-sdk/packages/cosmic-swingset && make)
 # Initialize a Dapp directory.
 agoric init foo
 # Change to the Dapp directory.
@@ -119,13 +127,16 @@ In general, you want to issue these Agoric CLI commands in this order:
 
 Use `agoric help` whenever you need help with one of the above Agoric CLI commands.
 
-There are four general options for all commands, whose usage is:
+There are some general options for all commands, whose usage is:
 ```js
 agoric [options] [command]
 ```
 They are:
 - `-V`, `--version`                                  
   - Output the version number.
+- `--docker-tag <tag>`
+  - Use the specified tag of any started Docker containers.  Defaults to
+    `latest`.
 - `--sdk`
   - Use the Agoric SDK containing this program.
 - `-v`, `--verbose`
