@@ -50,7 +50,7 @@ strikePrice2, settlementAmount }.
  options. It uses Collateral.
  * `priceAuthority` is an oracle that has a timer so it can respond to requests for prices as of a
    stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
-   in the strike currency.
+   asset in the strike currency.
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#startInstance
 
@@ -60,21 +60,29 @@ customProperties including `longAmount` and `shortAmount`, the amounts of the tw
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#invitationDetails
 
-The funder can use these option amounts to create an offer that assures them they will get the two
-options in exchange for the funds. The proposal describes the options they want and the collateral
-they give. When the offer is made they get a payout that contains the two option positions, which
-are themselves invitations which can be exercised for free, and provide the option payouts with the
-keyword Collateral.
+The funder can use these option amounts to create an offer that ensures that they will get the two
+options in exchange for the funds. The proposal describes the desired options and provided
+collateral. When the offer is made, a payout is returned containing the two option positions. The
+positions are invitations which can be exercised for free, and provide the option payouts under the
+keyword `Collateral`.
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#creatorInvitation
 
-The options that are returned by the contract are Zoe invitations, so their values and terms can be
-verified by asking Zoe for the contract terms.  This makes it possible to sell the options because
+The options returned by the contract are Zoe invitations, so their values and terms can be
+verified by asking Zoe for the contract terms.  This means you can sell the options because
 a prospetive purchaser can inspect their value. The prospective purchaser can verify the underlying
-amount, and check to see that the priceAuthority is one they are willing to rely on. They can check
-the expiration to see that it matches their expectations (here it's a small integer suitable for a
-manual timer in a test; in actual use, it would represent block height or wall clock time.) The
+amount, and check to see that the priceAuthority is one they are willing to rely on. They can check that
+the expiration matches their expectations (here it's a small integer suitable for a
+manual timer in a test; in actual use, it represents block height or wall clock time.) The
 strike prices and settlement amount are likewise visible.
+
+The options returned by the contract are Zoe invitations, so their parameters are visible in the
+contract terms. Since prospective purchasers can verify the details, the options are valuable
+objects which someone might buy. The prospective purchaser would verify the underlying amount, and
+check that they are willing to rely on this priceAuthority. They can also see that the expiration
+matches their expectations (in a test it would be a small integer suitable for a manual timer; in
+actual use, it represents block height or wall clock time.) The strike prices and settlement amount
+are likewise visible.
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#verifyTerms
 
@@ -87,5 +95,5 @@ neither waits for the other to exercise.
 
 There is a
 [unit test](https://raw.githubusercontent.com/Agoric/agoric-sdk/master/packages/zoe/test/unitTests/contracts/test-callSpread.js)
-(search for "sell options") that demonstrates how these options could be offered using the
-SimpleExchange contract.
+(search for "sell options") showing how you could offer these options using the SimpleExchange
+contract.
