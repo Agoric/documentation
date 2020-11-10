@@ -14,8 +14,7 @@ pre-built contracts that can be imported and run on Zoe:
 - [Barter Exchange](./barter-exchange.md) - An exchange with an order book that allows all
   kinds of goods to be offered for explicit barter swaps.
 - [Call Spread](./callSpread.md) - Creates a pair of fully collateralized call spread
-  options, which are packaged as ERTP assets so they can be used as assets in other
-  contracts.
+  options. They are ERTP assets and can be used as such in other contracts.
 - [Covered Call](./covered-call.md) - This type of contract oversees the sale and execution of a
   call option.
 - [Multipool Autoswap](./multipoolAutoswap.md) - An automated market maker implementing

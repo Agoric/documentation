@@ -211,6 +211,7 @@ module.exports = {
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/barter-exchange',
+            '/zoe/guide/contracts/callSpread',
             '/zoe/guide/contracts/covered-call',
             '/zoe/guide/contracts/multipoolAutoswap',
             '/zoe/guide/contracts/second-price-auction',
