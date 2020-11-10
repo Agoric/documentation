@@ -8,7 +8,7 @@
 The basic loan contract allows a  borrower to add collateral of a
 particular brand and get a loan of another brand. The collateral (also
 known as margin) must be greater than the loan value, at an amount set
-by the Maintenance Margin Requirement (mmr) in the terms of the
+by the Maintenance Margin Requirement (`mmr`) in the terms of the
 contract.
 
 The loan does not have a distinct end time. Rather, if the
@@ -92,7 +92,7 @@ liquidation.
 
 The contract will shutdown under 3 conditions:
 1. The loan (plus interest) is repaid.
-  * In this case the lender gets the repayment and the borrower gets
+   * In this case the lender gets the repayment and the borrower gets
     their collateral back.
 2. The value of the collateral drops and the collateral must be
    liquidated.
