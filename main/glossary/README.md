@@ -16,8 +16,8 @@ The AllegedName must be a string.
 ## Allocation
 
 Allocations represent the [amounts](#amounts) to be paid out to each [seat](#seat) on exit from a contract instance. Possible 
-exit causes are exercising an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods for finding
-out what amount a current allocation is. 
+exit causes are exercising an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods
+for getting the amounts currently allocated.
 
 In more detail, Zoe's guarantee is each [seat](#seat) will either get what it asked for in its offer, or the return of what was [escrowed](#escrow).
 The contract can reallocate fairly arbitrarily to achieve that. As contract code is visible to its clients, users can see
@@ -32,14 +32,15 @@ disappear from the total allocation.
 AmountMath executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
 gives a new balance of 5 bucks. But, a deposit of a non-fungible theater ticket into a purse that already holds
-five tickets isn't done by numeric addition. Instead, you have to add a string or object to an array or record.
+five tickets isn't done by numeric addition. Instead, you have to combine two arrays, containing either 
+strings (`MathKind.STR_SET`) or objects/records (`MathKind.SET`).
 
 AmountMath has a single set of polymorphic
 methods of three different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
 [non-fungible](#non-fungible) assets (values are an array or object). The three AmountMathKinds are
 - `MathKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
-- `MathKind.STRING_SET`: Used with non-fungible assets. Amount values are strings.
-- `MathKind.SET`: Used with non-fungible assets. Amount values are objects or records with multiple properties.
+- `MathKind.STRING_SET`: Used with non-fungible assets. Amount values are arrays of strings.
+- `MathKind.SET`: Used with non-fungible assets. Amount values are arrays of objects or records with multiple properties.
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md) 
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
@@ -69,8 +70,9 @@ digital assets in the quantity specified by an [amount](#amounts).
 
 ## Board (Agoric Board)
 
-The Board is a shared, on-chain location where users can post an Id for a value
-and others can get the value just by knowing the Id. You can make an Id known by any 
+The Board is a shared, on-chain location where users can post a value and make it 
+accessible to others. When a user posts a value, they receive a unique Id for the value. 
+Others can get the value just by knowing the Id. You can make an Id known by any 
 communication method; private email, a DM or other private message, a phone call/voicemail,
 an email blast to a mailing list or many individuals, listing it on a website, etc.
 
@@ -91,7 +93,8 @@ const atomicSwapBundle = await bundleSource(
 ```
 The installation operation returns
 an `installation`, which is an object with one method; `getBundle()`. You can access an installed contract's source
-code via `E(installation).getBundle().source`.
+code via `const { source } = await E(installation).getBundle();`.
+
 ## Burn
 
 Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
@@ -182,9 +185,10 @@ Part of an [offer](#offer) specifying how the offer can be cancelled/exited. The
 A *facet* is an object that exposes an API or particular view of some larger entity, which may be an object itself. 
 You can make any number of facets of an entity. In JavaScript, you often make a facet by selecting methods from the entity,
 either directly or by destructuring:
-```
+```js
 const facet = {
   myMethod: oldObject.method,
+}
 ```
 Two Agoric uses are:
 - *Deposit Facet*: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add 
@@ -216,12 +220,12 @@ To participate in a contract instance, one must hold an invitation to do so. Con
 return a creator invitation on their instantiation, in case the contract instantiator wants 
 to immediately participate. Otherwise, the contract instance must create any additional invitations. 
 These, or any invitation held by a party, are distributed by sending it to someone's wallet. When you receive 
-an invitation, you should validate it via the [InvitationIssuer](#invitationissuer). Note that 
+an invitation, your wallet will validate it via the [InvitationIssuer](#invitationissuer). Note that 
 the invitation is a special case of [`Payment`](#payment), and so is associated with a specific [`Issuer`](#issuer).
 
 To participate in a contract instance by making an [offer](#offer), an invitation to that instance must accompany the offer.
 
-An `invitation`'s properties are:
+An `invitation`'s amount includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
 - The contract instance this invitation is for.
 - A handle used to refer to this invitation.
@@ -238,7 +242,7 @@ receive from someone else by calling `E(invitationIssuer).claim()` with the untr
 invitation as the argument. During the claiming process, the invitationIssuer validates
 the invitation. A successful claim also means that invitation is exclusively yours.
 
-**Note**: Depositing into an invitation-branded purse also claims an invitation. This is
+**Note**: Depositing into an invitation-branded purse also validates an invitation. This is
 what the [wallet](#wallet) does.
 
 ## Issuer
@@ -264,8 +268,8 @@ records with values of [amounts](#amounts), [issuers](#issuer), etc.
 ## Mint
 
 [ERTP](#ertp) has a *mint* object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
-*ZCFMint*. It doesn't matter whether you use the ERTP mint interface (henceforth called an *ERTP mint*) or the ZCFMint interface;
-quatloos created by an ERTP mint are indistinguishable from quatloos created by a ZCFMint. 
+*ZCFMint*. Assets and AssetHolders created using ZcfMints can be used in all the same ways as assets created by other ERTP Mints. 
+They interact with Purses, Payments, Brands, and Issuers in the same ways."
 
 - ERTP mints create digital assets and are the only ERTP objects with the authority to do so. 
   Access to an ERTP mint gives you the power to create more digital assets of its type at will. Mints
@@ -274,12 +278,13 @@ quatloos created by an ERTP mint are indistinguishable from quatloos created by 
   ERTP mints are [issuer's](#issuer) admin [facets](#facet), and there is a one-to-one relationship between an issuer and
   its mint. ERTP mints are also in a one-to-one relationship with that issuer's associated [brand](#brand).
 
-- ZCFMints are Zoe mints. Similar to ERTP mints, they have one-to-one relationships
+- ZCFMints give contract code a simpler interface to interact with an ERTP mint. Because ZCFMints encapsulate
+  an internal ERTP mint, they have the same one-to-one relationships
   with an issuer and its associated brand. A ZCFMint can mint assets that get associated with a seat without having to escrow
   payments, and burn assets that used to be associated with a seat without having to payout assets.
   
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
-However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
+However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint are the same concepts and have the same methods.
 
 For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/issuers-and-mints.md) 
 and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about ZCFMints, 
@@ -323,20 +328,22 @@ For more information, see [Douglas Crockford on Object Capabilities](https://fro
 
 ## Offer
 
-Offers are a structured way of describing user intent. In Zoe, an offer consists of a [proposal](#proposal) (the 
-rules under which the party wants to exercise the offer) and [payments](#payment) corresponding to what the proposal specifies as what the
-party will give if the offer is satisfied. The payments are automatically [escrowed](#escrow) by Zoe, and appropriately reallocated when
-the offer exits with either success or rejection. See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord).
+Users interact with contract instances by making offers. In Zoe, an offer consists of a [proposal](#proposal) (the 
+conditions under which the party makes the offer) and [payments](#payment) corresponding to what the party is willing
+to give in exchange for what they want. The payments are automatically [escrowed](#escrow) by Zoe, and reallocated 
+according to the contract code. An offer gets a payout of some combination of what the party originally contributed
+and what others have contributed. The specific payout is determined by the contract code. 
+See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord).
 
 ## Offer Safety
 
-Zoe guarantees offer safety. When a user makes an [offer](#offer) and it is [escrowed](#escrow) with Zoe, Zoe guarantees that 
+Zoe guarantees offer safety. When a user makes an [offer](#offer) and its payments are [escrowed](#escrow) with Zoe, Zoe guarantees that 
 the user either gets what they said they wanted, or gets back (gets a refund) what they originally offered and escrowed.
 
 ## Payment
 
-Payments hold assets issued by [Mints](#mint). Specifically assets intended for transfer 
-from one party to another. All assets of a payment must be of the same [brand](#brand).
+Payments hold assets created by [Mints](#mint). Specifically assets intended for transfer 
+from one party to another. All assets of a payment are of the same [brand](#brand).
 
 For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#purses-and-payments)
 and the [ERTP API's Payments section](/ertp/api/payment.md).
@@ -369,7 +376,7 @@ what asset you want, what asset you will give for it, and how/when the offer mak
 const myProposal = harden({
   give: { Asset: quatloosAmountMath.make(4)},
   want: { Price: moolaAmountMath.make(15) },
-  exit: { 'onDemand'
+  exit: { 'onDemand' }
 })
 ```
 `give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
@@ -387,27 +394,27 @@ For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-a
 An imaginary currency Agoric documentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek 
 episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
-## Reallocate/Reallocation
+## Reallocation
 
 A transfer of [amounts](#amounts) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
 current allocation as a [payout](#payout). 
 
 ## Seat
 
-Zoe uses seats to represent [offers](#offer), and has two seat [facets](#facet); a `ZCFSeat` and a `UserSeat`.
-The term comes from the expression "having a seat at the table" with regards to participating in a
-negotiation.
+Zoe uses a seat to represent an [offer](#offer) in progress, and has two seat [facets](#facet) representing
+two views of the same seat; a `ZCFSeat` and a `UserSeat`. The `UserSeat` is returned to the user who made an
+offer, and can check payouts' status or retrieve their results. The `ZCFSeat` is the argument passed to 
+the `offerHandler` in the contract code. It is used within contracts and with `zcf.` methods.
 
-Seats represent active offers and let contracts and users interact with them. ZCFSeats are used 
-within contracts and with `zcf.` methods. User seats represent offers external to Zoe and the 
-contract. The party who exercises an invitation and sends the `offer()` message to Zoe 
-gets a UserSeat that can check payouts' status or retrieve their results.
+The two seat facets have slightly different methods but represent the same seat and offer in progress. 
+The term comes from the expression "having a seat at the table" with regards to participating in a negotiation.
 
 For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.md#zcfseat-object) and 
 the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 
 ## SeatStagings
-`seatStagings` are associations of seats with reallocations.
+`seatStagings` are associations of seats with new [allocations](#allocation). `seatStagings` are
+passed to `zcf.reallocate`.
 
 ## SES (Secure ECMAScript)
 
@@ -424,7 +431,7 @@ An imaginary currency Agoric documentation uses in examples.
 Contract instances have associated terms, gotten via `E(zoe).getTerms(instance)`,
 which include the instance's associated [issuers](#issuer), [brands](#brand), and any custom terms. For 
 example, you might have a general auction contract. When someone instantiates it,
-they provide terms applicable only to that instance. For example, for some instances of 
+they provide terms applicable only to that instance. For some instances of 
 the auction, they want the minimum bid set at $1000. At other instances, they'd like
 it set at $10. They can specify the instance's minimum bid amount in its terms.
 
@@ -435,15 +442,15 @@ that can be owned or shared: How much, how many, or a description of a unique as
 Pixel(3,2), $3, or 'Seat J12 for the show September 27th at 9:00pm'.
 [Fungible](#fungible) values are usually 
 represented by natural numbers. Other values may be represented as strings naming a particular
-right, or an arbitrary object representing the rights at issue. The latter two examples 
+rights, or an array of arbitrary objects representing the rights at issue. The latter two examples 
 are usually [non-fungible](#non-fungible) assets. Values must be [Comparable](#comparable).
 
 For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
 
 ## Vat 
-A vat is a unit of isolation. To paraphrase the Las Vegas advertising slogan, what happens in a vat stays in that vat.
+A vat is a unit of isolation. 
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
-communicate with other vats and their objects and functions, but have to manage asynchronous messages and responses.
+communicate with other vats and their objects and functions, but can only communicate asynchronously. 
 
 For more information, see the [Vat section in the Distributed JS Programming Guide](/distributed-programming.md#vats)
 
@@ -451,8 +458,9 @@ For more information, see the [Vat section in the Distributed JS Programming Gui
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
 [purses](#purse), 8 Moola purses, and 2 Simoleons purses. You can also keep [Issuers](#issuer) in a 
-wallet. [Offers](#offer) are associated with the wallets 
-from which their associated payments come from. See the [Wallet API](/wallet-api.md).
+wallet. Dapps can propose [offers](#offers) to a wallet. If a user accepts the offer proposal, 
+the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse). 
+See the [Wallet API](/wallet-api.md).
 
 ## ZCF
 *ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe 
@@ -461,14 +469,6 @@ Contract Facet methods can be called synchronously by contract code.
 See the [ZCF API](/zoe/api/zoe-contract-facet.md).
 
 ## ZCFMint
-
-ZCFMints are Zoe mints. Similar to ERTP mints, they have one-to-one relationships
-with an [issuer](#issuer) and its associated [brand](#brand). A ZCFMint can mint assets that get associated with a [seat](#seat)
-without having to [escrow](#escrow) [payments](#payment), and [burn](#burn) assets that used 
-to be associated with a seat without having to payout assets.
-  
-ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
-However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint do have the same methods.
 
 See [Mint](#mint).
 
