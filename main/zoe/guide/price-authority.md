@@ -24,13 +24,27 @@ const { quoteAmount, quotePayment } = priceQuote;
 Because these are ERTP amounts and payments, they have issuers. And
 the payments are minted by an ERTP mint. A quote issuer and mint may
 be shared by several `priceAuthorities`, and a `priceAuthority` may
-use several quoteIssuers. Importantly, you can confirm the brand of a
-quote and that it was minted by the mint associated with the
-quoteIssuer by claiming the quotePayment:
+use several quoteIssuers.
+
+Importantly, you can confirm the brand of a quote and that it was minted by the
+mint associated with the quoteIssuer by using the `quoteIssuer` to obtain the
+`quoteAmount` of the `quotePayment`:
 
 ```js
-const verifiedQuote = await E(quoteIssuer).claim(quotePayment);
+const verifiedQuoteAmount = await E(quoteIssuer).getAmountOf(quotePayment);
 ```
+
+Once you have a `quoteAmount` (or a `verifiedQuoteAmount`), you can extract the
+quoted amounts:
+
+```js
+const [{ value: { amountIn, amountOut, timestamp, timer }] = quoteAmount;
+```
+
+This means that the `priceAuthority` asserts that when `timestamp` according to
+`timer` happened, you could sell `amountIn` and receive `amountOut` for it.
+`amountIn` and `amountOut` are ERTP amounts for the `brandIn` and `brandOut` you
+requested.
 
 ## PriceAuthority Methods
 
@@ -47,15 +61,12 @@ const verifiedQuote = await E(quoteIssuer).claim(quotePayment);
 - Returns: `{ TimerService | Promise<TimerService> }`
 - Gets the timer used in PriceQuotes for a given brandIn/brandOut pair. 
 
-### getPriceNotifier(brandIn, brandOut)
-- `brandIn`: `{ Brand }`
+### makeQuoteNotifier(amountIn, brandOut)
+- `amountIn`: `{ Amount }`
 - `brandOut`: `{ Brand }`
 - Returns: `{ ERef<Notifier<PriceQuote>> }`
-- Be notified of the latest PriceQuotes for a given brandIn/brandOut
-  pair.  Note that these are not necessarily all for a constant
-  amountIn (or amountOut), though some authorities may do that.  The
-  fact that they are raw quotes means that a PriceAuthority can
-  implement quotes for both fungible and non-fungible brands.
+- Be notified of the latest PriceQuotes for a given `amountIn`.  The rate at
+  which these are issued may be very different between `priceAuthorities`.
 
 ### quoteAtTime(deadline, amountIn, brandOut)
 - `deadline`: `{ Timestamp }`
@@ -98,4 +109,5 @@ const verifiedQuote = await E(quoteIssuer).claim(quotePayment);
 - `amountIn`: `{ Amount }`
 - `amountOutLimit`: `{ Amount }`
 - Returns: `{ Promise<PriceQuote> }`
-- Resolves when a price quote of `amountIn` reaches or drops below `amountOutLimit`.
+- Resolves when a price quote of `amountIn` reaches or drops below
+  `amountOutLimit`.
