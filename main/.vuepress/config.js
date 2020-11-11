@@ -208,6 +208,7 @@ module.exports = {
           sideBarDepth: 3,
           children: [
             '/zoe/guide/contracts/oracle',
+            '/zoe/guide/contracts/loan',
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/barter-exchange',

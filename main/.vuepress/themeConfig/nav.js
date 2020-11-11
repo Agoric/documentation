@@ -125,7 +125,7 @@ module.exports = [
       {
         text: 'Contracts',
         ariaLabel: 'Zoe Contracts Link',
-        link: '/zoe/guide/contracts/autoswap'
+        link: '/zoe/guide/contracts/'
       },
       {
         text: 'API',
