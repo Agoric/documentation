@@ -6,7 +6,7 @@ It has not yet been formally tested or hardened.
 Do not use for production purposes.
 :::
 
-This document shows how to start a new Agoric project. Our demos are called <i>Dapps (distributed
+This document shows how to start a new Agoric project. Our demos are called <i>Dapps (decentralized
 applications)</i>, which typically have a browser-based user interface, 
 a public API server, and a contract running on the Agoric blockchain.
 
