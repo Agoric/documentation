@@ -5,11 +5,12 @@
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/loan)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-The basic loan contract has two parties, a *lender* and a *borrower*. It lets the borrower add collateral of a
-particular brand and get a loan of another brand. The collateral (also
-known as margin) must be greater than the loan value, at an amount set
-by the Maintenance Margin Requirement (`mmr`) in the terms of the
-contract.
+The basic loan contract has two parties, a *lender* and a *borrower*.
+It lets the borrower add collateral of a particular brand and get a
+loan of another brand. The collateral (also known as margin) must be a
+certain percentage of the loan value (the default is 150%). The exact
+percentage required is defined by the Maintenance Margin Requirement
+(`mmr`) in the terms of the contract.
 
 The loan does not have a distinct end time. Rather, if the
 value of the collateral changes such that insufficient margin is
@@ -34,7 +35,7 @@ loaned amount and interest must be of the same (separate) brand.
 * `autoswapInstance` - The running contract instance for an
    [Autoswap](./autoswap.md) or [Multipool
    Autoswap](./multipoolAutoswap.md) installation. The `publicFacet`
-   of the instance is used for producing an invitation to sell the
+   of the instance is used to make an invitation to sell the
    collateral on liquidation.
 * `periodAsyncIterable` - the [asyncIterable](https://javascript.info/async-iterators-generators) used for notifications
    that a period has passed, on which compound interest will be
@@ -68,12 +69,12 @@ or the liquidation results. If the collateral price drops
 before liquidation, the total payout could be zero.
 Therefore, the lender cannot `want` anything in their proposal.
 
-The lender must be able to exit on demand until borrowing occurs. If the exit rule was
-`waived`, a borrower could hold on to their invitation and
-effectively lock up the lender's Loan forever.  When the borrowing
-occurs, the collateral is moved to a special collateral seat to
-prevent the lender from exiting with collateral before the
-contract ends due to repayment or liquidation.
+The lender must be able to exit on demand until borrowing occurs. If
+the exit rule was `waived`, a borrower could hold on to their
+invitation and effectively lock up the lender's escrowed loan amount
+forever.  When the borrowing occurs, the collateral is moved to a
+special collateral seat to prevent the lender from exiting with
+collateral before the contract ends due to repayment or liquidation.
 
 ## The Borrower
 
