@@ -11,7 +11,10 @@ pre-built contracts that can be imported and run on Zoe:
 - [Atomic Swap](./atomic-swap.md) - A basic trade of digital assets between two parties.
 - [Autoswap](./autoswap.md) - An automated market maker (implementating Uniswap v1) that
   can always trade between the two currencies in its liquidity pool.
-- [Barter Exchange](./barter-exchange.md) - An exchange with an order book that allows all kinds of goods to be offered for explicit barter swaps.
+- [Barter Exchange](./barter-exchange.md) - An exchange with an order book that allows all
+  kinds of goods to be offered for explicit barter swaps.
+- [Call Spread](./callSpread.md) - Creates a pair of fully collateralized call spread
+  options. They are ERTP assets and can be used as such in other contracts.
 - [Covered Call](./covered-call.md) - This type of contract oversees the sale and execution of a
   call option.
 - [Multipool Autoswap](./multipoolAutoswap.md) - An automated market maker implementing
