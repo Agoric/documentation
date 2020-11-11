@@ -5,7 +5,7 @@
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/loan)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-The basic loan contract allows a  borrower to add collateral of a
+The basic loan contract has two parties, a *lender* and a *borrower*. It lets the borrower add collateral of a
 particular brand and get a loan of another brand. The collateral (also
 known as margin) must be greater than the loan value, at an amount set
 by the Maintenance Margin Requirement (`mmr`) in the terms of the
@@ -17,7 +17,7 @@ provided, the collateral is liquidated, and the loan is closed. At any
 time, the borrower can add collateral or repay the loan with interest,
 closing the loan. The borrower can set up their own margin calls by
 getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling
-`E(priceAuthority).quoteWhenLT(allCollateral, x)` where x is the value
+`E(priceAuthority).quoteWhenLT(allCollateralAmount, x)` where x is the value
 of the collateral in the Loan brand at which they want a reminder to
 addCollateral.
 
@@ -28,8 +28,8 @@ loaned amount and interest must be of the same (separate) brand.
 * `mmr` (default = 150) - the Maintenance Margin Requirement, in
    percent. The default is 150, meaning that collateral should be
    worth at least 150% of the loan. If the value of the collateral
-   drops below `mmr`, liquidation occurs.
-* [`priceAuthority`](/zoe/guide/price-authority.md) - will be used for getting the current value of
+   drops below `mmr`, liquidation can occur.
+* [`priceAuthority`](/zoe/guide/price-authority.md) - used for getting the current value of
    collateral and setting liquidation triggers.
 * `autoswapInstance` - The running contract instance for an
    [Autoswap](./autoswap.md) or [Multipool
@@ -44,7 +44,7 @@ loaned amount and interest must be of the same (separate) brand.
 
 ## IssuerKeywordRecord
 
-The following is used for all keyword records, regardless of role in
+All keyword records use the following, regardless of their role in
 the contract:
 
 * Keyword: 'Collateral' - The issuer/payment for the digital assets to be
@@ -57,50 +57,48 @@ the contract:
 The lender puts up the amount to be loaned to the borrower, but has no
 further actions. The loan is ongoing until it is paid back entirely or
 liquidated, at which point the lender receives a payout. This means
-that the payout for the lender will be in Loan-branded digital assets,
-not Collateral-brand. (The only exception to this is if the scheduling
+the lender's payout will be in Loan-branded digital assets,
+not Collateral-brand. (The only exception is if the scheduling
 of liquidation triggers with the `priceAuthority` results in a error. In
-that case, we have no choice but to give the collateral to the lender.
+that case, we must give the collateral to the lender.
 The borrower has already exited with their loan.)
 
-The lender will want the interest earned from the loan + their refund
-or the results of the liquidation. If the price of collateral drops
-before we get the chance to liquidate, the total payout could be zero.
+The lender will want the loan interest in addition to either their refund
+or the liquidation results. If the collateral price drops
+before liquidation, the total payout could be zero.
 Therefore, the lender cannot `want` anything in their proposal.
 
 The lender must be able to exit on demand until borrowing occurs. If the exit rule was
-`waived`, a borrower would be able to hold on to their invitation and
+`waived`, a borrower could hold on to their invitation and
 effectively lock up the lender's Loan forever.  When the borrowing
 occurs, the collateral is moved to a special collateral seat to
-prevent the lender from being able to exit with collateral before the
-contract ends through repayment or liquidation.
+prevent the lender from exiting with collateral before the
+contract ends due to repayment or liquidation.
 
 ## The Borrower
 
 The borrower receives an invitation to join, makes an offer with Zoe
 escrowing their collateral, and receives their loan. The borrower seat
 is exited at this point so the borrower gets the payout of their loan,
-but the borrower also gets an object (`borrowFacet`) as their `offerResult` that will
-let them continue to interact with the contract.
+but the borrower also gets an object (`borrowFacet`) as their `offerResult` that
+lets them continue interacting with the contract.
 
-Once the loan has started, the borrower can repay the loan in its
-entirety (at which the lender receives the loan amount back plus
-interest and the contract closes), or add more collateral to stave off
+Once the loan starts, the borrower can repay the loan in its
+entirety at any time (at which point the lender receives the loan amount back plus
+interest, and the contract closes), or add more collateral to prevent
 liquidation.
 
 ## Contract Shutdown
 
-The contract will shutdown under 3 conditions:
+The contract shuts down under 3 conditions:
 1. The loan (plus interest) is repaid.
-   * In this case the lender gets the repayment and the borrower gets
+   * The lender gets the repayment and the borrower gets
     their collateral back.
 2. The value of the collateral drops and the collateral must be
    liquidated.
-   * In this case the lender gets the outcome of the sale of the
-     collateral, and the borrower still keeps their loan.
+   * The lender gets the outcome of the collateral sale, and the borrower keeps their loan.
 3. An error occurs when trying to use the priceAuthority.
-   * In this case the lender gets the collateral, and the borrower
-     keeps their loan.
+   * The lender gets the collateral, and the borrower keeps their loan.
 
 ## Debt and Interest Calculation 
 
@@ -112,8 +110,7 @@ is defined by the `interestRate` parameter.
 
 Liquidation is scheduled using the `priceAuthority` parameter.
 Specifically, the contract gets a promise resolved when the value of the
-collateral falls below a particular trigger value defined by the `mmr`
-parameter: 
+collateral falls below a trigger value defined by the `mmr` parameter: 
 
 ```js
   const internalLiquidationPromise = E(priceAuthority).quoteWhenLT(
@@ -123,9 +120,8 @@ parameter:
   internalLiquidationPromise.then(liquidate);
 ```
 
-The borrower can set up their own margin calls to be forewarned of a
-potential liquidation by
-getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling
+The borrower can self-forewarn about a potential liquidation by setting up their own margin calls.
+They do this by getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling
 `E(priceAuthority).quoteWhenLT(allCollateral, x)` where x is the value
 of the collateral in the Loan brand at which they want a reminder to
 addCollateral.
