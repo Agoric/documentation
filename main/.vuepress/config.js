@@ -62,6 +62,14 @@ module.exports = {
     sidebar: {
       '/getting-started/': [
         {
+          title: 'Hackathon',
+          path: '/getting-started/intro-hackathon.html',
+          collapsible: false,
+          sideBarDepth: 3,
+          children: [
+          ]
+        },
+        {
           title: 'Agoric Alpha',
           path: '/getting-started/alpha.html',
           collapsible: false,
@@ -189,7 +197,8 @@ module.exports = {
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
             '/zoe/guide/proposal',
-            '/zoe/guide/contract-requirements'
+            '/zoe/guide/contract-requirements',
+            '/zoe/guide/price-authority'
           ]
         },
         {
@@ -198,13 +207,16 @@ module.exports = {
           collapsible: false,
           sideBarDepth: 3,
           children: [
+            '/zoe/guide/contracts/oracle',
+            '/zoe/guide/contracts/loan',
             '/zoe/guide/contracts/atomic-swap',
             '/zoe/guide/contracts/autoswap',
             '/zoe/guide/contracts/barter-exchange',
+            '/zoe/guide/contracts/callSpread',
             '/zoe/guide/contracts/covered-call',
             '/zoe/guide/contracts/multipoolAutoswap',
             '/zoe/guide/contracts/second-price-auction',
-            '/zoe/guide/contracts/simple-exchange'
+            '/zoe/guide/contracts/simple-exchange',
           ]
         },
         {
@@ -227,6 +239,8 @@ module.exports = {
     docsRepo: 'Agoric/documentation',
     // if your docs are not at the root of the repo:
     docsDir: 'main',
+    // if your docs are in a specific branch (defaults to 'master'):
+    docsBranch: 'main',
     // defaults to false, set to true to enable
     editLinks: true,
     // custom text for edit link. Defaults to "Edit this page"

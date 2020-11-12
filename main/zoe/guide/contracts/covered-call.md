@@ -230,6 +230,9 @@ const daveCallSeat = await E(zoe).offer(
   daveCoveredCallPayments,
 );
 
-const simoleansForDave = await daveCallSeat.getPayout('StrikePrice');
-daveSimoleanPurse.deposit(simoleansForDave);
+  const daveMoolaPayout = await daveCallSeat.getPayout(
+    'UnderlyingAsset',
+  );
+  await daveMoolaPurse.deposit(daveMoolaPayout);
+
 ```

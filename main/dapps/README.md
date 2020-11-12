@@ -7,7 +7,7 @@ Alpha Release Candidate](./alpha-release-candidate.md).
 
 **This is a generic guide to Agoric Dapp projects**
 
-A dapp is a *distributed application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
+A dapp is a *decentralized application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
 
 ## Using a Dapp
 

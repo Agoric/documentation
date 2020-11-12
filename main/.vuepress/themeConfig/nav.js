@@ -6,6 +6,11 @@
 
 module.exports = [
   {
+    text: 'Hackathon',
+    ariaLabel: 'Hackathon',
+    link: '/getting-started/intro-hackathon',
+  },
+  {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
     items: [
@@ -120,7 +125,7 @@ module.exports = [
       {
         text: 'Contracts',
         ariaLabel: 'Zoe Contracts Link',
-        link: '/zoe/guide/contracts/autoswap'
+        link: '/zoe/guide/contracts/'
       },
       {
         text: 'API',
