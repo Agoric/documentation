@@ -95,7 +95,7 @@ liquidation.
 
 ## Contract Shutdown
 
-The contract shuts down under 3 conditions:
+The contract shuts down under any one of 3 conditions:
 1. The loan (plus interest) is repaid.
    * The lender gets the repayment and the borrower gets
     their collateral back.
