@@ -16,11 +16,7 @@ The loan does not have a distinct end time. Rather, if the
 value of the collateral changes such that insufficient margin is
 provided, the collateral is liquidated, and the loan is closed. At any
 time, the borrower can add collateral or repay the loan with interest,
-closing the loan. The borrower can set up their own margin calls by
-getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling
-`E(priceAuthority).quoteWhenLT(allCollateralAmount, x)` where x is the value
-of the collateral in the Loan brand at which they want a reminder to
-addCollateral.
+closing the loan. 
 
 Note that all collateral must be of the same brand and all of the
 loaned amount and interest must be of the same (separate) brand.
@@ -48,9 +44,9 @@ loaned amount and interest must be of the same (separate) brand.
 All keyword records use the following, regardless of their role in
 the contract:
 
-* Keyword: 'Collateral' - The issuer/payment for the digital assets to be
+* Keyword: `Collateral` - The issuer/payment for the digital assets to be
    escrowed as collateral.
-* Keyword: 'Loan' - The issuer/payment for the digital assets to be loaned
+* Keyword: `Loan` - The issuer/payment for the digital assets to be loaned
    out.
 
 ## The Lender
@@ -76,6 +72,8 @@ forever.  When the borrowing occurs, the collateral is moved to a
 special collateral seat to prevent the lender from exiting with
 collateral before the contract ends due to repayment or liquidation.
 
+<<< @/snippets/zoe/contracts/test-loan.js#lend
+
 ## The Borrower
 
 The borrower receives an invitation to join, makes an offer with Zoe
@@ -84,10 +82,16 @@ is exited at this point so the borrower gets the payout of their loan,
 but the borrower also gets an object (`borrowFacet`) as their `offerResult` that
 lets them continue interacting with the contract.
 
+<<< @/snippets/zoe/contracts/test-loan.js#borrow
+
 Once the loan starts, the borrower can repay the loan in its
 entirety at any time (at which point the lender receives the loan amount back plus
 interest, and the contract closes), or add more collateral to prevent
 liquidation.
+
+<<< @/snippets/zoe/contracts/test-loan.js#closeLoanInvitation
+
+<<< @/snippets/zoe/contracts/test-loan.js#addCollateralInvitation
 
 ## Contract Shutdown
 
@@ -113,19 +117,15 @@ Liquidation is scheduled using the `priceAuthority` parameter.
 Specifically, the contract gets a promise resolved when the value of the
 collateral falls below a trigger value defined by the `mmr` parameter: 
 
-```js
-  const internalLiquidationPromise = E(priceAuthority).quoteWhenLT(
-    allCollateral,
-    liquidationTriggerValue,
-  );
-  internalLiquidationPromise.then(liquidate);
-```
+<<< @/snippets/zoe/contracts/test-loan.js#liquidate
 
 The borrower can self-forewarn about a potential liquidation by setting up their own margin calls.
-They do this by getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling
-`E(priceAuthority).quoteWhenLT(allCollateral, x)` where x is the value
-of the collateral in the Loan brand at which they want a reminder to
-addCollateral.
+They do this by getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling:
+
+<<< @/snippets/zoe/contracts/test-loan.js#customMarginCall
+
+where x is the value of the collateral in the Loan brand at which they
+want a reminder to add collateral.
 
 ## Liquidating
 
