@@ -19,8 +19,16 @@ test('loan contract', async t => {
   );
   const installation = await E(zoe).install(contractBundle);
 
-  const collateralKit = makeIssuerKit('moola');
-  const loanKit = makeIssuerKit('simoleans');
+  const {
+    issuer: collateralIssuer,
+    amountMath: collateralMath,
+    mint: collateralMint,
+  } = makeIssuerKit('moola');
+  const {
+    issuer: loanIssuer,
+    amountMath: loanMath,
+    mint: loanMint,
+  } = makeIssuerKit('simoleans');
 
   // Create autoswap installation and instance
   const autoswapBundle = await bundleSource(
@@ -30,34 +38,36 @@ test('loan contract', async t => {
 
   const { instance: autoswapInstance } = await E(zoe).startInstance(
     autoswapInstallation,
-    harden({ Central: collateralKit.issuer, Secondary: loanKit.issuer }),
+    harden({ Central: collateralIssuer, Secondary: loanIssuer }),
   );
 
   const issuerKeywordRecord = harden({
-    Collateral: collateralKit.issuer,
-    Loan: loanKit.issuer,
+    Collateral: collateralIssuer,
+    Loan: loanIssuer,
   });
 
   const timer = buildManualTimer(console.log);
 
   const priceAuthority = makeFakePriceAuthority({
-    mathIn: collateralKit.amountMath,
-    mathOut: loanKit.amountMath,
+    mathIn: collateralMath,
+    mathOut: loanMath,
     priceList: [4, 2],
     timer,
   });
 
   const doAddCollateral = _ => {};
-  const allCollateralAmount = collateralKit.amountMath.make(1000);
-  const x = loanKit.amountMath.make(1500);
+  const allCollateralAmount = collateralMath.make(1000);
+  const myWarningLevel = loanMath.make(1500);
 
   // #region customMarginCall
   E(priceAuthority)
-    .quoteWhenLT(allCollateralAmount, x)
+    .quoteWhenLT(allCollateralAmount, myWarningLevel)
     .then(priceQuote => doAddCollateral(priceQuote));
   // #endregion customMarginCall
 
   const { subscription: periodAsyncIterable } = makeSubscriptionKit();
+
+  const loanPayment = loanMint.mintPayment(loanMath.make(1000));
 
   // #region lend
   const terms = {
@@ -74,20 +84,22 @@ test('loan contract', async t => {
     terms,
   );
 
-  const maxLoan = loanKit.amountMath.make(1000);
+  const maxLoan = loanMath.make(1000);
 
   const proposal = harden({
     give: { Loan: maxLoan },
   });
 
   const payments = harden({
-    Loan: loanKit.mint.mintPayment(maxLoan),
+    Loan: loanPayment,
   });
 
   const lenderSeat = await E(zoe).offer(lendInvitation, proposal, payments);
 
   const borrowInvitation = await E(lenderSeat).getOfferResult();
   // #endregion lend
+
+  const collateralPayment = collateralMint.mintPayment(allCollateralAmount);
 
   // #region borrow
   const borrowerProposal = harden({
@@ -96,7 +108,7 @@ test('loan contract', async t => {
   });
 
   const borrowerPayments = {
-    Collateral: collateralKit.mint.mintPayment(allCollateralAmount),
+    Collateral: collateralPayment,
   };
   const borrowSeat = await E(zoe).offer(
     borrowInvitation,
@@ -128,7 +140,7 @@ test('loan contract', async t => {
   t.truthy(await E(invitationIssuer).isLive(closeLoanInvitation));
   t.truthy(await E(invitationIssuer).isLive(addCollateralInvitation));
 
-  const liquidationTriggerValue = loanKit.amountMath.make(1000);
+  const liquidationTriggerValue = loanMath.make(1000);
   const liquidate = () => {};
 
   // #region liquidate

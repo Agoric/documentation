@@ -124,7 +124,7 @@ They do this by getting the [`priceAuthority`](/zoe/guide/price-authority.md) fr
 
 <<< @/snippets/zoe/contracts/test-loan.js#customMarginCall
 
-where x is the value of the collateral in the Loan brand at which they
+where `myWarningLevel` is the value of the collateral in the Loan brand at which they
 want a reminder to add collateral.
 
 ## Liquidating
