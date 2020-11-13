@@ -94,9 +94,10 @@ test('loan contract', async t => {
     Loan: loanPayment,
   });
 
-  const lenderSeat = await E(zoe).offer(lendInvitation, proposal, payments);
+  const lenderSeatPromise = E(zoe).offer(lendInvitation, proposal, payments);
 
-  const borrowInvitation = await E(lenderSeat).getOfferResult();
+  // E() can operate on a promise for an object. This enables promise pipelining.
+  const borrowInvitationPromise = E(lenderSeatPromise).getOfferResult();
   // #endregion lend
 
   const collateralPayment = collateralMint.mintPayment(allCollateralAmount);
@@ -110,35 +111,37 @@ test('loan contract', async t => {
   const borrowerPayments = {
     Collateral: collateralPayment,
   };
-  const borrowSeat = await E(zoe).offer(
-    borrowInvitation,
+  const borrowSeatPromise = E(zoe).offer(
+    borrowInvitationPromise,
     borrowerProposal,
     borrowerPayments,
   );
 
-  const borrowFacet = E(borrowSeat).getOfferResult();
+  const borrowFacetPromise = E(borrowSeatPromise).getOfferResult();
   // #endregion borrow
 
   const invitationIssuer = await E(zoe).getInvitationIssuer();
 
   // #region closeLoanInvitation
-  const closeLoanInvitation = await E(borrowFacet).makeCloseLoanInvitation();
+  const closeLoanInvitationPromise = E(
+    borrowFacetPromise,
+  ).makeCloseLoanInvitation();
   // #endregion closeLoanInvitation
 
   // #region addCollateralInvitation
-  const addCollateralInvitation = await E(
-    borrowFacet,
+  const addCollateralInvitationPromise = E(
+    borrowFacetPromise,
   ).makeAddCollateralInvitation();
   // #endregion addCollateralInvitation
 
   // #region debtNotifier
-  const debtNotifier = await E(borrowFacet).getDebtNotifier();
-  const state = await debtNotifier.getUpdateSince();
+  const debtNotifierPromise = E(borrowFacetPromise).getDebtNotifier();
+  const state = await E(debtNotifierPromise).getUpdateSince();
   t.deepEqual(state.value, maxLoan);
   // #endregion debtNotifier
 
-  t.truthy(await E(invitationIssuer).isLive(closeLoanInvitation));
-  t.truthy(await E(invitationIssuer).isLive(addCollateralInvitation));
+  t.truthy(await E(invitationIssuer).isLive(closeLoanInvitationPromise));
+  t.truthy(await E(invitationIssuer).isLive(addCollateralInvitationPromise));
 
   const liquidationTriggerValue = loanMath.make(1000);
   const liquidate = () => {};

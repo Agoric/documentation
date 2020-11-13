@@ -68,18 +68,17 @@ Therefore, the lender cannot `want` anything in their proposal.
 The lender must be able to exit on demand until borrowing occurs. If
 the exit rule was `waived`, a borrower could hold on to their
 invitation and effectively lock up the lender's escrowed loan amount
-forever.  When the borrowing occurs, the collateral is moved to a
-special collateral seat to prevent the lender from exiting with
-collateral before the contract ends due to repayment or liquidation.
+forever.
 
 <<< @/snippets/zoe/contracts/test-loan.js#lend
 
 ## The Borrower
 
 The borrower receives an invitation to join, makes an offer with Zoe
-escrowing their collateral, and receives their loan. The borrower seat
-is exited at this point so the borrower gets the payout of their loan,
-but the borrower also gets an object (`borrowFacet`) as their `offerResult` that
+escrowing their collateral, and receives their loan. The collateral is
+moved to an internal seat called the `collateralSeat`, and the borrower seat
+is exited at this point so the borrower gets the payout of their loan.
+The borrower also gets an object (`borrowFacet`) as their `offerResult` that
 lets them continue interacting with the contract.
 
 <<< @/snippets/zoe/contracts/test-loan.js#borrow
