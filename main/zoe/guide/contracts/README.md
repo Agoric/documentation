@@ -42,8 +42,6 @@ These contracts create various sorts of financial instrument.
 ## Generic Sales/Trading Contracts
 
 These contracts involve trading or selling ERTP digital assets.
-Some contracts are restricted to non-fungible tokens, but most can be
-instantiated with either fungible or non-fungible tokens.
 
 - [Sell Items](./sell-items.md) - A generic sales contract, mostly
   used for selling NFTs for money.
