@@ -1,12 +1,22 @@
-# The Chainlink Oracle Query Contract
+# The Low-level Oracle Query Contract
 
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/oracle.js) (Last updated: 5-NOV-2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-This contract allows other contracts or users to make queries to an
-external oracle. The queries can be free, or require a fee. 
+**NOTE: You almost certainly do not want to use this contract directly.
+Instead, please read the [Chainlink integration
+documentation](/chainlink-integration.md)**
+
+This contract allows other contracts or users to make single queries to a generic
+oracle. The queries can be free, or require a fee.  This provides a very
+low-level API to issue single queries that are answered by an individual
+off-chain oracle node.
+
+Relying on just a single node can be both expensive and risky. Instead, use the
+higher-level APIs described in the [Chainlink integration
+documentation](/chainlink-integration.md).
 
 ## Making a Free Query
 

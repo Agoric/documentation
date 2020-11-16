@@ -1,0 +1,68 @@
+# Chainlink Integration
+
+This document explains how you can consume [Chainlink
+oracles](https://chain.link) when unit testing, integration testing, and
+actually on-chain.
+
+## Overview
+
+Using Chainlink on Agoric provides two main features:
+- price feeds exposed on Agoric via the on-chain `home.priceAuthority`, an
+  officially-sponsored [price authority](/zoe/guide/price-authority.md) built
+  from aggregating several Chainlink nodes.
+- [Chainlink's Any API](https://docs.chain.link/docs/request-and-receive-data)
+  to initiate a job on a single oracle and return its results
+
+These features have been tested with [actual Chainlink oracle
+software](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
+
+However, it is important to note that Chainlink is still in the process of
+setting up an incentivized testnet for established Chainlink node operators to
+connect to Agoric.
+
+## Price Authority
+
+To test your contract against a locally-simulated price authority, just follow
+the instructions in [the Price Authority API](/zoe/guide/price-authority.md).
+
+If you want to use the curated on-chain price authority, you can find it at
+`home.priceAuthority`.  Here is a sample of getting a quote for selling `30
+Testnet.$LINK` in `Testnet.$USD`:
+
+(Note that this is a mock price until there are actual Chainlink nodes on the
+testnet).
+
+```js
+const linkIssuer = E(home.wallet).getIssuer('Testnet.$LINK');
+const linkMath = await makeLocalAmountMath(linkIssuer);
+const linkBrand = await E(linkIssuer).getBrand();
+const { decimalPlaces: linkDecimals } = await E(linkBrand).getDisplayInfo();
+const linkAmount = linkMath.make(30 * 10 ** linkDecimals);
+const usdBrand = await E(E(home.wallet).getIssuer('Testnet.$USD')).getBrand();
+const { decimalPlaces: usdDecimals } = await E(usdBrand).getDisplayInfo();
+const { quoteAmount: { value: [{ amountOut: usdAmount, timestamp }] } } = await E(home.priceAuthority).quoteGiven(linkAmount, usdBrand);
+const linkValue = linkAmount.value / 10 ** linkDecimals;
+const usdValue = usdAmount.value / 10 ** usdDecimals;
+console.log(linkValue, 'Testnet.$LINK trades for', usdValue, 'Testnet.$USD');
+// 30 Testnet.$LINK trades for 12 Testnet.$USD
+```
+
+## Any API
+
+In order to use Chainlink's Any API, you will need to obtain an instance of the
+[Low-level Oracle Query Contract](/zoe/guide/contracts/oracle.md) and submit a
+query of the form:
+
+```js
+{
+  jobId: <Chainlink JobId>,
+  params: { ...<job parameters> }
+}
+```
+
+The string `result` data that the oracle node returns will be sent as the
+response to your query.
+
+You can test these queries against a locally-running Chainlink node that you
+control by following [the Chainlink integration
+instructions](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
