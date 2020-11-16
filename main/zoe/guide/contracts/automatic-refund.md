@@ -8,7 +8,7 @@
 This is a very trivial contract to explain and test Zoe.
 AutomaticRefund just gives you back what you put in. AutomaticRefund
 tells Zoe to exit the seat, which gives the user their payout
-through Zoe. Other contracts will use these same steps, but they will
+through Zoe. Other contracts use these same steps, but they
 have more sophisticated logic and interfaces.
 
 Since the contract doesn't attempt any reallocation, the offer can contain

@@ -9,8 +9,8 @@ Sell items in exchange for money. Items may be fungible or
 non-fungible and multiple items may be bought at once. Money must be
 fungible.
 
-The `pricePerItem` is to be set in the terms. It is expected that all
-items are sold for the same uniform price.
+The `pricePerItem` is set in the terms. It is expected that all
+items sell for the same uniform price.
 
 The initial offer should be `{ give: { Items: items } }`, accompanied by
 terms as described above. Buyers use offers that match `{ want: {
@@ -20,6 +20,6 @@ money should be pricePerItem times the number of items requested.
 
 When all the items have been sold, the contract will terminate,
 triggering the creator's payout. If the creator has an onDemand exit
-clause, they can exit early to collect their winnings. The remaining
+clause, they can exit early to collect their earnings. The remaining
 items will still be available for sale, but the creator won't be able
 to collect later earnings.

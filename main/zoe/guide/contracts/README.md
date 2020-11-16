@@ -19,13 +19,13 @@ pre-built contracts that can be imported and run on Zoe:
 
 ## DeFi Contracts
 
-These contracts create some sort of financial instrument.
+These contracts create various sorts of financial instrument.
 
 
 - [Call Spread](./callSpread.md) - Creates a pair of fully collateralized call spread
-  options. They are ERTP assets and can be used as such in other contracts.
+  options as ERTP assets. They can be used as such in other contracts.
 - [Loan Contract](./loan.md) - a basic collateralized loan contract.
-- [Covered Call](./covered-call.md) - Creates a call option, the right
+- [Covered Call](./covered-call.md) - Creates a call option, which is the right
   to buy an underlying asset.
 - [OTC Desk](./otc-desk.md) - A contract for giving quotes that can be
   exercised. The quotes are guaranteed to be exercisable because they
@@ -41,7 +41,7 @@ These contracts create some sort of financial instrument.
 
 ## Generic Sales/Trading Contracts
 
-These contracts involve the trading or selling of ERTP digital assets.
+These contracts involve trading or selling ERTP digital assets.
 Some contracts are restricted to non-fungible tokens, but most can be
 instantiated with either fungible or non-fungible tokens.
 
@@ -59,12 +59,12 @@ instantiated with either fungible or non-fungible tokens.
 ## Governance
 
 - [Escrow To Vote](./escrow-to-vote.md) - A coin voting contract in which
-  votes are weighted by the escrowed governance tokens
+  votes are weighted by the escrowed governance tokens.
 
 ## Minting
 
-- [Mint Payments](./mint-payments.md) - an example of minting fungible
-  tokens
+- [Mint Payments](./mint-payments.md) - An example of minting fungible
+  tokens.
 - [Mint and Sell NFTs](./mint-and-sell-nfts.md) - A contract that
   mints NFTs and sells them through a separate sales contract.
 

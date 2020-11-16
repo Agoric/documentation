@@ -7,9 +7,9 @@
 
 ![Building a Composable DeFi Contract](./assets/title.jpg)
 
-The OTC Desk contract from the ["Building a
-Composable DeFi Contract" Cosmos Code With Us
-episode](https://cosmos.network/series/code-with-us/building-a-composable-defi-contract).
+This is the OTC Desk contract from the ["Building a
+Composable DeFi Contract" episode of Cosmos Code With 
+Us](https://cosmos.network/series/code-with-us/building-a-composable-defi-contract).
 
 [Watch the replay of the
 workshop](https://www.youtube.com/watch?v=faxrecQgEio):
@@ -27,7 +27,7 @@ In this OTC Desk Contract:
 * Trades are atomic and “trustless”
 * Creator keeps all profits
 * Can use any pricing mechanism
-* Can stop quoting when market is crazy
+* Can stop quoting when the market is crazy
 * Can trade fungible and non-fungible digital assets
 * Uses another contract (the [covered call option contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall.js)) as a reusable component
 
