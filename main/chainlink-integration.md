@@ -66,3 +66,8 @@ response to your query.
 You can test these queries against a locally-running Chainlink node that you
 control by following [the Chainlink integration
 instructions](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
+
+If you want to use a more limited local node that emulates just a portion of the
+Chainlink API without having to run Docker containers, you can use the [local
+(mock) builtin
+oracle](https://github.com/agoric/dapp-oracle#running-a-local-builtin-oracle).
