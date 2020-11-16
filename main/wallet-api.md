@@ -1,169 +1,81 @@
-# Wallet API
+# Agoric Wallet
 
-This document lists and describes the API commands available to the
-wallet. Additionally, see [below for the wallet changes in Alpha](#wallet-changes-in-alpha).
-
-## Overview
-
-Wallet API commands work with the following object types:
-- `purse`: Stores assets until you withdraw them into a payment for use 
-- `issuer`: Creates empty purses and payments and maps minted assets
-  to them when assets are added or removed. Issuers verify and move
-  digital assets.
-- `offer`: Consists of what amount of what [brand](/ertp/guide/amounts.md#brands)
-  you're willing to
-  give, and what amount of what brand you want, as well as the
-  conditions under which the offer holder can cancel it.## Petnames
+This page documents that *Agoric Wallet*, including its use of *petnames*, its place in the Agoric Platform
+architecture, accessing it via the *REPL* (*Read-Eval-Print Loop*), and the Wallet
+API. Additionally, see [below for the wallet changes in Alpha](#wallet-changes-in-alpha).
 
 ## Petnames
 
-The Agoric wallet uses *petnames* for issuers and purses.
-
-Petnames are your personal names for objects. No one else can see or
+Before we get into the Wallet itself, you should know about *petnames*,
+which are your personal names for objects. No one else can see or
 modify a petname without your permission. You can think of them as
 your phone's contacts list. The actual phone number is what your phone
 uses to call someone, but for you to more easily tell who a number is
 associated with, you've assigned a petname to it, such as Mom,
-Grandpa, Kate S., etc.
+Grandpa, Kate S., etc. Different people can have different petnames for
+different objects. For example, the same person is "Mom" to you, "Mimi"
+to her granddaughter, and "Mrs. Watson" to many others.
 
-## Purse API Methods
+Your Wallet manages your petnames for Dapps, asset types, issuers, etc. 
 
-### `deposit(pursePetname, payment)`
-- `pursePetname`  `{ String }`
-- `payment`  `{ Payment }`
-- Returns: The deposited amount.
+## Wallet and Agoric Architecture
 
-Deposits the specified payment into the specified purse in the wallet. Returns the deposited amount.
+The Agoric System consists of interconnected Agoric VMs. Some are 
+on the blockchain, some are local. The Wallet is a user's trusted 
+agent for interacting with the Agoric VM network.
 
-### `getPurses()`
-- Returns:  Promises for all `purse` objects and their petnames in the wallet via an array of [petname, promise] arrays.
+We also have Dapps (*Decentralized applications*), which are Web UIs 
+that interact with Agoric VMs. Dapps have their own agendas...which
+may include wanting to steal assets from Wallets. 
 
-The returned array of arrays can be turned into a `Map` (`new Map(getPurses())`).
+An *Ag-Solo* is a single off-chain Agoric VM. They have their own UI
+and way of communicating with chains (including multiple chains and
+network connections). They serve as entry points into the Agoric System.
 
-### `getPurse(pursePetname)`
-- `pursePetName`  `{String}`
-- Returns: A promise for the `purse` object with the given petname
-- Errors: Throws an error if there is no purse with the given petname.
+When you run `agoric start`, you get a private ag-solo that runs your 
+private wallet. The wallet is a user's *trusted agent*. It lets you
+enable or disable inbound connections from Dapps and approve or decline
+proposals from those Dapps you enabled. 
 
-### `getPurseIssuer(petname)`
--  `petname`  `{String}`
-- Returns: The `issuer` object associated with the purse.
-- Errors: Throws an error if given an invalid purse petname. 
+The way this works in the Wallet's UI is via the *proposals* that are
+part of a Zoe *offer*; a Dapp says it wants the user to offer something.
+The wallet expresses that request/offer in a popup, and the user indicates
+they want to enact or decline it. 
 
-Given a purse's petname, returns the `issuer` object associated with the purse. 
+Dapps can be anywhere; they can be web apps interacting with wallets, 
+usually because they want your money and/or help you exchange something
+with someone else. They may even want to give you something for free. 
+But a Dapp's main use is exhanging something on the chain, in addition
+to controling what access they have and managing the proposals.
 
-### `makeEmptyPurse(issuerPetname, pursePetname)`
-- `issuerPetname` `{String}`
-- `pursePetname` `{String}`
-- Returns: A new, empty, `purse` object.
-- Errors: There is already a purse in this wallet with the name of `pursePetname`'s value.   
+The Agoric Chain is made up of validators that are on-chain Agoric VMs. Validators are not regular clients Validator consensus is what makes the chain accept or reject
 
-Creates and returns a new, empty, purse object with specified petname, which uses the issuer with the specified petname.
+## Wallet Bridge protocol
 
-## Issuer API Methods
+## Petnames and paths
 
-### `addIssuer(issuerPetname, issuer, brandRegKey)`
-- `issuerPetname` `{String}`
-- `issuer` `{Issuer}`
-- `brandRegKey` `{String}` Optional
+The wallet bridge protocol is migrating petnames to *paths*. All former petnames
+are now either a *path* or still a plain string. A path is an array of strings
+whose first element is the user's petname for a Dapp. Dapps must be able to
+work with either plain string petnames or array-of-strings paths. 
 
-Assigns the given petname to a given `issuer` object, and adds the issuer to the wallet. `brandRegKey` is a key in the Registry, whose value is the `brand` object associated with the issuer.
-
-### `getIssuers()`
-- Returns: All issuers associated with the wallet and their petnames as an array of arrays of the format `[[issuerPetname, issuer], ...]`. 
-
-You can use `getIssuers()` to make a new map of petnames to issuers by doing `new Map(getIssuer())` 
-
-### `getIssuerNames(issuer)`
-- `issuer` `{issuer}`
-- Returns: The petname and brandRegKey of the specified  `issuer` object.
-
-## Offer API Methods
-
-### `acceptOffer(id)`
-- `id` `{String}`
-- Errors: If the offer has already been resolved or rejected. 
-
-Makes the id-specified offer to the target contract. It approves a proposal added by `addOffer()` and submits an offer to the contract instance on behalf of the  user. Changes the specified offer's status to "accepted" in the wallet inbox. 
-
-### `addOffer(rawOffer, hooks)`  
-- `rawOffer` `{Object}`
-- `hooks` `{Hooks}` Optional
-- Returns: The offer's id.
-
-Adds a new proposal to the wallet's inbox that the user can approve to make an  offer to a contract invitation. The `rawOffer` is a potential offer sent from the Dapp UI to be looked at by the user. The `hooks` instruct the wallet to do actions before or after the offer is made, such as getting an invite from the `publicAPI` in order to make an offer. 
-
-`hooks` format is: 
-```js
-hooks[targetName][hookName] = [hookMethod, ...hookArgs]
-```
-
-Within the wallet, hooks are called as:
-```js
-E(target)[hookMethod](...hookArgs)
-```
-
-For example:
-
-```Js
-`hooks: {
-     publicAPI: {
-        getInvite: ['makeInvite'], // E(publicAPI).makeInvite()
-     },
-}
-``` 
-
-### `cancelOffer(id)`
-- `id` `{String}`
-- Returns: `true` if successful, `false` if not.
-- Errors: Returns `false` if the offer was not made with the exit rule `onDemand`, throws if the offer was already completed.
-
-Cancels the id-specified offer in the contract instance and changes its status in the wallet inbox to "cancel". 
-
-### `declineOffer(id)`
-- `id` `{String}`
-
-Changes the status of the id-specified offer in the wallet inbox to "decline". 
-
-### `getOffers()`
-- Returns: An array of the `offer` objects associated with the wallet, sorted by
-id. 
-
-### `getOfferHandle: id => idToOfferHandle.get(id)()`
-- `id` `{String}`
-- Returns: The `offerHandle` object associated with the specified offer id. 
-
-### `getOfferHandles: ids => ids.map(wallet.getOfferHandle)()`
-- Returns: An array of all the `offerHandle` objects for offers in the
-    wallet's inbox 
-
-## `hydrateHooks(hooks)`
-- `hooks` `{hooks}`
-
-Uses the `hooks` data from the offer to create a function call with arguments. For example, the Dapp UI might use the hooks data to instruct the wallet to get an invite from a contract's publicAPI. 
-
-## Wallet Changes in Alpha
-
-### Dapp approvals
-
-The wallet now prompts the user to accept the Dapp after your Dapp sends the first message over the wallet bridge, postponing your Dapp's wallet interactions until the user approves the connection.  If you aren't receiving responses from the wallet bridge, it is probably because your Dapp has not yet been approved.
-
-If you want to suggest a particular name for your Dapp, you will have
-to add `?suggestedDappPetname=XXX` to the `wallet-bridge.html` iframe
-src URL, as done in the [Fungible
-Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L137).
-
-### Petname to path migration
-
-There is a migration in progress for the wallet bridge protocol.  Anything that used to be a "petname" is now either still a petname (a plain string), or a "path" (an array of strings whose first element is the user's petname for your Dapp).  You will have to adapt your Dapp to be able to use arrays-of-strings wherever you initially had just plain string petnames.
-
-A simple way to do this is to `JSON.stringify(petnameOrPath)` before using them in a programmatic string-only context (such as a key in a Map or Set, or an attribute value of an HTML element, such as an ID).  If you display paths to users, you should join their elements with `'.'`, ideally coloring the first element differently than the dots and other elements.  This is because the first element is a trusted, user-assigned petname for the Dapp, and the other elements are automatically generated by the Dapp or wallet, and have no special relationship to the user.
+They can do this via `JSON.stringify(petnameOrPath)` before using the `petnameOrPath` in
+a programmatic string-only context (such as a key in a Map or Set, or an HTML element's 
+attribute value, such as an ID).  When displaying a path to users, you should join its
+elements with `'.'`. If in an IDE, you should ideally coloring the first element 
+differently from the dots and other elements. The first element is a trusted, 
+user-assigned petname for the Dapp, while the other elements were automatically 
+generated by the Dapp or wallet. Thus, they have no special relationship to the user.
 
 ### Dapp-specific path suggestions
 
-Your Dapp should suggest names for any Installations, Instances, or Issuers that the wallet user will interact with.  Once accepted, these will be returned to your Dapp as paths (arrays of strings, above) beginning with the user's petname for the Dapp.
+Your Dapp should suggest names for any Installations, Instances, or Issuers wallet users
+will interact with. When a wallet accepts them, it returns them to the Dapp as paths (arrays 
+of strings) that start with the user's petname for the Dapp.
 
-For example, here are [the messages that the Fungible Faucet Dapp sends](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L145) over the wallet bridge:
+For example, here are [the messages that the Fungible Faucet Dapp 
+sends](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L145) 
+over the wallet bridge:
 
 ```js
     // Our issuer will default to something like `FungibleFaucet.Installation`.
@@ -184,4 +96,249 @@ For example, here are [the messages that the Fungible Faucet Dapp sends](https:/
       petname: 'Token',
       boardId: TOKEN_ISSUER_BOARD_ID,
     });
- ``
+ ```
+
+
+## Dapp interaction
+
+## Overview
+
+Wallet API commands work with the following object types:
+- `purse`: Stores assets until you withdraw them into a payment for use 
+- `issuer`: Creates empty purses and payments and maps minted assets
+  to them when assets are added or removed. Issuers verify and move
+  digital assets.
+- `offer`: Consists of what amount of what [brand](/ertp/guide/amounts.md#brands)
+  you're willing to
+  give, and what amount of what brand you want, as well as the
+  conditions under which the offer holder can cancel it.## Petnames
+
+## Purse API Methods
+
+### `deposit(pursePetname, payment)`
+- `pursePetname`  `{ String }`
+- `payment`  `{ Payment }`
+- Returns: The deposited amount.
+
+Deposits the specified payment into the specified purse in the wallet. Returns the deposited amount.
+
+**Note**: `deposit()` has a special case. Since Zoe invitations are represented as ERTP payments,
+a wallet receives invitations and uses `deposit()` to put them in an invitation-branded purse.
+
+```js
+wallet.deposit('myQuatloosPurse', quatloosPayment);
+```
+
+### `getPurses()`
+- Returns:  Promises for all `purse` objects in the wallet and their 
+petnames via an array of [petname, promise] arrays.
+
+The returned array of arrays can be turned into a `Map` (`new Map(getPurses())`).
+```js
+const walletPurses = await wallet.getPurses();
+```
+
+### `getPurse(pursePetname)`
+- `pursePetName`  `{String}`
+- Returns: A promise for the `purse` object with the given petname
+- Errors: Throws an error if there is no purse with the given petname.
+
+Returns a promise for the `purse` object associated with the given petname.
+
+```js
+const quatloosPurse = await wallet.getPurse('myQuatloosPurse');
+```
+**Note**: Since Zoe invitations are ERTP payments, wallets hold invitations
+in purses associated with an invitation brand. To access the default purse
+for invitations, do:
+```js
+const invitePurse = wallet.getPurse(ZOE_INVITE_PURSE_PETNAME); 
+```
+
+### `getPurseIssuer(petname)`
+-  `petname`  `{String}`
+- Returns: The `issuer` object associated with the purse.
+- Errors: Throws an error if given an invalid purse petname. 
+
+Given a purse's petname, returns the `issuer` object associated with the purse. 
+
+### `makeEmptyPurse(brandPetname, pursePetname)`
+- `brandPetname` `{String}`
+- `pursePetname` `{String}`
+- Returns: A new, empty, `purse` object.
+- Errors: There is already a purse in this wallet with the name of `pursePetname`'s value.   
+
+Creates and returns a new, empty, purse object with the specified petname, which contains assets 
+of the specified brand petname, and uses that brand's associated issuer.
+```js
+const myFunMoneyQuatloosPurse = await wallet.makeEmptyPurse('quatloos', 'fun money');
+```
+
+## Issuer API Methods
+
+### `addIssuer(issuerPetname, issuer, brandRegKey)(petnameForBrand, issuer, makePurse = false)`
+- `petnameForBrand` `{String}`
+- `issuer` `{Issuer}`
+- `makePurse` `{Boolean}` Optional
+- Returns: The string `issuer ${q(petnameForBrand)} successfully added to wallet`
+
+Adds the specified issuer to the wallet. The issuer's associated brand is given the specified
+petname. If the optional `makePurse` argument is `true`, it makes a new purse in the wallet for
+the issuer's brand. 
+```js
+await wallet.addIssuer('quatloos', quatlooIssuer);
+```
+
+### `getIssuer(petname)`
+- `petname` `{String}`
+- Returns: The issuer in the wallet with the specified petname.
+```
+const quatloosIssuer = wallet.getIssuer('quatloosIssuer');
+```
+
+### `getIssuers()`
+- Returns: All issuers associated with the wallet and their petnames as an 
+  array of arrays of the format `[[issuerPetname, issuer], ...]`. 
+
+Use `getIssuers()` to make a new map of petnames to issuers by doing `new Map(getIssuer())` 
+```js
+const walletIssuers = wallet.getIssuers();
+```
+
+### `getIssuerNames(issuer)` tyg todo: Appears to have been deprecated?
+- `issuer` `{issuer}`
+- Returns: The petname and brandRegKey of the specified  `issuer` object.
+
+### `suggestIssuer(suggestedPetname, issuerBoardId, dappOrigin = undefined)`
+- `suggestedPetname` `{String}`
+- `issuerBoardId` = `{String}`
+- `dappOrigin` = `{tyg todo: Not sure what should go here}` optional, defaults to `undefined`.
+Returns: **tyg todo: Not sure**
+
+Gets the issuer from its associated Board ID. If not already in the wallet, it adds the
+issuer to the wallet. If the issuer is added, an empty purse associated with it is also created
+and added to the wallet. The issuer is given the specified petname. **tyg todo: Not sure what
+dappOrigin is or how it's used**
+
+
+## Offer API Methods
+
+### `acceptOffer(id)`
+- `id` `{String}`
+- Errors: If the offer has already been resolved or rejected. 
+
+Makes the id-specified offer to the target contract. It approves a proposal added by `addOffer()` and submits an offer to the contract instance on behalf of the  user. Changes the specified offer's status to "accepted" in the wallet inbox. 
+
+### `addOffer(rawOffer, requestContext = {})`  
+- `rawOffer` `{Object}`
+- `requestContext` **tyg todo Not sure what should go here other than Optional and {} default**
+- Returns: The offer's Board id.
+
+Adds a new proposal to the wallet's inbox that the user can approve to make an 
+offer to a contract invitation. The `rawOffer` is a potential offer sent from the
+Dapp UI to be looked at by the user. Its invitation is extracted from the wallet's invitation
+purse. **tyg todo Not sure what requestContext does**
+
+
+
+### `cancelOffer(id)`
+- `id` `{String}`
+- Returns: `true` if successful, `false` if not.
+- Errors: Returns `false` if the offer was not made with the exit rule `onDemand`, throws if the offer was already completed.
+
+Cancels the id-specified offer in the contract instance and changes its status in the wallet inbox to "cancel". 
+
+### `declineOffer(id)`
+- `id` `{String}`
+
+Changes the status of the id-specified offer in the wallet inbox to "decline". 
+
+### `getOffers()`
+- Returns: An array of the `offer` objects associated with the wallet, sorted by
+id. 
+
+### `getOfferHandle: id => idToOfferHandle.get(id)()`.  tyg todo: Appears to be deprecated?
+- `id` `{String}`
+- Returns: The `offerHandle` object associated with the specified offer id. 
+
+### `getOfferHandles: ids => ids.map(wallet.getOfferHandle)()` tyg todo: Appears to be deprecated?
+- Returns: An array of all the `offerHandle` objects for offers in the
+    wallet's inbox 
+
+## `hydrateHooks(hooks)` tyg todo: Appears to be deprecated?
+- `hooks` `{hooks}`
+
+Uses the `hooks` data from the offer to create a function call with arguments. For example, the Dapp UI might use the hooks data to instruct the wallet to get an invite from a contract's publicAPI. 
+
+## Miscellaneous API Methods
+
+### `getInstance(petname)`
+- `petname` `{String}`
+- Returns: The instance object with the given petname. 
+```js
+const automaticRefundInstance = wallet.getInstance('automaticRefund');
+```
+**tyg todo: How is this associated with the wallet? Just the contract instance it's in?**
+
+### `suggestInstance(suggestedPetname, instanceBoardId, dappOrigin = undefined)`
+- `suggestedPetname` `{String}`
+- `instanceBoardId` = `{String}`
+- `dappOrigin` = `{tyg todo: Not sure what should go here}` optional, defaults to `undefined`.
+Returns: **tyg todo: Not sure**
+
+Gets the instance from its associated Board ID. If not already in the wallet, it adds the
+instance to the wallet. The instance is given the specified petname. **tyg todo: Not sure what
+dappOrigin is or how it's used**
+```js
+automaticRefundInstance = await wallet.suggestInstance(
+    'automaticRefund', 
+    automaticRefundInstanceBoardId, 
+  ); 
+```
+
+### `getInstallation(petname)`
+- `petname` `{String}`
+- Returns: The installation object with the given petname. 
+```js
+const automaticRefundInstallation = wallet.getInstallation('automaticRefund');
+```
+**tyg todo: How is this associated with the wallet? Just the contract installation it's in?**
+
+### `suggestInstallation(suggestedPetname, installationBoardId, dappOrigin = undefined)`
+- `suggestedPetname` `{String}`
+- `installationBoardId` = `{String}`
+- `dappOrigin` = `{tyg todo: Not sure what should go here}` optional, defaults to `undefined`
+Returns: **tyg todo: Not sure**
+
+Gets the installation from its associated Board ID. If not already in the wallet, it adds the
+installation to the wallet. The installation is given the specified petname. **tyg todo: Not sure what
+dappOrigin is or how it's used**
+```js
+const automaticRefundInstallation = await wallet.suggestInstallation(
+    'automaticRefund', 
+     automaticRefundInstallationBoardId, 
+  ); 
+```
+** await wallet.renameInstallation('automaticRefund2', installation); 
+
+### `getSeat(id)`
+
+### `getSeats([id])
+** const seats = wallet.getSeats(harden([id])); 
+**  const seat = wallet.getSeat(id); 
+.getPurse('Default Zoe invite purse');  (this and previous special cases
+
+
+
+
+## Wallet Changes in Alpha
+
+### Dapp approvals
+
+The wallet now prompts the user to accept the Dapp after your Dapp sends the first message over the wallet bridge, postponing your Dapp's wallet interactions until the user approves the connection.  If you aren't receiving responses from the wallet bridge, it is probably because your Dapp has not yet been approved.
+
+If you want to suggest a particular name for your Dapp, you will have
+to add `?suggestedDappPetname=XXX` to the `wallet-bridge.html` iframe
+src URL, as done in the [Fungible
+Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L137).
+
