@@ -16,18 +16,15 @@ Using Chainlink on Agoric provides two main features:
 We have tested these features with [actual Chainlink oracle
 software](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
 
-However, it is important to note that Chainlink is still in the process of
-setting up an incentivized testnet for established Chainlink node operators to
-connect to Agoric.
+**Note**: Chainlink has not yet (as of 2020-11-16) finished setting up an incentivized testnet for established Chainlink node operators to connect to Agoric.
 
 ## Price Authority
 
 To test your contract against a locally-simulated price authority, just follow
 the instructions in [the Price Authority API](/zoe/guide/price-authority.md).
 
-If you want to use the curated on-chain price authority, you can find it at
-`home.priceAuthority`.  Here is a sample of getting a quote for selling `30
-Testnet.$LINK` in `Testnet.$USD`:
+To use the curated on-chain price authority, see `home.priceAuthority`.  For 
+example, to get a quote for selling `30 Testnet.$LINK` in `Testnet.$USD`:
 
 (Note that this is a mock price until there are actual Chainlink nodes on the
 testnet).
@@ -49,7 +46,7 @@ console.log(linkValue, 'Testnet.$LINK trades for', usdValue, 'Testnet.$USD');
 
 ## Any API
 
-In order to use Chainlink's Any API, you will need to obtain an instance of the
+To use Chainlink's Any API, you need to get an instance of the
 [Low-level Oracle Query Contract](/zoe/guide/contracts/oracle.md) and submit a
 query of the form:
 
@@ -60,7 +57,7 @@ query of the form:
 }
 ```
 
-The string `result` data that the oracle node returns will be sent as the
+The string `result` data the oracle node returns is sent as the
 response to your query.
 
 You can test these queries against a locally-running Chainlink node that you

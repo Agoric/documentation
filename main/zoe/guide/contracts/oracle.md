@@ -9,10 +9,9 @@
 Instead, please read the [Chainlink integration
 documentation](/chainlink-integration.md)**
 
-This contract allows other contracts or users to make single queries to a generic
-oracle. The queries can be free, or require a fee.  This provides a very
-low-level API to issue single queries that are answered by an individual
-off-chain oracle node.
+This contract lets other contracts or users make single free or fee-based queries to a generic
+oracle.  This provides a very
+low-level API to issue single queries that an individual off-chain oracle node answers.
 
 Relying on just a single node can be both expensive and risky. Instead, use the
 higher-level APIs described in the [Chainlink integration
@@ -61,6 +60,5 @@ accessible.
 The contract expects all `oracleHandlers` to offer the following API:
 
 <<< @/snippets/zoe/contracts/test-oracle.js#API
-
 
 
