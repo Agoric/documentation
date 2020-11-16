@@ -1,19 +1,19 @@
 # Chainlink Integration
 
-This document explains how you can consume [Chainlink
+This document explains how to consume [Chainlink
 oracles](https://chain.link) when unit testing, integration testing, and
 actually on-chain.
 
 ## Overview
 
 Using Chainlink on Agoric provides two main features:
-- price feeds exposed on Agoric via the on-chain `home.priceAuthority`, an
+- Price feeds are exposed on Agoric via the on-chain `home.priceAuthority`. This is an
   officially-sponsored [price authority](/zoe/guide/price-authority.md) built
   from aggregating several Chainlink nodes.
 - [Chainlink's Any API](https://docs.chain.link/docs/request-and-receive-data)
-  to initiate a job on a single oracle and return its results
+  can initiate a job on a single oracle and return its results
 
-These features have been tested with [actual Chainlink oracle
+We have tested these features with [actual Chainlink oracle
 software](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
 
 However, it is important to note that Chainlink is still in the process of
