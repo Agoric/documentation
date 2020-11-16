@@ -19,7 +19,7 @@ pre-built contracts that can be imported and run on Zoe:
 
 ## DeFi Contracts
 
-These contracts create various sorts of financial instrument.
+These contracts create various sorts of financial instruments.
 
 
 - [Call Spread](./callSpread.md) - Creates a pair of fully collateralized call spread
