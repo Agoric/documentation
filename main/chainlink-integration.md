@@ -57,14 +57,14 @@ query of the form:
 }
 ```
 
-The string `result` data the oracle node returns is sent as the
-response to your query.
+The oracle node returns its result, which is a JSONable value such as a string.
+This is sent as your query's reply.
 
 You can test these queries against a locally-running Chainlink node that you
-control by following [the Chainlink integration
-instructions](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
+control.  Follow [the Chainlink integration
+instructions](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md)
+to set it up.
 
-If you want to use a more limited local node that emulates just a portion of the
-Chainlink API without having to run Docker containers, you can use the [local
-(mock) builtin
+There is also a more limited local node that emulates part of the Chainlink API
+without having to run Docker containers.  This is the [local (mock) builtin
 oracle](https://github.com/agoric/dapp-oracle#running-a-local-builtin-oracle).
