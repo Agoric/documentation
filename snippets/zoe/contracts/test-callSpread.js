@@ -33,7 +33,7 @@ test('callSpread, mid-strike', async t => {
     brands,
   } = setup();
   const contractBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/callSpread'),
+    require.resolve('@agoric/zoe/src/contracts/callSpread/fundedCallSpread'),
   );
   const installation = await E(zoe).install(contractBundle);
 
