@@ -21,15 +21,23 @@ pre-built contracts that can be imported and run on Zoe:
 
 These contracts create various sorts of financial instruments.
 
-
-- [Call Spread](./callSpread.md) - Creates a pair of fully collateralized call spread
-  options as ERTP assets. They can be used as such in other contracts.
-- [Loan Contract](./loan.md) - a basic collateralized loan contract.
 - [Covered Call](./covered-call.md) - Creates a call option, which is the right
   to buy an underlying asset.
+- [Funded Call Spread](./fundedCallSpread.md) - Creates a pair of fully collateralized call spread
+  options. They are ERTP assets and can be used as such in other contracts. There are two variants
+  of this contract, which affect the way invitations are created. This version is fully funded by
+  the creator, who receives a matching pair of call spread options, which can be traded or sold
+  separately.
+- [Loan Contract](./loan.md) - a basic collateralized loan contract.
 - [OTC Desk](./otc-desk.md) - A contract for giving quotes that can be
   exercised. The quotes are guaranteed to be exercisable because they
   are actually options with the underlying assets escrowed.
+- [Priced Call Spread](./pricedCallSpread.md) - Creates a pair of fully collateralized call spread
+  options. They are ERTP assets and can be used as such in other contracts. There are two variants
+  of this contract, which affect the way invitations are created. In this version, the creator
+  requests a pair of options, each of which enables the holder to purchase a particular position at
+  a stated price. This version would be useful for a market maker who finds pairs of people with
+  matching requirements.
 
 ## Uniswap-like Constant Product AMMs
 

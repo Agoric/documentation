@@ -1,8 +1,8 @@
-# Funded Call Spread
+# Priced Call Spread
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread/fundedCallSpread.js) (Last updated: 17-NOV-2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread/pricedCallSpreads.js) (Last updated: 17-NOV-2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 This contract implements a fully collateralized call spread. You can use a call spread as a
@@ -13,14 +13,13 @@ higher price. A call spread has two participating seats that pay out complementa
 on the value of some good at a known future time. This video gives a
 [walkthrough of the implementation](https://youtu.be/m5Pf2d1tHCs?t=3566) of the contract.
 
-There are two variants of the callSpread. This one is fully funded by its creator, who can then sell
-(or transfer another way) the options to other parties. The other is called the
-[pricedCallSpread](./pricedCallSpread.md). It allow the creator to specify the price that two
-parties will pay, and give them each an invitation to buy a known position at a stated price.
+There are two variants of the callSpread. This one has the creator specify the price that two
+parties will pay and give them each an invitation to buy a known position at a stated price.  The
+other is called the [fundedCallSpread](./fundedCallSpread.md). It is fully funded by its creator,
+who can then sell (or otherwise transfer) the options to other parties.
 
-The Zoe invitations representing options are produced in pairs. In this variant, the creator
-deposits the entire amount that will be apportioned between the holders of the two positions. The
-individual options are Zoe invitations whose details are inspectable by prospective purchasers.
+The Zoe invitations representing options are produced in pairs.  The individual options are Zoe
+invitations whose details are inspectable by prospective purchasers.
 
 These options are settled financially. There is no requirement that the original purchaser have
 ownership of the underlying asset at the start, and the beneficiaries shouldn't expect to take
@@ -55,45 +54,44 @@ strikePrice2, settlementAmount }.
    stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
    asset in the strike currency.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#startInstance
+<<< @/snippets/zoe/contracts/test-callSpread.js#startInstancePriced
 
-## Creating the Options
+## Creating the Option Invitations
 
-The terms specify all the details of the options. However, the options are not handed out until the
-creator provides the collateral that will make them valuable.  The creatorInvitation has
-customProperties including the amounts of the two options: `longAmount` and `shortAmount`.
+The terms specify all the details of the options. A call to `creatorFacet.makeInvitationPair()` is
+required to specify the share (as a whole number percentage) that will be paid by the purchaser of
+the long position. It returns a pair of invitations.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#invitationDetails
+<<< @/snippets/zoe/contracts/test-callSpread.js#makeInvitationPriced
 
-The creator uses these option amounts to create an offer that ensures that they will get the two
-options in exchange for the funds. The proposal describes the desired options and provided
-collateral. When the offer is made, a payout is returned containing the two option positions. The
-positions are invitations which can be exercised for free, and provide the option payouts under the
-keyword `Collateral`.
+The creator gives these invitations to the two parties (or might retain one for their own use.) When
+Bob receives an invitation, he can extract the value of the call spread option that he wants to buy,
+and create a proposal. The collateral required is also in the option's details. The holders of the
+invitations can exercise with the required collateral to receive the actual call spread option
+positions. 
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#creatorInvitation
+<<< @/snippets/zoe/contracts/test-callSpread.js#exercisePricedInvitation
 
 ## Validating the Options
 
-The options returned by the contract are Zoe invitations, so their values and terms can be verified
-by asking for the contract terms.  This makes it possible to sell the options because a prospective
-purchaser will be able to inspect the value. The prospective purchaser can see that the
-priceAuthority is one they are willing to rely on and can verify the underlying amount.  They can
-check that the expiration matches their expectations (here `3` is a small integer suitable for a
-manual timer in a test; in actual use, it might represent block height or wall clock time.) The
-strike prices and settlement amount are likewise visible.
+The options are packaged as invitations so they are fully self-describing, and can be verified with
+Zoe, so their value is apparent to anyone who might be interested in them.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#verifyTerms
+<<< @/snippets/zoe/contracts/test-callSpread.js#validatePricedInvitation
+
+The details of the underlying call spread option are accessible from the terms associated with this
+instance of the contract.
+
+<<< @/snippets/zoe/contracts/test-callSpread.js#checkTerms-priced
 
 ## Options can be Exercised Independently
+
+ The option position invitations can be exercised for free, and provide their payouts under the
+keyword `Collateral`.
+
+<<< @/snippets/zoe/contracts/test-callSpread.js#bobExercise
 
 The contract doesn't rely on the options being exercised before the specified close. If either
 option is exercised after the closing price is determined, the payouts will still be available. The
 two options make their payment available as soon after exercise as the price is available, and
 neither waits for the other to exercise.
-
-<<< @/snippets/zoe/contracts/test-callSpread.js#bobExercise
-
-There is a
-[unit test](https://github.com/Agoric/agoric-sdk/blob/0b44d486390768fbf828e64ce52c99192f67ada0/packages/zoe/test/unitTests/contracts/test-callSpread.js#L440)
-showing how you could offer these options for sale using the SimpleExchange contract.
