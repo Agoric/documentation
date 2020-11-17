@@ -1,8 +1,7 @@
 # Agoric Wallet
 
 This page documents that *Agoric Wallet*, including its use of *petnames*, its place in the Agoric Platform
-architecture, accessing it via the *REPL* (*Read-Eval-Print Loop*), and the Wallet
-API. Additionally, see [below for the wallet changes in Alpha](#wallet-changes-in-alpha).
+architecture, accessing it via the *REPL* (*Read-Eval-Print Loop*), and the Wallet API. 
 
 ## Petnames
 
@@ -35,7 +34,8 @@ network connections). They serve as entry points into the Agoric System.
 When you run `agoric start`, you get a private ag-solo that runs your 
 private wallet. The wallet is a user's *trusted agent*. It lets you
 enable or disable inbound connections from Dapps and approve or decline
-proposals from those Dapps you enabled. 
+proposals from those Dapps you enabled. The Wallet is visible at
+`localhost:3000`.
 
 The way this works in the Wallet's UI is via the *proposals* that are
 part of a Zoe *offer*; a Dapp says it wants the user to offer something.
@@ -48,9 +48,15 @@ with someone else. They may even want to give you something for free.
 But a Dapp's main use is exhanging something on the chain, in addition
 to controling what access they have and managing the proposals.
 
-The Agoric Chain is made up of validators that are on-chain Agoric VMs. Validators are not regular clients Validator consensus is what makes the chain accept or reject
-
 ## Wallet Bridge protocol
+
+The *wallet bridge* is a web page with direct access to an Agoric Wallet. It provides
+the Dapp with a facet of an API. Dapps never talk directly to a Wallet, only to
+this bridge that knows where the Wallet is. So, for example, if a Dapp is running in
+`localhost:8000` and the Wallet in `localhost:3000`, they don't communicate directly.
+They do so by sending JSON-encoded messages through the wallet bridge.
+
+**tyg todo: What else should they know here?**
 
 ## Petnames and paths
 
@@ -98,10 +104,39 @@ over the wallet bridge:
     });
  ```
 
+## The Agoric Board
 
-## Dapp interaction
+Several Wallet API methods use *Agoric's Board*, a key-value "bulletin board" that
+lets users make data generally available. Users can post an Id for a value and 
+others can get the value just by knowing the Id. You can make Id(s) known by any 
+communication method you like; private email, an email blast to a mailing list 
+or many individuals, buying an ad on a website, tv program, or newspaper, 
+listing it on her website, etc.
 
-## Overview
+<<< @/snippets/ertp/guide/test-readme.js#getValue
+
+To get an object, such as a depositFacet, using the Board, first you have
+to be told what Board Id is associated with it. Using the `getValue()` method,
+you retrieve the reference to the depositFacet and can deposit payments into it. 
+
+## The Wallet UI
+
+**tyg todo: Working on**
+
+## Wallet API Overview
+
+You can interact with a Wallet via the JavaScript *REPL* (*Read-Eval-Print Loop*),
+which is visible at the bottom of the Wallet UI display. 
+In the REPL, you send message to `home.wallet`, which is the Wallet running on that
+page/process. Typing `E(home.wallet).foo()` in the REPL returns the names of all the Wallet
+API methods by the clever method of asking it to evaluate a non-existant API method and
+getting an error message listing all the valid methods.
+
+Running `agoric open --repl==only` opens a browser tab that shows only the REPL, and not
+the combination of Wallet UI and REPL area. When issuing commands to the Wallet from the
+REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. See 
+the [`E()` section](/distributed-programming.html#communicating-with-remote-objects-using-e) in 
+the Distributed JavaScript Programming Guide for more information about `E()`.
 
 Wallet API commands work with the following object types:
 - `purse`: Stores assets until you withdraw them into a payment for use 
@@ -109,9 +144,11 @@ Wallet API commands work with the following object types:
   to them when assets are added or removed. Issuers verify and move
   digital assets.
 - `offer`: Consists of what amount of what [brand](/ertp/guide/amounts.md#brands)
-  you're willing to
-  give, and what amount of what brand you want, as well as the
-  conditions under which the offer holder can cancel it.## Petnames
+  you're willing to give, and what amount of what brand you want, as well as the
+  conditions under which the offer holder can cancel it.
+- `seat`:
+- `instance`:
+- `installation`:
 
 ## Purse API Methods
 
@@ -128,6 +165,22 @@ a wallet receives invitations and uses `deposit()` to put them in an invitation-
 ```js
 wallet.deposit('myQuatloosPurse', quatloosPayment);
 ```
+
+### `enableAutoDeposit(pursePetname)`
+- `pursePetname` `{String}`
+- Returns: **tyg todo: Not sure**
+
+**tyg todo: Unclear what this does**
+
+### `disableAutoDeposit()`
+- `pursePetname` `{String}`
+- Returns: **tyg todo: Not sure**
+
+**tyg todo: Unclear what this does**
+
+### `getDepositFacetId(_brandBoardId)`
+- `_brandBoardId`:  **tyg todo: Doesn't seem to actually be used in the method?**
+- Returns: The Board id for the generic depositFacet. **tyg todo: Not sure what's meant by this generic thing?**
 
 ### `getPurses()`
 - Returns:  Promises for all `purse` objects in the wallet and their 
@@ -173,8 +226,14 @@ of the specified brand petname, and uses that brand's associated issuer.
 ```js
 const myFunMoneyQuatloosPurse = await wallet.makeEmptyPurse('quatloos', 'fun money');
 ```
+### `enableAutoDeposit(pursePetname)
+- `pursePetname` `{String}`
+- Returns: 
+
 
 ## Issuer API Methods
+
+Note: Click [`getPurseIssuer()`](#getpurseissuer-petname) to see its documentation.
 
 ### `addIssuer(issuerPetname, issuer, brandRegKey)(petnameForBrand, issuer, makePurse = false)`
 - `petnameForBrand` `{String}`
@@ -204,10 +263,21 @@ Use `getIssuers()` to make a new map of petnames to issuers by doing `new Map(ge
 ```js
 const walletIssuers = wallet.getIssuers();
 ```
+### `publishIssuer(brand)`
+- `brand` `{Brand}`
+- Returns: The Board ID of the issuer associated with the specified brand.
 
-### `getIssuerNames(issuer)` tyg todo: Appears to have been deprecated?
-- `issuer` `{issuer}`
-- Returns: The petname and brandRegKey of the specified  `issuer` object.
+Gets the issuer associated with the specified brand. If that issuer has an associated Board ID,
+the ID is returned. If not, the issuer is given a new board ID, which is returned.
+
+### `renameIssuer(petname, issuer)`
+- `petname` `{String}`
+- `issuer` `{Issuer}`
+- Returns: `issuer ${q(petname)} successfully renamed in wallet`
+
+Renames the specified issuer to have the specified petname. Error if the issuer is not
+in the wallet. 
+
 
 ### `suggestIssuer(suggestedPetname, issuerBoardId, dappOrigin = undefined)`
 - `suggestedPetname` `{String}`
@@ -225,9 +295,13 @@ dappOrigin is or how it's used**
 
 ### `acceptOffer(id)`
 - `id` `{String}`
+- Returns: **tyg todo: Not sure?**
 - Errors: If the offer has already been resolved or rejected. 
 
-Makes the id-specified offer to the target contract. It approves a proposal added by `addOffer()` and submits an offer to the contract instance on behalf of the  user. Changes the specified offer's status to "accepted" in the wallet inbox. 
+Makes the id-specified offer to the target contract. It approves 
+a proposal added by `addOffer()` and submits an offer to the contract
+instance on behalf of the  user. Changes the specified offer's status 
+to "accepted" in the wallet inbox. 
 
 ### `addOffer(rawOffer, requestContext = {})`  
 - `rawOffer` `{Object}`
@@ -239,8 +313,6 @@ offer to a contract invitation. The `rawOffer` is a potential offer sent from th
 Dapp UI to be looked at by the user. Its invitation is extracted from the wallet's invitation
 purse. **tyg todo Not sure what requestContext does**
 
-
-
 ### `cancelOffer(id)`
 - `id` `{String}`
 - Returns: `true` if successful, `false` if not.
@@ -250,27 +322,22 @@ Cancels the id-specified offer in the contract instance and changes its status i
 
 ### `declineOffer(id)`
 - `id` `{String}`
+- Returns: Undefined
 
 Changes the status of the id-specified offer in the wallet inbox to "decline". 
 
 ### `getOffers()`
 - Returns: An array of the `offer` objects associated with the wallet, sorted by
-id. 
+id.  
 
-### `getOfferHandle: id => idToOfferHandle.get(id)()`.  tyg todo: Appears to be deprecated?
-- `id` `{String}`
-- Returns: The `offerHandle` object associated with the specified offer id. 
+## Instance API Methods
 
-### `getOfferHandles: ids => ids.map(wallet.getOfferHandle)()` tyg todo: Appears to be deprecated?
-- Returns: An array of all the `offerHandle` objects for offers in the
-    wallet's inbox 
+**tyg todo: How is this associated with the wallet? Just the contract instance it's in?**
 
-## `hydrateHooks(hooks)` tyg todo: Appears to be deprecated?
-- `hooks` `{hooks}`
-
-Uses the `hooks` data from the offer to create a function call with arguments. For example, the Dapp UI might use the hooks data to instruct the wallet to get an invite from a contract's publicAPI. 
-
-## Miscellaneous API Methods
+### `addInstance(petname, instanceHandle)`
+- `petname` `{String}`
+- `instanceHandle` `{InstanceHandle}`
+- Returns: `instance ${q(petname)} successfully added to wallet`
 
 ### `getInstance(petname)`
 - `petname` `{String}`
@@ -278,8 +345,15 @@ Uses the `hooks` data from the offer to create a function call with arguments. F
 ```js
 const automaticRefundInstance = wallet.getInstance('automaticRefund');
 ```
-**tyg todo: How is this associated with the wallet? Just the contract instance it's in?**
+Gives the specified instance the specified petname, and adds the instalation to the wallet.
 
+### `renameInstance(petname, instance)`
+- `petname` `{String}`
+- `instance` `{Instance}`
+Returns: `instance ${q(petname)} successfully renamed in wallet`
+
+Renames the specified instance with the specified petname.
+  
 ### `suggestInstance(suggestedPetname, instanceBoardId, dappOrigin = undefined)`
 - `suggestedPetname` `{String}`
 - `instanceBoardId` = `{String}`
@@ -296,13 +370,33 @@ automaticRefundInstance = await wallet.suggestInstance(
   ); 
 ```
 
+## Installation API Methods
+
+**tyg todo: How is installation associated with the wallet? Just the contract installation it's in?**
+
+### `addInstallation(petname, installationHandle)`
+- `petname` `{String}`
+- `installationHandle` `{InstallationHandle}`
+- Returns: `installation ${q(petname)} successfully added to wallet`
+
+Gives the specified installation the specified petname, and adds the instalation to the wallet.
+
 ### `getInstallation(petname)`
 - `petname` `{String}`
 - Returns: The installation object with the given petname. 
+
 ```js
 const automaticRefundInstallation = wallet.getInstallation('automaticRefund');
 ```
-**tyg todo: How is this associated with the wallet? Just the contract installation it's in?**
+### `renameInstallation(petname, installation)`
+- `petname` `{String}`
+- `installation` `{Installation}`
+Returns: `installation ${q(petname)} successfully renamed in wallet`
+
+Renames the specified installation with the specified petname.
+```js
+await wallet.renameInstallation('automaticRefund2', installation); 
+```
 
 ### `suggestInstallation(suggestedPetname, installationBoardId, dappOrigin = undefined)`
 - `suggestedPetname` `{String}`
@@ -319,26 +413,62 @@ const automaticRefundInstallation = await wallet.suggestInstallation(
      automaticRefundInstallationBoardId, 
   ); 
 ```
-** await wallet.renameInstallation('automaticRefund2', installation); 
+
+## Contact API Methods
+
+### `getSelfContact()`
+
+**tyg todo: Don't know what's going on here**
+// Allow people to send us payments.
+  const selfContact = await addContact('Self', {
+    receive(payment) {
+      return addPayment(payment);
+    },
+  });
+
+### `addContact(petname, actions)`
+- `petname` `{String}`
+- `actions` `{}`
+Returns: 
+
+**tyg todo: Not sure what's going on here. In particular, what are "actions"? Code below**
+```js
+const addContact = async (petname, actions) => {
+    const already = await E(board).has(actions);
+    let depositFacet;
+    if (already) {
+      depositFacet = actions;
+    } else {
+      depositFacet = harden({
+        receive(paymentP) {
+          return E(actions).receive(paymentP);
+        },
+      });
+    }
+```
+### `getContactsNotifier()`
+- Returns: `{ContractsNotifier}`
+
+**tyg todo: Not sure what's going on. It seems to just return "contractsNotifier", but I don't know what that's for**
+
+## Seat API Methods
 
 ### `getSeat(id)`
+- `id` `{String}`
+- Returns: `{Seat}`
+
+Returns the seat that is the Board value associated with the specified id.
+```js
+const seat = wallet.getSeat(id); 
+```
 
 ### `getSeats([id])
-** const seats = wallet.getSeats(harden([id])); 
-**  const seat = wallet.getSeat(id); 
-.getPurse('Default Zoe invite purse');  (this and previous special cases
+- `[id]` `{[String]}`
+Returns an array of seat objects which are the Board values associated each of
+the ids in the specified array of ids.
+```js
+const seats = wallet.getSeats(harden([id])); 
+```
 
 
-
-
-## Wallet Changes in Alpha
-
-### Dapp approvals
-
-The wallet now prompts the user to accept the Dapp after your Dapp sends the first message over the wallet bridge, postponing your Dapp's wallet interactions until the user approves the connection.  If you aren't receiving responses from the wallet bridge, it is probably because your Dapp has not yet been approved.
-
-If you want to suggest a particular name for your Dapp, you will have
-to add `?suggestedDappPetname=XXX` to the `wallet-bridge.html` iframe
-src URL, as done in the [Fungible
-Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet/blob/6092d6648a7a773d299c79fecd44bb650f6cfa06/ui/public/src/main.js#L137).
 
