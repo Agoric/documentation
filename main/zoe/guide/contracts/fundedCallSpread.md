@@ -1,22 +1,23 @@
-# Call Spread
+# Funded Call Spread
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread.js) (Last updated: 03-NOV-2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread/fundedCallSpread.js)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 This contract implements a fully collateralized call spread. You can use a call spread as a
 [financial building block](https://youtu.be/m5Pf2d1tHCs) to create futures, puts, calls, and event
 binaries that would form the basis for a prediction market, insurance, and much more. A call spread
 is a combination of a call option bought at one strike price and a second call option sold at a
-higher price. A call spread has two participating seats that pay out
-complementary amounts depending on the value of some good at a known future time. This video gives
-a [walkthrough of the implementation](https://youtu.be/m5Pf2d1tHCs?t=3566) of the contract.
+higher price. A call spread has two participating seats that pay out complementary amounts depending
+on the value of some good at a known future time. This video gives a
+[walkthrough of the implementation](https://youtu.be/m5Pf2d1tHCs?t=3566) of the contract.
 
-The Zoe invitations representing the options are produced in
-pairs.  The creator deposits the entire amount that will be apportioned between the holders of
-the two positions. The individual options are ZOE invitations whose details are inspectable by
-prospective purchasers.
+There are two variants of the callSpread. This one is fully funded by its creator, who can then sell
+(or transfer another way) the options to other parties. The other is called the
+[pricedCallSpread](./pricedCallSpread.md). It allows the creator to specify the proportion of the
+collateral that should be provided by the two parties. Each get an invitation to contribute a stated
+amount of collateral for a particular position.
 
 These options are settled financially. There is no requirement that the original purchaser have
 ownership of the underlying asset at the start, and the beneficiaries shouldn't expect to take
@@ -24,24 +25,26 @@ delivery at closing.
 
 ## Issuers
 
-The Strike and Collateral currencies are often the same, however this contract decouples the
+The Strike and Collateral currencies are often the same, however these contracts decouple the
 currencies. You can have, for example, a spread based on APPL stock (`Underlying`), with the stock
-price in USD (`Strike`) and contract paying out in JPY (`Collateral`).
+price in USD (`Strike`) where the contract pays out in JPY (`Collateral`).
 
 The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike, and Collateral.
- * The asset whose eventual value determines the payouts uses `Underlying`. This is often a
-   fungible currency, but doesn't have to be. It would be perfectly sensible to have a call spread
-   contract on the value of a "Superior Magic Sword", as long as there was a price oracle to say
-   how its price varies over time.
+ * The asset whose eventual value determines the payouts uses `Underlying`. This is often a fungible
+   currency, but doesn't have to be. It would be perfectly valid to have a call spread contract on
+   the value of a "Superior Magic Sword", as long as there was a price oracle to determine its price
+   at the expiration time.
  * The original deposit and the payout use the `Collateral` issuer.
  * `Strike` amounts are used for the price oracle's quote as to the value of the Underlying, as
    well as the strike prices in the terms.
 
 ## Terms
 
-The terms include { timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
-strikePrice2, settlementAmount }.
- * `timer` is a timer, and must be recognized by `priceAuthority`.
+The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
+strikePrice2, settlementAmount }`.
+ * `timer` is a
+   [timer](https://github.com/Agoric/agoric-sdk/blob/master/packages/cosmic-swingset/TimerService.md),
+   and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.
@@ -61,7 +64,7 @@ customProperties including the amounts of the two options: `longAmount` and `sho
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#invitationDetails
 
-The creator can use these option amounts to create an offer that ensures that they will get the two
+The creator uses these option amounts to create an offer that ensures that they will get the two
 options in exchange for the funds. The proposal describes the desired options and provided
 collateral. When the offer is made, a payout is returned containing the two option positions. The
 positions are invitations which can be exercised for free, and provide the option payouts under the

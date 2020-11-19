@@ -30,10 +30,9 @@ test('callSpread, mid-strike', async t => {
     bucks,
     zoe,
     amountMaths,
-    brands,
   } = setup();
   const contractBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/callSpread'),
+    require.resolve('@agoric/zoe/src/contracts/callSpread/fundedCallSpread'),
   );
   const installation = await E(zoe).install(contractBundle);
 
@@ -55,10 +54,6 @@ test('callSpread, mid-strike', async t => {
     manualTimer,
   );
 
-  const quoteAuthority = await E(priceAuthority).getQuoteIssuer(
-    brands.get('simoleans'),
-    brands.get('moola'),
-  );
   // #region startInstance
   // underlying is 2 Simoleans, strike range is 30-50 (doubled)
   const terms = harden({
@@ -74,7 +69,6 @@ test('callSpread, mid-strike', async t => {
     Underlying: simoleanIssuer,
     Collateral: bucksIssuer,
     Strike: moolaIssuer,
-    Quote: quoteAuthority,
   });
 
   const { creatorInvitation } = await zoe.startInstance(
@@ -143,6 +137,146 @@ test('callSpread, mid-strike', async t => {
   t.truthy(moolaMath.isEqual(moola(100), carolTerms.strikePrice2));
   t.truthy(bucksMath.isEqual(bucks(300), carolTerms.settlementAmount));
   // #endregion verifyTerms
+
+  await E(manualTimer).tick();
+  await E(manualTimer).tick();
+  await E(manualTimer).tick();
+  await Promise.all([bobDeposit, carolDeposit]);
+});
+
+test('pricedCallSpread, mid-strike', async t => {
+  const {
+    moolaIssuer,
+    simoleanIssuer,
+    moola,
+    simoleans,
+    bucksIssuer,
+    bucksMint,
+    bucks,
+    zoe,
+    amountMaths,
+  } = setup();
+  const contractBundle = await bundleSource(
+    require.resolve('@agoric/zoe/src/contracts/callSpread/pricedCallSpread'),
+  );
+  const installation = await E(zoe).install(contractBundle);
+
+  // Setup Bob
+  const bobBucksPurse = bucksIssuer.makeEmptyPurse();
+  const bobBucksPayment = bucksMint.mintPayment(bucks(225));
+  // Setup Carol
+  const carolBucksPurse = bucksIssuer.makeEmptyPurse();
+  const carolBucksPayment = bucksMint.mintPayment(bucks(75));
+
+  const manualTimer = buildManualTimer(console.log, 0);
+  const priceAuthority = await makeTestPriceAuthority(
+    amountMaths,
+    [20, 45, 45, 45, 45, 45, 45],
+    manualTimer,
+  );
+
+  // #region startInstancePriced
+  // underlying is 2 Simoleans, strike range is 30-50 (doubled)
+  const terms = harden({
+    expiration: 3,
+    underlyingAmount: simoleans(2),
+    priceAuthority,
+    strikePrice1: moola(60),
+    strikePrice2: moola(100),
+    settlementAmount: bucks(300),
+    timer: manualTimer,
+  });
+  // Alice creates a pricedCallSpread instance
+  const issuerKeywordRecord = harden({
+    Underlying: simoleanIssuer,
+    Collateral: bucksIssuer,
+    Strike: moolaIssuer,
+  });
+  const { creatorFacet } = await zoe.startInstance(
+    installation,
+    issuerKeywordRecord,
+    terms,
+  );
+  // #endregion startInstancePriced
+
+  // #region makeInvitationPriced
+  const invitationPair = await E(creatorFacet).makeInvitationPair(75);
+  const { longInvitation, shortInvitation } = invitationPair;
+  // #endregion makeInvitationPriced
+
+  const simoleansMath = amountMaths.get('simoleans');
+  const bucksMath = amountMaths.get('bucks');
+
+  // region validatePricedInvitation
+  const invitationIssuer = await E(zoe).getInvitationIssuer();
+  const longAmount = await E(invitationIssuer).getAmountOf(longInvitation);
+  const longOptionValue = longAmount.value[0];
+  const longOption = longOptionValue.option;
+
+  t.is(installation, longOptionValue.installation);
+  t.is('long', longOptionValue.position);
+  t.is(225, longOptionValue.collateral);
+  // endregion validatePricedInvitation
+
+  // region checkTerms-priced
+  const bobTerms = await E(zoe).getTerms(longOptionValue.instance);
+  t.truthy(simoleansMath.isEqual(simoleans(2), bobTerms.underlyingAmount));
+  t.truthy(bucksMath.isEqual(bucks(300), bobTerms.settlementAmount));
+  // endregion checkTerms-priced
+
+  // Bob makes an offer for the long option
+  // region exercisePricedInvitation
+  const bobProposal = harden({
+    want: { Option: longOption },
+    give: { Collateral: bucks(longOptionValue.collateral) },
+  });
+  const bobFundingSeat = await zoe.offer(await longInvitation, bobProposal, {
+    Collateral: bobBucksPayment,
+  });
+  const bobOption = await bobFundingSeat.getPayout('Option');
+  // endregion exercisePricedInvitation
+
+  // region exercisePricedOption
+  // bob gets an option, and exercises it for the payout
+  const bobOptionSeat = await zoe.offer(bobOption);
+
+  const bobPayout = bobOptionSeat.getPayout('Collateral');
+  // region exercisePricedOption
+  const bobDeposit = assertPayoutDeposit(
+    t,
+    bobPayout,
+    bobBucksPurse,
+    bucks(225),
+  );
+
+  const shortAmount = await E(invitationIssuer).getAmountOf(shortInvitation);
+  const shortOptionValue = shortAmount.value[0];
+  t.is('short', shortOptionValue.position);
+  const shortOption = shortOptionValue.option;
+
+  // carol makes an offer for the short option
+  const carolProposal = harden({
+    want: { Option: shortOption },
+    give: { Collateral: bucks(shortOptionValue.collateral) },
+  });
+  const carolFundingSeat = await zoe.offer(
+    await shortInvitation,
+    carolProposal,
+    {
+      Collateral: carolBucksPayment,
+    },
+  );
+  // carol gets an option, and exercises it for the payout
+  const carolOption = await carolFundingSeat.getPayout('Option');
+  const carolOptionSeat = await zoe.offer(carolOption);
+
+  const carolPayout = carolOptionSeat.getPayout('Collateral');
+  const carolDeposit = assertPayoutDeposit(
+    t,
+    carolPayout,
+    carolBucksPurse,
+    bucks(75),
+  );
 
   await E(manualTimer).tick();
   await E(manualTimer).tick();
