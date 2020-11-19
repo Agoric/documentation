@@ -221,7 +221,7 @@ return a creator invitation on their instantiation, in case the contract instant
 to immediately participate. Otherwise, the contract instance must create any additional invitations. 
 These, or any invitation held by a party, are distributed by sending it to someone's wallet. When you receive 
 an invitation, your wallet will validate it via the [InvitationIssuer](#invitationissuer). Note that 
-the invitation is a special case of [`Payment`](#payment), and so is associated with a specific [`Issuer`](#issuer).
+the invitation is a [`Payment`](#payment), and so is associated with a specific [`Issuer`](#issuer).
 
 To participate in a contract instance by making an [offer](#offer), an invitation to that instance must accompany the offer.
 
@@ -233,7 +233,7 @@ An `invitation`'s amount includes the following properties:
 
 ## InvitationIssuer
 
-Since [invitations](#invitation) are special cases of [payments](#payment), invitations 
+Since [invitations](#invitation) are [payments](#payment), invitations 
 must have a dedicated [issuer](#issuer), which is the InvitationIssuer.
 
 Zoe has a single `InvitationIssuer` for its entire lifetime. By having a reference to Zoe, 
@@ -269,7 +269,7 @@ records with values of [amounts](#amounts), [issuers](#issuer), etc.
 
 [ERTP](#ertp) has a *mint* object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
 *ZCFMint*. Assets and AssetHolders created using ZcfMints can be used in all the same ways as assets created by other ERTP Mints. 
-They interact with Purses, Payments, Brands, and Issuers in the same ways."
+They interact with Purses, Payments, Brands, and Issuers in the same ways.
 
 - ERTP mints create digital assets and are the only ERTP objects with the authority to do so. 
   Access to an ERTP mint gives you the power to create more digital assets of its type at will. Mints
