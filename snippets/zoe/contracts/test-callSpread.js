@@ -230,10 +230,10 @@ test('pricedCallSpread, mid-strike', async t => {
     want: { Option: longOption },
     give: { Collateral: bucks(longOptionValue.collateral) },
   });
-  const bobPurchaseSeat = await zoe.offer(await longInvitation, bobProposal, {
+  const bobFundingSeat = await zoe.offer(await longInvitation, bobProposal, {
     Collateral: bobBucksPayment,
   });
-  const bobOption = await bobPurchaseSeat.getPayout('Option');
+  const bobOption = await bobFundingSeat.getPayout('Option');
   // endregion exercisePricedInvitation
 
   // region exercisePricedOption
@@ -259,7 +259,7 @@ test('pricedCallSpread, mid-strike', async t => {
     want: { Option: shortOption },
     give: { Collateral: bucks(shortOptionValue.collateral) },
   });
-  const carolPurchaseSeat = await zoe.offer(
+  const carolFundingSeat = await zoe.offer(
     await shortInvitation,
     carolProposal,
     {
@@ -267,7 +267,7 @@ test('pricedCallSpread, mid-strike', async t => {
     },
   );
   // carol gets an option, and exercises it for the payout
-  const carolOption = await carolPurchaseSeat.getPayout('Option');
+  const carolOption = await carolFundingSeat.getPayout('Option');
   const carolOptionSeat = await zoe.offer(carolOption);
 
   const carolPayout = carolOptionSeat.getPayout('Collateral');

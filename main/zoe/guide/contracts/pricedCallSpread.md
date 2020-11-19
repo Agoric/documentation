@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread/pricedCallSpreads.js) (Last updated: 17-NOV-2020)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/callSpread/pricedCallSpreads.js)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 This contract implements a fully collateralized call spread. You can use a call spread as a
@@ -13,11 +13,10 @@ higher price. A call spread has two participating seats that pay out complementa
 on the value of some good at a known future time. This video gives a
 [walkthrough of the implementation](https://youtu.be/m5Pf2d1tHCs?t=3566) of the contract.
 
-There are two variants of the callSpread. This one has the creator specify the price that two
-parties will pay and give them each an invitation to buy a known position at a stated price.  The
-other is called the [fundedCallSpread](./fundedCallSpread.md). It is fully funded by its creator,
-who can then sell (or otherwise transfer) the options to other parties.
-
+There are two variants of the callSpread.  In this version, the creator requests a pair of
+invitations, each of which enables the holder to obtain one of the positions by providing a started
+portion of the collateral. The other is called the [fundedCallSpread](./fundedCallSpread.md). It is
+fully funded by its creator, who can then sell (or otherwise transfer) the options to other parties.
 The Zoe invitations representing options are produced in pairs.  The individual options are Zoe
 invitations whose details are inspectable by prospective purchasers.
 
@@ -27,24 +26,26 @@ delivery at closing.
 
 ## Issuers
 
-The Strike and Collateral currencies are often the same, however this contract decouples the
+The Strike and Collateral currencies are often the same, however these contracts decouple the
 currencies. You can have, for example, a spread based on APPL stock (`Underlying`), with the stock
 price in USD (`Strike`) and contract paying out in JPY (`Collateral`).
 
 The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike, and Collateral.
- * The asset whose eventual value determines the payouts uses `Underlying`. This is often a
-   fungible currency, but doesn't have to be. It would be perfectly sensible to have a call spread
-   contract on the value of a "Superior Magic Sword", as long as there was a price oracle to say
-   how its price varies over time.
+ * The asset whose eventual value determines the payouts uses `Underlying`. This is often a fungible
+   currency, but doesn't have to be. It would be perfectly valid to have a call spread contract on
+   the value of a "Superior Magic Sword", as long as there was a price oracle to determine its price
+   at the expiration time.
  * The original deposit and the payout use the `Collateral` issuer.
  * `Strike` amounts are used for the price oracle's quote as to the value of the Underlying, as
    well as the strike prices in the terms.
 
 ## Terms
 
-The terms include { timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
-strikePrice2, settlementAmount }.
- * `timer` is a timer, and must be recognized by `priceAuthority`.
+The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
+strikePrice2, settlementAmount }`.
+ * `timer` is a
+   [timer](https://github.com/Agoric/agoric-sdk/blob/master/packages/cosmic-swingset/TimerService.md),
+   and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.
@@ -59,16 +60,16 @@ strikePrice2, settlementAmount }.
 ## Creating the Option Invitations
 
 The terms specify all the details of the options. A call to `creatorFacet.makeInvitationPair()` is
-required to specify the share (as a whole number percentage) that will be paid by the purchaser of
-the long position. It returns a pair of invitations.
+required to specify the share (as a whole number percentage) that will be contributed for the long
+position. It returns a pair of invitations.
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#makeInvitationPriced
 
 The creator gives these invitations to the two parties (or might retain one for their own use.) When
-Bob receives an invitation, he can extract the value of the call spread option that he wants to buy,
-and create a proposal. The collateral required is also in the option's details. The holders of the
+Bob receives an invitation, he can extract the value of the call spread option that he wants, and
+create a proposal. The collateral required is also in the option's details. The holders of the
 invitations can exercise with the required collateral to receive the actual call spread option
-positions. 
+positions.
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#exercisePricedInvitation
 
