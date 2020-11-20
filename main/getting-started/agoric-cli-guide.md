@@ -23,6 +23,9 @@ cd agoric-sdk/packages/cosmic-swingset && make
 Check that the `ag-cosmos-helper` binary is in your `$PATH` and works by running the following. If not, you
 need to add it to your `$PATH`:
 ```sh
+# Display the directory that should be in your $PATH.
+echo ${GOBIN-${GOPATH-$HOME/go}/bin}
+# Attempt to run a binary that was installed there.
 ag-cosmos-helper version --long
 ```
 Then start a real local chain by running the following command. If you want to
@@ -60,7 +63,7 @@ For each new local ag-solo, you need to either:
 
 Test that each of your ag-solos is running and has a wallet by connecting to `http://localhost:<PORT-NUMBER>/` for each port you used.
 
-Run your contract and API deployment scripts against the API ag-solo with this `agorice deploy` command. Note that port 8000 is the default 
+Run your contract and API deployment scripts against the API ag-solo with this `agoric deploy` command. Note that port 8000 is the default 
 for `agoric deploy` operations. To deploy to an ag-solo running on a different port, use `agoric deploy --hostport=127.0.0.1:<PORT-NUMBER>` 
 ```sh
 agoric deploy <PATH-TO-DEPLOY.JS>
@@ -122,7 +125,7 @@ Navigate to `https://local.agoric.com/` and,
 in the resulting page, set the address to `http://localhost:8001` 
 
 Click **Save**. Then click **Open** and 
-verify that it opens a different wallet and REPL (the REPL history will be blank). 
+verify that it opens a wallet page (but note that you won't have access yet).
 
 Type `console.log(8001)` 
 in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL's history.
