@@ -91,8 +91,12 @@ agoric install
 agoric start local-chain >& chain.log &
 # Start a local API ag-solo (takes over a minute to finish)
 agoric start local-solo 8000 >& solo-8000.log &
+# Open the associated wallet
+agoric open --hostport=localhost:8000
 # Start a second ag-solo.
 agoric start local-solo 8001 >& solo-8001.log &
+# Open the second associated wallet
+agoric open --hostport=localhost:8001
 # Repeat for any other ag-solos you wish to start (8002, 8003, etc)
 ```
 Configure the first client browser
