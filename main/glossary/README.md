@@ -71,8 +71,8 @@ digital assets in the quantity specified by an [amount](#amounts).
 ## Board (Agoric Board)
 
 The Board is a shared, on-chain location where users can post a value and make it 
-accessible to others. When a user posts a value, they receive a unique Id for the value. 
-Others can get the value just by knowing the Id. You can make an Id known by any 
+accessible to others. When a user posts a value, they receive a unique ID for the value. 
+Others can get the value just by knowing the ID. You can make an ID known by any 
 communication method; private email, a DM or other private message, a phone call/voicemail,
 an email blast to a mailing list or many individuals, listing it on a website, etc.
 
@@ -280,7 +280,7 @@ They interact with Purses, Payments, Brands, and Issuers in the same ways.
 
 - ZCFMints give contract code a simpler interface to interact with an ERTP mint. Because ZCFMints encapsulate
   an internal ERTP mint, they have the same one-to-one relationships
-  with an issuer and its associated brand. A ZCFMint can mint assets that get associated with a seat without having to escrow
+  with an issuer and its associated brand. A ZCFMint can mint assets and assign them to a seat without having to escrow
   payments, and burn assets that used to be associated with a seat without having to payout assets.
   
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
@@ -302,7 +302,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 
 ## Notifier
 
-A notifier provides a stream of updates describing changes to the state of an [offer](#offer).
+A notifier provides a stream of updates describing changes to the state of an [offer](#offer) or other object.
 For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](/distributed-programming.md#notifiers).
 
 ## Object Capabilities
@@ -328,17 +328,20 @@ For more information, see [Douglas Crockford on Object Capabilities](https://fro
 
 ## Offer
 
-Users interact with contract instances by making offers. In Zoe, an offer consists of a [proposal](#proposal) (the 
-conditions under which the party makes the offer) and [payments](#payment) corresponding to what the party is willing
-to give in exchange for what they want. The payments are automatically [escrowed](#escrow) by Zoe, and reallocated 
-according to the contract code. An offer gets a payout of some combination of what the party originally contributed
+Users interact with contract instances by making offers. In Zoe, an offer consists of a [proposal](#proposal) (what 
+the offer making party is willing to give up and what they want in exchange) and [payments](#payment) corresponding
+to the amount in the proposal they're willing to give. The payments are automatically [escrowed](#escrow) by Zoe, and reallocated 
+according to the contract code. An offer gets a [payout](#payout) of some combination of what the party originally contributed
 and what others have contributed. The specific payout is determined by the contract code. 
+
 See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord).
 
 ## Offer Safety
 
 Zoe guarantees offer safety. When a user makes an [offer](#offer) and its payments are [escrowed](#escrow) with Zoe, Zoe guarantees that 
-the user either gets what they said they wanted, or gets back (gets a refund) what they originally offered and escrowed.
+the user either gets what they said they wanted, or gets back (gets a refund) what they originally offered and
+escrowed. One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
+can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
 
 ## Payment
 
@@ -414,7 +417,7 @@ the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 
 ## SeatStagings
 `seatStagings` are associations of seats with new [allocations](#allocation). `seatStagings` are
-passed to `zcf.reallocate`.
+passed to `zcf.reallocate()`.
 
 ## SES (Secure ECMAScript)
 
@@ -457,8 +460,8 @@ For more information, see the [Vat section in the Distributed JS Programming Gui
 ## Wallet
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
-[purses](#purse), 8 Moola purses, and 2 Simoleons purses. You can also keep [Issuers](#issuer) in a 
-wallet. Dapps can propose [offers](#offers) to a wallet. If a user accepts the offer proposal, 
+[purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [Issuers](#issuer). 
+Dapps can propose [offers](#offers) to a wallet. If a user accepts the offer proposal, 
 the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse). 
 See the [Wallet API](/wallet-api.md).
 
