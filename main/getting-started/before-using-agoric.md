@@ -90,9 +90,11 @@ software, you need to install the following.
       <td>9</td>
       <td>Install the Agoric CLI by: <code>yarn link-cli 
         &lt;<i>agoric script location</i>&gt;</code></td>
-      <td>Select a location for the Agoric CLI program. For example,
+      <td>Select a location for the Agoric CLI program to be called from. For example,
         <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
         with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>)
+        This creates a shell script named <code>agoric</code> in the specified directory.
+        The script runs the <code>agoric</code> commands that make up the Agoric CLI.
         </td>
     </tr>
   </tbody>
