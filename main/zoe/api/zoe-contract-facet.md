@@ -360,7 +360,8 @@ The returned values look like:
     brands: { A: moolaKit.brand, B: simoleanKit.brand },
     issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
     maths: { A: moolaKit.amountMath, B: simoleanKit.amountMath },
-    whatever: 'whatever',
+    customTermA: 'something',
+    customTermB: 'something else',
  };
  ```
 
