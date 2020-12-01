@@ -131,7 +131,7 @@ Any surplus remains with its original `seat`. For example if `seat`
 A gives 5 Quatloos and `seat` B only wants 3 Quatloos, `seat` A retains 2 Quatloos.
 
 If either of the seats has exited, `trade` throws. `trade` itself does NOT
-`kickOut` or `exit` either seat for any reason.
+`fail` or `exit` either seat for any reason.
 
 If the trade fails for reasons other than either seat exiting, it
 throws the message `The trade between left and right failed. Please

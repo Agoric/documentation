@@ -349,14 +349,28 @@ zcf.shutdown();
 ## zcf.getTerms()
 - Returns: `{Object}`
 
-Returns the `issuers`, `brands`, and custom `terms` the current contract `instance` was instantiated with.
+Returns the `issuers`, `brands`, `maths`, and custom `terms` the current contract `instance` was instantiated with.
+
+The returned values look like:
+```js
+{ brands, issuers, maths, customTermA, customTermB ... }
+// where brands, issuers, and maths are all keywordRecords, like:
+
+{
+    brands: { A: moolaKit.brand, B: simoleanKit.brand },
+    issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
+    maths: { A: moolaKit.amountMath, B: simoleanKit.amountMath },
+    customTermA: 'something',
+    customTermB: 'something else',
+ };
+ ```
 
 Note that there is also an `E(zoe).getTerms(instance)`. Often the choice of which to use is not which method
 to use, but which of Zoe Service or ZCF you have access to. On the contract side, you more easily have access
 to `zcf`, and `zcf` already knows what instance is running. So in contract code, you use `zcf.getTerms()`. From
 a user side, with access to Zoe Service, you use `E(zoe).getTerms()`.
 ```js
-const { brands, issuers, terms } = zcf.getTerms()
+const { brands, issuers, maths, terms } = zcf.getTerms()
 ```
 
 ## zcf.getZoeService()
