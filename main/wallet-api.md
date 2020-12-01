@@ -129,19 +129,6 @@ Changes the status of the id-specified offer in the wallet inbox to "decline".
 - Returns: An array of the `offer` objects associated with the wallet, sorted by
 id. 
 
-### `getOfferHandle: id => idToOfferHandle.get(id)()`
-- `id` `{String}`
-- Returns: The `offerHandle` object associated with the specified offer id. 
-
-### `getOfferHandles: ids => ids.map(wallet.getOfferHandle)()`
-- Returns: An array of all the `offerHandle` objects for offers in the
-    wallet's inbox 
-
-## `hydrateHooks(hooks)`
-- `hooks` `{hooks}`
-
-Uses the `hooks` data from the offer to create a function call with arguments. For example, the Dapp UI might use the hooks data to instruct the wallet to get an invite from a contract's publicAPI. 
-
 ## Wallet Changes in Alpha
 
 ### Dapp approvals
