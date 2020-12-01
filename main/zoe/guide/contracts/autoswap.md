@@ -29,7 +29,7 @@ amount to be received.
 When adding or removing liquidity, the amounts deposited must be in proportion to the
 current balances in the pool. The amount of the `Central` asset is used as the
 basis. The `Secondary` assets must be added in proportion.  If less `Secondary` is
-provided than required, we refuse the offer by calling `seat.kickOut()`. If more is
+provided than required, we refuse the offer. If more is
 provided than is required, we return the excess.
 
 Before trading can take place, someone must add liquidity using

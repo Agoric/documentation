@@ -9,9 +9,15 @@
 Instead, please read the [Chainlink integration
 documentation](/chainlink-integration.md)**
 
-This contract lets other contracts or users make single free or fee-based queries to a generic
-oracle.  This provides a very
-low-level API to issue single queries that an individual off-chain oracle node answers.
+This contract lets other contracts or users make single free or fee-based
+queries to a generic oracle node (a single instance).  This provides a very
+low-level API to issue single queries that an individual off-chain oracle node
+answers.
+
+**CAUTION: The security of oracle networks (such as Chainlink) depends upon
+having higher-level contracts to aggregate the results of the individual nodes
+(this low-level contract).  This protects against misbehaviour from an
+individual node.**
 
 Relying on just a single node can be both expensive and risky. Instead, use the
 higher-level APIs described in the [Chainlink integration
