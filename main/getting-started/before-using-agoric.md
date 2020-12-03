@@ -90,10 +90,13 @@ software, you need to install the following.
       <td>9</td>
       <td>Install the Agoric CLI by: <code>yarn link-cli 
         &lt;<i>agoric script location</i>&gt;</code></td>
-      <td>Select a location for the Agoric CLI program. For example,
+      <td>Select a location for the Agoric wrapper script. For example,
         <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
         with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>)
-        </td>
+        This creates a shell script that, when run, accesses the SDK's Agoric CLI. We 
+        strongly recommend putting it at <code>/usr/local/bin/agoric</code>, but its specific 
+        location and name is up to you.
+      </td>
     </tr>
   </tbody>
 </table>
