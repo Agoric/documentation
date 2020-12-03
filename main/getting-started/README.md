@@ -82,7 +82,7 @@ For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://ag
 Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
 
 Our **[YouTube channel](https://www.youtube.com/c/Agoric/videos)** has many different videos, ranging from our monthly Community Calls to workshops and 
-tutorials. We particularly recommend the [OTC Desk Contract tutorial](https://www.youtube.com/watch?v=faxrecQgEio)(Note: This is on the Cosmos
+tutorials. We particularly recommend the [OTC Desk Contract tutorial](https://www.youtube.com/watch?v=faxrecQgEio) (Note: This is on the Cosmos
 channel, not the Agoric channel) and [Smart Contracts in JavaScript](https://www.youtube.com/watch?v=qudVWjSqDJU&t=2732s) (one of our DiFi Workshops).
 
 Finally, we have links to the ultimate documentation; the **[GitHub
