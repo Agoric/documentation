@@ -461,7 +461,7 @@ For more information, see the [Vat section in the Distributed JS Programming Gui
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
 [purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [Issuers](#issuer). 
-Dapps can propose [offers](#offers) to a wallet. If a user accepts the offer proposal, 
+Dapps can propose [offers](#offer) to a wallet. If a user accepts the offer proposal, 
 the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse). 
 See the [Wallet API](/wallet-api.md).
 
