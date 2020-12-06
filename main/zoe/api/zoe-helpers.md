@@ -326,7 +326,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
-- `zcf` `{ContractFacet }`
+- `zcf` `{ContractFacet}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - Returns: `{Promise<PaymentPKeywordRecord>}`
 
@@ -341,4 +341,61 @@ import {
   saveAllIssuers,
 } from '@agoric/zoe/src/contractSupport';
 await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
+```
+
+## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat)
+- `zcf` `{ContractFacet}`
+- `invitation `{ERef<Invitation>}`
+- `keywordMapping` `{KeywordKeywordRecord=}`
+- `proposal` `{Proposal}`
+- `fromSeat` `{ZCFSeat}`
+- `toSeat` `{ZCFSeat}`
+- Returns: `{OfferToReturns}`
+  
+@param {ContractFacet} zcf
+ *   Zoe Contract Facet for contractA
+ *
+ * @param {ERef<Invitation>} invitation
+ *   Invitation to contractB
+ *
+ * @param {KeywordKeywordRecord=} keywordMapping
+ *   Mapping of keywords used in contractA to keywords to be used in
+ *   contractB. Note that the pathway to deposit the payout back to
+ *   contractA reverses this mapping.
+ *
+ * @param {Proposal} proposal
+ *   The proposal for the offer to be made to contractB
+ *
+ * @param {ZCFSeat} fromSeat
+ *   The seat in contractA to take the offer payments from.
+ *
+ * @param {ZCFSeat} toSeat
+ *   The seat in contractA to deposit the payout of the offer to.
+ 
+  Please say whether fromSeat and toSeat can be the same. (I'm expecting the answer to be yes. If that's the case can toSeat be the default?)
+
+ 
+@katelynsills katelynsills 4 hours ago Author Member
+Yup, fromSeat and toSeat can be the same. I will make a comment saying so and will make the fromSeat a defaul
+  
+  
+  
+  
+Where invitation is the invitation to contractB, proposal is the proposal to use with the invitation, and keywordMapping is a record of the keywords appropriate to contractA mapped to the keywords for contractB.
+
+The `OfferToReturns` return value is a promise for the `userSeat` for the
+offer to the other contract, and a promise (`deposited`) which
+resolves when the payout for the offer has been deposited to the `toSeat`. 
+It has two properties:
+- `userSeatPromise`: a `Promise<UserSeat>` 
+- `deposited`: a Promise<AmountKeywordRecord>
+
+```js
+ const { userSeatPromise: autoswapUserSeat, deposited } = zcf.offerTo(
+   swapInvitation,
+   keywordMapping, // {}
+   proposal,
+   fromSeat,
+   lenderSeat,
+ );
 ```
