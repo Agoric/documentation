@@ -3,20 +3,6 @@
 This page documents that *Agoric Wallet*, including its use of *petnames*, its place in the Agoric Platform
 architecture, accessing it via the *REPL* (*Read-Eval-Print Loop*), and the Wallet API. 
 
-## Petnames
-
-Before we get into the Wallet itself, you should know about *petnames*,
-which are your personal names for objects. No one else can see or
-modify a petname without your permission. You can think of them as
-your phone's contacts list. The actual phone number is what your phone
-uses to call someone, but for you to more easily tell who a number is
-associated with, you've assigned a petname to it, such as Mom,
-Grandpa, Kate S., etc. Different people can have different petnames for
-different objects. For example, the same person is "Mom" to you, "Mimi"
-to her granddaughter, and "Mrs. Watson" to many others.
-
-Your Wallet manages your petnames for Dapps, asset types, issuers, etc. 
-
 ## Wallet and Agoric Architecture
 
 The Agoric System consists of interconnected Agoric VMs. Some are 
@@ -34,8 +20,8 @@ network connections). They serve as entry points into the Agoric System.
 When you run `agoric start`, you get a private ag-solo that runs your 
 private wallet. The wallet is a user's *trusted agent*. It lets you
 enable or disable inbound connections from Dapps and approve or decline
-proposals from those Dapps you enabled. The Wallet is visible at
-`localhost:3000`.
+proposals from those Dapps you enabled. The Wallet is visible 
+when you run `agoric open`.
 
 The way this works in the Wallet's UI is via the *proposals* that are
 part of a Zoe *offer*; a Dapp says it wants the user to offer something.
@@ -53,12 +39,25 @@ to controling what access they have and managing the proposals.
 The *wallet bridge* is a web page with direct access to an Agoric Wallet. It provides
 the Dapp with a facet of an API. Dapps never talk directly to a Wallet, only to
 this bridge that knows where the Wallet is. So, for example, if a Dapp is running in
-`localhost:8000` and the Wallet in `localhost:3000`, they don't communicate directly.
-They do so by sending JSON-encoded messages through the wallet bridge.
+your browser at `https://encouragement.example.com` and the Wallet is running locally, 
+they don't communicate directly. They do so by sending JSON-encoded messages through 
+the wallet bridge.
 
 **tyg todo: What else should they know here?**
 
 ## Petnames and paths
+
+Before we get into the Wallet itself, you should know about *petnames*,
+which are your personal names for objects. No one else can see or
+modify a petname without your permission. You can think of them as
+your phone's contacts list. The actual phone number is what your phone
+uses to call someone, but for you to more easily tell who a number is
+associated with, you've assigned a petname to it, such as Mom,
+Grandpa, Kate S., etc. Different people can have different petnames for
+different objects. For example, the same person is "Mom" to you, "Mimi"
+to her granddaughter, and "Mrs. Watson" to many others.
+
+Your Wallet manages your petnames for Dapps, asset types, issuers, etc. 
 
 The wallet bridge protocol is migrating petnames to *paths*. All former petnames
 are now either a *path* or still a plain string. A path is an array of strings
@@ -137,6 +136,95 @@ the combination of Wallet UI and REPL area. When issuing commands to the Wallet 
 REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. See 
 the [`E()` section](/distributed-programming.html#communicating-with-remote-objects-using-e) in 
 the Distributed JavaScript Programming Guide for more information about `E()`.
+
+** tyg todo: New API stuff starts here **
+
+There are two objects on which the Wallet API commands work:
+- `WalletUser`: The presence exposed as `local.wallet` (or `home.wallet`).  
+  It provides a place for Wallet API commands.
+- `WalletBridge`: Its methods can be used by an untrusted
+  Dapp without breaching the wallet's integrity.  These methods are also
+  exposed via the iframe/WebSocket bridge that a Dapp UI can use to access the
+  wallet.
+  
+## WalletUser API commands
+
+### `getBridge()`
+- `id` `{String}`
+- Returns: `{Seat}`
+@property {() => Promise<WalletBridge>} getBridge return the wallet bridge
+that bypasses Dapp-authorization.  This should only be used within the REPL
+or deployment scripts that want to use the WalletBridge API without the
+effort of calling `getScopedBridge`.
+
+### `getScopedBridge()`
+- `id` `{String}`
+- Returns: `{Seat}`@property {(suggestedDappPetname: Petname, dappOrigin: string) =>
+Promise<WalletBridge>} getScopedBridge return a wallet bridge corresponding
+to an origin that must be approved in the wallet UI.  This is available for
+completeness in order to provide the underlying API that's available over the
+standard wallet-bridge.html.
+
+### `addPayment(id)`
+- `id` `{String}`
+- Returns: `{Seat}`@property {(payment: ERef<Payment>) => Promise<void>} addPayment add a
+payment of any brand to the wallet for deposit to the user-specified purse
+(either an autodeposit or manually approved).
+
+### `getDepositFacet(id)`
+- `id` `{String}`
+- Returns: `{Seat}`@property {(brandBoardId: string) => Promise<string>} getDepositFacetId
+return the board ID to use to receive payments of the specified brand (used
+by existing deploy scripts).
+    
+
+ 
+
+### `getIssuers()`
+- Returns: `{Array<[Petname, Issuer]>}`
+
+Returns an array of all the Issuers and their petnames associated with this Wallet.
+
+### `getIssuer(petname)`
+- `petname` `{Petname}`
+- Returns: `{Issuer}`
+
+Returns the issuer with the specified petname associated with this Wallet.
+
+### `getPurses()`
+- Returns: `{Array<[Petname, Purse]>}`
+
+Returns all the purses associated with this wallet.
+
+### `getPurse(pursePetname)`
+- `pursePetName`  `{String}`
+- Returns `{Purse}`
+- Errors: Throws an error if there is no purse with the given petname.
+
+Returns the `purse` object with the given petname
+
+@property {() => Promise<WalletBridge>} getBridge return the wallet bridge
+ * that bypasses Dapp-authorization.  This should only be used within the REPL
+ * or deployment scripts that want to use the WalletBridge API without the
+ * effort of calling `getScopedBridge`.
+ *
+ * @property {(suggestedDappPetname: Petname, dappOrigin: string) =>
+ * Promise<WalletBridge>} getScopedBridge return a wallet bridge corresponding
+ * to an origin that must be approved in the wallet UI.  This is available for
+ * completeness in order to provide the underlying API that's available over the
+ * standard wallet-bridge.html.
+ *
+ * @property {(payment: ERef<Payment>) => Promise<void>} addPayment add a
+ * payment of any brand to the wallet for deposit to the user-specified purse
+ * (either an autodeposit or manually approved).
+ *
+ * @property {(brandBoardId: string) => Promise<string>} getDepositFacetId
+ * return the board ID to use to receive payments of the specified brand (used
+ * by existing deploy scripts).
+
+
+
+**tyg todo: old API stuff starts here.**
 
 Wallet API commands work with the following object types:
 - `purse`: Stores assets until you withdraw them into a payment for use 
