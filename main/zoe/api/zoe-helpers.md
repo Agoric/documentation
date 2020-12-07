@@ -326,7 +326,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
-- `zcf` `{ContractFacet }`
+- `zcf` `{ContractFacet}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - Returns: `{Promise<PaymentPKeywordRecord>}`
 
@@ -341,4 +341,56 @@ import {
   saveAllIssuers,
 } from '@agoric/zoe/src/contractSupport';
 await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
+```
+
+## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat)
+- `zcf` `{ContractFacet}`
+- `invitation` `{ERef<Invitation>}`
+- `keywordMapping` `{KeywordKeywordRecord=}`
+- `proposal` `{Proposal}`
+- `fromSeat` `{ZCFSeat}`
+- `toSeat` `{ZCFSeat}`
+- Returns: `{OfferToReturns}`
+
+`offerTo()` makes an offer from your current contract instance (which
+we'll call "contractA") to another contract instance (which we'll call
+"contractB"). It withdraws offer payments from the `fromSeat` in
+contractA and deposits any payouts in the `toSeat`, also a contractA
+seat. Note that `fromSeat` and `toSeat` may be the same seat, which is
+the default condition (i.e. `toSeat` is an optional parameter
+defaulting to `fromSeat`'s value). `offerTo` can be used to make an
+offer from any contract instance to any other contract instance, as
+long as the `fromSeat` allows the withdrawal without violating
+offer-safety. 
+
+`zcf` is contractA's Zoe contract facet. The `invitation` parameter is an invitation 
+to contractB. The `proposal` parameter is the proposal part of the offer made to contractB.
+
+`keywordMapping` is a record of the keywords used in contractA mapped to the 
+keywords for contractB. Note that the pathway to deposit the payout back to
+contractA reverses this mapping. It looks like this, where the keywords are
+from the contracts indicated by using "A" or "B" in the keyword name.
+```js
+// Map the keywords in contractA to the keywords in contractB
+  const keywordMapping = harden({
+    TokenA1: 'TokenB1',
+    TokenA2: 'TokenB2',
+  });
+```
+
+The `OfferToReturns` return value is a promise for an object containing
+the `userSeat` for the offer to the other contract, and a promise (`deposited`) 
+that resolves when the payout for the offer has been deposited to the `toSeat`. 
+Its two properties are:
+- `userSeatPromise`: `Promise<UserSeat>` 
+- `deposited`: `Promise<AmountKeywordRecord>`
+
+```js
+ const { userSeatPromise: autoswapUserSeat, deposited } = zcf.offerTo(
+   swapInvitation,
+   keywordMapping, // {}
+   proposal,
+   fromSeat,
+   lenderSeat,
+ );
 ```
