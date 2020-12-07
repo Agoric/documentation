@@ -150,35 +150,38 @@ There are two objects on which the Wallet API commands work:
 ## WalletUser API commands
 
 ### `getBridge()`
-- `id` `{String}`
-- Returns: `{Seat}`
-@property {() => Promise<WalletBridge>} getBridge return the wallet bridge
-that bypasses Dapp-authorization.  This should only be used within the REPL
-or deployment scripts that want to use the WalletBridge API without the
-effort of calling `getScopedBridge`.
+- Returns: `{Promise<WalletBridge>}`
 
-### `getScopedBridge()`
-- `id` `{String}`
-- Returns: `{Seat}`@property {(suggestedDappPetname: Petname, dappOrigin: string) =>
-Promise<WalletBridge>} getScopedBridge return a wallet bridge corresponding
-to an origin that must be approved in the wallet UI.  This is available for
-completeness in order to provide the underlying API that's available over the
+Returns the wallet bridge that bypasses Dapp-authorization. This should 
+only be used within the REPL or deployment scripts that want to use the
+WalletBridge API without the effort of calling `getScopedBridge`.
+**tyg todo: Why is this an effort? How severe is it that we're recommedning 
+they not do it?**
+
+### `getScopedBridge(suggestedDappPetname, dappOrigin)`
+- `suggestedDappPetname` `{Petname}`
+- `dappOrigin` `{String}`
+- Returns: `{Promise<WalletBridge>}
+
+Returns a wallet bridge corresponding to an origin that must be approved in the wallet UI. 
+This is available for completeness to provide the underlying API that's available over the
 standard wallet-bridge.html.
 
-### `addPayment(id)`
-- `id` `{String}`
-- Returns: `{Seat}`@property {(payment: ERef<Payment>) => Promise<void>} addPayment add a
-payment of any brand to the wallet for deposit to the user-specified purse
-(either an autodeposit or manually approved).
+### `addPayment(payment)`
+- `id` `{ERef<Payment>}`
+- Returns: `void`
 
-### `getDepositFacet(id)`
-- `id` `{String}`
-- Returns: `{Seat}`@property {(brandBoardId: string) => Promise<string>} getDepositFacetId
-return the board ID to use to receive payments of the specified brand (used
-by existing deploy scripts).
-    
+Adds a payment to the Wallet for deposit to the user-specified purse,
+either via an autodeposit or manually approved.
 
- 
+### `getDepositFacet(brandBoardId)`
+- `brandBoardId` `{String}`
+- Returns: `{Promise<string>}`
+
+Returns the board ID for the deposit facet of a purse in the user's Wallet that accepts payments
+of the brand specified by the `brandBoardId` parameter. **tyg todo: What if
+the Wallet has more than one purse for the specified by board ID brand? Or is
+the parameter really the id for a purse that takes that brand?**
 
 ### `getIssuers()`
 - Returns: `{Array<[Petname, Issuer]>}`
@@ -221,6 +224,64 @@ Returns the `purse` object with the given petname
  * @property {(brandBoardId: string) => Promise<string>} getDepositFacetId
  * return the board ID to use to receive payments of the specified brand (used
  * by existing deploy scripts).
+    
+## WalletBridge API commands    
+    
+These methods can be used by an untrusted Dapp without breaching the wallet's 
+integrity.  They are also exposed via the iframe/WebSocket bridge that a 
+Dapp UI can use to access a Wallet.
+ 
+### `addOffer(offer)`
+- `offer` `{OfferState}`
+- Returns: `{Promise<string>}`
+
+Adds an offer to the Wallet, returning **tyg todo: Not sure what the returned string is for**
+
+### `addOfferInvitation(offer, invitation)`
+- `offer` `{OfferState}`
+- `invitation` `{ERef<Payment>}`
+- Returns: `{Promise<string>}`
+
+Add the specified invitation to the specified offer. **tyg todo: Not sure what the returned string is for**
+
+### `getDepositFacetId(brandBoardId`
+- `brandBoardId` `{string}`
+- Returns: `{Promise<string>}`
+
+Returns the Board ID to use to receive payments of the specified by its Board ID brand.
+
+### `getPursesNotifier()`
+- Returns: `{Promise<Notifier<Array<PursesFullState>>>}`
+
+Returns a notifier that follows changes the purses in the Wallet.
+
+### `getOffersNotifier()`
+- Returns: `{Promise<Notifier<array<OfferState>>>}`
+
+Returns a notifier that follows changes to the offers received by the Wallet.
+
+### `suggestIssuer(petname, issuerBoardId)`
+- `petname` `{Petname}`
+- `issuerBoardId` `{string}`
+- Returns: `void`
+
+Introduce an ERTP issuer with a suggested petname to the Wallet.
+
+### `suggestInstallation(petname, installationBoardID)`
+- `petname` `{Petname}`
+- `installationBoardId` `{string}`
+- Returns: `void`
+
+Introduce a Zoe contract installation with a suggested petname to the Wallet.
+
+### `suggestInstance(petname, instanceBoardId)
+- `petname` `{Petname}`
+- `instanceBoardId` `{string}`
+- Returns: `void`
+
+Introduce a Zoe contract instance with a suggested petname to the Wallet.
+ 
+ 
 
 
 
