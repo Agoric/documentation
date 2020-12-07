@@ -352,12 +352,16 @@ await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 - `toSeat` `{ZCFSeat}`
 - Returns: `{OfferToReturns}`
 
-`offerTo()` makes an offer from your current contract instance (which we'll call
-"contractA") to another contract instance **tyg todo: Do these have to be instances of the
-same contract?** (which we'll call "contractB"). It withdraws offer payments from the
-`fromSeat` in contractA and deposits any payouts in the `toSeat`, also a contractA seat.
-Note that `fromSeat` and `toSeat` may be the same seat, which is the default condition 
-(i.e. `toSeat` is an optional parameter defaulting to `fromSeat`'s value).
+`offerTo()` makes an offer from your current contract instance (which
+we'll call "contractA") to another contract instance (which we'll call
+"contractB"). It withdraws offer payments from the `fromSeat` in
+contractA and deposits any payouts in the `toSeat`, also a contractA
+seat. Note that `fromSeat` and `toSeat` may be the same seat, which is
+the default condition (i.e. `toSeat` is an optional parameter
+defaulting to `fromSeat`'s value). `offerTo` can be used to make an
+offer from any contract instance to any other contract instance, as
+long as the `fromSeat` allows the withdrawal without violating
+offer-safety. 
 
 `zcf` is contractA's Zoe contract facet. The `invitation` parameter is an invitation 
 to contractB. The `proposal` parameter is the proposal part of the offer made to contractB.
