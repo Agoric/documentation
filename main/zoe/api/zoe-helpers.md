@@ -361,7 +361,8 @@ the default condition (i.e. `toSeat` is an optional parameter
 defaulting to `fromSeat`'s value). `offerTo` can be used to make an
 offer from any contract instance to any other contract instance, as
 long as the `fromSeat` allows the withdrawal without violating
-offer-safety. 
+offer-safety. To be clear, this does mean that contractA and contractB
+do not have to be instances of the same contract. 
 
 `zcf` is contractA's Zoe contract facet. The `invitation` parameter is an invitation 
 to contractB. The `proposal` parameter is the proposal part of the offer made to contractB.
