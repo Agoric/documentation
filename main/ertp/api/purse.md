@@ -53,6 +53,22 @@ const quatloosPurse.deposit(quatloos5);
 const currentBalance = quatloosPurse.getCurrentAmount();
 ```
 
+## purse.getCurrentAmountNotifier()
+- Returns: `{Notifier<Amount>}`
+
+Returns a lossy notifier for changes to this purse's balance. For more details,
+see [Notifiers](/distributed-programming.md#notifiers).
+
+```js
+const notifier = purse.getCurrentAmountNotifier();
+let nextUpdate = notifier.getUpdateSince();
+
+const checkNotifier = async () => {
+  const { value: balance, updateCount } = await nextUpdate;
+  nextUpdate = notifier.getUpdateSince(updateCount);
+};
+```
+
 ## purse.deposit(payment, optAmount)
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` - Optional. 
@@ -142,3 +158,19 @@ issuer.getAmountOf(withdrawalPayment);
 // The new balance of the purse is 7 Quatloos
 purse.getCurrentAmount();
 ```
+
+## purse.getAllegedBrand()
+- Returns: `{Brand}`
+
+Returns an alleged brand, indicating what kind of digital asset the purse purports to hold.
+Since a purse is not trusted, this result should be treated with suspicion. Either
+verify the returned brand with its issuer, or check the result when you use it. Any successful 
+operation on the purse that involves branded assets (`withdraw`, `deposit`, `getCurrentAmount`, 
+`depositFacet.receive`) verifies the brand for that purse.
+
+```js
+const purseBrand = quatloosPurse.getAllegedBrand();
+```
+
+
+
