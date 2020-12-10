@@ -162,15 +162,10 @@ purse.getCurrentAmount();
 ## purse.getAllegedBrand()
 - Returns: `{Brand}`
 
-Returns an alleged brand, indicating what kind of digital asset the purse purports to hold.
-Since a purse is not trusted, this result should be treated with suspicion. Either
-verify the returned brand with its issuer, or check the result when you use it. Any successful 
-operation on the purse that involves branded assets (`withdraw`, `deposit`, `getCurrentAmount`, 
-`depositFacet.receive`) verifies the brand for that purse.
+Returns an alleged brand (Note: a `Brand`, not a `string` as `allegedName()` methods do), 
+indicating what kind of digital asset the purse purports to hold. This can identify the 
+purse's brand if the purse was made by a trusted issuer using `issuer.makeEmptyPurse()`.
 
 ```js
 const purseBrand = quatloosPurse.getAllegedBrand();
 ```
-
-
-
