@@ -120,7 +120,115 @@ you retrieve the reference to the depositFacet and can deposit payments into it.
 
 ## The Wallet UI
 
-**tyg todo: Working on**
+The WalletUI is visible in a browser tab set to `localhost:8000`. 
+
+### Menubar
+
+At the top of the UI is a menu bar with four items.
+
+![Menu bar](./assets/0-MenuBar.png)
+
+- **Inbox**
+  - ![Inbox](./assets/2-InboxWalletUI.png)
+  - Shows your offers, impending payments, enablable Dapps, and purses.
+  - Lets you send payments, enable/disable Dapps and change their petname, **tyg todo: Unclear what can do with offers and impending payments**
+- **Transfers**
+  - ![Transfers](./assets/3-TransfersWalletUI.png)
+  - Shows your purses and contacts.
+  - Lets you send payments, import contacts by Board ID and give them a petname.
+- **Setup**
+  - ![Setup](./assets/4-SetupWalletUI.png)
+  - Shows your enablable Dapps, issuers, and contacts. 
+  - Lets you create empty purses, import contacts by Board ID and give them a petname, and enable/disable Dapps and change their petname.
+- **Connected/Disconnet**
+  - ![Connected](.assets/5-ConnectWalletUI.png)
+  - Shows if the Wallet is connected to **tyg todo: Not sure what word is right here**
+  - Lets you connect the Wallet to or disconnect the Wallet from **tyg todo: Not sure what word is right here**
+
+As there are only six page components, several of which are repeated on the three pages making up the Wallet UI,
+we will cover the components rather than the pages in detail.
+
+### Purses
+
+![Purses](.assets/PursesWalletUI.png)
+
+The Purses component shows all purses in the wallet and their current balances (both the value and the brand).
+It also shows the special default purse that holds Zoe invitations.
+
+![Purse Send](.assets/PursesSendWalletUI.png)
+
+If you expand a purse entry, you'll see a red **SEND** button for that purse. Clicking it opens the above
+popup. From the popup, you can specify how much of the purse's shown current balance you would like to 
+send elsewhere. 
+
+You can transfer assets to another purse within your wallet. However, there must already be a purse that accepts
+assets of that brand to select. Otherwise, your only option is to send the assets back to the same purse they came
+from. **tyg todo: Is there any situation where you'd actually want to do this?**.
+
+Or you can transfer assets from the purse to any contact you already have. As noted, this is an irrevocable one way
+transfer. **tyg todo: What happens if the contact doesn't have a purse that accepts this asset type? Does it just
+sit under Incoming Payments until an appropriate purse is created? If so, does it automatically go into that new 
+purse or does it require action by the Wallet user to make it do so? And what if I send 400 Quatloos to my contact
+you, but you have three Quatloos purses in your Wallet? How is it determined which one the payment goes into?**
+
+When you are finished specifying how much the payment is and where it's going, click the **Send** button at the bottom
+of the popup. Otherwise click the **Cancel** button to cancel the prospective transfer and close the popup.
+
+**tyg todo: What's the auto-deposit indicator about?** If you enable a Purse's **AutoDeposit** by sliding its button
+to the left, any incoming Payments of that Purse's Brand are automatically deposited into it. **tyg todo: What if there's
+more than one Purse in the Wallet for that Brand?** Sliding the button to the right, causing it to turn red, means
+you have to manually approve the deposit.
+
+### Dapps
+
+![Dapps](./assets/DappsWalletUI.png)
+
+The Dapps component shows all Dapps that can communicate with the Wallet. An expanded entry
+shows an alleged URL for that Dapp's UI, its Petname, and a toggle to enable/disable the Dapp
+from communicating with the Wallet. Note that unlike the other entries with an on/off slider,
+a Dapp is enabled when the button is slid to the right and turns red, and disabled when slid to the 
+left and turns white. **tyg todo: Should probably be consistent about this throughout the Wallet**
+
+### Issuers
+
+![Issuers](./assets/IssuersWalletUI.png)
+
+The Issuers component shows all Issuers known to the Wallet, along with their associated Brands.
+An expanded entry shows that Issuer's Board ID and a **Make Purse** button. When **Make Purse** is
+clicked the following popup appears:
+
+![Make Purse](./assets/MakePurseWalletUI.png)
+
+The Issuer creates a new empty Purse, that holds its Brand of assets, in the Wallet, giving it the Petname
+you specify. Remember there can be more than one Purse in a Wallet that holds assets of a specific Brand.
+
+If you click the **Import** button at the bottom of the Issuers list, this popup appears:
+
+![Import Issuer](./assets/ImportIssuerWalletUI.png)
+
+You specify a Petname and the Board ID (obtained from a trusted source) of an Issuer, and it's imported
+into the Wallet and can be used to create new empty Purses to store assets of its associated Brand. 
+
+### Contacts
+
+![Contacts](./assets/ContactsWalletUI)
+
+The Contacts component shows all entities known to the Wallet, including the Wallet itself as "Self". An
+expanded entry shows the contact's Board ID. If you click on the **Import** button, this popup appears:
+
+![Import Contact](./assets/ImportContactWalletUI)
+
+You specify a Petname and the Board ID (obtained from a trusted source) of a Contact, and it's imported
+into the Wallet. 
+
+### Offers
+
+**tyg todo: Not sure what this looks like as default Faucet Wallet doesn't list any.
+Need to rework things **
+
+### Incoming Payments
+
+**tyg todo: Not sure what this looks like as default Faucet Wallet doesn't list any**
 
 ## Wallet API Overview
 
@@ -137,7 +245,7 @@ REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments
 the [`E()` section](/distributed-programming.html#communicating-with-remote-objects-using-e) in 
 the Distributed JavaScript Programming Guide for more information about `E()`.
 
-** tyg todo: New API stuff starts here **
+**tyg todo: New API stuff starts here **
 
 There are two objects on which the Wallet API commands work:
 - `WalletUser`: The presence exposed as `local.wallet` (or `home.wallet`).  
@@ -205,25 +313,6 @@ Returns all the purses associated with this wallet.
 - Errors: Throws an error if there is no purse with the given petname.
 
 Returns the `purse` object with the given petname
-
-@property {() => Promise<WalletBridge>} getBridge return the wallet bridge
- * that bypasses Dapp-authorization.  This should only be used within the REPL
- * or deployment scripts that want to use the WalletBridge API without the
- * effort of calling `getScopedBridge`.
- *
- * @property {(suggestedDappPetname: Petname, dappOrigin: string) =>
- * Promise<WalletBridge>} getScopedBridge return a wallet bridge corresponding
- * to an origin that must be approved in the wallet UI.  This is available for
- * completeness in order to provide the underlying API that's available over the
- * standard wallet-bridge.html.
- *
- * @property {(payment: ERef<Payment>) => Promise<void>} addPayment add a
- * payment of any brand to the wallet for deposit to the user-specified purse
- * (either an autodeposit or manually approved).
- *
- * @property {(brandBoardId: string) => Promise<string>} getDepositFacetId
- * return the board ID to use to receive payments of the specified brand (used
- * by existing deploy scripts).
     
 ## WalletBridge API commands    
     
@@ -281,11 +370,8 @@ Introduce a Zoe contract installation with a suggested petname to the Wallet.
 
 Introduce a Zoe contract instance with a suggested petname to the Wallet.
  
- 
 
-
-
-**tyg todo: old API stuff starts here.**
+**tyg todo: old API stuff starts here. Should any of it be retained?**
 
 Wallet API commands work with the following object types:
 - `purse`: Stores assets until you withdraw them into a payment for use 
