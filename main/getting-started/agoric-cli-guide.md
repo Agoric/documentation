@@ -124,6 +124,7 @@ In general, you want to issue these Agoric CLI commands in this order:
 2. `agoric install`
 3. `agoric start` (Usually with `--reset`)
 4. `agoric deploy`
+5. `agoric open`
 
 Use `agoric help` whenever you need help with one of the above Agoric CLI commands.
 
