@@ -209,19 +209,19 @@ into the Wallet and can be used to create new empty Purses to store assets of it
 
 ### Contacts
 
-![Contacts](./assets/ContactsWalletUI)
+![Contacts](./assets/ContactsWalletUI.png)
 
 The Contacts component shows all entities known to the Wallet, including the Wallet itself as "Self". An
 expanded entry shows the contact's Board ID. If you click on the **Import** button, this popup appears:
 
-![Import Contact](./assets/ImportContactWalletUI)
+![Import Contact](./assets/ImportContactWalletUI.png)
 
 You specify a Petname and the Board ID (obtained from a trusted source) of a Contact, and it's imported
 into the Wallet. 
 
 ### Offers
 
-![Offers](./assets/OffersWalletUI)
+![Offers](./assets/OffersWalletUI.png)
 
 The Offers component shows any pending offers known to the Wallet. Click the green **Accept** button
 to accept the offer, or click the red **Decline** button to decline it.
@@ -229,7 +229,7 @@ to accept the offer, or click the red **Decline** button to decline it.
 Note the small, red, `<>` at the far right
 of an offer. Clicking it opens a popup with the JSON representation of that offer, for example:
 
-![Offer Detail](./assets/OfferDetailWalletUI)
+![Offer Detail](./assets/OfferDetailWalletUI.png)
 
 ### Incoming Payments
 
