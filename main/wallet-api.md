@@ -182,7 +182,6 @@ means you have to manually approve the deposit.
 
 The Dapps component shows all Dapps that can communicate with the Wallet. An expanded entry
 shows an alleged URL for that Dapp's UI, its Petname, and a toggle to enable/disable the Dapp
-
 from communicating with the Wallet. Note that like the other entries with an on/off slider,
 a Dapp is enabled when the button is slid to the right and turns red, and disabled when slid to the 
 left and turns white.
