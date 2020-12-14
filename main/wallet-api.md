@@ -195,7 +195,7 @@ The Issuers component shows all Issuers known to the Wallet, along with their as
 An expanded entry shows that Issuer's Board ID and a **Make Purse** button. When **Make Purse** is
 clicked the following popup appears:
 
-![Make Purse](./assets/MakePurseWalletUI.png)
+![Make Purse](./assets/CreatePurseWalletUI.png)
 
 The Issuer creates a new empty Purse, that holds its Brand of assets, in the Wallet, giving it the Petname
 you specify. Remember there can be more than one Purse in a Wallet that holds assets of a specific Brand.
