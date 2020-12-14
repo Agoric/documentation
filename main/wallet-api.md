@@ -283,10 +283,8 @@ either via an autodeposit or manually approved.
 - `brandBoardId` `{String}`
 - Returns: `{Promise<string>}`
 
-Returns the board ID for the deposit facet of a purse in the user's Wallet that accepts payments
-of the brand specified by the `brandBoardId` parameter. **tyg todo: What if
-the Wallet has more than one purse for the specified by board ID brand? Or is
-the parameter really the id for a purse that takes that brand?**
+Returns the board ID for the deposit facet of the user's Wallet that accepts payments
+of the brand specified by the `brandBoardId` parameter.
 
 ### `getIssuers()`
 - Returns: `{Array<[Petname, Issuer]>}`
@@ -321,14 +319,16 @@ Dapp UI can use to access a Wallet.
 - `offer` `{OfferState}`
 - Returns: `{Promise<string>}`
 
-Adds an offer to the Wallet, returning the offer's unique Board ID. 
+Adds an offer to the Wallet, returning the offer's unique private ID in the Wallet.
+This ID is not stored in the Board.
 
 ### `addOfferInvitation(offer, invitation)`
 - `offer` `{OfferState}`
 - `invitation` `{ERef<Payment>}`
 - Returns: `{Promise<string>}`
 
-Add the specified invitation to the specified offer, returning the offer's unique Board ID. 
+Add the specified invitation to the specified offer, returning the offer's private ID in the Wallet.  
+This ID is not stored in the Board.
 
 ### `getDepositFacetId(brandBoardId`
 - `brandBoardId` `{string}`
