@@ -118,7 +118,7 @@ you retrieve the reference to the depositFacet and can deposit payments into it.
 
 ## The Wallet UI
 
-The WalletUI is visible in a browser tab set to `localhost:8000`. 
+From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
 
 ### Menubar
 
@@ -182,9 +182,10 @@ means you have to manually approve the deposit.
 
 The Dapps component shows all Dapps that can communicate with the Wallet. An expanded entry
 shows an alleged URL for that Dapp's UI, its Petname, and a toggle to enable/disable the Dapp
-from communicating with the Wallet. Note that unlike the other entries with an on/off slider,
+
+from communicating with the Wallet. Note that like the other entries with an on/off slider,
 a Dapp is enabled when the button is slid to the right and turns red, and disabled when slid to the 
-left and turns white. **tyg todo: Should probably be consistent about this throughout the Wallet**
+left and turns white.
 
 ### Issuers
 
@@ -220,8 +221,15 @@ into the Wallet.
 
 ### Offers
 
-**tyg todo: Not sure what this looks like as default Faucet Wallet doesn't list any.
-Need to rework things **
+![Offers](./assets/OffersWalletUI)
+
+The Offers component shows any pending offers known to the Wallet. Click the green **Accept** button
+to accept the offer, or click the red **Decline** button to decline it.
+
+Note the small, red, `<>` at the far right
+of an offer. Clicking it opens a popup with the JSON representation of that offer, for example:
+
+![Offer Detail](./assets/OfferDetailWalletUI)
 
 ### Incoming Payments
 
@@ -238,9 +246,9 @@ getting an error message listing all the valid methods.
 
 Running `agoric open --repl==only` opens a browser tab that shows only the REPL, and not
 the combination of Wallet UI and REPL area. When issuing commands to the Wallet from the
-REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. See 
-the [`E()` section](/distributed-programming.html#communicating-with-remote-objects-using-e) in 
-the Distributed JavaScript Programming Guide for more information about `E()`.
+REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. For more
+information about `E()`, see the [`E()` section](/distributed-programming.html#communicating-with-remote-objects-using-e) in 
+the Distributed JavaScript Programming Guide.
 
 **tyg todo: New API stuff starts here **
 
@@ -260,8 +268,8 @@ There are two objects on which the Wallet API commands work:
 Returns the wallet bridge that bypasses Dapp-authorization. This should 
 only be used within the REPL or deployment scripts that want to use the
 WalletBridge API without the effort of calling `getScopedBridge`.
-**tyg todo: Why is this an effort? How severe is it that we're recommedning 
-they not do it?**
+Since your REPL and deployment scripts already run using the ag-solo's full authority, 
+it doesn't really make a difference to have them use a more restricted bridge.
 
 ### `getScopedBridge(suggestedDappPetname, dappOrigin)`
 - `suggestedDappPetname` `{Petname}`
