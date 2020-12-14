@@ -120,7 +120,7 @@ you retrieve the reference to the depositFacet and can deposit payments into it.
 
 From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
 
-### Menubar
+### Menu Bar
 
 At the top of the UI is a menu bar with four items.
 
@@ -128,7 +128,7 @@ At the top of the UI is a menu bar with four items.
 
 - **Inbox**
   - ![Inbox](./assets/2-InboxWalletUI.png)
-  - Shows your offers, impending payments, enablable Dapps, and purses.
+  - Shows your offers, impending payments, Dapps, and purses.
   - Lets you send payments, enable/disable Dapps and change their petname, approve/decline offers, or deposit impending payments.
 - **Transfers**
   - ![Transfers](./assets/3-TransfersWalletUI.png)
@@ -136,9 +136,9 @@ At the top of the UI is a menu bar with four items.
   - Lets you send payments, import contacts by Board ID and give them a petname.
 - **Setup**
   - ![Setup](./assets/4-SetupWalletUI.png)
-  - Shows your enablable Dapps, issuers, and contacts. 
+  - Shows your Dapps, issuers, and contacts. 
   - Lets you create empty purses, import contacts by Board ID and give them a petname, and enable/disable Dapps and change their petname.
-- **Connected/Disconnet**
+- **Connected/Disconnect**
   - ![Connected](./assets/5-ConnectWalletUI.png)
   - Shows if the Wallet UI is connected to your ag-solo.
   - Lets you connect the Wallet to or disconnect the Wallet UI from your ag-solo.
@@ -237,8 +237,8 @@ of an offer. Clicking it opens a popup with the JSON representation of that offe
 
 The Incoming Payments component shows any pending incoming payments not yet deposited in a purse.
 A Deposit To value of "Automatic" means to deposit the payment in the apprpriate purse that has
-auto-deposit enabled. Otherwise, you need to select which of your purses for that brand of asset you
-want to deposit the payment into. Note that you can't divide the payment or otherwise make a partial
+auto-deposit enabled. Otherwise, you need to select into which of your purses for that brand of asset you
+want to deposit the payment. Note that you can't divide the payment or otherwise make a partial
 deposit; it's all or nothing. 
 
 Note the small, red, `<>` at the far right
@@ -252,7 +252,7 @@ You can interact with a Wallet via the JavaScript *REPL* (*Read-Eval-Print Loop*
 which is visible at the bottom of the Wallet UI display. 
 In the REPL, you send message to `home.wallet`, which is the Wallet running on that
 page/process. Typing `E(home.wallet).foo()` in the REPL returns the names of all the Wallet
-API methods by the clever method of asking it to evaluate a non-existant API method and
+API methods by the clever method of asking it to evaluate a non-existent API method and
 getting an error message listing all the valid methods.
 
 Running `agoric open --repl==only` opens a browser tab that shows only the REPL, and not
