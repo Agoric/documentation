@@ -31,14 +31,14 @@ in two ways.
 - In a browser tab, go to `localhost:8000`. Depending on the browser's width, you
   will see either the Wallet and REPL in separate columns or separate rows.
 
-![Wallet and REPL](./assets/walletAndREPLColumns.svg)
+![Wallet and REPL](./assets/walletAndREPLColumns.png)
 
-![Wallet and REPL](./assets/walletAndREPLRows.svg)
+![Wallet and REPL](./assets/walletAndREPLRows.png)
 
 - From a shell, run `agoric open --repl` This opens the user's Wallet UI and its
   associated REPL. To open only the REPL, run `agoric open --repl only`
 
-![REPL](./assets/REPL.svg)
+![REPL](./assets/REPL.png)
 
 ## Using the REPL
 
@@ -46,7 +46,7 @@ From the REPL, you can run Agoric or JavaScript commands. Also, you can use the 
 `home` object's predefined connections to other objects and services. To see what’s 
 available, just type `home` into the REPL:
 
-![home](./assets/home.svg)
+![home](./assets/home.png)
 
 ```js
 Command[1] home
