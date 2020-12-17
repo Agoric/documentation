@@ -20,16 +20,16 @@ Deploying a contract to the chain first uploads the bundled contract source code
 local Agoric ag-solo process. The deployment script then uses the `home` object to access 
 Zoe which installs the code on chain.
 
-The Wallet has an associated REPL (*Read-Eval-Print Loop*). From the REPL and the `home`
+An ag-solo has an associated REPL (*Read-Eval-Print Loop*). From the REPL and the `home`
 object, developers can use all the on-chain commands that deployment scripts use to 
-deploy contracts and Dapps.
+deploy contracts and Dapps. They can also run JavaScript commands from the REPL. 
 
 ## Accessing the REPL
 
-Once an Agoric process is running and on-chain, you can access its associated REPL
+Once an ag-solo is running and on-chain, you can access its associated REPL
 in two ways. 
 - In a browser tab, go to `localhost:8000`. Depending on the browser's width, you
-  will see either the Wallet and REPL in separate columns or separate rows.
+  will see the Wallet UI and REPL either in separate columns or separate rows.
 
 ![Wallet and REPL](./assets/walletAndREPLColumns.png)
 
@@ -42,7 +42,7 @@ in two ways.
 
 ## Using the REPL
 
-From the REPL, you can run Agoric or JavaScript commands. Also, you can use the REPL's 
+You can run JavaScript commands from the REPL. You can also use the REPL's 
 `home` object's predefined connections to other objects and services. To see what’s 
 available, just type `home` into the REPL:
 
@@ -54,50 +54,39 @@ History[1] {"chainTimerService":[Presence o-50],"sharingService":[Presence o-51]
 ```
 The results of what is entered into the REPL is saved under `history[N]`
 
-By entering `home` in your REPL you get back an effective "-help"
-output of `home`-associated objects and services.
-
 Here’s a better formatted list of the `home` objects with brief description of each. The
 link on each object name takes you to a more detailed documentation page for that object.
+Several `home` objects are either for internal Agoric use only or have been deprecated. These
+listed together at the end and external developers should ignore them and not try to use
+them.
 
-- `wallet`
-  - The link takes you to the standard `wallet` API documentation. When calling
-any of the `wallet` API methods from the REPL, `wallet` must be prefaced by
-`home.` and use `E()`. For example, `E(home.wallet).getPurses()` 
-  
-- `chainTimerService` 
-  - Chain-based timing service used to schedule events.
-- `localTimerService `
-  - Local vat-based timing service used to schedule events 
-- `sharingService` 
-  - Lets you share items between vats connected to the same remote chain vat.
-- `ibcport`
-- `registry` 
-  - For internal use only. 
-- [`zoe`](https://agoric.com/documentation/zoe/api/zoe.html)
-  - This link takes you to the standard `zoe` API documentation. When calling
-any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
-`home.` and use `E()`. For example, `E(home.zoe).getInviteIssuer()` 
-- `uploads` 
-- `spawner` **tyg todo: Unclear what this is for/why and what commands
-  would be used from the REPL?**
-- `network` 
-- `contractHost`
-  - Replaced by the `spawner` object. Please update any code that uses 
-    `conractHost` to use `spawner` instead. 
-- `registrar`
-  - Renamed to `registry` and deprecated. Please update any code that uses 
-`registrar` to use `registry` instead. 
-- `http`
-  -`api/deploy.js` uses this object to install new HTTP and WebSocket handlers in an
- ag-solo.  You should not need to use it. 
+- [`wallet`](/wallet-api.md): The link takes you to the standard `wallet` API documentation. When calling
+   a `wallet` API methods from the REPL, `wallet` must be prefaced by
+   `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
+- `chainTimerService`: Chain-based timing service used to schedule events.
+- `localTimerService`: Local vat-based timing service used to schedule events 
+- `board`:
+- `sharingService`: Lets you share items between vats connected to the same remote chain vat.
+- `ibcport`:
+- [`zoe`](/zoe/api/zoe.md): This link takes you
+   to the standard `zoe` API documentation. When calling
+   any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
+   `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
+- `uploads`: 
+- `spawner`: **tyg todo: Unclear what this is for/why and what commands would be used from the REPL?**
+- `network`:
+- `priceAuthority`:
+- `priceAuthorityAdmin`:
+- `faucet`:
+- `plugin`:
+- `scratch`:
+- `vattp`:
 
 Click on each object link above to go to its documentation.
 
-
-
-
-
-
-
-
+The following `home` objects should be ignored.
+- `contractHost`: Replaced by the `spawner` object.
+- `http`: `api/deploy.js` uses this to install new HTTP and WebSocket handlers in an
+   ag-solo.  You should not need to use it. 
+- `registrar`: Deprecated.
+- `registry`: Deprecated
