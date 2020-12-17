@@ -31,20 +31,22 @@ in two ways.
 - In a browser tab, go to `localhost:8000`. Depending on the browser's width, you
   will see either the Wallet and REPL in separate columns or separate rows.
 
-![Wallet and REPL](/assets/walletAndREPLColumns.svg)
+![Wallet and REPL](./assets/walletAndREPLColumns.svg)
 
-![Wallet and REPL](/assets/walletAndREPLRows.svg)
+![Wallet and REPL](./assets/walletAndREPLRows.svg)
 
 - From a shell, run `agoric open --repl` This opens the user's Wallet UI and its
   associated REPL. To open only the REPL, run `agoric open --repl only`
 
-![REPL](/assets/REPL.svg)
+![REPL](./assets/REPL.svg)
 
 ## Using the REPL
 
 From the REPL, you can run Agoric or JavaScript commands. Also, you can use the REPL's 
 `home` object's predefined connections to other objects and services. To see what’s 
 available, just type `home` into the REPL:
+
+![home](./assets/home.svg)
 
 ```js
 Command[1] home
@@ -54,8 +56,6 @@ The results of what is entered into the REPL is saved under `history[N]`
 
 By entering `home` in your REPL you get back an effective "-help"
 output of `home`-associated objects and services.
-
-![Home](/assets/home.svg)
 
 Here’s a better formatted list of the `home` objects with brief description of each. The
 link on each object name takes you to a more detailed documentation page for that object.
