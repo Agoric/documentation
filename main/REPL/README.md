@@ -65,7 +65,8 @@ them.
    `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
 - `chainTimerService`: Chain-based timing service used to schedule events.
 - `localTimerService`: Local vat-based timing service used to schedule events 
-- `board`:
+- [`board`](./board.md): The Board is a shared, on-chain location where users can post a 
+  value and make it accessible to others.
 - `sharingService`: Lets you share items between vats connected to the same remote chain vat.
 - `ibcport`:
 - [`zoe`](/zoe/api/zoe.md): This link takes you
@@ -73,7 +74,7 @@ them.
    any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
    `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
 - `uploads`: 
-- `spawner`: **tyg todo: Unclear what this is for/why and what commands would be used from the REPL?**
+- `spawner`: Launches programs running on your local ag-solo. **tyg todo: Unclear what commands would be used from the REPL?**
 - `network`:
 - `priceAuthority`:
 - `priceAuthorityAdmin`:
