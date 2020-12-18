@@ -1,18 +1,21 @@
  # Price Authority
  
- ## `getQuoteIssuer(brandIn, brandOut)`
+`PriceAuthority` is an object that mints `PriceQuotes` and handles
+triggers and notifiers for changes in the price
+ 
+## `getQuoteIssuer(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
  - `brandOut` `{ Brand }`
- - Returns: `{ Issuer }`
+ - Returns: `{ ERef<Issuer> }`
  
-Returns the quote issuer for the specified brands.
+Returns the ERTP `PriceQuote` issuer for the specified brands pair.
  
 ## `getTimerService(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
  - `brandOut` `{ Brand }`
- - Returns: `{ Timer }`
+ - Returns: `{ ERef<TimerService> }`
  
-Returns the timer for the specified brands.
+Returns the timer used in `PriceQuotes` for the specified brands.
 
 ## `getPriceNotifier(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
@@ -24,9 +27,16 @@ Returns a notifier for the specified brands.
 ## `quoteGiven(amountIn, brandOut)`
  - `amountIn` `{ Amount }`
  - `brandOut` `{ Brand }`
- - Returns: `{ Quote }`
+ - Returns: `{ Promise<PriceQuote> }`
  
-Returns a quote for the specified amount in the specified brand..
+Returns a quote corresponding to the specified amount. **tyg todo: Should I add "in the specified brand"?**
+
+## `quoteWanted(brandIn, amountOut)`
+ - `brandIn` `{ Brand }`
+ - `amountOut` `{ Amount }`
+ - Returns: `{ Promise<PriceQuote> }`
+ 
+Returns the quote for the specified amount in the specified brand. **tyg todo: Should I add "in the specified brand"?**
 
 ## `getQuoteIssuer(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
@@ -35,48 +45,47 @@ Returns a quote for the specified amount in the specified brand..
  
 Returns the quote issuer for the specified brands.
 
-## `quoteWanted(brandIn, amountOut)`
- - `brandIn` `{ Brand }`
- - `amountOut` `{ Amount }`
- - Returns: `{ Amount, Amount }` **tyg todo: Has "return { AmountIn, amountOut };"; is this correct?**
-   
-Returns the quote for the specified amount in the specified brand.
+## `makeQuoteNotifier(amountIn, brandOut)`
+ - `amountIn` `{ Amount }`
+ - `brandOut` `{ Brand }`
+ - Returns: `{ ERef<Notifier<PriceQuote>> }`
  
- /** @type {PriceAuthority} */
-  const priceAuthority = {
-    async quoteAtTime(deadline, amountIn, brandOut) {
-      mathIn.coerce(amountIn);
-      assertBrands(amountIn.brand, brandOut);
+Be notified of the latest `PriceQuotes` for the specified amount.  
+Different Price Authorities may issue notifications at very different rates. 
+ 
+## `quoteAtTime(deadline, amountIn, brandOut)`
+ - `deadline` `{ Timestamp }`
+ - `amountIn` `{ Amount }`
+ - `brandOut` `{ Brand }`
+ - Returns: `{ Promise<PriceQuote> }`
+ 
+Resolves after `deadline` passes on the PriceA uthority's `timerService`
+with `amountIn`'s price quote at that time.
 
-      await notifier.getUpdateSince();
-      const quotePK = makePromiseKit();
-      await E(timer).setWakeup(
-        deadline,
-        harden({
-          async wake(timestamp) {
-            try {
-              const quoteP = createQuote(calcAmountOut => ({
-                amountIn,
-                amountOut: calcAmountOut(amountIn),
-                timestamp,
-              }));
+## `quoteWhenGT(amountIn, amountOutLimit)
+- `amountIn` `{ Amount }`
+- `amountOutLimit `{ Amount }`
+- Returns: `{ Promise<PriceQuote> }`
 
-              // We don't wait for the quote to be authenticated; resolve
-              // immediately.
-              quotePK.resolve(quoteP);
-              await quotePK.promise;
-            } catch (e) {
-              quotePK.reject(e);
-            }
-          },
-        }),
-      );
+Resolve when a price quote of `amountIn` exceeds `amountOutLimit`
 
-      // Wait until the wakeup passes.
-      return quotePK.promise;
-    },
-    quoteWhenLT: makeQuoteWhenOut(isLT),
-    quoteWhenLTE: makeQuoteWhenOut(isLTE),
-    quoteWhenGTE: makeQuoteWhenOut(isGTE),
-    quoteWhenGT: makeQuoteWhenOut(isGT),
-  };
+## `quoteWhenGTE(amountIn, amountOutLimit)
+- `amountIn` `{ Amount }`
+- `amountOutLimit `{ Amount }`
+- Returns: `{ Promise<PriceQuote> }`
+
+Resolve when a price quote of `amountIn` reaches or exceeds `amountOutLimit`
+
+## `quoteWhenLTE(amountIn, amountOutLimit)
+- `amountIn` `{ Amount }`
+- `amountOutLimit `{ Amount }`
+- Returns: `{ Promise<PriceQuote> }`
+
+Resolve when a price quote of `amountIn` reaches or drops below `amountOutLimit`
+
+## `quoteWhenLT(amountIn, amountOutLimit)
+- `amountIn` `{ Amount }`
+- `amountOutLimit `{ Amount }`
+- Returns: `{ Promise<PriceQuote> }`
+
+Resolve when a price quote of `amountIn` drops to below `amountOutLimit`.
