@@ -63,8 +63,8 @@ them.
 - [`wallet`](/wallet-api.md): The link takes you to the standard `wallet` API documentation. When calling
    a `wallet` API methods from the REPL, `wallet` must be prefaced by
    `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
-- `chainTimerService`: Chain-based timing service used to schedule events.
-- `localTimerService`: Local vat-based timing service used to schedule events 
+- [`chainTimerService`](./timerService.md): Chain-based timing service used to schedule events.
+- [`localTimerService`](./timerService.md): Local vat-based timing service used to schedule events 
 - [`board`](./board.md): The Board is a shared, on-chain location where users can post a 
   value and make it accessible to others.
 - `sharingService`: Lets you share items between vats connected to the same remote chain vat.
@@ -73,21 +73,22 @@ them.
    to the standard `zoe` API documentation. When calling
    any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
    `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
-- `uploads`: 
 - `spawner`: Launches programs running on your local ag-solo. **tyg todo: Unclear what commands would be used from the REPL?**
-- `network`:
-- `priceAuthority`:
+- [`priceAuthority`](./priceAuthority.md):
 - `priceAuthorityAdmin`:
-- `faucet`:
-- `plugin`:
 - `scratch`:
-- `vattp`:
 
 Click on each object link above to go to its documentation.
 
 The following `home` objects should be ignored.
 - `contractHost`: Replaced by the `spawner` object.
+- `faucet`: Internal for chain setup.
 - `http`: `api/deploy.js` uses this to install new HTTP and WebSocket handlers in an
    ag-solo.  You should not need to use it. 
+- `network`: Privileged object for internal use.
+- `plugin`: Privileged object for internal use.
 - `registrar`: Deprecated.
-- `registry`: Deprecated
+- `registry`: Deprecated.
+- `uploads`: Deprecated name for `scratch`.
+- `vattp`: Privileged object for internal use.
+
