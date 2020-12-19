@@ -1,9 +1,11 @@
 # Network API
 
 Suitably-empowered code inside a vat can access a "network API" that works 
-vaguely like the BSD socket API. This code can open a listening port on various
-networking stacks, initiate connections to remote ports, send and receive data 
-over these connections, and finally close the connection and/or ports.
+vaguely like the BSD socket API. This code can:
+- Open a listening port on various networking stacks.
+- Initiate connections to remote ports.
+- Send and receive data over these connections
+- Finally close the connection and/or ports.
 
 The type of connection is limited by the host in which the vat is running. 
 Chain-based machines must operate in a platonic realm of replicated consensus, 
@@ -207,14 +209,14 @@ to get right, it is better to avoid them, where possible.
 
 ## Closing the Connection
 
-When a given Connection has ceased to be useful, you should close it:
+When a given Connection ceases to be useful, you should close it:
 
 ```js
 connection.close();
 ```
 
 This initiates a shutdown. The `ConnectionHandler` on both sides will eventually 
-see their `onClose()` methods be called, with a `reason`.  It will allow them to 
+see their `onClose()` methods be called, with a `reason`.  It allows them to 
 distinguish an intentional `onClose()` (`reason` is `undefined`) from some error 
 condition.
 
