@@ -33,9 +33,11 @@ history[2] 1340435997
 ## `E(home.<chain or local>TimerService.(setWakeup(baseTime, handler)`
 - `baseTime` `{ integer }` 
 - `handler` `{ Handler }`
-- Returns: `Integer` Time at which the call is scheduled to happen. **tyg todo: In what format?**
+- Returns: `{ Integer }` 
 
 Calls the specified handler the specified number of seconds after executing this call.
+
+Returns the time at which the call is scheduled to happen. **tyg todo: In what format?**
 
 ```js
 const handler = harden({wake(now) { console.log(`woke up ${now}`); }});
@@ -44,49 +46,29 @@ const willWakeAt = E(home.localTimerService).setWakeup(60, handler);
 **tyg todo: Getting an "undefined" response on the `const handler...`
 in the REPL?**
 
-###  setWakeup(baseTime :integer, handler :Handler) -> (integer);
-- `baseTime` `{ integer }` 
-- `handler` `{ Handler }`
-- Returns: `Integer` Time at which the call is scheduled to happen.
-
 ## `E(home.<chain or local>TimerService).removeWakeup(handler)`
 - `handler` `{ Handler }`
-- Returns list of `Integer` times when the cancelled wakeup calls were scheduled to happen.
+- Returns: `{ Array[Integer] }`
 
 Remove the specified handler from all scheduled wakeups, whether
 created by `setWakeup()` or `repeater.schedule()`, effectively
 canceling the wakeups using that handler. **tyg todo: Is this last correct?**
 
+Returns a list of `Integer` times when the cancelled wakeup calls were scheduled to happen.
+
 ```js
 const timeList = E(home.chainTimerService.removeWakeup(handler);
 ```
-
-### removeWakeup(handler :Handler) -> (List(integer));
-- `handler` `{ Handler }`
-- Returns list of times when the calls were scheduled to happen.
-
-Remove the handler from all scheduled wakeups, whether
-created by `setWakeup()` or `repeater.schedule()`, effectively
-canceling the wakeups. **tyg todo: Is this last correct?**
-
- // Return value is the time at which the call is scheduled to take place.
-  setWakeup(baseTime :integer, handler :Handler) -> (integer);
-
-  // Remove the handler from all its scheduled wakeups, whether
-  // produced by timer.setWakeup(h) or repeater.schedule(h).
   
 ## `E(home.<chain or local>TimerService).createRepeater(delaySecs, interval)`
-- `delaySecs`: `{Integer}`
-- `interval`: `{Integer}`
-- Returns: `{Repeater}` that schedules `wake()` calls repeatedly at times
-that are a multiple of the interval value after the base time.
+- `delaySecs`: `{ Integer }`
+- `interval`: `{ Integer }`
+- Returns: `{ Repeater }` 
 
 Creates and returns a `Repeater` object. It schedules `wake()` calls repeatedly at 
-times that are a multiple of the specified interval following baseTime. `interval`
-is the delay between times when `wake()` is called. When
-`schedule(h)` is called, `h.wake()` will be scheduled to be called after the
-next multiple of interval from the base. Since block times are coarse-
-grained, the actual call may occur later, but this won't change when the
+times that are a multiple of the specified interval following `baseTime`. `interval`
+is the delay between times when `wake()` is called. Since block times are coarse-grained,
+the actual call may occur later, but this won't change when the
 next event will be called. 
 ```js
 createRepeater(5, 10);
