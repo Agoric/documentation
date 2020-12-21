@@ -67,16 +67,17 @@ them.
 - [`localTimerService`](./timerService.md): Local vat-based timing service used to schedule events 
 - [`board`](./board.md): The Board is a shared, on-chain location where users can post a 
   value and make it accessible to others.
-- `sharingService`: Lets you share items between vats connected to the same remote chain vat.
-- `ibcport`:
+- [`sharingService`](./sharingService.md): Lets you share items between vats connected to the same remote chain vat.
+- [`ibcport`](./networking.md): IBC implementation that lets vats open and close listening ports, 
+  connect and disconnect to/from remote ports, and send and receive data over those connections.
 - [`zoe`](/zoe/api/zoe.md): This link takes you
    to the standard `zoe` API documentation. When calling
    any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
    `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
-- `spawner`: Launches programs running on your local ag-solo. **tyg todo: Unclear what commands would be used from the REPL?**
+- [`spawner`](./spawner.md): Launches programs running on your local ag-solo. **tyg todo: Unclear what commands would be used from the REPL?**
 - [`priceAuthority`](./priceAuthority.md):
 - `priceAuthorityAdmin`:
-- `scratch`:
+- [`scratch`](./scratch.md):
 
 Click on each object link above to go to its documentation.
 
