@@ -108,7 +108,10 @@ test('ertp guide purse payment example', async t => {
   await quatloosPurse.getCurrentAmount();
   // #endregion example
 
-  t.deepEqual(await quatloosPurse.getCurrentAmount(), quatloosAmountMath.make(7));
+  t.deepEqual(
+    await quatloosPurse.getCurrentAmount(),
+    quatloosAmountMath.make(7),
+  );
   t.deepEqual(
     await quatloosIssuer.getAmountOf(withdrawalPayment),
     quatloosAmountMath.make(3),
