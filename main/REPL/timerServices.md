@@ -25,10 +25,12 @@ current block was created?**
 unclear what it's the start time of?** start time in milliseconds.
 ```js
 command[1] E(home.chainTimerService).getCurrentTimestamp()
-history[1] 1590465270
+history[1] 1608523721
+command[2] E(home.localTimerService).getCurrentTimestamp()
+history[2] 1340435997
 ```
 
-##  `E(home.<chain or local>TimerService.(setWakeup(baseTime, handler)`
+## `E(home.<chain or local>TimerService.(setWakeup(baseTime, handler)`
 - `baseTime` `{ integer }` 
 - `handler` `{ Handler }`
 - Returns: `Integer` Time at which the call is scheduled to happen. **tyg todo: In what format?**
@@ -82,7 +84,7 @@ that are a multiple of the interval value after the base time.
 Creates and returns a `Repeater` object. It schedules `wake()` calls repeatedly at 
 times that are a multiple of the specified interval following baseTime. `interval`
 is the delay between times when `wake()` is called. When
-schedule(h) is called, h.wake() will be scheduled to be called after the
+`schedule(h)` is called, `h.wake()` will be scheduled to be called after the
 next multiple of interval from the base. Since block times are coarse-
 grained, the actual call may occur later, but this won't change when the
 next event will be called. 
