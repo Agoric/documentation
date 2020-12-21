@@ -15,11 +15,11 @@ get access to its value, the deposit facet object. They can then safely deposit
 assets into the facet's associated purse without being able to withdraw assets
 from the purse or check its balance.
 
-A Board has four API commands: **tyg todo: Not sure if has() and ids() should be externally documented?**
-- `getId(value)`
-- `getValue(id)`
-- `has()`
-- `ids()`-
+Note that when calling from the REPL's `home` object, you must use 
+the [`E` syntax](/distributed-programming.md#communicating-with-remote-objects-using-e)
+as shown below.
+
+**tyg todo: Not sure if has() and ids() should be externally documented?**
 
 ## `E(home.board).getId(value)`
 - `value` `{Object}`
@@ -56,7 +56,7 @@ command[3] E(home.board).getValue("1403739213")
 history[3] "foobar"
 ```  
   
-## `has(value)`
+## `E(home.board).has(value)`
 - `value` `{ object }`
 - Returns `{boolean}`
 
@@ -69,7 +69,7 @@ command[5] E(home.board).has("foobar")
 history[5] true
 ```
 
-## `ids()`
+## `E(home.board).ids()`
 - Returns: `{Array of strings}`
 
 Returns an array of all ID strings in the Board. 
