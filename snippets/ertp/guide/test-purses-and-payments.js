@@ -15,11 +15,11 @@ test('ertp guide purse getCurrentAmount', async t => {
   // #region getCurrentAmount
   const quatloosPurse = quatloosIssuer.makeEmptyPurse();
   // Balance should be 0 Quatloos.
-  const currentBalance = quatloosPurse.getCurrentAmount();
+  const currentBalance = await quatloosPurse.getCurrentAmount();
   // Deposit a payment of 5 Quatloos
   quatloosPurse.deposit(quatloosPayment5);
   // Balance should be 5 Quatloos
-  const newBalance = quatloosPurse.getCurrentAmount();
+  const newBalance = await quatloosPurse.getCurrentAmount();
   // #endregion getCurrentAmount
 
   t.deepEqual(currentBalance, amountMath.make(0));
@@ -79,7 +79,7 @@ test('ertp guide purse getDepositFacet', async t => {
   depositOnlyFacet.receive(payment);
   // #endregion getDepositFacet
 
-  t.deepEqual(purse.getCurrentAmount(), quatloosAmountMath.make(100));
+  t.deepEqual(await purse.getCurrentAmount(), quatloosAmountMath.make(100));
 });
 
 test('ertp guide purse payment example', async t => {
@@ -105,10 +105,10 @@ test('ertp guide purse payment example', async t => {
   await quatloosIssuer.getAmountOf(withdrawalPayment);
 
   // The new balance of the purse is 7 Quatloos
-  quatloosPurse.getCurrentAmount();
+  await quatloosPurse.getCurrentAmount();
   // #endregion example
 
-  t.deepEqual(quatloosPurse.getCurrentAmount(), quatloosAmountMath.make(7));
+  t.deepEqual(await quatloosPurse.getCurrentAmount(), quatloosAmountMath.make(7));
   t.deepEqual(
     await quatloosIssuer.getAmountOf(withdrawalPayment),
     quatloosAmountMath.make(3),
