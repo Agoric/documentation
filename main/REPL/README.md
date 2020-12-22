@@ -63,8 +63,8 @@ them.
 - [`wallet`](/wallet-api.md): The link takes you to the standard `wallet` API documentation. When calling
    a `wallet` API methods from the REPL, `wallet` must be prefaced by
    `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
-- [`chainTimerService`](./timerService.md): Chain-based timing service used to schedule events.
-- [`localTimerService`](./timerService.md): Local vat-based timing service used to schedule events 
+- [`chainTimerService`](./timerServices.md): Chain-based timing service used to schedule events.
+- [`localTimerService`](./timerServices.md): Local vat-based timing service used to schedule events 
 - [`board`](./board.md): The Board is a shared, on-chain location where users can post a 
   value and make it accessible to others.
 - [`sharingService`](./sharingService.md): Lets you share items between vats connected to the same remote chain vat.
@@ -76,7 +76,7 @@ them.
    `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
 - [`spawner`](./spawner.md): Launches programs running on your local ag-solo. **tyg todo: Unclear what commands would be used from the REPL?**
 - [`priceAuthority`](./priceAuthority.md):
-- `priceAuthorityAdmin`:
+- [`priceAuthorityAdmin`](./priceAuthority.md):
 - [`scratch`](./scratch.md):
 
 Click on each object link above to go to its documentation.
