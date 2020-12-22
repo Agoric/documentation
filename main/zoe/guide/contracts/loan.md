@@ -33,9 +33,10 @@ loaned amount and interest must be of the same (separate) brand.
    Autoswap](./multipoolAutoswap.md) installation. The `publicFacet`
    of the instance is used to make an invitation to sell the
    collateral on liquidation.
-* `periodAsyncIterable` - the [asyncIterable](https://javascript.info/async-iterators-generators) used for notifications
+* `periodNotifier` - the [notifier](/distributed-programming.md#notifiers) used for notifications
    that a period has passed, on which compound interest will be
-   calculated using the `interestRate`.
+   calculated using the `interestRate`. Note that currently this is
+   lossy, but will be [fixed to be non-lossy soon](https://github.com/Agoric/agoric-sdk/issues/2108). 
 * `interestRate` - the rate in [basis points](https://www.investopedia.com/terms/b/basispoint.asp) that will be multiplied
    with the debt on every period to compound interest.
 
