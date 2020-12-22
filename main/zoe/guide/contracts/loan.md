@@ -108,7 +108,7 @@ The contract shuts down under any one of 3 conditions:
 ## Debt and Interest Calculation 
 
 Interest is calculated and compounded when the
-`periodAsyncIterable` pushes a new value. The interest rate per period
+`periodNotifier` pushes a new value. The interest rate per period
 is defined by the `interestRate` parameter.
 
 ## Scheduling Liquidation
