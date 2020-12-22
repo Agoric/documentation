@@ -41,33 +41,39 @@ coarse-grained, the actual call may occur later, but this won't change when
 the next event will be called.
 
 
-/**
- * @typedef {number} Timestamp An absolute individual stamp returned by a
- * TimerService.  Note that different timer services may have different
- * interpretations of actual Timestamp values.
- * @typedef {number} RelativeTime Difference between two Timestamps.  Note that
- * different timer services may have different interpretations of actual
- * RelativeTime values.
- */
+### `Timestamp` object
 
-/**
- * @typedef {Object} TimerWaker
- * @property {(timestamp: Timestamp) => void} wake The timestamp passed to
- * `wake()` is the time that the call was scheduled to occur.
- */
+A `Number`, an absolute individual stamp returned by a `TimerService`.  Note that different
+timer services may have different interpretations of actual Timestamp values.
 
-/**
- * @typedef {Object} TimerRepeater
- * @property {(waker: TimerWaker) => void} schedule Returns the time scheduled for
- * the first call to `E(waker).wake()`.  The waker will continue to be scheduled
- * every interval until the repeater is disabled.
- * @property {() => void} disable Disable this repeater, so `schedule(w)` can't
- * be called, and wakers already scheduled with this repeater won't be
- * rescheduled again after `E(waker).wake()` is next called on them.
- */
+### `RelativeTime` object
 
+A `Number`, the difference between two `Timestamps`.  Note that
+different timer services may have different interpretations of actual `RelativeTime` values.
 
+### `TimerWaker` object
 
+- `TimerWaker.wake(timestamp)
+  - timestamp `{ Timestamp }`
+  - Returns: `void`
+  - The specified timestamp is the time the call was scheduled to occur.
+
+### `TimerRepeater` object
+
+The `TimerRepeater` object has two methods for scheduling its first call and disabling
+itself.
+
+- `TimerRepeater.schedule(waker)`
+  - `waker` `{ TimerWaker }`
+  - Returns: `void`
+  - Returns the time scheduled for the first call to `E(waker).wake()`.  
+    The waker continues to be scheduled every interval until the repeater is disabled.
+    
+- `TimerRepeater.disable()`
+  - Returns: `void`
+  - Disable this repeater, so `schedule(w)` can't be called, and wakers 
+    already scheduled with this repeater won't be rescheduled again 
+    after `E(waker).wake()` is next called on them.
 
 ## Price Authority
  
@@ -86,9 +92,7 @@ A `PriceQuoteValue` is the `Value` part of a `quoteAmount`. Its properties are:
 - `conditions` `{ any= }`: Additional conditions for the quote
 
 `PriceAuthority` is an object that mints `PriceQuotes` and handles
-triggers and notifiers for changes in the price.
-
- 
+triggers and notifiers for changes in the price. 
  
 ## `getQuoteIssuer(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
