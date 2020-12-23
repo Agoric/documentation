@@ -121,21 +121,22 @@ Different `PriceAuthories` may issue these at very different rates.
  - `brandOut` `{ Brand }`
  - Returns: `{ Notifier }`
  
-Returns a notifier for the specified brands.
+Returns a notifier for the specified brands. Different `PriceAuthorie`s may i
+ssue these at very different rates.
 
 ## `quoteGiven(amountIn, brandOut)`
  - `amountIn` `{ Amount }`
  - `brandOut` `{ Brand }`
  - Returns: `{ Promise<PriceQuote> }`
  
-Returns a price quote corresponding to the specified amount. **tyg todo: Should I add "in the specified brand"?**
+Returns a price quote corresponding to the specified amount in the specified brand. 
 
 ## `quoteWanted(brandIn, amountOut)`
  - `brandIn` `{ Brand }`
  - `amountOut` `{ Amount }`
  - Returns: `{ Promise<PriceQuote> }`
  
-Returns a price quote for the specified amount in the specified brand. **tyg todo: Should I add "in the specified brand"?**
+Returns a price quote for the specified amount in the specified brand. 
 
 ## `getQuoteIssuer(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
