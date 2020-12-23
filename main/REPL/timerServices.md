@@ -5,7 +5,8 @@
 - `chainTimerService` is from the chain (if present). 
 
 In general, you should use the chain timer for contracts. But it's more efficient to 
-use the local timer for objects that don't need consensus or consistency. **tyg todo: Examples of such local prefered objects?**
+use the local timer for objects that don't need consensus or consistency. 
+For example, people might want it for testing. 
 
 Both timer services let you:
 - Get the start time of the current block. **tyg todo: Is this the case for local?**
@@ -15,7 +16,8 @@ Both timer services let you:
 
 With respect to using them, the only difference between the two timer
 services is whether you preface their identical command set with
-`localTimerService` or `chainTimerService` 
+`localTimerService` or `chainTimerService`. However, note that
+the local and chain versions of a method may use different time bases.
 
 ## `E(home.<chain or local>TimerService).getCurrentTimestamp()`
 - Returns: If `chainTimerService`, the current block's start time **tyg todo: This
@@ -37,7 +39,8 @@ history[2] 1340435997
 
 Calls the specified handler the specified number of seconds after executing this call.
 
-Returns the time at which the call is scheduled to happen. **tyg todo: In what format?**
+Returns the time, in the same format as the parameter,
+at which the call is scheduled to happen. 
 
 ```js
 const handler = harden({wake(now) { console.log(`woke up ${now}`); }});
@@ -52,7 +55,7 @@ in the REPL?**
 
 Remove the specified handler from all scheduled wakeups, whether
 created by `setWakeup()` or `repeater.schedule()`, effectively
-canceling the wakeups using that handler. **tyg todo: Is this last correct?**
+canceling the wakeups using that handler.
 
 Returns a list of `Integer` times when the cancelled wakeup calls were scheduled to happen.
 
