@@ -46,10 +46,10 @@ history[2] "1403739213"
 Looks up the `id` value in the Board and returns the Board-associated value for that ID.
 
 Errors:
-- If the `id` value is not a string, exits with string "id must be string (a <type of the argument>".
+- If the `id` value is not a string, exits with string "id must be string (a [type of the argument]".
 - If the `id` value has too few digits, exits with string "id must consist of at least 3 digits".
-- If the `id` value is **tyg todo: Not clear on what it's checking here. Some sort of checksum for valid ids?**, exits with string "id is probably a typo, cannot verify CRC: a <type of the argument>".
-- If the `id` value is not in the Board, exits with string "board does not have id: <id>".
+- If the `id` value is **tyg todo: Not clear on what it's checking here. Some sort of checksum for valid ids?**, exits with string "id is probably a typo, cannot verify CRC: a [type of the argument]".
+- If the `id` value is not in the Board, exits with string "board does not have id: [id]".
 ```js
 // Continuing from the example above in getValue(), the id returns its associated value
 command[3] E(home.board).getValue("1403739213")
