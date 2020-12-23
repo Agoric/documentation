@@ -79,7 +79,8 @@ history[3] [Alleged: presence o-102]{}
 **tyg todo: Not sure what's going on here. I don't seem to be able
 to get validate() to do anything but return an error**
 ```js
-command[4] E(home.sharingService).validate("YourMap")
+command[4] E(home.sharingService).validate(history[3])
+
 history[4] Promise.reject("Error: Unrecognized sharedMap: (a string)")
 command[5] E(home.sharingService).validate("MyMap")
 history[5] Promise.reject("Error: Unrecognized sharedMap: (a string)")
