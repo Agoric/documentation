@@ -74,7 +74,6 @@ them.
    to the standard `zoe` API documentation. When calling
    any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
    `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
-- [`spawner`](./spawner.md): Launches programs running on your local ag-solo. **tyg todo: Unclear what commands would be used from the REPL?**
 - [`priceAuthority`](./priceAuthority.md):
 - [`priceAuthorityAdmin`](./priceAuthority.md):
 - [`scratch`](./scratch.md):
@@ -90,6 +89,7 @@ The following `home` objects should be ignored.
 - `plugin`: Privileged object for internal use.
 - `registrar`: Deprecated.
 - `registry`: Deprecated.
+- `spawner`: Privileged object for internal use.
 - `uploads`: Deprecated name for `scratch`.
 - `vattp`: Privileged object for internal use.
 
