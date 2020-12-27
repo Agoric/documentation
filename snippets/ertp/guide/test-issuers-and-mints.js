@@ -69,7 +69,7 @@ test('ertp guide issuers and mints makeEmptyPurse', async t => {
   // The new empty purse contains 0 Quatloos
   const quatloosPurse = quatloosIssuer.makeEmptyPurse();
   // #endregion makeEmptyPurse
-  t.deepEqual(await quatloosPurse.getCurrentAmount(), {
+  t.deepEqual(await quatloosPurse.getRecentAmount(), {
     brand: quatloosIssuer.getBrand(),
     value: 0,
   });
