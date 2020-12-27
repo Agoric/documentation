@@ -5,22 +5,22 @@ import test from 'ava';
 import { makeIssuerKit } from '@agoric/ertp';
 // #endregion import
 
-test('ertp guide purse getCurrentAmount', async t => {
+test('ertp guide purse getRecentAmount', async t => {
   const { issuer: quatloosIssuer, mint, amountMath } = makeIssuerKit(
     'quatloos',
   );
 
   const quatloosPayment5 = mint.mintPayment(amountMath.make(5));
 
-  // #region getCurrentAmount
+  // #region getRecentAmount
   const quatloosPurse = quatloosIssuer.makeEmptyPurse();
   // Balance should be 0 Quatloos.
-  const currentBalance = await quatloosPurse.getCurrentAmount();
+  const currentBalance = await quatloosPurse.getRecentAmount();
   // Deposit a payment of 5 Quatloos
   quatloosPurse.deposit(quatloosPayment5);
   // Balance should be 5 Quatloos
-  const newBalance = await quatloosPurse.getCurrentAmount();
-  // #endregion getCurrentAmount
+  const newBalance = await quatloosPurse.getRecentAmount();
+  // #endregion getRecentAmount
 
   t.deepEqual(currentBalance, amountMath.make(0));
   t.deepEqual(newBalance, amountMath.make(5));
@@ -79,7 +79,7 @@ test('ertp guide purse getDepositFacet', async t => {
   depositOnlyFacet.receive(payment);
   // #endregion getDepositFacet
 
-  t.deepEqual(await purse.getCurrentAmount(), quatloosAmountMath.make(100));
+  t.deepEqual(await purse.getRecentAmount(), quatloosAmountMath.make(100));
 });
 
 test('ertp guide purse payment example', async t => {
@@ -105,11 +105,11 @@ test('ertp guide purse payment example', async t => {
   await quatloosIssuer.getAmountOf(withdrawalPayment);
 
   // The new balance of the purse is 7 Quatloos
-  await quatloosPurse.getCurrentAmount();
+  await quatloosPurse.getRecentAmount();
   // #endregion example
 
   t.deepEqual(
-    await quatloosPurse.getCurrentAmount(),
+    await quatloosPurse.getRecentAmount(),
     quatloosAmountMath.make(7),
   );
   t.deepEqual(
