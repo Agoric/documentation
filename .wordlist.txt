@@ -319,6 +319,8 @@ getPublicFacet
 getPurse
 getPurseIssuer
 getPurses
+getRecentAmount
+getRecentAmountNotifier
 getRefund
 getTerms
 getUpdateSince
