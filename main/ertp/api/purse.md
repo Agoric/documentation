@@ -36,7 +36,40 @@ quatloosPurse1 = quatloosIssuer.makeEmptyPurse();
 quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
 
-## purse.getCurrentAmount()
+## purse.getRecentAmount()
+- Returns: `{Amount}`
+
+Get an `amount` describing the current digital assets balance in the `purse`.
+Of course, the returned `amount` `value` might be different the next time you
+call `getRecentAmount()` on the same `purse` if assets have been deposited or
+withdrawn from it in-between calls. 
+
+```js
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
+// quatloos5 is a payment with balance of 5 quatloos
+const quatloosPurse.deposit(quatloos5);
+// Returns an amount with value = 5 and brand = quatloos
+const recentBalance = quatloosPurse.getRecentAmount();
+```
+
+## purse.getRecentAmountNotifier() 
+- Returns: `{Notifier<Amount>}`
+
+Returns a lossy notifier for changes to this purse's balance. For more details,
+see [Notifiers](/distributed-programming.md#notifiers).
+
+```js
+const notifier = purse.getRecentAmountNotifier();
+let nextUpdate = notifier.getUpdateSince();
+
+const checkNotifier = async () => {
+  const { value: balance, updateCount } = await nextUpdate;
+  nextUpdate = notifier.getUpdateSince(updateCount);
+};
+```
+
+## purse.getCurrentAmount()  DEPRECATED AS OF 2021-1-1. See purse.getRecentAmount()
 - Returns: `{Amount}`
 
 Get an `amount` describing the current digital assets balance in the `purse`.
@@ -53,7 +86,7 @@ const quatloosPurse.deposit(quatloos5);
 const currentBalance = quatloosPurse.getCurrentAmount();
 ```
 
-## purse.getCurrentAmountNotifier()
+## purse.getCurrentAmountNotifier() DEPRECATED AS OF 2021-1-1. See purse.getRecentAmountNotifier()
 - Returns: `{Notifier<Amount>}`
 
 Returns a lossy notifier for changes to this purse's balance. For more details,
@@ -156,7 +189,7 @@ const withdrawalPayment = purse.withdraw(quatloos3);
 issuer.getAmountOf(withdrawalPayment);
 
 // The new balance of the purse is 7 Quatloos
-purse.getCurrentAmount();
+purse.getRecentAmount();
 ```
 
 ## purse.getAllegedBrand()
