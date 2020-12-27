@@ -80,9 +80,9 @@ deposit facet object, you should tell them what assets `brand` it accepts.
 The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/#ertp-api).
-- [`purse.getCurrentAmount()`](../api/purse.md#purse-getcurrentamount)
+- [`purse.getRecentAmount()`](../api/purse.md#purse-getrecentamount)
 - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
-  - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getCurrentAmount
+  - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getRecentAmount
 - [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
   - Withdraw the assets described by `amount` from this `purse` into a new
     `payment`. Returns the new `payment`.
