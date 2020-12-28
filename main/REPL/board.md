@@ -15,15 +15,17 @@ get access to its value, the deposit facet object. They can then safely deposit
 assets into the facet's associated purse without being able to withdraw assets
 from the purse or check its balance.
 
+The `ids()` method returns all of the Board's currently used IDs. 
+This means anyone can access any Board-stored value. The Board is public, 
+not private.
+
 Note that when calling from the REPL's `home` object, you must use 
 the [`E` syntax](/distributed-programming.md#communicating-with-remote-objects-using-e)
 as shown below.
 
-**tyg todo: Not sure if has() and ids() should be externally documented?**
-
 ## `E(home.board).getId(value)`
-- `value` `{Object}`
-- Returns: `{string}`
+- `value` `{ any }`
+- Returns: `{ string }`
 
 If the `value` is present in the Board, this method returns its Board-associated ID value. 
 
@@ -31,34 +33,41 @@ If the `value` is **not** present in the Board, this method adds it to the Board
 an associated ID value. It returns the new ID value.
 
 ```js
-// Create an ID for the value "foobar"
-command[1] E(home.board).getId("foobar")
+// Create an ID for an object that you want to make public
+command[1] E(home.board).getId(myObject)
 history[1] "1403739213"
-// The value "foobar" now has the ID of "1403739213"
-command[2] E(home.board).getId("foobar")
+// The value myObject now has the ID "1403739213"
+command[2] E(home.board).getId(myObject)
 history[2] "1403739213"
 ```
 
 ## `E(home.board).getValue(id)`
-- `id` `{string}`
-- Returns: `{Object}`
+- `id` `{ string }`
+- Returns: `{ any }`
 
 Looks up the `id` value in the Board and returns the Board-associated value for that ID.
 
+With respect to the `CRC` used in an error message below, an ID has two parts, the raw id
+and a CRC (https://en.wikipedia.org/wiki/Cyclic_redundancy_check). The CRC error 
+happens when the passed in id's CRC value is checked. The alleged ID is split into its 
+two parts, and if the CRC in the alleged ID doesn't match the CRC produced at this time
+from the raw ID value, it throws the error.
+
 Errors:
-- If the `id` value is not a string, exits with string "id must be string (a [type of the argument]".
-- If the `id` value has too few digits, exits with string "id must consist of at least 3 digits".
-- If the `id` value is **tyg todo: Not clear on what it's checking here. Some sort of checksum for valid ids?**, exits with string "id is probably a typo, cannot verify CRC: a [type of the argument]".
-- If the `id` value is not in the Board, exits with string "board does not have id: [id]".
+- If the `id` value is not a string, errors with the message "id must be string" and a log of the failing `id` that was passed in.
+- If the `id` value has too few digits, errors with the message "id must consist of at least 3 digits".
+- If the `id` value is , errors with the message "id is probably a typo, cannot verify CRC".
+- If the `id` value is not in the Board, errors with the message "board does not have id: [id]".
 ```js
 // Continuing from the example above in getValue(), the id returns its associated value
 command[3] E(home.board).getValue("1403739213")
+// returns myObject
 history[3] "foobar"
 ```  
   
 ## `E(home.board).has(value)`
-- `value` `{ object }`
-- Returns `{boolean}`
+- `value` `{ any }`
+- Returns `{ boolean }`
 
 Returns `true` if the specified value has an associated Board ID.
 
@@ -70,9 +79,10 @@ history[5] true
 ```
 
 ## `E(home.board).ids()`
-- Returns: `{Array of strings}`
+- Returns: `{ Array of strings }`
 
-Returns an array of all ID strings in the Board. 
+Returns an array of all IDs in the Board. Remember, the Board is public, so
+anyone can access anything in it.
 
 ```js
 command[6] E(home.board).ids()
