@@ -58,7 +58,7 @@ test('ertp guide readme', async t => {
   // #endregion getValue
 
   t.is(depositFacet, aliceQuatloosDepositFacet);
-  t.deepEqual(await await aliceQuatloosPurse.getCurrentAmount(), quatloosFive);
+  t.deepEqual(await aliceQuatloosPurse.getCurrentAmount(), quatloosFive);
 
   // #region ticketValues
   const startDateString = new Date(2019, 11, 9, 20, 30).toISOString();
