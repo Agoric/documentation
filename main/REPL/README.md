@@ -22,7 +22,8 @@ Zoe which installs the code on chain.
 
 An ag-solo has an associated REPL (*Read-Eval-Print Loop*). From the REPL and the `home`
 object, developers can use all the on-chain commands that deployment scripts use to 
-deploy contracts and Dapps. They can also run JavaScript commands from the REPL. 
+deploy contracts and Dapps. In addition to the on-chain commands, they can also run
+any other JavaScript commands from the REPL. 
 
 ## Accessing the REPL
 
@@ -60,23 +61,24 @@ Several `home` objects are either for internal Agoric use only or have been depr
 listed together at the end and external developers should ignore them and not try to use
 them.
 
-- [`wallet`](/wallet-api.md): The link takes you to the standard `wallet` API documentation. When calling
-   a `wallet` API methods from the REPL, `wallet` must be prefaced by
+- [`wallet`](/wallet-api.md): Holds on-chain digital assets and object capabilities on behalf of the user.
+   The link takes you to the standard `wallet` API documentation. When calling
+   `wallet` API methods from the REPL, `wallet` must be prefaced by
    `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
-- [`chainTimerService`](./timerServices.md): Chain-based timing service used to schedule events.
-- [`localTimerService`](./timerServices.md): Local vat-based timing service used to schedule events 
-- [`board`](./board.md): The Board is a shared, on-chain location where users can post a 
-  value and make it accessible to others.
-- [`sharingService`](./sharingService.md): Lets you share items between vats connected to the same remote chain vat.
+- [`chainTimerService`](./timerServices.md): On-chain time authority used to schedule events.
+- [`localTimerService`](./timerServices.md): Local off-chain time authority used to schedule events 
+- [`board`](./board.md): Shared, on-chain location where users can post generally accessible values.
+- [`sharingService`](./sharingService.md): Share on-chain objects with other users without making them
+  available to the general public. In particular, you can share items between vats connected to the 
+  same remote chain.
 - [`ibcport`](./networking.md): IBC implementation that lets vats open and close listening ports, 
   connect and disconnect to/from remote ports, and send and receive data over those connections.
-- [`zoe`](/zoe/api/zoe.md): This link takes you
-   to the standard `zoe` API documentation. When calling
-   any of the `zoe` API methods from the REPL, `zoe` must be prefaced by
-   `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
-- [`priceAuthority`](./priceAuthority.md):
-- [`priceAuthorityAdmin`](./priceAuthority.md):
-- [`scratch`](./scratch.md):
+- [`zoe`](/zoe/api/zoe.md): Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
+  digital assets and guaranteeing users get either what they want or get a refund of what they escrowed. Even if the
+  contract is buggy or malicious. This link takes you to the standard `zoe` API documentation. When calling
+  any of the `zoe` API methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
+- [`priceAuthority`](./priceAuthority.md): Get price quotes for pairs of digital assets.
+- [`scratch`](./scratch.md): An off-chain, private, place to store key-value pairs on your ag-solo for later use.
 
 Click on each object link above to go to its documentation.
 
@@ -87,6 +89,7 @@ The following `home` objects should be ignored.
    ag-solo.  You should not need to use it. 
 - `network`: Privileged object for internal use.
 - `plugin`: Privileged object for internal use.
+- `priceAuthorityAdmin`: Privileged object for internal use.
 - `registrar`: Deprecated.
 - `registry`: Deprecated.
 - `spawner`: Privileged object for internal use.
