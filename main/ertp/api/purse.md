@@ -37,20 +37,20 @@ quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
 
 ## purse.getRecentAmount()
-- Returns: `{Amount}`
+- Returns: `{Promise<Amount>}`
 
-Get an `amount` describing the current digital assets balance in the `purse`.
-Of course, the returned `amount` `value` might be different the next time you
-call `getRecentAmount()` on the same `purse` if assets have been deposited or
-withdrawn from it in-between calls. 
+Get a promise for the `amount` of digital assets in the `purse`. 
+Because the promise resolves at a later point, this information 
+may be outdated when it is received, but it was the latest 
+and most accurate balance when the method was called. 
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 // quatloos5 is a payment with balance of 5 quatloos
-const quatloosPurse.deposit(quatloos5);
+const depositAmount = quatloosPurse.deposit(quatloos5);
 // Returns an amount with value = 5 and brand = quatloos
-const recentBalance = quatloosPurse.getRecentAmount();
+const recentBalancePromise = quatloosPurse.getRecentAmount();
 ```
 
 ## purse.getRecentAmountNotifier() 
