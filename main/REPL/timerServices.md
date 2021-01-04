@@ -20,11 +20,14 @@ services is whether you preface their identical command set with
 the local and chain versions of a method may use different time bases.
 
 ## `E(home.<chain or local>TimerService).getCurrentTimestamp()`
-- Returns: If `chainTimerService`, the current block's start time **tyg todo: This
-appears  to be the number of milliseconds since the
-current block was created?** 
-- Returns: If `localTimerService(), **tyg todo:
-unclear what it's the start time of?** start time in milliseconds.
+- Returns: the current block's start time according to the local or chain clock
+
+The current block might be executed more than once in case of restart or replay.
+But each time it will start from the same state and receive the same inputs. 
+Since this is repeatable computation, the same computation can be run in various l
+ocations to cross-verify. So each time, the `currentTimeStamp` will be the same, 
+even if we're running the computation a minute or a month later. It's always the 
+current block's start time, expressed as a Unix epoch time in milliseconds or similar.
 ```js
 command[1] E(home.chainTimerService).getCurrentTimestamp()
 history[1] 1608523721
@@ -43,11 +46,11 @@ Returns the time, in the same format as the parameter,
 at which the call is scheduled to happen. 
 
 ```js
-const handler = harden({wake(now) { console.log(`woke up ${now}`); }});
-const willWakeAt = E(home.localTimerService).setWakeup(60, handler);
+command[3] handler = harden({ wake: now => { console.log(`woke up ${now}`); }})
+history[3] {"wake":[Function wake]}
+command[4] willWakeAt =  E(home.localTimerService).setWakeup(3, handler)
+history[4] sending for eval
 ```
-**tyg todo: Getting an "undefined" response on the `const handler...`
-in the REPL?**
 
 ## `E(home.<chain or local>TimerService).removeWakeup(handler)`
 - `handler` `{ Handler }`
@@ -60,7 +63,8 @@ canceling the wakeups using that handler.
 Returns a list of `Integer` times when the cancelled wakeup calls were scheduled to happen.
 
 ```js
-const timeList = E(home.chainTimerService.removeWakeup(handler);
+command[5] timeList = E(home.localTimerService.removeWakeup(handler)
+history[5] sending for eval
 ```
   
 ## `E(home.<chain or local>TimerService).createRepeater(delaySecs, interval)`
@@ -74,5 +78,6 @@ is the delay between times when `wake()` is called. Since block times are coarse
 the actual call may occur later, but this won't change when the
 next event will be called. 
 ```js
-createRepeater(5, 10);
+command[6] E(home.localTimerService).createRepeater(5,10)
+history[6] sending for eval
 ```
