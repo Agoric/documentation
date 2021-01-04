@@ -1,6 +1,10 @@
 You use `scratch` to get, set, and list to save key-value pairs for later. It is only on the ag-solo and is not accessible from the chain, making it private to the ag-solo user. Since deploy scripts are ephemeral, use scratch to save objects in a deploy script for later scripts to use.
 
-## `set(iD, obj)`
+Note that when calling from the REPL's home object, you must use the [E syntax](./distributed-programming.md#communicating-with-remote-objects-using-e) as shown below.
+
+**tyg todo: Are the keys limited to strings? Not clear from code. If not, need to fix all three methods**
+
+## `E(home.scratch).set(iD, obj)`
 - `iD`: `{ String }`
 - `obj`: `{ Object }`
 Returns: `{ String }`
@@ -11,8 +15,8 @@ command[1] E(home.scratch).set("foo", "bar")
 history[1] "foo"
 ```
 
-## `get(id)`
-- `id`: `{ String }`. **tyg todo: Not sure of the type; see definition code at end**
+## `E(home.scratch).get(id)`
+- `id`: `{ String }`
 - Returns: `{ Object }`
 
 Takes an ID key and returns its associated object in the ag-solo's scratchpad. 
@@ -22,8 +26,8 @@ command[2] E(home.scratch).get("foo")
 history[2] "bar"
 ```
 
-## `list()`
-- Returns: `{ Array of Strings }`
+## `E(home.scratch).list()`
+- Returns: `{ Array of Strings }` 
 
 Returns a sorted array of all ID values currently in the Scratchpad.
 ```js
