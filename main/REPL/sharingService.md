@@ -22,13 +22,6 @@ every name used only once.
 - `addEntry(key, value)` (`sharedMap` method) 
 - `lookup(key)` (`sharedMap` method)
 
-The way to use it is to call createBoard() with a name that you share with someone else. 
-They then call grabBoard() and pass the name you gave. If they get a valid corkboard, 
-then you have a private channel. If they don't get it, then someone else must have tried 
-to grab the name first, and you can discard that one and try again.
-Once you each have an end, either of you can call addEntry(key, value) to store an object, 
-which the other party can retrieve with lookup(key).
-
 Use `sharingService` by:
 1. Calling `createSharedMap(name)` to create a `sharedMap` object with the
    specified name. If the name is already used, it returns an error and
@@ -62,10 +55,10 @@ history[1] [Alleged: presence o-102]{}
 
 ## `E(home.sharingService).grabSharedMap(name)`
 - `name`: `{ String }`
-- Returns: `{ SharedMap }` or 
+- Returns: `{ SharedMap }` or `undefined`
 
 Returns the `sharedMap` object with the given name, if it exists.
-If there is no `sharedMap` with that name, it returns `"undefined"`.
+If there is no `sharedMap` with that name, it returns `undefined`.
 
 ```js
 command[2] E(home.sharingService).grabSharedMap("YourMap")
