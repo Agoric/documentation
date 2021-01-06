@@ -25,7 +25,7 @@ methods on the publicFacet. Other publicFacet operations support querying prices
 the sizes of pools. Create new pools with `addPool()`.
 
 When making trades or requesting prices, the caller must specify that either the
-input price (swapIn, getInputPrice) or the output price (swapOut, getOutPutPrice) is
+input price (swapIn, getInputPrice) or the output price (swapOut, getOutputPrice) is
 fixed. For swaps, the required keywords are `In` for the trader's `give` amount, and
 `Out` for the trader's `want` amount.  `getInputPrice()` and `getOutputPrice()` each
 take an amount for the currency that is being specified, and a brand to indicate the
