@@ -27,8 +27,8 @@ Returns the time when the call is scheduled to happen
 Remove the `waker` from all scheduled wakeups, whether produced by `timer.seWakeup(h)`
 or `repeater.schedule(h)`.
 
-### `createRepeater(delay, interval)`
-- `delay` `{ RelativeTime }`
+### `createRepeater(delaySecs, interval)`
+- `delaySecs` `{ RelativeTime }`
 - `interval` `{ RelativeTime }`
 Returns: `{ TimerRepeater }`
 
