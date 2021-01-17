@@ -11,9 +11,9 @@ All deployment happens via the local running Agoric process. This is usually the
 ag-solo process, and frequently referred to as that or just as ag-solo. It is also 
 sometimes described as/called an Agoric VM or a local server.
 
-An ag-solo communicates with either a locally running or remote chain. The local process 
-has a `home` object, which contains references to services on-chain, including Zoe, the 
-Board for sharing objects, and an application user's Wallet among others. Developers can 
+An ag-solo communicates with either a locally running or remote chain. This local process (the ag-solo)
+has a home object, which contains references to services on-chain, including Zoe, the 
+Board for sharing objects, and an application user's Wallet, among others. Developers can 
 use these service references to call the service's associated API commands.
 
 Deploying a contract to the chain first uploads the bundled contract source code to the 
@@ -58,11 +58,11 @@ The results of what is entered into the REPL is saved under `history[N]`
 Here’s a better formatted list of the `home` objects with brief description of each. The
 link on each object name takes you to a more detailed documentation page for that object.
 Several `home` objects are either for internal Agoric use only or have been deprecated. These
-listed together at the end and external developers should ignore them and not try to use
+are listed together at the end and external developers should ignore them and not try to use
 them.
 
 - [`wallet`](/wallet-api.md): Holds on-chain digital assets and object capabilities on behalf of the user.
-   The link takes you to the standard `wallet` API documentation. When calling
+   The link takes you to the standard non-REPL specific `wallet` API documentation. When calling
    `wallet` API methods from the REPL, `wallet` must be prefaced by
    `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
 - [`chainTimerService`](./timerServices.md): On-chain time authority used to schedule events.
@@ -75,7 +75,7 @@ them.
   connect and disconnect to/from remote ports, and send and receive data over those connections.
 - [`zoe`](/zoe/api/zoe.md): Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
   digital assets and guaranteeing users get either what they want or get a refund of what they escrowed. Even if the
-  contract is buggy or malicious. This link takes you to the standard `zoe` API documentation. When calling
+  contract is buggy or malicious. This link takes you to the standard, non-REPL specific, `zoe` API documentation. When calling
   any of the `zoe` API methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
 - [`priceAuthority`](./priceAuthority.md): Get price quotes for pairs of digital assets.
 - [`scratch`](./scratch.md): An off-chain, private, place to store key-value pairs on your ag-solo for later use.
