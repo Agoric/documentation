@@ -19,6 +19,25 @@ services is whether you preface their identical command set with
 `localTimerService` or `chainTimerService`. However, note that
 the local and chain versions of a method may use different time bases.
 
+Before looking at the timer service methods, we need to cover two related objects,
+the `TimerWaker` and the `TimerRepeater`. 
+
+A `TimerWaker` has one method, `wake`, which takes a `Timestamp` argument and returns `void`. 
+The passed `timestamp` is the time when the call to `wake()` is scheduled to occur.
+
+A `TimerRepeater` has two methods, `schedule()` and `disable`:
+- `schedule(waker)`
+  - `waker` `{ `TimerWaker` }`
+  - Returns `void`             **tyg: The source ChrisH passed along was @property {(waker: TimerWaker) => void} Should it be a Timestamp instead of void?**
+  - The `waker` argument is any object with a `wake()` method. Returns the 
+    time scheduled for the first call to `E(waker).wake()`.  The waker continues
+    to be scheduled every interval until the repeater is disabled.
+- `disable()`
+  - Returns `void`
+  - Disable this repeater, so `schedule()` can't be called, and wakers already 
+    scheduled with this repeater won't be rescheduled again 
+    after `E(waker).wake()` is next called on them.
+
 ## `E(home.<chain or local>TimerService).getCurrentTimestamp()`
 - Returns: the current block's start time according to the local or chain clock
 
@@ -81,3 +100,12 @@ next event will be called.
 command[6] E(home.localTimerService).createRepeater(5,10)
 history[6] sending for eval
 ```
+
+## `E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`
+- `delaySecs` `{ RelativeTime }`
+- `interval` `{ RelativeTime }`
+- Returns: `{ Notifier<Timestamp> }`
+
+Creates and returns a `Notifier` object. It repeatedly delivers updates at times
+that are a multiple of the passed in `interval` value, with the first update happening
+the value of `delaySecs` after the notifier is created.
