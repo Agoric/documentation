@@ -110,10 +110,9 @@ Cycle](/getting-started/development-cycle.md)
   <tr>
     <td>10</td>
     <td>To open your Wallet UI in a browser tab, <code>agoric open</code></td>
- <td>Running <code>agoric open --repl==only</code> opens a browser tab that shows only the REPL (<i>Read-Eval-Print Loop</i>), 
-      and not the combination of Wallet UI and REPL. <b>tyg todo: agoric open seems to be only showing the Wallet UI
-      and not the REPL?</b>
+    <td>Running <code>agoric open --repl</code> opens a browser tab that shows the combination of Wallet UI and REPL (<i>Read-Eval-Print Loop</i>).
     </td>
+    <td>To open your Wallet UI in a browser tab, <code>agoric open</code></td>
   </tr>
 </tbody>
 </table>
