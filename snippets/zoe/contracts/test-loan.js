@@ -9,7 +9,7 @@ import test from 'ava';
 import { E } from '@agoric/eventual-send';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority';
-import { makeSubscriptionKit } from '@agoric/notifier';
+import { makeNotifierKit } from '@agoric/notifier';
 
 test('loan contract', async t => {
   const zoe = makeZoe(makeFakeVatAdmin().admin);
@@ -65,7 +65,7 @@ test('loan contract', async t => {
     .then(priceQuote => doAddCollateral(priceQuote));
   // #endregion customMarginCall
 
-  const { subscription: periodAsyncIterable } = makeSubscriptionKit();
+  const { notifier: periodNotifier } = makeNotifierKit();
 
   const loanPayment = loanMint.mintPayment(loanMath.make(1000));
 
@@ -74,7 +74,7 @@ test('loan contract', async t => {
     mmr: 150,
     autoswapInstance,
     priceAuthority,
-    periodAsyncIterable,
+    periodNotifier,
     interestRate: 5,
   };
 

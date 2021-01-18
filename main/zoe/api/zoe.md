@@ -185,7 +185,7 @@ const installation = await E(zoe).getInstallation(invitation);
 ```
 
 ## E(zoe).startInstance(installation, issuerKeywordRecord, terms)
-- `installation` `{Installation}`
+- `installation` `{ERef<Installation>}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - `terms` `{Object}`
 - Returns: `{Promise<StartInstanceResult>}`
