@@ -110,9 +110,8 @@ Cycle](/getting-started/development-cycle.md)
   <tr>
     <td>10</td>
     <td>To open your Wallet UI in a browser tab, <code>agoric open</code></td>
-    <td>Running <code>agoric open --repl</code> opens a browser tab that shows the combination of Wallet UI and REPL (<i>Read-Eval-Print Loop</i>).
-    </td>
-    <td>To open your Wallet UI in a browser tab, <code>agoric open</code></td>
+    <td>Running <code>agoric open --repl</code> in a shell opens a browser tab
+     that shows both the Wallet UI and REPL (<i>Read-Eval-Print Loop</i>).</td>
   </tr>
 </tbody>
 </table>
