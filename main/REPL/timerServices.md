@@ -68,7 +68,9 @@ at which the call is scheduled to happen.
 command[3] handler = harden({ wake: now => { console.log(`woke up ${now}`); }})
 history[3] {"wake":[Function wake]}
 command[4] willWakeAt =  E(home.localTimerService).setWakeup(3, handler)
-history[4] sending for eval
+history[4] 1342464583
+// Written to console a few seconds later
+woke up 1342464583
 ```
 
 ## `E(home.<chain or local>TimerService).removeWakeup(handler)`
@@ -98,7 +100,7 @@ the actual call may occur later, but this won't change when the
 next event will be called. 
 ```js
 command[6] E(home.localTimerService).createRepeater(5,10)
-history[6] sending for eval
+history[6] [Alleged: presence o-124]{}
 ```
 
 ## `E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`
@@ -106,6 +108,12 @@ history[6] sending for eval
 - `interval` `{ RelativeTime }`
 - Returns: `{ Notifier<Timestamp> }`
 
+**tyg todo: Is this supposed to be here, or should it be over in the ZCF API and seat methods? **
+
 Creates and returns a `Notifier` object. It repeatedly delivers updates at times
 that are a multiple of the passed in `interval` value, with the first update happening
 the value of `delaySecs` after the notifier is created.
+
+```js
+command[30] E(home.localTimerService).createNotifier(5,10)
+history[30] Promise.reject("TypeError: target has no method \"createNotifier\", has [createRepeater,getCurrentTimestamp,removeWakeup,setWakeup]")
