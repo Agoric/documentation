@@ -34,10 +34,10 @@ an associated ID value. It returns the new ID value.
 
 ```js
 // Create an ID for an object that you want to make public
-command[1] E(home.board).getId(myObject)
+command[1] E(home.board).getId("abc")
 history[1] "1403739213"
-// The value myObject now has the ID "1403739213"
-command[2] E(home.board).getId(myObject)
+// The value "abc" now has the ID "1403739213"
+command[2] E(home.board).getId("abc")
 history[2] "1403739213"
 ```
 
@@ -49,7 +49,7 @@ Looks up the `id` value in the Board and returns the Board-associated value for 
 
 With respect to the `CRC` used in an error message below, an ID has two parts, the raw id
 and a CRC (https://en.wikipedia.org/wiki/Cyclic_redundancy_check). The CRC error 
-happens when the passed in id's CRC value is checked. The alleged ID is split into its 
+happens when the passed-in id's CRC value is checked. The alleged ID is split into its 
 two parts, and if the CRC in the alleged ID doesn't match the CRC produced at this time
 from the raw ID value, it throws the error.
 
@@ -61,8 +61,8 @@ Errors:
 ```js
 // Continuing from the example above in getValue(), the id returns its associated value
 command[3] E(home.board).getValue("1403739213")
-// returns myObject
-history[3] "foobar"
+// returns the "abc" value
+history[3] "abc"
 ```  
   
 ## `E(home.board).has(value)`
@@ -72,9 +72,11 @@ history[3] "foobar"
 Returns `true` if the specified value has an associated Board ID.
 
 ```js
+// Pass an id, not a value, so returns false
 command[4] E(home.board).has("1403739213")
 history[4] false
-command[5] E(home.board).has("foobar")
+// Pass a value that does have an id in the Board, so returns true
+command[5] E(home.board).has("abc")
 history[5] true
 ```
 
@@ -91,5 +93,3 @@ history[6]["604346717","381205908","1667979430","1576549616","1532665031",
            "262188032","1265655452","1202180815","813441138","605437304",
            "1403739213"]
 ```
-
-
