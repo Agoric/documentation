@@ -68,21 +68,38 @@ history[3] [Alleged: presence o-102]{}
 ```
 
 ## `E(home.sharingService).validate(sharedMap)`
+- `sharedMap`: `{ SharedMap }`
+- Returns: `{ Promise<SharedMap> }` or **tyg todo: Not sure what's returned if fails to validate**
 
-**tyg todo: Not sure what's going on here. I don't seem to be able
-to get validate() to do anything but return an error**
+Validates the sharedMap argument. If valid, you and its creator have a private channel for posting and
+retrieving key-value pairs. If invalid, someone else must have grabbed the name first. You should discard
+this sharedMap and its name and try again to establish a sharedMap connection with the map creator.
+
+ **tyg todo: This doesn't make sense. The map name would seem to validate whether or not someone
+ else is already using it? **
+
+At the moment, there is a bug filed for the behavior shown here. While it would seem it should be the same,
+the `my` from `command[1]` is **not** the same as `history[1]`. `my` is the promise for the `sharedMap`. `history[1]`
+is the resolved version of that promise. Once the unresolved promise is assigned to `my`, `my` doesn't update its value 
+when the promise resolves.
+
+Thus, when `validate()` is called with an argument of `my`, it returns an error as `my` is an unresolved promise.
+While `history[1]` initially shows that unresolved promise, the REPL waits for it to resolve and prints the result
+as `history[1]`. If you later use a `history[1]` reference, it refers to the promise's resolved state.
+
+This behavior actually is **not** the bug. It's considered a quirk of the REPL. The bug is that `validate()` doesn't
+wait for any promise arguments to resolve. This section will be updated when `validate()` is revised to wait for 
+its parameter to resolve before trying to validate it. 
+
 ```js
-command[4] E(home.sharingService).validate(history[3])
-
-history[4] Promise.reject("Error: Unrecognized sharedMap: (a string)")
-command[5] E(home.sharingService).validate("MyMap")
-history[5] Promise.reject("Error: Unrecognized sharedMap: (a string)")
-command[6] const foo =  E(home.sharingService).grabSharedMap("MyMap")
-history[6] undefined
-command[7] E(home.sharingService).createSharedMap("SecondMap")
-history[7] [Alleged: presence o-103]{}
-command[8] const foo =  E(home.sharingService).grabSharedMap("SecondMap")
-history[8] undefined
+command[1] my = E(home.sharingService).createSharedMap("MyMap")
+history[1] [Alleged: presence o-134]{}
+command[2] E(home.sharingService).validate(my)
+history[2] Promise.reject("Error: Unrecognized sharedMap: (an object)")
+command[3] my~.getName()
+history[3] "MyMap"
+command[4] E(home.sharingService).validate(history[1])
+history[4] [Alleged: presence o-134]{}
 ```
 
 ## `E(home.sharingService).sharedMap.addEntry(key, value)`
@@ -93,8 +110,7 @@ history[8] undefined
 
 Adds an entry to the specified shared map with the specified key and value.
 
-**tyg todo: Not sure how to use from REPL. See above for problems with
-storing a sharedMap object**
+**tyg todo: Still not sure how to use from REPL. See below.** 
 
 ## `E(home.sharingService).sharedMap.lookupKey(key)` 
 - `key`: `{ String }`
@@ -102,7 +118,23 @@ storing a sharedMap object**
 
 Returns the value associated with the specified key in the `sharedMap`.
 
-**tyg todo: Not sure how to use from REPL. See above for problems with
-storing a sharedMap object**
+**tyg todo: Still not sure how to use from REPL. See below.**
 
+**tyg todo: OK, here's what I got in the REPL:**
+```js
+command[16] E(home.sharingService).createSharedMap("BMap")
+history[16] [Alleged: presence o-123]{}
+command[17] foo = E(home.sharingService).grabSharedMap("BMap")
+history[17] [Alleged: presence o-123]{}
+command[18] E(home.sharingService).foo.addEntry("key", "value")
+history[18] exception: "TypeError: E(...).foo.addEntry is not a function"
+command[20] E(foo).addEntry("key", "value")
+history[20] 1
+command[21] E(foo).lookupKey("key")
+history[21] Promise.reject("TypeError: target has no method \"lookupKey\", has [addEntry,getName,lookup]")
+command[23] E(home.sharingService).[history17].addEntry("foo", "bar")
+history[23] working on eval(E(home.sharingService).[history17].addEntry("foo", "bar"))
+command[24] E(home.sharingService).[history17].lookupKey("foo")
+history[24] working on eval(E(home.sharingService).[history17].lookupKey("foo"))
+```
 
