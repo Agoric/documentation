@@ -9,7 +9,7 @@ use the local timer for objects that don't need consensus or consistency.
 For example, people might want it for testing. 
 
 Both timer services let you:
-- Get the start time of the current block. **tyg todo: Is this the case for local?**
+- Get a monotonically increasing timestamp for each instance of the local chain.
 - Schedule `wake()` calls.
 - Remove scheduled `wake()` calls.
 - Create a repeater for scheduling of events at regular intervals. 
@@ -39,14 +39,14 @@ A `TimerRepeater` has two methods, `schedule()` and `disable`:
     after `E(waker).wake()` is next called on them.
 
 ## `E(home.<chain or local>TimerService).getCurrentTimestamp()`
-- Returns: the current block's start time according to the local or chain clock
+- Returns: A monotonically increasing timestamp for each instance of the chain.
 
 The current block might be executed more than once in case of restart or replay.
 But each time it will start from the same state and receive the same inputs. 
 Since this is repeatable computation, the same computation can be run in various l
 ocations to cross-verify. So each time, the `currentTimeStamp` will be the same, 
-even if we're running the computation a minute or a month later. It's always the 
-current block's start time, expressed as a Unix epoch time in milliseconds or similar.
+even if we're running the computation a minute or a month later. It's expressed 
+as a Unix epoch time in milliseconds or similar.
 ```js
 command[1] E(home.chainTimerService).getCurrentTimestamp()
 history[1] 1608523721
