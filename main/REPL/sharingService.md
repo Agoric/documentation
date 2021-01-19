@@ -88,17 +88,14 @@ as `history[1]`. If you later use a `history[1]` reference, it refers to the pro
 
 This behavior actually is **not** the bug. It's considered a quirk of the REPL. The bug is that `validate()` doesn't
 wait for any promise arguments to resolve. This section will be updated when `validate()` is revised to wait for 
-its parameter to resolve before trying to validate it. **tyg todo: What should I replace "my~.getName()" with, since they won't know ~?**
-
+its parameter to resolve before trying to validate it. 
 ```js
 command[1] my = E(home.sharingService).createSharedMap("MyMap")
 history[1] [Alleged: presence o-134]{}
 command[2] E(home.sharingService).validate(my)
 history[2] Promise.reject("Error: Unrecognized sharedMap: (an object)")
-command[3] my~.getName()
-history[3] "MyMap"
-command[4] E(home.sharingService).validate(history[1])
-history[4] [Alleged: presence o-134]{}
+command[3] E(home.sharingService).validate(history[1])
+history[3] [Alleged: presence o-134]{}
 ```
 
 ## `E(home.sharingService).sharedMap.addEntry(key, value)`
