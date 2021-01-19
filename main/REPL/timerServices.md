@@ -27,10 +27,10 @@ The passed `timestamp` is the time when the call to `wake()` is scheduled to occ
 
 A `TimerRepeater` has two methods, `schedule()` and `disable`:
 - `schedule(waker)`
-  - `waker` `{ `TimerWaker` }`
-  - Returns `void`             **tyg: The source ChrisH passed along was @property {(waker: TimerWaker) => void} Should it be a Timestamp instead of void?**
+  - `waker` `{ TimerWaker }`
+  - Returns `{ Timestamp }`  
   - The `waker` argument is any object with a `wake()` method. Returns the 
-    time scheduled for the first call to `E(waker).wake()`.  The waker continues
+    time indicating the time the waker is next scheduled to be called.  The waker continues
     to be scheduled every interval until the repeater is disabled.
 - `disable()`
   - Returns `void`
