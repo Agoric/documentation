@@ -75,8 +75,7 @@ Validates the sharedMap argument. If valid, you and its creator have a private c
 retrieving key-value pairs. If invalid, someone else must have grabbed the name first. You should discard
 this sharedMap and its name and try again to establish a sharedMap connection with the map creator.
 
- **tyg todo: This doesn't make sense. The map name would seem to validate whether or not someone
- else is already using it? **
+ **tyg todo: This doesn't make sense. The map name would seem to validate whether or not someone else is already using it?**
 
 At the moment, there is a bug filed for the behavior shown here. While it would seem it should be the same,
 the `my` from `command[1]` is **not** the same as `history[1]`. `my` is the promise for the `sharedMap`. `history[1]`
@@ -89,7 +88,7 @@ as `history[1]`. If you later use a `history[1]` reference, it refers to the pro
 
 This behavior actually is **not** the bug. It's considered a quirk of the REPL. The bug is that `validate()` doesn't
 wait for any promise arguments to resolve. This section will be updated when `validate()` is revised to wait for 
-its parameter to resolve before trying to validate it. 
+its parameter to resolve before trying to validate it. **tyg todo: What should I replace "my~.getName()" with, since they won't know ~?**
 
 ```js
 command[1] my = E(home.sharingService).createSharedMap("MyMap")
@@ -110,31 +109,31 @@ history[4] [Alleged: presence o-134]{}
 
 Adds an entry to the specified shared map with the specified key and value.
 
-**tyg todo: Still not sure how to use from REPL. See below.** 
+```js
+command[0] E(home.sharingService).createSharedMap("MyMap")
+history[0] [Alleged: presence o-122]{}
+command[1] foo = E(home.sharingService).grabSharedMap("MyMap")
+history[1] [Alleged: presence o-122]{}
+command[2] E(foo).addEntry("key", "value")
+history[2] 1
+command[3] E(foo).lookup("key")
+history[3] "value"
+```
 
-## `E(home.sharingService).sharedMap.lookupKey(key)` 
+## `E(home.sharingService).sharedMap.lookup(key)` 
 - `key`: `{ String }`
 - Returns: `{ Object }`
 
 Returns the value associated with the specified key in the `sharedMap`.
 
-**tyg todo: Still not sure how to use from REPL. See below.**
-
-**tyg todo: OK, here's what I got in the REPL:**
 ```js
-command[16] E(home.sharingService).createSharedMap("BMap")
-history[16] [Alleged: presence o-123]{}
-command[17] foo = E(home.sharingService).grabSharedMap("BMap")
-history[17] [Alleged: presence o-123]{}
-command[18] E(home.sharingService).foo.addEntry("key", "value")
-history[18] exception: "TypeError: E(...).foo.addEntry is not a function"
-command[20] E(foo).addEntry("key", "value")
-history[20] 1
-command[21] E(foo).lookupKey("key")
-history[21] Promise.reject("TypeError: target has no method \"lookupKey\", has [addEntry,getName,lookup]")
-command[23] E(home.sharingService).[history17].addEntry("foo", "bar")
-history[23] working on eval(E(home.sharingService).[history17].addEntry("foo", "bar"))
-command[24] E(home.sharingService).[history17].lookupKey("foo")
-history[24] working on eval(E(home.sharingService).[history17].lookupKey("foo"))
+command[0] E(home.sharingService).createSharedMap("MyMap")
+history[0] [Alleged: presence o-122]{}
+command[1] foo = E(home.sharingService).grabSharedMap("MyMap")
+history[1] [Alleged: presence o-122]{}
+command[2] E(foo).addEntry("key", "value")
+history[2] 1
+command[3] E(foo).lookup("key")
+history[3] "value"
 ```
 
