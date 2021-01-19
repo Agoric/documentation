@@ -63,7 +63,7 @@ How to install software that the Agoric SDK depends on.
   documentation, accessible from the Zoe documentation sidebar menu.
 
 When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
-Reference](/zoe/api/)**, **[Wallet API Reference](/wallet-api.md)**,
+Reference](/zoe/api/)**, **[Wallet UI Guide and API Reference](/wallet-api.md)**,
 and **[Agoric CLI Guide](/getting-started/agoric-cli-guide.md)** for details about 
 their respective commands. 
 
