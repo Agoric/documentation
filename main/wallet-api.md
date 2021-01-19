@@ -171,10 +171,10 @@ designated the auto-deposit purse for its asset type.
 When you are finished specifying how much the payment is and where it's going, click the **Send** button at the bottom
 of the popup. Otherwise click the **Cancel** button to cancel the prospective transfer and close the popup.
 
-If you enable a Purse's **AutoDeposit** by sliding its button
-to the right, causing it to turn red, any incoming Payments of that Purse's Brand are automatically deposited into it.  
-Doing so disables any other auto-deposit purses for that Brand. Sliding the button to the left, causing it to turn white, 
-means you have to manually approve the deposit.
+If you enable a Purse's **AutoDeposit** by sliding its buttonto the right, causing it to turn red, any
+incoming Payments of that Purse's Brand are automatically deposited into it. Doing so disables any other 
+auto-deposit purses for that Brand. Sliding the button to the left, causing it to turn white, means you have
+to manually approve the deposit.
 
 ### Dapps
 
