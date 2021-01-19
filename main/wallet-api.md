@@ -1,6 +1,6 @@
 # Agoric Wallet
 
-This page documents that *Agoric Wallet*, including its use of *petnames*, its place in the Agoric Platform
+This page documents the *Agoric Wallet*, including its use of *petnames*, its place in the Agoric Platform
 architecture, accessing it via the *REPL* (*Read-Eval-Print Loop*), and the Wallet API. 
 
 ## Wallet and Agoric Architecture
@@ -249,7 +249,7 @@ of a payment. Clicking it opens a popup with the JSON representation of that pay
 
 You can interact with a Wallet via the JavaScript *REPL* (*Read-Eval-Print Loop*),
 which is visible at the bottom of the Wallet UI display. 
-In the REPL, you send message to `home.wallet`, which is the Wallet running on that
+In the REPL, you send messages to `home.wallet`, which is the Wallet running on that
 page/process. Typing `E(home.wallet).foo()` in the REPL returns the names of all the Wallet
 API methods by the clever method of asking it to evaluate a non-existent API method and
 getting an error message listing all the valid methods.
@@ -376,7 +376,7 @@ Introduce an ERTP issuer with a suggested petname to the Wallet.
 
 Introduce a Zoe contract installation with a suggested petname to the Wallet.
 
-### `suggestInstance(petname, instanceBoardId)
+### `suggestInstance(petname, instanceBoardId)`
 - `petname` `{Petname}`
 - `instanceBoardId` `{string}`
 - Returns: `void`
