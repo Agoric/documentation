@@ -1,6 +1,74 @@
 // Extra styles for site
 @import './palette'
 
+@media (max-width: 900px) {
+.sidebar-button {
+      display: block;
+}
+}
+
+@media (max-width: 1200px) {
+  .search-box input {
+    cursor: pointer;
+    width: 0;
+    max-width: 0;
+
+      &:focus {
+        max-width: none;
+      }
+  }
+}
+
+@media (max-width: 1016px) {
+  .sidebar-button {
+    display: block !important;
+  }
+
+  .navbar {
+    padding-left: 4rem !important;
+  }
+
+  .navbar .can-hide {
+    display: none !important;
+  }
+
+  .theme-container.sidebar-open.no-sidebar .sidebar {
+    transform: translateX(0);
+    display: block;
+  }
+
+  .theme-container .sidebar .nav-links {
+    display: block;
+  }
+
+  .sidebar-open .dropdown-wrapper .nav-dropdown {
+    position: static;
+    max-height: none;
+    border: 0;
+    top: auto;
+    right: auto;
+  }
+
+  .sidebar-open .dropdown-wrapper {
+    height: auto;
+  }
+
+  .dropdown-wrapper .nav-dropdown .dropdown-item h4, .dropdown-wrapper .nav-dropdown .dropdown-item > a {
+    font-size: 15px;
+    line-height: 2rem;
+  }
+
+  .sidebar-open {
+    .dropdown-wrapper:hover .nav-dropdown, .dropdown-wrapper.open .nav-dropdown {
+      display: none !important;
+    }
+
+    .dropdown-wrapper.open:hover .nav-dropdown, .dropdown-wrapper.open .nav-dropdown {
+      display: block !important;
+    }
+  }
+}
+
 .ag-btn
   background-color $accentColor
   color $white
