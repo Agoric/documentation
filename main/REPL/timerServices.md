@@ -9,10 +9,12 @@ use the local timer for objects that don't need consensus or consistency.
 For example, people might want it for testing. 
 
 Both timer services let you:
-- Get a monotonically increasing timestamp for each instance of the local chain.
 - Schedule `wake()` calls.
 - Remove scheduled `wake()` calls.
 - Create a repeater for scheduling of events at regular intervals. 
+
+The local service lets you get a monotonically increasing timestamp for each instance 
+of the local chain. The chain service lets you get the start time of the current block.
 
 With respect to using them, the only difference between the two timer
 services is whether you preface their identical command set with
@@ -107,8 +109,6 @@ history[6] [Alleged: presence o-124]{}
 - `delaySecs` `{ RelativeTime }`
 - `interval` `{ RelativeTime }`
 - Returns: `{ Notifier<Timestamp> }`
-
-**tyg todo: Is this supposed to be here, or should it be over in the ZCF API and seat methods? **
 
 Creates and returns a `Notifier` object. It repeatedly delivers updates at times
 that are a multiple of the passed in `interval` value, with the first update happening
