@@ -56,7 +56,7 @@ command[2] E(home.localTimerService).getCurrentTimestamp()
 history[2] 1340435997
 ```
 
-## `E(home.<chain or local>TimerService.(setWakeup(baseTime, handler)`
+## `E(home.<chain or local>TimerService).setWakeup(baseTime, handler)`
 - `baseTime` `{ integer }` 
 - `handler` `{ Handler }`
 - Returns: `{ Integer }` 
