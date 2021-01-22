@@ -49,8 +49,8 @@ Different `PriceAuthories` may issue these at very different rates.
  - `brandOut` `{ Brand }`
  - Returns: `{ Notifier }`
  
-Returns a notifier for the specified brands. Different `PriceAuthorie`s may i
-ssue these at very different rates.
+Returns a notifier for the specified brands. Different `PriceAuthories` may 
+issue these at very different rates.
 
 ## `quoteGiven(amountIn, brandOut)`
  - `amountIn` `{ Amount }`
