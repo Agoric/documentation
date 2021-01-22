@@ -32,10 +32,10 @@ Use `sharingService` by:
 4. They call `validate(sharedMap)` on the returned object. 
    - If it's a valid `sharedMap`, then you and they have a private channel. 
    - If invalid, then someone else must have grabbed the name first, and
-     you can discard that one and try  again. **tyg todo: This doesn't
-     make sense. The map name would seem to validate whether or not someone
-     else is already using it**
-5. Once you and others have a reference to the same valid `sharedMap`
+     you can discard that one and try  again. 
+   - Note that you only get the object if you're the first to request it. Otherwise,
+     someone beat you to it.          
+5. Once you and another have a reference to the same valid `sharedMap`
    object, either of you can call `addEntry(key, value)` to store an
    object, which the other party can retrieve with `lookup(key)`. 
 
@@ -69,15 +69,13 @@ history[3] [Alleged: presence o-102]{}
 
 ## `E(home.sharingService).validate(sharedMap)`
 - `sharedMap`: `{ SharedMap }`
-- Returns: `{ Promise<SharedMap> }` or **tyg todo: Not sure what's returned if fails to validate**
+- Returns: `{ Promise<SharedMap> }` or throws an error if it fails to validate
 
 Validates the sharedMap argument. If valid, you and its creator have a private channel for posting and
 retrieving key-value pairs. If invalid, someone else must have grabbed the name first. You should discard
 this sharedMap and its name and try again to establish a sharedMap connection with the map creator.
 
- **tyg todo: This doesn't make sense. The map name would seem to validate whether or not someone else is already using it?**
-
-At the moment, there is a bug filed for the behavior shown here. While it would seem it should be the same,
+At the moment, there is a bug filed for the behavior shown below. While it would seem it should be the same,
 the `my` from `command[1]` is **not** the same as `history[1]`. `my` is the promise for the `sharedMap`. `history[1]`
 is the resolved version of that promise. Once the unresolved promise is assigned to `my`, `my` doesn't update its value 
 when the promise resolves.
@@ -102,9 +100,10 @@ history[3] [Alleged: presence o-134]{}
 - `sharedMap`: `{ sharedMap }`
 - `key`: `{ String }`
 - `value`: `{ Object }`
-- Returns: **tyg todo: Not sure**
+- Returns: `{ Integer }`
 
-Adds an entry to the specified shared map with the specified key and value.
+Adds an entry to the specified shared map with the specified key and value. Returns
+the number of entries after the newly added one.
 
 ```js
 command[0] E(home.sharingService).createSharedMap("MyMap")
