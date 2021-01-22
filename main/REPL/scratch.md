@@ -1,4 +1,6 @@
-You use `scratch` to save key-value pairs for later. It is only on the ag-solo and is not accessible from the chain, making it private to the ag-solo user. Since deploy scripts are ephemeral, use scratch to save objects in a deploy script for later scripts to use.
+# Scratch
+
+You use `scratch` to save key-value pairs for later. It is only on the ag-solo and is not accessible from the chain, making it private to the ag-solo user. Since deploy scripts are ephemeral, use `scratch` to save objects from a deploy script for later scripts to use.
 
 Note that when calling from the REPL's home object, you must use the [E syntax](/distributed-programming.md#communicating-with-remote-objects-using-e) as shown below.
 
