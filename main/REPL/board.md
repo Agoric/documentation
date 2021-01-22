@@ -48,7 +48,7 @@ history[2] "1403739213"
 Looks up the `id` value in the Board and returns the Board-associated value for that ID.
 
 With respect to the `CRC` used in an error message below, an ID has two parts, the raw id
-and a CRC (https://en.wikipedia.org/wiki/Cyclic_redundancy_check). The CRC error 
+and a [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check). The CRC error 
 happens when the passed-in id's CRC value is checked. The alleged ID is split into its 
 two parts, and if the CRC in the alleged ID doesn't match the CRC produced at this time
 from the raw ID value, it throws the error.
@@ -56,7 +56,7 @@ from the raw ID value, it throws the error.
 Errors:
 - If the `id` value is not a string, errors with the message "id must be string" and a log of the failing `id` that was passed in.
 - If the `id` value has too few digits, errors with the message "id must consist of at least 3 digits".
-- If the `id` value is , errors with the message "id is probably a typo, cannot verify CRC".
+- If the `id` value has a different CRC value than the stored one, errors with the message "id is probably a typo, cannot verify CRC".
 - If the `id` value is not in the Board, errors with the message "board does not have id: [id]".
 ```js
 // Continuing from the example above in getValue(), the id returns its associated value
