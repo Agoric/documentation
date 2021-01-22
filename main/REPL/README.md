@@ -7,6 +7,12 @@ click [here](https://nodejs.org/api/repl.html).
 
 When you run `agoric start --reset`, you start a local *ag-solo*. 
 
+You use `agoric start` to start what we call an *ag-solo*, which is a 
+single personal local Agoric node. You need an ag-solo running on your 
+machine to interact with Agoric network services, whether a built-in 
+simulated chain (also started by `agoric start`), or a fully-decentralized public Agoric 
+blockchain. 
+
 All deployment happens via the local running Agoric process. This is usually the 
 ag-solo process, and frequently referred to as that or just as ag-solo. It is also 
 sometimes described as/called an Agoric VM or a local server.
@@ -16,9 +22,10 @@ has a home object, which contains references to services on-chain, including Zoe
 Board for sharing objects, and an application user's Wallet, among others. Developers can 
 use these service references to call the service's associated API commands.
 
-Deploying a contract to the chain first uploads the bundled contract source code to the 
-local Agoric ag-solo process. The deployment script then uses the `home` object to access 
-Zoe which installs the code on chain.
+Contract code starts in a file on a user's computer, either written by them or 
+imported from `agoric/zoe`. The code is *bundled*; turned into a particularly formatted
+blob of code that exists in memory while a deploy script is running. When `E(zoe).install()` is
+called, the blob is sent to and stored on-chain so that Zoe can access it. 
 
 An ag-solo has an associated REPL (*Read-Eval-Print Loop*). From the REPL and the `home`
 object, developers can use all the on-chain commands that deployment scripts use to 
