@@ -1,84 +1,15 @@
-# Price Authority and Timer Service
+# Price Authority
 
-`PriceAuthority` objects use the timer service. Therefore, before covering `PriceAuthority`, we must
-first look at the timer service's objects and methods.
+`PriceAuthority` is an object that mints `PriceQuotes` and handles
+triggers and notifiers for changes in the price. 
 
-## Timer Service
+`PriceAuthority` objects use timer services. You should be familiar with the objects 
+and methods in the [REPL TimerService document](./timerServices.md) 
 
-`TimerService` objects have methods for getting the current time, scheduling
-a `wake()` call, scheduling repeated events, and cancelling scheduled events.
-
-### `getCurrentTimestamp()`
-- Returns: `{ Timestamp }`
-
-Returns the last timestamp.
-
-### `setWakeup(baseTime, waker)`
-- `baseTime` `{ Timestamp }`
-- `waker` `{ TimerWaker }`
-- Returns: `{ Timestamp }`
-
-Returns the time when the call is scheduled to happen
-
-### `removeWakeup(waker)`
-- `waker` `{ TimerWaker }`
-- Returns: `{ Array<Timestamp> }`
-
-Remove the `waker` from all scheduled wakeups, whether produced by `timer.seWakeup(h)`
-or `repeater.schedule(h)`.
-
-### `createRepeater(delaySecs, interval)`
-- `delaySecs` `{ RelativeTime }`
-- `interval` `{ RelativeTime }`
-Returns: `{ TimerRepeater }`
-
-Returns a repeater that will repeatedly schedule `wake()` calls. The
-first call occurs after `delay` time, and the following calls occur
-at `interval` time values. 
-When `schedule(w)` is called, `w.wake()` will be scheduled to be
-called after the next multiple of interval from the base. Since times can be
-coarse-grained, the actual call may occur later, but this won't change when
-the next event will be called.
-
-
-### `Timestamp` object
-
-A `Number`, an absolute individual stamp returned by a `TimerService`.  Note that different
-timer services may have different interpretations of actual Timestamp values.
-
-### `RelativeTime` object
-
-A `Number`, the difference between two `Timestamps`.  Note that
-different timer services may have different interpretations of actual `RelativeTime` values.
-
-### `TimerWaker` object
-
-- `TimerWaker.wake(timestamp)
-  - timestamp `{ Timestamp }`
-  - Returns: `void`
-  - The specified timestamp is the time the call was scheduled to occur.
-
-### `TimerRepeater` object
-
-The `TimerRepeater` object has two methods for scheduling its first call and disabling
-itself.
-
-- `TimerRepeater.schedule(waker)`
-  - `waker` `{ TimerWaker }`
-  - Returns: `void`
-  - Returns the time scheduled for the first call to `E(waker).wake()`.  
-    The waker continues to be scheduled every interval until the repeater is disabled.
-    
-- `TimerRepeater.disable()`
-  - Returns: `void`
-  - Disable this repeater, so `schedule(w)` can't be called, and wakers 
-    already scheduled with this repeater won't be rescheduled again 
-    after `E(waker).wake()` is next called on them.
-
-## Price Authority
+## Price quote objects
  
-Before discussing `PriceAuthority` and `PriceAuthorityAdmin` objects, we need to cover the other price-based
-objects and methods they interact with.
+Before discussing `PriceAuthority` and `PriceAuthorityAdmin` methods, we need to 
+cover the other price-based objects and methods they interact with.
  
 A `PriceQuote` is an object with two properties:
 - `quoteAmount`: An `Amount` whose value is a `PriceQuoteValue`.
@@ -90,9 +21,6 @@ A `PriceQuoteValue` is the `Value` part of a `quoteAmount`. Its properties are:
 - `timer` `{ TimerService }`:  The service that gave the `timestamp`
 - `timestamp` `{ Timestamp }`: A timestamp according to `timer` for the quote
 - `conditions` `{ any= }`: Additional conditions for the quote
-
-`PriceAuthority` is an object that mints `PriceQuotes` and handles
-triggers and notifiers for changes in the price. 
  
 ## `getQuoteIssuer(brandIn, brandOut)`
  - `brandIn` `{ Brand }`
