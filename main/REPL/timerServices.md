@@ -1,4 +1,6 @@
-# Timer Service Objects
+# Timer Services 
+    
+## TimerService objects
 
 `home` has two timer service objects: 
 - `localTimerService` is from the local vat.
@@ -21,11 +23,24 @@ services is whether you preface their identical command set with
 `localTimerService` or `chainTimerService`. However, note that
 the local and chain versions of a method may use different time bases.
 
-Before looking at the timer service methods, we need to cover two related objects,
-the `TimerWaker` and the `TimerRepeater`. 
+Before looking at the timer service methods, we need to cover four related objects.
+
+## `Timestamp` object
+
+An `Integer`, an absolute individual stamp returned by a `TimerService`.  Note that different
+timer services may have different interpretations of actual Timestamp values.
+
+### `RelativeTime` object
+
+An `Integer`, the difference between two `Timestamps`.  Note that
+different timer services may have different interpretations of actual `RelativeTime` values.
+
+### `TimerWaker` object
 
 A `TimerWaker` has one method, `wake`, which takes a `Timestamp` argument and returns `void`. 
 The passed `timestamp` is the time when the call to `wake()` is scheduled to occur.
+
+### `TimerRepeater` object
 
 A `TimerRepeater` has two methods, `schedule()` and `disable`:
 - `schedule(waker)`
@@ -39,8 +54,10 @@ A `TimerRepeater` has two methods, `schedule()` and `disable`:
   - Disable this repeater, so `schedule()` can't be called, and wakers already 
     scheduled with this repeater won't be rescheduled again 
     after `E(waker).wake()` is next called on them.
+    
+## TimerService methods
 
-## `E(home.<chain or local>TimerService).getCurrentTimestamp()`
+### `E(home.<chain or local>TimerService).getCurrentTimestamp()`
 - Returns: A monotonically increasing timestamp for each instance of the chain.
 
 The current block might be executed more than once in case of restart or replay.
@@ -56,7 +73,7 @@ command[2] E(home.localTimerService).getCurrentTimestamp()
 history[2] 1340435997
 ```
 
-## `E(home.<chain or local>TimerService).setWakeup(baseTime, handler)`
+### `E(home.<chain or local>TimerService).setWakeup(baseTime, handler)`
 - `baseTime` `{ Timestamp }` 
 - `handler` `{ Handler }`
 - Returns: `{ Timestamp }` 
@@ -75,22 +92,22 @@ history[4] 1342464583
 woke up 1342464583
 ```
 
-## `E(home.<chain or local>TimerService).removeWakeup(handler)`
+### `E(home.<chain or local>TimerService).removeWakeup(handler)`
 - `handler` `{ Handler }`
-- Returns: `{ Array[Integer] }`
+- Returns: `{ Promise<Array[Timestamp]>}`
 
 Remove the specified handler from all scheduled wakeups, whether
 created by `setWakeup()` or `repeater.schedule()`, effectively
 canceling the wakeups using that handler.
 
-Returns a list of `Integer` times when the cancelled wakeup calls were scheduled to happen.
+Returns a promise for an array of `Timestamp` times when the cancelled wakeup calls were scheduled to happen.
 
 ```js
-command[5] timeList = E(home.localTimerService.removeWakeup(handler)
-history[5] sending for eval
+command[5] timeList = E(home.localTimerService).removeWakeup(handler)
+history[5] unresolved Promise
 ```
   
-## `E(home.<chain or local>TimerService).createRepeater(delaySecs, interval)`
+### `E(home.<chain or local>TimerService).createRepeater(delaySecs, interval)`
 - `delaySecs`: `{ Integer }`
 - `interval`: `{ Integer }`
 - Returns: `{ Repeater }` 
@@ -105,7 +122,46 @@ command[6] E(home.localTimerService).createRepeater(5,10)
 history[6] [Alleged: presence o-124]{}
 ```
 
-## `E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`
+**tyg todo: Tried running the following from and kept getting nothing but "Sending for eval" responses**
+
+```
+command[3]  makeHandler = () => { let calls = 0; const args = []; return { getCalls() {
+return calls; }, getArgs() { return args; }, wake(arg) { args.push(arg); calls += 1; }, }; }
+history[3]  [Function makeHandler]
+command[4]  h1 = makeHandler()
+history[4]  {"getCalls":[Function getCalls],"getArgs":[Function getArgs],"wake":[Function wake]}
+command[5]  h2 = makeHandler()
+history[5]  {"getCalls":[Function getCalls],"getArgs":[Function getArgs],"wake":[Function wake]}
+command[6]  tl = home.localTimerService
+history[6]  [Presence o-59]  
+command[7]  tc = home.chainTimerService
+history[7]  [Presence o-55]  
+command[8]  rl = tl~.makeRepeater(7, 1500)
+history[8]  [Presence o-64]  
+command[9]  rc = tc~.makeRepeater(7, 1)
+history[9]  [Presence o-65]  
+command[10]  rl~.schedule(h1)
+history[10]  1571783040007
+command[11]  rc~.schedule(h2)
+history[11]  1571783051
+command[12]  h1.getCalls()
+history[12]  3
+command[13]  h2.getCalls()
+history[13]  1
+...
+command[22]  h1.getCalls()
+history[22]  50
+command[23]  h1.getCalls()
+history[23]  53
+command[24]  h1.getCalls()
+history[24]  54
+command[25]  tl~.getCurrentTimestamp()
+history[25]  1571783375000
+command[26]  tc~.getCurrentTimestamp()
+history[26]  1571783384
+```
+
+### `E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`
 - `delaySecs` `{ RelativeTime }`
 - `interval` `{ RelativeTime }`
 - Returns: `{ Notifier<Timestamp> }`
@@ -116,4 +172,4 @@ the value of `delaySecs` after the notifier is created.
 
 ```js
 command[30] E(home.localTimerService).createNotifier(5,10)
-history[30] Promise.reject("TypeError: target has no method \"createNotifier\", has [createRepeater,getCurrentTimestamp,removeWakeup,setWakeup]")
+history[30] sending for eval
