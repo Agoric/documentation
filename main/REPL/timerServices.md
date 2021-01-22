@@ -62,8 +62,8 @@ A `TimerRepeater` has two methods, `schedule()` and `disable`:
 
 The current block might be executed more than once in case of restart or replay.
 But each time it will start from the same state and receive the same inputs. 
-Since this is repeatable computation, the same computation can be run in various l
-ocations to cross-verify. So each time, the `currentTimeStamp` will be the same, 
+Since this is repeatable computation, the same computation can be run in various
+locations to cross-verify. So each time, the `currentTimeStamp` will be the same, 
 even if we're running the computation a minute or a month later. It's expressed 
 as a Unix epoch time in milliseconds or similar.
 ```js
