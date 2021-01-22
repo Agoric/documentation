@@ -122,7 +122,7 @@ command[6] E(home.localTimerService).createRepeater(5,10)
 history[6] [Alleged: presence o-124]{}
 ```
 
-**tyg todo: Tried running the following from and kept getting nothing but "Sending for eval" responses**
+A longer example of creating and using Repeaters:
 
 ```
 command[3]  makeHandler = () => { let calls = 0; const args = []; return { getCalls() {
@@ -172,4 +172,4 @@ the value of `delaySecs` after the notifier is created.
 
 ```js
 command[30] E(home.localTimerService).createNotifier(5,10)
-history[30] sending for eval
+history[30] [Alleged: presence o-129]{}
