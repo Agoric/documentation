@@ -157,6 +157,7 @@ In general, you want to issue these Agoric CLI commands in this order:
 2. `agoric install`
 3. `agoric start` (Usually with `--reset`)
 4. `agoric deploy`
+5. `agoric open`
 
 Use `agoric help` whenever you need help with one of the above Agoric CLI commands.
 
@@ -247,21 +248,25 @@ They are:
     
 #### `agoric open`
 - **Function**:
-  - Launch the Agoric UI
+  - Launch the Agoric UI. By default, it shows only the UI and not the REPL. To show either
+    both the UI and REPL, or only the REPL, see the `--repl` optional argument below.
 - **Required Arguments**
   - None
 - **Optional Arguments**
   - `--hostport <host:port>`: Host and port on which to connect to the VM (default: "127.0.0.1:8000").
   - `--no-browser`: Display the UI's URL, but don't open a browser.
-  - `--repl [yes | only | no]`:  Whether to show the Read-Eval-Print loop. Defaults to `yes`.
+  - `--repl [yes | only | no]`:  Whether to show the Read-Eval-Print loop. Defaults to `yes` if specified (see
+    Examples below)
   - `-h`, `--help`: Display help for `open` command.
 - **Examples**
-  - Launch the Agoric UI in a browser
+  - Launch only the Agoric UI in a browser
     - `agoric open`
   - Display the Agoric UI's URL, but don't open it in a browser.
     - `agoric open --no-browser`
   - Display only the REPL for the Agoric UI in a browser.
     - `agoric open --repl only`
+  - Display both the Agoric UI and the REPL in a browser (`--repl` defaults to `yes`).
+    - `agoric open --repl`
 
 #### `agoric help`
 - **Function**:

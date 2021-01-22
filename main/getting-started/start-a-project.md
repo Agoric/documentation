@@ -102,10 +102,16 @@ Cycle](/getting-started/development-cycle.md)
     <td>9</td>
     <td>Go to a browser and open <code>http://localhost:3000</code> to
       see the Dapp. If you used the default values for <code>agoric init</code>
-  in Step 2, you'll see the Fungible Faucet demo Dapp, described in the next cell.</td>
-  <td>If you used the <code>agoric init</code> defaults in Step 2, 
-    you'll see our Fungible Faucet Dapp, which lets you get 1000 fungible tokens at a time for free. Receiving the tokens requires interaction
-  with your wallet where your assets are stored (which was started with the Agoric VM).</td>
+      in Step 2, you'll see the Fungible Faucet demo Dapp, described in the next cell.</td>
+    <td>If you used the <code>agoric init</code> defaults in Step 2, 
+      you'll see our Fungible Faucet Dapp, which lets you get 1000 fungible tokens at a time for free. Receiving the tokens requires interaction
+      with your wallet where your assets are stored (which was started with the Agoric VM).</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>To open your Wallet UI in a browser tab, <code>agoric open</code></td>
+    <td>Running <code>agoric open --repl</code> in a shell opens a browser tab
+     that shows both the Wallet UI and REPL (<i>Read-Eval-Print Loop</i>).</td>
   </tr>
 </tbody>
 </table>
