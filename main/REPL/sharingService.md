@@ -8,7 +8,8 @@ connected to the same remote chain vat. You can then
 use a named *shared map* to pass items to and from another vat.
 
 Shared maps are conceptually similar to a physical bulletin
-board. If you know the name of a shared map, you can
+board. However, each shared map is only intended to be shared
+between two parties. If you have access to a shared map, you can
 append objects to or remove objects from that shared map. 
 
 Name usage in shared maps is first come, first served, with
@@ -26,15 +27,16 @@ Use `sharingService` by:
 1. Calling `createSharedMap(name)` to create a `sharedMap` object with the
    specified name. If the name is already used, it returns an error and
    you must try again with a different name.
-2. Share the `sharedMap` object reference with anyone you want to have
-   access to it. 
+2. Share the `sharedMap` object reference with whoever you want to have
+   access to it. Remember, the intent is that only one other party will use
+   a specific map with you.
 3. They call `grabSharedMap(name)` with the name you provided.
 4. They call `validate(sharedMap)` on the returned object. 
    - If it's a valid `sharedMap`, then you and they have a private channel. 
-   - If invalid, then someone else must have grabbed the name first, and
-     you can discard that one and try  again. 
+   - If invalid, then someone else has grabbed the name first, so you
+     need to set up a differently named map and try again.  
    - Note that you only get the object if you're the first to request it. Otherwise,
-     someone beat you to it.          
+     you were beaten to it and don't get to use it.           
 5. Once you and another have a reference to the same valid `sharedMap`
    object, either of you can call `addEntry(key, value)` to store an
    object, which the other party can retrieve with `lookup(key)`. 
