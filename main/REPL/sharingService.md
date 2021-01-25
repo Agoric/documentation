@@ -108,14 +108,21 @@ Adds an entry to the specified shared map with the specified key and value. Retu
 the number of entries after the newly added one.
 
 ```js
-command[0] E(home.sharingService).createSharedMap("MyMap")
+//Alice creates a shared map
+command[0] foo = E(home.sharingService).createSharedMap("AliceMap")
 history[0] [Alleged: presence o-122]{}
-command[1] foo = E(home.sharingService).grabSharedMap("MyMap")
-history[1] [Alleged: presence o-122]{}
-command[2] E(foo).addEntry("key", "value")
-history[2] 1
-command[3] E(foo).lookup("key")
-history[3] "value"
+//Alice tells Bob about her shared map
+//In his REPL (thus the repeat of "command[0]"; the previous one was in Alice's REPL), 
+//Bob grabs Alice's shared map
+command[0] bar = E(home.sharingService).grabSharedMap("AliceMap")
+history[0] [Alleged: presence o-122]{}
+//Alice adds the key-value pair of "key" and "value" to her shared map
+command[1] E(foo).addEntry("key", "value")
+history[1] 1
+//Bob retrieves the value of the key-value pair in the shared map that has "key" as its key.
+//(thus the repeat of "command[1]"; the previous one was in Alice's REPL),
+command[1] E(bar).lookup("key")
+history[1] "value"
 ```
 
 ## `E(home.sharingService).sharedMap.lookup(key)` 
@@ -125,13 +132,20 @@ history[3] "value"
 Returns the value associated with the specified key in the `sharedMap`.
 
 ```js
-command[0] E(home.sharingService).createSharedMap("MyMap")
+//Alice creates a shared map.
+command[0] foo = E(home.sharingService).createSharedMap("AliceMap")
 history[0] [Alleged: presence o-122]{}
-command[1] foo = E(home.sharingService).grabSharedMap("MyMap")
-history[1] [Alleged: presence o-122]{}
-command[2] E(foo).addEntry("key", "value")
-history[2] 1
-command[3] E(foo).lookup("key")
-history[3] "value"
+//Alice tells Bob about her shared map
+//In his REPL (thus the repeat of "command[0]"; the previous one was in Alice's REPL), 
+//Bob grabs Alice's shared map
+command[0] bar = E(home.sharingService).grabSharedMap("AliceMap")
+history[0] [Alleged: presence o-122]{}
+//Alice adds the key-value pair of "key" and "value" to her shared map
+command[1] E(foo).addEntry("key", "value")
+history[1] 1
+//Bob retrieves the value of the key-value pair in the shared map that has "key" as its key.
+//(thus the repeat of "command[1]"; the previous one was in Alice's REPL),
+command[1] E(bar).lookup("key")
+history[1] "value"
 ```
 
