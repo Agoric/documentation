@@ -3,8 +3,8 @@
 ## Introduction
 
 The Board is a shared, on-chain location that is where users post an object as a value and make
-it accessible to others. When a user posts a value, they receive a unique ID 
-for that value. Others can get the value just by knowing the ID. You can make 
+it accessible to others. When a user posts a value object, they receive a unique ID 
+for that value. Others can get the value object just by knowing the ID. You can make 
 an ID known by any communication method; private email, a DM or other private 
 message, an email blast to a mailing list or many individuals, listing it on a website, etc.
 
@@ -62,7 +62,7 @@ Errors:
 // Continuing from the example above in getValue(), the id returns its associated value
 command[3] E(home.board).getValue("1403739213")
 // returns the "abc" value
-history[3] auctionInvitation
+history[3] [Alleged: presence o-102]{}
 ```  
   
 ## `E(home.board).has(value)`
