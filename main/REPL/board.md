@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Board is a shared, on-chain location where users post an object as a value and make
+The Board is a shared, on-chain location that is where users post an object as a value and make
 it accessible to others. When a user posts a value, they receive a unique ID 
 for that value. Others can get the value just by knowing the ID. You can make 
 an ID known by any communication method; private email, a DM or other private 
@@ -34,10 +34,10 @@ an associated ID value. It returns the new ID value.
 
 ```js
 // Create an ID for an object that you want to make public
-command[1] E(home.board).getId("abc")
+command[1] E(home.board).getId(auctionInvitation)
 history[1] "1403739213"
-// The value "abc" now has the ID "1403739213"
-command[2] E(home.board).getId("abc")
+// The value auctionInvitation (an Invitation object) now has the ID "1403739213"
+command[2] E(home.board).getId(auctionInvitation)
 history[2] "1403739213"
 ```
 
@@ -62,7 +62,7 @@ Errors:
 // Continuing from the example above in getValue(), the id returns its associated value
 command[3] E(home.board).getValue("1403739213")
 // returns the "abc" value
-history[3] "abc"
+history[3] auctionInvitation
 ```  
   
 ## `E(home.board).has(value)`
@@ -76,7 +76,7 @@ Returns `true` if the specified value has an associated Board ID.
 command[4] E(home.board).has("1403739213")
 history[4] false
 // Pass a value that does have an id in the Board, so returns true
-command[5] E(home.board).has("abc")
+command[5] E(home.board).has(auctionInvitation)
 history[5] true
 ```
 
