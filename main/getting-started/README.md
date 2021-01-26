@@ -67,6 +67,9 @@ Reference](/zoe/api/)**, **[Wallet UI Guide and API Reference](/wallet-api.md)**
 and **[Agoric CLI Guide](/getting-started/agoric-cli-guide.md)** for details about 
 their respective commands. 
 
+Agoric has its own REPL (*Read-Eval-Print Loop*) from which you can ...
+For more details, refer to the [REPL Guide](/REPL/).
+
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
 to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
 See our **[dIBC Guide](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md)** for more information. 
@@ -80,6 +83,11 @@ definitions to (i.e. what does *mint* mean in an Agoric context?).
 For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
 
 Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+
+We have a **[YouTube channel](https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg)** with
+playlists for [Tutorials](https://www.youtube.com/playlist?list=PLzDw4TTug5O2Yeg629E78Ey8DwNCw72S3),
+[Workshops](https://www.youtube.com/playlist?list=PLzDw4TTug5O0fL94E6u9qhHye8Gr4cstv), and our 
+monthly [Community Calls](https://www.youtube.com/playlist?list=PLzDw4TTug5O39fpx5IuMriKVamEK3aoZ2).
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
