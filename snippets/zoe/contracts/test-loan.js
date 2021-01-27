@@ -7,6 +7,7 @@ import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit } from '@agoric/ertp';
 import test from 'ava';
 import { E } from '@agoric/eventual-send';
+import { makePercent } from '@agoric/zoe/src/contractSupport/percentMath';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority';
 import { makeNotifierKit } from '@agoric/notifier';
@@ -71,7 +72,7 @@ test('loan contract', async t => {
 
   // #region lend
   const terms = {
-    mmr: 150,
+    mmr: makePercent(150, loanMath),
     autoswapInstance,
     priceAuthority,
     periodNotifier,
