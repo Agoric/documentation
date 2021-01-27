@@ -77,7 +77,7 @@ software, you need to install the following.
     <tr>
       <td>7</td>
       <td><code>yarn install</code></td>
-      <td>Install NPM dependencies.</td>
+      <td>Install NPM dependencies. <b>Note:</b> If you run into errors during install or build, make sure you have build-essential installed. <code>gcc --version</code></td>
     </tr>
     <tr>
       <td>8</td>
