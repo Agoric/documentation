@@ -108,6 +108,13 @@ what sets it up, etc.**
 - Instance vat
 - User vat?
 
+The solo machine has some vats, like the HTTP handler, local spawner (contractHost for solo), wallet. These are local to the solo vat (**tyg todo: Was this supposed to be "solo machine"?)** even when on a real blockchain.
+
+A deployed contract is evaled in a new vat (previously evaled in vat-zoe or vat-host).
+
+![David's vat diagram](./assets/David-diagram.png)
+
+
 ## Deploy scripts
 - API
 - Contract
