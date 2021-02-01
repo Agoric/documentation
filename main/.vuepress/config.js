@@ -246,8 +246,8 @@ module.exports = {
     // custom text for edit link. Defaults to "Edit this page"
     editLinkText: 'Help us improve this page!',
 
-    zoeVersion: 'Alpha Release v0.8.1',
-    zoeDocsUpdated: '2020-9-15'
+    zoeVersion: 'Alpha Release v0.11.0',
+    zoeDocsUpdated: '2021-02-01'
 
 
     /* --- SEARCH --- */
