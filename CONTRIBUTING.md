@@ -238,6 +238,16 @@ applying site config changes may require stopping and restarting this program.
 
 View your local documentation site at `localhost:8080/documentation/`
 
+## Updating Zoe Version and DocsUpdated
+
+In `[/.vuepress/config.js](/.vuepress/config.js)`, find the lines
+```
+zoeVersion: 'Alpha Release v0.8.1',
+zoeDocsUpdated: '2020-9-15'
+```
+Edit the values to be current. The current Zoe version is at line 
+3 [here](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/package.json).
+
 ## Editing Site Menus
 
 VuePress processing adds a top menubar to all Documentation site pages. When viewing a doc in an
