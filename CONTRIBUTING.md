@@ -245,7 +245,8 @@ In `[/.vuepress/config.js](/.vuepress/config.js)`, find the lines
 zoeVersion: 'Alpha Release v0.8.1',
 zoeDocsUpdated: '2020-9-15'
 ```
-Edit the values to be current.
+Edit the values to be current. The current Zoe version is at line 
+3 [here](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/package.json).
 
 ## Editing Site Menus
 
