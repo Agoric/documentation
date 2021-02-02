@@ -12,6 +12,9 @@ An `issuer` has an unchangeable one-to-one relationship with the `mint` and
 You can then rely on that `issuer` as the authority to 
 validate an untrusted `payment` of that `brand`.
 
+**Note**: You should not create an Issuer in a deploy script. Deploy scripts 
+are ephemeral, so any object created there dies as soon as the script stops.
+
 ## makeIssuerKit(allegedName, amountMathKind)
 - `allegedName` `{String}` 
 - `amountMathKind` `{MathKind}` - optional
