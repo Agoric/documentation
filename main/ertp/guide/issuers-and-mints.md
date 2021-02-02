@@ -3,6 +3,9 @@
 ## Issuers
 ![Issuer structure](./assets/issuers-and-assets.svg)
 
+**Note**: You should not create an Issuer in a deploy script. Deploy scripts are ephemeral, so any object 
+created there dies as soon as the script stops.
+
 Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
 or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
 Its special admin facet is a `mint` which it has a one-to-one
