@@ -31,10 +31,10 @@ granted a reference to an object that program provided.*
 
 Any programming environment fitting the OCap model satisfies three requirements:
 - Any program can protect its invariants by hiding its own data and capabilities.
-- One can only exercise power over something by having a reference to the 
+- Power can only be exercised over something by having a reference to the 
   object that provides that power, for example, a file system object. A 
   reference to a powerfulobject is a *capability*.
-- One can only get a capability by being given one. For example, by receiving
+- The only way to get a capability is by being given one. For example, by receiving
   one as an argument of a constructor or method.
 
 JavaScript does not fully qualify as an OCap language due to the pervasive 
@@ -44,37 +44,45 @@ in 2007 with ECMAScript 5, Agoric engineers and the OCap community have influenc
 JavaScript’s evolution so a program can transform its own environment into 
 this safe JavaScript environment.
 
-Some of the necessary pieces of this puzzle are freeze(), defineProperties(), 
-WeakMap, and Proxy. The freeze() and defineProperties() functions allow a 
-JavaScript program to make the surface of every reachable object in their 
-environment immutable. The WeakMap and Proxy classes allow programs to create
-revocable membranes, objects that can grant a capability temporarily.
+Some pieces of this are `freeze()`, `defineProperties()`, `WeakMap`, and `Proxy`. 
+`freeze()` and `defineProperties()` let a JavaScript program make immutable the 
+surface of every reachable object in their environment. The `WeakMap` and `Proxy` 
+classes let programs create *revocable membranes*, objects that can temporarily 
+grant a capability.
 
-SES uses freeze() and defineProperties() in its lockdown() function. Running 
-lockdown() freezes every object accessible in its environment, or precisely, 
-transforms its realm into a frozen realm. Functions that can’t be made immutable
-by freezing, like Math.random() and Date.now(), are replaced with powerless 
-versions, or tamed. Anything not recognized as part of the safe JavaScript 
-environment gets removed. SES also provides the harden() function so programs 
-can make the API surface of any capability tamper-proof, freezing every object 
-accessible by following properties of that object.
+SES does the following:
+- Uses `freeze()` and `defineProperties()` in its `lockdown()` function. Running 
+  `lockdown()` freezes every object accessible in its environment, or precisely, 
+  transforms its realm into a frozen realm. 
+- Replaces functions that can’t be made immutable by freezing 
+  (e.g. `Math.random()`, `Date.now()`) with powerless or tamed versions. 
+- Removes anything unrecognized as part of the safe JavaScript 
+  environment. 
+- Provides the `harden()` function so programs can make the API surface of any 
+  capability tamper-proof, freezing every object accessible by following properties 
+  of that object.
 
-A compartment is an environment for a stranger’s code. Each compartment has its
-own global object and, after lockdown, shares the same frozen realm with other 
-compartments. A single compartment can run a JavaScript program in the 
-locked-down SES environment, but most interesting programs have multiple modules.
-So, each compartment also gets its own module system. The next SES release includes
-support for ECMAScript modules, a relatively new system supported by many browsers,
-and officially released in Node.js 14.
+SES also makes use of *compartments* as an environment for a stranger’s code. 
+Each compartment has its own global object and, after lockdown, shares the same 
+frozen realm with other compartments. A single compartment can run a JavaScript program
+in the locked-down SES environment, but most interesting programs have multiple modules.
+So, each compartment also gets its own module system. 
 
+We can also link compartments, so one compartment can export a module that another 
+imports. Each compartment can have its own rules for resolving import specifiers and 
+how to locate and retrieve modules. 
 
+We expect compartments to greatly simplify using SES for large applications. We are 
+building tools that use compartments to load and bundle existing libraries and then 
+execute them with a compartment for each package. This will provide a seamless experience 
+as simple as `<script src=“app.js”>` or `node app.js`, but with the safety of SES.
 
-As of February 2021, SES is making its way through JavaScript standards 
-committees. It is expected to become an official part of JavaScript when
-the standards process is completed. Meanwhile, Agoric provides its own SES
-*shim* for use in writing secure smart contracts in JavaScript (Several
-Agoric engineers are on the relevant standards committees and are responsible for
-aspects of SES).
+The next SES release includes support for ECMAScript modules, a relatively new system 
+supported by many browsers, and officially released in Node.js 14. As of February 2021, 
+SES is making its way through JavaScript standards committees. It is expected to become 
+an official part of JavaScript when the standards process is completed. Meanwhile, Agoric
+provides its own SES *shim* for use in writing secure smart contracts in JavaScript (Several
+Agoric engineers are on the relevant standards committees and are responsible for aspects of SES).
 
 ## Agoric SES
 
@@ -109,30 +117,6 @@ let compartment = new Compartment();
 compartment.evaluate(code);
 ```
 
-
-Some of the necessary pieces of this puzzle are freeze(), defineProperties(), 
-WeakMap, and Proxy. The freeze() and defineProperties() functions allow a 
-JavaScript program to make the surface of every reachable object in their 
-environment immutable. The WeakMap and Proxy classes allow programs to create
-revocable membranes, objects that can grant a capability temporarily.
-
-SES uses freeze() and defineProperties() in its lockdown() function. Running 
-lockdown() freezes every object accessible in its environment, or precisely, 
-transforms its realm into a frozen realm. Functions that can’t be made immutable
-by freezing, like Math.random() and Date.now(), are replaced with powerless 
-versions, or tamed. Anything not recognized as part of the safe JavaScript 
-environment gets removed. SES also provides the harden() function so programs 
-can make the API surface of any capability tamper-proof, freezing every object 
-accessible by following properties of that object.
-
-A compartment is an environment for a stranger’s code. Each compartment has its
-own global object and, after lockdown, shares the same frozen realm with other 
-compartments. A single compartment can run a JavaScript program in the 
-locked-down SES environment, but most interesting programs have multiple modules.
-So, each compartment also gets its own module system. The next SES release includes
-support for ECMAScript modules, a relatively new system supported by many browsers,
-and officially released in Node.js 14.
-
 ```js
 compartment
 .import('./main.js')
@@ -141,11 +125,7 @@ compartment
 });
 ```
 
-We can also link compartments, so one compartment can export a module that another 
-compartment imports. Each compartment may have its own rules for how to resolve 
-import specifiers and how to locate and retrieve modules. In this example, we 
-use the compartment constructor to create two compartments: one for the application
-and another for its dependency.
+
 
 ```js
 const dependency = new Compartment({}, {}, {
@@ -165,12 +145,6 @@ const application = new Compartment({}, {
 });
 view raw
 ```
-
-We expect the introduction of compartments to greatly simplify using SES for large
-applications. In the coming weeks, we will be building tools that use compartments
-to load and bundle existing libraries and then execute them with a compartment for
-each package. This will provide a seamless experience as simple as <script src=“app.js”> or
-node app.js, but with the safety of SES.
   
 ---------------------------  SES README
 
