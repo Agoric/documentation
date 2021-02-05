@@ -1,56 +1,55 @@
 See the [README](./README.md) for a description of the global `lockdown` function
 installed by the SES-shim.
-Essentially, calling `lockdown` turns a JavaScript system into a SES system,
-with enforced ocap (object-capability) security.
-Here we explain the configuration options to the lockdown function.
+
+
+Calling `lockdown()` turns a JavaScript system into a SES (Secure ECMAScript) system,
+with enforced ocap (object-capability) security. This page documents `lockdown()` and its
+configuration options.
 
 # `lockdown` Options
 
-For every safety-relevant options setting, if the option is omitted
-it defaults to `'safe'`. For these options, the tradeoff is safety vs
-compatibility, though note that a tremendous amount of legacy code, not
-written to run under SES, does run compatibly under SES even with all of these
-options set to `'safe'`. You should only consider an `'unsafe'` option if
-you find you need it and are able to evaluate the risks.
+## Default `safe` settings
 
-The `stackFiltering` option trades off stronger filtering of stack traceback to
-minimize distractions vs completeness for tracking down a bug hidden in
-obscure places. The `overrideTaming` option trades off better code
-compatibility vs better tool compatibility.
+All four of these safety-relevant options default to `safe` if omitted 
+from a call to `lockdown()`. Their other possible value is `unsafe`.
+- `regExpTaming`
+- `localeTaming`
+- `consoleTaming`
+- `errorTaming`
 
-Each option is explained in its own section below.
-
-| option           | default setting  | other settings | about |
-|------------------|------------------|----------------|-------|
-| `regExpTaming`   | `'safe'`    | `'unsafe'`     | `RegExp.prototype.compile` |
-| `localeTaming`   | `'safe'`    | `'unsafe'`     | `toLocaleString`           |
-| `consoleTaming`  | `'safe'`    | `'unsafe'`     | deep stacks                |
-| `errorTaming`    | `'safe'`    | `'unsafe'`     | `errorInstance.stack`      |
-| `stackFiltering` | `'concise'` | `'verbose'`    | deep stacks signal/noise   |
-| `overrideTaming` | `'moderate'` | `'min'`       | override mistake antidote  |
+The tradeoff is safety vs compatibility with existing code. However, much
+legacy JavaScript code does run under SES, even if both not written to do so
+and with all the options set to `safe`. Only consider an `'unsafe'` value if
+you both need it and can evaluate its risks.
 
 ## `regExpTaming` Options
-
-**Background**: In standard plain JavaScript, the builtin
-`RegExp.prototype.compile` method may violate the object invariants of frozen
-`RegExp` instances. This violates assumptions elsewhere, and so can be
-used to corrupt other guarantees. For example, the JavaScript `Proxy`
-abstraction preserves the object invariants only if its target does. It was
-designed under the assumption that these invariants are never broken. If a
-non-conforming object is available, it can be used to construct a proxy
-object that is also non-conforming.
 
 ```js
 lockdown(); // regExpTaming defaults to 'safe'
 // or
 lockdown({ regExpTaming: 'safe' }); // Delete RegExp.prototype.compile
 // vs
-lockdown({ regExpTaming: 'unsafe' }); // Preserve RegExp.prototype.compile
+lockdown({ regExpTaming: 'unsafe' }); // Keep RegExp.prototype.compile
 ```
+### Purpose
+
+With its default `safe` value, `regExpTiming` prevents using `RegExp.prototype.compile()` in
+the locked down code.
+
+With its `unsafe` value, `RegExp.prototype.compile()` can still be used in code that is
+otherwise under lockdown.
+
+### Background
+
+In standard JavaScript, `RegExp.prototype.compile()` may 
+violate the object invariants of frozen `RegExp` instances. This violates
+assumptions elsewhere, and so can corrupt other guarantees. For example, 
+the `Proxy` abstraction preserves the object invariants only if its target 
+does. If a non-conforming object is available, it can construct an also 
+non-conforming proxy object.
 
 The `regExpTaming` default `'safe'` setting deletes this dangerous method. The
-`'unafe'` setting preserves it for maximal compatibility at the price of some
-risk.
+`'unafe'` setting keeps it for compatibility purposes at the price of riskier code.
 
 **Background**: In de facto plain JavaScript, the legacy `RegExp` static
 methods like `RegExp.lastMatch` are an unsafe global
@@ -75,19 +74,6 @@ safe and powerless.
 
 ## `localeTaming` Options
 
-**Background**: In standard plain JavaScript, the builtin methods with
- "`Locale`" or "`locale`" in their name&mdash;`toLocaleString`,
-`toLocaleDateString`, `toLocaleTimeString`, `toLocaleLowerCase`,
-`toLocaleUpperCase`, and `localeCompare`&mdash;have a global behavior that is
-not fully determined by the language spec, but rather varies with location and
-culture, which is their point. However, by placing this information of shared
-primordial prototypes, it cannot differ per comparment, and so one compartment
-cannot virtualize the locale for code running in another compartment. Worse, on
-some engines the behavior of these methods may change at runtime as the machine
-is "moved" between different locales,
-i.e., if the operating system's locale is reconfigured while JavaScript
-code is running.
-
 ```js
 lockdown(); // localeTaming defaults to 'safe'
 // or
@@ -95,19 +81,59 @@ lockdown({ localeTaming: 'safe' }); // Alias toLocaleString to toString, etc
 // vs
 lockdown({ localeTaming: 'unsafe' }); // Allow locale-specific behavior
 ```
+### Purpose
 
-The `localeTaming` default `'safe'` option replaces each of these methods with
-the corresponding non-locale-specific method. `Object.prototype.toLocaleString`
-becomes just another name for `Object.prototype.toString`. The `'unsafe'`
-setting preserves the original behavior for maximal compatibility at the price
-of reproducibility and fingerprinting. Aside from fingerprinting, the risk that
+The default `'safe'` setting replaces each of the methods listed below with their
+corresponding non-locale-specific method. For example, `Object.prototype.toLocaleString`
+becomes another name for `Object.prototype.toString`. 
+
+The `'unsafe'` setting keeps the original behavior for maximal compatibility at the price
+of reproducibility and fingerprinting. 
+
+In standard JavaScript, there builtin methods have `Locale` or `locale` in their name:
+- `toLocaleString`
+- `toLocaleDateString`
+- `toLocaleTimeString`
+- `toLocaleLowerCase`
+- `toLocaleUpperCase`
+- `localeCompare`
+
+### Background
+
+The point of all of the "locale methods" is to have a global behavior not fully determined by the
+language spec, but which varies with location and culture. 
+
+However, by placing this information of shared
+primordial prototypes, it cannot differ per comparment, and so one compartment
+cannot virtualize the locale for code running in another compartment. Worse, on
+some engines the behavior of these methods may change at runtime as the machine
+is "moved" between different locales,
+i.e., if the operating system's locale is reconfigured while JavaScript
+code is running.
+
+Aside from fingerprinting, the risk that
 this slow non-determinism opens a
 [communications channel](https://agoric.com/taxonomy-of-security-issues/)
 is negligible.
 
 ## `consoleTaming` Options
 
-**Background**: Most JavaScript environments provide a `console` object on the
+```js
+lockdown(); // consoleTaming defaults to 'safe'
+// or
+lockdown({ consoleTaming: 'safe' }); // Wrap start console to show deep stacks
+// vs
+lockdown({ consoleTaming: 'unsafe' }); // Leave original start console in place
+```
+### Purpose
+
+The `'unsafe'` setting leaves the original console in place. The `assert` package
+and error objects continue to work, but the `console` logging output will not 
+show this extra information.
+
+### Background
+
+Most JavaScript environments provide a `console` object on the
 global object with interesting information hiding properties. JavaScript code
 can use the `console` to send information to the console's logging output, but
 cannot see that output. The `console` is a *write-only device*. The logging
@@ -129,17 +155,7 @@ more diagnostic information that should remain hidden from other objects. See
 the [error README](./src/error/README.md) for an in depth explanation of this
 relationship between errors, `assert` and the virtual `console`.
 
-```js
-lockdown(); // consoleTaming defaults to 'safe'
-// or
-lockdown({ consoleTaming: 'safe' }); // Wrap start console to show deep stacks
-// vs
-lockdown({ consoleTaming: 'unsafe' }); // Leave original start console in place
-```
 
-The `consoleTaming: 'unsafe'` setting leaves the original console in place.
-The `assert` package and error objects will continue to work, but the `console`
-logging output will not show any of this extra information.
 
 The risk is that the original platform-provided `console` object often has
 additional methods beyond the de facto `console` "standards". Under the
@@ -184,7 +200,32 @@ of the eventual-send shim:
 
 ## `errorTaming` Options
 
-**Background**: The error system of JavaScript has several safety problems.
+```js
+lockdown(); // errorTaming defaults to 'safe'
+// or
+lockdown({ errorTaming: 'safe' }); // Deny unprivileged access to stacks, if possible
+// vs
+lockdown({ errorTaming: 'unsafe' }); // stacks also available by errorInstance.stack
+```
+## Purpose
+
+The `errorTaming` default `'safe'` setting makes the stack trace inaccessible
+from error instances alone, when possible. It currently does this only on
+v8 (Chrome, Brave, Node). It will also do so on SpiderMonkey (Firefox).
+Currently is it not possible for the SES-shim to hide it on other
+engines, leaving this information leak available. Note that it is only an
+information leak. It reveals the magic information only as a powerless
+string. This leak threatens
+[confidentiality but not integrity](https://agoric.com/taxonomy-of-security-issues/).
+
+Since the current JavaScript de facto reality is that the stack is only
+available by saying `err.stack`, a number of development tools assume they
+can find it there. When the information leak is tolerable, the `'unsafe'`
+setting will preserve the filtered stack information on the `err.stack`.
+
+### Background
+
+The error system of JavaScript has several safety problems.
 In most JavaScript engines running normal JavaScript, if `err` is an
 Error instance, the expression `err.stack` will produce a string
 revealing the stack trace. This is an
@@ -224,29 +265,24 @@ constructor shared by all other compartments is both safe and powerless.
 See the [error README](./src/error/README.md) for an in depth explanation of the
 relationship between errors, `assert` and the virtual `console`.
 
-```js
-lockdown(); // errorTaming defaults to 'safe'
-// or
-lockdown({ errorTaming: 'safe' }); // Deny unprivileged access to stacks, if possible
-// vs
-lockdown({ errorTaming: 'unsafe' }); // stacks also available by errorInstance.stack
-```
-
-The `errorTaming` default `'safe'` setting makes the stack trace inaccessible
-from error instances alone, when possible. It currently does this only on
-v8 (Chrome, Brave, Node). It will also do so on SpiderMonkey (Firefox).
-Currently is it not possible for the SES-shim to hide it on other
-engines, leaving this information leak available. Note that it is only an
-information leak. It reveals the magic information only as a powerless
-string. This leak threatens
-[confidentiality but not integrity](https://agoric.com/taxonomy-of-security-issues/).
-
-Since the current JavaScript de facto reality is that the stack is only
-available by saying `err.stack`, a number of development tools assume they
-can find it there. When the information leak is tolerable, the `'unsafe'`
-setting will preserve the filtered stack information on the `err.stack`.
 
 ## `stackFiltering` Options
+
+The `stackFiltering` option trades off stronger filtering of stack traceback to
+minimize distractions vs completeness for tracking down a bug hidden in
+obscure places. The `overrideTaming` option trades off better code
+compatibility vs better tool compatibility.
+
+Each option is explained in its own section below.
+
+| option           | default setting  | other settings | about |
+|------------------|------------------|----------------|-------|
+| `regExpTaming`   | `'safe'`    | `'unsafe'`     | `RegExp.prototype.compile` |
+| `localeTaming`   | `'safe'`    | `'unsafe'`     | `toLocaleString`           |
+| `consoleTaming`  | `'safe'`    | `'unsafe'`     | deep stacks                |
+| `errorTaming`    | `'safe'`    | `'unsafe'`     | `errorInstance.stack`      |
+| `stackFiltering` | `'concise'` | `'verbose'`    | deep stacks signal/noise   |
+| `overrideTaming` | `'moderate'` | `'min'`       | override mistake antidote  |
 
 **Background**: The error stacks shown by many JavaScript engines are
 voluminous.
@@ -363,6 +399,22 @@ of the eventual-send shim:
 </details>
 
 ## `overrideTaming` Options
+
+The `stackFiltering` option trades off stronger filtering of stack traceback to
+minimize distractions vs completeness for tracking down a bug hidden in
+obscure places. The `overrideTaming` option trades off better code
+compatibility vs better tool compatibility.
+
+Each option is explained in its own section below.
+
+| option           | default setting  | other settings | about |
+|------------------|------------------|----------------|-------|
+| `regExpTaming`   | `'safe'`    | `'unsafe'`     | `RegExp.prototype.compile` |
+| `localeTaming`   | `'safe'`    | `'unsafe'`     | `toLocaleString`           |
+| `consoleTaming`  | `'safe'`    | `'unsafe'`     | deep stacks                |
+| `errorTaming`    | `'safe'`    | `'unsafe'`     | `errorInstance.stack`      |
+| `stackFiltering` | `'concise'` | `'verbose'`    | deep stacks signal/noise   |
+| `overrideTaming` | `'moderate'` | `'min'`       | override mistake antidote  |
 
 **Background**: JavaScript suffers from the so-called
 [override mistake](https://web.archive.org/web/20141230041441/http://wiki.ecmascript.org/doku.php?id=strawman:fixing_override_mistake),
