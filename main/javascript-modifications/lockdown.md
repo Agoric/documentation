@@ -81,9 +81,9 @@ below.
 <table>
   <tbody>
   <tr>
-    <td><center<b>Option</b></center</td>
-    <td><center<b>Values</b></center</td>
-    <td><center><b>Functionality</b></center</td>
+    <td><center<b>Option</b></center></td>
+    <td><center<b>Values</b></center></td>
+    <td><center><b>Functionality</b></center></td>
   </tr>
   <tr>
     <td><code>regExpTaming</code></td>
