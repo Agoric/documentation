@@ -80,11 +80,11 @@ below.
 
 <table>
   <tbody>
-  <th>
-    <td>Option</td>
-    <td>Values</td>
-    <td>Functionality</td>
-  </th>
+  <tr>
+    <td><center<b>Option</b></center</td>
+    <td><center<b>Values</b></center</td>
+    <td><center><b>Functionality</b></center</td>
+  </tr>
   <tr>
     <td><code>regExpTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
@@ -94,31 +94,31 @@ below.
     <tr>
     <td><code>localeTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
-    <td><code>'safe'</code> Alias <code>toLocaleString()</code> to <code>toString()</code>, etc.,
+    <td><code>'safe'</code> aliases <code>toLocaleString()</code> to <code>toString()</code>, etc.,<br>
         <code>'unsafe'</code> keeps JavaScript locale methods as is</td>
   </tr>
   <tr>
     <td><code>consoleTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
-    <td><code>'safe'</code> wraps start console to show deep stacks,
+    <td><code>'safe'</code> wraps start console to show deep stacks,<br>
         <code>'unsafe'</code> uses the original start console.</td>
   </tr>
   <tr>
     <td><code>errorTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
-    <td><code>'safe'</code> denies unprivileged stacks access, 
+    <td><code>'safe'</code> denies unprivileged stacks access,<br> 
         <code>'unsafe'</code> makes stacks also available by <code>errorInstance.stackkeeps()</code>.</td>
   </tr>
   <tr>
     <td><code>stackFiltering</code></td>
     <td><code>'concise'</code> (default) or <code>'verbose'</code></td>
-    <td><code>'concise'</code> preserves important deep stack info, 
+    <td><code>'concise'</code> preserves important deep stack info,<br>
         <code>'verbose'</code> console shows full deep stacks</td>
   </tr>
   <tr>
     <td><code>overrideTaming</code></td>
     <td><code>'moderate'</code> (default) or <code>'min'</code></td>
-    <td><code>'moderate'</code> moderate mitigations for legacy compatibility, 
+    <td><code>'moderate'</code> moderates mitigations for legacy compatibility,<br> 
         <code>'min'</code> minimal mitigations for purely modern code</td>
   </tr>
   </tbody>
