@@ -1,17 +1,35 @@
-So you're an application author and an upstream developer sesified a library. What do you do?
+# `lockdown() and its Options
 
 Calling `lockdown()` turns a JavaScript system into a SES (Secure ECMAScript) system,
-with enforced *ocap (object-capability) security*. This page documents `lockdown()` and its
+with enforced *OCap (object-capability) security*. This page documents `lockdown()` and its
 configuration options.
 
 `lockdown()` alters the surrounding execution environment, or *realm*, such that no two programs
 running in the same realm can observe or interfere with each other until they have been introduced.
 
-To do this, lockdown() tamper-proofs all of the JavaScript intrinsics, to prevent prototype pollution. After that, no program can subvert the methods of these objects (preventing some man in the middle attacks). Also, no program can use these mutable objects to pass notes to parties that haven't been expressly introduced (preventing some covert communication channels).
+To do this, `lockdown()` tamper-proofs all of the JavaScript intrinsics to prevent prototype pollution.
+After that, no program can subvert the methods of these objects (preventing some man in the middle
+attacks). Also, no program can use these mutable objects to pass notes to parties that haven't been
+expressly introduced (preventing some covert communication channels).
 
-Lockdown freezes all objects accessible to any program in the realm. The set of accessible objects includes but is not limited to: globalThis, [].__proto__, {}.__proto__, (() => {}).__proto__ (async () => {}).__proto__, and the properties of any accessible object.
+Lockdown freezes all JavaScript defined objects accessible to any program in the realm. The frozen 
+accessible objects include but are not limited to: 
+- `globalThis`
+- `[].__proto__`
+- `{}.__proto__`
+- `(() => {}).__proto__ (async () => {}).__proto__`
+- The properties of any accessible object
 
-The lockdown() function also tames some objects including regular expressions, locale methods, and errors. A tamed RexExp does not have the deprecated compile method. A tamed error does not have a V8 stack, but the console can still see the stack. Lockdown replaces locale methods like String.prototype.localeCompare with lexical versions that do not reveal the user locale.
+`lockdown()` also *tames* some objects, such as:
+- Regular expressions
+  - A tamed RexExp does not have the deprecated compile method.
+- Locale methods
+  - Lockdown replaces locale methods like `String.prototype.localeCompare()` with lexical 
+    versions that do not reveal the user locale.
+- Errors
+  - A tamed error does not have a V8 stack, but the console can still see the stack.
+  Lockdown replaces locale methods like 
+String.prototype.localeCompare with lexical versions that do not reveal the user locale.
 
 import 'ses';
 import 'my-vetted-shim';
@@ -20,13 +38,27 @@ lockdown();
 
 console.log(Object.isFrozen([].__proto__));
 // true
-Lockdown does not erase any powerful objects from the initial global scope. Instead, Compartments give complete control over what powerful objects exist for client code.
 
-See lockdown options for configuration options to lockdown. However, all of these have sensible defaults that should work for most projects out of the box.
+Lockdown does not erase any powerful objects from the initial global scope. Instead, 
+Compartments give complete control over what powerful objects exist for client code.
 
-# `lockdown` Options
+## `lockdown()` vs. `harden()`
 
-## Default `safe` settings
+`lockdown()` and `harden()` essentially do the same thing; freeze objects so their 
+properties cannot be changed, and the only way to interact with them is through 
+their methods. The differences are what objects you use them on, and when you use them.
+
+`lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials* 
+(implicitly shared global objects) and enables `harden()`. If you call `harden()` 
+before `lockdown()` excutes, it throws an error.
+
+`lockdown()` works on objects created by the JavaScript language itself as part of 
+its definition. Use `harden()` to freeze objects created after `lockdown()`was called;
+i.e. objects created by programs written in JavaScript.
+
+## `lockdown` Options
+
+### Default `safe` settings
 
 All four of these safety-relevant options default to `safe` if omitted 
 from a call to `lockdown()`. Their other possible value is `unsafe`.
@@ -35,10 +67,62 @@ from a call to `lockdown()`. Their other possible value is `unsafe`.
 - `consoleTaming`
 - `errorTaming`
 
-The tradeoff is safety vs compatibility with existing code. However, much
-legacy JavaScript code does run under SES, even if both not written to do so
-and with all the options set to `safe`. Only consider an `'unsafe'` value if
-you both need it and can evaluate its risks.
+The tradeoff is safety vs compatibility with existing code. However, much legacy
+JavaScript code does run under SES, even if both not written to do so and with all
+the options set to `safe`. Only consider an `'unsafe'` value if you both need it 
+and can evaluate its risks. These are described in more detail below.
+
+### Options quick reference
+
+This section provides a quick usage reference for lockdown's options, their possible
+values, and their usage. Each is described in more detail in their individual sections
+below.
+
+<table>
+  <tbody>
+  <th>
+    <td>Option</td>
+    <td>Values</td>
+    <td>Functionality</td>
+  </th>
+  <tr>
+    <td><code>regExpTaming</code></td>
+    <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
+    <td><code>'safe'</code> deletes <code>RegExp.prototype.compile()</code>, 
+        <code>'unsafe'</code> keeps it</td>
+  </tr>
+    <tr>
+    <td><code>localeTaming</code></td>
+    <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
+    <td><code>'safe'</code> Alias <code>toLocaleString()</code> to <code>toString()</code>, etc.,
+        <code>'unsafe'</code> keeps JavaScript locale methods as is</td>
+  </tr>
+  <tr>
+    <td><code>consoleTaming</code></td>
+    <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
+    <td><code>'safe'</code> wraps start console to show deep stacks,
+        <code>'unsafe'</code> uses the original start console.</td>
+  </tr>
+  <tr>
+    <td><code>errorTaming</code></td>
+    <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
+    <td><code>'safe'</code> denies unprivileged stacks access, 
+        <code>'unsafe'</code> makes stacks also available by <code>errorInstance.stackkeeps()</code>.</td>
+  </tr>
+  <tr>
+    <td><code>stackFiltering</code></td>
+    <td><code>'concise'</code> (default) or <code>'verbose'</code></td>
+    <td><code>'concise'</code> preserves important deep stack info, 
+        <code>'verbose'</code> console shows full deep stacks</td>
+  </tr>
+  <tr>
+    <td><code>overrideTaming</code></td>
+    <td><code>'moderate'</code> (default) or <code>'min'</code></td>
+    <td><code>'moderate'</code> moderate mitigations for legacy compatibility, 
+        <code>'min'</code> minimal mitigations for purely modern code</td>
+  </tr>
+  </tbody>
+</table>
 
 ## `regExpTaming` Options
 
@@ -386,7 +470,6 @@ lockdown({ overrideTaming: 'moderate' }); // Moderate mitigations for legacy com
 // vs
 lockdown({ overrideTaming: 'min' }); // Minimal mitigations for purely modern code
 ```
-
 
 ### Purpose
 The `overrideTaming` option trades off better code
