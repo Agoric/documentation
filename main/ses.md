@@ -8,32 +8,31 @@ extensions and plug-ins, etc.).
 
 ## The SES Story
 
-JavaScript was created to enable web surfers to safely run programs from strangers. 
+JavaScript was created to let web surfers safely run programs from strangers. 
 Web pages put JavaScript programs in a *sandbox* that restricts their abilities 
 while maximizing utility.
 
 This worked well until web applications started inviting multiple strangers
-into the same sandbox. But they continued to depend on a security model where 
+into the same sandbox. They continued to depend on a security model where 
 every stranger got their own sandbox.
 
 Meanwhile, server-side JavaScript applications imbue their sandbox with unbounded
 abilities and run programs written by strangers. Such applications are vulnerable 
-not only to their dependencies, but also the rarely reviewed dependencies of 
-their dependencies.
+to their dependencies *and* also the rarely reviewed dependencies of their dependencies.
 
 SES uses a finer grain security model, *Object Capabilities* or tersely, *OCap*. 
-With Ocap, many strangers can collaborate in a single sandbox, without risking them
+With OCap, many strangers can collaborate in a single sandbox, without risking them
 frustrating, interfering, or conspiring with or against the user or each other.
 
-To do this, SES *hardens* the entire surface of the JavaScript environment. *No 
-program can subvert or communicate with another program unless expressly 
-granted a reference to an object that program provided.*
+To do this, SES *hardens* the entire surface of the JavaScript environment. 
+*The only way a program can subvert or communicate with another program is to
+have been expressly granted a reference to an object provided by that other program.*
 
 Any programming environment fitting the OCap model satisfies three requirements:
 - Any program can protect its invariants by hiding its own data and capabilities.
 - Power can only be exercised over something by having a reference to the 
-  object that provides that power, for example, a file system object. A 
-  reference to a powerfulobject is a *capability*.
+  object providing that power, for example, a file system object. A 
+  reference to a powerful object is a *capability*.
 - The only way to get a capability is by being given one. For example, by receiving
   one as an argument of a constructor or method.
 
@@ -43,6 +42,32 @@ transitively immutable environment without any unintended capabilities. Starting
 in 2007 with ECMAScript 5, Agoric engineers and the OCap community have influenced
 JavaScript’s evolution so a program can transform its own environment into 
 this safe JavaScript environment.
+
+## What SES does: An overview
+
+SES removes, adds, and modifies various aspects of JavaScript. In particular:
+
+- Removed from JavaScript or made unusable:
+  - Most [Node.js-specific global objects](https://nodejs.org/dist/latest-v14.x/docs/api/globals.html) 
+  - All [Node.js built-in modules](https://nodejs.org/dist/latest-v14.x/docs/api/) such as `http` and 
+   `crypto`. 
+  - [Features from browser environments](https://developer.mozilla.org/en-US/docs/Web/API) presented as names in the global scope including `atob`, `TextEncoder`, and `URL`.
+  - HTML comments
+  - Dynamic `import` expressions
+  - Direct evals
+
+- Added to or modified from JavaScript
+  - console
+  - `lockdown()`
+  - `harden()`
+  - `HandledPromise()` 	
+  - `Compartment`   
+  - `globalThis` is frozen.
+  - JavaScript primordials are frozen.
+
+We'll look at each of these in more detail.
+
+
 
 Some pieces of this are `freeze()`, `defineProperties()`, `WeakMap`, and `Proxy`. 
 `freeze()` and `defineProperties()` let a JavaScript program make immutable the 
