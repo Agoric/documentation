@@ -88,8 +88,8 @@ below.
   <tr>
     <td><code>regExpTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
-    <td><code>'safe'</code> deletes <code>RegExp.prototype.compile()</code>, 
-        <code>'unsafe'</code> keeps it</td>
+    <td><code>'safe'</code> disables all <code>RegExp.*</code> methods,<br>
+        <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</td>
   </tr>
     <tr>
     <td><code>localeTaming</code></td>
@@ -129,23 +129,22 @@ below.
 ```js
 lockdown(); // regExpTaming defaults to 'safe'
 // or
-lockdown({ regExpTaming: 'safe' }); // Delete RegExp.prototype.compile
+lockdown({ regExpTaming: 'safe' }); // Disables all RegExp.*() methods.
 // vs
-lockdown({ regExpTaming: 'unsafe' }); // Keep RegExp.prototype.compile
+lockdown({ regExpTaming: 'unsafe' }); // Disables all RegExp.*() methods except RegExp.prototype.compile()
 ```
 ### Purpose
 
 With its default `safe` value, `regExpTaming` prevents using `RegExp.*()` methods in
 the locked down code.
 
-With its `unsafe` value, `RegExp.prototype.compile()` can be used in code that is
-otherwise under lockdown. However, all other `RegExp.*` methods are still disabled
+With its `unsafe` value, `RegExp.prototype.compile()` can be used in locked down code.
+However, all other `RegExp.*()` methods are disabled
 
 ### Background
 
-`regExpTaming`, when set to `'safe'` removes all `RegExp.*` methods from usable JavaScript.
-There are two reasons for doing so, one for `RegExp.prototype.complie()` and one for all
-other `RegExp.*` methods.
+There are two reasons for removing `RegExp.*` methods from usable JavaScript.
+One is for `RegExp.prototype.compile()` and one for all other `RegExp.*()` methods.
 
 - In standard JavaScript, `RegExp.prototype.compile()` may 
   violate the object invariants of frozen `RegExp` instances. This violates
@@ -157,22 +156,15 @@ other `RegExp.*` methods.
   The default `'safe'` setting deletes this dangerous method. The
   `'unsafe'` setting keeps it for compatibility purposes at the price of riskier code.
 
-- In standard JavaScript, legacy `RegExp` static methods like `RegExp.lastMatch` 
+- In standard JavaScript, legacy `RegExp` static methods like `RegExp.lastMatch()` 
   are an unsafe global [overt communications channel](https://agoric.com/taxonomy-of-security-issues/).
-  They reveal on the `RegExp` constructor information derived from the last match
+  The `RegExp` constructor reveals information derived from the last match
   made by any `RegExp` instance in a form of non-local causality.
-  
-  These static methods are currently de facto JavaScript, but not yet part of 
-  the standard. The [Legacy RegExp static methods](https://github.com/tc39/proposal-regexp-legacy-features)
-  proposal would standardize them as *normative optional* and deletable, meaning
-  - Conforming JavaScript engines may omit them
-  - A shim may delete them and have the resulting state still conform to the 
-    initial JavaScript state specification.
 
-  All these legacy `RegExp` static methods are currently removed under **both**
-  the `regExpTaming` `'safe`' and `'unsafe'` settings. This has not caused any 
-  compatibility problems; if it does, we may allow a subset under the `'unsafe'`
-  setting.
+  Except for `RegExp.prototype.compile()` all `RegExp` static methods are currently 
+  removed under **both** the `regExpTaming` `'safe`' and `'unsafe'` settings. This
+  has not caused any compatibility problems; if it does, we may allow a subset 
+  under the `'unsafe'` setting.
 
 ## `localeTaming` Options
 
@@ -185,14 +177,15 @@ lockdown({ localeTaming: 'unsafe' }); // Allow locale-specific behavior
 ```
 ### Purpose
 
-The default `'safe'` setting replaces each of the methods listed below with their
-corresponding non-locale-specific method. For example, `Object.prototype.toLocaleString`
-becomes another name for `Object.prototype.toString`. 
+The default `'safe'` setting replaces each method listed below with their
+corresponding non-locale-specific method. For example, `Object.prototype.toLocaleString()`
+becomes another name for `Object.prototype.toString()`. 
 
-The `'unsafe'` setting keeps the original behavior for maximal compatibility at the price
+The `'unsafe'` setting keeps the original behavior for compatibility at the price
 of reproducibility and fingerprinting. 
 
-In standard JavaScript, thee builtin methods have `Locale` or `locale` in their name:
+In standard JavaScript, these builtin methods have `Locale` or `locale` in their name
+and are affected by `localeTaming`:
 - `toLocaleString`
 - `toLocaleDateString`
 - `toLocaleTimeString`
@@ -202,14 +195,14 @@ In standard JavaScript, thee builtin methods have `Locale` or `locale` in their 
 
 ### Background
 
-All of the "locale methods" have global behavior not fully determined by the
-JavaScript spec, but which varies with location and culture. 
+All of the "locale methods" have, by design, global behavior not fully determined by the
+JavaScript spec. Their behavior varies with location and culture. 
 
 However, by placing this information of shared primordial prototypes, **(tyg todo: I'm not parsing the
 previous phrase. What does "placing this information of shared prototypes" mean, or is there a typo
 or missing text in there?)** 
-it cannot differ per comparment. So one compartment cannot virtualize the locale for code
-running in another compartment. Worse, on some engines the methods' behavior may change at runtime as 
+it cannot differ per Comparment. So one Compartment cannot virtualize the locale for code
+running in another Compartment. Worse, on some engines the methods' behavior may change at runtime as 
 the machine is "moved" between different locales, i.e., if the operating system's locale is
 reconfigured while JavaScript code is running.
 
@@ -240,16 +233,12 @@ cannot see that output. The logging output is normally meant for humans, and
 is mostly formatted for human use for diagnosing problems.
 
 Given these constraints, it is safe and helpful for `console` to reveal
-to humans information it would not reveal to the objects it interacts with. 
+to humans information it would not reveal to objects it interacts with. 
 SES amplifies this and reveals much more information than the normal
-`console` does. 
+`console` does. By default and during `lockdown` SES replaces the builtin
+`console`with a wrapper, thus virtualizing it.  
 
-By default during `lockdown` SES virtualizes the builtin
-`console`, by replacing it with a wrapper. This is a virtual `console`
-implementing the standard `console` API mostly by forwarding to the original
-wrapped `console`.
-
-Also, the virtual `console` has a special relationship with
+Also, the enhanced virtual `console` has a special relationship with
 error objects and the SES `assert` package. Errors can report 
 more diagnostic information that should be hidden from other objects. See
 the [error README](./src/error/README.md) for an in depth explanation of this
@@ -257,7 +246,7 @@ relationship between errors, `assert` and the virtual `console`.
 
 `console` often has additional methods beyond its de facto "standards". The
 `'unsafe'` setting does not remove them. We do not know if these additional
-methods violate ocap security, so should assume they are unsafe. A raw `console` 
+methods violate OCap security, so should assume they are unsafe. A raw `console` 
 object should only be handled by very trustworthy code.
 
 Examples from
