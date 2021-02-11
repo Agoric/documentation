@@ -1,4 +1,4 @@
-# `lockdown() and its Options
+# `lockdown()` and its Options
 
 Calling `lockdown()` turns a JavaScript system into a SES (Secure ECMAScript) system,
 with enforced *OCap (object-capability) security*. This page documents `lockdown()` and its
@@ -29,8 +29,7 @@ accessible objects include but are not limited to:
 - Errors
   - A tamed error does not have a V8 stack, but the console can still see the stack.
   Lockdown replaces locale methods like 
-String.prototype.localeCompare with lexical versions that do not reveal the user locale.
-
+```js
 import 'ses';
 import 'my-vetted-shim';
 
@@ -38,15 +37,15 @@ lockdown();
 
 console.log(Object.isFrozen([].__proto__));
 // true
-
+```
 Lockdown does not erase any powerful objects from the initial global scope. Instead, 
 Compartments give complete control over what powerful objects exist for client code.
 
 ## `lockdown()` vs. `harden()`
 
 `lockdown()` and `harden()` essentially do the same thing; freeze objects so their 
-properties cannot be changed, and the only way to interact with them is through 
-their methods. The differences are what objects you use them on, and when you use them.
+properties cannot be changed. The only way to interact with frozen objects is through 
+their methods. Their differences are what objects you use them on, and when you use them.
 
 `lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials* 
 (implicitly shared global objects) and enables `harden()`. If you call `harden()` 
@@ -353,8 +352,8 @@ obscure places.
 ### Background
 
 Many JavaScript engines show voluminous error stacks, containing many stack 
-frames of infrastructure functions which are usually irrelevant for disagnosing
-bugs. The SES-shim's`console`, with `consoleTaming` set to `'safe'`, is even more
+frames of infrastructure functions which are usually irrelevant for bug diagnosis.
+The SES-shim's`console`, with `consoleTaming` set to `'safe'`, is even more
 voluminous. It displays "deep stack" traces, tracing back through the
 [eventually sent messages](https://github.com/tc39/proposal-eventual-send)
 from other turns of the event loop.
@@ -464,11 +463,6 @@ lockdown({ overrideTaming: 'min' }); // Minimal mitigations for purely modern co
 The `overrideTaming` option trades off better code
 compatibility vs better tool compatibility.
 
-
-| option           | default setting  | other settings | about |
-|------------------|------------------|----------------|-------|
-| `overrideTaming` | `'moderate'` | `'min'`       | override mistake antidote  |
-
 ### Background
 JavaScript suffers from the so-called
 [override mistake](https://web.archive.org/web/20141230041441/http://wiki.ecmascript.org/doku.php?id=strawman:fixing_override_mistake),
@@ -499,7 +493,6 @@ the enabling getter. This adds yet more noise to the debugging experience.
 The file [src/enablements.js](src/enablements.js) exports two different
 whitelists definining which data properties to convert to enable override by
 assignment, `moderateEnablements` and `minEnablements`.
-
 
 The `overrideTaming` default `'moderate'` option of `lockdown` is intended to
 be fairly minimal, but we expand it as needed, when we
