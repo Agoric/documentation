@@ -466,14 +466,15 @@ compatibility vs better tool compatibility.
 ### Background
 JavaScript suffers from the so-called
 [override mistake](https://web.archive.org/web/20141230041441/http://wiki.ecmascript.org/doku.php?id=strawman:fixing_override_mistake),
-preventing `lockdown()` from _simply_ hardening all primordials. Rather,
-for each of
-[these data properties](src/enablements.js), we convert it to an accessor
+preventing `lockdown()` from _simply_ hardening all primordials. 
+
+Rather, `lockdown()` converts each of
+[these data properties](src/enablements.js) to an accessor
 property whose getter and setter emulate [a data property without the override
 mistake](https://github.com/tc39/ecma262/pull/1320). For non-reflective code
 the illusion is perfect. But reflective code sees it is an accessor
-rather than a data property. We add an `originalValue` property to the getter
-of that accessor, letting reflective code know that a getter alleges that it
+rather than a data property. We add an `originalValue` property to that accessor's
+getter, letting reflective code know that a getter alleges that it
 results from this transform, and what the original data value was. This enables
 a form of cooperative emulation, where that code can decide whether to uphold
 the illusion by pretending it sees the data property that would have been there.
