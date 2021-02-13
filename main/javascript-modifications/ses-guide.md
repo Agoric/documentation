@@ -65,11 +65,132 @@ is completed. Meanwhile, Agoric provides its own SES *shim* for use in writing s
 smart contracts in JavaScript (Several Agoric engineers are on the relevant standards 
 committees and are responsible for aspects of SES).
 
+## SES and JavaScript globals
+
+As mentioned, SES does not include any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) (which is not “safe”). 
+Nor does it allow non-determinism from built-in JavaScript objects. 
+
+As of SES-0.8.0/Fall 2020, [Agoric's SES source code](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js) defines
+a subset of the globals defined by the baseline JavaScript language specification. SES includes the globals:
+
+- `Object`
+- `Array`
+- `Number`
+- `Map`
+- `WeakMap`
+- `Number`
+- `BigInt`
+- `Intl`
+- `Math`
+  - `Math.random()` is disabled (calling it throws an error) as an obvious source of   
+     non-determinism.  
+- `Date`
+  - `Date.now()` returns `NaN`
+  - `new Date(nonNumber)` or `Date(anything)` return a `Date` that stringifies to `"Invalid Date"`
+
+SES retains the other `Math` and `Date` features, which are purely computational and deterministic.
+
+Much of the `Intl` package, and some locale-specific aspects of other objects (e.g. `Number.prototype.toLocaleString`)
+have results that depend upon which locale is configured. This varies from one process to another. 
+See [`lockdown()`](./lockdown.md) for how those are handled.
 
 ## What does SES remove from standard JavaScript
 
+**tyg todo: Note: I'm not sure how much of this is SES-related and how much is other
+JavaScript/node Agoric differentials.**
+
+Almost all existing JavaScript code was written to run under Node.js or inside a browser, so 
+it's easy to conflate the environment features with JavaScript. itself. For example, you may 
+be surprised that `Buffer` and `require` are Node.js additions and not part of JavaScript. 
+
+Most Node.js-specific [global objects](https://nodejs.org/dist/latest-v14.x/docs/api/globals.html) are 
+unavailable including:
+
+* `queueMicrotask`
+* `Buffer` (consider using `TypedArray` instead, but see below)
+* `setImmediate`/`clearImmediate`: Not available, but you can generally replace `setImmediate(fn)` 
+  with `Promise.resolve().then(_ => fn())` to defer execution of `fn` until after the current event/callback
+  finishes processing. But be aware it won't run until after all *other* ready Promise callbacks execute. 
+
+  There are two queues: the *IO queue* (accessed by `setImmediate`), and the *Promise queue* (accessed by 
+  Promise resolution). SES code can only add to the Promise queue. Note that the Promise queue is 
+  higher-priority than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
+* `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`): Any notion of time must come from 
+  exchanging messages with external timer services (the SwingSet environment provides a `TimerService` object 
+  to the bootstrap vat, which can share itwith other vats)
+* `global`: Is not defined. Use `globalThis` instead (and remember that it is frozen).
+* `process`: Is not available, e.g. no `process.env` to access the process's environment variables, 
+  or `process.argv` for the argument array.
+* `URL` and `URLSearchParams`: Are not available.
+* `WebAssembly`: Is not available.
+* `TextEncoder` and `TextDecoder`: Are not available.
+
+Some names look like globals, but are really part of the module-defining tools: imports, exports, and 
+metadata. Modules start as files on disk, but then are bundled together into an archive before being 
+loaded into a vat. The bundling tool uses several standard functions to locate other modules that must 
+be included. These are not a part of SES, but are allowed in module source code, and are translated or 
+removed before execution. 
+
+- `import` and `export` syntax are allowed in ESM-style modules ( preferred over CommonJS). These are 
+  not globals per se, but top-level syntax that defines the module graph.
+- `require`, `module`, `module.exports`, and `exports` are allowed in CommonJS-style modules, and 
+  should work as expected. However, new code should be written as ESM modules. They are either 
+  consumed by the bundling process, provided (in some form) by the execution environment, or 
+  otherwise rewritten to work sensibly
+- `__dirname` and `__filename` are not provided
+- The dynamic import expression (`await import('name')`) is currently prohibited in vat code, 
+  but a future SES implementation may allow it.
+
+Node.js has a [large collection](https://nodejs.org/dist/latest-v14.x/docs/api/) of "built-in 
+modules", such as `http` and `crypto`. Some are clearly platform-specific (e.g. `v8`), while 
+others are not so obvious (`stream`). All are accessed by importing a module (`const v8 = require('v8')` 
+in CommonJS modules, or `import v8 from 'v8'` in ESM modules). These modules are built out of 
+native code (C++), not plain JS.
+
+None of these built-in modules are available to vat code. `require` or `import` can be used on 
+pure JS modules, but not on modules including native code. For a vat to exercise authority from 
+a built-in module, you have to write a *device* with an endowment with the built-in module's 
+functions, then have the vat send messages to the device.
+
+Browser environments also have a huge list of [other features](https://developer.mozilla.org/en-US/docs/Web/API) 
+presented as names in the global scope (some also added to Node.js). None are available in a 
+SES environment. The most surprising removals include `atob`, `TextEncoder`, and `URL`.
+
+`debugger` is a first-class JavaScript statement, and behaves as expected.
 
 ## What does SES add to standard Javascript
+
+- `console` is available to help with debugging. Since all JavaScript implementations
+  add it, you may be surprised it’s not in the official spec. So leaving it out would cause 
+  too much confusion. Note that `console log`’s exact behavior is up to the host program; display 
+  to the operator is not guaranteed. Also, it is difficult at best to write to `process.stdout` and
+  so that should not be done.
+
+- `lockdown()` and `harden()` both an object’s API surface (enumerable data properties). 
+  A hardened object’s properties cannot be changed, so the only way to interact with a 
+  hardened object is through its methods. `harden()` is similar to `Object.freeze()` but more 
+  powerful. See the individual [`lockdown()`](#lockdown) and [`harden()`](#harden) sections
+  below. 
+
+- `HandledPromise` is also a global. 
+  The [`E` wrapper (`E(target).method-name(args)`)](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e) 
+  can be imported as `import { E } from '@agoric/eventual-send`. These two are defined by the 
+  TC39 [Eventual-Send Proposal](https://github.com/tc39/proposal-eventual-send). In addition, "tildot" syntax (`target~.methodname(args)`) 
+  is expanded as the code is first bundled, so it can be used (but not inside `eval()` calls or new compartments).
+
+- `Compartment` (a [part of SES](https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment)) is 
+  a global. Code runs inside a `Compartment` and can create sub-compartments to host other 
+  code (with different globals or transforms).
+
+  Note that these child compartments get `harden` and `Compartment`, but you have to explicitly 
+  provide any other JS additions (including `console` and `HandledPromise`) as “endowments” since 
+  they won’t be present otherwise. If the parent compartment is metered, its child compartments 
+  are always metered too. Child compartments will *not* be frozen by default: 
+  see [Frozen globalThis](#frozen-globalthis) below for details.
+
+As SES is on the JavaScript standards track, the above anticipates additional proposed standard-track 
+features. If those features become standards, future JavaScript environments will include them as global 
+objects. So the current SES shim also makes those global objects available.
 
 ## Compartments and realms
 
@@ -93,7 +214,7 @@ realm with Compartments providing just enough authority to create
 useful and secure contracts. But not enough authority to do anything
 unintended or harmful to the participants of the smart contract. 
 
-##`lockdown()`
+## `lockdown()`
 
 `lockdown()` freezes all JavaScript defined objects accessible to any 
 program in the execution environment. Calling `lockdown()` turns a JavaScript
@@ -112,6 +233,16 @@ For a full explanation of `lockdown()` and its options, please see
 [here](./lockdown.md).
 
 ## `harden()`
+
+`harden()` should be called on all objects that will be transferred across a trust boundary 
+The general rule is if you make a new object and give it to someone else (and don't 
+immediately forget it yourself), you should give them `harden(obj)` instead of the raw object. 
+
+You have to harden a class before you harden any of its instances; i.e. it takes two separate 
+steps to harden both a class and its instances. Harden a base class before hardening classes 
+that inherit from it. harden() does transitive freezing by following the object’s own
+properties (as opposed to properties it inherited), and the objects whose own properties refer 
+to them, and so forth.
 
 When you freeze an object via `harden()`, it ensures any external callers 
 can only interact with it through functions in the object’s API. `harden()` 
@@ -148,18 +279,16 @@ whose own properties refer to them, and so forth.
 contract can use harden as a global, without importing anything.
 
 Tip: If your text editor/IDE complains about harden() not being defined or imported, 
-try adding /* global harden */ to the top of the file.
+try adding `/* global harden */` to the top of the file.
 
 You use harden() like this:
-
+```js
 const o = {a: 2};
 o.a  = 12;
 console.log(o.a); // 12 because o is still mutable
-
 harden(o);
-
 o.a  = 37; // throws a TypeError because o is now hardened
-
+```
 ## `lockdown()` and `harden()`
 
 `lockdown()` and `harden()` essentially do the same thing; freeze objects so their 
