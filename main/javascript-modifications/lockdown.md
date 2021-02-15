@@ -1,5 +1,9 @@
 # `lockdown()` and its Options
 
+**Note: This document is a companion to the SES-Guide, in that it explains and gives backgrounds
+to `lockdown()` and its options. If you just want to use `lockdown()` with minimal explanation,
+please see [SES-Reference](./ses-reference.md).**
+
 Calling `lockdown()` turns a JavaScript system into a SES (Secure ECMAScript) system,
 with enforced *OCap (object-capability) security*. This page documents `lockdown()` and its
 configuration options.
@@ -480,32 +484,32 @@ a form of cooperative emulation, where that code can decide whether to uphold
 the illusion by pretending it sees the data property that would have been there.
 
 The VSCode debugger's object inspector shows the own properties of an object,
-which is a great aid to debugging. Unfortunately, it also shows the inherited
-accessor properties, with one line for the getter and another line for the
-setter. As we enable override on more properties of widely used prototypes,
-we become compatible with more legacy code, but at the price of a significantly
+a great aid to debugging. Unfortunately, it also shows the inherited
+accessor properties, with one line for the getter and another for the
+setter. As you enable override on more properties of widely used prototypes,
+you become compatible with more legacy code, but at the price of a significantly
 worse debugging experience. Expand the "Expand for..." items at the end of this
 section for screenshots showing the different experiences.
 
 Enablements have a further debugging cost. When single stepping *into* code,
-we now step into every access to an enabled property. Every read steps into
+you step into every access to an enabled property. Every read steps into
 the enabling getter. This adds yet more noise to the debugging experience.
 
-The file [src/enablements.js](src/enablements.js) exports two different
+[src/enablements.js](src/enablements.js) exports two different
 whitelists definining which data properties to convert to enable override by
 assignment, `moderateEnablements` and `minEnablements`.
 
 The `overrideTaming` default `'moderate'` option of `lockdown` is intended to
-be fairly minimal, but we expand it as needed, when we
-encounter code which should run under SES but is prevented from doing so
-by the override mistake. As we encouter these we list them in the comments
-next to each enablement. This process has rapidly converged. We rarely come
-across any more such cases. ***If you find one, please file an issue.*** Thanks.
+be fairly minimal. We expand it when we
+encounter code which should run under SES but can't due to
+the override mistake. As we encountered these we listed them in the comments
+next to each enablement. We rarely come
+across any more cases. ***If you find one, please file an issue.***
 
 The `'min'` enablements setting serves two purposes: it enables a pleasant
-debugging experience in VSCode, and it helps ensure that new code does not
-depend on anything more than these being enabled, which is good practice.
-All code authored by Agoric will be compatible with both settings, but
+debugging experience in VSCode, and it helps ensure new code does not
+depend on anything more than these being enabled.
+All Agoric-authored is compatible with both settings, but
 Agoric currently still pulls in some third party dependencies only compatible
 with the `'moderate'` setting.
 
