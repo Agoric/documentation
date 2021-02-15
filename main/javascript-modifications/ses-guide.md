@@ -66,6 +66,11 @@ the needed SES features) for use in writing secure smart contracts in JavaScript
 (Several Agoric engineers are on the relevant standards committees and are responsible
 for aspects of SES).
 
+## Installation and importing
+
+**tyg todo Not sure what the current situation is with respect to what needs to go into
+what code to get and use SES in one's code**
+
 ## JavaScript globals and primordials
 
 As mentioned, SES does not include any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) (which is not “safe”). 
@@ -377,32 +382,26 @@ communications layer for passing references to distributed objects, enforces
 this at vat boundaries.
 
 The general rule is that if you make a new object and give it to someone else 
-(and don't immediately forget it yourself), you should give them harden(obj) 
+(and don't immediately forget it yourself), you should give them `harden(obj)` 
 instead of the raw object. This prevents someone from adding/deleting the properties
 or prototypes of that object. Being hardened doesn't preclude an object from having 
-access to mutable state (harden(new Map()) still behaves like a normal mutable Map), 
+access to mutable state (`harden(new Map())` still behaves like a normal mutable `Map`), 
 but it means their methods stay the same and can't be surprisingly changed by someone else
 
-Defined objects (mint, issuer, zcf, etc.) shouldn't need hardening as their 
+Defined objects (`mint`, `issuer`, `zcf`, etc.) shouldn't need hardening as their 
 constructors should do that work. It's mainly records, callbacks, and ephemeral 
 objects that need hardening.
 
 You can send a message to a hardened object. If it's a record, you can access 
 its properties and their values.
 
-You have to harden a class before you harden any of its instances; i.e. it takes two 
-separate steps to harden both a class and its instances. Harden a base class before 
-hardening classes that inherit from it. harden() does transitive freezing by following 
-the object’s own properties (as opposed to properties it inherited), and the objects 
-whose own properties refer to them, and so forth.
-
 `harden()` is automatically provided by SES. Any code that will run inside a vat or a 
 contract can use harden as a global, without importing anything.
 
-Tip: If your text editor/IDE complains about harden() not being defined or imported, 
+Tip: If your text editor/IDE complains about `harden()` not being defined or imported, 
 try adding `/* global harden */` to the top of the file.
 
-You use harden() like this:
+You use `harden()` like this:
 ```js
 const o = {a: 2};
 o.a  = 12;
@@ -441,3 +440,66 @@ The same is true for NPM packages that use missing globals, or attempt to modify
 The [SES wiki](https://github.com/Agoric/SES-shim/wiki) tracks compatibility reports for NPM packages, 
 including potential workarounds.
 
+## HTML Comments
+
+JavaScript parsers may not recognize HTML comments within source code, potentially causing different
+behavior on different engines. For safety, the SES shim rejects any source code containing a comment
+open (`<!--`) or close (`-->`) sequence. However, its filter uses a regular expression, not a full 
+parser. It unnecessarily rejects any source code containing either of the strings `<!--` or `-->`, 
+even if neither marks a comment.
+
+### Dynamic Import Expressions
+
+One active JavaScript feature proposal would add a "dynamic import" expression: `await import('path')`. 
+If implemented (or if someone decides to be an early adopter and adds it to an engine), and your engine 
+has this, code might be able to bypass the `Compartment`'s module map. For safety, the SES shim already 
+rejects code that looks like it uses this feature. The regular expression for this pattern can be 
+confused into falsely rejecting legitimate code. For example, the word “import” at the end of a line 
+in a comment, such as:
+```js
+//
+// This function calculates the import
+// duties paid on the merchandise..
+//
+```
+The regexp confuses the above with something like the following, and rejects it:
+```js
+foo = bar(argument);
+sneaky = import
+// tricky comment to obscure function invocation
+(modulename);
+```
+There are also problems with “import” being near a parenthesis inside a comment. 
+
+### Direct vs. Indirect Eval Expressions
+
+A *direct eval*, invoked as `eval(code)`, behaves as if `code` were expanded in place. The 
+evaluated code sees the same scope as the `eval` itself sees, so this `code` can reference `x`:
+
+```js
+function foo(code) {
+  const x = 1;
+  eval(code);
+}
+```
+
+If you perform a direct eval, you cannot hide your internal authorities from the code being evaluated. 
+
+In contrast, an *indirect eval* only gets the global scope, not the local scope. In a safe SES 
+environment, indirect eval is a useful and common tool. The evaluated code can only access global 
+objects, and those are all safe (and frozen). The only bad thing an indirect eval can do is consume 
+unbounded CPU or memory. Once you've evaluated the code, you can invoke it with arguments to give it 
+as many or as few authorities as you like.
+
+The most common way to invoke an indirect eval is `(1,eval)(code)`.
+
+The SES shim cannot correctly emulate a direct eval. If it tried, it would perform an indirect eval. 
+This could be pretty confusing, because the code might not actually use objects from the local scope. 
+You might not notice the problem until some later change altered the behavior.
+
+To avoid this confusion, the shim uses a regular expression to reject code that looks like it is 
+performing a direct eval. This regexp is not complete (you can trick it into performing a direct 
+eval anyway), but  that’s safe. Our goal is just to guide people away from confusing behaviors 
+early in their development process.
+
+This regexp falsely rejects occurrences inside static strings and comments.
