@@ -61,11 +61,12 @@ this safe JavaScript environment.
 
 As of February 2021, SES is making its way through JavaScript standards committees. 
 It is expected to become an official part of JavaScript when the standards process 
-is completed. Meanwhile, Agoric provides its own SES *shim* for use in writing secure 
-smart contracts in JavaScript (Several Agoric engineers are on the relevant standards 
-committees and are responsible for aspects of SES).
+is completed. Meanwhile, Agoric provides its own SES *shim* (a library providing
+the needed SES features) for use in writing secure smart contracts in JavaScript 
+(Several Agoric engineers are on the relevant standards committees and are responsible
+for aspects of SES).
 
-## SES and JavaScript globals
+## JavaScript globals and primordials
 
 As mentioned, SES does not include any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) (which is not “safe”). 
 Nor does it allow non-determinism from built-in JavaScript objects. 
@@ -93,6 +94,20 @@ SES retains the other `Math` and `Date` features, which are purely computational
 Much of the `Intl` package, and some locale-specific aspects of other objects (e.g. `Number.prototype.toLocaleString`)
 have results that depend upon which locale is configured. This varies from one process to another. 
 See [`lockdown()`](./lockdown.md) for how those are handled.
+
+SES freezes *primordials*; built-in JavaScript objects such as `Object`, `Array`, and `RegExp`, 
+and their prototype chains. `globalThis` is also frozen. This prevents malicious code from changing their behavior 
+(imagine `Array.prototype.push` delivering a copy of its argument to an attacker, or ignoring 
+certain values). It also prevents using, for example, `Object.heyBuddy` or `globalThis.heyBuddy` 
+as an ambient communication channel via setting a property and another program periodically reading it. 
+This would violate object-capability security; objects may only communicate through references. 
+
+Both frozen primordials and a frozen `globalThis` break a few JS libraries that add new features
+to built-in objects (shims/polyfills). For shims which just add properties to `globalThis`, it 
+may be possible to load these in a new non-frozen `Compartment`. Shims that modify primordials 
+only work if you build new (mutable) wrappers around the default primordials and let the shims 
+modify those wrappers instead.
+
 
 ## What does SES remove from standard JavaScript
 
@@ -192,7 +207,7 @@ As SES is on the JavaScript standards track, the above anticipates additional pr
 features. If those features become standards, future JavaScript environments will include them as global 
 objects. So the current SES shim also makes those global objects available.
 
-## Compartments and realms
+## Realms
 
 JavaScript code runs in the context of 
 a [*Realm*](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-code-realms). A 
@@ -207,12 +222,112 @@ a realm within which the primordials are deeply frozen.
 
 SES also lets programs create *Compartments*. These are "mini-realms".
 A Compartment has its own dedicated global object and environment, but 
-it inherits the primordials from their parent realm.
+it inherits the primordials from their parent realm. Components are described
+in detail in the next section. 
 
 Agoric deploy scripts and smart contract code run in an immutable
 realm with Compartments providing just enough authority to create
 useful and secure contracts. But not enough authority to do anything
 unintended or harmful to the participants of the smart contract. 
+
+## Compartments
+A *compartment* is an execution environment for evaluating a stranger’s code. It has
+its own `globalThis` global object and wholly independent system of 
+modules. Otherwise it shares the same batch of intrinsics such as `Array` with the surrounding 
+compartment. The concept of a compartment implies an initial compartment, 
+the initial execution environment of a realm. After lockdown, all compartments share the same 
+frozen realm. 
+
+Here we create a compartment with a `print()` function on `globalThis`.
+```js
+import 'ses';
+
+const c = new Compartment({
+  print: harden(console.log),
+});
+
+c.evaluate(`
+  print('Hello! Hello?');
+`);
+```
+This new compartment has a different global object than the start compartment **tyg todo: Not sure what "start compartment"
+means? The initial compartment? One from the Zoe start() method?** . The 
+global object is initially mutable. Locking down the realm hardened the objects in 
+global scope. After lockdown, no compartment can tamper with these intrinsics and 
+undeniable objects. Many of these are identical in the new compartment.
+```js
+const c = new Compartment();
+c.globalThis === globalThis; // false
+c.globalThis.JSON === JSON; // true
+```
+
+Other pairs of compartments also share many identical intrinsics and undeniable objects
+of the realm. Each has a unique, initially mutable, global object.
+```js
+const c1 = new Compartment();
+const c2 = new Compartment();
+c1.globalThis === c2.globalThis; // false
+c1.globalThis.JSON === c2.globalThis.JSON; // true
+```
+Every compartment's global scope includes a shallow, specialized copy of the JavaScript
+intrinsics, omitting `Date.now()` and `Math.random()`. These are left out
+since they can be covert communication channels between programs. 
+
+However, a compartment may be expressly given access to these objects through
+the compartment constructor's first argument or by assigning them to the 
+compartment's `globalThis` after construction.
+```js
+const powerfulCompartment = new Compartment({ Math });
+powerfulCompartment.globalThis.Date = Date;
+```
+
+When a new `Compartment` object is created, you must decide if it supports object-capability security.
+If it does, run `harden(compartment.globalThis)` on it before loading any untrusted code into it.
+
+A single compartment can run a JavaScript program in the locked-down SES environment.
+However, most interesting programs have multiple modules. So, each compartment also has
+its own module system. The next SES release will include support for ECMAScript modules,
+**tyg todo: Has this happened already? If not, is there an ETA?**
+a relatively new system supported by many browsers, and officially released in Node.js 14.
+
+Compartments can be linked, so one compartment can export a module that another compartment
+imports. Each compartment may have its own rules for how to resolve import specifiers and 
+how to locate and retrieve modules. In this example, we use the compartment constructor to 
+create two compartments: one for the application and another for its dependency.
+
+**tyg todo: Will people understand this code or do we need to explain any/all methods in it
+in more detail**
+
+```js
+const dependency = new Compartment({}, {}, {
+  resolveHook: (moduleSpecifier, moduleReferrer) =>
+    resolve(moduleSpecifier, moduleReferrer),
+  importHook: async moduleSpecifier => {
+    const moduleLocation = locate(moduleSpecifier);
+    const moduleText = await retrieve(moduleLocation);
+    return new ModuleStaticRecord(moduleText, moduleLocation);
+  },
+});
+const application = new Compartment({}, {
+  'dependency': dependency.module('./main.js'),
+}, {
+  resolveHook,
+  importHook,
+});
+```
+
+Compartments greatly simplify using SES for large applications. We will build tools that use 
+compartments to load and bundle existing libraries and then execute them with a compartment
+for each package. **tyg todo Has this happened? If so, where/what are the tools? If not, any ETA?**
+This will provide a seamless experience as simple as <script src=“app.js”> or node app.js, but 
+with the safety of SES.
+  
+**tyg todo: My problem with this section is that while I think I understand what compartments are
+and what they do, I'm not clear on just how/when they are used. This (and the SES reference) could
+use what amounts to a paragraph or two like "When writing a contract, you use compartments like this. 
+This is when you want to create a compartment. This is when you don't want to. Do you ever destroy a
+compartment? If so, how?**
+
 
 ## `lockdown()`
 
@@ -238,15 +353,21 @@ For a full explanation of `lockdown()` and its options, please see
 The general rule is if you make a new object and give it to someone else (and don't 
 immediately forget it yourself), you should give them `harden(obj)` instead of the raw object. 
 
+After calling lockdown, the harden function ensures that every object in the transitive 
+closure over property and prototype access starting with that object has been frozen by 
+`Object.freeze()`. This means that the object can be passed among programs and none of 
+those programs will be able to tamper with the surface of that object graph. They can 
+only read the surface data and call the surface functions.
+
 You have to harden a class before you harden any of its instances; i.e. it takes two separate 
 steps to harden both a class and its instances. Harden a base class before hardening classes 
-that inherit from it. harden() does transitive freezing by following the object’s own
+that inherit from it. harden()` does transitive freezing by following the object’s own
 properties (as opposed to properties it inherited), and the objects whose own properties refer 
 to them, and so forth.
 
 When you freeze an object via `harden()`, it ensures any external callers 
 can only interact with it through functions in the object’s API. `harden()` 
-is an enhanced transitive version of `Object.freeze`, which only locks up an 
+is an enhanced transitive version of `Object.freeze()`, which only locks up an 
 object's own properties.
 
 All objects that are transferred across a trust boundary must have their API
@@ -303,4 +424,20 @@ before `lockdown()` excutes, it throws an error.
 its definition. Use `harden()` to freeze objects created after `lockdown()`was called;
 i.e. objects created by programs written in JavaScript.
 
+## Library compatibility
+
+Programs running under SES can use `import` or `require()` to import other libraries consisting
+only of JavaScript code, which are compatible with the SES environment. This includes a significant 
+part of the NPM registry.
+
+However, many NPM packages use built-in Node.js modules. If used at import time (in their top-level 
+code), SES-enabled code cannot use the package and fails to load at all. If they use the built-in 
+features at runtime, then the package can load. However, it might fail later when a function is 
+invoked that accesses the missing functionality. So some NPM packages are partially compatible; 
+you can use them if you don't invoke certain features.
+
+The same is true for NPM packages that use missing globals, or attempt to modify frozen primordials.
+
+The [SES wiki](https://github.com/Agoric/SES-shim/wiki) tracks compatibility reports for NPM packages, 
+including potential workarounds.
 
