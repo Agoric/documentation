@@ -1,5 +1,7 @@
 # SES Reference
 
+**tyg todo: Note: Still in progress; want to get some feedback on ses-guide and lockdown before finishing this up**
+
 This document describes SES (Secure ECMAScript) affects writing Agoric JavaScript code. 
 It is very much a "how to do something" document, with little explanation about why and
 how something was implimented or other background information. For that, see the more
