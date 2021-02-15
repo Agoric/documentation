@@ -132,7 +132,7 @@ unavailable including:
   higher-priority than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
 * `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`): Any notion of time must come from 
   exchanging messages with external timer services (the SwingSet environment provides a `TimerService` object 
-  to the bootstrap vat, which can share itwith other vats)
+  to the bootstrap vat, which can share it with other vats)
 * `global`: Is not defined. Use `globalThis` instead (and remember that it is frozen).
 * `process`: Is not available, e.g. no `process.env` to access the process's environment variables, 
   or `process.argv` for the argument array.
@@ -160,12 +160,12 @@ Node.js has a [large collection](https://nodejs.org/dist/latest-v14.x/docs/api/)
 modules", such as `http` and `crypto`. Some are clearly platform-specific (e.g. `v8`), while 
 others are not so obvious (`stream`). All are accessed by importing a module (`const v8 = require('v8')` 
 in CommonJS modules, or `import v8 from 'v8'` in ESM modules). These modules are built out of 
-native code (C++), not plain JS.
+native code (C++), not plain JavaScript.
 
-None of these built-in modules are available to vat code. `require` or `import` can be used on 
-pure JS modules, but not on modules including native code. For a vat to exercise authority from 
+None of these built-in modules are available to SES code. `require` or `import` can be used on 
+pure JavaScript modules, but not on modules including native code. To exercise authority from 
 a built-in module, you have to write a *device* with an endowment with the built-in module's 
-functions, then have the vat send messages to the device.
+functions, then send messages to the device.
 
 Browser environments also have a huge list of [other features](https://developer.mozilla.org/en-US/docs/Web/API) 
 presented as names in the global scope (some also added to Node.js). None are available in a 
