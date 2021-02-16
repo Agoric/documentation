@@ -165,6 +165,11 @@
   resolved "https://registry.yarnpkg.com/@agoric/make-hardener/-/make-hardener-0.1.1.tgz#9b887da47aeec6637d9db4f0a92a4e740b8262bb"
   integrity sha512-3emNc+yWJoFK5JMLoEFPs6rCzkntWQKxpR4gt3jaZYLKoUG4LrTmID3XNe8y40B6SJ3k/wLPodKa0ToQGlhrwQ==
 
+"@agoric/make-hardener@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@agoric/make-hardener/-/make-hardener-0.1.2.tgz#b9a72d98ae23a4c6918cd7dc4a9a72deebafde45"
+  integrity sha512-l5O7TCVDcl6NcWW5Rp/lAQaFLmje97wHrKPJbYV08M4TNDgSiMlesYtar40OnAR2pnzgsyilSQc+hU5mEvCJWg==
+
 "@agoric/marshal@^0.2.5":
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/@agoric/marshal/-/marshal-0.2.5.tgz#fa5178a503b00c287c963faa2c4bb6828b69f5b9"
@@ -8746,6 +8751,15 @@ ses@^0.10.1:
   dependencies:
     "@agoric/babel-standalone" "^7.9.5"
     "@agoric/make-hardener" "^0.1.0"
+    "@agoric/transform-module" "^0.4.1"
+
+ses@^0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/ses/-/ses-0.12.2.tgz#ac8180eb8ec8e12652f352c2f3fae0b19be03465"
+  integrity sha512-XhzToLDYbT4liHNzt+GY6RNP64e+pi2ioCgyYztXt6ZnsSF4UttaN1EXEzDZoPjU67Nym7f8bSQiVRu7tezD5g==
+  dependencies:
+    "@agoric/babel-standalone" "^7.9.5"
+    "@agoric/make-hardener" "^0.1.2"
     "@agoric/transform-module" "^0.4.1"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
