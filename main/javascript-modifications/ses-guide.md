@@ -1,7 +1,7 @@
 # SES Guide
 
 This document is a guide to understanding *SES (Secure ECMAScript)*. In addition
-to showing what you can and cannot do with a program that implements SES, it gives
+to showing what you can and cannot do with a program that uses SES, it gives
 background on the reasons why functionality was added or removed from JavaScript to do so.
 This is intended for initial reading when starting to use or learn about Agoric. For 
 a more limited description of how to use SES without much explanation, see 
@@ -15,7 +15,9 @@ lack of security, which is particularly significant in that JavaScript applicati
 use and rely on a lot of third-party code (modules, packages, libraries, 
 user-provided code for extensions and plug-ins, etc.). 
 
-SES is a safe deterministic subset of "strict mode" JavaScript. This means 
+SES is a JavaScript dialect that enforces best practices by removing hazardous 
+features such as global mutable state and the odd lack of encapsulation in 
+sloppy mode. It is a safe deterministic subset of "strict mode" JavaScript. This means 
 it does not include any IO objects that provide 
 [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority). SES 
 also removes non-determinism by modifying a few built-in objects. It also uses
@@ -36,15 +38,15 @@ Meanwhile, server-side JavaScript applications imbue their sandbox with unbounde
 abilities and run programs written by strangers. Such applications are vulnerable 
 to their dependencies *and* also the rarely reviewed dependencies of their dependencies.
 
-SES uses a finer grain security model, *Object Capabilities* or tersely, *OCap*. 
-With OCap, many strangers can collaborate in a single sandbox, without risking them
+SES uses a finer grain security model, *Object Capabilities* or *OCaps*. 
+With OCaps, many strangers can collaborate in a single sandbox, without risking them
 frustrating, interfering, or conspiring with or against the user or each other.
 
 To do this, SES *hardens* the entire surface of the JavaScript environment. 
 *The only way a program can subvert or communicate with another program is to
 have been expressly granted a reference to an object provided by that other program.*
 
-Any programming environment fitting the OCap model satisfies three requirements:
+Any programming environment fitting the OCaps model satisfies three requirements:
 - Any program can protect its invariants by hiding its own data and capabilities.
 - Power can only be exercised over something by having a reference to the 
   object providing that power, for example, a file system object. A 
@@ -52,7 +54,7 @@ Any programming environment fitting the OCap model satisfies three requirements:
 - The only way to get a capability is by being given one. For example, by receiving
   one as an argument of a constructor or method.
 
-JavaScript does not fully qualify as an OCap language due to the pervasive 
+Ordinary JavaScript does not fully qualify as an OCaps language due to the pervasive 
 mutability of shared objects. You can construct a JavaScript subset with a 
 transitively immutable environment without any unintended capabilities. Starting
 in 2007 with ECMAScript 5, Agoric engineers and the OCap community have influenced
@@ -112,7 +114,6 @@ to built-in objects (shims/polyfills). For shims which just add properties to `g
 may be possible to load these in a new non-frozen `Compartment`. Shims that modify primordials 
 only work if you build new (mutable) wrappers around the default primordials and let the shims 
 modify those wrappers instead.
-
 
 ## What does SES remove from standard JavaScript
 
@@ -186,10 +187,10 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
   to the operator is not guaranteed. Also, it is difficult at best to write to `process.stdout` and
   so that should not be done.
 
-- `lockdown()` and `harden()` both an object’s API surface (enumerable data properties). 
-  A hardened object’s properties cannot be changed, so the only way to interact with a 
+- `lockdown()` and `harden()` both freeze an object’s API surface (enumerable data properties). 
+  A hardened object’s properties cannot be changed, only read, so the only way to interact with a 
   hardened object is through its methods. `harden()` is similar to `Object.freeze()` but more 
-  powerful. See the individual [`lockdown()`](#lockdown) and [`harden()`](#harden) sections
+  thorough. See the individual [`lockdown()`](#lockdown) and [`harden()`](#harden) sections
   below. 
 
 - `HandledPromise` is also a global. 
@@ -366,7 +367,7 @@ only read the surface data and call the surface functions.
 
 You have to harden a class before you harden any of its instances; i.e. it takes two separate 
 steps to harden both a class and its instances. Harden a base class before hardening classes 
-that inherit from it. harden()` does transitive freezing by following the object’s own
+that inherit from it. `harden()` does transitive freezing by following the object’s own
 properties (as opposed to properties it inherited), and the objects whose own properties refer 
 to them, and so forth.
 
