@@ -92,7 +92,9 @@ software, you need to install the following.
         &lt;<i>agoric script location</i>&gt;</code></td>
       <td>Select a location for the Agoric wrapper script. For example,
         <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
-        with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>)
+        with permission problems, <code>sudo yarn link-cli /usr/local/bin/agoric</code>
+        If you have problems with <code>sudo</code> or just don't want to use it do;<br>
+        <code>yarn link-cli &lt;name of a file for which you have write permission&gt;</code>)<br><br>
         This creates a shell script that, when run, accesses the SDK's Agoric CLI. We 
         strongly recommend putting it at <code>/usr/local/bin/agoric</code>, but its specific 
         location and name is up to you.
