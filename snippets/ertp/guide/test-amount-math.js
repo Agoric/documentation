@@ -140,8 +140,7 @@ test('ertp guide amountMath methods subtract', async t => {
   const subtractedList = myItemsAmountMath.subtract(listAmountA, listAmountC);
   // Throws error
   t.throws(() => myItemsAmountMath.subtract(listAmountA, listAmountB), {
-    message:
-      'some of the elements in right ((an object)) were not present in left ((an object))',
+    message: /some of the elements in right \(\(an object\)\) were not present in left \(\(an object\)\)/,
   });
   // #endregion subtract
   t.deepEqual(subtractedList, myItemsAmountMath.make(harden(['1', '4'])));

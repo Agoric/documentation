@@ -58,7 +58,7 @@ test('ertp guide purse deposit', async t => {
   const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
   // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
   t.throws(() => quatloosPurse.deposit(secondPayment, quatloos123), {
-    message: `payment balance (an object) must equal amount (an object)`,
+    message: /payment balance \(an object\) must equal amount \(an object\)/,
   });
   // #endregion deposit
 });
