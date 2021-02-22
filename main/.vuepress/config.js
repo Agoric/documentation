@@ -46,6 +46,7 @@ module.exports = {
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
+    sidebarDepth: 2,
     lastUpdated: 'Last Updated', 
     logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
@@ -65,7 +66,6 @@ module.exports = {
           title: 'Agoric Alpha',
           path: '/getting-started/alpha.html',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -73,7 +73,6 @@ module.exports = {
           title: 'Documentation Guide',
           path: '/getting-started/',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -81,7 +80,6 @@ module.exports = {
           title: 'Before Using Agoric',
           path: '/getting-started/before-using-agoric.html',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -89,7 +87,6 @@ module.exports = {
           title: 'Starting A Project',
           path: '/getting-started/start-a-project.html',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -97,7 +94,6 @@ module.exports = {
           title: 'Development Cycle',
           path: '/getting-started/development-cycle.html',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -105,7 +101,6 @@ module.exports = {
           title: 'Deploying Smart Contracts',
           path: '/getting-started/deploying.html',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -113,7 +108,6 @@ module.exports = {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.md',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -121,7 +115,6 @@ module.exports = {
           title: 'Zoe Introduction',
           path: '/getting-started/intro-zoe.md',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -129,7 +122,6 @@ module.exports = {
           title: 'Agoric CLI Guide',
           path: '/getting-started/agoric-cli-guide.html',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -139,7 +131,6 @@ module.exports = {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.md',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -147,7 +138,6 @@ module.exports = {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
             '/ertp/guide/',
             '/ertp/guide/amounts',
@@ -160,7 +150,6 @@ module.exports = {
           title: 'ERTP API',
           path: '/ertp/api/',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
             '/ertp/api/issuer',
             '/ertp/api/mint',
@@ -176,7 +165,6 @@ module.exports = {
           title: 'Zoe Introduction',
           path: '/getting-started/intro-zoe.md',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -184,7 +172,6 @@ module.exports = {
           title: 'Zoe Guide',
           path: '/zoe/guide/',
           collapsible: false,
-          sideBarDepth: 5,
           children: [
             '/zoe/guide/',
             '/zoe/guide/offer-safety',
@@ -197,7 +184,6 @@ module.exports = {
           title: 'Zoe Contracts',
           path: '/zoe/guide/contracts/',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
             '/zoe/guide/contracts/automatic-refund',
             '/zoe/guide/contracts/atomic-swap',
@@ -223,7 +209,6 @@ module.exports = {
           title: 'Zoe API',
           path: '/zoe/api/',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',

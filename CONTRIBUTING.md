@@ -399,7 +399,12 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
   will change to `.html` during its processing).
 - `collapsible`: Can this item be collapsed? So far, we don't have any collapsible items, so 
   always give this property the value `false`.
-- `sideBarDepth`: How many levels can the sidebar show? So far, we've not gone deeper than 3.
+- `sideBarDepth`: How many levels can the sidebar show? The site-level
+  default is 2, which displays h3 and is the max, but if fewer levels
+  are desired, the setting can be overridden at the sidebar item
+  level. More information
+  [here](https://vuepress.vuejs.org/theme/default-theme-config.html#nested-header-links).
+  
 - `children`: An array of submenu items for this sidebar menu item. You just need to specify
   the file paths to where you want to go when the submenu item is clicked. VuePress uses the
   file's (including default README.md files for folders) H1 level header text for the sidebar text.
@@ -411,7 +416,6 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.md',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
           ]
         },
@@ -419,7 +423,6 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
           title: 'ERTP Guide',
           path: '/ertp/guide/',
           collapsible: false,
-          sideBarDepth: 3,
           children: [
             '/ertp/guide/',
             '/ertp/guide/amounts',
