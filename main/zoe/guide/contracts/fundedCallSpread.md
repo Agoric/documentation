@@ -78,7 +78,7 @@ The options returned by the contract are Zoe invitations, so their values and te
 by asking for the contract terms.  This makes it possible to sell the options because a prospective
 purchaser will be able to inspect the value. The prospective purchaser can see that the
 priceAuthority is one they are willing to rely on and can verify the underlying amount.  They can
-check that the expiration matches their expectations (here `3` is a small integer suitable for a
+check that the expiration matches their expectations (here `3n` is a small integer suitable for a
 manual timer in a test; in actual use, it might represent block height or wall clock time.) The
 strike prices and settlement amount are likewise visible.
 

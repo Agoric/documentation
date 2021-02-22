@@ -282,7 +282,7 @@ const myProposal = harden({
   want: { Price: moola(15) },
   exit: { afterDeadline: {
     timer,
-    deadline: 100,
+    deadline: 100n,
   }}
 })
 ```
