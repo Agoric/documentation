@@ -47,17 +47,17 @@ test('callSpread, mid-strike', async t => {
   // Setup Carol
   const carolBucksPurse = bucksIssuer.makeEmptyPurse();
 
-  const manualTimer = buildManualTimer(console.log, 0);
+  const manualTimer = buildManualTimer(console.log, 0n);
   const priceAuthority = makeTestPriceAuthority(
     amountMaths,
-    [20, 45],
+    [20n, 45n],
     manualTimer,
   );
 
   // #region startInstance
   // underlying is 2 Simoleans, strike range is 30-50 (doubled)
   const terms = harden({
-    expiration: 3,
+    expiration: 3n,
     underlyingAmount: simoleans(2),
     priceAuthority,
     strikePrice1: moola(60),
@@ -129,7 +129,7 @@ test('callSpread, mid-strike', async t => {
   const optionValue = shortOptionAmount.value[0];
   const carolTerms = await zoe.getTerms(optionValue.instance);
   t.is('short', optionValue.position);
-  t.is(3, carolTerms.expiration);
+  t.is(3n, carolTerms.expiration);
   t.is(manualTimer, carolTerms.timer);
   t.is(priceAuthority, carolTerms.priceAuthority);
   t.truthy(simoleanMath.isEqual(simoleans(2), carolTerms.underlyingAmount));
@@ -168,17 +168,17 @@ test('pricedCallSpread, mid-strike', async t => {
   const carolBucksPurse = bucksIssuer.makeEmptyPurse();
   const carolBucksPayment = bucksMint.mintPayment(bucks(75));
 
-  const manualTimer = buildManualTimer(console.log, 0);
+  const manualTimer = buildManualTimer(console.log, 0n);
   const priceAuthority = await makeTestPriceAuthority(
     amountMaths,
-    [20, 45, 45, 45, 45, 45, 45],
+    [20n, 45n, 45n, 45n, 45n, 45n, 45n],
     manualTimer,
   );
 
   // #region startInstancePriced
   // underlying is 2 Simoleans, strike range is 30-50 (doubled)
   const terms = harden({
-    expiration: 3,
+    expiration: 3n,
     underlyingAmount: simoleans(2),
     priceAuthority,
     strikePrice1: moola(60),
@@ -200,7 +200,7 @@ test('pricedCallSpread, mid-strike', async t => {
   // #endregion startInstancePriced
 
   // #region makeInvitationPriced
-  const invitationPair = await E(creatorFacet).makeInvitationPair(75);
+  const invitationPair = await E(creatorFacet).makeInvitationPair(75n);
   const { longInvitation, shortInvitation } = invitationPair;
   // #endregion makeInvitationPriced
 
@@ -215,7 +215,7 @@ test('pricedCallSpread, mid-strike', async t => {
 
   t.is(installation, longOptionValue.installation);
   t.is('long', longOptionValue.position);
-  t.is(225, longOptionValue.collateral);
+  t.is(225n, longOptionValue.collateral);
   // endregion validatePricedInvitation
 
   // region checkTerms-priced
