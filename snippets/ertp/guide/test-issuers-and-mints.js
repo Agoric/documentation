@@ -28,7 +28,7 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   t.truthy(quatloosIssuer);
   t.truthy(quatloosMint);
   t.truthy(quatloosBrand);
-t.deepEqual(quatloos2, { brand: quatloosBrand, value: 2n });
+  t.deepEqual(quatloos2, { brand: quatloosBrand, value: 2n });
   t.truthy(titleMint);
   t.truthy(titleIssuer);
   t.truthy(titleAmountMath);
