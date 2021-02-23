@@ -213,7 +213,7 @@ It returns a promise for a `StartInstanceResult` object. The object consists of:
 - `creatorInvitation` `{Payment | undefined}`
 
 The `adminFacet` has two methods:
-- `getVatShutdownPromise()    
+- `getVatShutdownPromise()`    
   - Returns a promise that resolves to reason (the value passed to `fail(reason)`) or 
     completion (the value passed to `exit(completion)`) when this newly started instance terminates. 
 - `getVatStats()`
@@ -273,13 +273,15 @@ The optional `exit`'s value should be an `exitRule`, an object with three possib
 key:value pairs:
 - `onDemand:null`:  (Default) The user can cancel on demand.
 - `waived:null`: The user can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. The timer is a timer,
-and the `deadline` is with respect to the timer. Some example timers use Unix epoch time, while others count block height.
+- `afterDeadline`: The offer is automatically cancelled after a deadline, as determined 
+   by its `timer` and `deadline` properties. The timer is a timer, and the `deadline` is with respect to the 
+   timer. Some example timers use Unix epoch time, while others count block height. Note that `deadline`'s
+   value is a `BigInt`, not a `Number` (just append an "n" to the number you want to use to get its `BigInt`)
 
 ```js
 const myProposal = harden({
-  give: { Asset: quatloos(4)},
-  want: { Price: moola(15) },
+  give: { Asset: quatloos(4n)},
+  want: { Price: moola(15n) },
   exit: { afterDeadline: {
     timer,
     deadline: 100n,
@@ -333,8 +335,8 @@ and an operation to request that the offer exit, as follows:
     An `Allocation` example:
     - ```js
       {
-        Asset: quatloosAmountMath.make(5),
-        Price: moolaAmountMath.make(9)
+        Asset: quatloosAmountMath.make(5n),
+        Price: moolaAmountMath.make(9n)
       }
       ```
 - `getProposal()`
