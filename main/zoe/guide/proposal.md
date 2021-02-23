@@ -49,7 +49,7 @@ intrinsic value. `payments` hold actual digital assets.
 - `'onDemand'`: (Default) Whenever the user wants.
 - `'waived'`: The user cannot cancel, relying on the contract to finish the offer.
 - `'afterDeadline'`: Cancelled automatically after a deadline. This requires two
-  more properties, a `timer` object and a deadline value.
+  more properties, a `timer` object and a deadline BigInt value.
 
 ## Escrowed Payments
 
