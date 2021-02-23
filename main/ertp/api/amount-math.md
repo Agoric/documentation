@@ -15,7 +15,7 @@ There are three different kinds of `amountMath`, each of which implements all th
 
 The three kinds of `amountMath` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
 - `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
@@ -47,7 +47,13 @@ someAmount: {
 
 ## Value
 
-`values` describe how much of something can be owned or shared. A fungible `value` is normally represented by a natural number. Other `values` may be represented as strings naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+`values` describe how much of something can be owned or shared. A fungible `value` is
+normally represented by a natural number BigInt. Other `values` may be represented as strings
+naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+
+Note that numbers in a value are represented as type `BigInt`, which allows for arbitrarily 
+large numbers. BigInts are depicted as an integer with an appended "n"; e.g. 10n, 137n. 
+See the [BigInt section in the JavaScript Distributed Programming Guide](/distributed-programming.md#bigint) for details. 
 
 ## makeLocalAmountMath(issuer)
 - `issuer`: `{issuer}`
@@ -95,9 +101,20 @@ quatloosAmountMath.getAmountMathKind(); // For example, returns MathKind.NAT
 Make an `amount` from a `value` by adding the `brand` associated with
 the `amountMath`.
 
+Remember that numbers in `values` are represented as `BigInts`; integers
+with an appended "n". As seen in the below example, we strongly encourage
+using BigInts as the argument to `amountMath.make()`. While `amountMath.make()`
+does coerce a `Number` argument to a `BigInt`, so both `4` and `4n` return an
+amount with a value of `4n`, using Numbers is likely to confuse later viewers
+of your code. 
+
+See the [BigInt section in the JavaScript Distributed Programming Guide](/distributed-programming.md#bigint) for 
+details about `BigInts`. 
+
+
 ```js
-//amount837 = { value: 837, brand: quatloos }
-const amount837 = quatloosAmountMath.make(837);
+//amount837 = { value: 837n, brand: quatloos }
+const amount837 = quatloosAmountMath.make(837n);
 ```
 
 ## amountMath.coerce(allegedAmount)
@@ -109,7 +126,7 @@ If not valid, throws an exception. This checks if
 an `amount` coming from elsewhere is for the expected `brand`.
 
 ```js
-const quatloos50 = quatloosAmountMath.make(50);
+const quatloos50 = quatloosAmountMath.make(50n);
 // Returns the same amount as quatloos50
 const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
 ```
@@ -118,12 +135,13 @@ const verifiedAmount = quatlooAmountMath.coerce(allegedAmount);
 - `amount` `{Amount}`
 - Returns: `{Value}`
 
-Returns the `value` from the given `amount`.
+Returns the `value` from the given `amount`. Remember, numeric values
+are represented as `BigInts`, not `Numbers`.
 
 ```js
-const quatloos123 = quatloosAmountMath.make(123);
+const quatloos123 = quatloosAmountMath.make(123n);
 
-// returns 123
+// returns 123n
 const myValue = quatloosAmountMath.getValue(quatloos123);
 ```
 
@@ -139,7 +157,7 @@ or `MathKind.STRING_SET` (`[]`).
 ```js
 // Returns an empty amount for this amountMath.
 // Since this is a fungible amount it returns an amount
-// with 0 as its value.
+// with 0n as its value.
 const empty = quatloosAmountMath.getEmpty();
 ```
 
@@ -151,7 +169,7 @@ Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
 const empty = quatloosAmountMath.getEmpty();
-const quatloos1 = quatloosAmountMath.make(1);
+const quatloos1 = quatloosAmountMath.make(1n);
 
 // returns true
 quatloosAmountMath.isEmpty(empty)
@@ -176,8 +194,8 @@ contents and has additional elements.
 
 ```js
 const empty = quatloosAmountMath.getEmpty();
-const quatloos5 = quatloosAmountMath.make(5);
-const quatloos10 = quatloosAmountMath.make(10);
+const quatloos5 = quatloosAmountMath.make(5n);
+const quatloos10 = quatloosAmountMath.make(10n);
 
 // Returns true
 quatloosAmountMath.isGTE(quatloos5, empty);
@@ -208,9 +226,9 @@ are considered unequal because the latter has elements that are not contained in
 
 ```js
 const empty = quatloosAmountMath.getEmpty();
-const quatloos10 = quatloosAmountMath.make(10);
-const quatloos5 = quatloosAmountMath.make(5);
-const quatloos5b = quatloosAmountMath.make(5);
+const quatloos10 = quatloosAmountMath.make(10n);
+const quatloos5 = quatloosAmountMath.make(5n);
+const quatloos5b = quatloosAmountMath.make(5n);
 
 // Returns true
 quatloosAmountMath.isEqual(quatloos10, quatloos10);

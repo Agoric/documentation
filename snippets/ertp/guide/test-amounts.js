@@ -11,7 +11,7 @@ test('ertp guide amounts', async t => {
     issuer: quatloosIssuer,
   } = quatloosKit;
   // #region manualMake
-  const newAmount = { brand: quatloosBrand, value: 5 };
+  const newAmount = { brand: quatloosBrand, value: 5n };
   // #endregion manualMake
   t.deepEqual(newAmount, quatloosAmountMath.make(5));
 
@@ -54,11 +54,11 @@ test('ertp guide amounts', async t => {
   const value = quatloosAmountMath.getValue(quatloos123);
   // #endregion getValue
 
-  t.is(value, 123);
+  t.is(value, 123n);
 
   // #region make
   const quatloos837 = quatloosAmountMath.make(837);
   // #endregion make
 
-  t.deepEqual(quatloos837, { brand: quatloosBrand, value: 837 });
+  t.deepEqual(quatloos837, { brand: quatloosBrand, value: 837n });
 });

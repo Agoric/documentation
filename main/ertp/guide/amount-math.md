@@ -14,7 +14,7 @@ An `amountMath` is one of three different kinds, each of which
 implements the same methods. Which kind is used for a particular `brand` depends
 on what was specified when the `brand` and its `issuer` were 
 created. The kinds are: 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative integers).
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
 - `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
@@ -47,7 +47,7 @@ API Reference](../api/).
     - For this `amountMath`, return the `brand` it can operate on..
     - <<< @/snippets/ertp/guide/test-amount-math.js#getBrand
   - [amountMath.getValue(amount)](../api/amount-math.md#amountmath-getvalue-amount)
-    - Returns the `value` of the `amount` argument. 
+    - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
   - [amountMath.getAmountMathKind()](../api/amount-math.md#amountmath-getamountmathkind)
     - Returns a string of either `'nat'`, `'str'`, or `'strSet'`,
@@ -94,7 +94,8 @@ API Reference](../api/).
 - **Amount Creation Methods**
   - [amountMath.make(allegedValue)](../api/amount-math.md#amountmath-make-allegedvalue)	
     - Takes a `value` argument and returns an `amount` by making a record
-      with the `value` and the `brand` associated with the `amountMath`.
+      with the `value` and the `brand` associated with the `amountMath`. The `value`
+      argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
   - [amountMath.getEmpty()](../api/amount-math.md#amountmath-getempty)
     - Returns an `amount` representing an empty `amount` (which is the identity

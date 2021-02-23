@@ -68,6 +68,12 @@ and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
 digital assets in the quantity specified by an [amount](#amounts).
 
+## BigInt
+
+JavaScript's `Number` primitive only represents numbers up to 253 - 1. `BigInt` is a built-in 
+object that can be used for arbitrarily large integers. Agoric uses `BigInts` for times 
+and `Amount` `values`. See [here](/distributed-programming.md#bigint) for more information.
+
 ## Board (Agoric Board)
 
 The Board is a shared, on-chain location where users can post a value and make it 

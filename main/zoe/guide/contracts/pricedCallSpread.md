@@ -60,7 +60,7 @@ strikePrice2, settlementAmount }`.
 ## Creating the Option Invitations
 
 The terms specify all the details of the options. A call to `creatorFacet.makeInvitationPair()` is
-required to specify the share (as a whole number percentage) that will be contributed for the long
+required to specify the share (as a whole number percentage in BigInt form) that will be contributed for the long
 position. It returns a pair of invitations.
 
 <<< @/snippets/zoe/contracts/test-callSpread.js#makeInvitationPriced

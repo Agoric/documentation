@@ -18,7 +18,7 @@ test('ertp guide amountMath localAmountMath', async t => {
   // #region localAmountMath
   const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
   // #endregion localAmountMath
-  t.is(quatloosLocalAmountMath.make(2).value, 2);
+  t.is(quatloosLocalAmountMath.make(2).value, 2n);
 });
 
 test('ertp guide amountMath methods getBrand', async t => {
@@ -38,7 +38,7 @@ test('ertp guide amountMath methods getValue', async t => {
   // returns 123
   const value = quatloosAmountMath.getValue(quatloos123);
   // #endregion getValue
-  t.is(value, 123);
+  t.is(value, 123n);
 });
 
 test('ertp guide amountMath methods getAmountMathKind', async t => {
@@ -154,7 +154,7 @@ test('ertp guide amountMath methods make', async t => {
   } = makeIssuerKit('quatloos');
   /// An `amount` with `value` = 837 and `brand` = Quatloos
   const quatloos837 = quatloosAmountMath.make(837);
-  const anotherQuatloos837 = harden({ brand: quatloosBrand, value: 837 });
+  const anotherQuatloos837 = harden({ brand: quatloosBrand, value: 837n });
   t.deepEqual(quatloos837, anotherQuatloos837);
   // #endregion make
 });
