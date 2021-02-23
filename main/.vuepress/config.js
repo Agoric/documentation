@@ -61,6 +61,24 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
+      '/glossary/': [
+        {
+          title: 'Glossary',
+          path: '/glossary/',
+          collapsible: false,
+          children: [
+          ]
+        },
+        ],      
+      '/platform/': [
+        {
+          title: 'Platform',
+          path: '/platform/',
+          collapsible: false,
+          children: [
+          ]
+        },
+        ],      
       '/getting-started/': [
         {
           title: 'Agoric Alpha',
