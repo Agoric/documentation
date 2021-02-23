@@ -45,8 +45,8 @@ A record consisting of a `value` and a `brand`. It is a description of an asset,
   as it has no economic scarcity or economic value.
   
 So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
-where `400` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
-whose values have to be non-negative integers. 
+where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
+whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
 
 The `brand` is a very important component. Most ERTP objects work with or on one specific `brand`.
 In fact, instances of these next three components all only work on one `brand`. Note also that their
