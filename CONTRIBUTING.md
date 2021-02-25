@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Contributing to Agoric's Documentation Repo
 
 Agoric's public-facing technical documentation is mostly in the [Agoric Documentation GitHub repo](https://github.com/Agoric/documentation).
@@ -78,6 +82,14 @@ Lines with no special treatment are converted into standard HTML paragraph tags.
 VuePress automatically builds search functionality and individual page menus from `h1`, `h2`, and `h3` headers (i.e. Markdown's `#`, `##`, and `###` commands). 
 You must have only **one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers 
 on one page and that they aren't too long. Otherwise the sidebar menu for the page will be cluttered and hard to read and use.
+
+There's a glitch (or something we don't understand) that sometimes causes individual pages not to display a sidebar menu for their headers.
+To force an individual page sidebar menu, add the following YAML at the top of a page's source file (this file has this YAML at the top):
+```js
+---
+sidebar: auto
+---
+```
 
 ## Writing Links
 
