@@ -4,7 +4,7 @@
 
 This document describes SES (Secure ECMAScript) affects writing Agoric JavaScript code. 
 It is very much a "how to do something" document, with little explanation about why and
-how something was implimented or other background information. For that, see the more
+how something was implemented or other background information. For that, see the more
 comprehensive [SES Guide](./ses-guide.md).
 
 ## Removed by SES summary
@@ -76,8 +76,8 @@ their methods. Their differences are what objects you use them on, and when you 
 before `lockdown()` excutes throws an error.
 
 `lockdown()` works on objects created by the JavaScript language itself as part of 
-its definition. Use `harden()` to freeze objects created after `lockdown()`was called;
-i.e. objects created by your JavaScript code. 
+its definition. Use `harden()` to freeze objects created by your JavaScript code 
+after `lockdown()`was called. 
 
 ## `lockdown` Options
 
@@ -104,8 +104,8 @@ below.
 <table>
   <tbody>
   <tr>
-    <td><center<b>Option</b></center></td>
-    <td><center<b>Values</b></center></td>
+    <td><center><b>Option</b></center></td>
+    <td><center><b>Values</b></center></td>
     <td><center><b>Functionality</b></center></td>
   </tr>
   <tr>
