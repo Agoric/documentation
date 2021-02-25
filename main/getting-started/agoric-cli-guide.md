@@ -2,19 +2,19 @@
 sidebar: auto
 ---
 
-## Agoric CLI
+# Agoric CLI Guide
 
 You use the Agoric CLI to install dependencies, initialize, deploy, and start Agoric projects. This Guide has two parts:
 1. [Starting Multiuser Dapps](#starting-multiuser-dapps): How to use the Agoric CLI to deploy and start a local-chain-multiuser scenario, for development and and testing of multiuser Dapps
 2. [Agoric CLI Command Reference](#agoric-cli-command-reference): Reference material for the five `agoric` CLI commands.
 
-### Starting Multiuser Dapps
+## Starting Multiuser Dapps
 
 When developing a Dapp, you may need to test how it behaves with multiple users before deploying it publicly.
 These users could have different roles, such as the contract deployer, an auctioneer, a bidder, a buyer, a seller, etc. 
 The Agoric CLI implements a local-chain-multiuser scenario for developing and testing multiuser Dapps.
 
-#### Usage
+### Usage
 
 Develop your Dapp as described in the [Agoric Getting Started Guide](/getting-started/).
 After using `agoric start` to test with the simulated chain, stop the simulated
@@ -78,7 +78,7 @@ different profiles of the same browser).  Then fill out the localhost address of
 that browser. This connects the processes in the browsers to their own wallets so they do not share per-client data 
 such as cookies, storage, etc. Test your UI in each browser!
 
-#### Example
+### Example
 
 This section shows how you do the above steps.
 
@@ -120,7 +120,7 @@ command and output in the REPL history.
 
 ![REPL](./assets/REPL-1.png)
 
-#### Configure an additional client browser
+### Configure an additional client browser
 Open a different browser. Not just another tab or window, but a completely different browser or browser profile 
 that doesn’t share cookies with any other ag-solo’s browser. For example, if you had an open Chrome window, 
 create a new Chrome profile, or open a Firefox or Safari window. 
@@ -138,7 +138,7 @@ in the REPL, hit **Enter**, and see the `console.log` command and output in the 
 
 You can repeat this section for as many other ports as you ran ag-solos for.
 
-#### Test the UI
+### Test the UI
 ```sh
 # Deploy the contract and API service.
 agoric deploy contract/deploy.js api/deploy.js
@@ -150,7 +150,7 @@ Then navigate to `http://localhost:3000` in each browser/profile for which you w
 When the UI opens your wallet, the browser should navigate to the same URL you entered in that browser
 or profile’s `https://local.agoric.com` page.
 
-### Agoric CLI Command Reference
+## Agoric CLI Command Reference
 Add a command name to `agoric` to specify what command to run. **Note**: Required argument names need not be given, only their values. Optional argument names must be given, along with their values. See the command's examples if you're not sure if a name is needed.
 
 The `agoric` commands documented here are the ones useful for dapp developers. Other `agoric` commands you may see listed
@@ -182,7 +182,7 @@ They are:
 - `-h`, `--help`
   - Display help for the command.
 
-#### `agoric init`
+### `agoric init`
 - **Function**: 
   - Creates a new Dapp directory named `<project>` with contents copied from the `dapp-template` argument template.
 - **Required Arguments**:
@@ -199,7 +199,7 @@ They are:
   - Creates a directory named `my-contract` with contents copied from a template named `dapp-skeleton` located under the URL `file:///home/contracts`
 	  - `agoric init my-contract --dapp-template dapp-skeleton --dapp-base file:///home/contracts` 
 
-#### `agoric install`
+### `agoric install`
 - **Function**:
   - Install Dapp JavaScript dependencies. This may take a while. You use this instead of established npm install tools.
   The reason is that there is both an SDK (`--sdk`) and NPM mode. Currently we only support SDK mode, which allows you to link your Dapp 
@@ -213,7 +213,7 @@ They are:
   - Installs Dapp JavaScript dependencies
 	- `agoric install`
 
-#### `agoric start`
+### `agoric start`
 - **Function**:
   - Run an Agoric VM on which contracts will run.
 - **Required Arguments**:
@@ -235,7 +235,7 @@ They are:
  process messages. 
       - `agoric start --delay 5`
 
-#### `agoric deploy`
+### `agoric deploy`
 - **Function**:
   - Run one or more deployment scripts against the local Agoric VM. You may optionally specify which host and port to connect to the VM on.
 - **Required Arguments**:
@@ -250,7 +250,7 @@ They are:
     port 99.
     - `agoric deploy --hostport 128.7.3.139:99 ./contract/deploy.js`
     
-#### `agoric open`
+### `agoric open`
 - **Function**:
   - Launch the Agoric UI. By default, it shows only the UI and not the REPL. To show either
     both the UI and REPL, or only the REPL, see the `--repl` optional argument below.
@@ -272,7 +272,7 @@ They are:
   - Display both the Agoric UI and the REPL in a browser (`--repl` defaults to `yes`).
     - `agoric open --repl`
 
-#### `agoric help`
+### `agoric help`
 - **Function**:
   - Displays the Agoric CLI commands and arguments with brief descriptions.
 - **Required Arguments**:
