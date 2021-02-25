@@ -47,6 +47,7 @@ module.exports = {
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 2,
+    sidebar: 'auto',
     lastUpdated: 'Last Updated', 
     logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
