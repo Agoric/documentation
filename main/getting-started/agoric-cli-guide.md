@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 ## Agoric CLI
 
 You use the Agoric CLI to install dependencies, initialize, deploy, and start Agoric projects. This Guide has two parts:
