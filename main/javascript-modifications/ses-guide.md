@@ -73,7 +73,7 @@ for aspects of SES).
 **tyg todo Not sure what the current situation is with respect to what needs to go into
 what code to get and use SES in one's code**
 
-## JavaScript globals and primordials
+## What SES does to JavaScript
 
 As mentioned, SES does not include any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) (which is not “safe”). 
 Nor does it allow non-determinism from built-in JavaScript objects. 
@@ -107,13 +107,13 @@ and their prototype chains. `globalThis` is also frozen. This prevents malicious
 (imagine `Array.prototype.push` delivering a copy of its argument to an attacker, or ignoring 
 certain values). It also prevents using, for example, `Object.heyBuddy` or `globalThis.heyBuddy` 
 as an ambient communication channel via setting a property and another program periodically reading it. 
-This would violate object-capability security; objects may only communicate through references. 
+This would violate object-capability discipline; objects may only communicate through references. 
 
-Both frozen primordials and a frozen `globalThis` break a few JS libraries that add new features
-to built-in objects (shims/polyfills). For shims which just add properties to `globalThis`, it 
-may be possible to load these in a new non-frozen `Compartment`. Shims that modify primordials 
-only work if you build new (mutable) wrappers around the default primordials and let the shims 
-modify those wrappers instead.
+Both frozen primordials and a frozen `globalThis` have problems with a few JavaScript 
+libraries that add new features to built-in objects (shims/polyfills). These
+libraries stretch best practices' boundaries by adding new features to built-in 
+objects in a way SES Compartments don't allow. To use these with SES, see "vetted 
+shims" in `lockdown.js`.  **tyg todo: Check this out**
 
 ## What does SES remove from standard JavaScript
 
@@ -122,7 +122,11 @@ JavaScript/node Agoric differentials.**
 
 Almost all existing JavaScript code was written to run under Node.js or inside a browser, so 
 it's easy to conflate the environment features with JavaScript. itself. For example, you may 
-be surprised that `Buffer` and `require` are Node.js additions and not part of JavaScript. 
+be surprised that `Buffer` and `require` are Node.js additions and not 
+part of JavaScript. You might equally be surprised that `setTimeout()`, 
+`setInterval()`, `URL`, `atob()`, `btoa()`, TextEncoder, and TextDecoder are additions 
+to the programming environment standardized by the web, and are not intrinsic
+to JavaScript.
 
 Most Node.js-specific [global objects](https://nodejs.org/dist/latest-v14.x/docs/api/globals.html) are 
 unavailable including:
@@ -134,7 +138,8 @@ unavailable including:
   finishes processing. But be aware it won't run until after all *other* ready Promise callbacks execute. 
 
   There are two queues: the *IO queue* (accessed by `setImmediate`), and the *Promise queue* (accessed by 
-  Promise resolution). SES code can only add to the Promise queue. Note that the Promise queue is 
+  Promise resolution). SES code can add to the Promise queue, but needs to be given a 
+  capability to be able to add to the IO queue. Note that the Promise queue is 
   higher-priority than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
 * `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`): Any notion of time must come from 
   exchanging messages with external timer services (the SwingSet environment provides a `TimerService` object 
@@ -146,33 +151,6 @@ unavailable including:
 * `WebAssembly`: Is not available.
 * `TextEncoder` and `TextDecoder`: Are not available.
 
-Some names look like globals, but are really part of the module-defining tools: imports, exports, and 
-metadata. Modules start as files on disk, but then are bundled together into an archive before being 
-loaded into a vat. The bundling tool uses several standard functions to locate other modules that must 
-be included. These are not a part of SES, but are allowed in module source code, and are translated or 
-removed before execution. 
-
-- `import` and `export` syntax are allowed in ESM-style modules ( preferred over CommonJS). These are 
-  not globals per se, but top-level syntax that defines the module graph.
-- `require`, `module`, `module.exports`, and `exports` are allowed in CommonJS-style modules, and 
-  should work as expected. However, new code should be written as ESM modules. They are either 
-  consumed by the bundling process, provided (in some form) by the execution environment, or 
-  otherwise rewritten to work sensibly
-- `__dirname` and `__filename` are not provided
-- The dynamic import expression (`await import('name')`) is currently prohibited in vat code, 
-  but a future SES implementation may allow it.
-
-Node.js has a [large collection](https://nodejs.org/dist/latest-v14.x/docs/api/) of "built-in 
-modules", such as `http` and `crypto`. Some are clearly platform-specific (e.g. `v8`), while 
-others are not so obvious (`stream`). All are accessed by importing a module (`const v8 = require('v8')` 
-in CommonJS modules, or `import v8 from 'v8'` in ESM modules). These modules are built out of 
-native code (C++), not plain JavaScript.
-
-None of these built-in modules are available to SES code. `require` or `import` can be used on 
-pure JavaScript modules, but not on modules including native code. To exercise authority from 
-a built-in module, you have to write a *device* with an endowment with the built-in module's 
-functions, then send messages to the device.
-
 Browser environments also have a huge list of [other features](https://developer.mozilla.org/en-US/docs/Web/API) 
 presented as names in the global scope (some also added to Node.js). None are available in a 
 SES environment. The most surprising removals include `atob`, `TextEncoder`, and `URL`.
@@ -183,9 +161,9 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
 
 - `console` is available to help with debugging. Since all JavaScript implementations
   add it, you may be surprised it’s not in the official spec. So leaving it out would cause 
-  too much confusion. Note that `console log`’s exact behavior is up to the host program; display 
-  to the operator is not guaranteed. Also, it is difficult at best to write to `process.stdout` and
-  so that should not be done.
+  too much confusion. Note that `console.log`’s exact behavior is up to the host program; display
+  to the operator is not guaranteed. Use the console for debug information only. 
+  The console is not obliged to write to the POSIX standard output.
 
 - `lockdown()` and `harden()` both freeze an object’s API surface (enumerable data properties). 
   A hardened object’s properties cannot be changed, only read, so the only way to interact with a 
@@ -193,21 +171,9 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
   thorough. See the individual [`lockdown()`](#lockdown) and [`harden()`](#harden) sections
   below. 
 
-- `HandledPromise` is also a global. 
-  The [`E` wrapper (`E(target).method-name(args)`)](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e) 
-  can be imported as `import { E } from '@agoric/eventual-send`. These two are defined by the 
-  TC39 [Eventual-Send Proposal](https://github.com/tc39/proposal-eventual-send). In addition, "tildot" syntax (`target~.methodname(args)`) 
-  is expanded as the code is first bundled, so it can be used (but not inside `eval()` calls or new compartments).
-
 - `Compartment` (a [part of SES](https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment)) is 
   a global. Code runs inside a `Compartment` and can create sub-compartments to host other 
-  code (with different globals or transforms).
-
-  Note that these child compartments get `harden` and `Compartment`, but you have to explicitly 
-  provide any other JS additions (including `console` and `HandledPromise`) as “endowments” since 
-  they won’t be present otherwise. If the parent compartment is metered, its child compartments 
-  are always metered too. Child compartments will *not* be frozen by default: 
-  see [Frozen globalThis](#frozen-globalthis) below for details.
+  code (with different globals or transforms). Note that these child compartments get `harden()` and `Compartment`.
 
 As SES is on the JavaScript standards track, the above anticipates additional proposed standard-track 
 features. If those features become standards, future JavaScript environments will include them as global 
@@ -223,8 +189,9 @@ In Node.js, a Node process is a realm.
 
 For historical reasons, the ECMAScript specification requires the *primordials*
 to be mutable (`Array.prototype.push = yourFunction` is valid ECMAScript but not 
-recommended). With SES you can turn the current realm into an *immutable realm*; 
-a realm within which the primordials are deeply frozen. 
+recommended). By using the SES shim and calling `lockdown()`, you can turn the 
+current realm into an *immutable realm*; a realm within which the primordials 
+are deeply frozen. 
 
 SES also lets programs create *Compartments*. These are "mini-realms".
 A Compartment has its own dedicated global object and environment, but 
@@ -321,13 +288,18 @@ const application = new Compartment({}, {
   importHook,
 });
 ```
+Compartments provide a low-level loader API for JavaScript modules. 
+Your code might run in compartments, but they are an implementation 
+detail of tools and runtimes.
 
-Compartments greatly simplify using SES for large applications. We will build tools that use 
-compartments to load and bundle existing libraries and then execute them with a compartment
-for each package. **tyg todo Has this happened? If so, where/what are the tools? If not, any ETA?**
-This will provide a seamless experience as simple as <script src=“app.js”> or node app.js, but 
-with the safety of SES.
-  
+The Agoric runtime uses compartments to isolate contracts within a vat. 
+MetaMask’s LavaMoat uses a Compartment for every module, to create 
+boundaries between application code and third-party dependencies.
+
+The lifetime of a compartment is bounded by garbage collection and the 
+lifetime of the realm that contains them. You will not ever have to tear
+down or delete one. 
+
 **tyg todo: My problem with this section is that while I think I understand what compartments are
 and what they do, I'm not clear on just how/when they are used. This (and the SES reference) could
 use what amounts to a paragraph or two like "When writing a contract, you use compartments like this. 
@@ -355,7 +327,7 @@ For a full explanation of `lockdown()` and its options, please see
 
 ## `harden()`
 
-`harden()` should be called on all objects that will be transferred across a trust boundary 
+`harden()` must be called on all objects that will be transferred across a trust boundary 
 The general rule is if you make a new object and give it to someone else (and don't 
 immediately forget it yourself), you should give them `harden(obj)` instead of the raw object. 
 
@@ -389,9 +361,10 @@ or prototypes of that object. Being hardened doesn't preclude an object from hav
 access to mutable state (`harden(new Map())` still behaves like a normal mutable `Map`), 
 but it means their methods stay the same and can't be surprisingly changed by someone else
 
-Defined objects (`mint`, `issuer`, `zcf`, etc.) shouldn't need hardening as their 
-constructors should do that work. It's mainly records, callbacks, and ephemeral 
-objects that need hardening.
+For example, the Agoric programming environment defines objects (`mint`, 
+`issuer`, `zcf`, etc.) that shouldn't need hardening as their constructors
+should do that work. It's mainly records, callbacks, and ephemeral objects 
+that need hardening.
 
 You can send a message to a hardened object. If it's a record, you can access 
 its properties and their values.
