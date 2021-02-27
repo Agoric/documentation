@@ -193,6 +193,11 @@ module.exports = [
         link: 'https://agoric.com/papers/'
       },
       {
+        text: 'YouTube',
+        ariaLabel: 'Agoric YouTube Channel Page Link',
+        link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/'
+      },     
+      {
         text: 'Github',
         ariaLabel: 'Agoric Github Link',
         link: 'https://github.com/Agoric/'
