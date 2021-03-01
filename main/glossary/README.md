@@ -469,7 +469,7 @@ The overall place a party keeps their assets of all brands. For example, your wa
 [purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [Issuers](#issuer). 
 Dapps can propose [offers](#offer) to a wallet. If a user accepts the offer proposal, 
 the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse). 
-See the [Wallet API](/wallet-api.md).
+See the [Wallet Guide and API](/guides/wallet/).
 
 ## ZCF
 *ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe 
