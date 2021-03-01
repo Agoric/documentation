@@ -63,7 +63,7 @@ How to install software that the Agoric SDK depends on.
   documentation, accessible from the Zoe documentation sidebar menu.
 
 When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
-Reference](/zoe/api/)**, **[Wallet UI Guide and API Reference](/wallet-api.md)**,
+Reference](/zoe/api/)**, **[Wallet Guide and API Reference](/guides/wallet)**,
 and **[Agoric CLI Guide](/getting-started/agoric-cli-guide.md)** for details about 
 their respective commands. 
 
@@ -79,7 +79,11 @@ definitions to (i.e. what does *mint* mean in an Agoric context?).
 
 For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
 
-Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, 
+such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+
+Agoric's **[YouTube channel](https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg)** has tutorials, company calls, 
+and other talks by Agoric engineers and management.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
