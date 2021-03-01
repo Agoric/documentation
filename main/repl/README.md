@@ -68,7 +68,7 @@ Several `home` objects are either for internal Agoric use only or have been depr
 are listed together at the end and external developers should ignore them and not try to use
 them.
 
-- [`wallet`](/wallet-api.md): Holds on-chain digital assets and object capabilities on behalf of the user.
+- [`wallet`](/guides/wallet/api.md): Holds on-chain digital assets and object capabilities on behalf of the user.
    The link takes you to the standard non-REPL specific `wallet` API documentation. When calling
    `wallet` API methods from the REPL, `wallet` must be prefaced by
    `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
