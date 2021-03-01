@@ -88,7 +88,7 @@ module.exports = [
       {
         text: 'Wallet API',
         ariaLabel: 'Wallet API Guide',
-        link: '/wallet-api'
+        link: '/guides/wallet/'
       },
       {
         text: 'Dynamic IBC (dIBC)',
