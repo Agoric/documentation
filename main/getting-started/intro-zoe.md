@@ -54,7 +54,7 @@ use](/zoe/guide/contracts/), including:
 You must have a Zoe invitation to a specific contract instance to join
 and participate in it. Let's imagine your friend Alice has sent you a
 `Zoe invitation` for a contract instance to your
-[wallet](/wallet-api.md). 
+[wallet](/guides/wallet/). 
 
 Compare this to a smart contract on Ethereum. On Ethereum, the smart
 contract developer must guard against malicious calls and store an
