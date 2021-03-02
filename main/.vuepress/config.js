@@ -230,7 +230,7 @@ module.exports = {
           children: [
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',
-            '/zoe/api/zoe-helpers'
+            '/zoe/api/zoe-helpers',
             '/zoe/api/price-authority',
           ],
         },
