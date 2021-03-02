@@ -4,7 +4,7 @@ This page lists words, expressions, or concepts used by the Agoric technology st
 
 ## Agoric CLI
 A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
-See the [Agoric CLI Guide](/getting-started/agoric-cli-guide.md).
+See the [Agoric CLI Guide](/guides/agoric-cli/).
 
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
