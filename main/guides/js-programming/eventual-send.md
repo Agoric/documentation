@@ -52,4 +52,4 @@ remote object complains that it doesn't know that method.
 objects in the current vat or presences for objects in other vats as arguments.
 
 `E()` is frequently used in code to call
-[Zoe Service API methods](./zoe/api/zoe.md).
+[Zoe Service API methods](/zoe/api/zoe.md).
