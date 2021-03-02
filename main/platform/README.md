@@ -14,7 +14,7 @@ it's very important to ensure that one user cannot prevent another
 user's code from executing and that the way in which code is
 interleaved doesn't open up hazards such as reentrancy. SwingSet
 solves that problem by dividing up the execution environment into
-*vats*. A [vat](/distributed-programming.md#vats) is a *unit
+*vats*. A [vat](/guide/js-programming/vats.md) is a *unit
 of synchrony*. This means that within a JavaScript vat, objects and
 functions can communicate with one another synchronously. Between
 vats, objects and functions communicate asynchronously, by design.
