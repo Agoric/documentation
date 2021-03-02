@@ -49,7 +49,7 @@ How to install software that the Agoric SDK depends on.
 7. **[Deploying Smart Contracts](./deploying.md)**: 
   A brief description of the tools and processes for deploying contracts to the chain and
   application code to the application server.
-8. **[JavaScript Distributed Programming Guide](/distributed-programming.md)**: 
+8. **[JavaScript Distributed Programming Guide](/guides/js-programming/)**: 
   We've made some Agoric-specific additions at various layers, including concepts, syntax, 
   and additions to the Agoric library. You should know about and understand these before 
   programming on the Agoric platform.
