@@ -46,7 +46,7 @@ in two ways.
 - From a shell, run `agoric open --repl` This opens the user's Wallet UI and its
   associated REPL. To open only the REPL, run `agoric open --repl only`
 
-![REPL](./assets/REPL.png)
+![REPL](./assets/repl.png)
 
 ## Using the REPL
 
