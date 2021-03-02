@@ -215,7 +215,7 @@ an object reference, and no identity can be guessed and no fake identity will su
 ## Harden
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
-its [section in the JavaScript Distributed Programming Guide](guides/js-programming/ses/ses-guide.md)
+its [section in the JavaScript Distributed Programming Guide](/guides/js-programming/ses/ses-guide.md)
 
 ## IBC
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC
