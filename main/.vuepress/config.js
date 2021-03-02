@@ -138,7 +138,7 @@ module.exports = {
         },
         {
           title: 'Agoric CLI Guide',
-          path: '/getting-started/agoric-cli-guide.html',
+          path: '/guides/agoric-cli/',
           collapsible: false,
           children: [
           ]
@@ -231,6 +231,7 @@ module.exports = {
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',
             '/zoe/api/zoe-helpers'
+            '/zoe/api/price-authority'
           ],
         },
         {
