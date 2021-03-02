@@ -46,3 +46,7 @@ This means that the `priceAuthority` asserts that when `timestamp` according to
 `amountIn` and `amountOut` are ERTP amounts for the `brandIn` and `brandOut` you
 requested.
 
+## API Reference
+
+The Price Authority API reference is a section of the [Zoe API reference](./api/price-authority.md)
+
