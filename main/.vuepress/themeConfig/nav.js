@@ -47,7 +47,7 @@ module.exports = [
       {
         text: 'Agoric CLI Guide',
         ariaLabel: 'Agoric CLI Guide Menu',
-        link: '/getting-started/agoric-cli-guide',
+        link: '/guides/agoric-cli/',
       },
       {
         text: 'Agoric Alpha',
@@ -68,7 +68,7 @@ module.exports = [
       {
         text: 'Agoric CLI',
         ariaLabel: 'Agoric CLI Guide',
-        link: '/getting-started/agoric-cli-guide.md',
+        link: '/guides/agoric-cli/',
       },
       {
         text: 'Agoric Dapps',
@@ -86,7 +86,7 @@ module.exports = [
         link: '/zoe/guide/'
       },
       {
-        text: 'Wallet API',
+        text: 'Wallet Guide and API',
         ariaLabel: 'Wallet API Guide',
         link: '/guides/wallet/'
       },
@@ -98,7 +98,7 @@ module.exports = [
       {
         text: 'JS Distributed Programming',
         ariaLabel: 'JS Distributed Programming',
-        link: '/distributed-programming',
+        link: '/guides/distributed-programming/',
       },
     ],
   },
