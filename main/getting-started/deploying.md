@@ -1,6 +1,6 @@
 # Deploying Smart Contracts
 
-The `agoric deploy` command in the [agoric command line tool](/getting-started/agoric-cli-guide.md#agoric-deploy) 
+The `agoric deploy` command in the [agoric command line tool](/guides/agoric-cli/commands.md#agoric-deploy) 
 supports deploying contracts and off-chain web applications that talk to them. The command 
 has two primary uses:
 
