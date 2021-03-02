@@ -57,7 +57,7 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 - Returns: `{Notifier<Amount>}`
 
 Returns a lossy notifier for changes to this purse's balance. For more details,
-see [Notifiers](/distributed-programming.md#notifiers).
+see [Notifiers](/guides/js-programming/notifiers.md).
 
 ```js
 const notifier = purse.getCurrentAmountNotifier();
