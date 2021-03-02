@@ -64,7 +64,7 @@ How to install software that the Agoric SDK depends on.
 
 When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
 Reference](/zoe/api/)**, **[Wallet Guide and API Reference](/guides/wallet)**,
-and **[Agoric CLI Guide](/getting-started/agoric-cli-guide.md)** for details about 
+and **[Agoric CLI Guide](/guides/agoric-cli/)** for details about 
 their respective commands. 
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
