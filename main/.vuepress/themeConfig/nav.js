@@ -98,7 +98,7 @@ module.exports = [
       {
         text: 'JS Distributed Programming',
         ariaLabel: 'JS Distributed Programming',
-        link: '/guides/distributed-programming/',
+        link: '/guides/js-programming/',
       },
     ],
   },
