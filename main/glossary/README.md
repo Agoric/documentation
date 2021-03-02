@@ -215,7 +215,7 @@ an object reference, and no identity can be guessed and no fake identity will su
 ## Harden
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
-its [section in the JavaScript Distributed Programming Guide](guides/js-programming/ses-guide.md.md)
+its [section in the JavaScript Distributed Programming Guide](guides/js-programming/ses/ses-guide.md)
 
 ## IBC
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC
@@ -430,7 +430,7 @@ passed to `zcf.reallocate()`.
 SES is a standards-track extension to the JavaScript standard. It
 provides a secure platform for executing programs. With SES, you can run code you don't
 completely trust, without being vulnerable to bugs or bad intentions. 
-See the [SES section of the Distributed JavaScript Programming Guide](/guides/js-programming/ses-guide.md) for 
+See the [SES section of the Distributed JavaScript Programming Guide](/guides/js-programming/ses/ses-guide.md) for 
 more details. 
 
 ## Simoleons
