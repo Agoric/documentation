@@ -21,7 +21,7 @@ software](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/READM
 ## Price Authority
 
 To test your contract against a locally-simulated price authority, just follow
-the instructions in [the Price Authority API](/zoe/guide/price-authority.md).
+the instructions in [the Price Authority API](/zoe/api/price-authority.md).
 
 To use the curated on-chain price authority, see `home.priceAuthority`.  For 
 example, to get a quote for selling `30 Testnet.$LINK` in `Testnet.$USD`:
