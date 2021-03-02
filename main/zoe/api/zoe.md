@@ -12,7 +12,7 @@ is referred to via `zoe`, which only supports asynchronous invocation. Operation
 invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies).
 All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences.
 
-For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/distributed-programming.md).
+For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send.md).
 :::
 
 ## E(zoe).getBrands(instance)
