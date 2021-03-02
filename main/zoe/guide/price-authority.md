@@ -48,5 +48,5 @@ requested.
 
 ## API Reference
 
-The Price Authority API reference is a section of the [Zoe API reference](./api/price-authority.md)
+The Price Authority API reference is a section of the [Zoe API reference](/zoe/api/price-authority.md)
 
