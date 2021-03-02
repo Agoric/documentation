@@ -93,7 +93,7 @@ Values are the "how many" part of an `amount`.
 
 Note that numberic values (for fungible assets) are represented as `BigInts` and
 not `Numbers`. So a value of "10" is written "10n" to show it is a `BigInt` 10.
-See [here](/distributed-programming.md#bigint) for more information about `BigInt`.
+See [here](/guides/js-programming/bigint.md) for more information about `BigInt`.
 
 There are no `value`
 methods, but two `amountMath` methods use or return them. 
