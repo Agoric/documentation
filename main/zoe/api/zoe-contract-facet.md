@@ -213,7 +213,7 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
-    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/distributed-programming.md#notifiers).
+    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/guides/js-programming/notifiers.md).
 - `getProposal()`
   - Returns: `{ ProposalRecord }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
