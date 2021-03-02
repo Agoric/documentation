@@ -378,7 +378,7 @@ and an operation to request that the offer exit, as follows:
   - You use a `notifier` wherever some piece of code has changing state that other
     code wants updates on. The updates can be anything the contract wants to publish.
     For example, you could notify about price changes, new currency pools, etc. For
-    more about `notifiers`, see our [Distributed Programming Guide](/distributed-programming.md#notifiers)
+    more about `notifiers`, see our [JavaScript Programming Guide](/guides/js-programming/notifiers.md)
 - `hasExited()`
   - Returns: `{ Promise<Boolean> }`
   - Returns `true` if the seat has exited, `false` if it is still active.
