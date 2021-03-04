@@ -78,7 +78,37 @@ module.exports = {
           children: [
           ]
         },
-        ],      
+        ],  
+      '/guides/': [
+        {
+          title: 'Documentation Guide',
+          path: '/getting-started/',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Agoric CLI',
+          path: '/guides/agoric-cli',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Wallet',
+          path: '/guides/wallet',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Agoric JavaScript Programming',
+          path: '/guides/js-programming',
+          collapsible: false,
+          children: [
+          ]
+        },
+      ]
       '/getting-started/': [
         {
           title: 'Agoric Alpha',
