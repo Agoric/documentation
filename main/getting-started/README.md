@@ -65,7 +65,13 @@ How to install software that the Agoric SDK depends on.
 When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
 Reference](/zoe/api/)**, **[Wallet Guide and API Reference](/guides/wallet)**,
 and **[Agoric CLI Guide](/guides/agoric-cli/)** for details about 
-their respective commands. 
+their respective commands. The Wallet Guide also covers the Wallet UI and 
+general working with the Agoric Wallet.
+
+You can access a REPL (Read-Eval-Print Loop). From the REPL and its `home` object,
+developers can use all the on-chain commands that deployment scripts use to deploy
+contracts and Dapps. In addition to the on-chain commands, you can also run any 
+other JavaScript commands. See the **[REPL Guide](/guides/repl)** for details.
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
 to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
