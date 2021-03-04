@@ -1,8 +1,12 @@
 export default ({ router }) => {
   router.addRoutes([
-    { path: '/main/wallet-api.md', redirect: '/main/guides/wallet/' },
-    { path: '/main/chainlink-integration.md', redirect: '/main/guides/chainlink-integration.md' },
-    { path: '/main/distributed-programming.md', redirect: '/main/guides/js-programming/' },
-    { path: '/main/getting-started/agoric-cli-guide.md', redirect: '/main/guides/agoric-cli/' },
+    { path: '/wallet-api/', redirect: '/guides/wallet/' },
+    { path: '/wallet-api.html', redirect: '/guides/wallet/' },
+    { path: '/chainlink-integration/', redirect: '/guides/chainlink-integration/' },
+    { path: '/chainlink-integration.html', redirect: '/guides/chainlink-integration/' },
+    { path: '/distributed-programming/', redirect: '/guides/js-programming/' },
+    { path: '/distributed-programming.html', redirect: '/guides/js-programming/' },
+    { path: '/getting-started/agoric-cli-guide/', redirect: '/guides/agoric-cli/' },
+    { path: '/getting-started/agoric-cli-guide.html', redirect: '/guides/agoric-cli/' },
   ])
 } 
