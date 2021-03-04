@@ -108,7 +108,7 @@ module.exports = {
           children: [
           ]
         },
-      ]
+      ],
       '/getting-started/': [
         {
           title: 'Agoric Alpha',
