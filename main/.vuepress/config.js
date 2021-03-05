@@ -108,6 +108,20 @@ module.exports = {
           children: [
           ]
         },
+        {
+          title: 'REPL',
+          path: '/repl',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Chainlink Integration',
+          path: '/guides/chainlink-integration.md/',
+          collapsible: false,
+          children: [
+          ]
+       },
       ],
       '/getting-started/': [
         {
