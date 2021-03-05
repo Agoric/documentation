@@ -30,7 +30,7 @@ They are:
 - `-h`, `--help`
   - Display help for the command.
 
-##`agoric init`
+## `agoric init`
 - **Function**: 
   - Creates a new Dapp directory named `<project>` with contents copied from the `dapp-template` argument template.
 - **Required Arguments**:
