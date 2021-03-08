@@ -1,4 +1,4 @@
-import '@agoric/install-ses';
+import '@agoric/zoe/tools/prepare-test-env';
 import test from 'ava';
 
 import { makeIssuerKit } from '@agoric/ertp';
