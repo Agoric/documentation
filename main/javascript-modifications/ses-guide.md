@@ -1,28 +1,31 @@
 # SES Guide
 
-This document is a guide to understanding *SES (Secure ECMAScript)*. In addition
-to showing what you can and cannot do with a program that uses SES, it gives
-background on the reasons why functionality was added or removed from JavaScript to do so.
+This is a guide to understanding *SES (Secure ECMAScript)*. It:
+- Shows what you can and cannot do with a SES-using JavaScript program.
+- Defines what SES is and does.
+- Provides background on why JavaScript functionality was added, removed, or changed.
+- Describes *realms* and *compartments*.
+
 This is intended for initial reading when starting to use or learn about Agoric. For 
-a more limited description of how to use SES without much explanation, see 
-the [SES Reference](./ses-reference.md).
+those knowledgable about or experienced with SES, see the SES Reference](./ses-reference.md)
+for to use SES without much explanation.
 
 ## What is SES
 
-SES (*Secure ECMAScript*) is a JavaScript runtime library for safely running 
-third-party code inside a featherweight compartment. It addresses JavaScript’s 
-lack of security, which is particularly significant in that JavaScript applications
-use and rely on a lot of third-party code (modules, packages, libraries, 
-user-provided code for extensions and plug-ins, etc.). 
-
-SES is a JavaScript dialect that enforces best practices by removing hazardous 
-features such as global mutable state and the odd lack of encapsulation in 
-sloppy mode. It is a safe deterministic subset of "strict mode" JavaScript. This means 
-it does not include any IO objects that provide 
-[*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority). SES 
-also removes non-determinism by modifying a few built-in objects. It also uses
-added functionality to freeze both built-in JavaScript objects and program created
-objects and make them immutable.
+SES (*Secure ECMAScript*):
+- Is a JavaScript runtime library for safely running third-party code. 
+- Addresses JavaScript’s lack of security.
+  - This is particularly significant because JavaScript applications
+    use and rely on third-party code (modules, packages, libraries, 
+    user-provided code for extensions and plug-ins, etc.). 
+- Enforces best practices by removing hazardous features such as global 
+  mutable state and lack of encapsulation in sloppy mode. 
+- Is a safe deterministic subset of "strict mode" JavaScript. 
+- Does not include any IO objects that provide 
+  [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority). 
+- Removes non-determinism by modifying a few built-in objects. 
+- Adds functionality to freeze and make immutable both built-in JavaScript 
+  objects and program created objects and make them immutable.
 
 ## The SES Story
 
@@ -31,12 +34,12 @@ Web pages put JavaScript programs in a *sandbox* that restricts their abilities
 while maximizing utility.
 
 This worked well until web applications started inviting multiple strangers
-into the same sandbox. They continued to depend on a security model where 
-every stranger got their own sandbox.
+into the same sandbox. But they continued to depend on a security model where 
+every stranger had their own sandbox.
 
-Meanwhile, server-side JavaScript applications imbue their sandbox with unbounded
-abilities and run programs written by strangers. Such applications are vulnerable 
-to their dependencies *and* also the rarely reviewed dependencies of their dependencies.
+Meanwhile, server-side JavaScript applications imbued their sandbox with unbounded
+abilities and ran programs written by strangers. They were vulnerable 
+to both their dependencies *and* also the rarely reviewed dependencies of their dependencies.
 
 SES uses a finer grain security model, *Object Capabilities* or *OCaps*. 
 With OCaps, many strangers can collaborate in a single sandbox, without risking them
@@ -62,11 +65,12 @@ JavaScript’s evolution so a program can transform its own environment into
 this safe JavaScript environment.
 
 As of February 2021, SES is making its way through JavaScript standards committees. 
-It is expected to become an official part of JavaScript when the standards process 
+It is expected to become official JavaScript when the standards process 
 is completed. Meanwhile, Agoric provides its own SES *shim* (a library providing
-the needed SES features) for use in writing secure smart contracts in JavaScript 
-(Several Agoric engineers are on the relevant standards committees and are responsible
-for aspects of SES).
+the needed SES features) for writing secure smart contracts in JavaScript. 
+Note that several Agoric engineers are on the relevant standards committees 
+and are responsible for aspects of SES, so our SES should be very close to the
+eventual standards.
 
 ## Installation and importing
 
@@ -75,11 +79,11 @@ what code to get and use SES in one's code**
 
 ## What SES does to JavaScript
 
-As mentioned, SES does not include any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) (which is not “safe”). 
-Nor does it allow non-determinism from built-in JavaScript objects. 
+As mentioned, SES does not include any IO objects providing "unsafe" [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority). 
+It also doesn't allow non-determinism from built-in JavaScript objects. 
 
-As of SES-0.8.0/Fall 2020, [Agoric's SES source code](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js) defines
-a subset of the globals defined by the baseline JavaScript language specification. SES includes the globals:
+As of SES-0.8.0/Fall 2020, [Agoric's SES source code](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js) 
+defines a subset of the globals defined by the baseline JavaScript language specification. SES includes these globals:
 
 - `Object`
 - `Array`
@@ -89,16 +93,14 @@ a subset of the globals defined by the baseline JavaScript language specificatio
 - `Number`
 - `BigInt`
 - `Intl`
-- `Math`
+- `Math` all features except
   - `Math.random()` is disabled (calling it throws an error) as an obvious source of   
      non-determinism.  
-- `Date`
+- `Date` all features except
   - `Date.now()` returns `NaN`
   - `new Date(nonNumber)` or `Date(anything)` return a `Date` that stringifies to `"Invalid Date"`
 
-SES retains the other `Math` and `Date` features, which are purely computational and deterministic.
-
-Much of the `Intl` package, and some locale-specific aspects of other objects (e.g. `Number.prototype.toLocaleString`)
+Much of the `Intl` package, and some other objects' locale-specific aspects (e.g. `Number.prototype.toLocaleString`)
 have results that depend upon which locale is configured. This varies from one process to another. 
 See [`lockdown()`](./lockdown.md) for how those are handled.
 
@@ -117,53 +119,56 @@ shims" in `lockdown.js`.  **tyg todo: Check this out**
 
 ## What does SES remove from standard JavaScript
 
-**tyg todo: Note: I'm not sure how much of this is SES-related and how much is other
-JavaScript/node Agoric differentials.**
-
-Almost all existing JavaScript code was written to run under Node.js or inside a browser, so 
-it's easy to conflate the environment features with JavaScript. itself. For example, you may 
-be surprised that `Buffer` and `require` are Node.js additions and not 
-part of JavaScript. You might equally be surprised that `setTimeout()`, 
-`setInterval()`, `URL`, `atob()`, `btoa()`, TextEncoder, and TextDecoder are additions 
+Almost all existing JavaScript code runs under Node.js or inside a browser, so 
+it's easy to conflate environment features with JavaScript. For example, you may 
+be surprised that `Buffer` and `require` are Node.js additions. Also `setTimeout()`, 
+`setInterval()`, `URL`, `atob()`, `btoa()`, `TextEncoder`, and `TextDecoder` are additions 
 to the programming environment standardized by the web, and are not intrinsic
 to JavaScript.
 
 Most Node.js-specific [global objects](https://nodejs.org/dist/latest-v14.x/docs/api/globals.html) are 
-unavailable including:
+**unavailable** including:
 
 * `queueMicrotask`
+* `URL` and `URLSearchParams`
+* `WebAssembly`
+* `TextEncoder` and `TextDecoder`
+* `global`
+  * Use `globalThis` instead (and remember it is frozen).
+* `process`
+  * No `process.env` to access the process's environment variables.
+  * No `process.argv` for the argument array.
 * `Buffer` (consider using `TypedArray` instead, but see below)
-* `setImmediate`/`clearImmediate`: Not available, but you can generally replace `setImmediate(fn)` 
-  with `Promise.resolve().then(_ => fn())` to defer execution of `fn` until after the current event/callback
-  finishes processing. But be aware it won't run until after all *other* ready Promise callbacks execute. 
+* `setImmediate`/`clearImmediate`
+  * You can generally replace `setImmediate(fn)` 
+    with `Promise.resolve().then(_ => fn())` to defer execution of `fn` until after the current event/callback
+    finishes processing. But it won't run until after all *other* ready Promise callbacks execute. 
 
-  There are two queues: the *IO queue* (accessed by `setImmediate`), and the *Promise queue* (accessed by 
-  Promise resolution). SES code can add to the Promise queue, but needs to be given a 
-  capability to be able to add to the IO queue. Note that the Promise queue is 
-  higher-priority than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
-* `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`): Any notion of time must come from 
-  exchanging messages with external timer services (the SwingSet environment provides a `TimerService` object 
-  to the bootstrap vat, which can share it with other vats)
-* `global`: Is not defined. Use `globalThis` instead (and remember that it is frozen).
-* `process`: Is not available, e.g. no `process.env` to access the process's environment variables, 
-  or `process.argv` for the argument array.
-* `URL` and `URLSearchParams`: Are not available.
-* `WebAssembly`: Is not available.
-* `TextEncoder` and `TextDecoder`: Are not available.
+    There are two queues: the *IO queue* (accessed by `setImmediate`), and the *Promise queue* (accessed by 
+    Promise resolution). SES code can add to the Promise queue, but needs to be given a 
+    capability to be able to add to the IO queue. Note that the Promise queue is 
+    higher-priority than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
+* `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`)
+  * Any notion of time must come from 
+    exchanging messages with external timer services (the SwingSet environment provides a `TimerService` object 
+    to the bootstrap vat, which can share it with other vats)
 
-Browser environments also have a huge list of [other features](https://developer.mozilla.org/en-US/docs/Web/API) 
-presented as names in the global scope (some also added to Node.js). None are available in a 
+None of the huge list of [other Browser environment features](https://developer.mozilla.org/en-US/docs/Web/API) 
+presented as names in the global scope (some also added to Node.js) are available in a 
 SES environment. The most surprising removals include `atob`, `TextEncoder`, and `URL`.
 
 `debugger` is a first-class JavaScript statement, and behaves as expected.
 
 ## What does SES add to standard Javascript
 
-- `console` is available to help with debugging. Since all JavaScript implementations
-  add it, you may be surprised it’s not in the official spec. So leaving it out would cause 
-  too much confusion. Note that `console.log`’s exact behavior is up to the host program; display
-  to the operator is not guaranteed. Use the console for debug information only. 
-  The console is not obliged to write to the POSIX standard output.
+The following anticipate additional proposed standard-track features. If they become standards, 
+future JavaScript environments will include them as global objects. So the current Agoric SES shim 
+makes those global objects available.
+
+- `console` is available for debugging. While not in the official spec, since all implementations
+  add it, leaving it out would cause confusion. Note that `console.log`’s exact 
+  behavior is up to the host program; display to the operator is not guaranteed. Use the 
+  console for debug information only. The console is not obliged to write to the POSIX standard output.
 
 - `lockdown()` and `harden()` both freeze an object’s API surface (enumerable data properties). 
   A hardened object’s properties cannot be changed, only read, so the only way to interact with a 
@@ -171,25 +176,26 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
   thorough. See the individual [`lockdown()`](#lockdown) and [`harden()`](#harden) sections
   below. 
 
-- `Compartment` (a [part of SES](https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment)) is 
+- `[Compartment](https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment)` is 
   a global. Code runs inside a `Compartment` and can create sub-compartments to host other 
   code (with different globals or transforms). Note that these child compartments get `harden()` and `Compartment`.
 
-As SES is on the JavaScript standards track, the above anticipates additional proposed standard-track 
-features. If those features become standards, future JavaScript environments will include them as global 
-objects. So the current SES shim also makes those global objects available.
-
 ## Realms
+
+Agoric deploy scripts and smart contract code run in an *immutable
+realm* with *Compartments* providing just enough authority to create
+useful and secure contracts. But not enough authority to do anything
+unintended or harmful to the participants of the smart contract. 
 
 JavaScript code runs in the context of 
 a [*Realm*](https://www.ecma-international.org/ecma-262/10.0/index.html#sec-code-realms). A 
-realm is the set of *primordials* (objects and functions of the standard library 
+realm is the set of *primordials* (objects and standard library functions
 like `Array.prototype.push`) and a global object. In a web browser, an iframe is a realm. 
 In Node.js, a Node process is a realm.
 
-For historical reasons, the ECMAScript specification requires the *primordials*
-to be mutable (`Array.prototype.push = yourFunction` is valid ECMAScript but not 
-recommended). By using the SES shim and calling `lockdown()`, you can turn the 
+For historical reasons, the ECMAScript specification requires primordials
+be mutable (`Array.prototype.push = yourFunction` is valid ECMAScript but not 
+recommended). By using the Agoric SES shim and calling `lockdown()`, you can turn the 
 current realm into an *immutable realm*; a realm within which the primordials 
 are deeply frozen. 
 
@@ -198,15 +204,10 @@ A Compartment has its own dedicated global object and environment, but
 it inherits the primordials from their parent realm. Components are described
 in detail in the next section. 
 
-Agoric deploy scripts and smart contract code run in an immutable
-realm with Compartments providing just enough authority to create
-useful and secure contracts. But not enough authority to do anything
-unintended or harmful to the participants of the smart contract. 
-
 ## Compartments
 A *compartment* is an execution environment for evaluating a stranger’s code. It has
 its own `globalThis` global object and wholly independent system of 
-modules. Otherwise it shares the same batch of intrinsics such as `Array` with the surrounding 
+modules. Otherwise it shares the same batch of intrinsics such as `Array` with its surrounding 
 compartment. The concept of a compartment implies an initial compartment, 
 the initial execution environment of a realm. After lockdown, all compartments share the same 
 frozen realm. 
@@ -243,8 +244,8 @@ c1.globalThis === c2.globalThis; // false
 c1.globalThis.JSON === c2.globalThis.JSON; // true
 ```
 Every compartment's global scope includes a shallow, specialized copy of the JavaScript
-intrinsics, omitting `Date.now()` and `Math.random()`. These are left out
-since they can be covert communication channels between programs. 
+intrinsics. These omit `Date.now()` and `Math.random()`
+since they can be covert inter-program communication channels. 
 
 However, a compartment may be expressly given access to these objects through
 the compartment constructor's first argument or by assigning them to the 
@@ -254,7 +255,7 @@ const powerfulCompartment = new Compartment({ Math });
 powerfulCompartment.globalThis.Date = Date;
 ```
 
-When a new `Compartment` object is created, you must decide if it supports object-capability security.
+When you create a new `Compartment` object, you must decide if it supports OCaps security.
 If it does, run `harden(compartment.globalThis)` on it before loading any untrusted code into it.
 
 A single compartment can run a JavaScript program in the locked-down SES environment.
@@ -312,65 +313,43 @@ compartment? If so, how?**
 `lockdown()` freezes all JavaScript defined objects accessible to any 
 program in the execution environment. Calling `lockdown()` turns a JavaScript
 system into a SES system, with enforced OCap (object-capability) security. It
-alters the surrounding execution environment, or realm, such that no two 
+alters the surrounding execution environment (realm) such that no two 
 programs running in the same realm can observe or interfere with each other 
 until they have been introduced.
 
-To do this, lockdown() tamper-proofs all of the JavaScript intrinsics to prevent 
+To do this, `lockdown()` tamper-proofs all of the JavaScript intrinsics to prevent 
 prototype pollution. After that, no program can subvert the methods of these objects 
 (preventing some man in the middle attacks). Also, no program can use these mutable
 objects to pass notes to parties that haven't been expressly introduced (preventing 
 some covert communication channels).
 
-For a full explanation of `lockdown()` and its options, please see
+For a full explanation of `lockdown()` and its options, please click
 [here](./lockdown.md).
 
 ## `harden()`
 
+`harden()` is automatically provided by SES. Any code that will run inside a vat or a 
+contract can use harden as a global, without importing anything. The Agoric programming 
+environment defines objects (`mint`, `issuer`, `zcf`, etc.) that shouldn't need hardening 
+as their constructors do that work. You mainly need to harden records, callbacks, and ephemeral objects. 
+
 `harden()` must be called on all objects that will be transferred across a trust boundary 
 The general rule is if you make a new object and give it to someone else (and don't 
 immediately forget it yourself), you should give them `harden(obj)` instead of the raw object. 
+This ensures other objects can only interact with them through their defined method interface, 
+i.e. the functions in the object's API. *CapTP*, our communications layer for passing 
+references to distributed objects, enforces this at vat boundaries. 
 
-After calling lockdown, the harden function ensures that every object in the transitive 
-closure over property and prototype access starting with that object has been frozen by 
-`Object.freeze()`. This means that the object can be passed among programs and none of 
-those programs will be able to tamper with the surface of that object graph. They can 
-only read the surface data and call the surface functions.
+You can send a message to a hardened object. If it's a record, you can access 
+its properties and their values. Being hardened doesn't preclude an object from having 
+access to mutable state (`harden(new Map())` still behaves like a normal mutable `Map`), 
+but it means their methods stay the same and can't be surprisingly changed by someone else.
 
 You have to harden a class before you harden any of its instances; i.e. it takes two separate 
 steps to harden both a class and its instances. Harden a base class before hardening classes 
-that inherit from it. `harden()` does transitive freezing by following the object’s own
+that inherit from it. `harden()` does transitive freezing with `Object.freeze()` by following the object’s own
 properties (as opposed to properties it inherited), and the objects whose own properties refer 
 to them, and so forth.
-
-When you freeze an object via `harden()`, it ensures any external callers 
-can only interact with it through functions in the object’s API. `harden()` 
-is an enhanced transitive version of `Object.freeze()`, which only locks up an 
-object's own properties.
-
-All objects that are transferred across a trust boundary must have their API
-surface frozen, usually by calling `harden()`. This ensures other objects can 
-only interact with them through their defined method interface. *CapTP*, our 
-communications layer for passing references to distributed objects, enforces 
-this at vat boundaries.
-
-The general rule is that if you make a new object and give it to someone else 
-(and don't immediately forget it yourself), you should give them `harden(obj)` 
-instead of the raw object. This prevents someone from adding/deleting the properties
-or prototypes of that object. Being hardened doesn't preclude an object from having 
-access to mutable state (`harden(new Map())` still behaves like a normal mutable `Map`), 
-but it means their methods stay the same and can't be surprisingly changed by someone else
-
-For example, the Agoric programming environment defines objects (`mint`, 
-`issuer`, `zcf`, etc.) that shouldn't need hardening as their constructors
-should do that work. It's mainly records, callbacks, and ephemeral objects 
-that need hardening.
-
-You can send a message to a hardened object. If it's a record, you can access 
-its properties and their values.
-
-`harden()` is automatically provided by SES. Any code that will run inside a vat or a 
-contract can use harden as a global, without importing anything.
 
 Tip: If your text editor/IDE complains about `harden()` not being defined or imported, 
 try adding `/* global harden */` to the top of the file.
@@ -400,14 +379,13 @@ i.e. objects created by programs written in JavaScript.
 ## Library compatibility
 
 Programs running under SES can use `import` or `require()` to import other libraries consisting
-only of JavaScript code, which are compatible with the SES environment. This includes a significant 
-part of the NPM registry.
+only of SES-compatible JavaScript code. This includes a significant part of the NPM registry.
 
 However, many NPM packages use built-in Node.js modules. If used at import time (in their top-level 
 code), SES-enabled code cannot use the package and fails to load at all. If they use the built-in 
-features at runtime, then the package can load. However, it might fail later when a function is 
-invoked that accesses the missing functionality. So some NPM packages are partially compatible; 
-you can use them if you don't invoke certain features.
+features at runtime, then the package can load. However, it might fail later when an invoked function 
+accesses the missing functionality. So some NPM packages are partially compatible; 
+usable if you don't invoke certain features.
 
 The same is true for NPM packages that use missing globals, or attempt to modify frozen primordials.
 
@@ -417,16 +395,16 @@ including potential workarounds.
 ## HTML Comments
 
 JavaScript parsers may not recognize HTML comments within source code, potentially causing different
-behavior on different engines. For safety, the SES shim rejects any source code containing a comment
+behavior on different engines. For safety, the Agoric SES shim rejects any source code containing a comment
 open (`<!--`) or close (`-->`) sequence. However, its filter uses a regular expression, not a full 
 parser. It unnecessarily rejects any source code containing either of the strings `<!--` or `-->`, 
 even if neither marks a comment.
 
 ### Dynamic Import Expressions
 
-One active JavaScript feature proposal would add a "dynamic import" expression: `await import('path')`. 
+One active JavaScript feature proposal adds a "dynamic import" expression: `await import('path')`. 
 If implemented (or if someone decides to be an early adopter and adds it to an engine), and your engine 
-has this, code might be able to bypass the `Compartment`'s module map. For safety, the SES shim already 
+has this, code might be able to bypass the `Compartment`'s module map. For safety, the Agoric SES shim already 
 rejects code that looks like it uses this feature. The regular expression for this pattern can be 
 confused into falsely rejecting legitimate code. For example, the word “import” at the end of a line 
 in a comment, such as:
@@ -443,7 +421,7 @@ sneaky = import
 // tricky comment to obscure function invocation
 (modulename);
 ```
-There are also problems with “import” being near a parenthesis inside a comment. 
+There are also problems when “import” is near a parenthesis inside a comment. 
 
 ### Direct vs. Indirect Eval Expressions
 
@@ -467,7 +445,7 @@ as many or as few authorities as you like.
 
 The most common way to invoke an indirect eval is `(1,eval)(code)`.
 
-The SES shim cannot correctly emulate a direct eval. If it tried, it would perform an indirect eval. 
+The Agoric SES shim cannot correctly emulate a direct eval. If it tried, it would perform an indirect eval. 
 This could be pretty confusing, because the code might not actually use objects from the local scope. 
 You might not notice the problem until some later change altered the behavior.
 
