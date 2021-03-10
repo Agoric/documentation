@@ -23,6 +23,6 @@ The Zoe API is divided into the following sections:
 - [Price Authority](./price-authority.md) -
   Functions related to `priceAuthority` objects that provide a price feed, on-demand
   quotes, and wakeups for various time and price conditions. See the Zoe Guide's 
-  [Price Authority section](./guide/price-authority.md)
+  [Price Authority section](../guide/price-authority.md)
 
 
