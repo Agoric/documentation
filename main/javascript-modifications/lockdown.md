@@ -244,7 +244,8 @@ SES amplifies this and reveals much more information than the normal
 Also, the enhanced virtual `console` has a special relationship with
 error objects and the SES `assert` package. Errors can report 
 more diagnostic information that should be hidden from other objects. See
-the [error README](./src/error/README.md) for an in depth explanation of this
+the [error README](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/error/README.md) 
+for an in depth explanation of this
 relationship between errors, `assert` and the virtual `console`.
 
 `console` often has additional methods beyond its de facto "standards". The
@@ -334,7 +335,8 @@ magic powers of the v8 `Error` constructor&mdash;those consistent with the
 discourse level of the proposed `getStack`. In all cases, the `Error`
 constructor shared by all other compartments is both safe and powerless.
 
-See the [error README](./src/error/README.md) for an in depth explanation of the
+See the [error README](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/error/README.md) 
+for an in depth explanation of the
 relationship between errors, `assert` and the virtual `console`.
 
 ## `stackFiltering` Options
@@ -473,7 +475,7 @@ JavaScript suffers from the so-called
 preventing `lockdown()` from _simply_ hardening all primordials. 
 
 Rather, `lockdown()` converts each of
-[these data properties](src/enablements.js) to an accessor
+[these data properties](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/enablements.js) to an accessor
 property whose getter and setter emulate [a data property without the override
 mistake](https://github.com/tc39/ecma262/pull/1320). For non-reflective code
 the illusion is perfect. But reflective code sees it is an accessor
@@ -495,7 +497,7 @@ Enablements have a further debugging cost. When single stepping *into* code,
 you step into every access to an enabled property. Every read steps into
 the enabling getter. This adds yet more noise to the debugging experience.
 
-[src/enablements.js](src/enablements.js) exports two different
+[src/enablements.js](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/enablements.js) exports two different
 whitelists definining which data properties to convert to enable override by
 assignment, `moderateEnablements` and `minEnablements`.
 
@@ -521,18 +523,18 @@ by our override mitigation.
 <details>
   <summary>Expand for { overrideTaming: 'moderate' } vscode inspector display</summary>
 
-  ![overrideTaming: 'moderate' vscode inspector display](docs/images/override-taming-moderate-inspector.png)
+  ![overrideTaming: 'moderate' vscode inspector display](./assets/override-taming-moderate-inspector.png)
 </details>
 
 <details>
   <summary>Expand for { overrideTaming: 'min' } vscode inspector display</summary>
 
-![overrideTaming: 'min' vscode inspector display](docs/images/override-taming-min-inspector.png)
+![overrideTaming: 'min' vscode inspector display](./assets/override-taming-min-inspector.png)
 </details>
 
 <details>
   <summary>Expand to see the vscode inspector display if enabling all of Object.prototype</summary>
 
-![vscode inspector display if enabling all of Object.prototype](docs/images/override-taming-star-inspector.png)
+![vscode inspector display if enabling all of Object.prototype](./assets/override-taming-star-inspector.png)
 </details>
   
