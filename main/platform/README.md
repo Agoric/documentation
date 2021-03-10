@@ -1,3 +1,6 @@
+---
+sidebar: auto
+---
 # The Agoric Platform
 
 ![agoric stack](./assets/stack.svg)

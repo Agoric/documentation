@@ -1,5 +1,5 @@
 export default ({ router }) => {
-  router.addRoutes([
+  const redirects = [
     { path: '/wallet-api/', redirect: '/guides/wallet/' },
     { path: '/wallet-api.html', redirect: '/guides/wallet/' },
     { path: '/chainlink-integration/', redirect: '/guides/chainlink-integration/' },
@@ -8,5 +8,6 @@ export default ({ router }) => {
     { path: '/distributed-programming.html', redirect: '/guides/js-programming/' },
     { path: '/getting-started/agoric-cli-guide/', redirect: '/guides/agoric-cli/' },
     { path: '/getting-started/agoric-cli-guide.html', redirect: '/guides/agoric-cli/' },
-  ])
+  ];
+  redirects.forEach(config => router.addRoute(config));
 } 

@@ -47,7 +47,6 @@ module.exports = {
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 2,
-    sidebar: 'auto',
     lastUpdated: 'Last Updated', 
     logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
@@ -61,25 +60,7 @@ module.exports = {
     // Internal links: Must have a corresponding folder with a README.md file
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
-    sidebar: {
-      '/glossary/': [
-        {
-          title: 'Glossary',
-          path: '/glossary/',
-          collapsible: false,
-          children: [
-          ]
-        },
-        ],      
-      '/platform/': [
-        {
-          title: 'Platform',
-          path: '/platform/',
-          collapsible: false,
-          children: [
-          ]
-        },
-        ],  
+    sidebar: { 
       '/guides/': [
         {
           title: 'Documentation Guide',
@@ -90,35 +71,35 @@ module.exports = {
         },
         {
           title: 'Agoric CLI',
-          path: '/guides/agoric-cli',
+          path: '/guides/agoric-cli/',
           collapsible: false,
           children: [
           ]
         },
         {
           title: 'Wallet',
-          path: '/guides/wallet',
+          path: '/guides/wallet/',
           collapsible: false,
           children: [
           ]
         },
         {
           title: 'Agoric JavaScript Programming',
-          path: '/guides/js-programming',
+          path: '/guides/js-programming/',
           collapsible: false,
           children: [
           ]
         },
         {
           title: 'REPL',
-          path: '/repl',
+          path: '/repl/',
           collapsible: false,
           children: [
           ]
         },
         {
           title: 'Chainlink Integration',
-          path: '/guides/chainlink-integration.md/',
+          path: '/guides/chainlink-integration.html',
           collapsible: false,
           children: [
           ]
@@ -192,7 +173,7 @@ module.exports = {
       '/ertp/': [
         {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.md',
+          path: '/getting-started/ertp-introduction.html',
           collapsible: false,
           children: [
           ]
