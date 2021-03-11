@@ -98,7 +98,7 @@ module.exports = [
       {
         text: 'REPL',
         ariaLabel: 'REPL',
-        link: '/guides/repl/',
+        link: '/repl/',
       },
 
       {
