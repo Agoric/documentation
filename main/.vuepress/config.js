@@ -74,6 +74,9 @@ module.exports = {
           path: '/guides/agoric-cli/',
           collapsible: false,
           children: [
+       	    '/guides/agoric-cli/',
+            '/guides/agoric-cli/commands',
+            '/guides/agoric-cli/starting-multiuser-dapps',
           ]
         },
         {
@@ -81,6 +84,9 @@ module.exports = {
           path: '/guides/wallet/',
           collapsible: false,
           children: [
+            '/guides/wallet/',
+	          '/guides/wallet/ui',
+	          '/guides/wallet/api',		
           ]
         },
         {
