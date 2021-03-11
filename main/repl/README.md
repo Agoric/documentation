@@ -1,3 +1,6 @@
+---
+sidebar: auto
+---
 # Agoric REPL
 
 **Note**: This page describes the Agoric REPL. For information about the `Node.js` REPL, 
