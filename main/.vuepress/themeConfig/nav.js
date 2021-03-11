@@ -45,7 +45,7 @@ module.exports = [
         link: '/getting-started/intro-zoe',
       },
       {
-        text: 'Agoric CLI Guide',
+        text: 'Agoric CLI Guide and API',
         ariaLabel: 'Agoric CLI Guide Menu',
         link: '/guides/agoric-cli/',
       },
@@ -66,8 +66,8 @@ module.exports = [
         link: '/getting-started/',
       },
       {
-        text: 'Agoric CLI',
-        ariaLabel: 'Agoric CLI Guide',
+        text: 'Agoric CLI Guide and API',
+        ariaLabel: 'Agoric CLI Guide and API',
         link: '/guides/agoric-cli/',
       },
       {
@@ -86,19 +86,25 @@ module.exports = [
         link: '/zoe/guide/'
       },
       {
+        text: 'Agoric JavaScript Programming',
+        ariaLabel: 'Agoric JS Programming',
+        link: '/guides/js-programming/',
+      },
+      {
         text: 'Wallet Guide and API',
-        ariaLabel: 'Wallet API Guide',
+        ariaLabel: 'Wallet API Guide and API',
         link: '/guides/wallet/'
       },
+      {
+        text: 'REPL',
+        ariaLabel: 'REPL',
+        link: '/guides/repl/',
+      },
+
       {
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
         link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
-      },
-      {
-        text: 'JS Distributed Programming',
-        ariaLabel: 'JS Distributed Programming',
-        link: '/guides/js-programming/',
       },
     ],
   },
