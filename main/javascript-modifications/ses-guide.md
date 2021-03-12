@@ -7,14 +7,14 @@ This is a guide to understanding *SES (Secure ECMAScript)*. It:
 - Describes *realms* and *compartments*.
 
 This is intended for initial reading when starting to use or learn about Agoric. For 
-those knowledgable about or experienced with SES, see the SES Reference](./ses-reference.md)
+those knowledgable about or experienced with SES, see the [SES Reference](./ses-reference.md)
 for to use SES without much explanation.
 
 ## What is SES
 
 SES (*Secure ECMAScript*):
 - Is a JavaScript runtime library for safely running third-party code. 
-- Addresses JavaScript’s lack of security.
+- Addresses JavaScript’s lack of internal security.
   - This is particularly significant because JavaScript applications
     use and rely on third-party code (modules, packages, libraries, 
     user-provided code for extensions and plug-ins, etc.). 
