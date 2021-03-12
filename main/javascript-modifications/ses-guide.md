@@ -341,16 +341,12 @@ This ensures other objects can only interact with them through their defined met
 i.e. the functions in the object's API. *CapTP*, our communications layer for passing 
 references to distributed objects, enforces this at vat boundaries. 
 
+Hardening an instance also hardens its class.
+
 You can send a message to a hardened object. If it's a record, you can access 
 its properties and their values. Being hardened doesn't preclude an object from having 
 access to mutable state (`harden(new Map())` still behaves like a normal mutable `Map`), 
 but it means their methods stay the same and can't be surprisingly changed by someone else.
-
-You have to harden a class before you harden any of its instances; i.e. it takes two separate 
-steps to harden both a class and its instances. Harden a base class before hardening classes 
-that inherit from it. `harden()` does transitive freezing with `Object.freeze()` by following the object’s own
-properties (as opposed to properties it inherited), and the objects whose own properties refer 
-to them, and so forth.
 
 > Tip: If your text editor/IDE complains about `harden()` not being defined or imported, 
 > try adding `/* global harden */` to the top of the file.
