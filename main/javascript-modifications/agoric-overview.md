@@ -79,7 +79,7 @@ The vat environment has four significant objects not part of standard JavaScript
   across a trust boundary The general rule is if you make a new object 
   and give it to someone else (and don't immediately forget it yourself), 
   you should give them `harden(obj)` instead of the raw object. Hardening
-  a class also hardens its instances.
+  a class instance also hardens the class.
 
 - `HandledPromise` is also a global. 
   The [`E` wrapper (`E(target).method-name(args)`)](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e) 
