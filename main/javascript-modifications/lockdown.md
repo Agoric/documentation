@@ -373,6 +373,12 @@ However, sometimes bugs might be in that infrastrusture, so that information
 is relevant. With the `'verbose'` setting, the console shows the full raw stack 
 information for each level of the deep stacks.
 
+**tyg todo: I'm not finding a good definition for what the "concise" value does.
+In the sample code, the comment is "Preserve important deep stack info". Does
+this mean it should be something like "The 'concise' value causes stack traces to
+only show the most important distributed computation related values/information.
+[And what sort of things is that?]."?**
+
 Either `stackFiltering` setting is safe. Stack information will
 or will not be available from error objects according to the `errorTaming`
 option and the platform error behavior.
