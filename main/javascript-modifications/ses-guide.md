@@ -352,17 +352,17 @@ that inherit from it. `harden()` does transitive freezing with `Object.freeze()`
 properties (as opposed to properties it inherited), and the objects whose own properties refer 
 to them, and so forth.
 
-+ Tip: If your text editor/IDE complains about `harden()` not being defined or imported, 
-+ try adding `/* global harden */` to the top of the file.
-+
-+ You use `harden()` like this:
-+ ```js
-+ const o = {a: 2};
-+ o.a  = 12;
-+ console.log(o.a); // 12 because o is still mutable
-+ harden(o);
-+ o.a  = 37; // throws a TypeError because o is now hardened
-+ ```
+> Tip: If your text editor/IDE complains about `harden()` not being defined or imported, 
+> try adding `/* global harden */` to the top of the file.
+>
+> You use `harden()` like this:
+> ```js
+> const o = {a: 2};
+> o.a  = 12;
+> console.log(o.a); // 12 because o is still mutable
+> harden(o);
+> o.a  = 37; // throws a TypeError because o is now hardened
+> ```
 ## `lockdown()` and `harden()`
 
 `lockdown()` and `harden()` essentially do the same thing; freeze objects so their 
