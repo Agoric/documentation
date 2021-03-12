@@ -72,19 +72,14 @@ The vat environment has four significant objects not part of standard JavaScript
 -`harden` is a global that freezes an object’s API surface (enumerable data properties). 
   A hardened object’s properties cannot be changed, so the only way to interact 
   with a hardened object is through its methods. `harden()` is similar to `Object.freeze()` 
-  but more powerful. For more details, see [the `harden` package](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/harden/README.md).
+  but more powerful. For more details, 
+  see [the details from the `ses` package](https://github.com/Agoric/SES-shim/blob/master/packages/ses/README.md#harden).
 
   `harden()` should be called on all objects that will be transferred
   across a trust boundary The general rule is if you make a new object 
   and give it to someone else (and don't immediately forget it yourself), 
-  you should give them `harden(obj)` instead of the raw object. 
-
-  You must harden a class before you harden any of its instances; i.e. it 
-  takes two separate steps to harden both a class and its instances. Harden 
-  a base class before hardening classes that inherit from it. `harden()` does 
-  transitive freezing by following the object’s own properties (as opposed to 
-  properties it inherited), and the objects whose own properties refer to 
-  them, and so forth.
+  you should give them `harden(obj)` instead of the raw object. Hardening
+  a class also hardens its instances.
 
 - `HandledPromise` is also a global. 
   The [`E` wrapper (`E(target).method-name(args)`)](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e) 
@@ -134,8 +129,8 @@ into an archive before being loaded into a vat. The bundling tool uses several s
 functions to locate other modules that must be included. These are not a part of SES, but 
 are allowed in module source code, and are translated or removed before execution. 
 
-- `import` and `export` syntax are allowed in ESM-style modules ( preferred over CommonJS). 
-  These are not globals per se, but top-level syntax that defines the module graph.
+- `import` and `export` syntax are allowed in ESM-style modules (preferred over CommonJS). 
+  These are not globals as such, but top-level syntax that defines the module graph.
 - `require`, `module`, `module.exports`, and `exports` are allowed in CommonJS-style modules, 
   and should work as expected. However, new code should be written as ESM modules. They 
   are either consumed by the bundling process, provided (in some form) by the execution 
@@ -230,7 +225,7 @@ change altered the behavior.
 
 To avoid this confusion, the shim uses a regular expression to reject code that 
 looks like it is performing a direct eval. This regexp is not complete (you can 
-trick it into performing a direct eval anyway), but  that’s safe. Our goal is 
+trick it into performing a direct eval anyway), but that’s safe. Our goal is 
 just to guide people away from confusing behaviors early in their development process.
 
 This regexp falsely rejects occurrences inside static strings and comments.
