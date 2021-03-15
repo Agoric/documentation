@@ -51,7 +51,7 @@ Use `sharingService` by:
 Creates and returns a new shared map with the specified name. 
 
 Errors: If you specify an already used name for a shared map, it
-returns "Error: Entry already exists: <name>".
+returns "Error: Entry already exists: &lt;name&gt;".
 
 ```js
 command[1] E(home.sharingService).createSharedMap("MyMap")
