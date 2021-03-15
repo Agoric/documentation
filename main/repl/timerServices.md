@@ -1,3 +1,6 @@
+---
+sidebar: auto 
+---
 # Timer Services 
     
 ## TimerService objects
@@ -25,7 +28,7 @@ the local and chain versions of a method may use different time bases.
 
 Before looking at the timer service methods, we need to cover four related objects.
 
-## `Timestamp` object
+### `Timestamp` object
 
 An `Integer`, an absolute individual stamp returned by a `TimerService`.  Note that different
 timer services may have different interpretations of actual Timestamp values.
