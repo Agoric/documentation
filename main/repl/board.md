@@ -1,3 +1,6 @@
+---
+sidebar: auto 
+---
 # The Agoric Board
 
 ## Introduction
