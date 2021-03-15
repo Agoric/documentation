@@ -1,9 +1,9 @@
 
-## The Wallet UI
+# Wallet UI
 
 From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
 
-### Menu Bar
+## Menu Bar
 
 At the top of the UI is a menu bar with four items.
 
@@ -29,7 +29,7 @@ At the top of the UI is a menu bar with four items.
 As there are only six page components, several of which are repeated on the three pages making up the Wallet UI,
 we will cover the components in detail rather than the pages.
 
-### Purses
+## Purses
 
 ![Purses](./assets/PursesWalletUI.png)
 
@@ -59,7 +59,7 @@ incoming Payments of that Purse's Brand are automatically deposited into it. Doi
 auto-deposit purses for that Brand. Sliding the button to the left, causing it to turn white, means you have
 to manually approve the deposit.
 
-### Dapps
+## Dapps
 
 ![Dapps](./assets/DappsWalletUI.png)
 
@@ -69,7 +69,7 @@ from communicating with the Wallet. Note that like the other entries with an on/
 a Dapp is enabled when the button is slid to the right and turns red, and disabled when slid to the 
 left and turns white.
 
-### Issuers
+## Issuers
 
 ![Issuers](./assets/IssuersWalletUI.png)
 
@@ -89,7 +89,7 @@ If you click the **Import** button at the bottom of the Issuers list, this popup
 You specify a Petname and the Board ID (obtained from a trusted source) of an Issuer, and it's imported
 into the Wallet and can be used to create new empty Purses to store assets of its associated Brand. 
 
-### Contacts
+## Contacts
 
 ![Contacts](./assets/ContactsWalletUI.png)
 
@@ -101,7 +101,7 @@ expanded entry shows the contact's Board ID. If you click on the **Import** butt
 You specify a Petname and the Board ID (obtained from a trusted source) of a Contact, and it's imported
 into the Wallet. 
 
-### Offers
+## Offers
 
 ![Offers](./assets/OffersWalletUI.png)
 
@@ -113,7 +113,7 @@ of an offer. Clicking it opens a popup with the JSON representation of that offe
 
 ![Offer Detail](./assets/OfferDetailWalletUI.png)
 
-### Incoming Payments
+## Incoming Payments
 
 ![Payments](./assets/IncomingPaymentWalletUI.png)
 
