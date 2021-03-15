@@ -104,6 +104,13 @@ module.exports = {
           ]
         },
         {
+          title: 'Dynamic IBC',
+          path: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
           title: 'Chainlink Integration',
           path: '/guides/chainlink-integration.html',
           collapsible: false,
