@@ -47,6 +47,7 @@ module.exports = {
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 2,
+    sidebar: 'auto',
     lastUpdated: 'Last Updated', 
     logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
@@ -61,6 +62,14 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
+      '/wallet-api.html': [
+        {
+          title: 'Wallet API',
+          path: '/wallet-api.html',
+          collapsible: true,
+          children: []
+        },
+      ],
       '/glossary/': [
         {
           title: 'Glossary',

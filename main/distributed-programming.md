@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Agoric JavaScript Programming Extensions
 
 Agoric's platform lets you write secure smart contracts in JavaScript. The platform itself is mainly written in JavaScript. However, we've made several Agoric-specific additions to general JavaScript programming that you should know about and understand before programming on the platform. Some are *concepts*, others are *Agoric library additions*, and some are at the *syntax level*. All changes at the language level are in process to become official standards.

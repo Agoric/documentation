@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # Agoric Wallet
 
 This page documents the *Agoric Wallet*, including its use of *petnames*, its place in the Agoric Platform
