@@ -100,7 +100,11 @@ module.exports = [
         ariaLabel: 'REPL',
         link: '/repl/',
       },
-
+      {
+        text: 'Chainlink Integration',
+        ariaLabel: 'Chainlink Integration',
+        link: '/guides/chainlink-integration',
+      },
       {
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
