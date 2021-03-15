@@ -1,3 +1,6 @@
+---
+sidebar: auto 
+---
 # Price Authority
 
 `PriceAuthority` is an object that mints `PriceQuotes` and handles
