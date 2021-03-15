@@ -1,4 +1,4 @@
-# Wallet API Overview
+# Wallet API
 
 You can interact with a Wallet via the JavaScript *REPL* (*Read-Eval-Print Loop*),
 which is visible at the bottom of the Wallet UI display. 
@@ -21,7 +21,7 @@ There are two objects on which the Wallet API commands work:
   exposed via the iframe/WebSocket bridge that a Dapp UI can use to access the
   wallet.
   
-## Wallet API commandes
+## Wallet API commands
 
 ### `getBridge()`
 - Returns: `{Promise<WalletBridge>}`
