@@ -65,34 +65,53 @@ History[1] {"chainTimerService":[Presence o-50],"sharingService":[Presence o-51]
 ```
 The results of what is entered into the REPL is saved under `history[N]`
 
-Here’s a better formatted list of the `home` objects with brief description of each. The
-link on each object name takes you to a more detailed documentation page for that object.
+The following sections describe the `home` objects developers can use. Click on the
+section header to go to more detailed documentation about that object.
 Several `home` objects are either for internal Agoric use only or have been deprecated. These
-are listed together at the end and external developers should ignore them and not try to use
+are listed together in the final section. External developers should ignore them and not try to use
 them.
 
-- [`wallet`](/guides/wallet/api.md): Holds on-chain digital assets and object capabilities on behalf of the user.
-   The link takes you to the standard non-REPL specific `wallet` API documentation. When calling
-   `wallet` API methods from the REPL, `wallet` must be prefaced by
-   `home.` and use `E()`. For example, `E(home.wallet).getPurses()`   
-- [`chainTimerService`](./timerServices.md): On-chain time authority used to schedule events.
-- [`localTimerService`](./timerServices.md): Local off-chain time authority used to schedule events 
-- [`board`](./board.md): Shared, on-chain location where users can post generally accessible values.
-- [`sharingService`](./sharingService.md): Share on-chain objects with other users without making them
-  available to the general public. In particular, you can share items between vats connected to the 
-  same remote chain.
-- [`ibcport`](./networking.md): IBC implementation that lets vats open and close listening ports, 
-  connect and disconnect to/from remote ports, and send and receive data over those connections.
-- [`zoe`](/zoe/api/zoe.md): Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
-  digital assets and guaranteeing users get either what they want or get a refund of what they escrowed. Even if the
-  contract is buggy or malicious. This link takes you to the standard, non-REPL specific, `zoe` API documentation. When calling
-  any of the `zoe` API methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For example, `E(home.zoe).getFoo()` 
-- [`priceAuthority`](./priceAuthority.md): Get price quotes for pairs of digital assets.
-- [`scratch`](./scratch.md): An off-chain, private, place to store key-value pairs on your ag-solo for later use.
+### [`wallet`](/guides/wallet/api.md)
+Holds on-chain digital assets and object capabilities on behalf of the user.
+The header link takes you to the standard non-REPL specific `wallet` API documentation. When calling
+`wallet` API methods from the REPL, `wallet` must be prefaced by `home.` and use `E()`. For 
+example, `E(home.wallet).getPurses()`   
 
-Click on each object link above to go to its documentation.
+### [`chainTimerService`](./timerServices.md)
+On-chain time authority used to schedule events.
 
-The following `home` objects should be ignored.
+### [`localTimerService`](./timerServices.md)
+Local off-chain time authority used to schedule events. 
+
+### [`board`](./board.md)
+Shared on-chain location where users can post generally accessible values.
+
+### [`sharingService`](./sharingService.md)
+Share on-chain objects with other users without making them
+available to the general public. In particular, you can share 
+items between vats connected to the same remote chain.
+
+### [`ibcport`](./networking.md)
+IBC implementation that lets vats open and close listening ports, 
+connect and disconnect to/from remote ports, and send and receive 
+data over those connections.
+
+### [`zoe`](/zoe/api/zoe.md)
+Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
+digital assets and guaranteeing users get either what they want or get a refund of what 
+they escrowed. Even if the contract is buggy or malicious. The header link takes you to the 
+standard, non-REPL specific, `zoe` API documentation. When calling any of the `zoe` API 
+methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For 
+example, `E(home.zoe).getFoo()` 
+
+### [`priceAuthority`](./priceAuthority.md)
+Get price quotes for pairs of digital assets.
+
+### [`scratch`](./scratch.md)
+An off-chain, private, place to store key-value pairs on your ag-solo for later use.
+
+### Deprecated and Internal-only Objects
+
 - `contractHost`: Replaced by the `spawner` object.
 - `faucet`: Internal for chain setup.
 - `http`: `api/deploy.js` uses this to install new HTTP and WebSocket handlers in an
