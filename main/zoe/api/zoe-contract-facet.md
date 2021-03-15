@@ -242,7 +242,9 @@ to manipulate the offer. The queries and operations are as follows:
     the key is a keyword such as `Asset` or `Price` applicable to the
     contract. The value is an `amount` with its `value` and `brand`.
 
-    `Allocations` represent the `amounts` to be paid out to each `seat` on exit.
+    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. (After
+    `exit()` has been called, the final allocation balances, which were transferred to
+	payouts, continue to be reported.)
     Normal reasons for exiting are the user requesting to exit or the contract
     explicitly choosing to close out the `seat`. The guarantees also hold if the contract
     encounters an error or misbehaves. There are several methods for finding out
