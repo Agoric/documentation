@@ -1,3 +1,6 @@
+---
+sidebar: auto 
+---
 # Sharing Service
 
 The `sharingService` object  and package are not part of the general
