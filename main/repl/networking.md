@@ -1,3 +1,6 @@
+---
+sidebar: auto 
+---
 # Network API
 
 Suitably-empowered code inside a vat can access a "network API" that works 
