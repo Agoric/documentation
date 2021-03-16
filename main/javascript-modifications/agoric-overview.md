@@ -76,7 +76,7 @@ The vat environment has four significant objects not part of standard JavaScript
   see [the details from the `ses` package](https://github.com/Agoric/SES-shim/blob/master/packages/ses/README.md#harden).
 
   `harden()` should be called on all objects that will be transferred
-  across a trust boundary The general rule is if you make a new object 
+  across a trust boundary. The general rule is if you make a new object 
   and give it to someone else (and don't immediately forget it yourself), 
   you should give them `harden(obj)` instead of the raw object. Hardening
   a class instance also hardens the class.
