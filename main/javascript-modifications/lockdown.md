@@ -298,8 +298,7 @@ lockdown({ errorTaming: 'unsafe' }); // Stacks also available by errorInstance.s
 ## Purpose
 
 The `errorTaming` default `'safe'` setting makes the stack trace inaccessible
-from error instances alone. It does this on v8 (Chrome, Brave, Node). 
-It will also do so on SpiderMonkey (Firefox). **tyg todo: Does this mean it does this now? If not, then what's the ETA?**
+from error instances alone. It does this on v8 (Chrome, Brave, Node) and SpiderMonkey (Firefox). 
 Note that it is **not** hidden on other engines, leaving an information
 leak available. It reveals information only as a powerless
 string. It threatens [confidentiality but not integrity](https://agoric.com/taxonomy-of-security-issues/).
@@ -359,7 +358,7 @@ obscure places.
 
 Many JavaScript engines show voluminous error stacks, containing many stack 
 frames of infrastructure functions which are usually irrelevant for bug diagnosis.
-The SES-shim's`console`, with `consoleTaming` set to `'safe'`, is even more
+The SES-shim's `console`, with `consoleTaming` set to `'safe'`, is even more
 voluminous. It displays "deep stack" traces, tracing back through the
 [eventually sent messages](https://github.com/tc39/proposal-eventual-send)
 from other turns of the event loop.
@@ -369,15 +368,12 @@ computation. When possible, the SES-shim filters and transforms the shown stack
 trace information, removing artifacts from low level infrastructure.
 Currently, this only works on v8. 
 
-However, sometimes bugs might be in that infrastrusture, so that information
-is relevant. With the `'verbose'` setting, the console shows the full raw stack 
-information for each level of the deep stacks.
-
-**tyg todo: I'm not finding a good definition for what the "concise" value does.
-In the sample code, the comment is "Preserve important deep stack info". Does
-this mean it should be something like "The 'concise' value causes stack traces to
-only show the most important distributed computation related values/information.
-[And what sort of things is that?]."?**
+The 'concise' vs 'verbose' settings are about trying to reduce the noise appearing 
+on the console's reported stack traces. 
+The default `'concise'` setting reduces the noise. But it does so at the risk of 
+throwing out the signal you were really looking for. Sometimes bugs might be in 
+that infrastrusture, so that information is relevant. With the `'verbose'` setting, 
+the console shows the full raw stack information for each level of the deep stacks.
 
 Either `stackFiltering` setting is safe. Stack information will
 or will not be available from error objects according to the `errorTaming`
