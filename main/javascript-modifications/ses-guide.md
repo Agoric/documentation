@@ -114,8 +114,7 @@ This would violate object-capability discipline; objects may only communicate th
 Both frozen primordials and a frozen `globalThis` have problems with a few JavaScript 
 libraries that add new features to built-in objects (shims/polyfills). These
 libraries stretch best practices' boundaries by adding new features to built-in 
-objects in a way SES Compartments don't allow. To use these with SES, see "vetted 
-shims" in `lockdown.js`.  **tyg todo: Check this out**
+objects in a way SES Compartments don't allow. 
 
 ## What does SES remove from standard JavaScript
 
@@ -224,11 +223,24 @@ c.evaluate(`
   print('Hello! Hello?');
 `);
 ```
-This new compartment has a different global object than the start compartment **tyg todo: Not sure what "start compartment"
-means? The initial compartment? One from the Zoe start() method?** . The 
-global object is initially mutable. Locking down the realm hardened the objects in 
+This new compartment has a different global object than the start compartment. We 
+posit that all JavaScript executes in a realm and compartment. Every realm has 
+distinct intrinsics, whereas every compartment shares intrinsics. The initial 
+realm and compartment are not constructed with `new Realm()` or `new Compartment()` but
+that’s invisible to the code running; they could just as well be running within 
+a constructed realm or compartment. 
+
+We call the one compartment in a realm that was not expressly constructed the start 
+compartment. The start compartment receives some ambient authorities from the host, 
+often access to timers and IO that are denied to other compartments. Running lockdown 
+does not erase these powerful objects, but puts the program running in the start 
+compartment on a footing where it is possible to carefully delegate powers to child 
+compartments.
+
+The global object is initially mutable. Locking down the realm hardened the objects in 
 global scope. After lockdown, no compartment can tamper with these intrinsics and 
 undeniable objects. Many of these are identical in the new compartment.
+
 ```js
 const c = new Compartment();
 c.globalThis === globalThis; // false
@@ -260,17 +272,24 @@ If it does, run `harden(compartment.globalThis)` on it before loading any untrus
 
 A single compartment can run a JavaScript program in the locked-down SES environment.
 However, most interesting programs have multiple modules. So, each compartment also has
-its own module system. The next SES release will include support for ECMAScript modules,
-**tyg todo: Has this happened already? If not, is there an ETA?**
+its own module system. SES version 0.8.0 adds support for ECMAScript modules,
 a relatively new system supported by many browsers, and officially released in Node.js 14.
 
 Compartments can be linked, so one compartment can export a module that another compartment
 imports. Each compartment may have its own rules for how to resolve import specifiers and 
-how to locate and retrieve modules. In this example, we use the compartment constructor to 
+how to locate and retrieve modules. In the following example, we use the compartment constructor to 
 create two compartments: one for the application and another for its dependency.
 
-**tyg todo: Will people understand this code or do we need to explain any/all methods in it
-in more detail**
+The `resolveHook` is synchronous and determines how to compute the full module specifier 
+for a partially resolved module specifier in ESM source text, like `import "./even.js"` as 
+it appears in `./math/odd.js` corresponds to `./math/even.js` in a Node.js program.
+
+The `importHook` is asynchronous and responsible for for locating, retrieving, and parsing 
+modules. Retrieving is getting the source text from the web, archive, or database based on 
+its location. Converting a module specifier to a location is an internal concern of 
+the `importHook` and the particular storage medium for the module texts, but should generally 
+be a URL and may appear in stack traces. The `importHook` may use the `ModuleStaticRecord` 
+constructor to create a reusable, parsed representation of the module text.
 
 ```js
 const dependency = new Compartment({}, {}, {
