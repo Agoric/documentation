@@ -198,17 +198,18 @@ and are affected by `localeTaming`:
 - `localeCompare`
 
 ### Background
+All "locale method" behavior varies depending on the user's locale and can change while 
+a program is running. This breaks determinism since a program run in one compartment may have
+a different result in another compartment or at another time. Also, revealing the user's locale  
+helps unscrupulous programs to track and even identify the user.
 
-All of the "locale methods" have, by design, global behavior not fully determined by the
-JavaScript spec. Their behavior varies with location and culture. 
+This behavior might be acceptable if governed on a per-compartment basis ("virtualized"). 
+But since these methods appear on the prototype of shared intrinsic objects like the `String`
+prototype, there is no safe alternative design.
 
-However, by placing this information of shared primordial prototypes, **(tyg todo: I'm not parsing the
-previous phrase. What does "placing this information of shared prototypes" mean, or is there a typo
-or missing text in there?)** 
-it cannot differ per Comparment. So one Compartment cannot virtualize the locale for code
-running in another Compartment. Worse, on some engines the methods' behavior may change at runtime as 
-the machine is "moved" between different locales, i.e., if the operating system's locale is
-reconfigured while JavaScript code is running.
+Instead, the hosting program can reveal the locale to all compartments by setting 
+`localeTaming` to `unsafe`, or inject a `locale` object into selected compartments 
+with the powers of these methods.
 
 Aside from fingerprinting, the risk that this slow non-determinism opens a
 [communications channel](https://agoric.com/taxonomy-of-security-issues/)
