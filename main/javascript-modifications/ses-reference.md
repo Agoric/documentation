@@ -35,12 +35,13 @@ SES adds the following to JavaScript or changes them significantly:
 that haven't been expressly introduced (preventing some covert communication channels).
 
 Lockdown *freezes* all JavaScript defined objects accessible to any program in the realm. The frozen 
-accessible objects include but are not limited to: **tyg todo: Is there a short English description for
-the 2nd-4th items here?**
+accessible objects include but are not limited to: 
 - `globalThis`
-- `[].__proto__`
-- `{}.__proto__`
-- `(() => {}).__proto__ (async () => {}).__proto__`
+- `[].__proto__` the array prototype, equivalent to `Array.prototype` in a pristine JavaScript environment.
+- `{}.__proto__` the `Object.prototype` 
+- `(() => {}).__proto__` the `Function.prototype`
+- `(async () => {}).__proto__` the prototype of all asynchronous functions, and has no alias 
+   in the global scope of a pristine JavaScript environment.
 - The properties of any accessible object
 
 `lockdown()` also *tames* some objects, such as:
@@ -256,15 +257,14 @@ lockdown({ stackFiltering: 'verbose' }); // Console shows full deep stacks
 
 ## `overrideTaming` Options
 
-**tyg todo: Honestly not fond of this. If you can do a better job of giving a very brief
-summary of what the settings just do without having to explain a lot of background, please
-do.**
-
 The `overrideTaming` option trades off better code
 compatibility vs better tool compatibility.
 
-The default `'moderate'` option is intended to
-be fairly minimal. We expand it when we
+When starting a project, we recommend using the non-default `'min'` option to make
+debugging more plesant. You may need to reset it to the `'moderate'` default if
+third-party shimming code interferes with `lockdown()`. 
+
+`'moderate'` option is intended to be fairly minimal. Expand it when you
 encounter code which should run under SES but can't due to
 the [override mistake](https://web.archive.org/web/20141230041441/http://wiki.ecmascript.org/doku.php?id=strawman:fixing_override_mistake),
 
