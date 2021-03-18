@@ -1,6 +1,6 @@
 // @ts-check
 
-import '@agoric/install-ses';
+import '@agoric/zoe/tools/prepare-test-env';
 import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
