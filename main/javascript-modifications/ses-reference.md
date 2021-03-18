@@ -9,9 +9,9 @@ comprehensive [SES Guide](./ses-guide.md).
 
 ## Using SES with your code
 
-The SES shim transforsm ordinary JavaScript environments into SES environments.
+The SES shim transforms ordinary JavaScript environments into SES environments.
 
-On Node.js you can import or require ses in either CommonJS or ECMAScript modules, then call `lockdow()`n. This is a *shim*. It mutates the environment in place so any code running after the shim can assume it’s running in a SES environment. This includes the globals `lockdown()`, `harden()`, `Compartment`, and so on. For example:
+On Node.js you can import or require `ses` in either CommonJS or ECMAScript modules, then call `lockdown()`. This is a *shim*. It mutates the environment in place so any code running after the shim can assume it’s running in a SES environment. This includes the globals `lockdown()`, `harden()`, `Compartment`, and so on. For example:
 ```js
 require("ses");
 lockdown();
@@ -96,7 +96,7 @@ their methods. Their differences are what objects you use them on, and when you 
 
 `lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials* 
 (implicitly shared global objects) and enables `harden()`. Calling `harden()` 
-before `lockdown()` excutes throws an error.
+before `lockdown()` executes throws an error.
 
 `lockdown()` works on objects created by the JavaScript language itself as part of 
 its definition. Use `harden()` to freeze objects created by your JavaScript code 
@@ -120,7 +120,7 @@ and can evaluate its risks.
 
 ### Options quick reference
 
-This section provides a quick usage reference for lockdown's options, their possible
+This section provides a quick usage reference for `lockdown()`'s options, their possible
 values, and their usage. Each is described in more detail in their individual sections
 below.
 
@@ -246,7 +246,7 @@ the `'unsafe'` setting preserves `err.stack`'s filtered stack information.
 
 `errorTaming` does not affect the `Error` constructor's safety. 
 After calling `lockdown`, the tamed `Error` constructor in the
-start compartment follows ocap rules. Under v8 it emulates most of the
+start compartment follows OCap rules. Under v8 it emulates most of the
 magic powers of the v8 `Error` constructor&mdash;those consistent with the
 discourse level of the proposed `getStack`. In all cases, the `Error`
 constructor shared by all other compartments is both safe and powerless.
@@ -293,7 +293,7 @@ The `overrideTaming` option trades off better code
 compatibility vs better tool compatibility.
 
 When starting a project, we recommend using the non-default `'min'` option to make
-debugging more plesant. You may need to reset it to the `'moderate'` default if
+debugging more pleasant. You may need to reset it to the `'moderate'` default if
 third-party shimming code interferes with `lockdown()`. 
 
 `'moderate'` option is intended to be fairly minimal. Expand it when you
