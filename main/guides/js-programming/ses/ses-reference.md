@@ -5,8 +5,6 @@ It is very much a "how to do something" document, with little explanation about 
 how something was implemented or other background information. For that, see the more
 comprehensive [SES Guide](./ses-guide.md).
 
-## Installing SES in your code
-
 ## Using SES with your code
 
 The SES shim transforms ordinary JavaScript environments into SES environments.
