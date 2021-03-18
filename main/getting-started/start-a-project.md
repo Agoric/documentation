@@ -67,7 +67,10 @@ Cycle](/getting-started/development-cycle.md)
   <tr>
     <td>4</td>
     <td><code>agoric install</code></td>
-    <td>Install JavaScript dependencies, which may take a while.</td>
+    <td>Install JavaScript dependencies, which may take a while.<br>
+        Note: When on a Mac, you must first install 
+        <a href="https://apps.apple.com/us/app/xcode/id497799835">Xcode</a>. 
+    </td>
   </tr>
   <tr>
     <td>5</td>

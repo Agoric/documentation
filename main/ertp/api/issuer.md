@@ -31,7 +31,7 @@ The optional `amountMathKind` specifies the kind of math to use with the digital
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
 polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ERTP` 
 instead of using strings. 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative integers). Default value.
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
 - `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` values are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
 
@@ -46,13 +46,13 @@ makeIssuerKit('kitties', MathKind.SET);
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand, amountMath: quatloosAmountMath } = 
       makeIssuerKit('quatloos');
 // This is merely an amount, describing assets.
-const quatloos2 = quatloosAmountMath.make(2);
+const quatloos2 = quatloosAmountMath.make(2n);
 
 const { mint: titleMint, issuer: titleIssuer amountMath: titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.STRING_SET);
 // These are merely amounts describing digital assets, not minting assets.
-const cornerProperty = titleLocalAmountMath.make(harden['1292826']);
-const adjacentProperty = titleLocalAmountMath.make(harden['1028393']);
-const combinedProperty = titleLocalAmountMath.make(harden['1292826', '1028393']);
+const cornerProperty = titleLocalAmountMath.make(harden['1292826n']);
+const adjacentProperty = titleLocalAmountMath.make(harden['1028393n']);
+const combinedProperty = titleLocalAmountMath.make(harden['1292826n', '1028393n']);
 ```
 
 ## issuer.getAllegedName()
@@ -87,7 +87,7 @@ Get the kind of this `issuer`'s `amountMath`. It returns one of
 The `amountMathKind` value specifies which of three kinds an `amountMath` is,
 and what kind of values it is used on. Each kind implements all of the same set 
 of API methods (i.e. `amountMath` methods are polymorphic). 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative integers). Default value.
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
 - `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` values are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
 
@@ -107,7 +107,7 @@ the `payment`'s `brand`  and tell us how much it contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
-const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
+const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100n));
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
 
@@ -153,7 +153,7 @@ If `payment` is a `promise` for a `payment`, the operation proceeds after the
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint } = 
       makeIssuerKit('quatloos');     
-const amountToBurn = quatloosAmountMath.make(10);
+const amountToBurn = quatloosAmountMath.make(10n);
 const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
 // burntAmount should equal 10 Quatloos
@@ -181,7 +181,7 @@ it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const amountExpectedToTransfer = quatloosAmountMath.make(2);
+const amountExpectedToTransfer = quatloosAmountMath.make(2n);
 const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
 const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
@@ -209,7 +209,7 @@ const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
 // create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(quatloosMint.mintPayment(quatloosAmountMath.make(1)));
+  payments.push(quatloosMint.mintPayment(quatloosAmountMath.make(1n)));
 }
 
 // combinedPayment equals 100
@@ -220,7 +220,7 @@ const combinedPayment = quatloosIssuer.combine(payments);
 
 ```js
 const { mint: otherMint, issuer: otherIssuer } = makeIssuerKit('other');
-const otherPayment = otherMint.mintPayment(otherAmountMath.make(10));
+const otherPayment = otherMint.mintPayment(otherAmountMath.make(10n));
 payments.push(otherPayment); // using the payments array from the above code
 
 // throws error
@@ -244,9 +244,9 @@ it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20));
+const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20n));
 // After the split, paymentA has 5 quatloos and paymentB has 15.
-const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloosAmountMath.make(5));
+const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloosAmountMath.make(5n));
 ```
 
 ## issuer.splitMany(payment, amountArray)
@@ -263,19 +263,19 @@ of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer} = makeIssuerKit('quatloos');
-const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100));
-const goodAmounts = Array(10).fill(quatloosAmountMath.make(10));
+const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100n));
+const goodAmounts = Array(10).fill(quatloosAmountMath.make(10n));
 
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
-// Set original amount to 1000
-const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000));
+// Set original amount to 1000n
+const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000n));
 
-// Total amounts in badAmounts equal 20, when it should equal 1000
-const badAmounts = Array(2).fill(quatloosAmountMath.make(10));
+// Total amounts in badAmounts equal 20n, when it should equal 1000n
+const badAmounts = Array(2).fill(quatloosAmountMath.make(10n));
 
-// 20 does not equal 1000, so throws error
+// 20n does not equal 1000n, so throws error
 quatloosIssuer.splitMany(payment, badAmounts);
 ```
 

@@ -108,7 +108,7 @@ const threeMoola = moolaAmountMath.make(3);
 const aliceProposal = harden({
   give: { UnderlyingAsset: threeMoola },
   want: { StrikePrice: simoleanAmountMath.make(7) },
-  exit: { afterDeadline: { deadline: 1599856578, timer: chainTimer } },
+  exit: { afterDeadline: { deadline: 1599856578n, timer: chainTimer } },
 });
 
 const alicePayment = { UnderlyingAsset: aliceMoolaPurse.withdraw(threeMoola) };

@@ -19,7 +19,7 @@ a `brand` and a `value`. While `amountMath.make()` is recommended for proper obj
 - **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
 - **Value**: How much/many of the asset. Fungible values are natural
-numbers. Non-fungible values may be represented as strings naming a
+numbers represented as BigInts. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
 issue (e.g., a theatre ticket's date, time, row and seat positions).
 
@@ -89,7 +89,13 @@ return a `brand`.
 
 ![Value methods](./assets/value.svg) 
 
-Values are the "how many" part of an `amount`. There are no `value`
+Values are the "how many" part of an `amount`. 
+
+Note that numberic values (for fungible assets) are represented as `BigInts` and
+not `Numbers`. So a value of "10" is written "10n" to show it is a `BigInt` 10.
+See [here](/distributed-programming.md#bigint) for more information about `BigInt`.
+
+There are no `value`
 methods, but two `amountMath` methods use or return them. 
 - [`amountMath.getValue(amount)`](../api/amount-math.md#amountmath-getvalue-amount)
   - Return the `amount` argument's `value`

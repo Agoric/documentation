@@ -1,8 +1,16 @@
+---
+sidebar: auto
+---
+
 # Agoric JavaScript Programming Extensions
 
 Agoric's platform lets you write secure smart contracts in JavaScript. The platform itself is mainly written in JavaScript. However, we've made several Agoric-specific additions to general JavaScript programming that you should know about and understand before programming on the platform. Some are *concepts*, others are *Agoric library additions*, and some are at the *syntax level*. All changes at the language level are in process to become official standards.
 
 Extensions covered in this document are:
+- **[`BigInt`](#bigint)**: JavaScript's `Number` primitive only represents
+  numbers up to 2<sup>53</sup> - 1. `BigInt` is a built-in object that can be used for
+  arbitrarily large integers. Agoric uses `BigInts` for times and amount `values`.
+
 - **[Vats](#vats)**: Objects and functions in the same JavaScript vat can
   communicate synchronously. Communication with objects outside the
   vat can only be done asynchronously. 
@@ -32,6 +40,46 @@ using `E` (`E(remoteObj).myMethod()`), or the "tildot" operator `remoteObj~.myMe
 - **[Notifiers](#notifiers):** The Agoric platform uses Notifiers to distribute state change
 updates. Notifiers rely on promises to deliver a stream of messages as a publish-subscribe system
 might, without requiring explicit management of lists of subscribers.
+
+## `BigInt`
+
+JavaScript's `Number` primitive only represents numbers up to 2<sup>53</sup> - 1. `BigInt` is 
+a built-in object that can be used for arbitrarily large integers. Agoric uses `BigInts` for times 
+and amount `values`.
+
+You create a `BigInt` by appending `n` to an integer. For example, `10n` is a BigInt equal to
+the `Number` `10`. You can also call the method `BigInt()`.
+```js
+const previouslyMaxSafeInteger = 9007199254740991n
+
+const alsoHuge = BigInt(9007199254740991)
+// alsoHuge has the value 9007199254740991n
+
+const hugeString = BigInt("9007199254740991")
+// hugeString has the value 9007199254740991n
+```
+
+`BigInt` cannot be used with the `Math` object's methods. It cannot be mixed with `Numbers` in operations; 
+they must be coerced to the same type. Coercing a `BigInt` to a `Number` may lose precision.
+
+`typeof` returns `'bigint'` for `BigInts`. When wrapped in an `Object`, a `BigInt` is a normal "object" type.
+
+```js
+typeof 1n === 'bigint'           // true
+typeof BigInt('1') === 'bigint'  // true
+typeof Object(1n) === 'object'  // true
+```
+
+Note that JSON does not serialize `BigInt` values by default. You must first implement your
+own `toJSON()` method. Otherwise `JSON.stringify()` will raise a `TypeError`.
+```js
+BigInt.prototype.toJSON = function() { return this.toString()  }
+// Instead of throwing, JSON.stringify now produces a string like this:
+
+JSON.stringify(BigInt(1))
+// '"1"'
+```
+For full reference information about `BigInt`, go [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt).
 
 ## Vats
 

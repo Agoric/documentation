@@ -103,8 +103,8 @@ quatloosPurse.deposit(payout.Asset);
 
 For example:
 ```js
-const quatloos5 = quatloosAmountMath.make(5);
-const quatloos9 = quatloosAmountMath.make(9);
+const quatloos5 = quatloosAmountMath.make(5n);
+const quatloos9 = quatloosAmountMath.make(9n);
 const myAmountKeywordRecord =
 {
   Asset: quatloos5,
@@ -231,7 +231,9 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns: `{ Amount }`
   - Returns the `amount` from the part of the `allocation` that matches the
     `keyword` and `brand`. If the `keyword` is not in the `allocation`, it
-    returns an empty `amount` of the `brand` argument.
+    returns an empty `amount` of the `brand` argument. (After
+    `exit()` has been called, it continues to report the final allocation balance, 
+    which was transferred to a payout.)
 
     This is similar to the next method, `getCurrentAllocation()`. `getAmountAllocated()`
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
@@ -242,7 +244,9 @@ to manipulate the offer. The queries and operations are as follows:
     the key is a keyword such as `Asset` or `Price` applicable to the
     contract. The value is an `amount` with its `value` and `brand`.
 
-    `Allocations` represent the `amounts` to be paid out to each `seat` on exit.
+    `Allocations` represent the `amounts` to be paid out to each `seat` on exit. (After
+    `exit()` has been called, the final allocation balances, which were transferred to
+    payouts, continue to be reported.)
     Normal reasons for exiting are the user requesting to exit or the contract
     explicitly choosing to close out the `seat`. The guarantees also hold if the contract
     encounters an error or misbehaves. There are several methods for finding out
@@ -255,8 +259,8 @@ to manipulate the offer. The queries and operations are as follows:
     An `Allocation` example:
     - ```js
       {
-        Asset: quatloosAmountMath.make(5),
-        Price: moolaAmountMath.make(9)
+        Asset: quatloosAmountMath.make(5n),
+        Price: moolaAmountMath.make(9n)
       }
       ```
  - `exit(completion)`

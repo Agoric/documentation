@@ -1,4 +1,4 @@
-import '@agoric/install-ses';
+import '@agoric/zoe/tools/prepare-test-env';
 import test from 'ava';
 
 // #region import
@@ -28,7 +28,7 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   t.truthy(quatloosIssuer);
   t.truthy(quatloosMint);
   t.truthy(quatloosBrand);
-  t.deepEqual(quatloos2, { brand: quatloosBrand, value: 2 });
+  t.deepEqual(quatloos2, { brand: quatloosBrand, value: 2n });
   t.truthy(titleMint);
   t.truthy(titleIssuer);
   t.truthy(titleAmountMath);
@@ -71,7 +71,7 @@ test('ertp guide issuers and mints makeEmptyPurse', async t => {
   // #endregion makeEmptyPurse
   t.deepEqual(await quatloosPurse.getCurrentAmount(), {
     brand: quatloosIssuer.getBrand(),
-    value: 0,
+    value: 0n,
   });
 });
 
@@ -123,7 +123,7 @@ test('ertp guide issuers and mints payment methods', async t => {
 
   t.deepEqual(await quatloosIssuer.getAmountOf(combinedPayment), {
     brand: quatloosBrand,
-    value: 100,
+    value: 100n,
   });
 
   // #region split
@@ -168,7 +168,7 @@ test('ertp guide issuers and mints payment methods', async t => {
 
   t.is(arrayOfNewPayments.length, 10);
   t.deepEqual(await quatloosIssuer.getAmountOf(arrayOfNewPayments[0]), {
-    value: 10,
+    value: 10n,
     brand: quatloosBrand,
   });
 

@@ -103,7 +103,7 @@ convey no underlying value. They have two parts:
 - **Brand**: An unforgeable object identity for the digital asset's kind,
   such as an object that represents Quatloos.
 - **Value**: How much/many of the asset. Fungible `values` are natural
-  numbers. Non-fungible `values` are strings or objects representing
+  numbers and represented as `BigInts`. Non-fungible `values` are strings or objects representing
   attributes of the asset (say, a theater ticket's row and seat positions).
 
 Note: *fungible* means any item in a set can be used. For example, for 

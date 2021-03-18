@@ -73,7 +73,8 @@ requested.
 - `amountIn`: `{ Amount }`
 - `brandOut`: `{ Brand }`
 - Returns: `{ Promise<PriceQuote> }`
-- Resolves after `deadline` passes on the `priceAuthority`’s `timerService` with the price quote of `amountIn` at that time. 
+- Resolves after `deadline` passes on the `priceAuthority`’s `timerService` with the price 
+  quote of `amountIn` at that time. Note that `deadline`'s value is a `BigInt`.
 
 ### quoteGiven(amountIn, brandOut)
 - `amountIn: `{ Amount }`

@@ -1,13 +1,13 @@
 // @ts-check
 
-import '@agoric/install-ses';
+import '@agoric/zoe/tools/prepare-test-env';
 import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit } from '@agoric/ertp';
 import test from 'ava';
 import { E } from '@agoric/eventual-send';
-import { makePercent } from '@agoric/zoe/src/contractSupport/percentMath';
+import { makeRatio } from '@agoric/zoe/src/contractSupport';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority';
 import { makeNotifierKit } from '@agoric/notifier';
@@ -72,7 +72,7 @@ test('loan contract', async t => {
 
   // #region lend
   const terms = {
-    mmr: makePercent(150, loanMath),
+    mmr: makeRatio(150, loanMath.getBrand()),
     autoswapInstance,
     priceAuthority,
     periodNotifier,

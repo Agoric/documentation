@@ -302,7 +302,7 @@ defaults to `Deposit and reallocation successful.`
 import {
   depositToSeat,
 } from '@agoric/zoe/src/contractSupport';
-await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2) }, { Dep: quatloosPayment });
+await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment });
 ```
 
 ## withdrawFromSeat(zcf, seat, amounts)
@@ -322,7 +322,7 @@ Unlike `depositToSeat()`, a `PaymentKeywordRecord` is returned, not a success me
 import {
   withdrawFromSeat,
 } from '@agoric/zoe/src/contractSupport';
-const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2) });
+const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2n) });
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
