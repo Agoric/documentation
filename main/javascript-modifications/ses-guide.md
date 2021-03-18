@@ -27,7 +27,7 @@ SES (*Secure ECMAScript*):
 - Adds functionality to freeze and make immutable both built-in JavaScript 
   objects and program created objects and make them immutable.
 
-## The SES Story
+## The SES story
 
 JavaScript was created to let web surfers safely run programs from strangers. 
 Web pages put JavaScript programs in a *sandbox* that restricts their abilities 
@@ -71,8 +71,6 @@ the needed SES features) for writing secure smart contracts in JavaScript.
 Note that several Agoric engineers are on the relevant standards committees 
 and are responsible for aspects of SES, so our SES should be very close to the
 eventual standards.
-
-## Installation and importing
 
 ## Using SES with your code
 
@@ -430,7 +428,7 @@ The same is true for NPM packages that use missing globals, or attempt to modify
 The [SES wiki](https://github.com/Agoric/SES-shim/wiki) tracks compatibility reports for NPM packages, 
 including potential workarounds.
 
-## HTML Comments
+## HTML comments
 
 JavaScript parsers may not recognize HTML comments within source code, potentially causing different
 behavior on different engines. For safety, the Agoric SES shim rejects any source code containing a comment
@@ -438,7 +436,7 @@ open (`<!--`) or close (`-->`) sequence. However, its filter uses a regular expr
 parser. It unnecessarily rejects any source code containing either of the strings `<!--` or `-->`, 
 even if neither marks a comment.
 
-### Dynamic Import Expressions
+### Dynamic import expressions
 
 One active JavaScript feature proposal adds a "dynamic import" expression: `await import('path')`. 
 If implemented (or if someone decides to be an early adopter and adds it to an engine), and your engine 
@@ -461,7 +459,7 @@ sneaky = import
 ```
 There are also problems when “import” is near a parenthesis inside a comment. 
 
-### Direct vs. Indirect Eval Expressions
+## Direct vs. indirect eval expressions
 
 A *direct eval*, invoked as `eval(code)`, behaves as if `code` were expanded in place. The 
 evaluated code sees the same scope as the `eval` itself sees, so this `code` can reference `x`:
