@@ -7,7 +7,7 @@ This is a guide to understanding *SES (Secure ECMAScript)*. It:
 - Describes *realms* and *compartments*.
 
 This is intended for initial reading when starting to use or learn about Agoric. For 
-those knowledgable about or experienced with SES, see the [SES Reference](./ses-reference.md)
+those knowledgeable about or experienced with SES, see the [SES Reference](./ses-reference.md)
 for to use SES without much explanation.
 
 ## What is SES
@@ -74,9 +74,9 @@ eventual standards.
 
 ## Using SES with your code
 
-The SES shim transforsm ordinary JavaScript environments into SES environments.
+The SES shim transforms ordinary JavaScript environments into SES environments.
 
-On Node.js you can import or require ses in either CommonJS or ECMAScript modules, then call `lockdow()`n. This is a *shim*. It mutates the environment in place so any code running after the shim can assume it’s running in a SES environment. This includes the globals `lockdown()`, `harden()`, `Compartment`, and so on. For example:
+On Node.js you can import or require `ses` in either CommonJS or ECMAScript modules, then call `lockdown()`. This is a *shim*. It mutates the environment in place so any code running after the shim can assume it’s running in a SES environment. This includes the globals `lockdown()`, `harden()`, `Compartment`, and so on. For example:
 ```js
 require("ses");
 lockdown();
