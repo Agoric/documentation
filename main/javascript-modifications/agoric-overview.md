@@ -115,10 +115,17 @@ are unavailable within a vat including:
   processing. But be aware it won't run until after all *other* ready 
   Promise callbacks execute. 
 
-There are two queues: the *IO queue* (accessed by `setImmediate`), and the *Promise queue* (accessed by Promise resolution). SES code can only add to the Promise queue. Note that the Promise queue is higher-priority than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
-* `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`): Any notion of time must come from exchanging messages with external timer services (the SwingSet environment provides a `TimerService` object to the bootstrap vat, which can share itwith other vats)
+There are two queues: the *IO queue* (accessed by `setImmediate`), and 
+the *Promise queue* (accessed by Promise resolution). SES code can only 
+add to the Promise queue. Note that the Promise queue is higher-priority 
+than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.
+* `setInterval` and `setTimeout` (and `clearInterval`/`clearTimeout`): Any 
+  notion of time must come from exchanging messages with external timer services
+  (the SwingSet environment provides a `TimerService` object to the bootstrap vat, 
+  which can share it with other vats)
 * `global`: Is not defined. Use `globalThis` instead (and remember that it is frozen).
-* `process`: Is not available, e.g. no `process.env` to access the process's environment variables, or `process.argv` for the argument array.
+* `process`: Is not available, e.g. no `process.env` to access the process's environment 
+  variables, or `process.argv` for the argument array.
 * `URL` and `URLSearchParams`: Are not available.
 * `WebAssembly`: Is not available.
 * `TextEncoder` and `TextDecoder`: Are not available.
@@ -156,13 +163,13 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
 
 `debugger` is a first-class JavaScript statement, and behaves as expected in vat code.
 
-## Shim Limitations
+## Shim limitations
 
 The [*shim*](https://github.com/Agoric/SES-shim/) providing our SES environment is not as 
 fully-featured as a native implementation. As a result, you cannot use some forms of code 
 yet. The following restrictions should be lifted once your JS engine can provide SES natively.
 
-### HTML Comments
+### HTML comments
 
 JavaScript parsers may not recognize HTML comments within source code, potentially causing 
 different behavior on different engines. For safety, the SES shim rejects any source 
@@ -170,7 +177,7 @@ code containing a comment open (`<!--`) or close (`-->`) sequence. However, its 
 uses a regular expression, not a full parser. It unnecessarily rejects any source code 
 containing either of the strings `<!--` or `-->`, even if neither marks a comment.
 
-### Dynamic Import Expressions
+### Dynamic import expressions
 
 One active JS feature proposal would add a "dynamic import" expression: `await import('path')`. 
 If implemented (or if someone decides to be an early adopter and adds it to an engine), 
@@ -193,7 +200,7 @@ sneaky = import
 ```
 There are also problems with “import” being near a parenthesis inside a comment. 
 
-### Direct vs. Indirect Eval Expressions
+### Direct vs. indirect eval expressions
 
 A *direct eval*, invoked as `eval(code)`, behaves as if `code` were expanded in place. 
 The evaluated code sees the same scope as the `eval` itself sees, so this `code` can 
@@ -230,9 +237,9 @@ just to guide people away from confusing behaviors early in their development pr
 
 This regexp falsely rejects occurrences inside static strings and comments.
 
-## Other Changes
+## Other changes
 
-### Frozen globalThis
+### Frozen `globalThis`
 
 Vats run in a `Compartment` with a frozen `globalThis` object. If mutable, 
 it would provide an ambient communication channel. One side of this channel 
@@ -244,7 +251,7 @@ Vats can create a new `Compartment` object, and decide if it supports object-cap
 security. If it does, they should run `harden(compartment.globalThis)` on it 
 and only then load any untrusted code into it.
 
-### Frozen Primordials
+### Frozen primordials
 
 SES freezes *primordials*; built-in JavaScript objects such as `Object`, `Array`, 
 and `RegExp`, and their prototype chains. This prevents malicious code from 
@@ -259,7 +266,7 @@ non-frozen `Compartment`. Shims that modify primordials only work if you build
 new (mutable) wrappers around the default primordials and let the shims modify 
 those wrappers instead.
 
-## Library Compatibility
+## Library compatibility
 
 Vat code can use `import` or `require()` to import other libraries consisting 
 only of JS code, which are compatible with the SES environment. This includes 
