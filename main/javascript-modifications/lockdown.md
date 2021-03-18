@@ -19,9 +19,10 @@ expressly introduced (preventing some covert communication channels).
 Lockdown freezes all JavaScript defined objects accessible to any program in the realm. The frozen 
 accessible objects include but are not limited to: 
 - `globalThis`
-- `[].__proto__`
-- `{}.__proto__`
-- `(() => {}).__proto__ (async () => {}).__proto__`
+- `[].__proto__` the array prototype, equivalent to Array.prototype in a pristine JavaScript environment.
+- `{}.__proto__` the Object.prototype
+- `(() => {}).__proto__` the Function.prototype
+- (async () => {}).__proto__` the prototype of all asynchronous functions, and has no alias in the global scope of a pristine JavaScript environment
 - The properties of any accessible object
 
 `lockdown()` also *tames* some objects, such as:
@@ -53,7 +54,7 @@ their methods. Their differences are what objects you use them on, and when you 
 
 `lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials* 
 (implicitly shared global objects) and enables `harden()`. If you call `harden()` 
-before `lockdown()` excutes, it throws an error.
+before `lockdown()` executes, it throws an error.
 
 `lockdown()` works on objects created by the JavaScript language itself as part of 
 its definition. Use `harden()` to freeze objects created after `lockdown()`was called;
@@ -187,7 +188,7 @@ becomes another name for `Object.prototype.toString()`.
 The `'unsafe'` setting keeps the original behavior for compatibility at the price
 of reproducibility and fingerprinting. 
 
-In standard JavaScript, these builtin methods have `Locale` or `locale` in their name
+In standard JavaScript, these built-in methods have `Locale` or `locale` in their name
 and are affected by `localeTaming`:
 - `toLocaleString`
 - `toLocaleDateString`
@@ -238,7 +239,7 @@ is mostly formatted for human use for diagnosing problems.
 Given these constraints, it is safe and helpful for `console` to reveal
 to humans information it would not reveal to objects it interacts with. 
 SES amplifies this and reveals much more information than the normal
-`console` does. By default and during `lockdown` SES replaces the builtin
+`console` does. By default and during `lockdown` SES replaces the built-in
 `console`with a wrapper, thus virtualizing it.  
 
 Also, the enhanced virtual `console` has a special relationship with
@@ -329,7 +330,7 @@ the error stack string.
 
 `errorTaming` does not affect the `Error` constructor's safety. 
 After calling `lockdown`, the tamed `Error` constructor in the
-start compartment follows ocap rules. Under v8 it emulates most of the
+start compartment follows OCap rules. Under v8 it emulates most of the
 magic powers of the v8 `Error` constructor&mdash;those consistent with the
 discourse level of the proposed `getStack`. In all cases, the `Error`
 constructor shared by all other compartments is both safe and powerless.
@@ -363,7 +364,7 @@ voluminous. It displays "deep stack" traces, tracing back through the
 [eventually sent messages](https://github.com/tc39/proposal-eventual-send)
 from other turns of the event loop.
 
-Full deep distributed stacks are overwhelmingly noisy for debuging distributed
+Full deep distributed stacks are overwhelmingly noisy for debugging distributed
 computation. When possible, the SES-shim filters and transforms the shown stack
 trace information, removing artifacts from low level infrastructure.
 Currently, this only works on v8. 
@@ -372,7 +373,7 @@ The 'concise' vs 'verbose' settings are about trying to reduce the noise appeari
 on the console's reported stack traces. 
 The default `'concise'` setting reduces the noise. But it does so at the risk of 
 throwing out the signal you were really looking for. Sometimes bugs might be in 
-that infrastrusture, so that information is relevant. With the `'verbose'` setting, 
+that infrastructure, so that information is relevant. With the `'verbose'` setting, 
 the console shows the full raw stack information for each level of the deep stacks.
 
 Either `stackFiltering` setting is safe. Stack information will
@@ -462,7 +463,7 @@ of the eventual-send shim:
 ```js
 lockdown(); // overrideTaming defaults to 'moderate'
 // or
-lockdown({ overrideTaming: 'moderate' }); // Moderate mitigations for legacy compat
+lockdown({ overrideTaming: 'moderate' }); // Moderate mitigations for legacy compatability
 // vs
 lockdown({ overrideTaming: 'min' }); // Minimal mitigations for purely modern code
 ```
@@ -500,7 +501,7 @@ you step into every access to an enabled property. Every read steps into
 the enabling getter. This adds yet more noise to the debugging experience.
 
 [src/enablements.js](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/enablements.js) exports two different
-whitelists definining which data properties to convert to enable override by
+whitelists defining which data properties to convert to enable override by
 assignment, `moderateEnablements` and `minEnablements`.
 
 The `overrideTaming` default `'moderate'` option of `lockdown` is intended to
