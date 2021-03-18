@@ -5,7 +5,39 @@ It is very much a "how to do something" document, with little explanation about 
 how something was implemented or other background information. For that, see the more
 comprehensive [SES Guide](./ses-guide.md).
 
-## Installing SES in Your Code
+## Installing SES in your code
+
+## Using SES with your code
+
+The SES shim transforsm ordinary JavaScript environments into SES environments.
+
+On Node.js you can import or require ses in either CommonJS or ECMAScript modules, then call `lockdow()`n. This is a *shim*. It mutates the environment in place so any code running after the shim can assume it’s running in a SES environment. This includes the globals `lockdown()`, `harden()`, `Compartment`, and so on. For example:
+```js
+require("ses");
+lockdown();
+```
+Or:
+```js
+import 'ses';
+lockdown();
+```
+
+To ensure a module runs in a SES environment, wrap the above code in a `ses-lockdown.js` module and import it:
+```js
+import './non-ses-code-before-lockdown.js';
+import './ses-lockdown.js'; // calls lockdown.
+import './ses-code-after-lockdown.js';
+```
+To use SES as a script on the web, use the UMD build.
+```js
+<script src="node_modules/ses/dist/ses.umd.min.js">
+```
+
+The full SES environment's module system requires a translating compiler. There is a much thinner SES version that just provides an evaluator Compartment. For it, use the much smaller `ses/lockdown` layer. Especially if all client code gets bundled as a script out-of-band.
+```js
+import 'ses/lockdown';
+<script src="node_modules/ses/dist/lockdown.umd.min.js"></script>
+```
 
 ## Removed by SES summary
 
