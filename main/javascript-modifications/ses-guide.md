@@ -74,8 +74,37 @@ eventual standards.
 
 ## Installation and importing
 
-**tyg todo Not sure what the current situation is with respect to what needs to go into
-what code to get and use SES in one's code**
+## Using SES with your code
+
+The SES shim transforsm ordinary JavaScript environments into SES environments.
+
+On Node.js you can import or require ses in either CommonJS or ECMAScript modules, then call `lockdow()`n. This is a *shim*. It mutates the environment in place so any code running after the shim can assume it’s running in a SES environment. This includes the globals `lockdown()`, `harden()`, `Compartment`, and so on. For example:
+```js
+require("ses");
+lockdown();
+```
+Or:
+```js
+import 'ses';
+lockdown();
+```
+
+To ensure a module runs in a SES environment, wrap the above code in a `ses-lockdown.js` module and import it:
+```js
+import './non-ses-code-before-lockdown.js';
+import './ses-lockdown.js'; // calls lockdown.
+import './ses-code-after-lockdown.js';
+```
+To use SES as a script on the web, use the UMD build.
+```js
+<script src="node_modules/ses/dist/ses.umd.min.js">
+```
+
+The full SES environment's module system requires a translating compiler. There is a much thinner SES version that just provides an evaluator Compartment. For it, use the much smaller `ses/lockdown` layer. Especially if all client code gets bundled as a script out-of-band.
+```js
+import 'ses/lockdown';
+<script src="node_modules/ses/dist/lockdown.umd.min.js"></script>
+```
 
 ## What SES does to JavaScript
 
@@ -208,7 +237,7 @@ A *compartment* is an execution environment for evaluating a stranger’s code. 
 its own `globalThis` global object and wholly independent system of 
 modules. Otherwise it shares the same batch of intrinsics such as `Array` with its surrounding 
 compartment. The concept of a compartment implies an initial compartment, 
-the initial execution environment of a realm. After lockdown, all compartments share the same 
+the initial execution environment of a realm. After lockdown is called, all compartments share the same 
 frozen realm. 
 
 Here we create a compartment with a `print()` function on `globalThis`.
@@ -320,13 +349,6 @@ boundaries between application code and third-party dependencies.
 The lifetime of a compartment is bounded by garbage collection and the 
 lifetime of the realm that contains them. You will not ever have to tear
 down or delete one. 
-
-**tyg todo: My problem with this section is that while I think I understand what compartments are
-and what they do, I'm not clear on just how/when they are used. This (and the SES reference) could
-use what amounts to a paragraph or two like "When writing a contract, you use compartments like this. 
-This is when you want to create a compartment. This is when you don't want to. Do you ever destroy a
-compartment? If so, how?**
-
 
 ## `lockdown()`
 
