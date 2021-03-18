@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Agoric Changes to JavaScript | Alpha</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/documentation/favicon-full.ico">
+    <style type="text/css">
+    .two-col-table td {
+        width: 50%;
+    }
+    .two-col-table table {
+        table-layout: fixed;
+    }</style>
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-118217811-1"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); </script>
+    <script>
+    const logoUrlChanger = setInterval(function() {
+    //Anchor above the logo image
+    const homeEls = document.getElementsByClassName("home-link");
+    if(homeEls.length > 0) {
+      const homeEl = homeEls[0];
+      homeEl.setAttribute("href", "https://agoric.com");
+      homeEl.setAttribute("onclick", "return false;");
+      clearInterval(logoUrlChanger);
+    }
+
+    //Actual logo image
+    const logoEls = document.getElementsByClassName("logo")
+    if(logoEls.length > 0) {
+      const logoEl = logoEls[0]
+      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+      clearInterval(logoUrlChanger);
+    }
+   }, 1000) </script>
+    <meta name="description" content="Build, deploy and operate dApps and DeFi markets.">
+    
+    <link rel="preload" href="/documentation/assets/css/0.styles.3032228c.css" as="style"><link rel="preload" href="/documentation/assets/js/app.d73fc7a4.js" as="script"><link rel="preload" href="/documentation/assets/js/2.ad57a6c8.js" as="script"><link rel="preload" href="/documentation/assets/js/51.4d4ad059.js" as="script"><link rel="prefetch" href="/documentation/assets/js/10.76dabfa3.js"><link rel="prefetch" href="/documentation/assets/js/11.fbdbb997.js"><link rel="prefetch" href="/documentation/assets/js/12.f8ef28bb.js"><link rel="prefetch" href="/documentation/assets/js/13.5d1f0876.js"><link rel="prefetch" href="/documentation/assets/js/14.19b18fe6.js"><link rel="prefetch" href="/documentation/assets/js/15.fa36cc55.js"><link rel="prefetch" href="/documentation/assets/js/16.8aad053f.js"><link rel="prefetch" href="/documentation/assets/js/17.8cdfc5c6.js"><link rel="prefetch" href="/documentation/assets/js/18.e5d573f0.js"><link rel="prefetch" href="/documentation/assets/js/19.f6159705.js"><link rel="prefetch" href="/documentation/assets/js/20.5a742331.js"><link rel="prefetch" href="/documentation/assets/js/21.2bf0bcc8.js"><link rel="prefetch" href="/documentation/assets/js/22.88478922.js"><link rel="prefetch" href="/documentation/assets/js/23.076998fa.js"><link rel="prefetch" href="/documentation/assets/js/24.d5d54e33.js"><link rel="prefetch" href="/documentation/assets/js/25.4e15e138.js"><link rel="prefetch" href="/documentation/assets/js/26.d27bf259.js"><link rel="prefetch" href="/documentation/assets/js/27.45c424fa.js"><link rel="prefetch" href="/documentation/assets/js/28.4610e508.js"><link rel="prefetch" href="/documentation/assets/js/29.5f4e841f.js"><link rel="prefetch" href="/documentation/assets/js/3.b6303a5c.js"><link rel="prefetch" href="/documentation/assets/js/30.c26f3757.js"><link rel="prefetch" href="/documentation/assets/js/31.931cf624.js"><link rel="prefetch" href="/documentation/assets/js/32.ac9e37ba.js"><link rel="prefetch" href="/documentation/assets/js/33.e1adf9cd.js"><link rel="prefetch" href="/documentation/assets/js/34.1b5dfc34.js"><link rel="prefetch" href="/documentation/assets/js/35.94f10d8b.js"><link rel="prefetch" href="/documentation/assets/js/36.cb22252a.js"><link rel="prefetch" href="/documentation/assets/js/37.bd326632.js"><link rel="prefetch" href="/documentation/assets/js/38.cacebd67.js"><link rel="prefetch" href="/documentation/assets/js/39.f10faa18.js"><link rel="prefetch" href="/documentation/assets/js/4.c107cf64.js"><link rel="prefetch" href="/documentation/assets/js/40.7286f0e2.js"><link rel="prefetch" href="/documentation/assets/js/41.72c56ea4.js"><link rel="prefetch" href="/documentation/assets/js/42.da11a811.js"><link rel="prefetch" href="/documentation/assets/js/43.fb6e2740.js"><link rel="prefetch" href="/documentation/assets/js/44.56a94659.js"><link rel="prefetch" href="/documentation/assets/js/45.843b9ed4.js"><link rel="prefetch" href="/documentation/assets/js/46.b6c9a6b1.js"><link rel="prefetch" href="/documentation/assets/js/47.199cf679.js"><link rel="prefetch" href="/documentation/assets/js/48.3abf2d49.js"><link rel="prefetch" href="/documentation/assets/js/49.9531034f.js"><link rel="prefetch" href="/documentation/assets/js/5.24e317dc.js"><link rel="prefetch" href="/documentation/assets/js/50.47fe0f74.js"><link rel="prefetch" href="/documentation/assets/js/52.5b58d0e4.js"><link rel="prefetch" href="/documentation/assets/js/53.2e333ddb.js"><link rel="prefetch" href="/documentation/assets/js/54.2d30cff5.js"><link rel="prefetch" href="/documentation/assets/js/55.ec2caf93.js"><link rel="prefetch" href="/documentation/assets/js/56.127e5a7e.js"><link rel="prefetch" href="/documentation/assets/js/57.dfe552c5.js"><link rel="prefetch" href="/documentation/assets/js/58.ab116c5f.js"><link rel="prefetch" href="/documentation/assets/js/59.d2c9e0a5.js"><link rel="prefetch" href="/documentation/assets/js/6.d605c65c.js"><link rel="prefetch" href="/documentation/assets/js/60.b01937c8.js"><link rel="prefetch" href="/documentation/assets/js/61.c087220c.js"><link rel="prefetch" href="/documentation/assets/js/62.5f7a331f.js"><link rel="prefetch" href="/documentation/assets/js/63.0f757978.js"><link rel="prefetch" href="/documentation/assets/js/64.f20f1e5c.js"><link rel="prefetch" href="/documentation/assets/js/65.b30af5da.js"><link rel="prefetch" href="/documentation/assets/js/66.f9872ede.js"><link rel="prefetch" href="/documentation/assets/js/67.2eea72db.js"><link rel="prefetch" href="/documentation/assets/js/68.17807603.js"><link rel="prefetch" href="/documentation/assets/js/69.8bd8877a.js"><link rel="prefetch" href="/documentation/assets/js/7.c00212f3.js"><link rel="prefetch" href="/documentation/assets/js/70.d41652c0.js"><link rel="prefetch" href="/documentation/assets/js/71.a7776040.js"><link rel="prefetch" href="/documentation/assets/js/72.1ab035b2.js"><link rel="prefetch" href="/documentation/assets/js/73.cda1627b.js"><link rel="prefetch" href="/documentation/assets/js/74.31070d87.js"><link rel="prefetch" href="/documentation/assets/js/75.35eb2df1.js"><link rel="prefetch" href="/documentation/assets/js/76.f9019e68.js"><link rel="prefetch" href="/documentation/assets/js/77.586f762f.js"><link rel="prefetch" href="/documentation/assets/js/78.5f6484e0.js"><link rel="prefetch" href="/documentation/assets/js/79.83da5f54.js"><link rel="prefetch" href="/documentation/assets/js/8.5e3474b9.js"><link rel="prefetch" href="/documentation/assets/js/80.5f3295c0.js"><link rel="prefetch" href="/documentation/assets/js/81.2f4097c8.js"><link rel="prefetch" href="/documentation/assets/js/9.35677375.js">
+    <link rel="stylesheet" href="/documentation/assets/css/0.styles.3032228c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/documentation/" class="home-link router-link-active"><img src="/documentation/logo.svg" alt="Alpha" class="logo"> <span class="site-name can-hide">Alpha</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/agoric-cli-guide.html" class="nav-link">
+  Agoric CLI Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/alpha.html" class="nav-link">
+  Agoric Alpha
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/agoric-cli-guide.html" class="nav-link">
+  Agoric CLI
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/wallet-api.html" class="nav-link">
+  Wallet API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="/documentation/distributed-programming.html" class="nav-link">
+  JS Distributed Programming
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/agoric-cli-guide.html" class="nav-link">
+  Agoric CLI Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/alpha.html" class="nav-link">
+  Agoric Alpha
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/agoric-cli-guide.html" class="nav-link">
+  Agoric CLI
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/wallet-api.html" class="nav-link">
+  Wallet API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="/documentation/distributed-programming.html" class="nav-link">
+  JS Distributed Programming
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="agoric-changes-to-javascript"><a href="#agoric-changes-to-javascript" class="header-anchor">#</a> Agoric Changes to JavaScript</h1> <h2 id="introduction"><a href="#introduction" class="header-anchor">#</a> Introduction</h2> <p>This doc summarizes Agoric’s additions to and deletions from the current JavaScript standards. In other
+words, what you need to know to write JavaScript that runs in an Agoric vat. <em>Vats</em> are containers that
+run code in a confined and resource-limited environment,
+with <a href="https://en.wikipedia.org/wiki/Persistence_(computer_science)#Orthogonal_or_transparent_persistence" target="_blank" rel="noopener noreferrer"><em>orthogonal persistence</em><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+and <a href="https://github.com/tc39/proposal-eventual-send" target="_blank" rel="noopener noreferrer"><em>eventual-send-based</em><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> access to external
+resources.</p> <p>Most JS environments (Node.js, web browsers) provide a combination of the baseline
+JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects" target="_blank" rel="noopener noreferrer"><em>language globals</em><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> (e.g.
+<code>Object</code>, <code>Array</code>, etc.) and host objects, many of which provide
+IO. <a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank" rel="noopener noreferrer">Web browsers<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> offer things like <code>window</code>, <code>fetch</code>, <code>WebAssembly</code>,
+and <code>localStorage</code>, while <a href="https://nodejs.org/dist/latest-v14.x/docs/api/globals.html" target="_blank" rel="noopener noreferrer">Node.js includes<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> ones
+like <code>require</code>, <code>process</code>, and <code>Buffer</code>. In general, host objects provide all IO.</p> <p>Vats are different. Their JS environment is a frozen <a href="https://medium.com/agoric/ses-securing-javascript-in-the-real-world-4f309e6b66a6" target="_blank" rel="noopener noreferrer">SES<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> (<em>Secure
+ECMAScript</em>) <code>Compartment</code> (see below), with some additions.</p> <h2 id="ses"><a href="#ses" class="header-anchor">#</a> SES</h2> <p>SES is a safe deterministic subset of &quot;strict mode&quot; JavaScript. This means it does not include
+any IO objects that provide <a href="https://en.wikipedia.org/wiki/Ambient_authority" target="_blank" rel="noopener noreferrer"><em>ambient authority</em><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+(which is not “safe”). SES also removes non-determinism by modifying a few built-in objects. For a
+more detailed explanation of SES and its functionality, see the <a href="/documentation/javascript-modifications/ses-guide.html">SES Guide</a>
+and [SES Reference(./ses-reference.md).</p> <p>As of SES-0.8.0/Fall 2020, <a href="https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js" target="_blank" rel="noopener noreferrer">the SES source code<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+defines a subset of the globals defined by the baseline JavaScript language specification. SES <strong>includes</strong> the globals:</p> <ul><li><code>Object</code></li> <li><code>Array</code></li> <li><code>Number</code></li> <li><code>Map</code></li> <li><code>WeakMap</code></li> <li><code>Number</code></li> <li><code>BigInt</code></li> <li><code>Intl</code></li> <li><code>Math</code> <ul><li><code>Math.random()</code> is disabled (calling it throws an error) as an obvious source of<br>
+non-determinism.</li></ul></li> <li><code>Date</code> <ul><li><code>Date.now()</code> returns <code>NaN</code></li> <li><code>new Date(nonNumber)</code> or <code>Date(anything)</code> return a <code>Date</code> that stringifies to <code>&quot;Invalid Date&quot;</code></li></ul></li></ul> <p>We retain the other, purely computational and deterministic, <code>Math</code> and <code>Date</code> features.</p> <p>Much of the <code>Intl</code> package, and some locale-specific aspects of other objects
+(e.g. <code>Number.prototype.toLocaleString</code>) have results that depend upon which locale is configured.
+This varies from one process to another. Our handling of this is still in development. Either these
+functions will be disabled, or they will act as if run on a host with a single fixed locale as defined
+by the SES specification.</p> <h2 id="additions"><a href="#additions" class="header-anchor">#</a> Additions</h2> <p>As SES is on the JavaScript standards track, the below anticipates additional
+proposed standard-track features. If those features become standards, future
+JS environments will include them as global objects. So the current SES shim
+also makes those global objects available.</p> <p>The vat environment has four significant objects not part of standard JavaScript:</p> <ul><li><code>console</code> helps with debugging. Since all JavaScript implementations add it,
+you may be surprised it’s not in the official spec. So leaving it out would
+cause too much confusion. Note that <code>console.log</code>’s exact behavior is up to
+the host program; display to the operator is not guaranteed. Use the console
+for debug information only. The console is not obliged to write to the POSIX
+standard output.</li></ul> <p>-<code>harden</code> is a global that freezes an object’s API surface (enumerable data properties).
+A hardened object’s properties cannot be changed, so the only way to interact
+with a hardened object is through its methods. <code>harden()</code> is similar to <code>Object.freeze()</code>
+but more powerful. For more details,
+see <a href="https://github.com/Agoric/SES-shim/blob/master/packages/ses/README.md#harden" target="_blank" rel="noopener noreferrer">the details from the <code>ses</code> package<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</p> <p><code>harden()</code> should be called on all objects that will be transferred
+across a trust boundary. The general rule is if you make a new object
+and give it to someone else (and don't immediately forget it yourself),
+you should give them <code>harden(obj)</code> instead of the raw object. Hardening
+a class instance also hardens the class.</p> <ul><li><p><code>HandledPromise</code> is also a global.
+The <a href="https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e" target="_blank" rel="noopener noreferrer"><code>E</code> wrapper (<code>E(target).method-name(args)</code>)<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+can be imported as <code>import { E } from '@agoric/eventual-send</code>. These two
+are defined by the TC39 <a href="https://github.com/tc39/proposal-eventual-send" target="_blank" rel="noopener noreferrer">Eventual-Send Proposal<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>.</p></li> <li><p><code>Compartment</code> (a <a href="https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment" target="_blank" rel="noopener noreferrer">part of SES<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>)
+is a global. Vat code runs inside a <code>Compartment</code> and can create sub-compartments
+to host other code (with different globals or transforms).</p> <p>Note that these child compartments get <code>harden()</code> and <code>Compartment</code>, but
+you have to explicitly provide any other JS additions (including <code>console</code>
+and <code>HandledPromise</code>) as “endowments” since they won’t be present otherwise.
+If the parent compartment is metered, its child compartments are always
+metered too. Child compartments will <em>not</em> be frozen by default:
+see <a href="#frozen-globalthis">Frozen globalThis</a> below for details.</p></li></ul> <h2 id="removals"><a href="#removals" class="header-anchor">#</a> Removals</h2> <p>Almost all existing JS code was written to run under Node.js or inside a browser,
+so it's easy to conflate the environment features with JavaScript itself. For
+example, you may be surprised that <code>Buffer</code> and <code>require</code> are Node.js
+additions and not part of JavaScript.</p> <p>Most Node.js-specific <a href="https://nodejs.org/dist/latest-v14.x/docs/api/globals.html" target="_blank" rel="noopener noreferrer">global objects<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+are unavailable within a vat including:</p> <ul><li><code>queueMicrotask</code></li> <li><code>Buffer</code> (consider using <code>TypedArray</code> instead, but see below)</li> <li><code>setImmediate</code>/<code>clearImmediate</code>: Not available, but you can generally
+replace <code>setImmediate(fn)</code> with <code>Promise.resolve().then(_ =&gt; fn())</code> to
+defer execution of <code>fn</code> until after the current event/callback finishes
+processing. But be aware it won't run until after all <em>other</em> ready
+Promise callbacks execute.</li></ul> <p>There are two queues: the <em>IO queue</em> (accessed by <code>setImmediate</code>), and
+the <em>Promise queue</em> (accessed by Promise resolution). SES code can only
+add to the Promise queue. Note that the Promise queue is higher-priority
+than the IO queue, so the Promise queue must be empty for any IO or timers to be handled.</p> <ul><li><code>setInterval</code> and <code>setTimeout</code> (and <code>clearInterval</code>/<code>clearTimeout</code>): Any
+notion of time must come from exchanging messages with external timer services
+(the SwingSet environment provides a <code>TimerService</code> object to the bootstrap vat,
+which can share it with other vats)</li> <li><code>global</code>: Is not defined. Use <code>globalThis</code> instead (and remember that it is frozen).</li> <li><code>process</code>: Is not available, e.g. no <code>process.env</code> to access the process's environment
+variables, or <code>process.argv</code> for the argument array.</li> <li><code>URL</code> and <code>URLSearchParams</code>: Are not available.</li> <li><code>WebAssembly</code>: Is not available.</li> <li><code>TextEncoder</code> and <code>TextDecoder</code>: Are not available.</li></ul> <p>Some names look like globals, but are really part of the module-defining tools: imports,
+exports, and metadata. Modules start as files on disk, but then are bundled together
+into an archive before being loaded into a vat. The bundling tool uses several standard
+functions to locate other modules that must be included. These are not a part of SES, but
+are allowed in module source code, and are translated or removed before execution.</p> <ul><li><code>import</code> and <code>export</code> syntax are allowed in ESM-style modules (preferred over CommonJS).
+These are not globals as such, but top-level syntax that defines the module graph.</li> <li><code>require</code>, <code>module</code>, <code>module.exports</code>, and <code>exports</code> are allowed in CommonJS-style modules,
+and should work as expected. However, new code should be written as ESM modules. They
+are either consumed by the bundling process, provided (in some form) by the execution
+environment, or otherwise rewritten to work sensibly</li> <li><code>__dirname</code> and <code>__filename</code> are not provided</li> <li>The dynamic import expression (<code>await import('name')</code>) is currently prohibited in vat
+code, but a future SES implementation may allow it.</li></ul> <p>Node.js has a <a href="https://nodejs.org/dist/latest-v14.x/docs/api/" target="_blank" rel="noopener noreferrer">large collection<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> of &quot;built-in
+modules&quot;, such as <code>http</code> and <code>crypto</code>. Some are clearly platform-specific (e.g. <code>v8</code>), while
+others are not so obvious (<code>stream</code>). All are accessed by importing a
+module (<code>const v8 = require('v8')</code> in CommonJS modules, or <code>import v8 from 'v8'</code> in ESM modules).
+These modules are built out of native code (C++), not plain JS.</p> <p>None of these built-in modules are available to vat code. <code>require</code> or <code>import</code> can be used
+on pure JS modules, but not on modules including native code. For a vat to exercise authority
+from a built-in module, you have to write a <em>device</em> with an endowment with the built-in
+module's functions, then have the vat send messages to the device.</p> <p>Browser environments also have a huge list of <a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank" rel="noopener noreferrer">other features<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+presented as names in the global scope (some also added to Node.js). None are available in a
+SES environment. The most surprising removals include <code>atob</code>, <code>TextEncoder</code>, and <code>URL</code>.</p> <p><code>debugger</code> is a first-class JavaScript statement, and behaves as expected in vat code.</p> <h2 id="shim-limitations"><a href="#shim-limitations" class="header-anchor">#</a> Shim limitations</h2> <p>The <a href="https://github.com/Agoric/SES-shim/" target="_blank" rel="noopener noreferrer"><em>shim</em><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> providing our SES environment is not as
+fully-featured as a native implementation. As a result, you cannot use some forms of code
+yet. The following restrictions should be lifted once your JS engine can provide SES natively.</p> <h3 id="html-comments"><a href="#html-comments" class="header-anchor">#</a> HTML comments</h3> <p>JavaScript parsers may not recognize HTML comments within source code, potentially causing
+different behavior on different engines. For safety, the SES shim rejects any source
+code containing a comment open (<code>&lt;!--</code>) or close (<code>--&gt;</code>) sequence. However, its filter
+uses a regular expression, not a full parser. It unnecessarily rejects any source code
+containing either of the strings <code>&lt;!--</code> or <code>--&gt;</code>, even if neither marks a comment.</p> <h3 id="dynamic-import-expressions"><a href="#dynamic-import-expressions" class="header-anchor">#</a> Dynamic import expressions</h3> <p>One active JS feature proposal would add a &quot;dynamic import&quot; expression: <code>await import('path')</code>.
+If implemented (or if someone decides to be an early adopter and adds it to an engine),
+and your JS engine has this, vat code might be able to bypass the <code>Compartment</code>'s module
+map. For safety, the SES shim already rejects code that looks like it uses this feature.
+The regular expression for this pattern can be confused into falsely rejecting legitimate
+code. For example, the word “import” at the end of a line in a comment, such as:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">//</span>
+<span class="token comment">// This function calculates the import</span>
+<span class="token comment">// duties paid on the merchandise..</span>
+<span class="token comment">//</span>
+</code></pre></div><p>The regexp confuses the above with something like the following, and rejects it:</p> <div class="language-js extra-class"><pre class="language-js"><code>foo <span class="token operator">=</span> <span class="token function">bar</span><span class="token punctuation">(</span>argument<span class="token punctuation">)</span><span class="token punctuation">;</span>
+sneaky <span class="token operator">=</span> <span class="token keyword">import</span>
+<span class="token comment">// tricky comment to obscure function invocation</span>
+<span class="token punctuation">(</span>modulename<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>There are also problems with “import” being near a parenthesis inside a comment.</p> <h3 id="direct-vs-indirect-eval-expressions"><a href="#direct-vs-indirect-eval-expressions" class="header-anchor">#</a> Direct vs. indirect eval expressions</h3> <p>A <em>direct eval</em>, invoked as <code>eval(code)</code>, behaves as if <code>code</code> were expanded in place.
+The evaluated code sees the same scope as the <code>eval</code> itself sees, so this <code>code</code> can
+reference <code>x</code>:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token parameter">code</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token function">eval</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>If you perform a direct eval, you cannot hide your internal authorities from the
+code being evaluated.</p> <p>In contrast, an <em>indirect eval</em> only gets the global scope, not the local scope.
+In a safe SES environment, indirect eval is a useful and common tool. The evaluated
+code can only access global objects, and those are all safe (and frozen). The only
+bad thing an indirect eval can do is consume unbounded CPU or memory. Once you've
+evaluated the code, you can invoke it with arguments to give it as many or as few
+authorities as you like.</p> <p>The most common way to invoke an indirect eval is <code>(1,eval)(code)</code>.</p> <p>The SES shim cannot correctly emulate a direct eval. If it tried, it would perform
+an indirect eval. This could be pretty confusing, because the code might not actually
+use objects from the local scope. You might not notice the problem until some later
+change altered the behavior.</p> <p>To avoid this confusion, the shim uses a regular expression to reject code that
+looks like it is performing a direct eval. This regexp is not complete (you can
+trick it into performing a direct eval anyway), but that’s safe. Our goal is
+just to guide people away from confusing behaviors early in their development process.</p> <p>This regexp falsely rejects occurrences inside static strings and comments.</p> <h2 id="other-changes"><a href="#other-changes" class="header-anchor">#</a> Other changes</h2> <h3 id="frozen-globalthis"><a href="#frozen-globalthis" class="header-anchor">#</a> Frozen <code>globalThis</code></h3> <p>Vats run in a <code>Compartment</code> with a frozen <code>globalThis</code> object. If mutable,
+it would provide an ambient communication channel. One side of this channel
+could set <code>globalThis.heyBuddyAreYouOutThere = 'exfiltrated message'</code>, and
+the other side could periodically read it. This would violate object-capability
+security; objects may only communicate through references.</p> <p>Vats can create a new <code>Compartment</code> object, and decide if it supports object-capability
+security. If it does, they should run <code>harden(compartment.globalThis)</code> on it
+and only then load any untrusted code into it.</p> <h3 id="frozen-primordials"><a href="#frozen-primordials" class="header-anchor">#</a> Frozen primordials</h3> <p>SES freezes <em>primordials</em>; built-in JavaScript objects such as <code>Object</code>, <code>Array</code>,
+and <code>RegExp</code>, and their prototype chains. This prevents malicious code from
+changing their behavior (imagine <code>Array.prototype.push</code> delivering a copy of
+its argument to an attacker, or ignoring certain values). It also prevents
+using, for example, <code>Object.heyBuddy</code> as an ambient communication channel.</p> <p>Both frozen primordials and a frozen <code>globalThis</code> break a few JS libraries
+that add new features to built-in objects (shims/polyfills). For shims which
+just add properties to <code>globalThis</code>, it may be possible to load these in a new
+non-frozen <code>Compartment</code>. Shims that modify primordials only work if you build
+new (mutable) wrappers around the default primordials and let the shims modify
+those wrappers instead.</p> <h2 id="library-compatibility"><a href="#library-compatibility" class="header-anchor">#</a> Library compatibility</h2> <p>Vat code can use <code>import</code> or <code>require()</code> to import other libraries consisting
+only of JS code, which are compatible with the SES environment. This includes
+a significant portion of the NPM registry.</p> <p>However, many NPM packages use built-in Node.js modules. If used at import
+time (in their top-level code), vat code cannot use the package and fails
+to load at all. If they use the built-in features at runtime, then the
+package can load. However, it might fail later when a function is invoked
+that accesses the missing functionality. So some NPM packages are partially
+compatible; you can use them if you don't invoke certain features.</p> <p>The same is true for NPM packages that use missing globals, or attempt to
+modify frozen primordials.</p> <p>The <a href="https://github.com/Agoric/SES-shim/wiki" target="_blank" rel="noopener noreferrer">SES wiki<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> tracks compatibility
+reports for NPM packages, including potential workarounds.</p> <h2 id="summary"><a href="#summary" class="header-anchor">#</a> Summary</h2> <p>When writing JavaScript to run in Agoric’s vats, keep in mind the following
+differences from the JavaScript flavor you’re used to:</p> <ul><li><p>Missing or unusable:</p> <ul><li>Most <a href="https://nodejs.org/dist/latest-v14.x/docs/api/globals.html" target="_blank" rel="noopener noreferrer">Node.js-specific global objects<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li>All <a href="https://nodejs.org/dist/latest-v14.x/docs/api/" target="_blank" rel="noopener noreferrer">Node.js built-in modules<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> such as <code>http</code> and
+<code>crypto</code>.</li> <li><a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank" rel="noopener noreferrer">Features from browser environments<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> presented
+as names in the global scope including <code>atob</code>, <code>TextEncoder</code>, and <code>URL</code>.</li> <li>HTML comments</li> <li>Dynamic <code>import</code> expressions</li> <li>Direct evals</li></ul></li> <li><p>Added or modified</p> <ul><li><code>console</code></li> <li><code>harden()</code></li> <li><code>HandledPromise()</code></li> <li><code>Compartment</code></li> <li><code>globalThis</code> is frozen.</li> <li>JavaScript primordials are frozen.</li></ul></li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/Agoric/documentation/edit/main/main/javascript-modifications/agoric-overview.md" target="_blank" rel="noopener noreferrer">Help us improve this page!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/18/2021, 9:50:04 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/documentation/assets/js/app.d73fc7a4.js" defer></script><script src="/documentation/assets/js/2.ad57a6c8.js" defer></script><script src="/documentation/assets/js/51.4d4ad059.js" defer></script>
+  </body>
+</html>
