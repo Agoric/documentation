@@ -5,8 +5,6 @@ It is very much a "how to do something" document, with little explanation about 
 how something was implemented or other background information. For that, see the more
 comprehensive [SES Guide](./ses-guide.md).
 
-## Installing SES in your code
-
 ## Using SES with your code
 
 The SES shim transforms ordinary JavaScript environments into SES environments.
@@ -135,7 +133,7 @@ below.
     <td><code>regExpTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
     <td><code>'safe'</code> disables all <code>RegExp.*</code> methods,<br>
-        <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</td>
+      <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</code></td>
   </tr>
     <tr>
     <td><code>localeTaming</code></td>
