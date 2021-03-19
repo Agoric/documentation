@@ -10,7 +10,7 @@ This is intended for initial reading when starting to use or learn about Agoric.
 those knowledgeable about or experienced with SES, see the [SES Reference](./ses-reference.md)
 for to use SES without much explanation.
 
-## What is SES
+## What is SES?
 
 SES (*Secure ECMAScript*):
 - Is a JavaScript runtime library for safely running third-party code. 
@@ -143,7 +143,7 @@ libraries that add new features to built-in objects (shims/polyfills). These
 libraries stretch best practices' boundaries by adding new features to built-in 
 objects in a way SES Compartments don't allow. 
 
-## What does SES remove from standard JavaScript
+## What SES removes from standard JavaScript
 
 Almost all existing JavaScript code runs under Node.js or inside a browser, so 
 it's easy to conflate environment features with JavaScript. For example, you may 
@@ -185,7 +185,7 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
 
 `debugger` is a first-class JavaScript statement, and behaves as expected.
 
-## What does SES add to standard Javascript
+## What SES adds to standard Javascript
 
 The following anticipate additional proposed standard-track features. If they become standards, 
 future JavaScript environments will include them as global objects. So the current Agoric SES shim 
