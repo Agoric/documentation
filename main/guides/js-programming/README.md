@@ -24,14 +24,14 @@ Extensions covered in this document are:
 
 - **[`harden()`](./ses/ses-guide.md)**: A hardened object’s properties cannot be changed, so the only way to interact
 with a hardened object is through its methods. `harden()`is similar to `Object.freeze()` but
-more powerful. 
+more powerful. Objects provided as parameters that will be shared across vat boundaries must be hardened.
 
 - **[Remote object communication using `E`](./eventual-send.md)**: `E` is a local "bridge" function that lets
 you invoke methods on remote objects, whether in another vat, machine, or blockchain (for example).
 It takes a local representative (a *proxy*) for a remote object as an argument and sends messages
 to it using normal message-sending syntax. The local proxy forwards all messages to the remote 
 object to deal with. Sending a message to the remote object must be done by 
-using `E` (`E(remoteObj).myMethod()`), or the "tildot" operator `remoteObj~.myMethod()``
+using `E` (`E(remoteObj).myMethod()`).
 
 - **[Notifiers](./notifiers.md):** The Agoric platform uses Notifiers to distribute state change
 updates. Notifiers rely on promises to deliver a stream of messages as a publish-subscribe system
