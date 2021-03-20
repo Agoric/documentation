@@ -10,4 +10,5 @@ Vats need to run on some platform. Both a single physical machine and a blockcha
 Since a vat runs in a single *event loop*, each incoming request has to finish before the next one starts. If there's remaining work, you schedule it to happen later after a Promise resolves.
 
 The Agoric process starts several vats. Each vat hosts a service (e.g. the Board, Zoe,
-etc.). As of July, 2020, all contracts run in the Zoe vat. Eventually this will change to each contract having a dedicated vat.
+etc.). As of March, 2021, all contracts each run in a new vat with their own version of the 
+Zoe Contract Facet. There is one vat that contains the Zoe Service.
