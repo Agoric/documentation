@@ -4,8 +4,9 @@ Agoric's platform lets you write secure smart contracts in JavaScript. The platf
 
 Extensions covered in this document are:
 - **[`BigInt`](./bigint.md)**: JavaScript's `Number` primitive only represents
-  numbers up to 2<sup>53</sup> - 1. `BigInt` is a built-in object that can be used for
-  arbitrarily large integers. Agoric uses `BigInts` for times and amount `values`.
+  numbers up to 2<sup>53</sup> - 1. `BigInt` is a newer built-in JavaScript 
+  object that represents arbitrarily large integers. Agoric uses `BigInts` for 
+  amount `values` and times.
 
 - **[Vats](./vats.md)**: Objects and functions in the same JavaScript vat can
   communicate synchronously. Communication with objects outside the
