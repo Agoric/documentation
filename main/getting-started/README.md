@@ -70,8 +70,7 @@ general working with the Agoric Wallet.
 
 You can access a REPL (Read-Eval-Print Loop). From the REPL and its `home` object,
 developers can use all the on-chain commands that deployment scripts use to deploy
-contracts and Dapps. In addition to the on-chain commands, you can also run any 
-other JavaScript commands. See the **[REPL Guide](/repl/)** for details.
+contracts and Dapps. See the **[REPL Guide](/repl/)** for details.
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
 to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
