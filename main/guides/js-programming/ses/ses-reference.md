@@ -133,7 +133,7 @@ below.
     <td><code>regExpTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
     <td><code>'safe'</code> disables all <code>RegExp.*</code> methods,<br>
-        <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</td>
+        <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</code></td>
   </tr>
     <tr>
     <td><code>localeTaming</code></td>
