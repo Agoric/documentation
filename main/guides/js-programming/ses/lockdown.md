@@ -64,8 +64,8 @@ i.e. objects created by programs written in JavaScript.
 
 ### Default `safe` settings
 
-All four of these safety-relevant options default to `safe` if omitted 
-from a call to `lockdown()`. Their other possible value is `unsafe`.
+All four of these safety-relevant options default to `'safe'` if omitted 
+from a call to `lockdown()`. Their other possible value is `'unsafe'`.
 - `regExpTaming`
 - `localeTaming`
 - `consoleTaming`
@@ -73,7 +73,7 @@ from a call to `lockdown()`. Their other possible value is `unsafe`.
 
 The tradeoff is safety vs compatibility with existing code. However, much legacy
 JavaScript code does run under SES, even if both not written to do so and with all
-the options set to `safe`. Only consider an `'unsafe'` value if you both need it 
+the options set to `'safe'`. Only consider an `'unsafe'` value if you both need it 
 and can evaluate its risks. These are described in more detail below.
 
 ### Options quick reference
@@ -93,7 +93,7 @@ below.
     <td><code>regExpTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
     <td><code>'safe'</code> disables all <code>RegExp.*</code> methods,<br>
-        <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</td>
+      <code>'unsafe'</code> disables all but <code>RegExp.prototype.compile()</code></td>
   </tr>
     <tr>
     <td><code>localeTaming</code></td>
@@ -139,10 +139,10 @@ lockdown({ regExpTaming: 'unsafe' }); // Disables all RegExp.*() methods except 
 ```
 ### Purpose
 
-With its default `safe` value, `regExpTaming` prevents using `RegExp.*()` methods in
+With its default `'safe'` value, `regExpTaming` prevents using `RegExp.*()` methods in
 the locked down code.
 
-With its `unsafe` value, `RegExp.prototype.compile()` can be used in locked down code.
+With its `'unsafe'` value, `RegExp.prototype.compile()` can be used in locked down code.
 However, all other `RegExp.*()` methods are disabled
 
 ### Background
@@ -208,7 +208,7 @@ But since these methods appear on the prototype of shared intrinsic objects like
 prototype, there is no safe alternative design.
 
 Instead, the hosting program can reveal the locale to all compartments by setting 
-`localeTaming` to `unsafe`, or inject a `locale` object into selected compartments 
+`localeTaming` to `'unsafe'`, or inject a `locale` object into selected compartments 
 with the powers of these methods.
 
 Aside from fingerprinting, the risk that this slow non-determinism opens a
