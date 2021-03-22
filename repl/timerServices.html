@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Timer Services | Alpha</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/documentation/favicon-full.ico">
+    <style type="text/css">
+    .two-col-table td {
+        width: 50%;
+    }
+    .two-col-table table {
+        table-layout: fixed;
+    }</style>
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-118217811-1"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); </script>
+    <script>
+    const logoUrlChanger = setInterval(function() {
+    //Anchor above the logo image
+    const homeEls = document.getElementsByClassName("home-link");
+    if(homeEls.length > 0) {
+      const homeEl = homeEls[0];
+      homeEl.setAttribute("href", "https://agoric.com");
+      homeEl.setAttribute("onclick", "return false;");
+      clearInterval(logoUrlChanger);
+    }
+
+    //Actual logo image
+    const logoEls = document.getElementsByClassName("logo")
+    if(logoEls.length > 0) {
+      const logoEl = logoEls[0]
+      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+      clearInterval(logoUrlChanger);
+    }
+   }, 1000) </script>
+    <meta name="description" content="Build, deploy and operate dApps and DeFi markets.">
+    
+    <link rel="preload" href="/documentation/assets/css/0.styles.3032228c.css" as="style"><link rel="preload" href="/documentation/assets/js/app.e9d39649.js" as="script"><link rel="preload" href="/documentation/assets/js/2.055035d6.js" as="script"><link rel="preload" href="/documentation/assets/js/62.da3dd3f8.js" as="script"><link rel="prefetch" href="/documentation/assets/js/10.585b2158.js"><link rel="prefetch" href="/documentation/assets/js/11.9a98c34f.js"><link rel="prefetch" href="/documentation/assets/js/12.5c179c24.js"><link rel="prefetch" href="/documentation/assets/js/13.5d1f0876.js"><link rel="prefetch" href="/documentation/assets/js/14.fa0ecac6.js"><link rel="prefetch" href="/documentation/assets/js/15.f2b84c5b.js"><link rel="prefetch" href="/documentation/assets/js/16.6a6558c6.js"><link rel="prefetch" href="/documentation/assets/js/17.17052e2b.js"><link rel="prefetch" href="/documentation/assets/js/18.e5d573f0.js"><link rel="prefetch" href="/documentation/assets/js/19.f6159705.js"><link rel="prefetch" href="/documentation/assets/js/20.87ef6363.js"><link rel="prefetch" href="/documentation/assets/js/21.2bf0bcc8.js"><link rel="prefetch" href="/documentation/assets/js/22.3c41c5fe.js"><link rel="prefetch" href="/documentation/assets/js/23.3ce7e6cd.js"><link rel="prefetch" href="/documentation/assets/js/24.0c1bb113.js"><link rel="prefetch" href="/documentation/assets/js/25.4a088968.js"><link rel="prefetch" href="/documentation/assets/js/26.b2120513.js"><link rel="prefetch" href="/documentation/assets/js/27.c02f4aff.js"><link rel="prefetch" href="/documentation/assets/js/28.c50b740e.js"><link rel="prefetch" href="/documentation/assets/js/29.9215e21e.js"><link rel="prefetch" href="/documentation/assets/js/3.5029543d.js"><link rel="prefetch" href="/documentation/assets/js/30.aa842318.js"><link rel="prefetch" href="/documentation/assets/js/31.14590e40.js"><link rel="prefetch" href="/documentation/assets/js/32.e34543b0.js"><link rel="prefetch" href="/documentation/assets/js/33.08dc5e79.js"><link rel="prefetch" href="/documentation/assets/js/34.be2a1606.js"><link rel="prefetch" href="/documentation/assets/js/35.4339ff49.js"><link rel="prefetch" href="/documentation/assets/js/36.f50aba9e.js"><link rel="prefetch" href="/documentation/assets/js/37.2d97d21b.js"><link rel="prefetch" href="/documentation/assets/js/38.1064fcbf.js"><link rel="prefetch" href="/documentation/assets/js/39.7eab9bf3.js"><link rel="prefetch" href="/documentation/assets/js/4.45e5a0cd.js"><link rel="prefetch" href="/documentation/assets/js/40.2e9758c8.js"><link rel="prefetch" href="/documentation/assets/js/41.fb0e921d.js"><link rel="prefetch" href="/documentation/assets/js/42.5bfa7121.js"><link rel="prefetch" href="/documentation/assets/js/43.6b0e5f2c.js"><link rel="prefetch" href="/documentation/assets/js/44.737659ce.js"><link rel="prefetch" href="/documentation/assets/js/45.fef430e8.js"><link rel="prefetch" href="/documentation/assets/js/46.2bd64db0.js"><link rel="prefetch" href="/documentation/assets/js/47.5ae1df34.js"><link rel="prefetch" href="/documentation/assets/js/48.bbcba416.js"><link rel="prefetch" href="/documentation/assets/js/49.ab14f817.js"><link rel="prefetch" href="/documentation/assets/js/5.ad898805.js"><link rel="prefetch" href="/documentation/assets/js/50.8489dcf8.js"><link rel="prefetch" href="/documentation/assets/js/51.84a46060.js"><link rel="prefetch" href="/documentation/assets/js/52.ccdc748b.js"><link rel="prefetch" href="/documentation/assets/js/53.2630e864.js"><link rel="prefetch" href="/documentation/assets/js/54.7c35a2f1.js"><link rel="prefetch" href="/documentation/assets/js/55.5dc8b5c3.js"><link rel="prefetch" href="/documentation/assets/js/56.745b027d.js"><link rel="prefetch" href="/documentation/assets/js/57.de5ade0c.js"><link rel="prefetch" href="/documentation/assets/js/58.183f3fdf.js"><link rel="prefetch" href="/documentation/assets/js/59.3fc1a30d.js"><link rel="prefetch" href="/documentation/assets/js/6.6a786cd3.js"><link rel="prefetch" href="/documentation/assets/js/60.494b175d.js"><link rel="prefetch" href="/documentation/assets/js/61.94d8d5ff.js"><link rel="prefetch" href="/documentation/assets/js/63.ea00a8ce.js"><link rel="prefetch" href="/documentation/assets/js/64.7f2edaf9.js"><link rel="prefetch" href="/documentation/assets/js/65.8d7fcace.js"><link rel="prefetch" href="/documentation/assets/js/66.b1bee48c.js"><link rel="prefetch" href="/documentation/assets/js/67.9238ee65.js"><link rel="prefetch" href="/documentation/assets/js/68.b16ef159.js"><link rel="prefetch" href="/documentation/assets/js/69.e5759c9c.js"><link rel="prefetch" href="/documentation/assets/js/7.8282d243.js"><link rel="prefetch" href="/documentation/assets/js/70.15df2113.js"><link rel="prefetch" href="/documentation/assets/js/71.ab1af6cb.js"><link rel="prefetch" href="/documentation/assets/js/72.85907030.js"><link rel="prefetch" href="/documentation/assets/js/73.a1a7a363.js"><link rel="prefetch" href="/documentation/assets/js/74.14bf8a3a.js"><link rel="prefetch" href="/documentation/assets/js/75.122cf302.js"><link rel="prefetch" href="/documentation/assets/js/76.cad1913f.js"><link rel="prefetch" href="/documentation/assets/js/77.6aaf5e0d.js"><link rel="prefetch" href="/documentation/assets/js/78.0cb7e765.js"><link rel="prefetch" href="/documentation/assets/js/79.e8a1b202.js"><link rel="prefetch" href="/documentation/assets/js/8.de2b40f3.js"><link rel="prefetch" href="/documentation/assets/js/80.c9f390a2.js"><link rel="prefetch" href="/documentation/assets/js/81.c5f99ea1.js"><link rel="prefetch" href="/documentation/assets/js/82.96575513.js"><link rel="prefetch" href="/documentation/assets/js/83.8acb0dc5.js"><link rel="prefetch" href="/documentation/assets/js/84.9a3f3930.js"><link rel="prefetch" href="/documentation/assets/js/85.3875c95e.js"><link rel="prefetch" href="/documentation/assets/js/86.72361b10.js"><link rel="prefetch" href="/documentation/assets/js/87.4f247b2a.js"><link rel="prefetch" href="/documentation/assets/js/88.7dcf1461.js"><link rel="prefetch" href="/documentation/assets/js/89.1d379d0c.js"><link rel="prefetch" href="/documentation/assets/js/9.b5b2cafd.js"><link rel="prefetch" href="/documentation/assets/js/90.5777bc7e.js"><link rel="prefetch" href="/documentation/assets/js/91.aa841d80.js">
+    <link rel="stylesheet" href="/documentation/assets/css/0.styles.3032228c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/documentation/" class="home-link router-link-active"><img src="/documentation/logo.svg" alt="Alpha" class="logo"> <span class="site-name can-hide">Alpha</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/alpha.html" class="nav-link">
+  Agoric Alpha
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/js-programming/" class="nav-link">
+  Agoric JavaScript Programming
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/wallet/" class="nav-link">
+  Wallet Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/repl/" class="nav-link router-link-active">
+  REPL
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/chainlink-integration.html" class="nav-link">
+  Chainlink Integration
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YouTube
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/alpha.html" class="nav-link">
+  Agoric Alpha
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/js-programming/" class="nav-link">
+  Agoric JavaScript Programming
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/wallet/" class="nav-link">
+  Wallet Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/repl/" class="nav-link router-link-active">
+  REPL
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/chainlink-integration.html" class="nav-link">
+  Chainlink Integration
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YouTube
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Timer Services</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/documentation/repl/timerServices.html#timerservice-objects" class="sidebar-link">TimerService objects</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#timestamp-object" class="sidebar-link">Timestamp object</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#relativetime-object" class="sidebar-link">RelativeTime object</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#timerwaker-object" class="sidebar-link">TimerWaker object</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#timerrepeater-object" class="sidebar-link">TimerRepeater object</a></li></ul></li><li><a href="/documentation/repl/timerServices.html#timerservice-methods" class="sidebar-link">TimerService methods</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#e-home-chain-or-local-timerservice-getcurrenttimestamp" class="sidebar-link">E(home.TimerService).getCurrentTimestamp()</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#e-home-chain-or-local-timerservice-setwakeup-basetime-handler" class="sidebar-link">E(home.TimerService).setWakeup(baseTime, handler)</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#e-home-chain-or-local-timerservice-removewakeup-handler" class="sidebar-link">E(home.TimerService).removeWakeup(handler)</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#e-home-chain-or-local-timerservice-createrepeater-delaysecs-interval" class="sidebar-link">E(home.TimerService).createRepeater(delaySecs, interval)</a></li><li class="sidebar-sub-header"><a href="/documentation/repl/timerServices.html#e-home-chain-or-local-timerservice-createnotifier-delaysecs-interval" class="sidebar-link">E(home.TimerService).createNotifier(delaySecs, interval)</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="timer-services"><a href="#timer-services" class="header-anchor">#</a> Timer Services</h1> <h2 id="timerservice-objects"><a href="#timerservice-objects" class="header-anchor">#</a> TimerService objects</h2> <p><code>home</code> has two timer service objects:</p> <ul><li><code>localTimerService</code> is from the local vat.</li> <li><code>chainTimerService</code> is from the chain (if present).</li></ul> <p>In general, you should use the chain timer for contracts. But it's more efficient to
+use the local timer for objects that don't need consensus or consistency.
+For example, people might want it for testing.</p> <p>Both timer services let you:</p> <ul><li>Schedule <code>wake()</code> calls.</li> <li>Remove scheduled <code>wake()</code> calls.</li> <li>Create a repeater for scheduling of events at regular intervals.</li></ul> <p>The local service lets you get a monotonically increasing timestamp for each instance
+of the local chain. The chain service lets you get the start time of the current block.</p> <p>With respect to using them, the only difference between the two timer
+services is whether you preface their identical command set with
+<code>localTimerService</code> or <code>chainTimerService</code>. However, note that
+the local and chain versions of a method may use different time bases.</p> <p>Before looking at the timer service methods, we need to cover four related objects.</p> <h3 id="timestamp-object"><a href="#timestamp-object" class="header-anchor">#</a> <code>Timestamp</code> object</h3> <p>An <code>Integer</code>, an absolute individual stamp returned by a <code>TimerService</code>.  Note that different
+timer services may have different interpretations of actual Timestamp values.</p> <h3 id="relativetime-object"><a href="#relativetime-object" class="header-anchor">#</a> <code>RelativeTime</code> object</h3> <p>An <code>Integer</code>, the difference between two <code>Timestamps</code>.  Note that
+different timer services may have different interpretations of actual <code>RelativeTime</code> values.</p> <h3 id="timerwaker-object"><a href="#timerwaker-object" class="header-anchor">#</a> <code>TimerWaker</code> object</h3> <p>A <code>TimerWaker</code> has one method, <code>wake</code>, which takes a <code>Timestamp</code> argument and returns <code>void</code>.
+The passed <code>timestamp</code> is the time when the call to <code>wake()</code> is scheduled to occur.</p> <h3 id="timerrepeater-object"><a href="#timerrepeater-object" class="header-anchor">#</a> <code>TimerRepeater</code> object</h3> <p>A <code>TimerRepeater</code> has two methods, <code>schedule()</code> and <code>disable</code>:</p> <ul><li><code>schedule(waker)</code> <ul><li><code>waker</code> <code>{ TimerWaker }</code></li> <li>Returns <code>{ Timestamp }</code></li> <li>The <code>waker</code> argument is any object with a <code>wake()</code> method. Returns the
+time indicating the time the waker is next scheduled to be called.  The waker continues
+to be scheduled every interval until the repeater is disabled.</li></ul></li> <li><code>disable()</code> <ul><li>Returns <code>void</code></li> <li>Disable this repeater, so <code>schedule()</code> can't be called, and wakers already
+scheduled with this repeater won't be rescheduled again
+after <code>E(waker).wake()</code> is next called on them.</li></ul></li></ul> <h2 id="timerservice-methods"><a href="#timerservice-methods" class="header-anchor">#</a> TimerService methods</h2> <h3 id="e-home-chain-or-local-timerservice-getcurrenttimestamp"><a href="#e-home-chain-or-local-timerservice-getcurrenttimestamp" class="header-anchor">#</a> <code>E(home.&lt;chain or local&gt;TimerService).getCurrentTimestamp()</code></h3> <ul><li>Returns: A monotonically increasing timestamp for each instance of the chain.</li></ul> <p>The current block might be executed more than once in case of restart or replay.
+But each time it will start from the same state and receive the same inputs.
+Since this is repeatable computation, the same computation can be run in various
+locations to cross-verify. So each time, the <code>currentTimeStamp</code> will be the same,
+even if we're running the computation a minute or a month later. It's expressed
+as a Unix epoch time in milliseconds or similar.</p> <div class="language-js extra-class"><pre class="language-js"><code>command<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token constant">E</span><span class="token punctuation">(</span>home<span class="token punctuation">.</span>chainTimerService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCurrentTimestamp</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token number">1608523721</span>
+command<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token constant">E</span><span class="token punctuation">(</span>home<span class="token punctuation">.</span>localTimerService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCurrentTimestamp</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token number">1340435997</span>
+</code></pre></div><h3 id="e-home-chain-or-local-timerservice-setwakeup-basetime-handler"><a href="#e-home-chain-or-local-timerservice-setwakeup-basetime-handler" class="header-anchor">#</a> <code>E(home.&lt;chain or local&gt;TimerService).setWakeup(baseTime, handler)</code></h3> <ul><li><code>baseTime</code> <code>{ Timestamp }</code></li> <li><code>handler</code> <code>{ Handler }</code></li> <li>Returns: <code>{ Timestamp }</code></li></ul> <p>Calls the specified handler the specified number of seconds after executing this call.</p> <p>Returns the time, in the same format as the parameter,
+at which the call is scheduled to happen.</p> <div class="language-js extra-class"><pre class="language-js"><code>command<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> handler <span class="token operator">=</span> <span class="token function">harden</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token function-variable function">wake</span><span class="token operator">:</span> <span class="token parameter">now</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">woke up </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>now<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token punctuation">{</span><span class="token string">&quot;wake&quot;</span><span class="token operator">:</span><span class="token punctuation">[</span>Function wake<span class="token punctuation">]</span><span class="token punctuation">}</span>
+command<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> willWakeAt <span class="token operator">=</span>  <span class="token constant">E</span><span class="token punctuation">(</span>home<span class="token punctuation">.</span>localTimerService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setWakeup</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> handler<span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token number">1342464583</span>
+<span class="token comment">// Written to console a few seconds later</span>
+woke up <span class="token number">1342464583</span>
+</code></pre></div><h3 id="e-home-chain-or-local-timerservice-removewakeup-handler"><a href="#e-home-chain-or-local-timerservice-removewakeup-handler" class="header-anchor">#</a> <code>E(home.&lt;chain or local&gt;TimerService).removeWakeup(handler)</code></h3> <ul><li><code>handler</code> <code>{ Handler }</code></li> <li>Returns: <code>{ Promise&lt;Array[Timestamp]&gt;}</code></li></ul> <p>Remove the specified handler from all scheduled wakeups, whether
+created by <code>setWakeup()</code> or <code>repeater.schedule()</code>, effectively
+canceling the wakeups using that handler.</p> <p>Returns a promise for an array of <code>Timestamp</code> times when the cancelled wakeup calls were scheduled to happen.</p> <div class="language-js extra-class"><pre class="language-js"><code>command<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> timeList <span class="token operator">=</span> <span class="token constant">E</span><span class="token punctuation">(</span>home<span class="token punctuation">.</span>localTimerService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">removeWakeup</span><span class="token punctuation">(</span>handler<span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> unresolved Promise
+</code></pre></div><h3 id="e-home-chain-or-local-timerservice-createrepeater-delaysecs-interval"><a href="#e-home-chain-or-local-timerservice-createrepeater-delaysecs-interval" class="header-anchor">#</a> <code>E(home.&lt;chain or local&gt;TimerService).createRepeater(delaySecs, interval)</code></h3> <ul><li><code>delaySecs</code>: <code>{ Integer }</code></li> <li><code>interval</code>: <code>{ Integer }</code></li> <li>Returns: <code>{ Repeater }</code></li></ul> <p>Creates and returns a <code>Repeater</code> object. It schedules <code>wake()</code> calls repeatedly at
+times that are a multiple of the specified interval following <code>baseTime</code>. <code>interval</code>
+is the delay between times when <code>wake()</code> is called. Since block times are coarse-grained,
+the actual call may occur later, but this won't change when the
+next event will be called.</p> <div class="language-js extra-class"><pre class="language-js"><code>command<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span> <span class="token constant">E</span><span class="token punctuation">(</span>home<span class="token punctuation">.</span>localTimerService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createRepeater</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span> <span class="token punctuation">[</span>Alleged<span class="token operator">:</span> presence o<span class="token operator">-</span><span class="token number">124</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div><p>A longer example of creating and using Repeaters:</p> <div class="language- extra-class"><pre class="language-text"><code>command[3]  makeHandler = () =&gt; { let calls = 0; const args = []; return { getCalls() {
+return calls; }, getArgs() { return args; }, wake(arg) { args.push(arg); calls += 1; }, }; }
+history[3]  [Function makeHandler]
+command[4]  h1 = makeHandler()
+history[4]  {&quot;getCalls&quot;:[Function getCalls],&quot;getArgs&quot;:[Function getArgs],&quot;wake&quot;:[Function wake]}
+command[5]  h2 = makeHandler()
+history[5]  {&quot;getCalls&quot;:[Function getCalls],&quot;getArgs&quot;:[Function getArgs],&quot;wake&quot;:[Function wake]}
+command[6]  tl = home.localTimerService
+history[6]  [Presence o-59]  
+command[7]  tc = home.chainTimerService
+history[7]  [Presence o-55]  
+command[8]  rl = tl~.makeRepeater(7, 1500)
+history[8]  [Presence o-64]  
+command[9]  rc = tc~.makeRepeater(7, 1)
+history[9]  [Presence o-65]  
+command[10]  rl~.schedule(h1)
+history[10]  1571783040007
+command[11]  rc~.schedule(h2)
+history[11]  1571783051
+command[12]  h1.getCalls()
+history[12]  3
+command[13]  h2.getCalls()
+history[13]  1
+...
+command[22]  h1.getCalls()
+history[22]  50
+command[23]  h1.getCalls()
+history[23]  53
+command[24]  h1.getCalls()
+history[24]  54
+command[25]  tl~.getCurrentTimestamp()
+history[25]  1571783375000
+command[26]  tc~.getCurrentTimestamp()
+history[26]  1571783384
+</code></pre></div><h3 id="e-home-chain-or-local-timerservice-createnotifier-delaysecs-interval"><a href="#e-home-chain-or-local-timerservice-createnotifier-delaysecs-interval" class="header-anchor">#</a> <code>E(home.&lt;chain or local&gt;TimerService).createNotifier(delaySecs, interval)</code></h3> <ul><li><code>delaySecs</code> <code>{ RelativeTime }</code></li> <li><code>interval</code> <code>{ RelativeTime }</code></li> <li>Returns: <code>{ Notifier&lt;Timestamp&gt; }</code></li></ul> <p>Creates and returns a <code>Notifier</code> object. It repeatedly delivers updates at times
+that are a multiple of the passed in <code>interval</code> value, with the first update happening
+the value of <code>delaySecs</code> after the notifier is created.</p> <div class="language-js extra-class"><pre class="language-js"><code>command<span class="token punctuation">[</span><span class="token number">30</span><span class="token punctuation">]</span> <span class="token constant">E</span><span class="token punctuation">(</span>home<span class="token punctuation">.</span>localTimerService<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createNotifier</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span>
+history<span class="token punctuation">[</span><span class="token number">30</span><span class="token punctuation">]</span> <span class="token punctuation">[</span>Alleged<span class="token operator">:</span> presence o<span class="token operator">-</span><span class="token number">129</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/Agoric/documentation/edit/main/main/repl/timerServices.md" target="_blank" rel="noopener noreferrer">Help us improve this page!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/22/2021, 2:45:43 AM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/documentation/assets/js/app.e9d39649.js" defer></script><script src="/documentation/assets/js/2.055035d6.js" defer></script><script src="/documentation/assets/js/62.da3dd3f8.js" defer></script>
+  </body>
+</html>

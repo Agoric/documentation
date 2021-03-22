@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Wallet UI | Alpha</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/documentation/favicon-full.ico">
+    <style type="text/css">
+    .two-col-table td {
+        width: 50%;
+    }
+    .two-col-table table {
+        table-layout: fixed;
+    }</style>
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-118217811-1"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); </script>
+    <script>
+    const logoUrlChanger = setInterval(function() {
+    //Anchor above the logo image
+    const homeEls = document.getElementsByClassName("home-link");
+    if(homeEls.length > 0) {
+      const homeEl = homeEls[0];
+      homeEl.setAttribute("href", "https://agoric.com");
+      homeEl.setAttribute("onclick", "return false;");
+      clearInterval(logoUrlChanger);
+    }
+
+    //Actual logo image
+    const logoEls = document.getElementsByClassName("logo")
+    if(logoEls.length > 0) {
+      const logoEl = logoEls[0]
+      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+      clearInterval(logoUrlChanger);
+    }
+   }, 1000) </script>
+    <meta name="description" content="Build, deploy and operate dApps and DeFi markets.">
+    
+    <link rel="preload" href="/documentation/assets/css/0.styles.3032228c.css" as="style"><link rel="preload" href="/documentation/assets/js/app.e9d39649.js" as="script"><link rel="preload" href="/documentation/assets/js/2.055035d6.js" as="script"><link rel="preload" href="/documentation/assets/js/3.5029543d.js" as="script"><link rel="prefetch" href="/documentation/assets/js/10.585b2158.js"><link rel="prefetch" href="/documentation/assets/js/11.9a98c34f.js"><link rel="prefetch" href="/documentation/assets/js/12.5c179c24.js"><link rel="prefetch" href="/documentation/assets/js/13.5d1f0876.js"><link rel="prefetch" href="/documentation/assets/js/14.fa0ecac6.js"><link rel="prefetch" href="/documentation/assets/js/15.f2b84c5b.js"><link rel="prefetch" href="/documentation/assets/js/16.6a6558c6.js"><link rel="prefetch" href="/documentation/assets/js/17.17052e2b.js"><link rel="prefetch" href="/documentation/assets/js/18.e5d573f0.js"><link rel="prefetch" href="/documentation/assets/js/19.f6159705.js"><link rel="prefetch" href="/documentation/assets/js/20.87ef6363.js"><link rel="prefetch" href="/documentation/assets/js/21.2bf0bcc8.js"><link rel="prefetch" href="/documentation/assets/js/22.3c41c5fe.js"><link rel="prefetch" href="/documentation/assets/js/23.3ce7e6cd.js"><link rel="prefetch" href="/documentation/assets/js/24.0c1bb113.js"><link rel="prefetch" href="/documentation/assets/js/25.4a088968.js"><link rel="prefetch" href="/documentation/assets/js/26.b2120513.js"><link rel="prefetch" href="/documentation/assets/js/27.c02f4aff.js"><link rel="prefetch" href="/documentation/assets/js/28.c50b740e.js"><link rel="prefetch" href="/documentation/assets/js/29.9215e21e.js"><link rel="prefetch" href="/documentation/assets/js/30.aa842318.js"><link rel="prefetch" href="/documentation/assets/js/31.14590e40.js"><link rel="prefetch" href="/documentation/assets/js/32.e34543b0.js"><link rel="prefetch" href="/documentation/assets/js/33.08dc5e79.js"><link rel="prefetch" href="/documentation/assets/js/34.be2a1606.js"><link rel="prefetch" href="/documentation/assets/js/35.4339ff49.js"><link rel="prefetch" href="/documentation/assets/js/36.f50aba9e.js"><link rel="prefetch" href="/documentation/assets/js/37.2d97d21b.js"><link rel="prefetch" href="/documentation/assets/js/38.1064fcbf.js"><link rel="prefetch" href="/documentation/assets/js/39.7eab9bf3.js"><link rel="prefetch" href="/documentation/assets/js/4.45e5a0cd.js"><link rel="prefetch" href="/documentation/assets/js/40.2e9758c8.js"><link rel="prefetch" href="/documentation/assets/js/41.fb0e921d.js"><link rel="prefetch" href="/documentation/assets/js/42.5bfa7121.js"><link rel="prefetch" href="/documentation/assets/js/43.6b0e5f2c.js"><link rel="prefetch" href="/documentation/assets/js/44.737659ce.js"><link rel="prefetch" href="/documentation/assets/js/45.fef430e8.js"><link rel="prefetch" href="/documentation/assets/js/46.2bd64db0.js"><link rel="prefetch" href="/documentation/assets/js/47.5ae1df34.js"><link rel="prefetch" href="/documentation/assets/js/48.bbcba416.js"><link rel="prefetch" href="/documentation/assets/js/49.ab14f817.js"><link rel="prefetch" href="/documentation/assets/js/5.ad898805.js"><link rel="prefetch" href="/documentation/assets/js/50.8489dcf8.js"><link rel="prefetch" href="/documentation/assets/js/51.84a46060.js"><link rel="prefetch" href="/documentation/assets/js/52.ccdc748b.js"><link rel="prefetch" href="/documentation/assets/js/53.2630e864.js"><link rel="prefetch" href="/documentation/assets/js/54.7c35a2f1.js"><link rel="prefetch" href="/documentation/assets/js/55.5dc8b5c3.js"><link rel="prefetch" href="/documentation/assets/js/56.745b027d.js"><link rel="prefetch" href="/documentation/assets/js/57.de5ade0c.js"><link rel="prefetch" href="/documentation/assets/js/58.183f3fdf.js"><link rel="prefetch" href="/documentation/assets/js/59.3fc1a30d.js"><link rel="prefetch" href="/documentation/assets/js/6.6a786cd3.js"><link rel="prefetch" href="/documentation/assets/js/60.494b175d.js"><link rel="prefetch" href="/documentation/assets/js/61.94d8d5ff.js"><link rel="prefetch" href="/documentation/assets/js/62.da3dd3f8.js"><link rel="prefetch" href="/documentation/assets/js/63.ea00a8ce.js"><link rel="prefetch" href="/documentation/assets/js/64.7f2edaf9.js"><link rel="prefetch" href="/documentation/assets/js/65.8d7fcace.js"><link rel="prefetch" href="/documentation/assets/js/66.b1bee48c.js"><link rel="prefetch" href="/documentation/assets/js/67.9238ee65.js"><link rel="prefetch" href="/documentation/assets/js/68.b16ef159.js"><link rel="prefetch" href="/documentation/assets/js/69.e5759c9c.js"><link rel="prefetch" href="/documentation/assets/js/7.8282d243.js"><link rel="prefetch" href="/documentation/assets/js/70.15df2113.js"><link rel="prefetch" href="/documentation/assets/js/71.ab1af6cb.js"><link rel="prefetch" href="/documentation/assets/js/72.85907030.js"><link rel="prefetch" href="/documentation/assets/js/73.a1a7a363.js"><link rel="prefetch" href="/documentation/assets/js/74.14bf8a3a.js"><link rel="prefetch" href="/documentation/assets/js/75.122cf302.js"><link rel="prefetch" href="/documentation/assets/js/76.cad1913f.js"><link rel="prefetch" href="/documentation/assets/js/77.6aaf5e0d.js"><link rel="prefetch" href="/documentation/assets/js/78.0cb7e765.js"><link rel="prefetch" href="/documentation/assets/js/79.e8a1b202.js"><link rel="prefetch" href="/documentation/assets/js/8.de2b40f3.js"><link rel="prefetch" href="/documentation/assets/js/80.c9f390a2.js"><link rel="prefetch" href="/documentation/assets/js/81.c5f99ea1.js"><link rel="prefetch" href="/documentation/assets/js/82.96575513.js"><link rel="prefetch" href="/documentation/assets/js/83.8acb0dc5.js"><link rel="prefetch" href="/documentation/assets/js/84.9a3f3930.js"><link rel="prefetch" href="/documentation/assets/js/85.3875c95e.js"><link rel="prefetch" href="/documentation/assets/js/86.72361b10.js"><link rel="prefetch" href="/documentation/assets/js/87.4f247b2a.js"><link rel="prefetch" href="/documentation/assets/js/88.7dcf1461.js"><link rel="prefetch" href="/documentation/assets/js/89.1d379d0c.js"><link rel="prefetch" href="/documentation/assets/js/9.b5b2cafd.js"><link rel="prefetch" href="/documentation/assets/js/90.5777bc7e.js"><link rel="prefetch" href="/documentation/assets/js/91.aa841d80.js">
+    <link rel="stylesheet" href="/documentation/assets/css/0.styles.3032228c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/documentation/" class="home-link router-link-active"><img src="/documentation/logo.svg" alt="Alpha" class="logo"> <span class="site-name can-hide">Alpha</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/alpha.html" class="nav-link">
+  Agoric Alpha
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/js-programming/" class="nav-link">
+  Agoric JavaScript Programming
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/wallet/" class="nav-link router-link-active">
+  Wallet Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/repl/" class="nav-link">
+  REPL
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/chainlink-integration.html" class="nav-link">
+  Chainlink Integration
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YouTube
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/alpha.html" class="nav-link">
+  Agoric Alpha
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/js-programming/" class="nav-link">
+  Agoric JavaScript Programming
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/wallet/" class="nav-link router-link-active">
+  Wallet Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/repl/" class="nav-link">
+  REPL
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/chainlink-integration.html" class="nav-link">
+  Chainlink Integration
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YouTube
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/documentation/getting-started/" class="sidebar-link">Documentation Guide</a></li><li><section class="sidebar-group collapsable depth-0"><a href="/documentation/guides/agoric-cli/" class="sidebar-heading clickable"><span>Agoric CLI</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/documentation/guides/wallet/" class="sidebar-heading clickable router-link-active open"><span>Wallet</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/documentation/guides/wallet/" aria-current="page" class="sidebar-link">Agoric Wallet</a></li><li><a href="/documentation/guides/wallet/ui.html" aria-current="page" class="active sidebar-link">Wallet UI</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#menu-bar" class="sidebar-link">Menu Bar</a></li><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#purses" class="sidebar-link">Purses</a></li><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#dapps" class="sidebar-link">Dapps</a></li><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#issuers" class="sidebar-link">Issuers</a></li><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#contacts" class="sidebar-link">Contacts</a></li><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#offers" class="sidebar-link">Offers</a></li><li class="sidebar-sub-header"><a href="/documentation/guides/wallet/ui.html#incoming-payments" class="sidebar-link">Incoming Payments</a></li></ul></li><li><a href="/documentation/guides/wallet/api.html" class="sidebar-link">Wallet API</a></li></ul></section></li><li><a href="/documentation/guides/js-programming/" class="sidebar-link">Agoric JavaScript Programming</a></li><li><a href="/documentation/repl/" class="sidebar-link">REPL</a></li><li><a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="sidebar-link">Dynamic IBC<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li><a href="/documentation/guides/chainlink-integration.html" class="sidebar-link">Chainlink Integration</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="wallet-ui"><a href="#wallet-ui" class="header-anchor">#</a> Wallet UI</h1> <p>From a shell window, run <code>agoric open</code> to open the Wallet UI in a browser tab.</p> <h2 id="menu-bar"><a href="#menu-bar" class="header-anchor">#</a> Menu Bar</h2> <p>At the top of the UI is a menu bar with four items.</p> <p><img src="/documentation/assets/img/0-MenuBar.12a6b27c.png" alt="Menu bar"></p> <ul><li><strong>Inbox</strong> <ul><li><img src="/documentation/assets/img/2-InboxWalletUI.fcd77570.png" alt="Inbox"></li> <li>Shows your offers, impending payments, Dapps, and purses.</li> <li>Lets you send payments, enable/disable Dapps and change their petname, approve/decline offers, or deposit impending payments.</li></ul></li> <li><strong>Transfers</strong> <ul><li><img src="/documentation/assets/img/3-TransfersWalletUI.4cdcf861.png" alt="Transfers"></li> <li>Shows your purses and contacts.</li> <li>Lets you send payments, import contacts by Board ID and give them a petname.</li></ul></li> <li><strong>Setup</strong> <ul><li><img src="/documentation/assets/img/4-SetupWalletUI.dd54ed52.png" alt="Setup"></li> <li>Shows your Dapps, issuers, and contacts.</li> <li>Lets you create empty purses, import contacts by Board ID and give them a petname, and enable/disable Dapps and change their petname.</li></ul></li> <li><strong>Connected/Disconnect</strong> <ul><li><img src="/documentation/assets/img/5-ConnectWalletUI.4b928516.png" alt="Connected"></li> <li>Shows if the Wallet UI is connected to your ag-solo.</li> <li>Lets you connect the Wallet to or disconnect the Wallet UI from your ag-solo.</li></ul></li></ul> <p>As there are only six page components, several of which are repeated on the three pages making up the Wallet UI,
+we will cover the components in detail rather than the pages.</p> <h2 id="purses"><a href="#purses" class="header-anchor">#</a> Purses</h2> <p><img src="/documentation/assets/img/PursesWalletUI.8cdfdb13.png" alt="Purses"></p> <p>The Purses component shows all purses in the wallet and their current balances (both the value and the brand).
+It also shows the special default purse that holds Zoe invitations.</p> <p><img src="/documentation/assets/img/PursesSendWalletUI.909f142c.png" alt="Purse Send"></p> <p>If you expand a purse entry, you'll see a red <strong>SEND</strong> button for that purse. Clicking it opens the above
+popup. From the popup, you can specify how much of the purse's shown current balance you would like to
+send elsewhere.</p> <p>You can transfer assets to another purse within your wallet. However, there must already be a purse that accepts
+assets of that brand to select. Otherwise, your only option is to send the assets back to the same purse they came
+from, which can be used for testing.</p> <p>Or you can transfer assets from the purse to any contact you already have. As noted, this is an irrevocable one way
+transfer. If the contact doesn't have an auto-deposit purse that accepts this asset type, it just sits under their
+Incoming Payments until an appropriate purse is created and it is manually deposited.  Only one purse can be
+designated the auto-deposit purse for its asset type.</p> <p>When you are finished specifying how much the payment is and where it's going, click the <strong>Send</strong> button at the bottom
+of the popup. Otherwise click the <strong>Cancel</strong> button to cancel the prospective transfer and close the popup.</p> <p>If you enable a Purse's <strong>AutoDeposit</strong> by sliding its buttonto the right, causing it to turn red, any
+incoming Payments of that Purse's Brand are automatically deposited into it. Doing so disables any other
+auto-deposit purses for that Brand. Sliding the button to the left, causing it to turn white, means you have
+to manually approve the deposit.</p> <h2 id="dapps"><a href="#dapps" class="header-anchor">#</a> Dapps</h2> <p><img src="/documentation/assets/img/DappsWalletUI.0d76a53c.png" alt="Dapps"></p> <p>The Dapps component shows all Dapps that can communicate with the Wallet. An expanded entry
+shows an alleged URL for that Dapp's UI, its Petname, and a toggle to enable/disable the Dapp
+from communicating with the Wallet. Note that like the other entries with an on/off slider,
+a Dapp is enabled when the button is slid to the right and turns red, and disabled when slid to the
+left and turns white.</p> <h2 id="issuers"><a href="#issuers" class="header-anchor">#</a> Issuers</h2> <p><img src="/documentation/assets/img/IssuersWalletUI.b65684cc.png" alt="Issuers"></p> <p>The Issuers component shows all Issuers known to the Wallet, along with their associated Brands.
+An expanded entry shows that Issuer's Board ID and a <strong>Make Purse</strong> button. When <strong>Make Purse</strong> is
+clicked the following popup appears:</p> <p><img src="/documentation/assets/img/CreatePurseWalletUI.df3c3b46.png" alt="Make Purse"></p> <p>The Issuer creates a new empty Purse, that holds its Brand of assets, in the Wallet, giving it the Petname
+you specify. Remember there can be more than one Purse in a Wallet that holds assets of a specific Brand.</p> <p>If you click the <strong>Import</strong> button at the bottom of the Issuers list, this popup appears:</p> <p><img src="/documentation/assets/img/ImportIssuerWalletUI.d54532aa.png" alt="Import Issuer"></p> <p>You specify a Petname and the Board ID (obtained from a trusted source) of an Issuer, and it's imported
+into the Wallet and can be used to create new empty Purses to store assets of its associated Brand.</p> <h2 id="contacts"><a href="#contacts" class="header-anchor">#</a> Contacts</h2> <p><img src="/documentation/assets/img/ContactsWalletUI.80ceeff5.png" alt="Contacts"></p> <p>The Contacts component shows all entities known to the Wallet, including the Wallet itself as &quot;Self&quot;. An
+expanded entry shows the contact's Board ID. If you click on the <strong>Import</strong> button, this popup appears:</p> <p><img src="/documentation/assets/img/ImportContactWalletUI.5d12ae5d.png" alt="Import Contact"></p> <p>You specify a Petname and the Board ID (obtained from a trusted source) of a Contact, and it's imported
+into the Wallet.</p> <h2 id="offers"><a href="#offers" class="header-anchor">#</a> Offers</h2> <p><img src="/documentation/assets/img/OffersWalletUI.7511543e.png" alt="Offers"></p> <p>The Offers component shows any pending offers known to the Wallet. Click the green <strong>Accept</strong> button
+to accept the offer, or click the red <strong>Decline</strong> button to decline it.</p> <p>Note the small, red, <code>&lt;&gt;</code> at the far right
+of an offer. Clicking it opens a popup with the JSON representation of that offer, for example:</p> <p><img src="/documentation/assets/img/OfferDetailWalletUI.0563c8ee.png" alt="Offer Detail"></p> <h2 id="incoming-payments"><a href="#incoming-payments" class="header-anchor">#</a> Incoming Payments</h2> <p><img src="/documentation/assets/img/IncomingPaymentWalletUI.6e97d7e5.png" alt="Payments"></p> <p>The Incoming Payments component shows any pending incoming payments not yet deposited in a purse.
+A Deposit To value of &quot;Automatic&quot; means to deposit the payment in the apprpriate purse that has
+auto-deposit enabled. Otherwise, you need to select into which of your purses for that brand of asset you
+want to deposit the payment. Note that you can't divide the payment or otherwise make a partial
+deposit; it's all or nothing.</p> <p>Note the small, red, <code>&lt;&gt;</code> at the far right
+of a payment. Clicking it opens a popup with the JSON representation of that payment, for example:</p> <p><img src="/documentation/assets/img/PaymentDetailWalletUI.22a653f3.png" alt="Payment Detail"></p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/Agoric/documentation/edit/main/main/guides/wallet/ui.md" target="_blank" rel="noopener noreferrer">Help us improve this page!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/22/2021, 2:45:43 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/documentation/guides/wallet/" class="prev router-link-active">
+        Agoric Wallet
+      </a></span> <span class="next"><a href="/documentation/guides/wallet/api.html">
+        Wallet API
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/documentation/assets/js/app.e9d39649.js" defer></script><script src="/documentation/assets/js/2.055035d6.js" defer></script><script src="/documentation/assets/js/3.5029543d.js" defer></script>
+  </body>
+</html>
