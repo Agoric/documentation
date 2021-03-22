@@ -49,7 +49,7 @@ How to install software that the Agoric SDK depends on.
 7. **[Deploying Smart Contracts](./deploying.md)**: 
   A brief description of the tools and processes for deploying contracts to the chain and
   application code to the application server.
-8. **[JavaScript Distributed Programming Guide](/distributed-programming.md)**: 
+8. **[JavaScript Distributed Programming Guide](/guides/js-programming/)**: 
   We've made some Agoric-specific additions at various layers, including concepts, syntax, 
   and additions to the Agoric library. You should know about and understand these before 
   programming on the Agoric platform.
@@ -63,9 +63,14 @@ How to install software that the Agoric SDK depends on.
   documentation, accessible from the Zoe documentation sidebar menu.
 
 When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
-Reference](/zoe/api/)**, **[Wallet UI Guide and API Reference](/wallet-api.md)**,
-and **[Agoric CLI Guide](/getting-started/agoric-cli-guide.md)** for details about 
-their respective commands. 
+Reference](/zoe/api/)**, **[Wallet Guide and API Reference](/guides/wallet)**,
+and **[Agoric CLI Guide](/guides/agoric-cli/)** for details about 
+their respective commands. The Wallet Guide also covers the Wallet UI and 
+general working with the Agoric Wallet.
+
+You can access a REPL (Read-Eval-Print Loop). From the REPL and its `home` object,
+developers can use all the on-chain commands that deployment scripts use to deploy
+contracts and Dapps. See the **[REPL Guide](/repl/)** for details.
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
 to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
@@ -79,7 +84,11 @@ definitions to (i.e. what does *mint* mean in an Agoric context?).
 
 For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
 
-Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, 
+such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+
+Agoric's **[YouTube channel](https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg)** has tutorials, company calls, 
+and other talks by Agoric engineers and management.
 
 Finally, we have links to the ultimate documentation; the **[GitHub
 repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.

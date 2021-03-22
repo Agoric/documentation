@@ -14,10 +14,10 @@ Before doing the steps given in this document, be sure you have done the necessa
 specified in [Before Using Agoric](/getting-started/before-using-agoric.md).
 
 For complete documentation on the Agoric CLI commands (those starting with `agoric`) used here, 
-see the [Agoric CLI Guide](/getting-started/agoric-cli-guide.md).
+see the [Agoric CLI Guide](/guides/agoric-cli/commands.md).
 
 For starting a local chain with multiple users, making it possible to develop and test multiuser Dapps, also see the 
- [Agoric CLI Guide](/getting-started/agoric-cli-guide.md#starting-multiuser-dapps).
+ [Agoric CLI Guide](/guides/agoric-cli/starting-multiuser-dapps.md).
 
 Also, for what needs to be done after you modify a project's code, see 
 [Development

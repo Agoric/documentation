@@ -7,7 +7,7 @@
 
 **NOTE: You almost certainly do not want to use this contract directly.
 Instead, please read the [Chainlink integration
-documentation](/chainlink-integration.md)**
+documentation](/guides/chainlink-integration.md)**
 
 This contract lets other contracts or users make single free or fee-based
 queries to a generic oracle node (a single instance).  This provides a very
@@ -21,7 +21,7 @@ individual node.**
 
 Relying on just a single node can be both expensive and risky. Instead, use the
 higher-level APIs described in the [Chainlink integration
-documentation](/chainlink-integration.md).
+documentation](/guides/chainlink-integration.md).
 
 ## Making a Free Query
 

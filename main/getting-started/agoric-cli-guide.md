@@ -1,6 +1,3 @@
----
-sidebar: auto
----
 
 # Agoric CLI Guide
 

@@ -47,7 +47,6 @@ module.exports = {
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 2,
-    sidebar: 'auto',
     lastUpdated: 'Last Updated', 
     logo: '/logo.svg',
     /* --- NAVBAR (top) --- */
@@ -61,33 +60,64 @@ module.exports = {
     // Internal links: Must have a corresponding folder with a README.md file
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
-    sidebar: {
-      '/wallet-api.html': [
+    sidebar: { 
+      '/guides/': [
         {
-          title: 'Wallet API',
-          path: '/wallet-api.html',
-          collapsible: true,
-          children: []
+          title: 'Documentation Guide',
+          path: '/getting-started/',
+          collapsible: false,
+          children: [
+          ]
         },
+        {
+          title: 'Agoric CLI',
+          path: '/guides/agoric-cli/',
+          collapsible: false,
+          children: [
+       	    '/guides/agoric-cli/',
+            '/guides/agoric-cli/commands',
+            '/guides/agoric-cli/starting-multiuser-dapps',
+          ]
+        },
+        {
+          title: 'Wallet',
+          path: '/guides/wallet/',
+          collapsible: false,
+          children: [
+            '/guides/wallet/',
+	          '/guides/wallet/ui',
+	          '/guides/wallet/api',		
+          ]
+        },
+        {
+          title: 'Agoric JavaScript Programming',
+          path: '/guides/js-programming/',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'REPL',
+          path: '/repl/',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Dynamic IBC',
+          path: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Chainlink Integration',
+          path: '/guides/chainlink-integration.html',
+          collapsible: false,
+          children: [
+          ]
+       },
       ],
-      '/glossary/': [
-        {
-          title: 'Glossary',
-          path: '/glossary/',
-          collapsible: false,
-          children: [
-          ]
-        },
-        ],      
-      '/platform/': [
-        {
-          title: 'Platform',
-          path: '/platform/',
-          collapsible: false,
-          children: [
-          ]
-        },
-        ],      
       '/getting-started/': [
         {
           title: 'Agoric Alpha',
@@ -147,7 +177,7 @@ module.exports = {
         },
         {
           title: 'Agoric CLI Guide',
-          path: '/getting-started/agoric-cli-guide.html',
+          path: '/guides/agoric-cli/',
           collapsible: false,
           children: [
           ]
@@ -156,7 +186,7 @@ module.exports = {
       '/ertp/': [
         {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.md',
+          path: '/getting-started/ertp-introduction.html',
           collapsible: false,
           children: [
           ]
@@ -212,24 +242,6 @@ module.exports = {
           path: '/zoe/guide/contracts/',
           collapsible: false,
           children: [
-            '/zoe/guide/contracts/automatic-refund',
-            '/zoe/guide/contracts/atomic-swap',
-            '/zoe/guide/contracts/autoswap',
-            '/zoe/guide/contracts/barter-exchange',
-            '/zoe/guide/contracts/covered-call',
-            '/zoe/guide/contracts/escrow-to-vote',
-            '/zoe/guide/contracts/fundedCallSpread',
-            '/zoe/guide/contracts/loan',
-            '/zoe/guide/contracts/mint-and-sell-nfts',
-            '/zoe/guide/contracts/mint-payments',
-            '/zoe/guide/contracts/multipoolAutoswap',
-            '/zoe/guide/contracts/oracle',
-            '/zoe/guide/contracts/otc-desk',
-            '/zoe/guide/contracts/pricedCallSpread',
-            '/zoe/guide/contracts/second-price-auction',
-            '/zoe/guide/contracts/sell-items',
-            '/zoe/guide/contracts/simple-exchange',
-            '/zoe/guide/contracts/use-obj-example',
           ]
         },
         {
@@ -239,7 +251,8 @@ module.exports = {
           children: [
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',
-            '/zoe/api/zoe-helpers'
+            '/zoe/api/zoe-helpers',
+            '/zoe/api/price-authority',
           ],
         },
         {

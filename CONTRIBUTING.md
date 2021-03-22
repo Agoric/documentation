@@ -34,10 +34,12 @@ process is:
 This doc explains:
 - The overall documentation structure.
 - Our preferred way of writing links.
-- How to import code snippets into docs.
 - What happens when you make a PR.
+- How to import code snippets into docs.
+- Updating Zoe Version and DocsUpdated
 - How to build and run a local doc server for testing.
 - How to edit the top menubar and sidebars of the Agoric documentation site.
+- How to redirect links if you move repo folders/files around or delete them.
 
 ## Structure
 
@@ -485,3 +487,32 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
 When viewing a page, VuePress has automatically constructed a sidebar menu entry for that page 
 consisting of all `h1`, `h2`, and `h3` header titles on the page.
 
+## Redirecting links
+
+If you reorganize part of the Documentation repo or delete/deprecate a file in favor of a replacement,
+you should establish a site URL redirect from the old file to the new one, in case anyone external to 
+Agoric has made a link or bookmarked the old file.
+
+Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of 03/2021, ours
+looks like this:
+```js
+export default ({ router }) => {
+  router.addRoutes([
+    { path: '/wallet-api/', redirect: '/guides/wallet/' },
+    { path: '/wallet-api.html', redirect: '/guides/wallet/' },
+    { path: '/chainlink-integration/', redirect: '/guides/chainlink-integration.md' },
+    { path: '/chainlink-integration.html', redirect: '/guides/chainlink-integration.md' },
+    { path: '/distributed-programming/', redirect: '/guides/js-programming/' },
+    { path: '/distributed-programming.html', redirect: '/guides/js-programming/' },
+    { path: '/getting-started/agoric-cli-guide/', redirect: '/guides/agoric-cli/' },
+    { path: '/getting-started/agoric-cli-guide.html', redirect: '/guides/agoric-cli/' },
+  ])
+}
+```
+The general format should be self-explanatory. However, there are two things you need to know that aren't apparant
+- VuePress treats `main` as the root of the folders. So all of the addresses start with `/` to represent `/main/`.
+- You'll notice there are two entries for every redirect, one where the redirected address ends with `.html` and
+  one where it ends with `/`. For each individual file that is not a `README.md`, there are two ways to access it.
+  So we cover both ways. No entry has a `.md` extension. The redirect happens after VuePress' build step, so there
+  are no longer any Markdown files; they've been converted to .html. So that's what's redirected.
+  

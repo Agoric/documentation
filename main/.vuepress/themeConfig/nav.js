@@ -45,9 +45,9 @@ module.exports = [
         link: '/getting-started/intro-zoe',
       },
       {
-        text: 'Agoric CLI Guide',
+        text: 'Agoric CLI Guide and API',
         ariaLabel: 'Agoric CLI Guide Menu',
-        link: '/getting-started/agoric-cli-guide',
+        link: '/guides/agoric-cli/',
       },
       {
         text: 'Agoric Alpha',
@@ -66,9 +66,9 @@ module.exports = [
         link: '/getting-started/',
       },
       {
-        text: 'Agoric CLI',
-        ariaLabel: 'Agoric CLI Guide',
-        link: '/getting-started/agoric-cli-guide.md',
+        text: 'Agoric CLI Guide and API',
+        ariaLabel: 'Agoric CLI Guide and API',
+        link: '/guides/agoric-cli/',
       },
       {
         text: 'Agoric Dapps',
@@ -86,19 +86,29 @@ module.exports = [
         link: '/zoe/guide/'
       },
       {
-        text: 'Wallet API',
-        ariaLabel: 'Wallet API Guide',
-        link: '/wallet-api'
+        text: 'Agoric JavaScript Programming',
+        ariaLabel: 'Agoric JS Programming',
+        link: '/guides/js-programming/',
+      },
+      {
+        text: 'Wallet Guide and API',
+        ariaLabel: 'Wallet API Guide and API',
+        link: '/guides/wallet/'
+      },
+      {
+        text: 'REPL',
+        ariaLabel: 'REPL',
+        link: '/repl/',
+      },
+      {
+        text: 'Chainlink Integration',
+        ariaLabel: 'Chainlink Integration',
+        link: '/guides/chainlink-integration',
       },
       {
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
         link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
-      },
-      {
-        text: 'JS Distributed Programming',
-        ariaLabel: 'JS Distributed Programming',
-        link: '/distributed-programming',
       },
     ],
   },
@@ -192,6 +202,11 @@ module.exports = [
         ariaLabel: 'Papers Page Link',
         link: 'https://agoric.com/papers/'
       },
+      {
+        text: 'YouTube',
+        ariaLabel: 'Agoric YouTube Channel Page Link',
+        link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/'
+      },     
       {
         text: 'Github',
         ariaLabel: 'Agoric Github Link',

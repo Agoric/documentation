@@ -1,7 +1,6 @@
 ---
 sidebar: auto
 ---
-
 # Agoric Dapp
 
 ::: warning Changes in the Alpha Release Candidate

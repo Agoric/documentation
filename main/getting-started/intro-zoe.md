@@ -54,7 +54,7 @@ use](/zoe/guide/contracts/), including:
 You must have a Zoe invitation to a specific contract instance to join
 and participate in it. Let's imagine your friend Alice has sent you a
 `Zoe invitation` for a contract instance to your
-[wallet](/wallet-api.md). 
+[wallet](/guides/wallet/). 
 
 Compare this to a smart contract on Ethereum. On Ethereum, the smart
 contract developer must guard against malicious calls and store an
@@ -82,7 +82,7 @@ to inspect and validate the invitation.
 
 E() is part of the Agoric platform and is used to [call methods on
 remote objects and receive a promise for the
-result](/distributed-programming.md#communicating-with-remote-objects-using-e).
+result](/guides/js-programming/eventual-send.md).
 Code on the Agoric platform is put in separate environments, called
 [vats](/glossary/#vat), for security. Zoe is in a different vat,
 making it a remote object, so we must use E().
@@ -156,7 +156,7 @@ Keyword as your `proposal.give`:
 
 <<< @/snippets/test-intro-zoe.js#getPayments
 
-Now  you need to [harden](/distributed-programming.md#harden) your
+Now  you need to [harden](/guides/js-programming/ses/ses-guide.md) your
 just created `proposal` and `payments` objects. Hardening is
 transitively freezing an object. For security reasons, we must harden
 any objects that will be passed to a remote object like Zoe.

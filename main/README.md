@@ -51,3 +51,7 @@ Our ocap platform consists of:
 - A cryptographic routing fabric for inter-chain interoperability.
 - A library of market abstractions and a framework for securely composing them.
 - A framework for secure user interaction.
+
+## Getting Started
+
+Our [Documentation Guide](/getting-started/) describes our documentation and suggests an order for getting started with the Agoric platform.

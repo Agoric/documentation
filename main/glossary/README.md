@@ -1,10 +1,13 @@
+---
+sidebar: auto
+---
 # Glossary
 
 This page lists words, expressions, or concepts used by the Agoric technology stack.
 
 ## Agoric CLI
 A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
-See the [Agoric CLI Guide](/getting-started/agoric-cli-guide.md).
+See the [Agoric CLI Guide](/guides/agoric-cli/).
 
 ## AllegedName
 Human-readable name of a kind of rights. The alleged name should
@@ -72,7 +75,7 @@ digital assets in the quantity specified by an [amount](#amounts).
 
 JavaScript's `Number` primitive only represents numbers up to 253 - 1. `BigInt` is a built-in 
 object that can be used for arbitrarily large integers. Agoric uses `BigInts` for times 
-and `Amount` `values`. See [here](/distributed-programming.md#bigint) for more information.
+and `Amount` `values`. See [here](/guides/js-programming/bigint.md) for more information.
 
 ## Board (Agoric Board)
 
@@ -150,7 +153,7 @@ See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/do
 in another vat, machine, or blockchain. It takes a local representative (a proxy) for a remote object as an argument and 
 sends messages to it using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with. 
 All `E()` calls return a promise for the eventual returned value. For more detail, see 
-the [`E()` section in the Distributed JavaScript page](/distributed-programming.md#communicating-with-remote-objects-using-e).
+the [`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
 
 ## ERTP
 
@@ -215,7 +218,7 @@ an object reference, and no identity can be guessed and no fake identity will su
 ## Harden
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
-its [section in the JavaScript Distributed Programming Guide](/distributed-programming.md#harden)
+its [section in the JavaScript Distributed Programming Guide](/guides/js-programming/ses/ses-guide.md)
 
 ## IBC
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC
@@ -309,7 +312,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 ## Notifier
 
 A notifier provides a stream of updates describing changes to the state of an [offer](#offer) or other object.
-For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](/distributed-programming.md#notifiers).
+For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](/guides/js-programming/notifiers.md).
 
 ## Object Capabilities
 
@@ -374,7 +377,7 @@ as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in [wal
 ## Presence 
 A local version of a remote object that serves as the remote object's proxy. 
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`. 
-For more information, see the [JavaScript Distributed Programming Guide](/distributed-programming.md). 
+For more information, see the [JavaScript Distributed Programming Guide](/guides/js-programming/). 
 
 ## Proposal
 
@@ -430,7 +433,7 @@ passed to `zcf.reallocate()`.
 SES is a standards-track extension to the JavaScript standard. It
 provides a secure platform for executing programs. With SES, you can run code you don't
 completely trust, without being vulnerable to bugs or bad intentions. 
-See the [SES section of the Distributed JavaScript Programming Guide](/distributed-programming.md#secure-ecmascript-ses) for 
+See the [SES section of the Distributed JavaScript Programming Guide](/guides/js-programming/ses/ses-guide.md) for 
 more details. 
 
 ## Simoleons
@@ -461,7 +464,7 @@ A vat is a unit of isolation.
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
 communicate with other vats and their objects and functions, but can only communicate asynchronously. 
 
-For more information, see the [Vat section in the Distributed JS Programming Guide](/distributed-programming.md#vats)
+For more information, see the [Vat section in the Distributed JS Programming Guide](/guides/js-programming/vats.md)
 
 ## Wallet
 
@@ -469,7 +472,7 @@ The overall place a party keeps their assets of all brands. For example, your wa
 [purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [Issuers](#issuer). 
 Dapps can propose [offers](#offer) to a wallet. If a user accepts the offer proposal, 
 the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse). 
-See the [Wallet API](/wallet-api.md).
+See the [Wallet Guide and API](/guides/wallet/).
 
 ## ZCF
 *ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe 
