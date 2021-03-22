@@ -3,7 +3,7 @@ their respective project's folder, such as the ERTP and Zoe Guides. The followin
 all guides across our Documentation repo.
 
 - [Agoric CLI](./agoric-cli)
-- [Agoric Dapps](./dapps)
+- [Agoric Dapps](/dapps)
 - [Chainlink Integration](./chainlink-integration.md)
 - [Documentation](/getting-started/)
 - [Dynamic IBC](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md)
