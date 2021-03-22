@@ -102,10 +102,10 @@ after `lockdown()`was called.
 
 ## `lockdown` Options
 
-### Default `safe` settings
+### Default `'safe'` settings
 
-All four of these safety-relevant options default to `safe` if omitted 
-from a call to `lockdown()`. Their other possible value is `unsafe`.
+All four of these safety-relevant options default to `'safe'` if omitted 
+from a call to `lockdown()`. Their other possible value is `'unsafe'`.
 - `regExpTaming`
 - `localeTaming`
 - `consoleTaming`
@@ -113,7 +113,7 @@ from a call to `lockdown()`. Their other possible value is `unsafe`.
 
 The tradeoff is safety vs compatibility with existing code. However, much legacy
 JavaScript code does run under SES, even if both not written to do so and with all
-the options set to `safe`. Only consider an `'unsafe'` value if you both need it 
+the options set to `'safe'`. Only consider an `'unsafe'` value if you both need it 
 and can evaluate its risks.
 
 ### Options quick reference
@@ -172,9 +172,9 @@ below.
 
 #### `regExpTaming` Option
 
-With its default `safe` value, regExpTaming prevents using `RegExp.*()` methods in the locked down code.
+With its default `'safe'` value, regExpTaming prevents using `RegExp.*()` methods in the locked down code.
 
-With its `unsafe` value, `RegExp.prototype.compile()` can be used in locked down code. 
+With its `'unsafe'` value, `RegExp.prototype.compile()` can be used in locked down code. 
 All other `RegExp.*()` methods are disabled.
 
 ```js
@@ -210,7 +210,7 @@ lockdown({ localeTaming: 'unsafe' }); // Allow locale-specific behavior
 
 #### `consoleTaming` Options
 
-The default `safe` option actually expands what you would expect from `console`'s logging 
+The default `'safe'` option actually expands what you would expect from `console`'s logging 
 output. It will show information from the `assert` package and error objects.
 Errors can report more diagnostic information that should be hidden from other objects. See
 the [error README](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/error/README.md) 
@@ -218,7 +218,7 @@ for an in depth explanation of this.
 
 The `'unsafe'` setting leaves the original `console` in place. The `assert` package
 and error objects continue to work, but the `console` logging output will not 
-show this extra information. `unsafe` does **not** remove any additional `console` 
+show this extra information. `'unsafe'` does **not** remove any additional `console` 
 methods beyond its de facto "standards". Since we do not know if these 
 methods violate OCap security, we should assume they are unsafe. A raw `console` 
 object should only be handled by very trustworthy code.
