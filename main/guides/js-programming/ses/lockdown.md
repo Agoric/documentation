@@ -527,18 +527,18 @@ by our override mitigation.
 <details>
   <summary>Expand for { overrideTaming: 'moderate' } vscode inspector display</summary>
 
-  ![overrideTaming: 'moderate' vscode inspector display](./assets/override-taming-moderate-inspector.png)
+<p>![overrideTaming: 'moderate' vscode inspector display](./assets/override-taming-moderate-inspector.png)</p>
 </details>
 
 <details>
   <summary>Expand for { overrideTaming: 'min' } vscode inspector display</summary>
 
-![overrideTaming: 'min' vscode inspector display](./assets/override-taming-min-inspector.png)
+<p>![overrideTaming: 'min' vscode inspector display](./assets/override-taming-min-inspector.png)</p>
 </details>
 
 <details>
   <summary>Expand to see the vscode inspector display if enabling all of Object.prototype</summary>
 
-![vscode inspector display if enabling all of Object.prototype](./assets/override-taming-star-inspector.png)
+<p>![vscode inspector display if enabling all of Object.prototype](./assets/override-taming-star-inspector.png)</p>
 </details>
   
