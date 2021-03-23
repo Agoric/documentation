@@ -78,7 +78,7 @@ module.exports = {
             '/guides/agoric-cli/commands',
             '/guides/agoric-cli/starting-multiuser-dapps',
           ]
-        }
+        },
         {
           title: 'ERTP Guide',
           path: '/ertp/guide/',
@@ -118,7 +118,7 @@ module.exports = {
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
-	    '/guides/js-programming/agoric-javascript-overview',
+	    '/guides/js-programming/agoric-js-overview',
 	    '/guides/js-programming/bigint',
 	    '/guides/js-programming/eventual-send',	
 	    '/guides/js-programming/ses/',	
@@ -131,8 +131,8 @@ module.exports = {
           path: '/guides/js-programming/ses/',
           collapsible: false,
           children: [
-	    '/guides/js-programming/ses/guide',
-	    '/guides/js-programming/ses/reference',
+	    '/guides/js-programming/ses/ses-guide',
+	    '/guides/js-programming/ses/ses-reference',
 	    '/guides/js-programming/ses/lockdown',
           ]
         },
