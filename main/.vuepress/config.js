@@ -78,6 +78,30 @@ module.exports = {
             '/guides/agoric-cli/commands',
             '/guides/agoric-cli/starting-multiuser-dapps',
           ]
+        }
+        {
+          title: 'ERTP Guide',
+          path: '/ertp/guide/',
+          collapsible: false,
+          children: [
+            '/ertp/guide/',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
+            '/ertp/guide/issuers-and-mints',
+            '/ertp/guide/purses-and-payments',
+          ]
+        },
+        {
+          title: 'Zoe Guide',
+          path: '/zoe/guide/',
+          collapsible: false,
+          children: [
+            '/zoe/guide/',
+            '/zoe/guide/offer-safety',
+            '/zoe/guide/proposal',
+            '/zoe/guide/contract-requirements',
+            '/zoe/guide/price-authority'
+          ]
         },
         {
           title: 'Wallet',
@@ -94,6 +118,7 @@ module.exports = {
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
+	    '/guides/js-programming/agoric-javascript-overview',
 	    '/guides/js-programming/bigint',
 	    '/guides/js-programming/eventual-send',	
 	    '/guides/js-programming/ses/',	
@@ -102,10 +127,28 @@ module.exports = {
           ]
         },
         {
+          title: 'SES',
+          path: '/guides/js-programming/ses/',
+          collapsible: false,
+          children: [
+	    '/guides/js-programming/ses/guide',
+	    '/guides/js-programming/ses/reference',
+	    '/guides/js-programming/ses/lockdown',
+          ]
+        },
+        {
           title: 'REPL',
           path: '/repl/',
           collapsible: false,
           children: [
+	    '/guides/wallet/api',
+	    '/repl/timerServices',
+            '/repl/board',
+	    '/repl/sharingService',
+	    '/repl/networking',
+	    '/zoe/api/zoe',
+	    '/repl/priceAuthority',
+	    '/repl/scratch',
           ]
         },
         {
