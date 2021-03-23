@@ -1,4 +1,4 @@
-# Communicating with remote objects using `E`
+# Remote object communication with `E()`
 
 On the Agoric platform, objects may be running in distinct vats, on a remote
 machine, or even on a blockchain. When you send messages to non-local

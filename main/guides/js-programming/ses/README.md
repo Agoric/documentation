@@ -1,3 +1,5 @@
+# SES
+
 The Agoric platform includes a *SES (Secure ECMAScript)* shim, (a library
 providing SES features) for writing secure smart contracts in JavaScript. 
 SES is a JavaScript runtime library for safely running third-party code.
