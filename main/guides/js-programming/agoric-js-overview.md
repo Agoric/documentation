@@ -24,8 +24,8 @@ ECMAScript*) `Compartment` (see below), with some additions.
 SES is a safe deterministic subset of "strict mode" JavaScript. This means it does not include 
 any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) 
 (which is not “safe”). SES also removes non-determinism by modifying a few built-in objects. For a 
-more detailed explanation of SES and its functionality, see the [SES Guide](ses-guide.md) 
-and [SES Reference(./ses-reference.md).
+more detailed explanation of SES and its functionality, see the [SES Guide](./ses/ses-guide.md) 
+and [SES Reference(./ses/ses-reference.md).
 
 As of SES-0.8.0/Fall 2020, [the SES source code](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js) 
 defines a subset of the globals defined by the baseline JavaScript language specification. SES **includes** the globals:
