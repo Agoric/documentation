@@ -85,8 +85,8 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/wallet/',
-	          '/guides/wallet/ui',
-	          '/guides/wallet/api',		
+	    '/guides/wallet/ui',
+	    '/guides/wallet/api',		
           ]
         },
         {
@@ -94,6 +94,11 @@ module.exports = {
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
+	    '/guides/js-programming/bigint',
+	    '/guides/js-programming/eventual-send',	
+	    '/guides/js-programming/ses/',	
+	    '/guides/js-programming/vats',	
+	    '/guides/js-programming/notifiers',	
           ]
         },
         {
