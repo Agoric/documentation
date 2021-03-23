@@ -74,7 +74,6 @@ module.exports = {
           path: '/guides/agoric-cli/',
           collapsible: false,
           children: [
-       	    '/guides/agoric-cli/',
             '/guides/agoric-cli/commands',
             '/guides/agoric-cli/starting-multiuser-dapps',
           ]
@@ -114,7 +113,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Agoric JavaScript Programming',
+          title: 'JavaScript Programming',
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
