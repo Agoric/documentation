@@ -34,6 +34,8 @@ makes a similar` {publication, subscription}` pair. Each pair’s first
 element (`updater` or `publication`) produces the async iteration which is then 
 consumed using each pair’s second element (`notifier` or `subscription`).
 ```js
+import { makeNotifierKit } from '@agoric/notifier';
+import { makeSubscriberKit } from '@agoric/notifier';
 const { updater, notifier } = makeNotifierKit();
 const { publication, subscription } = makeSubscriptionKit(); 
 ```
@@ -115,11 +117,17 @@ position.
 ## Methods
 
 The `updater` and `publication` both have the same three methods:
-- `updateState(state)`: Supplies and sends out a new state to consumers.
-- `finish(finalState)`: Closes the stream of state changes and supplies a final state
+- `updateState(state)`
+  Supplies and sends out a new state to consumers. All active Promises 
+  produced by `getUpdateSince()` are resolved to the next record.
+- `finish(finalState)`
+  - Closes the stream of state changes and supplies a final state
     value to consumers.
-- `fail(reason)`: Closes the stream of state changes, indicates a failure to finish
-   satisfactorily, and supplies a reason for the failure to consumers.
+- `fail(reason)`
+  - Closes the stream of state changes, indicates a failure to finish
+    satisfactorily, and supplies a reason for the failure to consumers. Does not provide
+    a next state. Instead, it causes the Promise to be rejected with the reason, 
+    signalling that the monitored object hit an error condition.
 
 The `subscription` and `publication` both have this method:
 - `getUpdateSince()`: Returns `{ value, updateCount }`. 
