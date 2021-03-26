@@ -164,24 +164,24 @@ Individual contracts can use notifiers and subscriptions to provide updates givi
 The following methods use or return notifiers. Click on the name to go to their
 full documentation:
 
-- [`ZCFSeat.getNotifier()](/zoe/api/zoe-contract-facet.html#zcfseat-object)
+- [`ZCFSeat.getNotifier()](/zoe/api/zoe-contract-facet.md#zcfseat-object)
    - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It  provides updates on changing
    allocations for this seat, and tells when the seat has been exited.
-- [`UserSeat.getNotifier`](/zoe/api/zoe.html#userseat-object)
+- [`UserSeat.getNotifier`](/zoe/api/zoe.md#userseat-object)
   - Part of the Zoe API, returns a notifier associated with the seat. Its updates can be anything the contract wants to publish, such as
      price changes, new currency pools, etc.
-- [`purse.getCurrentAmountNotifier()`](/ertp/api/purse.html#purse-getcurrentamountnotifier)
+- [`purse.getCurrentAmountNotifier()`](/ertp/api/purse.md#purse-getcurrentamountnotifier)
    - Part of the ERTP API, returns a lossy notifier for changes to this purse's balance.
-- [`getPursesNotifier`](/guides/wallet/api.html#getpursesnotifier)
+- [`getPursesNotifier`](/guides/wallet/api.md#getpursesnotifier)
    - Part of the Wallet API, it returns a notifier that follows changes in the purses in the Wallet.
-- [`getOffersNotifier`](/guides/wallet/api.html#getoffersnotifier)
+- [`getOffersNotifier`](/guides/wallet/api.md#getoffersnotifier)
    - Part of the Wallet API, it returns a notifier that follows changes to the offers received by the Wallet.
-- [`makeQuoteNotifier(amountIn,brandOut)`](/repl/priceAuthority.html#makequotenotifier-amountin-brandout)
+- [`makeQuoteNotifier(amountIn,brandOut)`](/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
    - Part of the PriceAuthority API, notifies the latest PriceQuotes for the given amountIn.
-- [`getPriceNotifier(brandIn, brandOut)`](/repl/priceAuthority.html#getpricenotifier-brandin-brandout)
+- [`getPriceNotifier(brandIn, brandOut)`](/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
    - Part of the PriceAuthority API, returns a notifier for the specified brands. Different PriceAuthories may issue these at very
      different rates.
-- [`E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`](/repl/timerServices.html#e-home-chain-or-local-timerservice-createnotifier-delaysecs-interval)
+- [`E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`](/repl/timerServices.md#e-home-chain-or-local-timerservice-createnotifier-delaysecs-interval)
    - Part of the REPL's chain and local TimerServices, it creates and returns a `Notifier` object. It repeatedly delivers updates at times
       that are a multiple of the passed in interval value, with the first update happening the value of `delaySecs` after the notifier is
       created.
