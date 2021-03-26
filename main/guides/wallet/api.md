@@ -108,7 +108,7 @@ Returns the Board ID to use to receive payments of the specified by its Board ID
 ### `getPursesNotifier()`
 - Returns: `{Promise<Notifier<Array<PursesJSONState>>>}`
 
-Returns a notifier that follows changes the purses in the Wallet.
+Returns a notifier that follows changes to the purses in the Wallet.
 
 ### `getOffersNotifier()`
 - Returns: `{Promise<Notifier<array<OfferState>>>}`
