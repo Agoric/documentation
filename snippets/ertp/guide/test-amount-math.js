@@ -140,7 +140,7 @@ test('ertp guide amountMath methods subtract', async t => {
   const subtractedList = myItemsAmountMath.subtract(listAmountA, listAmountC);
   // Throws error
   t.throws(() => myItemsAmountMath.subtract(listAmountA, listAmountB), {
-    message: `right element (a string) was not in left`,
+    message: /right element .* was not in left/,
   });
   // #endregion subtract
   t.deepEqual(subtractedList, myItemsAmountMath.make(harden(['1', '4'])));
