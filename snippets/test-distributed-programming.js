@@ -1,5 +1,5 @@
-import '@agoric/zoe/tools/prepare-test-env';
-import test from 'ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+
 import { E } from '@agoric/eventual-send';
 
 // #region importNotifier

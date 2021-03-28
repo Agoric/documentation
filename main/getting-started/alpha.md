@@ -9,7 +9,7 @@ The Agoric alpha release introduces our smart contract platform. It enables Java
 
 [Start Coding](/getting-started/)
 
-[Join Our Community](https://agoric.com/discord)
+[Join Our Community](https://discord.gg/gC9z6US)
 
 ## What You Can Build in Alpha
 

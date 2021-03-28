@@ -1,12 +1,11 @@
 // @ts-check
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
-import '@agoric/zoe/tools/prepare-test-env';
 import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit, MathKind } from '@agoric/ertp';
 import { assert, details } from '@agoric/assert';
-import test from 'ava';
 import { E } from '@agoric/eventual-send';
 
 test('oracle contract', async t => {
