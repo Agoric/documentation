@@ -14,11 +14,11 @@ want to be careful to use the correct ratio for the desired direction of the exc
 You don't want to multiply the dollar amount by the ratio that exchanges francs for
 dollars. You want to multiply it by the ratio that exchanges dollars for francs. 
 
-## `makeRatio(numberator, numeratorBrand, denominator, denominatorBrand)`
-- `numberator`: `{ BigInt }`
+## `makeRatio(numerator, numeratorBrand, denominator, denominatorBrand)`
+- `numerator`: `{ BigInt }`
 - `numeratorBrand`: `{ Brand }`
 - `denominator`: `{ BigInt }` defaults to 100n
-- `denominatorBrand)`: `{ Brand }`  defaults to `numberatorBrand` value
+- `denominatorBrand)`: `{ Brand }`  defaults to `numeratorBrand` value
 - Returns: `{ numerator: { Value , Brand }, denominator: { Value, Brand } }` 
 
 Makes a `Ratio`, representing a fraction and consisting of a hardened pair 
@@ -32,6 +32,13 @@ value.
 A ratio has these restrictions: 
 - Both the numerator value and denominator value must be natural numbers. 
 - The denominator cannot be 0. 
+
+```js
+// Use default values to create a ratio of 50 / 100 Quatloos
+const ratio = makeRatio(50n, quatloosBrand);
+// Specify all values to create a ratio of 75 / 4 Quatloos
+const ratio = makeRatio(75n, quatloosBrand, 4n, quatloosBrand);
+```
 
 ## `makeRatioFromAmounts(numeratorAmount, denominatorAmount)`
 - `numeratorAmount`: `{ Amount }`
@@ -47,6 +54,12 @@ A ratio has these restrictions:
 - Both the numerator value and denominator value must be natural numbers. 
 - The denominator cannot be 0. 
 
+```js
+const fiftyCent = dollarAmountMath.make(50n);
+const dollar = dollarAmountMath.make(100n);
+const halfDollar = makeRatioFromAmounts(fiftyCent, dollar);
+```
+
 ## `assertIsRatio(ratio)`
 - `ratio`: `{ Object }`
 - Returns: `void`
@@ -56,6 +69,10 @@ Throws an error if the argument is not a valid ratio.
 Throws messages for errors:
 - `Ratio ${ratio} must be a record with 2 fields.`
 - `Parameter must be a Ratio record, but ${ratio} has ${q(name)}`
+
+```js
+assertIsRatio(aRatio);
+```
 
 ## `multiplyBy(amount, ratio)`
 - `amount`: `{ Amount }`
@@ -83,13 +100,20 @@ Throws errors with messages:
 - `Expected an amount: ${amount})`:  First argument isn't an `Amount`. 
 - `amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
     ratio.denominator.brand`: The amount and ratio's denominator must have the same brand. 
+    
+```js
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
+const 47Dollars = dollarAmountMath.make(47n);
+// Returns an amount of 28 Swiss francs
+const exchange = multiplyBy(100Dollars, exchangeRatio);
+```
 
 ## ` divideBy(amount, ratio)`
 - `amount`: `{ Amount }`
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
-Returns a hardened `Amount`.  Its brand is the `ratio`'s denomiator's brand.
+Returns a hardened `Amount`.  Its brand is the `ratio`'s denominator's brand.
 Its value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s denominator's value.
 2. Dividing the result from step 1 by the `ratio`'s numerator's value.
@@ -108,8 +132,16 @@ If the denominator's brand was US dollars, the result would be an `Amount` of
 
 Throws errors with messages: 
 - `Expected an amount: ${amount})`:  First argument isn't an `Amount`. 
-- `amount's brand ${q(amount.brand)} must match ratio's numerator ${q(
-    ratio.numerator.brand`: The amount and ratio's numerator must have the same brand. 
+- `amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand`: The 
+  amount and ratio's numerator must have the same brand. 
+  
+```js
+```js
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
+const 47Dollars = dollarAmountMath.make(47n);
+// Returns an amount of 78 Swiss francs
+const exchange = divideBy(100Dollars, exchangeRatio);
+```
 
 ## `invertRatio(ratio)`
 - `ratio`: `{ Ratio }`
@@ -117,4 +149,9 @@ Throws errors with messages:
 
 Returns a `Ratio` such that the `ratio` argument's numerator is the returned value's
 denominator and the `ratio` argument's denominator is the returned value's numerator.
+
+```js
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
+// Returns a ratio of 5 US dollars / 3 swiss Francs
+const invertedRatio = invertRatio(exchangeRatio);
 
