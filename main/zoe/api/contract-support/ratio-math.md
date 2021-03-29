@@ -1,27 +1,25 @@
 # Ratio Math Methods
 
-These methods enable Zoe to perform operations on `Amounts` by ratios of two natural numbers.
-The ratio argument must be > 0 and cannot have a denominator of 0.
+These methods let Zoe  perform operations on `Amounts` by ratios of two natural numbers.
+A ratio cannot have a denominator of 0.
 
 The most common kind of `Ratio` is applied to an `Amount` of a particular 
 brand and produces results of the same brand. 
 
-The less common kind of `Ratio`  is applied to an `Amount` of a particular
+The less common `Ratio` is applied to an `Amount` of one
 brand and produces results of a different brand. For example, you might multiply
 a US dollar branded amount by a ratio that returns a Swiss franc branded amount;
 i.e. an exchange rate between two brands (in this case, currencies). Of course you
 want to be careful to use the correct ratio for the desired direction of the exchange.
 You don't want to multiply the dollar amount by the ratio that exchanges francs for
-dollars. You want to multiply it by the ratio that exchanges dollars for francs. Agoric
-automatically checks the brands in the ratio math methods to ensure exchange rates
-are only used in the right direction.
+dollars. You want to multiply it by the ratio that exchanges dollars for francs. 
 
-## makeRatio(numberator, numeratorBrand, denominator, denominatorBrand)
-- `numberator`: `{ }`
-- `numeratorBrand`: `{ }`
-- `denominator`: `{ }` defaults to `PERCENT` aka 100n
-- `denominatorBrand)`: `{ }`  defaults to `numberatorBrand` value
-- Returns: `{ numerator: { value , brand }, denominator: { value, brand } }` 
+## `makeRatio(numberator, numeratorBrand, denominator, denominatorBrand)`
+- `numberator`: `{ BigInt }`
+- `numeratorBrand`: `{ Brand }`
+- `denominator`: `{ BigInt }` defaults to 100n
+- `denominatorBrand)`: `{ Brand }`  defaults to `numberatorBrand` value
+- Returns: `{ numerator: { Value , Brand }, denominator: { Value, Brand } }` 
 
 Makes a `Ratio`, representing a fraction and consisting of a hardened pair 
 of two `Amounts`. It is a pass-by-copy record. 
@@ -35,7 +33,7 @@ A ratio has these restrictions:
 - Both the numerator value and denominator value must be natural numbers. 
 - The denominator cannot be 0. 
 
-## makeRatioFromAmounts(numeratorAmount, denominatorAmount)
+## `makeRatioFromAmounts(numeratorAmount, denominatorAmount)`
 - `numeratorAmount`: `{ Amount }`
 - `denominatorAmount`: `{ Amount }`
 - Returns: `{ numerator: { value , brand }, denominator: { value, brand } }` 
