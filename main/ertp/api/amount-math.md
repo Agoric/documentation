@@ -4,10 +4,9 @@ Logic for manipulating `amounts`.
 
 ## Obtaining an AmountMath
 
-There are three ways and circumstances you can get access to an `amountMath`:
+There are two ways and circumstances you can get access to an `amountMath`:
 - You made its associated `mint` and `issuer` with `makeIssuerKit()`, so use the `amountMath` returned from the call. 
 - You are writing a Zoe contract and the `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`. 
-- You receive or learn about an `issuer` and are not writing a Zoe contract, so call `makeLocalAmountMath(issuer)`.
 
 ## AmountMath Kinds
 
@@ -55,43 +54,11 @@ Note that numbers in a value are represented as type `BigInt`, which allows for 
 large numbers. BigInts are depicted as an integer with an appended "n"; e.g. 10n, 137n. 
 See the [BigInt section in the JavaScript Distributed Programming Guide](/guides/js-programming/bigint.md) for details. 
 
-## makeLocalAmountMath(issuer)
-- `issuer`: `{issuer}`
-- Returns: `{ Promise<AmountMath> }`
+## makeLocalAmountMath(issuer). DEPRECATED 20-03-2021
 
-Creates and returns a local `amountMath` object. The new
-local copy uses the same remote `brand` as the `issuer` does.
+## amountMath.getBrand() DEPRECATED 20-03-2021
 
-This should be used when you need an `amountMath`, and receive or 
-learn about an `issuer`, and are not writing a Zoe contract.
-```js
-import { makeLocalAmountMath } from '@agoric/ertp';
-const quatloosAmountMath = await makeLocalAmountMath(quatloosIssuer);
-```
-
-## amountMath.getBrand()
-- Returns: `{Brand}`
-
-Return the `brand` the `amountMath` works on. 
-
-The association cannot be broken or changed;
-a particular `amountMath` and its methods 
-will always and only be used on `amounts` that have that
-`amountMath`'s initially associated `brand`. 
-
-```js
-//Get the amountMath's associated brand.
-const exampleBrand = exampleAmountMath.getBrand();
-```
-
-## amountMath.getAmountMathKind()
-- Returns: `{String}`
-
-Get the kind (`MathKind.NAT`, `MathKind.STRING_SET`, `MathKind.SET`) of the `amountMath`.
-
-```js
-quatloosAmountMath.getAmountMathKind(); // For example, returns MathKind.NAT
-```
+## amountMath.getAmountMathKind() DEPRECATED 20-03-2021
 
 ## amountMath.make(allegedValue)
 
@@ -258,7 +225,7 @@ If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 const { issuer: myItemsIssuer } = makeIssuerKit('myItems', MathKind.STRING_SET');
-const myItemsAmountMath = makeLocalAmountMath(myItemsIssuer);
+const myItemsAmountMath = makeAmountMath(myItemsIssuer);
 const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
 const listAmountB = myItemsAmountMath.make(harden['3']);
 
@@ -285,7 +252,7 @@ empty, it returns an empty `amount`.
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 const { issuer: myItemsIssuer } = makeIssuerKit('myItems', MathKind.STRING_SET);
-const myItemsLocalAmountMath = makeLocalAmountMath(myItemsIssuer);
+const myItemsAmountMath = makeAmountMath(myItemsIssuer);
 const listAmountA = myItemsAmountMath.make(harden['1','2','4']);
 const listAmountB = myItemsAmountMath.make(harden['3']);
 const listAmountC = myItemsAmountMath.make(harden['2']);
