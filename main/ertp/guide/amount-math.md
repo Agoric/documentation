@@ -28,15 +28,6 @@ For example:
 
 <<< @/snippets/ertp/guide/test-amount-math.js#allMathKinds
 
-On the other hand, if you are not writing a Zoe contract and need to
-use `amountMath`, you probably want to
-make and use a local `amountMath` whose methods will work synchronously. 
-
-`makeLocalAmountMath(issuer)` returns a promise for a local `AmountMath` 
-that works on the same `brand` as the one associated with the `issuer` argument.
-
-<<< @/snippets/ertp/guide/test-amount-math.js#localAmountMath
-
 ## AmountMath Methods
 The following is a brief description and example of each `amountMath` method. For
 more detail, click the method's name to go to its entry in the [ERTP
