@@ -2,7 +2,8 @@
 
 We rely on `PriceAuthority` oracles. A `PriceAuthority`
 gives reliable quotes for prices. The quotes might be based on broad surveys
-of prices across the ecosystem, or might come directly from an AMM (**tyg todo: What's AMM stand for?)** like our 
+of prices across the ecosystem, or might come directly from an AMM (Automatic
+Market Maker) like our 
 AutoSwap. A `PriceAuthority` can either give a quote for the current price 
 across any pair of currencies it knows about, or can immediately return a 
 `Promise` resolved when a condition is true. For example, a price 
@@ -29,7 +30,7 @@ const { quoteAmount, quotePayment } = priceQuote;
 - Gets the ERTP `Issuer` of `PriceQuotes` for a given `brandIn`/`brandOut`
   pair. 
 ```js
-const quoteIssuer = await E(priceAuthority).getQuoteIssuer(
+const quoteIssuer = await E(pAuthority).getQuoteIssuer(
     collateralKit.brand,
     loanKit.brand,
   );
@@ -41,7 +42,7 @@ const quoteIssuer = await E(priceAuthority).getQuoteIssuer(
 - Returns: `{ TimerService | Promise<TimerService> }`
 - Gets the timer used in `PriceQuotes` for a given `brandIn`/`brandOut` pair. 
 ```js
-const myTimer = E(priceAuthority).getTimerService(collateral.brand, loanKit.brand);
+const myTimer = E(pAuthority).getTimerService(collateral.brand, loanKit.brand);
 ```
 
 ## `makeQuoteNotifier(amountIn, brandOut)`
@@ -51,7 +52,7 @@ const myTimer = E(priceAuthority).getTimerService(collateral.brand, loanKit.bran
 - Be notified of the latest `PriceQuotes` for a given `amountIn`. The issuing
   rate may be very different between `priceAuthorities`.
 ```js
-const myNotifier = E(pAuthority).makeQuoteNotifier(100quatloos, usdBrand);
+const myNotifier = E(pAuthority).makeQuoteNotifier(quatloos100, usdBrand);
 ```
 
 ## `quoteAtTime(deadline, amountIn, brandOut)`
@@ -62,7 +63,7 @@ const myNotifier = E(pAuthority).makeQuoteNotifier(100quatloos, usdBrand);
 - Resolves after `deadline` passes on the `priceAuthority`’s `timerService` with the price 
   quote of `amountIn` at that time. Note that `deadline`'s value is a `BigInt`.
 ```js
-const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, 34quatloosAmount, usdBrand);
+const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, quatloosAmount34, usdBrand);
 ```
 
 ## `quoteGiven(amountIn, brandOut)`
@@ -71,7 +72,7 @@ const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, 34quatloosAmount, u
 - Returns: `{ Promise<PriceQuote> }`
 - Get a quote on demand corresponding to `amountIn`.
 ```js
-const quote = await E(pAuthority).quoteGiven(500moola, quatloosBrand);
+const quote = await E(pAuthority).quoteGiven(moola500, quatloosBrand);
 ```
 
 ## `quoteWanted(brandIn, amountOut)`
@@ -80,7 +81,7 @@ const quote = await E(pAuthority).quoteGiven(500moola, quatloosBrand);
 - Returns: `{ Promise<PriceQuote> }`
 - Get a quote on demand corresponding to `amountOut`.
 ```js
-const quote = await E(pAuthority).quoteWanted(quatloosBrand, 500moola;
+const quote = await E(pAuthority).quoteWanted(quatloosBrand, moola500;
 ```
 
 ## `quoteWhenGT(amountIn, amountOutLimit)`
