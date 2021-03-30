@@ -9,7 +9,13 @@ across any pair of currencies it knows about, or can immediately return a
 crossing some threshold, or at a particular time. It can also provide a 
 price feed that updates with every price change.
 
-Price `Quotes` are returned in two forms: 
+A `PriceQuote` is an amount-payment pair, where the amount is also the current 
+balance of the payment:
+```js
+const { quoteAmount, quotePayment } = priceQuote;
+```
+
+`PriceQuotes` are returned in two forms: 
 - `PriceDescription`
   - Always includes `amountIn`, `amountOut`, the quote's `Timestamp`,
     and the `TimerService` the `TimeStamp` is relative to.
@@ -44,6 +50,9 @@ const myTimer = E(priceAuthority).getTimerService(collateral.brand, loanKit.bran
 - Returns: `{ ERef<Notifier<PriceQuote>> }`
 - Be notified of the latest `PriceQuotes` for a given `amountIn`. The issuing
   rate may be very different between `priceAuthorities`.
+```js
+const myNotifier = E(pAuthority).makeQuoteNotifier(100quatloos, usdBrand);
+```
 
 ## `quoteAtTime(deadline, amountIn, brandOut)`
 - `deadline`: `{ Timestamp }`
@@ -61,30 +70,54 @@ const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, 34quatloosAmount, u
 - `brandOut: `{ Brand }`
 - Returns: `{ Promise<PriceQuote> }`
 - Get a quote on demand corresponding to `amountIn`.
+```js
+const quote = await E(pAuthority).quoteGiven(500moola, quatloosBrand);
+```
 
 ## `quoteWanted(brandIn, amountOut)`
 - `brandIn`: `{ Brand }`
 - `amountOut`: `{ Amount }`
 - Returns: `{ Promise<PriceQuote> }`
 - Get a quote on demand corresponding to `amountOut`.
+```js
+const quote = await E(pAuthority).quoteWanted(quatloosBrand, 500moola;
+```
 
 ## `quoteWhenGT(amountIn, amountOutLimit)`
 - `amountIn`: `{ Amount }`
 - `amountOutLimit`: `{ Amount }`
 - Returns: `{ Promise<PriceQuote> }`
 - Resolves when a price quote of `amountIn` exceeds `amountOutLimit`.
+```js
+const quote = E(pAuthority).quoteWhenGT(
+    amountMath.make(29n, brands.In),
+    amountMath.make(974n, brands.Out),
+  );
+```
 
 ## `quoteWhenGTE(amountIn, amountOutLimit)`
 - `amountIn`: `{ Amount }`
 - `amountOutLimit`: `{ Amount }`
 - Returns: `{ Promise<PriceQuote> }`
 - Resolves when a price quote of `amountIn` reaches or exceeds `amountOutLimit`.
+```js
+const quote = E(pAuthority).quoteWhenGTE(
+    amountMath.make(29n, brands.In),
+    amountMath.make(974n, brands.Out),
+  );
+```
 
 ## `quoteWhenLT(amountIn, amountOutLimit)`
 - `amountIn`: `{ Amount }`
 - `amountOutLimit`: `{ Amount }`
 - Returns: `{ Promise<PriceQuote> }`
 - Resolves when a price quote of `amountIn` drops below `amountOutLimit`.
+```js
+const quote = E(pAuthority).quoteWhenLT(
+    amountMath.make(29n, brands.In),
+    amountMath.make(974n, brands.Out),
+  );
+```
 
 ## `quoteWhenLTE(amountIn, amountOutLimit)`
 - `amountIn`: `{ Amount }`
@@ -92,3 +125,9 @@ const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, 34quatloosAmount, u
 - Returns: `{ Promise<PriceQuote> }`
 - Resolves when a price quote of `amountIn` reaches or drops below
   `amountOutLimit`.
+```js
+const quote = E(pAuthority).quoteWhenLTE(
+    amountMath.make(29n, brands.In),
+    amountMath.make(974n, brands.Out),
+  );
+```
