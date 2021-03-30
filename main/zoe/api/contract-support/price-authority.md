@@ -22,12 +22,21 @@ Price `Quotes` are returned in two forms:
 - Returns: `{ Issuer | Promise<Issuer> }`
 - Gets the ERTP `Issuer` of `PriceQuotes` for a given `brandIn`/`brandOut`
   pair. 
+```js
+const quoteIssuer = await E(priceAuthority).getQuoteIssuer(
+    collateralKit.brand,
+    loanKit.brand,
+  );
+```  
 
 ## `getTimerService(brandIn, brandOut)`
 - `brandIn`: `{ Brand }`
 - `brandOut`: `{ Brand }`
 - Returns: `{ TimerService | Promise<TimerService> }`
 - Gets the timer used in `PriceQuotes` for a given `brandIn`/`brandOut` pair. 
+```js
+const myTimer = E(priceAuthority).getTimerService(collateral.brand, loanKit.brand);
+```
 
 ## `makeQuoteNotifier(amountIn, brandOut)`
 - `amountIn`: `{ Amount }`
@@ -43,6 +52,9 @@ Price `Quotes` are returned in two forms:
 - Returns: `{ Promise<PriceQuote> }`
 - Resolves after `deadline` passes on the `priceAuthority`’s `timerService` with the price 
   quote of `amountIn` at that time. Note that `deadline`'s value is a `BigInt`.
+```js
+const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, 34quatloosAmount, usdBrand);
+```
 
 ## `quoteGiven(amountIn, brandOut)`
 - `amountIn: `{ Amount }`
