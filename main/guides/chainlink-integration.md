@@ -31,7 +31,7 @@ testnet).
 
 ```js
 const linkIssuer = E(home.wallet).getIssuer('Testnet.$LINK');
-const linkMath = await makeLocalAmountMath(linkIssuer);
+const linkMath = await makeAmountMath(linkIssuer);
 const linkBrand = await E(linkIssuer).getBrand();
 const { decimalPlaces: linkDecimals } = await E(linkBrand).getDisplayInfo();
 const linkAmount = linkMath.make(30 * 10 ** linkDecimals);
