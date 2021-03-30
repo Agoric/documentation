@@ -34,7 +34,7 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](../api/).
 
 - **Information Getting Methods**
-  - [amountMath.getValue(amount)](../api/amount-math.md#amountmath-getvalue-amount)
+  - [amountMath.getValue(amount,brand)](../api/amount-math.md#amountmath-getvalue-amount-brand)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
   - [amountMath.makeEmpty()](../api/amount-math.md#amountmath-getempty)
