@@ -37,13 +37,12 @@ API Reference](../api/).
   - [amountMath.getValue(amount)](../api/amount-math.md#amountmath-getvalue-amount)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.getEmpty()](../api/amount-math.md#amountmath-getempty)
+  - [amountMath.makeEmpty()](../api/amount-math.md#amountmath-getempty)
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
        operations. Note that this value varies depending on the
-       `brand` and its `amountMath` kind (`MathKind.NAT`, `MathKind.STR`, or
-       `MathKind.STRING_SET`).
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getEmpty
+       `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.STR`).
+    - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
 - **Comparison Methods**
   - [amountMath.isEmpty(amount)](../api/amount-math.md#amountmath-isempty-amount)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
@@ -80,12 +79,12 @@ API Reference](../api/).
       with the `value` and the `brand` associated with the `amountMath`. The `value`
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
-  - [amountMath.getEmpty()](../api/amount-math.md#amountmath-getempty)
+  - [amountMath.makeEmpty()](../api/amount-math.md#amountmath-getempty)
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
        operations. Note that this value varies depending on `amountMath`'s associated
-       `brand` and whether `amountMath` is of kind `MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`.
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getEmpty
+       `brand` and whether `amountMath` is of kind `MathKind.NAT` or `MathKind.STR`.
+    - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
  
 ## Methods on other objects
 
