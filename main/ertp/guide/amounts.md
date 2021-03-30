@@ -97,7 +97,7 @@ See [here](/guides/js-programming/bigint.md) for more information about `BigInt`
 
 There are no `value`
 methods, but two `amountMath` methods use or return them. 
-- [`amountMath.getValue(amount)`](../api/amount-math.md#amountmath-getvalue-amount)
+- [`amountMath.getValue(amount, brand)`](../api/amount-math.md#amountmath-getvalue-amount-brand)
   - Return the `amount` argument's `value`
   - <<< @/snippets/ertp/guide/test-amounts.js#getValue
 - [`amountMath.make(allegedValue)`](../api/amount-math.md#amountmath-make-allegedvalue)
