@@ -49,20 +49,20 @@ test('ertp guide amountMath methods getAmountMathKind', async t => {
   t.is(kind, 'nat');
 });
 
-test('ertp guide amountMath methods getEmpty', async t => {
-  // #region getEmpty
+test('ertp guide amountMath methods makeEmpty', async t => {
+  // #region makeEmpty
   const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
   // Returns an empty amount for this issuer.
   // Since this is a fungible amount it returns 0
-  const empty = quatloosAmountMath.getEmpty();
-  // #endregion getEmpty
+  const empty = quatloosAmountMath.makeEmpty();
+  // #endregion makeEmpty
   t.deepEqual(empty, quatloosAmountMath.make(0));
 });
 
 test('ertp guide amountMath methods isEmpty', async t => {
   // #region isEmpty
   const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const empty = quatloosAmountMath.getEmpty();
+  const empty = quatloosAmountMath.makeEmpty();
   const quatloos1 = quatloosAmountMath.make(1);
   // returns true
   quatloosAmountMath.isEmpty(empty);
@@ -76,7 +76,7 @@ test('ertp guide amountMath methods isEmpty', async t => {
 test('ertp guide amountMath methods isGTE', async t => {
   // #region isGTE
   const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const empty = quatloosAmountMath.getEmpty();
+  const empty = quatloosAmountMath.makeEmpty();
   const quatloos1 = quatloosAmountMath.make(1);
   // Returns true
   quatloosAmountMath.isGTE(quatloos1, empty);
@@ -91,7 +91,7 @@ test('ertp guide amountMath methods isGTE', async t => {
 test('ertp guide amountMath methods isEqual', async t => {
   // #region isEqual
   const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const empty = quatloosAmountMath.getEmpty();
+  const empty = quatloosAmountMath.makeEmpty();
   const quatloos1 = quatloosAmountMath.make(1);
   const anotherQuatloos1 = quatloosAmountMath.make(1);
 
