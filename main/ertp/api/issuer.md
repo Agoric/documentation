@@ -205,7 +205,7 @@ it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeLocalAmountMath(quatloosIssuer);
+const quatloosLocalAmountMath = makeAmountMath(quatloosIssuer);
 // create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
