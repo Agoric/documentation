@@ -83,8 +83,9 @@ details about `BigInts`.
 const amount837 = quatloosAmountMath.make(837n);
 ```
 
-## amountMath.coerce(allegedAmount)
+## amountMath.coerce(allegedAmount, brand)
 - `allegedAmount` `{Amount}`
+- `brand` `{Brand}`
 - Returns: `{Amount}`
 
 Make sure this `amount` is valid and if so, return it.
@@ -94,7 +95,7 @@ an `amount` coming from elsewhere is for the expected `brand`.
 ```js
 const quatloos50 = quatloosAmountMath.make(50n);
 // Returns the same amount as quatloos50
-const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
+const verifiedAmount = quatlooAmountMath.coerce(allegedAmount, quatloosBrand); 
 ```
 
 ## amountMath.getValue(amount, brand)
