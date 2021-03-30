@@ -37,11 +37,6 @@ API Reference](../api/).
   - [amountMath.getValue(amount)](../api/amount-math.md#amountmath-getvalue-amount)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.getAmountMathKind()](../api/amount-math.md#amountmath-getamountmathkind)
-    - Returns a string of either `'nat'`, `'str'`, or `'strSet'`,
-       indicating the kind of values this
-       `amountMath` operates on.
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind1
   - [amountMath.getEmpty()](../api/amount-math.md#amountmath-getempty)
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
