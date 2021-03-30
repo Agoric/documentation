@@ -66,8 +66,8 @@ const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, 34quatloosAmount, u
 ```
 
 ## `quoteGiven(amountIn, brandOut)`
-- `amountIn: `{ Amount }`
-- `brandOut: `{ Brand }`
+- `amountIn`: `{ Amount }`
+- `brandOut`: `{ Brand }`
 - Returns: `{ Promise<PriceQuote> }`
 - Get a quote on demand corresponding to `amountIn`.
 ```js
