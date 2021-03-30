@@ -20,9 +20,11 @@ The Zoe API is divided into the following sections:
   These Zoe methods can be called synchronously by contract code. A contract can use the Zoe Contract Facet (zcf) to do things like reallocate among offers or complete an offer.
 - [ZoeHelpers for writing contracts](./zoe-helpers.md) -
   Functions that extract common contract code and patterns into reusable helpers.
-- [Price Authority](./price-authority.md) -
+- [Price Authority](./contract-support/price-authority.md) -
   Functions related to `priceAuthority` objects that provide a price feed, on-demand
   quotes, and wakeups for various time and price conditions. See the Zoe Guide's 
   [Price Authority section](../guide/price-authority.md)
+- [Ratio Math](./contract-support/ratioMath.md) -
+  Functions that perform math operations on Amounts by ratios of two natural numbers (i.e. fractions).
 
 
