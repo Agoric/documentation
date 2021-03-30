@@ -10,12 +10,11 @@ There are two ways and circumstances you can get access to an `amountMath`:
 
 ## AmountMath Kinds
 
-There are three different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
+There are two different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
 
-The three kinds of `amountMath` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
+The two kinds of `amountMath` each implement all of the same set of API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 Use `makeIssuerKit(allegedName, MathKind)` to specify which `amountMath` 
@@ -98,7 +97,7 @@ const quatloos50 = quatloosAmountMath.make(50n);
 const verifiedAmount = quatlooAmountMath.coerce(allegedAmount); 
 ```
 
-## amountMath.getValue(amount)
+## amountMath.getValue(amount, brand)
 - `amount` `{Amount}`
 - Returns: `{Value}`
 
@@ -109,7 +108,7 @@ are represented as `BigInts`, not `Numbers`.
 const quatloos123 = quatloosAmountMath.make(123n);
 
 // returns 123n
-const myValue = quatloosAmountMath.getValue(quatloos123);
+const myValue = quatloosAmountMath.getValue(quatloos123, quatloosBrand);
 ```
 
 ## amountMath.makeEmpty()
