@@ -164,7 +164,7 @@ Individual contracts can use notifiers and subscriptions to provide updates givi
 The following methods use or return notifiers. Click on the name to go to their
 full documentation:
 
-- [`ZCFSeat.getNotifier()](/zoe/api/zoe-contract-facet.md#zcfseat-object)
+- [`ZCFSeat.getNotifier()`](/zoe/api/zoe-contract-facet.md#zcfseat-object)
    - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It  provides updates on changing
    allocations for this seat, and tells when the seat has been exited.
 - [`UserSeat.getNotifier`](/zoe/api/zoe.md#userseat-object)
@@ -177,7 +177,7 @@ full documentation:
 - [`getOffersNotifier`](/guides/wallet/api.md#getoffersnotifier)
    - Part of the Wallet API, it returns a notifier that follows changes to the offers received by the Wallet.
 - [`makeQuoteNotifier(amountIn,brandOut)`](/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
-   - Part of the PriceAuthority API, notifies the latest PriceQuotes for the given amountIn.
+   - Part of the PriceAuthority API, notifies the latest `PriceQuotes` for the given `amountIn`.
 - [`getPriceNotifier(brandIn, brandOut)`](/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
    - Part of the PriceAuthority API, returns a notifier for the specified brands. Different PriceAuthories may issue these at very
      different rates.
