@@ -112,20 +112,19 @@ const quatloos123 = quatloosAmountMath.make(123n);
 const myValue = quatloosAmountMath.getValue(quatloos123);
 ```
 
-## amountMath.getEmpty()
+## amountMath.makeEmpty()
 - Returns: `{Amount}`
 
 Returns the `amount` representing an empty `amount` for the `amountMath`'s 
 associated `brand`. This is the identity element for `AmountMath.add()` 
 and `AmountMath.subtract()`. The empty `value` depends 
-on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`), 
-or `MathKind.STRING_SET` (`[]`).
+on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`).
 
 ```js
 // Returns an empty amount for this amountMath.
 // Since this is a fungible amount it returns an amount
 // with 0n as its value.
-const empty = quatloosAmountMath.getEmpty();
+const empty = quatloosAmountMath.makeEmpty();
 ```
 
 ## amountMath.isEmpty(amount)
@@ -135,7 +134,7 @@ const empty = quatloosAmountMath.getEmpty();
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
 ```js
-const empty = quatloosAmountMath.getEmpty();
+const empty = quatloosAmountMath.makeEmpty();
 const quatloos1 = quatloosAmountMath.make(1n);
 
 // returns true
@@ -160,7 +159,7 @@ greater than { 'seat 2' } because the former both contains all of the latter's
 contents and has additional elements.
 
 ```js
-const empty = quatloosAmountMath.getEmpty();
+const empty = quatloosAmountMath.makeEmpty();
 const quatloos5 = quatloosAmountMath.make(5n);
 const quatloos10 = quatloosAmountMath.make(10n);
 
@@ -192,7 +191,7 @@ different from that of the latter. Similarly { 'seat 1',  'seat 3'  } and { 'sea
 are considered unequal because the latter has elements that are not contained in the former.
 
 ```js
-const empty = quatloosAmountMath.getEmpty();
+const empty = quatloosAmountMath.makeEmpty();
 const quatloos10 = quatloosAmountMath.make(10n);
 const quatloos5 = quatloosAmountMath.make(5n);
 const quatloos5b = quatloosAmountMath.make(5n);
