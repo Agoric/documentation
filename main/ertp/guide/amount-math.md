@@ -55,7 +55,7 @@ API Reference](../api/).
     - Returns `true` if the `leftAmount` argument equals the
 	`rightAmount` argument
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEqual
-  - [amountMath.coerce(allegedAmount)](../api/amount-math.md#amountmath-coerce-allegedamount)
+  - [amountMath.coerce(allegedAmount, brand)](../api/amount-math.md#amountmath-coerce-allegedamount-brand)
     - Takes an `amount` and returns it if it's a valid `amount`.
       If invalid, it throws an error.
     - <<< @/snippets/ertp/guide/test-amount-math.js#coerce
