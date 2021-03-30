@@ -24,7 +24,7 @@ The Zoe API is divided into the following sections:
   Functions related to `priceAuthority` objects that provide a price feed, on-demand
   quotes, and wakeups for various time and price conditions. See the Zoe Guide's 
   [Price Authority section](../guide/price-authority.md)
-- [Ratio Math](./contract-support/ratioMath.md) -
+- [Ratio Math](./contract-support/ratio-math.md) -
   Functions that perform math operations on Amounts by ratios of two natural numbers (i.e. fractions).
 
 
