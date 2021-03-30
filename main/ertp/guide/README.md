@@ -122,8 +122,6 @@ Here it also creates a new `mint`, `amountMath`, and formal `brand`
 for the argument, and returns all four new objects. The `mint`, `issuer`, and `brand` 
 are in one-to-one associations with each other. 
 
-Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./amount-math.md).
-
 In this case, you used the string 'quatloos' to name the `brand`.
 
 <<< @/snippets/ertp/guide/test-readme.js#seven
