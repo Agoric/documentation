@@ -1,7 +1,11 @@
-# Ratio Math Methods
+# Ratio Math Functions
 
-These methods let Zoe  perform operations on `Amounts` by ratios of two natural numbers.
-A ratio cannot have a denominator of 0.
+These functions let you apply a ratio (a fraction) to an ammount, multiplying or dividing an amount
+by a ratio of two natural numbers. A ratio cannot have a denominator of 0. Ratios consist of
+a *numerator* and a *denominator*. Both of these consist of a value and a brand, just like `amounts`.
+
+Note that ratios are
+**not** objects, but records. Thus, the ratio functions have to be imported.
 
 The most common kind of `Ratio` is applied to an `Amount` of a particular 
 brand and produces results of the same brand. 
@@ -21,8 +25,8 @@ dollars. You want to multiply it by the ratio that exchanges dollars for francs.
 - `denominatorBrand)`: `{ Brand }`  defaults to `numeratorBrand` value
 - Returns: `{ numerator: { Value , Brand }, denominator: { Value, Brand } }` 
 
-Makes a `Ratio`, representing a fraction and consisting of a hardened pair 
-of two `Amounts`. It is a pass-by-copy record. 
+Makes a `Ratio`, representing a fraction and consisting of a record containing
+two `Amounts`. It is a pass-by-copy record. 
 
 By default, the `denominator` is 100; i.e. the ratio is a percent. 
 
@@ -36,8 +40,8 @@ A ratio has these restrictions:
 ```js
 // Use default values to create a ratio of 50 / 100 Quatloos
 const ratio = makeRatio(50n, quatloosBrand);
-// Specify all values to create a ratio of 75 / 4 Quatloos
-const ratio = makeRatio(75n, quatloosBrand, 4n, quatloosBrand);
+// Specify all values to create a ratio of 75 Quatloos / 4 Moolas (the current exchange rate)
+const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 ```
 
 ## `makeRatioFromAmounts(numeratorAmount, denominatorAmount)`
@@ -55,13 +59,13 @@ A ratio has these restrictions:
 - The denominator cannot be 0. 
 
 ```js
-const fiftyCent = dollarAmountMath.make(50n);
-const dollar = dollarAmountMath.make(100n);
-const halfDollar = makeRatioFromAmounts(fiftyCent, dollar);
+const fiftyCents = centsAmountMath.make(50n);
+const dollar = centsAmountMath.make(100n);
+const halfADollar = makeRatioFromAmounts(fiftyCents, cents);
 ```
 
 ## `assertIsRatio(ratio)`
-- `ratio`: `{ Object }`
+- `ratio`: `{ Record }`
 - Returns: `void`
 
 Throws an error if the argument is not a valid ratio.
@@ -79,13 +83,13 @@ assertIsRatio(aRatio);
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
-Returns a hardened `Amount`.  Its brand is the `ratio`'s numerator's brand.
+Returns a hardened `Amount`.  Its brand is the `ratio`'s *numerator*'s brand.
 Its value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s numerator's value.
 2. Dividing the result from step 1 by the `ratio`'s denominator's value.
-3. Applying a floor method to the result from step 2 to round it down to
-    the nearest integer. If the step 2 result is already an integer, its value does
-    not change.
+3. Applying a floor to the result from step 2 to round it down to
+   the nearest integer. If the step 2 result is already an integer, its value does
+   not change.
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
@@ -99,13 +103,13 @@ If the numerator's brand was Swiss francs, the result would be an `Amount` of
 Throws errors with messages: 
 - `Expected an amount: ${amount})`:  First argument isn't an `Amount`. 
 - `amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
-    ratio.denominator.brand`: The amount and ratio's denominator must have the same brand. 
+  ratio.denominator.brand`: The amount and ratio's denominator must have the same brand. 
     
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
-const 47Dollars = dollarAmountMath.make(47n);
+const Dollars47 = dollarAmountMath.make(47n);
 // Returns an amount of 28 Swiss francs
-const exchange = multiplyBy(100Dollars, exchangeRatio);
+const exchange = multiplyBy(Dollars100, exchangeRatio);
 ```
 
 ## ` divideBy(amount, ratio)`
@@ -113,11 +117,11 @@ const exchange = multiplyBy(100Dollars, exchangeRatio);
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
-Returns a hardened `Amount`.  Its brand is the `ratio`'s denominator's brand.
+Returns a hardened `Amount`.  Its brand is the `ratio`'s *denominator*'s brand.
 Its value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s denominator's value.
 2. Dividing the result from step 1 by the `ratio`'s numerator's value.
-3. Applying a floor method to the result from step 2 to round it down to
+3. Applying a floor to the result from step 2 to round it down to
     the nearest integer. If the step 2 result is already an integer, its value does
     not change.
 
@@ -138,9 +142,9 @@ Throws errors with messages:
 ```js
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
-const 47Dollars = dollarAmountMath.make(47n);
+const Dollars47 = dollarAmountMath.make(47n);
 // Returns an amount of 78 Swiss francs
-const exchange = divideBy(100Dollars, exchangeRatio);
+const exchange = divideBy(Dollars100, exchangeRatio);
 ```
 
 ## `invertRatio(ratio)`
