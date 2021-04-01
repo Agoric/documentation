@@ -23,7 +23,6 @@ defaults to `MathKind.NAT` if not given. For example
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
-makeIssuerKit('foobars', MathKind.STRING_SET);
 makeIssuerKit('kitties', MathKind.SET);
 ```
 
@@ -112,13 +111,13 @@ const quatloos123 = quatloosAmountMath.make(123n);
 const myValue = quatloosAmountMath.getValue(quatloos123, quatloosBrand);
 ```
 
-## amountMath.makeEmpty()
+## amountMath.makeEmpty(brand, amountMathKind)
 - Returns: `{Amount}`
 
-Returns the `amount` representing an empty `amount` for the `amountMath`'s 
-associated `brand`. This is the identity element for `AmountMath.add()` 
+Returns the `amount` representing an empty `amount` for the `brand` argument's 
+`brand`. This is the identity element for `AmountMath.add()` 
 and `AmountMath.subtract()`. The empty `value` depends 
-on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`).
+on whether the `amountMathKind` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`).
 
 ```js
 // Returns an empty amount for this amountMath.
@@ -127,11 +126,14 @@ on whether the `amountMath` is `MathKind.NAT` (`0`), `MathKind.SET` (`[]`).
 const empty = quatloosAmountMath.makeEmpty();
 ```
 
-## amountMath.isEmpty(amount)
+## amountMath.isEmpty(amount, brand)
 - `amount` `{Amount}`
+- `brand` `{Brand}` (defaults to `undefined`)
 - Returns: `{Boolean}`
 
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
+
+The `brand` parameter is optional, and defaults to `undefined`.
 
 ```js
 const empty = quatloosAmountMath.makeEmpty();
@@ -144,14 +146,17 @@ quatloosAmountMath.isEmpty(empty)
 quatloosAmountMath.isEmpty(quatloos1)
 ```
 
-## amountMath.isGTE(leftAmount, rightAmount)
+## amountMath.isGTE(leftAmount, rightAmount, brand)
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
+- `brand` `{Brand}` (defaults to `undefined`)
 - Returns: `{boolean}`
 
 Returns `true` if the `value` of `leftAmount` is greater than or equal to
 the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand` as this `amountMath`.
+
+The `brand` argument is optional, defaulting to `undefined`.
 
 For non-fungible `values`, what "greater than or equal to" is depends on the 
 kind of `amountMath`. For example, { 'seat 1', 'seat 2' } is considered
@@ -175,14 +180,17 @@ quatloosAmountMath.isGTE(quatloos5, quatloos10);
 quatloosAmountMath.isGTE(quatloos5, quatloos5);
 ```
 
-## amountMath.isEqual(leftAmount, rightAmount)
+## amountMath.isEqual(leftAmount, rightAmount, brand)
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
+- `brand` `{Brand}` (defaults to `undefined`)
 - Returns: `{boolean}`
 
 Returns `true` if the `value` of `leftAmount` is equal to
 the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
+
+The `brand` argument is optional, defaulting to `undefined`.
 
 For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
 For example, { 'seat 1', 'seat 2' } is considered
@@ -206,13 +214,16 @@ quatloosAmountMath.isEqual(quatloos10, quatloos5);
 quatloosAmountMath.isEqual(empty, quatloos10);
 ```
 
-## amountMath.add(leftAmount, rightAmount)
+## amountMath.add(leftAmount, rightAmount, brand)
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
+- `brand` `{Brand}`
 - Returns: `{Amount}`
 
 Returns a new `amount` that is the union of `leftAmount` and `rightAmount`. Both
 arguments must be of the same `brand`.
+
+The `brand` argument is optional, defaulting to `undefined`.
 
 For fungible `amounts` this means adding their `values`. For non-fungible
 `amounts`, it usually means including all of the elements from `leftAmount`
@@ -232,9 +243,10 @@ const listAmountB = myItemsAmountMath.make(harden['3']);
 const combinedList = itemsAmountMath.add(listAmountA, listAmountB);
 ```
 
-## amountMath.subtract(leftAmount, rightAmount)
+## amountMath.subtract(leftAmount, rightAmount, brand)
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
+- `brand` `{Brand}`
 - Returns: `{Amount}`
 
 Returns a new `amount` that is the `leftAmount` minus the `rightAmount` (i.e. 
@@ -244,6 +256,8 @@ error. Because `leftAmount` must include `rightAmount`, this is **not**
 equivalent to set subtraction.
 
 `leftAmount` and `rightAmount` must be of the same `brand`.
+
+The `brand` argument is optional, defaulting to `undefined`.
 
 If the `rightAmount` is empty, it returns the `leftAmount`. If both arguments are
 empty, it returns an empty `amount`.
