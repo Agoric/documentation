@@ -95,6 +95,9 @@ The resulting value is determined by:
 3. Applying a floor to the result from step 2 to round it down to
    the nearest integer. If the step 2 result is already an integer, its value does
    not change.
+   
+The above describes what is done to determine the result, not precisely how it's
+done in the source code. 
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
@@ -129,6 +132,9 @@ Its value is determined by:
 3. Applying a floor to the result from step 2 to round it down to
     the nearest integer. If the step 2 result is already an integer, its value does
     not change.
+
+The above describes what is done to determine the result, not precisely how it's
+done in the source code. 
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
