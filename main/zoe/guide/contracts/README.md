@@ -47,7 +47,7 @@ A contract for giving quotes that can be exercised. The quotes are
 guaranteed to be exercisable because they are actually options with 
 escrowed underlying assets.
 
-## Uniswap-like Constant Product AMMs
+## Constant Product AMMs (Automatic Market Makers)
 
 ### [Autoswap](./autoswap.md) 
 An automated market maker implementating Uniswap v1. It 
