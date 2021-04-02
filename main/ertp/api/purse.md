@@ -130,6 +130,16 @@ Note the difference in method names for adding assets between a `purse` and its 
 To add assets to a `purse` directly, you use `purse.deposit()`. To add assets
 to a `purse` via its `depositFacet`, you use `depositFacet.receive()`.
 
+## depositFacet.receive(payment, optAmount)
+- `payment` `{Payment}`
+- `optAmount` `{Amount}` (optional)
+- Returns `{Amount}`
+-
+The `depositFacet` takes the `payment` and adds it to the balance of the facet's associated `purse`. 
+
+If the optional argument `optAmount` does not equal the balance of
+`payment`, or if `payment` is an unresolved promise, it throws an error.
+
 ## purse.withdraw(amount)
 - `amount` `{Amount}`
 - Returns: `{Payment}`
