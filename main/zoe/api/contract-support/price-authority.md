@@ -15,10 +15,7 @@ current price level at a particular time. The significant content (prices
 and time) is packaged in the amount, and repeated in the payment for veracity. 
 A `PriceQuote` is an amount-payment pair, where the amount is also the current 
 balance of the payment.
-
-It represents a statement from the `PriceAuthority` as to the current price
-level at a particular time. The significant content (prices and time) is 
-packaged in the amount, and repeated in the payment for veracity. 
+ 
 ```js
 const { quoteAmount, quotePayment } = priceQuote;
 ```
