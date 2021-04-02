@@ -299,7 +299,8 @@ module.exports = {
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',
             '/zoe/api/zoe-helpers',
-            '/zoe/api/price-authority',
+            '/zoe/api/contract-support/price-authority',
+            '/zoe/api/contract-support/ratio-math',
           ],
         },
         {
