@@ -52,7 +52,7 @@ const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 - `denominatorAmount`: `{ Amount }`
 - Returns: `{ numerator: { value , brand }, denominator: { value, brand } }` 
 
-Makes a `Ratio`, representing a fraction and consisting of a hardened pair 
+Makes a `Ratio`, representing a fraction and consisting of an immutable pair 
 of two `Amounts`.  The `numeratorAmount` is the ratio's numerator and
 the `denominatorAmount` is the ratio's denominator. It is a pass-by-copy 
 record. 
@@ -64,7 +64,7 @@ A ratio has these restrictions:
 ```js
 const fiftyCents = centsAmountMath.make(50n);
 const dollar = centsAmountMath.make(100n);
-const halfADollar = makeRatioFromAmounts(fiftyCents, cents);
+const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 ```
 
 ## `assertIsRatio(ratio)`
@@ -86,8 +86,10 @@ assertIsRatio(aRatio);
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
-Returns a hardened `Amount`.  Its brand is the `ratio`'s *numerator*'s brand.
-Its value is determined by:
+Returns an immutable `Amount`.  Its brand is the `ratio`'s *numerator*'s brand.
+Note the denominator brand has to be the same as the amount brand
+
+The resulting value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s numerator's value.
 2. Dividing the result from step 1 by the `ratio`'s denominator's value.
 3. Applying a floor to the result from step 2 to round it down to
@@ -120,7 +122,7 @@ const exchange = multiplyBy(Dollars100, exchangeRatio);
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
-Returns a hardened `Amount`.  Its brand is the `ratio`'s *denominator*'s brand.
+Returns an immutable `Amount`.  Its brand is the `ratio`'s *denominator*'s brand.
 Its value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s denominator's value.
 2. Dividing the result from step 1 by the `ratio`'s numerator's value.
