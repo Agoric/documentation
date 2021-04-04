@@ -6,7 +6,7 @@
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 
-Multipool Autoswap is a rewrite of [UniSwap](https://uniswap.org/) that supports
+Multipool Autoswap is an automated market maker (AMM) that supports
 multiple liquidity pools and direct exchanges across pools.
 
 Each liquidity pool maintains a price for exchanges between the central token and a
@@ -43,8 +43,6 @@ trust the contract to trade fairly.
 Transactions that don't require an invitation include `addPool()` and the queries
 (`getInputPrice()`, `getOutputPrice()`, `getPoolAllocation()`,
 `getLiquidityIssuer()`, and `getLiquiditySupply()`).
-
-This contract follows the design of [UniSwap V1](https://uniswap.org/).
 
 ## The MultipoolAutoswap API
 
