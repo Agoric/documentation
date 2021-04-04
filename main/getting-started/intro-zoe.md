@@ -41,7 +41,7 @@ users to lose their assets.**
 
 Agoric has written [a number of example contracts that you can
 use](/zoe/guide/contracts/), including:
-* a [Uniswap
+* an [Automated Market Maker (AMM)
   implementation](/zoe/guide/contracts/multipoolAutoswap.md)
 * a [covered call option
   contract](/zoe/guide/contracts/covered-call.md)
