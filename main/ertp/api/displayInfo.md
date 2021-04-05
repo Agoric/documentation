@@ -24,3 +24,7 @@ Returns the `DisplayInfo` object associated with the `brand`.
 
 You can either view the object's `decimalPlaces` property's value,
 or reset it to a different non-negative integer. 
+```js
+const quatloosDisplay = quatloosBrand.getDisplayInfo;
+const quatloosDecimalPlaces = quatloosDisplay.decimalPlaces;
+```
