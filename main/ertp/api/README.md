@@ -14,3 +14,4 @@ The ERTP API documentation is divided into these sections:
 - [Purse](./purse.md)
 - [Payment](./payment.md)
 - [AmountMath](./amount-math.md)
+- [DisplayInfo](./displayInfo.md)
