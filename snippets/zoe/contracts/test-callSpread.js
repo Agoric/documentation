@@ -1,20 +1,20 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import '@agoric/zoe/tools/prepare-test-env';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import test from 'ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+
 import bundleSource from '@agoric/bundle-source';
 import { E } from '@agoric/eventual-send';
 import '@agoric/zoe/exported';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
+import { amountMath } from '@agoric/ertp';
 
 import { setup } from '@agoric/zoe/test/unitTests/setupBasicMints';
 import { assertPayoutDeposit } from '@agoric/zoe/test/zoeTestHelpers';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority';
 
-const makeTestPriceAuthority = (amountMaths, priceList, timer) =>
+const makeTestPriceAuthority = (brands, priceList, timer) =>
   makeFakePriceAuthority({
-    mathIn: amountMaths.get('simoleans'),
-    mathOut: amountMaths.get('moola'),
+    actualBrandIn: brands.get('simoleans'),
+    actualBrandOut: brands.get('moola'),
     priceList,
     timer,
   });
@@ -29,7 +29,7 @@ test('callSpread, mid-strike', async t => {
     bucksMint,
     bucks,
     zoe,
-    amountMaths,
+    brands,
   } = setup();
   const contractBundle = await bundleSource(
     require.resolve('@agoric/zoe/src/contracts/callSpread/fundedCallSpread'),
@@ -49,7 +49,7 @@ test('callSpread, mid-strike', async t => {
 
   const manualTimer = buildManualTimer(console.log, 0n);
   const priceAuthority = makeTestPriceAuthority(
-    amountMaths,
+    brands,
     [20n, 45n],
     manualTimer,
   );
@@ -122,9 +122,6 @@ test('callSpread, mid-strike', async t => {
     bucks(75),
   );
 
-  const simoleanMath = amountMaths.get('simoleans');
-  const moolaMath = amountMaths.get('moola');
-  const bucksMath = amountMaths.get('bucks');
   // #region verifyTerms
   const optionValue = shortOptionAmount.value[0];
   const carolTerms = await zoe.getTerms(optionValue.instance);
@@ -132,10 +129,10 @@ test('callSpread, mid-strike', async t => {
   t.is(3n, carolTerms.expiration);
   t.is(manualTimer, carolTerms.timer);
   t.is(priceAuthority, carolTerms.priceAuthority);
-  t.truthy(simoleanMath.isEqual(simoleans(2), carolTerms.underlyingAmount));
-  t.truthy(moolaMath.isEqual(moola(60), carolTerms.strikePrice1));
-  t.truthy(moolaMath.isEqual(moola(100), carolTerms.strikePrice2));
-  t.truthy(bucksMath.isEqual(bucks(300), carolTerms.settlementAmount));
+  t.truthy(amountMath.isEqual(simoleans(2), carolTerms.underlyingAmount));
+  t.truthy(amountMath.isEqual(moola(60), carolTerms.strikePrice1));
+  t.truthy(amountMath.isEqual(moola(100), carolTerms.strikePrice2));
+  t.truthy(amountMath.isEqual(bucks(300), carolTerms.settlementAmount));
   // #endregion verifyTerms
 
   await E(manualTimer).tick();
@@ -154,7 +151,7 @@ test('pricedCallSpread, mid-strike', async t => {
     bucksMint,
     bucks,
     zoe,
-    amountMaths,
+    brands,
   } = setup();
   const contractBundle = await bundleSource(
     require.resolve('@agoric/zoe/src/contracts/callSpread/pricedCallSpread'),
@@ -170,7 +167,7 @@ test('pricedCallSpread, mid-strike', async t => {
 
   const manualTimer = buildManualTimer(console.log, 0n);
   const priceAuthority = await makeTestPriceAuthority(
-    amountMaths,
+    brands,
     [20n, 45n, 45n, 45n, 45n, 45n, 45n],
     manualTimer,
   );
@@ -204,9 +201,6 @@ test('pricedCallSpread, mid-strike', async t => {
   const { longInvitation, shortInvitation } = invitationPair;
   // #endregion makeInvitationPriced
 
-  const simoleansMath = amountMaths.get('simoleans');
-  const bucksMath = amountMaths.get('bucks');
-
   // region validatePricedInvitation
   const invitationIssuer = await E(zoe).getInvitationIssuer();
   const longAmount = await E(invitationIssuer).getAmountOf(longInvitation);
@@ -220,8 +214,8 @@ test('pricedCallSpread, mid-strike', async t => {
 
   // region checkTerms-priced
   const bobTerms = await E(zoe).getTerms(longOptionValue.instance);
-  t.truthy(simoleansMath.isEqual(simoleans(2), bobTerms.underlyingAmount));
-  t.truthy(bucksMath.isEqual(bucks(300), bobTerms.settlementAmount));
+  t.truthy(amountMath.isEqual(simoleans(2), bobTerms.underlyingAmount));
+  t.truthy(amountMath.isEqual(bucks(300), bobTerms.settlementAmount));
   // endregion checkTerms-priced
 
   // Bob makes an offer for the long option

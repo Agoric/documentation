@@ -74,9 +74,32 @@ module.exports = {
           path: '/guides/agoric-cli/',
           collapsible: false,
           children: [
-       	    '/guides/agoric-cli/',
             '/guides/agoric-cli/commands',
             '/guides/agoric-cli/starting-multiuser-dapps',
+          ]
+        },
+        {
+          title: 'ERTP Guide',
+          path: '/ertp/guide/',
+          collapsible: false,
+          children: [
+            '/ertp/guide/',
+            '/ertp/guide/amounts',
+            '/ertp/guide/amount-math',
+            '/ertp/guide/issuers-and-mints',
+            '/ertp/guide/purses-and-payments',
+          ]
+        },
+        {
+          title: 'Zoe Guide',
+          path: '/zoe/guide/',
+          collapsible: false,
+          children: [
+            '/zoe/guide/',
+            '/zoe/guide/offer-safety',
+            '/zoe/guide/proposal',
+            '/zoe/guide/contract-requirements',
+            '/zoe/guide/price-authority'
           ]
         },
         {
@@ -85,15 +108,31 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/wallet/',
-	          '/guides/wallet/ui',
-	          '/guides/wallet/api',		
+	    '/guides/wallet/ui',
+	    '/guides/wallet/api',		
           ]
         },
         {
-          title: 'Agoric JavaScript Programming',
+          title: 'JavaScript Programming',
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
+	    '/guides/js-programming/agoric-js-overview',
+	    '/guides/js-programming/bigint',
+	    '/guides/js-programming/eventual-send',	
+	    '/guides/js-programming/ses/',	
+	    '/guides/js-programming/vats',	
+	    '/guides/js-programming/notifiers',	
+          ]
+        },
+        {
+          title: 'SES',
+          path: '/guides/js-programming/ses/',
+          collapsible: false,
+          children: [
+	    '/guides/js-programming/ses/ses-guide',
+	    '/guides/js-programming/ses/ses-reference',
+	    '/guides/js-programming/ses/lockdown',
           ]
         },
         {
@@ -101,6 +140,14 @@ module.exports = {
           path: '/repl/',
           collapsible: false,
           children: [
+	    '/guides/wallet/api',
+	    '/repl/timerServices',
+            '/repl/board',
+	    '/repl/sharingService',
+	    '/repl/networking',
+	    '/zoe/api/zoe',
+	    '/repl/priceAuthority',
+	    '/repl/scratch',
           ]
         },
         {
@@ -252,7 +299,8 @@ module.exports = {
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',
             '/zoe/api/zoe-helpers',
-            '/zoe/api/price-authority',
+            '/zoe/api/contract-support/price-authority',
+            '/zoe/api/contract-support/ratio-math',
           ],
         },
         {

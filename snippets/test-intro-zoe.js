@@ -1,7 +1,6 @@
 // @ts-check
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
-import '@agoric/zoe/tools/prepare-test-env';
-import test from 'ava';
 import { E } from '@agoric/eventual-send';
 import { makeZoe } from '@agoric/zoe';
 import { makeIssuerKit } from '@agoric/ertp';

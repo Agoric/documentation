@@ -1,11 +1,10 @@
 // @ts-check
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
-import '@agoric/zoe/tools/prepare-test-env';
 import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
-import { makeIssuerKit } from '@agoric/ertp';
-import test from 'ava';
+import { makeIssuerKit, amountMath } from '@agoric/ertp';
 import { E } from '@agoric/eventual-send';
 import { makeRatio } from '@agoric/zoe/src/contractSupport';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
@@ -22,13 +21,13 @@ test('loan contract', async t => {
 
   const {
     issuer: collateralIssuer,
-    amountMath: collateralMath,
     mint: collateralMint,
+    brand: collateralBrand,
   } = makeIssuerKit('moola');
   const {
     issuer: loanIssuer,
-    amountMath: loanMath,
     mint: loanMint,
+    brand: loanBrand,
   } = makeIssuerKit('simoleans');
 
   // Create autoswap installation and instance
@@ -50,15 +49,15 @@ test('loan contract', async t => {
   const timer = buildManualTimer(console.log);
 
   const priceAuthority = makeFakePriceAuthority({
-    mathIn: collateralMath,
-    mathOut: loanMath,
+    actualBrandIn: collateralBrand,
+    actualBrandOut: loanBrand,
     priceList: [4, 2],
     timer,
   });
 
   const doAddCollateral = _ => {};
-  const allCollateralAmount = collateralMath.make(1000);
-  const myWarningLevel = loanMath.make(1500);
+  const allCollateralAmount = amountMath.make(1000n, collateralBrand);
+  const myWarningLevel = amountMath.make(1500n, loanBrand);
 
   // #region customMarginCall
   E(priceAuthority)
@@ -68,11 +67,11 @@ test('loan contract', async t => {
 
   const { notifier: periodNotifier } = makeNotifierKit();
 
-  const loanPayment = loanMint.mintPayment(loanMath.make(1000));
+  const loanPayment = loanMint.mintPayment(amountMath.make(1000n, loanBrand));
 
   // #region lend
   const terms = {
-    mmr: makeRatio(150, loanMath.getBrand()),
+    mmr: makeRatio(150n, loanBrand),
     autoswapInstance,
     priceAuthority,
     periodNotifier,
@@ -86,7 +85,7 @@ test('loan contract', async t => {
     terms,
   );
 
-  const maxLoan = loanMath.make(1000);
+  const maxLoan = amountMath.make(1000n, loanBrand);
 
   const proposal = harden({
     give: { Loan: maxLoan },
@@ -145,7 +144,7 @@ test('loan contract', async t => {
   t.truthy(await E(invitationIssuer).isLive(closeLoanInvitationPromise));
   t.truthy(await E(invitationIssuer).isLive(addCollateralInvitationPromise));
 
-  const liquidationTriggerValue = loanMath.make(1000);
+  const liquidationTriggerValue = amountMath.make(1000n, loanBrand);
   const liquidate = () => {};
 
   // #region liquidate
