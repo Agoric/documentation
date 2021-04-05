@@ -15,44 +15,50 @@ validate an untrusted `payment` of that `brand`.
 **Note**: You should not create an Issuer in a deploy script. Deploy scripts 
 are ephemeral, so any object created there dies as soon as the script stops.
 
-## makeIssuerKit(allegedName, amountMathKind)
+## makeIssuerKit(allegedName, amountMathKind, displayInfo)
 - `allegedName` `{String}` 
-- `amountMathKind` `{MathKind}` - optional
+- `amountMathKind` `{MathKind}` - optional, defaults to `MathKind.NAT`
+- `displayInfo` `{DisplayInfo}` - optional, defaults to `undefined`
 - Returns `{IssuerKit}`
 
-Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
-All are in unchangeable one-to-one relationships with each other. It also returns an `amountMath`
-that can be used on `amounts` of the created `brand`.
+`IssuerKit`, the return type, has these properties:
+- `mint` `{Mint}` 
+- `issuer` `{Issuer}` 
+- `brand` `{Brand}`
+- `amountMathKind` `{AmountMathKind}`
 
-The `allegedName` is available from the `brand` or the `issuer`. The `allegedName` is 
-useful for debugging and double-checking assumptions, but should not be trusted.
+Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
+All are in unchangeable one-to-one relationships with each other. It also returns an `amountMathKind`
+used to import a specific `mathHelpers` from the mathHelpers library. For example, `natMathHelpers`, the
+default, is used for basic fungible tokens.
+
+The `allegedName` becomes part of the `brand` in asset descriptions. It
+doesn't have to be a string, but it will only be used for its value. It
+is useful for debugging and double-checking assumptions, but should not be trusted.
+
+`displayInfo` tells the UI how to display `amounts` from this issuer or
+of this brand..
 
 The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
 polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ERTP` 
 instead of using strings. 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
-- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` values are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
-makeIssuerKit('foobars', MathKind.STRING_SET);
 makeIssuerKit('kitties', MathKind.SET);
 ```
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand, amountMath: quatloosAmountMath } = 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');
 // This is merely an amount, describing assets.
 const quatloos2 = quatloosAmountMath.make(2n);
 
-const { mint: titleMint, issuer: titleIssuer amountMath: titleAmountMath } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.STRING_SET);
-// These are merely amounts describing digital assets, not minting assets.
-const cornerProperty = titleLocalAmountMath.make(harden['1292826n']);
-const adjacentProperty = titleLocalAmountMath.make(harden['1028393n']);
-const combinedProperty = titleLocalAmountMath.make(harden['1292826n', '1028393n']);
+const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.SET);
 ```
 
 ## issuer.getAllegedName()
@@ -82,20 +88,19 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 - Returns: `{MathKind}`
 
 Get the kind of this `issuer`'s `amountMath`. It returns one of
-`MathKind.NAT` (`nat`), `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`).
+`MathKind.NAT` (`nat`) or `MathKind.SET` (`set`).
 
-The `amountMathKind` value specifies which of three kinds an `amountMath` is,
+The `amountMathKind` value specifies which kind an `amountMath` is,
 and what kind of values it is used on. Each kind implements all of the same set 
 of API methods (i.e. `amountMath` methods are polymorphic). 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
-- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` values are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as MathKind.NAT, the default value.
-const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.STRING_SET);
-moolaIssuer.getAmountMathKind(); // Returns 'str', also known as 'MathKind.STRING_SET`
+const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.SET);
+moolaIssuer.getAmountMathKind(); // Returns 'set', also known as 'MathKind.SET`
 ```
 ## issuer.getAmountOf(payment)
 - `payment` `{Payment}`
