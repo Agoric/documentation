@@ -1,4 +1,4 @@
-# Agoric Alpha
+# Agoric Beta
 Release Version: Adriatic
 
 ![Alpha Cover](./assets/alpha-cover2.png)
