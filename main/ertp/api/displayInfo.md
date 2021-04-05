@@ -1,6 +1,9 @@
 # DisplayInfo object
 
-`DisplayInfo` objects have one optional property, `decimalPlaces`, which takes a positive integer value.
+`DisplayInfo` objects have one optional property, `decimalPlaces`, which takes a non-negative integer value.
+
+`displayInfo` is an optional argument to [`makeIssuerKit`](./issuer.md#makeissuerkitallegedname-amountmathkind-displayinfo).
+If specified, its `decimalPlaces` value is used when displaying amount values of the `brand` created by the issuerKit.
 
 Tells the display software how many decimal places to move the
 decimal over to the left, or in other words, which position corresponds to whole
@@ -13,3 +16,11 @@ Do **not** specify a value for non-fungible digital assets.
 
 `decimalPlaces` should be used for *display purposes only*. Any
 other use is an anti-pattern.
+
+## `brand.getDisplayInfo()`
+- Returns: `{ DisplayInfo }`
+
+Returns the `DisplayInfo` object associated with the `brand`. 
+
+You can either view the object's `decimalPlaces` property's value,
+or reset it to a different non-negative integer. 
