@@ -64,7 +64,7 @@ Frontend is raw JavaScript.
 
 [Github: dapp-autoswap](https://github.com/Agoric/dapp-autoswap)
 
-A Uniswap implementation that lets the user trade fungible
+A automated market maker (AMM) implementation that lets the user trade fungible
 tokens. Frontend is React.
 
 ### Simple Exchange Dapp

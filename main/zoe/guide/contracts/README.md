@@ -47,15 +47,15 @@ A contract for giving quotes that can be exercised. The quotes are
 guaranteed to be exercisable because they are actually options with 
 escrowed underlying assets.
 
-## Uniswap-like Constant Product AMMs
+## Constant Product AMMs (Automatic Market Makers)
 
 ### [Autoswap](./autoswap.md) 
-An automated market maker implementating Uniswap v1. It 
+An automated market maker. It 
 can always trade between the two currencies in its liquidity pool.
 
 ### [Multipool Autoswap](./multipoolAutoswap.md) 
-An automated market maker implementing Uniswap v1. It has multiple
-liquidity pools and can trade between any pair of funded currencies.
+An automated market maker with multiple
+liquidity pools that can trade between any pair of funded currencies.
 
 ## Generic Sales/Trading Contracts
 
