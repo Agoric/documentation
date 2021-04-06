@@ -44,9 +44,9 @@ Returns a `payment` containing the newly minted assets.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint
-        amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+        brand: quatloosBrand } = makeIssuerKit('quatloos');
 
-const quatloos1000 = quatloosAmountMath.make(1000n);
+const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
 // newPayment will have a balance of 1000 Quatloos
 const newPayment = quatloosMint.mintPayment(quatloos1000);
 ```
