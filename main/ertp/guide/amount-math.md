@@ -43,7 +43,7 @@ API Reference](../api/).
        `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.SET`).
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
 - **Comparison Methods**
-  - [amountMath.isEmpty(amount)](../api/amount-math.md#amountmath-isempty-amount)
+  - [amountMath.isEmpty(amount, brand?)](../api/amount-math.md#amountmath-isempty-amount-brand)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEmpty
   - [amountMath.isGTE(leftAmount, rightAmount)](../api/amount-math.md#amountmath-isgte-leftamount-rightamount)
