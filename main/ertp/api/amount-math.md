@@ -93,7 +93,7 @@ an `amount` coming from elsewhere is for the expected `brand`.
 ```js
 const quatloos50 = amountMath.make(quatloosBrand, 50n);
 // Returns the same amount as quatloos50
-const verifiedAmount = amountMath.coerce(allegedAmount, quatloosBrand); 
+const verifiedAmount = amountMath.coerce(quatloosBrand, allegedAmount); 
 ```
 
 ## amountMath.getValue(brand, amount)
