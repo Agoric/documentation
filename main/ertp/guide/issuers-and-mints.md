@@ -48,7 +48,7 @@ API Reference](/ertp/api/#ertp-api).
     be trusted. 
     
     `amountMathKind` specifies if the associated `amountMath` is of kind `MathKind.NAT` (`nat`) 
-    (the default value), `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`);
+    (the default value) or `MathKind.SET` (`set`);
     see the [`amountMath` page](./amount-math.md) for details. 
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
@@ -65,7 +65,7 @@ API Reference](/ertp/api/#ertp-api).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
   - [`issuer.getAmountMathKind()`](/ertp/api/issuer.md#issuer-getamountmathkind)
     - Get the kind of `amountMath` for this `issuer`, either `MathKind.NAT` (`nat`),
-      `MathKind.STR` (`str`), or `MathKind.STRING_SET` (`strSet`).
+      or `MathKind.SET` (`set`).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountMathKind
 - **Purse operation**
   - [`issuer.makeEmptyPurse()`](/ertp/api/issuer.md#issuer-makeemptypurse)
