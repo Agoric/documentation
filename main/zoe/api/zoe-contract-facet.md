@@ -103,8 +103,8 @@ quatloosPurse.deposit(payout.Asset);
 
 For example:
 ```js
-const quatloos5 = quatloosAmountMath.make(5n);
-const quatloos9 = quatloosAmountMath.make(9n);
+const quatloos5 = amountMath.make(quatloosBrand, 5n);
+const quatloos9 = amountMath.make(quatloosBrand, 9n);
 const myAmountKeywordRecord =
 {
   Asset: quatloos5,
@@ -259,8 +259,8 @@ to manipulate the offer. The queries and operations are as follows:
     An `Allocation` example:
     - ```js
       {
-        Asset: quatloosAmountMath.make(5n),
-        Price: moolaAmountMath.make(9n)
+        Asset: amountMath.make(quatloosBrand, 5n),
+        Price: amountMath.make(quatloosBrand, 9n)
       }
       ```
  - `exit(completion)`
