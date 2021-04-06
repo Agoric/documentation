@@ -37,12 +37,11 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/#ertp-api).
 
 - **Create issuer operation**
-  - [`makeIssuerKit(allegedName, amountMathKind)`](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind)
+  - [`makeIssuerKit(allegedName, amountMathKind, displayInfo=)`](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo)
   - Makes an `issuer` and its related `mint`, `amountMath` and `brand`.
-    Returns ` { mint, issuer, amountMath, brand }` The `mint` and
+    Returns ` { mint, issuer, brand }` The `mint` and
     `brand` are in unchangeable one-to-one relationships with the `issuer`
-    and each other. The `amountMath` is in a many-to-one relationship
-    with the `issuer`, `brand`, and `mint`.
+    and each other. 
     
     The `allegedName` is available from the `brand` to describe assets, but should not
     be trusted. 
@@ -50,6 +49,10 @@ API Reference](/ertp/api/#ertp-api).
     `amountMathKind` specifies if the associated `amountMath` is of kind `MathKind.NAT` (`nat`) 
     (the default value) or `MathKind.SET` (`set`);
     see the [`amountMath` page](./amount-math.md) for details. 
+    
+    `displayInfo` is the number of places to the right of the decimal point to display of any
+    `values` associated with the created `brand`. It defaults to `undefined`
+    
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
 - **Get information about the issuer operations**
