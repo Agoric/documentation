@@ -90,9 +90,9 @@ API Reference](../api/).
 
 These methods either use or return `amountMath` objects:
 - [makeIssuerKit(allegedName, amountMathKind)](../api/issuer.md#makeissuerkit-allegedname-amountmathkind)
-  - Creates a new `amountMath` that uses the `amountMath` kind
-    designated by the `amountMathKind` argument (`MathKind.NAT`, `MathKind.STR`,
-    `MathKind.STRING_SET`). Also creates a new `mint`, `issuer`, and `brand`.
+  - Creates a new `amountMath` that uses the `AmountMathKind``
+    designated by the `amountMathKind` argument (`MathKind.NAT`,
+    `MathKind.SET`). Also creates a new `mint`, `issuer`, and `brand`.
   - <<< @/snippets/ertp/guide/test-amount-math.js#makeIssuerKit
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
   - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
