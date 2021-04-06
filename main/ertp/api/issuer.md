@@ -56,7 +56,7 @@ makeIssuerKit('kitties', MathKind.SET);
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');
 // This is merely an amount, describing assets.
-const quatloos2 = quatloosAmountMath.make(2n);
+const quatloos2 = amountMath.make(quatloosBrand, 2n);
 
 const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.SET);
 ```
@@ -111,8 +111,8 @@ trust it to provide its true value, and must rely on the `issuer` to validate
 the `payment`'s `brand`  and tell us how much it contains.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
-const quatloosPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100n));
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand} = makeIssuerKit('quatloos');
+const quatloosPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
 
@@ -156,9 +156,9 @@ If `payment` is a `promise` for a `payment`, the operation proceeds after the
 `promise` resolves.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint } = 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');     
-const amountToBurn = quatloosAmountMath.make(10n);
+const amountToBurn = amountMath.make(quatloosBrand, 10n);
 const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
 // burntAmount should equal 10 Quatloos
@@ -185,8 +185,8 @@ proceed after the `promise` resolves. Since you might also have a `promise` retu
 it might take a bit of time for the whole operation to resolve.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const amountExpectedToTransfer = quatloosAmountMath.make(2n);
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const amountExpectedToTransfer = amountMath.make(quatloosBrand, 2n);
 const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
 const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
@@ -209,12 +209,11 @@ proceed after the `promise` resolves. Since you might also have a `promise` retu
 it might take a bit of time for the whole operation to resolve.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const quatloosLocalAmountMath = makeAmountMath(quatloosIssuer);
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
 // create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(quatloosMint.mintPayment(quatloosAmountMath.make(1n)));
+  payments.push(quatloosMint.mintPayment(amountMath.make(quatloosBrand, 1n)));
 }
 
 // combinedPayment equals 100
@@ -224,8 +223,8 @@ const combinedPayment = quatloosIssuer.combine(payments);
 **Note**: You **cannot** combine `payments` from different `mints` (as they are of different `brands`):
 
 ```js
-const { mint: otherMint, issuer: otherIssuer } = makeIssuerKit('other');
-const otherPayment = otherMint.mintPayment(otherAmountMath.make(10n));
+const { mint: otherMint, issuer: otherIssuer, brand: otherBrand } = makeIssuerKit('other');
+const otherPayment = otherMint.mintPayment(amountMath.make(otherBrand, 10n));
 payments.push(otherPayment); // using the payments array from the above code
 
 // throws error
@@ -248,10 +247,10 @@ proceed after the `promise` resolves. Since you might also have a `promise` retu
 it might take a bit of time for the whole operation to resolve.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(20n));
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const oldPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 20n));
 // After the split, paymentA has 5 quatloos and paymentB has 15.
-const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, quatloosAmountMath.make(5n));
+const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, amountMath.make(quatloosBrand, 5n));
 ```
 
 ## issuer.splitMany(payment, amountArray)
@@ -267,18 +266,18 @@ in `amountArray` don't add up to the value of `payment`, the operation fails. Th
 of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer} = makeIssuerKit('quatloos');
-const oldPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100n));
-const goodAmounts = Array(10).fill(quatloosAmountMath.make(10n));
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = makeIssuerKit('quatloos');
+const oldPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
+const goodAmounts = Array(10).fill(amountMath.make(quatloosBrand, 10n));
 
 const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
 // Set original amount to 1000n
-const payment = quatloosMint.mintPayment(quatloosAmountMath.make(1000n));
+const payment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 1000n));
 
 // Total amounts in badAmounts equal 20n, when it should equal 1000n
-const badAmounts = Array(2).fill(quatloosAmountMath.make(10n));
+const badAmounts = Array(2).fill(amountMath.make(quatloosBrand, 10n));
 
 // 20n does not equal 1000n, so throws error
 quatloosIssuer.splitMany(payment, badAmounts);
