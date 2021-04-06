@@ -10,12 +10,11 @@ uses `amountMath` methods for all these operations.
 `amountMath` methods also check their arguments' `brand`, 
 throwing an error if the wrong `brand` was used.
 
-An `amountMath` is one of three different kinds, each of which
+An `amountMath` is one of two kinds, each of which
 implements the same methods. Which kind is used for a particular `brand` depends
 on what was specified when the `brand` and its `issuer` were 
 created. The kinds are: 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
 `makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`,
@@ -41,7 +40,7 @@ API Reference](../api/).
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
        operations. Note that this value varies depending on the
-       `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.STR`).
+       `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.SET`).
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
 - **Comparison Methods**
   - [amountMath.isEmpty(amount)](../api/amount-math.md#amountmath-isempty-amount)
@@ -89,11 +88,6 @@ API Reference](../api/).
 ## Methods on other objects
 
 These methods either use or return `amountMath` objects:
-- [makeIssuerKit(allegedName, amountMathKind)](../api/issuer.md#makeissuerkit-allegedname-amountmathkind)
-  - Creates a new `amountMath` that uses the `AmountMathKind``
-    designated by the `amountMathKind` argument (`MathKind.NAT`,
-    `MathKind.SET`). Also creates a new `mint`, `issuer`, and `brand`.
-  - <<< @/snippets/ertp/guide/test-amount-math.js#makeIssuerKit
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
   - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2
