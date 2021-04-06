@@ -1,7 +1,7 @@
 # Agoric Beta
 Release Version: Baltic
 
-![Agoric Banner](./assets/agoric-banner.png)
+![Agoric Banner](./assets/agoric-banner-2.png)
 
 Welcome to the Agoric Beta!
 
