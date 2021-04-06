@@ -82,8 +82,8 @@ const amount837 = amountMath.make(quatloosBrand, 837n);
 ```
 
 ## amountMath.coerce(brand, allegedAmount)
-- `allegedAmount` `{Amount}`
 - `brand` `{Brand}`
+- `allegedAmount` `{Amount}`
 - Returns: `{Amount}`
 
 Make sure this `amount` is valid and if so, return it.
