@@ -337,8 +337,8 @@ and an operation to request that the offer exit, as follows:
     An `Allocation` example:
     - ```js
       {
-        Asset: quatloosAmountMath.make(5n),
-        Price: moolaAmountMath.make(9n)
+        Asset: amountMath.make(quatloosBrand, 5n),
+        Price: amountMath.make(moolaBrand, 9n)
       }
       ```
 - `getProposal()`
