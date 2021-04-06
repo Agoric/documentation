@@ -37,14 +37,14 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](../api/).
 
 - **Information Getting Methods**
-  - [amountMath.getValue(amount,brand)](../api/amount-math.md#amountmath-getvalue-amount-brand)
+  - [amountMath.getValue(amount, brand)](../api/amount-math.md#amountmath-getvalue-amount-brand)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.makeEmpty()](../api/amount-math.md#amountmath-getempty)
+  - [amountMath.makeEmpty(mathKind, brand)](../api/amount-math.md#amountmath-getempty)
     - Returns an `amount` representing an empty `amount` (which is the identity
-       element for the `amountMath` `add()` and `subtract()`
-       operations. Note that this value varies depending on the
-       `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.SET`).
+      element for the `amountMath` `add()` and `subtract()`
+      operations. Note that this value varies depending on the
+      `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.SET`).
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
 - **Comparison Methods**
   - [amountMath.isEmpty(amount, brand?)](../api/amount-math.md#amountmath-isempty-amount-brand)
@@ -77,16 +77,16 @@ API Reference](../api/).
       doesn't include the contents of `rightAmount`, it throws an error. 
     - <<< @/snippets/ertp/guide/test-amount-math.js#subtract
 - **Amount Creation Methods**
-  - [amountMath.make(allegedValue)](../api/amount-math.md#amountmath-make-allegedvalue)	
+  - [amountMath.make(brand, allegedValue)](../api/amount-math.md#amountmath-make-brand-allegedvalue)	
     - Takes a `value` argument and returns an `amount` by making a record
       with the `value` and the `brand` associated with the `amountMath`. The `value`
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
-  - [amountMath.makeEmpty()](../api/amount-math.md#amountmath-getempty)
+  - [amountMath.makeEmpty(mathKind, brand)](../api/amount-math.md#amountmath-getempty-mathkind-brand)
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
-       operations. Note that this value varies depending on `amountMath`'s associated
-       `brand` and whether `amountMath` is of kind `MathKind.NAT` or `MathKind.STR`.
+       operations. Note that this value varies depending on the
+       `brand` and whether it is of kind `MathKind.NAT` or `MathKind.SET`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
  
 ## Methods on other objects
