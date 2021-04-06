@@ -119,7 +119,7 @@ are covered on the component-specific pages.
 First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
 Here it also creates a new `mint`, `amountMath`, and formal `brand` 
-for the argument, and returns all four new objects. The `mint`, `issuer`, and `brand` 
+for the argument, and returns all three new objects. The `mint`, `issuer`, and `brand` 
 are in one-to-one associations with each other. 
 
 In this case, you used the string 'quatloos' to name the `brand`.
@@ -232,7 +232,6 @@ in this case `MathKind.SET`.
 
 There are three kinds of `amountMath`. Each kind polymorphically implements the same set of methods. 
 - `MathKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
-- `MathKind.STRING_SET`: Used with non-fungible assets, operates on an array of string identifiers.
 - `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
 
 <<< @/snippets/ertp/guide/test-readme.js#ticketPayments
