@@ -386,8 +386,8 @@ what asset you want, what asset you will give for it, and how/when the offer mak
 (see [Exit Rule](#exit-rule) for details on the last). For example:
 ```
 const myProposal = harden({
-  give: { Asset: quatloosAmountMath.make(4)},
-  want: { Price: moolaAmountMath.make(15) },
+  give: { Asset: amountMath.make(quatloosBrand, 4)},
+  want: { Price: amountMath.make(moolaBrand, 15) },
   exit: { 'onDemand' }
 })
 ```
