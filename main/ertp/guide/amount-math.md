@@ -60,13 +60,13 @@ API Reference](../api/).
     - <<< @/snippets/ertp/guide/test-amount-math.js#coerce
 - **Manipulator Methods**
 
-  - [amountMath.add(leftAmount, rightAmount)](../api/amount-math.md#amountmath-add-leftamount-rightamount)
+  - [amountMath.add(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-add-leftamount-rightamount-brand)
     - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
        `amount` arguments. For a fungible `amount`, this means add their
        values.  For a non-fungible `amount`, it usually means
        including all elements from both `leftAmount` and `rightAmount`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#add
-  - [amountMath.subtract(leftAmount, rightAmount)](../api/amount-math.md#amountmath-subtract-leftamount-rightamount)
+  - [amountMath.subtract(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-subtract-leftamount-rightamount-brand)
     - Returns a new `amount` that is the `leftAmount` argument minus
       the `rightAmount` argument  (i.e. for strings or objects
       everything in `leftAmount` not in `rightAmount`). If `leftAmount`
