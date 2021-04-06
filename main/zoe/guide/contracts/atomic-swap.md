@@ -91,8 +91,8 @@ const bobInvitationValue = await E(zoe).getInvitationDetails(bobExclusiveInvitat
 assert(bobInstallationId === installation, details`wrong installation`);
 assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
-assert(moolaAmountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
-assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
+assert(amountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
+assert(amountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
 ```
 
 Bob decides to exercise the invitation, and to escrow his payments. He then
