@@ -96,8 +96,7 @@ methods, but two `amountMath` methods use or return them.
 - [`amountMath.getValue(amount, brand)`](../api/amount-math.md#amountmath-getvalue-amount-brand)
   - Return the `amount` argument's `value`
   - <<< @/snippets/ertp/guide/test-amounts.js#getValue
-- [`amountMath.make(allegedValue)`](../api/amount-math.md#amountmath-make-allegedvalue)
-  - Make an `amount`from a `value` by adding the
-  `amountMath` associated `brand` to the `value`. 
+- [`amountMath.make(brand, allegedValue)`](../api/amount-math.md#amountmath-make-brand-allegedvalue)
+  - Make an `amount`from a `brand` and a `value`. 
   - <<< @/snippets/ertp/guide/test-amounts.js#make
     
