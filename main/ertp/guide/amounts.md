@@ -80,10 +80,6 @@ return a `brand`.
   is valid. It uses the `brand` to find a `purse` we want to deposit it in, then verifies
   that it's genuine.
   - <<< @/snippets/ertp/guide/test-amounts.js#depositSomewhere
-- [`amountMath.getBrand()`](../api/amount-math.md#amountmath-getbrand)
-  - Return the `brand` the `amountMath` object is using for its
-  methods.
-  - <<< @/snippets/ertp/guide/test-amounts.js#amountMathGetBrand
 
 ## Values
 
