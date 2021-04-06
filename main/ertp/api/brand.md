@@ -51,7 +51,7 @@ helpful for debugging.
 const name = brand.getAllegedName();
 ```
 
-## `brand.getDisplayInfo()`
+## brand.getDisplayInfo()
 - Returns: `{DisplayInfo}`
 
 Returns the `DisplayInfo` object associated with the `brand`. 
