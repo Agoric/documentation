@@ -17,11 +17,15 @@ created. The kinds are:
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
-`makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`,
-`mint`, `brand`, and `amountMath`. 
+`makeIssuerKit(allegedName, amountMathKind, displayInfo=)` creates a new `issuer`,
+`mint`, and `brand`. 
 The second, optional, argument specifies which kind
 of `amountMath` is used for the `brand` in a one-to-one
 association with the new `issuer`. It defaults to `MathKind.NAT`. 
+
+The third, optional, argument specifies how many digits to the right
+of the decimal place to display of values associated with the created
+`brand`. It defaults to `undefined`.
 
 For example: 
 
