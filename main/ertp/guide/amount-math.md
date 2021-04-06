@@ -46,7 +46,7 @@ API Reference](../api/).
   - [amountMath.isEmpty(amount, brand?)](../api/amount-math.md#amountmath-isempty-amount-brand)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEmpty
-  - [amountMath.isGTE(leftAmount, rightAmount)](../api/amount-math.md#amountmath-isgte-leftamount-rightamount)
+  - [amountMath.isGTE(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-isgte-leftamount-rightamount-brand)
     - Returns `true` if the `leftAmount` argument is greater than or equal
        to the `rightAmount` argument, otherwise `false`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isGTE
