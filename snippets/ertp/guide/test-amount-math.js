@@ -1,33 +1,18 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
-import { makeIssuerKit, makeLocalAmountMath, MathKind } from '@agoric/ertp';
+import { makeIssuerKit, MathKind } from '@agoric/ertp';
 import { setupZCFTest } from '../../tools/setupZcfTest';
 
 test('ertp guide amountMath allMathKinds', async t => {
   // #region allMathKinds
   makeIssuerKit('Quatloos'); // Defaults to MathKind.NAT
-  makeIssuerKit('Quatloos', MathKind.STRING_SET);
   makeIssuerKit('Quatloos', MathKind.SET);
   // #endregion allMathKinds
   t.truthy(true);
 });
 
-test('ertp guide amountMath localAmountMath', async t => {
+test('ertp guide amountMath', async t => {
   const { issuer: quatloosIssuer } = makeIssuerKit('');
-  // #region localAmountMath
-  const quatloosLocalAmountMath = await makeLocalAmountMath(quatloosIssuer);
-  // #endregion localAmountMath
-  t.is(quatloosLocalAmountMath.make(2).value, 2n);
-});
-
-test('ertp guide amountMath methods getBrand', async t => {
-  const quatloosKit = makeIssuerKit('Quatloos');
-  const { amountMath: quatloosAmountMath } = quatloosKit;
-
-  // #region getBrand
-  const quatloosBrand = quatloosAmountMath.getBrand();
-  // #endregion getBrand
-  t.is(quatloosBrand, quatloosKit.brand);
 });
 
 test('ertp guide amountMath methods getValue', async t => {
@@ -38,15 +23,6 @@ test('ertp guide amountMath methods getValue', async t => {
   const value = quatloosAmountMath.getValue(quatloos123);
   // #endregion getValue
   t.is(value, 123n);
-});
-
-test('ertp guide amountMath methods getAmountMathKind', async t => {
-  // #region getAmountMathKind1
-  // amountMath kind defaults to `nat`
-  const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const kind = quatloosAmountMath.getAmountMathKind(); // returns 'nat'
-  // #endregion getAmountMathKind1
-  t.is(kind, 'nat');
 });
 
 test('ertp guide amountMath methods makeEmpty', async t => {
