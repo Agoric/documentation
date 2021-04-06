@@ -92,7 +92,7 @@ test('ertp guide amountMath methods coerce', async t => {
 
 test('ertp guide amountMath methods add', async t => {
   // #region add
-  const { amountMath: myItemsAmountMath } = makeIssuerKit('myItems', 'strSet');
+  const { amountMath: myItemsAmountMath } = makeIssuerKit('myItems', 'set');
   const listAmountA = myItemsAmountMath.make(harden(['1', '2', '4']));
   const listAmountB = myItemsAmountMath.make(harden(['3']));
 
@@ -107,7 +107,7 @@ test('ertp guide amountMath methods add', async t => {
 
 test('ertp guide amountMath methods subtract', async t => {
   // #region subtract
-  const { amountMath: myItemsAmountMath } = makeIssuerKit('myItems', 'strSet');
+  const { amountMath: myItemsAmountMath } = makeIssuerKit('myItems', 'set');
   const listAmountA = myItemsAmountMath.make(harden(['1', '2', '4']));
   const listAmountB = myItemsAmountMath.make(harden(['3']));
   const listAmountC = myItemsAmountMath.make(harden(['2']));
