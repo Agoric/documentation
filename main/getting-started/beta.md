@@ -3,7 +3,7 @@ Release Version: Baltic
 
 ![Agoric Banner](./assets/agoric-banner-2.png)
 
-Welcome to the Agoric Beta!
+Welcome to Phase 1 of the Agoric Beta!
 
 This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone start by interacting
 with the deployed application as a user. You'll start by getting your wallet set up, including getting some mock assets to play with
@@ -71,7 +71,7 @@ has not been exercised by the deadline, its underlying assets are paid to the co
 as a refund of their escrowed assets.
 
 ## Developer Experience
-Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our alpha, you can expect the following:
+Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our beta, you can expect the following:
 
 * VS Code with debugging support
 * Ability to build and test locally
