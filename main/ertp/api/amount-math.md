@@ -299,7 +299,7 @@ what it does and how to use it.
   - Returns the `amount` description of the `payment`
 - [`issuer.getAmountMathKind()`](./issuer.md#issuer-getamountmathkind)
   - Returns the kind of the `issuer`'s associated math helpers.
-- [`zcf.getAmountMath()`](/zoe/api/zoe-contract-facet.md#zcf-getamountmath)
+- [`zcf.getAmountMath()`](/zoe/api/zoe-contract-facet.md#zcf-getamountmathbrand)
   - Returns an `amountMath`.
 - [`zcf.getMathKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
   - Returns the `MathKind` associated with the `brand`.
