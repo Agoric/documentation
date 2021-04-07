@@ -40,7 +40,7 @@ API Reference](../api/).
   - [amountMath.getValue(brand, amount)](../api/amount-math.md#amountmath-getvalue-brand-amount)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.makeEmpty(brand, mathKind)](../api/amount-math.md#amountmath-getempty-brand-mathkind)
+  - [amountMath.makeEmpty(brand, mathKind)](../api/amount-math.md#amountmath-makeempty-brand-mathkind)
     - Returns an `amount` representing an empty `amount` (which is the identity
       element for the `amountMath` `add()` and `subtract()`
       operations. Note that this value varies depending on the
@@ -58,7 +58,7 @@ API Reference](../api/).
     - Returns `true` if the `leftAmount` argument equals the
 	`rightAmount` argument
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEqual
-  - [amountMath.coerce(allegedAmount, brand)](../api/amount-math.md#amountmath-coerce-allegedamount-brand)
+  - [amountMath.coerce(brand, allegedAmount)](../api/amount-math.md#amountmath-coerce-brand-allegedamount)
     - Takes an `amount` and returns it if it's a valid `amount`.
       If invalid, it throws an error.
     - <<< @/snippets/ertp/guide/test-amount-math.js#coerce
@@ -82,7 +82,7 @@ API Reference](../api/).
       with the `value` and the `brand` associated with the `amountMath`. The `value`
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
-  - [amountMath.makeEmpty(brand, mathKind)](../api/amount-math.md#amountmath-getempty-brand-mathkind)
+  - [amountMath.makeEmpty(brand, mathKind)](../api/amount-math.md#amountmath-makeempty-brand-mathkind)
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
        operations. Note that this value varies depending on the
