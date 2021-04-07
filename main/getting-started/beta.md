@@ -17,8 +17,7 @@ about your account. For now, this requires that you run some processes locally. 
 
 [Agoric Wallet Set-up Video Walkthrough](https://www.youtube.com/watch?v=e5LQx0EqR0o)
 
-Don't worry, this'll get much easier soon. After it passes reviews, the wallet will be available via a downloadable application.  
-On mainnet launch, Agoric will be integrated with leading wallet providers via a simple plugin.
+Don't worry, this'll get much easier soon. After it passes reviews, the wallet will be available via a downloadable application. On mainnet launch, Agoric will be integrated with leading wallet providers via a simple plugin.
 
 ## Head to the Treasury ##
 
