@@ -3,6 +3,7 @@
 `DisplayInfo` objects have one optional property, `decimalPlaces`, which takes a non-negative integer value.
 
 `displayInfo` is an optional argument to [`makeIssuerKit`](./issuer.md#makeissuerkitallegedname-amountmathkind-displayinfo).
+
 If specified, its `decimalPlaces` value is used when displaying amount values of the `brand` created by the issuerKit.
 
 Tells the display software how many decimal places to move the
