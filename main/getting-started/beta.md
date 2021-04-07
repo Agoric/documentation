@@ -58,7 +58,7 @@ const proposal = {
 This deadline is the expiration date for the covered call option. If the option has not been exercised by the deadline, as specified in the above code example, its underlying assets are paid out to the contract's creator as a refund of their escrowed assets.
 
 ## Developer Experience
-Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our alpha, you can expect the following:
+Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our beta, you can expect the following:
 
 * VS Code with debugging support
 * Ability to build and test locally
