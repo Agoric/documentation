@@ -13,6 +13,8 @@ Unlike other blockchains you may be familiar with, your "wallet" in Agoric is ac
 
 [Wallet Set-up Guide (Docker)](https://github.com/Agoric/agoric-sdk/wiki/Setting-up-an-Agoric-Dapp-Client-with-docker-compose)
 
+We also have a video walking you through the set-up. To watch it, click [here](https://www.youtube.com/watch?v=e5LQx0EqR0o).
+
 Don't worry - a downloadable application is coming (once it passes reviews).  On mainnet launch, Agoric will be integrated with several leading wallet providers via a simple plugin.
 
 ## Head to the Treasury ##
