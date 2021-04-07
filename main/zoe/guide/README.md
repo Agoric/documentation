@@ -2,8 +2,8 @@
 
 <Zoe-Version/>
 
-::: tip Alpha status
-The Agoric platform is at the alpha stage. It has not yet been formally tested
+::: tip Beta status
+The Agoric platform is at the beta stage. It has not yet been formally tested
 or hardened. Do not use for production purposes.
 :::
 

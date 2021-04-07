@@ -1,7 +1,7 @@
 # Introduction to Zoe
 
-::: tip Alpha status
-Zoe is currently at Alpha status. It has not yet been
+::: tip Beta status
+Zoe is currently at Beta status. It has not yet been
 formally tested or hardened. It is not yet of production quality.
 :::
 

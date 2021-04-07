@@ -3,9 +3,9 @@ sidebar: auto
 ---
 # Agoric Dapp
 
-::: warning Changes in the Alpha Release Candidate
+::: warning Changes in the Beta Release Candidate
 [Learn more about the changes to Zoe, contracts, and dapps in the
-Alpha Release Candidate](./alpha-release-candidate.md).
+Beta Release Candidate](../getting-started/beta.md).
 :::
 
 **This is a generic guide to Agoric Dapp projects**

@@ -4,7 +4,7 @@ module.exports = {
   /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
   base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Alpha', // title for the site. prefix for all page titles and displayed in the navbar
+  title: 'Beta', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
@@ -167,8 +167,8 @@ module.exports = {
       ],
       '/getting-started/': [
         {
-          title: 'Agoric Alpha',
-          path: '/getting-started/alpha.html',
+          title: 'Agoric Beta',
+          path: '/getting-started/beta.html',
           collapsible: false,
           children: [
           ]
@@ -319,8 +319,8 @@ module.exports = {
     // custom text for edit link. Defaults to "Edit this page"
     editLinkText: 'Help us improve this page!',
 
-    zoeVersion: 'Alpha Release v0.11.0',
-    zoeDocsUpdated: '2021-02-01'
+    zoeVersion: 'Beta Release v1.0.0',
+    zoeDocsUpdated: '2021-04-07'
 
 
     /* --- SEARCH --- */

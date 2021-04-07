@@ -50,9 +50,9 @@ module.exports = [
         link: '/guides/agoric-cli/',
       },
       {
-        text: 'Agoric Alpha',
-        ariaLabel: 'Agoric Alpha',
-        link: '/getting-started/alpha',
+        text: 'Agoric Beta',
+        ariaLabel: 'Agoric Beta',
+        link: '/getting-started/beta',
       },
     ]
   },

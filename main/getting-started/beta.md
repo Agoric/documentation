@@ -1,17 +1,31 @@
-# Agoric Alpha
-Release Version: Adriatic
+# Agoric Beta
+Release Version: Baltic
 
-![Alpha Cover](./assets/alpha-cover2.png)
+![Agoric Banner](./assets/agoric-banner-2.png)
 
-Decentralized Finance (DeFi) is the new frontier of financial services. Like many frontiers, it's exciting but dangerous. Agoric is building a public blockchain to make it more exciting and less dangerous. Welcome to the first step: **the Agoric alpha release**.
+Welcome to Phase 1 of the Agoric Beta!
 
-The Agoric alpha release introduces our smart contract platform. It enables JavaScript developers to start working on DeFi quickly and easily. Our object-based approach to smart contracts enables DeFi legos that are directly reusable. The smart contract framework leapfrogs existing technologies while providing a secure, stable infrastructure. Now developers can build, deploy, and operate sophisticated dApps and DeFi markets. It's live now, so get started.
+This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone start by interacting with the deployed application as a user. To start, make sure you've gotten your wallet set up.
+
+## Set Up A Wallet (Agoric Solo Machine) ##
+
+Unlike other blockchains you may be familiar with, your "wallet" in Agoric is actually a solo machine which maintains some additional state about your account.  For now, you'll need to run some processes locally to manage this.  See below for our set-up instructions:
+
+[Wallet Set-up Guide (Docker)](https://github.com/Agoric/agoric-sdk/wiki/Setting-up-an-Agoric-Dapp-Client-with-docker-compose)
+
+Don't worry - a downloadable application is coming (once it passes reviews).  On mainnet launch, Agoric will be integrated with several leading wallet providers via a simple plugin.
+
+## Head to the Treasury ##
+
+[Treasury Application](https://treasury.agoric.app)
+
+## Start Building ##
 
 [Start Coding](/getting-started/)
 
 [Join Our Community](https://discord.gg/gC9z6US)
 
-## What You Can Build in Alpha
+## What You Can Build in Beta
 
 <div class="two-col-table">
 
@@ -44,7 +58,7 @@ const proposal = {
 This deadline is the expiration date for the covered call option. If the option has not been exercised by the deadline, as specified in the above code example, its underlying assets are paid out to the contract's creator as a refund of their escrowed assets.
 
 ## Developer Experience
-Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our alpha, you can expect the following:
+Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our beta, you can expect the following:
 
 * VS Code with debugging support
 * Ability to build and test locally
