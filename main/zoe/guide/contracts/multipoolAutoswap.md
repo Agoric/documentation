@@ -72,8 +72,8 @@ back.
 
 ```js
 const saraProposal = harden({
-  want: { Out: amountMath.make(moola, 275n) },
-  give: { In: amountMath.make(simolean, 220n) },
+  want: { Out: amountMath.make(moolaBrand, 275n) },
+  give: { In: amountMath.make(simoleanBrand, 220n) },
 });
 
 const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
