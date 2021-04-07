@@ -3,9 +3,9 @@ Release Version: Baltic
 
 ![Agoric Banner](./assets/agoric-banner-2.png)
 
-Welcome to the Agoric Beta!
+Welcome to Phase 1 of the Agoric Beta!
 
-This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone start by interacting with the deployed as a user. To start, make sure you've gotten your wallet set up.
+This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone start by interacting with the deployed application as a user. To start, make sure you've gotten your wallet set up.
 
 ## Set Up A Wallet (Agoric Solo Machine) ##
 
