@@ -6,14 +6,14 @@ Logic for manipulating `amounts`.
 
 To get access to an `amountMath`:
 - `import { amountMath } from '@agoric/ertp';`
-  - It's a record, not an object with a constructor.
+  - This imports an `amountMath` object named `amountMath`. Use it to call `amountMath` methods.
 - By writing a Zoe contract. The `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`. 
 
 ## AmountMath Kinds
 
 There are two different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
 
-The two`amountMath` kinds each implement all of the same API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
+The two `amountMath` kinds each implement all of the same API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
