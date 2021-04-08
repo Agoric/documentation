@@ -319,6 +319,10 @@ Returns the `brand` associated with the `issuer`.
 
 Returns the `issuer` of the `brand` argument.
 
+## zcf.getMathKind(brand)
+
+Returns the `mathKind` for the `brand` argument.
+
 ## zcf.stopAcceptingOffers()
 - The contract requests Zoe to not accept offers for this contract instance. 
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
