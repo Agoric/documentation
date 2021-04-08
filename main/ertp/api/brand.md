@@ -1,12 +1,10 @@
 # Brand
 The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships
-with an `issuer` and a `mint`, and one-to-many relationships with `amountMaths`, `purses` and `payments`.
+with an `issuer` and a `mint`, and one-to-many relationships with `purses` and `payments`.
 
 Meaning for, say, the Quatloos `brand`:
 - There is only one Quatloos `issuer`.
 - There is only one Quatloos `mint`.
-- All `amounts` created via the Quatloos `amountMath` have a Quatloos `brand`.
-- There can be many local copies of the Quatloos `amountMath`, but those `amountMaths` only work on Quatloos branded `amounts`.
 - There can be any number of Quatloos holding `purses`, but those `purses` can only hold Quatloos.
 - There can be any number of Quatloos holding `payments`, but those `payments` can only hold Quatloos.
 
@@ -15,8 +13,8 @@ purported `amount` cannot use the `brand` by itself to verify its authenticity,
 since the `brand` can be reused by a misbehaving `issuer`.
 
 All of these relationships are unchangeable; if, say, a `mint` is created that makes new Quatloos, it
-can never create new assets of any other `brand`. And a `brand` cannot be associated with any other `mint` or
-`issuer`.
+can never create new assets of any other `brand`. And a `brand` cannot be associated with any 
+other `mint` or `issuer`.
 
 ## brand.isMyIssuer(issuer)
 - `issuer` `{Issuer}`
@@ -54,13 +52,16 @@ const name = brand.getAllegedName();
 ## brand.getDisplayInfo()
 - Returns: `{DisplayInfo}`
 
-Returns the `DisplayInfo` object associated with the `brand`. 
+Returns the `DisplayInfo` associated with the `brand`. 
 
-You can either view the object's `decimalPlaces` property's value,
-or reset it to a different non-negative integer. 
+You use a `displayInfo` record at the dapp and UI levels to correctly 
+display amounts. For fungible tokens, use the `decimalPlaces` property
+to display their value in the commonly used denomination, rather than 
+the smallest denomination used for financial accounting (for example, 
+displaying in dollars rather than cents.)
+
 ```js
 const quatloosDisplay = quatloosBrand.getDisplayInfo;
-const quatloosDecimalPlaces = quatloosDisplay.decimalPlaces;
 ```
 
 ## Related Methods
