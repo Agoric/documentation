@@ -1,6 +1,6 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
-import { makeIssuerKit, MathKind } from '@agoric/ertp';
+import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
 import { setupZCFTest } from '../../tools/setupZcfTest';
 
 test('ertp guide amountMath allMathKinds', async t => {
@@ -12,123 +12,122 @@ test('ertp guide amountMath allMathKinds', async t => {
 });
 
 test('ertp guide amountMath', async t => {
-  const { issuer: quatloosIssuer } = makeIssuerKit('');
+  const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('');
 });
 
 test('ertp guide amountMath methods getValue', async t => {
   // #region getValue
-  const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const quatloos123 = quatloosAmountMath.make(123);
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  const quatloos123 = amountMath.make(quatloosBrand, 123n);
   // returns 123
-  const value = quatloosAmountMath.getValue(quatloos123);
+  const value = amountMath.getValue(quatloosBrand, quatloos123);
   // #endregion getValue
   t.is(value, 123n);
 });
 
 test('ertp guide amountMath methods makeEmpty', async t => {
   // #region makeEmpty
-  const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
   // Returns an empty amount for this issuer.
   // Since this is a fungible amount it returns 0
-  const empty = quatloosAmountMath.makeEmpty();
+  const empty = amountMath.makeEmpty();
   // #endregion makeEmpty
-  t.deepEqual(empty, quatloosAmountMath.make(0));
+  t.deepEqual(empty, amountMath.make(0));
 });
 
 test('ertp guide amountMath methods isEmpty', async t => {
   // #region isEmpty
   const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const empty = quatloosAmountMath.makeEmpty();
-  const quatloos1 = quatloosAmountMath.make(1);
+  const empty = quatloosAmountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const quatloos1 = amountMath.make(quatloosBrand, 1n);
   // returns true
-  quatloosAmountMath.isEmpty(empty);
+  amountMath.isEmpty(empty);
   // returns false
-  quatloosAmountMath.isEmpty(quatloos1);
+  amountMath.isEmpty(quatloos1);
   // #endregion isEmpty
-  t.truthy(quatloosAmountMath.isEmpty(empty));
-  t.falsy(quatloosAmountMath.isEmpty(quatloos1));
+  t.truthy(amountMath.isEmpty(empty));
+  t.falsy(amountMath.isEmpty(quatloos1));
 });
 
 test('ertp guide amountMath methods isGTE', async t => {
   // #region isGTE
-  const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const empty = quatloosAmountMath.makeEmpty();
-  const quatloos1 = quatloosAmountMath.make(1);
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const quatloos1 = amountMath.make(quatloosBrand, 1n);
   // Returns true
-  quatloosAmountMath.isGTE(quatloos1, empty);
+  amountMath.isGTE(quatloos1, empty);
   // Returns false
-  quatloosAmountMath.isGTE(empty, quatloos1);
+  amountMath.isGTE(empty, quatloos1);
   // #endregion isGTE
-  t.truthy(quatloosAmountMath.isGTE(quatloos1, empty));
+  t.truthy(amountMath.isGTE(quatloos1, empty));
   // Returns false
-  t.falsy(quatloosAmountMath.isGTE(empty, quatloos1));
+  t.falsy(qamountMath.isGTE(empty, quatloos1));
 });
 
 test('ertp guide amountMath methods isEqual', async t => {
   // #region isEqual
-  const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const empty = quatloosAmountMath.makeEmpty();
-  const quatloos1 = quatloosAmountMath.make(1);
-  const anotherQuatloos1 = quatloosAmountMath.make(1);
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const quatloos1 = amountMath.make(quatloosBrand, 1n);
+  const anotherQuatloos1 = amountMath.make(quatloosBrand, 1n);
 
   // Returns true
-  quatloosAmountMath.isEqual(quatloos1, anotherQuatloos1);
+  amountMath.isEqual(quatloos1, anotherQuatloos1);
   // Returns false
-  quatloosAmountMath.isEqual(empty, quatloos1);
+  amountMath.isEqual(empty, quatloos1);
   // #endregion isEqual
 
-  t.truthy(quatloosAmountMath.isEqual(quatloos1, anotherQuatloos1));
-  t.falsy(quatloosAmountMath.isEqual(empty, quatloos1));
+  t.truthy(amountMath.isEqual(quatloos1, anotherQuatloos1));
+  t.falsy(amountMath.isEqual(empty, quatloos1));
 });
 
 test('ertp guide amountMath methods coerce', async t => {
   // #region coerce
-  const { amountMath: quatloosAmountMath } = makeIssuerKit('quatloos');
-  const quatloos50 = quatloosAmountMath.make(50);
-  quatloosAmountMath.coerce(quatloos50); // equal to quatloos50
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  const quatloos50 = amountMath.make(quatloosBrand, 50n);
+  amountMath.coerce(quatloosBrand, quatloos50); // equal to quatloos50
   // #endregion coerce
-  t.deepEqual(quatloosAmountMath.coerce(quatloos50), quatloos50);
+  t.deepEqual(amountMath.coerce(quatloosBrand, quatloos50), quatloos50);
 });
 
 test('ertp guide amountMath methods add', async t => {
   // #region add
-  const { amountMath: myItemsAmountMath } = makeIssuerKit('myItems', 'set');
-  const listAmountA = myItemsAmountMath.make(harden(['1', '2', '4']));
-  const listAmountB = myItemsAmountMath.make(harden(['3']));
+  const { brand: myItemsBrand } = makeIssuerKit('myItems', 'set');
+  const listAmountA = amountMath.make(myItemsBrand, harden(['1', '2', '4']));
+  const listAmountB = amountMath.make(myItemsBrand, harden(['3']));
 
   // Returns an amount containing all of ['1', '2', '4', '3']
-  const combinedList = myItemsAmountMath.add(listAmountA, listAmountB);
+  const combinedList = amountMath.add(listAmountA, listAmountB);
   // #endregion add
   t.deepEqual(
     combinedList,
-    myItemsAmountMath.make(harden(['1', '2', '4', '3'])),
+    amountMath.make(myItemsBrand, harden(['1', '2', '4', '3'])),
   );
 });
 
 test('ertp guide amountMath methods subtract', async t => {
   // #region subtract
-  const { amountMath: myItemsAmountMath } = makeIssuerKit('myItems', 'set');
-  const listAmountA = myItemsAmountMath.make(harden(['1', '2', '4']));
-  const listAmountB = myItemsAmountMath.make(harden(['3']));
-  const listAmountC = myItemsAmountMath.make(harden(['2']));
+  const { brand: myItemsBrand } = makeIssuerKit('myItems', 'set');
+  const listAmountA = amountMath.make(myItemsBrand, harden(['1', '2', '4']));
+  const listAmountB = amountMath.make(myItemsBrand, harden(['3']));
+  const listAmountC = amountMath.make(myItemsBrand, harden(['2']));
   // Returns ['1', '4']
-  const subtractedList = myItemsAmountMath.subtract(listAmountA, listAmountC);
+  const subtractedList = amountMath.subtract(listAmountA, listAmountC);
   // Throws error
-  t.throws(() => myItemsAmountMath.subtract(listAmountA, listAmountB), {
+  t.throws(() => amountMath.subtract(listAmountA, listAmountB), {
     message: /right element .* was not in left/,
   });
   // #endregion subtract
-  t.deepEqual(subtractedList, myItemsAmountMath.make(harden(['1', '4'])));
+  t.deepEqual(subtractedList, amountMath.make(harden(['1', '4'])));
 });
 
 test('ertp guide amountMath methods make', async t => {
   // #region make
   const {
-    amountMath: quatloosAmountMath,
     brand: quatloosBrand,
   } = makeIssuerKit('quatloos');
   /// An `amount` with `value` = 837 and `brand` = Quatloos
-  const quatloos837 = quatloosAmountMath.make(837);
+  const quatloos837 = amountMath.make(quatloosBrand, 837n);
   const anotherQuatloos837 = harden({ brand: quatloosBrand, value: 837n });
   t.deepEqual(quatloos837, anotherQuatloos837);
   // #endregion make
@@ -136,11 +135,10 @@ test('ertp guide amountMath methods make', async t => {
 
 test('ertp guide amountMath related', async t => {
   // #region makeIssuerKit
-  const { issuer, mint, brand, amountMath } = makeIssuerKit('quatloos');
+  const { issuer, mint, brand } = makeIssuerKit('quatloos');
   // #endregion makeIssuerKit
   t.truthy(mint);
   t.truthy(brand);
-  t.is(amountMath.getBrand(), issuer.getBrand());
 
   const quatloosIssuer = issuer;
   const quatloosBrand = brand;
