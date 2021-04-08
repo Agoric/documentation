@@ -16,7 +16,7 @@ specification of what is being sold, such as:
   count: 3,
   moneyIssuer: moolaIssuer,
   sellItemsInstallationHandle,
-  pricePerItem: moolaAmountMath.make(20),
+  pricePerItem: amountMath.make(moolaBrand, 20n),
 }
 ```
 

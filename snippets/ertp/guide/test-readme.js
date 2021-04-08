@@ -30,7 +30,7 @@ test('ertp guide readme', async t => {
   // #endregion deposit
 
   // #region five
-  const quatloosFive = amountMath.make(5n);
+  const quatloosFive = amountMath.make(quatloosBrand, 5n);
   // #endregion five
 
   // #region withdraw
@@ -75,12 +75,12 @@ test('ertp guide readme', async t => {
   const {
     mint: agoricTheatreTicketMint,
     brand: agoricTheatreTicketBrand,
-  } = makeIssuerKit('Agoric Theater tickets', MathKind.SET,);
+  } = makeIssuerKit('Agoric Theater tickets', MathKind.SET);
   // #endregion makeTicketIssuer
 
   // #region ticketPayments
   const ticketAmounts = ticketValues.map(ticketValue =>
-    amountMath.make(agoricTheatreTicketBrand, harden([ticketValue])),
+    amountMath.make(agoricTheatreTicketBrand, [ticketValue]),
   );
   const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount =>
     agoricTheatreTicketMint.mintPayment(ticketAmount),

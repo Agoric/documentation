@@ -62,8 +62,8 @@ A ratio has these restrictions:
 - The denominator cannot be 0. 
 
 ```js
-const fiftyCents = centsAmountMath.make(50n);
-const dollar = centsAmountMath.make(100n);
+const fiftyCents = amountMath.make(centsBrand, 50n);
+const dollar = amountMath.make(centsBrand, 100n);
 const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 ```
 
@@ -115,7 +115,7 @@ Throws errors with messages:
     
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
-const Dollars47 = dollarAmountMath.make(47n);
+const Dollars47 = amountMath.make(dollarBrand, 47n);
 // Returns an amount of 28 Swiss francs
 const exchange = multiplyBy(Dollars100, exchangeRatio);
 ```
@@ -153,7 +153,7 @@ Throws errors with messages:
 ```js
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
-const Dollars47 = dollarAmountMath.make(47n);
+const Dollars47 = amountMath.make(dollarBrand, 47n);
 // Returns an amount of 78 Swiss francs
 const exchange = divideBy(Dollars100, exchangeRatio);
 ```

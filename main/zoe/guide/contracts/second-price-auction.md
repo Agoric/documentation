@@ -57,8 +57,8 @@ onDemand: null }`) is used.
 
 ```js
 const aliceProposal = harden({
-  give: { Asset: moolaAmountMath.make(1) },
-  want: { Bid: simoleanAmountMath.make(3) },
+  give: { Asset: amountMath.make(moolaBrand, 1n) },
+  want: { Bid: amountMath.make(simoleanBrand, 3n) },
   exit: { waived: null },
 });
 
@@ -93,8 +93,8 @@ Bob decides to join the contract and makes an offer:
 
 ```js
 const bobProposal = harden({
-  give: { Bid: simoleanAmountMath.make(11) },
-  want: { Asset: moolaAmountMath.make(1) },
+  give: { Bid: amountMath.make(simoleanBrand, 11n) },
+  want: { Asset: amountMath.make(moolaBrand, 1n) },
 });
 
 const bobPayments = { Bid: bobSimoleanPayment };

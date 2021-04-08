@@ -28,7 +28,7 @@ test('ertp guide amountMath methods makeEmpty', async t => {
   // Since this is a fungible amount it returns 0
   const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
   // #endregion makeEmpty
-  t.deepEqual(empty, amountMath.make(0n));
+  t.deepEqual(empty, amountMath.make(quatloosBrand, 0n));
 });
 
 test('ertp guide amountMath methods isEmpty', async t => {
@@ -97,16 +97,16 @@ test('ertp guide amountMath methods add', async t => {
   // #endregion add
   t.deepEqual(
     combinedList,
-    amountMath.make(myItemsBrand, harden(['1', '2', '4', '3'])),
+    amountMath.make(myItemsBrand, ['1', '2', '4', '3']),
   );
 });
 
 test('ertp guide amountMath methods subtract', async t => {
   // #region subtract
   const { brand: myItemsBrand } = makeIssuerKit('myItems', 'set');
-  const listAmountA = amountMath.make(myItemsBrand, harden(['1', '2', '4']));
-  const listAmountB = amountMath.make(myItemsBrand, harden(['3']));
-  const listAmountC = amountMath.make(myItemsBrand, harden(['2']));
+  const listAmountA = amountMath.make(myItemsBrand, ['1', '2', '4']);
+  const listAmountB = amountMath.make(myItemsBrand, ['3']);
+  const listAmountC = amountMath.make(myItemsBrand, ['2']);
   // Returns ['1', '4']
   const subtractedList = amountMath.subtract(listAmountA, listAmountC);
   // Throws error
@@ -114,14 +114,12 @@ test('ertp guide amountMath methods subtract', async t => {
     message: /right element .* was not in left/,
   });
   // #endregion subtract
-  t.deepEqual(subtractedList, amountMath.make(harden(['1', '4'])));
+  t.deepEqual(subtractedList, amountMath.make(myItemsBrand, ['1', '4']));
 });
 
 test('ertp guide amountMath methods make', async t => {
   // #region make
-  const {
-    brand: quatloosBrand
-  } = makeIssuerKit('quatloos');
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
   /// An `amount` with `value` = 837 and `brand` = Quatloos
   const quatloos837 = amountMath.make(quatloosBrand, 837n);
   const anotherQuatloos837 = harden({ brand: quatloosBrand, value: 837n });
