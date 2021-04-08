@@ -15,7 +15,7 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   // It does not create new assets.
   const quatloos2 = amountMath.make(quatloosBrand, 2n);
   // Non-fungible asset, which needs an amountMath
-  // of kind 'MathKind.SET'
+  // of kind MathKind.SET
   const {
     mint: titleMint,
     issuer: titleIssuer,
@@ -74,12 +74,13 @@ test('ertp guide issuers and mints makeEmptyPurse', async t => {
 test('ertp guide issuers and mints payment methods', async t => {
   const {
     issuer: quatloosIssuer,
-    mint: quatloosMint,
+    brand: quatloosBrand,
+    mint: quatloosMint
   } = makeIssuerKit('quatloos');
 
   // #region getAmountOf
   const quatloosPayment = quatloosMint.mintPayment(
-    quatloosAmountMath.make(quatloosBrand, 100n),
+    amountMath.make(quatloosBrand, 100n),
   );
   // returns an amount with a value of 100 and the quatloos brand
   quatloosIssuer.getAmountOf(quatloosPayment);
@@ -94,7 +95,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   t.deepEqual(burntAmount, amountToBurn);
 
   // #region claim
-  const amountToTransfer = quatloosAmountMath.make(2);
+  const amountToTransfer = amountMath.make(quatloosBrand, 2n);
   const originalPayment = quatloosMint.mintPayment(amountToTransfer);
   const newPayment = await quatloosIssuer.claim(
     originalPayment,
@@ -125,7 +126,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   const oldPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 30n));
   const [paymentA, paymentB] = await quatloosIssuer.split(
     oldPayment,
-    quatloosAmountMath.make(10),
+    amountMath.make(quatloosBrand, 10n),
   );
   // paymentA is 10 quatloos, payment B is 20 quatloos.
   // #endregion split
@@ -137,7 +138,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   // #region splitMany
   // #region splitManyConcise
   const oldQuatloosPayment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 100n),
+    amountMath.make(quatloosBrand, 100n)
   );
   const goodQuatloosAmounts = Array(10).fill(amountMath.make(quatloosBrand, 10n));
 
@@ -202,7 +203,7 @@ test('ertp guide issuers and mints mint.getIssuer', async t => {
 
 test('ertp guide issuers and mints mint.mintPayment', async t => {
   // #region mintMintPayment
-  const { mint: quatloosMint } = makeIssuerKit(
+  const { mint: quatloosMint, brand: quatloosBrand } = makeIssuerKit(
     'quatloos',
   );
   const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
