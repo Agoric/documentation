@@ -40,7 +40,7 @@ API Reference](../api/).
   - [amountMath.getValue(brand, amount)](../api/amount-math.md#amountmath-getvalue-brand-amount)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmathmakeemptybrand-amountmathkind) 
+  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-amountmathkind) 
     - Returns an `amount` representing an empty `amount` (which is the identity
       element for the `amountMath` `add()` and `subtract()`
       operations. Note that this value varies depending on the
@@ -82,7 +82,7 @@ API Reference](../api/).
       with the `value` and the `brand` associated with the `amountMath`. The `value`
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
-  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmathmakeemptybrand-amountmathkind)
+  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-amountmathkind)
     - Returns an `amount` representing an empty `amount` (which is the identity
        element for the `amountMath` `add()` and `subtract()`
        operations. Note that this value varies depending on the
@@ -95,6 +95,3 @@ These methods either use or return `amountMath` objects:
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
   - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2
-- [zcf.getAmountMath(brand)](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
-  - Returns the `amountMath` object associated with the `brand` argument.
-  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetAmountMath

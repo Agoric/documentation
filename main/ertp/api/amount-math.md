@@ -2,13 +2,10 @@
 
 Logic for manipulating `amounts`.
 
-## Obtaining an AmountMath
+## Importing and Using AmountMath
 
-To get access to an `amountMath`:
+To use the `amountMath` library, import it from ERTP:
 - `import { amountMath } from '@agoric/ertp';`
-  - This imports an `amountMath` object named `amountMath`. Use it to call `amountMath` methods.
-- By writing a Zoe contract. The `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`. 
-
 ## AmountMath Kinds
 
 There are two different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
@@ -299,8 +296,6 @@ what it does and how to use it.
   - Returns the `amount` description of the `payment`
 - [`issuer.getAmountMathKind()`](./issuer.md#issuer-getamountmathkind)
   - Returns the kind of the `issuer`'s associated math helpers.
-- [`zcf.getAmountMath()`](/zoe/api/zoe-contract-facet.md#zcf-getamountmathbrand)
-  - Returns an `amountMath`.
 - [`zcf.getMathKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
   - Returns the `MathKind` associated with the `brand`.
 

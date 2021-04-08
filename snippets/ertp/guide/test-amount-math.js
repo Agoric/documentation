@@ -1,7 +1,6 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
-import { setupZCFTest } from '../../tools/setupZcfTest';
 
 test('ertp guide amountMath allMathKinds', async t => {
   // #region allMathKinds
@@ -135,16 +134,9 @@ test('ertp guide amountMath related', async t => {
   t.truthy(brand);
 
   const quatloosIssuer = issuer;
-  const quatloosBrand = brand;
 
   // #region getAmountMathKind2
   const myAmountMathKind = quatloosIssuer.getAmountMathKind();
   // #endregion getAmountMathKind2
   t.is(myAmountMathKind, 'nat');
-
-  const { zcf } = await setupZCFTest(harden({ Quatloos: quatloosIssuer }));
-  // #region zcfGetAmountMath
-  const quatloosAmountMath = zcf.getAmountMath(quatloosBrand);
-  // #endregion zcfGetAmountMath
-  t.is(quatloosAmountMath.getBrand(), quatloosBrand);
 });
