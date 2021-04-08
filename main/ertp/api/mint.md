@@ -6,13 +6,14 @@ A `mint` has a one-to-one relationship with both an `issuer` and a `brand`.
 So it can only mint new assets of that `brand` and is the only `mint` that can mint
 new assets of that `brand`.
 
-## makeIssuerKit(allegedName, amountMathKind)
+## makeIssuerKit(allegedName, amountMathKind, displayInfo)
 - `allegedName` `{String}`
 - `amountMathKind` `{MathKind}`
+- `displayInfo` `{DisplayInfo}`
 - Returns: `{IssuerKit}`
 
 While not a method called on a `mint`, clearly it's important to know how to create a new `mint`. 
-`makeIssuerKit()` returns a new `issuer`, `mint`, `amountMath`, and `brand`. 
+`makeIssuerKit()` returns a new `issuer`, `mint`, and `brand`. 
 See [here](/ertp/api/issuer.md#makeissuerkitallegedname-amountmathkind-displayinfo) for details.
 
 ## mint.getIssuer()
