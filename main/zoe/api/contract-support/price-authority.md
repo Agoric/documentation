@@ -95,8 +95,8 @@ const quote = await E(pAuthority).quoteWanted(quatloosBrand, moola500;
 - Resolves when a price quote of `amountIn` exceeds `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenGT(
-    amountMath.make(29n, brands.In),
-    amountMath.make(974n, brands.Out),
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -107,8 +107,8 @@ const quote = E(pAuthority).quoteWhenGT(
 - Resolves when a price quote of `amountIn` reaches or exceeds `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenGTE(
-    amountMath.make(29n, brands.In),
-    amountMath.make(974n, brands.Out),
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -119,8 +119,8 @@ const quote = E(pAuthority).quoteWhenGTE(
 - Resolves when a price quote of `amountIn` drops below `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenLT(
-    amountMath.make(29n, brands.In),
-    amountMath.make(974n, brands.Out),
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -132,7 +132,7 @@ const quote = E(pAuthority).quoteWhenLT(
   `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenLTE(
-    amountMath.make(29n, brands.In),
-    amountMath.make(974n, brands.Out),
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
   );
 ```

@@ -4,10 +4,7 @@ import { amountMath, makeIssuerKit } from '@agoric/ertp';
 
 test('ertp guide amounts', async t => {
   const quatloosKit = makeIssuerKit('quatloos');
-  const {
-    brand: quatloosBrand,
-    issuer: quatloosIssuer
-  } = quatloosKit;
+  const { brand: quatloosBrand, issuer: quatloosIssuer } = quatloosKit;
   // #region manualMake
   const newAmount = { brand: quatloosBrand, value: 5n };
   // #endregion manualMake

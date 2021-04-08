@@ -3,7 +3,7 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import { E } from '@agoric/eventual-send';
 import { makeZoe } from '@agoric/zoe';
-import { makeIssuerKit } from '@agoric/ertp';
+import { makeIssuerKit, amountMath } from '@agoric/ertp';
 
 // #region importBundleSource
 import bundleSource from '@agoric/bundle-source';
@@ -19,14 +19,14 @@ test('intro to zoe', async t => {
 
   const purse = simoleanKit.issuer.makeEmptyPurse();
   purse.deposit(
-    simoleanKit.mint.mintPayment(simoleanKit.amountMath.make(1000)),
+    simoleanKit.mint.mintPayment(amountMath.make(simoleanKit.brand, 1000n)),
   );
   const aliceProposal = harden({
-    give: { Asset: moolaKit.amountMath.make(3) }, // asset: 3 moola
-    want: { Price: simoleanKit.amountMath.make(7) }, // price: 7 simoleans
+    give: { Asset: amountMath.make(moolaKit.brand, 3n) }, // asset: 3 moola
+    want: { Price: amountMath.make(simoleanKit.brand, 7n) }, // price: 7 simoleans
   });
   const alicePayments = harden({
-    Asset: moolaKit.mint.mintPayment(moolaKit.amountMath.make(3)),
+    Asset: moolaKit.mint.mintPayment(amountMath.make(moolaKit.brand, 3n)),
   });
 
   // #region bundle
@@ -109,7 +109,7 @@ test('intro to zoe', async t => {
   // #endregion getPayout
   t.deepEqual(
     await moolaKit.issuer.getAmountOf(moolaPayment),
-    moolaKit.amountMath.make(3),
+    amountMath.make(moolaKit.brand, 3n),
   );
 
   // #region alicePayout
@@ -117,7 +117,7 @@ test('intro to zoe', async t => {
   // #endregion alicePayout
   t.deepEqual(
     await simoleanKit.issuer.getAmountOf(aliceSimoleanPayment),
-    simoleanKit.amountMath.make(7),
+    amountMath.make(simoleanKit.brand, 7n),
   );
 });
 

@@ -26,9 +26,7 @@ test('ertp guide purse getCurrentAmount', async t => {
 });
 
 test('ertp guide purse withdraw', async t => {
-  const { issuer, mint, brand } = makeIssuerKit(
-    'quatloos'
-  );
+  const { issuer, mint, brand } = makeIssuerKit('quatloos');
   const quatloosPurse = issuer.makeEmptyPurse();
   quatloosPurse.deposit(mint.mintPayment(amountMath.make(brand, 100n)));
 
@@ -54,7 +52,9 @@ test('ertp guide purse deposit', async t => {
 
   // Deposit a payment for 123 quatloos into the purse. Ensure that this is the amount you expect.
   quatloosPurse.deposit(quatloosPayment, quatloos123);
-  const secondPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
+  const secondPayment = quatloosMint.mintPayment(
+    amountMath.make(quatloosBrand, 100n),
+  );
   // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
   t.throws(() => quatloosPurse.deposit(secondPayment, quatloos123), {
     message: /payment balance .* must equal amount .*/,
@@ -69,7 +69,9 @@ test('ertp guide purse getDepositFacet', async t => {
   } = makeIssuerKit('quatloos');
 
   const purse = quatloosIssuer.makeEmptyPurse();
-  const payment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
+  const payment = quatloosMint.mintPayment(
+    amountMath.make(quatloosBrand, 100n),
+  );
 
   // #region getDepositFacet
   const depositOnlyFacet = purse.getDepositFacet();
@@ -107,7 +109,10 @@ test('ertp guide purse payment example', async t => {
   quatloosPurse.getCurrentAmount();
   // #endregion example
 
-  t.deepEqual(quatloosPurse.getCurrentAmount(), amountMath.make(quatloosBrand, 7n));
+  t.deepEqual(
+    quatloosPurse.getCurrentAmount(),
+    amountMath.make(quatloosBrand, 7n),
+  );
   t.deepEqual(
     await quatloosIssuer.getAmountOf(withdrawalPayment),
     amountMath.make(quatloosBrand, 3n),

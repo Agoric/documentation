@@ -16,10 +16,10 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   const quatloos2 = amountMath.make(quatloosBrand, 2n);
   // Non-fungible asset, which needs an amountMath
   // of kind MathKind.SET
-  const {
-    mint: titleMint,
-    issuer: titleIssuer,
-  } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.SET);
+  const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit(
+    'alamedaCountyPropertyTitle',
+    MathKind.SET,
+  );
   // #endregion makeIssuerKit
 
   t.truthy(quatloosIssuer);
@@ -75,7 +75,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   const {
     issuer: quatloosIssuer,
     brand: quatloosBrand,
-    mint: quatloosMint
+    mint: quatloosMint,
   } = makeIssuerKit('quatloos');
 
   // #region getAmountOf
@@ -115,15 +115,15 @@ test('ertp guide issuers and mints payment methods', async t => {
   const combinedPayment = quatloosIssuer.combine(payments);
   // #endregion combine
 
-  const quatloosBrand = quatloosIssuer.getBrand();
-
   t.deepEqual(await quatloosIssuer.getAmountOf(combinedPayment), {
     brand: quatloosBrand,
     value: 100n,
   });
 
   // #region split
-  const oldPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 30n));
+  const oldPayment = quatloosMint.mintPayment(
+    amountMath.make(quatloosBrand, 30n),
+  );
   const [paymentA, paymentB] = await quatloosIssuer.split(
     oldPayment,
     amountMath.make(quatloosBrand, 10n),
@@ -138,9 +138,11 @@ test('ertp guide issuers and mints payment methods', async t => {
   // #region splitMany
   // #region splitManyConcise
   const oldQuatloosPayment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 100n)
+    amountMath.make(quatloosBrand, 100n),
   );
-  const goodQuatloosAmounts = Array(10).fill(amountMath.make(quatloosBrand, 10n));
+  const goodQuatloosAmounts = Array(10).fill(
+    amountMath.make(quatloosBrand, 10n),
+  );
 
   const arrayOfNewPayments = await quatloosIssuer.splitMany(
     oldQuatloosPayment,
@@ -168,7 +170,9 @@ test('ertp guide issuers and mints payment methods', async t => {
     brand: quatloosBrand,
   });
 
-  const payment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
+  const payment = quatloosMint.mintPayment(
+    amountMath.make(quatloosBrand, 100n),
+  );
   // #region isLive
   const isItLive = quatloosIssuer.isLive(payment);
   // #endregion isLive
