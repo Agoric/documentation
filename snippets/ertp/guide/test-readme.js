@@ -3,14 +3,14 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 import { E } from '@agoric/eventual-send';
 import { makeBoard } from '@agoric/cosmic-swingset/lib/ag-solo/vats/lib-board';
 
-import { makeIssuerKit, MathKind } from '@agoric/ertp';
+import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
 
 test('ertp guide readme', async t => {
   // #region makeIssuerKit
   const {
     issuer: quatloosIssuer,
     mint: quatloosMint,
-    amountMath: quatloosAmountMath,
+    displayInfo: quatloosDisplayInfo,
     brand: quatloosBrand,
   } = makeIssuerKit('quatloos');
   // #endregion makeIssuerKit
@@ -18,7 +18,7 @@ test('ertp guide readme', async t => {
   t.is(quatloosBrand, quatloosIssuer.getBrand());
 
   // #region seven
-  const quatloosSeven = quatloosAmountMath.make(7);
+  const quatloosSeven = amountMath.make(quatloosBrand, 7n);
   // #endregion seven
 
   // #region mintPayment
@@ -31,7 +31,7 @@ test('ertp guide readme', async t => {
   // #endregion deposit
 
   // #region five
-  const quatloosFive = quatloosAmountMath.make(5);
+  const quatloosFive = amountMath.make(5n);
   // #endregion five
 
   // #region withdraw
@@ -75,7 +75,6 @@ test('ertp guide readme', async t => {
   // #region makeTicketIssuer
   const {
     mint: agoricTheatreTicketMint,
-    amountMath: agoricTheatreTicketAmountMath,
   } = makeIssuerKit('Agoric Theater tickets', MathKind.SET);
   // #endregion makeTicketIssuer
 
