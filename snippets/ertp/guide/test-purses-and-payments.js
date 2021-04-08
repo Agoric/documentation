@@ -27,7 +27,7 @@ test('ertp guide purse getCurrentAmount', async t => {
 
 test('ertp guide purse withdraw', async t => {
   const { issuer, mint, brand } = makeIssuerKit(
-    'quatloos',
+    'quatloos'
   );
   const quatloosPurse = issuer.makeEmptyPurse();
   quatloosPurse.deposit(mint.mintPayment(amountMath.make(brand, 100n)));
@@ -44,7 +44,7 @@ test('ertp guide purse deposit', async t => {
   const {
     issuer: quatloosIssuer,
     mint: quatloosMint,
-    brand: quatloosBrand
+    brand: quatloosBrand,
   } = makeIssuerKit('quatloos');
 
   // #region deposit
@@ -107,7 +107,7 @@ test('ertp guide purse payment example', async t => {
   quatloosPurse.getCurrentAmount();
   // #endregion example
 
-  t.deepEqual(quatloosPurse.getCurrentAmount(), quatloosAmountMath.make(7));
+  t.deepEqual(quatloosPurse.getCurrentAmount(), amountMath.make(quatloosBrand, 7n));
   t.deepEqual(
     await quatloosIssuer.getAmountOf(withdrawalPayment),
     amountMath.make(quatloosBrand, 3n),
