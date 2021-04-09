@@ -95,6 +95,3 @@ These methods either use or return `amountMath` objects:
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
   - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2
-- [zcf.getAmountMath(brand)](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
-  - Returns the `amountMath` object associated with the `brand` argument.
-  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetAmountMath
