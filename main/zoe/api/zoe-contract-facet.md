@@ -319,13 +319,16 @@ Returns the `brand` associated with the `issuer`.
 
 Returns the `issuer` of the `brand` argument.
 
-## zcf.getAmountMath(brand)
-- `brand` `{String}`
-- Returns: `{amountMath}`
+- [`zcf.getMathKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getmathkind-brand)
+  - Returns the `MathKind` associated with the `brand`.
 
-Returns the `amountMath` object associated with the `brand` argument.
+## zcf.getMathKind(brand)
+- `brand` `{String}`
+- Returns: `{MathKind}`
+
+Returns the `MathKind` associated with the `brand` argument.
 ```js
-const assetAmountMath = zcf.getAmountMath(assetAmount.brand);
+const quatloosMathKind = zcf.getMathKind(quatloosBrand);
 ```
 ## zcf.stopAcceptingOffers()
 - The contract requests Zoe to not accept offers for this contract instance. 
