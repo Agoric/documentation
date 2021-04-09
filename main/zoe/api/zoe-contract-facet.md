@@ -320,8 +320,13 @@ Returns the `brand` associated with the `issuer`.
 Returns the `issuer` of the `brand` argument.
 
 ## zcf.getMathKind(brand)
+- `brand` `{Brand}`
+- Returns: `{MathKind}`
 
-Returns the `mathKind` for the `brand` argument.
+Returns the `MathKind` associated with the `brand` argument.
+```js
+const quatloosMathKind = zcf.getMathKind(quatloosBrand);
+```
 
 ## zcf.stopAcceptingOffers()
 - The contract requests Zoe to not accept offers for this contract instance. 
