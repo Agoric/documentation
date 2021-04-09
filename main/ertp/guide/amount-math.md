@@ -93,5 +93,5 @@ API Reference](../api/).
 
 These methods either use or return `amountMath` objects:
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
-  - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
+  - Returns the kind of `amountMath` (`MathKind.NAT` or `MathKind.SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2

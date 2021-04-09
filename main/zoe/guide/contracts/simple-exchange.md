@@ -110,7 +110,7 @@ const bobBuyOrderProposal = harden({
   exit: { onDemand: null },
 });
 
-const bobSimPayment = await E(bobSimoleanPurse).withdraw(simoleanAmountMath(7));
+const bobSimPayment = await E(bobSimoleanPurse).withdraw(amountMath(simoleanBrand, 7n));
 const bobPayments = { Price: bobSimPayment };
 
 const bobSeat = await E(zoe).offer(

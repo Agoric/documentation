@@ -111,8 +111,8 @@ const myValue = amountMath.getValue(quatloosBrand, quatloos123);
 - Returns: `{Amount}`
 
 Returns the `amount` representing an empty `amount` for the `brand` argument's 
-`brand`. This is the identity element for `AmountMath.add()` 
-and `AmountMath.subtract()`. The empty `value` depends 
+`brand`. This is the identity element for `amountMath.add()` 
+and `amountMath.subtract()`. The empty `value` depends 
 on whether the `amountMathKind` is `MathKind.NAT` (`0`) of `MathKind.SET` (`[]`).
 
 ```js

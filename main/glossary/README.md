@@ -42,8 +42,10 @@ AmountMath has a single set of polymorphic
 methods of three different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
 [non-fungible](#non-fungible) assets (values are an array or object). The three AmountMathKinds are
 - `MathKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
-- `MathKind.STRING_SET`: Used with non-fungible assets. Amount values are arrays of strings.
-- `MathKind.SET`: Used with non-fungible assets. Amount values are arrays of objects or records with multiple properties.
+- `MathKind.SET`: Used with non-fungible assets. Amount values are
+  arrays of strings, numbers, objects, or other comparable values.
+  Values should never include promises (they aren't comparable), or
+  payments, purses, and anything else that can't be shared freely. 
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md) 
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
