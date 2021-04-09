@@ -86,9 +86,9 @@ creates the pool, the market price is 2 moola for 1 simolean, so that's the rate
 sets up.
 
 ```js
-const moola = moolaAmountMath.make;
-const simoleans = simoleanAmountMath.make;
-const liquidity = liquidityAmountMath.make;
+const moola = value => amountMath.make(moolaBrand, value);
+const simoleans = value => amountMath.make(simoleanBrand, value);
+const liquidity = value => amountMath.make(liquidityBrand, value);
 const liquidityIssuer = await E(zoe).getLiquidityIssuer();
 const aliceLiquidityPurse = E(liquidityIssuer).makeEmptyPurse();
 

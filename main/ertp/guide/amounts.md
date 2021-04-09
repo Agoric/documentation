@@ -23,12 +23,12 @@ numbers represented as BigInts. Non-fungible values may be represented as string
 particular right, or an arbitrary object representing the rights at
 issue (e.g., a theatre ticket's date, time, row and seat positions).
 
-`amounts` and their `values` and `brands` are manipulated by
-the `AmountMath`
-API. It executes the logic of how `amounts` change when digital 
-assets are merged, separated, or otherwise manipulated. For example, 
-you make an offer for something, which is declined. You want to change your 
-offer, represented as an `amount`, to be of a greater `value` by adding to it.
+`amounts` and their `values` and `brands` can be manipulated by the
+`amountMath` library. It executes the logic of how `amounts` change when
+digital assets are merged, separated, or otherwise manipulated. For
+example, you make an offer for something, which is declined. You want
+to change your offer, represented as an `amount`, to be of a greater
+`value` by adding to it.
 
 ## Brands
 

@@ -105,7 +105,6 @@ so the liquidity amount equals the amount of the central token in the offer.
 
 ```js
 const moolaLiquidityIssuer = await E(publicFacet).addPool(moolaIssuer, 'Moola');
-const moolaLiquidityAmountMath = await makeAmountMath(moolaLiquidityIssuer);
 ```
 
 Alice decides that the current rate in the external market is 2 Moola for each

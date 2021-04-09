@@ -2,13 +2,10 @@
 
 Logic for manipulating `amounts`.
 
-## Obtaining an AmountMath
+## Importing and Using AmountMath
 
-To get access to an `amountMath`:
+To use the `amountMath` library, import it from ERTP:
 - `import { amountMath } from '@agoric/ertp';`
-  - This imports an `amountMath` object named `amountMath`. Use it to call `amountMath` methods.
-- By writing a Zoe contract. The `issuer` is saved in Zoe, so call `zcf.getAmountMath(brand)`. 
-
 ## AmountMath Kinds
 
 There are two different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
@@ -114,8 +111,8 @@ const myValue = amountMath.getValue(quatloosBrand, quatloos123);
 - Returns: `{Amount}`
 
 Returns the `amount` representing an empty `amount` for the `brand` argument's 
-`brand`. This is the identity element for `AmountMath.add()` 
-and `AmountMath.subtract()`. The empty `value` depends 
+`brand`. This is the identity element for `amountMath.add()` 
+and `amountMath.subtract()`. The empty `value` depends 
 on whether the `amountMathKind` is `MathKind.NAT` (`0`) of `MathKind.SET` (`[]`).
 
 ```js
