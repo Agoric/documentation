@@ -25,18 +25,15 @@ are ephemeral, so any object created there dies as soon as the script stops.
 - `mint` `{Mint}` 
 - `issuer` `{Issuer}` 
 - `brand` `{Brand}`
-- `amountMathKind` `{AmountMathKind}`
 
 Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
-All are in unchangeable one-to-one relationships with each other. It also returns an `amountMathKind`
-used to import a specific `mathHelpers` from the mathHelpers library. For example, `natMathHelpers`, the
-default, is used for basic fungible tokens.
+All are in unchangeable one-to-one relationships with each other. 
 
 The `allegedName` becomes part of the `brand` in asset descriptions. It
 doesn't have to be a string, but it will only be used for its value. It
 is useful for debugging and double-checking assumptions, but should not be trusted.
 
-`displayInfo` tells the UI how to display `amounts` from this issuer or
+The optional `displayInfo` tells the UI how to display `amounts` from this issuer or
 of this brand..
 
 The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
