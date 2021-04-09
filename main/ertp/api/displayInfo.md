@@ -11,11 +11,10 @@ The `decimalPlaces` property tells the [display software](https://github.com/Ago
 how many places to move the decimal point over to the left so as to display the value
 in the commonly used denomination (for instance, 10.00 dollars rather than 1000 cents.) 
 
-Or in other words, which position corresponds to whole
-numbers. Fungible digital assets are represented in integers, in their smallest unit.
+Fungible digital assets are represented in integers, in their smallest unit.
 So, for example, the smallest unit for a US Dollar might be either *mill*, 1/1000 of a 
-dollar, or *cent*, 1/100 of a dollar. If mill, `decimalPlaces` would be 3, if cent, it
-would be 2. 
+dollar, or *cent*, 1/100 of a dollar. If mill, `decimalPlaces` would be `3`, if cent, it
+would be `2`. 
 
 Non-fungible assets do not use numeric valus, so don't specify a `decimalPlaces` value
 for them. 
