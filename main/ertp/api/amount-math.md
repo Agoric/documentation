@@ -181,7 +181,7 @@ const quatloos10 = amountMath.make(quatloosBrand, 10n);
 // Returns true
 amountMath.isGTE(quatloos5, empty);
 // Returns false
-amountMath.isGTE(empty, quatloos5);
+amountMath.isGTE(empty, quatloos5, quatloosBrand);
 // Returns true
 amountMath.isGTE(quatloos10, quatloos5);
 // Returns false
