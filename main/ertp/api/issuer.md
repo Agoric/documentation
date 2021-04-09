@@ -34,28 +34,33 @@ doesn't have to be a string, but it will only be used for its value. It
 is useful for debugging and double-checking assumptions, but should not be trusted.
 
 The optional `displayInfo` tells the UI how to display `amounts` from this issuer or
-of this brand..
+of this brand.
 
 The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
 polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ERTP` 
 instead of using strings. 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays of objects or records with multiple properties.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
-makeIssuerKit('kitties', MathKind.SET);
+makeIssuerKit('title', MathKind.SET);
 ```
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');
-// This is merely an amount, describing assets.
+// This is merely an amount, describing assets, not minting assets
 const quatloos2 = amountMath.make(quatloosBrand, 2n);
 
-const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit('alamedaCountyPropertyTitle', MathKind.SET);
+const { issuer: titleIssuer, mint: titleMint, brand: titleBrand } = 
+      makeIssuerKit('propertyTitle');
+// These are merely amounts describing digital assets, not minting assets.
+const cornerProperty = amountMath.make(propertyTitleBrand, ['1292826']);
+const adjacentProperty = amountMath.make(propertyTitleBrand, ['1028393']);
+const combinedProperty = amountMath.make(propertyTitleBrand, ['1292826', '1028393']);
 ```
 
 ## issuer.getAllegedName()
