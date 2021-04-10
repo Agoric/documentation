@@ -4,28 +4,26 @@
 
 Depositing and withdrawing assets from a
 `purse` and manipulating `payment` amounts 
-all require adding and subtracting digital assets. ERTP
-uses `amountMath` methods for all these operations. 
+all require adding and subtracting digital assets.
+ERTP uses the amountMath library for all these operations. 
 
-`amountMath` methods also check their arguments' `brand`, 
-throwing an error if the wrong `brand` was used.
+The `amountMath` library functions work for both fungible and nonfungible tokens. 
+There are two kinds, each of which implements the same methods. Which kind is used 
+for a particular `brand` depends on what was specified when the `brand` and 
+its `issuer` were created. The kinds are: 
 
-An `amountMath` is one of two kinds, each of which
-implements the same methods. Which kind is used for a particular `brand` depends
-on what was specified when the `brand` and its `issuer` were 
-created. The kinds are: 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are arrays with any number of strings, numbers, etc.
 
 `makeIssuerKit(allegedName, amountMathKind, displayInfo=)` creates a new `issuer`,
 `mint`, and `brand`. 
-The second, optional, argument specifies which kind
+
+The second, optional, `amountMathKind` argument specifies which kind
 of `amountMath` is used for the `brand` in a one-to-one
 association with the new `issuer`. It defaults to `MathKind.NAT`. 
 
-The third, optional, argument specifies how many digits to the right
-of the decimal place to display of values associated with the created
-`brand`. It defaults to `undefined`.
+The third, optional, `displayInfo` argument tells the UI how to display 
+values associated with the created `brand`. It defaults to `undefined`.
 
 For example: 
 
