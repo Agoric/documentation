@@ -49,11 +49,11 @@ where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just l
 whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
 
 Manipulating payment and other amounts, such as depositing and withdrawing assets from a purse, all require 
-adding and subtracting digital assets. You may also want to compare amount values. ERTP uses `amountMath`
-methods for all these operations.
+adding and subtracting digital assets. You may also want to compare amount values. ERTP uses the `amountMath`
+library for all these operations.
 
 - **[AmountMath](./amount-math.md)**:
-  Methods to do math operations on `amounts`. 
+  A library for doing math operations on `amounts`
 
 The `brand` is a very important component. Most ERTP objects work with or on one specific `brand`.
 In fact, instances of these next three components all only work on one `brand`. Note also that their
