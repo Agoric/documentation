@@ -245,8 +245,8 @@ If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty
 ```js
 import { MathKind, makeIssuerKit, amountMath } from '@agoric/ertp';
 const { brand: myItemsBrand } = makeIssuerKit('myItems', MathKind.SET');
-const listAmountA = amountMath.make(myItemsBrand, harden['1','2','4']);
-const listAmountB = amountMath.make(myItemsBrand, harden['3']);
+const listAmountA = amountMath.make(myItemsBrand, ['1','2','4']);
+const listAmountB = amountMath.make(myItemsBrand, ['3']);
 
 // Returns an amount whose value is ['1', '2', '4', '3']
 const combinedList = amountMath.add(listAmountA, listAmountB);
@@ -275,9 +275,9 @@ empty, it returns an empty `amount`.
 
 import { MathKind, makeIssuerKit, amountMath } from '@agoric/ertp';
 const { brand: myItemsBrand } = makeIssuerKit('myItems', MathKind.SET');
-const listAmountA = amountMath.make(myItemsBrand, harden['1','2','4']);
-const listAmountB = amountMath.make(myItemsBrand, harden['3']);
-const listAmountC = amountMath.make(myItemsBrand, harden['2']);
+const listAmountA = amountMath.make(myItemsBrand, ['1','2','4']);
+const listAmountB = amountMath.make(myItemsBrand, ['3']);
+const listAmountC = amountMath.make(myItemsBrand, ['2']);
 
 // Returns ['1', '4']
 const subtractedList = amountMath.subtract(listAmountA, listAmountC)
@@ -288,14 +288,14 @@ const badList = amountMath.subtract(listAmountA, listAmountB)
 ## Related Methods
 
 The following methods on other ERTP components and objects also either operate
-on or return an `amount` or `amountMath`. While a brief description is given for each, you should
+on or return an `amount` or `MathKind`. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
 
 - [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment)
   - Returns the `amount` description of the `payment`
 - [`issuer.getAmountMathKind()`](./issuer.md#issuer-getamountmathkind)
-  - Returns the kind of the `issuer`'s associated math helpers.
+  - Returns the `MathKind` of the `issuer`'s associated math helpers.
 - [`zcf.getMathKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getmathkind-brand)
   - Returns the `MathKind` associated with the `brand`.
 
