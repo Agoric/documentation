@@ -32,15 +32,15 @@ assign assets that weren't already in some allocation and it can't assign them t
 disappear from the total allocation.
 
 ## AmountMath
-AmountMath executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
+The AmountMath library executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks 
 gives a new balance of 5 bucks. But, a deposit of a non-fungible theater ticket into a purse that already holds
 five tickets isn't done by numeric addition. Instead, you have to combine two arrays, containing either 
-strings (`MathKind.STR_SET`) or objects/records (`MathKind.SET`).
+strings or objects/records.
 
-AmountMath has a single set of polymorphic
-methods of three different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
-[non-fungible](#non-fungible) assets (values are an array or object). The three AmountMathKinds are
+`AmountMath` has a single set of polymorphic
+methods of two different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
+[non-fungible](#non-fungible) assets (values are an array or object). The two `AmountMathKinds` are
 - `MathKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
 - `MathKind.SET`: Used with non-fungible assets. Amount values are
   arrays of strings, numbers, objects, or other comparable values.
@@ -295,7 +295,7 @@ They interact with Purses, Payments, Brands, and Issuers in the same ways.
   payments, and burn assets that used to be associated with a seat without having to payout assets.
   
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
-However, issuers, brands, and [amountMaths](#amountmath) associated with either an ERTP mint or a ZCFMint are the same concepts and have the same methods.
+However, issuers and brands associated with either an ERTP mint or a ZCFMint are the same concepts and have the same methods.
 
 For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/issuers-and-mints.md) 
 and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about ZCFMints, 
