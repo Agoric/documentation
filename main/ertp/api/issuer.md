@@ -41,7 +41,8 @@ Each implements all of the same set of API methods (i.e. `amountMath` methods ar
 polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ERTP` 
 instead of using strings. 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays of objects or records with multiple properties.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays that can
+  include strings, numbers, objects, or anything comparable. But not promises, purses, or payments.
 
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
@@ -95,8 +96,11 @@ Get the kind of this `issuer`'s `amountMath`. It returns one of
 The `amountMathKind` value specifies which kind an `amountMath` is,
 and what kind of values it is used on. Each kind implements all of the same set 
 of API methods (i.e. `amountMath` methods are polymorphic). 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are objects or records with multiple properties.
+- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural 
+  numbers (non-negative `BigInts`). Default value.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays 
+  that can include strings, numbers, objects, or anything comparable. But not promises,
+  purses, or payments.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
