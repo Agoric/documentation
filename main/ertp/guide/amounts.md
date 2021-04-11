@@ -5,14 +5,16 @@
 ![Amount methods](./assets/amount.svg) 
 
 `Amounts` describe digital assets. There are no `amount` API methods.
-Instead, an `amount` has two properties, `value` and `brand` with their own API methods.
-Use the `amountMath` API methods (covered in-depth 
+Instead, an `amount` has two properties, `value` and `brand` with methods
+that act on them or take them as arguments. 
+Use the `amountMath` library (covered in-depth 
 [here](../api/amount-math.md))
 to get information about and otherwise manipulate an `amount` as a whole.
-`amountMath.make()` is generally how you make new `amounts`.
 
+`amountMath.make()` is generally how you make new `amounts`.
 However, you can also make an `amount` as an object literal by making a record of
-a `brand` and a `value`. While `amountMath.make()` is recommended for proper object-oriented programming (it also checks the `brand`'s validity), this produces the same result:
+a `brand` and a `value`. While `amountMath.make()` is recommended for proper 
+object-oriented programming, this produces the same result:
 
 <<< @/snippets/ertp/guide/test-amounts.js#manualMake
 `amount` has two properties:
@@ -87,8 +89,8 @@ return a `brand`.
 
 Values are the "how many" part of an `amount`. 
 
-Note that numberic values (for fungible assets) are represented as `BigInts` and
-not `Numbers`. So a value of "10" is written "10n" to show it is a `BigInt` 10.
+Note that number values (for fungible assets) are represented as `BigInts` and
+not `Numbers`. So a value of `10` is written `10n` to show it is a `BigInt` 10.
 See [here](/guides/js-programming/bigint.md) for more information about `BigInt`.
 
 There are no `value`
