@@ -58,16 +58,15 @@ const issuerKeywordRecord = {
 - `instance` `{Instance}`
 - Returns: `{Object}`
 
-Returns the terms of the `instance` argument, including its `issuers`, `brands`, `maths` and any
+Returns the terms of the `instance` argument, including its `issuers`, `brands`, and any
 custom terms. The returned values look like:
 ```js
-{ brands, issuers, maths, customTermA, customTermB ... }
-//where brands, issuers, and maths are all keywordRecords, like:
+{ brands, issuers, customTermA, customTermB ... }
+//where brands and issuers are keywordRecords, like:
 
 {
     brands: { A: moolaKit.brand, B: simoleanKit.brand },
     issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
-    maths: { A: moolaKit.amountMath, B: simoleanKit.amountMath },
     customTermA: 'something',
     customTermB: 'something else',
  };
