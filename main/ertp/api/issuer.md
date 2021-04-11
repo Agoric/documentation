@@ -33,8 +33,7 @@ The `allegedName` becomes part of the `brand` in asset descriptions. It
 doesn't have to be a string, but it will only be used for its value. It
 is useful for debugging and double-checking assumptions, but should not be trusted.
 
-The optional `displayInfo` tells the UI how to display `amounts` from this issuer or
-of this brand.
+The optional `displayInfo` tells the UI how to display `amounts` of this brand.
 
 The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
