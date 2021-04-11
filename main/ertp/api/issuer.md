@@ -37,7 +37,7 @@ The optional `displayInfo` tells the UI how to display `amounts` of this brand.
 
 The optional `amountMathKind` specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e. `amountMath` methods are 
-polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ERTP` 
+polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ertp` 
 instead of using strings. 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays that can
