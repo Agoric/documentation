@@ -38,7 +38,7 @@ API Reference](/ertp/api/#ertp-api).
 
 - **Create issuer operation**
   - [`makeIssuerKit(allegedName, amountMathKind, displayInfo=)`](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo)
-  - Makes an `issuer` and its related `mint`, `amountMath` and `brand`.
+  - Makes an `issuer` and its related `mint` and `brand`.
     Returns ` { mint, issuer, brand }` The `mint` and
     `brand` are in unchangeable one-to-one relationships with the `issuer`
     and each other. 
