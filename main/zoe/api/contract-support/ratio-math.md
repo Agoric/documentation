@@ -1,11 +1,10 @@
 # Ratio Math Functions
 
-These functions let you apply a ratio (a fraction) to an ammount, multiplying or dividing an amount
-by a ratio of two natural numbers. A ratio cannot have a denominator of 0. Ratios consist of
-a *numerator* and a *denominator*. Both of these consist of a value and a brand, just like `amounts`.
+These functions let you apply a ratio (a fraction) to an amount, multiplying or dividing an amount
+by a ratio of two natural numbers. Ratios consist of a *numerator* and a *denominator*. Both of these
+consist of a value and a brand, just like `amounts`. A ratio cannot have a denominator value of 0.
 
-Note that ratios are
-**not** objects, but records. Thus, the ratio functions have to be imported.
+The ratio functions have to be imported.
 
 The most common kind of `Ratio` is applied to an `Amount` of a particular 
 brand and produces results of the same brand. 
