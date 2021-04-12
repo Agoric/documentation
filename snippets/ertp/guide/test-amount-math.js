@@ -157,6 +157,7 @@ test('ertp guide amountMath related', async t => {
 
 test('ertp guide zcf.getMathKind related', async t => {
   const { issuer, mint, brand } = makeIssuerKit('quatloos');
+  const { zcf } = await setupZCFTest(harden({ Quatloos: quatloosIssuer }));
   t.truthy(issuer);
   t.truthy(mint);
   t.truthy(brand);
