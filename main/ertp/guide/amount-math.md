@@ -41,14 +41,16 @@ API Reference](../api/).
 - **Comparison Methods**
   - [amountMath.isEmpty(amount, brand?)](../api/amount-math.md#amountmath-isempty-amount-brand)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
+      Throws an error if the optional `brand` argument isn't the same as the `amount` argument brand.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEmpty
   - [amountMath.isGTE(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-isgte-leftamount-rightamount-brand)
     - Returns `true` if the `leftAmount` argument is greater than or equal
-       to the `rightAmount` argument, otherwise `false`.
+      to the `rightAmount` argument, otherwise `false`.
+      Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isGTE
   - [amountMath.isEqual(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-isequal-leftamount-rightamount-brand)
     - Returns `true` if the `leftAmount` argument equals the
-	`rightAmount` argument
+      `rightAmount` argument. Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEqual
   - [amountMath.coerce(brand, allegedAmount)](../api/amount-math.md#amountmath-coerce-brand-allegedamount)
     - Takes an `amount` and returns it if it's a valid `amount`.
@@ -57,15 +59,18 @@ API Reference](../api/).
 - **Manipulator Methods**
   - [amountMath.add(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-add-leftamount-rightamount-brand)
     - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
-       `amount` arguments. For a fungible `amount`, this means add their
-       values.  For a non-fungible `amount`, it usually means
-       including all elements from both `leftAmount` and `rightAmount`.
+      `amount` arguments. For a fungible `amount`, this means add their
+      values.  For a non-fungible `amount`, it usually means
+      including all elements from both `leftAmount` and `rightAmount`.
+      Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#add
   - [amountMath.subtract(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-subtract-leftamount-rightamount-brand)
     - Returns a new `amount` that is the `leftAmount` argument minus
       the `rightAmount` argument  (i.e. for strings or objects
       everything in `leftAmount` not in `rightAmount`). If `leftAmount`
       doesn't include the contents of `rightAmount`, it throws an error. 
+      It also throws an error if the optional `brand` argument isn't the 
+      same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#subtract
 - **Amount Creation Methods**
   - [amountMath.make(brand, allegedValue)](../api/amount-math.md#amountmath-make-brand-allegedvalue)	
