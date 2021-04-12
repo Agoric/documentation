@@ -56,8 +56,8 @@ test('loan contract', async t => {
   });
 
   const doAddCollateral = _ => {};
-  const allCollateralAmount = amountMath.make(1000n, collateralBrand);
-  const myWarningLevel = amountMath.make(1500n, loanBrand);
+  const allCollateralAmount = amountMath.make(collateralBrand, 1000n);
+  const myWarningLevel = amountMath.make(loanBrand, 1500n);
 
   // #region customMarginCall
   E(priceAuthority)
@@ -67,7 +67,7 @@ test('loan contract', async t => {
 
   const { notifier: periodNotifier } = makeNotifierKit();
 
-  const loanPayment = loanMint.mintPayment(amountMath.make(1000n, loanBrand));
+  const loanPayment = loanMint.mintPayment(amountMath.make(loanBrand, 1000n));
 
   // #region lend
   const terms = {
@@ -85,7 +85,7 @@ test('loan contract', async t => {
     terms,
   );
 
-  const maxLoan = amountMath.make(1000n, loanBrand);
+  const maxLoan = amountMath.make(loanBrand, 1000n);
 
   const proposal = harden({
     give: { Loan: maxLoan },
@@ -144,7 +144,7 @@ test('loan contract', async t => {
   t.truthy(await E(invitationIssuer).isLive(closeLoanInvitationPromise));
   t.truthy(await E(invitationIssuer).isLive(addCollateralInvitationPromise));
 
-  const liquidationTriggerValue = amountMath.make(1000n, loanBrand);
+  const liquidationTriggerValue = amountMath.make(loanBrand, 1000n);
   const liquidate = () => {};
 
   // #region liquidate

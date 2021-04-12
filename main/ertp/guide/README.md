@@ -33,20 +33,27 @@ for a Friday evening ticket than a Wednesday matinee ticket, even if it's for th
 ## ERTP Concepts Overview
 
 Asset descriptions have two parts:
- - **[Value](./amounts.md#values)**:  An
+- **[Value](./amounts.md#values)**:  An
   asset's size. You can think of this as the answer to the questions "how many?" or "how much?" about
   an asset.
- - **[Brand](./amounts.md#brands)**: An
+- **[Brand](./amounts.md#brands)**: An
   asset's kind. You can think of this as the answer to the question "What is it?" about an asset.
   
 These two make up:
 - **[Amount](./amounts.md)**:
-A record consisting of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
+  A record consisting of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
   as it has no economic scarcity or economic value.
   
 So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
 where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
 whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
+
+Manipulating payment and other amounts, such as depositing and withdrawing assets from a purse, all require 
+adding and subtracting digital assets. You may also want to compare amount values. ERTP uses the `amountMath`
+library for all these operations.
+
+- **[AmountMath](./amount-math.md)**:
+  A library for doing math operations on `amounts`
 
 The `brand` is a very important component. Most ERTP objects work with or on one specific `brand`.
 In fact, instances of these next three components all only work on one `brand`. Note also that their
@@ -61,9 +68,6 @@ initially associated with Quatloos, they are always associated with Quatloos and
   is used to validate `payments` received from untrusted parties. Specifically, it validates
   `payments` of the `brand` the `issuer` is associated with. Has a one-to-one relationship
   with both a `brand` and a `mint`. 
-- **[AmountMath](./amount-math.md)**:
-  Methods to do math operations on `amounts`. Each `brand` can be associated with many `amountMaths`,
-  but each `amountMath` is permanently associated with only one `brand`.
 
 ![ERTP object relationships](./assets/relationships1.svg) 
 
@@ -71,7 +75,6 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 - A "Quatloos `mint`" that is the only ERTP `mint` that can ever create new Quatloos assets.
 - A "Quatloos `issuer`" that is the only `issuer` that can create a new `purse` to contain Quatloos and 
   operate on a `payment` containing Quatloos.
-- "Quatloos `amountMaths`" whose operations only work on `amounts` whose `brand` is Quatloos.
 
 ![ERTP object relationships 2](./assets/relationships2.svg) 
 
@@ -118,19 +121,17 @@ are covered on the component-specific pages.
 
 First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
-Here it also creates a new `mint`, `amountMath`, and formal `brand` 
-for the argument, and returns all four new objects. The `mint`, `issuer`, and `brand` 
+Here it also creates a new `mint` and formal `brand` 
+for the argument, and returns all three new objects. The `mint`, `issuer`, and `brand` 
 are in one-to-one associations with each other. 
-
-Note: Usually you'd want to create a `localAmountMath` via other means. See the [Amount Math page](./amount-math.md).
 
 In this case, you used the string 'quatloos' to name the `brand`.
 
 <<< @/snippets/ertp/guide/test-readme.js#seven
 
-Here you use the Quatloos `amountMath` to make a new `amount` description of the asset you want to create.
-Since `amountMath` objects are always associated with a single `brand`, in this case Quatloos, you 
-only have to specify what you want for the `value` of the new `amount`, in this case `7`.
+Here you use `amountMath` to make a new `amount` description of the asset you want to create.
+You need to specify what you want for the `value` of the new `amount`, in this case `7n`, as
+well as what `brand` it will be.
 
 This returns an `amount` description stored in `quatloosSeven`. Remember, an `amount` is only a description
 of an asset, not an asset itself. `quatloosSeven` has no worth or intrinsic value.
@@ -167,7 +168,7 @@ Now you tell your Quatloos containing `purse` that you want to withdraw the spec
 it. The withdrawn 5 Quatloos goes into a `payment`
 
 You've got your `payment` for 5 Quatloos, but how do you get it to Alice? She needs to
-have done some work first so there's somewhere for her to put it and a way of getting it to
+do some work first so there's somewhere for her to put it and a way of getting it to
 her rather than someone else.
 
 <<< @/snippets/ertp/guide/test-readme.js#depositFacet
@@ -232,9 +233,8 @@ As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric T
 The difference from when you created a fungible asset is that you have to use a second argument,
 in this case `MathKind.SET`.
 
-There are three kinds of `amountMath`. Each kind polymorphically implements the same set of methods. 
+There are two `MathKinds`. Each one polymorphically implements the same set of methods. 
 - `MathKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
-- `MathKind.STRING_SET`: Used with non-fungible assets, operates on an array of string identifiers.
 - `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
 
 <<< @/snippets/ertp/guide/test-readme.js#ticketPayments
@@ -282,8 +282,12 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
 ## Object capabilities and ERTP
 
 ERTP uses [*object capabilities*](/glossary/#object-capabilities).
-You can only use an object and issue commands to it if you have access to that object, not just its human-readable name or similar. For example, I might know (or make a good guess), that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I can't use it to create a million Quatloos and bet
-them all on Captain Kirk to win his gladiatorial match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
+You can only use an object and issue commands to it if you have access to that object, not
+just its human-readable name or similar. For example, I might know (or make a good guess), 
+that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. 
+But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I 
+can't use it to create a million Quatloos and bet them all on Captain Kirk to win his gladiatorial
+match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
 
 ## Security properties
 

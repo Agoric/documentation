@@ -209,10 +209,16 @@ Other objects' `payment`-related methods:
     `amount` description. If optional `optAmount` does not equal the `payment`'s balance
      or if `payment` is an unresolved promise, it throws an error.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
+- [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
+  - Withdraw the assets described by `amount` from this `purse` into a new
+    `payment`. Returns the new `payment`.
+  - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
 - [`purse.getDepositFacet()`](../api/purse.md#purse-getdepositfacet)
   - Creates a deposit-only facet on the `purse` that can be given to
     other parties that lets them deposit a `payment` (but not
-    withdraw) into the `purse`.
+    withdraw) into the `purse`. Note that you add a payment via a
+    deposit facet by calling `depositFacet.receive(payment)` instead of
+    `deposit()`. 
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
 ## `purse` and `payment` example
 

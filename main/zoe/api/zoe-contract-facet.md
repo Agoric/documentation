@@ -58,14 +58,14 @@ instead of relying on an asynchronous ERTP `mint`.
 **Important**: `ZCFMints` do **not** have the same methods as an ERTP `mint`. Do not try to use
 ERTP methods on a `ZCFMint` or vice versa.
 
-**Important**: On the other hand, the `issuer`, `brand`, and `amountMath` associated with a `zcfMint`
+**Important**: On the other hand, the `issuer` and `brand` associated with a `zcfMint`
 do have the same methods as their ERTP-derived counterparts. Assets created by a `zcfMint` are treated
 the same as ERTP `mint`-created assets by ERTP methods.
 
 `ZCFMints` have three methods:
 - `getIssuerRecord()`
   - Returns: `{IssuerRecord}`
-  - Returns an `issuerRecord` containing the `issuer`, `brand`, or `amountMath` associated with the `zcfMint`.
+  - Returns an `issuerRecord` containing the `issuer` and `brand` associated with the `zcfMint`.
 - `mintGains`
   - `gains`: `AmountKeywordRecord`
   - `zcfSeat`: `{ZCFSeat}` - optional
@@ -103,8 +103,8 @@ quatloosPurse.deposit(payout.Asset);
 
 For example:
 ```js
-const quatloos5 = quatloosAmountMath.make(5n);
-const quatloos9 = quatloosAmountMath.make(9n);
+const quatloos5 = amountMath.make(quatloosBrand, 5n);
+const quatloos9 = amountMath.make(quatloosBrand, 9n);
 const myAmountKeywordRecord =
 {
   Asset: quatloos5,
@@ -117,7 +117,7 @@ The following demonstrates `zcf.makeZCFMint`:
 calls to the resulting `ZCFMint` are synchronous.
 ```js
 const mySynchronousMint = await zcf.makeZCFMint('MySyncMint', 'set');
-const { amountMath, brand, issuer } = mySynchronousMint.getIssuerRecord();
+const { brand, issuer } = mySynchronousMint.getIssuerRecord();
 mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
 
@@ -149,9 +149,9 @@ This saves an `issuer` in Zoe's records for this contract `instance`.
 It also has saved the `issuer` information such that Zoe can handle offers involving
 this `issuer` and ZCF can provide the `issuerRecord` synchronously on request.
 
-An `IssuerRecord` has three fields, each of which holds the namesake object
+An `IssuerRecord` has two fields, each of which holds the namesake object
 associated with the `issuer` value of the record:
-`issuerRecord.amountMath`, `issuerRecord.brand`, and `issuerRecord.issuer`)
+`issuerRecord.brand` and `issuerRecord.issuer`.
 
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
@@ -259,8 +259,8 @@ to manipulate the offer. The queries and operations are as follows:
     An `Allocation` example:
     - ```js
       {
-        Asset: quatloosAmountMath.make(5n),
-        Price: moolaAmountMath.make(9n)
+        Asset: amountMath.make(quatloosBrand, 5n),
+        Price: amountMath.make(quatloosBrand, 9n)
       }
       ```
  - `exit(completion)`
@@ -319,14 +319,15 @@ Returns the `brand` associated with the `issuer`.
 
 Returns the `issuer` of the `brand` argument.
 
-## zcf.getAmountMath(brand)
-- `brand` `{String}`
-- Returns: `{amountMath}`
+## zcf.getMathKind(brand)
+- `brand` `{Brand}`
+- Returns: `{MathKind}`
 
-Returns the `amountMath` object associated with the `brand` argument.
+Returns the `MathKind` associated with the `brand` argument.
 ```js
-const assetAmountMath = zcf.getAmountMath(assetAmount.brand);
+const quatloosMathKind = zcf.getMathKind(quatloosBrand);
 ```
+
 ## zcf.stopAcceptingOffers()
 - The contract requests Zoe to not accept offers for this contract instance. 
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
@@ -353,17 +354,16 @@ zcf.shutdown();
 ## zcf.getTerms()
 - Returns: `{Object}`
 
-Returns the `issuers`, `brands`, `maths`, and custom `terms` the current contract `instance` was instantiated with.
+Returns the `issuers`, `brands`, and custom `terms` the current contract `instance` was instantiated with.
 
 The returned values look like:
 ```js
-{ brands, issuers, maths, customTermA, customTermB ... }
-// where brands, issuers, and maths are all keywordRecords, like:
+{ brands, issuers, customTermA, customTermB ... }
+// where brands and issuers are keywordRecords, like:
 
 {
     brands: { A: moolaKit.brand, B: simoleanKit.brand },
     issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
-    maths: { A: moolaKit.amountMath, B: simoleanKit.amountMath },
     customTermA: 'something',
     customTermB: 'something else',
  };

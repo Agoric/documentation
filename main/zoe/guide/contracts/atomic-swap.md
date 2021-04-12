@@ -49,10 +49,10 @@ In this case, Alice's exit rule is `onDemand`, meaning she
 can exit the contract instance at any time.
 
 ```js
-const threeMoola = moolaAmountMath.make(3);
+const threeMoola = amountMath.make(moolaBrand, 3);
 const aliceProposal = harden({
   give: { Asset: threeMoola },
-  want: { Price: simoleanAmountMath.make(15) },
+  want: { Price: amountMath.make(simoleanBrand, 15) },
   exit: { onDemand: null },
 });
 
@@ -91,8 +91,8 @@ const bobInvitationValue = await E(zoe).getInvitationDetails(bobExclusiveInvitat
 assert(bobInstallationId === installation, details`wrong installation`);
 assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
 assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
-assert(moolaAmountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
-assert(simoleanAmountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
+assert(amountMath.isEqual(bobInvitationValue.asset, moola(3)), details`wrong asset`);
+assert(amountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong price`);
 ```
 
 Bob decides to exercise the invitation, and to escrow his payments. He then
@@ -101,9 +101,9 @@ But Bob has written his proposal to match Alice's (notice that the `give`
 and `want` clauses are reversed from Alice's proposal):
 
 ```js
-const sevenSimoleans = simoleanAmountMath.make(7);
+const sevenSimoleans = amountMath.make(simoleanBrand, 7n);
 const bobProposal = harden({
-  want: { Asset: moolaAmountMath.make(3) },
+  want: { Asset: amountMath.make(moolaBrand, 3n) },
   give: { Price: sevenSimoleans },
   exit: { onDemand: null },
 });

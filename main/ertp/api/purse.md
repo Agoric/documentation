@@ -90,16 +90,16 @@ may pass them by. This is safe, as even if all the assets are withdrawn, the
 deposit still works on an empty `purse`.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, amountMath: quatloosAmountMath } = 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
-const payment = quatloosMint.mintPayment(quatloosAmountMath.make(123n));
-const quatloos123 = quatloosAmountMath.make(123n);
+const payment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 123n));
+const quatloos123 = amountMath.make(quatloosBrand, 123n);
 
 // Deposit a payment for 123 Quatloos into the purse. 
 const depositAmountA = quatloosPurse.deposit(payment, quatloos123);
 
-const secondPayment = quatloosMint.mintPayment(quatloosAmountMath.make(100n));
+const secondPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
 // Throws error
 const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 
@@ -130,6 +130,24 @@ Note the difference in method names for adding assets between a `purse` and its 
 To add assets to a `purse` directly, you use `purse.deposit()`. To add assets
 to a `purse` via its `depositFacet`, you use `depositFacet.receive()`.
 
+## depositFacet.receive(payment, optAmount?)
+- `payment` `{Payment}`
+- `optAmount` `{Amount}` (optional)
+- Returns `{Amount}`
+
+The `depositFacet` takes the `payment` and adds it to the balance of the facet's associated `purse`. 
+
+If the optional argument `optAmount` does not equal the balance of
+`payment`, or if `payment` is an unresolved promise, it throws an error.
+
+```js
+const depositOnlyFacet = purse.getDepositFacet();
+
+// Give depositOnlyFacet to someone else. Anyone with a deposit facet reference can tell it to receive
+// a payment, thus depositing the payment assets in the purse associated with the deposit facet.
+depositOnlyFacet.receive(payment);
+```
+
 ## purse.withdraw(amount)
 - `amount` `{Amount}`
 - Returns: `{Payment}`
@@ -142,14 +160,14 @@ But as soon as the message is processed, the value is gone from the `purse`.
 
 ```js
 // Create a purse and give it a balance of 10 Quatloos
-const { issuer, mint } = makeIssuerKit('quatloos');
+const { issuer, mint, brand } = makeIssuerKit('quatloos');
 const purse = issuer.makeEmptyPurse();
-const payment = mint.mintPayment(amountMath.make(10n));
-const quatloos10 = amountMath.make(10n);
+const payment = mint.mintPayment(amountMath.make(brand, 10n));
+const quatloos10 = amountMath.make(brand, 10n);
 purse.deposit(payment, quatloos10);
 
 // Withdraw an amount of 3 from the purse
-const quatloos3 = amountMath.make(3n);
+const quatloos3 = amountMath.make(brand, 3n);
 const withdrawalPayment = purse.withdraw(quatloos3);
 
 // The balance of the withdrawal payment is 3 Quatloos

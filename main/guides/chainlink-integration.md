@@ -31,17 +31,10 @@ testnet).
 
 ```js
 const linkIssuer = E(home.wallet).getIssuer('Testnet.$LINK');
-const linkMath = await makeLocalAmountMath(linkIssuer);
 const linkBrand = await E(linkIssuer).getBrand();
-const { decimalPlaces: linkDecimals } = await E(linkBrand).getDisplayInfo();
-const linkAmount = linkMath.make(30 * 10 ** linkDecimals);
+const linkAmount = amountMath.make(linkBrand, 30 * 10 ** 18);
 const usdBrand = await E(E(home.wallet).getIssuer('Testnet.$USD')).getBrand();
-const { decimalPlaces: usdDecimals } = await E(usdBrand).getDisplayInfo();
 const { quoteAmount: { value: [{ amountOut: usdAmount, timestamp }] } } = await E(home.priceAuthority).quoteGiven(linkAmount, usdBrand);
-const linkValue = linkAmount.value / 10 ** linkDecimals;
-const usdValue = usdAmount.value / 10 ** usdDecimals;
-console.log(linkValue, 'Testnet.$LINK trades for', usdValue, 'Testnet.$USD');
-// 30 Testnet.$LINK trades for 12 Testnet.$USD
 ```
 
 ## Any API

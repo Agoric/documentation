@@ -58,7 +58,7 @@ getOutputPrice() to get a quote.
 
 ```js
 const quote = E(publicFacet).getOutputPrice(
-  moolaAmountMath.make(275), simoleansBrand);
+  amountMath.make(moolaBrand, 275n), simoleansBrand);
   ```
   
 Let's assume the quote says she needs to provide 216 Simoleans. Sara believes the
@@ -72,13 +72,13 @@ back.
 
 ```js
 const saraProposal = harden({
-  want: { Out: moolaAmountMath.make(275) },
-  give: { In: simoleanAmountMath.make(220) },
+  want: { Out: amountMath.make(moolaBrand, 275n) },
+  give: { In: amountMath.make(simoleanBrand, 220n) },
 });
 
 const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
 const simoleanPayment =
-  harden({ In: saraSimoleanPurse.withdraw(simoleanAmountMath.make(220)) });
+  harden({ In: saraSimoleanPurse.withdraw(amountMath.make(simoleanBrand, 220n)) });
 
 const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, simoleanPayment);
 const saraResult = await saraSeat.getOfferResult();
@@ -105,7 +105,6 @@ so the liquidity amount equals the amount of the central token in the offer.
 
 ```js
 const moolaLiquidityIssuer = await E(publicFacet).addPool(moolaIssuer, 'Moola');
-const moolaLiquidityAmountMath = await makeLocalAmountMath(moolaLiquidityIssuer);
 ```
 
 Alice decides that the current rate in the external market is 2 Moola for each
@@ -113,10 +112,10 @@ Buck, so she deposits twice as many Moola as Bucks.
 
 ```js
 const aliceProposal = harden({
-  want: { Liquidity: moolaLiquidity(50) },
+  want: { Liquidity: moolaLiquidity(50n) },
   give: {
-    Secondary: moolaAmountMath.make(100),
-    Central: bucksAmountMath.make(50),
+    Secondary: amountMath.make(moolaBrand, 100n),
+    Central: amountMath.make(bucksBrand, 50n),
   },
 });
 const alicePayments = {
@@ -160,10 +159,10 @@ figure, but there's no need in this case.
 ```js
 const bobProposal = harden({
   give: {
-    Central: bucksAmountMath.make(1800)
-    Secondary: moolaAmountMath.make(1200),
+    Central: amountMath.make(bucksBrand, 1800n)
+    Secondary: amountMath.make(moolaBrand, 1200n),
   },
-  want: { Liquidity: liquidityAmountMath.make(0) },
+  want: { Liquidity: amountMath.make(liquidityBrand, 0n) },
   exit: { onDemand: null },
 ]);
 

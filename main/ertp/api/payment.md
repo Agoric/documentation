@@ -32,7 +32,7 @@ with it. Because `payments` are not trusted, any method calls on `payments`
 should be treated with suspicion and verified elsewhere.
 
 ```js
-const payment = quatloosMint.mintPayment(quatloosAmountMath.make(10n));
+const payment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 10n));
 //Should return 'quatloos'
 const allegedBrand = payment.getAllegedBrand();
 ```

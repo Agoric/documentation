@@ -26,9 +26,9 @@ accepted in either direction.
 ```
 Note: Here we used a shorthand for assets whose values are 5 simoleons, 3 
 quatloos, 8 quatloos, and 3 simoleons. Elsewhere this might have been done 
-by creating `amounts` inline (i.e. `quatloosAmountMath.make(8)`). Or by
+by creating `amounts` inline (i.e. `amountMath.make(quatloosBrand, 8n)`). Or by
 creating `amounts` outside the proposal and assigning them to variables.
-For example, `const quatloos8 = quatloosAmountMath.make(8);` and then using
+For example, `const quatloos8 = amountMath.make(quatloosBrand, 8n);` and then using
 `quatloos8` as the value for `Price` in the second clause above.
 
 The `want` term is an exact amount to exchange, while the
@@ -56,8 +56,8 @@ moola and receive at least 4 simoleans in return:
 
 ```js
 const aliceSellOrderProposal = harden({
-  give: { Asset: moolaAmountMath.make(3) },
-  want: { Price: simoleanAmountMath.make(4) },
+  give: { Asset: amountMath.make(moolaBrand, 3n) },
+  want: { Price: amountMath.make(simoleanBrand, 4n) },
   exit: { onDemand: null },
 });
 
@@ -105,12 +105,12 @@ Bob has checked that everything is in order, so he fulfills the buy order:
 
 ```js
 const bobBuyOrderProposal = harden({
-  give: { Price: simoleanAmountMath.make(7) },
-  want: { Asset: moolaAmountMath.make(3) },
+  give: { Price: amountMath.make(simoleanBrand, 7n) },
+  want: { Asset: amountMath.make(moolaBrand, 3n) },
   exit: { onDemand: null },
 });
 
-const bobSimPayment = await E(bobSimoleanPurse).withdraw(simoleanAmountMath(7));
+const bobSimPayment = await E(bobSimoleanPurse).withdraw(amountMath(simoleanBrand, 7n));
 const bobPayments = { Price: bobSimPayment };
 
 const bobSeat = await E(zoe).offer(

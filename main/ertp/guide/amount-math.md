@@ -4,38 +4,36 @@
 
 Depositing and withdrawing assets from a
 `purse` and manipulating `payment` amounts 
-all require adding and subtracting digital assets. ERTP
-uses `amountMath` methods for all these operations. 
+all require adding and subtracting digital assets.
+ERTP uses the `amountMath` library for all these operations. 
 
-`amountMath` methods also check their arguments' `brand`, 
-throwing an error if the wrong `brand` was used.
+The `amountMath` library functions work for both fungible and nonfungible tokens. 
+There are two `amountMathKinds`, each of which implements the same methods. Which kind is used 
+for a particular `brand` depends on what was specified when the `brand` and 
+its `issuer` were created. They are: 
 
-An `amountMath` is one of three different kinds, each of which
-implements the same methods. Which kind is used for a particular `brand` depends
-on what was specified when the `brand` and its `issuer` were 
-created. The kinds are: 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `MathKind.STRING_SET` (`strSet`): Used with non-fungible assets. `amount` `values` are strings.
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are arrays with any number of strings, numbers, etc.
 
-`makeIssuerKit(allegedName, amountMathKind)` creates a new `issuer`,
-`mint`, `brand`, and `amountMath`. 
-The second, optional, argument specifies which kind
+`makeIssuerKit(allegedName, amountMathKind, displayInfo=)` creates a new `issuer`,
+`mint`, and `brand`. 
+
+The second, optional, `amountMathKind` argument specifies which kind
 of `amountMath` is used for the `brand` in a one-to-one
 association with the new `issuer`. It defaults to `MathKind.NAT`. 
+
+The third, optional, `displayInfo` argument tells the UI how to display 
+values associated with the created `brand`. It defaults to `undefined`.
 
 For example: 
 
 <<< @/snippets/ertp/guide/test-amount-math.js#allMathKinds
 
-On the other hand, if you are not writing a Zoe contract and need to
-use `amountMath`, you probably want to
-make and use a local `amountMath` whose methods will work synchronously. 
-
-`makeLocalAmountMath(issuer)` returns a promise for a local `AmountMath` 
-that works on the same `brand` as the one associated with the `issuer` argument.
-
-<<< @/snippets/ertp/guide/test-amount-math.js#localAmountMath
+Note that many `amountMath` methods have a `brand` argument, either required or
+optional. For the ones with an optional `brand` argument, you should use it if
+you need to do an "absolute" check on the brand in the `amount` argument(s).
+In this case, you want to use the `brand` you got from the issuer (or from Zoe)
+as the optional parameter to compare the `amount` `brand`(s) to. 
 
 ## AmountMath Methods
 The following is a brief description and example of each `amountMath` method. For
@@ -43,78 +41,66 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](../api/).
 
 - **Information Getting Methods**
-  - [amountMath.getBrand()](../api/amount-math.md#amountmath-getbrand)
-    - For this `amountMath`, return the `brand` it can operate on..
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getBrand
-  - [amountMath.getValue(amount)](../api/amount-math.md#amountmath-getvalue-amount)
+  - [amountMath.getValue(brand, amount)](../api/amount-math.md#amountmath-getvalue-brand-amount)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.getAmountMathKind()](../api/amount-math.md#amountmath-getamountmathkind)
-    - Returns a string of either `'nat'`, `'str'`, or `'strSet'`,
-       indicating the kind of values this
-       `amountMath` operates on.
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind1
-  - [amountMath.getEmpty()](../api/amount-math.md#amountmath-getempty)
-    - Returns an `amount` representing an empty `amount` (which is the identity
-       element for the `amountMath` `add()` and `subtract()`
-       operations. Note that this value varies depending on the
-       `brand` and its `amountMath` kind (`MathKind.NAT`, `MathKind.STR`, or
-       `MathKind.STRING_SET`).
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getEmpty
 - **Comparison Methods**
-  - [amountMath.isEmpty(amount)](../api/amount-math.md#amountmath-isempty-amount)
+  - [amountMath.isEmpty(amount, brand?)](../api/amount-math.md#amountmath-isempty-amount-brand)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
+      Throws an error if the optional `brand` argument isn't the same as the `amount` argument brand.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEmpty
-  - [amountMath.isGTE(leftAmount, rightAmount)](../api/amount-math.md#amountmath-isgte-leftamount-rightamount)
+  - [amountMath.isGTE(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-isgte-leftamount-rightamount-brand)
     - Returns `true` if the `leftAmount` argument is greater than or equal
-       to the `rightAmount` argument, otherwise `false`.
+      to the `rightAmount` argument, otherwise `false`.
+      Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isGTE
-  - [amountMath.isEqual(leftAmount, rightAmount)](../api/amount-math.md#amountmath-isequal-leftamount-rightamount)
+  - [amountMath.isEqual(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-isequal-leftamount-rightamount-brand)
     - Returns `true` if the `leftAmount` argument equals the
-	`rightAmount` argument
+      `rightAmount` argument. Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEqual
-  - [amountMath.coerce(allegedAmount)](../api/amount-math.md#amountmath-coerce-allegedamount)
+  - [amountMath.coerce(brand, allegedAmount)](../api/amount-math.md#amountmath-coerce-brand-allegedamount)
     - Takes an `amount` and returns it if it's a valid `amount`.
       If invalid, it throws an error.
     - <<< @/snippets/ertp/guide/test-amount-math.js#coerce
 - **Manipulator Methods**
-
-  - [amountMath.add(leftAmount, rightAmount)](../api/amount-math.md#amountmath-add-leftamount-rightamount)
+  - [amountMath.add(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-add-leftamount-rightamount-brand)
     - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
-       `amount` arguments. For a fungible `amount`, this means add their
-       values.  For a non-fungible `amount`, it usually means
-       including all elements from both `leftAmount` and `rightAmount`.
+      `amount` arguments. For a fungible `amount`, this means add their
+      values.  For a non-fungible `amount`, it usually means
+      including all elements from both `leftAmount` and `rightAmount`.
+      Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#add
-  - [amountMath.subtract(leftAmount, rightAmount)](../api/amount-math.md#amountmath-subtract-leftamount-rightamount)
+  - [amountMath.subtract(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-subtract-leftamount-rightamount-brand)
     - Returns a new `amount` that is the `leftAmount` argument minus
       the `rightAmount` argument  (i.e. for strings or objects
       everything in `leftAmount` not in `rightAmount`). If `leftAmount`
       doesn't include the contents of `rightAmount`, it throws an error. 
+      It also throws an error if the optional `brand` argument isn't the 
+      same as the `amount` arguments brands.
     - <<< @/snippets/ertp/guide/test-amount-math.js#subtract
 - **Amount Creation Methods**
-  - [amountMath.make(allegedValue)](../api/amount-math.md#amountmath-make-allegedvalue)	
+  - [amountMath.make(brand, allegedValue)](../api/amount-math.md#amountmath-make-brand-allegedvalue)	
     - Takes a `value` argument and returns an `amount` by making a record
       with the `value` and the `brand` associated with the `amountMath`. The `value`
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
-  - [amountMath.getEmpty()](../api/amount-math.md#amountmath-getempty)
-    - Returns an `amount` representing an empty `amount` (which is the identity
-       element for the `amountMath` `add()` and `subtract()`
-       operations. Note that this value varies depending on `amountMath`'s associated
-       `brand` and whether `amountMath` is of kind `MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`.
-    - <<< @/snippets/ertp/guide/test-amount-math.js#getEmpty
+  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-amountmathkind)
+    - Returns an `amount` representing an empty `amount`, which is the identity
+      element for the `amountMath` `add()` and `subtract()`
+      operations. Note that this value varies depending on the
+      `brand` and whether it is of kind `MathKind.NAT` or `MathKind.SET`.
+    - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
+  - [amountMath.makeEmptyFromAmount(amount)](/ertp/api/amount-math.md#amountmath-makeemptyfromamount-amount)
+    - Returns an `amount` representing an empty `amount`, using another `amount`
+      as the template for the new empty amount's `brand` and `mathKind`.
+    - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmptyFromAmount
  
 ## Methods on other objects
 
-These methods either use or return `amountMath` objects:
-- [makeIssuerKit(allegedName, amountMathKind)](../api/issuer.md#makeissuerkit-allegedname-amountmathkind)
-  - Creates a new `amountMath` that uses the `amountMath` kind
-    designated by the `amountMathKind` argument (`MathKind.NAT`, `MathKind.STR`,
-    `MathKind.STRING_SET`). Also creates a new `mint`, `issuer`, and `brand`.
-  - <<< @/snippets/ertp/guide/test-amount-math.js#makeIssuerKit
+These methods return a `MathKind`: 
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
-  - Returns the kind of `amountMath` (`MathKind.NAT`, `MathKind.STR`, or `MathKind.STRING_SET`).
+  - Returns the `MathKind` of the `issuer`'s `brand`. (`MathKind.NAT` or `MathKind.SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2
-- [zcf.getAmountMath(brand)](/zoe/api/zoe-contract-facet.md#zcf-getamountmath-brand)
-  - Returns the `amountMath` object associated with the `brand` argument.
-  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetAmountMath
+- [zcf.getMathKind(brand)](/zoe/api/zoe-contract-facet.md#zcf-getmathkind-brand)
+  - Returns the `MathKind` of the `brand` argument. 
+  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetMathKind

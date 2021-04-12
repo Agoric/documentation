@@ -58,16 +58,15 @@ const issuerKeywordRecord = {
 - `instance` `{Instance}`
 - Returns: `{Object}`
 
-Returns the terms of the `instance` argument, including its `issuers`, `brands`, `maths` and any
+Returns the terms of the `instance` argument, including its `issuers`, `brands`, and any
 custom terms. The returned values look like:
 ```js
-{ brands, issuers, maths, customTermA, customTermB ... }
-//where brands, issuers, and maths are all keywordRecords, like:
+{ brands, issuers, customTermA, customTermB ... }
+//where brands and issuers are keywordRecords, like:
 
 {
     brands: { A: moolaKit.brand, B: simoleanKit.brand },
     issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
-    maths: { A: moolaKit.amountMath, B: simoleanKit.amountMath },
     customTermA: 'something',
     customTermB: 'something else',
  };
@@ -337,8 +336,8 @@ and an operation to request that the offer exit, as follows:
     An `Allocation` example:
     - ```js
       {
-        Asset: quatloosAmountMath.make(5n),
-        Price: moolaAmountMath.make(9n)
+        Asset: amountMath.make(quatloosBrand, 5n),
+        Price: amountMath.make(moolaBrand, 9n)
       }
       ```
 - `getProposal()`
