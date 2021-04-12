@@ -38,12 +38,6 @@ API Reference](../api/).
   - [amountMath.getValue(brand, amount)](../api/amount-math.md#amountmath-getvalue-brand-amount)
     - Returns the `value` of the `amount` argument. For fungible assets, this will be a `BigInt`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#getValue
-  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-amountmathkind) 
-    - Returns an `amount` representing an empty `amount` (which is the identity
-      element for the `amountMath` `add()` and `subtract()`
-      operations. Note that this value varies depending on the
-      `brand` and its `amountMath` kind (`MathKind.NAT` or `MathKind.SET`).
-    - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
 - **Comparison Methods**
   - [amountMath.isEmpty(amount, brand?)](../api/amount-math.md#amountmath-isempty-amount-brand)
     - Returns `true` if its `amount` argument is empty, otherwise `false`.
@@ -61,7 +55,6 @@ API Reference](../api/).
       If invalid, it throws an error.
     - <<< @/snippets/ertp/guide/test-amount-math.js#coerce
 - **Manipulator Methods**
-
   - [amountMath.add(leftAmount, rightAmount, brand?)](../api/amount-math.md#amountmath-add-leftamount-rightamount-brand)
     - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
        `amount` arguments. For a fungible `amount`, this means add their
@@ -93,7 +86,10 @@ API Reference](../api/).
  
 ## Methods on other objects
 
-These methods either use or return `amountMath` objects:
+These methods return a `MathKind`: 
 - [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
-  - Returns the kind of `amountMath` (`MathKind.NAT` or `MathKind.SET`).
+  - Returns the `MathKind` of the `issuer`'s `brand`. (`MathKind.NAT` or `MathKind.SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2
+- [zcf.getMathKind(brand)](/zoe/api/zoe-contract-facet.md#zcf-getmathkind-brand)
+  - Returns the `MathKind` of the `brand` argument. 
+  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetMathKind
