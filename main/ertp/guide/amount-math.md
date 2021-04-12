@@ -5,12 +5,12 @@
 Depositing and withdrawing assets from a
 `purse` and manipulating `payment` amounts 
 all require adding and subtracting digital assets.
-ERTP uses the amountMath library for all these operations. 
+ERTP uses the `amountMath` library for all these operations. 
 
 The `amountMath` library functions work for both fungible and nonfungible tokens. 
-There are two kinds, each of which implements the same methods. Which kind is used 
+There are two `amountMathKinds`, each of which implements the same methods. Which kind is used 
 for a particular `brand` depends on what was specified when the `brand` and 
-its `issuer` were created. The kinds are: 
+its `issuer` were created. They are: 
 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are arrays with any number of strings, numbers, etc.
@@ -28,6 +28,12 @@ values associated with the created `brand`. It defaults to `undefined`.
 For example: 
 
 <<< @/snippets/ertp/guide/test-amount-math.js#allMathKinds
+
+Note that many `amountMath` methods have a `brand` argument, either required or
+optional. For the ones with an optional `brand` argument, you should use it if
+you need to do an "absolute" check on the brand in the `amount` argument(s).
+In this case, you want to use the `brand` you got from the issuer (or from Zoe)
+as the optional parameter to compare the `amount` `brand`(s) to. 
 
 ## AmountMath Methods
 The following is a brief description and example of each `amountMath` method. For
