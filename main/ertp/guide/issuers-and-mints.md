@@ -163,7 +163,7 @@ the one Quatloos `mint` can create new Quatloos.
 - A `mint` that creates an asset `brand` can never be changed to create a different `brand`.
 So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
 
-There are two `mint` methods. Click the method's name to go to its entry in the [ERTP
+There are two `mint` methods, and the method that creates new mints. Click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/#ertp-api).
 - [`mint.getIssuer()`](/ertp/api/mint.md#mint-getissuer)
   - Returns the `issuer` uniquely associated with the `mint`.
@@ -176,3 +176,8 @@ API Reference](/ertp/api/#ertp-api).
     **Important**: `mint.mintPayment()` is the only way in ERTP to create new digital assets. There is no other way.
     The Zoe Contract Facet (`zcf`) can also create a mint in Zoe that can create new digital assets.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
+- [`makeIssuerKit(allegedName, amountMathKind, displayInfo)`](
+  - While not a method called on a `mint`, clearly you should know how to create a new `mint`. `makeIssuerKit()` returns
+    a new `issuer`, `mint`, and `brand`. 
+  - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
+
