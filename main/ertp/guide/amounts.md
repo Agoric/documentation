@@ -51,7 +51,7 @@ for one specific `brand`.
 - An `amount` is either *fungible* or *non-fungible*, as determined by which
 its `issuer`, and thus its `brand`, was created to be. 
 
-A `brand` has two associated methods. The following is a brief description 
+A `brand` has three associated methods. The following is a brief description 
 and example of each `brand` method. For more detail, click the method's name 
 to go to its entry in the [ERTP
 API Reference](../api/). 
@@ -64,8 +64,12 @@ API Reference](../api/).
     accepted by genuine ones. So to know, you have to verify with the `issuer` to see if it agrees.
   - <<< @/snippets/ertp/guide/test-amounts.js#isMyIssuer
 - [`brand.getAllegedName()`](../api/brand.md#brand-getallegedname)
-  - Return the `brand`'s alleged name, but should not be trusted as accurate.
+  - Returns the `brand`'s alleged name, but should not be trusted as accurate.
   - <<< @/snippets/ertp/guide/test-amounts.js#getAllegedName
+- [`brand.getDisplayInfo()`](../api/brand.md#brand-getdisplayinfo)
+  - Returns the `DisplayInfo` associated with the `brand`. The `DisplayInfo
+    tells the UI how to correctly display `values` associated with the `brand`.
+  - <<< @/snippets/ertp/guide/test-amounts.js#getDisplayInfo
 
 The following methods on other ERTP components also either operate on or
 return a `brand`.
