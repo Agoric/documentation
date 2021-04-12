@@ -8,15 +8,19 @@ To use the `amountMath` library, import it from ERTP:
 - `import { amountMath } from '@agoric/ertp';`
 ## AmountMath Kinds
 
-There are two different kinds of `amountMath`, each of which implements all the methods shown on this page. You only have to specify the `amountMath` kind when creating its associated `issuer`.
+There are two different kinds of `amountMath`, each of which implements all the 
+methods shown on this page. You only have to specify the `amountMath` kind when 
+creating its associated `issuer`.
 
-The two `amountMath` kinds each implement all of the same API methods (i.e. `amountMath` methods are polymorphic). We recommend you import the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
+The two `amountMathKinds` each implement all of the same API methods 
+(i.e. `amountMath` methods are polymorphic). We recommend you import 
+the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
 
 - `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
 - `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
-Use `makeIssuerKit(allegedName, amountMathKind, displayInfo)` to specify which `amountMath` 
-kind your contract uses. The second parameter, `amountMathKind` is optional and 
+Use `makeIssuerKit(allegedName, amountMathKind, displayInfo)` to specify which `amountMathKind` 
+your contract uses. The second parameter, `amountMathKind` is optional and 
 defaults to `MathKind.NAT` if not given. For example
 ```js
 import { MathKind, makeIssuerKit } from '@agoric/ertp';
@@ -49,6 +53,15 @@ naming a particular right, or an arbitrary object that sensibly represents the r
 Note that numbers in a value are represented as type `BigInt`, which allows for arbitrarily 
 large numbers. `BigInts` are depicted as an integer with an appended "n"; e.g. `10n`, `137n`. 
 See the [`BigInt` section in the JavaScript Distributed Programming Guide](/guides/js-programming/bigint.md) for details. 
+
+## Brand parameters
+
+Note that many `amountMath` methods have a `brand` argument, either required or
+optional. For the ones with an optional `brand` argument, you should use it if
+you need to do an "absolute" check on the brand in the `amount` argument(s).
+In this case, you want to use the `brand` you got from the issuer (or from Zoe)
+as the optional parameter to compare the `amount` `brand`(s) to. If they are
+not equal, an error is thrown.
 
 ## makeLocalAmountMath(issuer). DEPRECATED 20-03-2021
 
