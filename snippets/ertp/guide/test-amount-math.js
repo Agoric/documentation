@@ -30,6 +30,20 @@ test('ertp guide amountMath methods makeEmpty', async t => {
   t.deepEqual(empty, amountMath.make(quatloosBrand, 0n));
 });
 
+test('ertp guide amountMath methods makeEmptyFromAmount', async t => {
+  // #region makeEmptyFromAmount
+  const { brand: quatloosBrand } = makeIssuerKit('quatloos');
+  // Returns an empty amount for this issuer.
+  // Since this is a fungible amount it returns 0
+  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  // quatloosAmount837 = { value: 837n, brand: quatloos }
+  const quatloosAmount837 = amountMath.make(quatloosBrand, 837n);
+  // Returns an amount = { value: 0n, brand: quatloos }
+  const quatloosAmount0 = amountMath.makeEmptyFromAmount(quatloosAmount837);
+  // #endregion makeEmptyFromAmount
+  t.deepEqual(empty, quatloosAmount0);
+});
+
 test('ertp guide amountMath methods isEmpty', async t => {
   // #region isEmpty
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
