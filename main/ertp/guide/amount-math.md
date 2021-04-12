@@ -81,11 +81,15 @@ API Reference](../api/).
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
   - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-amountmathkind)
-    - Returns an `amount` representing an empty `amount` (which is the identity
-       element for the `amountMath` `add()` and `subtract()`
-       operations. Note that this value varies depending on the
-       `brand` and whether it is of kind `MathKind.NAT` or `MathKind.SET`.
+    - Returns an `amount` representing an empty `amount`, which is the identity
+      element for the `amountMath` `add()` and `subtract()`
+      operations. Note that this value varies depending on the
+      `brand` and whether it is of kind `MathKind.NAT` or `MathKind.SET`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
+  - [amountMath.makeEmptyFromAmount(amount)](/ertp/api/amount-math.md#amountmath-makeemptyfromamount-amount)
+    - Returns an `amount` representing an empty `amount`, using another `amount`
+      as the template for the new empty amount's `brand` and `mathKind`.
+    - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmptyFromAmount
  
 ## Methods on other objects
 
