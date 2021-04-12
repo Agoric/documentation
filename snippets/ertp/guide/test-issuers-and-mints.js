@@ -226,7 +226,9 @@ test('ertp guide mints makeIssuerKit', async t => {
     brand: quatloosBrand,
   } = makeIssuerKit('quatloos');
   // Mint a new 2 Quatloos payment
-  const paymentQuatloos2 = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 2n));
+  const paymentQuatloos2 = quatloosMint.mintPayment(amountMath.make(quatloosBrand,2n));
+  // #endregion makeIssuerMint
+  t.truthy(issuer.isLive(paymentQuatloos2));
   t.truthy(quatloosIssuer);
   t.truthy(quatloosMint);
   t.truthy(quatloosBrand);
