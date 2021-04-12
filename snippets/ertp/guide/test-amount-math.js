@@ -162,9 +162,9 @@ test('ertp guide zcf.getMathKind related', async t => {
 
   const quatloosIssuer = issuer;
   const quatloosBrand = brand;
-  // #region getAmountMathKind2
+  // #region zcfGetMathKind
   const quatloosMathKind = zcf.getMathKind(quatloosbrand);
-  // #endregion getAmountMathKind2
+  // #endregion zcfGetMathKind
   t.is(quatloosMathKind, 'nat');
 });
 
