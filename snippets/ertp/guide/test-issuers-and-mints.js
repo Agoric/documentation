@@ -217,3 +217,17 @@ test('ertp guide issuers and mints mint.mintPayment', async t => {
   const issuer = quatloosMint.getIssuer();
   t.truthy(issuer.isLive(newPayment));
 });
+
+test('ertp guide mints makeIssuerKit', async t => {
+  // #region makeIssuerKitMint
+  const {
+    issuer: quatloosIssuer,
+    mint: quatloosMint,
+    brand: quatloosBrand,
+  } = makeIssuerKit('quatloos');
+  // Mint a new 2 Quatloos payment
+  const paymentQuatloos2 = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 2n));
+  t.truthy(quatloosIssuer);
+  t.truthy(quatloosMint);
+  t.truthy(quatloosBrand);
+});
