@@ -176,7 +176,7 @@ API Reference](/ertp/api/#ertp-api).
     **Important**: `mint.mintPayment()` is the only way in ERTP to create new digital assets. There is no other way.
     The Zoe Contract Facet (`zcf`) can also create a mint in Zoe that can create new digital assets.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
-- [`makeIssuerKit(allegedName, amountMathKind, displayInfo)`](
+- [`makeIssuerKit(allegedName, amountMathKind, displayInfo)`](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo)
   - While not a method called on a `mint`, clearly you should know how to create a new `mint`. `makeIssuerKit()` returns
     a new `issuer`, `mint`, and `brand`. 
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
