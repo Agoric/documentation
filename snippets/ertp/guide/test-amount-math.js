@@ -154,3 +154,17 @@ test('ertp guide amountMath related', async t => {
   // #endregion getAmountMathKind2
   t.is(myAmountMathKind, 'nat');
 });
+
+test('ertp guide zcf.getMathKind related', async t => {
+  const { issuer, mint, brand } = makeIssuerKit('quatloos');
+  t.truthy(mint);
+  t.truthy(brand);
+
+  const quatloosIssuer = issuer;
+  const quatloosBrand = brand;
+  // #region getAmountMathKind2
+  const quatloosMathKind = zcf.getMathKind(quatloosbrand);
+  // #endregion getAmountMathKind2
+  t.is(quatloosMathKind, 'nat');
+});
+
