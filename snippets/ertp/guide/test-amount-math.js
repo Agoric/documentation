@@ -1,6 +1,7 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
-
 import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
+
+import { setupZCFTest } from '../../tools/setupZcfTest';
 
 test('ertp guide amountMath allMathKinds', async t => {
   // #region allMathKinds
@@ -157,7 +158,7 @@ test('ertp guide amountMath related', async t => {
 
 test('ertp guide zcf.getMathKind related', async t => {
   const { issuer, mint, brand } = makeIssuerKit('quatloos');
-  const { zcf } = await setupZCFTest(harden({ Quatloos: quatloosIssuer }));
+  const { zcf } = await setupZCFTest(harden({ Quatloos: issuer }));
   t.truthy(issuer);
   t.truthy(mint);
   t.truthy(brand);

@@ -29,7 +29,7 @@ test('ertp guide amounts', async t => {
   // #region getDisplayInfo
   const myDisplayInfo = brand.getDisplayInfo();
   // #endregion getDisplayInfo
-  t.is(myDisplayInfo, quatloosBrand.getDisplayInfo();
+  t.is(myDisplayInfo, quatloosBrand.getDisplayInfo());
 
   const brandToPurse = new Map();
   brandToPurse.set(brand, issuer.makeEmptyPurse());
