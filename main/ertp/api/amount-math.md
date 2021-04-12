@@ -143,7 +143,8 @@ const quatloosAmount0 = amountMath.makeEmptyFromAmount(quatloosAmount837);
 
 Returns `true` if the `amount` is empty. Otherwise returns `false`.
 
-The `brand` parameter is optional, and defaults to `undefined`.
+The `brand` parameter is optional, and defaults to `undefined`. 
+If it does not match `amount`'s `brand`, an error is thrown.
 
 ```js
 const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
@@ -167,6 +168,7 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
 
 The `brand` argument is optional, defaulting to `undefined`.
+If it does not match the `amounts` `brand`, an error is thrown.
 
 For non-fungible `values`, what "greater than or equal to" is depends on the 
 kind of `amountMath`. For example, { 'seat 1', 'seat 2' } is considered
@@ -201,6 +203,7 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 `brand`.
 
 The `brand` argument is optional, defaulting to `undefined`.
+If it does not match the `amounts` `brand`, an error is thrown.
 
 For non-fungible `values`, "equal to" depends on the kind of `amountMath`. 
 For example, { 'seat 1', 'seat 2' } is considered
@@ -234,6 +237,7 @@ Returns a new `amount` that is the union of `leftAmount` and `rightAmount`. Both
 arguments must be of the same `brand`.
 
 The `brand` argument is optional, defaulting to `undefined`.
+If it does not match the `amounts` `brand`, an error is thrown.
 
 For fungible `amounts` this means adding their `values`. For non-fungible
 `amounts`, it usually means including all of the elements from `leftAmount`
@@ -267,6 +271,7 @@ equivalent to set subtraction.
 `leftAmount` and `rightAmount` must be of the same `brand`.
 
 The `brand` argument is optional, defaulting to `undefined`.
+If it does not match the `amounts` `brand`, an error is thrown.
 
 If the `rightAmount` is empty, it returns the `leftAmount`. If both arguments are
 empty, it returns an empty `amount`.
