@@ -46,6 +46,11 @@ This means that the `priceAuthority` asserts that when `timestamp` according to
 `amountIn` and `amountOut` are ERTP amounts for the `brandIn` and `brandOut` you
 requested.
 
+## Mutable price quotes
+
+A `MutableQuote` object is the same as a `PriceQuote`, except that you can cancel it or
+change its trigger levels to specified values without requiring a second `Promise`. 
+
 ## API Reference
 
 The Price Authority API reference is a section of the [Zoe API reference](/zoe/api/contract-support/price-authority.md)
