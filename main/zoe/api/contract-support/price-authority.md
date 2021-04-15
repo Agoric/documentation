@@ -138,18 +138,23 @@ const quote = E(pAuthority).quoteWhenLTE(
 ```
 ## `MutableQuote` object
 
-**tyg todo: When do you want to use a mutable quote vs. a regular quote, and vice versa?**
+Use a `MutableQuote` when you expect to make multiple calls, replacing the trigger
+value. If you just need a single quote, and won't change the trigger level, then use
+a non-mutable quote.
 
 There are four *mutable quote* methods, which return a `MutableQuote` object with the methods:
 - `cancel(e)`
   - `e``{ String }`
-  - Causes the `Promise` to reject with the message `e`.  **tyg todo: How is the message used; where does it go?**
+  - Causes the `Promise` to reject with the message `e`. When the promise is used with a `.then()`
+    the message is part of the rejection notification. 
 - `getPromise()`
-  - Returns the same `Promise` as the `quoteWhen...()` methods.
+  - Returns: `{ Promise<PriceQuote> }`
 - `updateLevel(newAmountIn, newAmountOutLimit)`
   - `newAmountIn` `{ Amount }`
   - `newAmountOutLimit` `{ Amount }`
   - Changes the `MutableQuote`'s trigger levels to the specified values without requiring a second `Promise`.
+    `newAmountIn` and `newAmountOutLimit`'s brands must match the original `amountIn` and `newAmountOutLimit`
+    brands respectively. 
   
 ## `mutableQuoteWhenGT(amountIn, amountOutLimit)`
 - `amountIn`: `{ Amount }`
