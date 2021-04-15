@@ -48,8 +48,13 @@ requested.
 
 ## Mutable price quotes
 
-A `MutableQuote` object is the same as a `PriceQuote`, except that you can cancel it or
-change its trigger levels to specified values without requiring a second `Promise`. 
+A `PriceQuote` is a record (has fields rather than methods), while `MutableQuote` is
+an object (methods, no fields). `MutableQuote`'s method `getPromise(`) returns 
+a `Promise` for a `PriceQuote`, which is the same `Promise` returned by the `quoteWhenLTE()`
+API method and its siblings. 
+
+You can cancel a `MutableQuote` or change its trigger levels to specified values without
+requiring a second `Promise`. 
 
 ## API Reference
 
