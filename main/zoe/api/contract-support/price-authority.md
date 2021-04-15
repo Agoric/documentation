@@ -149,7 +149,7 @@ There are four *mutable quote* methods, which return a `MutableQuote` object wit
 - `updateLevel(newAmountIn, newAmountOutLimit)`
   - `newAmountIn` `{ Amount }`
   - `newAmountOutLimit` `{ Amount }`
-  - Changes the `MutableQUote`'s trigger levels to the specified values without requiring a second `Promise`.
+  - Changes the `MutableQuote`'s trigger levels to the specified values without requiring a second `Promise`.
   
 ## `mutableQuoteWhenGT(amountIn, amountOutLimit)`
 - `amountIn`: `{ Amount }`
