@@ -14,7 +14,7 @@ contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/cont
 ## Receiving a quote
 
 A `priceAuthority` has a number of different methods that will return
-official `priceQuotes`. A `priceQuote` is an amount, payment pair,
+official `priceQuotes`. A `priceQuote` is a record with an amount and a payment,
 where the amount is also the current balance of the payment:
 
 ```js
@@ -45,6 +45,14 @@ This means that the `priceAuthority` asserts that when `timestamp` according to
 `timer` happened, you could sell `amountIn` and receive `amountOut` for it.
 `amountIn` and `amountOut` are ERTP amounts for the `brandIn` and `brandOut` you
 requested.
+
+## Mutable price quotes
+
+`MutableQuote`'s method `getPromise()` returns a `Promise` for a `PriceQuote`, 
+which is the same as what is returned by the `quoteWhenLTE()` API method and variants. 
+Effectively, the non-mutable price quote methods return a single `PriceQuote`, while
+the mutable price quote methods return a reusable object which can manipulated 
+by changing its trigger levels or by cancelling it. 
 
 ## API Reference
 
