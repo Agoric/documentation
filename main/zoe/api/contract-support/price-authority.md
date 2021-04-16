@@ -145,7 +145,7 @@ a non-mutable quote.
 There are four *mutable quote* methods, which return a `MutableQuote` object with the methods:
 - `cancel(e)`
   - `e``{ String }`
-  - Causes the `Promise` to reject with the message `e`. When the promise is used with a `.then()`
+  - Causes the `Promise` to reject with the message `e`. When the promise is used with a `E.when()`
     the message is part of the rejection notification. 
 - `getPromise()`
   - Returns: `{ Promise<PriceQuote> }`
