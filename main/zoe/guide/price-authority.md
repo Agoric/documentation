@@ -48,11 +48,11 @@ requested.
 
 ## Mutable price quotes
 
-`MutableQuote`'s method `getPromise(`) returns a `Promise` for a `PriceQuote`, 
-which is the same `Promise` returned by the `quoteWhenLTE()` API method and its siblings. 
-Effectively, the non-mutable price quote methods return a static `PriceQuote`, while
-the mutable price quote methods return a reusable price quote object which can manipulated 
-by changing its trigger levels or cancelling it. 
+`MutableQuote`'s method `getPromise()` returns a `Promise` for a `PriceQuote`, 
+which is the same as what is returned by the `quoteWhenLTE()` API method and variants. 
+Effectively, the non-mutable price quote methods return a single `PriceQuote`, while
+the mutable price quote methods return a reusable object which can manipulated 
+by changing its trigger levels or by cancelling it. 
 
 ## API Reference
 
