@@ -1,31 +1,49 @@
+
 # `Far()` and Remotable Objects
 
 ## Remotable objects
 
-Some objects have methods that can be invoked remotely (across contracts and vats) using
-the [`E()` syntax](./eventual-send.html#remote-object-communication-with-e). These are
-*`Remotable`* objects. All objects used in your contract's external API must be `Remotable`. 
+In Agoric smart contracts and dapps, you can call methods on objects from other vats or machines. 
+For example, a purse for an ERTP issuer actually lives in the issuer's vat. But code in your off-chain
+wallet or another contract can still use that purse.
 
-These objects also have an *interface name* associated with them, which is useful for debugging. 
-It only shows up in `console.log`.
+This is possible because Agoric encapsulates inter-machine and inter-vat communication. At
+the smart contract or dapp level, objects from other vats or machines can almost be treated 
+as if they are local.
 
-Remotable objects must meet these requirements:
+To call a method on an object from another vat or machine, you must 
+use [`E()`](./eventual-send.html#remote-object-communication-with-e). For example, getting
+an `Issuer`'s `brand` would look like `E(issuer).getBrand()`.
 
-* Each of its property names is a `String`. They cannot be a `Symbol` (except for `Symbol.syncIterator`).
-  * Any method named by a symbol other than `Symbol.syncIterator` is not remotely invokable in the Agoric system.
-* Each of its property values is a function. They cannot be an accessor (getter/setter) or plain data.
-* It must be `harden()`ed.
-* It must be marked with `Far()` (some older code may use the to be deprecated`Remotable()`).
+Objects intended to be used in other vats are called `Remotables`. In particular, note that
+every object returned from a smart contract, such a `publicFacet` or 
+`creatorFacet`, must be `Remotable`. All objects used in your contract's external API must
+be `Remotable`
 
-## `Far()`
+### Rules for Creating Remotables
+- All property names must be strings. 
+  - Property names must not be `Symbols`. **tyg todo: Do we need to have the `Symbol.asyncIterator` exception here?**
+- All property values must be functions. 
+  - They cannot be accessors.
+  - Note: If you wish to send data, send a pass-by-copy record instead, or add a function that returns a pass-by-copy record.
+- You must wrap the object with `Far()`.
+
+### Using `Remotables`
+- Call a `Remotable`'s method by first wrapping the `Remotable` object with `E`, such as `E(issuer).getBrand();`
+- Handle the resulting promise. Calling `E()` always results in a `Promise`.
+
+## Using `Far()`
 
 `Far(interface-name, object-with-methods)`
 - `interface-name` `{ String }`
 - `object-with-methods` ` { Object }` `[remotable={}]`
--  Returns: A remotable object.
+-  Returns: A `Remotable` object.
 
-`Far()`'s second argument is a record of all the object's property functions
- and their definitions. See the example code below.
+The `interface-name` parameter gives the `Remotable` an *interface name*, which only shows
+up in `console.log` when 
+
+The `object-with-methods` parameter includes a record with definitions of all the object's 
+property functions. See the example code below.
 
 Use the `Far()` function to mark an object as `Remotable`.  `Far()` also:
 - Runs `harden()` on the object.
@@ -48,26 +66,10 @@ const countRemotable = Far('counter', {
 });
 ```
 
-`Far()` automatically does [`harden()`](./ses/ses-guide.md#harden) on its object argument, 
-so if you've made a `Remotable` object with `Far()`, you don't need to also call `harden()` 
+`Far()` automatically [hardens](./ses/ses-guide.md#harden) its object argument. 
+If you make a `Remotable` object with `Far()`, you don't need to also call `harden()` 
 on it. Since `far()` is not used on objects used to send data, you must still use
 `harden()` on them.
 
-## `Remotable()`
 
-`Remotable()` is a lower-level way to do what `Far()` does. You should **not** use it. While it works now, in the future when objects like `countRemotable` below are serialized for transmission, it will cause an error.  At that point, `Far()` **must** be used. It is presented here so you know how to fix any older code that may use it. For example:
-
-**tyg todo: Thing is, the sample code and the how to upgrade it doesn't actually use a function/method `Remotable()` but just
-runs harden() on the object's methods. Should this be rephrased to something like "Another way to make an object `Remotable` 
-is to run `harden()`...."? Or is there also a `remotable()` function that should be shown?**
-```js
-let counter;
-const countRemotable = harden({
-  increment() { counter++; },
-  decrement() { counter--; },
-  read() { return counter; },
-});
-```
-
-In most cases, you can upgrade this code by simply replacing the `harden(..)` with `Far('interfacename' ...)`.
 
