@@ -21,8 +21,6 @@ every object returned from a smart contract, such a `publicFacet` or
 be `Remotable`
 
 ### Rules for Creating Remotables
-- All property names must be strings. 
-  - Property names must not be `Symbols`. **tyg todo: Do we need to have the `Symbol.asyncIterator` exception here?**
 - All property values must be functions. 
   - They cannot be accessors.
   - Note: If you wish to send data, send a pass-by-copy record instead, or add a function that returns a pass-by-copy record.
@@ -40,7 +38,7 @@ be `Remotable`
 -  Returns: A `Remotable` object.
 
 The `interface-name` parameter gives the `Remotable` an *interface name*, which only shows
-up in `console.log` when 
+up when logged through `console.log`. 
 
 The `object-with-methods` parameter includes a record with definitions of all the object's 
 property functions. See the example code below.
@@ -50,10 +48,10 @@ Use the `Far()` function to mark an object as `Remotable`.  `Far()` also:
 - Checks for the property name and value requirements above. If they are not met, it throws an error.
 - Records the object's interface name. 
 
-You should call `far()` on an object if it both:
+You should call `Far()` on an object if it both:
 - Will be sent out of its native vat.
   - If it might ever appear as the `foo` in [`E(foo)`](./eventual-send.md),  
-    you should run `far()` on it after creating it.
+    you should run `Far()` on it after creating it.
 - Has methods called on it, as opposed to just effectively storing data.
 
 ```js
@@ -68,7 +66,7 @@ const countRemotable = Far('counter', {
 
 `Far()` automatically [hardens](./ses/ses-guide.md#harden) its object argument. 
 If you make a `Remotable` object with `Far()`, you don't need to also call `harden()` 
-on it. Since `far()` is not used on objects used to send data, you must still use
+on it. Since `Far()` is not used on objects used to send data, you must still use
 `harden()` on them.
 
 
