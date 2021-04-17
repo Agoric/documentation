@@ -136,3 +136,73 @@ const quote = E(pAuthority).quoteWhenLTE(
     amountMath.make(brands.Out, 974n),
   );
 ```
+## `MutableQuote` object
+
+Use a `MutableQuote` when you expect to make multiple calls, replacing the trigger
+value. If you just need a single quote, and won't change the trigger level, then use
+a non-mutable quote.
+
+There are four *mutable quote* methods, which return a `MutableQuote` object with the methods:
+- `cancel(e)`
+  - `e``{ String }`
+  - Causes the `Promise` to reject with the message `e`. When the promise is used with a `E.when()`
+    the message is part of the rejection notification. 
+- `getPromise()`
+  - Returns: `{ Promise<PriceQuote> }`
+- `updateLevel(newAmountIn, newAmountOutLimit)`
+  - `newAmountIn` `{ Amount }`
+  - `newAmountOutLimit` `{ Amount }`
+  - Changes the `MutableQuote`'s trigger levels to the specified values without requiring a second `Promise`.
+    `newAmountIn` and `newAmountOutLimit`'s brands must match the original `amountIn` and `newAmountOutLimit`
+    brands respectively. 
+  
+## `mutableQuoteWhenGT(amountIn, amountOutLimit)`
+- `amountIn`: `{ Amount }`
+- `amountOutLimit`: `{ Amount }`
+- Returns: `{ Promise<MutableQuote> }`
+- Resolves when a price quote of `amountIn` exceeds `amountOutLimit`
+```js
+const quote = E(pAuthority).mutableQuoteWhenGT(
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
+  );
+```
+  
+## `mutableQuoteWhenGTE(amountIn, amountOutLimit)`
+- `amountIn`: `{ Amount }`
+- `amountOutLimit`: `{ Amount }`
+- Returns: `{ Promise<MutableQuote> }`
+- Resolves when a price quote of `amountIn` reaches or exceeds
+  `amountOutLimit`
+```js
+const quote = E(pAuthority).mutableQuoteWhenGTE(
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
+  );
+```
+  
+## `mutableQuoteWhenLT(amountIn, amountOutLimit)`
+- `amountIn`: `{ Amount }`
+- `amountOutLimit`: `{ Amount }`
+- Returns: `{ Promise<MutableQuote> }`
+- Resolves when a price quote of `amountIn` drops below
+  `amountOutLimit`
+```js
+const quote = E(pAuthority).mutableQuoteWhenLT(
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
+  );
+```
+
+## `mutableQuoteWhenLTE(amountIn, amountOutLimit)`
+- `amountIn`: `{ Amount }`
+- `amountOutLimit`: `{ Amount }`
+- Returns: `{ Promise<MutableQuote> }`
+- Resolves when a price quote of `amountIn` reaches or drops below
+  `amountOutLimit`
+```js
+const quote = E(pAuthority).mutableQuoteWhenLTE(
+    amountMath.make(brands.In, 29n),
+    amountMath.make(brands.Out, 974n),
+  );
+```
