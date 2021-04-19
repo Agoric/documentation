@@ -15,7 +15,7 @@ All such operations immediately return a promise for their result. That may even
 For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send.md).
 :::
 
-## E(zoe).getBrands(instance)
+## `E(zoe).getBrands(instance)`
 - `instance` `{Instance}`
 - Returns: `{Promise<BrandKeywordRecord>}`
 
@@ -34,7 +34,7 @@ const brandKeywordRecord = {
   Price: moolaBrand,
 };
 ```
-## E(zoe).getIssuers(instance)
+## `E(zoe).getIssuers(instance)`
 - `instance` `{Instance}`
 - Returns: `{Promise<IssuerKeywordRecord>}`
 
@@ -54,7 +54,7 @@ const issuerKeywordRecord = {
   Price: moolaIssuer,
 };
 ```
-## E(zoe).getTerms(instance)
+## `E(zoe).getTerms(instance)`
 - `instance` `{Instance}`
 - Returns: `{Object}`
 
@@ -75,7 +75,7 @@ custom terms. The returned values look like:
 const terms = await E(zoe).getTerms(instance);
 ```
 
-## E(zoe).getPublicFacet(instance)
+## `E(zoe).getPublicFacet(instance)`
 - `instance` `{Instance}`
 - Returns: `{Promise<PublicFacet>}`
 
@@ -88,7 +88,7 @@ Returns a `publicFacet` containing the public facet defined for `instance`.
 ```js
 const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
-## E(zoe).getInvitationIssuer()
+## `E(zoe).getInvitationIssuer()`
 - Returns `{Issuer}`
 
 Zoe has a single `invitationIssuer` for its entire
@@ -119,7 +119,7 @@ const { value: invitationValue } =
     await E(invitationIssuer).getAmountOf(invitation);
 ```
 
-## E(zoe).getInvitationDetails(invitation)
+## `E(zoe).getInvitationDetails(invitation)`
 - `invitation` `{Invitation}`
 - Returns `{Promise<Object>}`
 
@@ -135,7 +135,7 @@ const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
 ```
 
-## E(zoe).install(bundle)
+## `E(zoe).install(bundle)`
 - `bundle` `{SourceBundle}`
 - Returns: `{Promise<Installation>}`
 
@@ -153,7 +153,7 @@ const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(zoe).install(bundle);
 ```
 
-## E(zoe).getInstance(invitation)
+## `E(zoe).getInstance(invitation)`
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Instance>}`
 
@@ -170,7 +170,7 @@ these methods:
 const instance = await E(zoe).getInstance(invitation);
 ```
 
-## E(zoe).getInstallation(invitation)
+## `E(zoe).getInstallation(invitation)`
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Installation>}`
 
@@ -183,7 +183,7 @@ An `installation` is an object with one property:
 const installation = await E(zoe).getInstallation(invitation);
 ```
 
-## E(zoe).startInstance(installation, issuerKeywordRecord, terms)
+## `E(zoe).startInstance(installation, issuerKeywordRecord, terms)`
 - `installation` `{ERef<Installation>}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - `terms` `{Object}`
@@ -253,7 +253,7 @@ const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
   installation, issuerKeywordRecord, terms);
 ```
-## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
+## `E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`
 - `invitation` `{Invitation|Promise<Invitation>}`
 - `proposal` `{Proposal}`
 - `paymentKeywordRecord` `{PaymentKeywordRecord}`
@@ -299,7 +299,7 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment
 };
 ```
-## UserSeat Object
+## `UserSeat` Object
 
 Zoe uses `seats` to access or manipulate offers. They let contracts and users interact
 with them. Zoe has two kinds of seats. `ZCFSeats`
