@@ -20,6 +20,10 @@ every object returned from a smart contract, such a `publicFacet` or
 `creatorFacet`, must be `Remotable`. All objects used in your contract's external API must
 be `Remotable`
 
+**Note**: ERTP objects, such as `Purses`, are automatically created as `Remotable`. You do 
+not need to do anything to make them remotable; i.e. you do not need to call `Far()` on an ERTP object.
+**tyg todo: Are UserSeat and ZCFSeat both also automatically created as `Remotable`?**
+
 ### Rules for Creating Remotables
 - All property values must be functions. 
   - They cannot be accessors.
@@ -43,7 +47,7 @@ up when logged through `console.log`.
 The `object-with-methods` parameter includes a record with definitions of all the object's 
 property functions. See the example code below.
 
-Use the `Far()` function to mark an object as `Remotable`.  `Far()` also:
+`Far()` function marks an object as `Remotable`.  `Far()` also:
 - Runs `harden()` on the object.
 - Checks for the property name and value requirements above. If they are not met, it throws an error.
 - Records the object's interface name. 
@@ -53,6 +57,17 @@ You should call `Far()` on an object if it both:
   - If it might ever appear as the `foo` in [`E(foo)`](./eventual-send.md),  
     you should run `Far()` on it after creating it.
 - Has methods called on it, as opposed to just effectively storing data.
+
+`Far()` automatically [hardens](./ses/ses-guide.md#harden) its object argument. 
+If you make a `Remotable` object with `Far()`, you don't need to also call `harden()` 
+on it. Since `Far()` is not used on objects used to send data, you must still use
+`harden()` on them.
+
+There's no harm in using `Far()` on an object, even if it never leaves its vat. An error
+is thrown if you call `Far()` on a record, instead of an object, which doesn't have function
+values. However, if object `foo` should never be exposed to other vats, you should make it
+a point **not** to use `Far()` on it. If `foo` is not marked as `Remotable` but is accidentally
+exposed, an error is thrown. This prevents any vulnerability from such accidental exposure.
 
 ```js
 import { Far } from '@agoric/marshal';
@@ -64,10 +79,7 @@ const countRemotable = Far('counter', {
 });
 ```
 
-`Far()` automatically [hardens](./ses/ses-guide.md#harden) its object argument. 
-If you make a `Remotable` object with `Far()`, you don't need to also call `harden()` 
-on it. Since `Far()` is not used on objects used to send data, you must still use
-`harden()` on them.
+
 
 
 
