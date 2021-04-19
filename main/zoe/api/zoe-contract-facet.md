@@ -10,7 +10,7 @@ The contract instance is launched by `E(zoe).startInstance()`, and is given acce
 the `zcf` object during that launch. In the operations below, `instance` is
 the handle for the running contract instance.
 
-## start
+## `start`
 
 This section covers the code you need to have at the start of your contract code.
 
@@ -47,7 +47,7 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## zcf.makeZCFMint(keyword, amountMathKind)
+## `zcf.makeZCFMint(keyword, amountMathKind)`
 - `keyword` `{String}`
 - `amountMathKind` `{AmountMathKind}` (defaults to `MathKind.NAT`)
 - Returns: `{Promise<ZCFMint>}`
@@ -121,7 +121,7 @@ const { brand, issuer } = mySynchronousMint.getIssuerRecord();
 mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
 
-## zcf.getInvitationIssuer()
+## `zcf.getInvitationIssuer()`
 - Returns: [`{Issuer}`](/ertp/api/issuer.md)
 
 Zoe has a single `invitationIssuer` for the entirety of its
@@ -136,7 +136,7 @@ mint `invitations` and validate their `amounts`."
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
-## zcf.saveIssuer(issuer, keyword)
+## `zcf.saveIssuer(issuer, keyword)`
 - `issuer` `{Issuer}`
 - `keyword` `{String}`
 - Returns: `{Promise<IssuerRecord>}`
@@ -156,7 +156,7 @@ associated with the `issuer` value of the record:
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
-## zcf.makeInvitation(offerHandler, description, customProperties)
+## `zcf.makeInvitation(offerHandler, description, customProperties)`
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
@@ -182,7 +182,7 @@ put in the `invitation`'s `value`.
 const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ```
 
-## zcf.makeEmptySeatKit()
+## `zcf.makeEmptySeatKit()`
 - Returns: `{ZCFSeat, Promise<UserSeat>}`
 
 Returns an empty `ZCFSeat` and a promise for a `UserSeat`
@@ -193,7 +193,7 @@ there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`.
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
-## ZCFSeat object
+## `ZCFSeat` object
 
 Zoe uses `seats` to access or manipulate offers. Seats represent active
 offers and let contracts and users interact with them. Zoe has two kinds
@@ -307,19 +307,19 @@ to manipulate the offer. The queries and operations are as follows:
      `proposal.want`. Both can be fully satisfied. See the ZoeHelper
      [`satisfies()`](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
 
-## zcf.getBrandForIssuer(issuer)
+## `zcf.getBrandForIssuer(issuer)`
 - `issuer` `{Issuer}`
 - Returns: `{Brand}`
 
 Returns the `brand` associated with the `issuer`.
 
-## zcf.getIssuerForBrand(brand)
+## `zcf.getIssuerForBrand(brand)`
 - `brand` `{Brand}`
 - Returns: `{Issuer}`
 
 Returns the `issuer` of the `brand` argument.
 
-## zcf.getMathKind(brand)
+## `zcf.getMathKind(brand)`
 - `brand` `{Brand}`
 - Returns: `{MathKind}`
 
@@ -328,11 +328,11 @@ Returns the `MathKind` associated with the `brand` argument.
 const quatloosMathKind = zcf.getMathKind(quatloosBrand);
 ```
 
-## zcf.stopAcceptingOffers()
+## `zcf.stopAcceptingOffers()`
 - The contract requests Zoe to not accept offers for this contract instance. 
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
-## zcf.shutdown(completion)
+## `zcf.shutdown(completion)`
      
 Shuts down the entire vat and contract instance and gives payouts.
 
@@ -351,7 +351,7 @@ message.
 ```js
 zcf.shutdown();
 ```
-## zcf.getTerms()
+## `zcf.getTerms()`
 - Returns: `{Object}`
 
 Returns the `issuers`, `brands`, and custom `terms` the current contract `instance` was instantiated with.
@@ -377,7 +377,7 @@ a user side, with access to Zoe Service, you use `E(zoe).getTerms()`.
 const { brands, issuers, maths, terms } = zcf.getTerms()
 ```
 
-## zcf.getZoeService()
+## `zcf.getZoeService()`
 - Returns: [ZoeService](./zoe.md)
 
 This is the only way to get the user-facing [Zoe Service API](/zoe/api/zoe.md#zoe) to
@@ -388,7 +388,7 @@ const zoeService = zcf.getZoeService();
 E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
 
-## zcf.assertUniqueKeyword(keyword)
+## `zcf.assertUniqueKeyword(keyword)`
 - `keyword` `{String}`
 - Returns: Undefined
 
@@ -398,7 +398,7 @@ a valid keyword, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
-## zcf.reallocate(seatStagings)
+## `zcf.reallocate(seatStagings)`
 - `seatStagings` `{SeatStaging[]}` (at least two)
 - Returns: `{void}`
 
