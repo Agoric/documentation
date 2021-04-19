@@ -15,7 +15,7 @@ validate an untrusted `payment` of that `brand`.
 **Note**: You should not create an Issuer in a deploy script. Deploy scripts 
 are ephemeral, so any object created there dies as soon as the script stops.
 
-## makeIssuerKit(allegedName, amountMathKind, displayInfo)
+## `makeIssuerKit(allegedName, amountMathKind, displayInfo)`
 - `allegedName` `{String}` 
 - `amountMathKind` `{MathKind}` - optional, defaults to `MathKind.NAT`
 - `displayInfo` `{DisplayInfo}` - optional, defaults to `undefined`
@@ -63,7 +63,7 @@ const adjacentProperty = amountMath.make(propertyTitleBrand, ['1028393']);
 const combinedProperty = amountMath.make(propertyTitleBrand, ['1292826', '1028393']);
 ```
 
-## issuer.getAllegedName()
+## `issuer.getAllegedName()`
 - Returns: `{allegedName}`
 
 Returns the `allegedName` for this `issuer`.
@@ -86,7 +86,7 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 // quatloosIssuerAllegedName === 'quatloos'
 ```
 
-## issuer.getAmountMathKind()
+## `issuer.getAmountMathKind()`
 - Returns: `{MathKind}`
 
 Get the kind of this `issuer`'s `amountMath`. It returns one of
@@ -107,7 +107,7 @@ quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as MathKind.NAT
 const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.SET);
 moolaIssuer.getAmountMathKind(); // Returns 'set', also known as 'MathKind.SET`
 ```
-## issuer.getAmountOf(payment)
+## `issuer.getAmountOf(payment)`
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
@@ -121,7 +121,7 @@ const quatloosPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
 
-## issuer.getBrand()
+## `issuer.getBrand()`
 - Returns: `{Brand}` 
 
 Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
@@ -135,7 +135,7 @@ const quatloosBrand = quatloosIssuer.getBrand();
 // brand === quatloosBrand
 ```
 
-## issuer.makeEmptyPurse()
+## `issuer.makeEmptyPurse()`
 - Returns: `{Purse}`
 
 Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
@@ -145,7 +145,7 @@ const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
-## issuer.burn(payment, optAmount)
+## `issuer.burn(payment, optAmount)`
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` - Optional
 - Returns: `{Amount}`
@@ -170,7 +170,7 @@ const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
-## issuer.claim(payment, optAmount)
+## `issuer.claim(payment, optAmount)`
 - `payment` `{Payment}` 
 - `optAmount` `{Amount}` 
 - Returns: `{Payment}` 
@@ -197,7 +197,7 @@ const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
-## issuer.combine(paymentsArray, optTotalAmount)
+## `issuer.combine(paymentsArray, optTotalAmount)`
 - `paymentsArray` `{Array <Payment>}`
 - `optTotalAmount` `{Amount}` - Optional.
 - Returns: `{Payment}`
@@ -236,7 +236,7 @@ payments.push(otherPayment); // using the payments array from the above code
 const badPayment = quatloosIssuer.combine(payments);
 ```
 
-## issuer.split(payment, paymentAmountA)
+## `issuer.split(payment, paymentAmountA)`
 - `payment` `{Payment}`
 - `paymentAmountA` `{Amount}`
 - Returns: `{Array <Payment>}`
@@ -258,7 +258,7 @@ const oldPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 20n))
 const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, amountMath.make(quatloosBrand, 5n));
 ```
 
-## issuer.splitMany(payment, amountArray)
+## `issuer.splitMany(payment, amountArray)`
 - `payment` `{Payment}`
 - `amountArray` `{Array <Amount>}`
 - Returns: `{Array <Payment>}`
@@ -288,7 +288,7 @@ const badAmounts = Array(2).fill(amountMath.make(quatloosBrand, 10n));
 quatloosIssuer.splitMany(payment, badAmounts);
 ```
 
-## issuer.isLive(payment)
+## `issuer.isLive(payment)`
 - `payment` `{Payment}`
 - Returns: `{Boolean}`
 
