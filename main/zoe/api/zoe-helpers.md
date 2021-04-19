@@ -16,7 +16,7 @@ Note that almost all ZoeHelpers require `zcf`, a `ContractFacet` as a first argu
 ZoeHelpers are contract helpers, in that they are useful to contract code. Contracts are started up by Zoe, 
 and `zcf` is passed in as a parameter to `start()`. 
 
-## assertIssuerKeywords(zcf, keywords)
+## `assertIssuerKeywords(zcf, keywords)`
 - `zcf` `{ContractFacet}` 
 - `keywords` `{Array <String>}`
 
@@ -35,7 +35,7 @@ import {
 assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
-## assertUsesNatMath(zcf, brand)
+## `assertUsesNatMath(zcf, brand)`
 - `zcf`- `{ContractFacet}`
 - `brand` - `{Brand}`
 
@@ -54,7 +54,7 @@ import {
  assertUsesNatMath(zcf, quatloosBrand);
  ```
 
-## satisfies(zcf, seat, update)
+## `satisfies(zcf, seat, update)`
 - `zcf`- `{ContractFacet}`
 - `seat` - `{ZCFSeat}`
 - `update` - `{AmountKeywordRecord}`
@@ -87,7 +87,7 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
     swap(zcf, seat, offer);
 ```
 
-## trade(zcf, left, right, leftHasExitedMsg, rightHasExitedMsg)
+## `trade(zcf, left, right, leftHasExitedMsg, rightHasExitedMsg)`
 - `zcf` - `{ContractFacet}`
 - `left` - `{SeatGainsLossesRecord}`
 - `right` - `{SeatGainsLossesRecord}`
@@ -158,7 +158,7 @@ trade(
     );
 ```
 
-## swap(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)
+## `swap(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)`
 - `zcf` `{ContractFacet}`
 - `leftSeat` `{ZCFSeat}`
 - `rightSeat` `{ZCFSeat}`
@@ -202,7 +202,7 @@ import {
 swap(zcf, firstSeat, secondSeat);
 ```
 
-## swapExact(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)
+## `swapExact(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)`
 - `zcf` `{ContractFacet}`
 - `leftSeat` `{ZCFSeat}`
 - `rightSeat` `{ZCFSeat}`
@@ -249,7 +249,7 @@ import {
 const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 ```
 
-## assertProposalShape(seat, expected)
+## `assertProposalShape(seat, expected)`
 - `seat` `{ZCFSeat}`
 - `expected` `{ExpectedRecord}`
 - Returns: `{void}`
@@ -284,7 +284,7 @@ const sell = seat => {
 };
 ```
  
-## depositToSeat(zcf, recipientSeat, amounts, payments)
+## `depositToSeat(zcf, recipientSeat, amounts, payments)`
 - `zcf` `{ContractFacet }`
 - `recipientSeat` `{ZCFSeat}`
 - `amounts` `{AmountKeywordRecord}`
@@ -305,7 +305,7 @@ import {
 await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment });
 ```
 
-## withdrawFromSeat(zcf, seat, amounts)
+## `withdrawFromSeat(zcf, seat, amounts)`
 - `zcf` `{ContractFacet }`
 - `seat` `{ZCFSeat}`
 - `amounts` `{AmountKeywordRecord}`
@@ -325,7 +325,7 @@ import {
 const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2n) });
 ```
 
-## saveAllIssuers(zcf, issuerKeywordRecord)
+## `saveAllIssuers(zcf, issuerKeywordRecord)`
 - `zcf` `{ContractFacet}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - Returns: `{Promise<PaymentPKeywordRecord>}`
@@ -343,7 +343,7 @@ import {
 await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 ```
 
-## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat)
+## `offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat)`
 - `zcf` `{ContractFacet}`
 - `invitation` `{ERef<Invitation>}`
 - `keywordMapping` `{KeywordKeywordRecord=}`
