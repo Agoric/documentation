@@ -63,13 +63,13 @@ In this case, you want to use the `brand` you got from the issuer (or from Zoe)
 as the optional parameter to compare the `amount` `brand`(s) to. If they are
 not equal, an error is thrown.
 
-## makeLocalAmountMath(issuer). DEPRECATED 20-03-2021
+## `makeLocalAmountMath(issuer)` DEPRECATED 20-03-2021
 
-## amountMath.getBrand() DEPRECATED 20-03-2021
+## `amountMath.getBrand()` DEPRECATED 20-03-2021
 
-## amountMath.getAmountMathKind() DEPRECATED 20-03-2021
+## `amountMath.getAmountMathKind()` DEPRECATED 20-03-2021
 
-## amountMath.make(brand, allegedValue)
+## `amountMath.make(brand, allegedValue)`
 - `brand` `{Brand}`
 - `allegedValue` `{Value}`
 - Returns: `{Amount}`
@@ -91,7 +91,7 @@ details about `BigInts`.
 const amount837 = amountMath.make(quatloosBrand, 837n);
 ```
 
-## amountMath.coerce(brand, allegedAmount)
+## `amountMath.coerce(brand, allegedAmount)`
 - `brand` `{Brand}`
 - `allegedAmount` `{Amount}`
 - Returns: `{Amount}`
@@ -106,7 +106,7 @@ const quatloos50 = amountMath.make(quatloosBrand, 50n);
 const verifiedAmount = amountMath.coerce(quatloosBrand, allegedAmount); 
 ```
 
-## amountMath.getValue(brand, amount)
+## `amountMath.getValue(brand, amount)`
 - `amount` `{Amount}`
 - Returns: `{Value}`
 
@@ -120,7 +120,7 @@ const quatloos123 = amountMath.make(quatloosBrand, 123n);
 const myValue = amountMath.getValue(quatloosBrand, quatloos123);
 ```
 
-## amountMath.makeEmpty(brand, amountMathKind)
+## `amountMath.makeEmpty(brand, amountMathKind)`
 - Returns: `{Amount}`
 
 Returns the `amount` representing an empty `amount` for the `brand` argument's 
@@ -135,7 +135,7 @@ on whether the `amountMathKind` is `MathKind.NAT` (`0`) of `MathKind.SET` (`[]`)
 const empty = amountMath.makeEmpty(quatloosBrand, mathKind.NAT);
 ```
 
-## amountMath.makeEmptyFromAmount(amount)
+## `amountMath.makeEmptyFromAmount(amount)`
 - `amount` `{Amount}`
 - Returns: `{Amount}`
 
@@ -149,7 +149,7 @@ const quatloosAmount837 = amountMath.make(quatloosBrand, 837n);
 const quatloosAmount0 = amountMath.makeEmptyFromAmount(quatloosAmount837);
 ```
 
-## amountMath.isEmpty(amount, brand?)
+## `amountMath.isEmpty(amount, brand?)`
 - `amount` `{Amount}`
 - `brand?` `{Brand}` (optional, defaults to `undefined`)
 - Returns: `{Boolean}`
@@ -170,7 +170,7 @@ const result = amountMath.isEmpty(empty);
 const result = amountMath.isEmpty(quatloos1);
 ```
 
-## amountMath.isGTE(leftAmount, rightAmount, brand?)
+## `amountMath.isGTE(leftAmount, rightAmount, brand?)`
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
 - `brand` `{Brand}` (optional, defaults to `undefined`)
@@ -205,7 +205,7 @@ amountMath.isGTE(quatloos5, quatloos10);
 amountMath.isGTE(quatloos5, quatloos5);
 ```
 
-## amountMath.isEqual(leftAmount, rightAmount, brand?)
+## `amountMath.isEqual(leftAmount, rightAmount, brand?)`
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
 - `brand` `{Brand}` (optional, defaults to `undefined`)
@@ -240,7 +240,7 @@ amountMath.isEqual(quatloos10, quatloos5);
 amountMath.isEqual(empty, quatloos10);
 ```
 
-## amountMath.add(leftAmount, rightAmount, brand?)
+## `amountMath.add(leftAmount, rightAmount, brand?)`
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
 - `brand` `{Brand}` (optional, defaults to `undefined`)
@@ -269,7 +269,7 @@ const listAmountB = amountMath.make(myItemsBrand, ['3']);
 const combinedList = amountMath.add(listAmountA, listAmountB);
 ```
 
-## amountMath.subtract(leftAmount, rightAmount, brand?)
+## `amountMath.subtract(leftAmount, rightAmount, brand?)`
 - `leftAmount` `{Amount}`
 - `rightAmount` `{Amount}`
 - `brand` `{Brand}` (optional, defaults to `undefined`)
