@@ -23,7 +23,7 @@ Unlike `payments`, `purses` are not meant to be sent to others.
 To transfer digital assets, you should withdraw a `payment` from a `purse` and
 send the `payment` to another party.
 
-## issuer.makeEmptyPurse()
+## `issuer.makeEmptyPurse()`
 - Returns: `{Purse}`
 
 While not a method called on a `purse`, clearly it's important to know how
@@ -36,7 +36,7 @@ quatloosPurse1 = quatloosIssuer.makeEmptyPurse();
 quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
 
-## purse.getCurrentAmount()
+## `purse.getCurrentAmount()`
 - Returns: `{Amount}`
 
 Get an `amount` describing the current digital assets balance in the `purse`.
@@ -53,7 +53,7 @@ const quatloosPurse.deposit(quatloos5);
 const currentBalance = quatloosPurse.getCurrentAmount();
 ```
 
-## purse.getCurrentAmountNotifier()
+## `purse.getCurrentAmountNotifier()`
 - Returns: `{Notifier<Amount>}`
 
 Returns a lossy notifier for changes to this purse's balance. For more details,
@@ -69,7 +69,7 @@ const checkNotifier = async () => {
 };
 ```
 
-## purse.deposit(payment, optAmount)
+## `purse.deposit(payment, optAmount)`
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` - Optional. 
 - Returns: `{Amount}`
@@ -105,7 +105,7 @@ const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 
 ```
 
-## purse.getDepositFacet()
+## `purse.getDepositFacet()`
 
 Returns a deposit-only facet on the `purse`. This is an object you can give to other parties
 that lets them deposit `payments` to your  `purse` without being able to withdraw assets from or check
@@ -130,7 +130,7 @@ Note the difference in method names for adding assets between a `purse` and its 
 To add assets to a `purse` directly, you use `purse.deposit()`. To add assets
 to a `purse` via its `depositFacet`, you use `depositFacet.receive()`.
 
-## depositFacet.receive(payment, optAmount?)
+## `depositFacet.receive(payment, optAmount?)`
 - `payment` `{Payment}`
 - `optAmount` `{Amount}` (optional)
 - Returns `{Amount}`
@@ -148,7 +148,7 @@ const depositOnlyFacet = purse.getDepositFacet();
 depositOnlyFacet.receive(payment);
 ```
 
-## purse.withdraw(amount)
+## `purse.withdraw(amount)`
 - `amount` `{Amount}`
 - Returns: `{Payment}`
 
@@ -177,7 +177,7 @@ issuer.getAmountOf(withdrawalPayment);
 purse.getCurrentAmount();
 ```
 
-## purse.getAllegedBrand()
+## `purse.getAllegedBrand()`
 - Returns: `{Brand}`
 
 Returns an alleged brand (Note: a `Brand`, not a `string` as `allegedName()` methods do), 
