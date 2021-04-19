@@ -5,6 +5,7 @@ on:
   push:	
     branches:	
       - main
+      - mfig-ssh-deploy # temporary, for testing
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -18,6 +19,26 @@ jobs:
       run: |
         yarn install
         yarn docs:build
+
+    - name: Configure SSH
+      run: |
+        mkdir -m0700 -p ~/.ssh/
+        echo "$SSH_KEY" > ~/.ssh/staging.key
+        chmod 600 ~/.ssh/staging.key
+        cat >>~/.ssh/config <<END
+        Host staging
+          HostName $SSH_HOST
+          User $SSH_USER
+          IdentityFile ~/.ssh/staging.key
+          StrictHostKeyChecking no
+        END
+      env:
+        SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+        SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+        SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+
+    - name: SSH check out and build
+      run: ssh staging 'cd documentation && git pull && yarn install && yarn docs:build'
 
     - name: Deploy to gh-pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
