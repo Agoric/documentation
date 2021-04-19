@@ -168,9 +168,7 @@ below.
   </tbody>
 </table>
 
-### Lockdown options
-
-#### `regExpTaming` Option
+### `regExpTaming` Option
 
 With its default `'safe'` value, regExpTaming prevents using `RegExp.*()` methods in the locked down code.
 
@@ -185,7 +183,7 @@ lockdown({ regExpTaming: 'safe' }); // Disables all RegExp.*() methods.
 lockdown({ regExpTaming: 'unsafe' }); // Disables all RegExp.*() methods except RegExp.prototype.compile()
 ```
 
-#### `localeTaming` Option
+### `localeTaming` Option
 
 The default `'safe'` setting replaces each method listed below with their
 corresponding non-locale-specific method. For example, `Object.prototype.toLocaleString()`
@@ -208,7 +206,7 @@ lockdown({ localeTaming: 'safe' }); // Alias toLocaleString to toString, etc
 lockdown({ localeTaming: 'unsafe' }); // Allow locale-specific behavior
 ```
 
-#### `consoleTaming` Options
+### `consoleTaming` Options
 
 The default `'safe'` option actually expands what you would expect from `console`'s logging 
 output. It will show information from the `assert` package and error objects.
@@ -231,7 +229,7 @@ lockdown({ consoleTaming: 'safe' }); // Wrap start console to show deep stacks
 lockdown({ consoleTaming: 'unsafe' }); // Leave original start console in place
 ```
 
-## `errorTaming` Options
+### `errorTaming` Options
 
 The `errorTaming` default `'safe'` setting makes the stack trace inaccessible
 from error instances alone. It does this on v8 engines (Chrome, Brave, Node). 
@@ -256,7 +254,7 @@ lockdown({ errorTaming: 'safe' }); // Deny unprivileged access to stacks, if pos
 lockdown({ errorTaming: 'unsafe' }); // Stacks also available by errorInstance.stack
 ```
 
-## `stackFiltering` Options
+### `stackFiltering` Options
 
 `stackFiltering` trades off stronger stack traceback filtering to
 minimize distractions vs completeness for tracking down bugs in
@@ -285,7 +283,7 @@ lockdown({ stackFiltering: 'concise' }); // Preserve important deep stack info
 lockdown({ stackFiltering: 'verbose' }); // Console shows full deep stacks
 ```
 
-## `overrideTaming` Options
+### `overrideTaming` Options
 
 The `overrideTaming` option trades off better code
 compatibility vs better tool compatibility.
