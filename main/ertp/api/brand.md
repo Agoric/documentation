@@ -16,7 +16,7 @@ All of these relationships are unchangeable; if, say, a `mint` is created that m
 can never create new assets of any other `brand`. And a `brand` cannot be associated with any 
 other `mint` or `issuer`.
 
-## brand.isMyIssuer(issuer)
+## `brand.isMyIssuer(issuer)`
 - `issuer` `{Issuer}`
 - Returns: `{Boolean}`
 
@@ -30,7 +30,7 @@ that B is its `brand`, then the `brand` is unreliable.
 const isIssuer = brand.isMyIssuer(issuer);
 ```
 
-## brand.getAllegedName()
+## `brand.getAllegedName()`
 - Returns: `{String}`
 
 Returns the alleged name of the `brand`. Should not be trusted as accurate.
@@ -49,7 +49,7 @@ helpful for debugging.
 const name = brand.getAllegedName();
 ```
 
-## brand.getDisplayInfo()
+## `brand.getDisplayInfo()`
 - Returns: `{DisplayInfo}`
 
 Returns the `DisplayInfo` associated with the `brand`. 
