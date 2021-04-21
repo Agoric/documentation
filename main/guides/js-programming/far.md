@@ -30,31 +30,32 @@ not need to do anything to make them remotable; i.e. you do not need to call `Fa
   - Note: If you wish to send data, send a pass-by-copy record instead, or add a function that returns a pass-by-copy record.
 - You must wrap the object with `Far()`.
 
-### Using `Remotables`
+### Using Remotables
 - Call a `Remotable`'s method by first wrapping the `Remotable` object with `E`, such as `E(issuer).getBrand();`
 - Handle the resulting promise. Calling `E()` always results in a `Promise`.
 
 ## Using `Far()`
 
-`Far(interface-name, object-with-methods)`
-- `interface-name` `{ String }`
+`Far(farName, object-with-methods)`
+- `farName` `{ String }`
 - `object-with-methods` ` { Object }` `[remotable={}]`
 -  Returns: A `Remotable` object.
 
-The `interface-name` parameter gives the `Remotable` an *interface name*, which only shows
+The `farName` parameter gives the `Remotable` an *interface name* for debugging purposes, which only shows
 up when logged through `console.log`. 
 
 The `object-with-methods` parameter includes a record with definitions of all the object's 
 property functions. See the example code below.
 
-`Far()` function marks an object as `Remotable`.  `Far()` also:
+`Far()` function marks an object as remotable.  `Far()` also:
 - Runs `harden()` on the object.
-- Checks for the property name and value requirements above. If they are not met, it throws an error.
+- Checks for the property 
+and value requirements above. If they are not met, it throws an error.
 - Records the object's interface name. 
 
 You should call `Far()` on an object if it both:
 - Will be sent out of its native vat.
-  - If it might ever appear as the `foo` in [`E(foo)`](./eventual-send.md),  
+  - If it might ever appear as the `foo` in [`E(foo).method(args)`](./eventual-send.md),  
     you should run `Far()` on it after creating it.
 - Has methods called on it, as opposed to just effectively storing data.
 
