@@ -1,7 +1,7 @@
 
 # `Far()` and Remotable Objects
 
-## Remotable objects
+## Remotable and passable objects
 
 In Agoric smart contracts and dapps, you can call methods on objects from other vats or machines. 
 For example, a purse for an ERTP issuer actually lives in the issuer's vat. But code in your off-chain
@@ -15,23 +15,31 @@ To call a method on an object from another vat or machine, you must
 use [`E()`](./eventual-send.html#remote-object-communication-with-e). For example, getting
 an `Issuer`'s `brand` would look like `E(issuer).getBrand()`.
 
-Objects intended to be used in other vats are called `Remotables`. In particular, note that
-every object returned from a smart contract, such a `publicFacet` or 
-`creatorFacet`, must be `Remotable`. All objects used in your contract's external API must
-be `Remotable`
+Objects intended to be used in other vats are called *remotables*. Remote messages sent to
+remotables must only contain *passable* arguments and return *passable* results. 
+Passables includes all things that can be passed as arguments in messages. 
 
-**Note**: ERTP objects, such as `Purses`, are automatically created as `Remotable`. You do 
-not need to do anything to make them remotable; i.e. you do not need to call `Far()` on an ERTP object.
-**tyg todo: Are UserSeat and ZCFSeat both also automatically created as `Remotable`?**
+There are three kinds of passables:
+   * Remotables, objects with methods that can be called remotely using `E()`.
+   * Pass-by-copy data, such as numbers or hardened records
+   * Promises for passables.
 
-### Rules for Creating Remotables
+In particular, note that every object returned from a smart contract, such a `publicFacet` or 
+`creatorFacet`, must be passable. All objects used in your contract's external API must
+be passable.
+
+### Rules for creating remotables
 - All property values must be functions. 
   - They cannot be accessors.
-  - Note: If you wish to send data, send a pass-by-copy record instead, or add a function that returns a pass-by-copy record.
+  - Note: If you wish to send data, send pass-by-copy data such as pass-by-copy records, 
+    pass-by-copy arrays, strings, numbers, etc. or some other passable.
 - You must wrap the object with `Far()`.
 
-### Using Remotables
-- Call a `Remotable`'s method by first wrapping the `Remotable` object with `E`, such as `E(issuer).getBrand();`
+**Note**: ERTP objects, such as `Purses`, are automatically created as `Remotable`, as are
+`UserSeats` and `ZCFSeats`. 
+
+### Using remotables
+- Call a remotable's method by first wrapping the remotable object with `E`, such as `E(issuer).getBrand();`
 - Handle the resulting promise. Calling `E()` always results in a `Promise`.
 
 ## Using `Far()`
@@ -48,9 +56,11 @@ The `object-with-methods` parameter includes a record with definitions of all th
 property functions. See the example code below.
 
 `Far()` function marks an object as remotable.  `Far()` also:
-- Runs `harden()` on the object.
-- Checks for the property 
-and value requirements above. If they are not met, it throws an error.
+- Hardens the object.
+  - Both `harden()` and `Far()` function harden the object. 
+  - Only hardened objects are passable.
+- Checks for the property and value requirements above. 
+  If they are not met, it throws an error.
 - Records the object's interface name. 
 
 You should call `Far()` on an object if it both:
@@ -59,10 +69,9 @@ You should call `Far()` on an object if it both:
     you should run `Far()` on it after creating it.
 - Has methods called on it, as opposed to just effectively storing data.
 
-`Far()` automatically [hardens](./ses/ses-guide.md#harden) its object argument. 
-If you make a `Remotable` object with `Far()`, you don't need to also call `harden()` 
-on it. Since `Far()` is not used on objects used to send data, you must still use
-`harden()` on them.
+As defined, only passables can be either passed as arguments or returned as results,
+and they must be hardened. If the passable is a remotable, it must be hardened with `Far()`.
+Otherwise, it must be hardened with [`harden()`](./ses/ses-guide.md#harden).
 
 There's no harm in using `Far()` on an object, even if it never leaves its vat. An error
 is thrown if you call `Far()` on a record, instead of an object, which doesn't have function
