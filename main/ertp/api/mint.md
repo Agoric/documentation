@@ -8,13 +8,13 @@ new assets of that `brand`.
 
 ## `makeIssuerKit(allegedName, amountMathKind, displayInfo)`
 - `allegedName` `{String}`
-- `amountMathKind` `{MathKind}`
+- `assetKind` `{AssetKind}`
 - `displayInfo` `{DisplayInfo}`
 - Returns: `{IssuerKit}`
 
 While not a method called on a `mint`, clearly it's important to know how to create a new `mint`. 
 `makeIssuerKit()` returns a new `issuer`, `mint`, and `brand`. 
-See [here](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo) for details.
+See [here](/ertp/api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo) for details.
 
 ## `mint.getIssuer()`
 - Returns: `{Issuer}`
