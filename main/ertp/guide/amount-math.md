@@ -1,4 +1,4 @@
-# Amount Math
+# AmountMath
 
 ![AmountMath methods](./assets/amount-math.svg) 
 
@@ -8,26 +8,26 @@ all require adding and subtracting digital assets.
 ERTP uses the `amountMath` library for all these operations. 
 
 The `amountMath` library functions work for both fungible and nonfungible tokens. 
-There are two `amountMathKinds`, each of which implements the same methods. Which kind is used 
+There are two `assetKinds`, each of which implements the same methods. Which kind is used 
 for a particular `brand` depends on what was specified when the `brand` and 
 its `issuer` were created. They are: 
 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are arrays with any number of strings, numbers, etc.
+- `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
+- `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are arrays with any number of strings, numbers, etc.
 
-`makeIssuerKit(allegedName, amountMathKind, displayInfo=)` creates a new `issuer`,
+`makeIssuerKit(allegedName, assetKind, displayInfo=)` creates a new `issuer`,
 `mint`, and `brand`. 
 
-The second, optional, `amountMathKind` argument specifies which kind
+The second, optional, `assetKind` argument specifies which kind
 of `amountMath` is used for the `brand` in a one-to-one
-association with the new `issuer`. It defaults to `MathKind.NAT`. 
+association with the new `issuer`. It defaults to `AssetKind.NAT`. 
 
 The third, optional, `displayInfo` argument tells the UI how to display 
 values associated with the created `brand`. It defaults to `undefined`.
 
 For example: 
 
-<<< @/snippets/ertp/guide/test-amount-math.js#allMathKinds
+<<< @/snippets/ertp/guide/test-amount-math.js#allAssetKinds
 
 Note that many `amountMath` methods have a `brand` argument, either required or
 optional. For the ones with an optional `brand` argument, you should use it if
@@ -84,23 +84,23 @@ API Reference](../api/).
       with the `value` and the `brand` associated with the `amountMath`. The `value`
       argument should be represented as a `BigInt` e.g. 10n rather than 10.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
-  - [amountMath.makeEmpty(brand, mathKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-amountmathkind)
+  - [amountMath.makeEmpty(brand, assetKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-assetkind)
     - Returns an `amount` representing an empty `amount`, which is the identity
       element for the `amountMath` `add()` and `subtract()`
       operations. Note that this value varies depending on the
-      `brand` and whether it is of kind `MathKind.NAT` or `MathKind.SET`.
+      `brand` and whether it is of kind `AssetKind.NAT` or `AssetKind.SET`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmpty
   - [amountMath.makeEmptyFromAmount(amount)](/ertp/api/amount-math.md#amountmath-makeemptyfromamount-amount)
     - Returns an `amount` representing an empty `amount`, using another `amount`
-      as the template for the new empty amount's `brand` and `mathKind`.
+      as the template for the new empty amount's `brand` and `assetKind`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#makeEmptyFromAmount
  
 ## Methods on other objects
 
-These methods return a `MathKind`: 
-- [issuer.getAmountMathKind()](../api/issuer.md#issuer-getamountmathkind)
-  - Returns the `MathKind` of the `issuer`'s `brand`. (`MathKind.NAT` or `MathKind.SET`).
-  - <<< @/snippets/ertp/guide/test-amount-math.js#getAmountMathKind2
-- [zcf.getMathKind(brand)](/zoe/api/zoe-contract-facet.md#zcf-getmathkind-brand)
-  - Returns the `MathKind` of the `brand` argument. 
-  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetMathKind
+These methods return a `AssetKind`: 
+- [issuer.getAssetKind()](../api/issuer.md#issuer-getassetkind)
+  - Returns the `AssetKind` of the `issuer`'s `brand`. (`AssetKind.NAT` or `AssetKind.SET`).
+  - <<< @/snippets/ertp/guide/test-amount-math.js#getAssetKind2
+- [zcf.getAssetKind(brand)](/zoe/api/zoe-contract-facet.md#zcf-getassetkind-brand)
+  - Returns the `AssetKind` of the `brand` argument. 
+  - <<< @/snippets/ertp/guide/test-amount-math.js#zcfGetAssetKind
