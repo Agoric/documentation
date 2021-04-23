@@ -39,10 +39,10 @@ five tickets isn't done by numeric addition. Instead, you have to combine two ar
 strings or objects/records.
 
 `AmountMath` has a single set of polymorphic
-methods of two different kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
-[non-fungible](#non-fungible) assets (values are an array or object). The two `AmountMathKinds` are
-- `MathKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
-- `MathKind.SET`: Used with non-fungible assets. Amount values are
+methods of two different asset kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
+[non-fungible](#non-fungible) assets (values are an array or object). The two `AssetKinds` are
+- `AssetKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
+- `AssetKind.SET`: Used with non-fungible assets. Amount values are
   arrays of strings, numbers, objects, or other comparable values.
   Values should never include promises (they aren't comparable), or
   payments, purses, and anything else that can't be shared freely. 
