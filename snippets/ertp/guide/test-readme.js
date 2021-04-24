@@ -1,7 +1,7 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import { E } from '@agoric/eventual-send';
-import { makeBoard } from '@agoric/cosmic-swingset/lib/ag-solo/vats/lib-board';
+import { makeBoard } from '@agoric/vats/src/lib-board';
 
 import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
 
