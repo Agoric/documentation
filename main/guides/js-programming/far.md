@@ -15,7 +15,7 @@ To call a method on an object from another vat or machine, you must
 use [`E()`](./eventual-send.html#remote-object-communication-with-e). For example, getting
 an `Issuer`'s `brand` would look like `E(issuer).getBrand()`.
 
-Objects intended to be used in other vats are called *remotables*. Remote messages sent to
+Objects intended to be used from other vats are called *remotables*. Remote messages sent to
 remotables must only contain *passable* arguments and return *passable* results. 
 Passables includes all things that can be passed as arguments in messages. 
 
@@ -31,8 +31,6 @@ be passable.
 ### Rules for creating remotables
 - All property values must be functions. 
   - They cannot be accessors.
-  - Note: If you wish to send data, send pass-by-copy data such as pass-by-copy records, 
-    pass-by-copy arrays, strings, numbers, etc. or some other passable.
 - You must wrap the object with `Far()`.
 
 **Note**: ERTP objects, such as `Purses`, are automatically created as `Remotable`, as are
@@ -50,12 +48,12 @@ be passable.
 -  Returns: A `Remotable` object.
 
 The `farName` parameter gives the `Remotable` an *interface name* for debugging purposes, which only shows
-up when logged through `console.log`. 
+up when logged through the `console`, for example with `console.log`. 
 
-The `object-with-methods` parameter includes a record with definitions of all the object's 
-property functions. See the example code below.
+The `object-with-methods` parameter should be an object whose properties are the functions serving 
+as the object's methods. See the example code below.
 
-`Far()` function marks an object as remotable.  `Far()` also:
+The `Far()` function marks an object as remotable.  `Far()` also:
 - Hardens the object.
   - Both `harden()` and `Far()` function harden the object. 
   - Only hardened objects are passable.
@@ -69,11 +67,11 @@ You should call `Far()` on an object if it both:
     you should run `Far()` on it after creating it.
 - Has methods called on it, as opposed to just effectively storing data.
 
-As defined, only passables can be either passed as arguments or returned as results,
+Only passables can be passed as arguments or returned as results,
 and they must be hardened. If the passable is a remotable, it must be hardened with `Far()`.
 Otherwise, it must be hardened with [`harden()`](./ses/ses-guide.md#harden).
 
-There's no harm in using `Far()` on an object, even if it never leaves its vat. An error
+An error
 is thrown if you call `Far()` on a record, instead of an object, which doesn't have function
 values. However, if object `foo` should never be exposed to other vats, you should make it
 a point **not** to use `Far()` on it. If `foo` is not marked as `Remotable` but is accidentally
