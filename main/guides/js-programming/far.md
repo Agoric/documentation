@@ -74,7 +74,7 @@ Otherwise, it must be hardened with [`harden()`](./ses/ses-guide.md#harden).
 An error
 is thrown if you call `Far()` on a record, instead of an object, which doesn't have function
 values. However, if object `foo` should never be exposed to other vats, you should make it
-a point **not** to use `Far()` on it. If `foo` is not marked as `Remotable` but is accidentally
+a point **not** to use `Far()` on it. If `foo` is not marked as a remotable but is accidentally
 exposed, an error is thrown. This prevents any vulnerability from such accidental exposure.
 
 ```js
