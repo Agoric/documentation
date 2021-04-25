@@ -9,7 +9,7 @@ pre-built contracts that can be imported and run on Zoe:
 ## Oracles
 
 ### [Oracle Contract](./oracle.md) 
-A low-level oracle contract for querying [Chainlink] (https://docs.chain.link/docs/request-and-receive-data#config)
+A low-level oracle contract for querying [Chainlink](https://docs.chain.link/docs/request-and-receive-data#config)
 or other oracles. 
 
 ### [PriceAuthority](/zoe/guide/price-authority.md)
