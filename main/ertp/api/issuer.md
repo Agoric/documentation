@@ -86,7 +86,7 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 // quatloosIssuerAllegedName === 'quatloos'
 ```
 
-## issuer.getAssetKind()
+## `issuer.getAssetKind()`
 - Returns: `{AssetKind}`
 
 Get the kind of this `issuer`'s asset. It returns one of

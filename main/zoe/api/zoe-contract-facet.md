@@ -47,9 +47,9 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## `zcf.makeZCFMint(keyword, amountMathKind)`
+## zcf.makeZCFMint(keyword, assetKind)
 - `keyword` `{String}`
-- `amountMathKind` `{AmountMathKind}` (defaults to `MathKind.NAT`)
+- `assetKind` `{assetKind}` (defaults to `AssetKind.NAT`)
 - Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
@@ -342,13 +342,13 @@ Returns the `brand` associated with the `issuer`.
 
 Returns the `issuer` of the `brand` argument.
 
-## `zcf.getMathKind(brand)`
+## `zcf.getAssetKind(brand)`
 - `brand` `{Brand}`
-- Returns: `{MathKind}`
+- Returns: `{AssetKind}`
 
-Returns the `MathKind` associated with the `brand` argument.
+Returns the `AssetKind` associated with the `brand` argument.
 ```js
-const quatloosMathKind = zcf.getMathKind(quatloosBrand);
+const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
 ```
 
 ## `zcf.stopAcceptingOffers()`

@@ -6,7 +6,7 @@ A `mint` has a one-to-one relationship with both an `issuer` and a `brand`.
 So it can only mint new assets of that `brand` and is the only `mint` that can mint
 new assets of that `brand`.
 
-## `makeIssuerKit(allegedName, amountMathKind, displayInfo)`
+## `makeIssuerKit(allegedName, assetKind, displayInfo)`
 - `allegedName` `{String}`
 - `assetKind` `{AssetKind}`
 - `displayInfo` `{DisplayInfo}`
