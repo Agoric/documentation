@@ -1,13 +1,13 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
-import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
+import { amountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 
 import { setupZCFTest } from '../../tools/setupZcfTest';
 
-test('ertp guide amountMath allMathKinds', async t => {
-  // #region allMathKinds
-  makeIssuerKit('Quatloos'); // Defaults to MathKind.NAT
-  makeIssuerKit('Quatloos', MathKind.SET);
-  // #endregion allMathKinds
+test('ertp guide amountMath allAssetKinds', async t => {
+  // #region allAssetKinds
+  makeIssuerKit('Quatloos'); // Defaults to AssetKind.NAT
+  makeIssuerKit('Quatloos', AssetKind.SET);
+  // #endregion allAssetKinds
   t.truthy(true);
 });
 
@@ -26,7 +26,7 @@ test('ertp guide amountMath methods makeEmpty', async t => {
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
   // Returns an empty amount for this issuer.
   // Since this is a fungible amount it returns 0
-  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const empty = amountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
   // #endregion makeEmpty
   t.deepEqual(empty, amountMath.make(quatloosBrand, 0n));
 });
@@ -36,7 +36,7 @@ test('ertp guide amountMath methods makeEmptyFromAmount', async t => {
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
   // Returns an empty amount for this issuer.
   // Since this is a fungible amount it returns 0
-  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const empty = amountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
   // quatloosAmount837 = { value: 837n, brand: quatloos }
   const quatloosAmount837 = amountMath.make(quatloosBrand, 837n);
   // Returns an amount = { value: 0n, brand: quatloos }
@@ -48,7 +48,7 @@ test('ertp guide amountMath methods makeEmptyFromAmount', async t => {
 test('ertp guide amountMath methods isEmpty', async t => {
   // #region isEmpty
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
-  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const empty = amountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
   const quatloos1 = amountMath.make(quatloosBrand, 1n);
   // returns true
   amountMath.isEmpty(empty);
@@ -62,7 +62,7 @@ test('ertp guide amountMath methods isEmpty', async t => {
 test('ertp guide amountMath methods isGTE', async t => {
   // #region isGTE
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
-  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const empty = amountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
   const quatloos1 = amountMath.make(quatloosBrand, 1n);
   // Returns true
   amountMath.isGTE(quatloos1, empty);
@@ -77,7 +77,7 @@ test('ertp guide amountMath methods isGTE', async t => {
 test('ertp guide amountMath methods isEqual', async t => {
   // #region isEqual
   const { brand: quatloosBrand } = makeIssuerKit('quatloos');
-  const empty = amountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+  const empty = amountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
   const quatloos1 = amountMath.make(quatloosBrand, 1n);
   const anotherQuatloos1 = amountMath.make(quatloosBrand, 1n);
 
@@ -150,21 +150,21 @@ test('ertp guide amountMath related', async t => {
 
   const quatloosIssuer = issuer;
 
-  // #region getAmountMathKind2
-  const myAmountMathKind = quatloosIssuer.getAmountMathKind();
-  // #endregion getAmountMathKind2
-  t.is(myAmountMathKind, 'nat');
+  // #region getAssetKind2
+  const myAssetKind = quatloosIssuer.getAssetKind();
+  // #endregion getAssetKind2
+  t.is(myAssetKind, 'nat');
 });
 
-test('ertp guide zcf.getMathKind related', async t => {
+test('ertp guide zcf.getAssetKind related', async t => {
   const { issuer, mint, brand } = makeIssuerKit('quatloos');
   const { zcf } = await setupZCFTest(harden({ Quatloos: issuer }));
   t.truthy(issuer);
   t.truthy(mint);
   t.truthy(brand);
   const quatloosBrand = brand;
-  // #region zcfGetMathKind
-  const quatloosMathKind = zcf.getMathKind(quatloosBrand);
-  // #endregion zcfGetMathKind
-  t.is(quatloosMathKind, 'nat');
+  // #region zcfGetKind
+  const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
+  // #endregion zcfGetAssetKind
+  t.is(quatloosAssetKind, 'nat');
 });
