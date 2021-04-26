@@ -3,7 +3,7 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 import { E } from '@agoric/eventual-send';
 import { makeBoard } from '@agoric/cosmic-swingset/lib/ag-solo/vats/lib-board';
 
-import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
+import { amountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 
 test('ertp guide readme', async t => {
   // #region makeIssuerKit
@@ -75,7 +75,7 @@ test('ertp guide readme', async t => {
   const {
     mint: agoricTheatreTicketMint,
     brand: agoricTheatreTicketBrand,
-  } = makeIssuerKit('Agoric Theater tickets', MathKind.SET);
+  } = makeIssuerKit('Agoric Theater tickets', AssetKind.SET);
   // #endregion makeTicketIssuer
 
   // #region ticketPayments
