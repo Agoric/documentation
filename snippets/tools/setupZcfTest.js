@@ -2,7 +2,7 @@ import { E } from '@agoric/eventual-send';
 import bundleSource from '@agoric/bundle-source';
 
 import { makeZoe } from '@agoric/zoe';
-import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
+import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
 
 const contractRoot = `${__dirname}/zcfTesterContract`;
 
