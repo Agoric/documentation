@@ -4,6 +4,16 @@ This document describes and illustrates:
 - Agoric's components and structure
 - Agoric's infrastructure processes
 
+## Questions I want to ask to start
+
+1. Walk through each step in Starting A Project; what things (vats, ag-solos, processes, etc.) are created at each step and what are they connected to?
+2. In a typical contract, what vats are created and what is in each one?
+3. In a typical contract, what ag-solos are created and what runs in each one?
+4. In a typical contract, what chain/chains are there, and what is connected to it/them?
+5. In a typical contract, what processes are running?
+6. Once I have the above, or in the process of getting them, what and how are these things connected to/in communication with?
+
+
 ## Agoric system diagram (via Kate)
 
 ![Dapp process](./assets/Agoric%20System%20Diagram.svg)
