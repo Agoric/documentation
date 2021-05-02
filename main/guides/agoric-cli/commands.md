@@ -98,7 +98,7 @@ They are:
     port 99.
     - `agoric deploy --hostport 128.7.3.139:99 ./contract/deploy.js`
     
-##`agoric open`
+## `agoric open`
 - **Function**:
   - Launch the Agoric UI. By default, it shows only the UI and not the REPL. To show either
     both the UI and REPL, or only the REPL, see the `--repl` optional argument below.
