@@ -15,7 +15,7 @@ All such operations immediately return a promise for their result. That may even
 For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send.md).
 :::
 
-## E(zoe).getBrands(instance)
+## `E(zoe).getBrands(instance)`
 - `instance` `{Instance}`
 - Returns: `{Promise<BrandKeywordRecord>}`
 
@@ -34,7 +34,7 @@ const brandKeywordRecord = {
   Price: moolaBrand,
 };
 ```
-## E(zoe).getIssuers(instance)
+## `E(zoe).getIssuers(instance)`
 - `instance` `{Instance}`
 - Returns: `{Promise<IssuerKeywordRecord>}`
 
@@ -54,7 +54,7 @@ const issuerKeywordRecord = {
   Price: moolaIssuer,
 };
 ```
-## E(zoe).getTerms(instance)
+## `E(zoe).getTerms(instance)`
 - `instance` `{Instance}`
 - Returns: `{Object}`
 
@@ -75,7 +75,7 @@ custom terms. The returned values look like:
 const terms = await E(zoe).getTerms(instance);
 ```
 
-## E(zoe).getPublicFacet(instance)
+## `E(zoe).getPublicFacet(instance)`
 - `instance` `{Instance}`
 - Returns: `{Promise<PublicFacet>}`
 
@@ -88,7 +88,7 @@ Returns a `publicFacet` containing the public facet defined for `instance`.
 ```js
 const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
-## E(zoe).getInvitationIssuer()
+## `E(zoe).getInvitationIssuer()`
 - Returns `{Issuer}`
 
 Zoe has a single `invitationIssuer` for its entire
@@ -119,7 +119,7 @@ const { value: invitationValue } =
     await E(invitationIssuer).getAmountOf(invitation);
 ```
 
-## E(zoe).getInvitationDetails(invitation)
+## `E(zoe).getInvitationDetails(invitation)`
 - `invitation` `{Invitation}`
 - Returns `{Promise<Object>}`
 
@@ -135,7 +135,7 @@ const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(zoe).getInvitationDetails(invitation);
 ```
 
-## E(zoe).install(bundle)
+## `E(zoe).install(bundle)`
 - `bundle` `{SourceBundle}`
 - Returns: `{Promise<Installation>}`
 
@@ -153,7 +153,7 @@ const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(zoe).install(bundle);
 ```
 
-## E(zoe).getInstance(invitation)
+## `E(zoe).getInstance(invitation)`
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Instance>}`
 
@@ -170,7 +170,7 @@ these methods:
 const instance = await E(zoe).getInstance(invitation);
 ```
 
-## E(zoe).getInstallation(invitation)
+## `E(zoe).getInstallation(invitation)`
 - `invitation` `{Invitation}`
 - Returns: `{Promise<Installation>}`
 
@@ -183,7 +183,7 @@ An `installation` is an object with one property:
 const installation = await E(zoe).getInstallation(invitation);
 ```
 
-## E(zoe).startInstance(installation, issuerKeywordRecord, terms)
+## `E(zoe).startInstance(installation, issuerKeywordRecord, terms)`
 - `installation` `{ERef<Installation>}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}`
 - `terms` `{Object}`
@@ -253,7 +253,7 @@ const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
   installation, issuerKeywordRecord, terms);
 ```
-## E(Zoe).offer(invitation, proposal, paymentKeywordRecord)
+## `E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`
 - `invitation` `{Invitation|Promise<Invitation>}`
 - `proposal` `{Proposal}`
 - `paymentKeywordRecord` `{PaymentKeywordRecord}`
@@ -263,7 +263,8 @@ Used to make an offer to the contract that created the `invitation` that is
 provided as the first argument.
 
 The invocation normally includes a `proposal` (the
-rules under which they want to exercise the offer) and `payments` that correspond to the `give` property of the `proposal`. The payments will be escrowed by Zoe. If
+rules under which they want to exercise the offer) and `payments` that correspond 
+to the `give` property of the `proposal`. The payments will be escrowed by Zoe. If
 either the `proposal `or `payments` are empty, indicate this by
 omitting that argument or passing `undefined`, instead of passing an
 empty record.
@@ -299,7 +300,7 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment
 };
 ```
-## UserSeat Object
+## `UserSeat` Object
 
 Zoe uses `seats` to access or manipulate offers. They let contracts and users interact
 with them. Zoe has two kinds of seats. `ZCFSeats`
@@ -319,7 +320,7 @@ you should only share a `UserSeat` with trusted parties.
 `UserSeat` includes queries for the associated offer's current state
 and an operation to request that the offer exit, as follows:
 
-- `getCurrentAllocation()`
+### `E(UserSeat).getCurrentAllocation()`
   - Returns: `{ Promise<Allocation> }`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
@@ -340,7 +341,7 @@ and an operation to request that the offer exit, as follows:
         Price: amountMath.make(moolaBrand, 9n)
       }
       ```
-- `getProposal()`
+### `E(UserSeat).getProposal()`
   - Returns: `{ Promise<ProposalRecord> }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
     accompanying the escrow of `payments` dictating what the user expects
@@ -356,17 +357,17 @@ and an operation to request that the offer exit, as follows:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
     ```
-- `getPayouts()`
+### `E(UserSeat).getPayouts()`
   - Returns: `{ Promise<PaymentPKeywordRecord> }`
   - A `payout` is a `payment` that goes to a party in a successful transaction, redirecting
     escrowed assets in accordance with the result of the transaction. Returns a record
     containing all the `payout` `payments` associated with the `seat`'s offers.
-- `getPayout(keyword)`
+### `E(UserSeat).getPayout(keyword)`
   - Returns: `{ Promise<Payment> }`
   - A `payout` is a `payment` that goes to a party in a successful transaction, redirecting
     escrowed assets in accordance with the result of the transaction. Returns the `payout`
     `payment` associated with the `keyword` argument.
-- `getOfferResult()`
+### `E(UserSeat).getOfferResult()`
   - Returns: `{ Promise<OfferResult> }`
   - The returned `OfferResult` can be literally anything. For example, in tests
     for the Automated Refund Dapp, it's the string "The offer was accepted". In
@@ -374,16 +375,16 @@ and an operation to request that the offer exit, as follows:
     to buy the underlying asset. Strings and invitations are the most common things returned.
     The value is set by the returned result of  the `offerHandlers` function passed
     as an argument to `zcf.makeInvitation()`.
-- `getNotifier()`
+### `E(UserSeat).getNotifier()`
   - Returns: `{ Promise<Notifier> }`
   - You use a `notifier` wherever some piece of code has changing state that other
     code wants updates on. The updates can be anything the contract wants to publish.
     For example, you could notify about price changes, new currency pools, etc. For
     more about `notifiers`, see our [JavaScript Programming Guide](/guides/js-programming/notifiers.md)
-- `hasExited()`
+### `E(UserSeat).hasExited()`
   - Returns: `{ Promise<Boolean> }`
   - Returns `true` if the seat has exited, `false` if it is still active.
-- `tryExit()`
+### `E(UserSeat).tryExit()`
   - Returns `{ Void }`
   - Note: Only works if the `seat`'s `proposal` has an `OnDemand` `exit` clause.
     Zoe's offer-safety guarantee applies no matter how a `seat`'s interaction with

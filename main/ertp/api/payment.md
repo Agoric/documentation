@@ -24,7 +24,7 @@ To convert a `payment` into a new `purse`:
 
 `purse.deposit(payment)` burns the `payment`.
 
-## payment.getAllegedBrand()
+## `payment.getAllegedBrand()`
 - Returns: `{Brand}`
 
 Get the allegedBrand, indicating the kind of digital asset this `payment` purports to be, and which `issuer` to use 

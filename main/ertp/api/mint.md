@@ -6,7 +6,7 @@ A `mint` has a one-to-one relationship with both an `issuer` and a `brand`.
 So it can only mint new assets of that `brand` and is the only `mint` that can mint
 new assets of that `brand`.
 
-## makeIssuerKit(allegedName, amountMathKind, displayInfo)
+## `makeIssuerKit(allegedName, amountMathKind, displayInfo)`
 - `allegedName` `{String}`
 - `amountMathKind` `{MathKind}`
 - `displayInfo` `{DisplayInfo}`
@@ -16,7 +16,7 @@ While not a method called on a `mint`, clearly it's important to know how to cre
 `makeIssuerKit()` returns a new `issuer`, `mint`, and `brand`. 
 See [here](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo) for details.
 
-## mint.getIssuer()
+## `mint.getIssuer()`
 - Returns: `{Issuer}`
 
 Get the `Issuer` associated with this `mint`. From their creation, a `mint` is always
@@ -30,7 +30,7 @@ const quatloosMintIssuer = quatloosMint.getIssuer();
 issuer === quatloosMintIssuer;
 ```
 
-## mint.mintPayment(newAmount)
+## `mint.mintPayment(newAmount)`
 - `newAmount` `{Amount}`
 - Returns: `{Payment}`
 

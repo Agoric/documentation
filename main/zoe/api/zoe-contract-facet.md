@@ -10,7 +10,7 @@ The contract instance is launched by `E(zoe).startInstance()`, and is given acce
 the `zcf` object during that launch. In the operations below, `instance` is
 the handle for the running contract instance.
 
-## start
+## `start`
 
 This section covers the code you need to have at the start of your contract code.
 
@@ -47,7 +47,7 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## zcf.makeZCFMint(keyword, amountMathKind)
+## `zcf.makeZCFMint(keyword, amountMathKind)`
 - `keyword` `{String}`
 - `amountMathKind` `{AmountMathKind}` (defaults to `MathKind.NAT`)
 - Returns: `{Promise<ZCFMint>}`
@@ -61,30 +61,6 @@ ERTP methods on a `ZCFMint` or vice versa.
 **Important**: On the other hand, the `issuer` and `brand` associated with a `zcfMint`
 do have the same methods as their ERTP-derived counterparts. Assets created by a `zcfMint` are treated
 the same as ERTP `mint`-created assets by ERTP methods.
-
-`ZCFMints` have three methods:
-- `getIssuerRecord()`
-  - Returns: `{IssuerRecord}`
-  - Returns an `issuerRecord` containing the `issuer` and `brand` associated with the `zcfMint`.
-- `mintGains`
-  - `gains`: `AmountKeywordRecord`
-  - `zcfSeat`: `{ZCFSeat}` - optional
-  - Returns: `{ZCFSeat}`
-  - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
-    The `gains`' keywords are in that `seat`'s namespace.
-    Mint the `gains` `amount` of assets and add them to
-    that `seat`'s `allocation`. If a `seat` is provided,
-    it is returned. Otherwise a new `seat` is returned.
-  - `zcfMint.mintGains({ Token: amount }, seat);`
-- `burnLosses`
-  - `losses`: `AmountKeywordRecord`
-  - `zcfSeat` : `{ZCFSeat}`
-  - Returns: void
-  - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
-    The `losses`' keywords are in that `seat`'s namespace.
-    Subtract `losses` from that `seat`'s `allocation`, then
-    burn that `amount` of assets from the pooled `purse`.
-  - `zcfMint.burnLosses({ Token: amount }, seat);`
 
 `AmountKeywordRecord` is a record in which the keys are keywords, and
 the values are `amounts`. Keywords are unique identifiers per contract,
@@ -120,8 +96,35 @@ const mySynchronousMint = await zcf.makeZCFMint('MySyncMint', 'set');
 const { brand, issuer } = mySynchronousMint.getIssuerRecord();
 mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
+`ZCFSeats` have three methods:
+- `getIssuerRecord()`
+- `mintGains(gains, zcfSeat)`
+- `burnLosses(losses, zcfSeat)
 
-## zcf.getInvitationIssuer()
+### `ZCFMint.getIssuerRecord()`
+  - Returns: `{IssuerRecord}`
+  - Returns an `issuerRecord` containing the `issuer` and `brand` associated with the `zcfMint`.
+### `ZCFMint.mintGains(gains, zcfSeat)`
+  - `gains`: `AmountKeywordRecord`
+  - `zcfSeat`: `{ZCFSeat}` - optional
+  - Returns: `{ZCFSeat}`
+  - All `amounts` in `gains` must be of this `ZCFMint`'s `brand`.
+    The `gains`' keywords are in that `seat`'s namespace.
+    Mint the `gains` `amount` of assets and add them to
+    that `seat`'s `allocation`. If a `seat` is provided,
+    it is returned. Otherwise a new `seat` is returned.
+  - `zcfMint.mintGains({ Token: amount }, seat);`
+### `ZCFMint.burnLosses(losses, zcfSeat)`
+  - `losses`: `AmountKeywordRecord`
+  - `zcfSeat` : `{ZCFSeat}`
+  - Returns: void
+  - All `amounts` in `losses` must be of this `ZCFMint`'s `brand`.
+    The `losses`' keywords are in that `seat`'s namespace.
+    Subtract `losses` from that `seat`'s `allocation`, then
+    burn that `amount` of assets from the pooled `purse`.
+  - `zcfMint.burnLosses({ Token: amount }, seat);`getIssuerRecord()`
+
+## `zcf.getInvitationIssuer()`
 - Returns: [`{Issuer}`](/ertp/api/issuer.md)
 
 Zoe has a single `invitationIssuer` for the entirety of its
@@ -136,7 +139,7 @@ mint `invitations` and validate their `amounts`."
 const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
-## zcf.saveIssuer(issuer, keyword)
+## `zcf.saveIssuer(issuer, keyword)`
 - `issuer` `{Issuer}`
 - `keyword` `{String}`
 - Returns: `{Promise<IssuerRecord>}`
@@ -156,7 +159,7 @@ associated with the `issuer` value of the record:
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
-## zcf.makeInvitation(offerHandler, description, customProperties)
+## `zcf.makeInvitation(offerHandler, description, customProperties)`
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
@@ -182,7 +185,7 @@ put in the `invitation`'s `value`.
 const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ```
 
-## zcf.makeEmptySeatKit()
+## `zcf.makeEmptySeatKit()`
 - Returns: `{ZCFSeat, Promise<UserSeat>}`
 
 Returns an empty `ZCFSeat` and a promise for a `UserSeat`
@@ -193,7 +196,7 @@ there may be multiple such APIs per object) a `ZCFSeat` and a `UserSeat`.
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
-## ZCFSeat object
+## `ZCFSeat` object
 
 Zoe uses `seats` to access or manipulate offers. Seats represent active
 offers and let contracts and users interact with them. Zoe has two kinds
@@ -205,16 +208,16 @@ associated offer, such as the amounts of assets that are currently
 allocated to the offer. It also includes synchronous operations
 to manipulate the offer. The queries and operations are as follows:
 
-- `hasExited()`
+### `ZCFSeat.hasExited()`
   - Returns: `{ Boolean }`
   - Returns `true` if the `seat` has exited, `false` if it is still active.
-- `getNotifier()`
+### `ZCFSeat.getNotifier()`
   - Returns: `{ Notifier<Allocation> }`
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
     when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/guides/js-programming/notifiers.md).
-- `getProposal()`
+### `ZCFSeat.getProposal()`
   - Returns: `{ ProposalRecord }`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
     accompanying the escrow of `payments` dictating what the user expects
@@ -227,7 +230,7 @@ to manipulate the offer. The queries and operations are as follows:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();
     ```
-- `getAmountAllocated(keyword, brand)`
+### `ZCFSeat.getAmountAllocated(keyword, brand)`
   - Returns: `{ Amount }`
   - Returns the `amount` from the part of the `allocation` that matches the
     `keyword` and `brand`. If the `keyword` is not in the `allocation`, it
@@ -238,7 +241,7 @@ to manipulate the offer. The queries and operations are as follows:
     This is similar to the next method, `getCurrentAllocation()`. `getAmountAllocated()`
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
     all the current `allocations` at once.
-- `getCurrentAllocation()`
+### `ZCFSeat.getCurrentAllocation()`
   - Returns: `{ <Allocation> }`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
@@ -263,27 +266,27 @@ to manipulate the offer. The queries and operations are as follows:
         Price: amountMath.make(quatloosBrand, 9n)
       }
       ```
- - `exit(completion)`
+### `ZCFSeat.exit(completion)`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
      are made, and the `seat` object can no longer interact with the contract.
      The `completion` argument is usually a string, but this is not required. Its
      only use is for the notification sent to the contract instance's `done()` function. 
      Any other still open seats or outstanding promises and the contract instance continue.
- - `fail(msg)`
+### `ZCFSeat.fail(msg)`
    - Returns: `void`
    - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is successful while
      `fail()` signals an error occured while processing the offer. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
      Any other still open seats or outstanding promises and the contract instance continue.
- - `kickOut(msg)` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
+### `ZCFSeat.kickOut(msg)` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
    - Returns: `void`
    - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
      `kickOut()` aborts the transaction attempt and signals an error. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
- - `stage(newAllocation)`
+### `ZCFSeat.stage(newAllocation)`
    - Returns: `{ SeatStaging }`
    - A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
      at least two `seatStagings` as arguments and does its reallocation based on them.
@@ -295,9 +298,10 @@ to manipulate the offer. The queries and operations are as follows:
      same `amounts`. All keywords mentioned in the `newAllocation` have their `amounts`
      replaced with the corresponding `amount` from `newAllocation`.
 
-     Note that ZoeHelpers [`trade()`](./zoe-helpers.md#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might
+     Note that ZoeHelpers [`trade()`](./zoe-helpers.md#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) 
+     and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might
      be easier to use for simple cases.
- - `isOfferSafe(newAllocation)`
+### `ZCFSeat.isOfferSafe(newAllocation)`
    - Returns `{ Boolean }`
    - Takes an `allocation` as an argument and returns `true` if that `allocation`
      satisfies offer safety, `false` if is doesn't. Essentially, it checks
@@ -307,19 +311,19 @@ to manipulate the offer. The queries and operations are as follows:
      `proposal.want`. Both can be fully satisfied. See the ZoeHelper
      [`satisfies()`](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
 
-## zcf.getBrandForIssuer(issuer)
+## `zcf.getBrandForIssuer(issuer)`
 - `issuer` `{Issuer}`
 - Returns: `{Brand}`
 
 Returns the `brand` associated with the `issuer`.
 
-## zcf.getIssuerForBrand(brand)
+## `zcf.getIssuerForBrand(brand)`
 - `brand` `{Brand}`
 - Returns: `{Issuer}`
 
 Returns the `issuer` of the `brand` argument.
 
-## zcf.getMathKind(brand)
+## `zcf.getMathKind(brand)`
 - `brand` `{Brand}`
 - Returns: `{MathKind}`
 
@@ -328,11 +332,11 @@ Returns the `MathKind` associated with the `brand` argument.
 const quatloosMathKind = zcf.getMathKind(quatloosBrand);
 ```
 
-## zcf.stopAcceptingOffers()
+## `zcf.stopAcceptingOffers()`
 - The contract requests Zoe to not accept offers for this contract instance. 
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
-## zcf.shutdown(completion)
+## `zcf.shutdown(completion)`
      
 Shuts down the entire vat and contract instance and gives payouts.
 
@@ -351,7 +355,7 @@ message.
 ```js
 zcf.shutdown();
 ```
-## zcf.getTerms()
+## `zcf.getTerms()`
 - Returns: `{Object}`
 
 Returns the `issuers`, `brands`, and custom `terms` the current contract `instance` was instantiated with.
@@ -377,7 +381,7 @@ a user side, with access to Zoe Service, you use `E(zoe).getTerms()`.
 const { brands, issuers, maths, terms } = zcf.getTerms()
 ```
 
-## zcf.getZoeService()
+## `zcf.getZoeService()`
 - Returns: [ZoeService](./zoe.md)
 
 This is the only way to get the user-facing [Zoe Service API](/zoe/api/zoe.md#zoe) to
@@ -388,7 +392,7 @@ const zoeService = zcf.getZoeService();
 E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
 
-## zcf.assertUniqueKeyword(keyword)
+## `zcf.assertUniqueKeyword(keyword)`
 - `keyword` `{String}`
 - Returns: Undefined
 
@@ -398,7 +402,7 @@ a valid keyword, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
-## zcf.reallocate(seatStagings)
+## `zcf.reallocate(seatStagings)`
 - `seatStagings` `{SeatStaging[]}` (at least two)
 - Returns: `{void}`
 
