@@ -118,10 +118,11 @@ module.exports = {
           collapsible: false,
           children: [
 	    '/guides/js-programming/agoric-js-overview',
+	    '/guides/js-programming/ses/',
 	    '/guides/js-programming/bigint',
-	    '/guides/js-programming/eventual-send',	
-	    '/guides/js-programming/ses/',	
-	    '/guides/js-programming/vats',	
+	    '/guides/js-programming/vats',
+	    '/guides/js-programming/far',
+	    '/guides/js-programming/eventual-send',			
 	    '/guides/js-programming/notifiers',	
           ]
         },

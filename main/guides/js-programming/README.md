@@ -1,6 +1,11 @@
 # Agoric JavaScript Programming
 
-Agoric's platform lets you write secure smart contracts in JavaScript. The platform itself is mainly written in JavaScript. However, we've made several Agoric-specific additions and deletions to general JavaScript programming that you should know about and understand before programming on the platform. Some are *concepts*, others are *Agoric library additions*, and some are at the *syntax level*. All changes at the language level are in process to become official standards.
+Agoric's platform lets you write secure smart contracts in JavaScript. The platform 
+itself is mainly written in JavaScript. However, we've made several Agoric-specific 
+additions and deletions to general JavaScript programming that you should know about 
+and understand before programming on the platform. Some are *concepts*, others 
+are *Agoric library additions*, and some are at the *syntax level*. All changes at the 
+language level are in process to become official standards.
 
 Click on the top heading of each section for complete documentation of the topic.
 
@@ -10,6 +15,13 @@ Click on the top heading of each section for complete documentation of the topic
     all the things Agoric has added at the general JavaScript programming level. In particular, you
     should know about SES (*Secure ECMAScript*) and its `lockdown()` and `harden()` methods.
 
+- **[Secure EcmaScript (SES)](./ses/)**
+  - SES provides a secure platform for
+    executing programs. With SES, you can run code you don't completely trust,
+    without being vulnerable to bugs or bad intentions. It's a
+    standards-track extension to the JavaScript standard. Notable additions
+    include the `lockdown()` and `harden()` methods to freeze objects. 
+    
 - **[`BigInt`](./bigint.md)** 
   - JavaScript's `Number` primitive only represents
     numbers up to 2<sup>53</sup> - 1. `BigInt` is a newer built-in JavaScript 
@@ -20,13 +32,11 @@ Click on the top heading of each section for complete documentation of the topic
   - Objects and functions in the same JavaScript vat can
     communicate synchronously. Communication with objects outside the
     vat can only be done asynchronously. 
-
-- **[Secure EcmaScript (SES)](./ses/)**
-  - SES provides a secure platform for
-    executing programs. With SES, you can run code you don't completely trust,
-    without being vulnerable to bugs or bad intentions. It's a
-    standards-track extension to the JavaScript standard. Notable additions
-    include the `lockdown()` and `harden()` methods to freeze objects. 
+    
+- **[`Far()` and remotable objects](./far.md)**
+  - In Agoric smart contracts and dapps, you can call methods on objects from other
+    vats or machines. Objects intended to be used from other vats are called *remotables*. 
+    To mark an object as remotable, use the `Far()` function.
 
 - **[Remote object communication using `E`](./eventual-send.md)**
   - `E` is a local "bridge" function that lets

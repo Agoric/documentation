@@ -1,7 +1,11 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import { E } from '@agoric/eventual-send';
-import { makeBoard } from '@agoric/cosmic-swingset/lib/ag-solo/vats/lib-board';
+
+// We need to disable this lint until @agoric/vats is released
+// and adopted in package.json.
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { makeBoard } from '@agoric/vats/src/lib-board';
 
 import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
 
