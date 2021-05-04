@@ -209,16 +209,16 @@ allocated to the offer. It also includes synchronous operations
 to manipulate the offer. The queries and operations are as follows:
 
 ### `ZCFSeat.hasExited()`
-  - Returns: `{ Boolean }`
+  - Returns: `{Boolean}`
   - Returns `true` if the `seat` has exited, `false` if it is still active.
 ### `ZCFSeat.getNotifier()`
-  - Returns: `{ Notifier<Allocation> }`
+  - Returns: `{Notifier<Allocation>}`
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
     when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/guides/js-programming/notifiers.md).
 ### `ZCFSeat.getProposal()`
-  - Returns: `{ ProposalRecord }`
+  - Returns: `{ProposalRecord}`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
     accompanying the escrow of `payments` dictating what the user expects
     to get back from Zoe. It has keys `give`, `want`, and
@@ -231,7 +231,9 @@ to manipulate the offer. The queries and operations are as follows:
     const { want, give, exit } = sellerSeat.getProposal();
     ```
 ### `ZCFSeat.getAmountAllocated(keyword, brand)`
-  - Returns: `{ Amount }`
+  - `keyword`: `{String}`
+  - `brand`: `{Brand}`
+  - Returns: `{Amount}`
   - Returns the `amount` from the part of the `allocation` that matches the
     `keyword` and `brand`. If the `keyword` is not in the `allocation`, it
     returns an empty `amount` of the `brand` argument. (After
@@ -242,7 +244,7 @@ to manipulate the offer. The queries and operations are as follows:
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
     all the current `allocations` at once.
 ### `ZCFSeat.getCurrentAllocation()`
-  - Returns: `{ <Allocation> }`
+  - Returns: `{<Allocation>}`
   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
     the key is a keyword such as `Asset` or `Price` applicable to the
     contract. The value is an `amount` with its `value` and `brand`.
@@ -260,35 +262,51 @@ to manipulate the offer. The queries and operations are as follows:
     all the current `allocations` at once.
 
     An `Allocation` example:
-    - ```js
+    ```js
       {
         Asset: amountMath.make(quatloosBrand, 5n),
         Price: amountMath.make(quatloosBrand, 9n)
       }
       ```
 ### `ZCFSeat.exit(completion)`
+   - `completion`: `{Object}`
    - Returns: `void`
    - Causes the `seat` to exit, concluding its existence. All `payouts`, if any,
      are made, and the `seat` object can no longer interact with the contract.
      The `completion` argument is usually a string, but this is not required. Its
      only use is for the notification sent to the contract instance's `done()` function. 
      Any other still open seats or outstanding promises and the contract instance continue.
+     
+     Note: You should not use `ZCFSeat.exit()` when exiting with an error. Use the method
+     described next, `ZCFSeat.fail()`, instead. 
+     
 ### `ZCFSeat.fail(msg)`
+   - `msg`: `{String}`
    - Returns: `void`
    - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is successful while
      `fail()` signals an error occured while processing the offer. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
      Any other still open seats or outstanding promises and the contract instance continue.
-### `ZCFSeat.kickOut(msg)` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
+     
+     Agoric recommends you exit a seat with an error as follows:
+     ```js
+     throw seat.fail(Error('you did it wrong'));
+     ```
+### `ZCFSeat.kickOut( msg )` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
    - Returns: `void`
    - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is for a successful transaction while
      `kickOut()` aborts the transaction attempt and signals an error. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
 ### `ZCFSeat.stage(newAllocation)`
-   - Returns: `{ SeatStaging }`
-   - A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
+   - `newAllocation`: `{Allocation}`
+   - Returns: `{SeatStaging}`
+   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
+     the key is a keyword such as `Asset` or `Price` applicable to the
+     contract. The value is an `amount` with its `value` and `brand`.
+    
+     A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
      at least two `seatStagings` as arguments and does its reallocation based on them.
 
      You can create multiple independent `seatStagings` for a `seat`. None of them has
@@ -302,7 +320,8 @@ to manipulate the offer. The queries and operations are as follows:
      and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might
      be easier to use for simple cases.
 ### `ZCFSeat.isOfferSafe(newAllocation)`
-   - Returns `{ Boolean }`
+   - `newAllocation`: `{Allocation}`
+   - Returns `{Boolean}`
    - Takes an `allocation` as an argument and returns `true` if that `allocation`
      satisfies offer safety, `false` if is doesn't. Essentially, it checks
      `newAllocation` for offer safety, against the `seat`'s `proposal`.
