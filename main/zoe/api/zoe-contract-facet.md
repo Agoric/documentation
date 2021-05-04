@@ -262,7 +262,7 @@ to manipulate the offer. The queries and operations are as follows:
     all the current `allocations` at once.
 
     An `Allocation` example:
-    - ```js
+    ```js
       {
         Asset: amountMath.make(quatloosBrand, 5n),
         Price: amountMath.make(quatloosBrand, 9n)
@@ -291,7 +291,7 @@ to manipulate the offer. The queries and operations are as follows:
      
      Agoric recommends you exit a seat with an error as follows:
      ```js
-     throw seat.fail(Error('you did it wrong');
+     throw seat.fail(Error('you did it wrong'));
      ```
 ### `ZCFSeat.kickOut( msg )` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
    - Returns: `void`
