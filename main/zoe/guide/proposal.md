@@ -26,8 +26,8 @@ Proposals are records with `give`, `want`, and `exit` keys.
 
 ```js
 const myProposal = harden({
-  give: { Asset: amountMath.make(quatloosBrand, 4n)},
-  want: { Price: amountMath.make(moolaBrand, 15n) },
+  give: { Asset: AmountMath.make(quatloosBrand, 4n)},
+  want: { Price: AmountMath.make(moolaBrand, 15n) },
   exit: { 'onDemand'
 })
 ```
@@ -37,8 +37,8 @@ payments to be escrowed, and payouts to the user.
 In the example above, `Asset` and `Price` are the keywords. However, in an auction contract,
 the keywords might be `Asset` and `Bid`.
 
-The `amountMath.make(quatloosBrand, 4n)` is just making an ERTP `amount`, or description of digital assets.
-In this case, 4 of our imaginary Quatloos currency. `amountMath.make(moolaBrand, 15n)` is making 
+The `AmountMath.make(quatloosBrand, 4n)` is just making an ERTP `amount`, or description of digital assets.
+In this case, 4 of our imaginary Quatloos currency. `AmountMath.make(moolaBrand, 15n)` is making 
 an `amount` of 15 of our imaginary Moola currency. (The appended "n" indicates that the numbers are
 represented as `BigInts` rather than `Numbers`)
 
