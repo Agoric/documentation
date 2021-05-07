@@ -95,8 +95,8 @@ const quote = await E(pAuthority).quoteWanted(quatloosBrand, moola500;
 - Resolves when a price quote of `amountIn` exceeds `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenGT(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -107,8 +107,8 @@ const quote = E(pAuthority).quoteWhenGT(
 - Resolves when a price quote of `amountIn` reaches or exceeds `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenGTE(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -119,8 +119,8 @@ const quote = E(pAuthority).quoteWhenGTE(
 - Resolves when a price quote of `amountIn` drops below `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenLT(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -132,8 +132,8 @@ const quote = E(pAuthority).quoteWhenLT(
   `amountOutLimit`.
 ```js
 const quote = E(pAuthority).quoteWhenLTE(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
 ## `MutableQuote` object
@@ -163,8 +163,8 @@ There are four *mutable quote* methods, which return a `MutableQuote` object wit
 - Resolves when a price quote of `amountIn` exceeds `amountOutLimit`
 ```js
 const quote = E(pAuthority).mutableQuoteWhenGT(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
   
@@ -176,8 +176,8 @@ const quote = E(pAuthority).mutableQuoteWhenGT(
   `amountOutLimit`
 ```js
 const quote = E(pAuthority).mutableQuoteWhenGTE(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
   
@@ -189,8 +189,8 @@ const quote = E(pAuthority).mutableQuoteWhenGTE(
   `amountOutLimit`
 ```js
 const quote = E(pAuthority).mutableQuoteWhenLT(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
 
@@ -202,7 +202,7 @@ const quote = E(pAuthority).mutableQuoteWhenLT(
   `amountOutLimit`
 ```js
 const quote = E(pAuthority).mutableQuoteWhenLTE(
-    amountMath.make(brands.In, 29n),
-    amountMath.make(brands.Out, 974n),
+    AmountMath.make(brands.In, 29n),
+    AmountMath.make(brands.Out, 974n),
   );
 ```
