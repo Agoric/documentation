@@ -20,7 +20,8 @@ For any `brand`, any number of `purses` or `payments` can hold assets
 of that `brand`. Neither a `purse` nor a `payment` can ever change their
 associated `brand`.
 
-Each `purse` and `payment` object contains a specific single amount of digital assets, which may be none at all (`empty` in amountMath terms). In the same way 
+Each `purse` and `payment` object contains a specific single amount of digital assets, 
+which may be none at all (`empty` in AmountMath terms). In the same way 
 you might have separate bank accounts for different purposes, 
 you can have different purses for the same brand of digital asset. 
 One purse might hold 2 Quatloos and another purse might hold 3 Quatloos. 
