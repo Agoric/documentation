@@ -93,13 +93,13 @@ deposit still works on an empty `purse`.
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
-const payment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 123n));
-const quatloos123 = amountMath.make(quatloosBrand, 123n);
+const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 123n));
+const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 
 // Deposit a payment for 123 Quatloos into the purse. 
 const depositAmountA = quatloosPurse.deposit(payment, quatloos123);
 
-const secondPayment = quatloosMint.mintPayment(amountMath.make(quatloosBrand, 100n));
+const secondPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
 // Throws error
 const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 
@@ -162,12 +162,12 @@ But as soon as the message is processed, the value is gone from the `purse`.
 // Create a purse and give it a balance of 10 Quatloos
 const { issuer, mint, brand } = makeIssuerKit('quatloos');
 const purse = issuer.makeEmptyPurse();
-const payment = mint.mintPayment(amountMath.make(brand, 10n));
-const quatloos10 = amountMath.make(brand, 10n);
+const payment = mint.mintPayment(AmountMath.make(brand, 10n));
+const quatloos10 = AmountMath.make(brand, 10n);
 purse.deposit(payment, quatloos10);
 
 // Withdraw an amount of 3 from the purse
-const quatloos3 = amountMath.make(brand, 3n);
+const quatloos3 = AmountMath.make(brand, 3n);
 const withdrawalPayment = purse.withdraw(quatloos3);
 
 // The balance of the withdrawal payment is 3 Quatloos
