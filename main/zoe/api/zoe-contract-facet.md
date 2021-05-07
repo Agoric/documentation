@@ -47,9 +47,9 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## `zcf.makeZCFMint(keyword, amountMathKind)`
+## `zcf.makeZCFMint(keyword, AmountMathKind)`
 - `keyword` `{String}`
-- `amountMathKind` `{AmountMathKind}` (defaults to `MathKind.NAT`)
+- `AmountMathKind` `{AmountMathKind}` (defaults to `AssetKind.NAT`)
 - Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
@@ -79,8 +79,8 @@ quatloosPurse.deposit(payout.Asset);
 
 For example:
 ```js
-const quatloos5 = amountMath.make(quatloosBrand, 5n);
-const quatloos9 = amountMath.make(quatloosBrand, 9n);
+const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+const quatloos9 = AmountMath.make(quatloosBrand, 9n);
 const myAmountKeywordRecord =
 {
   Asset: quatloos5,
@@ -264,8 +264,8 @@ to manipulate the offer. The queries and operations are as follows:
     An `Allocation` example:
     ```js
       {
-        Asset: amountMath.make(quatloosBrand, 5n),
-        Price: amountMath.make(quatloosBrand, 9n)
+        Asset: AmountMath.make(quatloosBrand, 5n),
+        Price: AmountMath.make(quatloosBrand, 9n)
       }
       ```
 ### `ZCFSeat.exit(completion)`
