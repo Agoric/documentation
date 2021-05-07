@@ -117,13 +117,13 @@ it).
 
 `Issuers` must be able to deposit and withdraw assets from a `purse`. This
 requires being able to add and subtract digital assets. They use a set
-of `amountMath` functions.
+of `AmountMath` functions.
 
-In addition to math operations, `amountMath` functions check on their
+In addition to math operations, `AmountMath` functions check on their
 arguments' `brands`, throwing an error if the wrong `brand` was used.
 
-An `amountMath` only works on assets of their associated `brand` and `issuer`.
-There can be many copies of the `amountMath` for a particular `brand` and
+An `AmountMath` only works on assets of their associated `brand` and `issuer`.
+There can be many copies of the `AmountMath` for a particular `brand` and
 its `issuer`. 
 
 ## Next Steps
