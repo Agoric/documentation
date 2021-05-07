@@ -35,23 +35,23 @@ import {
 assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
-## `assertUsesNatMath(zcf, brand)`
+## `assertNatAssetKind(zcf, brand)`
 - `zcf`- `{ContractFacet}`
 - `brand` - `{Brand}`
 
 This method always takes `zcf` as its first argument. 
 
-Assert that the `brand` corresponds to an `issuer` that uses `MathKind.NAT`. 
-This means the `issuer` creates fungible assets.
+Assert that the `brand` has the AssetKind.NAT
+This means the corresponding `mint` creates fungible assets.
 
-If `false` throws with message `issuer must use NAT amountMath`.
+If `false` throws with message `brand must be AssetKind.NAT`.
 
 ```js
 import {
-  assertUsesNatMath,
+  assertNatAssetKind,
 } from '@agoric/zoe/src/contractSupport';
 
- assertUsesNatMath(zcf, quatloosBrand);
+ assertNatAssetKind(zcf, quatloosBrand);
  ```
 
 ## `satisfies(zcf, seat, update)`
