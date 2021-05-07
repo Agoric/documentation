@@ -44,7 +44,7 @@ This method always takes `zcf` as its first argument.
 Assert that the `brand` corresponds to an `issuer` that uses `MathKind.NAT`. 
 This means the `issuer` creates fungible assets.
 
-If `false` throws with message `issuer must use NAT amountMath`.
+If `false` throws with message `issuer must use NAT AmountMath`.
 
 ```js
 import {
