@@ -49,7 +49,7 @@ where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just l
 whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
 
 Manipulating payment and other amounts, such as depositing and withdrawing assets from a purse, all require 
-adding and subtracting digital assets. You may also want to compare amount values. ERTP uses the `amountMath`
+adding and subtracting digital assets. You may also want to compare amount values. ERTP uses the `AmountMath`
 library for all these operations.
 
 - **[AmountMath](./amount-math.md)**:
@@ -129,7 +129,7 @@ In this case, you used the string 'quatloos' to name the `brand`.
 
 <<< @/snippets/ertp/guide/test-readme.js#seven
 
-Here you use `amountMath` to make a new `amount` description of the asset you want to create.
+Here you use `AmountMath` to make a new `amount` description of the asset you want to create.
 You need to specify what you want for the `value` of the new `amount`, in this case `7n`, as
 well as what `brand` it will be.
 
@@ -224,7 +224,7 @@ Objects representing valid tickets have the properties:
 
 To create tickets, you first create JavaScript objects that each represent a ticket.
 Then, because you need to specify the amount of digital assets to be minted, 
-you can use `amountMath` to make an amount. In this case, you're making tickets
+you can use `AmountMath` to make an amount. In this case, you're making tickets
 for one performance of *Hamilton*.
 
 <<< @/snippets/ertp/guide/test-readme.js#makeTicketIssuer
