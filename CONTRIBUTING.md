@@ -2,7 +2,7 @@
 sidebar: auto
 ---
 
-# Contributing to Agoric's Documentation Repo
+# ontributing to Agoric's Documentation Repo
 
 Agoric's public-facing technical documentation is mostly in the [Agoric Documentation GitHub repo](https://github.com/Agoric/documentation).
 The complete documentation set also includes external items such as papers, presentations, videos, etc. Our document
