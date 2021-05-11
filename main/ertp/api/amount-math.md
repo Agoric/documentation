@@ -10,11 +10,12 @@ To use the `amountMath` library, import it from ERTP:
 
 The `amountMath` library lets you manipulate amounts, such as by adding two amounts together. 
 However, remember that we have two types of amounts, fungible and non-fungible. While a fungible 
-amount has natural numbers for its value, a non-fungible amount has a set of objects or records
-for its value. Clearly, the same addition process cannot be used on both. 
+amount has natural numbers for its value, a non-fungible amount has an array of elements, such as 
+strings, numbers, objects or records, for its value. Even though very different addition processes
+are performed, `amountMath.add()` and other `amountMath()` methods work for both types of amounts. 
 
-The `amountMath` library methods are polymorphic. All of the operations implement one method that 
-works on fungible assets and one that works on non-fungible assets. Which method is used is 
+The `amountMath` library methods are polymorphic. All of the operations work for both fungible 
+and non-fungible assets. Which method is used is 
 determined by the `AssetType` associated with the amounts' `Issuer` and `Brand`. This is 
 specified when `issuerKit()` creates the issuer and brand. 
 
