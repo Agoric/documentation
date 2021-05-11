@@ -1,7 +1,7 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 // #region import
-import { amountMath, makeIssuerKit, MathKind } from '@agoric/ertp';
+import { amountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 // #endregion import
 
 test('ertp guide issuers and mints makeIssuerKit', async t => {
@@ -14,11 +14,11 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   // This is merely an amount, describing assets.
   // It does not create new assets.
   const quatloos2 = amountMath.make(quatloosBrand, 2n);
-  // Non-fungible asset, which needs an amountMath
-  // of kind MathKind.SET
+  // Non-fungible asset, which needs an AssetKind
+  // of AssetKind.SET
   const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit(
     'alamedaCountyPropertyTitle',
-    MathKind.SET,
+    AssetKind.SET,
   );
   // #endregion makeIssuerKit
 
@@ -51,11 +51,11 @@ test('ertp guide issuers and mints getAllegedName', async t => {
   t.is(quatloosIssuerAllegedName, 'quatloos');
 });
 
-test('ertp guide issuers and mints getAmountMathKind', async t => {
-  // #region getAmountMathKind
+test('ertp guide issuers and mints getAssetKind', async t => {
+  // #region getAssetKind
   const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-  const kind = quatloosIssuer.getAmountMathKind(); // 'nat', the default value for makeIssuerKit()
-  // #endregion getAmountMathKind
+  const kind = quatloosIssuer.getAssetKind(); // 'nat', the default value for makeIssuerKit()
+  // #endregion getAssetKind
   t.is(kind, 'nat');
 });
 

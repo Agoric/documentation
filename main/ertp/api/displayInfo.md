@@ -3,7 +3,7 @@
 A `DisplayInfo` record is associated with a brand and gives information about how to display that 
 brand's amounts. A `DisplayInfo` record has one optional property, `decimalPlaces`, which takes a non-negative integer value.
 
-`displayInfo` is an optional argument to [`makeIssuerKit`](./issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo).
+`displayInfo` is an optional argument to [`makeIssuerKit`](./issuer.md#makeissuerkit-allegedname-assetkind-displayinfo).
 
 If specified, its `decimalPlaces` value is used when displaying amount values of the `brand` created by the issuerKit.
 

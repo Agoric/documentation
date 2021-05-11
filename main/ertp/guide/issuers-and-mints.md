@@ -37,7 +37,7 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/#ertp-api).
 
 - **Create issuer operation**
-  - [`makeIssuerKit(allegedName, amountMathKind, displayInfo=)`](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo)
+  - [`makeIssuerKit(allegedName, assetKind, displayInfo=)`](/ertp/api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo)
   - Makes an `issuer` and its related `mint` and `brand`.
     Returns ` { mint, issuer, brand }` The `mint` and
     `brand` are in unchangeable one-to-one relationships with the `issuer`
@@ -46,8 +46,8 @@ API Reference](/ertp/api/#ertp-api).
     The `allegedName` is available from the `brand` to describe assets, but should not
     be trusted. 
     
-    `amountMathKind` specifies if the associated `amountMath` is of kind `MathKind.NAT` (`nat`) 
-    (the default value) or `MathKind.SET` (`set`);
+    `assetKind` specifies if the associated `amountMath` is of kind `AssetKind.NAT` (`nat`) 
+    (the default value) or `AssetKind.SET` (`set`);
     see the [`amountMath` page](./amount-math.md) for details. 
     
     `displayInfo` is the number of places to the right of the decimal point to display of any
@@ -66,10 +66,10 @@ API Reference](/ertp/api/#ertp-api).
       [`allegedName`](/glossary/#allegedname),
 	the non-trusted human-readable name of the `issuer`'s associated `brand`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
-  - [`issuer.getAmountMathKind()`](/ertp/api/issuer.md#issuer-getamountmathkind)
-    - Get the kind of `amountMath` for this `issuer`, either `MathKind.NAT` (`nat`),
-      or `MathKind.SET` (`set`).
-    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountMathKind
+  - [`issuer.getAssetKind()`](/ertp/api/issuer.md#issuer-getassetkind)
+    - Get the kind of asset for this `issuer`, either `AssetKind.NAT` (`nat`),
+      or `AssetKind.SET` (`set`).
+    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAssetKind
 - **Purse operation**
   - [`issuer.makeEmptyPurse()`](/ertp/api/issuer.md#issuer-makeemptypurse)
     - Returns a new empty `purse` for the `brand` associated with the `issuer`. The `purse` only accepts valid 
@@ -176,7 +176,7 @@ API Reference](/ertp/api/#ertp-api).
     **Important**: `mint.mintPayment()` is the only way in ERTP to create new digital assets. There is no other way.
     The Zoe Contract Facet (`zcf`) can also create a mint in Zoe that can create new digital assets.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
-- [`makeIssuerKit(allegedName, amountMathKind, displayInfo)`](/ertp/api/issuer.md#makeissuerkit-allegedname-amountmathkind-displayinfo)
+- [`makeIssuerKit(allegedName, assetKind, displayInfo)`](/ertp/api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo)
   - While not a method called on a `mint`, clearly you should know how to create a new `mint`. `makeIssuerKit()` returns
     a new `issuer`, `mint`, and `brand`. 
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
