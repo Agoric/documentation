@@ -47,7 +47,7 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## zcf.makeZCFMint(keyword, assetKind)
+## `zcf.makeZCFMint(keyword, assetKind)`
 - `keyword` `{String}`
 - `assetKind` `{assetKind}` (defaults to `AssetKind.NAT`)
 - Returns: `{Promise<ZCFMint>}`
