@@ -293,12 +293,6 @@ to manipulate the offer. The queries and operations are as follows:
      ```js
      throw seat.fail(Error('you did it wrong'));
      ```
-### `ZCFSeat.kickOut( msg )` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
-   - Returns: `void`
-   - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
-     This is equivalent to exiting, except that `exit` is for a successful transaction while
-     `kickOut()` aborts the transaction attempt and signals an error. The contract
-     still gets its current `allocation` and the `seat` can no longer interact with the contract.
 ### `ZCFSeat.stage(newAllocation)`
    - `newAllocation`: `{Allocation}`
    - Returns: `{SeatStaging}`

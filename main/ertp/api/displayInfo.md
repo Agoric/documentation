@@ -22,6 +22,9 @@ for them.
 `decimalPlaces` should be used for *display purposes only*. Any
 other use is an anti-pattern.
 
+`DisplayInfo` also has an `assetKind` property. Its value specifies the kind of the associated asset, either
+`AssetKind.NAT` (fungible) or `AssetKind.SET` (non-fungible).
+
 ## `brand.getDisplayInfo()`
 - Returns: `{ DisplayInfo }`
 
