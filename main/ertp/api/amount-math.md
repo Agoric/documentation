@@ -6,26 +6,31 @@ Logic for manipulating `amounts`.
 
 To use the `AmountMath` library, import it from ERTP:
 - `import { AmountMath } from '@agoric/ertp';`
-## AmountMath Kinds
+## AssetKinds
 
-There are two different kinds of `AmountMath`, each of which implements all the 
-methods shown on this page. You only have to specify the `AmountMath` kind when 
-creating its associated `issuer`.
+The `AmountMath` library lets you manipulate amounts, such as by adding two amounts together. 
+However, remember that we have two types of amounts, fungible and non-fungible. While a fungible 
+amount has natural numbers for its value, a non-fungible amount has an array of elements, such as 
+strings, numbers, objects or records, for its value. Even though very different addition processes
+are performed, `AmountMath.add()` and other `AmountMath()` methods work for both types of amounts. 
 
-The two `AmountMathKinds` each implement all of the same API methods 
-(i.e. `AmountMath` methods are polymorphic). We recommend you import 
-the `MathKind` values from `@agoric/ERTP` instead of making the strings yourself. 
+The `AmountMath` library methods are polymorphic. All of the operations work for both fungible 
+and non-fungible assets. Which method is used is 
+determined by the `AssetKind` associated with the amounts' `Issuer` and `Brand`. This is 
+specified when `issuerKit()` creates the issuer and brand. 
 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+We recommend you import the two `AssetKind` values from `@agoric/ERTP` instead of making the 
+strings yourself. 
+- `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative `BigInts`).
+- `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
 
-Use `makeIssuerKit(allegedName, AmountMathKind, displayInfo)` to specify which `AmountMathKind` 
-your contract uses. The second parameter, `AmountMathKind` is optional and 
-defaults to `MathKind.NAT` if not given. For example
+Use `makeIssuerKit(allegedName, assetKind, displayInfo)` to specify which `AssetKind` 
+your contract uses. The second parameter, `assetKind` is optional and 
+defaults to `AssetKind.NAT` if not given. For example
 ```js
-import { MathKind, makeIssuerKit } from '@agoric/ertp';
-makeIssuerKit('quatloos'); // Defaults to MathKind.NAT and undefined displayInfo
-makeIssuerKit('kitties', MathKind.SET); // Defaults to undefined displayInfo
+import { AssetKind, makeIssuerKit } from '@agoric/ertp';
+makeIssuerKit('quatloos'); // Defaults to AssetKind.NAT and undefined displayInfo
+makeIssuerKit('kitties', AssetKind.SET); // Defaults to undefined displayInfo
 ```
 
 ## Amount
@@ -119,20 +124,19 @@ const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 // returns 123n
 const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 ```
-
-## `AmountMath.makeEmpty(brand, AmountMathKind)`
+## AmountMath.makeEmpty(brand, assetKind)
 - Returns: `{Amount}`
 
-Returns the `amount` representing an empty `amount` for the `brand` argument's 
-`brand`. This is the identity element for `AmountMath.add()` 
+Returns the `amount` representing an empty `Amount` for the `brand` argument's 
+`Brand`. This is the identity element for `AmountMath.add()` 
 and `AmountMath.subtract()`. The empty `value` depends 
-on whether the `AmountMathKind` is `MathKind.NAT` (`0`) of `MathKind.SET` (`[]`).
+on whether the `assetKind` is `AssetKind.NAT` (`0`) of `AssetKind.SET` (`[]`).
 
 ```js
 // Returns an empty amount.
-// Since this is a fungible amountKind it returns an amount
+// Since this is a fungible assetKind it returns an amount
 // with 0n as its value.
-const empty = AmountMath.makeEmpty(quatloosBrand, mathKind.NAT);
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 ```
 
 ## `AmountMath.makeEmptyFromAmount(amount)`
@@ -140,7 +144,7 @@ const empty = AmountMath.makeEmpty(quatloosBrand, mathKind.NAT);
 - Returns: `{Amount}`
 
 Return the `amount` representing an empty amount, using another
-`amount` as the template for the `brand` and `mathKind`.
+`amount` as the template for the `brand` and `assetKind`.
 
 ```js
 // quatloosAmount837 = { value: 837n, brand: quatloos }
@@ -160,7 +164,7 @@ The `brand` parameter is optional, and defaults to `undefined`.
 If it does not match `amount`'s `brand`, an error is thrown.
 
 ```js
-const empty = AmountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 const quatloos1 = AmountMath.make(quatloosBrand, 1n);
 
 // returns true
@@ -189,7 +193,7 @@ greater than { 'seat 2' } because the former both contains all of the latter's
 contents and has additional elements.
 
 ```js
-const empty = AmountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 const quatloos5 = AmountMath.make(quatloosBrand, 5n);
 const quatloos10 = AmountMath.make(quatloosBrand, 10n);
 
@@ -218,14 +222,16 @@ the `value` of `rightAmount`. Both `amount` arguments must have the same
 The `brand` argument is optional, defaulting to `undefined`.
 If it does not match the `amounts` `brand`, an error is thrown.
 
-For non-fungible `values`, "equal to" depends on the kind of `AmountMath`. 
+For non-fungible `values`, "equal to" depends on the value of the
+brand's `AssetKind`. 
+
 For example, { 'seat 1', 'seat 2' } is considered
 unequal to { 'seat 2' } because the number of items in the former is
 different from that of the latter. Similarly { 'seat 1',  'seat 3'  } and { 'seat 2' } 
 are considered unequal because the latter has elements that are not contained in the former.
 
 ```js
-const empty = AmountMath.makeEmpty(quatloosBrand, MathKind.NAT);
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 const quatloos5 = AmountMath.make(quatloosBrand, 5n);
 const quatloos5b = AmountMath.make(quatloosBrand, 5n);
 const quatloos10 = AmountMath.make(quatloosBrand, 10n);
@@ -260,8 +266,8 @@ If either `leftAmount` or `rightAmount` is empty, it just returns the non-empty
 `amount` argument. If both are empty, it returns an empty `amount`.
 
 ```js
-import { MathKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
-const { brand: myItemsBrand } = makeIssuerKit('myItems', MathKind.SET');
+import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.SET');
 const listAmountA = AmountMath.make(myItemsBrand, ['1','2','4']);
 const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 
@@ -290,9 +296,8 @@ If the `rightAmount` is empty, it returns the `leftAmount`. If both arguments ar
 empty, it returns an empty `amount`.
 
 ```js
-
-import { MathKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
-const { brand: myItemsBrand } = makeIssuerKit('myItems', MathKind.SET');
+import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.SET');
 const listAmountA = AmountMath.make(myItemsBrand, ['1','2','4']);
 const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 const listAmountC = AmountMath.make(myItemsBrand, ['2']);
@@ -306,14 +311,14 @@ const badList = AmountMath.subtract(listAmountA, listAmountB)
 ## Related Methods
 
 The following methods on other ERTP components and objects also either operate
-on or return an `amount` or `MathKind`. While a brief description is given for each, you should
+on or return an `amount` or `AssetKind`. While a brief description is given for each, you should
 click through to a method's main documentation entry for full details on
 what it does and how to use it.
 
 - [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment)
   - Returns the `amount` description of the `payment`
-- [`issuer.getAmountMathKind()`](./issuer.md#issuer-getamountmathkind)
-  - Returns the `MathKind` of the `issuer`'s associated math helpers.
-- [`zcf.getMathKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getmathkind-brand)
-  - Returns the `MathKind` associated with the `brand`.
+- [`issuer.getAssetKind()`](./issuer.md#issuer-getassetkind)
+  - Returns the `AssetKind` of the `issuer`'s associated math helpers.
+- [`zcf.getAssetKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getassetkind-brand)
+  - Returns the `AssetKind` associated with the `brand`.
 

@@ -15,9 +15,9 @@ validate an untrusted `payment` of that `brand`.
 **Note**: You should not create an Issuer in a deploy script. Deploy scripts 
 are ephemeral, so any object created there dies as soon as the script stops.
 
-## `makeIssuerKit(allegedName, AmountMathKind, displayInfo)`
+## makeIssuerKit(allegedName, assetKind, displayInfo)
 - `allegedName` `{String}` 
-- `AmountMathKind` `{MathKind}` - optional, defaults to `MathKind.NAT`
+- `assetKind` `{AssetKind}` - optional, defaults to `AssetKind.NAT`
 - `displayInfo` `{DisplayInfo}` - optional, defaults to `undefined`
 - Returns `{IssuerKit}`
 
@@ -35,18 +35,18 @@ is useful for debugging and double-checking assumptions, but should not be trust
 
 The optional `displayInfo` tells the UI how to display `amounts` of this brand.
 
-The optional `AmountMathKind` specifies the kind of math to use with the digital assets. 
+The optional `assetKind` specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e. `AmountMath` methods are 
-polymorphic). We recommend you import and use the `MathKind` values from `@agoric/ertp` 
+polymorphic). We recommend you import and use the `AssetKind` values from `@agoric/ertp` 
 instead of using strings. 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays that can
+- `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural numbers (non-negative BigInts). Default value.
+- `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays that can
   include strings, numbers, objects, or anything comparable. But not promises, purses, or payments.
 
 ```js
-import { MathKind, makeIssuerKit } from '@agoric/ertp';
-makeIssuerKit('quatloos'); // Defaults to MathKind.NAT
-makeIssuerKit('title', MathKind.SET);
+import { AssetKind, makeIssuerKit } from '@agoric/ertp';
+makeIssuerKit('quatloos'); // Defaults to AssetKind.NAT
+makeIssuerKit('title', AssetKind.SET);
 ```
 
 ```js
@@ -86,26 +86,26 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 // quatloosIssuerAllegedName === 'quatloos'
 ```
 
-## `issuer.getAmountMathKind()`
-- Returns: `{MathKind}`
+## `issuer.getAssetKind()`
+- Returns: `{AssetKind}`
 
-Get the kind of this `issuer`'s `AmountMath`. It returns one of
-`MathKind.NAT` (`nat`) or `MathKind.SET` (`set`).
+Get the kind of this `issuer`'s asset. It returns one of
+`AssetKind.NAT` (`nat`) or `AssetKind.SET` (`set`).
 
-The `AmountMathKind` value specifies which kind an `AmountMath` is,
-and what kind of values it is used on. Each kind implements all of the same set 
+The `assetKind` value specifies what kind of values `AmountMath` is used on for this
+issuer. Each kind implements all of the same set 
 of API methods (i.e. `AmountMath` methods are polymorphic). 
-- `MathKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural 
+- `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural 
   numbers (non-negative `BigInts`). Default value.
-- `MathKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays 
+- `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays 
   that can include strings, numbers, objects, or anything comparable. But not promises,
   purses, or payments.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-quatloosIssuer.getAmountMathKind(); // Returns 'nat', also known as MathKind.NAT, the default value.
-const { issuer: moolaIssuer } = makeIssuerKit('moola', MathKind.SET);
-moolaIssuer.getAmountMathKind(); // Returns 'set', also known as 'MathKind.SET`
+quatloosIssuer.getAssetKind(); // Returns 'nat', also known as AssetKind.NAT, the default value.
+const { issuer: moolaIssuer } = makeIssuerKit('moola', AssetKind.SET);
+moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET`
 ```
 ## `issuer.getAmountOf(payment)`
 - `payment` `{Payment}`

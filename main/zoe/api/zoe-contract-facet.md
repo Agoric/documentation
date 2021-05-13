@@ -47,9 +47,9 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## `zcf.makeZCFMint(keyword, AmountMathKind)`
+## `zcf.makeZCFMint(keyword, assetKind)`
 - `keyword` `{String}`
-- `AmountMathKind` `{AmountMathKind}` (defaults to `AssetKind.NAT`)
+- `assetKind` `{AssetKind}` (defaults to `AssetKind.NAT`)
 - Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
@@ -293,12 +293,6 @@ to manipulate the offer. The queries and operations are as follows:
      ```js
      throw seat.fail(Error('you did it wrong'));
      ```
-### `ZCFSeat.kickOut( msg )` **Renamed fail(msg) as of 4-OCT-2020. DO NOT USE**
-   - Returns: `void`
-   - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
-     This is equivalent to exiting, except that `exit` is for a successful transaction while
-     `kickOut()` aborts the transaction attempt and signals an error. The contract
-     still gets its current `allocation` and the `seat` can no longer interact with the contract.
 ### `ZCFSeat.stage(newAllocation)`
    - `newAllocation`: `{Allocation}`
    - Returns: `{SeatStaging}`
@@ -342,13 +336,13 @@ Returns the `brand` associated with the `issuer`.
 
 Returns the `issuer` of the `brand` argument.
 
-## `zcf.getMathKind(brand)`
+## `zcf.getAssetKind(brand)`
 - `brand` `{Brand}`
-- Returns: `{MathKind}`
+- Returns: `{AssetKind}`
 
-Returns the `MathKind` associated with the `brand` argument.
+Returns the `AssetKind` associated with the `brand` argument.
 ```js
-const quatloosMathKind = zcf.getMathKind(quatloosBrand);
+const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
 ```
 
 ## `zcf.stopAcceptingOffers()`
