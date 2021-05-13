@@ -46,9 +46,9 @@ API Reference](/ertp/api/#ertp-api).
     The `allegedName` is available from the `brand` to describe assets, but should not
     be trusted. 
     
-    `assetKind` specifies if the associated `amountMath` is of kind `AssetKind.NAT` (`nat`) 
+    `assetKind` specifies if the associated asset is of kind `AssetKind.NAT` (`nat`) 
     (the default value) or `AssetKind.SET` (`set`);
-    see the [`amountMath` page](./amount-math.md) for details. 
+    see the [`AmountMath` page](./amount-math.md) for details. 
     
     `displayInfo` is the number of places to the right of the decimal point to display of any
     `values` associated with the created `brand`. It defaults to `undefined`

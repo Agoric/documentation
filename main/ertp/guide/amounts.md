@@ -7,13 +7,13 @@
 `Amounts` describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with methods
 that act on them or take them as arguments. 
-Use the `amountMath` library (covered in-depth 
+Use the `AmountMath` library (covered in-depth 
 [here](../api/amount-math.md))
 to get information about and otherwise manipulate an `amount` as a whole.
 
-`amountMath.make()` is generally how you make new `amounts`.
+`AmountMath.make()` is generally how you make new `amounts`.
 However, you can also make an `amount` as an object literal by making a record of
-a `brand` and a `value`. While `amountMath.make()` is recommended for proper 
+a `brand` and a `value`. While `AmountMath.make()` is recommended for proper 
 object-oriented programming, this produces the same result:
 
 <<< @/snippets/ertp/guide/test-amounts.js#manualMake
@@ -26,7 +26,7 @@ particular right, or an arbitrary object representing the rights at
 issue (e.g., a theatre ticket's date, time, row and seat positions).
 
 `amounts` and their `values` and `brands` can be manipulated by the
-`amountMath` library. It executes the logic of how `amounts` change when
+`AmountMath` library. It executes the logic of how `amounts` change when
 digital assets are merged, separated, or otherwise manipulated. For
 example, you make an offer for something, which is declined. You want
 to change your offer, represented as an `amount`, to be of a greater
@@ -98,11 +98,11 @@ not `Numbers`. So a value of `10` is written `10n` to show it is a `BigInt` 10.
 See [here](/guides/js-programming/bigint.md) for more information about `BigInt`.
 
 There are no `value`
-methods, but two `amountMath` methods use or return them. 
-- [`amountMath.getValue(brand, amount)`](../api/amount-math.md#amountmath-getvalue-brand-amount)
+methods, but two `AmountMath` methods use or return them. 
+- [`AmountMath.getValue(brand, amount)`](../api/amount-math.md#amountmath-getvalue-brand-amount)
   - Return the `amount` argument's `value`
   - <<< @/snippets/ertp/guide/test-amounts.js#getValue
-- [`amountMath.make(brand, allegedValue)`](../api/amount-math.md#amountmath-make-brand-allegedvalue)
+- [`AmountMath.make(brand, allegedValue)`](../api/amount-math.md#amountmath-make-brand-allegedvalue)
   - Make an `amount`from a `brand` and a `value`. 
   - <<< @/snippets/ertp/guide/test-amounts.js#make
     

@@ -104,10 +104,10 @@ const { creatorInvitation } = await E(zoe).startInstance(
 Then Alice creates a proposal, and  escrows the funds she is depositing.
 
 ```js
-const threeMoola = amountMath.make(moolaBrand, 3n);
+const threeMoola = AmountMath.make(moolaBrand, 3n);
 const aliceProposal = harden({
   give: { UnderlyingAsset: threeMoola },
-  want: { StrikePrice: amountMath.make(simoleanBrand, 7n) },
+  want: { StrikePrice: AmountMath.make(simoleanBrand, 7n) },
   exit: { afterDeadline: { deadline: 1599856578n, timer: chainTimer } },
 });
 
@@ -216,8 +216,8 @@ exchange for the underlying asset:
 const daveOption = await daveSwapSeat.getPayout('Asset');
 
 const daveCoveredCallProposal = harden({
-  want: { UnderlyingAsset: amountMath.make(moolaBrand, 3n) },
-  give: { StrikePrice: amountMath.make(simoleanBrand, 7n) },
+  want: { UnderlyingAsset: AmountMath.make(moolaBrand, 3n) },
+  give: { StrikePrice: AmountMath.make(simoleanBrand, 7n) },
 });
 
 const daveCoveredCallPayments = harden({

@@ -32,7 +32,7 @@ testnet).
 ```js
 const linkIssuer = E(home.wallet).getIssuer('Testnet.$LINK');
 const linkBrand = await E(linkIssuer).getBrand();
-const linkAmount = amountMath.make(linkBrand, 30 * 10 ** 18);
+const linkAmount = AmountMath.make(linkBrand, 30 * 10 ** 18);
 const usdBrand = await E(E(home.wallet).getIssuer('Testnet.$USD')).getBrand();
 const { quoteAmount: { value: [{ amountOut: usdAmount, timestamp }] } } = await E(home.priceAuthority).quoteGiven(linkAmount, usdBrand);
 ```

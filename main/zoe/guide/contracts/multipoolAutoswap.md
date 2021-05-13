@@ -58,7 +58,7 @@ getOutputPrice() to get a quote.
 
 ```js
 const quote = E(publicFacet).getOutputPrice(
-  amountMath.make(moolaBrand, 275n), simoleansBrand);
+  AmountMath.make(moolaBrand, 275n), simoleansBrand);
   ```
   
 Let's assume the quote says she needs to provide 216 Simoleans. Sara believes the
@@ -72,13 +72,13 @@ back.
 
 ```js
 const saraProposal = harden({
-  want: { Out: amountMath.make(moolaBrand, 275n) },
-  give: { In: amountMath.make(simoleanBrand, 220n) },
+  want: { Out: AmountMath.make(moolaBrand, 275n) },
+  give: { In: AmountMath.make(simoleanBrand, 220n) },
 });
 
 const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
 const simoleanPayment =
-  harden({ In: saraSimoleanPurse.withdraw(amountMath.make(simoleanBrand, 220n)) });
+  harden({ In: saraSimoleanPurse.withdraw(AmountMath.make(simoleanBrand, 220n)) });
 
 const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, simoleanPayment);
 const saraResult = await saraSeat.getOfferResult();
@@ -114,8 +114,8 @@ Buck, so she deposits twice as many Moola as Bucks.
 const aliceProposal = harden({
   want: { Liquidity: moolaLiquidity(50n) },
   give: {
-    Secondary: amountMath.make(moolaBrand, 100n),
-    Central: amountMath.make(bucksBrand, 50n),
+    Secondary: AmountMath.make(moolaBrand, 100n),
+    Central: AmountMath.make(bucksBrand, 50n),
   },
 });
 const alicePayments = {
@@ -159,10 +159,10 @@ figure, but there's no need in this case.
 ```js
 const bobProposal = harden({
   give: {
-    Central: amountMath.make(bucksBrand, 1800n)
-    Secondary: amountMath.make(moolaBrand, 1200n),
+    Central: AmountMath.make(bucksBrand, 1800n)
+    Secondary: AmountMath.make(moolaBrand, 1200n),
   },
-  want: { Liquidity: amountMath.make(liquidityBrand, 0n) },
+  want: { Liquidity: AmountMath.make(liquidityBrand, 0n) },
   exit: { onDemand: null },
 ]);
 
