@@ -1,15 +1,12 @@
 # ERTP Guide
 
-ERTP (*Electronic
-Rights Transfer Protocol*)
+ERTP (*Electronic Rights Transfer Protocol*)
 is Agoric's token standard for transferring tokens and other digital assets in
-JavaScript. Using the
-[ERTP API](../api/),
+JavaScript. Using the [ERTP API](../api/),
 you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
-ERTP uses
-*[OCaps (object capabilities)](/glossary/#object-capabilities)*
+ERTP uses *[OCaps (object capabilities)](/glossary/#object-capabilities)*
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -231,11 +228,11 @@ for one performance of *Hamilton*.
 
 As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
 The difference from when you created a fungible asset is that you have to use a second argument,
-in this case `MathKind.SET`.
+in this case `AssetKind.SET`.
 
-There are two `MathKinds`. Each one polymorphically implements the same set of methods. 
-- `MathKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
-- `MathKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
+There are two `AssetKinds`. Each one polymorphically implements the same set of methods. 
+- `AssetKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
+- `AssetKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
 
 <<< @/snippets/ertp/guide/test-readme.js#ticketPayments
 

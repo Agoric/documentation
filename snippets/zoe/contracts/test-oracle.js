@@ -4,7 +4,7 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
-import { makeIssuerKit, MathKind, amountMath } from '@agoric/ertp';
+import { makeIssuerKit, AssetKind, amountMath } from '@agoric/ertp';
 import { assert, details } from '@agoric/assert';
 import { E } from '@agoric/eventual-send';
 
@@ -22,7 +22,7 @@ test('oracle contract', async t => {
     mint: linkMint,
     issuer: linkIssuer,
     brand: linkBrand,
-  } = makeIssuerKit('$LINK', MathKind.NAT);
+  } = makeIssuerKit('$LINK', AssetKind.NAT);
 
   const feeAmount = amountMath.make(linkBrand, 1000n);
 
