@@ -92,9 +92,8 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 Get the kind of this `issuer`'s asset. It returns one of
 `AssetKind.NAT` (`nat`) or `AssetKind.SET` (`set`).
 
-The `assetKind` value specifies what kind of values `AmountMath` is used on for this
-issuer. Each kind implements all of the same set 
-of API methods (i.e. `AmountMath` methods are polymorphic). 
+The `assetKind` value specifies what kind of values are used in amounts for this issuer. 
+`AmountMath` works for all the different kinds of values. 
 - `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` values are natural 
   numbers (non-negative `BigInts`). Default value.
 - `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` values are arrays 
