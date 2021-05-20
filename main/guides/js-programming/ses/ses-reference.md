@@ -211,7 +211,7 @@ lockdown({ localeTaming: 'unsafe' }); // Allow locale-specific behavior
 The default `'safe'` option actually expands what you would expect from `console`'s logging 
 output. It will show information from the `assert` package and error objects.
 Errors can report more diagnostic information that should be hidden from other objects. See
-the [error README](https://github.com/Agoric/SES-shim/blob/master/packages/ses/src/error/README.md) 
+the [error README](https://github.com/endojs/endo/blob/master/packages/ses/src/error/README.md) 
 for an in depth explanation of this.
 
 The `'unsafe'` setting leaves the original `console` in place. The `assert` package

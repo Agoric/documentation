@@ -109,7 +109,7 @@ import 'ses/lockdown';
 As mentioned, SES does not include any IO objects providing "unsafe" [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority). 
 It also doesn't allow non-determinism from built-in JavaScript objects. 
 
-As of SES-0.8.0/Fall 2020, [Agoric's SES source code](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js) 
+As of SES-0.8.0/Fall 2020, [Agoric's SES source code](https://github.com/endojs/endo/blob/SES-v0.8.0/packages/ses/src/whitelist.js) 
 defines a subset of the globals defined by the baseline JavaScript language specification. SES includes these globals:
 
 - `Object`
@@ -202,7 +202,7 @@ makes those global objects available.
   thorough. See the individual [`lockdown()`](#lockdown) and [`harden()`](#harden) sections
   below. 
 
-- `[Compartment](https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment)` is 
+- `[Compartment](https://github.com/endojs/endo/tree/SES-v0.8.0/packages/ses#compartment)` is 
   a global. Code runs inside a `Compartment` and can create sub-compartments to host other 
   code (with different globals or transforms). Note that these child compartments get `harden()` and `Compartment`.
 
@@ -425,7 +425,7 @@ usable if you don't invoke certain features.
 
 The same is true for NPM packages that use missing globals, or attempt to modify frozen primordials.
 
-The [SES wiki](https://github.com/Agoric/SES-shim/wiki) tracks compatibility reports for NPM packages, 
+The [SES wiki](https://github.com/endojs/endo/wiki) tracks compatibility reports for NPM packages, 
 including potential workarounds.
 
 ## HTML comments
