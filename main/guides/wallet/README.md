@@ -93,7 +93,7 @@ over the wallet bridge:
       petname: 'Instance',
       boardId: INSTANCE_BOARD_ID,
     });
-    // Our issuer will default to something like `FungibleFaucet.Assurance`.
+    // Our issuer will default to something like `FungibleFaucet.Token`.
     walletSend({
       type: 'walletSuggestIssuer',
       petname: 'Token',
@@ -108,7 +108,7 @@ lets users make data generally available. Users can obtain an Id by posting a va
 others can get the value just by knowing the Id. You can make Id(s) known by any 
 communication method you like; private email, an email blast to a mailing list 
 or many individuals, buying an ad on a website, tv program, or newspaper, 
-listing it on her website, etc.
+listing it on your website, etc.
 
 <<< @/snippets/ertp/guide/test-readme.js#getValue
 
