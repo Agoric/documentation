@@ -28,13 +28,39 @@ In particular, note that every object returned from a smart contract, such a `pu
 `creatorFacet`, must be passable. All objects used in your contract's external API must
 be passable.
 
+### Rules for creating passable objects
+Record and tuples are hardened acyclical objects which can be passed-by-copy if they satisfy some constraints.
+
+#### Record
+A plain object where:
+- All properties must have pass-by-copy values, such as numbers, strings, or other records and tuples.
+  - Properties cannot be accessors.
+- All properties must be own and enumerable, with string names.
+  - Symbols are not allowed.
+  - The prototype must be `Object.prototype` or `null`.
+- Nested values cannot form a cycle.
+- It must be hardened with `harden()`.
+
+#### Record
+A plain array where:
+- All properties must have pass-by-copy values, such as numbers, strings, or other records and tuples.
+  - Properties cannot be accessors.
+- All properties must be own and enumerable, where names are the integers indexes or `length`.
+  - The array cannot have holes.
+  - The prototype must be `Array.prototype`.
+- Nested values cannot form a cycle.
+- It must be hardened with `harden()`.
+
 ### Rules for creating remotables
 - All property values must be functions. 
   - They cannot be accessors.
 - You must wrap the object with `Far()`.
 
 **Note**: ERTP objects, such as `Purses`, are automatically created as `Remotable`, as are
-`UserSeats` and `ZCFSeats`. 
+`UserSeats` and `ZCFSeats`.
+
+**Note**: A hardened empty object can be made remotable instead of passable by copy when
+wrapped with `Far()`. This allows making an unforgeable [Handle](/glossary/#handle).
 
 ### Using remotables
 - Call a remotable's method by first wrapping the remotable object with `E`, such as `E(issuer).getBrand();`

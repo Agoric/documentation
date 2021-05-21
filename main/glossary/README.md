@@ -413,6 +413,10 @@ episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamester
 A transfer of [amounts](#amounts) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
 current allocation as a [payout](#payout). 
 
+## Record and Tuple
+
+Records and tuples are immutable objects which can be passed by copy. They only contain values which can be passed by copy such as numbers, strings, or other records and tuples. 
+For more details, see [Passable objects documentation](/guides/js-programming/far.md#rules-for-creating-passable-objects).
 ## Seat
 
 Zoe uses a seat to represent an [offer](#offer) in progress, and has two seat [facets](#facet) representing
