@@ -176,7 +176,11 @@ containing either of the strings `<!--` or `-->`, even if neither marks a commen
 
 ### Dynamic import expressions
 
-The "dynamic import" feature (`await import('path')`) is not a function call but JavaScript syntax. As such it would allow vat code to bypass the shim's `Compartment`'s module map. For safety, the SES shim rejects code that looks like it uses this feature. 
+The "dynamic import" feature (`import('path')`) enables code to load dependencies at runtime.
+While it takes the form of an expression returning a Promise, it's actually not a normal
+function call, but is instead JavaScript syntax. As such it would let vat code bypass the
+shim's `Compartment`'s module map. For safety, the SES shim rejects code that looks like it
+uses the dynamic import syntax.
 The regular expression for this pattern can be confused into falsely rejecting legitimate 
 code. For example, the word “import” at the end of a line in a comment, such as:
 ```js
