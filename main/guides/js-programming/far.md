@@ -33,22 +33,22 @@ Record and tuples are hardened acyclical objects which can be passed-by-copy if 
 
 #### Record
 A plain object where:
-- All properties must have pass-by-copy values, such as numbers, strings, or other records and tuples.
+- All property values must be passables.
   - Properties cannot be accessors.
 - All properties must be own and enumerable, with string names.
   - Symbols are not allowed.
   - The prototype must be `Object.prototype` or `null`.
-- Nested values cannot form a cycle.
+- Nested records and tuples cannot form a cycle.
 - It must be hardened with `harden()`.
 
-#### Record
+#### Tuple
 A plain array where:
-- All properties must have pass-by-copy values, such as numbers, strings, or other records and tuples.
+- All property values must be passables.
   - Properties cannot be accessors.
-- All properties must be own and enumerable, where names are the integers indexes or `length`.
+- All properties must be own, and be all the integers indexes or `length`.
   - The array cannot have holes.
   - The prototype must be `Array.prototype`.
-- Nested values cannot form a cycle.
+- Nested records and tuples cannot form a cycle.
 - It must be hardened with `harden()`.
 
 ### Rules for creating remotables
