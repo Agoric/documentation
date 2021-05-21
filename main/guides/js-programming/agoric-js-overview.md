@@ -226,8 +226,9 @@ change altered the behavior.
 
 To avoid this confusion, the shim uses a regular expression to reject code that 
 looks like it is performing a direct eval. This regexp is not complete (you can 
-trick it into performing a direct eval anyway), but that’s safe. Our goal is 
-just to guide people away from confusing behaviors early in their development process.
+trick it into allowing a direct eval), but that’s safe because it really performs
+an indirect eval. Our goal is just to guide people away from confusing behaviors
+early in their development process.
 
 This regexp falsely rejects occurrences inside static strings and comments.
 
