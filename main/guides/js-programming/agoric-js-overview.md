@@ -33,8 +33,8 @@ defines a subset of the globals defined by the baseline JavaScript language spec
 - `Object`
 - `Array`
 - `Number`
-- `Map`
-- `WeakMap`
+- `Map` / `Set`
+- `WeakMap` / `WeakSet`
 - `Number`
 - `BigInt`
 - `Intl`
