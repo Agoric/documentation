@@ -1,6 +1,6 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
-import { amountMath, makeIssuerKit } from '@agoric/ertp';
+import { AmountMath, makeIssuerKit } from '@agoric/ertp';
 
 test('ertp guide amounts', async t => {
   const quatloosKit = makeIssuerKit('quatloos');
@@ -8,7 +8,7 @@ test('ertp guide amounts', async t => {
   // #region manualMake
   const newAmount = { brand: quatloosBrand, value: 5n };
   // #endregion manualMake
-  t.deepEqual(newAmount, amountMath.make(quatloosBrand, 5n));
+  t.deepEqual(newAmount, AmountMath.make(quatloosBrand, 5n));
 
   const { brand, issuer } = quatloosKit;
   // #region isMyIssuer
@@ -33,7 +33,7 @@ test('ertp guide amounts', async t => {
 
   const brandToPurse = new Map();
   brandToPurse.set(brand, issuer.makeEmptyPurse());
-  const quatloos50 = amountMath.make(quatloosBrand, 50n);
+  const quatloos50 = AmountMath.make(quatloosBrand, 50n);
   const payment = quatloosKit.mint.mintPayment(quatloos50);
   // #region depositSomewhere
   const allegedBrand = payment.getAllegedBrand();
@@ -43,15 +43,15 @@ test('ertp guide amounts', async t => {
   t.deepEqual(depositAmount, quatloos50);
 
   // #region getValue
-  const quatloos123 = amountMath.make(quatloosBrand, 123n);
+  const quatloos123 = AmountMath.make(quatloosBrand, 123n);
   // returns 123
-  const value = amountMath.getValue(quatloosBrand, quatloos123);
+  const value = AmountMath.getValue(quatloosBrand, quatloos123);
   // #endregion getValue
 
   t.is(value, 123n);
 
   // #region make
-  const quatloos837 = amountMath.make(quatloosBrand, 837n);
+  const quatloos837 = AmountMath.make(quatloosBrand, 837n);
   // #endregion make
 
   t.deepEqual(quatloos837, { brand: quatloosBrand, value: 837n });

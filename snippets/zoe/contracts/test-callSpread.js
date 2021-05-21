@@ -5,7 +5,7 @@ import bundleSource from '@agoric/bundle-source';
 import { E } from '@agoric/eventual-send';
 import '@agoric/zoe/exported';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
-import { amountMath } from '@agoric/ertp';
+import { AmountMath } from '@agoric/ertp';
 
 import { setup } from '@agoric/zoe/test/unitTests/setupBasicMints';
 import { assertPayoutDeposit } from '@agoric/zoe/test/zoeTestHelpers';
@@ -129,10 +129,10 @@ test('callSpread, mid-strike', async t => {
   t.is(3n, carolTerms.expiration);
   t.is(manualTimer, carolTerms.timer);
   t.is(priceAuthority, carolTerms.priceAuthority);
-  t.truthy(amountMath.isEqual(simoleans(2), carolTerms.underlyingAmount));
-  t.truthy(amountMath.isEqual(moola(60), carolTerms.strikePrice1));
-  t.truthy(amountMath.isEqual(moola(100), carolTerms.strikePrice2));
-  t.truthy(amountMath.isEqual(bucks(300), carolTerms.settlementAmount));
+  t.truthy(AmountMath.isEqual(simoleans(2), carolTerms.underlyingAmount));
+  t.truthy(AmountMath.isEqual(moola(60), carolTerms.strikePrice1));
+  t.truthy(AmountMath.isEqual(moola(100), carolTerms.strikePrice2));
+  t.truthy(AmountMath.isEqual(bucks(300), carolTerms.settlementAmount));
   // #endregion verifyTerms
 
   await E(manualTimer).tick();
@@ -214,8 +214,8 @@ test('pricedCallSpread, mid-strike', async t => {
 
   // region checkTerms-priced
   const bobTerms = await E(zoe).getTerms(longOptionValue.instance);
-  t.truthy(amountMath.isEqual(simoleans(2), bobTerms.underlyingAmount));
-  t.truthy(amountMath.isEqual(bucks(300), bobTerms.settlementAmount));
+  t.truthy(AmountMath.isEqual(simoleans(2), bobTerms.underlyingAmount));
+  t.truthy(AmountMath.isEqual(bucks(300), bobTerms.settlementAmount));
   // endregion checkTerms-priced
 
   // Bob makes an offer for the long option

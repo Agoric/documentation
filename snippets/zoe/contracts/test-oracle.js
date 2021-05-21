@@ -4,7 +4,7 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
-import { makeIssuerKit, AssetKind, amountMath } from '@agoric/ertp';
+import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';
 import { assert, details } from '@agoric/assert';
 import { E } from '@agoric/eventual-send';
 
@@ -24,7 +24,7 @@ test('oracle contract', async t => {
     brand: linkBrand,
   } = makeIssuerKit('$LINK', AssetKind.NAT);
 
-  const feeAmount = amountMath.make(linkBrand, 1000n);
+  const feeAmount = AmountMath.make(linkBrand, 1000n);
 
   const reply = 42;
 
@@ -34,7 +34,7 @@ test('oracle contract', async t => {
       if (query.kind === 'Paid') {
         requiredFee = feeAmount;
         assert(
-          amountMath.isGTE(fee, requiredFee),
+          AmountMath.isGTE(fee, requiredFee),
           details`Minimum fee of ${feeAmount} not met; have ${fee}`,
         );
       }
@@ -70,7 +70,7 @@ test('oracle contract', async t => {
 
   t.is(response, 42);
 
-  const link = amountMath.make(linkBrand, 1n);
+  const link = AmountMath.make(linkBrand, 1n);
 
   const linkPayment = linkMint.mintPayment(link);
 

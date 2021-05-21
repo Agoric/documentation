@@ -7,7 +7,7 @@ import { E } from '@agoric/eventual-send';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { makeBoard } from '@agoric/vats/src/lib-board';
 
-import { amountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
+import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 
 test('ertp guide readme', async t => {
   // #region makeIssuerKit
@@ -21,7 +21,7 @@ test('ertp guide readme', async t => {
   t.is(quatloosBrand, quatloosIssuer.getBrand());
 
   // #region seven
-  const quatloosSeven = amountMath.make(quatloosBrand, 7n);
+  const quatloosSeven = AmountMath.make(quatloosBrand, 7n);
   // #endregion seven
 
   // #region mintPayment
@@ -34,7 +34,7 @@ test('ertp guide readme', async t => {
   // #endregion deposit
 
   // #region five
-  const quatloosFive = amountMath.make(quatloosBrand, 5n);
+  const quatloosFive = AmountMath.make(quatloosBrand, 5n);
   // #endregion five
 
   // #region withdraw
@@ -84,7 +84,7 @@ test('ertp guide readme', async t => {
 
   // #region ticketPayments
   const ticketAmounts = ticketValues.map(ticketValue =>
-    amountMath.make(agoricTheatreTicketBrand, [ticketValue]),
+    AmountMath.make(agoricTheatreTicketBrand, [ticketValue]),
   );
   const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount =>
     agoricTheatreTicketMint.mintPayment(ticketAmount),
