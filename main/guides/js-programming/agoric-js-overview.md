@@ -107,13 +107,10 @@ additions and not part of JavaScript.
 Most Node.js-specific [global objects](https://nodejs.org/dist/latest-v14.x/docs/api/globals.html) 
 are unavailable within a vat including:
 
-* `queueMicrotask`
+* `queueMicrotask`: You can 
+  replace `queueMicrotask(fn)` with `Promise.resolve().then(_ => fn())`.
 * `Buffer` (consider using `TypedArray` instead, but see below)
-* `setImmediate`/`clearImmediate`: Not available, but you can generally 
-  replace `setImmediate(fn)` with `Promise.resolve().then(_ => fn())` to 
-  defer execution of `fn` until after the current event/callback finishes 
-  processing. But be aware it won't run until after all *other* ready 
-  Promise callbacks execute. 
+* `setImmediate`/`clearImmediate`: Not available
 
 There are two queues: the *IO queue* (accessed by `setImmediate`), and 
 the *Promise queue* (accessed by Promise resolution). SES code can only 
