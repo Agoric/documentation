@@ -196,7 +196,7 @@ sneaky = import
 // tricky comment to obscure function invocation
 (modulename);
 ```
-There are also problems with “import” being near a parenthesis inside a comment. 
+There are also problems when “import” is near a parenthesis inside a comment. 
 
 ### Direct vs. indirect eval expressions
 
