@@ -48,7 +48,7 @@ standard wallet-bridge.html.
 Adds a payment to the Wallet for deposit to the user-specified purse,
 either via an autodeposit or manually approved.
 
-### `getDepositFacet(brandBoardId)`
+### `getDepositFacetId(brandBoardId)`
 - `brandBoardId` `{String}`
 - Returns: `{Promise<string>}`
 
