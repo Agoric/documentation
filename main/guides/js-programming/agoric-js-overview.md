@@ -219,16 +219,18 @@ authorities as you like.
 
 The most common way to invoke an indirect eval is `(1,eval)(code)`.
 
-The SES shim cannot correctly emulate a direct eval. If it tried, it would perform 
-an indirect eval. This could be pretty confusing, because the code might not actually 
-use objects from the local scope. You might not notice the problem until some later 
-change altered the behavior.
+The SES proposal does not change how direct and indirect eval work. However, the SES shim
+cannot correctly emulate a direct eval. If it tried, it would perform an indirect eval.
+This could be pretty confusing, because the evaluated code would not use objects from
+the local scope as expected. Furthermore, in the future when SES is natively implemented
+by JavaScript engines, the behavior would revert to direct eval, allowing access to
+anything in scope.
 
-To avoid this confusion, the shim uses a regular expression to reject code that 
-looks like it is performing a direct eval. This regexp is not complete (you can 
-trick it into allowing a direct eval), but that’s safe because it really performs
-an indirect eval. Our goal is just to guide people away from confusing behaviors
-early in their development process.
+To avoid this confusion and compatibility risk, the shim uses a regular expression to
+reject code that looks like it is performing a direct eval. This regexp is not complete
+(you can trick it into allowing a direct eval), but that’s safe because it really performs
+an indirect eval. Our goal is just to guide people away from confusing and non-compliant
+behaviors early in their development process.
 
 This regexp falsely rejects occurrences inside static strings and comments.
 
