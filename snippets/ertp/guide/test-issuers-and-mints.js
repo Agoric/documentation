@@ -1,7 +1,7 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 // #region import
-import { amountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
+import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 // #endregion import
 
 test('ertp guide issuers and mints makeIssuerKit', async t => {
@@ -13,7 +13,7 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
   } = makeIssuerKit('quatloos');
   // This is merely an amount, describing assets.
   // It does not create new assets.
-  const quatloos2 = amountMath.make(quatloosBrand, 2n);
+  const quatloos2 = AmountMath.make(quatloosBrand, 2n);
   // Non-fungible asset, which needs an AssetKind
   // of AssetKind.SET
   const { mint: titleMint, issuer: titleIssuer } = makeIssuerKit(
@@ -80,14 +80,14 @@ test('ertp guide issuers and mints payment methods', async t => {
 
   // #region getAmountOf
   const quatloosPayment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 100n),
+    AmountMath.make(quatloosBrand, 100n),
   );
   // returns an amount with a value of 100 and the quatloos brand
   quatloosIssuer.getAmountOf(quatloosPayment);
   // #endregion getAmountOf
 
   // #region burn
-  const amountToBurn = amountMath.make(quatloosBrand, 10n);
+  const amountToBurn = AmountMath.make(quatloosBrand, 10n);
   const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
   // burntAmount is 10 quatloos
   const burntAmount = await quatloosIssuer.burn(paymentToBurn, amountToBurn);
@@ -95,7 +95,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   t.deepEqual(burntAmount, amountToBurn);
 
   // #region claim
-  const amountToTransfer = amountMath.make(quatloosBrand, 2n);
+  const amountToTransfer = AmountMath.make(quatloosBrand, 2n);
   const originalPayment = quatloosMint.mintPayment(amountToTransfer);
   const newPayment = await quatloosIssuer.claim(
     originalPayment,
@@ -109,7 +109,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   // create an array of 100 payments of 1 unit each
   const payments = [];
   for (let i = 0; i < 100; i += 1) {
-    payments.push(quatloosMint.mintPayment(amountMath.make(quatloosBrand, 1n)));
+    payments.push(quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 1n)));
   }
   // combinedPayment equals 100
   const combinedPayment = quatloosIssuer.combine(payments);
@@ -122,26 +122,26 @@ test('ertp guide issuers and mints payment methods', async t => {
 
   // #region split
   const oldPayment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 30n),
+    AmountMath.make(quatloosBrand, 30n),
   );
   const [paymentA, paymentB] = await quatloosIssuer.split(
     oldPayment,
-    amountMath.make(quatloosBrand, 10n),
+    AmountMath.make(quatloosBrand, 10n),
   );
   // paymentA is 10 quatloos, payment B is 20 quatloos.
   // #endregion split
   const paymentAAmount = await quatloosIssuer.getAmountOf(paymentA);
   const paymentBAmount = await quatloosIssuer.getAmountOf(paymentB);
-  t.deepEqual(paymentAAmount, amountMath.make(quatloosBrand, 10n));
-  t.deepEqual(paymentBAmount, amountMath.make(quatloosBrand, 20n));
+  t.deepEqual(paymentAAmount, AmountMath.make(quatloosBrand, 10n));
+  t.deepEqual(paymentBAmount, AmountMath.make(quatloosBrand, 20n));
 
   // #region splitMany
   // #region splitManyConcise
   const oldQuatloosPayment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 100n),
+    AmountMath.make(quatloosBrand, 100n),
   );
   const goodQuatloosAmounts = Array(10).fill(
-    amountMath.make(quatloosBrand, 10n),
+    AmountMath.make(quatloosBrand, 10n),
   );
 
   const arrayOfNewPayments = await quatloosIssuer.splitMany(
@@ -153,14 +153,14 @@ test('ertp guide issuers and mints payment methods', async t => {
   // amount in the original payment, in the above case, 100 Quatloos in each.
 
   const anotherQuatloosPayment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 1000n),
+    AmountMath.make(quatloosBrand, 1000n),
   );
   // total amounts in badQuatloosAmounts equal 20, when it should equal 1000
-  const badQuatloosAmounts = Array(2).fill(amountMath.make(quatloosBrand, 10n));
+  const badQuatloosAmounts = Array(2).fill(AmountMath.make(quatloosBrand, 10n));
   // throws error
   t.throwsAsync(
     () => quatloosIssuer.splitMany(anotherQuatloosPayment, badQuatloosAmounts),
-    { message: 'rights were not conserved' },
+    { message: /rights were not conserved/ },
   );
   // #endregion splitMany
 
@@ -171,7 +171,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   });
 
   const payment = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 100n),
+    AmountMath.make(quatloosBrand, 100n),
   );
   // #region isLive
   const isItLive = quatloosIssuer.isLive(payment);
@@ -210,7 +210,7 @@ test('ertp guide issuers and mints mint.mintPayment', async t => {
   const { mint: quatloosMint, brand: quatloosBrand } = makeIssuerKit(
     'quatloos',
   );
-  const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
+  const quatloos1000 = AmountMath.make(quatloosBrand, 1000n);
   const newPayment = quatloosMint.mintPayment(quatloos1000);
   // #endregion mintMintPayment
 
@@ -227,7 +227,7 @@ test('ertp guide mints makeIssuerKit', async t => {
   } = makeIssuerKit('quatloos');
   // Mint a new 2 Quatloos payment
   const paymentQuatloos2 = quatloosMint.mintPayment(
-    amountMath.make(quatloosBrand, 2n),
+    AmountMath.make(quatloosBrand, 2n),
   );
   // #endregion makeIssuerMint
   t.truthy(quatloosIssuer.isLive(paymentQuatloos2));

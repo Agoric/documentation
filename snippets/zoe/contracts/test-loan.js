@@ -4,7 +4,7 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
-import { makeIssuerKit, amountMath } from '@agoric/ertp';
+import { makeIssuerKit, AmountMath } from '@agoric/ertp';
 import { E } from '@agoric/eventual-send';
 import { makeRatio } from '@agoric/zoe/src/contractSupport';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer';
@@ -56,8 +56,8 @@ test('loan contract', async t => {
   });
 
   const doAddCollateral = _ => {};
-  const allCollateralAmount = amountMath.make(collateralBrand, 1000n);
-  const myWarningLevel = amountMath.make(loanBrand, 1500n);
+  const allCollateralAmount = AmountMath.make(collateralBrand, 1000n);
+  const myWarningLevel = AmountMath.make(loanBrand, 1500n);
 
   // #region customMarginCall
   E(priceAuthority)
@@ -67,7 +67,7 @@ test('loan contract', async t => {
 
   const { notifier: periodNotifier } = makeNotifierKit();
 
-  const loanPayment = loanMint.mintPayment(amountMath.make(loanBrand, 1000n));
+  const loanPayment = loanMint.mintPayment(AmountMath.make(loanBrand, 1000n));
 
   // #region lend
   const terms = {
@@ -85,7 +85,7 @@ test('loan contract', async t => {
     terms,
   );
 
-  const maxLoan = amountMath.make(loanBrand, 1000n);
+  const maxLoan = AmountMath.make(loanBrand, 1000n);
 
   const proposal = harden({
     give: { Loan: maxLoan },
@@ -144,7 +144,7 @@ test('loan contract', async t => {
   t.truthy(await E(invitationIssuer).isLive(closeLoanInvitationPromise));
   t.truthy(await E(invitationIssuer).isLive(addCollateralInvitationPromise));
 
-  const liquidationTriggerValue = amountMath.make(loanBrand, 1000n);
+  const liquidationTriggerValue = AmountMath.make(loanBrand, 1000n);
   const liquidate = () => {};
 
   // #region liquidate
