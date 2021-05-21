@@ -25,9 +25,9 @@ SES is a safe deterministic subset of "strict mode" JavaScript. This means it do
 any IO objects that provide [*ambient authority*](https://en.wikipedia.org/wiki/Ambient_authority) 
 (which is not “safe”). SES also removes non-determinism by modifying a few built-in objects. For a 
 more detailed explanation of SES and its functionality, see the [SES Guide](./ses/ses-guide.md) 
-and [SES Reference(./ses/ses-reference.md).
+and [SES Reference](./ses/ses-reference.md).
 
-As of SES-0.8.0/Fall 2020, [the SES source code](https://github.com/Agoric/SES-shim/blob/SES-v0.8.0/packages/ses/src/whitelist.js) 
+As of SES-0.8.0/Fall 2020, [the SES source code](https://github.com/endojs/endo/blob/SES-v0.8.0/packages/ses/src/whitelist.js) 
 defines a subset of the globals defined by the baseline JavaScript language specification. SES **includes** the globals:
 
 - `Object`
@@ -69,11 +69,11 @@ The vat environment has four significant objects not part of standard JavaScript
   for debug information only. The console is not obliged to write to the POSIX 
   standard output.
 
--`harden` is a global that freezes an object’s API surface (enumerable data properties). 
+- `harden` is a global that freezes an object’s API surface (enumerable data properties). 
   A hardened object’s properties cannot be changed, so the only way to interact 
   with a hardened object is through its methods. `harden()` is similar to `Object.freeze()` 
   but more powerful. For more details, 
-  see [the details from the `ses` package](https://github.com/Agoric/SES-shim/blob/master/packages/ses/README.md#harden).
+  see [the details from the `ses` package](https://github.com/endojs/endo/blob/master/packages/ses/README.md#harden).
 
   `harden()` should be called on all objects that will be transferred
   across a trust boundary. The general rule is if you make a new object 
@@ -86,7 +86,7 @@ The vat environment has four significant objects not part of standard JavaScript
   can be imported as `import { E } from '@agoric/eventual-send`. These two 
   are defined by the TC39 [Eventual-Send Proposal](https://github.com/tc39/proposal-eventual-send). 
 
-- `Compartment` (a [part of SES](https://github.com/Agoric/SES-shim/tree/SES-v0.8.0/packages/ses#compartment)) 
+- `Compartment` (a [part of SES](https://github.com/endojs/endo/tree/SES-v0.8.0/packages/ses#compartment)) 
   is a global. Vat code runs inside a `Compartment` and can create sub-compartments 
   to host other code (with different globals or transforms).
 
@@ -165,7 +165,7 @@ SES environment. The most surprising removals include `atob`, `TextEncoder`, and
 
 ## Shim limitations
 
-The [*shim*](https://github.com/Agoric/SES-shim/) providing our SES environment is not as 
+The [*shim*](https://github.com/endojs/endo/tree/master/packages/ses) providing our SES environment is not as 
 fully-featured as a native implementation. As a result, you cannot use some forms of code 
 yet. The following restrictions should be lifted once your JS engine can provide SES natively.
 
@@ -282,7 +282,7 @@ compatible; you can use them if you don't invoke certain features.
 The same is true for NPM packages that use missing globals, or attempt to 
 modify frozen primordials.
 
-The [SES wiki](https://github.com/Agoric/SES-shim/wiki) tracks compatibility 
+The [SES wiki](https://github.com/endojs/endo/wiki) tracks compatibility 
 reports for NPM packages, including potential workarounds.
 
 ## Summary

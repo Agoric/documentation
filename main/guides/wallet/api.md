@@ -42,13 +42,13 @@ This is available for completeness to provide the underlying API that's availabl
 standard wallet-bridge.html.
 
 ### `addPayment(payment)`
-- `id` `{ERef<Payment>}`
+- `payment` `{ERef<Payment>}`
 - Returns: `void`
 
 Adds a payment to the Wallet for deposit to the user-specified purse,
 either via an autodeposit or manually approved.
 
-### `getDepositFacet(brandBoardId)`
+### `getDepositFacetId(brandBoardId)`
 - `brandBoardId` `{String}`
 - Returns: `{Promise<string>}`
 
