@@ -425,6 +425,22 @@ current allocation as a [payout](#payout).
 
 Records and tuples are immutable objects which can be passed by copy. They only contain values which are [passables](#passable). 
 For more details, see [Passable objects documentation](/guides/js-programming/far.md#rules-for-creating-passable-objects).
+
+## Remotable
+
+Remotables are objects intended to be used from other vats. Remote messages sent to remotables must only contain [passable](#passable)
+arguments and return passable results. 
+
+All of a remotable's property values must be functions, and cannot be accessors. Its methods are called by wrapping 
+the remotable object with [`E`](#e), such as `E(issuer).getBrand()`. As with all calls to `E()`, it results in a Promise.
+
+Every object returned from a smart contract, such a publicFacet or creatorFacet, must be passable. All objects used in 
+your contract's external API must be passable.
+
+ERTP objects, such as `Purses`, are automatically created as `Remotable`, as are `UserSeats` and `ZCFSeats`.
+
+For more information, see the [Remotable and passable objects documentation](/guides/js-programming/far.md#remotable-and-passable-objects).
+
 ## Seat
 
 Zoe uses a seat to represent an [offer](#offer) in progress, and has two seat [facets](#facet) representing
