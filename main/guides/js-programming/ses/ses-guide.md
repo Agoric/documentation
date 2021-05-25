@@ -443,22 +443,26 @@ While it takes the form of an expression returning a Promise, it's actually not 
 function call, but is instead JavaScript syntax. As such it would let vat code bypass the
 shim's `Compartment`'s module map. For safety, the SES shim rejects code that looks like it
 uses the dynamic import syntax.
-The regular expression for this pattern can be confused into falsely rejecting legitimate 
-code. For example, the word “import” at the end of a line in a comment, such as:
+
+The regular expression for this pattern is safe and should never allow any use of
+dynamic import, however obfuscated the usage is. Because of this, it may be confused
+into falsely rejecting legitimate code.
+
+For example, the word “import” near a parenthesis or at the end of a line inside a
+comment is identified as a disallowed use of `import()` and falsely rejected:
 ```js
 //
 // This function calculates the import
 // duties paid on the merchandise..
 //
 ```
-The regexp confuses the above with something like the following, and rejects it:
+
+But the following obfuscated dynamic import usage is rightly rejected:
 ```js
-foo = bar(argument);
 sneaky = import
-// tricky comment to obscure function invocation
+// comment to hide invocation
 (modulename);
 ```
-There are also problems when “import” is near a parenthesis inside a comment. 
 
 ## Direct vs. indirect eval expressions
 
