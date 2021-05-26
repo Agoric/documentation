@@ -75,26 +75,26 @@ them.
 Holds on-chain digital assets and object capabilities on behalf of the user.
 The header link takes you to the standard non-REPL specific `wallet` API documentation. When calling
 `wallet` API methods from the REPL, `wallet` must be prefaced by `home.` and use `E()`. For 
-example, `E(home.wallet).getPurses()`   
+example, `E(home.wallet).getPurses()`. [Full Wallet API documentation.](/guides/wallet/api.md) 
 
 ### [`chainTimerService`](./timerServices.md)
-On-chain time authority used to schedule events.
+On-chain time authority used to schedule events. [Full `chainTimerService` documentation.](./timerServices.md)
 
 ### [`localTimerService`](./timerServices.md)
-Local off-chain time authority used to schedule events. 
+Local off-chain time authority used to schedule events. [Full `localTimerService` documentation.](./timerServices.md)
 
 ### [`board`](./board.md)
-Shared on-chain location where users can post generally accessible values.
+Shared on-chain location where users can post generally accessible values. [Full `board` documentation.](./board.md)
 
 ### [`sharingService`](./sharingService.md)
 Share on-chain objects with other users without making them
 available to the general public. In particular, you can share 
-items between vats connected to the same remote chain.
+items between vats connected to the same remote chain. [Full `sharingService` documentation.](./sharingService.md)
 
 ### [`ibcport`](./networking.md)
 IBC implementation that lets vats open and close listening ports, 
 connect and disconnect to/from remote ports, and send and receive 
-data over those connections.
+data over those connections. [Full `ibcport` documentation.](./networking.md)
 
 ### [`zoe`](/zoe/api/zoe.md)
 Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
@@ -102,13 +102,13 @@ digital assets and guaranteeing users get either what they want or get a refund 
 they escrowed. Even if the contract is buggy or malicious. The header link takes you to the 
 standard, non-REPL specific, `zoe` API documentation. When calling any of the `zoe` API 
 methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For 
-example, `E(home.zoe).getFoo()` 
+example, `E(home.zoe).getFoo()`. [Full Zoe API documentation.](/zoe/api/zoe.md)
 
 ### [`priceAuthority`](./priceAuthority.md)
-Get price quotes for pairs of digital assets.
+Get price quotes for pairs of digital assets. [Full `priceAuthority` documentation.](./priceAuthority.md)
 
 ### [`scratch`](./scratch.md)
-An off-chain, private, place to store key-value pairs on your ag-solo for later use.
+An off-chain, private, place to store key-value pairs on your ag-solo for later use. [Full `scratch` documentation.](./scratch.md)
 
 ### Deprecated and Internal-only Objects
 
