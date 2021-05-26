@@ -33,8 +33,8 @@ defines a subset of the globals defined by the baseline JavaScript language spec
 - `Object`
 - `Array`
 - `Number`
-- `Map`
-- `WeakMap`
+- `Map` / `Set`
+- `WeakMap` / `WeakSet`
 - `Number`
 - `BigInt`
 - `Intl`
@@ -107,13 +107,10 @@ additions and not part of JavaScript.
 Most Node.js-specific [global objects](https://nodejs.org/dist/latest-v14.x/docs/api/globals.html) 
 are unavailable within a vat including:
 
-* `queueMicrotask`
+* `queueMicrotask`: You can 
+  replace `queueMicrotask(fn)` with `Promise.resolve().then(_ => fn())`.
 * `Buffer` (consider using `TypedArray` instead, but see below)
-* `setImmediate`/`clearImmediate`: Not available, but you can generally 
-  replace `setImmediate(fn)` with `Promise.resolve().then(_ => fn())` to 
-  defer execution of `fn` until after the current event/callback finishes 
-  processing. But be aware it won't run until after all *other* ready 
-  Promise callbacks execute. 
+* `setImmediate`/`clearImmediate`: Not available
 
 There are two queues: the *IO queue* (accessed by `setImmediate`), and 
 the *Promise queue* (accessed by Promise resolution). SES code can only 
@@ -179,26 +176,31 @@ containing either of the strings `<!--` or `-->`, even if neither marks a commen
 
 ### Dynamic import expressions
 
-One active JS feature proposal would add a "dynamic import" expression: `await import('path')`. 
-If implemented (or if someone decides to be an early adopter and adds it to an engine), 
-and your JS engine has this, vat code might be able to bypass the `Compartment`'s module 
-map. For safety, the SES shim already rejects code that looks like it uses this feature. 
-The regular expression for this pattern can be confused into falsely rejecting legitimate 
-code. For example, the word “import” at the end of a line in a comment, such as:
+The "dynamic import expression" (`import('path')`) enables code to load dependencies at
+runtime. It returns a promise resolving to the module namespace object. While it takes
+the form of a function call, it's actually not a function call, but is instead JavaScript
+syntax. As such it would let vat code bypass the shim's `Compartment`'s module map.
+For safety, the SES shim rejects code that looks like it uses a dynamic import expression.
+
+The regular expression for this pattern is safe and should never allow any use of
+dynamic import, however obfuscated the usage is. Because of this, it may be confused
+into falsely rejecting legitimate code.
+
+For example, the word “import” near a parenthesis or at the end of a line inside a
+comment is identified as a disallowed use of `import()` and falsely rejected:
 ```js
 //
 // This function calculates the import
 // duties paid on the merchandise..
 //
 ```
-The regexp confuses the above with something like the following, and rejects it:
+
+But the following obfuscated dynamic import usage is rightly rejected:
 ```js
-foo = bar(argument);
 sneaky = import
-// tricky comment to obscure function invocation
+// comment to hide invocation
 (modulename);
 ```
-There are also problems with “import” being near a parenthesis inside a comment. 
 
 ### Direct vs. indirect eval expressions
 
@@ -225,15 +227,18 @@ authorities as you like.
 
 The most common way to invoke an indirect eval is `(1,eval)(code)`.
 
-The SES shim cannot correctly emulate a direct eval. If it tried, it would perform 
-an indirect eval. This could be pretty confusing, because the code might not actually 
-use objects from the local scope. You might not notice the problem until some later 
-change altered the behavior.
+The SES proposal does not change how direct and indirect eval work. However, the SES shim
+cannot correctly emulate a direct eval. If it tried, it would perform an indirect eval.
+This could be pretty confusing, because the evaluated code would not use objects from
+the local scope as expected. Furthermore, in the future when SES is natively implemented
+by JavaScript engines, the behavior would revert to direct eval, allowing access to
+anything in scope.
 
-To avoid this confusion, the shim uses a regular expression to reject code that 
-looks like it is performing a direct eval. This regexp is not complete (you can 
-trick it into performing a direct eval anyway), but that’s safe. Our goal is 
-just to guide people away from confusing behaviors early in their development process.
+To avoid this confusion and compatibility risk, the shim uses a regular expression to
+reject code that looks like it is performing a direct eval. This regexp is not complete
+(you can trick it into allowing a direct eval), but that’s safe because it really performs
+an indirect eval. Our goal is just to guide people away from confusing and non-compliant
+behaviors early in their development process.
 
 This regexp falsely rejects occurrences inside static strings and comments.
 
