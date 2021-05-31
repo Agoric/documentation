@@ -256,6 +256,7 @@ to manipulate the offer. The queries and operations are as follows:
     explicitly choosing to close out the `seat`. The guarantees also hold if the contract
     encounters an error or misbehaves. There are several methods for finding out
     what `amount` a current `allocation` is.
+    
 
     This is similar to the previous method, `getAmountAllocated()`. `getAmountAllocated()`
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
@@ -267,7 +268,32 @@ to manipulate the offer. The queries and operations are as follows:
         Asset: AmountMath.make(quatloosBrand, 5n),
         Price: AmountMath.make(quatloosBrand, 9n)
       }
-      ```
+    ```
+ ### `ZCFSeat.incrementBy(amountKeywordRecord)
+  - `amountKeywordRecord`: `{AmountKeywordRecord}``
+  - Returns: `{AmountKeyRecord}`
+  - Adds the `amountKeywordRecord` argument to the `ZCFseat`'s staged allocation and returns the
+    resulting new staged allocation value.     
+
+### `ZCFSeat.decrementBy(amountKeywordRecord)`
+  - `amountKeywordRecord`: `{AmountKeywordRecord}``
+  - Returns: `{AmountKeywordRecord}`
+  - Subtracts the `amountKeywordRecord` argument from the `ZCFseat`'s staged allocation and returns the
+    resulting new staged allocation value.     
+
+### `ZCFSeat.clear()`
+  - Returns: `{void}`
+  - Deletes the `ZCFSeat`'s current staged allocation, if any.
+
+### `ZCFSeat.getStagedAllocation()`
+  - Returns: `{<Allocation>}`
+  - Gets and returns the `stagedAllocation`, wich is the allocation committed if the seat is reallocated over, if offer safety holds and rights are conserved.
+
+### `ZCFSeat.hasStagedAllocation()`
+  - Returns: `{boolean}`
+  - Returns `true` if there is a staged allocation, i.e. whether `incrementBy()` or `decrementBy()` has been called and `clear()` has not. Otherwise returns 
+    `false`.      
+      
 ### `ZCFSeat.exit(completion)`
    - `completion`: `{Object}`
    - Returns: `void`
@@ -293,26 +319,8 @@ to manipulate the offer. The queries and operations are as follows:
      ```js
      throw seat.fail(Error('you did it wrong'));
      ```
-### `ZCFSeat.stage(newAllocation)`
-   - `newAllocation`: `{Allocation}`
-   - Returns: `{SeatStaging}`
-   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
-     the key is a keyword such as `Asset` or `Price` applicable to the
-     contract. The value is an `amount` with its `value` and `brand`.
-    
-     A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
-     at least two `seatStagings` as arguments and does its reallocation based on them.
-
-     You can create multiple independent `seatStagings` for a `seat`. None of them has
-     any effect until submitted to `reallocate()`. Each call to `stage()` starts from the
-     `seat`'s current `allocation` and uses the `newAllocation` as a replacement for the
-     current state. Any keywords not mentioned in `newAllocation` retain the
-     same `amounts`. All keywords mentioned in the `newAllocation` have their `amounts`
-     replaced with the corresponding `amount` from `newAllocation`.
-
-     Note that ZoeHelpers [`trade()`](./zoe-helpers.md#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) 
-     and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might
-     be easier to use for simple cases.
+### `ZCFSeat.stage(newAllocation)`**DEPRECATED 22-06-01**
+   
 ### `ZCFSeat.isOfferSafe(newAllocation)`
    - `newAllocation`: `{Allocation}`
    - Returns `{Boolean}`
