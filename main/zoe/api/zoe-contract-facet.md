@@ -47,13 +47,16 @@ This is usually used when a party has to make an offer first, such as escrowing 
 for sale in an auction or covered call.
 - `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
 
-## `zcf.makeZCFMint(keyword, assetKind)`
+## `zcf.makeZCFMint(keyword, assetKind, displayInfo)`
 - `keyword` `{String}`
 - `assetKind` `{AssetKind}` (defaults to `AssetKind.NAT`)
+- `displayInfo` `{DisplayInfo}` (optional)
 - Returns: `{Promise<ZCFMint>}`
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
-instead of relying on an asynchronous ERTP `mint`.
+instead of relying on an asynchronous ERTP `mint`. The optional `displayInfo` parameter takes values
+like `{ decimalPlaces: 16 }` that tell the UI how to display values associated with the created mint's 
+brand. It defaults to undefined.
 
 **Important**: `ZCFMints` do **not** have the same methods as an ERTP `mint`. Do not try to use
 ERTP methods on a `ZCFMint` or vice versa.
@@ -61,6 +64,22 @@ ERTP methods on a `ZCFMint` or vice versa.
 **Important**: On the other hand, the `issuer` and `brand` associated with a `zcfMint`
 do have the same methods as their ERTP-derived counterparts. Assets created by a `zcfMint` are treated
 the same as ERTP `mint`-created assets by ERTP methods.
+
+The following demonstrates `zcf.makeZCFMint`:
+
+**Note**: The call to make the `ZCFMint` is asynchronous, but
+calls to the resulting `ZCFMint` are synchronous.
+```js
+const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.SET);
+const { brand, issuer } = mySynchronousMint.getIssuerRecord();
+mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
+```
+`ZCFMints` have three methods, two of which use an `AmountKeywordRecord`
+- `getIssuerRecord()`
+- `mintGains(gains, zcfSeat)`
+- `burnLosses(losses, zcfSeat)`
+
+### `AmountKeywordRecord`
 
 `AmountKeywordRecord` is a record in which the keys are keywords, and
 the values are `amounts`. Keywords are unique identifiers per contract,
@@ -87,19 +106,6 @@ const myAmountKeywordRecord =
   Price: quatloos9
 }
 ```
-The following demonstrates `zcf.makeZCFMint`:
-
-**Note**: The call to make the `ZCFMint` is asynchronous, but
-calls to the resulting `ZCFMint` are synchronous.
-```js
-const mySynchronousMint = await zcf.makeZCFMint('MySyncMint', 'set');
-const { brand, issuer } = mySynchronousMint.getIssuerRecord();
-mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
-```
-`ZCFSeats` have three methods:
-- `getIssuerRecord()`
-- `mintGains(gains, zcfSeat)`
-- `burnLosses(losses, zcfSeat)
 
 ### `ZCFMint.getIssuerRecord()`
   - Returns: `{IssuerRecord}`
