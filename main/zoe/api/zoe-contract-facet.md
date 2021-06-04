@@ -70,7 +70,7 @@ The following demonstrates `zcf.makeZCFMint`:
 **Note**: The call to make the `ZCFMint` is asynchronous, but
 calls to the resulting `ZCFMint` are synchronous.
 ```js
-const mySynchronousMint = await zcf.makeZCFMint('MySyncMint', 'set');
+const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.SET);
 const { brand, issuer } = mySynchronousMint.getIssuerRecord();
 mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
