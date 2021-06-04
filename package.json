@@ -57,6 +57,9 @@
     "vuepress": "^1.5.4",
     "vuepress-plugin-check-md": "0.0.2"
   },
+  "resolutions": {
+    "**/esm": "agoric-labs/esm#Agoric-built"
+  },
   "globals": {
     "harden": "readonly"
   },
