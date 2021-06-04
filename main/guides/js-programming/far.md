@@ -12,7 +12,7 @@ the smart contract or dapp level, objects from other vats or machines can almost
 as if they are local.
 
 To call a method on an object from another vat or machine, you must 
-use [`E()`](./eventual-send.html#remote-object-communication-with-e). For example, getting
+use [`E()`](./eventual-send.md#remote-object-communication-with-e). For example, getting
 an `Issuer`'s `brand` would look like `E(issuer).getBrand()`.
 
 Objects intended to be used from other vats are called *remotables*. Remote messages sent to
