@@ -426,10 +426,6 @@ The term comes from the expression "having a seat at the table" with regards to 
 For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.md#zcfseat-object) and 
 the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 
-## SeatStagings
-`seatStagings` are associations of seats with new [allocations](#allocation). `seatStagings` are
-passed to `zcf.reallocate()`.
-
 ## SES (Secure ECMAScript)
 
 SES is a standards-track extension to the JavaScript standard. It
