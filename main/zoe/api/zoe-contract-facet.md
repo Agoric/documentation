@@ -270,17 +270,21 @@ to manipulate the offer. The queries and operations are as follows:
       }
     ```
  ### `ZCFSeat.incrementBy(amountKeywordRecord)`
-  - `amountKeywordRecord`: `{AmountKeywordRecord}``
+  - `amountKeywordRecord`: `{AmountKeywordRecord}`
   - Returns: `{AmountKeyRecord}`
-  - Adds the `amountKeywordRecord` argument to the `ZCFseat`'s staged allocation and returns the
-    resulting new staged allocation value.     
+  - Adds the `amountKeywordRecord` argument to the `ZCFseat`'s staged allocation and returns the 
+    same `amountKeywordRecord` so it can be reused in another call. Note that this lets
+    `incrementBy(decrementBy()` work as a usage pattern.    
 
 ### `ZCFSeat.decrementBy(amountKeywordRecord)`
   - `amountKeywordRecord`: `{AmountKeywordRecord}``
   - Returns: `{AmountKeywordRecord}`
   - Subtracts the `amountKeywordRecord` argument from the `ZCFseat`'s staged allocation and returns the
-    resulting new staged allocation value. The subtracted amount value cannot be greater than
-    the subtracted from amount (i.e. negative results are not allowed).
+    same `amountKeywordRecord` so it can be used in another call.  Note that this lets
+    `incrementBy(decrementBy()` work as a usage pattern.  
+    
+    The amounts to subtract cannot be 
+    greater than the staged allocation (i.e. negative results are not allowed).
 
 ### `ZCFSeat.clear()`
   - Returns: `{void}`
@@ -288,12 +292,12 @@ to manipulate the offer. The queries and operations are as follows:
 
 ### `ZCFSeat.getStagedAllocation()`
   - Returns: `{<Allocation>}`
-  - Gets and returns the `stagedAllocation`, wich is the allocation committed if the seat is reallocated over, if offer safety holds and rights are conserved.
+  - Gets and returns the `stagedAllocation`, which is the allocation committed if the seat is reallocated over, if offer safety holds and rights are conserved.
 
 ### `ZCFSeat.hasStagedAllocation()`
   - Returns: `{boolean}`
-  - Returns `true` if there is a staged allocation, i.e. whether `incrementBy()` or `decrementBy()` has been called and `clear()` has not. Otherwise returns 
-    `false`.      
+  - Returns `true` if there is a staged allocation, i.e. whether `incrementBy()` or `decrementBy()` has been called and `clear()`
+    and `reallocate()` have not. Otherwise returns `false`.      
       
 ### `ZCFSeat.exit(completion)`
    - `completion`: `{Object}`
@@ -320,8 +324,7 @@ to manipulate the offer. The queries and operations are as follows:
      ```js
      throw seat.fail(Error('you did it wrong'));
      ```
-### `ZCFSeat.stage(newAllocation)`**DEPRECATED 22-06-01**
-   
+     
 ### `ZCFSeat.isOfferSafe(newAllocation)`
    - `newAllocation`: `{Allocation}`
    - Returns `{Boolean}`
@@ -428,8 +431,11 @@ zcf.assertUniqueKeyword(keyword);
 - `seats` `{ZCFSeats[]}` (at least two)
 - Returns: `{void}`
 
-The contract reallocates over its `seats` arguments, which are
-associations of `seats` with staged allocations to be used in reallocation.
+`zcf.reallocate()` commits the staged allocations for each of its seat arguments,
+making their staged allocations their current allocations. `zcf.reallocate()` then
+transfers the assets escrowed in Zoe from one seat to another. Importantly, the assets 
+stay escrowed, with only the internal Zoe accounting of each seat's allocation changed.
+
 There must be at least two `ZCFseats` in the array argument. Every `ZCFSeat`
 with a staged allocation must be included in the argument array or an error
 is thrown. If any seat in the argument array does not have a staged allocation,
@@ -445,8 +451,16 @@ fail before any seats have their current allocation changed
 The reallocation only succeeds if it:
 1. Conserves rights (the specified `amounts` have the same total value as the
   current total amount)
-2. Is 'offer-safe' for all parties
-  involved. Offer safety is checked at the staging step.
+2. Is 'offer-safe' for all parties involved. 
+
+The reallocation is partial, only applying to the `seats` in the
+argument array. By induction, if rights conservation and
+offer safety hold before, they hold after a safe reallocation.
+
+This is true even though we only re-validate for `seats` whose
+allocations change. A reallocation can only effect offer safety for
+those `seats`, and since rights are conserved for the change, overall
+rights are unchanged.
 
 `reallocate()` throws this error:
 - `reallocating must be done over two or more seats`
