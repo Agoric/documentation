@@ -176,7 +176,7 @@ The contract then uses `getProposal()` to extract the properties of the proposal
 `makeMatchingInvitation()`, our first handler, then constructs a handler for the second offer,
 with the first offer's `want` and `give` in scope. This second
 handler, `matchingSeatOfferHandler()` does the final step.
-It uses the [`swap` helper  function](../api/zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg),
+It uses the [`swap` helper  function](../api/zoe-helpers.md#swap-zcf-leftseat-rightseat),
 a powerful Zoe Helper that handles a lot of the logic of doing a basic swap of assets.
 
 If the swap succeeds, it reallocates the assets between the parties, as described above. The handler then exits 

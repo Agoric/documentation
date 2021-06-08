@@ -262,6 +262,7 @@ to manipulate the offer. The queries and operations are as follows:
     explicitly choosing to close out the `seat`. The guarantees also hold if the contract
     encounters an error or misbehaves. There are several methods for finding out
     what `amount` a current `allocation` is.
+    
 
     This is similar to the previous method, `getAmountAllocated()`. `getAmountAllocated()`
     gets the `allocation` of one keyword at a time, while `getCurrentAllocation()` returns
@@ -273,7 +274,37 @@ to manipulate the offer. The queries and operations are as follows:
         Asset: AmountMath.make(quatloosBrand, 5n),
         Price: AmountMath.make(quatloosBrand, 9n)
       }
-      ```
+    ```
+ ### `ZCFSeat.incrementBy(amountKeywordRecord)`
+  - `amountKeywordRecord`: `{AmountKeywordRecord}`
+  - Returns: `{AmountKeyRecord}`
+  - Adds the `amountKeywordRecord` argument to the `ZCFseat`'s staged allocation and returns the 
+    same `amountKeywordRecord` so it can be reused in another call. Note that this lets
+    `zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))` work as a usage pattern. 
+
+### `ZCFSeat.decrementBy(amountKeywordRecord)`
+  - `amountKeywordRecord`: `{AmountKeywordRecord}`
+  - Returns: `{AmountKeywordRecord}`
+  - Subtracts the `amountKeywordRecord` argument from the `ZCFseat`'s staged allocation and returns the
+    same `amountKeywordRecord` so it can be used in another call.  Note that this lets
+    `zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))` work as a usage pattern.  
+    
+    The amounts to subtract cannot be 
+    greater than the staged allocation (i.e. negative results are not allowed).
+
+### `ZCFSeat.clear()`
+  - Returns: `{void}`
+  - Deletes the `ZCFSeat`'s current staged allocation, if any.
+
+### `ZCFSeat.getStagedAllocation()`
+  - Returns: `{<Allocation>}`
+  - Gets and returns the `stagedAllocation`, which is the allocation committed if the seat is reallocated over, if offer safety holds and rights are conserved.
+
+### `ZCFSeat.hasStagedAllocation()`
+  - Returns: `{boolean}`
+  - Returns `true` if there is a staged allocation, i.e. whether `incrementBy()` or `decrementBy()` has been called and `clear()`
+    and `reallocate()` have not. Otherwise returns `false`.      
+      
 ### `ZCFSeat.exit(completion)`
    - `completion`: `{Object}`
    - Returns: `void`
@@ -299,26 +330,7 @@ to manipulate the offer. The queries and operations are as follows:
      ```js
      throw seat.fail(Error('you did it wrong'));
      ```
-### `ZCFSeat.stage(newAllocation)`
-   - `newAllocation`: `{Allocation}`
-   - Returns: `{SeatStaging}`
-   - An `Allocation` is an `AmountKeywordRecord` of key-value pairs where
-     the key is a keyword such as `Asset` or `Price` applicable to the
-     contract. The value is an `amount` with its `value` and `brand`.
-    
-     A `seatStaging` is an association of a `seat` with reallocations. `reallocate()` takes
-     at least two `seatStagings` as arguments and does its reallocation based on them.
-
-     You can create multiple independent `seatStagings` for a `seat`. None of them has
-     any effect until submitted to `reallocate()`. Each call to `stage()` starts from the
-     `seat`'s current `allocation` and uses the `newAllocation` as a replacement for the
-     current state. Any keywords not mentioned in `newAllocation` retain the
-     same `amounts`. All keywords mentioned in the `newAllocation` have their `amounts`
-     replaced with the corresponding `amount` from `newAllocation`.
-
-     Note that ZoeHelpers [`trade()`](./zoe-helpers.md#trade-zcf-left-right-lefthasexitedmsg-righthasexitedmsg) 
-     and [`swap()`](./zoe-helpers.md#swap-zcf-leftseat-rightseat-lefthasexitedmsg-righthasexitedmsg) might
-     be easier to use for simple cases.
+     
 ### `ZCFSeat.isOfferSafe(newAllocation)`
    - `newAllocation`: `{Allocation}`
    - Returns `{Boolean}`
@@ -421,39 +433,46 @@ a valid keyword, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
-## `zcf.reallocate(seatStagings)`
-- `seatStagings` `{SeatStaging[]}` (at least two)
+## `zcf.reallocate(seats)`
+- `seats` `{ZCFSeats[]}` (at least two)
 - Returns: `{void}`
 
-The contract reallocates over `seatStagings`, which are
-associations of `seats` with new `allocations` to be used in reallocation.
-There must be at least two `seatStagings` in the array argument.
+`zcf.reallocate()` commits the staged allocations for each of its seat arguments,
+making their staged allocations their current allocations. `zcf.reallocate()` then
+transfers the assets escrowed in Zoe from one seat to another. Importantly, the assets 
+stay escrowed, with only the internal Zoe accounting of each seat's allocation changed.
+
+There must be at least two `ZCFSeats` in the array argument. Every `ZCFSeat`
+with a staged allocation must be included in the argument array or an error
+is thrown. If any seat in the argument array does not have a staged allocation,
+an error is thrown. 
+
+On commit, the staged allocations become the seats' current allocations and 
+the staged allocations are deleted.
+
+Note: `reallocate()` is an *atomic operation*. To enforce offer safety, 
+it will never abort part way through. It will completely succeed or it will 
+fail before any seats have their current allocation changed.
 
 The reallocation only succeeds if it:
 1. Conserves rights (the specified `amounts` have the same total value as the
   current total amount)
-2. Is 'offer-safe' for all parties
-  involved. Offer safety is checked at the staging step.
+2. Is 'offer-safe' for all parties involved. 
 
-The reallocation is partial, only applying to `seats` associated
-with the `seatStagings`. By induction, if rights conservation and
+The reallocation is partial, only applying to the `seats` in the
+argument array. By induction, if rights conservation and
 offer safety hold before, they hold after a safe reallocation.
 
 This is true even though we only re-validate for `seats` whose
-`allocations` change. A reallocation can only effect offer safety for
+allocations change. A reallocation can only effect offer safety for
 those `seats`, and since rights are conserved for the change, overall
 rights are unchanged.
 
-`reallocate()` throws these errors:
+`reallocate()` throws this error:
 - `reallocating must be done over two or more seats`
-- `The seatStaging was not recognized`
-- `The seatStaging was not recognized`
-- `keyword must be unique`
-- If the total `amount` per `brand` is not equal to the total `amount` per `brand`
-  in the proposed reallocation. (no message)
+
 ```js
-zcf.reallocate(
-    seat.stage(seatAAllocation),
-    seat.stage(seatBAllocation),
-  );
+sellerSeat.incrementBy(buyerSeat.decrementBy({ Money: providedMoney }));
+buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
+zcf.reallocate(buyerSeat, sellerSeat);
 ```

@@ -87,104 +87,23 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
     swap(zcf, seat, offer);
 ```
 
-## `trade(zcf, left, right, leftHasExitedMsg, rightHasExitedMsg)`
-- `zcf` - `{ContractFacet}`
-- `left` - `{SeatGainsLossesRecord}`
-- `right` - `{SeatGainsLossesRecord}`
-- `leftHasExitedMsg` - `{String}` - Optional
-- `rightHasExitedMsg` - `{String}` - Optional
-- Returns: void
-
-::: details SeatGainsLossesRecord
- - `seat` - `{ZCFSeat}`
- - `gains` - `{AmountKeywordRecord}`  - what the seat will
-gain as a result of this trade
- - `losses` - `{AmountKeywordRecord=}`  - what the seat will give up
-   as a result of this trade. Losses is optional, but can only be
-   omitted if the keywords for both seats are the same. If losses is
-   not defined, the gains of the other seat is subtracted.
-:::
-
-**Note**: The `swap()` method is a specific use of `trade()`. In `swap()`, 
-for both `seats`, everything a `seat` wants is given to it, having been
-taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
-- Use `trade()` when any of these are true:
-  - The `seats` have different keywords.
-  - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
-  - You want to continue to interact with the `seats` after the trade.
-- Use `swap()` when all of these are true:
-  - Both `seats` use the same keywords.
-  - The `seats`' wants can be fulfilled from the other `seat`.
-  - No further `seat` interaction is desired.
-
-This method always takes `zcf` as its first argument.
-
-The `left` and `right` arguments are each `SeatGainsLossesRecords`
-with `seat`, `gains`, and optional `losses` properties. `gains` and
-`losses` are `amountKeywordRecords` describing declaratively what is
-added or removed from that `seat`'s allocation.
-
-`trade()` does a trade between the `seats` in `left` and `right`. If the two `seats` can trade, 
-it swaps their compatible assets.
-
-Any surplus remains with its original `seat`. For example if `seat` 
-A gives 5 Quatloos and `seat` B only wants 3 Quatloos, `seat` A retains 2 Quatloos.
-
-If either of the seats has exited, `trade` throws. `trade` itself does NOT
-`fail` or `exit` either seat for any reason.
-
-If the trade fails for reasons other than either seat exiting, it
-throws the message `The trade between left and right failed. Please
-check the log for more information`. It writes the specific error to
-the console.
-
-```js
-import {
-  trade,
-} from '@agoric/zoe/src/contractSupport';
-trade(
-      zcf,
-      {
-        seat: poolSeat,
-        gains: { Central: amountIn },
-        losses: { Secondary: amountOut },
-        },
-      },
-      {
-        seat: swapSeat,
-        gains: { Out: amountOut },
-        losses: { In: amountIn },
-      },
-    );
-```
-
-## `swap(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)`
+## `swap(zcf, leftSeat, rightSeat)`
 - `zcf` `{ContractFacet}`
 - `leftSeat` `{ZCFSeat}`
 - `rightSeat` `{ZCFSeat}`
-- `leftHasExitedMsg` - `{String}` - Optional
-- `rightHasExitedMsg` - `{String}` - Optional
 - Returns: `defaultAcceptanceMsg`
 
-**Note**: The `swap()` method is a specific use of `trade()`. In `swap(),` 
+**Note**: In `swap(),` 
 for both `seats`, everything a `seat` wants is given to it, having been
-taken from the other `seat`. `swap()` exits both `seats`, but `trade()` does not.
-- Use `trade()` when any of these are true:
-  - The `seats` have different keywords.
-  - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
-  - You want to continue interacting with the `seats` after the trade.
-- Use `swap()` when all of these are true:
+taken from the other `seat`. `swap()` exits both `seats`.
+Use `swap()` when all of these are true:
   - Both `seats` use the same keywords.
   - The `seats`' wants can be fulfilled from the other `seat`.
   - No further `seat` interaction is desired.
 
 This method always takes `zcf` as its first argument.
 
-`leftHasExitedMsg` and `rightHasExitedMsg` are optional and are passed
-to `trade` within `swap` to add custom error messages in the case that
-either seat has exited.
-
-If the two `seats` can trade, then swap their compatible assets,
+If the two `seats` can trade, they swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
 
@@ -202,32 +121,23 @@ import {
 swap(zcf, firstSeat, secondSeat);
 ```
 
-## `swapExact(zcf, leftSeat, rightSeat, leftHasExitedMsg, rightHasExitedMsg)`
+## `swapExact(zcf, leftSeat, rightSeat)`
 - `zcf` `{ContractFacet}`
 - `leftSeat` `{ZCFSeat}`
 - `rightSeat` `{ZCFSeat}`
-- `leftHasExitedMsg` - `{String}` - Optional
-- `rightHasExitedMsg` - `{String}` - Optional
 - Returns: `defaultAcceptanceMsg`
 
-**Note**: `swapExact()` and `swap()` are specific uses of `trade()`. In `swap()` and `swapExact()`,
+In `swap()` and `swapExact()`,
 for both seats, everything a seat wants is given to it, having been
-taken from the other seat. `swap()` and `swapExact()` exit both seats, but `trade()` does not.
-- Use `trade()` when any of these are true:
-  - The `seats` have different keywords.
-  - The `amounts` to be reallocated don't exactly match the wants of the `seats`. 
-  - You want to continue interacting with the `seats` after the trade.
-- Use `swap()` or `swapExact()` when all of these are true:
-  - Both `seats` use the same keywords.
+taken from the other seat. `swap()` and `swapExact()` exit both seats.
+Use `swap()` or `swapExact()` when both of these are true:
   - The `seats`' wants can be fulfilled from the other `seat`.
   - No further `seat` interaction is desired.
 
-This method always takes `zcf` as its first argument.
+For `swap()` only, both `seats` use the same keywords. This does **not** 
+hold for `swapExact()`
 
-`leftHasExitedMsg` and `rightHasExitedMsg` are optional and are passed
-to `trade()` within `swapExact()` to add custom error messages in the case that
-either seat has exited. They default to `the left seat in swapExact() has exited`,
-and `the right seat in swapExact() has exited` respectively. 
+This method always takes `zcf` as its first argument.
 
 `exactSwap()` is a special case of `swap()` such that it is successful only
 if both seats gain everything they want and lose everything they were willing to give.
@@ -235,7 +145,7 @@ It is only good for exact and entire swaps where each
 seat wants everything that the other seat has. The benefit of using
 this method is that the keywords of each seat do not matter.
 
-If the two `seats` can trade, then swap their compatible assets,
+If the two `seats` can trade, they swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
 
