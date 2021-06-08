@@ -436,7 +436,7 @@ making their staged allocations their current allocations. `zcf.reallocate()` th
 transfers the assets escrowed in Zoe from one seat to another. Importantly, the assets 
 stay escrowed, with only the internal Zoe accounting of each seat's allocation changed.
 
-There must be at least two `ZCFseats` in the array argument. Every `ZCFSeat`
+There must be at least two `ZCFSeats` in the array argument. Every `ZCFSeat`
 with a staged allocation must be included in the argument array or an error
 is thrown. If any seat in the argument array does not have a staged allocation,
 an error is thrown. 
@@ -446,7 +446,7 @@ the staged allocations are deleted.
 
 Note: `reallocate()` is an *atomic operation*. To enforce offer safety, 
 it will never abort part way through. It will completely succeed or it will 
-fail before any seats have their current allocation changed
+fail before any seats have their current allocation changed.
 
 The reallocation only succeeds if it:
 1. Conserves rights (the specified `amounts` have the same total value as the
@@ -464,3 +464,9 @@ rights are unchanged.
 
 `reallocate()` throws this error:
 - `reallocating must be done over two or more seats`
+
+```js
+sellerSeat.incrementBy(buyerSeat.decrementBy({ Money: providedMoney }));
+buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
+zcf.reallocate(buyerSeat, sellerSeat);
+```
