@@ -87,8 +87,6 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
     swap(zcf, seat, offer);
 ```
 
-## `trade(zcf, left, right, leftHasExitedMsg, rightHasExitedMsg)`. DEPRICATED 2021-06-07
-
 ## `swap(zcf, leftSeat, rightSeat)`
 - `zcf` `{ContractFacet}`
 - `leftSeat` `{ZCFSeat}`
@@ -105,7 +103,7 @@ Use `swap()` when all of these are true:
 
 This method always takes `zcf` as its first argument.
 
-If the two `seats` can trade, then swap their compatible assets,
+If the two `seats` can trade, they swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
 
@@ -131,11 +129,13 @@ swap(zcf, firstSeat, secondSeat);
 
 In `swap()` and `swapExact()`,
 for both seats, everything a seat wants is given to it, having been
-taken from the other seat. `swap()` and `swapExact()` exit both seats
-Use `swap()` or `swapExact()` when all of these are true:
-  - Both `seats` use the same keywords.
+taken from the other seat. `swap()` and `swapExact()` exit both seats.
+Use `swap()` or `swapExact()` when both of these are true:
   - The `seats`' wants can be fulfilled from the other `seat`.
   - No further `seat` interaction is desired.
+
+For `swap()` only, both `seats` use the same keywords. This does **not** 
+hold for `swapExact()`
 
 This method always takes `zcf` as its first argument.
 
@@ -145,7 +145,7 @@ It is only good for exact and entire swaps where each
 seat wants everything that the other seat has. The benefit of using
 this method is that the keywords of each seat do not matter.
 
-If the two `seats` can trade, then swap their compatible assets,
+If the two `seats` can trade, they swap their compatible assets,
 exiting both `seats`. It returns the message `The offer has been accepted. 
 Once the contract has been completed, please check your payout`.
 
