@@ -274,14 +274,14 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns: `{AmountKeyRecord}`
   - Adds the `amountKeywordRecord` argument to the `ZCFseat`'s staged allocation and returns the 
     same `amountKeywordRecord` so it can be reused in another call. Note that this lets
-    `incrementBy(decrementBy()` work as a usage pattern.    
+    `zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))` work as a usage pattern. 
 
 ### `ZCFSeat.decrementBy(amountKeywordRecord)`
-  - `amountKeywordRecord`: `{AmountKeywordRecord}``
+  - `amountKeywordRecord`: `{AmountKeywordRecord}`
   - Returns: `{AmountKeywordRecord}`
   - Subtracts the `amountKeywordRecord` argument from the `ZCFseat`'s staged allocation and returns the
     same `amountKeywordRecord` so it can be used in another call.  Note that this lets
-    `incrementBy(decrementBy()` work as a usage pattern.  
+    `zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))` work as a usage pattern.  
     
     The amounts to subtract cannot be 
     greater than the staged allocation (i.e. negative results are not allowed).
