@@ -5,7 +5,7 @@
 # website at localhost:8080 by default
 ####
 home: true # use default home page layout (hero image with text, features section)
-heroImage: https://agoric.com/assets/images/logo.svg
+heroImage: https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg
 ## Action button
 actionText: Try Beta → # text that goes in the button
 actionLink: /getting-started/beta.html # go-to link when clicking on button

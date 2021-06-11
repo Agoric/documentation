@@ -48,7 +48,7 @@ module.exports = {
   themeConfig: {
     sidebarDepth: 2,
     lastUpdated: 'Last Updated', 
-    logo: '/logo.svg',
+    logo: 'https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg',
     /* --- NAVBAR (top) --- */
     nav,
     /* --- SIDEBAR --- */
