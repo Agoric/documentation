@@ -109,6 +109,14 @@ code directly by calling:
 
 <<< @/snippets/test-intro-zoe.js#inspectCode
 
+In many cases, the bundled source is a single reviewable string.
+In others, the bundle contains to base 64 encoded zip file that you can
+extract for review.
+```
+jq -r .endoZipBase64 bundle.json | base64 -d > bundle.zip
+unzip bundle.zip
+```
+
 Contracts can add their own specific information to invitations. In
 this case, the Atomic Swap contract adds information about what is
 being traded: the `asset`, the amount Alice has escrowed, and the

@@ -105,6 +105,14 @@ const atomicSwapBundle = await bundleSource(
 The installation operation returns
 an `installation`, which is an object with one method; `getBundle()`. You can access an installed contract's source
 code via `const { source } = await E(installation).getBundle();`.
+In many cases, the bundled source is a single reviewable string.
+In others, the bundle contains to base 64 encoded zip file that you can
+extract for review.
+```
+jq -r .endoZipBase64 bundle.json | base64 -d > bundle.zip
+unzip bundle.zip
+```
+
 
 ## Burn
 
