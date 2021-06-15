@@ -1,7 +1,7 @@
 // @ts-check
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
-import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
+import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';

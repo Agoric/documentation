@@ -4,11 +4,12 @@
 
 // Add imports here
 
-// Optional: you may wish to use the Zoe helpers in @agoric/zoe/src/contractSupport
-import { swap as _ } from '@agoric/zoe/src/contractSupport';
+// Optional: you may wish to use the Zoe helpers in
+// @agoric/zoe/src/contractSupport/index.js
+import { swap as _ } from '@agoric/zoe/src/contractSupport/index.js';
 
 // Import the Zoe types
-import '@agoric/zoe/exported';
+import '@agoric/zoe/exported.js';
 
 /**
  * [Contract Description Here]

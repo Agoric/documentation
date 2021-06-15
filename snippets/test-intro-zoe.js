@@ -1,5 +1,5 @@
 // @ts-check
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import { E } from '@agoric/eventual-send';
 import { makeZoe } from '@agoric/zoe';
@@ -9,7 +9,7 @@ import { makeIssuerKit, AmountMath } from '@agoric/ertp';
 import bundleSource from '@agoric/bundle-source';
 // #endregion importBundleSource
 
-import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
+import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 
 test('intro to zoe', async t => {
   const zoe = makeZoe(makeFakeVatAdmin().admin);
