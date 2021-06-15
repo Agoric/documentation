@@ -5,7 +5,7 @@
 // Add imports here
 
 // Optional: you may wish to use the Zoe helpers in @agoric/zoe/src/contractSupport
-import { trade as _ } from '@agoric/zoe/src/contractSupport';
+import { swap as _ } from '@agoric/zoe/src/contractSupport';
 
 // Import the Zoe types
 import '@agoric/zoe/exported';
