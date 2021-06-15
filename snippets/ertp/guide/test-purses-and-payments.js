@@ -1,4 +1,4 @@
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 // #region import
 import { AmountMath, makeIssuerKit } from '@agoric/ertp';

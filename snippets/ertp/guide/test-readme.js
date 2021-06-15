@@ -1,11 +1,11 @@
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import { E } from '@agoric/eventual-send';
 
 // We need to disable this lint until @agoric/vats is released
 // and adopted in package.json.
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { makeBoard } from '@agoric/vats/src/lib-board';
+import { makeBoard } from '@agoric/vats/src/lib-board.js';
 
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 

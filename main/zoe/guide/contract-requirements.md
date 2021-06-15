@@ -17,7 +17,7 @@ code, including:
   smartly resolving promises rather than polling
 * [@agoric/zoe](https://www.npmjs.com/package/@agoric/zoe): Zoe has
   helpers that contracts can use by importing
-  `@agoric/zoe/src/contractSupport/zoeHelpers`
+  `@agoric/zoe/src/contractSupport/zoeHelpers.js`
 
 A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a

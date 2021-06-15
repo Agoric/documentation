@@ -119,6 +119,10 @@
       "jsdoc/require-param-description": "off",
       "jsdoc/require-returns": "off",
       "jsdoc/require-returns-description": "off",
+      "import/extensions": [
+        "error",
+        "always"
+      ],
       "import/no-extraneous-dependencies": [
         "error",
         {

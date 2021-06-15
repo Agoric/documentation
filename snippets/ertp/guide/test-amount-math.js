@@ -1,7 +1,7 @@
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 
-import { setupZCFTest } from '../../tools/setupZcfTest';
+import { setupZCFTest } from '../../tools/setupZcfTest.js';
 
 test('ertp guide AmountMath allAssetKinds', async t => {
   // #region allAssetKinds

@@ -1,14 +1,14 @@
 // @ts-check
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
-import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
+import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoe } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit, AmountMath } from '@agoric/ertp';
 import { E } from '@agoric/eventual-send';
-import { makeRatio } from '@agoric/zoe/src/contractSupport';
-import buildManualTimer from '@agoric/zoe/tools/manualTimer';
-import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority';
+import { makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
+import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
+import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
 import { makeNotifierKit } from '@agoric/notifier';
 
 test('loan contract', async t => {
