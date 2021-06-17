@@ -342,6 +342,11 @@ to manipulate the offer. The queries and operations are as follows:
      `proposal.want`. Both can be fully satisfied. See the ZoeHelper
      [`satisfies()`](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
 
+## `zcf.getInstance()`
+- Returns: `{Instance}`
+
+The contract code returns its own current instance, so it can be sent elsewhere.
+
 ## `zcf.getBrandForIssuer(issuer)`
 - `issuer` `{Issuer}`
 - Returns: `{Brand}`
