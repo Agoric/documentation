@@ -281,6 +281,23 @@ to manipulate the offer. The queries and operations are as follows:
   - Adds the `amountKeywordRecord` argument to the `ZCFseat`'s staged allocation and returns the 
     same `amountKeywordRecord` so it can be reused in another call. Note that this lets
     `zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))` work as a usage pattern. 
+    
+    Note that you can add amounts to original or staged allocations which do not have the
+    specified keyword for the amount. The result is for the keyword and amount to become part
+    of the allocation. For example, if we start with a new, empty, allocation:
+    ```js
+    // Make an empty seat.
+    const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();  
+    // The allocation is currently empty, i.e. `{}`
+    const stagedAllocation = zcfSeat1.getStagedAllocation();
+    const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
+    // Try to incrementBy empty. This succeeds, and the keyword is added
+    // with an empty amount.
+    zcfSeat1.incrementBy({ RUN: empty }); 
+    t.deepEqual(zcfSeat1.getStagedAllocation(), { RUN: empty  });
+    ```
+    While this incremented the allocation by an empty amount, any amount would have been added to the 
+    allocation in the same way. 
 
 ### `ZCFSeat.decrementBy(amountKeywordRecord)`
   - `amountKeywordRecord`: `{AmountKeywordRecord}`
@@ -289,8 +306,41 @@ to manipulate the offer. The queries and operations are as follows:
     same `amountKeywordRecord` so it can be used in another call.  Note that this lets
     `zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))` work as a usage pattern.  
     
-    The amounts to subtract cannot be 
-    greater than the staged allocation (i.e. negative results are not allowed).
+    The amounts to subtract cannot be greater than the staged allocation (i.e. negative 
+    results are not allowed).
+    
+    `decrementBy()` has different behavior from `incrementBy()` if the original or staged allocation 
+    does not have the keyword specified for an amount in the `amountKeywordRecord` argument. There are two
+    cases to look at; when the corresponding amount to subtract is empty and when it isn't. 
+    ```js
+    // Make an empty seat.
+    const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();  
+    // The allocation is currently {}
+    const stagedAllocation = zcfSeat1.getStagedAllocation();
+    const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
+    // decrementBy empty does not throw, and does not add a keyword 
+    zcfSeat1.decrementBy({ RUN: empty });
+    t.deepEqual(zcfSeat1.getStagedAllocation(), {});
+    ```
+    The result here is **not** to add the keyword to the allocation. It wasn't there to begin with, and
+    the operation was to try to subtract it from the allocation. Subtracting something that's not there
+    does not add it to the original value. For example, if I tell you I'm taking away the Mona Lisa from
+    you and you are not the Lourve and don't have it, you still don't have it after I try to take it away.
+    In the above example, trying to take away an empty amount from an empty allocation is effectively a
+    null operation; the allocation is still empty, didn't add the new keyword, and no error is thrown. 
+    
+    However, decrementing a non-empty amount from an empty allocation has a different result. For example:
+    ```js
+    // Make an empty seat.
+    const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();  
+    // The allocation is currently {}
+    const stagedAllocation = zcfSeat1.getStagedAllocation();
+    // decrementBy throws for a keyword that does not exist on the stagedAllocation and a non-empty amount
+    zcfSeat1.decrementBy({ RUN: runFee });
+    ```
+    It throws an error because you cannot subtract something from nothing. So trying to decrement an empty
+    allocation by a non-empty amount is an error, while decrementing an empty allocation by an empty amount
+    is effectively a null operation with no effects.
 
 ### `ZCFSeat.clear()`
   - Returns: `{void}`
