@@ -310,7 +310,7 @@ to manipulate the offer. The queries and operations are as follows:
     results are not allowed).
     
     `decrementBy()` has different behavior from `incrementBy()` if the original or staged allocation 
-    does not the keyword specified for an amount in the `amountKeywordRecord` argument. There are two
+    does not have the keyword specified for an amount in the `amountKeywordRecord` argument. There are two
     cases to look at; when the corresponding amount to subtract is empty and when it isn't. 
     ```js
     // Make an empty seat.
