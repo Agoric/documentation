@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {
+    "@agoric/zoe": "*",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
@@ -42,7 +43,6 @@
     "@agoric/ertp": "*",
     "@agoric/eventual-send": "*",
     "@agoric/install-ses": "*",
-    "@agoric/zoe": "*",
     "@agoric/notifier": "*",
     "@agoric/promise-kit": "*",
     "@agoric/assert": "*",
