@@ -294,7 +294,7 @@ to manipulate the offer. The queries and operations are as follows:
     // Try to incrementBy empty. This succeeds, and the keyword is added
     // with an empty amount.
     zcfSeat1.incrementBy({ RUN: empty }); 
-    t.deepEqual(zcfSeat1.getStagedAllocation(), {    RUN: empty  });
+    t.deepEqual(zcfSeat1.getStagedAllocation(), { RUN: empty  });
     ```
     While this incremented the allocation by an empty amount, any amount would have been added to the 
     allocation in the same way. 
