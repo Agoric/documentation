@@ -395,7 +395,7 @@ to manipulate the offer. The queries and operations are as follows:
 ## `zcf.getInstance()`
 - Returns: `{Instance}`
 
-The contract code returns its own current instance, so it can be sent elsewhere.
+The contract code can request its own current instance, so it can be sent elsewhere.
 
 ## `zcf.getBrandForIssuer(issuer)`
 - `issuer` `{Issuer}`
