@@ -120,13 +120,9 @@ Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`]
 
 ## Comparable
 
-A *passable* is something that can be marshalled. A *comparable* is a
-passable whose leaves contain no promises. Two comparables can be
-synchronously compared for structural equivalence.
-
-A comparable is a JavaScript object containing no promises, and can
-thus be locally compared for equality with another object. If either object
-contains Promises, equality is indeterminable. If both are fulfilled down
+A *comparable* is a [passable](#passable) whose leaves contain no promises. Two 
+comparables can be synchronously compared for structural equivalence. If either passable
+object contains Promises, equality is indeterminable. If both are fulfilled down
 to Presences and local state, then either they're the same all the way
 down, or they represent different objects.
 
@@ -362,6 +358,18 @@ the user either gets what they said they wanted, or gets back (gets a refund) wh
 escrowed. One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
 
+
+## Passable
+
+A *passable* is something that can be marshalled.
+
+There are three kinds of passables:
+   * Remotables, objects with methods that can be called remotely using `E()`, and their remote Presence.
+   * Pass-by-copy data, such as numbers or hardened records.
+   * Promises for passables.
+
+For more information, see the [Remotable and passable objects documentation](/guides/js-programming/far.md#remotable-and-passable-objects).
+
 ## Payment
 
 Payments hold assets created by [Mints](#mint). Specifically assets intended for transfer 
@@ -420,6 +428,26 @@ episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamester
 
 A transfer of [amounts](#amounts) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
 current allocation as a [payout](#payout). 
+
+## Record and Tuple
+
+Records and tuples are immutable objects which can be passed by copy. They only contain values which are [passables](#passable). 
+For more details, see [Passable objects documentation](/guides/js-programming/far.md#rules-for-creating-passable-objects).
+
+## Remotable
+
+Remotables are objects intended to be used from other vats. Remote messages sent to remotables must only contain [passable](#passable)
+arguments and return passable results. 
+
+All of a remotable's property values must be functions, and cannot be accessors. Its methods are called by wrapping 
+the remotable object with [`E`](#e), such as `E(issuer).getBrand()`. As with all calls to `E()`, it results in a Promise.
+
+Every object returned from a smart contract, such a publicFacet or creatorFacet, must be passable. All objects used in 
+your contract's external API must be passable.
+
+ERTP objects, such as `Purses`, are automatically created as `Remotable`, as are `UserSeats` and `ZCFSeats`.
+
+For more information, see the [Remotable and passable objects documentation](/guides/js-programming/far.md#remotable-and-passable-objects).
 
 ## Seat
 

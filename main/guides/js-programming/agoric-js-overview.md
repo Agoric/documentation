@@ -69,7 +69,7 @@ The vat environment has four significant objects not part of standard JavaScript
   for debug information only. The console is not obliged to write to the POSIX 
   standard output.
 
-- `harden` is a global that freezes an object’s API surface (enumerable data properties). 
+- `harden` is a global that freezes an object’s API surface. 
   A hardened object’s properties cannot be changed, so the only way to interact 
   with a hardened object is through its methods. `harden()` is similar to `Object.freeze()` 
   but more powerful. For more details, 
