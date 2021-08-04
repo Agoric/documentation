@@ -31,7 +31,7 @@ Play around with the mock assets we've kindly pre-stocked your wallet with.
 
 [Start Coding](/getting-started/) with a description of how to use our documentation to get started.
 
-[Join Our Discord Community](https://discord.gg/gC9z6US) and chat with us and other developers.
+[Join Our Discord Community](https://agoric.com/discord) and chat with us and other developers.
 
 ## What You Can Build in Beta
 
