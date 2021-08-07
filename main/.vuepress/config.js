@@ -110,7 +110,7 @@ module.exports = {
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
-	    '/guides/js-programming/agoric-js-overview',
+            '/guides/js-programming/hardened-js',
 	    '/guides/js-programming/ses/',
 	    '/guides/js-programming/bigint',
 	    '/guides/js-programming/vats',

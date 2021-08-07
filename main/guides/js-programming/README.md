@@ -7,12 +7,6 @@ and understand before programming on the platform. Some are *concepts*, others
 are *Agoric library additions*, and some are at the *syntax level*. All changes at the 
 language level are in process to become official standards.
 
-- **[Agoric JavaScript Overview](./agoric-js-overview.md)**
-  - This is the key document to familiarize yourself with and refer back to. It briefly specifies 
-    all the things in JavaScript you can't or shouldn't use when working on the Agoric platform and
-    all the things Agoric has added at the general JavaScript programming level. In particular, you
-    should know about SES (*Secure ECMAScript*) and its `lockdown()` and `harden()` methods.
-
 - **[Secure EcmaScript (SES)](./ses/)**
   - SES provides a secure platform for
     executing programs. With SES, you can run code you don't completely trust,

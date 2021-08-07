@@ -37,6 +37,8 @@ a part of the state that is intended to serve as an outbox. On a
 non-blockchain machine, this might mean sending a message to a remote
 machine.
 
+SwingSet provides [*orthogonal persistence*](https://en.wikipedia.org/wiki/Persistence_(computer_science)#Orthogonal_or_transparent_persistence).
+
 ## Cosmos SDK
 
 Our testnet has a single SwingSet instance with multiple vats running
