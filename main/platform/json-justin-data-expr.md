@@ -50,8 +50,8 @@ In an environment with pre-declared variables:
    - bitwise: `&`, `|`, `^`
    - shift: `<<`, `>>`
      - unsigned: `>>>`
-   - runtime type check: `typeof thing == "string"`
-   - conditional: ``typeof thing == "string" ? thing : ${thing} ``
+   - runtime type check: `typeof thing === "string"`
+   - conditional (ternary operator): ``a > b ? a : b``
    - void operator: `void ignoreMyResult()`
 
 ## Jessie: operators
@@ -95,8 +95,8 @@ const { size: s } = order;
 const size = order.size; // better as...
 const { size } = order;
 
-const s1 = sizes[1];
-const s2 = sizes[2];
+const s1 = sizes[0];
+const s2 = sizes[1];
 const rest = sizes.slice(2);  // better as...
 
 const [s1, s2, ...rest] = sizes;
@@ -115,7 +115,7 @@ const serviceOrder = ({ size, shape }) => {
 ```
 
 ```js
-const f = (a, opt) {
+const f = (a, opt) => {
   if (typeof opt !== 'undefined') {
     ...
   }
@@ -123,7 +123,7 @@ const f = (a, opt) {
 ```
 
 ```js
-const f = (a, b = 0) {
+const f = (a, b = 0) => {
 }
 ```
 
