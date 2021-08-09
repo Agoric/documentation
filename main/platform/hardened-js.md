@@ -69,8 +69,8 @@ Type ".help" for more information
 ```
 
  - An object is a record of functions that close over shared state.
- - A `makeCounter` function take the place of `class Counter`.
- - `this` is not in Jessie.
+ - The `this` keyword is not part of Jessie, so neither are constructors.
+ - A `makeCounter` function takes the place of the `class Counter` constructor syntax.
 
 
 _TODO: `decrement()`, facets_
@@ -112,7 +112,7 @@ TypeError: Cannot assign to read only property 'increment' of object '#<Object>'
  - _caveat_: exception is thrown in strict mode. REPL might not throw.
  - regardless, the object defended itself
  - Jessie pre-defines `harden` (_as does Agoric smart contract framework_)
-   - `npm install @agoric/harden` and `import harden from '@agoric/harden';` otherwise
+   - see the `ses` [hardened Javascript package](https://github.com/endojs/endo/tree/master/packages/ses#harden) otherwise
 
 
 ## Types: advisory

@@ -86,7 +86,7 @@ In an environment with pre-declared variables:
 _TODO: accessor methods?_
 
 
-## Destructing Assignments, Patterns, and Shorthand Properties
+## Destructuring Assignments, Patterns, and Shorthand Properties
 
 ```js
 const s = order.size;     // better as... 
