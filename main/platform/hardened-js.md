@@ -2,6 +2,21 @@
 
 _Status: WIP_.
 
+TL;DR: Here are the steps to play whack-a-mole with the Jessie linter:
+
+1. If not already configured, run `yarn add eslint @jessie.js/eslint-plugin`
+2. If not already configured, add the following to your `package.json`:
+
+```json
+  "eslintConfig": {
+    "extends": [
+      "@jessie.js"
+    ]
+  }
+```// TODO: remove this comment to complete the json fence
+3. Put `// @jessie-check` at the beginning of your `.js` source file.
+4. Run `yarn eslint --fix path/to/your-source.js`
+5. Follow the linter's advice to edit your file, then go back to step 4.
 ## Preface: Fodder / Brainstorm
 
  - structure from [E in a Walnut](http://www.skyhunter.com/marcs/ewalnut.html#SEC8)
