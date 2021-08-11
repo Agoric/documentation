@@ -13,7 +13,7 @@ TL;DR: Here are the steps to play whack-a-mole with the Jessie linter:
       "@jessie.js"
     ]
   }
-```// TODO: remove this comment to complete the json fence
+```
 
 3. Put `// @jessie-check` at the beginning of your `.js` source file.
 4. Run `yarn eslint --fix path/to/your-source.js`
