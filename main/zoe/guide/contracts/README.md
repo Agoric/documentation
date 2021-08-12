@@ -20,6 +20,15 @@ higher-level abstraction.
 
 These contracts create various sorts of financial instruments.
 
+### [Treasury](./treasury.md)
+
+The Treasury is the primary mechansim for making RUN (the Agoric stable-value
+currency) available to participants in the economy. It does this by issuing
+loans against supported types of collateral. The creator of the contract can
+add new types of collateral. (This is expected to be under the control of
+on-chain governance after the initial currencies are defined when the contract
+starts up.)
+
 ### [Loan Contract](./loan.md)
 A basic collateralized loan contract.
 
