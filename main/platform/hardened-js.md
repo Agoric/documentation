@@ -2,6 +2,19 @@
 
 _Status: WIP_.
 
+ - JavaScript is popular
+ - JavaScript has some messy parts
+ - Stick to Hardened JavaScript
+
+Overview:
+ - Objects
+ - Defensive Correctness
+ - **Electronic Rights**
+ - Data Structures
+ - Reference: JSON Data, Justin expressions, Jessie programs
+
+## Getting Started: Tools
+
 TL;DR: Here are the steps to play whack-a-mole with the Jessie linter:
 
 1. If not already configured, run `yarn add eslint @jessie.js/eslint-plugin`
@@ -18,24 +31,6 @@ TL;DR: Here are the steps to play whack-a-mole with the Jessie linter:
 3. Put `// @jessie-check` at the beginning of your `.js` source file.
 4. Run `yarn eslint --fix path/to/your-source.js`
 5. Follow the linter's advice to edit your file, then go back to step 4.
-
-## Preface: Fodder / Brainstorm
-
- - structure from [E in a Walnut](http://www.skyhunter.com/marcs/ewalnut.html#SEC8)
-   - as adapted in [Practical Security: The Mafia game — Monte 0\.1 documentation](https://monte.readthedocs.io/en/latest/ordinary-programming.html)
- - JSON / Justin / Jessie as in [Jessica](https://github.com/agoric-labs/jessica)
- - Build slides with [Remark](https://remarkjs.com/#1)
-   - example: [kumc\-bmi/naaccr\-tumor\-data](https://github.com/kumc-bmi/naaccr-tumor-data)
-
-## Overview
-
- - JavaScript is popular
- - JavaScript has some messy parts
- - Stick to Hardened JavaScript:
-   - Objects in Jessie
-   - Data in JSON
-   - Expressions in Justin
-   - Jessie details
 
 ## Simple Objects
 
@@ -198,19 +193,68 @@ Uncaught TypeError: poison is a string but must be a bigint or a number
  - **defensive correctness**: a program is _defensively correct_ if it remains correct despite arbitrary behavior on the part of its clients.
    - [Miller, Tribble, Shapiro 2005](http://erights.org/talks/promises/paper/tgc05.pdf)
 
+## Details: Stay Tuned
 
-## Map, Set
+ - Ordinary programming in JavaScript follows in a later section
+ - Much overlap with Java, Python, C, etc.
 
-_TODO: teach these using Mafia game as in Monte_
+_If you are **not** familiar with programming in some language, study details a bit and then come back here._
 
-_TODO: teach `new Set()` or `makeSet()`?_
+## Electronic Rights: Mint and Purse
 
-## Eventual Send
+**Watch**: [the mint pattern](https://youtu.be/iyuo0ymTt4g?t=1525),
+an 8 minute segment starting at 25:00 in
 
- - `const resultP = E(possiblyRemoteObject).method(args)`
- - `const result = await resultP;`
- - `const results = await Promise.all([E(o1).m1(), E(o2).m2()]);`
+ - [Agoric \+ Protocol Labs // Higher\-order Smart Contracts across Chains \- Mark Miller \- YouTube](https://www.youtube.com/watch?v=iyuo0ymTt4g).
 
-_TODO: async functions?_
+[![image](https://user-images.githubusercontent.com/150986/129462162-4599c0f4-8519-4a04-a707-88ef6e6044d7.png)
+](https://youtu.be/iyuo0ymTt4g?t=1525)
 
-_TODO: tildot syntax?_
+
+```js
+const makeMint = () => {
+  const ledger = makeWeakMap();
+
+  const issuer = harden({
+    makeEmptyPurse: () => mint.makePurse(0),
+  });
+
+  const mint = harden({
+    makePurse: initialBalance => {
+      const purse = harden({
+        getIssuer: () => issuer,
+        getBalance: () => ledger.get(purse),
+
+        deposit: (amount, src) => {
+          Nat(ledger.get(purse) + Nat(amount));
+          ledger.set(src, Nat(ledger.get(src) - amount));
+          ledger.set(purse, ledger.get(purse) + amount);
+        },
+        withdraw: amount => {
+          const newPurse = issuer.makeEmptyPurse();
+          newPurse.deposit(amount, purse);
+          return newPurse;
+        },
+      });
+      ledger.set(purse, initialBalance);
+      return purse;
+    },
+  });
+
+  return mint;
+};
+```
+
+## Agoric JavaScript APIs
+
+ - [ERTP Introduction](https://agoric.com/documentation/getting-started/ertp-introduction.html#creating-assets-with-ertp)
+ - [Introduction to Zoe](https://agoric.com/documentation/getting-started/intro-zoe.html#what-is-zoe)
+ - [Remote object communication with E\(\)](https://agoric.com/documentation/guides/js-programming/eventual-send.html)
+
+## Appendix / Colophon: Fodder / Brainstorm
+
+ - structure from [E in a Walnut](http://www.skyhunter.com/marcs/ewalnut.html#SEC8)
+   - as adapted in [Practical Security: The Mafia game — Monte 0\.1 documentation](https://monte.readthedocs.io/en/latest/ordinary-programming.html)
+ - JSON / Justin / Jessie as in [Jessica](https://github.com/agoric-labs/jessica)
+ - Build slides with [Remark](https://remarkjs.com/#1)
+   - example: [kumc\-bmi/naaccr\-tumor\-data](https://github.com/kumc-bmi/naaccr-tumor-data)
