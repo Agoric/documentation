@@ -90,7 +90,7 @@ test('callSpread, mid-strike', async t => {
     give: { Collateral: bucks(300) },
   });
   const alicePayments = { Collateral: aliceBucksPayment };
-  const aliceSeat = await zoe.offer(
+  const aliceSeat = await E(zoe).offer(
     creatorInvitation,
     aliceProposal,
     alicePayments,
@@ -102,7 +102,7 @@ test('callSpread, mid-strike', async t => {
   // #endregion creatorInvitation
 
   // #region bobExercise
-  const bobOptionSeat = await zoe.offer(bobLongOption);
+  const bobOptionSeat = await E(zoe).offer(bobLongOption);
   const bobPayout = bobOptionSeat.getPayout('Collateral');
   // #endregion bobExercise
 
@@ -113,7 +113,7 @@ test('callSpread, mid-strike', async t => {
     bucks(225),
   );
 
-  const carolOptionSeat = await zoe.offer(carolShortOption);
+  const carolOptionSeat = await E(zoe).offer(carolShortOption);
   const carolPayout = carolOptionSeat.getPayout('Collateral');
   const carolDeposit = assertPayoutDeposit(
     t,
@@ -124,7 +124,7 @@ test('callSpread, mid-strike', async t => {
 
   // #region verifyTerms
   const optionValue = shortOptionAmount.value[0];
-  const carolTerms = await zoe.getTerms(optionValue.instance);
+  const carolTerms = await E(zoe).getTerms(optionValue.instance);
   t.is('short', optionValue.position);
   t.is(3n, carolTerms.expiration);
   t.is(manualTimer, carolTerms.timer);
@@ -224,7 +224,7 @@ test('pricedCallSpread, mid-strike', async t => {
     want: { Option: longOption },
     give: { Collateral: bucks(longOptionValue.collateral) },
   });
-  const bobFundingSeat = await zoe.offer(await longInvitation, bobProposal, {
+  const bobFundingSeat = await E(zoe).offer(await longInvitation, bobProposal, {
     Collateral: bobBucksPayment,
   });
   const bobOption = await bobFundingSeat.getPayout('Option');
@@ -232,7 +232,7 @@ test('pricedCallSpread, mid-strike', async t => {
 
   // region exercisePricedOption
   // bob gets an option, and exercises it for the payout
-  const bobOptionSeat = await zoe.offer(bobOption);
+  const bobOptionSeat = await E(zoe).offer(bobOption);
 
   const bobPayout = bobOptionSeat.getPayout('Collateral');
   // region exercisePricedOption
@@ -253,7 +253,7 @@ test('pricedCallSpread, mid-strike', async t => {
     want: { Option: shortOption },
     give: { Collateral: bucks(shortOptionValue.collateral) },
   });
-  const carolFundingSeat = await zoe.offer(
+  const carolFundingSeat = await E(zoe).offer(
     await shortInvitation,
     carolProposal,
     {
@@ -262,7 +262,7 @@ test('pricedCallSpread, mid-strike', async t => {
   );
   // carol gets an option, and exercises it for the payout
   const carolOption = await carolFundingSeat.getPayout('Option');
-  const carolOptionSeat = await zoe.offer(carolOption);
+  const carolOptionSeat = await E(zoe).offer(carolOption);
 
   const carolPayout = carolOptionSeat.getPayout('Collateral');
   const carolDeposit = assertPayoutDeposit(
