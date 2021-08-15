@@ -71,7 +71,7 @@ test('callSpread, mid-strike', async t => {
     Strike: moolaIssuer,
   });
 
-  const { creatorInvitation } = await zoe.startInstance(
+  const { creatorInvitation } = await E(zoe).startInstance(
     installation,
     issuerKeywordRecord,
     terms,
@@ -189,7 +189,7 @@ test('pricedCallSpread, mid-strike', async t => {
     Collateral: bucksIssuer,
     Strike: moolaIssuer,
   });
-  const { creatorFacet } = await zoe.startInstance(
+  const { creatorFacet } = await E(zoe).startInstance(
     installation,
     issuerKeywordRecord,
     terms,
