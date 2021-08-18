@@ -26,13 +26,13 @@ When borrowers exercise an invitation and deposit collateral, they receive a
 getCollateralAmount, getDebtAmount, getLiquidationSeat, getLiquidationPromise
 }`.
 
-An `AdjustBalancesInvitation` allows the borrower to add or remove collateral or
-increase or decrease the loan balance.  `CloseInvitation` allows the borrower
-to close their loan and withdraw any remaining collateral.  The
-`liquidationPromise` and `liquidationSeat` allow the borrower to find out
-if/when the loan gets liquidated and receive any proceeds above what's needed to
-repay the debt.  `getCollateralAmount()` and `getDebtAmount()` reveal the named
-balances.
+An `AdjustBalancesInvitation` allows the borrower to add or remove collateral
+or increase or decrease the loan balance.  `CloseInvitation` allows the
+borrower to close their loan and withdraw any remaining collateral.  The
+`liquidationPromise` allows the borrower to find out if/when the loan gets
+liquidated. The `liquidationSeat`'s `getPayoff()` or `getPayoffs()` allow the
+borrower to retrieve any proceeds above what's needed to repay the debt.
+`getCollateralAmount()` and `getDebtAmount()` reveal the named balances.
 
 ### adjustBalances
 
