@@ -2,7 +2,7 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import { E } from '@agoric/eventual-send';
-import { makeZoe } from '@agoric/zoe';
+import { makeZoeKit } from '@agoric/zoe';
 import { makeIssuerKit, AmountMath } from '@agoric/ertp';
 
 // #region importBundleSource
@@ -12,7 +12,9 @@ import bundleSource from '@agoric/bundle-source';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 
 test('intro to zoe', async t => {
-  const zoe = makeZoe(makeFakeVatAdmin().admin);
+  const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
+  const feePurse = E(zoeService).makeFeePurse();
+  const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
 
   const moolaKit = makeIssuerKit('moola');
   const simoleanKit = makeIssuerKit('simoleans');
@@ -122,7 +124,9 @@ test('intro to zoe', async t => {
 });
 
 test('intro to zoe - contract-format', async t => {
-  const zoe = makeZoe(makeFakeVatAdmin().admin);
+  const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
+  const feePurse = E(zoeService).makeFeePurse();
+  const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
   const atomicSwapBundle = await bundleSource(`${__dirname}/contract-format`);
   const atomicSwapInstallation = await E(zoe).install(atomicSwapBundle);
   const { creatorInvitation } = await E(zoe).startInstance(

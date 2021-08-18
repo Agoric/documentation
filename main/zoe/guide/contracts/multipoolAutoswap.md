@@ -124,7 +124,7 @@ const alicePayments = {
 };
 
 const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation();
-const addLiquiditySeat = await zoe.offer(
+const addLiquiditySeat = await E(zoe).offer(
   aliceAddLiquidityInvitation,
   aliceProposal,
   alicePayments,

@@ -2,14 +2,16 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
-import { makeZoe } from '@agoric/zoe';
+import { makeZoeKit } from '@agoric/zoe';
 import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';
 import { assert, details } from '@agoric/assert';
 import { E } from '@agoric/eventual-send';
 
 test('oracle contract', async t => {
-  const zoe = makeZoe(makeFakeVatAdmin().admin);
+  const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
+  const feePurse = E(zoeService).makeFeePurse();
+  const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
 
   // #region bundle
   const contractBundle = await bundleSource(
