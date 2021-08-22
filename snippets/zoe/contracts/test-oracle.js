@@ -7,6 +7,7 @@ import bundleSource from '@agoric/bundle-source';
 import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';
 import { assert, details } from '@agoric/assert';
 import { E } from '@agoric/eventual-send';
+import { Far } from '@agoric/marshal';
 
 test('oracle contract', async t => {
   const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
@@ -30,7 +31,7 @@ test('oracle contract', async t => {
 
   const reply = 42;
 
-  const oracleHandler = harden({
+  const oracleHandler = Far('oracleHandler', {
     async onQuery(query, fee) {
       let requiredFee;
       if (query.kind === 'Paid') {
@@ -98,11 +99,11 @@ test('oracle contract', async t => {
   t.is(offerResult, 42);
 
   // #region API
-  const oracleHandlerAPI = {
+  const oracleHandlerAPI = Far('oracleHandlerAPI', {
     onQuery: async (_query, _fee) => {},
     onError: async (_query, _reason) => {},
     onReply: async (_query, _reply, _fee) => {},
-  };
+  });
   // #endregion API
 
   t.truthy(oracleHandlerAPI);
