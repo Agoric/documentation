@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {
+    "@agoric/marshal": "*",
     "@agoric/zoe": "*",
     "typescript": "^4.0.3"
   },
