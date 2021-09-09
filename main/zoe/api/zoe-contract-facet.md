@@ -25,10 +25,15 @@ and return values and warn when methods are misused.
  */
 ```
 Your contract code must export a function `start` as a non-default export.
-`zcf` is the Zoe Contract Facet and is the only argument provided to the contract
+`zcf` is the Zoe Contract Facet and is the first argument provided to
+the contract. The second argument, `privateArgs`, is used by the
+caller of `startInstance` to pass in any arguments that should not be
+part of the public terms. `privateArgs` is an object with keys and
+values as decided by the caller of `startInstance`. If no private
+arguments are passed, `privateArgs` is undefined.
 
 ```js
-const start = zcf => {
+const start = (zcf, privateArgs) => {
   ...
   // your code here
   return harden({ creatorFacet, creatorInvitation, publicFacet });
@@ -231,7 +236,7 @@ to manipulate the offer. The queries and operations are as follows:
     `exit`. `give` and `want` are records with keywords as keys and
     `amounts` as values. The `proposal` is a user's understanding of the
     contract that they are entering when they make an offer. See
-    [`E(zoe).offer()`](./zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord) for full details.
+    [`E(zoe).offer()`](./zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs) for full details.
   - Example:
     ```js
     const { want, give, exit } = sellerSeat.getProposal();

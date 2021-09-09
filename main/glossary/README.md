@@ -353,7 +353,7 @@ to the amount in the proposal they're willing to give. The payments are automati
 according to the contract code. An offer gets a [payout](#payout) of some combination of what the party originally contributed
 and what others have contributed. The specific payout is determined by the contract code. 
 
-See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`](https://agoric.com/documentation/zoe/api/zoe.html#e-zoe-offer-invitation-proposal-paymentkeywordrecord).
+See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs).
 
 ## Offer Safety
 
