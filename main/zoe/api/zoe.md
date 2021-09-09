@@ -183,6 +183,20 @@ An `installation` is an object with one property:
 const installation = await E(zoe).getInstallation(invitation);
 ```
 
+## `E(zoe).getInstallationForInstance(instance)`
+- `instance` `{Instance}`
+- Returns `{Promise<Installation>}`
+
+Returns a `Promise` for the contract `installation` used by the
+`instance`. An `instance` is the unique identifier for the running,
+executing contract. The `installation` is the unique identifier for
+the underlying code. This method can be used as part of a process to
+inspect the underlying code for a running contract `instance`.
+
+```js
+const installation = await E(zoe).getInstallationForInstance(instance);
+```
+
 ## `E(zoe).startInstance(installation, issuerKeywordRecord, terms)`
 - `installation` `{ERef<Installation>}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}` - optional
