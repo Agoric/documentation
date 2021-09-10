@@ -22,6 +22,7 @@ const start = (zcf, privateArgs) => {
   // privateArgs: any arguments to be made available to the contract
   // code by the contract owner that should not be in the public
   // terms.
+  const { _myPrivateArg } = privateArgs;
 
   // Add contract logic here, including the
   // handling of offers and the making of invitations.
