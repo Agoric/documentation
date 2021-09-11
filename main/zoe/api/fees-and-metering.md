@@ -7,10 +7,10 @@ Fees are charged in
 RUN, our stable local currency. These are the Zoe methods that charge
 fees:
 
-* `install`
-* `startInstance`
-* `offer`
-* `getPublicFacet`
+* `install()`
+* `startInstance()`
+* `offer()`
+* `getPublicFacet()`
 
 The specific amount charged for each method can be queried with
 `E(zoe).getConfiguration()`, which returns a promise for an object. On
@@ -23,14 +23,14 @@ An example of `zoeFeesConfig`:
 ```
 zoeFeesConfig: {
   getPublicFacetFee: 50n,
-  installFee: 65_000n,
-  startInstanceFee: 5_000_000n,
-  offerFee: 65_000n,
+  installFee: 65000n,
+  startInstanceFee: 5000000n,
+  offerFee: 65000n,
   timeAuthority: chainTimerServiceP,
-  lowFee: 500_000n,
-  highFee: 5_000_000n,
-  shortExp: 1000n * 60n * 5n, // 5 min in milliseconds
-  longExp: 1000n * 60n * 60n * 24n * 1n, // 1 day in milliseconds
+  lowFee: 500000n,
+  highFee: 5000000n,
+  shortExp: 300000n,
+  longExp: 86400000n,
 },
 ```
 Note: the `n` is appended to the end of the integer literal to make a
@@ -105,10 +105,10 @@ is an amount of RUN and `expiry` is a timestamp:
 ```
 
 The relative fee specified by contract code can be either LOW_FEE or
-HIGH_FEE, and the expiry can be SHORT_EXP or LONG_EXPIRY. 
+HIGH_FEE, and the expiry can be SHORT_EXP or LONG_EXP. 
 
 The translation from relative fees and expiries to absolute fees and
-expiries can be altered by changing `lowFee`,
+expiries can be altered when Zoe is created by changing `lowFee`,
 `highFee`, `shortExp`, and `longExp` in `zoeFeesConfig`.
 
 When a user makes an offer, Zoe checks whether the `expiry` in the

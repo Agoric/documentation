@@ -37,7 +37,7 @@ in calls to `zcf` methods.  Put this right before the start of your contract cod
  * @type {ContractStartFn}
  */
  ```
-Your contract code must export a function `start()` as a non-default export. `zcf` is the Zoe Contract Facet and is the first argument provided to
+Your contract code must export a function `start()` as a non-default export. `zcf` is the [Zoe Contract Facet](zoe/api/zoe-contract-facet.md) and is the first argument provided to
 the contract. The second argument, `privateArgs`, is used by the
 caller of `startInstance` to pass in any arguments that should not be
 part of the public terms. `privateArgs` is an object with keys and

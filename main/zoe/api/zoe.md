@@ -221,7 +221,7 @@ defines what variables need their values passed in as `terms`.
 
 `privateArgs` are optional. Pass an object record here with any values
 that need to be made available to the contract code, but which should
-not be in the public terms. For example, to sharing minting authority
+not be in the public terms. For example, to share minting authority
 among multiple contracts, pass in the following as `privateArgs`:
 
 ```js
@@ -287,6 +287,8 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInsta
 Used to make an offer to the contract that created the `invitation` that is
 provided as the first argument.
 
+### Proposals and payments
+
 The invocation normally includes a `proposal` (the
 rules under which they want to exercise the offer) and `payments` that correspond 
 to the `give` property of the `proposal`. The payments will be escrowed by Zoe. If
@@ -325,11 +327,17 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment
 };
 ```
-
+### OfferArgs
 `offerArgs` is an optional object record. It can be used to pass
 additional arguments to the `offerHandler` contract code associated
 with the invitation. It is up to the contract code whether it chooses
-to handle any `offerArgs` passed to it or whether it drops them. 
+to handle any `offerArgs` passed to it or whether it drops them.
+
+Zoe checks that `offerArgs` is a `copyRecord`, but the contract code
+should be careful interacting with the values of the `offerArgs`
+object. These values need input validation before being used by the
+contract code since they are coming directly from the user and may
+have malicious behavior.
 
 ## `UserSeat` Object
 
