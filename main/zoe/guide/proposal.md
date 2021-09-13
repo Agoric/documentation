@@ -4,7 +4,7 @@
 
 ## Making An offer
 
-To make an offer, you use [`E(zoe).offer()`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord), which takes three arguments:
+To make an offer, you use [`E(zoe).offer()`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), which takes three arguments:
 - An `invitation` to participate in this contract instance.
 - A `proposal` stating your offer conditions.
 - The `payments` escrowed for the offer, each in association with a `proposal`-specified keyword.

@@ -82,7 +82,7 @@ The vat environment has four significant objects not part of standard JavaScript
   a class instance also hardens the class.
 
 - `HandledPromise` is also a global. 
-  The [`E` wrapper (`E(target).method-name(args)`)](https://agoric.com/documentation/distributed-programming.html#communicating-with-remote-objects-using-e) 
+  The [`E` wrapper (`E(target).method-name(args)`)](/guides/js-programming/eventual-send.md) 
   can be imported as `import { E } from '@agoric/eventual-send`. These two 
   are defined by the TC39 [Eventual-Send Proposal](https://github.com/tc39/proposal-eventual-send). 
 
