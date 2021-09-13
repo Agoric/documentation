@@ -1,24 +1,32 @@
 # Ratio Math Functions
 
-These functions let you apply a ratio (a fraction) to an amount, multiplying or dividing an amount
-by a ratio of two natural numbers. Ratios consist of a *numerator* and a *denominator*. Both of these
-consist of a value and a brand, just like `amounts`. A ratio cannot have a denominator value of 0.
+These functions let you apply a ratio (a fraction) to an amount, multiplying or
+dividing an amount by a ratio of two natural numbers. Ratios consist of a
+*numerator* and a *denominator*. Both of these consist of a value and a brand,
+just like `amounts`. A ratio cannot have a denominator value of 0.
 
 The ratio functions have to be imported.
 
-The most common kind of `Ratio` is applied to an `Amount` of a particular 
-brand and produces results of the same brand. 
+The most common kind of `Ratio` is applied to an `Amount` of a particular brand
+and produces results of the same brand.
 
-`Ratios` can also have two brands, essentially typing them such as miles per hour
-or US dollars for Swiss francs (an exchange rate ratio) (i.e. the numerator is one
-brand and the denominator is another). Keep in mind that a ratio function should 
-make sense when used with a dual-branded ratio.
+`Ratios` can also have two brands, essentially typing them such as miles per
+hour or US dollars for Swiss francs (an exchange rate ratio) (i.e. the numerator
+is one brand and the denominator is another). Keep in mind that a ratio function
+should make sense when used with a dual-branded ratio.
 
-For example, when multiplying an amount by a ratio, the result has the ratio numerator's brand.
-So the amount should have the same brand as the ratio's denominator to cancel it out; e.g. 5 
-gallons * (10 miles / 1 gallon) = 50 miles. Similarly, dividing an amount by a ratio returns
-a result amount with the denominator's brand, so the amount should be the same brand as
-the numerator to cancel it out. 
+For example, when multiplying an amount by a ratio, the result has the ratio
+numerator's brand.  So the amount should have the same brand as the ratio's
+denominator to cancel it out; e.g. 5 gallons * (10 miles / 1 gallon) = 50
+miles. Similarly, dividing an amount by a ratio returns a result amount with the
+denominator's brand, so the amount should be the same brand as the numerator to
+cancel it out.
+
+In order to support precision calculations, the multiplication and division
+operations require that the caller specify whether the result should be rounded
+up or down. These operations produce Amounts, so they have to end by converting
+the ratio to an integer with a division. This may require roundoff, and correct
+calculations requrie that the caller choose which is appropriate.
 
 ## `makeRatio(numerator, numeratorBrand, denominator, denominatorBrand)`
 - `numerator`: `{ BigInt }`
@@ -80,23 +88,24 @@ Throws messages for errors:
 assertIsRatio(aRatio);
 ```
 
-## `multiplyBy(amount, ratio)`
+## `floorMultiplyBy(amount, ratio)`
+## `ceilMultiplyBy(amount, ratio)`
 - `amount`: `{ Amount }`
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
 Returns an immutable `Amount`.  Its brand is the `ratio`'s *numerator*'s brand.
-Note the denominator brand has to be the same as the amount brand
+Note the denominator brand has to be the same as the amount brand.
 
 The resulting value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s numerator's value.
 2. Dividing the result from step 1 by the `ratio`'s denominator's value.
-3. Applying a floor to the result from step 2 to round it down to
-   the nearest integer. If the step 2 result is already an integer, its value does
-   not change.
-   
-The above describes what is done to determine the result, not precisely how it's
-done in the source code. 
+3. If that results in an integer, that value is returned, otherwise, the value
+  is rounded down (for floorMultiplyBy) or up (for ceilMultiplyBy) to the next
+  integer.
+
+  The above describes what is done to determine the result, not precisely how
+  it's done in the source code.
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
@@ -119,21 +128,24 @@ const Dollars47 = AmountMath.make(dollarBrand, 47n);
 const exchange = multiplyBy(Dollars100, exchangeRatio);
 ```
 
-## ` divideBy(amount, ratio)`
+## ` floorDivideBy(amount, ratio)`
+## ` ceilDivideBy(amount, ratio)`
 - `amount`: `{ Amount }`
 - `ratio`: `{ Ratio }`
 - Returns: `{ Amount }`
 
 Returns an immutable `Amount`.  Its brand is the `ratio`'s *denominator*'s brand.
+
 Its value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s denominator's value.
 2. Dividing the result from step 1 by the `ratio`'s numerator's value.
-3. Applying a floor to the result from step 2 to round it down to
-    the nearest integer. If the step 2 result is already an integer, its value does
-    not change.
+3. If that results in an integer, that value is returned, otherwise, the value
+  is rounded down (for floorMultiplyBy) or up (for ceilMultiplyBy) to the next
+  integer.
 
-The above describes what is done to determine the result, not precisely how it's
-done in the source code. 
+  The above describes what is done to determine the result, not precisely how
+  it's done in the source code.
+
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
