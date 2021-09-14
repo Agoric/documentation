@@ -78,12 +78,11 @@ A singleton potentially must:
 - Create new Purses for the application to use
 - Seed the on-chain contract with initial orders or configuration.
 
-These example contract `api/deploy.js` scripts  show some of the 
+These example contract `api/deploy.js` scripts show some of the 
 range of the above custom setup actions:
 * [`dapp-fungible-faucet`](https://github.com/Agoric/dapp-fungible-faucet/blob/main/api/deploy.js)
 * [`dapp-card-store`](https://github.com/Agoric/dapp-card-store/blob/main/api/deploy.js)
 * [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/main/api/deploy.js)
-* [`dapp-autoswap`](https://github.com/Agoric/dapp-autoswap/blob/main/api/deploy.js)
 
 For an example of additions needed to support IBC (*Inter-Blockchain Communication protocol*), see the [`dibc-encouragement` branch](https://github.com/Agoric/dapp-encouragement/compare/main..dibc-encouragement). The link takes you to a page showing the differences in various files in the Encouragement Dapp between the main branch and a branch which integrates IBC. 
 

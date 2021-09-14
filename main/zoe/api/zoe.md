@@ -183,18 +183,33 @@ An `installation` is an object with one property:
 const installation = await E(zoe).getInstallation(invitation);
 ```
 
+## `E(zoe).getInstallationForInstance(instance)`
+- `instance` `{Instance}`
+- Returns `{Promise<Installation>}`
+
+Returns a `Promise` for the contract `installation` used by the
+`instance`. An `instance` is the unique identifier for the running,
+executing contract. The `installation` is the unique identifier for
+the underlying code. This method can be used as part of a process to
+inspect the underlying code for a running contract `instance`.
+
+```js
+const installation = await E(zoe).getInstallationForInstance(instance);
+```
+
 ## `E(zoe).startInstance(installation, issuerKeywordRecord, terms)`
 - `installation` `{ERef<Installation>}`
-- `issuerKeywordRecord` `{IssuerKeywordRecord}`
-- `terms` `{Object}`
+- `issuerKeywordRecord` `{IssuerKeywordRecord}` - optional
+- `terms` `{Object}` - optional
+- `privateArgs` `{Object}` - optional
 - Returns: `{Promise<StartInstanceResult>}`
 
 Create an instance of the installed smart contract (specified by
 the `installation` argument). You must also specify the
-instance's `issuerKeywordRecord` (as key-value pairs) and `terms`
+instance's `issuers` (as key-value pairs) and `terms`
 for the contract.
 
-The `issuerKeywordRecord` is a record mapping string names (keywords)
+The `issuerKeywordRecord` is an optional record mapping string names (keywords)
 to issuers, such as `{ Asset: quatlooIssuer}`. Keywords must begin
 with a capital letter and must be ASCII. Parties to the contract will
 use the keywords to index their proposal and their payments.
@@ -203,6 +218,15 @@ The `terms` are values used by this contract instance, such as the
 number of bids an auction will wait for before closing. These values may
 be different for different instances of the same contract, but the contract
 defines what variables need their values passed in as `terms`.
+
+`privateArgs` are optional. Pass an object record here with any values
+that need to be made available to the contract code, but which should
+not be in the public terms. For example, to share minting authority
+among multiple contracts, pass in the following as `privateArgs`:
+
+```js
+{ externalMint: myExternalMint }
+```
 
 It returns a promise for a `StartInstanceResult` object. The object consists of:
 - `adminFacet` `{any}`
@@ -253,14 +277,17 @@ const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
   installation, issuerKeywordRecord, terms);
 ```
-## `E(Zoe).offer(invitation, proposal, paymentKeywordRecord)`
+## `E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`
 - `invitation` `{Invitation|Promise<Invitation>}`
-- `proposal` `{Proposal}`
-- `paymentKeywordRecord` `{PaymentKeywordRecord}`
+- `proposal` `{Proposal}` - optional
+- `paymentKeywordRecord` `{PaymentKeywordRecord}` - optional
+- `offerArgs` `{Object}` - optional
 - Returns: `{Promise<UserSeat>}`
 
 Used to make an offer to the contract that created the `invitation` that is
 provided as the first argument.
+
+### Proposals and payments
 
 The invocation normally includes a `proposal` (the
 rules under which they want to exercise the offer) and `payments` that correspond 
@@ -300,6 +327,18 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment
 };
 ```
+### OfferArgs
+`offerArgs` is an optional object record. It can be used to pass
+additional arguments to the `offerHandler` contract code associated
+with the invitation. It is up to the contract code whether it chooses
+to handle any `offerArgs` passed to it or whether it drops them.
+
+Zoe checks that `offerArgs` is a `copyRecord`, but the contract code
+should be careful interacting with the values of the `offerArgs`
+object. These values need input validation before being used by the
+contract code since they are coming directly from the user and may
+have malicious behavior.
+
 ## `UserSeat` Object
 
 Zoe uses `seats` to access or manipulate offers. They let contracts and users interact
