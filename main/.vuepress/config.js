@@ -321,7 +321,7 @@ module.exports = {
     editLinkText: 'Help us improve this page!',
 
     zoeVersion: 'v0.18.1',
-    zoeDocsUpdated: '2021-08-23'
+    zoeDocsUpdated: '2021-09-13'
 
 
     /* --- SEARCH --- */
