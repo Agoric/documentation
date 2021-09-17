@@ -30,12 +30,12 @@ Before looking at the timer service methods, we need to cover four related objec
 
 ### `Timestamp` object
 
-An `Integer`, an absolute individual stamp returned by a `TimerService`.  Note that different
+An `bigint`, an absolute individual stamp returned by a `TimerService`.  Note that different
 timer services may have different interpretations of actual Timestamp values.
 
 ### `RelativeTime` object
 
-An `Integer`, the difference between two `Timestamps`.  Note that
+An `bigint`, the difference between two `Timestamps`.  Note that
 different timer services may have different interpretations of actual `RelativeTime` values.
 
 ### `TimerWaker` object
@@ -77,7 +77,7 @@ history[2] 1340435997
 ```
 
 ### `E(home.<chain or local>TimerService).setWakeup(baseTime, handler)`
-- `baseTime` `{ Timestamp }` 
+- `baseTime` `{ RelativeTime }`
 - `handler` `{ Handler }`
 - Returns: `{ Timestamp }` 
 
@@ -89,7 +89,7 @@ at which the call is scheduled to happen.
 ```js
 command[3] handler = harden({ wake: now => { console.log(`woke up ${now}`); }})
 history[3] {"wake":[Function wake]}
-command[4] willWakeAt =  E(home.localTimerService).setWakeup(3, handler)
+command[4] willWakeAt =  E(home.localTimerService).setWakeup(3n, handler)
 history[4] 1342464583
 // Written to console a few seconds later
 woke up 1342464583
@@ -110,9 +110,9 @@ command[5] timeList = E(home.localTimerService).removeWakeup(handler)
 history[5] unresolved Promise
 ```
   
-### `E(home.<chain or local>TimerService).createRepeater(delaySecs, interval)`
-- `delaySecs`: `{ Integer }`
-- `interval`: `{ Integer }`
+### `E(home.<chain or local>TimerService).createRepeater(delay, interval)`
+- `delay`: `{ RelativeTime }`
+- `interval`: `{ RelativeTime }`
 - Returns: `{ Repeater }` 
 
 Creates and returns a `Repeater` object. It schedules `wake()` calls repeatedly at 
@@ -164,14 +164,14 @@ command[26]  tc~.getCurrentTimestamp()
 history[26]  1571783384
 ```
 
-### `E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`
-- `delaySecs` `{ RelativeTime }`
+### `E(home.<chain or local>TimerService).createNotifier(delay, interval)`
+- `delay` `{ RelativeTime }`
 - `interval` `{ RelativeTime }`
 - Returns: `{ Notifier<Timestamp> }`
 
 Creates and returns a `Notifier` object. It repeatedly delivers updates at times
 that are a multiple of the passed in `interval` value, with the first update happening
-the value of `delaySecs` after the notifier is created.
+the value of `delay` after the notifier is created.
 
 ```js
 command[30] E(home.localTimerService).createNotifier(5,10)
