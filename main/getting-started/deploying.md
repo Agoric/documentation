@@ -84,8 +84,6 @@ range of the above custom setup actions:
 * [`dapp-card-store`](https://github.com/Agoric/dapp-card-store/blob/main/api/deploy.js)
 * [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/main/api/deploy.js)
 
-For an example of additions needed to support IBC (*Inter-Blockchain Communication protocol*), see the [`dibc-encouragement` branch](https://github.com/Agoric/dapp-encouragement/compare/main..dibc-encouragement). The link takes you to a page showing the differences in various files in the Encouragement Dapp between the main branch and a branch which integrates IBC. 
-
 Application deployment steps may include:
 * Bundle the `api` code and deploy it to the running local "api" process (ag-solo)
 * Include the contract installation configuration information in the bundle
