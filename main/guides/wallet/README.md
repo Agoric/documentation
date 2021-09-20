@@ -39,7 +39,7 @@ to controlling what access they have and managing the proposals.
 The *wallet bridge* is a web page with direct access to an Agoric Wallet. It provides
 the Dapp with a facet of an API. Dapps never talk directly to a Wallet, only to
 this bridge that knows where the Wallet is. So, for example, if a Dapp is running in
-your browser at `https://encouragement.example.com` and the Wallet is running locally, 
+your browser at `https://treasury.agoric.app/` and the Wallet is running locally, 
 they don't communicate directly. They do so by sending JSON-encoded messages through 
 the wallet bridge.
 

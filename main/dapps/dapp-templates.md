@@ -51,15 +51,6 @@ Pegasus currently uses the packet data JSON format of the Interchain Standard fu
 
 Frontend is React.
 
-### Encouragement Dapp
-
-[Github:
-dapp-encouragement](https://github.com/Agoric/dapp-encouragement)
-
-Sends encouragement messages to the user through either the dapp
-backend or by minting encouragement NFT tokens in a contract.
-Frontend is raw JavaScript.
-
 ### Simple Exchange Dapp
 
 [Github:
