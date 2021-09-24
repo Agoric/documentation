@@ -1,5 +1,5 @@
 # Agoric Beta
-Release Version: Baltic
+Release Version: guanlong88
 
 ![Agoric Banner](./assets/agoric-banner-2.png)
 
