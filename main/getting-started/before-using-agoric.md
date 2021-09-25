@@ -27,7 +27,7 @@ software, you need to install the following.
     </tr>
     <tr>
       <td>2</td>
-      <td><a href="https://classic.yarnpkg.com/en/docs/install">Install Yarn 1<br>(Yes, Yarn 1 and not a later version)</a></td>
+      <td><a href="https://yarnpkg.com/getting-started/install">Install Yarn</a></td>
       <td>Yarn is a package manager for your code and lets developers
     share code with others. Code is shared via a <i>package</i> that contains all shared code and a
     <code>package.json</code> file describing the package. The link takes you to 
@@ -88,7 +88,7 @@ software, you need to install the following.
     </tr>
     <tr>
       <td>9</td>
-      <td>Install the Agoric CLI by: <code>yarn link-cli 
+      <td>Install the Agoric CLI: <br><code>yarn link-cli 
         &lt;<i>agoric script location</i>&gt;</code></td>
       <td>Select a location for the Agoric wrapper script. For example,
         <code>yarn link-cli /usr/local/bin/agoric</code> (or if that fails
