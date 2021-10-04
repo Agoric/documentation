@@ -26,7 +26,7 @@ In order to support precision calculations, the multiplication and division
 operations require that the caller specify whether the result should be rounded
 up or down. These operations produce Amounts, so they have to end by converting
 the ratio to an integer with a division. This may require roundoff, and correct
-calculations requrie that the caller choose which is appropriate.
+calculations require that the caller choose which is appropriate.
 
 ## `makeRatio(numerator, numeratorBrand, denominator, denominatorBrand)`
 - `numerator`: `{ BigInt }`
@@ -104,9 +104,6 @@ The resulting value is determined by:
   is rounded down (for floorMultiplyBy) or up (for ceilMultiplyBy) to the next
   integer.
 
-  The above describes what is done to determine the result, not precisely how
-  it's done in the source code.
-
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
 1. 47 * 3 = 141
@@ -136,16 +133,12 @@ const exchange = multiplyBy(Dollars100, exchangeRatio);
 
 Returns an immutable `Amount`.  Its brand is the `ratio`'s *denominator*'s brand.
 
-Its value is determined by:
+The resulting value is determined by:
 1. Multiplying the `amount` value by the `ratio`'s denominator's value.
 2. Dividing the result from step 1 by the `ratio`'s numerator's value.
 3. If that results in an integer, that value is returned, otherwise, the value
-  is rounded down (for floorMultiplyBy) or up (for ceilMultiplyBy) to the next
+  is rounded down (for floorDivideBy) or up (for ceilDivideBy) to the next
   integer.
-
-  The above describes what is done to determine the result, not precisely how
-  it's done in the source code.
-
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
