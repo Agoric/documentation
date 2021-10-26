@@ -56,7 +56,7 @@ A contract for giving quotes that can be exercised. The quotes are
 guaranteed to be exercisable because they are actually options with 
 escrowed underlying assets.
 
-## Constant Product AMMs (Automatic Market Makers)
+## AMM (Automatic Market Maker) Swap contracts 
 
 ### [Autoswap](./autoswap.md) 
 An automated market maker. It 
@@ -65,6 +65,13 @@ can always trade between the two currencies in its liquidity pool.
 ### [Multipool Autoswap](./multipoolAutoswap.md) 
 An automated market maker with multiple
 liquidity pools that can trade between any pair of funded currencies.
+
+### [ConstantProduct AMM](./constantProductAMM.md)
+An automated market maker with multiple liquidity pools that can trade
+between any pair of funded currencies. It charges a poolFee (added to the
+liquidity pools) and a protocolFee (set aside for the benefit of the Agoric
+economy). These fees are subject to change by votes controlled by and made
+visible by the governance system.
 
 ## Generic Sales/Trading Contracts
 
