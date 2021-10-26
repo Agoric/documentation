@@ -84,7 +84,7 @@ test('ertp guide readme', async t => {
 
   // #region ticketPayments
   const ticketAmounts = ticketValues.map(ticketValue =>
-    AmountMath.make(agoricTheatreTicketBrand, [ticketValue]),
+    AmountMath.make(agoricTheatreTicketBrand, harden([ticketValue])),
   );
   const agoricTheatreTicketPayments = ticketAmounts.map(ticketAmount =>
     agoricTheatreTicketMint.mintPayment(ticketAmount),

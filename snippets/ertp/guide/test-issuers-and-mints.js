@@ -112,7 +112,7 @@ test('ertp guide issuers and mints payment methods', async t => {
     payments.push(quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 1n)));
   }
   // combinedPayment equals 100
-  const combinedPayment = quatloosIssuer.combine(payments);
+  const combinedPayment = quatloosIssuer.combine(harden(payments));
   // #endregion combine
 
   t.deepEqual(await quatloosIssuer.getAmountOf(combinedPayment), {
@@ -146,7 +146,7 @@ test('ertp guide issuers and mints payment methods', async t => {
 
   const arrayOfNewPayments = await quatloosIssuer.splitMany(
     oldQuatloosPayment,
-    goodQuatloosAmounts,
+    harden(goodQuatloosAmounts),
   );
   // #endregion splitManyConcise
   // Note that the total amount in the amountArray must equal the
@@ -159,7 +159,11 @@ test('ertp guide issuers and mints payment methods', async t => {
   const badQuatloosAmounts = Array(2).fill(AmountMath.make(quatloosBrand, 10n));
   // throws error
   t.throwsAsync(
-    () => quatloosIssuer.splitMany(anotherQuatloosPayment, badQuatloosAmounts),
+    () =>
+      quatloosIssuer.splitMany(
+        anotherQuatloosPayment,
+        harden(badQuatloosAmounts),
+      ),
     { message: /rights were not conserved/ },
   );
   // #endregion splitMany
