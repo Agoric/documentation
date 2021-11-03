@@ -48,12 +48,13 @@ multiplied by the incremental debt will be added to the debt balance.
 
 The borrower can close their loan by exercising a `closeInvitation`. The
 borrower must give at least the current `debtAmount` in order to close out the
-loan and retrieve their collateral.
+loan and retrieve their collateral. Since any excess will be returned, it is
+safe to overpay to cover variations in pricing.
 
 ### Interest and liquidation
 
-Parameters specific to each collateral type set the interest rate and required
-collateralization ratio
+Parameters (subject to governance) specific to each collateral type set the
+interest rate and required collateralization ratio.
 
 The `initialMargin` is the `collateralizationRatio` that's required when opening
 a loan, and it can be the same or slightly higher than the `liquidationMargin`.
@@ -81,15 +82,10 @@ benefit of the user's [wallet](/guides/wallet/).
      uiNotifier,
      invitationMakers: { AdjustBalances, CloseVault }
 
-## Treasury creator
+## Adding Collateral types
 
-*(Subject to Change)* When the Treasury is created, it creates its own AMM
-(currently `multipoolAutoswap`), and retains the right to create new collateral
-pools. As any new collateral is added, a corresponding AMM pool is also created.
-
-When each AMM pool is created, we also create an associated priceAuthority
-(effectively an oracle). The Treasury relies on the priceAuthority to find out
-when collateral values fall.
+The creatorFacet has a method `addVaultType()` that allows someone to add new
+collateral types and specify the parameters for its loans.
 
 ## Implementation detail
 
@@ -102,22 +98,6 @@ governance, liquidation takes place in a separate vat.
 
 ### Invitations
 
-#### addType
-
-The creator's facet of the Treasury allows them to call
-`makeAddTypeInvitation()`. This invitation can be exercised with a proposal that
-specifies 
-
-```
-{
-  give: { Collateral: collateralAmount },
-  want: { Governance: AmountMath.makeEmpty(govBrand) }
-}
-```
-
-The number of governance tokens returned is controlled by the `initialPrice`
-parameter for that collateral type.
-
 #### makeLoan
 
 The treasury's public API includes `makeLoanInvitation()` and
@@ -129,19 +109,11 @@ to the issuer of `RUN` so anyone can hold, spend and recognize RUN.
 
 ### Roadmap
 
-#### Governance
-
-There are PRs in review to add a governance system, and part of that is making
-changes to the Treasury's parameters be managed by Governance.
-
-
- * Governance: designed, initial implementation under review
-* Split out AMM: we'd like to enable the treasury to work with already existing
-  AMM pools for new collateral types. To do so, we need to ensure that the
-  treasury won't be taken advantage of by illiquid pools.
-* Finer control over liquidation: we think liquidation should be sensitive to
+ * Finer control over liquidation: we think liquidation should be sensitive to
   market depth and trade volumes.
  * Vaults in individual Vats: for better isolation and security, we want to put
   each vault in a separate vat.
  * Limits on RUN issued per collateral type: limiting the amount of RUN that
    can be issued for each collateral might blunt some attacks
+ * Adding new collateral types will be made subject to governance rather
+   than being included in the creatorFacet.
