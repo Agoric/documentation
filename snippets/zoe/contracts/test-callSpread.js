@@ -41,7 +41,7 @@ test('callSpread, mid-strike', async t => {
   // The spread will then mature, and both will get paid.
 
   // Setup Alice
-  const aliceBucksPayment = bucksMint.mintPayment(bucks(300));
+  const aliceBucksPayment = bucksMint.mintPayment(bucks(300n));
   // Setup Bob
   const bobBucksPurse = bucksIssuer.makeEmptyPurse();
   // Setup Carol
@@ -58,11 +58,11 @@ test('callSpread, mid-strike', async t => {
   // underlying is 2 Simoleans, strike range is 30-50 (doubled)
   const terms = harden({
     expiration: 3n,
-    underlyingAmount: simoleans(2),
+    underlyingAmount: simoleans(2n),
     priceAuthority,
-    strikePrice1: moola(60),
-    strikePrice2: moola(100),
-    settlementAmount: bucks(300),
+    strikePrice1: moola(60n),
+    strikePrice2: moola(100n),
+    settlementAmount: bucks(300n),
     timer: manualTimer,
   });
   const issuerKeywordRecord = harden({
@@ -87,7 +87,7 @@ test('callSpread, mid-strike', async t => {
   // #region creatorInvitation
   const aliceProposal = harden({
     want: { LongOption: longOptionAmount, ShortOption: shortOptionAmount },
-    give: { Collateral: bucks(300) },
+    give: { Collateral: bucks(300n) },
   });
   const alicePayments = { Collateral: aliceBucksPayment };
   const aliceSeat = await E(zoe).offer(
@@ -110,7 +110,7 @@ test('callSpread, mid-strike', async t => {
     t,
     bobPayout,
     bobBucksPurse,
-    bucks(225),
+    bucks(225n),
   );
 
   const carolOptionSeat = await E(zoe).offer(carolShortOption);
@@ -119,7 +119,7 @@ test('callSpread, mid-strike', async t => {
     t,
     carolPayout,
     carolBucksPurse,
-    bucks(75),
+    bucks(75n),
   );
 
   // #region verifyTerms
@@ -129,10 +129,10 @@ test('callSpread, mid-strike', async t => {
   t.is(3n, carolTerms.expiration);
   t.is(manualTimer, carolTerms.timer);
   t.is(priceAuthority, carolTerms.priceAuthority);
-  t.truthy(AmountMath.isEqual(simoleans(2), carolTerms.underlyingAmount));
-  t.truthy(AmountMath.isEqual(moola(60), carolTerms.strikePrice1));
-  t.truthy(AmountMath.isEqual(moola(100), carolTerms.strikePrice2));
-  t.truthy(AmountMath.isEqual(bucks(300), carolTerms.settlementAmount));
+  t.truthy(AmountMath.isEqual(simoleans(2n), carolTerms.underlyingAmount));
+  t.truthy(AmountMath.isEqual(moola(60n), carolTerms.strikePrice1));
+  t.truthy(AmountMath.isEqual(moola(100n), carolTerms.strikePrice2));
+  t.truthy(AmountMath.isEqual(bucks(300n), carolTerms.settlementAmount));
   // #endregion verifyTerms
 
   await E(manualTimer).tick();
@@ -160,10 +160,10 @@ test('pricedCallSpread, mid-strike', async t => {
 
   // Setup Bob
   const bobBucksPurse = bucksIssuer.makeEmptyPurse();
-  const bobBucksPayment = bucksMint.mintPayment(bucks(225));
+  const bobBucksPayment = bucksMint.mintPayment(bucks(225n));
   // Setup Carol
   const carolBucksPurse = bucksIssuer.makeEmptyPurse();
-  const carolBucksPayment = bucksMint.mintPayment(bucks(75));
+  const carolBucksPayment = bucksMint.mintPayment(bucks(75n));
 
   const manualTimer = buildManualTimer(console.log, 0n);
   const priceAuthority = await makeTestPriceAuthority(
@@ -176,11 +176,11 @@ test('pricedCallSpread, mid-strike', async t => {
   // underlying is 2 Simoleans, strike range is 30-50 (doubled)
   const terms = harden({
     expiration: 3n,
-    underlyingAmount: simoleans(2),
+    underlyingAmount: simoleans(2n),
     priceAuthority,
-    strikePrice1: moola(60),
-    strikePrice2: moola(100),
-    settlementAmount: bucks(300),
+    strikePrice1: moola(60n),
+    strikePrice2: moola(100n),
+    settlementAmount: bucks(300n),
     timer: manualTimer,
   });
   // Alice creates a pricedCallSpread instance
@@ -214,8 +214,8 @@ test('pricedCallSpread, mid-strike', async t => {
 
   // region checkTerms-priced
   const bobTerms = await E(zoe).getTerms(longOptionValue.instance);
-  t.truthy(AmountMath.isEqual(simoleans(2), bobTerms.underlyingAmount));
-  t.truthy(AmountMath.isEqual(bucks(300), bobTerms.settlementAmount));
+  t.truthy(AmountMath.isEqual(simoleans(2n), bobTerms.underlyingAmount));
+  t.truthy(AmountMath.isEqual(bucks(300n), bobTerms.settlementAmount));
   // endregion checkTerms-priced
 
   // Bob makes an offer for the long option
@@ -240,7 +240,7 @@ test('pricedCallSpread, mid-strike', async t => {
     t,
     bobPayout,
     bobBucksPurse,
-    bucks(225),
+    bucks(225n),
   );
 
   const shortAmount = await E(invitationIssuer).getAmountOf(shortInvitation);
@@ -269,7 +269,7 @@ test('pricedCallSpread, mid-strike', async t => {
     t,
     carolPayout,
     carolBucksPurse,
-    bucks(75),
+    bucks(75n),
   );
 
   await E(manualTimer).tick();
