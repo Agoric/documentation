@@ -45,7 +45,7 @@ You don't transfer assets directly from one `purse` to
 another `purse`. Instead, in ERTP you do something like these steps to send and receive assets. The actual send operation is up to you; ERTP does not 
 implement a way of sending object-containing messages between parties.
 - Send assets:
-  1. Withdraw assets described by an `amount`from a `purse`, creating a `payment`.
+  1. Withdraw assets described by an `amount` from a `purse`, creating a `payment`.
   2. Send this `payment` to a recipient as a message.
 - Receive assets:
   1. If you don't already have one, create a `purse` for the asset `brand`
@@ -73,8 +73,8 @@ If you have a deposit facet, you make a deposit to its associated `purse` by cal
 
 The `payment` must be the same `brand` as what
 the associated `purse` object can contain. Otherwise it throws an error. 
-When sending a party a 
-deposit facet object, you should tell them what assets `brand` it accepts.
+When sending a deposit facet object
+to a party, you should tell them what assets `brand` it accepts.
 
 ![Purse methods](./assets/purse.svg)  
 
@@ -91,7 +91,7 @@ API Reference](/ertp/api/#ertp-api).
 - [`purse.deposit(payment, optAmount)`](../api/purse.md#purse-deposit-payment-optamount)
   - Deposit the digital asset contents of the `payment` into this `purse`,
     returning a description of the `payment` balance as an `amount`. If the optional argument
-    `optAmount` does not equal the `payment` balance,  or if `payment`
+    `optAmount` does not equal the `payment` balance, or if `payment`
     is an unresolved promise, it throws an error.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
 - [`purse.getDepositFacet()`](/ertp/api/purse.md#purse-getdepositfacet)

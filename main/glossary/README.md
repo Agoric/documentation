@@ -326,7 +326,7 @@ For more information, see the [Notifier section in the Distributed JavaScript Pr
 
 ## Object Capabilities
 
-Objects have state, behavior, and references. Lets say Object A has references to Objects B 
+Objects have state, behavior, and references. Let's say Object A has references to Objects B 
 and C, while B and C do not have references to each other. Thus, A can communicate with B and C, 
 and B and C cannot communicate with each other. There is an effective zero-cost firewall between B and C.
 

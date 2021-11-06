@@ -3,7 +3,7 @@ sidebar: auto
 ---
 # Sharing Service
 
-The `sharingService` object  and package are not part of the general
+The `sharingService` object and package are not part of the general
 Agoric architecture, but can be useful for hackathons and demos. 
 
 `home.sharingService` lets you connect to other vats

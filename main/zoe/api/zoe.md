@@ -412,7 +412,7 @@ and an operation to request that the offer exit, as follows:
     for the Automated Refund Dapp, it's the string "The offer was accepted". In
     the Covered Call example, it's a call option, which is an assayable `invitation`
     to buy the underlying asset. Strings and invitations are the most common things returned.
-    The value is set by the returned result of  the `offerHandlers` function passed
+    The value is set by the returned result of the `offerHandlers` function passed
     as an argument to `zcf.makeInvitation()`.
 ### `E(UserSeat).getNotifier()`
   - Returns: `{ Promise<Notifier> }`
