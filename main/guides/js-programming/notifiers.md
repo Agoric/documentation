@@ -56,7 +56,7 @@ non-final values.
 Notifiers are appropriate when a quantity changes quickly. They only communicate
 non-final values at the rate they're consumed, bounded by the network round-trip
 time.  All other non-final values are never communicated. The `NotifierKit`'s
-lossy nature  enables this optimization.`
+lossy nature enables this optimization.`
 
 `notifier` and `subscription` both implement the JavaScript `AsyncIterable` API to consume the iteration. `updater` and `publication` implement the `IterationObserver` API, as defined by Agoric (JavaScript has no standard for producing iterations). For both pairs, ` IterationObserver` only produces the iteration. `AsyncIterable` consumes the iteration.
 
@@ -81,7 +81,7 @@ An iteration’s sampling subset:
 When a new iteration value is available, either it or a later value becomes
 available on each sampling subset promptly. In other words, if value 'a' is
 introduced on the producer end followed a few moments later by 'b', then all
-clients  either promptly see 'a', or won't see it but will promptly see a
+clients either promptly see 'a', or won't see it but will promptly see a
 successor, such as 'b'. If a value is added and nothing else follows for a
 while, then that value must be distributed promptly to the consumers.
 
@@ -192,7 +192,7 @@ full documentation:
 
 Let’s look at a subscription example. We have three characters; Paula the publisher, and subscribers Alice and Bob. While Alice and Bob both consume Paula's published iteration, they use different tools to do so.
 
-First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with non-final sequence 'a', 'b' and  'done' as its completion value.
+First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with non-final sequence 'a', 'b' and 'done' as its completion value.
 ```js
 const { publication, subscription } = makeSubscriptionKit(); 
 // Paula the publisher says
@@ -208,7 +208,7 @@ Alice uses the former, and then Bob uses the latter.
 Subscriber Alice consumes the iteration using the for-await-of loop. She can see
 the non-final values and whether the iteration completes or fails. She can see a
 failure reason, but the for-await-of syntax does not let her see the completion
-value 'done'. She can write code that only executes after the loop finishes,but
+value 'done'. She can write code that only executes after the loop finishes, but
 the code won’t know what the completion value actually was “done”, “completed”, or something else. This is a limitation of JavaScript's iteration, whether asynchronous or synchronous (as consumed by a for-of loop).
 ```js
 const consume = async subscription => {
@@ -259,7 +259,7 @@ Either make `NotifierKit()` or `makeSubscriberKit()` can be used in a multicast
 manner with good distributed systems properties, where there is only one
 producing site but any number of consuming sites. The producer is not vulnerable
 to the consumers; they cannot cause the kit to malfunction or prevent the code
-producing values from making progress. The consumers cannot cause each other  to
+producing values from making progress. The consumers cannot cause each other to
 hang or miss values. 
 
 For distributed operation, all the iteration values---non-final values,

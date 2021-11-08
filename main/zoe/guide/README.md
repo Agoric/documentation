@@ -40,7 +40,7 @@ statement about what you want and what you're willing to offer. It
 turns out, many smart contracts (apart from gifts and one-way
 payments) involve an exchange of digital assets that can be put in
 terms of offer proposals. We
-can say things like, "I'll give you [three wood for two
+can say things like, "I'll give you [three wool for two
 bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the
 particulars of structuring an offer proposal here](./proposal.md).
 

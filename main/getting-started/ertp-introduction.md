@@ -21,7 +21,7 @@ object. If it doesn't have a reference, it can't.
 In ERTP, *mints* create *digital assets*. Access to an asset's
 `mint` lets you create more digital assets of that kind. You can then
 store new assets in a *payment* or a *purse*. 
-- `Payments`: Assets you intend to move between `purses` or to other destinations..
+- `Payments`: Assets you intend to move between `purses` or to other destinations.
 - `Purses`: Store assets until you withdraw them into a payment for use
 
 To send assets in ERTP:
@@ -108,7 +108,7 @@ convey no underlying value. They have two parts:
 
 Note: *fungible* means any item in a set can be used. For example, for 
 change for a dollar, any four quarters work. *Non-fungible* means
-specific items in a set must be used. For  example, theater tickets
+specific items in a set must be used. For example, theater tickets
 are not all the same, and it matters if you get third row center or
 second balcony far left  (and affects what you're willing to trade for
 it). 

@@ -101,7 +101,7 @@ const { creatorInvitation } = await E(zoe).startInstance(
 );
 ```
 
-Then Alice creates a proposal, and  escrows the funds she is depositing.
+Then Alice creates a proposal, and escrows the funds she is depositing.
 
 ```js
 const threeMoola = AmountMath.make(moolaBrand, 3n);
