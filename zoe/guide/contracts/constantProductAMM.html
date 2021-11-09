@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ConstantProduct AMM | Beta</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/documentation/favicon-full.ico">
+    <style type="text/css">
+    .two-col-table td {
+        width: 50%;
+    }
+    .two-col-table table {
+        table-layout: fixed;
+    }</style>
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-118217811-1"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); </script>
+    <script>
+    const logoUrlChanger = setInterval(function() {
+    //Anchor above the logo image
+    const homeEls = document.getElementsByClassName("home-link");
+    if(homeEls.length > 0) {
+      const homeEl = homeEls[0];
+      homeEl.setAttribute("href", "https://agoric.com");
+      homeEl.setAttribute("onclick", "return false;");
+      clearInterval(logoUrlChanger);
+    }
+
+    //Actual logo image
+    const logoEls = document.getElementsByClassName("logo")
+    if(logoEls.length > 0) {
+      const logoEl = logoEls[0]
+      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+      clearInterval(logoUrlChanger);
+    }
+   }, 1000) </script>
+    <meta name="description" content="Build, deploy and operate dApps and DeFi markets.">
+    
+    <link rel="preload" href="/documentation/assets/css/0.styles.3032228c.css" as="style"><link rel="preload" href="/documentation/assets/js/app.2e593384.js" as="script"><link rel="preload" href="/documentation/assets/js/2.581bc00f.js" as="script"><link rel="preload" href="/documentation/assets/js/80.29bab1c2.js" as="script"><link rel="preload" href="/documentation/assets/js/20.0d6b3cf5.js" as="script"><link rel="prefetch" href="/documentation/assets/js/10.d33116e2.js"><link rel="prefetch" href="/documentation/assets/js/11.2cfd9e9f.js"><link rel="prefetch" href="/documentation/assets/js/12.b296ec1e.js"><link rel="prefetch" href="/documentation/assets/js/13.a0bf1487.js"><link rel="prefetch" href="/documentation/assets/js/14.11dce8c6.js"><link rel="prefetch" href="/documentation/assets/js/15.30eb1823.js"><link rel="prefetch" href="/documentation/assets/js/16.2c73c7b0.js"><link rel="prefetch" href="/documentation/assets/js/17.1444a129.js"><link rel="prefetch" href="/documentation/assets/js/18.1b284903.js"><link rel="prefetch" href="/documentation/assets/js/19.c3c01e28.js"><link rel="prefetch" href="/documentation/assets/js/21.bbcb470d.js"><link rel="prefetch" href="/documentation/assets/js/22.0bb08ac2.js"><link rel="prefetch" href="/documentation/assets/js/23.8cd5cd72.js"><link rel="prefetch" href="/documentation/assets/js/24.04d6ec39.js"><link rel="prefetch" href="/documentation/assets/js/25.21f6a6bb.js"><link rel="prefetch" href="/documentation/assets/js/26.be3a2ec2.js"><link rel="prefetch" href="/documentation/assets/js/27.dea439dc.js"><link rel="prefetch" href="/documentation/assets/js/28.63a8b800.js"><link rel="prefetch" href="/documentation/assets/js/29.fb8d695b.js"><link rel="prefetch" href="/documentation/assets/js/3.d0e387db.js"><link rel="prefetch" href="/documentation/assets/js/30.947612a9.js"><link rel="prefetch" href="/documentation/assets/js/31.003e1792.js"><link rel="prefetch" href="/documentation/assets/js/32.1ce71901.js"><link rel="prefetch" href="/documentation/assets/js/33.28f5d5cc.js"><link rel="prefetch" href="/documentation/assets/js/34.5907a4d8.js"><link rel="prefetch" href="/documentation/assets/js/35.629b1d28.js"><link rel="prefetch" href="/documentation/assets/js/36.205c8e77.js"><link rel="prefetch" href="/documentation/assets/js/37.ad446959.js"><link rel="prefetch" href="/documentation/assets/js/38.5806cce0.js"><link rel="prefetch" href="/documentation/assets/js/39.74e426ad.js"><link rel="prefetch" href="/documentation/assets/js/4.a06f2bdb.js"><link rel="prefetch" href="/documentation/assets/js/40.e784f4df.js"><link rel="prefetch" href="/documentation/assets/js/41.745b5691.js"><link rel="prefetch" href="/documentation/assets/js/42.fdaaa87b.js"><link rel="prefetch" href="/documentation/assets/js/43.1790b347.js"><link rel="prefetch" href="/documentation/assets/js/44.59115b59.js"><link rel="prefetch" href="/documentation/assets/js/45.e85af69d.js"><link rel="prefetch" href="/documentation/assets/js/46.9020c333.js"><link rel="prefetch" href="/documentation/assets/js/47.f83b70aa.js"><link rel="prefetch" href="/documentation/assets/js/48.c251f1f5.js"><link rel="prefetch" href="/documentation/assets/js/49.d1ca6d76.js"><link rel="prefetch" href="/documentation/assets/js/5.db2a67a3.js"><link rel="prefetch" href="/documentation/assets/js/50.b0d2af97.js"><link rel="prefetch" href="/documentation/assets/js/51.b1589664.js"><link rel="prefetch" href="/documentation/assets/js/52.a11322b1.js"><link rel="prefetch" href="/documentation/assets/js/53.f8ee68fd.js"><link rel="prefetch" href="/documentation/assets/js/54.9f7f0c72.js"><link rel="prefetch" href="/documentation/assets/js/55.2e817e89.js"><link rel="prefetch" href="/documentation/assets/js/56.c71f369d.js"><link rel="prefetch" href="/documentation/assets/js/57.577e14a8.js"><link rel="prefetch" href="/documentation/assets/js/58.8003441a.js"><link rel="prefetch" href="/documentation/assets/js/59.07362945.js"><link rel="prefetch" href="/documentation/assets/js/6.5613c56f.js"><link rel="prefetch" href="/documentation/assets/js/60.d363826d.js"><link rel="prefetch" href="/documentation/assets/js/61.4a56b9b1.js"><link rel="prefetch" href="/documentation/assets/js/62.9caf1d6c.js"><link rel="prefetch" href="/documentation/assets/js/63.29e83b9f.js"><link rel="prefetch" href="/documentation/assets/js/64.6e699ff3.js"><link rel="prefetch" href="/documentation/assets/js/65.cc0eceef.js"><link rel="prefetch" href="/documentation/assets/js/66.c73f5912.js"><link rel="prefetch" href="/documentation/assets/js/67.6e58b485.js"><link rel="prefetch" href="/documentation/assets/js/68.c94aaed3.js"><link rel="prefetch" href="/documentation/assets/js/69.25762f00.js"><link rel="prefetch" href="/documentation/assets/js/7.66629c4e.js"><link rel="prefetch" href="/documentation/assets/js/70.285df064.js"><link rel="prefetch" href="/documentation/assets/js/71.0271d662.js"><link rel="prefetch" href="/documentation/assets/js/72.8ef0cb9b.js"><link rel="prefetch" href="/documentation/assets/js/73.d1a076cf.js"><link rel="prefetch" href="/documentation/assets/js/74.3b3f7646.js"><link rel="prefetch" href="/documentation/assets/js/75.88430a12.js"><link rel="prefetch" href="/documentation/assets/js/76.5769a932.js"><link rel="prefetch" href="/documentation/assets/js/77.4b541fae.js"><link rel="prefetch" href="/documentation/assets/js/78.11a4e60e.js"><link rel="prefetch" href="/documentation/assets/js/79.735043f8.js"><link rel="prefetch" href="/documentation/assets/js/8.2d021411.js"><link rel="prefetch" href="/documentation/assets/js/81.5a399460.js"><link rel="prefetch" href="/documentation/assets/js/82.7b581bbd.js"><link rel="prefetch" href="/documentation/assets/js/83.f9f87bc9.js"><link rel="prefetch" href="/documentation/assets/js/84.77cc752a.js"><link rel="prefetch" href="/documentation/assets/js/85.c6f8c3ac.js"><link rel="prefetch" href="/documentation/assets/js/86.e5778f8b.js"><link rel="prefetch" href="/documentation/assets/js/87.b4aaa88e.js"><link rel="prefetch" href="/documentation/assets/js/88.fea6864b.js"><link rel="prefetch" href="/documentation/assets/js/89.d6f2c35f.js"><link rel="prefetch" href="/documentation/assets/js/9.0ecb0039.js"><link rel="prefetch" href="/documentation/assets/js/90.7b5e889b.js"><link rel="prefetch" href="/documentation/assets/js/91.f30c4c9e.js"><link rel="prefetch" href="/documentation/assets/js/92.5f3cc763.js"><link rel="prefetch" href="/documentation/assets/js/93.d4c21e9e.js"><link rel="prefetch" href="/documentation/assets/js/94.e0fdaec1.js"><link rel="prefetch" href="/documentation/assets/js/95.33bb0640.js"><link rel="prefetch" href="/documentation/assets/js/96.784570c3.js"><link rel="prefetch" href="/documentation/assets/js/97.0a39a7f0.js"><link rel="prefetch" href="/documentation/assets/js/98.ef017245.js">
+    <link rel="stylesheet" href="/documentation/assets/css/0.styles.3032228c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/documentation/" class="home-link router-link-active"><img src="https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg" alt="Beta" class="logo"> <span class="site-name can-hide">Beta</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/beta.html" class="nav-link">
+  Agoric Beta
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link router-link-active">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/js-programming/" class="nav-link">
+  Agoric JavaScript Programming
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/wallet/" class="nav-link">
+  Wallet Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/repl/" class="nav-link">
+  REPL
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/chainlink-integration.html" class="nav-link">
+  Chainlink Integration
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link router-link-active">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link router-link-active">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YouTube
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Getting Started Menu" class="dropdown-title"><span class="title">Getting Started</span> <span class="arrow down"></span></button> <button type="button" aria-label="Getting Started Menu" class="mobile-dropdown-title"><span class="title">Getting Started</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/before-using-agoric.html" class="nav-link">
+  Before Using Agoric
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/start-a-project.html" class="nav-link">
+  Starting a Project
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/development-cycle.html" class="nav-link">
+  Development Cycle
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/deploying.html" class="nav-link">
+  Deploying Smart Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction.html" class="nav-link">
+  ERTP Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Zoe Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/getting-started/beta.html" class="nav-link">
+  Agoric Beta
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Guides" class="dropdown-title"><span class="title">Guides</span> <span class="arrow down"></span></button> <button type="button" aria-label="Guides" class="mobile-dropdown-title"><span class="title">Guides</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/" class="nav-link">
+  Documentation
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/agoric-cli/" class="nav-link">
+  Agoric CLI Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/dapps/" class="nav-link">
+  Agoric Dapps
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  ERTP
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link router-link-active">
+  Zoe
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/js-programming/" class="nav-link">
+  Agoric JavaScript Programming
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/wallet/" class="nav-link">
+  Wallet Guide and API
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/repl/" class="nav-link">
+  REPL
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/guides/chainlink-integration.html" class="nav-link">
+  Chainlink Integration
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Dynamic IBC (dIBC)
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Zoe Menu" class="dropdown-title"><span class="title">Zoe</span> <span class="arrow down"></span></button> <button type="button" aria-label="Zoe Menu" class="mobile-dropdown-title"><span class="title">Zoe</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/intro-zoe.html" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/" class="nav-link router-link-active">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/guide/contracts/" class="nav-link router-link-active">
+  Contracts
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/zoe/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="ERTP Menu" class="dropdown-title"><span class="title">ERTP</span> <span class="arrow down"></span></button> <button type="button" aria-label="ERTP Menu" class="mobile-dropdown-title"><span class="title">ERTP</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/getting-started/ertp-introduction/" class="nav-link">
+  Introduction
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/guide/" class="nav-link">
+  Guide
+</a></li><li class="dropdown-item"><!----> <a href="/documentation/ertp/api/" class="nav-link">
+  API
+</a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Platform Menu" class="dropdown-title"><span class="title">Platform</span> <span class="arrow down"></span></button> <button type="button" aria-label="Platform Menu" class="mobile-dropdown-title"><span class="title">Platform</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/documentation/platform/" class="nav-link">
+  Agoric Stack
+</a></li></ul></div></div><div class="nav-item"><a href="/documentation/glossary/" class="nav-link">
+  Glossary
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Learn More Menu" class="dropdown-title"><span class="title">Learn More</span> <span class="arrow down"></span></button> <button type="button" aria-label="Learn More Menu" class="mobile-dropdown-title"><span class="title">Learn More</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://agoric.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Agoric
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://agoric.com/papers/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Papers
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  YouTube
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Agoric/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/documentation/getting-started/intro-zoe.html" class="sidebar-link">Zoe Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><a href="/documentation/zoe/guide/" class="sidebar-heading clickable router-link-active"><span>Zoe Guide</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/documentation/zoe/guide/contracts/" aria-current="page" class="sidebar-link">Zoe Contracts</a></li><li><section class="sidebar-group collapsable depth-0"><a href="/documentation/zoe/api/" class="sidebar-heading clickable"><span>Zoe API</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/documentation/zoe/roadmap/" class="sidebar-link">Zoe Roadmap</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="constantproduct-amm"><a href="#constantproduct-amm" class="header-anchor">#</a> ConstantProduct AMM</h1> <div class="zoe-version">
+    Zoe v0.18.1. Last updated
+    2021-09-13.
+</div> <h5 id="view-the-code-on-github-last-updated-2021-10-26"><a href="#view-the-code-on-github-last-updated-2021-10-26" class="header-anchor">#</a> <a href="https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/vpool-xyk-amm/multipoolMarketMaker.js" target="_blank" rel="noopener noreferrer">View the code on Github<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> (Last updated: 2021-10-26)</h5> <h5 id="view-contracts-on-github"><a href="#view-contracts-on-github" class="header-anchor">#</a> <a href="https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts" target="_blank" rel="noopener noreferrer">View contracts on Github<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></h5> <p>The Constant Product AMM is an automated market maker (AMM) that supports multiple
+liquidity pools and direct exchanges across pools. It's called the &quot;Constant
+Product&quot; AMM because it uses the constant product rule, which is one of a family of
+rules that enable a market maker to guarantee to be able to continue to make
+trades, regardless of how prices change. (The constant product rule does this by
+ensuring that the product of the contents of two pools of assets remains constant
+as trading takes place.)</p> <p>Each liquidity pool maintains a price for exchanges between the central token
+and a secondary token. Secondary tokens can be exchanged with each other, but
+only through the central token. For example, if BLD and ATM are two token types
+and RUN is the central currency, a swap giving ATM and wanting BLD would first
+use the pool (ATM, RUN) then the pool (BLD, RUN). There are no direct liquidity
+pools between two secondary tokens.</p> <p>There should only need to be one instance of this contract, so liquidity can be
+shared as much as possible. Each secondary currency has a separate pool of liquidity.</p> <p>When the contract is instantiated, the terms specify the central token.  Invitations
+for adding and removing liquidity and for making trades are available by calling
+methods on the publicFacet. Other publicFacet operations support querying prices and
+the sizes of pools. Create new pools with <code>addPool()</code>.</p> <p>When making trades or requesting prices, the caller must specify that either the
+input price (swapIn, getInputPrice) or the output price (swapOut, getOutputPrice) is
+fixed. For swaps, the required keywords are <code>In</code> for the trader's <code>give</code> amount, and
+<code>Out</code> for the trader's <code>want</code> amount.  <code>getInputPrice()</code> and <code>getOutputPrice()</code> each
+take two amounts. When <code>getInputPrice()</code> or <code>swapIn()</code> is called, the <code>amountOut</code>
+parameter indicated the desired <code>amountOut</code>; if <code>amountIn</code> is insufficient to provide
+that much, the result indicates that no trade will take place. (The returned amountIn
+and amountOut will both be empty amounts.) Similarly, when <code>swapIn()</code> or
+<code>getOutputPrice()</code> is called, <code>amountIn</code> is treated as a maximum.  If it would take a
+greater amount to get the specified <code>amountOut</code>, the result indicates no trade.</p> <p>When adding and removing liquidity, the keywords are <code>Central</code>, <code>Secondary</code>, and
+<code>Liquidity</code>. Adding liquidity uses <code>Central</code> and <code>Secondary</code> in the <code>give</code> section
+and <code>Liquidity</code> in the <code>want</code> section. Removing liquidity reverses the keywords:
+<code>Liquidity</code> in the <code>give</code> section, and <code>Central</code> and <code>Secondary</code> in the want
+section. If the proposal specifies amounts directly taken from a recent quote, and
+any trading has intervened, the trade is unlikely to be accepted. You can either
+specify limits on how far the price may have moved, or specify limits of zero and
+trust the contract to trade fairly.</p> <p>Transactions that don't require an invitation include <code>addPool()</code> and the queries
+(<code>getInputPrice()</code>, <code>getOutputPrice()</code>, <code>getPoolAllocation()</code>,
+<code>getLiquidityIssuer()</code>, and <code>getLiquiditySupply()</code>).</p> <h2 id="the-constantproduct-api"><a href="#the-constantproduct-api" class="header-anchor">#</a> The ConstantProduct API</h2> <p>These examples use RUN as the central token. BLD and ATM are secondary currencies.</p> <h3 id="trading-with-the-constantproduct-amm"><a href="#trading-with-the-constantproduct-amm" class="header-anchor">#</a> Trading with the ConstantProduct AMM</h3> <p>Once trading pools have been set up (see below), a new trader can interact with the
+market by asking for the current price, making an invitation, and making an
+offer. If Sara has ATM and needs 275 BLD for a deal she has negotiated, she can use
+getOutputPrice() to get a quote. (An empty amount indicates no limit on the
+amountOut of the result.)</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> quote <span class="token operator">=</span> <span class="token constant">E</span><span class="token punctuation">(</span>publicFacet<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getOutputPrice</span><span class="token punctuation">(</span>
+  AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>BLDBrand<span class="token punctuation">,</span> <span class="token number">275n</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  AmountMath<span class="token punctuation">.</span><span class="token function">makeEmpty</span><span class="token punctuation">(</span>ATMBrand<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>Let's assume the quote says she needs to provide 216 ATM. Sara believes the
+price is somewhat volatile, and she doesn't want to make repeated calls, so she pads
+her offer. If the appropriate pools don't exist, she'll get an error (<code>brands were not recognized</code>). If someone sells a lot of ATM into the pool just ahead of
+her, the price will increase, and she'll have to decide whether to deposit more
+ATM or wait for the price to stabilize. If someone buys a lot of ATM just
+ahead of her order, she'll get the 275 BLD for less and will get some ATM
+back.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> saraProposal <span class="token operator">=</span> <span class="token function">harden</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  want<span class="token operator">:</span> <span class="token punctuation">{</span> Out<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>BLDBrand<span class="token punctuation">,</span> <span class="token number">275n</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  give<span class="token operator">:</span> <span class="token punctuation">{</span> In<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>atmBrand<span class="token punctuation">,</span> <span class="token number">220n</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> swapInvitation <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>publicFacet<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">makeSwapOutInvitation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> atmPayment <span class="token operator">=</span>
+  <span class="token function">harden</span><span class="token punctuation">(</span><span class="token punctuation">{</span> In<span class="token operator">:</span> saraAtmPurse<span class="token punctuation">.</span><span class="token function">withdraw</span><span class="token punctuation">(</span>AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>atmBrand<span class="token punctuation">,</span> <span class="token number">220n</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> saraSeat <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>zoe<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span>swapInvitation<span class="token punctuation">,</span> saraProposal<span class="token punctuation">,</span> atmPayment<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> saraResult <span class="token operator">=</span> <span class="token keyword">await</span> saraSeat<span class="token punctuation">.</span><span class="token function">getOfferResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>If the result is <code>Swap successfully completed.</code>, she got the BLD for 220 ATM
+or less (she'll want to deposit any refund). Otherwise the market price moved against
+her, and she'll have to check the price again and make another offer.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> BLDProceeds <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>saraSeat<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPayout</span><span class="token punctuation">(</span><span class="token string">'In'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> atmRefund <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>saraSeat<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPayout</span><span class="token punctuation">(</span><span class="token string">'Out'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> BLDProceedsAmount <span class="token operator">=</span> <span class="token constant">E</span><span class="token punctuation">(</span>saraBLDPurse<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">deposit</span><span class="token punctuation">(</span>BLDProceeds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token constant">E</span><span class="token punctuation">(</span>saraAtmPurse<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">deposit</span><span class="token punctuation">(</span>atmRefund<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="creating-a-new-pool"><a href="#creating-a-new-pool" class="header-anchor">#</a> Creating a new Pool</h3> <p>When the contract is first instantiated, there won't be any pools ready for
+trading. <code>addPool()</code> adds a new currency, which can then be funded.  (All
+currencies must be fungible.) When a pool is first funded, there's no other basis
+on which to decide how much liquidity to create, so the liquidity amount equals the
+amount of the central token in the offer.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> BLDLiquidityIssuer <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>publicFacet<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addPool</span><span class="token punctuation">(</span>BLDIssuer<span class="token punctuation">,</span> <span class="token string">'BLD'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>Alice sees that the current rate in the external market is 2 BLD for each
+RUN, so she deposits twice as many BLD as RUN to fund the market.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> aliceProposal <span class="token operator">=</span> <span class="token function">harden</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  want<span class="token operator">:</span> <span class="token punctuation">{</span> Liquidity<span class="token operator">:</span> <span class="token function">BLDLiquidity</span><span class="token punctuation">(</span><span class="token number">50n</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  give<span class="token operator">:</span> <span class="token punctuation">{</span>
+    Secondary<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>BLDBrand<span class="token punctuation">,</span> <span class="token number">100n</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    Central<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>RUNBrand<span class="token punctuation">,</span> <span class="token number">50n</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> alicePayments <span class="token operator">=</span> <span class="token punctuation">{</span>
+  Secondary<span class="token operator">:</span> aliceBLDPayment<span class="token punctuation">,</span>
+  Central<span class="token operator">:</span> aliceRUNPayment<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> aliceAddLiquidityInvitation <span class="token operator">=</span> <span class="token constant">E</span><span class="token punctuation">(</span>publicFacet<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">makeAddLiquidityInvitation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> addLiquiditySeat <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>zoe<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span>
+  aliceAddLiquidityInvitation<span class="token punctuation">,</span>
+  aliceProposal<span class="token punctuation">,</span>
+  alicePayments<span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="adding-liquidity-to-an-existing-pool"><a href="#adding-liquidity-to-an-existing-pool" class="header-anchor">#</a> Adding Liquidity to an Existing Pool</h3> <p>When adding or removing liquidity to pools that have already been established, the
+amounts deposited must be in proportion to the current balances in the pool. The
+calculation is based on the amount of the <code>Central</code> asset. The <code>Secondary</code> assets
+must be added in proportion.  If less <code>Secondary</code> is provided than required, the
+offer is exited with no trade. If more of the secondary is provided than is required,
+the excess is returned.</p> <p>Bob calls <code>getPoolAllocation()</code> to find the relative levels. Let's say the answer is
+that the current ratio is 1234 BLD to 1718 RUN.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> BLDPoolAlloc <span class="token operator">=</span> <span class="token constant">E</span><span class="token punctuation">(</span>publicFacet<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPoolAllocation</span><span class="token punctuation">(</span>BLDBrand<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> RUNValue <span class="token operator">=</span> BLDPoolAlloc<span class="token punctuation">.</span>Central<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+<span class="token keyword">const</span> BLDValue <span class="token operator">=</span> BLDPoolAlloc<span class="token punctuation">.</span>secondary<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+</code></pre></div><p>Now he can add liquidity.  The price ratio changes when anyone trades with the pool,
+so he should leave some flexibility in the proposal. The pool calculates the amount
+of <code>secondary</code> currency required based on the amount of <code>central</code> currency provided.
+Bob bumps up the amount of BLD he'll contribute by a little. If he was concerned
+about how much liquidity this would produce, he would calculate it and specify a rough
+figure, but there's no need in this case.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">const</span> bobProposal <span class="token operator">=</span> <span class="token function">harden</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  give<span class="token operator">:</span> <span class="token punctuation">{</span>
+    Central<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>RUNBrand<span class="token punctuation">,</span> <span class="token number">1800n</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    Secondary<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>BLDBrand<span class="token punctuation">,</span> <span class="token number">1200n</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  want<span class="token operator">:</span> <span class="token punctuation">{</span> Liquidity<span class="token operator">:</span> AmountMath<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>liquidityBrand<span class="token punctuation">,</span> <span class="token number">0n</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  exit<span class="token operator">:</span> <span class="token punctuation">{</span> onDemand<span class="token operator">:</span> <span class="token keyword">null</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> bobPayments <span class="token operator">=</span> <span class="token punctuation">{</span>
+  Central<span class="token operator">:</span> bobRUNPayment<span class="token punctuation">,</span>
+  Secondary<span class="token operator">:</span> bobBLDPayment<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> seat <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token constant">E</span><span class="token punctuation">(</span>zoe<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span>addLiquidityInvite<span class="token punctuation">,</span> bobProposal<span class="token punctuation">,</span> bobPayments<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="governance"><a href="#governance" class="header-anchor">#</a> Governance</h2> <p>The ConstantProduct AMM uses governance to manage changes to two parameters: <code>PoolFee</code>
+and <code>ProtocolFee</code>. The current values of the parameters and the history of governance
+voting to update their values is visible through the governance APIs.</p> <p>An instance of the ConstantProduct AMM is managed by a contractGovernor, which
+controls the ability to change contract parameters and add new types of collateral.
+The contractGovernor adds these four methods to the contract's publicFacet:</p> <ul><li><code>getSubscription()</code>: get a <a href="/documentation/guides/js-programming/notifiers.html">Subscription</a> that
+updates when votes are called.</li> <li><code>getContractGovernor()</code>: returns the contractGovernor for verification.</li> <li><code>getGovernedParamsValues()</code>: returns a structure showing the current values of
+the two parameters.</li> <li><code>getParamValue('PoolFee')</code>: gets a description of the current value of
+either parameter. Note the initial capital letter.</li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/Agoric/documentation/edit/main/main/zoe/guide/contracts/constantProductAMM.md" target="_blank" rel="noopener noreferrer">Help us improve this page!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">11/9/2021, 7:26:13 PM</span></div></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/documentation/assets/js/app.2e593384.js" defer></script><script src="/documentation/assets/js/2.581bc00f.js" defer></script><script src="/documentation/assets/js/80.29bab1c2.js" defer></script><script src="/documentation/assets/js/20.0d6b3cf5.js" defer></script>
+  </body>
+</html>
