@@ -108,7 +108,7 @@ const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 ## `purse.getDepositFacet()`
 
 Returns a deposit-only facet on the `purse`. This is an object you can give to other parties
-that lets them deposit `payments` to your  `purse` without being able to withdraw assets from or check
+that lets them deposit `payments` to your `purse` without being able to withdraw assets from or check
 the balance of the `purse`. This makes it a safe way to let other people send you `payments`.
 
 You can only deposit a `payment` into a deposit facet that's the same `brand` as the original `purse`

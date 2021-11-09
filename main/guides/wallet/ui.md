@@ -118,7 +118,7 @@ of an offer. Clicking it opens a popup with the JSON representation of that offe
 ![Payments](./assets/IncomingPaymentWalletUI.png)
 
 The Incoming Payments component shows any pending incoming payments not yet deposited in a purse.
-A Deposit To value of "Automatic" means to deposit the payment in the apprpriate purse that has
+A Deposit To value of "Automatic" means to deposit the payment in the appropriate purse that has
 auto-deposit enabled. Otherwise, you need to select into which of your purses for that brand of asset you
 want to deposit the payment. Note that you can't divide the payment or otherwise make a partial
 deposit; it's all or nothing. 

@@ -56,11 +56,11 @@ test('ertp guide readme', async t => {
   // #endregion getId
 
   // #region getValue
-  const depositFacet = await E(board).getValue(aliceQuatloosDepositFacetId);
-  await E(aliceQuatloosDepositFacet).receive(myQuatloosPayment);
+  const depositFacet = E(board).getValue(aliceQuatloosDepositFacetId);
+  await E(depositFacet).receive(myQuatloosPayment);
   // #endregion getValue
 
-  t.is(depositFacet, aliceQuatloosDepositFacet);
+  t.is(await depositFacet, aliceQuatloosDepositFacet);
   t.deepEqual(await aliceQuatloosPurse.getCurrentAmount(), quatloosFive);
 
   // #region ticketValues

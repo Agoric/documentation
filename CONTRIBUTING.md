@@ -509,7 +509,7 @@ export default ({ router }) => {
   ])
 }
 ```
-The general format should be self-explanatory. However, there are two things you need to know that aren't apparant
+The general format should be self-explanatory. However, there are two things you need to know that aren't apparent
 - VuePress treats `main` as the root of the folders. So all of the addresses start with `/` to represent `/main/`.
 - You'll notice there are two entries for every redirect, one where the redirected address ends with `.html` and
   one where it ends with `/`. For each individual file that is not a `README.md`, there are two ways to access it.

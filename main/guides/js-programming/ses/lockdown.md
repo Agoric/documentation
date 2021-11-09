@@ -241,7 +241,7 @@ Given these constraints, it is safe and helpful for `console` to reveal
 to humans information it would not reveal to objects it interacts with. 
 SES amplifies this and reveals much more information than the normal
 `console` does. By default and during `lockdown` SES replaces the built-in
-`console`with a wrapper, thus virtualizing it.  
+`console` with a wrapper, thus virtualizing it.  
 
 Also, the enhanced virtual `console` has a special relationship with
 error objects and the SES `assert` package. Errors can report 
@@ -464,7 +464,7 @@ of the eventual-send shim:
 ```js
 lockdown(); // overrideTaming defaults to 'moderate'
 // or
-lockdown({ overrideTaming: 'moderate' }); // Moderate mitigations for legacy compatability
+lockdown({ overrideTaming: 'moderate' }); // Moderate mitigations for legacy compatibility
 // vs
 lockdown({ overrideTaming: 'min' }); // Minimal mitigations for purely modern code
 ```

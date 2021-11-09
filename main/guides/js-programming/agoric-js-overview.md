@@ -191,7 +191,7 @@ comment is identified as a disallowed use of `import()` and falsely rejected:
 ```js
 //
 // This function calculates the import
-// duties paid on the merchandise..
+// duties paid on the merchandise.
 //
 ```
 
