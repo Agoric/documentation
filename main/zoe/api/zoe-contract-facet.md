@@ -330,7 +330,7 @@ to manipulate the offer. The queries and operations are as follows:
     The result here is **not** to add the keyword to the allocation. It wasn't there to begin with, and
     the operation was to try to subtract it from the allocation. Subtracting something that's not there
     does not add it to the original value. For example, if I tell you I'm taking away the Mona Lisa from
-    you and you are not the Lourve and don't have it, you still don't have it after I try to take it away.
+    you and you are not the Louvre and don't have it, you still don't have it after I try to take it away.
     In the above example, trying to take away an empty amount from an empty allocation is effectively a
     null operation; the allocation is still empty, didn't add the new keyword, and no error is thrown. 
     
@@ -377,7 +377,7 @@ to manipulate the offer. The queries and operations are as follows:
    - Returns: `void`
    - The `seat` exits, displaying the optional `msg` string, if there is one, on the console.
      This is equivalent to exiting, except that `exit` is successful while
-     `fail()` signals an error occured while processing the offer. The contract
+     `fail()` signals an error occurred while processing the offer. The contract
      still gets its current `allocation` and the `seat` can no longer interact with the contract.
      Any other still open seats or outstanding promises and the contract instance continue.
      
@@ -390,7 +390,7 @@ to manipulate the offer. The queries and operations are as follows:
    - `newAllocation`: `{Allocation}`
    - Returns `{Boolean}`
    - Takes an `allocation` as an argument and returns `true` if that `allocation`
-     satisfies offer safety, `false` if is doesn't. Essentially, it checks
+     satisfies offer safety, `false` if it doesn't. Essentially, it checks
      `newAllocation` for offer safety, against the `seat`'s `proposal`.
      It checks whether `newAllocation` fully satisfies
      `proposal.give` (giving a refund) or whether it fully satisfies

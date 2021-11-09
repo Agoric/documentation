@@ -23,7 +23,7 @@ recipients with others, its associated `quotePayment` is the same value wrapped 
 This lets other recipients validate the quote is from the intended source. 
 
 Accessing the `quotePayment` value requires a round trip, so `quoteAmount`is included for the original recipient's
-convenience. They know  who they received it from and don't need to validate provenance.
+convenience. They know who they received it from and don't need to validate provenance.
  
 A `PriceQuoteValue` is the `Value` part of a `quoteAmount`. Its properties are:
 - `amountIn` `{ Amount }`: The amount supplied to a trade

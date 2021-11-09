@@ -149,7 +149,7 @@ A `mint` issues new digital assets of its associated `brand` as a new
 `payment` object. These assets may be currency-like (our imaginary
 Quatloos currency), goods-like valuables (magic swords for games), or
 electronic rights (the right to participate in a contract). Only a
-holder of a `mint`object can create new assets from it. 
+holder of a `mint` object can create new assets from it. 
 
 In other words, let's say there
 are 1000 Quatloos in circulation. Only holders of the Quatloos associated

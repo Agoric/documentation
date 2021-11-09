@@ -340,7 +340,7 @@ Your code might run in compartments, but they are an implementation
 detail of tools and runtimes.
 
 Vats in the Agoric runtime use compartments to isolate contracts within a vat. 
-A vat can use multiple comparments.
+A vat can use multiple compartments.
 MetaMask’s LavaMoat uses a Compartment for every module, to create 
 boundaries between application code and third-party dependencies.
 
@@ -406,7 +406,7 @@ their methods. Their differences are what objects you use them on, and when you 
 
 `lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials* 
 (implicitly shared global objects) and enables `harden()`. If you call `harden()` 
-before `lockdown()` excutes, it throws an error.
+before `lockdown()` executes, it throws an error.
 
 `lockdown()` works on objects created by the JavaScript language itself as part of 
 its definition. Use `harden()` to freeze objects created after `lockdown()`was called;
