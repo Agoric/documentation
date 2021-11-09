@@ -36,7 +36,7 @@ Each `deploy.js` runs in its own temporary process, connected to `ag-solo`, thro
 
 ## Contract deployment
 
-First, let's look at *contract deployment*. `contract/deploy.js`bundles up a contract's source code
+First, let's look at *contract deployment*. `contract/deploy.js` bundles up a contract's source code
 (which may consist of multiple files and modules) and "installs" 
 it on the blockchain as source code, using [`Zoe`](/getting-started/intro-zoe.md). 
 This does _not_ execute contract code; it just makes the code available on-chain.

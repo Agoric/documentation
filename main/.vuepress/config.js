@@ -1,7 +1,7 @@
 const nav = require('./themeConfig/nav')
 
 module.exports = {
-  /* --- FOR DEPLOYEMENT TO GITHUB PAGES--- */
+  /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/documentation/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
   title: 'Beta', // title for the site. prefix for all page titles and displayed in the navbar
@@ -330,7 +330,7 @@ module.exports = {
     // h1, h2, and h3 headers
     // Disable search by uncommenting the following line:
     // search: false
-    // Cusotmize how many suggestions will be shown with:
+    // Customize how many suggestions will be shown with:
     // searchMaxSuggestions: <numberOfSuggestions>
   }
 }

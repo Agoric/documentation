@@ -111,16 +111,16 @@ test('ertp guide AmountMath methods add', async t => {
   // #endregion add
   t.deepEqual(
     combinedList,
-    AmountMath.make(myItemsBrand, ['1', '2', '4', '3']),
+    AmountMath.make(myItemsBrand, harden(['1', '2', '4', '3'])),
   );
 });
 
 test('ertp guide AmountMath methods subtract', async t => {
   // #region subtract
   const { brand: myItemsBrand } = makeIssuerKit('myItems', 'set');
-  const listAmountA = AmountMath.make(myItemsBrand, ['1', '2', '4']);
-  const listAmountB = AmountMath.make(myItemsBrand, ['3']);
-  const listAmountC = AmountMath.make(myItemsBrand, ['2']);
+  const listAmountA = AmountMath.make(myItemsBrand, harden(['1', '2', '4']));
+  const listAmountB = AmountMath.make(myItemsBrand, harden(['3']));
+  const listAmountC = AmountMath.make(myItemsBrand, harden(['2']));
   // Returns ['1', '4']
   const subtractedList = AmountMath.subtract(listAmountA, listAmountC);
   // Throws error
@@ -128,7 +128,10 @@ test('ertp guide AmountMath methods subtract', async t => {
     message: /right element .* was not in left/,
   });
   // #endregion subtract
-  t.deepEqual(subtractedList, AmountMath.make(myItemsBrand, ['1', '4']));
+  t.deepEqual(
+    subtractedList,
+    AmountMath.make(myItemsBrand, harden(['1', '4'])),
+  );
 });
 
 test('ertp guide AmountMath methods make', async t => {

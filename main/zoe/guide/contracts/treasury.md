@@ -1,6 +1,6 @@
 # Treasury contract
 
-The Treasury is the primary mechansim for making `RUN` (the Agoric stable-value
+The Treasury is the primary mechanism for making `RUN` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
 loans against supported types of collateral. The creator of the contract can
 add new types of collateral. (This is expected to be under the control of
@@ -93,7 +93,7 @@ collateral types and specify the parameters for its loans.
 
 Currently the treasury runs all the `vaults` in a single vat. We intend to split
 the `vaults` into separate vats for better isolation. In order to allow the
-liquidation approach to be pluggable and to be visible to and changable by
+liquidation approach to be pluggable and to be visible to and changeable by
 governance, liquidation takes place in a separate vat.
 
 ### Invitations
