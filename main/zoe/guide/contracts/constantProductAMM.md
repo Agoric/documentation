@@ -3,11 +3,16 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: 2021-10-26)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 
-The Constant Product AMM is an automated market maker (AMM) that supports
-multiple liquidity pools and direct exchanges across pools.
+The Constant Product AMM is an automated market maker (AMM) that supports multiple
+liquidity pools and direct exchanges across pools. It's called the "Constant
+Product" AMM because it uses the constant product rule, which is one of a family of
+rules that enable a market maker to guarantee to be able to continue to make
+trades, regardless of how prices change. (The constant product rule does this by
+ensuring that the product of the contents of two pools of assets remains constant
+as trading takes place.)
 
 Each liquidity pool maintains a price for exchanges between the central token
 and a secondary token. Secondary tokens can be exchanged with each other, but
@@ -30,10 +35,10 @@ fixed. For swaps, the required keywords are `In` for the trader's `give` amount,
 `Out` for the trader's `want` amount.  `getInputPrice()` and `getOutputPrice()` each
 take two amounts. When `getInputPrice()` or `swapIn()` is called, the `amountOut`
 parameter indicated the desired `amountOut`; if `amountIn` is insufficient to provide
-that much, the result indicates that no trade will take place. Similarly, when
-`swapIn()` or `getOutputPrice()` is called, `amountIn` is treated as a maximum.
-If it would take a greater amount to get the specified `amountOut`, the result
-indicates no trade.
+that much, the result indicates that no trade will take place. (The returned amountIn
+and amountOut will both be empty amounts.) Similarly, when `swapIn()` or
+`getOutputPrice()` is called, `amountIn` is treated as a maximum.  If it would take a
+greater amount to get the specified `amountOut`, the result indicates no trade.
 
 When adding and removing liquidity, the keywords are `Central`, `Secondary`, and
 `Liquidity`. Adding liquidity uses `Central` and `Secondary` in the `give` section
@@ -54,9 +59,9 @@ These examples use RUN as the central token. BLD and ATM are secondary currencie
 
 ### Trading with the ConstantProduct AMM
 
-Once trading pools have been set up, a new trader can interact with the market by
-asking for the current price, making an invitation, and making an offer. If Sara has
-ATM and needs 275 BLD for a deal she has negotiated, she can use
+Once trading pools have been set up (see below), a new trader can interact with the
+market by asking for the current price, making an invitation, and making an
+offer. If Sara has ATM and needs 275 BLD for a deal she has negotiated, she can use
 getOutputPrice() to get a quote. (An empty amount indicates no limit on the
 amountOut of the result.)
 
@@ -105,16 +110,17 @@ E(saraAtmPurse).deposit(atmRefund);
 ###  Creating a new Pool
 
 When the contract is first instantiated, there won't be any pools ready for
-trading. `addPool()` adds a new currency, which can then be funded. When a pool is
-first funded, there's no other basis on which to decide how much liquidity to create,
-so the liquidity amount equals the amount of the central token in the offer.
+trading. `addPool()` adds a new currency, which can then be funded.  (All
+currencies must be fungible.) When a pool is first funded, there's no other basis
+on which to decide how much liquidity to create, so the liquidity amount equals the
+amount of the central token in the offer.
 
 ```js
 const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD');
 ```
 
 Alice sees that the current rate in the external market is 2 BLD for each
-RUN, so she deposits twice as many BLD as RUN.
+RUN, so she deposits twice as many BLD as RUN to fund the market.
 
 ```js
 const aliceProposal = harden({
@@ -186,8 +192,9 @@ The ConstantProduct AMM uses governance to manage changes to two parameters: `Po
 and `ProtocolFee`. The current values of the parameters and the history of governance
 voting to update their values is visible through the governance APIs.
 
-The contractGovernor used here adds these four methods to the contract's
-publicFacet: 
+An instance of the ConstantProduct AMM is managed by a contractGovernor, which
+controls the ability to change contract parameters and add new types of collateral.
+The contractGovernor adds these four methods to the contract's publicFacet:
 
 * `getSubscription()`: get a [Subscription](/guides/js-programming/notifiers.md) that
     updates when votes are called.
