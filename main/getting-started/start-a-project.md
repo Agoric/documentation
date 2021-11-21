@@ -52,7 +52,7 @@ Cycle](/getting-started/development-cycle.md)
     To specify a different project, use the optional arguments:<br>
     <code>--dapp-template &lt;name&gt;</code> Use the project specified by this &lt;name&gt; as the template copied into your current directory.<br> 
       <code>--dapp-base &lt;base-url&gt;</code> Look under this directory for the Dapp template. 
-  <br><br> <a href="/documentation/dapps/dapp-templates">Learn more about the available dapp templates.</a>
+  <br><br> <a href="/documentation/dapps/dapp-templates.html">Learn more about the available dapp templates.</a>
   <br><br>If this 
   doesn't work, use <code>echo $PATH</code> to check that your Agoric
       CLI install directory is in your <code>$PATH</code> If not, add
