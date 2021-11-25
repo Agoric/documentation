@@ -182,7 +182,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Before Using Agoric',
+          title: 'Installing the Agoric SDK',
           path: '/getting-started/before-using-agoric.html',
           collapsible: false,
           children: [

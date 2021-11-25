@@ -11,7 +11,7 @@ applications)</i>, which typically have a browser-based user interface,
 a public API server, and a contract running on the Agoric blockchain.
 
 Before doing the steps given in this document, be sure you have done the necessary prerequisites
-specified in [Before Using Agoric](/getting-started/before-using-agoric.md).
+specified in [Installing the Agoric SDK](/getting-started/before-using-agoric.md).
 
 For complete documentation on the Agoric CLI commands (those starting with `agoric`) used here, 
 see the [Agoric CLI Guide](/guides/agoric-cli/commands.md).
