@@ -81,8 +81,8 @@ module.exports = [
         link: '/zoe/guide/'
       },
       {
-        text: 'Agoric JavaScript Programming',
-        ariaLabel: 'Agoric JS Programming',
+        text: 'JavaScript Framework',
+        ariaLabel: 'JavaScript Framework',
         link: '/guides/js-programming/',
       },
       {

@@ -325,7 +325,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 ## Notifier
 
 A notifier provides a stream of updates describing changes to the state of an [offer](#offer) or other object.
-For more information, see the [Notifier section in the Distributed JavaScript Programming Guide](/guides/js-programming/notifiers.md).
+For more information, see [Notifiers and Subscriptions](/guides/js-programming/notifiers.md).
 
 ## Object Capabilities
 
@@ -473,7 +473,7 @@ A vat is a unit of isolation.
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
 communicate with other vats and their objects and functions, but can only communicate asynchronously. 
 
-For more information, see the [Vat section in the Distributed JS Programming Guide](/guides/js-programming/vats.md)
+For more information, see the [Vat section in the Distributed JS Programming Guide](/guides/js-programming/#vats-the-unit-of-synchrony)
 
 ## Wallet
 

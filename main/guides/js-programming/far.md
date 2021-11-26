@@ -1,46 +1,77 @@
 
-# `Far()` and Remotable Objects
+# `Far()`, Remotable, and Marshaling
 
-## Remotable and passable objects
+To export objects such as from our [counter example](./hardened-js.md#counter-example)
+to make them available to other vats, mark them as _remotable_ using [Far](#far-api):
 
-In Agoric smart contracts and dapps, you can call methods on objects from other vats or machines. 
-For example, a purse for an ERTP issuer actually lives in the issuer's vat. But code in your off-chain
-wallet or another contract can still use that purse.
+<<< @/snippets/test-distributed-programming.js#importFar
+<<< @/snippets/test-distributed-programming.js#makeFarCounter
 
-This is possible because Agoric encapsulates inter-machine and inter-vat communication. At
-the smart contract or dapp level, objects from other vats or machines can almost be treated 
-as if they are local.
+## Marshaling by Copy or by Presence
 
-To call a method on an object from another vat or machine, you must 
-use [`E()`](./eventual-send.md#remote-object-communication-with-e). For example, getting
-an `Issuer`'s `brand` would look like `E(issuer).getBrand()`.
+Recall that the first step in an [eventual send](./eventual-send.md#eventual-send) is
+to _marshal_ the method name and structured arguments; that is: to make them into a single string.
+This is like [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) but it can handle values such as `undefined` and `BigInt`s.
+Also, while many forms of data are copied between vats,
+remotables are marshalled so that they become remote _presences_ when unmarshaled:
 
-Objects intended to be used from other vats are called *remotables*. Remote messages sent to
-remotables must only contain *passable* arguments and return *passable* results. 
-Passables includes all things that can be passed as arguments in messages. 
+![counter remote presence](../../assets/remote-presence-fig.svg)
 
+Then another vat can make and use the exported counters:
+
+<<< @/snippets/test-distributed-programming.js#useFarCounter
+
+## Pass Styles and `harden`
+
+Calls to remote presences must only contain *passable* arguments and return *passable* results.
 There are three kinds of passables:
-   * Remotables, objects with methods that can be called remotely using `E()`.
-   * Pass-by-copy data, such as numbers or hardened records
-   * Promises for passables.
+   * Remotables: objects with methods that can be called using `E()` eventual send notation
+   * Pass-by-copy data, such as numbers or hardened structures
+   * Promises for passables
 
-In particular, note that every object returned from a smart contract, such a `publicFacet` or 
+Every object exported from a smart contract, such a `publicFacet` or
 `creatorFacet`, must be passable. All objects used in your contract's external API must
-be passable.
+be passable. All passables must be hardened.
 
-### Rules for creating remotables
-- All property values must be functions. 
-  - They cannot be accessors.
-- You must wrap the object with `Far()`.
+Consider what might happen if we had a remote `item` and we did not harden
+some pass-by-copy data that we passed to it:
 
-**Note**: ERTP objects, such as `Purses`, are automatically created as `Remotable`, as are
-`UserSeats` and `ZCFSeats`. 
+```js
+let amount1 = { brand: brand1, value: 10n };
+await E(item).setPrice(amount1); // Throws, but let's imagine it doesn't.
+amount1.value = 20n;
+```
 
-### Using remotables
-- Call a remotable's method by first wrapping the remotable object with `E`, such as `E(issuer).getBrand();`
-- Handle the resulting promise. Calling `E()` always results in a `Promise`.
+Now `amount1` is supposedly both in the local and the remote vat, but the `value`
+is `20n` in the local vat but `10n` in the remote vat. (Worse: the remote vat
+might be the same as the local vat.) Requiring `harden()` for pass-by-copy
+data leads to behavior across vats that is straightforward to reason about.
 
-## Using `Far()`
+### `passStyleOf` API
+
+`passStyleOf(passable)`
+ - `passable` `{Passable}`
+ - Returns: `{PassStyle}`
+
+
+A Passable is a value that may be marshalled. It is classified as one of
+PassStyle. A Passable must be hardened.
+
+The `PassStyle`s are:
+   * the atomic pass-by-copy primitives (`"undefined" | "null" |
+     "boolean" | "number" | "bigint" | "string" | "symbol"`),
+   * the pass-by-copy containers (`"copyArray" | "copyRecord"`) that
+     contain other Passables,
+   * and the special cases (`"error" | "promise"`), which
+     also contain other Passables.
+   * so-called `PassableCap` leafs (`"remotable" | "promise"`).
+
+::: tip Check `passStyleOf` when handling untrusted structured data
+Just as you would use `typeof` to check that an argument is
+a string or number, use `passStyleOf` to when you expect, say, a `copyRecord`;
+this prevents malicious clients from playing tricks with cyclic data etc.
+:::
+## `Far()` API
 
 `Far(farName, object-with-methods)`
 - `farName` `{ String }`
@@ -51,43 +82,16 @@ The `farName` parameter gives the `Remotable` an *interface name* for debugging 
 up when logged through the `console`, for example with `console.log`. 
 
 The `object-with-methods` parameter should be an object whose properties are the functions serving 
-as the object's methods. See the example code below.
+as the object's methods.
 
 The `Far()` function marks an object as remotable.  `Far()` also:
 - Hardens the object.
-  - Both `harden()` and `Far()` function harden the object. 
-  - Only hardened objects are passable.
-- Checks for the property and value requirements above. 
-  If they are not met, it throws an error.
-- Records the object's interface name. 
+- Checks that all property values are be functions and throws otherwise.
+  - accessors (`get()` and `set()`) are not allowed.
+- Records the object's interface name.
 
-You should call `Far()` on an object if it both:
-- Will be sent out of its native vat.
-  - If it might ever appear as the `foo` in [`E(foo).method(args)`](./eventual-send.md),  
-    you should run `Far()` on it after creating it.
-- Has methods called on it, as opposed to just effectively storing data.
-
-Only passables can be passed as arguments or returned as results,
-and they must be hardened. If the passable is a remotable, it must be hardened with `Far()`.
-Otherwise, it must be hardened with [`harden()`](./ses/ses-guide.md#harden).
-
-An error
-is thrown if you call `Far()` on a record, instead of an object, which doesn't have function
-values. However, if object `foo` should never be exposed to other vats, you should make it
-a point **not** to use `Far()` on it. If `foo` is not marked as a remotable but is accidentally
+::: tip Avoid accidental exports
+If an object should never be exposed to other vats, you should make it
+a point **not** to use `Far()` on it. If an object is not marked as a remotable but is accidentally
 exposed, an error is thrown. This prevents any vulnerability from such accidental exposure.
-
-```js
-import { Far } from '@agoric/marshal';
-let counter;
-const countRemotable = Far('counter', {
-  increment() { counter++; },
-  decrement() { counter--; },
-  read() { return counter; },
-});
-```
-
-
-
-
-
+:::

@@ -1,45 +1,55 @@
-# Agoric JavaScript Programming
+# JavaScript Framework for Secure Distributed Computing
 
-Agoric's platform lets you write secure smart contracts in JavaScript. The platform 
-itself is mainly written in JavaScript. However, we've made several Agoric-specific 
-additions and deletions to general JavaScript programming that you should know about 
-and understand before programming on the platform. Some are *concepts*, others 
-are *Agoric library additions*, and some are at the *syntax level*. All changes at the 
-language level are in process to become official standards.
+The Agoric smart contract platform starts with a JavaScript framework
+for secure distributed computing.
 
-- **[Secure EcmaScript (SES)](./ses/)**
-  - SES provides a secure platform for
-    executing programs. With SES, you can run code you don't completely trust,
-    without being vulnerable to bugs or bad intentions. It's a
-    standards-track extension to the JavaScript standard. Notable additions
-    include the `lockdown()` and `harden()` methods to freeze objects. 
-    
-- **[`BigInt`](./bigint.md)** 
-  - JavaScript's `Number` primitive only represents
-    numbers up to 2<sup>53</sup> - 1. `BigInt` is a newer built-in JavaScript 
-    object that represents arbitrarily large integers. Agoric uses `BigInts` for 
-    `amount` `values` and times.
+::: tip Watch: Distributed Programming for a Decentralized World (Aug 2019)
+This 15 minute overview is the first in a
+[4-parts series](https://www.youtube.com/playlist?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
+of short talks on the Agoric Architecture that overlap substantially with the material in
+the sections below.
+<br />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/52SgGFpWjsY?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+:::
 
-- **[Vats](./vats.md)**
-  - Objects and functions in the same JavaScript vat can
-    communicate synchronously. Communication with objects outside the
-    vat can only be done asynchronously. 
-    
-- **[`Far()` and remotable objects](./far.md)**
-  - In Agoric smart contracts and dapps, you can call methods on objects from other
-    vats or machines. Objects intended to be used from other vats are called *remotables*. 
-    To mark an object as remotable, use the `Far()` function.
+## Vats: the unit of synchrony
 
-- **[Remote object communication using `E`](./eventual-send.md)**
-  - `E` is a local "bridge" function that lets
-    you invoke methods on remote objects, whether in another vat, machine, or blockchain (for example).
-    It takes a local representative (a *proxy*) for a remote object as an argument and sends messages
-    to it using normal message-sending syntax. The local proxy forwards all messages to the remote 
-    object to deal with. Sending a message to the remote object must be done by 
-    using `E` (`E(remoteObj).myMethod()`).
+The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) as web browsers and Node.js.
+Each event loop has a message queue, a call stack of frames, and a heap of objects:
+
+![heap, stack, and queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop/the_javascript_runtime_environment_example.svg)
+
+We refer to this combination of an event loop with a message queue, a stack, and a heap as a _vat_.
+
+Vats are the unit of synchrony. We can only use ordinary synchronous
+function calls within the same vat. But we can use asynchronous function calls
+(with [eventual send](./eventual-send.md)) either within the same vat or between vats.
+Vats may be on remote machines, including massively replicated machines such as blockchains.
+
+## Parts of the Framework
+
+The framework includes:
+
+- **[Hardened JavaScript](./hardened-js.md)**
+  - Hardened JavaScript provides a platform for
+    making objects that can interact with code you don't completely trust,
+    without being vulnerable to bugs or bad intentions.
+    We introduce [object capabilities](./hardened-js.md#object-capabilities-ocaps) and how to use them
+    to apply the [principle of least authority](./hardened-js.md#the-principle-of-least-authority-pola).
+
+- **[`E()` for Eventual Send to Remote Presences](./eventual-send.md)**
+  - The `E()` wrapper function lets
+    you invoke methods within or between vats.
+    Given a local representative (a *presence*) for a remote object,
+    it sends messages to the origin of the presence.
+    `E(obj).myMethod(...args)` is an asynchronous form of `obj.myMethod(...args)`.
+
+- **[`Far()`, Remoteable Objects, and Marshaling](./far.md)**
+  - Objects used across vats are called *remotables*.
+    To mark an object for exporting from a vat, use the `Far()` function.
 
 - **[Notifiers and Subscriptions](./notifiers.md)**
-  - The Agoric platform uses Notifiers and Subscriptions to distribute state change
+  - Notifiers and Subscriptions distribute state change
     updates. Both deliver an asynchronous stream of messages as a publish-subscribe system
     might, without requiring explicit management of lists of subscribers. Notifiers are
-    lossy conveyors of non-final values while Subscriptions are lossless value conveyors.
+    lossy conveyors of non-final values while subscriptions are lossless value conveyors.

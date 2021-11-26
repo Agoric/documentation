@@ -1,4 +1,4 @@
-# Intro to Hardened JavaScript
+# Hardened JavaScript
 
 ::: tip Watch: Object-capability Programming in Secure Javascript (Aug 2019)
 
