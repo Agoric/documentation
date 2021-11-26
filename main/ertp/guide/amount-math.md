@@ -12,8 +12,8 @@ There are two `AssetKinds`, each of which implements the same methods. Which kin
 for a particular `brand` depends on what was specified when the `brand` and 
 its `issuer` were created. They are: 
 
-- `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative BigInts).
-- `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are arrays with any number of strings, numbers, etc.
+- `AssetKind.NAT` (`'nat'`): Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
+- `AssetKind.SET` (`set`): Used with non-fungible assets. Values are [copyArray](/guides/js-programming/far.md#passstyleof-api)s such as hardened arrays of strings.
 
 `makeIssuerKit(allegedName, assetKind, displayInfo=)` creates a new `issuer`,
 `mint`, and `brand`. 
@@ -82,7 +82,7 @@ API Reference](../api/).
   - [AmountMath.make(brand, allegedValue)](../api/amount-math.md#amountmath-make-brand-allegedvalue)	
     - Takes a `value` argument and returns an `amount` by making a record
       with the `value` and the `brand` associated with the `AmountMath`. The `value`
-      argument should be represented as a `BigInt` e.g. 10n rather than 10.
+      argument should be represented as a `BigInt` e.g. `10n` rather than `10`.
     - <<< @/snippets/ertp/guide/test-amount-math.js#make
   - [AmountMath.makeEmpty(brand, assetKind)](/ertp/api/amount-math.md#amountmath-makeempty-brand-assetkind)
     - Returns an `amount` representing an empty `amount`, which is the identity

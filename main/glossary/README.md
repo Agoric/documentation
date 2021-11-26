@@ -75,9 +75,12 @@ digital assets in the quantity specified by an [amount](#amounts).
 
 ## BigInt
 
-JavaScript's `Number` primitive only represents numbers up to 253 - 1. `BigInt` is a built-in 
-object that can be used for arbitrarily large integers. Agoric uses `BigInts` for times 
-and `Amount` `values`. See [here](/guides/js-programming/bigint.md) for more information.
+In [ERTP AmountMath](/ertp/guide/amount-math.md), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
+
+[Timer Services](/repl/timerServices.md) also use `BigInt` for absolute and relative times.
+
+`BigInt`s are written with an `n` suffix: `0n`, `1n`, `2n`, ... or created with `BigInt("123")`
+or `BigInt(123)`.
 
 ## Board (Agoric Board)
 

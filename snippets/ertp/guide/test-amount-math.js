@@ -166,7 +166,7 @@ test('ertp guide zcf.getAssetKind related', async t => {
   t.truthy(mint);
   t.truthy(brand);
   const quatloosBrand = brand;
-  // #region zcfGetKind
+  // #region zcfGetAssetKind
   const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
   // #endregion zcfGetAssetKind
   t.is(quatloosAssetKind, 'nat');

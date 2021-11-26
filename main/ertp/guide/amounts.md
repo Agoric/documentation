@@ -7,8 +7,7 @@
 `Amounts` describe digital assets. There are no `amount` API methods.
 Instead, an `amount` has two properties, `value` and `brand` with methods
 that act on them or take them as arguments. 
-Use the `AmountMath` library (covered in-depth 
-[here](../api/amount-math.md))
+Use the [`AmountMath` API](../api/amount-math.md)
 to get information about and otherwise manipulate an `amount` as a whole.
 
 `AmountMath.make()` is generally how you make new `amounts`.
@@ -93,9 +92,8 @@ return a `brand`.
 
 Values are the "how many" part of an `amount`. 
 
-Note that number values (for fungible assets) are represented as `BigInts` and
-not `Numbers`. So a value of `10` is written `10n` to show it is a `BigInt` 10.
-See [here](/guides/js-programming/bigint.md) for more information about `BigInt`.
+Note that number values (for fungible assets) are represented as `BigInt`s and
+not `Number`s. Write `10n` rather than `10`.
 
 There are no `value`
 methods, but two `AmountMath` methods use or return them. 

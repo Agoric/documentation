@@ -21,8 +21,8 @@ specified when `issuerKit()` creates the issuer and brand.
 
 We recommend you import the two `AssetKind` values from `@agoric/ERTP` instead of making the 
 strings yourself. 
-- `AssetKind.NAT` (`nat`): Used with fungible assets. `amount` `values` are natural numbers (non-negative `BigInts`).
-- `AssetKind.SET` (`set`): Used with non-fungible assets. `amount` `values` are objects or records with multiple properties.
+- `AssetKind.NAT` (`nat`): Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
+- `AssetKind.SET` (`set`): Used with non-fungible assets. Values are arrays of objects such as strings.
 
 Use `makeIssuerKit(allegedName, assetKind, displayInfo)` to specify which `AssetKind` 
 your contract uses. The second parameter, `assetKind` is optional and 
@@ -46,18 +46,18 @@ An empty `purse` has 0 Quatloos.
 ```js
 someAmount: {
   brand: someBrand,
-  value: someValue,}
+  value: someValue,
+}
 ```
 
 ## Value
 
-`values` describe how much of something can be owned or shared. A fungible `value` is
-normally represented by a natural number `BigInt`. Other `values` may be represented as strings
-naming a particular right, or an arbitrary object that sensibly represents the rights at issue.
+`values` describe how much of something can be owned or shared.
+A value is either a non-negative `BigInt` for a fungible amount
+or, for a non-fungible amount, [copyArray](/guides/js-programming/far.md#passstyleof-api)
+such as a hardened array of strings.
 
-Note that numbers in a value are represented as type `BigInt`, which allows for arbitrarily 
-large numbers. `BigInts` are depicted as an integer with an appended "n"; e.g. `10n`, `137n`. 
-See the [`BigInt` section in the JavaScript Distributed Programming Guide](/guides/js-programming/bigint.md) for details. 
+Recall that `BigInt`s are written with an `n` at the end: `10n`, `137n`, etc.
 
 ## Brand parameters
 
@@ -79,17 +79,7 @@ not equal, an error is thrown.
 - `allegedValue` `{Value}`
 - Returns: `{Amount}`
 
-Make an `amount` from a `value` by adding the `brand`.
-
-Remember that numbers in `values` are represented as `BigInts`; integers
-with an appended "n". As seen in the below example, we strongly encourage
-using BigInts as the argument to `AmountMath.make()`. While `AmountMath.make()`
-does coerce a `Number` argument to a `BigInt`, so both `4` and `4n` return an
-amount with a value of `4n`, using `Numbers` is likely to confuse later viewers
-of your code. 
-
-See the [BigInt section in the JavaScript Distributed Programming Guide](/guides/js-programming/bigint.md) for 
-details about `BigInts`. 
+Make an `amount` from a `value` and a `brand`.
 
 ```js
 //amount837 = { value: 837n, brand: quatloos }
@@ -115,8 +105,7 @@ const verifiedAmount = AmountMath.coerce(quatloosBrand, allegedAmount);
 - `amount` `{Amount}`
 - Returns: `{Value}`
 
-Returns the `value` from the given `amount`. Remember, numeric values
-are represented as `BigInts`, not `Numbers`.
+Returns the `value` from the given `amount`.
 
 ```js
 const quatloos123 = AmountMath.make(quatloosBrand, 123n);
@@ -130,7 +119,7 @@ const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 Returns the `amount` representing an empty `Amount` for the `brand` argument's 
 `Brand`. This is the identity element for `AmountMath.add()` 
 and `AmountMath.subtract()`. The empty `value` depends 
-on whether the `assetKind` is `AssetKind.NAT` (`0`) of `AssetKind.SET` (`[]`).
+on whether the `assetKind` is `AssetKind.NAT` (`0n`) or `AssetKind.SET` (`[]`).
 
 ```js
 // Returns an empty amount.
