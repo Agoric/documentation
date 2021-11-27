@@ -61,8 +61,6 @@ _Be sure to get Yarn 1 and not a later version._
 
 ## Clone the Agoric SDK
 
-_@@TODO: cite an issue about being able to install with yarn/npm._
-
 ```shell
 git clone https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
