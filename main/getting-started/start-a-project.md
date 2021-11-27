@@ -17,6 +17,12 @@ for a total of **three shell windows**:
  2. simulated blockchain and "solo" client
  3. web user interface
 
+::: tip Watch: Prepare Your Agoric Environment (Nov 2020)
+While you will need to read up on details such as `node` version,
+this presentation is a good overview of the Agoric SDK setup process.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+:::
+
 ## Initialize `demo` from Dapp Template
 
 Use the [Aagoric CLI](/guides/agoric-cli/commands.md) to fetch from a Dapp template

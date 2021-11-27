@@ -19,7 +19,15 @@ yarn link-cli ~/bin/agoric
 agoric --version
 ```
 
+Then proceed to [starting a project](/getting-started/start-a-project.md).
+
 A more detailed explanation follows.
+
+::: tip Watch: Prepare Your Agoric Environment (Nov 2020)
+While you will need to read below for updated details such as `node` version,
+this presentation is a good overview of the Agoric SDK setup process.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+:::
 
 ## Platform: Linux shell or equivalent
 
