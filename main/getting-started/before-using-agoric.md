@@ -24,8 +24,12 @@ Then proceed to [starting a project](/getting-started/start-a-project.md).
 A more detailed explanation follows.
 
 ::: tip Watch: Prepare Your Agoric Environment (Nov 2020)
-While you will need to read below for updated details such as `node` version,
-this presentation is a good overview of the Agoric SDK setup process.
+This presentation is a good overview of the Agoric SDK setup process,
+though a few details are out of date:
+
+ - node version: 12.x is too old; use 14.15.0 or higher
+ - skip `git checkout hackathon-2020-11`; use the default `master` branch
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 :::
 
@@ -33,7 +37,7 @@ this presentation is a good overview of the Agoric SDK setup process.
 
 The Agoric SDK is supported on
 <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>,
-(<a href="https://www.apple.com/macos/">MacOS</a>, or
+<a href="https://www.apple.com/macos/">MacOS</a>, or
 <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (wsl).</a>
 
  - To open a terminal on Macs, see **Applications>Utilities>terminal** in the **Finder**.
