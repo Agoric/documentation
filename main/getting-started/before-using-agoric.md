@@ -48,7 +48,7 @@ The Agoric SDK is supported on
 Download from [nodejs.org](https://nodejs.org/) and follow the instructions for your platform.
 
 
-## Install Yarn 1 package manager
+## Install Yarn package manager
 
 Follow [Yarn Installation](https://classic.yarnpkg.com/en/docs/install)
 instructions; for example:
@@ -56,8 +56,6 @@ instructions; for example:
 ```shell
 npm install --global yarn
 ```
-
-_Be sure to get Yarn 1 and not a later version._
 
 ## Clone the Agoric SDK
 
