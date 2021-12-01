@@ -63,13 +63,6 @@ module.exports = {
     sidebar: { 
       '/guides/': [
         {
-          title: 'Documentation Guide',
-          path: '/getting-started/',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
           title: 'Agoric CLI',
           path: '/guides/agoric-cli/',
           collapsible: false,
@@ -165,7 +158,14 @@ module.exports = {
           children: [
           ]
        },
-      ],
+       {
+        title: 'Documentation Guide',
+        path: '/getting-started/',
+        collapsible: false,
+        children: [
+        ]
+      },
+    ],
       '/getting-started/': [
         {
           title: 'Agoric Beta',
@@ -175,14 +175,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Documentation Guide',
-          path: '/getting-started/',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Before Using Agoric',
+          title: 'Installing the Agoric SDK',
           path: '/getting-started/before-using-agoric.html',
           collapsible: false,
           children: [
@@ -226,6 +219,13 @@ module.exports = {
         {
           title: 'Agoric CLI Guide',
           path: '/guides/agoric-cli/',
+          collapsible: false,
+          children: [
+          ]
+        },
+        {
+          title: 'Documentation Guide',
+          path: '/getting-started/',
           collapsible: false,
           children: [
           ]
