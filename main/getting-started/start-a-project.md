@@ -27,7 +27,7 @@ This presentation includes starting a project, but note an outdated detail:
 
 ## Initialize `demo` from Dapp Template
 
-Use the [Aagoric CLI](/guides/agoric-cli/commands.md) to fetch from a Dapp template
+Use the [Agoric CLI](/guides/agoric-cli/commands.md) to fetch from a Dapp template
 and put it in a `demo` directory _not located in your `agoric-sdk` clone_:
 
 
