@@ -29,8 +29,8 @@ loaned amount and interest must be of the same (separate) brand.
 * [`priceAuthority`](/zoe/guide/price-authority.md) - used for getting the current value of
    collateral and setting liquidation triggers.
 * `autoswapInstance` - The running contract instance for an
-   [Autoswap](./autoswap.md) or [Multipool
-   Autoswap](./multipoolAutoswap.md) installation. The `publicFacet`
+   [Autoswap](./autoswap.md) or [AMM](./constantProductAMM.md)
+   installation. The `publicFacet`
    of the instance is used to make an invitation to sell the
    collateral on liquidation.
 * `periodNotifier` - the [notifier](/guides/js-programming/notifiers.md) used for notifications
@@ -135,8 +135,8 @@ want a reminder to add collateral.
 
 ## Liquidating
 
-Actual liquidation is done through an Autoswap or Multipool Autoswap
-instance, regardless of the current price within the Autoswap
+Actual liquidation is done through an AMM,
+regardless of the current price within the Autoswap
 instance. Even if the price is worse or better than what our `priceAuthority`
 quoted, we still liquidate.
 

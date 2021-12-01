@@ -52,7 +52,7 @@ users to lose their assets.**
 Agoric has written [a number of example contracts that you can
 use](/zoe/guide/contracts/), including:
 * an [Automated Market Maker (AMM)
-  implementation](/zoe/guide/contracts/multipoolAutoswap.md)
+  implementation](/zoe/guide/contracts/constantProductAMM.md)
 * a [covered call option
   contract](/zoe/guide/contracts/covered-call.md)
 * an [OTC Desk market maker
