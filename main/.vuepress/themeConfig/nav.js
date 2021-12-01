@@ -10,13 +10,8 @@ module.exports = [
     ariaLabel: 'Getting Started Menu',
     items: [
       {
-        text: 'Documentation Guide',
-        ariaLabel: 'Documentation Guide Menu',
-        link: '/getting-started/',
-      },
-      {
-        text: 'Before Using Agoric',
-        ariaLabel: 'Before Using Agoric Menu',
+        text: 'Installing the Agoric SDK',
+        ariaLabel: 'Installing the Agoric SDK Menu',
         link: '/getting-started/before-using-agoric',
       },
       {
@@ -54,17 +49,17 @@ module.exports = [
         ariaLabel: 'Agoric Beta',
         link: '/getting-started/beta',
       },
+      {
+        text: 'Documentation Guide',
+        ariaLabel: 'Documentation Guide Menu',
+        link: '/getting-started/',
+      },
     ]
   },
   {
     text: 'Guides',
     ariaLabel: 'Guides',
     items: [
-      {
-        text: 'Documentation',
-        ariaLabel: 'Documentation Guide',
-        link: '/getting-started/',
-      },
       {
         text: 'Agoric CLI Guide and API',
         ariaLabel: 'Agoric CLI Guide and API',
@@ -109,6 +104,11 @@ module.exports = [
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
         link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
+      },
+      {
+        text: 'Documentation',
+        ariaLabel: 'Documentation Guide',
+        link: '/getting-started/',
       },
     ],
   },
