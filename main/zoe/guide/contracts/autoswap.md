@@ -13,16 +13,16 @@ price it can trade at.
 
 This contract follows the design of [UniSwap](https://uniswap.org/), with a single
 pool. This means any autoswap installation can make exchanges between two
-issuers. `multipoolAutoswap` generalizes this to many pools, all of which share a
+issuers. Our `constantProduct` AMM generalizes this to many pools, all of which share a
 common intermediate pool. We make this single autoswap contract available because it's
 simpler and therefore easier to read. We expect all practical usage to migrate to
-multipoolAutoswap.
+the constantProduct AMM.
 
 ## The Autoswap API
 
 When the contract is instantiated, its two tokens (`Central` and `Secondary`) are
 specified in the `issuerKeywordRecord`. There is no behavioral difference between the
-two when trading; the names were chosen for consistency with multipoolAutoswap. When
+two when trading; the names were chosen for consistency with constantProduct AMM. When
 trading, use the keywords `In` and `Out` to specify the amount to be paid in and the
 amount to be received.
 
