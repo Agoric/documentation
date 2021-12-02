@@ -3,127 +3,59 @@
 
 From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
 
-## Menu Bar
+The wallet facilitates several core user interactions within the Agoric ecosystem, described in the below sections.
 
-At the top of the UI is a menu bar with four items.
+## <a name="dapps">Dapps</a>
 
-![Menu bar](./assets/0-MenuBar.png)
+To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://local.agoric.com/.
 
-- **Inbox**
-  - ![Inbox](./assets/2-InboxWalletUI.png)
-  - Shows your offers, impending payments, Dapps, and purses.
-  - Lets you send payments, enable/disable Dapps and change their petname, approve/decline offers, or deposit impending payments.
-- **Transfers**
-  - ![Transfers](./assets/3-TransfersWalletUI.png)
-  - Shows your purses and contacts.
-  - Lets you send payments, import contacts by Board ID and give them a petname.
-- **Setup**
-  - ![Setup](./assets/4-SetupWalletUI.png)
-  - Shows your Dapps, issuers, and contacts. 
-  - Lets you create empty purses, import contacts by Board ID and give them a petname, and enable/disable Dapps and change their petname.
-- **Connected/Disconnect**
-  - ![Connected](./assets/5-ConnectWalletUI.png)
-  - Shows if the Wallet UI is connected to your ag-solo.
-  - Lets you connect the Wallet to or disconnect the Wallet UI from your ag-solo.
+Before the dapp is able to make offers, the connection must be accepted from the wallet. Incoming dapp connections can be managed from the Dashboard view:
 
-As there are only six page components, several of which are repeated on the three pages making up the Wallet UI,
-we will cover the components in detail rather than the pages.
+<img width="500" alt="Screen Shot 2021-12-01 at 7 30 32 PM" src="https://user-images.githubusercontent.com/8848650/144352840-06d3a7f4-d503-4d46-9a6e-dc65aab020ba.png">
 
-## Purses
+Once accepted, they can be viewed and managed from the Dapps view:
 
-![Purses](./assets/PursesWalletUI.png)
+<img width="499" alt="Screen Shot 2021-12-01 at 7 31 33 PM" src="https://user-images.githubusercontent.com/8848650/144352925-e9e51578-1cbc-4c63-bc0a-ab55275b47a5.png">
 
-The Purses component shows all purses in the wallet and their current balances (both the value and the brand).
-It also shows the special default purse that holds Zoe invitations.
+The petname is a string used to personally identify the dapp and should be unique. It can be modified as desired with the text field. It can be thought of like a contact name in a cellphone.
 
-![Purse Send](./assets/PursesSendWalletUI.png)
+Dapps can be removed so that they are no longer able to propose offers.
 
-If you expand a purse entry, you'll see a red **SEND** button for that purse. Clicking it opens the above
-popup. From the popup, you can specify how much of the purse's shown current balance you would like to 
-send elsewhere. 
+## <a name="offers">Offers</a>
 
-You can transfer assets to another purse within your wallet. However, there must already be a purse that accepts
-assets of that brand to select. Otherwise, your only option is to send the assets back to the same purse they came
-from, which can be used for testing.
+After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](https://agoric.com/documentation/zoe/guide/#what-is-zoe)").
 
-Or you can transfer assets from the purse to any contact you already have. As noted, this is an irrevocable one way
-transfer. If the contact doesn't have an auto-deposit purse that accepts this asset type, it just sits under their
-Incoming Payments until an appropriate purse is created and it is manually deposited.  Only one purse can be 
-designated the auto-deposit purse for its asset type.
+When an offer is proposed (usually from some interaction in a dapp), it will appear in the dashboard view:
 
-When you are finished specifying how much the payment is and where it's going, click the **Send** button at the bottom
-of the popup. Otherwise click the **Cancel** button to cancel the prospective transfer and close the popup.
+<img width="501" alt="Screen Shot 2021-12-01 at 7 43 34 PM" src="https://user-images.githubusercontent.com/8848650/144355118-c8f2544a-9406-43c7-931d-acd073feaa17.png">
 
-If you enable a Purse's **AutoDeposit** by sliding its buttonto the right, causing it to turn red, any
-incoming Payments of that Purse's Brand are automatically deposited into it. Doing so disables any other 
-auto-deposit purses for that Brand. Sliding the button to the left, causing it to turn white, means you have
-to manually approve the deposit.
+If the offer is approved, it will show as pending:
 
-## Dapps
+<img width="498" alt="Screen Shot 2021-12-01 at 7 43 40 PM" src="https://user-images.githubusercontent.com/8848650/144355159-755d0151-2718-4427-9d11-006364293249.png">
 
-![Dapps](./assets/DappsWalletUI.png)
+Depending on the terms of the smart contract being interacted with, some offers may be "exited" before completion. Exiting an offer does not revert any asset transfers that have already taken place, but may prevent the contract from executing any future planned transfers (e.g. a user may "exit" to withdraw a bid from an auction before the deadline).
 
-The Dapps component shows all Dapps that can communicate with the Wallet. An expanded entry
-shows an alleged URL for that Dapp's UI, its Petname, and a toggle to enable/disable the Dapp
-from communicating with the Wallet. Note that like the other entries with an on/off slider,
-a Dapp is enabled when the button is slid to the right and turns red, and disabled when slid to the 
-left and turns white.
+Completed offers will either show up in an accepted or rejected state, and can be dismissed by the user.
 
-## Issuers
+<img width="500" alt="Screen Shot 2021-12-01 at 7 43 54 PM" src="https://user-images.githubusercontent.com/8848650/144355387-994e3d7a-e170-45a3-b843-4f775d7839ff.png">
 
-![Issuers](./assets/IssuersWalletUI.png)
+## <a name="transfers">Transfers</a>
 
-The Issuers component shows all Issuers known to the Wallet, along with their associated Brands.
-An expanded entry shows that Issuer's Board ID and a **Make Purse** button. When **Make Purse** is
-clicked the following popup appears:
+The wallet can be used to transfer funds to and from other wallets, as well as between purses within the same wallet.
 
-![Make Purse](./assets/CreatePurseWalletUI.png)
+Every type of asset can be identified by a unique "Brand", and there exists one global Issuer for each Brand. If a user wants to send or receive a tokens of a particular Brand, its Issuer must be imported from the "Asset Issuers" view:
 
-The Issuer creates a new empty Purse, that holds its Brand of assets, in the Wallet, giving it the Petname
-you specify. Remember there can be more than one Purse in a Wallet that holds assets of a specific Brand.
+<img width="630" alt="Screen Shot 2021-12-01 at 8 10 05 PM" src="https://user-images.githubusercontent.com/8848650/144356129-74531aa4-4ab1-4dfc-8c77-62aafffb597a.png">
 
-If you click the **Import** button at the bottom of the Issuers list, this popup appears:
+Some issuers are imported by default in the wallet as shown above. The user can make as many purses as they want for each issuer. The purses are where the actual tokens are held, and can be managed from the "Dashboard" view:
 
-![Import Issuer](./assets/ImportIssuerWalletUI.png)
+<img width="636" alt="Screen Shot 2021-12-01 at 8 13 30 PM" src="https://user-images.githubusercontent.com/8848650/144356409-89f18b3e-d715-44cc-9b70-b6d99cfe7a62.png">
 
-You specify a Petname and the Board ID (obtained from a trusted source) of an Issuer, and it's imported
-into the Wallet and can be used to create new empty Purses to store assets of its associated Brand. 
+Tokens can be freely sent between purses within the same wallet. To send tokens to another wallet, that wallet's Board ID must be imported in the "Contacts" view:
 
-## Contacts
+<img width="458" alt="Screen Shot 2021-12-01 at 8 16 22 PM" src="https://user-images.githubusercontent.com/8848650/144356809-7681a7a7-9983-4ad2-9e48-1adabbc272f9.png">
 
-![Contacts](./assets/ContactsWalletUI.png)
+Then, a user can select the "Irrevocable one-way" transfer option to send their tokens to another wallet in their contacts:
 
-The Contacts component shows all entities known to the Wallet, including the Wallet itself as "Self". An
-expanded entry shows the contact's Board ID. If you click on the **Import** button, this popup appears:
+<img width="469" alt="Screen Shot 2021-12-01 at 8 19 38 PM" src="https://user-images.githubusercontent.com/8848650/144357174-f4769fa2-aa98-40e8-ac73-9a738e6432bb.png">
 
-![Import Contact](./assets/ImportContactWalletUI.png)
-
-You specify a Petname and the Board ID (obtained from a trusted source) of a Contact, and it's imported
-into the Wallet. 
-
-## Offers
-
-![Offers](./assets/OffersWalletUI.png)
-
-The Offers component shows any pending offers known to the Wallet. Click the green **Accept** button
-to accept the offer, or click the red **Decline** button to decline it.
-
-Note the small, red, `<>` at the far right
-of an offer. Clicking it opens a popup with the JSON representation of that offer, for example:
-
-![Offer Detail](./assets/OfferDetailWalletUI.png)
-
-## Incoming Payments
-
-![Payments](./assets/IncomingPaymentWalletUI.png)
-
-The Incoming Payments component shows any pending incoming payments not yet deposited in a purse.
-A Deposit To value of "Automatic" means to deposit the payment in the appropriate purse that has
-auto-deposit enabled. Otherwise, you need to select into which of your purses for that brand of asset you
-want to deposit the payment. Note that you can't divide the payment or otherwise make a partial
-deposit; it's all or nothing. 
-
-Note the small, red, `<>` at the far right
-of a payment. Clicking it opens a popup with the JSON representation of that payment, for example:
-
-![Payment Detail](./assets/PaymentDetailWalletUI.png)
