@@ -62,10 +62,6 @@ escrowed underlying assets.
 An automated market maker. It 
 can always trade between the two currencies in its liquidity pool.
 
-### [Multipool Autoswap](./multipoolAutoswap.md) 
-An automated market maker with multiple
-liquidity pools that can trade between any pair of funded currencies.
-
 ### [ConstantProduct AMM](./constantProductAMM.md)
 An automated market maker with multiple liquidity pools that can trade
 between any pair of funded currencies. It charges a poolFee (added to the
