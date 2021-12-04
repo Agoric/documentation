@@ -11,6 +11,8 @@
   "scripts": {
     "docs:dev": "vuepress dev main",
     "docs:build": "vuepress build main",
+    "docs:build-root": "yarn docs:build && yarn docs:re-root",
+    "docs:re-root": "cd main && mkdir -p .vuepress/dist-root/ && cp -rp .vuepress/dist/ .vuepress/dist-root/documentation/",
     "check-links": "vuepress check-md main",
     "test": "ava",
     "lint-fix": "yarn lint --fix",

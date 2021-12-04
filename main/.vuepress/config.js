@@ -106,17 +106,15 @@ module.exports = {
           ]
         },
         {
-          title: 'JavaScript Programming',
+          title: 'JavaScript Framework',
           path: '/guides/js-programming/',
           collapsible: false,
           children: [
-	    '/guides/js-programming/agoric-js-overview',
+            '/guides/js-programming/hardened-js',
+            '/guides/js-programming/eventual-send',
+            '/guides/js-programming/far',
+	    '/guides/js-programming/notifiers',
 	    '/guides/js-programming/ses/',
-	    '/guides/js-programming/bigint',
-	    '/guides/js-programming/vats',
-	    '/guides/js-programming/far',
-	    '/guides/js-programming/eventual-send',			
-	    '/guides/js-programming/notifiers',	
           ]
         },
         {

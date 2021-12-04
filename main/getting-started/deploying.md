@@ -94,4 +94,3 @@ Steps for contracts that use a singleton instance for all clients may further in
 * Use the invitation from that instance creation to configure the new instance
 * Register the contract instance's `instance` with the Board
 * Record the contract instance's Board ID in a configuration file
-

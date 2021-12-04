@@ -128,3 +128,48 @@ between multiple offers, or create new assets to order.
 
 To create an invitation in the contract, use the Zoe Contract
 Facet method [`zcf.makeInvitation`](/zoe/api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties).
+
+
+## Using `bundleSource`
+
+Modules start as files on disk, but then are bundled together
+into an archive before being loaded into a vat. The bundling tool uses several standard
+functions to locate other modules that must be included. These are not a part of SES, but
+are allowed in module source code, and are translated or removed before execution.
+
+- `import` and `export` syntax are allowed in ESM-style modules (preferred over CommonJS).
+  These are not globals as such, but top-level syntax that defines the module graph.
+- `require`, `module`, `module.exports`, and `exports` are allowed in CommonJS-style modules,
+  and should work as expected. However, new code should be written as ESM modules. They
+  are either consumed by the bundling process, provided (in some form) by the execution
+  environment, or otherwise rewritten to work sensibly
+- `__dirname` and `__filename` are not provided
+- The dynamic import expression (`await import('name')`) is currently prohibited in vat
+  code, but a future SES implementation may allow it.
+
+The [Node.js API](https://nodejs.org/dist/latest-v14.x/docs/api/) includes "built-in
+modules", such as `http` and `crypto`. Some are clearly platform-specific (e.g. `v8`), while
+others are not so obvious (`stream`). All are accessed by importing a
+module (`const v8 = require('v8')` in CommonJS modules, or `import v8 from 'v8'` in ESM modules).
+These modules are built out of native code (C++), not plain JS.
+
+None of these built-in modules are available to vat code. `require` or `import` can be used
+on pure JS modules, but not on modules including native code. For a vat to exercise authority
+from a built-in module, you have to write a *device* with an endowment with the built-in
+module's functions, then have the vat send messages to the device.
+
+## Library compatibility
+
+Vat code can use `import` or `require()` to import other libraries consisting
+only of JS code, which are compatible with the SES environment. This includes
+a significant portion of the NPM registry.
+
+However, many NPM packages use built-in Node.js modules. If used at import
+time (in their top-level code), vat code cannot use the package and fails
+to load at all. If they use the built-in features at runtime, then the
+package can load. However, it might fail later when a function is invoked
+that accesses the missing functionality. So some NPM packages are partially
+compatible; you can use them if you don't invoke certain features.
+
+The same is true for NPM packages that use missing globals, or attempt to
+modify frozen primordials.
