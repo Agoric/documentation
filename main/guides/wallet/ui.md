@@ -5,7 +5,7 @@ From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
 
 The wallet facilitates several core user interactions within the Agoric ecosystem, described in the below sections.
 
-## <a name="dapps">Dapps</a>
+## Dapps
 
 To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://local.agoric.com/.
 
@@ -21,7 +21,7 @@ The petname is a string used to personally identify the dapp and should be uniqu
 
 Dapps can be removed so that they are no longer able to propose offers.
 
-## <a name="offers">Offers</a>
+## Offers
 
 After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](https://agoric.com/documentation/zoe/guide/#what-is-zoe)").
 
@@ -39,7 +39,7 @@ Completed offers will either show up in an accepted or rejected state, and can b
 
 <img width="500" alt="Accepted Offer" src="./assets/accepted-offer.png">
 
-## <a name="transfers">Transfers</a>
+## Transfers
 
 The wallet can be used to transfer funds to and from other wallets, as well as between purses within the same wallet.
 
