@@ -30,14 +30,23 @@ jobs:
           User $SSH_USER
           IdentityFile ~/.ssh/staging.key
           StrictHostKeyChecking no
+        Host staging2
+          HostName $SSH_HOST2
+          User $SSH_USER
+          IdentityFile ~/.ssh/staging.key
+          StrictHostKeyChecking no
         END
       env:
         SSH_USER: ${{ secrets.STAGING_SSH_USER }}
         SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
         SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+        SSH_HOST2: ${{ secrets.STAGING_SSH_HOST2 }}
 
-    - name: SSH check out and build
+    - name: SSH check out and build (staging)
       run: ssh staging 'cd documentation && git pull && yarn install && yarn docs:build'
+
+    - name: SSH check out and build (staging2)
+      run: ssh staging2 'cd documentation && git pull && yarn install && yarn docs:build'
 
     - name: Deploy to gh-pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
