@@ -108,6 +108,9 @@ An example of minting fungible tokens.
 A contract that mints NFTs and sells them through 
 a separate sales contract.
 
+### [NFT Drop](./nft-drop.md)
+An example of how one would begin using Zoe to create a smart contract that provides users with the ability to mint an NFT in exchange for a fixed amount of an underlying token.
+
 ## Misc
 
 ### [Use Obj Example](./use-obj-example.md) 
