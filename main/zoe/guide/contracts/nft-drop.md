@@ -1,4 +1,4 @@
-∫# NFT Drop
+# NFT Drop
 
 <Zoe-Version/>
 
@@ -15,7 +15,7 @@ The purpose of the `NFTDropContractBasic.js` is to provide a point of reference 
   * Embedded additional metadata relating the project.
   * Whatever your heart desires!
 
-The code for the smart contract can be found below:
+The code for the smart contract is:
 ```js
 /** @type {ContractStartFn} */
 const start = async (zcf) => {
@@ -81,7 +81,7 @@ Once the `mint` has been created, the next step is to use it within the `buyNFTs
   };
 ```
 
-The final step is to create a [Remotable](../../../guides/js-programming/far.md#marshaling-by-copy-or-by-presence) for our public invitation using `zcf`s `makeInvitation` method. 
+The final step is to create a [Remotable](../../../guides/js-programming/far.md#marshaling-by-copy-or-by-presence) that provides the public with invitations on demand using `zcf`s `makeInvitation` method.
 
 ```js
 const publicFacet = Far('NFT Drop', {
@@ -90,7 +90,7 @@ const publicFacet = Far('NFT Drop', {
 
 return harden({ publicFacet });
 ```
-The contract is ready to be instantiated using the `E` as demonstrated in the test code below. In this snippet, the `nftName` for this collection is `PetRocks`, all of which are sold for the same fixed-price. 
+The contract is ready to be instantiated using the `E(zoe).startInstance` as demonstrated in the test code below.In this snippet, the `nftName` for this collection is `PetRocks`, all of which are sold for the same fixed-price.
 
 ```js
   const terms = harden({
@@ -101,7 +101,7 @@ The contract is ready to be instantiated using the `E` as demonstrated in the te
 
   const publicFacet = E(zoe).getPublicFacet(instance);
   // we now have access to the pubic invitation for the `buyNFTs` function.
-  const invitation = E(publicFacet).makeInvitation();
+  const invitation = E(publicFacet).makeBuyInvitation();
 ```
 
 Those who wish to understand more about this contract are encouraged to inspect these test code and run it on their own machine.
