@@ -229,27 +229,16 @@ among multiple contracts, pass in the following as `privateArgs`:
 ```
 
 It returns a promise for a `StartInstanceResult` object. The object consists of:
-- `adminFacet` `{any}`
+- `adminFacet` `{AdminFacet}`
 - `creatorFacet` `{any}`
 - `publicFacet` `{any}`
 - `instance` `{Instance}`
 - `creatorInvitation` `{Payment | undefined}`
 
-The `adminFacet` has two methods:
+The `adminFacet` has one method:
 - `getVatShutdownPromise()`    
   - Returns a promise that resolves to reason (the value passed to `fail(reason)`) or 
     completion (the value passed to `exit(completion)`) when this newly started instance terminates. 
-- `getVatStats()`
-  - Returns statistics about vat activity. These are the number of different types
-    of items in the vat's C-List, which tracks what this vat can reach on other vats
-    and how many entries are in the vat's transcript. The last gives an idea of
-    how many messages this vat has executed. A vat's transcript of messages it has 
-    executed lets it replay those messages if restarted and restore its pre-shutdown
-    state.
-    - `objectCount`
-    - `promiseCount`
-    - `deviceCount`
-    - `transcriptCount`
 
 A `publicFacet` is an object available via Zoe to anyone knowing
 the instance they are associated with. The `publicFacet` is used for general queries
