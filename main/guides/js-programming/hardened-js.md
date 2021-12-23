@@ -263,7 +263,7 @@ or not:
 
 In compartments used to load Agoric smart contracts,
 `globalThis` is hardened, following OCap discipline.
-These compartments have `console` and `assert` globals from [SES](./ses/).
+These compartments have `console` and `assert` globals from [the `ses` package](https://github.com/endojs/endo/blob/master/packages/ses/README.md).
 Don't rely on `console.log` for printing, though; it is for debugging
 only, and in a blockchain consensus context, it may do nothing at all.
 

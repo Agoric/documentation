@@ -114,17 +114,6 @@ module.exports = {
             '/guides/js-programming/eventual-send',
             '/guides/js-programming/far',
 	    '/guides/js-programming/notifiers',
-	    '/guides/js-programming/ses/',
-          ]
-        },
-        {
-          title: 'Endo and Hardened JavaScript',
-          path: '/guides/js-programming/ses/',
-          collapsible: false,
-          children: [
-	    '/guides/js-programming/ses/ses-guide',
-	    '/guides/js-programming/ses/ses-reference',
-	    '/guides/js-programming/ses/lockdown',
           ]
         },
         {

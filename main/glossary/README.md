@@ -185,7 +185,7 @@ host programs like an Endo browser, an Endo browser extension, and `endo`
 command line tools, as well allowing programs to limit the powers they delegate
 to dependencies, to limit exposure to supply-chain attacks.
 For more information, see the [Endo and Hardened JavaScript Programming
-Guide](/guides/js-programming/ses/ses-guide.md)
+Guide](https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md)
 
 ## ERTP
 
@@ -250,7 +250,7 @@ an object reference, and no identity can be guessed and no fake identity will su
 ## Harden
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
-its [section in the JavaScript Distributed Programming Guide](/guides/js-programming/ses/ses-guide.md)
+its [section in the JavaScript Distributed Programming Guide](https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md)
 
 ## Hardened JavaScript (SES)
 
@@ -259,7 +259,7 @@ Hardening JavaScript turns the sandbox into firm ground, where you can code run
 you don't completely trust, without being vulnerable to their bugs or bad
 intentions.
 See the [Endo and Hardened JavaScript Programming
-Guide](/guides/js-programming/ses/ses-guide.md) for more details.
+Guide](https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md) for more details.
 
 ## IBC
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC

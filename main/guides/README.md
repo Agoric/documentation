@@ -10,7 +10,6 @@ all guides across our Documentation repo.
 - [ERTP](/ertp/guide)
 - [JavaScript Distributed Programming on the Agoric Platform](./js-programming)
 - [REPL](/repl/)
-- [Endo and Hardened JavaScript (SES)](./js-programming/ses/ses-guide.md)
 - [Wallet](./wallet)
 - [Zoe](/zoe/guide)
 

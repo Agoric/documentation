@@ -131,7 +131,9 @@ export const start = zcf => {
 };
 ```
 (In a real contract, whenever we create a new object or array, we recursively
-deep-freeze it with `@agoric/harden`. You can [learn more about `harden` here](../../guides/js-programming/ses/ses-guide.md).)
+freeze it with `harden`. You can learn more about `harden` in the
+[Hardened JavaScript SES shim package
+documentation](https://github.com/endojs/endo/blob/master/packages/ses/README.md).)
 
 The `automaticRefund` contract behavior is implemented in `refund`.
 It just tells Zoe to exit the offer, which gives the user their payout
