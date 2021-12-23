@@ -118,7 +118,7 @@ module.exports = {
           ]
         },
         {
-          title: 'SES',
+          title: 'Endo and Hardened JavaScript',
           path: '/guides/js-programming/ses/',
           collapsible: false,
           children: [
