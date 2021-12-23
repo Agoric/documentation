@@ -47,7 +47,7 @@ module.exports = {
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 2,
-    lastUpdated: 'Last Updated', 
+    lastUpdated: 'Last Updated',
     logo: 'https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg',
     /* --- NAVBAR (top) --- */
     nav,
@@ -60,7 +60,7 @@ module.exports = {
     // Internal links: Must have a corresponding folder with a README.md file
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
-    sidebar: { 
+    sidebar: {
       '/guides/': [
         {
           title: 'Agoric CLI',
@@ -101,8 +101,8 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/wallet/',
-	    '/guides/wallet/ui',
-	    '/guides/wallet/api',		
+            '/guides/wallet/ui',
+            '/guides/wallet/api',		
           ]
         },
         {
@@ -113,7 +113,7 @@ module.exports = {
             '/guides/js-programming/hardened-js',
             '/guides/js-programming/eventual-send',
             '/guides/js-programming/far',
-	    '/guides/js-programming/notifiers',
+            '/guides/js-programming/notifiers',
           ]
         },
         {
@@ -121,14 +121,14 @@ module.exports = {
           path: '/repl/',
           collapsible: false,
           children: [
-	    '/guides/wallet/api',
-	    '/repl/timerServices',
+            '/guides/wallet/api',
+            '/repl/timerServices',
             '/repl/board',
-	    '/repl/sharingService',
-	    '/repl/networking',
-	    '/zoe/api/zoe',
-	    '/repl/priceAuthority',
-	    '/repl/scratch',
+            '/repl/sharingService',
+            '/repl/networking',
+            '/zoe/api/zoe',
+            '/repl/priceAuthority',
+            '/repl/scratch',
           ]
         },
         {
