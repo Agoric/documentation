@@ -467,7 +467,7 @@ the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 
 ## SES
 
-We have renamed SES to [Hardened JavaScript](#ses).
+We have renamed SES to [Hardened JavaScript](#hardened-javascript).
 
 ## Simoleons
 An imaginary currency Agoric documentation uses in examples.
