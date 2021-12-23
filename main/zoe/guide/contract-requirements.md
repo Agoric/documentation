@@ -23,8 +23,8 @@ A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a
 separate file, for example) and import them.
 
-A Zoe contract needs to be able to run under [Agoric's SES](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
-JavaScript code is incompatible with SES, because SES freezes the
+A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
+JavaScript code is incompatible with Hardened JavaScript, because Lockdown freezes the
 JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
 mutate these. 
 
@@ -134,7 +134,7 @@ Facet method [`zcf.makeInvitation`](/zoe/api/zoe-contract-facet.md#zcf-makeinvit
 
 Modules start as files on disk, but then are bundled together
 into an archive before being loaded into a vat. The bundling tool uses several standard
-functions to locate other modules that must be included. These are not a part of SES, but
+functions to locate other modules that must be included. These are not a part of Hardened JavaScript, but
 are allowed in module source code, and are translated or removed before execution.
 
 - `import` and `export` syntax are allowed in ESM-style modules (preferred over CommonJS).
@@ -145,7 +145,7 @@ are allowed in module source code, and are translated or removed before executio
   environment, or otherwise rewritten to work sensibly
 - `__dirname` and `__filename` are not provided
 - The dynamic import expression (`await import('name')`) is currently prohibited in vat
-  code, but a future SES implementation may allow it.
+  code, but a future SES implementation of Hardened JavaScript may allow it.
 
 The [Node.js API](https://nodejs.org/dist/latest-v14.x/docs/api/) includes "built-in
 modules", such as `http` and `crypto`. Some are clearly platform-specific (e.g. `v8`), while
@@ -161,7 +161,7 @@ module's functions, then have the vat send messages to the device.
 ## Library compatibility
 
 Vat code can use `import` or `require()` to import other libraries consisting
-only of JS code, which are compatible with the SES environment. This includes
+only of JS code, which are compatible with the Hardened JavaScript environment. This includes
 a significant portion of the NPM registry.
 
 However, many NPM packages use built-in Node.js modules. If used at import

@@ -1,10 +1,10 @@
 # `lockdown()` and its Options
 
-**Note: This document is a companion to the [SES-Guide](./ses-guide.md), in that it explains and gives backgrounds
+**Note: This document is a companion to the [Guide](./ses-guide.md), in that it explains and gives backgrounds
 to `lockdown()` and its options. If you just want to use `lockdown()` with minimal explanation,
-please see [SES-Reference](./ses-reference.md).**
+please see [Reference](./ses-reference.md).**
 
-Calling `lockdown()` turns a JavaScript system into a SES (Secure ECMAScript) system,
+Calling `lockdown()` turns a JavaScript into Hardened JavaScript,
 with enforced *OCap (object-capability) security*. This page documents `lockdown()` and its
 configuration options.
 
@@ -16,8 +16,8 @@ After that, no program can subvert the methods of these objects (preventing some
 attacks). Also, no program can use these mutable objects to pass notes to parties that haven't been
 expressly introduced (preventing some covert communication channels).
 
-Lockdown freezes all JavaScript defined objects accessible to any program in the realm. The frozen 
-accessible objects include but are not limited to: 
+Lockdown freezes all JavaScript defined objects accessible to any program in the realm. The frozen
+accessible objects include but are not limited to:
 - `globalThis`
 - `[].__proto__` the array prototype, equivalent to Array.prototype in a pristine JavaScript environment.
 - `{}.__proto__` the Object.prototype
@@ -29,11 +29,11 @@ accessible objects include but are not limited to:
 - Regular expressions
   - A tamed RexExp does not have the deprecated compile method.
 - Locale methods
-  - Lockdown replaces locale methods like `String.prototype.localeCompare()` with lexical 
+  - Lockdown replaces locale methods like `String.prototype.localeCompare()` with lexical
     versions that do not reveal the user locale.
 - Errors
   - A tamed error does not have a V8 stack, but the console can still see the stack.
-  Lockdown replaces locale methods like 
+  Lockdown replaces locale methods like
 ```js
 import 'ses';
 import 'my-vetted-shim';
@@ -43,20 +43,20 @@ lockdown();
 console.log(Object.isFrozen([].__proto__));
 // true
 ```
-Lockdown does not erase any powerful objects from the initial global scope. Instead, 
+Lockdown does not erase any powerful objects from the initial global scope. Instead,
 Compartments give complete control over what powerful objects exist for client code.
 
 ## `lockdown()` vs. `harden()`
 
-`lockdown()` and `harden()` essentially do the same thing; freeze objects so their 
-properties cannot be changed. The only way to interact with frozen objects is through 
+`lockdown()` and `harden()` essentially do the same thing; freeze objects so their
+properties cannot be changed. The only way to interact with frozen objects is through
 their methods. Their differences are what objects you use them on, and when you use them.
 
-`lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials* 
-(implicitly shared global objects) and enables `harden()`. If you call `harden()` 
+`lockdown()` **must** be called first. It hardens JavaScript's built-in *primordials*
+(implicitly shared global objects) and enables `harden()`. If you call `harden()`
 before `lockdown()` executes, it throws an error.
 
-`lockdown()` works on objects created by the JavaScript language itself as part of 
+`lockdown()` works on objects created by the JavaScript language itself as part of
 its definition. Use `harden()` to freeze objects created after `lockdown()`was called;
 i.e. objects created by programs written in JavaScript.
 
@@ -64,7 +64,7 @@ i.e. objects created by programs written in JavaScript.
 
 ### Default `safe` settings
 
-All four of these safety-relevant options default to `'safe'` if omitted 
+All four of these safety-relevant options default to `'safe'` if omitted
 from a call to `lockdown()`. Their other possible value is `'unsafe'`.
 - `regExpTaming`
 - `localeTaming`
@@ -72,8 +72,8 @@ from a call to `lockdown()`. Their other possible value is `'unsafe'`.
 - `errorTaming`
 
 The tradeoff is safety vs compatibility with existing code. However, much legacy
-JavaScript code does run under SES, even if both not written to do so and with all
-the options set to `'safe'`. Only consider an `'unsafe'` value if you both need it 
+JavaScript code does run under Hardened JavaScript, even if both not written to do so and with all
+the options set to `'safe'`. Only consider an `'unsafe'` value if you both need it
 and can evaluate its risks. These are described in more detail below.
 
 ### Options quick reference
@@ -110,7 +110,7 @@ below.
   <tr>
     <td><code>errorTaming</code></td>
     <td><code>'safe'</code> (default) or <code>'unsafe'</code></td>
-    <td><code>'safe'</code> denies unprivileged stacks access,<br> 
+    <td><code>'safe'</code> denies unprivileged stacks access,<br>
         <code>'unsafe'</code> makes stacks also available by <code>errorInstance.stackkeeps()</code>.</td>
   </tr>
   <tr>
@@ -122,7 +122,7 @@ below.
   <tr>
     <td><code>overrideTaming</code></td>
     <td><code>'moderate'</code> (default) or <code>'min'</code></td>
-    <td><code>'moderate'</code> moderates mitigations for legacy compatibility,<br> 
+    <td><code>'moderate'</code> moderates mitigations for legacy compatibility,<br>
         <code>'min'</code> minimal mitigations for purely modern code</td>
   </tr>
   </tbody>
@@ -150,24 +150,24 @@ However, all other `RegExp.*()` methods are disabled
 There are two reasons for removing `RegExp.*` methods from usable JavaScript.
 One is for `RegExp.prototype.compile()` and one for all other `RegExp.*()` methods.
 
-- In standard JavaScript, `RegExp.prototype.compile()` may 
+- In standard JavaScript, `RegExp.prototype.compile()` may
   violate the object invariants of frozen `RegExp` instances. This violates
-  assumptions elsewhere, and so can corrupt other guarantees. For example, 
-  the `Proxy` abstraction preserves the object invariants only if its target 
-  does. If a non-conforming object is available, it can construct an also 
+  assumptions elsewhere, and so can corrupt other guarantees. For example,
+  the `Proxy` abstraction preserves the object invariants only if its target
+  does. If a non-conforming object is available, it can construct an also
   non-conforming proxy object.
 
   The default `'safe'` setting deletes this dangerous method. The
   `'unsafe'` setting keeps it for compatibility purposes at the price of riskier code.
 
-- In standard JavaScript, legacy `RegExp` static methods like `RegExp.lastMatch()` 
+- In standard JavaScript, legacy `RegExp` static methods like `RegExp.lastMatch()`
   are an unsafe global [overt communications channel](https://agoric.com/taxonomy-of-security-issues/).
   The `RegExp` constructor reveals information derived from the last match
   made by any `RegExp` instance in a form of non-local causality.
 
-  Except for `RegExp.prototype.compile()` all `RegExp` static methods are currently 
+  Except for `RegExp.prototype.compile()` all `RegExp` static methods are currently
   removed under **both** the `regExpTaming` `'safe`' and `'unsafe'` settings. This
-  has not caused any compatibility problems; if it does, we may allow a subset 
+  has not caused any compatibility problems; if it does, we may allow a subset
   under the `'unsafe'` setting.
 
 ## `localeTaming` Options
@@ -183,10 +183,10 @@ lockdown({ localeTaming: 'unsafe' }); // Allow locale-specific behavior
 
 The default `'safe'` setting replaces each method listed below with their
 corresponding non-locale-specific method. For example, `Object.prototype.toLocaleString()`
-becomes another name for `Object.prototype.toString()`. 
+becomes another name for `Object.prototype.toString()`.
 
 The `'unsafe'` setting keeps the original behavior for compatibility at the price
-of reproducibility and fingerprinting. 
+of reproducibility and fingerprinting.
 
 In standard JavaScript, these built-in methods have `Locale` or `locale` in their name
 and are affected by `localeTaming`:
@@ -198,17 +198,17 @@ and are affected by `localeTaming`:
 - `localeCompare`
 
 ### Background
-All "locale method" behavior varies depending on the user's locale and can change while 
+All "locale method" behavior varies depending on the user's locale and can change while
 a program is running. This breaks determinism since a program run in one compartment may have
-a different result in another compartment or at another time. Also, revealing the user's locale  
+a different result in another compartment or at another time. Also, revealing the user's locale
 helps unscrupulous programs to track and even identify the user.
 
-This behavior might be acceptable if governed on a per-compartment basis ("virtualized"). 
+This behavior might be acceptable if governed on a per-compartment basis ("virtualized").
 But since these methods appear on the prototype of shared intrinsic objects like the `String`
 prototype, there is no safe alternative design.
 
-Instead, the hosting program can reveal the locale to all compartments by setting 
-`localeTaming` to `'unsafe'`, or inject a `locale` object into selected compartments 
+Instead, the hosting program can reveal the locale to all compartments by setting
+`localeTaming` to `'unsafe'`, or inject a `locale` object into selected compartments
 with the powers of these methods.
 
 Aside from fingerprinting, the risk that this slow non-determinism opens a
@@ -227,32 +227,32 @@ lockdown({ consoleTaming: 'unsafe' }); // Leave original start console in place
 ### Purpose
 
 The `'unsafe'` setting leaves the original console in place. The `assert` package
-and error objects continue to work, but the `console` logging output will not 
+and error objects continue to work, but the `console` logging output will not
 show this extra information.
 
 ### Background
 
 Most JavaScript environments provide a write-only `console` object on the
 global object. JavaScript code can write to the console's logging output, but
-cannot see that output. The logging output is normally meant for humans, and 
+cannot see that output. The logging output is normally meant for humans, and
 is mostly formatted for human use for diagnosing problems.
 
 Given these constraints, it is safe and helpful for `console` to reveal
-to humans information it would not reveal to objects it interacts with. 
-SES amplifies this and reveals much more information than the normal
-`console` does. By default and during `lockdown` SES replaces the built-in
-`console` with a wrapper, thus virtualizing it.  
+to humans information it would not reveal to objects it interacts with.
+Hardened JavaScript amplifies this and reveals much more information than the normal
+`console` does. By default `lockdown` replaces the built-in
+`console` with a wrapper, thus virtualizing it.
 
 Also, the enhanced virtual `console` has a special relationship with
-error objects and the SES `assert` package. Errors can report 
+error objects and the `assert` global. Errors can report
 more diagnostic information that should be hidden from other objects. See
-the [error README](https://github.com/endojs/endo/blob/master/packages/ses/src/error/README.md) 
+the [error README](https://github.com/endojs/endo/blob/master/packages/ses/src/error/README.md)
 for an in depth explanation of this
 relationship between errors, `assert` and the virtual `console`.
 
 `console` often has additional methods beyond its de facto "standards". The
 `'unsafe'` setting does not remove them. We do not know if these additional
-methods violate OCap security, so should assume they are unsafe. A raw `console` 
+methods violate OCap security, so should assume they are unsafe. A raw `console`
 object should only be handled by very trustworthy code.
 
 Examples from
@@ -300,13 +300,13 @@ lockdown({ errorTaming: 'unsafe' }); // Stacks also available by errorInstance.s
 ## Purpose
 
 The `errorTaming` default `'safe'` setting makes the stack trace inaccessible
-from error instances alone. It does this on v8 (Chrome, Brave, Node) and SpiderMonkey (Firefox). 
+from error instances alone. It does this on v8 (Chrome, Brave, Node) and SpiderMonkey (Firefox).
 Note that it is **not** hidden on other engines, leaving an information
 leak available. It reveals information only as a powerless
 string. It threatens [confidentiality but not integrity](https://agoric.com/taxonomy-of-security-issues/).
 
-In JavaScript the stack is only available via `err.stack`, so some 
-development tools assume it is there. When the information leak is tolerable, 
+In JavaScript the stack is only available via `err.stack`, so some
+development tools assume it is there. When the information leak is tolerable,
 the `'unsafe'` setting preserves `err.stack`'s filtered stack information.
 
 ### Background
@@ -329,14 +329,14 @@ provides a set of [static methods for accessing the raw stack
 information](https://v8.dev/docs/stack-trace-api) that create
 the error stack string.
 
-`errorTaming` does not affect the `Error` constructor's safety. 
+`errorTaming` does not affect the `Error` constructor's safety.
 After calling `lockdown`, the tamed `Error` constructor in the
 start compartment follows OCap rules. Under v8 it emulates most of the
 magic powers of the v8 `Error` constructor&mdash;those consistent with the
 discourse level of the proposed `getStack`. In all cases, the `Error`
 constructor shared by all other compartments is both safe and powerless.
 
-See the [error README](https://github.com/endojs/endo/blob/master/packages/ses/src/error/README.md) 
+See the [error README](https://github.com/endojs/endo/blob/master/packages/ses/src/error/README.md)
 for an in depth explanation of the
 relationship between errors, `assert` and the virtual `console`.
 
@@ -354,11 +354,11 @@ lockdown({ stackFiltering: 'verbose' }); // Console shows full deep stacks
 
 `stackFiltering` trades off stronger stack traceback filtering to
 minimize distractions vs completeness for tracking down bugs in
-obscure places. 
+obscure places.
 
 ### Background
 
-Many JavaScript engines show voluminous error stacks, containing many stack 
+Many JavaScript engines show voluminous error stacks, containing many stack
 frames of infrastructure functions which are usually irrelevant for bug diagnosis.
 The SES-shim's `console`, with `consoleTaming` set to `'safe'`, is even more
 voluminous. It displays "deep stack" traces, tracing back through the
@@ -368,13 +368,13 @@ from other turns of the event loop.
 Full deep distributed stacks are overwhelmingly noisy for debugging distributed
 computation. When possible, the SES-shim filters and transforms the shown stack
 trace information, removing artifacts from low level infrastructure.
-Currently, this only works on v8. 
+Currently, this only works on v8.
 
-The 'concise' vs 'verbose' settings are about trying to reduce the noise appearing 
-on the console's reported stack traces. 
-The default `'concise'` setting reduces the noise. But it does so at the risk of 
-throwing out the signal you were really looking for. Sometimes bugs might be in 
-that infrastructure, so that information is relevant. With the `'verbose'` setting, 
+The 'concise' vs 'verbose' settings are about trying to reduce the noise appearing
+on the console's reported stack traces.
+The default `'concise'` setting reduces the noise. But it does so at the risk of
+throwing out the signal you were really looking for. Sometimes bugs might be in
+that infrastructure, so that information is relevant. With the `'verbose'` setting,
 the console shows the full raw stack information for each level of the deep stacks.
 
 Either `stackFiltering` setting is safe. Stack information will
@@ -476,7 +476,7 @@ compatibility vs better tool compatibility.
 ### Background
 JavaScript suffers from the so-called
 [override mistake](https://web.archive.org/web/20141230041441/http://wiki.ecmascript.org/doku.php?id=strawman:fixing_override_mistake),
-preventing `lockdown()` from _simply_ hardening all primordials. 
+preventing `lockdown()` from _simply_ hardening all primordials.
 
 Rather, `lockdown()` converts each of
 [these data properties](https://github.com/endojs/endo/blob/master/packages/ses/src/enablements.js) to an accessor
@@ -507,7 +507,7 @@ assignment, `moderateEnablements` and `minEnablements`.
 
 The `overrideTaming` default `'moderate'` option of `lockdown` is intended to
 be fairly minimal. We expand it when we
-encounter code which should run under SES but can't due to
+encounter code which should run under Hardened JavaScript but can't due to
 the override mistake. As we encountered these we listed them in the comments
 next to each enablement. We rarely come
 across any more cases. ***If you find one, please file an issue.***
@@ -541,4 +541,4 @@ by our override mitigation.
 
 <p>![vscode inspector display if enabling all of Object.prototype](./assets/override-taming-star-inspector.png)</p>
 </details>
-  
+
