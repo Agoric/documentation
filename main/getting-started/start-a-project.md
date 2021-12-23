@@ -112,7 +112,6 @@ in a new browser window or tab.
 
 ## Use the Dapp to collect your (simulated) tokens
 
-Use the wallet to grant the Dapp's request to connect. For more information about the wallet UI see
-[https://agoric.com/documentation/guides/wallet/ui.html#wallet-ui](https://agoric.com/documentation/guides/wallet/ui.html#wallet-ui)
+Use the wallet to grant the Dapp's request to connect. See also the [wallet UI] (/guides/wallet/ui.html#wallet-ui) section.
 
 Then use the Fungible Faucet Dapp to collect your tokens.
