@@ -63,6 +63,12 @@ On a Mac, you must first install
 <pre style="background: aqua">
 # Shell 2
 cd demo # if not already there
+agoric start
+
+# if the process was interrupted or crashed
+# rerun the command above and it should resume
+
+# to reset and start over
 agoric start --reset
 </pre>
 
@@ -101,9 +107,11 @@ in a web browser.
 agoric open --repl
 ```
 
-Another browser window or tab should appear.
+This should automatically open [http://127.0.0.1:8000](http://127.0.0.1:8000)
+in a new browser window or tab.
 
 ## Use the Dapp to collect your (simulated) tokens
 
-Use the wallet to grant the Dapp's request to connect.
+Use the wallet to grant the Dapp's request to connect. See also the [wallet UI](/guides/wallet/ui.md#wallet-ui) section.
+
 Then use the Fungible Faucet Dapp to collect your tokens.
