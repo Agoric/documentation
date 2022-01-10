@@ -27,7 +27,7 @@ The sequence may continue indefinitely or terminate in one of two ways:
 this doc, "final" and "non-final" just refer to position in an iteration, and not 
 "final" in the sense of the Java keyword or similar.
 
-## `NotifierKit` and SubscriptionKit
+## NotifierKit and SubscriptionKit
 
 `makeNotifierKit()` makes an` {updater, notifier}` pair, while `makeSubscriptionKit()` 
 makes a similar` {publication, subscription}` pair. Each pair’s first 
