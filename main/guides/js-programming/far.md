@@ -86,7 +86,7 @@ as the object's methods.
 
 The `Far()` function marks an object as remotable.  `Far()` also:
 - Hardens the object.
-- Checks that all property values are be functions and throws otherwise.
+- Checks that all property values are functions and throws otherwise.
   - accessors (`get()` and `set()`) are not allowed.
 - Records the object's interface name.
 
