@@ -179,7 +179,7 @@ full documentation:
 - [`makeQuoteNotifier(amountIn,brandOut)`](/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
    - Part of the PriceAuthority API, notifies the latest `PriceQuotes` for the given `amountIn`.
 - [`getPriceNotifier(brandIn, brandOut)`](/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
-   - Part of the PriceAuthority API, returns a notifier for the specified brands. Different PriceAuthories may issue these at very
+   - Part of the PriceAuthority API, returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
      different rates.
 - [`E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`](/repl/timerServices.md)
    - Part of the REPL's chain and local TimerServices, it creates and returns a `Notifier` object. It repeatedly delivers updates at times
