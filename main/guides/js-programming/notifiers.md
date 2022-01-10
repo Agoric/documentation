@@ -262,8 +262,8 @@ to the consumers; they cannot cause the kit to malfunction or prevent the code
 producing values from making progress. The consumers cannot cause each other to
 hang or miss values. 
 
-For distributed operation, all the iteration values---non-final values,
-successful completion value, failure reason---must be `Passable`; values that
+For distributed operation, all the iteration values—non-final values,
+successful completion value, failure reason—must be `Passable`; values that
 can somehow be passed between vats. The rest of this doc assumes all these
 values are Passable.  
 
