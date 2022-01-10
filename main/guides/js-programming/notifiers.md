@@ -68,15 +68,14 @@ A `NotifierKit` producer produces iteration values with the updater using the
 `IterationObserver` API. Its consumers consume iteration values via the notifier
 using the `AsyncIterable` API. Each `NotifierKit` consumer iteration is a lossy sampling subset of the iteration produced by that `NotifierKit` producer. Different consumers may see different sampling subsets.
 
-An iteration’s sampling subset:
-- May omit some of the iteration’s non-final values.
+The following properties hold for every sampling subset:
+- Any non-final value from the producer may be missing from the sampling subset.
 - All sampling subset non-final values are:
-  - In the original’s non-final values (i.e. if "7" is in the subset, "7" is in
+  - In the producer’s non-final values (e.g. if "7" is in the subset, "7" is in
      the original).
-  - In the same order (i.e. if the original is order 1, 3, 8, 5, 9, the subset
-     is in the same order, even if missing some items; 1, 8, 5 for example,
-     but not 8, 1, 5).
-- The original and the subset both have the same termination value.
+  - In the same order (e.g. if the producer sequence is 1, 3, 8, 5, 9, the sampling subset
+     is guaranteed to not be 8, 1, 5).
+- The sampling subset has the same termination value as the iteration from the producer.
 
 When a new iteration value is available, either it or a later value becomes
 available on each sampling subset promptly. In other words, if value 'a' is
