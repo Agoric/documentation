@@ -35,7 +35,7 @@ element (`updater` or `publication`) produces the async iteration which is then
 consumed using each pair’s second element (`notifier` or `subscription`).
 ```js
 import { makeNotifierKit } from '@agoric/notifier';
-import { makeSubscriberKit } from '@agoric/notifier';
+import { makeSubscriptionKit } from '@agoric/notifier';
 const { updater, notifier } = makeNotifierKit();
 const { publication, subscription } = makeSubscriptionKit(); 
 ```
@@ -244,7 +244,7 @@ observeIteration(subscription, observer);
 
 `NotifierKit()` is a lossy conveyor of non-final values, but does also
 losslessly convey termination. Let's say the subscription example above 
-started with the following instead of `makeSubscriberKit()`
+started with the following instead of `makeSubscriptionKit()`
 ```js
 const { updater, notifier } = makeNotifierKit();
 ```
@@ -255,7 +255,7 @@ non-final values due to `NotifierKit()`'s lossy nature.
 
 ## Distributed Operation
 
-Either make `NotifierKit()` or `makeSubscriberKit()` can be used in a multicast
+Either make `NotifierKit()` or `makeSubscriptionKit()` can be used in a multicast
 manner with good distributed systems properties, where there is only one
 producing site but any number of consuming sites. The producer is not vulnerable
 to the consumers; they cannot cause the kit to malfunction or prevent the code
