@@ -129,16 +129,17 @@ The `updater` and `publication` both have the same three methods:
     signalling that the monitored object hit an error condition.
 
 The `subscription` and `publication` both have this method:
-- `getUpdateSince()`: Returns `{ value, updateCount }`. 
-  - Returns the next published value after the previously obtained value.
+- `getUpdateSince(previousUpdateCount)`: Returns a promise for `{ value, updateCount }`. 
+  - Returns a promise for the next published value, using an optional `previousUpdateCount`
+    to communicate the last obtained value.
     `value` represents the state, and the format is up to the publisher.
-    `updateCount` requests notification the next time there's a state change.
+    `updateCount` can be provided back to `getUpdateSince`
+    for requesting notification the _next_ time there's a state change.
     If the state becomes final (e.g. a seat exits), `updateCount` will be 
     undefined. If there's an error, the promise for the record is 
     rejected and there isn't a next state.
-
-    If you call `getUpdateSince(oldUpdateCount)` with no count, or any 
-    `updateCount` other than the most recent one, the notifier immediately 
+  - If you call `getUpdateSince` with no `previousUpdateCount`, or any 
+    `previousUpdateCount` other than the most recent one, the notifier immediately 
     returns a promise for a record with the current state. If you call with 
     the most-recently generated `updateCount`, the notifier returns a promise 
     for the next record, which is resolved on the next state change. If you 
