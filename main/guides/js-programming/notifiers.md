@@ -214,7 +214,7 @@ the code won’t know what the completion value actually was “done”, “comp
 const consume = async subscription => {
   try {
     for await (const val of subscription) {
-      console.log('non-final', val);
+      console.log('non-final-value', val);
     }
     console.log('the iteration finished');
   } catch (reason) {
@@ -230,7 +230,7 @@ consume(subscription);
 Subscriber Bob consumes using the `(observeIteration(asyncIterableP, iterationObserver)` adaptor.
 ```js
 const observer = harden({
-  updateState: val => console.log('non-final', val),
+  updateState: val => console.log('non-final-value', val),
   finish: completion => console.log('finished', completion),
   fail: reason => console.log('failed', reason),
 });
