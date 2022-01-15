@@ -94,20 +94,47 @@ recommended style for writing JavaScript smart contracts.
 This `eslint` configuration provides tool support.
 :::
 
-1. If not already configured, run `yarn add eslint @jessie.js/eslint-plugin`
-2. If not already configured, add the following to your `package.json`:
+1. If working from an empty directory, a package.json file must first be created by running `yarn init` or `yarn init -y`.
+2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add eslint @jessie.js/eslint-plugin`.
+3. The final step is to set up our project's eslint configuration inside of the package.json file by adding in the following code block.
 
 ```json
-  "eslintConfig": {
-    "extends": [
-      "@jessie.js"
-    ]
-  }
+"eslintConfig" : {
+  "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 6
+  },
+  "extends": [
+    "plugin:@jessie.js/recommended"
+  ]
+}
 ```
 
-3. Put `// @jessie-check` at the beginning of your `.js` source file.
-4. Run `yarn eslint --fix path/to/your-source.js`
-5. Follow the linter's advice to edit your file, then go back to step 4.
+Now, the contents of the package.json file should look similiar to the snippet below.
+
+```json
+{
+  "name": "eslint-config-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@jessie.js/eslint-plugin": "^0.1.3",
+    "eslint": "^8.6.0"
+  },
+  "eslintConfig": {
+    "parserOptions": { "sourceType": "module", "ecmaVersion": 6 },
+    "extends": ["plugin:@jessie.js/recommended"]
+  }
+}
+```
+
+### Linting jessie.js code
+
+1. Put `// @jessie-check` at the beginning of your `.js` source file.
+2. Run `yarn eslint --fix path/to/your-source.js`
+3. In the event that eslint finds issues with the code, follow the linter's advice to edit your file, and then repeat the step above.
 
 The details of Jessie have evolved with experience; as a result, here
 we use `(count += 1)` where in the video shows `{ return count++; }`.
