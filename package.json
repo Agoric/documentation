@@ -37,18 +37,18 @@
   },
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {
-    "@agoric/marshal": "*",
-    "@agoric/zoe": "*",
+    "@agoric/marshal": "beta",
+    "@agoric/zoe": "beta",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
-    "@agoric/bundle-source": "*",
-    "@agoric/ertp": "*",
-    "@agoric/eventual-send": "*",
-    "@agoric/install-ses": "*",
-    "@agoric/notifier": "*",
-    "@agoric/promise-kit": "*",
-    "@agoric/assert": "*",
+    "@agoric/bundle-source": "beta",
+    "@agoric/ertp": "beta",
+    "@agoric/eventual-send": "beta",
+    "@agoric/install-ses": "beta",
+    "@agoric/notifier": "beta",
+    "@agoric/promise-kit": "beta",
+    "@agoric/assert": "beta",
     "@typescript-eslint/parser": "^4.26.0",
     "ava": "^3.15.0",
     "eslint": "^7.27.0",
@@ -61,7 +61,9 @@
     "prettier": "^1.19.1",
     "ses": "^0.12.7",
     "vuepress": "^1.8.2",
-    "vuepress-plugin-check-md": "0.0.2"
+    "vuepress-plugin-check-md": "0.0.2",
+    "@agoric/solo": "beta",
+    "@agoric/cosmic-swingset": "beta"
   },
   "resolutions": {
     "**/esm": "agoric-labs/esm#Agoric-built"
