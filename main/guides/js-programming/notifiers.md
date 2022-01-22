@@ -128,7 +128,7 @@ The `updater` and `publication` both have the same three methods:
     a next state. Instead, it causes the Promise to be rejected with the reason, 
     signalling that the monitored object hit an error condition.
 
-The `subscription` and `publication` both have this method:
+The `notifier` has an additional method that the `subscription` does not:
 - `getUpdateSince(previousUpdateCount)`: Returns a promise for `{ value, updateCount }`. 
   - Returns a promise for the next published value, using an optional `previousUpdateCount`
     to communicate the last obtained value.
