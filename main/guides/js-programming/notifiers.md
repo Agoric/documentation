@@ -152,7 +152,7 @@ Zoe provides updates on the state of seats within a contract. The updates
 from Zoe indicate changes to the allocation of a seat and seats exiting. 
 These are available from `E(userSeat).getNotifier()` and `zcfSeat.getNotifier()`, 
 which provide long-lived notifier objects associated with a particular 
-seat. `zcfSeat`s are available within contracts while `userSeat`s are accessible 
+seat. `ZCFSeat`s are available within contracts while `UserSeat`s are accessible 
 from the REPL, deploy scripts, and other code outside contracts. There are no 
 equivalent `getSubscription()` or `getUpdater()` methods on the
 seats.
