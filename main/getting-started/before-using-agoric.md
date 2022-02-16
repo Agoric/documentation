@@ -6,7 +6,7 @@ first install the Agoric Software Development Kit (SDK).
 
 ## Quick Start
 
-If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
+If you're familiar with JavaScript development tools such as `node`, `yarn`, and `git`:
 
 ```shell
 node --version # 14.15.0 or higher

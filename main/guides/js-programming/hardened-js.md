@@ -110,7 +110,7 @@ This `eslint` configuration provides tool support.
 }
 ```
 
-Now, the contents of the package.json file should look similiar to the snippet below.
+Now, the contents of the package.json file should look similar to the snippet below.
 
 ```json
 {
@@ -251,7 +251,7 @@ reports for NPM packages, including potential workarounds.
 
 A globally available function such as `fetch` means that every object,
 including a simple string manipulation function, can access the network.
-In order to eliminate this sort of excess authority, _Object-capabity discipline_
+In order to eliminate this sort of excess authority, _Object-capability discipline_
 calls for limiting globals to immutable data and deterministic functions
 (eliminating "ambient authority" in the diagram above).
 
