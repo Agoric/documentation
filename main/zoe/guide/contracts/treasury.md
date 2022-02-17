@@ -56,15 +56,13 @@ safe to overpay to cover variations in pricing.
 Parameters (subject to governance) specific to each collateral type set the
 interest rate and required collateralization ratio.
 
-The `initialMargin` is the `collateralizationRatio` that's required when opening
-a loan, and it can be the same or slightly higher than the `liquidationMargin`.
-If the ratio of current value of collateral (according to the `priceAuthority`,
-currently driven by the AMM) to the outstanding debt falls below
-`liquidationMargin`, the collateral will be sold off, the debt repaid, and any
-remainder returned to the borrower. So it's prudent for borrowers to
+The `liquidationMargin` is the `collateralizationRatio` required to open a vault
+and keep it open. If the ratio of current value of collateral (according to the
+`priceAuthority`, currently driven by the AMM) to the outstanding debt falls
+below `liquidationMargin`, the collateral will be sold off, the debt repaid, and
+any remainder returned to the borrower. So it's prudent for borrowers to
 over-collateralize so that price volatility and interest charges don't quickly
-drive their loans into default. `InitialMargin` just to enforce this prudence
-when loans are being opened.
+drive their loans into default.
 
 The `loanFee` (in basis points) is charged on the amount of `RUN` issued when
 opening a loan or increasing the amount of a loan.  The `interestRate` is an
