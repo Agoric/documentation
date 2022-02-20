@@ -3,9 +3,9 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 import { makeIssuerKit, AmountMath } from '@agoric/ertp';
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 import { makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';

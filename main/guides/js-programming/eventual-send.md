@@ -16,7 +16,7 @@ script is given a `zoe` *remote presence*. To call methods on the
 actual Zoe object, the deploy script can do:
 
 ```js
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 
 E(zoe).install(bundle)
   .then(installationHandle => { ... })

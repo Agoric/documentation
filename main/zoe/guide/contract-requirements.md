@@ -8,8 +8,8 @@ to know the proper format and other expectations.
 A Zoe contract is a JavaScript file that can import other JavaScript
 code, including:
 
-* [@agoric/harden](https://www.npmjs.com/package/@agoric/harden): a package for recursively deep-freezing
-* [@agoric/nat](https://www.npmjs.com/package/@agoric/nat): a package
+* [@endo/harden](https://www.npmjs.com/package/@endo/harden): a package for recursively deep-freezing
+* [@endo/nat](https://www.npmjs.com/package/@endo/nat): a package
   for testing whether something is a natural number (natural numbers
   are recommended for currency-related programming in order to avoid
   rounding issues) and throwing if not.

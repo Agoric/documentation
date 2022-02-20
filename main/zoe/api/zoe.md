@@ -148,7 +148,7 @@ An `installation` is an object with one property:
 ```js
 // bundleSource takes source code files and
 // bundles them together in the format install expects.
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(zoe).install(bundle);
 ```

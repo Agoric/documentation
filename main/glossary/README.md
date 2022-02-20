@@ -100,7 +100,7 @@ and the [ERTP API's Brand section](/ertp/api/brand.md).
 
 Before a contract can be installed on Zoe, its source code must be bundled. This is done by:
 ```
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
     require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );

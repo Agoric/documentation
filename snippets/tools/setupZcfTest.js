@@ -1,5 +1,5 @@
-import { E } from '@agoric/eventual-send';
-import bundleSource from '@agoric/bundle-source';
+import { E } from '@endo/eventual-send';
+import bundleSource from '@endo/bundle-source';
 
 import { makeZoeKit } from '@agoric/zoe';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';

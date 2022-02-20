@@ -3,11 +3,11 @@ import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';
 import { assert, details } from '@agoric/assert';
-import { E } from '@agoric/eventual-send';
-import { Far } from '@agoric/marshal';
+import { E } from '@endo/eventual-send';
+import { Far } from '@endo/marshal';
 
 test('oracle contract', async t => {
   const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);

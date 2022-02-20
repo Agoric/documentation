@@ -1,12 +1,12 @@
 // @ts-check
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 import { makeZoeKit } from '@agoric/zoe';
 import { makeIssuerKit, AmountMath } from '@agoric/ertp';
 
 // #region importBundleSource
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 // #endregion importBundleSource
 
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
