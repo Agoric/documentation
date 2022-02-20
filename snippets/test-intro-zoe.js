@@ -1,5 +1,13 @@
 // @ts-check
+
+// TODO Remove babel-standalone preinitialization
+// https://github.com/endojs/endo/issues/768
+import '@agoric/babel-standalone';
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
+
+import url from 'url';
+import { resolve as importMetaResolve } from 'import-meta-resolve';
 
 import { E } from '@endo/eventual-send';
 import { makeZoeKit } from '@agoric/zoe';
@@ -32,9 +40,12 @@ test('intro to zoe', async t => {
   });
 
   // #region bundle
-  const atomicSwapBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
+  const atomicSwapUrl = await importMetaResolve(
+    '@agoric/zoe/src/contracts/atomicSwap.js',
+    import.meta.url,
   );
+  const atomicSwapPath = url.fileURLToPath(atomicSwapUrl);
+  const atomicSwapBundle = await bundleSource(atomicSwapPath);
   // #endregion bundle
 
   // #region install
@@ -127,7 +138,12 @@ test('intro to zoe - contract-format', async t => {
   const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
   const feePurse = E(zoeService).makeFeePurse();
   const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
-  const atomicSwapBundle = await bundleSource(`${__dirname}/contract-format`);
+  const atomicSwapUrl = await importMetaResolve(
+    './contract-format.js',
+    import.meta.url,
+  );
+  const atomicSwapPath = url.fileURLToPath(atomicSwapUrl);
+  const atomicSwapBundle = await bundleSource(atomicSwapPath);
   const atomicSwapInstallation = await E(zoe).install(atomicSwapBundle);
   const { creatorInvitation } = await E(zoe).startInstance(
     atomicSwapInstallation,

@@ -1,6 +1,13 @@
 // @ts-check
+
+// TODO Remove babel-standalone preinitialization
+// https://github.com/endojs/endo/issues/768
+import '@agoric/babel-standalone';
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
+import url from 'url';
+import { resolve as importMetaResolve } from 'import-meta-resolve';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
 import bundleSource from '@endo/bundle-source';
@@ -15,9 +22,12 @@ test('oracle contract', async t => {
   const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
 
   // #region bundle
-  const contractBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/oracle'),
+  const contractUrl = await importMetaResolve(
+    '@agoric/zoe/src/contracts/oracle.js',
+    import.meta.url,
   );
+  const contractPath = url.fileURLToPath(contractUrl);
+  const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
   // #endregion bundle
 
