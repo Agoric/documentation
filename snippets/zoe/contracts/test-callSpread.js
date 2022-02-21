@@ -1,8 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+
+// TODO Remove babel-standalone preinitialization
+// https://github.com/endojs/endo/issues/768
+import '@agoric/babel-standalone';
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
-import bundleSource from '@agoric/bundle-source';
-import { E } from '@agoric/eventual-send';
+import url from 'url';
+import { resolve as importMetaResolve } from 'import-meta-resolve';
+import bundleSource from '@endo/bundle-source';
+import { E } from '@endo/eventual-send';
 import '@agoric/zoe/exported.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { AmountMath } from '@agoric/ertp';
@@ -31,9 +38,12 @@ test('callSpread, mid-strike', async t => {
     zoe,
     brands,
   } = setup();
-  const contractBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/callSpread/fundedCallSpread'),
+  const contractUrl = await importMetaResolve(
+    '@agoric/zoe/src/contracts/callSpread/fundedCallSpread.js',
+    import.meta.url,
   );
+  const contractPath = url.fileURLToPath(contractUrl);
+  const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
 
   // Alice will create and fund a call spread contract, and give the invitations
@@ -153,9 +163,12 @@ test('pricedCallSpread, mid-strike', async t => {
     zoe,
     brands,
   } = setup();
-  const contractBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/callSpread/pricedCallSpread'),
+  const contractUrl = await importMetaResolve(
+    '@agoric/zoe/src/contracts/callSpread/pricedCallSpread.js',
+    import.meta.url,
   );
+  const contractPath = url.fileURLToPath(contractUrl);
+  const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
 
   // Setup Bob

@@ -344,7 +344,7 @@ launch the missiles!
 To be defensively correct, we need runtime validation for any inputs that cross trust boundaries:
 
 ```js
-import Nat from `@agoric/nat`;
+import Nat from `@endo/nat`;
 
 /** @param {number | bignum} init */
 const makeCounter = init => {

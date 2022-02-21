@@ -1,11 +1,18 @@
 // @ts-check
+
+// TODO Remove babel-standalone preinitialization
+// https://github.com/endojs/endo/issues/768
+import '@agoric/babel-standalone';
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
+import url from 'url';
+import { resolve as importMetaResolve } from 'import-meta-resolve';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 import { makeIssuerKit, AmountMath } from '@agoric/ertp';
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 import { makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
@@ -16,9 +23,12 @@ test('loan contract', async t => {
   const feePurse = E(zoeService).makeFeePurse();
   const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
 
-  const contractBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/loan'),
+  const contractUrl = await importMetaResolve(
+    '@agoric/zoe/src/contracts/loan/index.js',
+    import.meta.url,
   );
+  const contractPath = url.fileURLToPath(contractUrl);
+  const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
 
   const {
@@ -33,9 +43,12 @@ test('loan contract', async t => {
   } = makeIssuerKit('simoleans');
 
   // Create autoswap installation and instance
-  const autoswapBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/autoswap'),
+  const autoswapUrl = await importMetaResolve(
+    '@agoric/zoe/src/contracts/autoswap.js',
+    import.meta.url,
   );
+  const autoswapPath = url.fileURLToPath(autoswapUrl);
+  const autoswapBundle = await bundleSource(autoswapPath);
   const autoswapInstallation = await E(zoe).install(autoswapBundle);
 
   const { instance: autoswapInstance } = await E(zoe).startInstance(

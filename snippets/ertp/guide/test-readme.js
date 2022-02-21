@@ -1,6 +1,6 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 
 // We need to disable this lint until @agoric/vats is released
 // and adopted in package.json.
