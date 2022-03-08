@@ -1,5 +1,5 @@
 # Agoric CLI Command Reference
-Add a command name to `agoric` to specify what command to run. **Note**: Required argument names need not be given, only their values. Optional argument names must be given, along with their values. See the command's examples if you're not sure if a name is needed.
+Add a command name to `agoric` to specify what command to run.
 
 The `agoric` commands documented here are the ones useful for dapp developers. Other `agoric` commands you may see listed
 are not covered in this document.
@@ -34,9 +34,9 @@ They are:
 ## `agoric init`
 - **Function**: 
   - Creates a new Dapp directory named `<project>` with contents copied from the `dapp-template` argument template.
-- **Required Arguments**:
+- **Positional Arguments**:
     - `project`: Name of the new project to initialize.
-- **Optional Arguments**:
+- **Options**:
     - `--dapp-template <name>`: Use the template specified by `<name>`. Defaults to the demo Dapp `dapp-fungible-faucet`.
     - `--dapp-base <base-url>`: Look under this directory for the Dapp template. Defaults to `git://github.com/Agoric/`
     - `-h`, `--help`: Display help for `init` command.
@@ -54,9 +54,9 @@ They are:
   The reason is that there is both an SDK (`--sdk`) and NPM mode. Currently we only support SDK mode, which allows you to link your Dapp 
   against the SDK dependencies. This lets you modify in any package in the SDK against the SDK dependencies (and see the changes)
   and not have to register those packages with Yarn or NPM.
-- **Required Arguments**:
+- **Positional Arguments**:
   - None.
-- **Optional Arguments**:
+- **Options**:
   - None.
 - **Examples**:
   - Installs Dapp JavaScript dependencies
@@ -65,10 +65,10 @@ They are:
 ## `agoric start`
 - **Function**:
   - Run an Agoric VM on which contracts will run.
-- **Required Arguments**:
+- **Positional Arguments**:
   - `profile`: [optional] Specifies the environment for the VM. Defaults to `dev` for development mode, `testnet` connects to our current testnet.
   - `args`: [optional] Ignore this for now. It currently has no valid values.
-- **Optional Arguments**:
+- **Options**:
     - `--reset`:  Clear all VM state before starting.
     - `--pull`:  For Docker-based VM, pull the image before running.
     - `--delay [seconds]`: Account for processing time in the simulated chain by delaying each round-trip to it by the specified number of seconds (default `1`, which lets you easily count the number of trips in your head). If this option is not present, then the seconds of delay will be set from the numeric value of a FAKE_CHAIN_DELAY environment variable (or zero if there is no such variable).
@@ -86,9 +86,9 @@ They are:
 ## `agoric deploy`
 - **Function**:
   - Run one or more deployment scripts against the local Agoric VM. You may optionally specify which host and port to connect to the VM on.
-- **Required Arguments**:
+- **Positional Arguments**:
   - `<script...>`: Deployment script(s) to run against the local Agoric instance. You must specify at least one, and may specify more than one. 
-- **Optional Arguments**:
+- **Options**:
   - `--hostport <HOST:PORT>`: Host and port on which to connect to the VM.
   - `-h`, `--help`: Display help for `deploy` command
 - **Examples**:
@@ -101,10 +101,10 @@ They are:
 ## `agoric open`
 - **Function**:
   - Launch the Agoric UI. By default, it shows only the UI and not the REPL. To show either
-    both the UI and REPL, or only the REPL, see the `--repl` optional argument below.
-- **Required Arguments**
+    both the UI and REPL, or only the REPL, see the `--repl` option below.
+- **Positional Arguments**
   - None
-- **Optional Arguments**
+- **Options**
   - `--hostport <host:port>`: Host and port on which to connect to the VM (default: "127.0.0.1:8000").
   - `--no-browser`: Display the UI's URL, but don't open a browser.
   - `--repl [yes | only | no]`:  Whether to show the Read-Eval-Print loop. Defaults to `yes` if specified (see
@@ -123,9 +123,9 @@ They are:
 ## `agoric help`
 - **Function**:
   - Displays the Agoric CLI commands and arguments with brief descriptions.
-- **Required Arguments**:
+- **Positional Arguments**:
   - None
-- **Optional Arguments**:
+- **Options**:
   - `-V`, `--version`: Output Agoric's version number.
   - `--sdk`: Use the Agoric SDK containing this program.
   - `-v`, `--verbose`: Output a more detailed version of help (note: only for some commands)
