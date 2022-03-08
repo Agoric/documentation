@@ -5,11 +5,12 @@ The `agoric` commands documented here are the ones useful for dapp developers. O
 are not covered in this document.
 
 In general, you want to issue these Agoric CLI commands in this order:
-1. `agoric init`
-2. `agoric install`
-3. `agoric start` (Usually with `--reset`)
-4. `agoric deploy`
-5. `agoric open`
+1. `agoric init $projectDir`
+2. `cd $projectDir`
+3. `agoric install`
+4. `agoric start` (Usually with `--reset`)
+5. `agoric deploy`
+6. `agoric open`
 
 Use `agoric help` whenever you need help with one of the above Agoric CLI commands.
 
