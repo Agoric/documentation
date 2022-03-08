@@ -71,7 +71,7 @@ They are:
     - `--reset`:  Clear all VM state before starting.
     - `--pull`:  For Docker-based VM, pull the image before running.
     - `--delay [seconds]`: Delay the given number of seconds for each round-trip to the simulated chain and back for a simulated chain to process messages. A `1` value lets you easily count the number of trips in your head.
-    - `--inspect`: [host[:port]]`: Activate inspector on host:port (default: "127.0.0.1:9229")
+    - `--inspect [host[:port]]`: Activate inspector on host:port (default: "127.0.0.1:9229")
     - `--inspect-brk [host[:port]]`:  Activate inspector on host:port and break at start of script (default: "127.0.0.1:9229")
     - `-h`, `--help`: Display help for `start` command
 - **Examples**:
