@@ -493,7 +493,7 @@ If you reorganize part of the Documentation repo or delete/deprecate a file in f
 you should establish a site URL redirect from the old file to the new one, in case anyone external to 
 Agoric has made a link or bookmarked the old file.
 
-Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of 03/2021, ours
+Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of March 2021, ours
 looks like this:
 ```js
 export default ({ router }) => {
