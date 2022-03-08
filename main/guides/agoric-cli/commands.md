@@ -40,10 +40,10 @@ They are:
     - `--dapp-base <base-url>`: Look under this directory for the Dapp template. Defaults to `git://github.com/Agoric/`
     - `-h`, `--help`: Display help for `init` command.
 - **Examples**:
-  - Creates a directory named `demo` with contents copied from the default `dapp-template` value `dapp-simple-exchange`.
+  - Creates a directory named `demo` with contents copied from the default `dapp-template` value `dapp-fungible-faucet`.
 	- `agoric init demo`
   - Creates a directory named `my-first-contract` with contents copied from the default `dapp-template` value `dapp-simple-exchange`.
-	  - `agoric init my-first-contract`
+	  - `agoric init my-first-contract --dapp-template dapp-simple-exchange`
   - Creates a directory named `my-contract` with contents copied from a template named `dapp-skeleton` located under the URL `file:///home/contracts`
 	  - `agoric init my-contract --dapp-template dapp-skeleton --dapp-base file:///home/contracts` 
 
