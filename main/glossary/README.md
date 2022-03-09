@@ -53,7 +53,7 @@ by [issuers](#issuer) and [mints](#mint), and represent the goods and currency c
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 Quatloos"
+An amount is comprised of a [brand](#brand) with a [value](#value). For example, "4 Quatloos"
 is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
 **Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
@@ -107,7 +107,7 @@ The installation operation returns
 an `installation`, which is an object with one method; `getBundle()`. You can access an installed contract's source
 code via `const { source } = await E(installation).getBundle();`.
 In many cases, the bundled source is a single reviewable string.
-In others, the bundle contains to base 64 encoded zip file that you can
+In others, the bundle contains a base64-encoded zip file that you can
 extract for review.
 ```
 jq -r .endoZipBase64 bundle.json | base64 -d > bundle.zip
@@ -316,7 +316,7 @@ records with values of [amounts](#amounts), [issuers](#issuer), etc.
 ## Mint
 
 [ERTP](#ertp) has a *mint* object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
-*ZCFMint*. Assets and AssetHolders created using ZcfMints can be used in all the same ways as assets created by other ERTP Mints.
+*ZCFMint*. Assets and AssetHolders created using ZCFMints can be used in all the same ways as assets created by other ERTP Mints.
 They interact with Purses, Payments, Brands, and Issuers in the same ways.
 
 - ERTP mints create digital assets and are the only ERTP objects with the authority to do so.
