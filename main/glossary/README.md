@@ -53,8 +53,8 @@ by [issuers](#issuer) and [mints](#mint), and represent the goods and currency c
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 quatloos"
-is an amount with a value of "4" and a brand of the imaginary currency "quatloos".
+An amount is comprised of a [brand](#brand) with an [value](#value). For example, "4 Quatloos"
+is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
 **Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
 intrinsic value. For example, to make you an offer to buy a magic sword in a game,
@@ -88,7 +88,8 @@ communication method; private email, a DM or other private message, a phone call
 an email blast to a mailing list or many individuals, listing it on a website, etc.
 
 ## Brand
-Identifies the kind of [issuer](#issuer), such as "quatloos", "moola", etc. Brands are one of the two elements that
+Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
+"[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amounts).
 For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md)
 and the [ERTP API's Brand section](/ertp/api/brand.md).
@@ -294,8 +295,8 @@ what the [wallet](#wallet) does.
 
 ## Issuer
 Issuers are a one-to-one relationship with both a [mint](#mint) and a [brand](#brand), so each issuer works
-with one and only one asset type, such as only working with quatloos or only working
-with moola. This association cannot change to another type.
+with one and only one asset type, such as only working with [Quatloos](#quatloos)
+or only working with [Moola](#moola). This association cannot change to another type.
 
 Issuers can create empty [purses](#purse) for
 their asset type, but cannot mint new [amounts](#amounts). Issuers can also transform
