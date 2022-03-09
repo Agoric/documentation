@@ -33,19 +33,16 @@ disappear from the total allocation.
 
 ## AmountMath
 The AmountMath library executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
-or otherwise manipulated. For example, a deposit of 2 bucks into a purse that already has 3 bucks
-gives a new balance of 5 bucks. But, a deposit of a non-fungible theater ticket into a purse that already holds
-five tickets isn't done by numeric addition. Instead, you have to combine two arrays, containing either
-strings or objects/records.
+or otherwise manipulated. For example, a deposit of 2 [Quatloos](#quatloos) into a purse that already has 3 Quatloos
+gives a new balance of 5 Quatloos. But a deposit of a non-fungible theater ticket into a purse that already holds
+five tickets is performed by combining arrays rather than by arithmetic.
 
-`AmountMath` has a single set of polymorphic
-methods of two different asset kinds to deal with [fungible](#fungible) assets (values are natural numbers) and
-[non-fungible](#non-fungible) assets (values are an array or object). The two `AssetKinds` are
-- `AssetKind.NAT`: Used with fungible assets. Amount values are natural numbers (non-negative integers). Default value.
-- `AssetKind.SET`: Used with non-fungible assets. Amount values are
-  arrays of strings, numbers, objects, or other comparable values.
+`AmountMath` has a single set of polymorphic methods that deal with two different asset kinds:
+- `AssetKind.NAT`: Used with [fungible](#fungible) assets. Each amount value is a natural number (non-negative integer). This is the default `AssetKind`.
+- `AssetKind.SET`: Used with [non-fungible](#non-fungible) assets. Each amount value is an
+  array of comparable values (strings, numbers, objects, etc.).
   Values should never include promises (they aren't comparable), or
-  payments, purses, and anything else that can't be shared freely.
+  data that should not be shared freely such as payments and purses.
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
