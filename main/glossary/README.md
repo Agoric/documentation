@@ -97,7 +97,7 @@ and the [ERTP API's Brand section](/ertp/api/brand.md).
 ## Bundle
 
 Before a contract can be installed on Zoe, its source code must be bundled. This is done by:
-```
+```js
 import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
     require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
@@ -109,8 +109,8 @@ code via `const { source } = await E(installation).getBundle();`.
 In many cases, the bundled source is a single reviewable string.
 In others, the bundle contains a base64-encoded zip file that you can
 extract for review.
-```
-jq -r .endoZipBase64 bundle.json | base64 -d > bundle.zip
+```sh
+echo "$bundle_source" | base64 -d > bundle.zip
 unzip bundle.zip
 ```
 
@@ -423,7 +423,7 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 Proposals are records with `give`, `want`, and `exit` keys. [Offers](#offer) must include a proposal, which states
 what asset you want, what asset you will give for it, and how/when the offer maker can cancel the offer
 (see [Exit Rule](#exit-rule) for details on the last). For example:
-```
+```js
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4)},
   want: { Price: AmountMath.make(moolaBrand, 15) },
