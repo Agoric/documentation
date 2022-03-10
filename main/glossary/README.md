@@ -40,9 +40,9 @@ five tickets is performed by combining arrays rather than by arithmetic.
 `AmountMath` has a single set of polymorphic methods that deal with two different asset kinds:
 - `AssetKind.NAT`: Used with [fungible](#fungible) assets. Each amount value is a natural number (non-negative integer). This is the default `AssetKind`.
 - `AssetKind.SET`: Used with [non-fungible](#non-fungible) assets. Each amount value is an
-  array of comparable values (strings, numbers, objects, etc.).
-  Values should never include promises (they aren't comparable), or
-  data that should not be shared freely such as payments and purses.
+  array of [comparable](#comparable) values (strings, numbers, objects, etc.).
+  Values cannot include promises (they aren't comparable), and should not
+  include privileged objects such as payments and purses.
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
@@ -121,13 +121,12 @@ Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`]
 
 ## Comparable
 
-A *passable* is something that can be marshalled. A *comparable* is a
-passable whose leaves contain no promises. Two comparables can be
-synchronously compared for structural equivalence.
+A *passable* is something that can be marshalled (see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence)).
 
-A comparable is a JavaScript object containing no promises, and can
-thus be locally compared for equality with another object. If either object
-contains Promises, equality is indeterminable. If both are fulfilled down
+A *comparable* is a passable containing no promises or errors, and can
+thus be synchronously compared for structural equivalence with another object. If either object
+contains promises and/or errors, equality is indeterminable. If both are fulfilled down
 to Presences and local state, then either they're the same all the way
 down, or they represent different objects.
 
