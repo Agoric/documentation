@@ -1,9 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 
-// TODO Remove babel-standalone preinitialization
-// https://github.com/endojs/endo/issues/768
-import '@agoric/babel-standalone';
-
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 
 import url from 'url';
