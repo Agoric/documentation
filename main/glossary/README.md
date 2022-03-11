@@ -216,7 +216,7 @@ See [`E()`](#e) above.
 Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
 - `onDemand: null`: (Default) The offering party can cancel on demand.
 - `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline`: The offer is automatically cancelled after a deadline, as determined by its timer and deadline properties.
+- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `deadline` and `timer` properties.
 
 ## Facet
 
@@ -426,7 +426,7 @@ what asset you want, what asset you will give for it, and how/when the offer mak
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4)},
   want: { Price: AmountMath.make(moolaBrand, 15) },
-  exit: { 'onDemand' }
+  exit: { onDemand: null }
 })
 ```
 `give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
