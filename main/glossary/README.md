@@ -84,8 +84,8 @@ or `BigInt(123)`.
 The Board is a shared, on-chain location where users can post a value and make it
 accessible to others. When a user posts a value, they receive a unique ID for the value.
 Others can get the value just by knowing the ID. You can make an ID known by any
-communication method; private email, a DM or other private message, a phone call/voicemail,
-an email blast to a mailing list or many individuals, listing it on a website, etc.
+communication method&mdash;a DM or email or other private message, a phone call/voicemail,
+an email blast to a mailing list, publishing it on a website, etc.
 
 ## Brand
 Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
@@ -117,7 +117,7 @@ unzip bundle.zip
 
 ## Burn
 
-Destroy all digital assets in a payment. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
+Destroy all digital assets in a payment, e.g. as part of consuming it in an exchange. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
 
 ## Comparable
 
@@ -338,7 +338,7 @@ An imaginary currency Agoric documentation uses in examples.
 
 ## Non-fungible
 A non-fungible asset is one where each incidence of the asset has unique individual properties and
-is not interchangeable with another incidence. For example, if your asset is show tickets, it matters to the buyer
+is not interchangeable with another incidence. For example, if your asset is theater tickets, it matters to the buyer
 what the date and time of the show is, which row the seat is in, and where in the row the
 seat is (and likely other factors as well). You can't just give them any ticket in your supply,
 as they are not interchangeable (and may have different prices). See also [fungible](#fungible).
