@@ -382,8 +382,8 @@ See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/zoe
 ## Offer Safety
 
 Zoe guarantees offer safety. When a user makes an [offer](#offer) and its payments are [escrowed](#escrow) with Zoe, Zoe guarantees that
-the user either gets what they said they wanted, or gets back (gets a refund) what they originally offered and
-escrowed. One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
+the user either gets what they said they wanted, or gets back what they originally offered and
+escrowed (i.e., a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
 
 ## Payment
@@ -425,8 +425,8 @@ const myProposal = harden({
   exit: { onDemand: null }
 })
 ```
-`give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts), a description of what
-asset they are willing to give/want to get, and how much of it.
+`give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts) a description of what
+they are willing to give or want to get.
 
 ## Purse
 A purse holds [amounts](#amounts) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand) and generally _stationary_.
@@ -459,7 +459,7 @@ the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 
 ## SES
 
-We have renamed SES to [Hardened JavaScript](#hardened-javascript-ses).
+Secure ECMAScript has been renamed to [Hardened JavaScript](#hardened-javascript-ses).
 
 ## Simoleons
 An imaginary currency Agoric documentation uses in examples.
@@ -476,11 +476,11 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 Values are the part of an [amount](#amounts) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
-Pixel(3,2), $3, or 'Seat J12 for the show September 27th at 9:00pm'.
+Pixel(3,2), $3, or “Seat J12 for the show September 27th at 9:00pm”.
 [Fungible](#fungible) values are usually
 represented by natural numbers. Other values may be represented as strings naming a particular
 rights, or an array of arbitrary objects representing the rights at issue. The latter two examples
-are usually [non-fungible](#non-fungible) assets. Values must be [Comparable](#comparable).
+are usually [non-fungible](#non-fungible) assets. Values must be [comparable](#comparable).
 
 For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
 
@@ -494,7 +494,7 @@ For more information, see the [Vat section in the Distributed JS Programming Gui
 ## Wallet
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
-[purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [Issuers](#issuer).
+[purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [issuers](#issuer).
 Dapps can propose [offers](#offer) to a wallet. If a user accepts the offer proposal,
 the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse).
 See the [Wallet Guide and API](/guides/wallet/).
