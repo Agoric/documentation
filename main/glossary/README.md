@@ -160,7 +160,7 @@ See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/do
 ## E()
 
 (Also referred to as *eventual send*) `E()` is a local "bridge" function that invokes methods on remote objects, for example
-in another vat, machine, or blockchain. It takes a local representative (a proxy) for a remote object as an argument and
+in another vat, machine, or blockchain. It takes a local representative (a [presence](#presence)) for a remote object as an argument and
 sends messages to it using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with.
 All `E()` calls return a promise for the eventual returned value. For more detail, see
 the [`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
@@ -272,7 +272,7 @@ the invitation is a [`Payment`](#payment), and so is associated with a specific 
 
 To participate in a contract instance by making an [offer](#offer), an invitation to that instance must accompany the offer.
 
-An `invitation`'s amount includes the following properties:
+An invitation's [amount](#amounts) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
 - The contract instance this invitation is for.
 - A handle used to refer to this invitation.
@@ -453,7 +453,7 @@ current allocation as a [payout](#payout).
 
 Zoe uses a seat to represent an [offer](#offer) in progress, and has two seat [facets](#facet) representing
 two views of the same seat; a `ZCFSeat` and a `UserSeat`. The `UserSeat` is returned to the user who made an
-offer, and can check payouts' status or retrieve their results. The `ZCFSeat` is the argument passed to
+offer, and can check [payout](#payout) status or retrieve their results. The `ZCFSeat` is the argument passed to
 the `offerHandler` in the contract code. It is used within contracts and with [`zcf` methods](/zoe/api/zoe-contract-facet.md).
 
 The two seat facets have slightly different methods but represent the same seat and offer in progress.
