@@ -263,14 +263,10 @@ The Inter-Blockchain Communication protocol, used by blockchains to communicate 
 is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
 ## Invitation
-To participate in a contract instance, one must hold an invitation to do so. Contracts often
-return a creator invitation on their instantiation, in case the contract instantiator wants
+A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
+Contracts often return a creator invitation on their instantiation, in case the contract instantiator wants
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
-These, or any invitation held by a party, are distributed by sending it to someone's wallet. When you receive
-an invitation, your wallet will validate it via the [InvitationIssuer](#invitationissuer). Note that
-the invitation is a [`Payment`](#payment), and so is associated with a specific [`Issuer`](#issuer).
-
-To participate in a contract instance by making an [offer](#offer), an invitation to that instance must accompany the offer.
+Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in its payment, and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
 An invitation's [amount](#amounts) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
