@@ -429,9 +429,8 @@ const myProposal = harden({
 asset they are willing to give/want to get, and how much of it.
 
 ## Purse
-Purses hold [amounts](#amounts) of a certain [mint](#mint) issued assets. Specifically amounts that are _stationary_.
-Purses can transfer part of their held balance to a [payment](#payment), which is usually used to transfer value.
-A purse's contents are all of the same [brand](#brand).
+A purse holds [amounts](#amounts) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand) and generally _stationary_.
+When transfer is desired, a purse can move part of its held balance to a [payment](#payment).
 
 For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-and-payments.md#purses-and-payments) and the
 [ERTP API's Purses section](/ertp/api/purse.md).
