@@ -168,7 +168,7 @@ the [`E()` section in the Distributed JavaScript page](/guides/js-programming/ev
 ## Endo
 
 What Node.js does for JavaScript, Endo does for [Hardened
-JavaScript](#hardened-javascript).
+JavaScript](#hardened-javascript-ses).
 Endo guest programs run in Hardened JavaScript and communicate with their host
 and other guests through hardened interfaces and object-to-object
 message-passing.
@@ -392,7 +392,7 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 
 ## Payment
 
-Payments hold assets created by [Mints](#mint). Specifically assets intended for transfer
+Payments hold assets created by [mints](#mint), specifically assets intended for transfer
 from one party to another. All assets of a payment are of the same [brand](#brand).
 
 For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#purses-and-payments)
