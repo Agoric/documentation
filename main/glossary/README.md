@@ -143,7 +143,7 @@ If they have ten houses for sale, they have ten different contract instances.
 
 ## CreatorInvitation
 
-An [invitation](#invitation) optionally returned by `startInstance()` that the contract instance
+An [invitation](#invitation) optionally returned by [`startInstance()`](/zoe/api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms) that the contract instance
 creator can use. It is usually used in contracts where the creator immediately
 sells something (auctions, swaps, etc.).
 
@@ -335,7 +335,7 @@ However, issuers and brands associated with either an ERTP mint or a ZCFMint are
 
 For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/issuers-and-mints.md)
 and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about ZCFMints,
-see the [zcfMakeZCFMint() API entry](/zoe/api/zoe-contract-facet.md) in the Zoe Contract Facet API.
+see the [ZCF API `zcf.makeZCFMint()`](/zoe/api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo).
 
 ## Moola
 An imaginary currency Agoric documentation uses in examples.
@@ -454,7 +454,7 @@ current allocation as a [payout](#payout).
 Zoe uses a seat to represent an [offer](#offer) in progress, and has two seat [facets](#facet) representing
 two views of the same seat; a `ZCFSeat` and a `UserSeat`. The `UserSeat` is returned to the user who made an
 offer, and can check payouts' status or retrieve their results. The `ZCFSeat` is the argument passed to
-the `offerHandler` in the contract code. It is used within contracts and with `zcf.` methods.
+the `offerHandler` in the contract code. It is used within contracts and with [`zcf` methods](/zoe/api/zoe-contract-facet.md).
 
 The two seat facets have slightly different methods but represent the same seat and offer in progress.
 The term comes from the expression "having a seat at the table" with regards to participating in a negotiation.
@@ -470,7 +470,7 @@ We have renamed SES to [Hardened JavaScript](#hardened-javascript-ses).
 An imaginary currency Agoric documentation uses in examples.
 
 ## Terms
-Contract instances have associated terms, gotten via `E(zoe).getTerms(instance)`,
+Contract instances have associated terms, gotten via [`E(zoe).getTerms(instance)`](/zoe/api/zoe.md#e-zoe-getterms-instance),
 which include the instance's associated [issuers](#issuer), [brands](#brand), and any custom terms. For
 example, you might have a general auction contract. When someone instantiates it,
 they provide terms applicable only to that instance. For some instances of
