@@ -105,19 +105,18 @@ const atomicSwapBundle = await bundleSource(
 ```
 The installation operation returns
 an `installation`, which is an object with one method; `getBundle()`. You can access an installed contract's source
-code via `const { source } = await E(installation).getBundle();`.
-In many cases, the bundled source is a single reviewable string.
-In others, the bundle contains a base64-encoded zip file that you can
-extract for review.
+code via `const { endoZipBase64 } = await E(installation).getBundle();`.
+In most cases, the bundle contains a base64-encoded zip file that you can
+extract for review:
 ```sh
-echo "$bundle_source" | base64 -d > bundle.zip
+echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
 ```
 
 
 ## Burn
 
-Destroy all digital assets in a payment, e.g. as part of consuming it in an exchange. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
+Destroy all digital assets in a payment, for example as part of consuming it in an exchange. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
 
 ## Comparable
 
@@ -383,7 +382,7 @@ See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/zoe
 
 Zoe guarantees offer safety. When a user makes an [offer](#offer) and its payments are [escrowed](#escrow) with Zoe, Zoe guarantees that
 the user either gets what they said they wanted, or gets back what they originally offered and
-escrowed (i.e., a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
+escrowed (a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
 
 ## Payment
