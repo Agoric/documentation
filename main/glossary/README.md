@@ -318,13 +318,13 @@ They interact with Purses, Payments, Brands, and Issuers in the same ways.
   Access to an ERTP mint gives you the power to create more digital assets of its type at will. Mints
   can only create one type of asset and cannot change to create a different type.
 
-  ERTP mints are [issuer's](#issuer) admin [facets](#facet), and there is a one-to-one relationship between an issuer and
-  its mint. ERTP mints are also in a one-to-one relationship with that issuer's associated [brand](#brand).
+  There is a one-to-one relationship between an [issuer](#issuer) and its mint, and a mint is an administrative [facet](#facet) of its issuer.
+  ERTP mints are also in a one-to-one relationship with that issuer's associated [brand](#brand).
 
 - ZCFMints give contract code a simpler interface to interact with an ERTP mint. Because ZCFMints encapsulate
   an internal ERTP mint, they have the same one-to-one relationships
   with an issuer and its associated brand. A ZCFMint can mint assets and assign them to a seat without having to escrow
-  payments, and burn assets that used to be associated with a seat without having to payout assets.
+  payments, and burn seat-associated assets without corresponding payout.
 
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
 However, issuers and brands associated with either an ERTP mint or a ZCFMint are the same concepts and have the same methods.
