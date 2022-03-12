@@ -1,2 +1,2 @@
-# Display a 404 error page for things we don't recognize.
-/documentation/* https://static-agoric-com.netlify.app/404.html 200
+# Send to a 404 error page on the main site for things we don't recognize.
+https://agoric.com/documentation/* https://agoric.com/notfound/documentation/:splat 302
