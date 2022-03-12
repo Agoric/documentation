@@ -1,0 +1,2 @@
+# Display a 404 error page for things we don't recognize.
+/documentation/* https://static-agoric-com.netlify.app/404.html 200
