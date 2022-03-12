@@ -85,7 +85,7 @@ VuePress automatically builds search functionality and individual page menus fro
 You must have **only one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers 
 on one page and that they aren't too long. Otherwise the sidebar menu for the page will be cluttered and hard to read and use.
 
-Individual pages do not automatically display a sidebar menu for their headers (As of 03/2021, VuePress 
+Individual pages do not automatically display a sidebar menu for their headers (As of March 2021, VuePress
 documentation implies they do. We've filed a PR with them).
 To force an individual page sidebar menu, add the following YAML at the top of a page's source file (this file has this YAML at the top):
 ```js
