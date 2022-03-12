@@ -294,7 +294,7 @@ View your local documentation site at `localhost:8080/documentation/`
 In `[/.vuepress/config.js](/.vuepress/config.js)`, find the lines
 ```
 zoeVersion: 'Beta Release v1.0.0',
-zoeDocsUpdated: '2021-04-07'
+zoeDocsUpdated: 'Apr 7, 2021'
 ```
 Edit the values to be current. The current Zoe version is at line 
 3 [here](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/package.json).
