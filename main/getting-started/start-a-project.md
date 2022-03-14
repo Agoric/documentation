@@ -9,13 +9,20 @@ Do not use for production purposes.
 Now that you have [installed the Agoric SDK](/getting-started/before-using-agoric.md),
 let's try out your first Agoric _Dapp_ (decentralized application).
 
-In addition to a shell window for ordinary commands,
-open two additional shells for long-running processes and their logs,
-for a total of **three shell windows**:
+We'll be running **three shell windows**, and
+[dapp template initialization](#initialize-demo-from-dapp-template) in the first
+window will create their shared working directory.
 
- 1. main command shell
- 2. simulated blockchain and "solo" client
- 3. web user interface
+
+ 1. ```shell
+    # Shell 1: main command shell
+    ```
+ 2. ```shell secondary style2
+    # Shell 2: simulated blockchain and "solo" client
+    ```
+ 3. ```shell secondary style3
+    # Shell 3: web user interface
+    ```
 
 ::: tip Watch: Prepare Your Agoric Environment (Nov 2020)
 This presentation includes starting a project, but note an outdated detail:
@@ -48,6 +55,7 @@ Learn more about the [available dapp templates](/dapps/dapp-templates.md).
 ### Install the Agoric SDK in the Dapp
 
 ```shell
+# Shell 1
 cd demo
 agoric install
 ```
@@ -60,7 +68,7 @@ On a Mac, you must first install
 :::
 ## Start the Agoric Solo Client and Simulated Blockchain
 
-<pre style="background: aqua">
+```shell secondary style2
 # Shell 2
 cd demo # if not already there
 agoric start
@@ -70,7 +78,7 @@ agoric start
 
 # to reset and start over
 agoric start --reset
-</pre>
+```
 
 Leave this process and its logs running in its own shell window.
 ## Deploy the Contract and API
@@ -91,10 +99,11 @@ in detail later.
 The web user interface communicates with the API in
 the solo client as well as the wallet (below).
 
-<pre style="background: bisque">
+```shell secondary style3
 # Shell 3
+cd demo # if not already there
 cd ui && yarn start
-</pre>
+```
 
 Leave this running in its own shell window and
 visit [http://localhost:3000](http://localhost:3000)
