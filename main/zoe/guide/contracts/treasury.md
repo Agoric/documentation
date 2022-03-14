@@ -9,7 +9,7 @@ starts up.)
 
 ## Borrowers
 
-Borrowers open a **vault** by calling `makeLoanInvitation()`in the publicAPI to
+Borrowers open a **vault** by calling `makeVaultInvitation()`in the publicAPI to
 get an invitation. Their proposal specifies that they're giving a recognized
 collateral type, and how much `RUN` they want in return. The contract is
 parameterized with a collateralization rate per currency and borrowers can
@@ -98,12 +98,12 @@ governance, liquidation takes place in a separate vat.
 
 #### makeLoan
 
-The treasury's public API includes `makeLoanInvitation()` and
+The treasury's public API includes `makeVaultInvitation()` and
 `getCollaterals()`, as well as `getAMM()` and `getRunIssuer()`.
 `getCollaterals()` returns a list of the collateral types that are accepted.
 `getAmm()` returns the public facet of the AMM. `getRunIssuer()` provides access
 to the issuer of `RUN` so anyone can hold, spend and recognize RUN.
-`makeLoanInvitation()` is described above under [Borrowers](#borrowers)
+`makeVaultInvitation()` is described above under [Borrowers](#borrowers)
 
 ### Roadmap
 
