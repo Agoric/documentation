@@ -47,7 +47,7 @@ agoric init demo
 ```
 
 The name `demo` is an arbitrary suggestion; in general,
-use `agoric init DIRNAME` with any name you like.
+use `agoric init $DIRNAME` with any name you like.
 
 The default template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
 Learn more about the [available dapp templates](/dapps/dapp-templates.md).
