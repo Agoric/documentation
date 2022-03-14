@@ -1,5 +1,11 @@
 # Treasury contract
 
+<Zoe-Version/>
+
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/run-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Mar 11, 2022)
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+
+
 The Treasury is the primary mechanism for making `RUN` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
 loans against supported types of collateral. The creator of the contract can
