@@ -102,3 +102,15 @@
   font-size: .75em
   border-bottom: 1px #2c3e50 solid
   padding-bottom: 3px
+
+// Use alternate syntax highlighting for secondary code blocks
+div[class*="language-"].secondary
+  @import '_prism-coldark-cold'
+
+  // Suppress the primary theme
+  background-color transparent
+  code
+    color inherit
+
+div[class*="language-"].secondary.style3 pre
+  background-color bisque
