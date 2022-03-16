@@ -1,6 +1,6 @@
 # Hardened JavaScript
 
-::: tip Watch: Object-capability Programming in Secure Javascript (Aug 2019)
+::: tip Watch: Object-capability Programming in Secure Javascript (August 2019)
 
 _The first 15 minutes cover much of the material below.
 The last 10 minutes are Q&A._

@@ -75,7 +75,7 @@ If an ordinary synchronous call (`obj.method()`) fails because the method doesn'
 consider that `obj` may be remote and try `E(obj).method()`.
 :::
 
-::: tip Watch: How Agoric Solves Reentrancy Hazards (Nov 2020)
+::: tip Watch: How Agoric Solves Reentrancy Hazards (November 2020)
 for more on eventual send and remote communication
 <iframe width="560" height="315" src="https://www.youtube.com/embed/38oTyVv_D9I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 :::

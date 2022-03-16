@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: 2021-10-26)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/run-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: Feb 17, 2022)
 ##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 

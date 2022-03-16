@@ -23,7 +23,7 @@ Then proceed to [starting a project](/getting-started/start-a-project.md).
 
 A more detailed explanation follows.
 
-::: tip Watch: Prepare Your Agoric Environment (Nov 2020)
+::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation is a good overview of the Agoric SDK setup process,
 though a few details are out of date:
 

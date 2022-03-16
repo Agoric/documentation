@@ -3,7 +3,7 @@
 The Agoric smart contract platform starts with a JavaScript framework
 for secure distributed computing.
 
-::: tip Watch: Distributed Programming for a Decentralized World (Aug 2019)
+::: tip Watch: Distributed Programming for a Decentralized World (August 2019)
 This 15 minute overview is the first in a
 [4-parts series](https://www.youtube.com/playlist?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 of short talks on the Agoric Architecture that overlap substantially with the material in

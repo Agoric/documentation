@@ -45,7 +45,13 @@ module.exports = {
     ]
   ],
 
-  plugins: ['check-md'],
+  plugins: [
+    'check-md',
+    [
+      '@vuepress/last-updated',
+      { dateOptions: { dateStyle: "medium", timeStyle: "long", timeZone: "Etc/UTC" } },
+    ],
+  ],
 
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
@@ -312,7 +318,7 @@ module.exports = {
     editLinkText: 'Help us improve this page!',
 
     zoeVersion: 'v0.18.1',
-    zoeDocsUpdated: '2021-09-13'
+    zoeDocsUpdated: 'Sep 13, 2021'
 
 
     /* --- SEARCH --- */

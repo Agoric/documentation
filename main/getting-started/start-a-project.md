@@ -24,7 +24,7 @@ window will create their shared working directory.
     # Shell 3: web user interface
     ```
 
-::: tip Watch: Prepare Your Agoric Environment (Nov 2020)
+::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation includes starting a project, but note an outdated detail:
 
  - In the REPL `x~.go()` tildot support has been postponed; use `E(x).go()`.
