@@ -120,14 +120,11 @@ Destroy all digital assets in a payment, for example as part of consuming it in 
 
 ## Comparable
 
-A *passable* is something that can be marshalled (see the
-[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence)).
-
-A *comparable* is a passable containing no promises or errors, and can
-thus be synchronously compared for structural equivalence with another object. If either object
-contains promises and/or errors, equality is indeterminable. If both are fulfilled down
-to Presences and local state, then either they're the same all the way
-down, or they represent different objects.
+A *comparable* is a [passable](#passable) containing no promises or errors, and can
+thus be synchronously compared for structural equivalence with another piece of data.
+If either side of the comparison contains promises and/or errors, equality is indeterminable.
+If both are fulfilled down to [presences](#presence) and local state, then either they're the
+same all the way down, or they represent different objects.
 
 ## Contract and Contract Instance
 In Agoric documentation, *contract* usually refers to a contract's source code that
@@ -384,6 +381,11 @@ Zoe guarantees offer safety. When a user makes an [offer](#offer) and its paymen
 the user either gets what they said they wanted, or gets back what they originally offered and
 escrowed (a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
+
+## Passable
+
+A *passable* is something that can be marshalled (see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence)).
 
 ## Payment
 
