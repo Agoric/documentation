@@ -9,19 +9,19 @@ Do not use for production purposes.
 Now that you have [installed the Agoric SDK](/getting-started/before-using-agoric.md),
 let's try out your first Agoric _Dapp_ (decentralized application).
 
-We'll be running **three shell windows**, and
+We'll be running **three terminal windows**, and
 [dapp template initialization](#initialize-demo-from-dapp-template) in the first
 window will create their shared working directory.
 
 
- 1. ```shell
-    # Shell 1: main command shell
+ 1. ```sh
+    # Terminal 1: simulated blockchain and "solo" client
     ```
- 2. ```shell secondary style2
-    # Shell 2: simulated blockchain and "solo" client
+ 2. ```sh secondary style2
+    # Terminal 2: contract interaction
     ```
- 3. ```shell secondary style3
-    # Shell 3: web user interface
+ 3. ```sh secondary style3
+    # Terminal 3: web user interface
     ```
 
 ::: tip Watch: Prepare Your Agoric Environment (November 2020)
@@ -38,11 +38,11 @@ Use the [Agoric CLI](/guides/agoric-cli/commands.md) to fetch from a Dapp templa
 and put it in a `demo` directory _not located in your `agoric-sdk` clone_:
 
 
-```shell
-# Shell 1
+```sh
+# Terminal 1
 # Don't use your agoric-sdk clone as the parent of the demo directory.
 # It doesn't have to be your home directory; any other directory will do.
-cd
+cd $HOME
 agoric init demo
 ```
 
@@ -54,8 +54,8 @@ Learn more about the [available dapp templates](/dapps/dapp-templates.md).
 
 ### Install the Agoric SDK in the Dapp
 
-```shell
-# Shell 1
+```sh
+# Terminal 1
 cd demo
 agoric install
 ```
@@ -66,10 +66,11 @@ It may take a minute or so to install all the dependencies.
 On a Mac, you must first install
 [Xcode](https://apps.apple.com/us/app/xcode/id497799835)
 :::
+
 ## Start the Agoric Solo Client and Simulated Blockchain
 
-```shell secondary style2
-# Shell 2
+```sh
+# Terminal 1
 cd demo # if not already there
 agoric start
 
@@ -80,14 +81,15 @@ agoric start
 agoric start --reset
 ```
 
-Leave this process and its logs running in its own shell window.
+Leave this process and its logs running in its own terminal window.
 ## Deploy the Contract and API
 
-Deploy the contract to the simulated blockchain
+In a separate terminal, deploy the contract to the simulated blockchain
 and the API to the solo client.
 
-```shell
-# Shell 1
+```sh secondary style2
+# Terminal 2
+cd demo # if not already there
 agoric deploy ./contract/deploy.js ./api/deploy.js
 ```
 
@@ -99,20 +101,21 @@ in detail later.
 The web user interface communicates with the API in
 the solo client as well as the wallet (below).
 
-```shell secondary style3
-# Shell 3
+```sh secondary style3
+# Terminal 3
 cd demo # if not already there
 cd ui && yarn start
 ```
 
-Leave this running in its own shell window and
+Leave this running in its own terminal window and
 visit [http://localhost:3000](http://localhost:3000)
 in a web browser.
 
 ## Open the Agoric Wallet and REPL
 
-```shell
-# Shell 1
+```sh secondary style2
+# Terminal 2
+cd demo # if not already there
 agoric open --repl
 ```
 

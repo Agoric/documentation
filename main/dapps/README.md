@@ -17,7 +17,9 @@ A dapp is a *decentralized application* which typically has a browser-based user
 If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
 
 ```sh
-# Use `agoric init` to make a new local copy of a dapp template. Here we chose the Fungible Faucet Dapp. You can replace `my-fungible-faucet` with a name of your choice.
+# Use `agoric init` to make a new local copy of a dapp template.
+# Here we chose the Fungible Faucet Dapp.
+# You can replace `my-fungible-faucet` with a name of your choice.
 agoric init --dapp-template dapp-fungible-faucet my-fungible-faucet
 cd my-fungible-faucet
 # Install the project dependencies
@@ -29,7 +31,7 @@ agoric start --reset
 Leave this command running (it is your simulated environment).  Then,
 in a separate terminal, deploy the contract and API to the VM.
 
-```sh
+```sh secondary style2
 # Deploy a new instance of the contract to the VM
 agoric deploy contract/deploy.js
 # Reset the VM's API server
@@ -38,12 +40,12 @@ agoric deploy api/deploy.js
 
 Then in a third terminal:
 
-```sh
+```sh secondary style3
 # Start the user interface
 cd ui && yarn start
 ```
 
-You can then navigate to http://localhost:3000 to view your dapp.
+You can then navigate to [http://localhost:3000](http://localhost:3000) to view your dapp.
 
 ## Modifying this Dapp
 
