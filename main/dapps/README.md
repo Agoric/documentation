@@ -55,9 +55,9 @@ In the Agoric system, components are written in Javascript.
 
 The following are the important directories in an Agoric Dapp project:
 
-- [`contract`](#contract-directory) define and deploy the on-chain contract
-- [`api`](#api) define and deploy the chain-connected server's `/api` HTTP endpoint
-- [`ui`](#ui) the browser user interface that connects between the user's personal wallet and the API server
+- [`contract/`](#contract-directory) defines the on-chain smart contract.
+- [`api/`](#api) defines the chain-connected server's `/api` HTTP endpoint.
+- [`ui/`](#ui) defines the browser user interface connecting users' personal wallets and the API server.
 
 Other files and directories in this toplevel folder should not typically be modified.
 
@@ -66,7 +66,7 @@ Other files and directories in this toplevel folder should not typically be modi
 In the `contract` directory, you can find the following files to edit:
 
 - `init` contract initialization modules, starting with `init/custom-deploy.js`
-- `src` contract source code, starting with `src/contract.js`
+- `src/` contract source code, starting with `src/contract.js`
 
 Other files and folders that you don't typically need to edit:
 
@@ -77,7 +77,7 @@ Other files and folders that you don't typically need to edit:
 
 In the `api` directory, you can find the following files to edit:
 
-- `src` /api endpoint handler, starting with `src/handler.js`
+- `src/` handler for /api HTTP endpoints, starting with `src/handler.js`
 
 Other files and folders that you don't typically need to edit:
 

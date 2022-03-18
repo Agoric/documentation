@@ -12,9 +12,9 @@ and `api/deploy.js` scripts. You can use the deploy scripts created when you cop
 Dapp into your directory as they are, or you can modify the scripts as suggested later in this document.
 
 Remember, your Dapp has three primary subdirectories:
-- `contract/`which contains files relating to your smart contract itself.
-- `api/`which contains files enabling the UI frontend to communicate via HTTP/WebSocket to an on-chain backend contract instance and start your Dapp contract instance and backend.
-- `ui/` which contains files relating to your contract's user interface.
+- `contract/` contains files defining your on-chain smart contract.
+- `api/` contains files enabling the UI frontend to communicate via HTTP/WebSocket to an on-chain backend contract instance and start your Dapp contract instance and backend.
+- `ui/` contains files relating to your contract's browser user interface.
 
 ## How it works
 
@@ -53,7 +53,7 @@ which is our example of a typical contract deploy script.
 
 Deploying the `dapp-fungible-faucet` contract (e.g., with `agoric deploy contract/deploy.js` after `agoric init` 
 copied it into a local directory) installs it on chain, and generates the 
-file `./ui/public/conf/installationConstants.js`with contents like:
+file `ui/public/conf/installationConstants.js` with contents like:
 ```js
 // GENERATED FROM dapp-fungible-faucet/contract/deploy.js
 export default {
@@ -85,7 +85,7 @@ range of the above custom setup actions:
 * [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/main/api/deploy.js)
 
 Application deployment steps may include:
-* Bundle the `api` code and deploy it to the running local "api" process (ag-solo)
+* Bundle the `api/` code and deploy it to the running local "api" process (ag-solo)
 * Include the contract installation configuration information in the bundle
 * Create new currencies and add them to the application's wallet
 
