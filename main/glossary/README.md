@@ -133,7 +133,7 @@ Destroy all digital assets in a payment, for example as part of consuming it in 
 
 Comparable is a deprecated synonym of [key](#key).
 
-## Contract and Contract Instance
+## Contract Installation and Contract Instance
 In Agoric documentation, *contract* usually refers to a contract's source code that
 defines how the contract works. A contract's source code is *installed* on Zoe. A
 contract is *instantiated* to create *contract instances*, which are the active
@@ -144,7 +144,7 @@ code defining how that agreement works. When the realtor has a new house to sell
 they instantiate a new instance of their standard contract for that specific property.
 If they have ten houses for sale, they have ten different contract instances.
 
-## CreatorInvitation
+## Creator Invitation
 
 An [invitation](#invitation) optionally returned by [`startInstance()`](/zoe/api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms) that the contract instance
 creator can use. It is usually used in contracts where the creator immediately
