@@ -43,16 +43,16 @@ five tickets is performed by set union rather than by arithmetic.
   This is the default `AssetKind`.
 - `AssetKind.SET`: Used with [non-fungible](#non-fungible) assets;
   deprecated in favor of `AssetKind.COPY_SET` but still in wide use.
-  Each amount value is an array of [comparable](#comparable) values
+  Each amount value is an array of [key](#key) values
   subject to the same constraints as those of `AssetKind.COPY_SET`.
 - `AssetKind.COPY_SET`: Used with [non-fungible](#non-fungible) assets.
-  Each amount value is a set of [comparable](#comparable) values
+  Each amount value is a set of [key](#key) values
   (strings, numbers, objects, etc.).
-  Values cannot include promises (they aren't comparable), and should not
+  Values cannot include promises (they aren't keys), and should not
   include privileged objects such as payments and purses.
 - `AssetKind.COPY_BAG`: Used with semi-fungible assets.
   Each amount value is a [multiset](https://en.wikipedia.org/wiki/Multiset)
-  of [comparable](#comparable) values subject to the same constraints as
+  of [key](#key) values subject to the same constraints as
   those of `AssetKind.COPY_SET` but allowed to be present more than once.
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
@@ -131,11 +131,7 @@ Destroy all digital assets in a payment, for example as part of consuming it in 
 
 ## Comparable
 
-A *comparable* is a [passable](#passable) containing no promises or errors, and can
-thus be synchronously compared for structural equivalence with another piece of data.
-If either side of the comparison contains promises and/or errors, equality is indeterminable.
-If both are fulfilled down to [presences](#presence) and local state, then either they're the
-same all the way down, or they represent different objects.
+Comparable is a deprecated synonym of [key](#key).
 
 ## Contract and Contract Instance
 In Agoric documentation, *contract* usually refers to a contract's source code that
@@ -308,6 +304,14 @@ its asset type is valid.
 
 For more information, see the [ERTP Guide's Issuer section](/ertp/guide/issuers-and-mints.md)
 and the [ERTP API's Issuer section](/ertp/api/issuer.md).
+
+## Key
+
+A *key* is a [passable](#passable) containing no promises or errors, and can
+thus be synchronously compared for structural equivalence with another piece of data.
+If either side of the comparison contains promises and/or errors, equality is indeterminable.
+If both are fulfilled down to [presences](#presence) and local state, then either they're the
+same all the way down, or they represent different objects.
 
 ## Keywords
 
@@ -492,7 +496,7 @@ Pixel(3,2), $3, or “Seat J12 for the show September 27th at 9:00pm”.
 [Fungible](#fungible) values are usually
 represented by natural numbers. Other values may be represented as strings naming a particular
 rights, or an array of arbitrary objects representing the rights at issue. The latter two examples
-are usually [non-fungible](#non-fungible) assets. Values must be [comparable](#comparable).
+are usually [non-fungible](#non-fungible) assets. Values must be [keys](#key).
 
 For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
 
