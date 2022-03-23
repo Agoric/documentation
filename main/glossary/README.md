@@ -162,10 +162,12 @@ See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/do
 
 ## E()
 
-(Also referred to as *eventual send*) `E()` is a local "bridge" function that invokes methods on remote objects, for example
-in another vat, machine, or blockchain. It takes a local representative (a [presence](#presence)) for a remote object as an argument and
-sends messages to it using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with.
-All `E()` calls return a promise for the eventual returned value. For more detail, see
+(Also referred to as *eventual send*) `E()` is a local "bridge" function that
+asynchronously invokes methods on local or remote objects, for example those
+in another vat, machine, or blockchain. It takes a local object or a [presence](#presence)
+for a remote object as its argument and
+sends messages to the object using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with.
+All `E()` calls return a promise for the eventual result. For more detail, see
 the [`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
 
 ## Endo
