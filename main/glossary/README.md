@@ -35,14 +35,25 @@ disappear from the total allocation.
 The AmountMath library executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 [Quatloos](#quatloos) into a purse that already has 3 Quatloos
 gives a new balance of 5 Quatloos. But a deposit of a non-fungible theater ticket into a purse that already holds
-five tickets is performed by combining arrays rather than by arithmetic.
+five tickets is performed by set union rather than by arithmetic.
 
-`AmountMath` has a single set of polymorphic methods that deal with two different asset kinds:
-- `AssetKind.NAT`: Used with [fungible](#fungible) assets. Each amount value is a natural number (non-negative integer). This is the default `AssetKind`.
-- `AssetKind.SET`: Used with [non-fungible](#non-fungible) assets. Each amount value is an
-  array of [comparable](#comparable) values (strings, numbers, objects, etc.).
+`AmountMath` has a single set of polymorphic methods that deal with different asset kinds:
+- `AssetKind.NAT`: Used with [fungible](#fungible) assets.
+  Each amount value is a natural number (non-negative integer).
+  This is the default `AssetKind`.
+- `AssetKind.SET`: Used with [non-fungible](#non-fungible) assets;
+  deprecated in favor of `AssetKind.COPY_SET` but still in wide use.
+  Each amount value is an array of [comparable](#comparable) values
+  subject to the same constraints as those of `AssetKind.COPY_SET`.
+- `AssetKind.COPY_SET`: Used with [non-fungible](#non-fungible) assets.
+  Each amount value is a set of [comparable](#comparable) values
+  (strings, numbers, objects, etc.).
   Values cannot include promises (they aren't comparable), and should not
   include privileged objects such as payments and purses.
+- `AssetKind.COPY_BAG`: Used with semi-fungible assets.
+  Each amount value is a [multiset](https://en.wikipedia.org/wiki/Multiset)
+  of [comparable](#comparable) values subject to the same constraints as
+  those of `AssetKind.COPY_SET` but allowed to be present more than once.
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
