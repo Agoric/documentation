@@ -46,16 +46,16 @@ five tickets is performed by set union rather than by arithmetic.
   This is the default `AssetKind`.
 - `AssetKind.SET`: Used with [non-fungible](#non-fungible) assets;
   deprecated in favor of `AssetKind.COPY_SET` but still in wide use.
-  Each amount value is an array of [key](#key) values
+  Each amount value is an array of [Key](#key) values
   subject to the same constraints as those of `AssetKind.COPY_SET`.
 - `AssetKind.COPY_SET`: Used with [non-fungible](#non-fungible) assets.
-  Each amount value is a set of [key](#key) values
+  Each amount value is a set of [Key](#key) values
   (strings, numbers, objects, etc.).
   Values cannot include promises (they aren't keys), and should not
   include privileged objects such as payments and purses.
 - `AssetKind.COPY_BAG`: Used with [semi-fungible](#semi-fungible) assets.
   Each amount value is a [multiset](https://en.wikipedia.org/wiki/Multiset)
-  of [key](#key) values subject to the same constraints as
+  of [Key](#key) values subject to the same constraints as
   those of `AssetKind.COPY_SET` but allowed to be present more than once.
 
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
@@ -141,7 +141,7 @@ Destroy all digital assets in a payment, for example as part of consuming it in 
 
 ## Comparable
 
-Comparable is a deprecated synonym of [key](#key).
+Comparable is a deprecated synonym of [Key](#key).
 
 ## Contract Installation and Contract Instance
 
@@ -175,8 +175,8 @@ See [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/do
 
 (Also referred to as *eventual send*) `E()` is a local "bridge" function that
 asynchronously invokes methods on local or remote objects, for example those
-in another vat, machine, or blockchain. It takes a local object or a [presence](#presence)
-for a remote object as its argument and
+in another vat, machine, or blockchain. It takes as its argument either a local object
+or a [presence](#presence) for a remote object or a promise for a local or remote object, and
 sends messages to the object using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with.
 All `E()` calls return a promise for the eventual result. For more detail, see
 the [`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
@@ -232,7 +232,7 @@ See [`E()`](#e) above.
 Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
 - `onDemand: null`: (Default) The offering party can cancel on demand.
 - `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `deadline` and `timer` properties.
+- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. See [Proposals and payments](/zoe/api/zoe.md#proposals-and-payments).
 
 ## Facet
 
@@ -287,7 +287,7 @@ is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
 Contracts often return a creator invitation on their instantiation, in case the contract instantiator wants
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
-Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in its payment, and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
+Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(Zoe).offer()`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
 An invitation's [amount](#amounts) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
@@ -326,17 +326,19 @@ and the [ERTP API's Issuer section](/ertp/api/issuer.md).
 
 ## Key
 
-A *key* is a [passable](#passable) containing no promises or errors, and can
+A *Key* is a [passable](#passable) containing no promises or errors, and can
 thus be synchronously compared for structural equivalence with another piece of data.
 If either side of the comparison contains promises and/or errors, equality is indeterminable.
 If both are fulfilled down to [presences](#presence) and local state, then either they're the
 same all the way down, or they represent different objects.
 
-## Keywords
+Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (see [AmountMath](#amountmath)). [Values](#value) must be Keys.
 
-Keywords are unique identifiers per contract. They tie together the [proposal](#proposal), [payments](#payment)
-to be [escrowed](#escrow), and [payouts](#payout) to the user by serving as keys for key-value pairs in various
-records with values of [amounts](#amounts), [issuers](#issuer), etc.
+## Keyword
+
+A keyword is a property name string that starts with an upper case letter and is a valid
+[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier).
+A KeywordRecord is a CopyRecord in which every property name is a keyword.
 
 ## Mint
 
@@ -351,8 +353,8 @@ They interact with Purses, Payments, Brands, and Issuers in the same ways.
   There is a one-to-one relationship between an [issuer](#issuer) and its mint, and a mint is an administrative [facet](#facet) of its issuer.
   ERTP mints are also in a one-to-one relationship with that issuer's associated [brand](#brand).
 
-- ZCFMints give contract code a simpler interface to interact with an ERTP mint. Because ZCFMints encapsulate
-  an internal ERTP mint, they have the same one-to-one relationships
+- ZCFMints give contract code a simpler interface to interact with an ERTP mint from inside a contract.
+  Because ZCFMints encapsulate an internal ERTP mint, they have the same one-to-one relationships
   with an issuer and its associated brand. A ZCFMint can mint assets and assign them to a seat without having to escrow
   payments, and burn seat-associated assets without corresponding payout.
 
@@ -421,7 +423,8 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 ## Passable
 
 A *passable* is something that can be marshalled (see the
-[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence)).
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence))
+and sent to and from remote objects.
 
 ## Payment
 
@@ -454,7 +457,7 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 
 ## Proposal
 
-Proposals are records with `give`, `want`, and `exit` keys. [Offers](#offer) must include a proposal, which states
+Proposals are records with `give`, `want`, and `exit` properties. [Offers](#offer) must include a proposal, which states
 what asset you want, what asset you will give for it, and how/when the offer maker can cancel the offer
 (see [Exit Rule](#exit-rule) for details on the last). For example:
 ```js
@@ -464,12 +467,12 @@ const myProposal = harden({
   exit: { onDemand: null }
 })
 ```
-`give` and `want` use [keywords](#keywords) defined by the contract. Each specifies via an [amount](#amounts) a description of what
+`give` and `want` use [keywords](#keyword) defined by the contract. Each specifies via an [amount](#amounts) a description of what
 they are willing to give or want to get.
 
 ## Purse
 
-A purse holds [amounts](#amounts) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand) and generally _stationary_.
+A purse holds [amounts](#amounts) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand), often for arbitrarily long periods of time.
 When transfer is desired, a purse can move part of its held balance to a [payment](#payment).
 
 For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-and-payments.md#purses-and-payments) and the
@@ -530,10 +533,10 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 Values are the part of an [amount](#amounts) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
 Pixel(3,2), $3, or “Seat J12 for the show September 27th at 9:00pm”.
-[Fungible](#fungible) values are usually
-represented by natural numbers. Other values may be represented as strings naming a particular
-rights, or an array of arbitrary objects representing the rights at issue. The latter two examples
-are usually [non-fungible](#non-fungible) assets. Values must be [keys](#key).
+[Fungible](#fungible) values are usually represented by natural numbers.
+Other values may be represented as a CopySet of strings naming particular rights or
+arbitrary objects representing the rights directly (usually [non-fungible](#non-fungible) assets).
+Values must be [Keys](#key).
 
 For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
 
