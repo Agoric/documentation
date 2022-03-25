@@ -53,7 +53,7 @@ five tickets is performed by set union rather than by arithmetic.
   (strings, numbers, objects, etc.).
   Values cannot include promises (they aren't keys), and should not
   include privileged objects such as payments and purses.
-- `AssetKind.COPY_BAG`: Used with semi-fungible assets.
+- `AssetKind.COPY_BAG`: Used with [semi-fungible](#semi-fungible) assets.
   Each amount value is a [multiset](https://en.wikipedia.org/wiki/Multiset)
   of [key](#key) values subject to the same constraints as
   those of `AssetKind.COPY_SET` but allowed to be present more than once.
@@ -492,6 +492,16 @@ The term comes from the expression "having a seat at the table" with regards to 
 
 For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.md#zcfseat-object) and
 the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
+
+## Semi-fungible
+
+A semi-fungible asset is one that has distinct forms which are not interchangeable
+with each other, but in which instances of a single form may interchangeable with
+other instances of the same form.
+As a variation on the [non-fungible](#non-fungible) theater ticket example, tickets
+might specify only a section, where the holder may sit in any seat of that section.
+For each section, the number of theater tickets minted should not exceed the number
+of seats in that section.
 
 ## SES
 
