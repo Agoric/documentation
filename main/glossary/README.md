@@ -123,11 +123,13 @@ const atomicSwapBundle = await bundleSource(
     require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );
 ```
-The installation operation returns
-an `installation`, which is an object with one method; `getBundle()`. You can access an installed contract's source
-code via `const { endoZipBase64 } = await E(installation).getBundle();`.
+The installation operation returns an `installation`, which is an object with a single
+`getBundle()` method for accessing an installed contract's source code.
 In most cases, the bundle contains a base64-encoded zip file that you can
-extract for review:
+extract for review.
+```js
+const { endoZipBase64 } = await E(installation).getBundle();
+```
 ```sh
 echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
