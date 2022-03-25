@@ -103,6 +103,9 @@ Others can get the value just by knowing the ID. You can make an ID known by any
 communication method&mdash;a DM or email or other private message, a phone call/voicemail,
 an email blast to a mailing list, publishing it on a website, etc.
 
+**Note**: Publishing an object to the board makes it publicly accessible. If this is not
+appropriate for an object, do not use the board to communicate access to it.
+
 ## Brand
 
 Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
