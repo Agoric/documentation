@@ -292,12 +292,12 @@ empty record.
 
 The optional `exit`'s value should be an `exitRule`, an object with three possible keys for
 key:value pairs:
-- `onDemand:null`:  (Default) The user can cancel on demand.
-- `waived:null`: The user can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `onDemand: null`: (Default) The offering party can cancel on demand.
+- `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
 - `afterDeadline`: The offer is automatically cancelled after a deadline, as determined 
-   by its `timer` and `deadline` properties. The timer is a timer, and the `deadline` is with respect to the 
-   timer. Some example timers use Unix epoch time, while others count block height. Note that `deadline`'s
-   value is a `BigInt`, not a `Number` (just append an "n" to the number you want to use to get its `BigInt`)
+  by its `timer` and `deadline` properties.
+  `timer` must be a timer, and `deadline` must be a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) value interpreted with respect to the timer.
+  Some example timers use Unix epoch time, while others count block height.
 
 ```js
 const myProposal = harden({
