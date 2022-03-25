@@ -6,10 +6,12 @@ sidebar: auto
 This page lists words, expressions, or concepts used by the Agoric technology stack.
 
 ## Agoric CLI
+
 A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
 See the [Agoric CLI Guide](/guides/agoric-cli/).
 
 ## AllegedName
+
 Human-readable name of a kind of rights. The alleged name should
 not be trusted as an accurate depiction, since it is provided by
 the maker of the mint and could be deceptive, but is useful for debugging and double-checking.
@@ -32,6 +34,7 @@ assign assets that weren't already in some allocation and it can't assign them t
 disappear from the total allocation.
 
 ## AmountMath
+
 The AmountMath library executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 [Quatloos](#quatloos) into a purse that already has 3 Quatloos
 gives a new balance of 5 Quatloos. But a deposit of a non-fungible theater ticket into a purse that already holds
@@ -59,6 +62,7 @@ For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amou
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
 ## Amounts
+
 Amounts are the canonical description of tradable goods. They are manipulated
 by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
@@ -78,6 +82,7 @@ For more information, see the [ERTP Guide's Amounts section](/ertp/guide/amounts
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
 ## AssetHolder
+
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
 digital assets in the quantity specified by an [amount](#amounts).
 
@@ -99,6 +104,7 @@ communication method&mdash;a DM or email or other private message, a phone call/
 an email blast to a mailing list, publishing it on a website, etc.
 
 ## Brand
+
 Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amounts).
@@ -124,7 +130,6 @@ echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
 ```
 
-
 ## Burn
 
 Destroy all digital assets in a payment, for example as part of consuming it in an exchange. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
@@ -134,6 +139,7 @@ Destroy all digital assets in a payment, for example as part of consuming it in 
 Comparable is a deprecated synonym of [key](#key).
 
 ## Contract Installation and Contract Instance
+
 In Agoric documentation, *contract* usually refers to a contract's source code that
 defines how the contract works. A contract's source code is *installed* on Zoe. A
 contract is *instantiated* to create *contract instances*, which are the active
@@ -239,17 +245,20 @@ Two Agoric uses are:
 - *Public Facet*: A set of methods and properties for an object that a developer chooses to be publicly visible and usable.
 
 ## Fungible
+
 A fungible asset is one where all exemplars of the asset are interchangeable. For example, if you
 have 100 one dollar bills and need to pay someone five dollars, it does not matter which
 five one dollar bills you use. Also see [non-fungible](#non-fungible).
 
 ## Handle
+
 A handle is a unique identifier implemented as a JavaScript object. Only its identity
 is meaningful, so handles do not have properties. Unlike number or string identifiers,
 handles are unforgeable. This means the only way to know a handle identity is being given
 an object reference, and no identity can be guessed and no fake identity will succeed.
 
 ## Harden
+
 A hardened object’s properties cannot be changed, so the only way to interact with a hardened object is through its methods.
 `harden()` is similar to `Object.freeze()` but more powerful. For more about `harden()`, see
 its [section in the JavaScript Distributed Programming Guide](https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md)
@@ -264,10 +273,12 @@ See the [Endo and Hardened JavaScript Programming
 Guide](https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md) for more details.
 
 ## IBC
+
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC
 is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
 ## Invitation
+
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
 Contracts often return a creator invitation on their instantiation, in case the contract instantiator wants
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
@@ -294,6 +305,7 @@ the invitation. A successful claim also means that invitation is exclusively you
 what the [wallet](#wallet) does.
 
 ## Issuer
+
 Issuers are a one-to-one relationship with both a [mint](#mint) and a [brand](#brand), so each issuer works
 with one and only one asset type, such as only working with [Quatloos](#quatloos)
 or only working with [Moola](#moola). This association cannot change to another type.
@@ -347,9 +359,11 @@ and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about
 see the [ZCF API `zcf.makeZCFMint()`](/zoe/api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo).
 
 ## Moola
+
 An imaginary currency Agoric documentation uses in examples.
 
 ## Non-fungible
+
 A non-fungible asset is one where each incidence of the asset has unique individual properties and
 is not interchangeable with another incidence. For example, if your asset is theater tickets, it matters to the buyer
 what the date and time of the show is, which row the seat is in, and where in the row the
@@ -413,6 +427,7 @@ For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses
 and the [ERTP API's Payments section](/ertp/api/payment.md).
 
 ## Payout
+
 The assets paid out to a user when an [seat](#seat) exits, either successfully or not. The payout is always
 what the seat's current [allocation](#allocation) is.
 
@@ -427,6 +442,7 @@ someone, but to more easily tell who a number is associated with, it's assigned 
 as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in [wallets](#wallet).
 
 ## Presence
+
 A local version of a remote object that serves as the remote object's proxy.
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`.
 For more information, see the [JavaScript Distributed Programming Guide](/guides/js-programming/).
@@ -447,6 +463,7 @@ const myProposal = harden({
 they are willing to give or want to get.
 
 ## Purse
+
 A purse holds [amounts](#amounts) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand) and generally _stationary_.
 When transfer is desired, a purse can move part of its held balance to a [payment](#payment).
 
@@ -454,6 +471,7 @@ For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-a
 [ERTP API's Purses section](/ertp/api/purse.md).
 
 ## Quatloos
+
 An imaginary currency Agoric documentation uses in examples. For its origins, see the Wikipedia entry for the Star Trek
 episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
@@ -480,9 +498,11 @@ the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
 Secure ECMAScript has been renamed to [Hardened JavaScript](#hardened-javascript-ses).
 
 ## Simoleons
+
 An imaginary currency Agoric documentation uses in examples.
 
 ## Terms
+
 Contract instances have associated terms, gotten via [`E(zoe).getTerms(instance)`](/zoe/api/zoe.md#e-zoe-getterms-instance),
 which include the instance's associated [issuers](#issuer), [brands](#brand), and any custom terms. For
 example, you might have a general auction contract. When someone instantiates it,
@@ -503,6 +523,7 @@ are usually [non-fungible](#non-fungible) assets. Values must be [keys](#key).
 For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
 
 ## Vat
+
 A vat is a unit of isolation.
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
 communicate with other vats and their objects and functions, but can only communicate asynchronously.
@@ -518,6 +539,7 @@ the wallet makes an offer on the user's behalf and deposits the [payout](#payout
 See the [Wallet Guide and API](/guides/wallet/).
 
 ## ZCF
+
 *ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe
 Contract Facet methods can be called synchronously by contract code.
 
