@@ -20,7 +20,7 @@ The AllegedName must be a string.
 
 ## Allocation
 
-Allocations represent the [amounts](#amounts) to be paid out to each [seat](#seat) on exit from a contract instance. Possible
+Allocations represent the [amounts](#amount) to be paid out to each [seat](#seat) on exit from a contract instance. Possible
 exit causes are exercising an exit condition, the contract's explicit choice, or a crash or freeze. There are several methods
 for getting the amounts currently allocated.
 
@@ -35,7 +35,7 @@ disappear from the total allocation.
 
 ## AmountMath
 
-The AmountMath library executes the logic of how [amounts](#amounts) are changed when digital assets are merged, separated,
+The AmountMath library executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
 or otherwise manipulated. For example, a deposit of 2 [Quatloos](#quatloos) into a purse that already has 3 Quatloos
 gives a new balance of 5 Quatloos. But a deposit of a non-fungible theater ticket into a purse that already holds
 five tickets is performed by set union rather than by arithmetic.
@@ -61,9 +61,9 @@ five tickets is performed by set union rather than by arithmetic.
 For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
 and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 
-## Amounts
+## Amount
 
-Amounts are the canonical description of tradable goods. They are manipulated
+Amounts are the canonical descriptions of tradable goods. They are manipulated
 by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
@@ -84,7 +84,7 @@ and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
 ## AssetHolder
 
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
-digital assets in the quantity specified by an [amount](#amounts).
+digital assets in the quantity specified by an [amount](#amount).
 
 ## BigInt
 
@@ -110,7 +110,7 @@ appropriate for an object, do not use the board to communicate access to it.
 
 Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
-make up an [amount](#amounts).
+make up an [amount](#amount).
 For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md)
 and the [ERTP API's Brand section](/ertp/api/brand.md).
 
@@ -212,7 +212,7 @@ reference to an object, it can call methods on that object. If it doesn't
 have a reference, it can't. For more on object capabilities, see [this post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 
 Key ERTP concepts include [Issuers](#issuer), [Mints](#mint),
-[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amounts). Also
+[Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also
 see the [ERTP Introduction](/getting-started/ertp-introduction.md),
 [ERTP Guide](/ertp/guide/), and [ERTP API](/ertp/api/).
 
@@ -289,7 +289,7 @@ Contracts often return a creator invitation on their instantiation, in case the 
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
 Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(Zoe).offer()`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
-An invitation's [amount](#amounts) includes the following properties:
+An invitation's [amount](#amount) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
 - The contract instance this invitation is for.
 - A handle used to refer to this invitation.
@@ -316,7 +316,7 @@ with one and only one asset type, such as only working with [Quatloos](#quatloos
 or only working with [Moola](#moola). This association cannot change to another type.
 
 Issuers can create empty [purses](#purse) for
-their asset type, but cannot mint new [amounts](#amounts). Issuers can also transform
+their asset type, but cannot mint new [amounts](#amount). Issuers can also transform
 payments of their asset type (splitting, combining, burning, and exclusively claiming
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid.
@@ -467,12 +467,12 @@ const myProposal = harden({
   exit: { onDemand: null }
 })
 ```
-`give` and `want` use [keywords](#keyword) defined by the contract. Each specifies via an [amount](#amounts) a description of what
+`give` and `want` use [keywords](#keyword) defined by the contract. Each specifies via an [amount](#amount) a description of what
 they are willing to give or want to get.
 
 ## Purse
 
-A purse holds [amounts](#amounts) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand), often for arbitrarily long periods of time.
+A purse holds [amounts](#amount) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand), often for arbitrarily long periods of time.
 When transfer is desired, a purse can move part of its held balance to a [payment](#payment).
 
 For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-and-payments.md#purses-and-payments) and the
@@ -485,7 +485,7 @@ episode [The Gamesters of Triskelion](https://en.wikipedia.org/wiki/The_Gamester
 
 ## Reallocation
 
-A transfer of [amounts](#amounts) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
+A transfer of [amounts](#amount) between [seats](#seat) within Zoe; i.e. a change in their [allocations](#allocation). When a seat exits, it gets its
 current allocation as a [payout](#payout).
 
 ## Seat
@@ -530,7 +530,7 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
-Values are the part of an [amount](#amounts) that describe the value of something
+Values are the part of an [amount](#amount) that describe the value of something
 that can be owned or shared: How much, how many, or a description of a unique asset, such as
 Pixel(3,2), $3, or “Seat J12 for the show September 27th at 9:00pm”.
 [Fungible](#fungible) values are usually represented by natural numbers.
