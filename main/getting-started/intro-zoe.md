@@ -31,7 +31,7 @@ Zoe relies on Agoric's [Electronic Rights Transfer Protocol
 ### For Users ###
 
 **Zoe is safer.** Traditionally, putting digital assets in a smart
-contract has risked losing them. But Zoe guarantees you get either
+contract has carried the risk of losing them. But Zoe guarantees you get either
 what you wanted or a full refund of the assets you put in. You will
 never leave a contract empty-handed, even if the smart contract is
 buggy or malicious. 

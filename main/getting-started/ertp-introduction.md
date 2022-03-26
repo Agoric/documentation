@@ -85,7 +85,7 @@ i.e. If you have a reference to the Quatloos `issuer`, you can validate
 any `payment` made in Quatloos. You can also claim the `payment` either
 as a new `payment` to yourself or a `purse` you control.
 
-`Issuers` should be gotten from a trusted source
+`Issuers` should be retrieved from a trusted source
 and then relied upon as the decider of whether an untrusted `payment` is
 valid.
 
