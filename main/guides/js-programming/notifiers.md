@@ -49,17 +49,12 @@ The key difference between the two is
 
 If your consumers only care about more recent states, use `makeNotifierKit()`. Notifiers
 are often appropriate when the iteration represents a changing quantity, like a purse
-balance, and its consumer is updating a UI that doesn't care about any older and stale
-non-final values.
+balance, and the consumer is updating a UI that doesn't care about any older and stale
+non-final values. Notifiers only communicate values at the rate they're consumed, bounded
+by the network round-trip time, and many non-final values are never communicated if the
+quantity changes quickly. The notifier's lossy nature enables this optimization.
 
-Notifiers are appropriate when a quantity changes quickly. They only communicate
-non-final values at the rate they're consumed, bounded by the network round-trip
-time.  All other non-final values are never communicated. The `NotifierKit`'s
-lossy nature enables this optimization.`
-
-`notifier` and `subscription` both implement the JavaScript `AsyncIterable` API to consume the iteration. `updater` and `publication` implement the `IterationObserver` API, as defined by Agoric (JavaScript has no standard for producing iterations). For both pairs, ` IterationObserver` only produces the iteration. `AsyncIterable` consumes the iteration.
-
-An iteration subset may be a valid iteration. `NotifierKit` and `SubscriptionKit` are each organized around a different way of subsetting one iteration into another.
+`notifier` and `subscription` both implement the JavaScript `AsyncIterable` API to consume the iteration. `updater` and `publication` implement the `IterationObserver` API, as defined by Agoric (JavaScript has no standard for producing iterations). For both pairs, `IterationObserver` only produces the iteration. `AsyncIterable` consumes the iteration.
 
 ### NotifierKit
 
@@ -69,11 +64,11 @@ using the `AsyncIterable` API. Each NotifierKit consumer iteration is a lossy sa
 
 The following properties hold for every sampling subset:
 - Any non-final value from the producer may be missing from the sampling subset.
-- All sampling subset non-final values are:
-  - In the producer’s non-final values (e.g. if "7" is in the subset, "7" is in
-     the original).
-  - In the same order (e.g. if the producer sequence is 1, 3, 8, 5, 9, the sampling subset
-     is guaranteed to not be 8, 1, 5).
+- Every non-final value in the sampling subset is a non-final value from the producer
+  (e.g. if "7" is in the subset, then it was in the original producer iteration).
+- Every non-final value in the sampling subset appears in producer order
+  (e.g. if the producer sequence is 1, 3, 8, 5, 9,
+  the sampling subset is guaranteed to not be 8, 1, 5).
 - The sampling subset has the same termination value as the iteration from the producer.
 
 When a new iteration value is available, either it or a later value promptly
@@ -128,22 +123,20 @@ The `updater` and `publication` both have the same three methods:
     signalling that the monitored object hit an error condition.
 
 The `notifier` has an additional method that the `subscription` does not:
-- `getUpdateSince(previousUpdateCount)`: Returns a promise for `{ value, updateCount }`.
-  - Returns a promise for the next published value, using an optional `previousUpdateCount`
-    to communicate the last obtained value.
-    `value` represents the state, and the format is up to the publisher.
-    `updateCount` can be provided back to `getUpdateSince`
-    for requesting notification the _next_ time there's a state change.
-    If the state becomes final (e.g. a seat exits), `updateCount` will be
+- `getUpdateSince(previousUpdateCount)`
+  - Returns a promise for the next published value as a `{ value, updateCount }` record,
+    using an optional `previousUpdateCount` to communicate the last obtained value.
+    `value` is the new value from the publisher.
+    `updateCount` is a piece of data for use with `getUpdateSince`
+    to request notification the _next_ time there's a new value.
+    If the state becomes final (e.g. when a Zoe seat exits), `updateCount` will be
     undefined. If there's an error, the promise for the record is
-    rejected and there isn't a next state.
-  - If you call `getUpdateSince` with no `previousUpdateCount`, or any
-    `previousUpdateCount` other than the most recent one, the notifier immediately
-    returns a promise for a record with the current state. If you call with
-    the most-recently generated `updateCount`, the notifier returns a promise
-    for the next record, which is resolved on the next state change. If you
-    haven't called `getUpdateSince()` before, you won't have a
-    previous `updateCount` to use.
+    rejected and no further values can exist.
+  - If `getUpdateSince` is called without `previousUpdateCount`, or with any
+    `previousUpdateCount` other than the most recent one, it returns a promise
+    already resolved to the current state.
+    If called with the most recent `updateCount`, it returns a promise
+    for the next record, which is resolved on the next state change.
 
 ## Notifiers and Subscriptions in Zoe
 
@@ -320,10 +313,10 @@ reference to.
 
 ## Summary
 
-Data producers have to decide whether to publish losslessly or lossily. If
-your consumers only care about more recent states, then use a `NotifierKit`.
+Data producers have to decide between lossless and lossy publication. If
+consumers only care about the most recent state, then use `makeNotifierKit()`.
 This is often appropriate when the iteration represents a changing quantity.
-If you want to support consumers that need to see all the values, then use a `SubscriptionKit`.
+If you want to support consumers that need to see all values, then use `makeSubscriptionKit()`.
 
 Consumers can choose different ways of processing the data. In all cases,
 the publisher doesn't need to know the consumers, and the consumers can't
