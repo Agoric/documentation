@@ -54,16 +54,12 @@ data leads to behavior across vats that is straightforward to reason about.
  - Returns: `{PassStyle}`
 
 
-A Passable is a value that may be marshalled. It is classified as one of
-PassStyle. A Passable must be hardened.
-
-The `PassStyle`s are:
-   * the atomic pass-by-copy primitives (`"undefined" | "null" |
+A Passable is a hardened value that may be marshalled.
+It is classified as one of the following `PassStyle` values:
+   * atomic pass-by-copy primitives (`"undefined" | "null" |
      "boolean" | "number" | "bigint" | "string" | "symbol"`),
-   * the pass-by-copy containers (`"copyArray" | "copyRecord"`) that
-     contain other Passables,
-   * and the special cases (`"error" | "promise"`), which
-     also contain other Passables.
+   * pass-by-copy containers that contain other Passables (`"copyArray" | "copyRecord"`),
+   * special cases, which also contain other Passables (`"error"`).
    * so-called `PassableCap` leafs (`"remotable" | "promise"`).
 
 ::: tip Check `passStyleOf` when handling untrusted structured data
