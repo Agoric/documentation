@@ -47,8 +47,7 @@ The key difference between the two is
 - `subscriptions` are lossless.
    - The consumer will see every value in the sequence.
 
-If your consumers only care about more recent states, use a `NotifierKit`.  For
-consumers that need to see all the values, use a `SubscriptionKit`. Subscriptions
+If your consumers only care about more recent states, use `makeNotifierKit()`. Notifiers
 are often appropriate when the iteration represents a changing quantity, like a purse
 balance, and its consumer is updating a UI that doesn't care about any older and stale
 non-final values.
@@ -64,9 +63,9 @@ An iteration subset may be a valid iteration. `NotifierKit` and `SubscriptionKit
 
 ### NotifierKit
 
-A `NotifierKit` producer produces iteration values with the updater using the
-`IterationObserver` API. Its consumers consume iteration values via the notifier
-using the `AsyncIterable` API. Each `NotifierKit` consumer iteration is a lossy sampling subset of the iteration produced by that `NotifierKit` producer. Different consumers may see different sampling subsets.
+A NotifierKit producer produces iteration values with the `updater` using the
+`IterationObserver` API. Its consumers consume iteration values via the `notifier`
+using the `AsyncIterable` API. Each NotifierKit consumer iteration is a lossy sampling subset of the iteration produced by the producer. Different consumers may see different sampling subsets.
 
 The following properties hold for every sampling subset:
 - Any non-final value from the producer may be missing from the sampling subset.
@@ -77,8 +76,8 @@ The following properties hold for every sampling subset:
      is guaranteed to not be 8, 1, 5).
 - The sampling subset has the same termination value as the iteration from the producer.
 
-When a new iteration value is available, either it or a later value becomes
-available on each sampling subset promptly. In other words, if value 'a' is
+When a new iteration value is available, either it or a later value promptly
+becomes available on each sampling subset. In other words, if value 'a' is
 introduced on the producer end followed a few moments later by 'b', then all
 clients either promptly see 'a', or won't see it but will promptly see a
 successor, such as 'b'. If a value is added and nothing else follows for a
@@ -86,26 +85,26 @@ while, then that value must be distributed promptly to the consumers.
 
 ### SubscriptionKit
 
-Use the `SubscriptionKit` for pub-sub operations, where subscribers should see
-each published value starting when the subscribe. The producer can be described
-as the publisher and publishes iteration values with the publication using the
+Use `makeSubscriptionKit()` for pub-sub operations, where subscribers should see
+each published value starting when they subscribe. The producer can be described
+as the publisher and publishes iteration values with the `publication` using the
 `IterationObserver` API. Subscribers consume the published iteration values with
-the subscription using the `AsyncIterable` API. Since each published value is sent
-to all subscribers, `SubscriptionKit` generally should not be used with rapidly
-produced values.
+the `subscription` using the `AsyncIterable` API. Since each published value is sent
+to all subscribers, `makeSubscriptionKit()` generally should not be used with
+rapidly-produced values.
 
 An iteration’s suffix subset is defined by its starting point in the original
 iteration, which can be a non-final value or a termination.
 The suffix subset has exactly the original iteration’s members from its starting
 point to and including its termination. For example, if the original is
-{ 2 5 9 13 Fail } with Fail as the termination and a starting point at 9, the
-subset is { 9 13 Fail }.
+{ 2 5 9 13 Fail } with Fail as the termination, the subset from a starting point
+of 9 is { 9 13 Fail }.
 
 When a new value becomes available on the original iteration, it promptly becomes
-available on every suffix subset whose starting point is at or before that value
-So if the original is { 2 5 9 13 Fail } and 9 becomes available, 9 promptly
+available on every suffix subset whose starting point is at or before that value.
+So if the original is { 2 5 9 13 Fail } and 9 is published, 9 promptly
 becomes available to any suffix subset with a starting point of 2, 5, or 9. It
-does not become available to any subset starting at 13 or Fail).
+does not become available to any subset starting at 13 or Fail.
 
 Each subscription is an `AsyncIterable` that produces any number of
 `AsyncIterators`. These `AsyncIterators` are `SubsciptionIterators` which also
@@ -117,7 +116,7 @@ position.
 
 The `updater` and `publication` both have the same three methods:
 - `updateState(state)`
-  Supplies and sends out a new state to consumers. All active Promises
+  - Supplies and sends out a new state to consumers. All active Promises
   produced by `getUpdateSince()` are resolved to the next record.
 - `finish(finalState)`
   - Closes the stream of state changes and supplies a final state
@@ -151,7 +150,7 @@ The `notifier` has an additional method that the `subscription` does not:
 Zoe provides updates on the state of seats within a contract. The updates
 from Zoe indicate changes to the allocation of a seat and seats exiting.
 These are available from `E(userSeat).getNotifier()` and `zcfSeat.getNotifier()`,
-which provide long-lived notifier objects associated with a particular
+each of which provide a long-lived notifier object associated with a particular
 seat. `ZCFSeat`s are available within contracts while `UserSeat`s are accessible
 from the REPL, deploy scripts, and other code outside contracts. There are no
 equivalent `getSubscription()` or `getUpdater()` methods on the
@@ -167,24 +166,25 @@ full documentation:
 - [`ZCFSeat.getNotifier()`](/zoe/api/zoe-contract-facet.md#zcfseat-object)
    - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It provides updates on changing
    allocations for this seat, and tells when the seat has been exited.
-- [`UserSeat.getNotifier`](/zoe/api/zoe.md#userseat-object)
+- [`UserSeat.getNotifier()`](/zoe/api/zoe.md#userseat-object)
   - Part of the Zoe API, returns a notifier associated with the seat. Its updates can be anything the contract wants to publish, such as
      price changes, new currency pools, etc.
 - [`purse.getCurrentAmountNotifier()`](/ertp/api/purse.md#purse-getcurrentamountnotifier)
    - Part of the ERTP API, returns a lossy notifier for changes to this purse's balance.
-- [`getPursesNotifier`](/guides/wallet/api.md#getpursesnotifier)
+- [`getPursesNotifier()`](/guides/wallet/api.md#getpursesnotifier)
    - Part of the Wallet API, it returns a notifier that follows changes in the purses in the Wallet.
-- [`getOffersNotifier`](/guides/wallet/api.md#getoffersnotifier)
+- [`getOffersNotifier()`](/guides/wallet/api.md#getoffersnotifier)
    - Part of the Wallet API, it returns a notifier that follows changes to the offers received by the Wallet.
 - [`makeQuoteNotifier(amountIn,brandOut)`](/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
    - Part of the PriceAuthority API, notifies the latest `PriceQuotes` for the given `amountIn`.
 - [`getPriceNotifier(brandIn, brandOut)`](/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
    - Part of the PriceAuthority API, returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
      different rates.
-- [`E(home.<chain or local>TimerService).createNotifier(delaySecs, interval)`](/repl/timerServices.md)
-   - Part of the REPL's chain and local TimerServices, it creates and returns a `Notifier` object. It repeatedly delivers updates at times
-      that are a multiple of the passed in interval value, with the first update happening the value of `delaySecs` after the notifier is
-      created.
+- [`E(home.localTimerService).makeNotifier(delay, interval)` and
+  `E(home.chainTimerService).makeNotifier(delay, interval)`](/repl/timerServices.md#e-home-chain-or-local-timerservice-makenotifier-delay-interval)
+   - Part of the REPL's TimerService functionality, it creates and returns a `Notifier` object
+     that repeatedly delivers updates at times that are a multiple of the provided `interval` value,
+     with the first update happening after the provided `delay` value.
 
 ## Examples
 
@@ -200,7 +200,7 @@ publication.updateState('a');
 publication.updateState('b');
 publication.finish('done');
 ```
-Remember, `SubscriptionKit` is lossless. It conveys all of an async iteration’s non-final values, as well as the final value.
+Remember, a `SubscriptionKit` is lossless. It conveys all of an async iteration’s non-final values, as well as the final value.
 
 You can use the JavaScript `AsyncIterable` API directly, but either the JavaScript for-await-of syntax or the `observeIteration` adaptor are more convenient. Here,
 Alice uses the former, and then Bob uses the latter.
@@ -242,7 +242,7 @@ observeIteration(subscription, observer);
 ```
 ### Notifier example
 
-`NotifierKit()` is a lossy conveyor of non-final values, but does also
+A `NotifierKit` is a lossy conveyor of non-final values, but does
 losslessly convey termination. Let's say the subscription example above
 started with the following instead of `makeSubscriptionKit()`
 ```js
@@ -251,11 +251,11 @@ const { updater, notifier } = makeNotifierKit();
 If we then renamed `publication` to `updater` and `subscription` to `notifier`
 in the rest of the example, the code would still be correct and work. However,
 when using a notifier, either Alice or Bob may have missed either or both of the
-non-final values due to `NotifierKit()`'s lossy nature.
+non-final values due to `NotifierKit`'s lossy nature.
 
 ## Distributed Operation
 
-Either make `NotifierKit()` or `makeSubscriptionKit()` can be used in a multicast
+Either `makeNotifierKit()` or `makeSubscriptionKit()` can be used in a multicast
 manner with good distributed systems properties, where there is only one
 producing site but any number of consuming sites. The producer is not vulnerable
 to the consumers; they cannot cause the kit to malfunction or prevent the code
@@ -326,5 +326,5 @@ This is often appropriate when the iteration represents a changing quantity.
 If you want to support consumers that need to see all the values, then use a `SubscriptionKit`.
 
 Consumers can choose different ways of processing the data. In all cases,
-the publisher doesn't have to know the consumers, and the consumers can't
+the publisher doesn't need to know the consumers, and the consumers can't
 interfere with the producer or each other.

@@ -267,7 +267,7 @@ so it's easy to conflate the environment features with JavaScript itself. For
 example, you may be surprised that `Buffer` and `require` are Node.js
 additions and not part of JavaScript.
 
-The conventional globals defined by browser or node.js hosts are
+The conventional globals defined by browser or Node.js hosts are
 not available by default in a `Compartment`, whether authority-bearing
 or not:
 
