@@ -2,18 +2,18 @@
 
 *Notifiers* and *Subscriptions* both let a service notify clients of state changes.
 Specifically, both are abstractions for producing and consuming asynchronous
-value sequences. They rely on promises to deliver a stream of messages allowing 
+value sequences. They rely on promises to deliver a stream of messages allowing
 many clients to receive notifications without the originator having to track a subscription list.
-An object wanting to publish updates to interested clients makes a notifier or a 
-subscription available to them. 
+An object wanting to publish updates to interested clients makes a notifier or a
+subscription available to them.
 
 In JavaScript, async iterations are manipulated by `AsyncGenerators`, `AsyncIterables`, and `AsyncIterators`. For an introduction to them, see [here](https://javascript.info/async-iterators-generators).
 
 ## Distributed Asynchronous Iteration
 
-An *async iteration* is an abstract sequence of values. It consists of zero or 
-more *non-final values* in a fully ordered sequence, revealed asynchronously 
-over time. In other words, the values have a full ordering, and all consumers 
+An *async iteration* is an abstract sequence of values. It consists of zero or
+more *non-final values* in a fully ordered sequence, revealed asynchronously
+over time. In other words, the values have a full ordering, and all consumers
 see the whole sequence, or a subset of it, in the same order.
 
 The sequence may continue indefinitely or terminate in one of two ways:
@@ -23,21 +23,21 @@ The sequence may continue indefinitely or terminate in one of two ways:
 - *Fail*: The async iteration fails and gives a reported final reason. This should be an
    error object, but can be any JavaScript value.
 
-`Finish` and `Fail` are final values. To avoid confusion, for iteration values in 
-this doc, "final" and "non-final" just refer to position in an iteration, and not 
+`Finish` and `Fail` are final values. To avoid confusion, for iteration values in
+this doc, "final" and "non-final" just refer to position in an iteration, and not
 "final" in the sense of the Java keyword or similar.
 
 ## NotifierKit and SubscriptionKit
 
-`makeNotifierKit()` makes an` {updater, notifier}` pair, while `makeSubscriptionKit()` 
-makes a similar` {publication, subscription}` pair. Each pair’s first 
-element (`updater` or `publication`) produces the async iteration which is then 
+`makeNotifierKit()` makes an` {updater, notifier}` pair, while `makeSubscriptionKit()`
+makes a similar` {publication, subscription}` pair. Each pair’s first
+element (`updater` or `publication`) produces the async iteration which is then
 consumed using each pair’s second element (`notifier` or `subscription`).
 ```js
 import { makeNotifierKit } from '@agoric/notifier';
 import { makeSubscriptionKit } from '@agoric/notifier';
 const { updater, notifier } = makeNotifierKit();
-const { publication, subscription } = makeSubscriptionKit(); 
+const { publication, subscription } = makeSubscriptionKit();
 ```
 
 The key difference between the two is
@@ -51,7 +51,7 @@ If your consumers only care about more recent states, use a `NotifierKit`.  For
 consumers that need to see all the values, use a `SubscriptionKit`. Subscriptions
 are often appropriate when the iteration represents a changing quantity, like a purse
 balance, and its consumer is updating a UI that doesn't care about any older and stale
-non-final values. 
+non-final values.
 
 Notifiers are appropriate when a quantity changes quickly. They only communicate
 non-final values at the rate they're consumed, bounded by the network round-trip
@@ -117,7 +117,7 @@ position.
 
 The `updater` and `publication` both have the same three methods:
 - `updateState(state)`
-  Supplies and sends out a new state to consumers. All active Promises 
+  Supplies and sends out a new state to consumers. All active Promises
   produced by `getUpdateSince()` are resolved to the next record.
 - `finish(finalState)`
   - Closes the stream of state changes and supplies a final state
@@ -125,35 +125,35 @@ The `updater` and `publication` both have the same three methods:
 - `fail(reason)`
   - Closes the stream of state changes, indicates a failure to finish
     satisfactorily, and supplies a reason for the failure to consumers. Does not provide
-    a next state. Instead, it causes the Promise to be rejected with the reason, 
+    a next state. Instead, it causes the Promise to be rejected with the reason,
     signalling that the monitored object hit an error condition.
 
 The `notifier` has an additional method that the `subscription` does not:
-- `getUpdateSince(previousUpdateCount)`: Returns a promise for `{ value, updateCount }`. 
+- `getUpdateSince(previousUpdateCount)`: Returns a promise for `{ value, updateCount }`.
   - Returns a promise for the next published value, using an optional `previousUpdateCount`
     to communicate the last obtained value.
     `value` represents the state, and the format is up to the publisher.
     `updateCount` can be provided back to `getUpdateSince`
     for requesting notification the _next_ time there's a state change.
-    If the state becomes final (e.g. a seat exits), `updateCount` will be 
-    undefined. If there's an error, the promise for the record is 
+    If the state becomes final (e.g. a seat exits), `updateCount` will be
+    undefined. If there's an error, the promise for the record is
     rejected and there isn't a next state.
-  - If you call `getUpdateSince` with no `previousUpdateCount`, or any 
-    `previousUpdateCount` other than the most recent one, the notifier immediately 
-    returns a promise for a record with the current state. If you call with 
-    the most-recently generated `updateCount`, the notifier returns a promise 
-    for the next record, which is resolved on the next state change. If you 
-    haven't called `getUpdateSince()` before, you won't have a 
+  - If you call `getUpdateSince` with no `previousUpdateCount`, or any
+    `previousUpdateCount` other than the most recent one, the notifier immediately
+    returns a promise for a record with the current state. If you call with
+    the most-recently generated `updateCount`, the notifier returns a promise
+    for the next record, which is resolved on the next state change. If you
+    haven't called `getUpdateSince()` before, you won't have a
     previous `updateCount` to use.
 
 ## Notifiers and Subscriptions in Zoe
 
-Zoe provides updates on the state of seats within a contract. The updates 
-from Zoe indicate changes to the allocation of a seat and seats exiting. 
-These are available from `E(userSeat).getNotifier()` and `zcfSeat.getNotifier()`, 
-which provide long-lived notifier objects associated with a particular 
-seat. `ZCFSeat`s are available within contracts while `UserSeat`s are accessible 
-from the REPL, deploy scripts, and other code outside contracts. There are no 
+Zoe provides updates on the state of seats within a contract. The updates
+from Zoe indicate changes to the allocation of a seat and seats exiting.
+These are available from `E(userSeat).getNotifier()` and `zcfSeat.getNotifier()`,
+which provide long-lived notifier objects associated with a particular
+seat. `ZCFSeat`s are available within contracts while `UserSeat`s are accessible
+from the REPL, deploy scripts, and other code outside contracts. There are no
 equivalent `getSubscription()` or `getUpdater()` methods on the
 seats.
 
@@ -165,7 +165,7 @@ The following methods use or return notifiers. Click on the name to go to their
 full documentation:
 
 - [`ZCFSeat.getNotifier()`](/zoe/api/zoe-contract-facet.md#zcfseat-object)
-   - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It  provides updates on changing
+   - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It provides updates on changing
    allocations for this seat, and tells when the seat has been exited.
 - [`UserSeat.getNotifier`](/zoe/api/zoe.md#userseat-object)
   - Part of the Zoe API, returns a notifier associated with the seat. Its updates can be anything the contract wants to publish, such as
@@ -194,7 +194,7 @@ Let’s look at a subscription example. We have three characters; Paula the publ
 
 First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with non-final sequence 'a', 'b' and 'done' as its completion value.
 ```js
-const { publication, subscription } = makeSubscriptionKit(); 
+const { publication, subscription } = makeSubscriptionKit();
 // Paula the publisher says
 publication.updateState('a');
 publication.updateState('b');
@@ -243,7 +243,7 @@ observeIteration(subscription, observer);
 ### Notifier example
 
 `NotifierKit()` is a lossy conveyor of non-final values, but does also
-losslessly convey termination. Let's say the subscription example above 
+losslessly convey termination. Let's say the subscription example above
 started with the following instead of `makeSubscriptionKit()`
 ```js
 const { updater, notifier } = makeNotifierKit();
@@ -251,7 +251,7 @@ const { updater, notifier } = makeNotifierKit();
 If we then renamed `publication` to `updater` and `subscription` to `notifier`
 in the rest of the example, the code would still be correct and work. However,
 when using a notifier, either Alice or Bob may have missed either or both of the
-non-final values due to `NotifierKit()`'s lossy nature. 
+non-final values due to `NotifierKit()`'s lossy nature.
 
 ## Distributed Operation
 
@@ -260,37 +260,37 @@ manner with good distributed systems properties, where there is only one
 producing site but any number of consuming sites. The producer is not vulnerable
 to the consumers; they cannot cause the kit to malfunction or prevent the code
 producing values from making progress. The consumers cannot cause each other to
-hang or miss values. 
+hang or miss values.
 
 For distributed operation, all the iteration values&mdash;non-final values,
 successful completion value, failure reason&mdash;must be `Passable`; values that
 can somehow be passed between vats. The rest of this doc assumes all these
-values are Passable.  
+values are Passable.
 
 The `makeNotifierKit()` or `makeSubscriptionKit()` call makes the notifier/updater
 or publication/subscription pair on the producer's site. As a result, both the
 `iterationObserver` and the initial `asyncIterable` are on the producer's site. If
 Producer Paula sends Consumer Bob the `asyncIterable`, Bob receives a possibly
 remote reference to it. Producers and their Consumers can be remote from each
-other. 
+other.
 
 Bob's example code above is still correct if he uses this reference directly, since
 `observeIteration` only needs its first argument to be a reference of some sort to
 an `AsyncIterable` conveying `Passable` values. This reference may be a local
 `AsyncIterable`, a remote presence of an `AsyncIterable`, or a local or remote
 promise for an `AsyncIterable`. `observeIteration` only sends it eventual messages
-using `E()`  and so doesn't care about these differences.  
+using `E()` and so doesn't care about these differences.
 
 However, Bob’s code is sub-optimal. Its distributed systems properties are
 not terrible, but Bob does better using `getSharableSubscriptionInternals()`
 (provided by `SubscriptionKit`). This lets Bob make a local `AsyncIterable` that
-coordinates better with producer Paula's `IterationObserver`.  
+coordinates better with producer Paula's `IterationObserver`.
 
 Subscriber Alice's above code is less forgiving. She's using JavaScript's
 for-await-of loop which requires a local `AsyncIterable`. It cannot handle a
 remote reference to an `AsyncIterable` at Paula's site. Alice has to make an
 `AsyncIterable` at her site by using `getSharableSubsciptionInternals()`. She can
-replace her call to `consume(subscription)` with:  
+replace her call to `consume(subscription)` with:
 ```js
 import { makeSubscription } from '@agoric/notifier';
 
@@ -301,10 +301,10 @@ const localSubscription =
 The above used a SubscriptionKit. NotifierKits have a similar pair of a
 `getSharableNotifierInternals()` method and a `makeNotifier`. However, this
 technique requires Alice know what kind of possibly-remote `AsyncIterable`
-she has, and to have the required making function code locally available. 
+she has, and to have the required making function code locally available.
 
 Alternatively, Alice can generically mirror any possibly remote `AsyncIterable` by
-making a new local pair and plugging them together with `observeIteration`. 
+making a new local pair and plugging them together with `observeIteration`.
 ```js
 const {
   publication: adapterPublication,
@@ -316,15 +316,15 @@ consume(adapterSubscription);
 This works when subscription is a reference to any `AsyncIterable`. If Alice only
 needs to consume in a lossy manner, she can use` makeNotifierKit()` instead, which
 still works independently of what kind of `AsyncIterable` subscription is a
-reference to. 
+reference to.
 
 ## Summary
 
-Data producers have to decide whether to publish losslessly or lossily. If 
-your consumers only care about more recent states, then use a `NotifierKit`. 
-This is often appropriate when the iteration represents a changing quantity. 
+Data producers have to decide whether to publish losslessly or lossily. If
+your consumers only care about more recent states, then use a `NotifierKit`.
+This is often appropriate when the iteration represents a changing quantity.
 If you want to support consumers that need to see all the values, then use a `SubscriptionKit`.
 
-Consumers can choose different ways of processing the data. In all cases, 
-the publisher doesn't have to know the consumers, and the consumers can't 
+Consumers can choose different ways of processing the data. In all cases,
+the publisher doesn't have to know the consumers, and the consumers can't
 interfere with the producer or each other.
