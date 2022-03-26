@@ -23,8 +23,8 @@ Zoe is Agoric's smart contract framework. Use Zoe to:
 * **Mint new digital assets**
 * **Credibly trade assets**
 
-Zoe relies on Agoric's [*Electronic Rights Transfer Protocol
-(ERTP)*](./ertp-introduction.md), our token standard.
+Zoe relies on Agoric's [Electronic Rights Transfer Protocol
+(ERTP)](./ertp-introduction.md), our token standard.
 
 ## Why use Zoe?
 

@@ -278,7 +278,7 @@ in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the a
  
 ## Object capabilities and ERTP
 
-ERTP uses [*object capabilities*](/glossary/#object-capabilities).
+ERTP uses [object capabilities](/glossary/#object-capabilities).
 You can only use an object and issue commands to it if you have access to that object, not
 just its human-readable name or similar. For example, I might know (or make a good guess), 
 that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. 
