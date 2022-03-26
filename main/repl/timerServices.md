@@ -77,8 +77,8 @@ history[32] 1632170321864n // about 3 seconds later, in milliseconds since epoch
 - Returns: `{ Notifier<Timestamp> }`
 
 Creates and returns a `Notifier` object. It repeatedly delivers updates at times
-that are a multiple of the passed-in `interval` value, with the first update happening
-the value of `delay` after the notifier is created.
+that are a multiple of the provided `interval` value, with the first update happening
+after the provided `delay` value.
 
 ```
 command[30] E(home.localTimerService).makeNotifier(5_000n,10_000n)
