@@ -65,13 +65,11 @@ Other files and directories in this top-level folder should not typically be mod
 
 In the `contract` directory, you can find the following files to edit:
 
-- `init` contract initialization modules, starting with `init/custom-deploy.js`
 - `src/` contract source code, starting with `src/contract.js`
 
 Other files and folders that you don't typically need to edit:
 
 - `deploy.js` generic Agoric contract deployment script
-- `lib` library modules provided by Agoric and used by the contract
 
 ### API
 
