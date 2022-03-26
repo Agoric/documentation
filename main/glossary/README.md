@@ -36,8 +36,8 @@ disappear from the total allocation.
 ## AmountMath
 
 The AmountMath library executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
-or otherwise manipulated. For example, a deposit of 2 [Quatloos](#quatloos) into a purse that already has 3 Quatloos
-gives a new balance of 5 Quatloos. But a deposit of a non-fungible theater ticket into a purse that already holds
+or otherwise manipulated. For example, a deposit of 3 [Quatloos](#quatloos) into a purse that already has 7 Quatloos
+updates its balance to 10 Quatloos. But a deposit of a non-fungible theater ticket into a purse that already holds
 five tickets is performed by set union rather than by arithmetic.
 
 `AmountMath` has a single set of polymorphic methods that deal with different asset kinds:
