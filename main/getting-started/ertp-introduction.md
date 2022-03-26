@@ -50,10 +50,10 @@ the `purse`. If there's a problem, it throws an error.
 After a successful deposit, ERTP guarantees:
 - The `payment` is burned (i.e. destroyed).
 - The `purse` contains the total of what it held before plus the `payment`'s full content.
-  - i.e. If the `purse` had 7 Quatloos and the `payment` had 3 Quatloos, after depositing the `payment`
-    the `purse` has 10 Quatloos.
+  - For example, deposit of a 3 Quatloos `payment` into a `purse` that already has 7 Quatloos
+    updates its balance to 10 Quatloos.
 
-When the `deposit()` call throws an error (i.e. something went wrong),
+When the `deposit()` call throws an error (something goes wrong),
 ERTP guarantees:
 - The alleged `payment` is in the same state as before the call.
 - The `purse` is in the same state as before the call.
@@ -76,7 +76,7 @@ kind's `mint`.
 
 - **Issuers**: Create empty `purses` and manipulate and operate on
 `payments`. `Issuers` verify and move digital assets and are
-the authority on which `payments` and `purses` hold what digital assets.
+the authority on contents of `payments` and `purses` using their brand.
 
 An `issuer`'s special admin facet is a `Mint`, and that `Mint` and `Issuer`
 have a one-to-one relationship. With a reference to an `Issuer`, you can

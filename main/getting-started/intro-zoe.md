@@ -94,8 +94,8 @@ E() is part of the Agoric platform and is used to [call methods on
 remote objects and receive a promise for the
 result](/guides/js-programming/eventual-send.md).
 Code on the Agoric platform is put in separate environments, called
-[vats](/glossary/#vat), for security. Zoe is in a different vat,
-making it a remote object, so we must use E().
+[vats](/glossary/#vat), for security. Zoe is a remote object in its own vat,
+so we must use E().
 :::
 
 Invitations include information about their contract's installation.
@@ -130,8 +130,8 @@ Contracts can add their own specific information to invitations. In
 this case, the Atomic Swap contract adds information about what is
 being traded: the `asset`, the amount Alice has escrowed, and the
 `price`, what you must pay to get the asset. Let's say `asset` is an
-`amount` of 3 moola, and `price` is an `amount` of 7 simoleans. (Moola
-and simoleans are made-up currencies for this example.) Amounts are
+`amount` of 3 Moola, and `price` is an `amount` of 7 Simoleans. (Moola
+and Simoleans are made-up currencies for this example.) Amounts are
 descriptions of digital assets, but have no value themselves. Please
 see the ERTP guide for more on
 [amounts](/ertp/guide/amounts.md#amounts-values-and-brands).
@@ -161,13 +161,13 @@ the specific keywords, `Asset` and `Price`, are [determined by the
 contract
 code](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L29).
 
-You said you would give 7 simoleans, so you must send 7 simoleans as
+You said you would give 7 Simoleans, so you must send 7 Simoleans as
 an [ERTP payment](/ertp/guide/purses-and-payments.md). ([ERTP
 payments](/ertp/guide/purses-and-payments.md) are how the Agoric
 platform transfers fungible and nonfungible digital assets.) You
-happen to have some simoleans lying around in a simolean
+happen to have some Simoleans lying around in a Simolean
 [purse](/ertp/guide/purses-and-payments.md) (used to hold digital
-assets of a specific type). You withdraw a payment of 7 simoleans from
+assets of a specific type). You withdraw a payment of 7 Simoleans from
 the purse for your offer, and construct an object using the same
 Keyword as your `proposal.give`:
 
@@ -211,7 +211,7 @@ contract.
 ### Getting payouts
 
 Because this was an AtomicSwap contract, it is over once the second
-party escrows the correct assets. You can get your payout of moola
+party escrows the correct assets. You can get your payout of Moola
 with the Keyword you used ('Asset'):
 
 <<< @/snippets/test-intro-zoe.js#getPayout
@@ -257,8 +257,8 @@ be compared to other installations, and you can call
 
 Now Alice uses the installation to create a new instance. She must
 also tell Zoe about the ERTP issuers she wants to use, by specifying
-their role with Keywords. Alice was escrowing moola, so she uses the
-keyword `Asset` to label the `moolaIssuer`. She wanted simoleans, so
+their role with Keywords. Alice was escrowing Moola, so she uses the
+keyword `Asset` to label the `moolaIssuer`. She wanted Simoleans, so
 she uses the keyword `Price` to label the `simoleanIssuer`. When you
 create a new instance of the contract ([see permalink to line
 58](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L58))
@@ -277,7 +277,7 @@ invitation she sends to the counter-party.
 
 ## Zoe's two sides: Zoe Service and Zoe Contract Facet (ZCF)
 
-You may have noticed the contract code's `start` method had a `zcf`
+You may have noticed the contract code's `start` method has a `zcf`
 parameter. This is the Zoe Contract Facet. Zoe has two sides: the Zoe
 Service, which you've seen users interact with, and the Zoe Contract
 Facet (ZCF), which is accessible to the contract code. Note that users
