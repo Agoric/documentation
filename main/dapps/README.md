@@ -59,7 +59,7 @@ The following are the important directories in an Agoric Dapp project:
 - [`api/`](#api) defines the chain-connected server's `/api` HTTP endpoint.
 - [`ui/`](#ui) defines the browser user interface connecting users' personal wallets and the API server.
 
-Other files and directories in this toplevel folder should not typically be modified.
+Other files and directories in this top-level folder should not typically be modified.
 
 ### Contract directory
 
