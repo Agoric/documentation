@@ -53,11 +53,10 @@ Agoric has written [a number of example contracts that you can
 use](/zoe/guide/contracts/), including:
 * an [Automated Market Maker (AMM)
   implementation](/zoe/guide/contracts/constantProductAMM.md)
-* a [covered call option
-  contract](/zoe/guide/contracts/covered-call.md)
-* an [OTC Desk market maker
-  contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/otcDesk.js)
-* contracts for [minting fungible](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintPayments.js) and [non-fungible tokens](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/mintAndSellNFT.js)
+* a [covered call option contract](/zoe/guide/contracts/covered-call.md)
+* an [OTC Desk market maker contract](/zoe/guide/contracts/otc-desk.md)
+* contracts for [minting fungible](/zoe/guide/contracts/mint-payments.md) and
+  [non-fungible tokens](/zoe/guide/contracts/mint-and-sell-nfts.md)
 
 ## Using an example Zoe smart contract
 
@@ -74,7 +73,7 @@ capability](/glossary/#object-capabilities) security model, is just
 easier.
 
 This particular invitation is for an [AtomicSwap
-contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+contract](/zoe/guide/contracts/atomic-swap.md).
 In an AtomicSwap, one party puts up digital assets they want to
 exchange and sends an invitation to a second party for them to
 possibly complete the exchange. In this example, Alice has already
@@ -158,14 +157,12 @@ proposal:
 
 Proposals must use Keywords, which are capitalized ASCII keys. Here,
 the specific keywords, `Asset` and `Price`, are [determined by the
-contract
-code](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L29).
+contract code](/zoe/guide/contracts/atomic-swap.md).
 
 You said you would give 7 Simoleans, so you must send 7 Simoleans as
-an [ERTP payment](/ertp/guide/purses-and-payments.md). ([ERTP
-payments](/ertp/guide/purses-and-payments.md) are how the Agoric
-platform transfers fungible and nonfungible digital assets.) You
-happen to have some Simoleans lying around in a Simolean
+an ERTP payment. ([ERTP payments](/ertp/guide/purses-and-payments.md)
+are how the Agoric platform transfers fungible and nonfungible digital assets.)
+You happen to have some Simoleans lying around in a Simolean
 [purse](/ertp/guide/purses-and-payments.md) (used to hold digital
 assets of a specific type). You withdraw a payment of 7 Simoleans from
 the purse for your offer, and construct an object using the same
@@ -226,17 +223,14 @@ Now that you've seen how to participate in a contract instance, let's
 look at how you'd create a contract and its instances.
 
 Let's pretend Alice wrote that contract from scratch, even though
-AtomicSwap is one of Agoric's example contracts ([see the full
-AtomicSwap code
-here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
+AtomicSwap is one of Agoric's example contracts (see [Atomic Swap](/zoe/guide/contracts/atomic-swap.md)).
 Note: All Zoe contracts must have this format:
 
 ::: details Show contract format
 <<< @/snippets/contract-format.js#contractFormat
 :::
 
-Alice fills in this code template with [AtomicSwap's
-particulars](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+Alice fills in this code template with AtomicSwap's particulars.
 To install this particular code, Alice first must bundle it off-chain,
 meaning the code and its imports are flattened together:
 
@@ -248,7 +242,8 @@ Then Alice must install it on Zoe:
 
 <<< @/snippets/test-intro-zoe.js#install
 
-The return value is an `installation`, which we saw earlier. It is an
+The return value is an `installation`, which we saw
+[earlier](#inspecting-an-invitation). It is an
 object identifying a particular piece of code installed on Zoe. It can
 be compared to other installations, and you can call
 `E(atomicSwapInstallation).getBundle()` to see the code itself.
@@ -260,18 +255,15 @@ also tell Zoe about the ERTP issuers she wants to use, by specifying
 their role with Keywords. Alice was escrowing Moola, so she uses the
 keyword `Asset` to label the `moolaIssuer`. She wanted Simoleans, so
 she uses the keyword `Price` to label the `simoleanIssuer`. When you
-create a new instance of the contract ([see permalink to line
-58](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L58))
-by calling `startInstance()`, it returns a `creatorInvitation`. Alice
-uses this to make her offer; even the instance's creator needs to have
-an invitation to it to participate in it.
+create a new instance of the contract
+by calling `startInstance()`, it returns a `creatorInvitation`
+(even the instance's creator needs to have
+an invitation to participate in it).
 
 <<< @/snippets/test-intro-zoe.js#startInstance
 
-As per the [Atomic Swap contract
-code](https://github.com/Agoric/agoric-sdk/blob/23c3f9df56940230e21a16b4861f40197192fdea/packages/zoe/src/contracts/atomicSwap.js#L50),
-Alice gets an invitation as a result of her offer. This is the
-invitation she sends to the counter-party.
+Alice uses her `creatorInvitation` to make an offer, from which she gets
+an invitation that can be sent to the counter-party.
 
 <<< @/snippets/test-intro-zoe.js#aliceOffer
 
@@ -294,11 +286,10 @@ If you want to dive deeper into how Zoe works and what you can do, go
 to the [Zoe Guide](/zoe/guide/README.md). 
 
 To learn more about the AtomicSwap contract, you can [read its
-documentation](/zoe/guide/contracts/atomic-swap.md) and [look at its
-source
-code](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+documentation](/zoe/guide/contracts/atomic-swap.md) and look at its
+source code.
 There are several other example contracts for different transaction
-types in the [Contracts folder](/zoe/guide/contracts/)
+types in the [Contracts folder](/zoe/guide/contracts/).
 
 To start building Zoe contracts and applications (dapps), follow the
 instructions in [Starting a
