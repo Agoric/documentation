@@ -147,8 +147,8 @@ The `notifier` has an additional method that the `subscription` does not:
 
 ## Notifiers and Subscriptions in Zoe
 
-Zoe provides updates on the state of seats within a contract. The updates
-from Zoe indicate changes to the allocation of a seat and seats exiting.
+[Zoe](/zoe/api/) provides updates on the state of seats within a contract. The updates
+from Zoe indicate changes to seat allocation and seat exits.
 These are available from `E(userSeat).getNotifier()` and `zcfSeat.getNotifier()`,
 each of which provide a long-lived notifier object associated with a particular
 seat. `ZCFSeat`s are available within contracts while `UserSeat`s are accessible
@@ -163,10 +163,10 @@ Individual contracts can use notifiers and subscriptions to provide updates givi
 The following methods use or return notifiers. Click on the name to go to their
 full documentation:
 
-- [`ZCFSeat.getNotifier()`](/zoe/api/zoe-contract-facet.md#zcfseat-object)
+- [`ZCFSeat.getNotifier()`](/zoe/api/zoe-contract-facet.md#zcfseat-getnotifier)
    - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It provides updates on changing
    allocations for this seat, and tells when the seat has been exited.
-- [`UserSeat.getNotifier()`](/zoe/api/zoe.md#userseat-object)
+- [`UserSeat.getNotifier()`](/zoe/api/zoe.md#e-userseat-getnotifier)
   - Part of the Zoe API, returns a notifier associated with the seat. Its updates can be anything the contract wants to publish, such as
      price changes, new currency pools, etc.
 - [`purse.getCurrentAmountNotifier()`](/ertp/api/purse.md#purse-getcurrentamountnotifier)
