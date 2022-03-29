@@ -41,7 +41,7 @@ The following methods provide basic TimerService functionality.
 
 Returns a promise that resolves with the current timestamp.
 
-```
+```js
 command[1] E(home.chainTimerService).getCurrentTimestamp()
 history[1] 1632170301n // in seconds since epoch
 command[2] E(home.localTimerService).getCurrentTimestamp()
@@ -59,10 +59,10 @@ and observe the same response, even if running a minute or a month later.
 Returns a promise that resolves with the current timestamp after the `delay`
 has elapsed.
 
-```
-command[32] E(home.localTimerService).delay(3_000n)
-history[32] unresolved Promise
-history[32] 1632170321864n // about 3 seconds later, in milliseconds since epoch
+```js
+command[3] E(home.localTimerService).delay(3_000n)
+history[3] unresolved Promise
+history[3] 1632170321864n // about 3 seconds later, in milliseconds since epoch
 ```
 
 ### `E(home.<chain or local>TimerService).makeNotifier(delay, interval)`
@@ -74,11 +74,11 @@ Creates and returns a `Notifier` object. It repeatedly delivers updates at times
 that are a multiple of the specified `interval`, with the first update happening
 after the specified `delay` has elapsed.
 
-```
-command[30] E(home.localTimerService).makeNotifier(5_000n,10_000n)
-history[30] [Alleged: presence o-129]{}
-command[31] E(history[30]).getUpdateSince()
-history[31] {"updateCount":1,"value":1632163863000n}
+```js
+command[4] E(home.localTimerService).makeNotifier(5_000n, 10_000n)
+history[4] [Alleged: presence o-129]{}
+command[5] E(history[30]).getUpdateSince()
+history[5] {"updateCount":1,"value":1632163863000n}
 ```
 
 ## Advanced TimerService objects
@@ -153,45 +153,37 @@ after the specified `delay` has elapsed. Since block times are coarse-grained,
 the actual calls when using `chainTimerService` may occur less frequently than the specified
 `interval`.
 ```js
-command[6] E(home.localTimerService).makeRepeater(5_000n,10_000n)
+command[6] E(home.localTimerService).makeRepeater(5_000n, 10_000n)
 history[6] [Alleged: presence o-124]{}
 ```
 
 A longer example of creating and using Repeaters:
 
-```
-command[3]  makeHandler = () => { let calls = 0; const args = []; return { getCalls() {
-return calls; }, getArgs() { return args; }, wake(arg) { args.push(arg); calls += 1; }, }; }
-history[3]  [Function makeHandler]
-command[4]  h1 = makeHandler()
-history[4]  {"getCalls":[Function getCalls],"getArgs":[Function getArgs],"wake":[Function wake]}
-command[5]  h2 = makeHandler()
-history[5]  {"getCalls":[Function getCalls],"getArgs":[Function getArgs],"wake":[Function wake]}
+```js
+command[3]  makeWakeCounter = () => {
+  let count = 0;
+  return Far('counter', { getCount() { return count; }, wake(_t) { count += 1; }, });
+}
+history[3]  [Function makeWakeCounter]
+command[4]  c1 = makeWakeCounter()
+history[4]  [Object Alleged: counter]{"getCount":[Function getCount],"wake":[Function wake]}
+command[5]  c2 = makeWakeCounter()
+history[5]  [Object Alleged: counter]{"getCount":[Function getCount],"wake":[Function wake]}
 command[6]  tl = home.localTimerService
-history[6]  [Presence o-59]  
+history[6]  [Object Alleged: timerService]{}
 command[7]  tc = home.chainTimerService
-history[7]  [Presence o-55]  
-command[8]  rl = E(tl).makeRepeater(7, 1500)
-history[8]  [Presence o-64]  
-command[9]  rc = E(tc).makeRepeater(7, 1)
-history[9]  [Presence o-65]  
-command[10]  E(rl).schedule(h1)
+history[7]  [Object Alleged: timerService]{}
+command[8]  rl = E(tl).makeRepeater(7n, 1500n)
+history[8]  [Object Alleged: vatRepeater]{}
+command[9]  rc = E(tc).makeRepeater(7n, 15n)
+history[9]  [Object Alleged: vatRepeater]{}
+command[10]  E(rl).schedule(c1)
 history[10]  1571783040007n
-command[11]  E(rc).schedule(h2)
+command[11]  E(rc).schedule(c2)
 history[11]  1571783051n
-command[12]  h1.getCalls()
-history[12]  3
-command[13]  h2.getCalls()
-history[13]  1
 ...
-command[22]  h1.getCalls()
-history[22]  50
-command[23]  h1.getCalls()
-history[23]  53
-command[24]  h1.getCalls()
-history[24]  54
-command[25]  E(tl).getCurrentTimestamp()
-history[25]  1571783375000n
-command[26]  E(tc).getCurrentTimestamp()
-history[26]  1571783384n
+command[22]  Promise.resolve(E(tl).getCurrentTimestamp()).then(t => [t, c1.getCount()])
+history[22]  [1571783069041n,20]
+command[23]  Promise.resolve(E(tc).getCurrentTimestamp()).then(t => [t, c2.getCount()])
+history[23]  [1571783070n,2]
 ```
