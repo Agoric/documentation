@@ -41,12 +41,6 @@ The following methods provide basic TimerService functionality.
 
 Returns a promise that resolves with the current timestamp.
 
-The current block might be executed more than once in case of restart or replay.
-But each time it will start from the same state and receive the same inputs. 
-Since this is repeatable computation, the same computation can be run in various
-locations to cross-verify. So each time, the `currentTimeStamp` will be the same, 
-even if we're running the computation a minute or a month later. It's expressed 
-as a Unix epoch time in milliseconds or similar.
 ```
 command[1] E(home.chainTimerService).getCurrentTimestamp()
 history[1] 1632170301n // in seconds since epoch
@@ -54,12 +48,16 @@ command[2] E(home.localTimerService).getCurrentTimestamp()
 history[2] 1632170301546n // in milliseconds since epoch
 ```
 
+A chain block might be executed more than once in case of restart or replay or
+cross-verification, but each such execution will receive the same input state
+and observe the same response, even if running a minute or a month later.
+
 ### `E(home.<chain or local>TimerService).delay(delay)`
 - `delay` `{ RelativeTime }`
 - Returns: `{ Promise<Timestamp> }`
 
 Returns a promise that resolves with the current timestamp after the `delay`
-relative time has passed.
+has elapsed.
 
 ```
 command[32] E(home.localTimerService).delay(3_000n)
@@ -73,8 +71,8 @@ history[32] 1632170321864n // about 3 seconds later, in milliseconds since epoch
 - Returns: `{ Notifier<Timestamp> }`
 
 Creates and returns a `Notifier` object. It repeatedly delivers updates at times
-that are a multiple of the provided `interval` value, with the first update happening
-after the provided `delay` value.
+that are a multiple of the specified `interval`, with the first update happening
+after the specified `delay` has elapsed.
 
 ```
 command[30] E(home.localTimerService).makeNotifier(5_000n,10_000n)

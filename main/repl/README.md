@@ -116,7 +116,7 @@ An off-chain, private, place to store key-value pairs on your ag-solo for later 
 - `faucet`: Internal for chain setup.
 - `http`: `api/deploy.js` uses this to install new HTTP and WebSocket handlers in an
    ag-solo.  You should not need to use it. 
-- `network`: Privileged object for internal use.
+- `network`: Privileged object for internal use. [Full Network documentation.](./networking.md)
 - `plugin`: Privileged object for internal use.
 - `priceAuthorityAdmin`: Privileged object for internal use.
 - `registrar`: Deprecated.
