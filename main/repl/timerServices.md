@@ -5,9 +5,9 @@ sidebar: auto
     
 ## TimerService objects
 
-`home` has two timer service objects: 
-- `localTimerService` is from the local vat **with a resolution of 1ms**.
-- `chainTimerService` is from the chain (if present), **with a resolution of 1s**. 
+`home` has two timer service objects:
+- `localTimerService` is from the local vat **with units of 1 millisecond**.
+- `chainTimerService` is from the chain (if present) **with units of 1 second**.
 
 In general, you should use the chain timer for contracts. But it's more efficient to 
 use the local timer for objects that don't need consensus or consistency. 
@@ -21,22 +21,16 @@ Both timer services let you:
 The local service lets you get a monotonically increasing timestamp for each instance 
 of the local chain. The chain service lets you get the start time of the current block.
 
-With respect to using them, the only difference between the two timer
-services is whether you preface their identical command set with
-`localTimerService` or `chainTimerService`. However, note that
-the local and chain versions of a method may use different time bases.
+Both timer services present an identical API, but apply a different interpretation to
+the following data types.
 
-Before looking at the timer service methods, we need to cover four related objects.
+### `Timestamp`
 
-### `Timestamp` object
+A `BigInt` representing an absolute instant in time in a `TimerService`, using units and a basis dependent upon the service.
 
-An `Integer`, an absolute individual stamp returned by a `TimerService`.  Note that different
-timer services may have different interpretations of actual Timestamp values.
+### `RelativeTime`
 
-### `RelativeTime` object
-
-An `Integer`, the difference between two `Timestamps`.  Note that
-different timer services may have different interpretations of actual `RelativeTime` values.
+A `BigInt` representing the difference between two `Timestamp`s of the same `TimerService`.
 
 ## TimerService methods
 
