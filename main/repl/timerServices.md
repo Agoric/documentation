@@ -68,16 +68,17 @@ history[3] 1632170321864n // about 3 seconds later, in milliseconds since epoch
 ### `E(home.<chain or local>TimerService).makeNotifier(delay, interval)`
 - `delay` `{ RelativeTime }`
 - `interval` `{ RelativeTime }`
-- Returns: `{ Notifier<Timestamp> }`
+- Returns: `{ Promise<Notifier<Timestamp>> }`
 
-Creates and returns a `Notifier` object. It repeatedly delivers updates at times
+Creates a `Notifier` object and returns a promise that resolves with it.
+The notifier repeatedly delivers updates at times
 that are a multiple of the specified `interval`, with the first update happening
 after the specified `delay` has elapsed.
 
 ```js
 command[4] E(home.localTimerService).makeNotifier(5_000n, 10_000n)
 history[4] [Alleged: presence o-129]{}
-command[5] E(history[30]).getUpdateSince()
+command[5] E(history[4]).getUpdateSince()
 history[5] {"updateCount":1,"value":1632163863000n}
 ```
 
@@ -112,12 +113,12 @@ A `TimerRepeater` has an associated interval and two methods, `schedule()` and `
 ### `E(home.<chain or local>TimerService).setWakeup(baseTime, waker)`
 - `baseTime` `{ Timestamp }` 
 - `waker` `{ TimerWaker }`
-- Returns: `{ Timestamp }` 
+- Returns: `{ Promise<Timestamp> }`
 
 Calls the specified `waker` when the current timestamp is at least `baseTime`.
 **NOTE: `baseTime` is an absolute, not relative time.**
 
-Returns the time at which the call is scheduled to happen.
+Returns a promise that resolves with the time at which the call is scheduled to happen.
 
 ```js
 command[3] handler = harden({ wake: now => { console.log(`woke up ${now}`); }})
@@ -145,9 +146,10 @@ history[5] unresolved Promise
 ### `E(home.<chain or local>TimerService).makeRepeater(delay, interval)`
 - `delay`: `{ RelativeTime }`
 - `interval`: `{ RelativeTime }`
-- Returns: `{ Repeater }` 
+- Returns: `{ Promise<Repeater> }`
 
-Creates and returns a `Repeater` object. It schedules `wake()` calls repeatedly at 
+Creates a `Repeater` object and returns a promise that resolves with it.
+The repeater schedules `wake()` calls repeatedly at
 times that are a multiple of the specified `interval`, with the first update happening
 after the specified `delay` has elapsed. Since block times are coarse-grained,
 the actual calls when using `chainTimerService` may occur less frequently than the specified
