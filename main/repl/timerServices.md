@@ -182,8 +182,8 @@ history[10]  1571783040007n
 command[11]  E(rc).schedule(c2)
 history[11]  1571783051n
 ...
-command[22]  Promise.resolve(E(tl).getCurrentTimestamp()).then(t => [t, c1.getCount()])
+command[22]  E(tl).getCurrentTimestamp().then(t => [t, c1.getCount()])
 history[22]  [1571783069041n,20]
-command[23]  Promise.resolve(E(tc).getCurrentTimestamp()).then(t => [t, c2.getCount()])
+command[23]  E(tc).getCurrentTimestamp().then(t => [t, c2.getCount()])
 history[23]  [1571783070n,2]
 ```
