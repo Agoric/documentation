@@ -90,7 +90,7 @@ These are more complex objects that are only used for the following advanced met
 A `TimerWaker` has one method, `wake()`
 - `wake(timestamp)`
   - `timestamp` `{ Timestamp }`
-  - Returns `undefined`
+  - Returns `{ void }`
   - The provided `timestamp` is the time for which the call to `wake()` was scheduled.
 
 ### `TimerRepeater` object
@@ -103,7 +103,7 @@ A `TimerRepeater` has an associated interval and two methods, `schedule()` and `
     time indicating the time the waker is next scheduled to be called.  The waker continues
     to be scheduled every interval until the repeater is disabled.
 - `disable()`
-  - Returns `undefined`
+  - Returns `{ void }`
   - Disables this repeater, so `schedule()` can't be called again and wakers already
     scheduled with this repeater won't be rescheduled after they are called.
     
