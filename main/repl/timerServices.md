@@ -37,7 +37,9 @@ A `BigInt` representing the difference between two `Timestamp`s of the same `Tim
 The following methods provide basic TimerService functionality.
 
 ### `E(home.<chain or local>TimerService).getCurrentTimestamp()`
-- Returns: A monotonically increasing timestamp for the chain or local ag-solo.
+- Returns: `{ Promise<Timestamp> }`
+
+Returns a promise that resolves with the current timestamp.
 
 The current block might be executed more than once in case of restart or replay.
 But each time it will start from the same state and receive the same inputs. 
@@ -54,7 +56,7 @@ history[2] 1632170301546n // in milliseconds since epoch
 
 ### `E(home.<chain or local>TimerService).delay(delay)`
 - `delay` `{ RelativeTime }`
-- Returns: `{ Promise<Timestamp>}`
+- Returns: `{ Promise<Timestamp> }`
 
 Returns a promise that resolves with the current timestamp after the `delay`
 relative time has passed.
@@ -87,12 +89,15 @@ These are more complex objects that are only used for the following advanced met
 
 ### `TimerWaker` object
 
-A `TimerWaker` has one method, `wake`, which takes a `Timestamp` argument and returns `void`. 
-The passed `timestamp` is the time when the call to `wake()` is scheduled to occur.
+A `TimerWaker` has one method, `wake()`
+- `wake(timestamp)`
+  - `timestamp` `{ Timestamp }`
+  - Returns `undefined`
+  - The provided `timestamp` is the time for which the call to `wake()` was scheduled.
 
 ### `TimerRepeater` object
 
-A `TimerRepeater` has two methods, `schedule()` and `disable`:
+A `TimerRepeater` has an associated interval and two methods, `schedule()` and `disable()`:
 - `schedule(waker)`
   - `waker` `{ TimerWaker }`
   - Returns `{ Timestamp }`  
@@ -100,23 +105,21 @@ A `TimerRepeater` has two methods, `schedule()` and `disable`:
     time indicating the time the waker is next scheduled to be called.  The waker continues
     to be scheduled every interval until the repeater is disabled.
 - `disable()`
-  - Returns `void`
-  - Disable this repeater, so `schedule()` can't be called, and wakers already 
-    scheduled with this repeater won't be rescheduled again 
-    after `E(waker).wake()` is next called on them.
+  - Returns `undefined`
+  - Disables this repeater, so `schedule()` can't be called again and wakers already
+    scheduled with this repeater won't be rescheduled after they are called.
     
 ## Advanced TimerService methods
 
-### `E(home.<chain or local>TimerService).setWakeup(baseTime, handler)`
+### `E(home.<chain or local>TimerService).setWakeup(baseTime, waker)`
 - `baseTime` `{ Timestamp }` 
-- `handler` `{ Handler }`
+- `waker` `{ TimerWaker }`
 - Returns: `{ Timestamp }` 
 
-Calls the specified handler when the current timestamp is at least `baseTime`.
+Calls the specified `waker` when the current timestamp is at least `baseTime`.
 **NOTE: `baseTime` is an absolute, not relative time.**
 
-Returns the time, in the same format as the parameter,
-at which the call is scheduled to happen. 
+Returns the time at which the call is scheduled to happen.
 
 ```js
 command[3] handler = harden({ wake: now => { console.log(`woke up ${now}`); }})
@@ -127,15 +130,14 @@ history[4] 1632170402207n
 woke up 1632170402207n
 ```
 
-### `E(home.<chain or local>TimerService).removeWakeup(handler)`
-- `handler` `{ Handler }`
-- Returns: `{ Promise<Array[Timestamp]>}`
+### `E(home.<chain or local>TimerService).removeWakeup(waker)`
+- `waker` `{ TimerWaker }`
+- Returns: `{ Promise<Array[Timestamp]> }`
 
-Remove the specified handler from all scheduled wakeups, whether
-created by `setWakeup()` or `repeater.schedule()`, effectively
-canceling the wakeups using that handler.
+Cancels all scheduled wakeups of the specified `waker`, whether
+created by `setWakeup()` or `repeater.schedule()`.
 
-Returns a promise for an array of `Timestamp` times when the cancelled wakeup calls were scheduled to happen.
+Returns a promise for an array of Timestamps representing when the cancelled wakeup calls were scheduled to happen.
 
 ```js
 command[5] timeList = E(home.localTimerService).removeWakeup(handler)
@@ -143,15 +145,15 @@ history[5] unresolved Promise
 ```
   
 ### `E(home.<chain or local>TimerService).makeRepeater(delay, interval)`
-- `delay`: `{ Integer }`
-- `interval`: `{ Integer }`
+- `delay`: `{ RelativeTime }`
+- `interval`: `{ RelativeTime }`
 - Returns: `{ Repeater }` 
 
 Creates and returns a `Repeater` object. It schedules `wake()` calls repeatedly at 
-times that are a multiple of the specified interval following `baseTime`. `interval`
-is the delay between times when `wake()` is called. Since block times are coarse-grained,
-the actual call may occur later, but this won't change when the
-next event will be called. 
+times that are a multiple of the specified `interval`, with the first update happening
+after the specified `delay` has elapsed. Since block times are coarse-grained,
+the actual calls when using `chainTimerService` may occur less frequently than the specified
+`interval`.
 ```js
 command[6] E(home.localTimerService).makeRepeater(5_000n,10_000n)
 history[6] [Alleged: presence o-124]{}
