@@ -119,11 +119,10 @@ code directly by calling:
 
 <<< @/snippets/test-intro-zoe.js#inspectCode
 
-In many cases, the bundled source is a single reviewable string.
-In others, the bundle contains to base 64 encoded zip file that you can
-extract for review.
-```
-jq -r .endoZipBase64 bundle.json | base64 -d > bundle.zip
+In most cases, the bundle contains a base64-encoded zip file that you can
+extract for review:
+```sh
+echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
 ```
 

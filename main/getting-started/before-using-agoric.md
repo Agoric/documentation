@@ -38,7 +38,7 @@ though a few details are out of date:
 The Agoric SDK is supported on
 <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>,
 <a href="https://www.apple.com/macos/">MacOS</a>, or
-<a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (wsl).</a>
+<a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (WSL).</a>
 
  - To open a terminal on Macs, see **Applications>Utilities>terminal** in the **Finder**.
  - To launch a bash shell at a specific folder on Windows 10:

@@ -28,7 +28,7 @@ Proposals are records with `give`, `want`, and `exit` keys.
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n)},
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { 'onDemand'
+  exit: { onDemand: null },
 })
 ```
 `give` and `want` use keywords defined by the contract.
@@ -46,10 +46,11 @@ represented as `BigInts` rather than `Numbers`)
 intrinsic value. `payments` hold actual digital assets.
 
 `exit` determines how an offer can be can cancelled:
-- `'onDemand'`: (Default) Whenever the user wants.
-- `'waived'`: The user cannot cancel, relying on the contract to finish the offer.
-- `'afterDeadline'`: Cancelled automatically after a deadline. This requires two
-  more properties, a `timer` object and a deadline BigInt value.
+- `onDemand: null`: (Default) The offering party can cancel on demand.
+- `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline,
+  as determined by its `timer` and `deadline` properties. See
+  [Proposals and payments](/zoe/api/zoe.md#proposals-and-payments).
 
 ## Escrowed Payments
 
