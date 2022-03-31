@@ -256,16 +256,14 @@ Now Alice uses the installation to create a new instance. She must
 also tell Zoe about the ERTP issuers she wants to use, by specifying
 their role with Keywords. Alice was escrowing Moola, so she uses the
 keyword `Asset` to label the `moolaIssuer`. She wanted Simoleans, so
-she uses the keyword `Price` to label the `simoleanIssuer`. When you
-create a new instance of the contract
-by calling `startInstance()`, it returns a `creatorInvitation`
-(even the instance's creator needs to have
-an invitation to participate in it).
+she uses the keyword `Price` to label the `simoleanIssuer`.
 
 <<< @/snippets/test-intro-zoe.js#startInstance
 
-Alice uses her `creatorInvitation` to make an offer, from which she gets
-an invitation that can be sent to the counter-party.
+Even the creator of a contract instance needs an invitation to
+participate in it. Alice uses the returned `creatorInvitation` to
+make an offer, from which she gets an invitation that can be sent to
+the counter-party.
 
 <<< @/snippets/test-intro-zoe.js#aliceOffer
 

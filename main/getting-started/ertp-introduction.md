@@ -51,7 +51,7 @@ After a successful deposit, ERTP guarantees:
 - The `payment` is burned (i.e. destroyed).
 - The `purse` contains the total of what it held before plus the `payment`'s full content.
   - For example, deposit of a 3 Quatloos `payment` into a `purse` that already has 7 Quatloos
-    updates its balance to 10 Quatloos.
+    updates the purse's balance to 10 Quatloos.
 
 When the `deposit()` call throws an error (something goes wrong),
 ERTP guarantees:
@@ -85,7 +85,7 @@ i.e. If you have a reference to the Quatloos `issuer`, you can validate
 any `payment` made in Quatloos. You can also claim the `payment` either
 as a new `payment` to yourself or a `purse` you control.
 
-`Issuers` should be retrieved from a trusted source
+`Issuers` should be obtained from a trusted source
 and then relied upon as the decider of whether an untrusted `payment` is
 valid.
 
