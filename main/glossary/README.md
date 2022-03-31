@@ -336,8 +336,9 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 
 ## Keyword
 
-A keyword is a property name string that starts with an upper case letter and is a valid
-[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier).
+A keyword is a property name string that is a valid
+[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
+starts with an upper case letter, and contains no non-ASCII characters.
 A KeywordRecord is a CopyRecord in which every property name is a keyword.
 
 ## Mint

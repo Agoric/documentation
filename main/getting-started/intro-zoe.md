@@ -155,8 +155,10 @@ proposal:
 
 <<< @/snippets/test-intro-zoe.js#ourProposal
 
-Proposals must use Keywords, which are capitalized ASCII keys. Here,
-the specific keywords, `Asset` and `Price`, are [determined by the
+Proposals must use Keywords, which are
+[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
+properties that start with an upper case letter and contain no non-ASCII characters.
+Here, the specific keywords, `Asset` and `Price`, are [determined by the
 contract code](/zoe/guide/contracts/atomic-swap.md).
 
 You said you would give 7 Simoleans, so you must send 7 Simoleans as
