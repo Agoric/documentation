@@ -28,8 +28,8 @@ test('intro to zoe', async t => {
     simoleanKit.mint.mintPayment(AmountMath.make(simoleanKit.brand, 1000n)),
   );
   const aliceProposal = harden({
-    give: { Asset: AmountMath.make(moolaKit.brand, 3n) }, // asset: 3 moola
-    want: { Price: AmountMath.make(simoleanKit.brand, 7n) }, // price: 7 simoleans
+    give: { Asset: AmountMath.make(moolaKit.brand, 3n) }, // asset: 3 Moola
+    want: { Price: AmountMath.make(simoleanKit.brand, 7n) }, // price: 7 Simoleans
   });
   const alicePayments = harden({
     Asset: moolaKit.mint.mintPayment(AmountMath.make(moolaKit.brand, 3n)),
@@ -86,8 +86,8 @@ test('intro to zoe', async t => {
 
   // #region ourProposal
   const proposal = {
-    want: { Asset: asset }, // asset: 3 moola
-    give: { Price: price }, // price: 7 simoleans
+    want: { Asset: asset }, // asset: 3 Moola
+    give: { Price: price }, // price: 7 Simoleans
   };
   // #endregion ourProposal
 
