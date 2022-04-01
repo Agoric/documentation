@@ -48,7 +48,7 @@ If everything passes the checks, the assets move from the `payment` to
 the `purse`. If there's a problem, it throws an error.
 
 After a successful deposit, ERTP guarantees:
-- The `payment` is burned (i.e. destroyed).
+- The `payment` is consumed and unavailable for later use.
 - The `purse` contains the total of what it held before plus the `payment`'s full content.
   - For example, deposit of a 3 Quatloos `payment` into a `purse` that already has 7 Quatloos
     updates the purse's balance to 10 Quatloos.
