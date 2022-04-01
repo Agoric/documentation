@@ -152,75 +152,41 @@ API Reference](/ertp/api/#ertp-api).
    the result when you use it. Any successful operation by 
    the `issuer` for that `brand` done on the `payment` verifies the `payment`.
 
-Other objects' `payment`-related methods:
+### Other objects' Payment-related methods:
 
 - [`issuer.getAmountOf(payment)`](../api/issuer.md#issuer-getamountof-payment)
-  - Get the amount of digital assets in the `payment` as an `amount`. 
-    The `payment` itself is not trusted, so you must use the `issuer` method associated
-    with its `brand` to be sure of getting the true value. 
+  - Describe the `payment`'s balance as an Amount.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
 - [`issuer.burn(payment, optAmount)`](../api/issuer.md#issuer-burn-payment-optamount)
-  - Burn all of the digital assets in the `payment`. `optAmount` is
-    optional but if present, the `payment` balance must be equal to
-    it. If `payment` is a promise, the operation proceeds after it resolves. 
+  - Destroy all of the digital assets in the `payment`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
 - [`issuer.claim(payment, optAmount)`](../api/issuer.md#issuer-claim-payment-optamount)
-  - Transfer all assets from the `payment` to a returned new `payment`
-    and delete the original from the `issuer`'s records. Any references to the old
-    `payment` outside the `issuer` will still exist, but if anyone attempts to use the
-    old `payment`, an error is thrown.  
-    
-    If `optAmount` is
-    present, the `payment` balance must be equal to it or it throws
-    an error. If `payment` is a promise, the operation proceeds after it resolves. 
+  - Transfer all digital assets from `payment` to a new Payment.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#claim
 - [`issuer.combine(paymentsArray)`](../api/issuer.md#issuer-combine-paymentsarray-opttotalamount)
-  - Combine multiple `payments` into one, returned, `payment`. If any `payment` in
-  the array is a promise, the operation proceeds after every `payment`
-  resolves. All `payments` in the array are burned on successful completion.
+  - Combine multiple Payments into one new Payment.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
 - [`issuer.split(payment, paymentAmountA)`](../api/issuer.md#issuer-split-payment-paymentamounta)
-  - Split one `payment` into two new ones, A and B, returned in
-    an array. `paymentAmountA` determines A's value, and whatever is
-    left of the original `payment` after subtracting A is B's value. 
-    If `paymentAmountA` has a larger `value` than `payment`, it throws an error.
-    
-    The `payment` argument is deleted from the issuer's records. If `payment` is
-    a promise, the operation proceeds after the promise for a payment resolves. 
+  - Split a single `payment` into two new Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
 - [`issuer.splitMany(payment, amountArray)`](../api/issuer.md#issuer-splitmany-payment-amountarray)
-  - Split `payment` into multiple `payments`, returned as an array the
-    same length as `amountArray` and with its `payments` having the
-    same values as specified for `amountArray`'s elements. If `payment`
-    is a promise for a payment, the operation proceeds after it resolves. If
-    the `payment` value is not equal to the sum of `amountArray`'s
-    values, the operation fails. On success, the original `payment` is 
-    deleted from the issuer's records.
+  - Split a single `payment` into multiple Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
 - [`issuer.isLive(payment)`](../api/issuer.md#issuer-islive-payment)
-  - Returns `true` if `payment` has value. If `payment` is a promise for payment,
-    the operation proceeds upon resolution.
+  - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 - [`mint.mintPayment(newAmount)`](/ertp/api/mint.md#mint-mintpayment-newamount)
-  - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. Note
-    that unlike creating a new `payment` by withdrawing existing assets from a `purse`,
-    this creates new digital assets of the specified in `newAmount` `brand`.
+  - Create new digital assets of the `mint`'s associated `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
 - [`purse.deposit(payment, optAmount)`](../api/purse.md#purse-deposit-payment-optamount)
-  - Deposit all of `payment` into this `purse`, returning the deposit
-    `amount` description. If optional `optAmount` does not equal the `payment`'s balance
-     or if `payment` is an unresolved promise, it throws an error.
+  - Deposit all the contents of `payment` into `purse`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
 - [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
-  - Withdraw the assets described by `amount` from this `purse` into a new
-    `payment`. Returns the new `payment`.
+  - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
 - [`purse.getDepositFacet()`](../api/purse.md#purse-getdepositfacet)
-  - Creates a deposit-only facet on the `purse` that can be given to
-    other parties that lets them deposit a `payment` (but not
-    withdraw) into the `purse`. Note that you add a payment via a
-    deposit facet by calling `depositFacet.receive(payment)` instead of
-    `deposit()`. 
+  - Create and return a new deposit-only facet of the `purse` that allows arbitrary other parties to deposit Payments into `purse`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
+
 ## `purse` and `payment` example
 
 The following code creates a new `purse` for the `quatloos` brand, deposits

@@ -110,9 +110,9 @@ moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET`
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
-Get the `payment`'s balance. Because the `payment` is not trusted, we cannot
-trust it to provide its true value, and must rely on the `issuer` to validate
-the `payment`'s `brand` and tell us how much it contains.
+Describe the `payment`'s balance as an Amount. Because `payment` cannot
+be trusted to provide its own true value, `issuer` must be used to validate
+the `payment`'s `brand` and report how much it contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand} = makeIssuerKit('quatloos');
