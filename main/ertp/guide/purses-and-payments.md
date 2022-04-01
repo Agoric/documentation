@@ -154,9 +154,6 @@ API Reference](/ertp/api/#ertp-api).
 
 ### Other objects' Payment-related methods:
 
-- [`issuer.getAmountOf(payment)`](../api/issuer.md#issuer-getamountof-payment)
-  - Describe the `payment`'s balance as an Amount.
-  - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
 - [`issuer.burn(payment, optAmount)`](../api/issuer.md#issuer-burn-payment-optamount)
   - Destroy all of the digital assets in the `payment`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
@@ -166,26 +163,29 @@ API Reference](/ertp/api/#ertp-api).
 - [`issuer.combine(paymentsArray)`](../api/issuer.md#issuer-combine-paymentsarray-opttotalamount)
   - Combine multiple Payments into one new Payment.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
+- [`issuer.getAmountOf(payment)`](../api/issuer.md#issuer-getamountof-payment)
+  - Describe the `payment`'s balance as an Amount.
+  - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
+- [`issuer.isLive(payment)`](../api/issuer.md#issuer-islive-payment)
+  - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 - [`issuer.split(payment, paymentAmountA)`](../api/issuer.md#issuer-split-payment-paymentamounta)
   - Split a single `payment` into two new Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
 - [`issuer.splitMany(payment, amountArray)`](../api/issuer.md#issuer-splitmany-payment-amountarray)
   - Split a single `payment` into multiple Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
-- [`issuer.isLive(payment)`](../api/issuer.md#issuer-islive-payment)
-  - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 - [`mint.mintPayment(newAmount)`](/ertp/api/mint.md#mint-mintpayment-newamount)
   - Create new digital assets of the `mint`'s associated `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
 - [`purse.deposit(payment, optAmount)`](../api/purse.md#purse-deposit-payment-optamount)
   - Deposit all the contents of `payment` into `purse`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
-- [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
-  - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
-  - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
 - [`purse.getDepositFacet()`](../api/purse.md#purse-getdepositfacet)
   - Create and return a new deposit-only facet of the `purse` that allows arbitrary other parties to deposit Payments into `purse`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
+- [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
+  - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
+  - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
 
 ## `purse` and `payment` example
 
