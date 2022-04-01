@@ -11,7 +11,8 @@ take out, say, 3 Quatloos from it, leaving the `payment` with 7 Quatloos.
 
 However, you can split a `payment` into multiple `payments`, for example 
 into two new `payments` of 3 Quatloos and 7 Quatloos.
-The `split()` operation *burns* (destroys) the original 10 Quatloos `payment`.
+The `split()` operation consumes the original 10 Quatloos `payment`,
+making it unavailable for later use.
 
 `Payments` are often received from other actors. Since they are not self-verifying,
 you cannot trust `payments`. To get the verified balance of a `payment`, use the `issuer` 
@@ -22,7 +23,8 @@ To convert a `payment` into a new `purse`:
 2. Use the `issuer` to create an empty `purse` for that `brand`.
 3. Deposit the `payment` into the new `purse`. 
 
-`purse.deposit(payment)` burns the `payment`.
+`purse.deposit(payment)` consumes the `payment`,
+making it unavailable for later use.
 
 ## `payment.getAllegedBrand()`
 - Returns: `{Brand}`
@@ -44,16 +46,16 @@ on or return a `payment`. While a brief description is given for each,
 you should click through to a method's main documentation entry for 
 full details on what it does and how to use it.
 
-- [`issuer.burn(payment, optAmount)`](./issuer.md#issuer-burn-payment-optamount) 
-  - Burn (destroy) all of the digital assets in the `payment`.
-- [`issuer.claim(payment, optAmount)`](./issuer.md#issuer-claim-payment-optamount) 
-  - Transfer all assets from the `payment` to a returned new `payment` and burn the original.
+- [`issuer.burn(payment, optAmount)`](./issuer.md#issuer-burn-payment-optamount)
+  - Destroy all of the digital assets in the `payment`.
+- [`issuer.claim(payment, optAmount)`](./issuer.md#issuer-claim-payment-optamount)
+  - Transfer all digital assets from `payment` to a new Payment.
 - [`issuer.combine(paymentsArray)`](./issuer.md#issuer-combine-paymentsarray-opttotalamount) 
   - Combine multiple `payments` into one, returned, `payment`.
 - [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment) 
   - Get a description of a `payment` balance as an `amount`. 
-- [`issuer.isLive(payment)`](./issuer.md#issuer-islive-payment) 
-  - Returns `true` if the `issuer` says the `payment` exists (i.e. it's been created and hasn't been burned).
+- [`issuer.isLive(payment)`](./issuer.md#issuer-islive-payment)
+  - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 - [`issuer.split(payment, paymentAmountA)`](./issuer.md#issuer-split-payment-paymentamounta) 
   - Split one `payment` into two new ones.
 - [`issuer.splitMany(payment, amountArray)`](./issuer.md#issuer-splitmany-payment-amountarray) 
