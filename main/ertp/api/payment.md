@@ -42,7 +42,7 @@ const allegedBrand = payment.getAllegedBrand();
 ## Related Methods
 
 The following methods on other ERTP components either operate
-on or return a `payment`. While a brief description is given for each, 
+on or return a Payment. While a brief description is given for each,
 you should click through to a method's main documentation entry for 
 full details on what it does and how to use it.
 
@@ -50,21 +50,21 @@ full details on what it does and how to use it.
   - Destroy all of the digital assets in the `payment`.
 - [`issuer.claim(payment, optAmount)`](./issuer.md#issuer-claim-payment-optamount)
   - Transfer all digital assets from `payment` to a new Payment.
-- [`issuer.combine(paymentsArray)`](./issuer.md#issuer-combine-paymentsarray-opttotalamount) 
-  - Combine multiple `payments` into one, returned, `payment`.
-- [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment) 
-  - Get a description of a `payment` balance as an `amount`. 
+- [`issuer.combine(paymentsArray)`](./issuer.md#issuer-combine-paymentsarray-opttotalamount)
+  - Combine multiple Payments into one new Payment.
+- [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment)
+  - Describe the `payment`'s balance as an Amount.
 - [`issuer.isLive(payment)`](./issuer.md#issuer-islive-payment)
   - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
-- [`issuer.split(payment, paymentAmountA)`](./issuer.md#issuer-split-payment-paymentamounta) 
-  - Split one `payment` into two new ones.
-- [`issuer.splitMany(payment, amountArray)`](./issuer.md#issuer-splitmany-payment-amountarray) 
-  - Split `payment` into multiple `payments`, returned as an array.
-- [`mint.mintPayment(newAmount)`](./mint.md#mint-mintpayment-newamount) 
-  - Returns a new `payment` containing the newly minted assets corresponding to the `newAmount` argument. 
-- [`purse.deposit(payment, optAmount`)`](./purse.md#purse-deposit-payment-optamount) 
-  - Deposit all of `payment` into this `purse`.
+- [`issuer.split(payment, paymentAmountA)`](./issuer.md#issuer-split-payment-paymentamounta)
+  - Split a single `payment` into two new Payments.
+- [`issuer.splitMany(payment, amountArray)`](./issuer.md#issuer-splitmany-payment-amountarray)
+  - Split a single `payment` into multiple Payments.
+- [`mint.mintPayment(newAmount)`](./mint.md#mint-mintpayment-newamount)
+  - Create new digital assets of the `mint`'s associated `brand`.
+- [`purse.deposit(payment, optAmount)`](./purse.md#purse-deposit-payment-optamount)
+  - Deposit all the contents of `payment` into `purse`.
 - [`purse.getDepositFacet()`](./purse.md#purse-getdepositfacet)
-  - Creates a deposit-only facet on the `purse` that can be given to other parties to deposit `payments` in.
-- [`purse.withdraw(amount)`](./purse.md#purse-withdraw-amount) 
-  - Returns a new `payment` whose balance is described by the `amount` argument. 
+  - Create and return a new deposit-only facet of the `purse` that allows arbitrary other parties to deposit Payments into `purse`.
+- [`purse.withdraw(amount)`](./purse.md#purse-withdraw-amount)
+  - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.

@@ -74,7 +74,7 @@ const checkNotifier = async () => {
 - `optAmount` `{Amount}` - Optional. 
 - Returns: `{Amount}`
 
-Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
+Deposit all the contents of `payment` into `purse`, returning an `amount` describing the
 `payment`'s digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
 `payment`, or if `payment` is an unresolved promise, it throws an error.
 
@@ -106,10 +106,10 @@ const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 ```
 
 ## `purse.getDepositFacet()`
+- Returns: `{DepositFacet}`
 
-Returns a deposit-only facet on the `purse`. This is an object you can give to other parties
-that lets them deposit `payments` to your `purse` without being able to withdraw assets from or check
-the balance of the `purse`. This makes it a safe way to let other people send you `payments`.
+Create and return a new deposit-only facet of the `purse` that allows arbitrary other parties to deposit `payments` into `purse` without the ability to check its balance or withdraw from it.
+This makes it a safe way to let other people send you `payments`.
 
 You can only deposit a `payment` into a deposit facet that's the same `brand` as the original `purse`
 takes.
@@ -152,7 +152,7 @@ depositOnlyFacet.receive(payment);
 - `amount` `{Amount}`
 - Returns: `{Payment}`
 
-Withdraw the `amount` specified digital assets from this `purse` into a new `payment`.
+Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
 
 If the call succeeds, it immediately extracts the value into a new `payment`. 
 The caller won't get the new `payment` until a later turn, since the call is (nearly always) remote.
