@@ -102,7 +102,7 @@ API Reference](/ertp/api/#ertp-api).
       it throws an exception and each `payment` is unaffected.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
 
-  - [`issuer.split(payment, paymentAmountA`)](/ertp/api/issuer.md#issuer-split-payment-paymentamounta)
+  - [`issuer.split(payment, paymentAmountA)`](/ertp/api/issuer.md#issuer-split-payment-paymentamounta)
     - Split a single `payment` into two new `payments`, A and B, according
       to the `paymentAmountA` argument's value. In other words, the result
       has A equal to `paymentAmountA` and B equal to the original `payment`
