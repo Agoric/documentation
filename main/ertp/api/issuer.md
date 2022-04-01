@@ -198,12 +198,12 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 - `optTotalAmount` `{Amount}` - Optional.
 - Returns: `{Payment}`
 
-Combine multiple Payments into one new Payment. If any `payment` in `paymentsArray` is
+Combine multiple Payments into one new Payment. If any item in `paymentsArray` is
 a promise, the operation proceeds after each such promise resolves to a Payment.
 All Payments in `paymentsArray` are consumed and made unavailable for later use.
 
-If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
-array must equal `optTotalAmount` or it throws an error.
+If the optional `optTotalAmount` is present, the total value of all Payments in `paymentsArray`
+must equal `optTotalAmount` or it throws an error.
 
 
 ```js
@@ -218,7 +218,7 @@ for (let i = 0; i < 100; i += 1) {
 const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
-**Note**: You **cannot** combine `payments` from different `mints` (as they are of different `brands`):
+**Note**: You **cannot** combine Payments from different `mints` (as they are of different `brands`):
 
 ```js
 const { mint: otherMint, issuer: otherIssuer, brand: otherBrand } = makeIssuerKit('other');
@@ -234,9 +234,9 @@ const badPayment = quatloosIssuer.combine(payments);
 - `paymentAmountA` `{Amount}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`.
+Split a single `payment` into two new Payments, A and B, according to `paymentAmountA`.
 For example, if the `payment` is for 10 Quatloos, and `paymentAmountA` is 3 Quatloos,
-it returns an array of two `payments` with balances of 3 Quatloos and 7 Quatloos.
+it returns an array of two Payments with respective balances of 3 Quatloos and 7 Quatloos.
 
 The original `payment` is consumed and made unavailable for later use.
 
@@ -254,13 +254,12 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 - `amountArray` `{Array <Amount>}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into multiple Payments. The resulting array of `payments` is
-as long as `amountArray`, and the `payments` will have `amounts` corresponding to 
-the `amountArray` contents. The original `payment` is consumed and made unavailable
-for later use. If `payment`
-is a promise, the operation proceeds after it resolves to a Payment. If the `amounts`
-in `amountArray` don't add up to the value of `payment`, the operation fails. The `brands`
-of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
+Split a single `payment` into multiple Payments.
+The returned array includes a Payment item corresponding to each Amount of `amounts`, in order.
+The original `payment` is consumed and made unavailable for later use.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
+If the Amounts in `amountArray` don't add up to the value of `payment`, the operation fails.
+The `brands` of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = makeIssuerKit('quatloos');
