@@ -157,8 +157,7 @@ and return an Amount of what was burned.
 the code insists the `payment` balance is equal to `optAmount`, to prevent sending the wrong `payment`
 and other confusion.  
 
-If `payment` is a `promise` for a `payment`, the operation proceeds after the
-`promise` resolves.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
@@ -184,9 +183,7 @@ equal to `optAmount`, to prevent sending the wrong `payment` and other confusion
 If `optAmount` does not equal the balance in the original `payment`
 then it throws an error.  
 
-If a `payment` is a `promise` for a `payment`, the operation will 
-proceed after the `promise` resolves. Since you might also have a `promise` returned,
-it might take a bit of time for the whole operation to resolve.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -202,15 +199,12 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 - Returns: `{Payment}`
 
 Combine multiple Payments into one new Payment. If any `payment` in `paymentsArray` is
-a `promise`, the operation proceeds after all the `payments`
-resolve. All Payments in `paymentsArray` are consumed and made unavailable for later use.
+a promise, the operation proceeds after each such promise resolves to a Payment.
+All Payments in `paymentsArray` are consumed and made unavailable for later use.
 
 If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
 array must equal `optTotalAmount` or it throws an error.
 
-If a `payment` is a `promise` for a `payment`, the operation will 
-proceed after the `promise` resolves. Since you might also have a `promise` returned,
-it might take a bit of time for the whole operation to resolve.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -246,9 +240,7 @@ it returns an array of two `payments` with balances of 3 Quatloos and 7 Quatloos
 
 The original `payment` is consumed and made unavailable for later use.
 
-If the original `payment` is a `promise` for a `payment`, the operation will 
-proceed after the `promise` resolves. Since you might also have a `promise` returned,
-it might take a bit of time for the whole operation to resolve.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -265,8 +257,8 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 Split a single `payment` into multiple Payments. The resulting array of `payments` is
 as long as `amountArray`, and the `payments` will have `amounts` corresponding to 
 the `amountArray` contents. The original `payment` is consumed and made unavailable
-for later use. If the original `payment` 
-is a `promise`, the operation proceeds after the `promise` resolves.  If the `amounts` 
+for later use. If `payment`
+is a promise, the operation proceeds after it resolves to a Payment. If the `amounts`
 in `amountArray` don't add up to the value of `payment`, the operation fails. The `brands`
 of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
 
@@ -293,4 +285,4 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - Returns: `{Boolean}`
 
 Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
-If `payment` is a promise, the operation proceeds upon resolution.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
