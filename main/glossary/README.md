@@ -137,7 +137,9 @@ unzip bundle.zip
 
 ## Burn
 
-Destroy all digital assets in a payment, for example as part of consuming it in an exchange. See [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
+Destroy digital assets. Burning a [payment](#payment) additionally makes it
+unavailable for later use. See
+[`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
 
 ## Comparable
 
