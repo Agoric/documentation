@@ -205,6 +205,7 @@ All Payments in `paymentsArray` are consumed and made unavailable for later use.
 If the optional `optTotalAmount` is present, the total value of all Payments in `paymentsArray`
 must equal `optTotalAmount` or it throws an error.
 
+Each Payment in `paymentsArray` must be associated with the same Brand as `issuer`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -216,17 +217,6 @@ for (let i = 0; i < 100; i += 1) {
 
 // combinedPayment equals 100
 const combinedPayment = quatloosIssuer.combine(payments);
-```
-
-**Note**: You **cannot** combine Payments from different `mints` (as they are of different `brands`):
-
-```js
-const { mint: otherMint, issuer: otherIssuer, brand: otherBrand } = makeIssuerKit('other');
-const otherPayment = otherMint.mintPayment(AmountMath.make(otherBrand, 10n));
-payments.push(otherPayment); // using the payments array from the above code
-
-// throws error
-const badPayment = quatloosIssuer.combine(payments);
 ```
 
 ## `issuer.split(payment, paymentAmountA)`
@@ -242,6 +232,8 @@ The original `payment` is consumed and made unavailable for later use.
 
 If `payment` is a promise, the operation proceeds after it resolves to a Payment.
 
+`payment` and `paymentAmountA` must both be associated with the same Brand as `issuer`.
+
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
 const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 20n));
@@ -256,10 +248,13 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 
 Split a single `payment` into multiple Payments.
 The returned array includes a Payment item corresponding to each Amount of `amounts`, in order.
+
 The original `payment` is consumed and made unavailable for later use.
+
 If `payment` is a promise, the operation proceeds after it resolves to a Payment.
+
 If the Amounts in `amountArray` don't add up to the value of `payment`, the operation fails.
-The `brands` of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
+`payment` and each Amount in `amountArray` must be associated with the same Brand as `issuer`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = makeIssuerKit('quatloos');
