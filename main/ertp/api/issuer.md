@@ -149,8 +149,9 @@ const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 - `optAmount` `{Amount}` - Optional
 - Returns: `{Amount}`
 
-Burn (destroy) all of the digital assets in the `payment`
-and return an `amount` of what was burned. 
+Destroy all of the digital assets in the `payment`,
+make it unavailable for later use,
+and return an Amount of what was burned.
 
 `optAmount` is optional. If `optAmount` is present, 
 the code insists the `payment` balance is equal to `optAmount`, to prevent sending the wrong `payment`
@@ -174,9 +175,8 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 - `optAmount` `{Amount}` 
 - Returns: `{Payment}` 
 
-Transfer all digital assets from `payment` to a new `payment` and burn the
-original. This allows the owner to be sure no other references to this
-payment survive, so they are the exclusive owner. 
+Transfer all digital assets from `payment` to a new Payment and consume the
+original, making it unavailable for later use.
 
 `optAmount` is optional. 
 If `optAmount` is present, `payment`'s balance must be
@@ -201,9 +201,9 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 - `optTotalAmount` `{Amount}` - Optional.
 - Returns: `{Payment}`
 
-Combines multiple `payments` into one `payment`.  If any `payment` in `paymentsArray` is 
+Combine multiple Payments into one new Payment. If any `payment` in `paymentsArray` is
 a `promise`, the operation proceeds after all the `payments`
-resolve. The `payments` in `paymentsArray` are burned.
+resolve. All Payments in `paymentsArray` are consumed and made unavailable for later use.
 
 If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
 array must equal `optTotalAmount` or it throws an error.
@@ -240,11 +240,11 @@ const badPayment = quatloosIssuer.combine(payments);
 - `paymentAmountA` `{Amount}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`. 
+Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`.
 For example, if the `payment` is for 10 Quatloos, and `paymentAmountA` is 3 Quatloos,
 it returns an array of two `payments` with balances of 3 Quatloos and 7 Quatloos.
 
-The original `payment` is burned. 
+The original `payment` is consumed and made unavailable for later use.
 
 If the original `payment` is a `promise` for a `payment`, the operation will 
 proceed after the `promise` resolves. Since you might also have a `promise` returned,
@@ -262,9 +262,10 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 - `amountArray` `{Array <Amount>}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into multiple `payments`. The resulting array of `payments` is
+Split a single `payment` into multiple Payments. The resulting array of `payments` is
 as long as `amountArray`, and the `payments` will have `amounts` corresponding to 
-the `amountArray` contents. The original `payment` is burned. If the original `payment` 
+the `amountArray` contents. The original `payment` is consumed and made unavailable
+for later use. If the original `payment` 
 is a `promise`, the operation proceeds after the `promise` resolves.  If the `amounts` 
 in `amountArray` don't add up to the value of `payment`, the operation fails. The `brands`
 of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
@@ -291,5 +292,5 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - `payment` `{Payment}`
 - Returns: `{Boolean}`
 
-Returns `true` if the `payment` was created by the issuer and has not yet been destroyed.
+Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 If `payment` is a promise, the operation proceeds upon resolution.
