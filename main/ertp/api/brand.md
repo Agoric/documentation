@@ -20,7 +20,7 @@ other `mint` or `issuer`.
 - `issuer` `{Issuer}`
 - Returns: `{Boolean}`
 
-Return `true` if `issuer` is this brand's `issuer`, `false` if not.
+Return `true` if `issuer` is the brand's `issuer`, `false` if not.
 
 An `issuer` uniquely identifies its `brand`. A `brand` **unreliably** identifies 
 its `issuer`. If `brand` B claims its `issuer` is A, but A doesn't agree 

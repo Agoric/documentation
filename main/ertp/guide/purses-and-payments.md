@@ -167,7 +167,7 @@ API Reference](/ertp/api/#ertp-api).
   - Describe the `payment`'s balance as an Amount.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
 - [`issuer.isLive(payment)`](../api/issuer.md#issuer-islive-payment)
-  - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
+  - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 - [`issuer.split(payment, paymentAmountA)`](../api/issuer.md#issuer-split-payment-paymentamounta)
   - Split a single `payment` into two new Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
