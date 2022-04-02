@@ -26,7 +26,7 @@ are ephemeral, so any object created there dies as soon as the script stops.
 - `issuer` `{Issuer}` 
 - `brand` `{Brand}`
 
-Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
+Create and return a new `issuer` and its associated `mint` and `brand`.
 All are in unchangeable one-to-one relationships with each other. 
 
 The `allegedName` becomes part of the `brand` in asset descriptions. It
@@ -66,7 +66,7 @@ const combinedProperty = AmountMath.make(propertyTitleBrand, ['1292826', '102839
 ## `issuer.getAllegedName()`
 - Returns: `{allegedName}`
 
-Returns the `allegedName` for this `issuer`.
+Return the `allegedName` for the `issuer` (the non-trusted human-readable name of its associated `brand`).
 
 An alleged name is a human-readable string name 
 of a kind of digital asset. An alleged name
@@ -89,8 +89,7 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 ## `issuer.getAssetKind()`
 - Returns: `{AssetKind}`
 
-Get the kind of this `issuer`'s asset. It returns one of
-`AssetKind.NAT` (`nat`) or `AssetKind.SET` (`set`).
+Return the kind of the `issuer`'s asset; either `AssetKind.NAT` ("nat") or `AssetKind.SET` ("set").
 
 The `assetKind` value specifies what kind of values are used in amounts for this issuer. 
 `AmountMath` works for all the different kinds of values. 
@@ -123,7 +122,7 @@ quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloo
 ## `issuer.getBrand()`
 - Returns: `{Brand}` 
 
-Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
+Return the `brand` for the `issuer`. The `brand` indicates the kind of digital asset
 and is the same for the `issuer`'s associated `mint`, and any `purses` and `payments` of this particular
 kind. The `brand` is not closely held, so this function should not be trusted to identify
 an `issuer` alone. Fake digital assets and amounts can use another `issuer's` `brand`.
@@ -278,5 +277,5 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - `payment` `{Payment}`
 - Returns: `{Boolean}`
 
-Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
+Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 If `payment` is a promise, the operation proceeds after it resolves to a Payment.

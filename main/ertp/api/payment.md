@@ -55,7 +55,7 @@ full details on what it does and how to use it.
 - [`issuer.getAmountOf(payment)`](./issuer.md#issuer-getamountof-payment)
   - Describe the `payment`'s balance as an Amount.
 - [`issuer.isLive(payment)`](./issuer.md#issuer-islive-payment)
-  - Returns `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
+  - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
 - [`issuer.split(payment, paymentAmountA)`](./issuer.md#issuer-split-payment-paymentamounta)
   - Split a single `payment` into two new Payments.
 - [`issuer.splitMany(payment, amountArray)`](./issuer.md#issuer-splitmany-payment-amountarray)
