@@ -42,23 +42,20 @@ API Reference](/ertp/api/#ertp-api).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
 - **Get information about the issuer operations**
-  - [`issuer.getBrand()`](/ertp/api/issuer.md#issuer-getbrand)
-    - Return the `brand` for the `issuer`.
-    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getBrand
   - [`issuer.getAllegedName()`](/ertp/api/issuer.md#issuer-getallegedname)
     - Return the `allegedName` for the `issuer` (the non-trusted human-readable name of its associated `brand`).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
   - [`issuer.getAssetKind()`](/ertp/api/issuer.md#issuer-getassetkind)
     - Return the kind of the `issuer`'s asset; either `AssetKind.NAT` ("nat") or `AssetKind.SET` ("set").
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAssetKind
+  - [`issuer.getBrand()`](/ertp/api/issuer.md#issuer-getbrand)
+    - Return the `brand` for the `issuer`.
+    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getBrand
 - **Purse operation**
   - [`issuer.makeEmptyPurse()`](/ertp/api/issuer.md#issuer-makeemptypurse)
     - Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
 - **Payment operations**
-  - [`issuer.getAmountOf(payment)`](/ertp/api/issuer.md#issuer-getamountof-payment)
-    - Describe the `payment`'s balance as an Amount.
-    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
   - [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount)
     - Destroy all of the digital assets in the `payment`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
@@ -69,15 +66,18 @@ API Reference](/ertp/api/#ertp-api).
     - Combine multiple Payments into one new Payment.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
 
+  - [`issuer.getAmountOf(payment)`](/ertp/api/issuer.md#issuer-getamountof-payment)
+    - Describe the `payment`'s balance as an Amount.
+    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
+  - [`issuer.isLive(payment)`](/ertp/api/issuer.md#issuer-islive-payment)
+    - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
+    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isLive
   - [`issuer.split(payment, paymentAmountA)`](/ertp/api/issuer.md#issuer-split-payment-paymentamounta)
     - Split a single `payment` into two new Payments.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
   - [`issuer.splitMany(payment, paymentAmountArray)`](/ertp/api/issuer.md#issuer-splitmany-payment-amountarray)
     - Split a single `payment` into multiple Payments.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitMany
-  - [`issuer.isLive(payment)`](/ertp/api/issuer.md#issuer-islive-payment)
-    - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
-    - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isLive
 
 
 **Related Methods:**
