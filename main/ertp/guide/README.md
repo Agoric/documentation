@@ -25,7 +25,7 @@ one-dollar bills and need to pay someone 5 dollars, it doesn't matter
 which five of your one-dollar bills you give them. 
 
 Non-fungible assets have the same brand, but are not interchangeable. For example, you might have 100
-theatre tickets. But someone wanting to buy even a General Admission ticket from you will want one
+theater tickets. But someone wanting to buy even a General Admission ticket from you will want one
 for a specific date and time. This might also affect the price; you'll want to charge more
 for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
 

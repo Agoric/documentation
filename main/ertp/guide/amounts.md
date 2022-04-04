@@ -22,7 +22,7 @@ object-oriented programming, this produces the same result:
 - **Value**: How much/many of the asset. Fungible values are natural
 numbers represented as BigInts. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
-issue (e.g., a theatre ticket's date, time, row and seat positions).
+issue (e.g., a theater ticket's date, time, row and seat positions).
 
 `amounts` and their `values` and `brands` can be manipulated by the
 `AmountMath` library. It executes the logic of how `amounts` change when

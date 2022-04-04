@@ -58,8 +58,8 @@ implement a way of sending object-containing messages between parties.
 
 You change a purse's balance by calling either `deposit()` (to add assets) or
 `withdraw()` (to remove assets) on it. A purse can be empty, which for
-fungible assets means it has a value of 0. For non-fungible 
-assets, such as theatre tickets, it doesn't have any tickets.
+fungible assets means it has a value of 0. For non-fungible
+assets, such as theater tickets, it doesn't have any tickets.
 
 Unlike `payments`, `purses` are not meant to be sent to others. To transfer 
 digital assets, you should withdraw a `payment` from a `purse` and send 

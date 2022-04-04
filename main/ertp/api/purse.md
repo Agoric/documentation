@@ -16,7 +16,7 @@ friend Alice could have eight Quatloos `purses`, and so on.
 
 You change a `purse`'s balance by calling either `deposit()` (to add assets)
 or `withdraw()` (to remove assets) on it. A `purse` can be empty, which if it holds 
-a fungible currency means it has a value of 0. If it holds non-fungible theatre tickets, 
+a fungible currency means it has a value of 0. If it holds non-fungible theater tickets,
 it means it just doesn't have any tickets.
 
 Unlike `payments`, `purses` are not meant to be sent to others. 
