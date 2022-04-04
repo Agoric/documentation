@@ -5,8 +5,8 @@
 ![Amount methods](./assets/amount.svg) 
 
 `Amounts` describe digital assets. There are no `amount` API methods.
-Instead, an `amount` has two properties, `value` and `brand` with methods
-that act on them or take them as arguments. 
+Instead, an `amount` has `brand` and `value` properties and other API methods
+take them as arguments.
 Use the [`AmountMath` API](../api/amount-math.md)
 to get information about and otherwise manipulate an `amount` as a whole.
 

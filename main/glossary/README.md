@@ -72,7 +72,8 @@ An amount is comprised of a [brand](#brand) with a [value](#value). For example,
 is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
 **Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
-intrinsic value. For example, to make you an offer to buy a magic sword in a game,
+economic scarcity or intrinsic value.
+For example, to make you an offer to buy a magic sword in a game,
 a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
 sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
 trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating

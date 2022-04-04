@@ -9,7 +9,7 @@ In ERTP, digital assets always exist in either a `purse` or a `payment`:
 - **`purse`**: Holds
   an amount of same-branded digital assets until part or
   all of them are withdrawn into a `payment`. A new `purse` is created
-  by an `issuer` and can only hold assets of that `issuer`'s `brand`. 
+  by an `issuer` and can only hold assets of that `issuer`'s `brand`.
 - **`payment`**:
   Holds a quantity of same-branded digital assets to transfer to another party.
   A `payment` is created containing either new assets from a `mint` or existing assets
@@ -145,7 +145,7 @@ To consume a `payment` into a new `purse`:
 3. Deposit the `payment` into the new `purse`.
 
 `Payments` have only one API method, but many methods for other ERTP components
-have `payments` as arguments and effectively operate on a `payment`. The following is a 
+have `payments` as arguments and effectively operate on a `payment`. The following is a
 brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/).

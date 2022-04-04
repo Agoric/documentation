@@ -119,7 +119,7 @@ First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
 Here it also creates a new `mint` and formal `brand` 
 for the argument, and returns all three new objects. The `mint`, `issuer`, and `brand` 
-are in one-to-one associations with each other. 
+are all in unchangeable one-to-one relationships with each other.
 
 In this case, you used the string 'quatloos' to name the `brand`.
 
@@ -221,7 +221,7 @@ as they refer to a specific seat for a specific show at a specific time and date
 buyers which ticket they get.
 
 The Agoric Theatre has 1114 seats numbered `1` to `1114`.
-Objects representing valid tickets have the properties:
+An object representing a valid ticket has the properties:
 - `seat`: A number
 - `show`: A string describing the show
 - `start`: A string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
