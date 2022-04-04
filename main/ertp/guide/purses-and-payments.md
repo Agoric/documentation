@@ -85,28 +85,23 @@ The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/).
 - [`purse.getCurrentAmount()`](../api/purse.md#purse-getcurrentamount)
-- Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
+  - Describe the `purse`'s current balance as an Amount. Note that a `purse` can be empty.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getCurrentAmount
 - [`purse.withdraw(amount)`](../api/purse.md#purse-withdraw-amount)
-  - Withdraw the assets described by `amount` from this `purse` into a new
-    `payment`. Returns the new `payment`.
+  - Withdraw the `amount` of specified digital assets from this `purse` into a new `payment`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
 - [`purse.deposit(payment, optAmount)`](../api/purse.md#purse-deposit-payment-optamount)
-  - Deposit the digital asset contents of the `payment` into this `purse`,
-    returning a description of the `payment` balance as an `amount`. If the optional argument
-    `optAmount` does not equal the `payment` balance, or if `payment`
-    is an unresolved promise, it throws an error.
+  - Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
+`payment`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
 - [`purse.getDepositFacet()`](/ertp/api/purse.md#purse-getdepositfacet)
-  - Returns a deposit-only facet on the `purse` that can be given
-    to other parties. This lets them make a deposit to the `purse`, but not make
-    withdrawals from it or get its balance. Note that the command to add a `payment`'s
+  - Return a deposit-only facet on the `purse`. Note that the command to add a `payment`'s
     assets via a `DepositFacet` is not `deposit()` but `receive()` as shown here.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
 
 In addition, the method to create a new, empty, `purse` is called on an `issuer`:
 - [`issuer.makeEmptyPurse()`](../api/issuer.md#issuer-makeemptypurse)
-  - Returns a new empty `purse` for storing digital assets of the `brand` the `issuer` is associated with.
+  - Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
 ## Payments
 
@@ -150,11 +145,10 @@ brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/).
 - [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
-  - Returns a `brand`, indicating what kind of digital asset the
-  `payment` purports to be. Since a `payment` is not trusted, this result should be   
-   treated with suspicion. Either verify the value, or check 
-   the result when you use it. Any successful operation by 
-   the `issuer` for that `brand` done on the `payment` verifies the `payment`.
+  - Return the `brand` indicating the kind of digital asset this `payment` purports to be
+    and which `issuer` to use with it.
+    Because `payments` are not trusted, any method calls on them should be treated
+    with suspicion and verified elsewhere. Any successful operation by an `issuer` on a `payment` verifies it.
 
 ### Other objects' Payment-related methods:
 

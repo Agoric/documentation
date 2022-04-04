@@ -39,10 +39,10 @@ quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ## `purse.getCurrentAmount()`
 - Returns: `{Amount}`
 
-Get an `amount` describing the current digital assets balance in the `purse`.
-Of course, the returned `amount` `value` might be different the next time you
+Describe the `purse`'s current balance as an Amount.
+The returned Amount `value` might be empty, and might be different the next time you
 call `getCurrentAmount()` on the same `purse` if assets have been deposited or
-withdrawn from it in-between calls. 
+withdrawn in the interim.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
