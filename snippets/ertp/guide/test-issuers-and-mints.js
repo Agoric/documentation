@@ -233,7 +233,7 @@ test('ertp guide mints makeIssuerKit', async t => {
   const paymentQuatloos2 = quatloosMint.mintPayment(
     AmountMath.make(quatloosBrand, 2n),
   );
-  // #endregion makeIssuerMint
+  // #endregion makeIssuerKitMint
   t.truthy(quatloosIssuer.isLive(paymentQuatloos2));
   t.truthy(quatloosIssuer);
   t.truthy(quatloosMint);

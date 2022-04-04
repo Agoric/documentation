@@ -123,8 +123,8 @@ longer have any value. While a `payment` can be either combined with others or
 split into multiple `payments`, in both cases the original `payment(s)`
 are consumed and the results put in one or more new `payments`.
 
-A `payment` can be deposited in purses, split into multiple 
-`payments`, combined with other `payments`, and claimed (getting an exclusive `payment` and revoking access from anyone else). 
+A `payment` can be deposited into a purse, split into multiple
+`payments`, combined with other `payments`, or claimed (getting an exclusive `payment` and revoking access from anyone else).
 
 A `payment` is often received from other parties. Since they are not
 self-verifying, you cannot trust `payments`. To get the verified balance

@@ -16,10 +16,10 @@ a `brand` and a `value`. While `AmountMath.make()` is recommended for proper
 object-oriented programming, this produces the same result:
 
 <<< @/snippets/ertp/guide/test-amounts.js#manualMake
-`amount` has two properties:
-- **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
+Each `amount` has two properties:
+- `brand`: The kind of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
-- **Value**: How much/many of the asset. Fungible values are natural
+- `value`: How much/many of the asset. Fungible values are natural
 numbers represented as BigInts. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
 issue (e.g., a theater ticket's date, time, row and seat positions).
@@ -66,7 +66,7 @@ API Reference](../api/).
   - Returns the `brand`'s alleged name, but should not be trusted as accurate.
   - <<< @/snippets/ertp/guide/test-amounts.js#getAllegedName
 - [`brand.getDisplayInfo()`](../api/brand.md#brand-getdisplayinfo)
-  - Returns the `DisplayInfo` associated with the `brand`. The `DisplayInfo
+  - Returns the `DisplayInfo` associated with the `brand`. The `DisplayInfo`
     tells the UI how to correctly display `values` associated with the `brand`.
   - <<< @/snippets/ertp/guide/test-amounts.js#getDisplayInfo
 

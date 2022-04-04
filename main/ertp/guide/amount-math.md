@@ -11,23 +11,8 @@ The `AmountMath` library functions work for both fungible and nonfungible tokens
 There are two `AssetKinds`, each of which implements the same methods. Which kind is used 
 for a particular `brand` depends on what was specified when the `brand` and 
 its `issuer` were created. They are: 
-
-- `AssetKind.NAT` (`'nat'`): Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
-- `AssetKind.SET` (`set`): Used with non-fungible assets. Values are [copyArray](/guides/js-programming/far.md#passstyleof-api)s such as hardened arrays of strings.
-
-`makeIssuerKit(allegedName, assetKind, displayInfo=)` creates a new `issuer`,
-`mint`, and `brand`. 
-
-The second, optional, `assetKind` argument specifies which type 
-of `AmountMath` is used for the `brand` in a one-to-one
-association with the new `issuer`. It defaults to `AssetKind.NAT`. 
-
-The third, optional, `displayInfo` argument tells the UI how to display 
-values associated with the created `brand`. It defaults to `undefined`.
-
-For example: 
-
-<<< @/snippets/ertp/guide/test-amount-math.js#allAssetKinds
+- `AssetKind.NAT` ("nat"): Used with fungible assets. Values are natural numbers using the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
+- `AssetKind.SET` ("set"): Used with non-fungible assets. Values are [copyArray](/guides/js-programming/far.md#passstyleof-api)s such as hardened arrays of strings.
 
 Note that many `AmountMath` methods have a `brand` argument, either required or
 optional. For the ones with an optional `brand` argument, you should use it if
