@@ -20,8 +20,8 @@ For any `brand`, any number of `purses` or `payments` can hold assets
 of that `brand`. Neither a `purse` nor a `payment` can ever change their
 associated `brand`.
 
-Each `purse` and `payment` object contains a specific single amount of digital assets, 
-which may be none at all (`empty` in AmountMath terms). In the same way 
+Each `purse` and `payment` object contains a specific single amount of digital assets,
+which may be none at all ("empty" in [AmountMath](./amount-math.md) terms). In the same way
 you might have separate bank accounts for different purposes, 
 you can have different purses for the same brand of digital asset. 
 One purse might hold 2 Quatloos and another purse might hold 3 Quatloos. 
@@ -33,8 +33,9 @@ then withdrawing 6 Quatloos from that `purse` into a new `payment` leaves the `p
 with 5 Quatloos and the new `payment` has 6 Quatloos. 
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. To
-only add part of a `payment`, you must first use `payment.split()` 
-or `payment.splitMany()` to split the `payment` into two or more new `payments`.
+only add part of a `payment`, you must first use [`issuer.split()`](/ertp/api/issuer.md#issuer-split-payment-paymentamounta)
+or [`issuer.splitMany()`](/ertp/api/issuer.md#issuer-splitmany-payment-amountarray)
+to split it into two or more new `payments`.
 
 `mints` create entirely new digital assets and put them in a new `payment`. 
 You also create a `payment` by withdrawing assets from a `purse`, by splitting an 
@@ -64,7 +65,8 @@ Unlike `payments`, `purses` are not meant to be sent to others. To transfer
 digital assets, you should withdraw a `payment` from a `purse` and send 
 the `payment` to another party.
 
-You can create a *deposit facet* for a `purse`. Deposit facets are either sent to other parties or made publicly known. Any party can deposit a `payment` into the 
+You can create a [deposit facet](/glossary/#deposit-facet) for a `purse`.
+Deposit facets are either sent to other parties or made publicly known. Any party can deposit a `payment` into the
 deposit facet, which deposits it into its associated `purse`. However, no one can
 use a deposit facet to either make a withdrawal from its `purse` or get the `purse`'s balance. 
 
@@ -80,7 +82,7 @@ to a party, you should tell them what assets `brand` it accepts.
 
 The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/#ertp-api).
+API Reference](/ertp/api/).
 - [`purse.getCurrentAmount()`](../api/purse.md#purse-getcurrentamount)
 - Returns a description of the digital assets currently stored in the `purse` as an `amount`. Note that a `purse` can be empty.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getCurrentAmount
@@ -144,7 +146,7 @@ To convert a `payment` into a new `purse`:
 have `payments` as arguments and effectively operate on a `payment`. The following is a 
 brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/#ertp-api).
+API Reference](/ertp/api/).
 - [`payment.getAllegedBrand()`](../api/payment.md#payment-getallegedbrand)
   - Returns a `brand`, indicating what kind of digital asset the
   `payment` purports to be. Since a `payment` is not trusted, this result should be   

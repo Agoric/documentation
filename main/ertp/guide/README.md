@@ -171,14 +171,16 @@ her rather than someone else.
 
 Assume Alice already has a Quatloos containing `purse` of her own. To let other
 parties safely deposit Quatloos into it, she creates
-a *deposit facet* for that `purse`. Anyone who has access to a deposit facet can deposit
+a [deposit facet](/glossary/#deposit-facet) for that `purse`.
+Anyone who has access to a deposit facet can deposit
 assets to its `purse` but cannot either make a withdrawal from the `purse` or get its balance. It's like
 being able to send money to a friend via their email address; you can't then take money out
 of your friend's accounts or find out how much is in them.
 
 <<< @/snippets/ertp/guide/test-readme.js#getId
 
-Alice puts her deposit facet on Agoric's *Board*, a key-value "bulletin board" that lets her make it generally available for use.
+Alice puts her deposit facet on Agoric's [Board](/glossary/#board-agoric-board),
+a key-value "bulletin board" that lets her make it generally available for use.
 
 The Board is a basic bulletin board type system where users can post an Id for a value and
 others can get the value just by knowing the Id. Alice can make her Id(s) known by any
@@ -198,11 +200,11 @@ of 5 Quatloos.
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
 in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
 
-The [`E()` notation](../../guides/js-programming/eventual-send.md) is
-a local "bridge" function that lets you invoke methods on remote objects. It takes a local 
-representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy 
+The `E()` notation is a local "bridge" that lets you invoke methods on remote objects. It takes a local
+representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy
 forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
-is explained in more detail at the preceding link.
+is explained in more detail at the
+[`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
 
 ## Creating and using non-fungible assets
 
@@ -274,7 +276,7 @@ just its human-readable name or similar. For example, I might know (or make a go
 that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. 
 But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I 
 can't use it to create a million Quatloos and bet them all on Captain Kirk to win his gladiatorial
-match on Triskelion (see the [Wikipedia entry for the Star Trek episode](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion)).
+match on [Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
 ## Security properties
 
@@ -291,17 +293,14 @@ After a successful deposit, ERTP guarantees:
 - The `purse` contains all digital assets that were in the `payment`.
 
 When the `deposit` call throws an error (i.e. something went wrong), ERTP guarantees
-the `purse` and the alleged `payment` were unaffected by that call.
+that neither the `purse` nor the alleged `payment` are affected by it.
 
-In addition, you can create a *deposit facet* for any `purse`. This is an object associated
+In addition, you can create a [deposit facet](/glossary/#deposit-facet) for any `purse`. This is an object associated
 with a specific `purse` that can be sent to another party instead of a reference to the `purse`.
-The security advantage is that the other party can only make deposits to the associated `purse`
-via the deposit facet. They cannot make a withdrawal from or ask about the balance of a `purse` via its deposit facet.
+The security advantage is that the other party can only use the deposit facet to make deposits to the associated `purse`. They cannot use it to make a withdrawal from or ask about the balance of a `purse`.
 
 ## Promises
 
 Several ERTP methods are *asynchronous* and instead of immediately returning their expected value, return a *promise* for that value.
 
-JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see either:
-- [javascript.info](https://javascript.info/async)
-- [Mozilla's Developer Docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous)
+JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see [javascript.info](https://javascript.info/async) or [MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous).

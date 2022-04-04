@@ -111,7 +111,7 @@ appropriate for an object, do not use the board to communicate access to it.
 Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amount).
-For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md)
+For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md#brands)
 and the [ERTP API's Brand section](/ertp/api/brand.md).
 
 ## Bundle
