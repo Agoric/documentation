@@ -130,7 +130,7 @@ You need to specify what you want for the `value` of the new `amount`, in this c
 well as what `brand` it will be.
 
 This returns an `amount` description stored in `quatloosSeven`. Remember, an `amount` is only a description
-of an asset, not an asset itself. `quatloosSeven` has no worth or intrinsic value.
+of an asset, not an asset itself. `quatloosSeven` has no intrinsic value.
 
 <<< @/snippets/ertp/guide/test-readme.js#mintPayment
 
@@ -242,39 +242,30 @@ is a separate `payment`. You can transfer and deposit a non-fungible asset `paym
 
 ## Amounts are not assets
 
-**IMPORTANT**: Despite how it may seem, an `amount` is only a description of an asset, not
-an asset in and of itself. 
-An asset is held by a `purse` or `payment` in the same way a bank account holds money; not because of anything physical, 
-but because of a record held by an authoritative source. In ERTP, the `issuer` for each `brand` of asset 
-is the source of truth of what assets of that `brand` are held by what `purses` and `payments`.
-There is no `amount` stored in a `purse` or `payment`.
+**IMPORTANT**: Despite how it may seem, an `amount` is not an asset in and of itself.
+It merely _describes_ assets along the two axes of what they are and how many there are (`brand` and `value`).
+Amounts are used to negotiate without sending/sharing actual assets until a deal is made.
 
 For example, if I want to make you an offer to buy an asset, let's say a magic sword in a game, I'll send you
-an `amount` describing the asset of 5 Quatloos I'm willing to trade for your sword. I don't send you the actual 
+an `amount` describing the asset of 5 Quatloos I'm willing to trade for your sword. I don't send you the actual
 5 Quatloos; that only happens when we agree on the trade terms and I send you a `payment` of 5 Quatloos, the
 actual asset.
-
-If you reject my offer, I can change it so the `amount` I specify is for 10 Quatloos. I haven't added actual 
+If you reject my offer, I can change it so the `amount` I specify is for 10 Quatloos. I haven't added actual
 assets of 5 Quatloos to what I send you, only the description of assets in the offer I'm making for the sword.
 
 Making a new `amount` does not create any new assets. Nor does adding two `amounts`; since an `amount` is immutable, the
-addition just creates a new `amount` while the original two still exist. Since an `amount` is just a description of an 
-asset, it's the same as how you can't create a new ten dollar
-bill by drawing one; a new one has to be minted (printed) by an authorized government-run facility with its asset status
-derived from its government backing. Similarly, `mints` create new assets in ERTP 
-by creating a new `payment` that contains a newly created asset. 
+addition just creates a new `amount` while the original two still exist.
+ERTP assets can only be created by their `mint` returning a new `payment` containing them.
+Since an `amount` is just a description of an asset, it's like a drawing of a ten dollar bill, while
+an `asset` is analogous to an actual ten dollar bill printed by an authorized facility with value
+derived from its government backing.
 
-So an `amount` just describes an asset along the two axes of how many and
-what units it's in (`value` and `brand`). They're used as a way of negotiating
-with parties that doesn't involve sending/sharing the actual asset
-until a deal is made. 
+In other words, I don't make you an offer that I'll sell you a ticket to *Hamilton* for $300
+by sending you an actual ticket any more than you'd send me $300 before finding out what I'm willing to give you for it. Instead,
+I make you an offer by sending a description
+of what I'm willing to swap ("I will exchange a *Hamilton* ticket for $300").
+If the offer is accepted, **then** I send you the actual asset (enjoy the show!) and you send me the actual $300 (I'll enjoy spending it!).
 
-In other words, I don't make you an offer that I'll swap you a ticket to *Hamilton* for $300
-by sending you an actual ticket any more than you sent me $300 before finding out what I'd give you for it. Instead, 
-I make you an offer by sending you a written description
-of what I'm willing to swap ("I will swap a *Hamilton* ticket for $300"). If the offer is accepted, then I send you the actual asset, 
-in this case an actual *Hamilton* ticket (enjoy the show!) and you send me the actual $300 (I'll enjoy spending it!).
- 
 ## Object capabilities and ERTP
 
 ERTP uses [object capabilities](/glossary/#object-capabilities).
