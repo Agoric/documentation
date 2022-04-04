@@ -1,59 +1,60 @@
 # Purses and Payments
- 
-Digital assets can be any of:
-- Currency-like, such as our imaginary Quatloos currency.
-- Goods-like digital assets, such as magic weapons for use in a game or theater tickets.
-- Other kinds of rights, such as the right to participate in a particular contract.
 
-In ERTP, digital assets exist in either a `purse` or a `payment`:
+There are different kinds of digital assets:
+- Currency-like, such as our imaginary Quatloos.
+- Goods-like, such as theater tickets or magic weapons for use in a game.
+- Abstract rights, such as authorization to participate in a particular contract.
+
+In ERTP, digital assets always exist in either a `purse` or a `payment`:
 - **`purse`**: Holds
   an amount of same-branded digital assets until part or
   all of them are withdrawn into a `payment`. A new `purse` is created
   by an `issuer` and can only hold assets of that `issuer`'s `brand`. 
 - **`payment`**:
-  Holds a quantity of same-branded digital assets to transfer to another party. 
-  A new `payment` is created either with new assets by a `mint` or by 
-  withdrawing assets from a `purse`. It can only hold assets of the same `brand` as
-  that `mint` or `purse`.
+  Holds a quantity of same-branded digital assets to transfer to another party.
+  A `payment` is created containing either new assets from a `mint` or existing assets
+  withdrawn from a `purse` or transferred from one or more other consumed `payment`s.
+  It can only hold assets of the same `brand` as its source(s).
 
-For any `brand`, any number of `purses` or `payments` can hold assets
-of that `brand`. Neither a `purse` nor a `payment` can ever change their
+Any number of `purses` or `payments` can hold assets
+of any particular `brand`. Neither a `purse` nor a `payment` can ever change their
 associated `brand`.
 
 Each `purse` and `payment` object contains a specific single amount of digital assets,
 which may be none at all ("empty" in [AmountMath](./amount-math.md) terms). In the same way
-you might have separate bank accounts for different purposes, 
-you can have different purses for the same brand of digital asset. 
-One purse might hold 2 Quatloos and another purse might hold 3 Quatloos. 
+you might have separate bank accounts for different purposes,
+you can have separate purses for the same `brand` of digital asset.
+One of your purses might hold 2 Quatloos while another holds 9000 Quatloos.
 
-When you deposit assets into a `purse` or `payment`, they are added to
-whatever assets already exist there. So a 3 Quatloos deposit 
-into a `purse` with 8 Quatloos, results in a `purse` with 11 Quatloos. Similarly, 
-then withdrawing 6 Quatloos from that `purse` into a new `payment` leaves the `purse` 
-with 5 Quatloos and the new `payment` has 6 Quatloos. 
+When you deposit assets into a `purse`, they are added to
+whatever assets already exist there. So a 3 Quatloos deposit
+into a `purse` with 8 Quatloos, results in a `purse` with 11 Quatloos. Similarly,
+then withdrawing 6 Quatloos from that `purse` into a new `payment` leaves the `purse`
+with 5 Quatloos and the new `payment` with 6 Quatloos.
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. To
 only add part of a `payment`, you must first use [`issuer.split()`](/ertp/api/issuer.md#issuer-split-payment-paymentamounta)
 or [`issuer.splitMany()`](/ertp/api/issuer.md#issuer-splitmany-payment-amountarray)
 to split it into two or more new `payments`.
 
-`mints` create entirely new digital assets and put them in a new `payment`. 
-You also create a `payment` by withdrawing assets from a `purse`, by splitting an 
-existing `payment`, or by combining multiple `payments` into one new one. Note 
-the `brand` of the new `payment` is the same as the associated `brand` of its originating `mint`, `purse` or `payment`. 
+`mints` create entirely new digital assets and put them in a new `payment`.
+You also create a `payment` by withdrawing assets from a `purse`, by splitting an
+existing `payment`, or by combining multiple `payments` into one new one. Note
+the `brand` of the new `payment` is the same as the associated `brand` of its originating `mint`, `purse` or `payment`.
 
-You don't transfer assets directly from one `purse` to
-another `purse`. Instead, in ERTP you do something like these steps to send and receive assets. The actual send operation is up to you; ERTP does not 
-implement a way of sending object-containing messages between parties.
-- Send assets:
+In ERTP, assets are not transferred directly from one `purse` to another.
+Instead, the transfer must be mediated by a `payment` as demonstrated below.
+ERTP does not implement a way to perform the actual send and receive operations,
+although they are provided in the Agoric stack by [`E()`](/guides/js-programming/eventual-send.md).
+- Sender:
   1. Withdraw assets described by an `amount` from a `purse`, creating a `payment`.
-  2. Send this `payment` to a recipient as a message.
-- Receive assets:
+  2. Send this `payment` to a recipient.
+- Recipient:
   1. If you don't already have one, create a `purse` for the asset `brand`
-     you'll receive. 
+     you'll receive.
   2. Receive the message with the `payment`.
-  3. Deposit the `payment` in a `brand` appropriate `purse`. 
-     
+  3. Deposit the `payment` into a `brand`-appropriate `purse`.
+
 ## Purses
 
 You change a purse's balance by calling either `deposit()` (to add assets) or
@@ -68,15 +69,15 @@ the `payment` to another party.
 You can create a [deposit facet](/glossary/#deposit-facet) for a `purse`.
 Deposit facets are either sent to other parties or made publicly known. Any party can deposit a `payment` into the
 deposit facet, which deposits it into its associated `purse`. However, no one can
-use a deposit facet to either make a withdrawal from its `purse` or get the `purse`'s balance. 
+use a deposit facet to either make a withdrawal from its `purse` or get the `purse`'s balance.
 
 If you have a deposit facet, you make a deposit to its associated `purse` by calling 
-`depositFacet.receive(payment);`. Note that you add a `payment` to a `purse` with a `deposit()` method, while you add a `payment` to a `depositFacet` with a `receive()` method. 
+`depositFacet.receive(payment)`. Note that you add a `payment` to a `purse` with a `deposit()` method, while you add a `payment` to a `depositFacet` with a `receive()` method.
 
-The `payment` must be the same `brand` as what
-the associated `purse` object can contain. Otherwise it throws an error. 
+The `payment`'s `brand` must match that of the `purse`.
+Otherwise it throws an error.
 When sending a deposit facet object
-to a party, you should tell them what assets `brand` it accepts.
+to a party, you should tell them what `brand` it accepts.
 
 ![Purse methods](./assets/purse.svg)  
 
@@ -126,10 +127,11 @@ are consumed and the results put in one or more new `payments`.
 A `payment` can be deposited into a purse, split into multiple
 `payments`, combined with other `payments`, or claimed (getting an exclusive `payment` and revoking access from anyone else).
 
-A `payment` is often received from other parties. Since they are not
-self-verifying, you cannot trust `payments`. To get the verified balance
-of a `payment`, use the `getAmountOf(payment)` method on the trusted `issuer` 
-for the `payment`'s `brand`. 
+A `payment` is often received from other parties, but is not self-verifying
+and cannot be trusted to provide its own true value.
+To get the verified balance
+of a `payment`, use the `getAmountOf(payment)` method on the trusted `issuer`
+for the `payment`'s `brand`.
 
 To get the `issuer` for a `brand` you didn't create, 
 ask someone you trust. For example, the venue creating tickets for shows
@@ -140,7 +142,7 @@ that the `issuer` they give you is valid.
 To consume a `payment` into a new `purse`:
 1. Get the `payment`'s trusted `issuer`.
 2. Use the `issuer` to create an empty `purse` for that `brand`.
-3. Deposit the `payment` into the new `purse`. `purse.deposit(payment)` deletes the `payment`.
+3. Deposit the `payment` into the new `purse`.
 
 `Payments` have only one API method, but many methods for other ERTP components
 have `payments` as arguments and effectively operate on a `payment`. The following is a 
