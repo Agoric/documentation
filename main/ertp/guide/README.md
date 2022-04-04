@@ -6,7 +6,7 @@ JavaScript. Using the [ERTP API](../api/),
 you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
-ERTP uses *[OCaps (object capabilities)](/glossary/#object-capabilities)*
+ERTP uses [OCaps (object capabilities)](/glossary/#object-capabilities)
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -15,8 +15,8 @@ reference, it can't. For more on object capabilities, see
 ## Fungible and Non-Fungible Assets
 
 There are two kinds of assets,
-*[fungible](/glossary/#fungible)* and
-*[non-fungible](/glossary/#non-fungible)*. 
+[fungible](/glossary/#fungible) and
+[non-fungible](/glossary/#non-fungible).
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
