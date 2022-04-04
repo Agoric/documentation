@@ -121,7 +121,7 @@ In other words, if you create a `payment` containing
 10 Quatloos or it will be deleted from its `issuer` records and no
 longer have any value. While a `payment` can be either combined with others or
 split into multiple `payments`, in both cases the original `payment(s)`
-is/are deleted and the results put in one or more new `payments`.
+are consumed and the results put in one or more new `payments`.
 
 A `payment` can be deposited in purses, split into multiple 
 `payments`, combined with other `payments`, and claimed (getting an exclusive `payment` and revoking access from anyone else). 
@@ -137,7 +137,7 @@ can be trusted to give you the tickets' `issuer`. Or, a friend might have
 a cryptocurrency they like, and, if you trust them, you might accept 
 that the `issuer` they give you is valid.
 
-To convert a `payment` into a new `purse`:
+To consume a `payment` into a new `purse`:
 1. Get the `payment`'s trusted `issuer`.
 2. Use the `issuer` to create an empty `purse` for that `brand`.
 3. Deposit the `payment` into the new `purse`. `purse.deposit(payment)` deletes the `payment`.

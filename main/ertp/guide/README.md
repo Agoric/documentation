@@ -143,7 +143,7 @@ the longer term.
 For long term storage, we prefer using a `purse`. `payments` are generally used to transfer assets rather than
 hold them for extended periods. First you create a new empty `purse` for Quatloos using
 the Quatloos associated `issuer`. Then you deposit the `payment` into the `purse`. When this happens,
-the `payment` is automatically deleted and the 7 Quatloos are now resident
+the `payment` is automatically consumed and the 7 Quatloos are now resident
 in the `purse`. If you'd used an existing `purse` that contained, say, 17 Quatloos, these 7 would have been
 added to them so the `purse` balance would be 24 Quatloos. 
 
@@ -198,7 +198,7 @@ which gives you the reference to that deposit facet. You then just tell the face
 of 5 Quatloos. 
 
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
-in it, and the 5 Quatloos `payment` deleted when the transfer happened. 
+in it, and the 5 Quatloos `payment` consumed when the transfer happened.
 
 The `E()` notation is a local "bridge" that lets you invoke methods on remote objects. It takes a local
 representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy
