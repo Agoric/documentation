@@ -167,7 +167,11 @@ You've got your `payment` for 5 Quatloos, but how do you get it to Alice? She ne
 do some work first so there's somewhere for her to put it and a way of getting it to
 her rather than someone else.
 
+<div class="language-js secondary">
+
 <<< @/snippets/ertp/guide/test-readme.js#depositFacet
+
+</div>
 
 Assume Alice already has a Quatloos containing `purse` of her own. To let other
 parties safely deposit Quatloos into it, she creates
@@ -177,7 +181,11 @@ assets to its `purse` but cannot either make a withdrawal from the `purse` or ge
 being able to send money to a friend via their email address; you can't then take money out
 of your friend's accounts or find out how much is in them.
 
+<div class="language-js secondary">
+
 <<< @/snippets/ertp/guide/test-readme.js#getId
+
+</div>
 
 Alice puts her deposit facet on Agoric's [Board](/glossary/#board-agoric-board),
 a key-value "bulletin board" that lets her make it generally available for use.
