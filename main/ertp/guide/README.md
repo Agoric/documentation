@@ -12,7 +12,9 @@ object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
 [Chip Morningstar's post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
 
-## Fungible and Non-Fungible Assets
+## ERTP Concepts Overview
+
+### Fungible and Non-Fungible Assets
 
 There are two kinds of assets,
 [fungible](/glossary/#fungible) and
@@ -27,44 +29,39 @@ theatre tickets. But someone wanting to buy even a General Admission ticket from
 for a specific date and time. This might also affect the price; you'll want to charge more
 for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
 
-## ERTP Concepts Overview
+### Amount
 
-Asset descriptions have two parts:
-- **[Value](./amounts.md#values)**:  An
-  asset's size. You can think of this as the answer to the questions "how many?" or "how much?" about
-  an asset.
-- **[Brand](./amounts.md#brands)**: An
-  asset's kind. You can think of this as the answer to the question "What is it?" about an asset.
-  
-These two make up:
-- **[Amount](./amounts.md)**:
-  A record consisting of a `value` and a `brand`. It is a description of an asset, not an asset itself, 
-  as it has no economic scarcity or economic value.
-  
+Assets are described by **[Amount](./amounts.md)** records consisting of a `brand` and a `value`.
+- **[Brand](./amounts.md#brands)**: An asset's kind.
+  You can think of this as the answer to the question "What is it?" about an asset.
+- **[Value](./amounts.md#values)**:  An asset's size.
+  You can think of this as the answer to the questions "how many?" or "how much?" about an asset.
+
+**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
+economic scarcity or intrinsic value.
+
 So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
 where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
 whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
 
-Manipulating payment and other amounts, such as depositing and withdrawing assets from a purse, all require 
-adding and subtracting digital assets. You may also want to compare amount values. ERTP uses the `AmountMath`
-library for all these operations.
+### AmountMath
 
-- **[AmountMath](./amount-math.md)**:
-  A library for doing math operations on `amounts`
+ERTP uses the **[AmountMath](./amount-math.md)** library for operations such as adding, subtracting,
+and comparing amount values (such as when depositing to or withdrawing assets from a purse).
 
-The `brand` is a very important component. Most ERTP objects work with or on one specific `brand`.
-In fact, instances of these next three components all only work on one `brand`. Note also that their
-relationships with a `brand` are established at their creation and can never be changed. If they are 
-initially associated with Quatloos, they are always associated with Quatloos and Quatloos only. 
- 
-- **[Mint](./issuers-and-mints.md#mints)**: 
-  The only way to create digital assets of a particular `brand`. Each `brand` has
-  a one to one relationship with a `mint` and vice versa. The created assets are stored in `payments`.   
-- **[Issuer](./issuers-and-mints.md#issuers)**: 
+### Brand
+
+Most ERTP objects have a permanent constraint to working with or on one specific
+**[Brand](./amounts.md#brands)** established at their creation. If one is
+initially associated with Quatloos, it always associated with Quatloos and Quatloos only.
+In particular, a `brand` and its `mint` and its `issuer` are all in unchangeable respective
+one-to-one relationships with each other.
+- **[Mint](./issuers-and-mints.md#mints)**:
+  The unique creator of digital assets of a particular `brand`.
+- **[Issuer](./issuers-and-mints.md#issuers)**:
   The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
-  is used to validate `payments` received from untrusted parties. Specifically, it validates
-  `payments` of the `brand` the `issuer` is associated with. Has a one-to-one relationship
-  with both a `brand` and a `mint`. 
+  is used to validate `payments` received from untrusted parties for the `brand` with which
+  it is associated.
 
 ![ERTP object relationships](./assets/relationships1.svg) 
 
@@ -75,16 +72,18 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 
 ![ERTP object relationships 2](./assets/relationships2.svg) 
 
-We've already mentioned our final two components:
+### Purses and Payments
+
+We've already mentioned our final two concepts:
 - **[Purse](./purses-and-payments.md#purses)**: An
   object for holding digital assets of a specific `brand`.
 - **[Payment](./purses-and-payments.md#payments)**:
   An object for transferring digital assets of a specific `brand` to another party.
-  
+
 Similar to other component instances, a `purse` and a `payment` only work with one
 `brand`. So a `purse` or `payment` that holds Quatloos cannot hold an asset of `brand` Moola or vice versa. 
 You cannot change the `brand` a `purse` or `payment` was originally associated with. Once you create a
-Quatloos purse or Quatloos payment, they can never hold anything other than Quatloos.
+Quatloos purse or Quatloos payment, it can never hold anything other than Quatloos.
 
 However, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
