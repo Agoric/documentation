@@ -72,9 +72,9 @@ allowed to send such a message. Zoe, built on Agoric's [object
 capability](/glossary/#object-capabilities) security model, is just
 easier.
 
-This particular invitation is for an [AtomicSwap
+This particular invitation is for an [Atomic Swap
 contract](/zoe/guide/contracts/atomic-swap.md).
-In an AtomicSwap, one party puts up digital assets they want to
+In an Atomic Swap, one party puts up digital assets they want to
 exchange and sends an invitation to a second party for them to
 possibly complete the exchange. In this example, Alice has already
 escrowed the assets she wants to swap and is asking you to pay a
@@ -201,7 +201,7 @@ Check that your offer was successful:
 
 <<< @/snippets/test-intro-zoe.js#offerResult
 
-In response to your offer, the AtomicSwap contract returns the
+In response to your offer, the `atomicSwap` contract returns the
 message: "The offer has been accepted. Once the contract has been
 completed, please check your payout." Other contracts and offers may
 return something different. The offer's result is entirely up to the
@@ -209,7 +209,7 @@ contract.
 
 ### Getting payouts
 
-Because this was an AtomicSwap contract, it is over once the second
+Because this was an `atomicSwap` contract, it is over once the second
 party escrows the correct assets. You can get your payout of Moola
 with the Keyword you used ('Asset'):
 
@@ -225,14 +225,14 @@ Now that you've seen how to participate in a contract instance, let's
 look at how you'd create a contract and its instances.
 
 Let's pretend Alice wrote that contract from scratch, even though
-AtomicSwap is one of Agoric's example contracts (see [Atomic Swap](/zoe/guide/contracts/atomic-swap.md)).
+`atomicSwap` is one of Agoric's example contracts (see [Atomic Swap](/zoe/guide/contracts/atomic-swap.md)).
 Note: All Zoe contracts must have this format:
 
 ::: details Show contract format
 <<< @/snippets/contract-format.js#contractFormat
 :::
 
-Alice fills in this code template with AtomicSwap's particulars.
+Alice fills in this code template with `atomicSwap`'s particulars.
 To install this particular code, Alice first must bundle it off-chain,
 meaning the code and its imports are flattened together:
 
@@ -285,7 +285,7 @@ Helper APIs, [see our Zoe API documentation](/zoe/api/).
 If you want to dive deeper into how Zoe works and what you can do, go
 to the [Zoe Guide](/zoe/guide/README.md). 
 
-To learn more about the AtomicSwap contract, you can [read its
+To learn more about the Atomic Swap contract, you can [read its
 documentation](/zoe/guide/contracts/atomic-swap.md) and look at its
 source code.
 There are several other example contracts for different transaction

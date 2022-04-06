@@ -84,8 +84,8 @@ even if we don't trust each other. We are assured that at worst, if
 the swap contract behaves badly, we both get a refund, and at
 best, we get what we each wanted.
 
-Let's look at the basic `atomicSwap` contract ([full text of
-the real contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js)).
+Let's look at the basic [Atomic Swap contract](/zoe/guide/contracts/atomic-swap.md)
+(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what happens:
 1. I make an instance of the swap contract, and get an invitation to
@@ -149,8 +149,8 @@ several optional properties:
 
 ## Diving Deeper
 
-Let's dive back into the `atomicSwap` contract. As with `automaticRefund`, see the [real contract code
-here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/atomicSwap.js).
+Let's dive back into the [Atomic Swap contract](/zoe/guide/contracts/atomic-swap.md)
+(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
 
 The contract first confirms that `issuers` are setup for the `Asset` and `Price` keywords. Those are the two items that will be swapped.
 
