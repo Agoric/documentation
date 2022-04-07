@@ -115,24 +115,29 @@ code](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad898
 It only does one thing, and it's pretty useless - it gives you back what you put in.
 
 ```js
-export const start = zcf => {
+const start = zcf => {
   const refund = seat => {
     seat.exit();
     return `The offer was accepted`;
   };
   const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund');
 
-  const publicFacet = {
+  const publicFacet = Far('publicFacet', {
     makeInvitation: makeRefundInvitation,
-  };
+  });
+
   const creatorInvitation = makeRefundInvitation();
-  return { creatorInvitation, publicFacet };
+
+  return harden({ creatorInvitation, publicFacet });
 };
+
+harden(start);
+export { start };
 ```
-(In a real contract, whenever we create a new object or array, we recursively
+Whenever we create a new object or array, we recursively
 freeze it with `harden`. You can learn more about `harden` in the
 [Hardened JavaScript SES shim package
-documentation](https://github.com/endojs/endo/blob/master/packages/ses/README.md).)
+documentation](https://github.com/endojs/endo/blob/master/packages/ses/README.md).
 
 The `automaticRefund` contract behavior is implemented in `refund`.
 It just tells Zoe to exit the offer, which gives the user their payout
@@ -154,11 +159,10 @@ Let's dive back into the [Atomic Swap contract](/zoe/guide/contracts/atomic-swap
 The contract first confirms that `issuers` are setup for the `Asset` and `Price` keywords. Those are the two items that will be swapped.
 
 The following uses the [`assertIssuerKeywords` helper function](../api/zoe-helpers.md#assertissuerkeywords-zcf-keywords). It
-checks properties of the running contract instance's terms. The terms were retrieved via `zcf.getTerms()`
-in the `automaticRefund` contract.
-```javascript
+checks properties of the running contract instance's terms.
+```js
 const start = zcf => {
-  assertIssuerKeywords(zcf, ['Asset', 'Price']);
+  assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
 The first handler defined below, `makeMatchingInvitation()` is for the contract instance's creator, and it
@@ -171,7 +175,10 @@ This contract uses the
 check that the offer proposes the kind of trade the contract accepts. In this case, offers must
 have a proposal of the form:
 ```js
-{ give: { Asset: amount1 }, want: { Price: amount2 } }
+{
+  give: { Asset: amount1 },
+  want: { Price: amount2 },
+}
 ```
 `amount1` and `amount2` are amounts with the correct issuers for the keywords.
 The contract then uses `getProposal()` to extract the properties of the proposal for later matching.
