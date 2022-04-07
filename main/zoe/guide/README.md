@@ -14,7 +14,7 @@ dapps, please make sure your fee purse has enough RUN to pay fees. For
 more information about how fees are charged and how some fees are used
 to pay for code execution, please see our [work-in-progress
 documentation](/zoe/api/fees-and-metering.md). We expect that this model will change in the upcoming
-few months. 
+few months.
 :::
 
 This guide assumes some knowledge of the [ERTP
@@ -98,8 +98,8 @@ Here's a high-level overview of what happens:
    I send you that invitation to participate in this contract instance.
 4. You inspect the invitation and verify it was created by the
    `atomicSwap` contract code.
-5. You use your invitation to make your offer (offering five wool for
-   three bricks) with Zoe, making a matching offer. You get your own seat
+5. You use your invitation to make your matching offer with Zoe (5 wool for
+   3 bricks). You get your own seat
    to with which to access your payout and offer results.
 6. The contract confirms that our offers match, and reallocates our bricks
    and wool and exits our offers. That will resolve our respective payout
@@ -112,7 +112,7 @@ Writing smart contracts that run on Zoe is easy. Let's look
 at a simple contract like [Automatic Refund](/zoe/guide/contracts/automatic-refund.md)
 (link includes [real contract
 code](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/automaticRefund.js)).
-It only does one thing, and it's pretty useless - it gives you back what you put in.
+It only does one thing, and it's pretty useless&mdash;it gives you back what you put in.
 
 ```js
 const start = zcf => {
@@ -149,7 +149,7 @@ for Zoe. The `start` function must return an object with any of
 several optional properties:
 - `creatorInvitation`: an invitation only available to the creator of the contract instance.
 - `creatorFacet`: an object with operations made accessible only to the creator.
-- `publicFacet`: and object with operations available to any client with access to the instance.
+- `publicFacet`: an object with operations available to any client with access to the instance.
 
 ## Diving Deeper
 
@@ -165,13 +165,13 @@ const start = zcf => {
   assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
-The first handler defined below, `makeMatchingInvitation()` is for the contract instance's creator, and it
+The `makeMatchingInvitation()` handler is for the contract instance's creator, and it
 makes the `invitation` for the other party to use. At the end of this section, we'll see how it's incorporated into
-the contract. When the associated `invitation` is used to make an offer, `makeMatchingInvitation()` is invoked
-with the `seat` for that offer. 
+the contract. When the associated `creatorInvitation` is used to make an offer, `makeMatchingInvitation()` is invoked
+with the `seat` for that offer.
 
 This contract uses the
-[`assertProposalShape` helper function](../api/zoe-helpers.md#assertproposalshape-seat-expected) to 
+[`assertProposalShape` helper function](../api/zoe-helpers.md#assertproposalshape-seat-expected) to
 check that the offer proposes the kind of trade the contract accepts. In this case, offers must
 have a proposal of the form:
 ```js
@@ -180,6 +180,7 @@ have a proposal of the form:
   want: { Price: amount2 },
 }
 ```
+
 `amount1` and `amount2` are amounts with the correct issuers for the keywords.
 The contract then uses `getProposal()` to extract the properties of the proposal for later matching.
 ```js
@@ -191,14 +192,13 @@ The contract then uses `getProposal()` to extract the properties of the proposal
     const { want, give } = firstSeat.getProposal();
 ```
 
-`makeMatchingInvitation()`, our first handler, then constructs a handler for the second offer,
+`makeMatchingInvitation()` then constructs a handler for the second offer,
 with the first offer's `want` and `give` in scope. This second
-handler, `matchingSeatOfferHandler()` does the final step.
-It uses the [`swap` helper  function](../api/zoe-helpers.md#swap-zcf-leftseat-rightseat),
-a powerful Zoe Helper that handles a lot of the logic of doing a basic swap of assets.
-
-If the swap succeeds, it reallocates the assets between the parties, as described above. The handler then exits 
-both seats (causing payouts to be made available to both parties) and shuts down the contract.
+handler, `matchingSeatOfferHandler()`, is responsible for the final step.
+It uses the [`swap` helper  function](../api/zoe-helpers.md#swap-zcf-leftseat-rightseat)
+to attempt asset reallocation between the two seats as described above and then
+(whether or not the attempt succeeds) exits both seats, making payouts available to
+both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
 ```js
     const matchingSeatOfferHandler = matchingSeat => {
       const swapResult = swap(zcf, firstSeat, matchingSeat);
@@ -206,7 +206,8 @@ both seats (causing payouts to be made available to both parties) and shuts down
       return swapResult;
     };
 ```
-Now let's put it together. The last step of the first handler, `makeMatchingInvitation()`
+
+Now let's put it together. The final step of the first `makeMatchingInvitation()` handler
 is to create and return the second party's invitation, using
 `matchingSeatOfferHandler` and including custom properties for the proposal of the invited offer.
 ```js
@@ -221,8 +222,9 @@ is to create and return the second party's invitation, using
     return matchingSeatInvitation;
   };
 ```
-Finally, we make the invitation for the first party, and return it as
-the contract's `creatorInvitation`.
+
+Finally, the `start` function makes an invitation for the instance's creator
+and returns it as `creatorInvitation`.
 ```js
   const creatorInvitation = zcf.makeInvitation(
     makeMatchingInvitation,
@@ -231,6 +233,7 @@ the contract's `creatorInvitation`.
   return { creatorInvitation };
 };
 ```
-The `creatorInvitation` is only available to the contract instance's creator.
+
+The `creatorInvitation` is only available to the contract instance's creator
 (see [`startInstance`](../api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
-The creator can use it (by making an offer with it) or send it to some other party.
+The creator can use it to make their own offer, or can send it to some other party.

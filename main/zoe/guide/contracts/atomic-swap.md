@@ -77,6 +77,7 @@ this example, she sends it to Bob.
 ```js
 const invitationP = aliceSeat.getOfferResult();
 ```
+
 Bob examines the invitation's details to see if they match Alice's claims
 about it.
 
@@ -119,6 +120,7 @@ const bobSeat = await E(zoe).offer(
   harden({ Price: bobPayment }),
 );
 ```
+
 Bob has made his offer, so the contract executes. Since Alice
 and Bob's offers match, Alice's payouts resolve. She uses her
 `seat` to retrieve them. Then she deposits the moola
