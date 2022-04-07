@@ -127,7 +127,8 @@ unzip bundle.zip
 
 Contracts can add their own specific information to invitations. In
 this case, the Atomic Swap contract adds information about what is
-being traded: the `asset`, the amount Alice has escrowed, and the
+being traded: the `asset`, the [amount](/ertp/guide/amounts.md#amounts)
+Alice has escrowed, and the
 `price`, what you must pay to get the asset. Let's say `asset` is an
 `amount` of 3 Moola, and `price` is an `amount` of 7 Simoleans. (Moola
 and Simoleans are made-up currencies for this example.) Amounts are
@@ -143,7 +144,8 @@ offer.
 An offer has three required parts:
 * a Zoe invitation
 * a proposal
-* the digital assets you're offering to swap
+* a [payment](/ertp/guide/purses-and-payments.md#payments) containing
+  the digital assets you're offering to swap
 
 The `proposal` states what you want from the offer, and what you will
 give in return. Zoe uses the proposal as an invariant to ensure you
@@ -161,9 +163,7 @@ properties that start with an upper case letter and contain no non-ASCII charact
 Here, the specific keywords, `Asset` and `Price`, are [determined by the
 contract code](/zoe/guide/contracts/atomic-swap.md).
 
-You said you would give 7 Simoleans, so you must send 7 Simoleans as
-an ERTP payment. ([ERTP payments](/ertp/guide/purses-and-payments.md)
-are how the Agoric platform transfers fungible and nonfungible digital assets.)
+You said you would give 7 Simoleans, so you must send 7 Simoleans as a payment.
 You happen to have some Simoleans lying around in a Simolean
 [purse](/ertp/guide/purses-and-payments.md) (used to hold digital
 assets of a specific type). You withdraw a payment of 7 Simoleans from
@@ -183,15 +183,16 @@ You've put the required pieces together, so now you can make an offer:
 
 <<< @/snippets/test-intro-zoe.js#offer
 
-At this point, Zoe burns your invitation and confirms its validity.
-Zoe also escrows all of your payments, representing their value in
-amounts as your `current allocation` in the contract.
+At this point, Zoe confirms your invitation's validity and [burns](/glossary/#burn) it.
+Zoe also escrows your payments, representing their value as
+amounts in your [current allocation](/zoe/api/zoe.html#e-userseat-getcurrentallocation)
+in the contract.
 
 ### Using your UserSeat
 
-Making an offer as a user returns a `UserSeat`. This seat represents
-your position in the ongoing contract instance (your "seat at the
-table"). You can use this seat to:
+Making an offer as a user returns a [UserSeat](/zoe/api/zoe.md#userseat-object)
+representing your position in the ongoing contract instance (your
+"seat at the table"). You can use this seat to:
 
 1. Exit the contract.
 2. Get information about your position such as your current allocation.

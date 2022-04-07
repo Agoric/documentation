@@ -136,7 +136,7 @@ export { start };
 ```
 Whenever we create a new object or array, we recursively
 freeze it with `harden`. You can learn more about `harden` in the
-[Hardened JavaScript SES shim package
+[Endo and Hardened JavaScript
 documentation](https://github.com/endojs/endo/blob/master/packages/ses/README.md).
 
 The `automaticRefund` contract behavior is implemented in `refund`.

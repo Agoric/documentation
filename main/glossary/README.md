@@ -435,7 +435,7 @@ and sent to and from remote objects.
 Payments hold assets created by [mints](#mint), specifically assets intended for transfer
 from one party to another. All assets of a payment are of the same [brand](#brand).
 
-For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#purses-and-payments)
+For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#payments)
 and the [ERTP API's Payments section](/ertp/api/payment.md).
 
 ## Payout
