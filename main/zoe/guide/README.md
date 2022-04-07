@@ -109,11 +109,10 @@ Here's a high-level overview of what happens:
 ## How to write smart contracts
 
 Writing smart contracts that run on Zoe is easy. Let's look
-at a simple contract. It only does one thing, and
-it's pretty useless - it gives you back what you put in. Let's call it
-`automaticRefund`. Let's say the code of `automaticRefund` looks like
-this (see the [real contract code
-here](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/automaticRefund.js)):
+at a simple contract like [Automatic Refund](/zoe/guide/contracts/automatic-refund.md)
+(link includes [real contract
+code](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/automaticRefund.js)).
+It only does one thing, and it's pretty useless - it gives you back what you put in.
 
 ```js
 export const start = zcf => {
