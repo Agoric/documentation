@@ -217,7 +217,11 @@ with the Keyword you used ('Asset'):
 
 Alice also receives her payouts:
 
+<div class="language-js secondary">
+
 <<< @/snippets/test-intro-zoe.js#alicePayout
+
+</div>
 
 ## Writing and installing a contract
 

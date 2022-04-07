@@ -80,7 +80,7 @@ const invitationP = aliceSeat.getOfferResult();
 Bob examines the invitation's details to see if they match Alice's claims
 about it.
 
-```js
+```js secondary style2
 const {
   installation: bobInstallation,
   instance,
@@ -103,7 +103,7 @@ uses his invitation to make an offer, the same way that Alice used hers.
 But Bob has written his proposal to match Alice's (notice that the `give` 
 and `want` clauses are reversed from Alice's proposal):
 
-```js
+```js secondary style2
 const sevenSimoleans = AmountMath.make(simoleanBrand, 7n);
 const bobProposal = harden({
   want: { Asset: AmountMath.make(moolaBrand, 3n) },
@@ -134,7 +134,7 @@ const simoleanGainAmount = aliceSimoleansPurse.deposit(alicePricePayout);
 Bob's payout is also available. Since he already knows what Alice's offer was, 
 he doesn't need to look for a simolean refund.
 
-```js
+```js secondary style2
 const bobAssetPayout = await bobSeat.getPayout('Asset');
 const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
 ```
