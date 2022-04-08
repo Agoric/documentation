@@ -21,6 +21,7 @@ Checkout the latest beta release of the sdk:
 # Here we're using agoricdev-8 as the latest release.
 cd agoric-sdk
 git checkout -b beta agoricdev-8
+yarn && yarn build
 ```
 
 Use `agoric init` to make a new local copy of a dapp template:
