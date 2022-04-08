@@ -14,10 +14,17 @@ A dapp is a *decentralized application* which typically has a browser-based user
 
 ## Using a Dapp
 
-If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
+If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can...
 
+Checkout the latest beta release of the sdk:
 ```sh
-# Use `agoric init` to make a new local copy of a dapp template.
+# Here we're using agoricdev-8 as the latest release.
+cd agoric-sdk
+git checkout -b beta agoricdev-8
+```
+
+Use `agoric init` to make a new local copy of a dapp template:
+```sh
 # Here we chose the Fungible Faucet Dapp.
 # You can replace `my-fungible-faucet` with a name of your choice.
 agoric init --dapp-template dapp-fungible-faucet my-fungible-faucet
