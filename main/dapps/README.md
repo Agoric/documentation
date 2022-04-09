@@ -27,7 +27,7 @@ Use `agoric init` to make a new local copy of a dapp template:
 ```sh
 # Here we chose the Fungible Faucet Dapp.
 # You can replace `my-fungible-faucet` with a name of your choice.
-agoric init --dapp-template dapp-fungible-faucet --dappBranch beta my-fungible-faucet
+agoric init --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
 cd my-fungible-faucet
 # Install the project dependencies
 agoric install
