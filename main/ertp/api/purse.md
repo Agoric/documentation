@@ -75,8 +75,8 @@ const checkNotifier = async () => {
 - Returns: `{Amount}`
 
 Deposit all the contents of `payment` into `purse`, returning an `amount` describing the
-`payment`'s digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
-`payment`, or if `payment` is an unresolved promise, it throws an error.
+`payment`'s digital assets (i.e. the deposited amount). If the optional argument `optAmount` does not equal the balance of
+`payment`, or if `payment` is a promise, it throws an error.
 
 While the above applies to local and remote `purses`, for remote `purses` there may be effects on 
 this operation due to use of `promises` and asynchronicity. You 

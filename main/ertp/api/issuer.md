@@ -76,10 +76,10 @@ means there can be multiple issuers/mints/brands with the
 same alleged name, and thus the name by itself does not
 uniquely identify an issuer. Rather, the `brand` object does that.
 
-To put it another way, nothing stops different people from creating
-multiple `issuers` with the alleged name `Quatloos`...but that doesn't
-make any of them **the** Quatloos `issuer`. The alleged name is just a 
-human readable version which is helpful for debugging. 
+To put it another way, nothing stops anyone from creating an `issuer`
+with the alleged name "Quatloos" or even "BTC", regardless of whether
+or not such a name is already in use. The alleged name is just a
+human readable string which is helpful for debugging.
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
@@ -109,9 +109,9 @@ moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET`
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
-Describe the `payment`'s balance as an Amount. Because `payment` cannot
-be trusted to provide its own true value, `issuer` must be used to validate
-the `payment`'s `brand` and report how much it contains.
+Describe the `payment`'s balance as an Amount. Because a `payment` from an untrusted
+source cannot be trusted to provide its own true value, `issuer` must be used to
+validate its `brand` and report how much it contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand} = makeIssuerKit('quatloos');

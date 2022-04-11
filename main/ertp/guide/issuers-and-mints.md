@@ -53,7 +53,7 @@ API Reference](/ertp/api/#ertp-api).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getBrand
 - **Purse operation**
   - [`issuer.makeEmptyPurse()`](/ertp/api/issuer.md#issuer-makeemptypurse)
-    - Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
+    - Make and return an empty `purse` for holding assets of the `brand` associated with the `issuer`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
 - **Payment operations**
   - [`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount)
@@ -82,9 +82,9 @@ API Reference](/ertp/api/#ertp-api).
 
 **Related Methods:**
 
-**Note**: None of these methods return a canonical result. If the `issuer` itself doesn't acknowledge that
-the `mint`, `brand` or `purse` are associated with it, then they're invalid. These methods help you find 
-the right `issuer`, but aren't authoritative.
+**Note**: These methods help you find the right `issuer`, but aren't authoritative.
+A `mint`, `brand`, or `purse` is actually associated with an `issuer` only if
+the `issuer` itself acknowledges the association.
 
 - [`mint.getIssuer()`](/ertp/api/mint.md#mint-getissuer)
   - Return the `issuer` uniquely associated with the `mint`.
