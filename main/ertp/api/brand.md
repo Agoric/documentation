@@ -22,9 +22,9 @@ other `mint` or `issuer`.
 
 Return `true` if `issuer` is the brand's `issuer`, `false` if not.
 
-An `issuer` uniquely identifies its `brand`. A `brand` **unreliably** identifies 
-its `issuer`. If `brand` B claims its `issuer` is A, but A doesn't agree 
-that B is its `brand`, then the `brand` is unreliable.
+Note that a `brand` from an untrusted source can misrepresent its association with
+an `issuer`. The claim should be cross-checked against
+[`issuer.getBrand()`](./issuer.md#issuer-getbrand) for mutual agreement.
 
 ```js
 const isIssuer = brand.isMyIssuer(issuer);
