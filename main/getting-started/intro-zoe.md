@@ -12,7 +12,7 @@ dapps, please make sure your fee purse has enough RUN to pay fees. For
 more information about how fees are charged and how some fees are used
 to pay for code execution, please see our [work-in-progress
 documentation](/zoe/api/fees-and-metering.md). We expect that this model will change in the upcoming
-few months. 
+few months.
 :::
 
 ## What is Zoe?
@@ -33,8 +33,7 @@ Zoe relies on Agoric's [Electronic Rights Transfer Protocol
 **Zoe is safer.** Traditionally, putting digital assets in a smart
 contract has carried the risk of losing them. But Zoe guarantees you get either
 what you wanted or a full refund of the assets you put in. You will
-never leave a contract empty-handed, even if the smart contract is
-buggy or malicious. 
+never leave a smart contract empty-handed, even if it is buggy or malicious.
 
 ### For Developers ###
 
@@ -61,9 +60,8 @@ use](/zoe/guide/contracts/), including:
 ## Using an example Zoe smart contract
 
 You must have a Zoe invitation to a specific contract instance to join
-and participate in it. Let's imagine your friend Alice has sent you a
-`Zoe invitation` for a contract instance to your
-[wallet](/guides/wallet/). 
+and participate in it. Let's imagine your friend Alice has sent an
+invitation for a contract instance to your [wallet](/guides/wallet/).
 
 Compare this to a smart contract on Ethereum. On Ethereum, the smart
 contract developer must guard against malicious calls and store an
@@ -72,9 +70,9 @@ allowed to send such a message. Zoe, built on Agoric's [object
 capability](/glossary/#object-capabilities) security model, is just
 easier.
 
-This particular invitation is for an [AtomicSwap
+This particular invitation is for an [Atomic Swap
 contract](/zoe/guide/contracts/atomic-swap.md).
-In an AtomicSwap, one party puts up digital assets they want to
+In an Atomic Swap, one party puts up digital assets they want to
 exchange and sends an invitation to a second party for them to
 possibly complete the exchange. In this example, Alice has already
 escrowed the assets she wants to swap and is asking you to pay a
@@ -106,14 +104,14 @@ instance of the contract for each individual house they have up for
 sale.
 
 You use object identity comparison to quickly check that you recognize
-this contract installation, without having to check source code
-line-by-line to ensure the code is the same. In other words, you're
-sure this invitation is for participating in an instance of the
-contract it says it is, and not an unknown and possibly malicious one.
+this contract installation, without having to compare source code
+line-by-line. If the installation matches, you're
+sure the invitation is for participating in an instance of the
+expected contract rather than an unknown and possibly malicious one.
 
 <<< @/snippets/test-intro-zoe.js#isCorrectCode
 
-However, if you don't recognize the installation, you can inspect the
+However, if you don't recognize the installation, you can inspect its
 code directly by calling:
 
 <<< @/snippets/test-intro-zoe.js#inspectCode
@@ -127,13 +125,9 @@ unzip bundle.zip
 
 Contracts can add their own specific information to invitations. In
 this case, the Atomic Swap contract adds information about what is
-being traded: the `asset`, the amount Alice has escrowed, and the
-`price`, what you must pay to get the asset. Let's say `asset` is an
-`amount` of 3 Moola, and `price` is an `amount` of 7 Simoleans. (Moola
-and Simoleans are made-up currencies for this example.) Amounts are
-descriptions of digital assets, but have no value themselves. Please
-see the ERTP guide for more on
-[amounts](/ertp/guide/amounts.md#amounts-values-and-brands).
+being traded: the `asset` [amount](/ertp/guide/amounts.md#amounts)
+Alice has escrowed, and the `price` amount that you must pay to get it.
+Note that both are _descriptions_ of digital assets with no intrinsic value of their own.
 
 ### Making an offer
 
@@ -143,7 +137,8 @@ offer.
 An offer has three required parts:
 * a Zoe invitation
 * a proposal
-* the digital assets you're offering to swap
+* a [payment](/ertp/guide/purses-and-payments.md#payments) containing
+  the digital assets you're offering to swap
 
 The `proposal` states what you want from the offer, and what you will
 give in return. Zoe uses the proposal as an invariant to ensure you
@@ -151,7 +146,8 @@ don't lose your assets in the trade. This invariant is known as **offer
 safety**.
 
 You use the invitation's `asset` and `price` amounts to make your
-proposal: 
+proposal. Let's say `asset` is an amount of 3 Moola, and `price` is an amount
+of 7 Simoleans (Moola and Simoleans are made-up currencies for this example).
 
 <<< @/snippets/test-intro-zoe.js#ourProposal
 
@@ -161,9 +157,7 @@ properties that start with an upper case letter and contain no non-ASCII charact
 Here, the specific keywords, `Asset` and `Price`, are [determined by the
 contract code](/zoe/guide/contracts/atomic-swap.md).
 
-You said you would give 7 Simoleans, so you must send 7 Simoleans as
-an ERTP payment. ([ERTP payments](/ertp/guide/purses-and-payments.md)
-are how the Agoric platform transfers fungible and nonfungible digital assets.)
+You said you would give 7 Simoleans, so you must send 7 Simoleans as a payment.
 You happen to have some Simoleans lying around in a Simolean
 [purse](/ertp/guide/purses-and-payments.md) (used to hold digital
 assets of a specific type). You withdraw a payment of 7 Simoleans from
@@ -183,15 +177,16 @@ You've put the required pieces together, so now you can make an offer:
 
 <<< @/snippets/test-intro-zoe.js#offer
 
-At this point, Zoe burns your invitation and confirms its validity.
-Zoe also escrows all of your payments, representing their value in
-amounts as your `current allocation` in the contract.
+At this point, Zoe confirms your invitation's validity and [burns](/glossary/#burn) it.
+Zoe also escrows your payments, representing their value as
+amounts in your [current allocation](/zoe/api/zoe.md#e-userseat-getcurrentallocation)
+in the contract.
 
 ### Using your UserSeat
 
-Making an offer as a user returns a `UserSeat`. This seat represents
-your position in the ongoing contract instance (your "seat at the
-table"). You can use this seat to:
+Making an offer as a user returns a [UserSeat](/zoe/api/zoe.md#userseat-object)
+representing your position in the ongoing contract instance (your
+"seat at the table"). You can use this seat to:
 
 1. Exit the contract.
 2. Get information about your position such as your current allocation.
@@ -201,7 +196,7 @@ Check that your offer was successful:
 
 <<< @/snippets/test-intro-zoe.js#offerResult
 
-In response to your offer, the AtomicSwap contract returns the
+In response to your offer, the `atomicSwap` contract returns the
 message: "The offer has been accepted. Once the contract has been
 completed, please check your payout." Other contracts and offers may
 return something different. The offer's result is entirely up to the
@@ -209,7 +204,7 @@ contract.
 
 ### Getting payouts
 
-Because this was an AtomicSwap contract, it is over once the second
+The `atomicSwap` contract of this example is over once the second
 party escrows the correct assets. You can get your payout of Moola
 with the Keyword you used ('Asset'):
 
@@ -217,7 +212,11 @@ with the Keyword you used ('Asset'):
 
 Alice also receives her payouts:
 
+<div class="language-js secondary">
+
 <<< @/snippets/test-intro-zoe.js#alicePayout
+
+</div>
 
 ## Writing and installing a contract
 
@@ -225,14 +224,14 @@ Now that you've seen how to participate in a contract instance, let's
 look at how you'd create a contract and its instances.
 
 Let's pretend Alice wrote that contract from scratch, even though
-AtomicSwap is one of Agoric's example contracts (see [Atomic Swap](/zoe/guide/contracts/atomic-swap.md)).
+`atomicSwap` is one of Agoric's example contracts (see [Atomic Swap](/zoe/guide/contracts/atomic-swap.md)).
 Note: All Zoe contracts must have this format:
 
 ::: details Show contract format
 <<< @/snippets/contract-format.js#contractFormat
 :::
 
-Alice fills in this code template with AtomicSwap's particulars.
+Alice fills in this code template with `atomicSwap`'s particulars.
 To install this particular code, Alice first must bundle it off-chain,
 meaning the code and its imports are flattened together:
 
@@ -275,7 +274,7 @@ Service, which you've seen users interact with, and the Zoe Contract
 Facet (ZCF), which is accessible to the contract code. Note that users
 have access to the Zoe Service, but do not have access to ZCF.
 Contract code has access to ZCF *and* can get access to the Zoe
-Service. 
+Service.
 
 To learn more about the Zoe Service, Zoe Contract Facet, and Zoe
 Helper APIs, [see our Zoe API documentation](/zoe/api/).
@@ -283,9 +282,9 @@ Helper APIs, [see our Zoe API documentation](/zoe/api/).
 ## Next steps
 
 If you want to dive deeper into how Zoe works and what you can do, go
-to the [Zoe Guide](/zoe/guide/README.md). 
+to the [Zoe Guide](/zoe/guide/README.md).
 
-To learn more about the AtomicSwap contract, you can [read its
+To learn more about the Atomic Swap contract, you can [read its
 documentation](/zoe/guide/contracts/atomic-swap.md) and look at its
 source code.
 There are several other example contracts for different transaction
