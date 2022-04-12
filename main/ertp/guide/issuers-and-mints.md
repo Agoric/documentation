@@ -34,7 +34,7 @@ of the same `brand` is valid.
 The following is
 a brief description and example of each `Issuer` method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/#ertp-api).
+API Reference](/ertp/api/).
 
 - **Create issuer operation**
   - [`makeIssuerKit(allegedName, assetKind, displayInfo=)`](/ertp/api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo)
@@ -115,7 +115,7 @@ the one Quatloos `mint` can create new Quatloos.
 So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
 
 There are two `mint` methods, and the method that creates new mints. Click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/#ertp-api).
+API Reference](/ertp/api/).
 - [`mint.getIssuer()`](/ertp/api/mint.md#mint-getissuer)
   - Return the `issuer` uniquely associated with the `mint`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer

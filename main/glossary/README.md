@@ -12,7 +12,7 @@ See the [Agoric CLI Guide](/guides/agoric-cli/).
 
 ## AllegedName
 
-Human-readable name of a kind of rights. The alleged name should
+Human-readable name of a type of assets. The alleged name should
 not be trusted as an accurate depiction, since it is provided by
 the maker of the mint and could be deceptive, but is useful for debugging and double-checking.
 
@@ -72,7 +72,8 @@ An amount is comprised of a [brand](#brand) with a [value](#value). For example,
 is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
 **Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
-intrinsic value. For example, to make you an offer to buy a magic sword in a game,
+economic scarcity or intrinsic value.
+For example, to make you an offer to buy a magic sword in a game,
 a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
 sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
 trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
@@ -108,10 +109,10 @@ appropriate for an object, do not use the board to communicate access to it.
 
 ## Brand
 
-Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
+Identifies the type of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amount).
-For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md)
+For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md#brands)
 and the [ERTP API's Brand section](/ertp/api/brand.md).
 
 ## Bundle

@@ -29,9 +29,10 @@ making it unavailable for later use.
 ## `payment.getAllegedBrand()`
 - Returns: `{Brand}`
 
-Get the allegedBrand, indicating the kind of digital asset this `payment` purports to be, and which `issuer` to use 
-with it. Because `payments` are not trusted, any method calls on `payments` 
+Return the `brand` indicating the kind of digital asset this `payment` purports to be and which `issuer` to use
+with it. Because `payments` are not trusted, any method calls on them
 should be treated with suspicion and verified elsewhere.
+Any successful operation by an `issuer` on a `payment` verifies it.
 
 ```js
 const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 10n));

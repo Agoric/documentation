@@ -16,7 +16,7 @@ friend Alice could have eight Quatloos `purses`, and so on.
 
 You change a `purse`'s balance by calling either `deposit()` (to add assets)
 or `withdraw()` (to remove assets) on it. A `purse` can be empty, which if it holds 
-a fungible currency means it has a value of 0. If it holds non-fungible theatre tickets, 
+a fungible currency means it has a value of 0. If it holds non-fungible theater tickets,
 it means it just doesn't have any tickets.
 
 Unlike `payments`, `purses` are not meant to be sent to others. 
@@ -39,10 +39,10 @@ quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ## `purse.getCurrentAmount()`
 - Returns: `{Amount}`
 
-Get an `amount` describing the current digital assets balance in the `purse`.
-Of course, the returned `amount` `value` might be different the next time you
+Describe the `purse`'s current balance as an Amount.
+The returned Amount `value` might be empty, and might be different the next time you
 call `getCurrentAmount()` on the same `purse` if assets have been deposited or
-withdrawn from it in-between calls. 
+withdrawn in the interim.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
