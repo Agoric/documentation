@@ -3,7 +3,7 @@
 There are different kinds of digital assets:
 - Currency-like, such as our imaginary Quatloos.
 - Goods-like, such as theater tickets or magic weapons for use in a game.
-- Abstract rights, such as authorization to participate in a particular contract.
+- Abstract rights, such as participation in a particular contract.
 
 In ERTP, digital assets always exist in either a `purse` or a `payment`:
 - **`purse`**: Holds
@@ -20,7 +20,7 @@ Any number of `purses` or `payments` can hold assets
 of any particular `brand`. Neither a `purse` nor a `payment` can ever change their
 associated `brand`.
 
-Each `purse` and `payment` object contains a specific single amount of digital assets,
+Each `purse` and `payment` object contains a specific amount of digital assets,
 which may be none at all ("empty" in [AmountMath](./amount-math.md) terms). In the same way
 you might have separate bank accounts for different purposes,
 you can have separate purses for the same `brand` of digital asset.
@@ -44,8 +44,8 @@ the `brand` of the new `payment` is the same as the associated `brand` of its or
 
 In ERTP, assets are not transferred directly from one `purse` to another.
 Instead, the transfer must be mediated by a `payment` as demonstrated below.
-ERTP does not implement a way to perform the actual send and receive operations,
-although they are provided in the Agoric stack by [`E()`](/guides/js-programming/eventual-send.md).
+In the Agoric stack, the actual send and receive operations are provided by
+[`E()`](/guides/js-programming/eventual-send.md).
 - Sender:
   1. Withdraw assets described by an `amount` from a `purse`, creating a `payment`.
   2. Send this `payment` to a recipient.

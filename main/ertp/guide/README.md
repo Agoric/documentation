@@ -14,20 +14,27 @@ reference, it can't. For more on object capabilities, see
 
 ## ERTP Concepts Overview
 
-### Fungible and Non-Fungible Assets
+### Asset
 
-There are two kinds of assets,
-[fungible](/glossary/#fungible) and
-[non-fungible](/glossary/#non-fungible).
+There are three kinds of assets:
+[fungible](/glossary/#fungible),
+[non-fungible](/glossary/#non-fungible), and
+[semi-fungible](/glossary/#semi-fungible).
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
-which five of your one-dollar bills you give them. 
+which five of your one-dollar bills you give them.
 
 Non-fungible assets have the same brand, but are not interchangeable. For example, you might have 100
 theater tickets. But someone wanting to buy even a General Admission ticket from you will want one
 for a specific date and time. This might also affect the price; you'll want to charge more
 for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
+
+Semi-fungible assets have distinct forms which are not interchangeable
+with each other, but in which instances of a single form may interchangeable with
+other instances of the same form.
+For example, theater tickets for a single show might be partitioned into General Admission
+and Balcony sections, where a holder may sit in any seat of the respective section.
 
 ### Amount
 
@@ -173,7 +180,7 @@ her rather than someone else.
 
 </div>
 
-Assume Alice already has a Quatloos containing `purse` of her own. To let other
+Assume Alice already has a Quatloos `purse` of her own. To let other
 parties safely deposit Quatloos into it, she creates
 a [deposit facet](/glossary/#deposit-facet) for that `purse`.
 Anyone who has access to a deposit facet can deposit
@@ -208,10 +215,9 @@ of 5 Quatloos.
 Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
 in it, and the 5 Quatloos `payment` consumed when the transfer happened.
 
-The `E()` notation is a local "bridge" that lets you invoke methods on remote objects. It takes a local
-representative (a proxy) for a remote object as an argument and sends messages to it. The local proxy
-forwards all messages to the remote object to deal with. `E` must be used to send a message to the remote object. This
-is explained in more detail at the
+The `E()` notation is a local "bridge" that lets you invoke methods on remote objects.
+It takes a local representative (a [presence](/glossary/#presence)) for a remote object
+as an argument and sends messages to the remote object. This is explained in more detail at the
 [`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
 
 ## Creating and using non-fungible assets
@@ -253,7 +259,7 @@ is a separate `payment`. You can transfer and deposit a non-fungible asset `paym
 ## Amounts are not assets
 
 **IMPORTANT**: Despite how it may seem, an `amount` is not an asset in and of itself.
-It merely _describes_ assets along the two axes of what they are and how many there are (`brand` and `value`).
+It merely _describes_ assets along the two axes of what they are and how much there are (`brand` and `value`).
 Amounts are used to negotiate without sending/sharing actual assets until a deal is made.
 
 For example, if I want to make you an offer to buy an asset, let's say a magic sword in a game, I'll send you
@@ -275,6 +281,7 @@ by sending you an actual ticket any more than you'd send me $300 before finding 
 I make you an offer by sending a description
 of what I'm willing to swap ("I will exchange a *Hamilton* ticket for $300").
 If the offer is accepted, **then** I send you the actual asset (enjoy the show!) and you send me the actual $300 (I'll enjoy spending it!).
+In the Agoric stack, assets of the exchange are escrowed with [Zoe](/getting-started/intro-zoe.md).
 
 ## Object capabilities and ERTP
 

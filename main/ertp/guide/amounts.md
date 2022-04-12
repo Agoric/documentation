@@ -4,11 +4,9 @@
 
 ![Amount methods](./assets/amount.svg) 
 
-`Amounts` describe digital assets. There are no `amount` API methods.
-Instead, an `amount` has `brand` and `value` properties and other API methods
-take them as arguments.
-Use the [`AmountMath` API](../api/amount-math.md)
-to get information about and otherwise manipulate an `amount` as a whole.
+An `amount` describes digital assets. There are no `amount` API methods,
+but [`AmountMath` API](../api/amount-math.md) methods take `amounts` as arguments
+to get information about and manipulate them.
 
 `AmountMath.make()` is generally how you make new `amounts`.
 However, you can also make an `amount` as an object literal by making a record of
