@@ -192,9 +192,9 @@ The contract then uses `getProposal()` to extract the properties of the proposal
     const { want, give } = firstSeat.getProposal();
 ```
 
-`makeMatchingInvitation()` then constructs a handler for the second offer,
-with the first offer's `want` and `give` in scope. This second
-handler, `matchingSeatOfferHandler()`, is responsible for the final step.
+`makeMatchingInvitation()` then constructs a `matchingSeatOfferHandler()` handler
+for the second offer, with the first offer's `want` and `give` in scope. This second
+handler is responsible for the final step.
 It uses the [`swap` helper  function](../api/zoe-helpers.md#swap-zcf-leftseat-rightseat)
 to attempt asset reallocation between the two seats as described above and then
 (whether or not the attempt succeeds) exits both seats, making payouts available to
@@ -207,9 +207,9 @@ both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
     };
 ```
 
-Now let's put it together. The final step of the first `makeMatchingInvitation()` handler
+Now let's put it together. The final step of `makeMatchingInvitation()`
 is to create and return the second party's invitation, using
-`matchingSeatOfferHandler` and including custom properties for the proposal of the invited offer.
+`matchingSeatOfferHandler()` and including custom properties for the proposal of the invited offer.
 ```js
     const matchingSeatInvitation = zcf.makeInvitation(
       matchingSeatOfferHandler,
