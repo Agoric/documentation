@@ -12,7 +12,7 @@ See the [Agoric CLI Guide](/guides/agoric-cli/).
 
 ## AllegedName
 
-Human-readable name of a kind of rights. The alleged name should
+Human-readable name of a type of assets. The alleged name should
 not be trusted as an accurate depiction, since it is provided by
 the maker of the mint and could be deceptive, but is useful for debugging and double-checking.
 
@@ -109,7 +109,7 @@ appropriate for an object, do not use the board to communicate access to it.
 
 ## Brand
 
-Identifies the kind of [issuer](#issuer), such as "[Quatloos](#quatloos)",
+Identifies the type of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amount).
 For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md#brands)

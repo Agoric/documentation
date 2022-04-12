@@ -1,5 +1,5 @@
 # Brand
-The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships
+A `brand` identifies the type of assets. A particular `brand` has one-to-one relationships
 with an `issuer` and a `mint`, and one-to-many relationships with `purses` and `payments`.
 
 Meaning for, say, the Quatloos `brand`:
@@ -35,7 +35,7 @@ const isIssuer = brand.isMyIssuer(issuer);
 
 Returns the alleged name of the `brand`. Should not be trusted as accurate.
 
-An alleged name is a human-readable string name of a kind of digital asset. 
+An alleged name is a human-readable string name of a type of digital asset.
 It should not be trusted as accurate since there is no public registry or 
 expectation of uniqueness. This means there can be multiple issuers/mints/brands 
 with the same alleged name, and thus the name by itself does not uniquely 

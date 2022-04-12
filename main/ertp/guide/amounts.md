@@ -15,7 +15,7 @@ object-oriented programming, this produces the same result:
 
 <<< @/snippets/ertp/guide/test-amounts.js#manualMake
 Each `amount` has two properties:
-- `brand`: The kind of digital asset, such as our imaginary `Quatloos` currency or,
+- `brand`: The type of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
 - `value`: How much/many of the asset. Fungible values are natural
 numbers represented as BigInts. Non-fungible values may be represented as strings naming a
@@ -33,7 +33,7 @@ to change your offer, represented as an `amount`, to be of a greater
 
 ![Brand methods](./assets/brand.svg) 
 
-A `brand` object is an `amount` object's kind of digital asset, such as
+A `brand` object is an `amount` object's type of digital asset, such as
 our imaginary Quatloos currency or, in a game, a powerful magic
 sword.
 

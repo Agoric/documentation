@@ -39,7 +39,7 @@ and Balcony sections, where a holder may sit in any seat of the respective secti
 ### Amount
 
 Assets are described by **[Amount](./amounts.md)** records consisting of a `brand` and a `value`.
-- **[Brand](./amounts.md#brands)**: An asset's kind.
+- **[Brand](./amounts.md#brands)**: An asset's type.
   You can think of this as the answer to the question "What is it?" about an asset.
 - **[Value](./amounts.md#values)**:  An asset's size.
   You can think of this as the answer to the questions "how many?" or "how much?" about an asset.
