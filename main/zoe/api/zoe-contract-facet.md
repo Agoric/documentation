@@ -7,50 +7,8 @@ for that instance. A Zoe Contract Facet is accessed synchronously from within th
 and usually is referred to in code as `zcf`.
 
 The contract instance is launched by `E(zoe).startInstance()`, and is given access to
-the `zcf` object during that launch. In the operations below, `instance` is
-the handle for the running contract instance.
-
-## `start`
-
-This section covers the code you need to have at the start of your contract code.
-
-To warn if the correct return values for your contract are not being returned,
-add this right before the start of your contract code. It also lets TypeScript-aware
-tools (IDEs like vsCode and WebStorm) inform the developer about required parameters
-and return values and warn when methods are misused.
-
-```js
-/**
- * @type {ContractStartFn}
- */
-```
-Your contract code must export a function `start` as a non-default export.
-`zcf` is the Zoe Contract Facet and is the first argument provided to
-the contract. The second argument, `privateArgs`, is used by the
-caller of `startInstance` to pass in any arguments that should not be
-part of the public terms. `privateArgs` is an object with keys and
-values as decided by the caller of `startInstance`. If no private
-arguments are passed, `privateArgs` is undefined.
-
-```js
-const start = (zcf, privateArgs) => {
-  ...
-  // your code here
-  return harden({ creatorFacet, creatorInvitation, publicFacet });
-}
-harden(start);
-export { start };
-```
-The contract must return a record with any (or none) of the following:
-
-- `creatorFacet` - an object, usually with admin authority. It is only given to the entity that
-calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current contract `instance`.
-It creates `invitations` for other parties, and takes actions that are unrelated to making offers.
-- `creatorInvitation` - a Zoe `invitation` only given to the entity that calls `E(zoe).startInstance()`; i.e.
-the party that was the creator of the current contract `instance`.
-This is usually used when a party has to make an offer first, such as escrowing the underlying good
-for sale in an auction or covered call.
-- `publicFacet` - an object available through Zoe to anyone who knows the contract instance. Use the `publicFacet` for general queries and actions, such as getting the current price or creating public `invitations`.
+the `zcf` object during that launch (see [Contract Requirements](/zoe/guide/contract-requirements.md)).
+In the operations below, `instance` is the handle for the running contract instance.
 
 ## `zcf.makeZCFMint(keyword, assetKind, displayInfo)`
 - `keyword` `{String}`
