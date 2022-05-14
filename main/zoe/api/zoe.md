@@ -197,7 +197,7 @@ inspect the underlying code for a running contract `instance`.
 const installation = await E(zoe).getInstallationForInstance(instance);
 ```
 
-## `E(zoe).startInstance(installation, issuerKeywordRecord, terms)`
+## `E(zoe).startInstance(installation, issuerKeywordRecord, terms, privateArgs)`
 - `installation` `{ERef<Installation>}`
 - `issuerKeywordRecord` `{IssuerKeywordRecord}` - optional
 - `terms` `{Object}` - optional

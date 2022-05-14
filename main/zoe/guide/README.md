@@ -235,5 +235,5 @@ and returns it as `creatorInvitation`.
 ```
 
 The `creatorInvitation` is only available to the contract instance's creator
-(see [`startInstance`](../api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms)).
+(see [`startInstance`](../api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)).
 The creator can use it to make their own offer, or can send it to some other party.
