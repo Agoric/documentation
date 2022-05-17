@@ -63,7 +63,7 @@ a balance of RUN that is sufficient for paying fees.
 
 Fees are used to pay for the ongoing execution of contract code.
 Specifically, the fee purse that the contract owner uses when calling
-`E(zoe).startInstance` will be charged ongoing fees for chunks of execution.
+`E(zoe).startInstance()` will be charged ongoing fees for chunks of execution.
 
 Execution is measured in `computrons` at the JavaScript engine level
 (we use [XS](https://github.com/Moddable-OpenSource/moddable#modern-software-development-for-microcontrollers)),
