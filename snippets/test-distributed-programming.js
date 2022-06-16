@@ -6,10 +6,6 @@ import { E } from '@endo/eventual-send';
 import { Far, passStyleOf } from '@endo/marshal';
 // #endregion importFar
 
-// #region importNotifier
-import { makeNotifierKit } from '@agoric/notifier';
-// #endregion importNotifier
-
 test('remote counter', async t => {
   const assert = cond => t.true(cond);
 
