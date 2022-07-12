@@ -49,6 +49,10 @@ agoric init demo
 The name `demo` is an arbitrary suggestion; in general,
 use `agoric init $DIRNAME` with any name you like.
 
+If the install is successful, the result produced in your terminal should look like the following:
+
+![agoric init success](./assets/agoric-init-success.png)
+
 The default template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
 Learn more about the [available dapp templates](/dapps/dapp-templates.md).
 
@@ -60,7 +64,11 @@ cd demo
 agoric install
 ```
 
-It may take a minute or so to install all the dependencies.
+It may take a minute or so to install all the dependencies. 
+
+If the install is successful, the result produced in your terminal should look like the following:
+
+![agoric intall success](./assets/agoric-install-success.png)
 
 ::: tip Mac Dev Tools
 On a Mac, you must first install
@@ -81,6 +89,10 @@ agoric start
 agoric start --reset
 ```
 
+If `agoric start` is successful, you should see the following result in your terminal:
+
+![Agoric Start success](./assets/agoric-start-success.png) 
+
 Leave this process and its logs running in its own terminal window.
 ## Deploy the Contract and API
 
@@ -92,6 +104,10 @@ and the API to the solo client.
 cd demo # if not already there
 agoric deploy ./contract/deploy.js ./api/deploy.js
 ```
+
+If the deployments are successful, the result produced in your terminal should look like the following:
+
+![agoric deploy cmds success](./assets/agoric-deploy-success.png)
 
 We'll cover [deploying smart contracts](/getting-started/deploying.md)
 in detail later.
@@ -107,6 +123,10 @@ cd demo # if not already there
 cd ui && yarn start
 ```
 
+If successful, the result produced in your terminal should look like the following:
+
+![agoric ui start success](./assets/agoric-ui-start.png)
+
 Leave this running in its own terminal window and
 visit [http://localhost:3000](http://localhost:3000)
 in a web browser.
@@ -118,6 +138,10 @@ in a web browser.
 cd demo # if not already there
 agoric open --repl
 ```
+
+If successful, the result produced in your terminal should look like the following:
+
+![agoric open success cmd](./assets/agoric-open-success.png)
 
 This should automatically open [http://127.0.0.1:8000](http://127.0.0.1:8000)
 in a new browser window or tab.
