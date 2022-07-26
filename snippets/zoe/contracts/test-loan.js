@@ -1,18 +1,19 @@
 // @ts-check
 
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
+/* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
+import { test } from '../../prepare-test-env-ava.js';
 
-import url from 'url';
-import { resolve as importMetaResolve } from 'import-meta-resolve';
-import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
-import { makeZoeKit } from '@agoric/zoe';
-import bundleSource from '@endo/bundle-source';
-import { makeIssuerKit, AmountMath } from '@agoric/ertp';
-import { E } from '@endo/eventual-send';
-import { makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
-import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
-import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
+import { AmountMath, makeIssuerKit } from '@agoric/ertp';
 import { makeNotifierKit } from '@agoric/notifier';
+import { makeZoeKit } from '@agoric/zoe';
+import { makeRatio } from '@agoric/zoe/src/contractSupport/index.js';
+import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
+import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
+import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
+import bundleSource from '@endo/bundle-source';
+import { E } from '@endo/eventual-send';
+import { resolve as importMetaResolve } from 'import-meta-resolve';
+import url from 'url';
 
 test('loan contract', async t => {
   const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
