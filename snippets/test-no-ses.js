@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
 import test from 'ava';
 
 // #region changePassword
