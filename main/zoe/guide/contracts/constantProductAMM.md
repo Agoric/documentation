@@ -109,39 +109,20 @@ E(saraAtmPurse).deposit(atmRefund);
 
 ###  Creating a new Pool
 
+TODO: fix text in this section to match new API. @@@@@@
+
 When the contract is first instantiated, there won't be any pools ready for
 trading. `addPool()` adds a new currency, which can then be funded.  (All
 currencies must be fungible.) When a pool is first funded, there's no other basis
 on which to decide how much liquidity to create, so the liquidity amount equals the
 amount of the central token in the offer.
 
-```js
-const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD');
-```
+<<< @/snippets/test-amm-client-api.js#addIssuer
 
 Alice sees that the current rate in the external market is 2 BLD for each
 RUN, so she deposits twice as many BLD as RUN to fund the market.
 
-```js
-const aliceProposal = harden({
-  want: { Liquidity: BLDLiquidity(50n) },
-  give: {
-    Secondary: AmountMath.make(BLDBrand, 100n),
-    Central: AmountMath.make(RUNBrand, 50n),
-  },
-});
-const alicePayments = {
-  Secondary: aliceBLDPayment,
-  Central: aliceRUNPayment,
-};
-
-const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation();
-const addLiquiditySeat = await E(zoe).offer(
-  aliceAddLiquidityInvitation,
-  aliceProposal,
-  alicePayments,
-);
-```
+<<< @/snippets/test-amm-client-api.js#addPool
 
 ### Adding Liquidity to an Existing Pool
 
