@@ -56,10 +56,7 @@ test('ertp guide purse deposit', async t => {
   );
   // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
   t.throws(() => quatloosPurse.deposit(secondPayment, quatloos123), {
-    // To cope with version skew, this pattern is current and or of the old
-    // message and the new message. TODO: nce the old message no longer needs to
-    // be supported, delete it, simplifying the pattern.
-    message: /(?:payment balance .* must equal amount .*)|(?:{"brand":"\[Alleged: quatloos brand\]","value":"\[100n\]"} - Must be: {"brand":"\[Alleged: quatloos brand\]","value":"\[123n\]"})/,
+    message: /{"brand":"\[Alleged: quatloos brand\]","value":"\[100n\]"} - Must be: {"brand":"\[Alleged: quatloos brand\]","value":"\[123n\]"}/,
   });
   // #endregion deposit
 });
