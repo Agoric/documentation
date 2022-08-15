@@ -1,15 +1,18 @@
-const nav = require('./themeConfig/nav')
+const nav = require('./themeConfig/nav');
 
 module.exports = {
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
-  base: '/documentation/', // The base URL the site will be deployed at.
+  base: '/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Beta', // title for the site. prefix for all page titles and displayed in the navbar
+  title: 'Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
-    ['style', { type: 'text/css'}, `
+    [
+      'style',
+      { type: 'text/css' },
+      `
     .two-col-table td {
         width: 50%;
     }
@@ -18,10 +21,19 @@ module.exports = {
     }
     a[href^='#'] {
         font-style: italic;
-    }`],
-    ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1' }],
-    ['script', {}, "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); "],
-    ["script",
+    }`,
+    ],
+    [
+      'script',
+      { src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1' },
+    ],
+    [
+      'script',
+      {},
+      "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); ",
+    ],
+    [
+      'script',
       {},
       `
     const logoUrlChanger = setInterval(function() {
@@ -41,15 +53,21 @@ module.exports = {
       logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
       clearInterval(logoUrlChanger);
     }
-   }, 1000) `
-    ]
+   }, 1000) `,
+    ],
   ],
 
   plugins: [
     'check-md',
     [
       '@vuepress/last-updated',
-      { dateOptions: { dateStyle: "medium", timeStyle: "long", timeZone: "Etc/UTC" } },
+      {
+        dateOptions: {
+          dateStyle: 'medium',
+          timeStyle: 'long',
+          timeZone: 'Etc/UTC',
+        },
+      },
     ],
   ],
 
@@ -57,7 +75,8 @@ module.exports = {
   themeConfig: {
     sidebarDepth: 2,
     lastUpdated: 'Last Updated',
-    logo: 'https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg',
+    logo:
+      'https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg',
     /* --- NAVBAR (top) --- */
     nav,
     /* --- SIDEBAR --- */
@@ -78,7 +97,7 @@ module.exports = {
           children: [
             '/guides/agoric-cli/commands',
             '/guides/agoric-cli/starting-multiuser-dapps',
-          ]
+          ],
         },
         {
           title: 'ERTP Guide',
@@ -90,7 +109,7 @@ module.exports = {
             '/ertp/guide/amount-math',
             '/ertp/guide/issuers-and-mints',
             '/ertp/guide/purses-and-payments',
-          ]
+          ],
         },
         {
           title: 'Zoe Guide',
@@ -101,8 +120,8 @@ module.exports = {
             '/zoe/guide/offer-safety',
             '/zoe/guide/proposal',
             '/zoe/guide/contract-requirements',
-            '/zoe/guide/price-authority'
-          ]
+            '/zoe/guide/price-authority',
+          ],
         },
         {
           title: 'Wallet',
@@ -111,8 +130,8 @@ module.exports = {
           children: [
             '/guides/wallet/',
             '/guides/wallet/ui',
-            '/guides/wallet/api',		
-          ]
+            '/guides/wallet/api',
+          ],
         },
         {
           title: 'JavaScript Framework',
@@ -123,7 +142,7 @@ module.exports = {
             '/guides/js-programming/eventual-send',
             '/guides/js-programming/far',
             '/guides/js-programming/notifiers',
-          ]
+          ],
         },
         {
           title: 'REPL',
@@ -138,93 +157,82 @@ module.exports = {
             '/zoe/api/zoe',
             '/repl/priceAuthority',
             '/repl/scratch',
-          ]
+          ],
         },
         {
           title: 'Dynamic IBC',
-          path: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md',
+          path:
+            'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md',
           collapsible: false,
-          children: [
-          ]
+          children: [],
         },
         {
           title: 'Chainlink Integration',
           path: '/guides/chainlink-integration.html',
           collapsible: false,
-          children: [
-          ]
-       },
-       {
-        title: 'Documentation Guide',
-        path: '/getting-started/',
-        collapsible: false,
-        children: [
-        ]
-      },
-    ],
-      '/getting-started/': [
-        {
-          title: 'Agoric Beta',
-          path: '/getting-started/beta.html',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Installing the Agoric SDK',
-          path: '/getting-started/before-using-agoric.html',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Starting A Project',
-          path: '/getting-started/start-a-project.html',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Development Cycle',
-          path: '/getting-started/development-cycle.html',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Deploying Smart Contracts',
-          path: '/getting-started/deploying.html',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.md',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Zoe Introduction',
-          path: '/getting-started/intro-zoe.md',
-          collapsible: false,
-          children: [
-          ]
-        },
-        {
-          title: 'Agoric CLI Guide',
-          path: '/guides/agoric-cli/',
-          collapsible: false,
-          children: [
-          ]
+          children: [],
         },
         {
           title: 'Documentation Guide',
           path: '/getting-started/',
           collapsible: false,
-          children: [
-          ]
+          children: [],
+        },
+      ],
+      '/getting-started/': [
+        {
+          title: 'Agoric Beta',
+          path: '/getting-started/beta.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Installing the Agoric SDK',
+          path: '/getting-started/before-using-agoric.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Starting A Project',
+          path: '/getting-started/start-a-project.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Development Cycle',
+          path: '/getting-started/development-cycle.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Deploying Smart Contracts',
+          path: '/getting-started/deploying.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'ERTP Introduction',
+          path: '/getting-started/ertp-introduction.md',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Zoe Introduction',
+          path: '/getting-started/intro-zoe.md',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Agoric CLI Guide',
+          path: '/guides/agoric-cli/',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'Documentation Guide',
+          path: '/getting-started/',
+          collapsible: false,
+          children: [],
         },
       ],
       '/ertp/': [
@@ -232,8 +240,7 @@ module.exports = {
           title: 'ERTP Introduction',
           path: '/getting-started/ertp-introduction.html',
           collapsible: false,
-          children: [
-          ]
+          children: [],
         },
         {
           title: 'ERTP Guide',
@@ -245,7 +252,7 @@ module.exports = {
             '/ertp/guide/amount-math',
             '/ertp/guide/issuers-and-mints',
             '/ertp/guide/purses-and-payments',
-          ]
+          ],
         },
         {
           title: 'ERTP API',
@@ -259,16 +266,15 @@ module.exports = {
             '/ertp/api/payment',
             '/ertp/api/amount-math',
             '/ertp/api/displayInfo',
-          ]
-        }
+          ],
+        },
       ],
       '/zoe/': [
         {
           title: 'Zoe Introduction',
           path: '/getting-started/intro-zoe.md',
           collapsible: false,
-          children: [
-          ]
+          children: [],
         },
         {
           title: 'Zoe Guide',
@@ -279,15 +285,14 @@ module.exports = {
             '/zoe/guide/offer-safety',
             '/zoe/guide/proposal',
             '/zoe/guide/contract-requirements',
-            '/zoe/guide/price-authority'
-          ]
+            '/zoe/guide/price-authority',
+          ],
         },
         {
           title: 'Zoe Contracts',
           path: '/zoe/guide/contracts/',
           collapsible: false,
-          children: [
-          ]
+          children: [],
         },
         {
           title: 'Zoe API',
@@ -304,8 +309,8 @@ module.exports = {
         },
         {
           title: 'Zoe Roadmap',
-          path: '/zoe/roadmap/'
-        }
+          path: '/zoe/roadmap/',
+        },
       ],
     },
     docsRepo: 'Agoric/documentation',
@@ -319,8 +324,7 @@ module.exports = {
     editLinkText: 'Help us improve this page!',
 
     zoeVersion: 'v0.18.1',
-    zoeDocsUpdated: 'Sep 13, 2021'
-
+    zoeDocsUpdated: 'Sep 13, 2021',
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the
@@ -329,5 +333,5 @@ module.exports = {
     // search: false
     // Customize how many suggestions will be shown with:
     // searchMaxSuggestions: <numberOfSuggestions>
-  }
-}
+  },
+};
