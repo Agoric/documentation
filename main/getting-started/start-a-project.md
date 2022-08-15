@@ -1,9 +1,7 @@
 # Starting a Project
 
 ::: tip Beta status
-The Agoric platform is at the beta stage.
-It has not yet been formally tested or hardened.
-Do not use for production purposes.
+The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
 :::
 
 Now that you have [installed the Agoric SDK](/getting-started/before-using-agoric.md),
