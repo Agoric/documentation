@@ -2,11 +2,11 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/run-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Mar 11, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Mar 11, 2022)
 ##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 
-The Treasury is the primary mechanism for making `RUN` (the Agoric stable-value
+The Treasury is the primary mechanism for making `IST` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
 loans against supported types of collateral. The creator of the contract can
 add new types of collateral. (This is expected to be under the control of
@@ -17,7 +17,7 @@ starts up.)
 
 Borrowers open a **vault** by calling `makeVaultInvitation()`in the publicAPI to
 get an invitation. Their proposal specifies that they're giving a recognized
-collateral type, and how much `RUN` they want in return. The contract is
+collateral type, and how much `IST` they want in return. The contract is
 parameterized with a collateralization rate per currency and borrowers can
 withdraw up to that ratio. Other parameters control the interest rate. (Interest
 will be automatically added to the vault's debt.) The contract also has
@@ -44,7 +44,7 @@ borrower to retrieve any proceeds above what's needed to repay the debt.
 
 The borrower can adjust their collateral and debt levels by exercising an
 `AdjustBalancesInvitation` with a proposal that specifies the amount of
-`Collateral` and `RUN` that they will give and that they want (either keyword
+`Collateral` and `IST` that they will give and that they want (either keyword
 can be in either position.) As long as the resulting balances would not violate
 the required ratios and the withdrawals are within the loan's current balance,
 the adjustments will be made. If the debt balance increases, `loanFee`
@@ -70,7 +70,7 @@ any remainder returned to the borrower. So it's prudent for borrowers to
 over-collateralize so that price volatility and interest charges don't quickly
 drive their loans into default.
 
-The `loanFee` (in basis points) is charged on the amount of `RUN` issued when
+The `loanFee` (in basis points) is charged on the amount of `IST` issued when
 opening a loan or increasing the amount of a loan.  The `interestRate` is an
 annual rate.
 
@@ -108,7 +108,7 @@ The treasury's public API includes `makeVaultInvitation()` and
 `getCollaterals()`, as well as `getAMM()` and `getRunIssuer()`.
 `getCollaterals()` returns a list of the collateral types that are accepted.
 `getAmm()` returns the public facet of the AMM. `getRunIssuer()` provides access
-to the issuer of `RUN` so anyone can hold, spend and recognize RUN.
+to the issuer of `IST` so anyone can hold, spend and recognize IST.
 `makeVaultInvitation()` is described above under [Borrowers](#borrowers)
 
 ### Roadmap
@@ -117,7 +117,7 @@ to the issuer of `RUN` so anyone can hold, spend and recognize RUN.
   market depth and trade volumes.
  * Vaults in individual Vats: for better isolation and security, we want to put
   each vault in a separate vat.
- * Limits on RUN issued per collateral type: limiting the amount of RUN that
+ * Limits on IST issued per collateral type: limiting the amount of IST that
    can be issued for each collateral might blunt some attacks
  * Adding new collateral types will be made subject to governance rather
    than being included in the creatorFacet.
