@@ -1,0 +1,36 @@
+pull_request_rules:
+  - name: merge to master
+    conditions:
+      - label=automerge:merge
+      - check-success=Cloudflare Pages
+      - check-success=Lint and Test Snippets
+      - check-success=Test the build 
+      - "#approved-reviews-by>=1"
+      - "#review-threads-unresolved=0"
+    actions:
+      queue:
+        name: main
+        method: merge
+  - name: rebase updates then merge to master
+    conditions:
+      - label=automerge:rebase
+      - check-success=Cloudflare Pages
+      - check-success=Lint and Test Snippets
+      - check-success=Test the build 
+      - "#approved-reviews-by>=1"
+      - "#review-threads-unresolved=0"
+    actions:
+      queue:
+        method: merge
+        update_method: rebase
+  - name: squash to master
+    conditions:
+      - label=automerge:squash
+      - check-success=Cloudflare Pages
+      - check-success=Lint and Test Snippets
+      - check-success=Test the build 
+      - "#approved-reviews-by>=1"
+      - "#review-threads-unresolved=0"
+    actions:
+      queue:
+        method: squash
