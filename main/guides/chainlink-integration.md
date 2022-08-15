@@ -16,7 +16,7 @@ Using Chainlink on Agoric provides two main features:
 We have tested these features with [actual Chainlink oracle
 software](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
 
-**Note**: Chainlink has not yet (as of 2020-11-16) finished setting up an incentivized testnet for established Chainlink node operators to connect to Agoric.
+**Note**: Chainlink has not yet (as of Nov 16, 2020) finished setting up an incentivized testnet for established Chainlink node operators to connect to Agoric.
 
 ## Price Authority
 

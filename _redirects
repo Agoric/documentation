@@ -1,0 +1,2 @@
+# Send to a 404 error page on the main site for things we don't recognize.
+/documentation/* https://agoric.com/notfound/documentation/:splat 302

@@ -16,7 +16,7 @@ friend Alice could have eight Quatloos `purses`, and so on.
 
 You change a `purse`'s balance by calling either `deposit()` (to add assets)
 or `withdraw()` (to remove assets) on it. A `purse` can be empty, which if it holds 
-a fungible currency means it has a value of 0. If it holds non-fungible theatre tickets, 
+a fungible currency means it has a value of 0. If it holds non-fungible theater tickets,
 it means it just doesn't have any tickets.
 
 Unlike `payments`, `purses` are not meant to be sent to others. 
@@ -39,10 +39,10 @@ quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ## `purse.getCurrentAmount()`
 - Returns: `{Amount}`
 
-Get an `amount` describing the current digital assets balance in the `purse`.
-Of course, the returned `amount` `value` might be different the next time you
+Describe the `purse`'s current balance as an Amount.
+The returned Amount `value` might be empty, and might be different the next time you
 call `getCurrentAmount()` on the same `purse` if assets have been deposited or
-withdrawn from it in-between calls. 
+withdrawn in the interim.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -74,9 +74,9 @@ const checkNotifier = async () => {
 - `optAmount` `{Amount}` - Optional. 
 - Returns: `{Amount}`
 
-Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
-`payment`'s digital assets (i.e. the deposit amount). If the optional argument `optAmount` does not equal the balance of
-`payment`, or if `payment` is an unresolved promise, it throws an error.
+Deposit all the contents of `payment` into `purse`, returning an `amount` describing the
+`payment`'s digital assets (i.e. the deposited amount). If the optional argument `optAmount` does not equal the balance of
+`payment`, or if `payment` is a promise, it throws an error.
 
 While the above applies to local and remote `purses`, for remote `purses` there may be effects on 
 this operation due to use of `promises` and asynchronicity. You 
@@ -106,10 +106,10 @@ const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 ```
 
 ## `purse.getDepositFacet()`
+- Returns: `{DepositFacet}`
 
-Returns a deposit-only facet on the `purse`. This is an object you can give to other parties
-that lets them deposit `payments` to your `purse` without being able to withdraw assets from or check
-the balance of the `purse`. This makes it a safe way to let other people send you `payments`.
+Create and return a new deposit-only facet of the `purse` that allows arbitrary other parties to deposit `payments` into `purse` without the ability to check its balance or withdraw from it.
+This makes it a safe way to let other people send you `payments`.
 
 You can only deposit a `payment` into a deposit facet that's the same `brand` as the original `purse`
 takes.
@@ -152,7 +152,7 @@ depositOnlyFacet.receive(payment);
 - `amount` `{Amount}`
 - Returns: `{Payment}`
 
-Withdraw the `amount` specified digital assets from this `purse` into a new `payment`.
+Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
 
 If the call succeeds, it immediately extracts the value into a new `payment`. 
 The caller won't get the new `payment` until a later turn, since the call is (nearly always) remote.

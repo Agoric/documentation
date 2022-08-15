@@ -85,7 +85,7 @@ VuePress automatically builds search functionality and individual page menus fro
 You must have **only one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers 
 on one page and that they aren't too long. Otherwise the sidebar menu for the page will be cluttered and hard to read and use.
 
-Individual pages do not automatically display a sidebar menu for their headers (As of 03/2021, VuePress 
+Individual pages do not automatically display a sidebar menu for their headers (As of March 2021, VuePress
 documentation implies they do. We've filed a PR with them).
 To force an individual page sidebar menu, add the following YAML at the top of a page's source file (this file has this YAML at the top):
 ```js
@@ -294,7 +294,7 @@ View your local documentation site at `localhost:8080/documentation/`
 In `[/.vuepress/config.js](/.vuepress/config.js)`, find the lines
 ```
 zoeVersion: 'Beta Release v1.0.0',
-zoeDocsUpdated: '2021-04-07'
+zoeDocsUpdated: 'Apr 7, 2021'
 ```
 Edit the values to be current. The current Zoe version is at line 
 3 [here](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/package.json).
@@ -493,7 +493,7 @@ If you reorganize part of the Documentation repo or delete/deprecate a file in f
 you should establish a site URL redirect from the old file to the new one, in case anyone external to 
 Agoric has made a link or bookmarked the old file.
 
-Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of 03/2021, ours
+Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of March 2021, ours
 looks like this:
 ```js
 export default ({ router }) => {

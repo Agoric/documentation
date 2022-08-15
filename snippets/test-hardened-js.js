@@ -1,6 +1,6 @@
 // @jessie-check
 /* global Compartment */
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
+import { test } from './prepare-test-env-ava.js';
 
 test('Counter Example', t => {
   const assert = cond => t.true(cond);

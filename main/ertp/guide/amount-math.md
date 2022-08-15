@@ -11,34 +11,17 @@ The `AmountMath` library functions work for both fungible and nonfungible tokens
 There are two `AssetKinds`, each of which implements the same methods. Which kind is used 
 for a particular `brand` depends on what was specified when the `brand` and 
 its `issuer` were created. They are: 
-
-- `AssetKind.NAT` (`'nat'`): Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
-- `AssetKind.SET` (`set`): Used with non-fungible assets. Values are [copyArray](/guides/js-programming/far.md#passstyleof-api)s such as hardened arrays of strings.
-
-`makeIssuerKit(allegedName, assetKind, displayInfo=)` creates a new `issuer`,
-`mint`, and `brand`. 
-
-The second, optional, `assetKind` argument specifies which type 
-of `AmountMath` is used for the `brand` in a one-to-one
-association with the new `issuer`. It defaults to `AssetKind.NAT`. 
-
-The third, optional, `displayInfo` argument tells the UI how to display 
-values associated with the created `brand`. It defaults to `undefined`.
-
-For example: 
-
-<<< @/snippets/ertp/guide/test-amount-math.js#allAssetKinds
-
-Note that many `AmountMath` methods have a `brand` argument, either required or
-optional. For the ones with an optional `brand` argument, you should use it if
-you need to do an "absolute" check on the brand in the `amount` argument(s).
-In this case, you want to use the `brand` you got from the issuer (or from Zoe)
-as the optional parameter to compare the `amount` `brand`(s) to. 
+- `AssetKind.NAT` ("nat"): Used with fungible assets. Values are natural numbers using the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
+- `AssetKind.SET` ("set"): Used with non-fungible assets. Values are [copyArray](/guides/js-programming/far.md#passstyleof-api)s such as hardened arrays of strings.
 
 ## AmountMath Methods
 The following is a brief description and example of each `AmountMath` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](../api/).
+
+Note that many methods have a `brand` argument, either required or
+optional. Where optional, use the `brand` you got from an issuer (or from Zoe)
+to add verification that the `brand` of "amount" argument(s) corresponds with that `brand`.
 
 - **Information Getting Methods**
   - [AmountMath.getValue(brand, amount)](../api/amount-math.md#amountmath-getvalue-brand-amount)

@@ -1,8 +1,7 @@
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
+/* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
+import { test } from '../../prepare-test-env-ava.js';
 
-// #region import
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
-// #endregion import
 
 test('ertp guide issuers and mints makeIssuerKit', async t => {
   // #region makeIssuerKit
@@ -233,7 +232,7 @@ test('ertp guide mints makeIssuerKit', async t => {
   const paymentQuatloos2 = quatloosMint.mintPayment(
     AmountMath.make(quatloosBrand, 2n),
   );
-  // #endregion makeIssuerMint
+  // #endregion makeIssuerKitMint
   t.truthy(quatloosIssuer.isLive(paymentQuatloos2));
   t.truthy(quatloosIssuer);
   t.truthy(quatloosMint);

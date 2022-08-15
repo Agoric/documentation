@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/a564c6081976d7b66b3cdf54e0ba8903c8f1ee6d/packages/zoe/src/contracts/auction/secondPriceAuction.js) (Last updated: 2020/9/14)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/a564c6081976d7b66b3cdf54e0ba8903c8f1ee6d/packages/zoe/src/contracts/auction/secondPriceAuction.js) (Last updated: Sep 14, 2020)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 In a second-price auction, the winner is the participant with the highest bid, but

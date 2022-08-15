@@ -68,11 +68,11 @@ In this case, you want to use the `brand` you got from the issuer (or from Zoe)
 as the optional parameter to compare the `amount` `brand`(s) to. If they are
 not equal, an error is thrown.
 
-## `makeLocalAmountMath(issuer)` DEPRECATED 20-03-2021
+## `makeLocalAmountMath(issuer)` DEPRECATED Mar 20, 2021
 
-## `AmountMath.getBrand()` DEPRECATED 20-03-2021
+## `AmountMath.getBrand()` DEPRECATED Mar 20, 2021
 
-## `AmountMath.getAmountMathKind()` DEPRECATED 20-03-2021
+## `AmountMath.getAmountMathKind()` DEPRECATED Mar 20, 2021
 
 ## `AmountMath.make(brand, allegedValue)`
 - `brand` `{Brand}`

@@ -1,6 +1,6 @@
 # Hardened JavaScript
 
-::: tip Watch: Object-capability Programming in Secure Javascript (Aug 2019)
+::: tip Watch: Object-capability Programming in Secure Javascript (August 2019)
 
 _The first 15 minutes cover much of the material below.
 The last 10 minutes are Q&A._
@@ -267,7 +267,7 @@ so it's easy to conflate the environment features with JavaScript itself. For
 example, you may be surprised that `Buffer` and `require` are Node.js
 additions and not part of JavaScript.
 
-The conventional globals defined by browser or node.js hosts are
+The conventional globals defined by browser or Node.js hosts are
 not available by default in a `Compartment`, whether authority-bearing
 or not:
 
@@ -280,7 +280,7 @@ or not:
    - `require` (Use `import` module syntax instead.)
    - `localStorage`
       - [SwingSet](/platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
-      - For high cardinality data, see the `@agoric/store` package.
+      - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/store).
    - `global` (Use `globalThis` instead.)
  - authority-free but host-defined:
    - `Buffer`

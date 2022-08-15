@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/run-protocol/src/vpool-xyk-amm/constantProduct) (Last updated: 2022-02-23)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/inter-protocol/src/vpool-xyk-amm/constantProduct) (Last updated: 2022-02-23)
 ##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 

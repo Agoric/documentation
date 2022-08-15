@@ -14,11 +14,20 @@ A dapp is a *decentralized application* which typically has a browser-based user
 
 ## Using a Dapp
 
-If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can:
+If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you just want to try running a dapp locally (on a simulated Agoric VM, not an actual public chain), you can...
 
+Checkout the latest beta release of the sdk:
 ```sh
-# Use `agoric init` to make a new local copy of a dapp template. Here we chose the Fungible Faucet Dapp. You can replace `my-fungible-faucet` with a name of your choice.
-agoric init --dapp-template dapp-fungible-faucet my-fungible-faucet
+cd agoric-sdk
+git checkout beta
+yarn && yarn build
+```
+
+Use `agoric init` to make a new local copy of a dapp template:
+```sh
+# Here we chose the Fungible Faucet Dapp.
+# You can replace `my-fungible-faucet` with a name of your choice.
+agoric init --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
 cd my-fungible-faucet
 # Install the project dependencies
 agoric install
@@ -29,7 +38,7 @@ agoric start --reset
 Leave this command running (it is your simulated environment).  Then,
 in a separate terminal, deploy the contract and API to the VM.
 
-```sh
+```sh secondary style2
 # Deploy a new instance of the contract to the VM
 agoric deploy contract/deploy.js
 # Reset the VM's API server
@@ -38,12 +47,12 @@ agoric deploy api/deploy.js
 
 Then in a third terminal:
 
-```sh
+```sh secondary style3
 # Start the user interface
 cd ui && yarn start
 ```
 
-You can then navigate to http://localhost:3000 to view your dapp.
+You can then navigate to [http://localhost:3000](http://localhost:3000) to view your dapp.
 
 ## Modifying this Dapp
 
@@ -53,29 +62,27 @@ In the Agoric system, components are written in Javascript.
 
 The following are the important directories in an Agoric Dapp project:
 
-- [`contract`](#contract-directory) define and deploy the on-chain contract
-- [`api`](#api) define and deploy the chain-connected server's `/api` HTTP endpoint
-- [`ui`](#ui) the browser user interface that connects between the user's personal wallet and the API server
+- [`contract/`](#contract-directory) defines the on-chain smart contract.
+- [`api/`](#api) defines the chain-connected server's `/api` HTTP endpoint.
+- [`ui/`](#ui) defines the browser user interface connecting users' personal wallets and the API server.
 
-Other files and directories in this toplevel folder should not typically be modified.
+Other files and directories in this top-level folder should not typically be modified.
 
 ### Contract directory
 
 In the `contract` directory, you can find the following files to edit:
 
-- `init` contract initialization modules, starting with `init/custom-deploy.js`
-- `src` contract source code, starting with `src/contract.js`
+- `src/` contract source code, starting with `src/contract.js`
 
 Other files and folders that you don't typically need to edit:
 
 - `deploy.js` generic Agoric contract deployment script
-- `lib` library modules provided by Agoric and used by the contract
 
 ### API
 
 In the `api` directory, you can find the following files to edit:
 
-- `src` /api endpoint handler, starting with `src/handler.js`
+- `src/` handler for /api HTTP endpoints, starting with `src/handler.js`
 
 Other files and folders that you don't typically need to edit:
 

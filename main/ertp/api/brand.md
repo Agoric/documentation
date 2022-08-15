@@ -1,5 +1,5 @@
 # Brand
-The `brand` identifies the kind of assets. A particular `brand` has one-to-one relationships
+A `brand` identifies the type of assets. A particular `brand` has one-to-one relationships
 with an `issuer` and a `mint`, and one-to-many relationships with `purses` and `payments`.
 
 Meaning for, say, the Quatloos `brand`:
@@ -20,11 +20,11 @@ other `mint` or `issuer`.
 - `issuer` `{Issuer}`
 - Returns: `{Boolean}`
 
-Return `true` if `issuer` is this brand's `issuer`, `false` if not.
+Return `true` if `issuer` is the brand's `issuer`, `false` if not.
 
-An `issuer` uniquely identifies its `brand`. A `brand` **unreliably** identifies 
-its `issuer`. If `brand` B claims its `issuer` is A, but A doesn't agree 
-that B is its `brand`, then the `brand` is unreliable.
+Note that a `brand` from an untrusted source can misrepresent its association with
+an `issuer`. The claim should be cross-checked against
+[`issuer.getBrand()`](./issuer.md#issuer-getbrand) for mutual agreement.
 
 ```js
 const isIssuer = brand.isMyIssuer(issuer);
@@ -35,7 +35,7 @@ const isIssuer = brand.isMyIssuer(issuer);
 
 Returns the alleged name of the `brand`. Should not be trusted as accurate.
 
-An alleged name is a human-readable string name of a kind of digital asset. 
+An alleged name is a human-readable string name of a type of digital asset.
 It should not be trusted as accurate since there is no public registry or 
 expectation of uniqueness. This means there can be multiple issuers/mints/brands 
 with the same alleged name, and thus the name by itself does not uniquely 

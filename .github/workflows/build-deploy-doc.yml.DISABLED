@@ -43,10 +43,10 @@ jobs:
         SSH_HOST2: ${{ secrets.STAGING_SSH_HOST2 }}
 
     - name: SSH check out and build (staging)
-      run: ssh staging 'cd documentation && git pull && yarn install && yarn docs:build'
+      run: ssh staging 'cd documentation && git pull && yarn install --frozen-lockfile && yarn docs:build'
 
     - name: SSH check out and build (staging2)
-      run: ssh staging2 'cd documentation && git pull && yarn install && yarn docs:build'
+      run: ssh staging2 'cd documentation && git pull && yarn install --frozen-lockfile && yarn docs:build'
 
     - name: Deploy to gh-pages
       uses: JamesIves/github-pages-deploy-action@3.7.1

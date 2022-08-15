@@ -1,10 +1,7 @@
 // @ts-check
 
-// TODO Remove babel-standalone preinitialization
-// https://github.com/endojs/endo/issues/768
-import '@agoric/babel-standalone';
-
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
+/* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
+import { test } from '../../prepare-test-env-ava.js';
 
 import url from 'url';
 import { resolve as importMetaResolve } from 'import-meta-resolve';

@@ -1,5 +1,11 @@
 # Treasury contract
 
+<Zoe-Version/>
+
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/run-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Mar 11, 2022)
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+
+
 The Treasury is the primary mechanism for making `RUN` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
 loans against supported types of collateral. The creator of the contract can
@@ -9,7 +15,7 @@ starts up.)
 
 ## Borrowers
 
-Borrowers open a **vault** by calling `makeLoanInvitation()`in the publicAPI to
+Borrowers open a **vault** by calling `makeVaultInvitation()`in the publicAPI to
 get an invitation. Their proposal specifies that they're giving a recognized
 collateral type, and how much `RUN` they want in return. The contract is
 parameterized with a collateralization rate per currency and borrowers can
@@ -98,12 +104,12 @@ governance, liquidation takes place in a separate vat.
 
 #### makeLoan
 
-The treasury's public API includes `makeLoanInvitation()` and
+The treasury's public API includes `makeVaultInvitation()` and
 `getCollaterals()`, as well as `getAMM()` and `getRunIssuer()`.
 `getCollaterals()` returns a list of the collateral types that are accepted.
 `getAmm()` returns the public facet of the AMM. `getRunIssuer()` provides access
 to the issuer of `RUN` so anyone can hold, spend and recognize RUN.
-`makeLoanInvitation()` is described above under [Borrowers](#borrowers)
+`makeVaultInvitation()` is described above under [Borrowers](#borrowers)
 
 ### Roadmap
 

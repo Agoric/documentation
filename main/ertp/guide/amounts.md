@@ -4,11 +4,9 @@
 
 ![Amount methods](./assets/amount.svg) 
 
-`Amounts` describe digital assets. There are no `amount` API methods.
-Instead, an `amount` has two properties, `value` and `brand` with methods
-that act on them or take them as arguments. 
-Use the [`AmountMath` API](../api/amount-math.md)
-to get information about and otherwise manipulate an `amount` as a whole.
+An `amount` describes digital assets. There are no `amount` API methods,
+but [`AmountMath` API](../api/amount-math.md) methods take `amounts` as arguments
+to get information about and manipulate them.
 
 `AmountMath.make()` is generally how you make new `amounts`.
 However, you can also make an `amount` as an object literal by making a record of
@@ -16,13 +14,13 @@ a `brand` and a `value`. While `AmountMath.make()` is recommended for proper
 object-oriented programming, this produces the same result:
 
 <<< @/snippets/ertp/guide/test-amounts.js#manualMake
-`amount` has two properties:
-- **Brand**: The kind of digital asset, such as our imaginary `Quatloos` currency or,
+Each `amount` has two properties:
+- `brand`: The type of digital asset, such as our imaginary `Quatloos` currency or,
   in a game, a powerful magic sword with a brand of `Plus3Sword-ABCGames` or similar.
-- **Value**: How much/many of the asset. Fungible values are natural
+- `value`: How much/many of the asset. Fungible values are natural
 numbers represented as BigInts. Non-fungible values may be represented as strings naming a
 particular right, or an arbitrary object representing the rights at
-issue (e.g., a theatre ticket's date, time, row and seat positions).
+issue (e.g., a theater ticket's date, time, row and seat positions).
 
 `amounts` and their `values` and `brands` can be manipulated by the
 `AmountMath` library. It executes the logic of how `amounts` change when
@@ -35,7 +33,7 @@ to change your offer, represented as an `amount`, to be of a greater
 
 ![Brand methods](./assets/brand.svg) 
 
-A `brand` object is an `amount` object's kind of digital asset, such as
+A `brand` object is an `amount` object's type of digital asset, such as
 our imaginary Quatloos currency or, in a game, a powerful magic
 sword.
 
@@ -66,7 +64,7 @@ API Reference](../api/).
   - Returns the `brand`'s alleged name, but should not be trusted as accurate.
   - <<< @/snippets/ertp/guide/test-amounts.js#getAllegedName
 - [`brand.getDisplayInfo()`](../api/brand.md#brand-getdisplayinfo)
-  - Returns the `DisplayInfo` associated with the `brand`. The `DisplayInfo
+  - Returns the `DisplayInfo` associated with the `brand`. The `DisplayInfo`
     tells the UI how to correctly display `values` associated with the `brand`.
   - <<< @/snippets/ertp/guide/test-amounts.js#getDisplayInfo
 

@@ -19,7 +19,7 @@ See [here](/ertp/api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo) 
 ## `mint.getIssuer()`
 - Returns: `{Issuer}`
 
-Get the `Issuer` associated with this `mint`. From their creation, a `mint` is always
+Return the `issuer` uniquely associated with the `mint`. From their creation, a `mint` is always
 in an unchangeable one-to-one relationship with an `issuer`. 
 
 ```js

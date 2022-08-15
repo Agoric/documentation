@@ -26,7 +26,7 @@ are ephemeral, so any object created there dies as soon as the script stops.
 - `issuer` `{Issuer}` 
 - `brand` `{Brand}`
 
-Makes a new `issuer` as well as its one-to-one associated ERTP objects; a `mint` and a `brand`. 
+Create and return a new `issuer` and its associated `mint` and `brand`.
 All are in unchangeable one-to-one relationships with each other. 
 
 The `allegedName` becomes part of the `brand` in asset descriptions. It
@@ -66,7 +66,7 @@ const combinedProperty = AmountMath.make(propertyTitleBrand, ['1292826', '102839
 ## `issuer.getAllegedName()`
 - Returns: `{allegedName}`
 
-Returns the `allegedName` for this `issuer`.
+Return the `allegedName` for the `issuer` (the non-trusted human-readable name of its associated `brand`).
 
 An alleged name is a human-readable string name 
 of a kind of digital asset. An alleged name
@@ -76,10 +76,10 @@ means there can be multiple issuers/mints/brands with the
 same alleged name, and thus the name by itself does not
 uniquely identify an issuer. Rather, the `brand` object does that.
 
-To put it another way, nothing stops different people from creating
-multiple `issuers` with the alleged name `Quatloos`...but that doesn't
-make any of them **the** Quatloos `issuer`. The alleged name is just a 
-human readable version which is helpful for debugging. 
+To put it another way, nothing stops anyone from creating an `issuer`
+with the alleged name "Quatloos" or even "BTC", regardless of whether
+or not such a name is already in use. The alleged name is just a
+human readable string which is helpful for debugging.
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
@@ -89,8 +89,7 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 ## `issuer.getAssetKind()`
 - Returns: `{AssetKind}`
 
-Get the kind of this `issuer`'s asset. It returns one of
-`AssetKind.NAT` (`nat`) or `AssetKind.SET` (`set`).
+Return the kind of the `issuer`'s asset; either `AssetKind.NAT` ("nat") or `AssetKind.SET` ("set").
 
 The `assetKind` value specifies what kind of values are used in amounts for this issuer. 
 `AmountMath` works for all the different kinds of values. 
@@ -110,9 +109,9 @@ moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET`
 - `payment` `{Payment}`
 - Returns: `{Amount}`
 
-Get the `payment`'s balance. Because the `payment` is not trusted, we cannot
-trust it to provide its true value, and must rely on the `issuer` to validate
-the `payment`'s `brand` and tell us how much it contains.
+Describe the `payment`'s balance as an Amount. Because a `payment` from an untrusted
+source cannot be trusted to provide its own true value, `issuer` must be used to
+validate its `brand` and report how much it contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand} = makeIssuerKit('quatloos');
@@ -123,7 +122,7 @@ quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloo
 ## `issuer.getBrand()`
 - Returns: `{Brand}` 
 
-Returns the `brand` for this `issuer`. The `brand` indicates the kind of digital asset
+Return the `brand` for the `issuer`. The `brand` indicates the kind of digital asset
 and is the same for the `issuer`'s associated `mint`, and any `purses` and `payments` of this particular
 kind. The `brand` is not closely held, so this function should not be trusted to identify
 an `issuer` alone. Fake digital assets and amounts can use another `issuer's` `brand`.
@@ -149,15 +148,15 @@ const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 - `optAmount` `{Amount}` - Optional
 - Returns: `{Amount}`
 
-Burn (destroy) all of the digital assets in the `payment`
-and return an `amount` of what was burned. 
+Destroy all of the digital assets in the `payment`,
+make it unavailable for later use,
+and return an Amount of what was burned.
 
 `optAmount` is optional. If `optAmount` is present, 
 the code insists the `payment` balance is equal to `optAmount`, to prevent sending the wrong `payment`
 and other confusion.  
 
-If `payment` is a `promise` for a `payment`, the operation proceeds after the
-`promise` resolves.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
@@ -174,9 +173,8 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 - `optAmount` `{Amount}` 
 - Returns: `{Payment}` 
 
-Transfer all digital assets from `payment` to a new `payment` and burn the
-original. This allows the owner to be sure no other references to this
-payment survive, so they are the exclusive owner. 
+Transfer all digital assets from `payment` to a new Payment and consume the
+original, making it unavailable for later use.
 
 `optAmount` is optional. 
 If `optAmount` is present, `payment`'s balance must be
@@ -184,9 +182,7 @@ equal to `optAmount`, to prevent sending the wrong `payment` and other confusion
 If `optAmount` does not equal the balance in the original `payment`
 then it throws an error.  
 
-If a `payment` is a `promise` for a `payment`, the operation will 
-proceed after the `promise` resolves. Since you might also have a `promise` returned,
-it might take a bit of time for the whole operation to resolve.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -201,16 +197,14 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 - `optTotalAmount` `{Amount}` - Optional.
 - Returns: `{Payment}`
 
-Combines multiple `payments` into one `payment`.  If any `payment` in `paymentsArray` is 
-a `promise`, the operation proceeds after all the `payments`
-resolve. The `payments` in `paymentsArray` are burned.
+Combine multiple Payments into one new Payment. If any item in `paymentsArray` is
+a promise, the operation proceeds after each such promise resolves to a Payment.
+All Payments in `paymentsArray` are consumed and made unavailable for later use.
 
-If the optional `optTotalAmount` is present, the total of all the `payment` `amounts` in the
-array must equal `optTotalAmount` or it throws an error.
+If the optional `optTotalAmount` is present, the total value of all Payments in `paymentsArray`
+must equal `optTotalAmount` or it throws an error.
 
-If a `payment` is a `promise` for a `payment`, the operation will 
-proceed after the `promise` resolves. Since you might also have a `promise` returned,
-it might take a bit of time for the whole operation to resolve.
+Each Payment in `paymentsArray` must be associated with the same Brand as `issuer`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -224,31 +218,20 @@ for (let i = 0; i < 100; i += 1) {
 const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
-**Note**: You **cannot** combine `payments` from different `mints` (as they are of different `brands`):
-
-```js
-const { mint: otherMint, issuer: otherIssuer, brand: otherBrand } = makeIssuerKit('other');
-const otherPayment = otherMint.mintPayment(AmountMath.make(otherBrand, 10n));
-payments.push(otherPayment); // using the payments array from the above code
-
-// throws error
-const badPayment = quatloosIssuer.combine(payments);
-```
-
 ## `issuer.split(payment, paymentAmountA)`
 - `payment` `{Payment}`
 - `paymentAmountA` `{Amount}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into two new `payments`, A and B, according to `paymentAmountA`. 
+Split a single `payment` into two new Payments, A and B, according to `paymentAmountA`.
 For example, if the `payment` is for 10 Quatloos, and `paymentAmountA` is 3 Quatloos,
-it returns an array of two `payments` with balances of 3 Quatloos and 7 Quatloos.
+it returns an array of two Payments with respective balances of 3 Quatloos and 7 Quatloos.
 
-The original `payment` is burned. 
+The original `payment` is consumed and made unavailable for later use.
 
-If the original `payment` is a `promise` for a `payment`, the operation will 
-proceed after the `promise` resolves. Since you might also have a `promise` returned,
-it might take a bit of time for the whole operation to resolve.
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
+
+`payment` and `paymentAmountA` must both be associated with the same Brand as `issuer`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
@@ -262,12 +245,15 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 - `amountArray` `{Array <Amount>}`
 - Returns: `{Array <Payment>}`
 
-Split a single `payment` into multiple `payments`. The resulting array of `payments` is
-as long as `amountArray`, and the `payments` will have `amounts` corresponding to 
-the `amountArray` contents. The original `payment` is burned. If the original `payment` 
-is a `promise`, the operation proceeds after the `promise` resolves.  If the `amounts` 
-in `amountArray` don't add up to the value of `payment`, the operation fails. The `brands`
-of the `amountArray` `amounts` must all be the same as the `payment` `brand`.
+Split a single `payment` into multiple Payments.
+The returned array includes a Payment item corresponding to each Amount of `amounts`, in order.
+
+The original `payment` is consumed and made unavailable for later use.
+
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
+
+If the Amounts in `amountArray` don't add up to the value of `payment`, the operation fails.
+`payment` and each Amount in `amountArray` must be associated with the same Brand as `issuer`.
 
 ```js
 const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = makeIssuerKit('quatloos');
@@ -291,5 +277,5 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - `payment` `{Payment}`
 - Returns: `{Boolean}`
 
-Returns `true` if the `payment` was created by the issuer and has not yet been destroyed.
-If `payment` is a promise, the operation proceeds upon resolution.
+Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
+If `payment` is a promise, the operation proceeds after it resolves to a Payment.
