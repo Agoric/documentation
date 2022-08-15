@@ -323,8 +323,8 @@ module.exports = {
     // custom text for edit link. Defaults to "Edit this page"
     editLinkText: 'Help us improve this page!',
 
-    zoeVersion: 'v0.18.1',
-    zoeDocsUpdated: 'Sep 13, 2021',
+    zoeVersion: 'v0.24.0',
+    zoeDocsUpdated: 'May 27, 2022',
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the
