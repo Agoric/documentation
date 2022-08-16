@@ -56,7 +56,8 @@ test('ertp guide purse deposit', async t => {
   );
   // Throws error since secondPayment is 100 Quatloos and quatloos123 is 123 Quatloos
   t.throws(() => quatloosPurse.deposit(secondPayment, quatloos123), {
-    message: /{"brand":"\[Alleged: quatloos brand\]","value":"\[100n\]"} - Must be: {"brand":"\[Alleged: quatloos brand\]","value":"\[123n\]"}/,
+    message:
+      '{"brand":"[Alleged: quatloos brand]","value":"[100n]"} - Must be: {"brand":"[Alleged: quatloos brand]","value":"[123n]"}',
   });
   // #endregion deposit
 });
