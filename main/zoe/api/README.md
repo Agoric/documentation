@@ -3,8 +3,7 @@
 <Zoe-Version/>
 
 ::: tip Beta status
-The Agoric platform is at the beta stage. It has not yet been 
-formally tested or hardened. Do not use for production purposes.
+The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
 :::
 
 The Zoe framework provides a way to write smart contracts without having to worry about [offer safety](../guide/offer-safety.md). To use Zoe, we put things in terms of "offers". An offer proposal is a statement about what you want and what you're willing to offer. It turns out, many smart contracts (apart from gifts and one-way payments) involve an exchange of digital assets that can be put in terms of offer proposals.

@@ -256,8 +256,8 @@ to manipulate the offer. The queries and operations are as follows:
     const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
     // Try to incrementBy empty. This succeeds, and the keyword is added
     // with an empty amount.
-    zcfSeat1.incrementBy({ RUN: empty }); 
-    t.deepEqual(zcfSeat1.getStagedAllocation(), { RUN: empty  });
+    zcfSeat1.incrementBy({ IST: empty }); 
+    t.deepEqual(zcfSeat1.getStagedAllocation(), { IST: empty  });
     ```
     While this incremented the allocation by an empty amount, any amount would have been added to the 
     allocation in the same way. 
@@ -282,7 +282,7 @@ to manipulate the offer. The queries and operations are as follows:
     const stagedAllocation = zcfSeat1.getStagedAllocation();
     const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
     // decrementBy empty does not throw, and does not add a keyword 
-    zcfSeat1.decrementBy({ RUN: empty });
+    zcfSeat1.decrementBy({ IST: empty });
     t.deepEqual(zcfSeat1.getStagedAllocation(), {});
     ```
     The result here is **not** to add the keyword to the allocation. It wasn't there to begin with, and
@@ -299,7 +299,7 @@ to manipulate the offer. The queries and operations are as follows:
     // The allocation is currently {}
     const stagedAllocation = zcfSeat1.getStagedAllocation();
     // decrementBy throws for a keyword that does not exist on the stagedAllocation and a non-empty amount
-    zcfSeat1.decrementBy({ RUN: runFee });
+    zcfSeat1.decrementBy({ IST: runFee });
     ```
     It throws an error because you cannot subtract something from nothing. So trying to decrement an empty
     allocation by a non-empty amount is an error, while decrementing an empty allocation by an empty amount

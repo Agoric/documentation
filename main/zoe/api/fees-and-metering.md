@@ -4,7 +4,7 @@ Note: We recently started charging fees for using Zoe. The design is still
 on-going and the following details may change.
 
 Fees are charged in
-RUN, our stable local currency. These are the Zoe methods that charge
+IST, our stable local currency. These are the Zoe methods that charge
 fees:
 
 * `install()`
@@ -15,8 +15,8 @@ fees:
 The specific amount charged for each method can be queried with
 `E(zoe).getConfiguration()`, which returns a promise for an object. On
 that object, the `zoeFeesConfig` property gives the fee values in the
-smallest unit of RUN. 
-(The unit of RUN displayed in the wallet and in dapps is
+smallest unit of IST. 
+(The unit of IST displayed in the wallet and in dapps is
 10^`decimalPlaces`, usually 10^6).
 
 An example of `zoeFeesConfig`:
@@ -56,8 +56,8 @@ To bind a fee purse to Zoe, call:
 const myZoe = E(zoe).bindDefaultFeePurse(feePurse);
 ```
 
-Fees must be paid in RUN, so please make sure that your fee purse has
-a balance of RUN that is sufficient for paying fees.
+Fees must be paid in IST, so please make sure that your fee purse has
+a balance of IST that is sufficient for paying fees.
 
 ## Metering and Paying for Execution
 
@@ -73,7 +73,7 @@ been paid for, and how many have been used up. When execution uses up
 the paid-for computrons, Zoe refills the
 meter with computrons by charging a fee to the fee purse.
 
-Contract owners must add RUN to their fee purse on a regular basis to pay for the ongoing
+Contract owners must add IST to their fee purse on a regular basis to pay for the ongoing
 execution. The next section explains how contract owners can transfer
 some of the costs to users.
 
@@ -96,9 +96,9 @@ invitation specifies a low fee and a short expiry:
 ```
 
 `LOW_FEE` is a constant understood by Zoe. It will be translated by
-Zoe from a relative description into an amount of RUN, such that the
+Zoe from a relative description into an amount of IST, such that the
 invitation that a user receives has the additional details where `fee`
-is an amount of RUN and `expiry` is a timestamp:
+is an amount of IST and `expiry` is a timestamp:
 
 ```js
 { fee, expiry, zoeTimeAuthority }
@@ -120,4 +120,4 @@ guarantee that they can pay for the execution of their contract.
 ## Troubleshooting
 
 If you are experiencing problems running
-dapps, please make sure your fee purse has enough RUN to pay fees.
+dapps, please make sure your fee purse has enough IST to pay fees.

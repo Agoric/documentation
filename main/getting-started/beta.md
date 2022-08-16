@@ -61,7 +61,7 @@ their promise. The call option has an *expiration date*, when the opportunity is
 The digital assets owner cannot remove the assets from escrow before the expiration date.
 
 A covered call proposal looks like:
-```
+```js
 const proposal = {
     give: { StrikePrice: moola(25) },
     want: { Asset: concertTicket("E4") },
