@@ -4,8 +4,6 @@ queue_rules:
       - base=main
       # Require integration tests before merging only
       - check-success=Cloudflare Pages
-      - check-success=Lint and Test Snippets
-      - check-success=Test the build 
 pull_request_rules:
   - name: merge to master
     conditions:
