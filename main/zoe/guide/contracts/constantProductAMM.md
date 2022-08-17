@@ -27,7 +27,7 @@ shared as much as possible. Each secondary currency has a separate pool of liqui
 When the contract is instantiated, the terms specify the central token.  Invitations
 for adding and removing liquidity and for making trades are available by calling
 methods on the publicFacet. Other publicFacet operations support querying prices and
-the sizes of pools. Create new pools with `addPool()`.
+the sizes of pools. Create new pools with `addPoolInvitation()`.
 
 When making trades or requesting prices, the caller must specify that either the
 input price (swapIn, getInputPrice) or the output price (swapOut, getOutputPrice) is
@@ -49,7 +49,7 @@ any trading has intervened, the trade is unlikely to be accepted. You can either
 specify limits on how far the price may have moved, or specify limits of zero and
 trust the contract to trade fairly.
 
-Transactions that don't require an invitation include `addPool()` and the queries
+Transactions that don't require an invitation include `addPoolInvitation()` and the queries
 (`getInputPrice()`, `getOutputPrice()`, `getPoolAllocation()`,
 `getLiquidityIssuer()`, and `getLiquiditySupply()`).
 
@@ -109,13 +109,11 @@ E(saraAtmPurse).deposit(atmRefund);
 
 ###  Creating a new Pool
 
-TODO: fix text in this section to match new API. @@@@@@
-
 When the contract is first instantiated, there won't be any pools ready for
-trading. `addPool()` adds a new currency, which can then be funded.  (All
+trading. `addPoolInvitation()` adds a new currency, which can then be funded.  (All
 currencies must be fungible.) When a pool is first funded, there's no other basis
 on which to decide how much liquidity to create, so the liquidity amount equals the
-amount of the central token in the offer.
+amount of the central token in the offer. Keep in mind that there is minimuim amount of liquidity required in order to successfully establish a new pool, and this amount is decided upon via governance.
 
 <<< @/snippets/test-amm-client-api.js#addIssuer
 
