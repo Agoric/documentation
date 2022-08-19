@@ -1,5 +1,6 @@
 // @ts-check
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
+/* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
+import { test } from './prepare-test-env-ava.js';
 
 import { E } from '@endo/eventual-send';
 // #region importFar

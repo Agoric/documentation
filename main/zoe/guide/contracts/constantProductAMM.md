@@ -2,7 +2,7 @@
 
 <Zoe-Version/>
 
-##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/run-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: Feb 17, 2022)
+##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: Aug 15, 2022)
 ##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 
@@ -17,8 +17,8 @@ as trading takes place.)
 Each liquidity pool maintains a price for exchanges between the central token
 and a secondary token. Secondary tokens can be exchanged with each other, but
 only through the central token. For example, if BLD and ATM are two token types
-and RUN is the central currency, a swap giving ATM and wanting BLD would first
-use the pool (ATM, RUN) then the pool (BLD, RUN). There are no direct liquidity
+and IST is the central currency, a swap giving ATM and wanting BLD would first
+use the pool (ATM, IST) then the pool (BLD, IST). There are no direct liquidity
 pools between two secondary tokens.
 
 There should only need to be one instance of this contract, so liquidity can be
@@ -55,7 +55,7 @@ Transactions that don't require an invitation include `addPoolInvitation()` and 
 
 ## The ConstantProduct API
 
-These examples use RUN as the central token. BLD and ATM are secondary currencies.
+These examples use IST as the central token. BLD and ATM are secondary currencies.
 
 ### Trading with the ConstantProduct AMM
 
@@ -70,7 +70,7 @@ const quote = E(publicFacet).getOutputPrice(
   AmountMath.make(BLDBrand, 275n),
   AmountMath.makeEmpty(ATMBrand),
 );
-  ```
+```
   
 Let's assume the quote says she needs to provide 216 ATM. Sara believes the
 price is somewhat volatile, and she doesn't want to make repeated calls, so she pads
@@ -118,7 +118,7 @@ amount of the central token in the offer. Keep in mind that there is minimuim am
 <<< @/snippets/test-amm-client-api.js#addIssuer
 
 Alice sees that the current rate in the external market is 2 BLD for each
-RUN, so she deposits twice as many BLD as RUN to fund the market.
+IST, so she deposits twice as many BLD as IST to fund the market.
 
 <<< @/snippets/test-amm-client-api.js#addPool
 
@@ -132,11 +132,11 @@ offer is exited with no trade. If more of the secondary is provided than is requ
 the excess is returned.
 
 Bob calls `getPoolAllocation()` to find the relative levels. Let's say the answer is
-that the current ratio is 1234 BLD to 1718 RUN.
+that the current ratio is 1234 BLD to 1718 IST.
 
 ```js
 const BLDPoolAlloc = E(publicFacet).getPoolAllocation(BLDBrand);
-const RUNValue = BLDPoolAlloc.Central.value;
+const ISTValue = BLDPoolAlloc.Central.value;
 const BLDValue = BLDPoolAlloc.secondary.value;
 ```
 
@@ -150,7 +150,7 @@ figure, but there's no need in this case.
 ```js
 const bobProposal = harden({
   give: {
-    Central: AmountMath.make(RUNBrand, 1800n),
+    Central: AmountMath.make(ISTBrand, 1800n),
     Secondary: AmountMath.make(BLDBrand, 1200n),
   },
   want: { Liquidity: AmountMath.make(liquidityBrand, 0n) },
@@ -158,7 +158,7 @@ const bobProposal = harden({
 });
 
 const bobPayments = {
-  Central: bobRUNPayment,
+  Central: bobISTPayment,
   Secondary: bobBLDPayment,
 }
 

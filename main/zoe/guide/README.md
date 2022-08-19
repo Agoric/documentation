@@ -3,14 +3,13 @@
 <Zoe-Version/>
 
 ::: tip Beta status
-The Agoric platform is at the beta stage. It has not yet been formally tested
-or hardened. Do not use for production purposes.
+The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
 :::
 
 ::: tip Work in Progress: Fees and Metering
 We recently started
 charging fees for using Zoe. If you are experiencing problems running
-dapps, please make sure your fee purse has enough RUN to pay fees. For
+dapps, please make sure your fee purse has enough IST to pay fees. For
 more information about how fees are charged and how some fees are used
 to pay for code execution, please see our [work-in-progress
 documentation](/zoe/api/fees-and-metering.md). We expect that this model will change in the upcoming
