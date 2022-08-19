@@ -43,9 +43,7 @@ The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a
-   [timer](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/cosmic-swingset/TimerService.md),
-   and must be recognized by `priceAuthority`.
+ * `timer` is a [timer](/repl/timerServices.md), and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.

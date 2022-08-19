@@ -9,7 +9,7 @@ various time and price conditions.
 To see a `priceAuthority` in use, see the [Loan
 contract](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts/loan)
 and the [Call Spread
-contract](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/zoe/src/contracts/callSpread.js).
+contracts](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts/callSpread).
 
 ## Receiving a quote
 
