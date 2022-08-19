@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/otcDesk.js) (Last updated: Mar 1, 2022)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
 
 ![Building a Composable DeFi Contract](./assets/title.jpg)
 
@@ -29,7 +29,7 @@ In this OTC Desk Contract:
 * Can use any pricing mechanism
 * Can stop quoting when the market is crazy
 * Can trade fungible and non-fungible digital assets
-* Uses another contract (the [covered call option contract](https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/src/contracts/coveredCall.js)) as a reusable component
+* Uses another contract (the [covered call option contract](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/zoe/src/contracts/coveredCall.js)) as a reusable component
 
 ## The Dapp
 

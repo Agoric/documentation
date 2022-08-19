@@ -103,7 +103,7 @@ module.exports = [
       {
         text: 'Dynamic IBC (dIBC)',
         ariaLabel: 'dIBC Guide',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md'
+        link: 'https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md'
       },
       {
         text: 'Documentation',
@@ -140,7 +140,7 @@ module.exports = [
       {
         text: 'Github',
         ariaLabel: 'Zoe Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe'
+        link: 'https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe'
       }
     ],
   },
@@ -167,7 +167,7 @@ module.exports = [
       {
         text: 'Github',
         ariaLabel: 'ERTP Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/master/packages/ERTP'
+        link: 'https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/ERTP'
       }
     ]
   },

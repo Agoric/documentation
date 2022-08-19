@@ -6,7 +6,7 @@ all guides across our Documentation repo.
 - [Agoric Dapps](/dapps)
 - [Chainlink Integration](./chainlink-integration.md)
 - [Documentation](/getting-started/)
-- [Dynamic IBC](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md)
+- [Dynamic IBC](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md)
 - [ERTP](/ertp/guide)
 - [JavaScript Distributed Programming on the Agoric Platform](./js-programming)
 - [REPL](/repl/)

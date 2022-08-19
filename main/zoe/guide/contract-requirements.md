@@ -23,7 +23,7 @@ A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a
 separate file, for example) and import them.
 
-A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
+A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/HEAD/packages/ses). Some legacy
 JavaScript code is incompatible with Hardened JavaScript, because Lockdown freezes the
 JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
 mutate these. 

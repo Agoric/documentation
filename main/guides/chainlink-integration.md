@@ -14,7 +14,7 @@ Using Chainlink on Agoric provides two main features:
   can initiate a job on a single oracle and return its results
 
 We have tested these features with [actual Chainlink oracle
-software](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md).
+software](https://github.com/Agoric/dapp-oracle/blob/HEAD/chainlink-agoric/README.md).
 
 **Note**: Chainlink has not yet (as of Nov 16, 2020) finished setting up an incentivized testnet for established Chainlink node operators to connect to Agoric.
 
@@ -55,7 +55,7 @@ This is sent as your query's reply.
 
 You can test these queries against a locally-running Chainlink node that you
 control.  Follow [the Chainlink integration
-instructions](https://github.com/Agoric/dapp-oracle/blob/main/chainlink-agoric/README.md)
+instructions](https://github.com/Agoric/dapp-oracle/blob/HEAD/chainlink-agoric/README.md)
 to set it up.
 
 There is also a more limited local node that emulates part of the Chainlink API

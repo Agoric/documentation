@@ -136,7 +136,7 @@ export { start };
 Whenever we create a new object or array, we recursively
 freeze it with `harden`. You can learn more about `harden` in the
 [Endo and Hardened JavaScript
-documentation](https://github.com/endojs/endo/blob/master/packages/ses/README.md).
+documentation](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md).
 
 The `automaticRefund` contract behavior is implemented in `refund`.
 It just tells Zoe to exit the offer, which gives the user their payout

@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4c4da6a7ae76aebbff2af48613008978eb04462b/packages/zoe/src/contracts/oracle.js) (Last updated: Jan 31, 2022)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
 
 **NOTE: You almost certainly do not want to use this contract directly.
 Instead, please read the [Chainlink integration

@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/callSpread/fundedCallSpread.js) (Last updated: Feb 20, 2022)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
 
 This contract implements a fully collateralized call spread. You can use a call spread as a
 [financial building block](https://youtu.be/m5Pf2d1tHCs) to create futures, puts, calls, and event
@@ -43,7 +43,7 @@ The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
  * `timer` is a
-   [timer](https://github.com/Agoric/agoric-sdk/blob/master/packages/cosmic-swingset/TimerService.md),
+   [timer](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/cosmic-swingset/TimerService.md),
    and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.

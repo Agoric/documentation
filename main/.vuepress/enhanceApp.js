@@ -8,9 +8,9 @@ export default ({ router }) => {
     { path: '/distributed-programming.html', redirect: '/guides/js-programming/' },
     { path: '/getting-started/agoric-cli-guide/', redirect: '/guides/agoric-cli/' },
     { path: '/getting-started/agoric-cli-guide.html', redirect: '/guides/agoric-cli/' },
-    { path: '/guides/js-programming/ses/ses-guide.html', redirect: 'https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md' },
-    { path: '/guides/js-programming/ses/ses-reference.html', redirect: 'https://github.com/endojs/endo/blob/master/packages/ses/docs/reference.md' },
-    { path: '/guides/js-programming/ses/lockdown.html', redirect: 'https://github.com/endojs/endo/blob/master/packages/ses/docs/lockdown.md' },
+    { path: '/guides/js-programming/ses/ses-guide.html', redirect: 'https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md' },
+    { path: '/guides/js-programming/ses/ses-reference.html', redirect: 'https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/reference.md' },
+    { path: '/guides/js-programming/ses/lockdown.html', redirect: 'https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.md' },
   ];
   redirects.forEach(config => router.addRoute(config));
 } 
