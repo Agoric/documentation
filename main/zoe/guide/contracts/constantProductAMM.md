@@ -27,16 +27,16 @@ shared as much as possible. Each secondary currency has a separate pool of liqui
 When the contract is instantiated, the terms specify the central token.  Invitations
 for adding and removing liquidity and for making trades are available by calling
 methods on the publicFacet. Other publicFacet operations support querying prices and
-the sizes of pools. Create new pools with `addPool()`.
+the sizes of pools. To create new pools, use tbe `addPoolInvation()` recieved from the publicFacet.
 
 When making trades or requesting prices, the caller must specify that either the
-input price (swapIn, getInputPrice) or the output price (swapOut, getOutputPrice) is
+input price (`swapIn`, `getInputPrice`) or the output price (`swapOut`, `getOutputPrice`) is
 fixed. For swaps, the required keywords are `In` for the trader's `give` amount, and
 `Out` for the trader's `want` amount.  `getInputPrice()` and `getOutputPrice()` each
 take two amounts. When `getInputPrice()` or `swapIn()` is called, the `amountOut`
-parameter indicated the desired `amountOut`; if `amountIn` is insufficient to provide
-that much, the result indicates that no trade will take place. (The returned amountIn
-and amountOut will both be empty amounts.) Similarly, when `swapIn()` or
+parameter indicates the desired `amountOut`; if `amountIn` is insufficient to provide
+that much, the result indicates that no trade will take place. (The returned `amountIn`
+and `amountOut` will both be empty amounts.) Similarly, when `swapIn()` or
 `getOutputPrice()` is called, `amountIn` is treated as a maximum.  If it would take a
 greater amount to get the specified `amountOut`, the result indicates no trade.
 
@@ -49,7 +49,7 @@ any trading has intervened, the trade is unlikely to be accepted. You can either
 specify limits on how far the price may have moved, or specify limits of zero and
 trust the contract to trade fairly.
 
-Transactions that don't require an invitation include `addPool()` and the queries
+Transactions that don't require an invitation include `addPoolInvation()` and the queries
 (`getInputPrice()`, `getOutputPrice()`, `getPoolAllocation()`,
 `getLiquidityIssuer()`, and `getLiquiditySupply()`).
 
@@ -62,15 +62,15 @@ These examples use IST as the central token. BLD and ATM are secondary currencie
 Once trading pools have been set up (see below), a new trader can interact with the
 market by asking for the current price, making an invitation, and making an
 offer. If Sara has ATM and needs 275 BLD for a deal she has negotiated, she can use
-getOutputPrice() to get a quote. (An empty amount indicates no limit on the
-amountOut of the result.)
+`getOutputPrice()` to get a quote. (An empty amount indicates no limit on the
+`amountOut` of the result.)
 
 ```js
 const quote = E(publicFacet).getOutputPrice(
   AmountMath.make(BLDBrand, 275n),
   AmountMath.makeEmpty(ATMBrand),
 );
-  ```
+```
   
 Let's assume the quote says she needs to provide 216 ATM. Sara believes the
 price is somewhat volatile, and she doesn't want to make repeated calls, so she pads
@@ -110,13 +110,13 @@ E(saraAtmPurse).deposit(atmRefund);
 ###  Creating a new Pool
 
 When the contract is first instantiated, there won't be any pools ready for
-trading. `addPool()` adds a new currency, which can then be funded.  (All
+trading. `addPoolInvation()` adds a new currency, which can then be funded.  (All
 currencies must be fungible.) When a pool is first funded, there's no other basis
 on which to decide how much liquidity to create, so the liquidity amount equals the
-amount of the central token in the offer.
+amount of the central token in the offer. Keep in mind that when funding a new pool, there is a minimum liquidity requirement that must be met, or else the offer will get rejected.
 
 ```js
-const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD');
+const BLDLiquidityIssuer = await E(publicFacet).addIssuer(BLDIssuer, 'BLD');
 ```
 
 Alice sees that the current rate in the external market is 2 BLD for each
@@ -149,7 +149,7 @@ When adding or removing liquidity to pools that have already been established, t
 amounts deposited must be in proportion to the current balances in the pool. The
 calculation is based on the amount of the `Central` asset. The `Secondary` assets
 must be added in proportion.  If less `Secondary` is provided than required, the
-offer is exited with no trade. If more of the secondary is provided than is required,
+offer is exited with no trade. If more `Secondary` is provided than is required,
 the excess is returned.
 
 Bob calls `getPoolAllocation()` to find the relative levels. Let's say the answer is
@@ -163,7 +163,7 @@ const BLDValue = BLDPoolAlloc.secondary.value;
 
 Now he can add liquidity.  The price ratio changes when anyone trades with the pool,
 so he should leave some flexibility in the proposal. The pool calculates the amount
-of `secondary` currency required based on the amount of `central` currency provided.
+of the `Secondary` currency required based on the amount of the `Central` currency provided.
 Bob bumps up the amount of BLD he'll contribute by a little. If he was concerned
 about how much liquidity this would produce, he would calculate it and specify a rough
 figure, but there's no need in this case.
