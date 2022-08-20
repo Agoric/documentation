@@ -165,7 +165,7 @@ Keyword as your `proposal.give`:
 
 <<< @/snippets/test-intro-zoe.js#getPayments
 
-Now you need to [harden](https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md) your
+Now you need to [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) your
 just created `proposal` and `payments` objects. Hardening is
 transitively freezing an object. For security reasons, we must harden
 any objects that will be passed to a remote object like Zoe.

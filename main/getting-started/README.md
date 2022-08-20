@@ -73,7 +73,7 @@ contracts and Dapps. See the **[REPL Guide](/repl/)** for details.
 
 You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
 to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
-See our **[dIBC Guide](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md)** for more information. 
+See our **[dIBC Guide](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md)** for more information.
 
 To familiarize yourself with working Agoric smart contracts, take a look at our 
 **[Sample Contracts](/zoe/guide/contracts/README.md)**. 

@@ -47,7 +47,7 @@ to the default shared board so it is broadly accessible on the chain. The script
 the board id to a config file in the Dapp's `ui` directory as shown below.
 
 By default, when you run `agoric init`, your Dapp gets 
-the [`dapp-fungible-faucet` `contract/deploy.js` file](https://github.com/Agoric/dapp-fungible-faucet/blob/main/contract/deploy.js), 
+the [`dapp-fungible-faucet` `contract/deploy.js` file](https://github.com/Agoric/dapp-fungible-faucet/blob/HEAD/contract/deploy.js),
 which is our example of a typical contract deploy script.
 
 Deploying the `dapp-fungible-faucet` contract (e.g., with `agoric deploy contract/deploy.js` after `agoric init` 
@@ -79,9 +79,9 @@ A singleton may need to:
 
 These example contract `api/deploy.js` scripts show some of the 
 range of the above custom setup actions:
-* [`dapp-fungible-faucet`](https://github.com/Agoric/dapp-fungible-faucet/blob/main/api/deploy.js)
-* [`dapp-card-store`](https://github.com/Agoric/dapp-card-store/blob/main/api/deploy.js)
-* [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/main/api/deploy.js)
+* [`dapp-fungible-faucet`](https://github.com/Agoric/dapp-fungible-faucet/blob/HEAD/api/deploy.js)
+* [`dapp-card-store`](https://github.com/Agoric/dapp-card-store/blob/HEAD/api/deploy.js)
+* [`dapp-simple-exchange`](https://github.com/Agoric/dapp-simple-exchange/blob/HEAD/api/deploy.js)
 
 Application deployment steps may include:
 * Bundle the `api/` code and deploy it to the running local `ag-solo`

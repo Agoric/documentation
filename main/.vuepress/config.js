@@ -162,7 +162,7 @@ module.exports = {
         {
           title: 'Dynamic IBC',
           path:
-            'https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/networking.md',
+            'https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md',
           collapsible: false,
           children: [],
         },

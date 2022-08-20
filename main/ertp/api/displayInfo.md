@@ -7,7 +7,7 @@ brand's amounts. A `DisplayInfo` record has one optional property, `decimalPlace
 
 If specified, its `decimalPlaces` value is used when displaying amount values of the `brand` created by the issuerKit.
 
-The `decimalPlaces` property tells the [display software](https://github.com/Agoric/agoric-sdk/tree/master/packages/ui-components) 
+The `decimalPlaces` property tells the [display software](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/ui-components)
 how many places to move the decimal point over to the left so as to display the value
 in the commonly used denomination (for instance, 10.00 dollars rather than 1000 cents.) 
 

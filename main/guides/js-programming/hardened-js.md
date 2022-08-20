@@ -177,7 +177,7 @@ covers its tracks so that we don't notice:
 
 Our goal is **defensive correctness**: a program is _defensively correct_ if it remains correct despite arbitrary behavior on the part of its clients. _For further discussion, see [Concurrency Among Strangers](http://erights.org/talks/promises/paper/tgc05.pdf) and other [Agoric papers on Robust Composition](https://papers.agoric.com/papers/#robust-composition)_.
 
-To prevent tampering, use [harden](https://github.com/endojs/endo/blob/master/packages/ses/README.md#harden), which is a deep form of [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
+To prevent tampering, use [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden), which is a deep form of [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
 
 <<< @/snippets/test-hardened-js.js#defensiveMaker
 
@@ -190,7 +190,7 @@ across a trust boundary. It's important to `harden()` an object before exposing 
 
 ::: tip harden(), classes, and details
 Note that hardening a class instance also hardens the class.
-For more details, see [harden API in the `ses` package](https://github.com/endojs/endo/blob/master/packages/ses/README.md#harden)
+For more details, see [harden API in the `ses` package](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden)
 :::
 ## Objects with state
 
@@ -213,7 +213,7 @@ To see how this works in detail, you may want to step through this
 The first step to hardening JavaScript is that Hardened JavaScript
 is always in [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode).
 
-[![Subsetting JavaScript](https://raw.githubusercontent.com/endojs/Jessie/main/docs/jessie.png)](https://github.com/endojs/Jessie#subsetting-ecmascript)
+[![Subsetting JavaScript](https://raw.githubusercontent.com/endojs/Jessie/HEAD/docs/jessie.png)](https://github.com/endojs/Jessie#subsetting-ecmascript)
 
 One way that you would notice this is if you
 accidentally assign to a frozen property: this will throw a `TypeError`
@@ -290,7 +290,7 @@ or not:
 
 In compartments used to load Agoric smart contracts,
 `globalThis` is hardened, following OCap discipline.
-These compartments have `console` and `assert` globals from [the `ses` package](https://github.com/endojs/endo/blob/master/packages/ses/README.md).
+These compartments have `console` and `assert` globals from [the `ses` package](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md).
 Don't rely on `console.log` for printing, though; it is for debugging
 only, and in a blockchain consensus context, it may do nothing at all.
 
