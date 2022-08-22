@@ -27,7 +27,9 @@ shared as much as possible. Each secondary currency has a separate pool of liqui
 When the contract is instantiated, the terms specify the central token.  Invitations
 for adding and removing liquidity and for making trades are available by calling
 methods on the publicFacet. Other publicFacet operations support querying prices and
-the sizes of pools. To create new pools, use tbe `addPoolInvation()` recieved from the publicFacet.
+the sizes of pools. 
+
+To get a reference to an invitation for creating a new pool, you need use the `addPoolInvation()` method which is given to you by the AMM's publicFacet.
 
 When making trades or requesting prices, the caller must specify that either the
 input price (`swapIn`, `getInputPrice`) or the output price (`swapOut`, `getOutputPrice`) is
