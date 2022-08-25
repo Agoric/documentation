@@ -45,7 +45,7 @@ Play around with the mock assets we've kindly pre-stocked your wallet with.
 | ------ | ----------- |
 | <div style="text-align: center">![Covered Call](./assets/covered-call-small.png) </div> <br>Create an option contract that enables the holder to buy a specific, previously escrowed, asset at a predetermined strike price (before expiration). | <div style="text-align: center">![Simple Exchange](./assets/simple-exchange-small.png) </div> <br>A basic exchange with an order book for one asset, priced in a second asset. |
 
-| Automated market maker (“autoswap”) |
+| Automated market maker |
 | ------ |
 | <div style="text-align: center">![Automated Market Maker](./assets/amm-small.png) </div> <br>Build a smart contract that acts as an on-chain automated DEX with liquidity. |
 

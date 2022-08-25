@@ -3,8 +3,7 @@
 We rely on `PriceAuthority` oracles. A `PriceAuthority`
 gives reliable quotes for prices. The quotes might be based on broad surveys
 of prices across the ecosystem, or might come directly from an AMM (Automatic
-Market Maker) like our 
-AutoSwap. A `PriceAuthority` can either give a quote for the current price 
+Market Maker). A `PriceAuthority` can either give a quote for the current price 
 across any pair of currencies it knows about, or can immediately return a 
 `Promise` resolved when a condition is true. For example, a price 
 crossing some threshold, or at a particular time. It can also provide a 

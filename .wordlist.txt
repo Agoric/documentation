@@ -102,8 +102,6 @@ atomicSwapDescription
 atomicSwapInstallation
 atomicSwapInstance
 automaticRefund
-autoswap
-autoswapInstallation
 backend
 badAmounts
 badList
@@ -459,8 +457,6 @@ moolaValue
 Morningstar's
 msg
 Multipool
-MultipoolAutoswap
-multipoolAutoswap
 multiuser
 myAmountKeywordRecord
 myAmountMathKind

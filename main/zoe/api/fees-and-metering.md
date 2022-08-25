@@ -88,7 +88,7 @@ invitation specifies a low fee and a short expiry:
   const makeSwapInInvitation = () =>
     zcf.makeInvitation(
       swapIn,
-      'autoswap swapIn',
+      'AMM swapIn',
       undefined,
       LOW_FEE,
       SHORT_EXP,
