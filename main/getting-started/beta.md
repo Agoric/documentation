@@ -39,7 +39,7 @@ Play around with the mock assets we've kindly pre-stocked your wallet with.
 
 | Fungible and non-fungible tokens | Atomic swap |
 | ------ | ----------- |
-| <div style="text-align: center">![Non Fungible Token](./assets/nft-small.png) </div> <br>Create and use either fungible or non-fungible digital assets with your contracts. | <div style="text-align: center">![Atomic Swap](./assets/autoswap-small.png) </div> <br>Enable the exchange of one cryptocurrency for another without using centralized intermediaries. |
+| <div style="text-align: center">![Non Fungible Token](./assets/nft-small.png) </div> <br>Create and use either fungible or non-fungible digital assets with your contracts. | <div style="text-align: center">![Atomic Swap](./assets/atomicswap.png) </div> <br>Enable the exchange of one cryptocurrency for another without using centralized intermediaries. |
 
 | Covered call | Simple exchange |
 | ------ | ----------- |
