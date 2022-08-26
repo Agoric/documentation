@@ -28,7 +28,7 @@ loaned amount and interest must be of the same (separate) brand.
    drops below `mmr`, liquidation can occur.
 * [`priceAuthority`](/zoe/guide/price-authority.md) - used for getting the current value of
    collateral and setting liquidation triggers.
-* `AMMInstance` - The running contract instance for 
+* `autoswapInstance` - The running contract instance for 
    [AMM](./constantProductAMM.md) installation. The `publicFacet`
    of the instance is used to make an invitation to sell the
    collateral on liquidation.
