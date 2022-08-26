@@ -20,7 +20,6 @@ The Zoe API is divided into the following sections:
 - [ZoeHelpers for writing contracts](./zoe-helpers.md) -
   Functions that extract common contract code and patterns into
   reusable helpers.
-  execution of their contract code.
 - [Price Authority](./contract-support/price-authority.md) -
   Functions related to `priceAuthority` objects that provide a price feed, on-demand
   quotes, and wakeups for various time and price conditions. See the Zoe Guide's 
