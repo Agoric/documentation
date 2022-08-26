@@ -324,7 +324,7 @@ module.exports = {
     editLinkText: 'Help us improve this page!',
 
     zoeVersion: 'v0.24.0',
-    zoeDocsUpdated: 'May 27, 2022',
+    zoeDocsUpdated: 'August 25, 2022',
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the

@@ -298,7 +298,7 @@ Its two properties are:
 - `deposited`: `Promise<AmountKeywordRecord>`
 
 ```js
- const { userSeatPromise: autoswapUserSeat, deposited } = zcf.offerTo(
+ const { userSeatPromise: AMMUserSeat, deposited } = zcf.offerTo(
    swapInvitation,
    keywordMapping, // {}
    proposal,
