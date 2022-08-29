@@ -74,7 +74,7 @@ The `loanFee` (in basis points) is charged on the amount of `IST` issued when
 opening a loan or increasing the amount of a loan.  The `interestRate` is an
 annual rate.
 
-`ChargingPeriod` and `recordingPeriod` are parameters of the Treasury that apply
+`ChargingPeriod` and `recordingPeriod` are parameters of the Vault that apply
 to all loans. They can be adjusted (by governance) to change how frequently
 interest is accrued, and how frequently interest is compounded.
 
