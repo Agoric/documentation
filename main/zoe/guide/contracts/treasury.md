@@ -1,4 +1,4 @@
-# Treasury contract
+# Vault contract
 
 <Zoe-Version/>
 
@@ -6,7 +6,7 @@
 ##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
 
 
-The Treasury is the primary mechanism for making `IST` (the Agoric stable-value
+The Vault is the primary mechanism for making `IST` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
 loans against supported types of collateral. The creator of the contract can
 add new types of collateral. (This is expected to be under the control of
@@ -95,7 +95,7 @@ collateral types and specify the parameters for its loans.
 
 ### Vats
 
-Currently the treasury runs all the `vaults` in a single vat. We intend to split
+Currently the Vault runs all the `vaults` in a single vat. We intend to split
 the `vaults` into separate vats for better isolation. In order to allow the
 liquidation approach to be pluggable and to be visible to and changeable by
 governance, liquidation takes place in a separate vat.
@@ -104,7 +104,7 @@ governance, liquidation takes place in a separate vat.
 
 #### makeLoan
 
-The treasury's public API includes `makeVaultInvitation()` and
+The Vault's public API includes `makeVaultInvitation()` and
 `getCollaterals()`, as well as `getAMM()` and `getRunIssuer()`.
 `getCollaterals()` returns a list of the collateral types that are accepted.
 `getAmm()` returns the public facet of the AMM. `getRunIssuer()` provides access
