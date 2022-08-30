@@ -21,7 +21,7 @@ Don't worry, this'll get much easier soon. After it passes reviews, the wallet w
 be available via a downloadable application. On mainnet launch, Agoric will be integrated 
 with leading wallet providers via a simple plugin.
 
-## Head to the Treasury App ##
+## Head to the Vault App ##
 
 Play around with the mock assets we've kindly pre-stocked your wallet with.
 
