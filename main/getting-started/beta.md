@@ -25,7 +25,7 @@ with leading wallet providers via a simple plugin.
 
 Play around with the mock assets we've kindly pre-stocked your wallet with.
 
-[Treasury Application](https://treasury.agoric.app)
+[Vault Application](https://treasury.agoric.app)
 
 ## Start Building Things ##
 
