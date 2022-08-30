@@ -95,7 +95,7 @@ collateral types and specify the parameters for its loans.
 
 ### Vats
 
-Currently the Vault runs all the `vaults` in a single vat. We intend to split
+Currently the VaultFactory runs all the `vaults` in a single vat. We intend to split
 the `vaults` into separate vats for better isolation. In order to allow the
 liquidation approach to be pluggable and to be visible to and changeable by
 governance, liquidation takes place in a separate vat.
