@@ -82,7 +82,7 @@ Agoric is a team of engineers. We've based our developer experience on our decad
 * Rapid testing iteration with the Ava test infrastructure
 
 ### Stuck on something?
-Be sure to check out our guide to [Installing the Agoric SDK](getting-started/before-using-agoric.html), ensure you have `agoric` available from your command line, and then you'll be ready to [get started](/getting-started/) building your vision with a complete security architecture at your fingertips.
+Be sure to check out our guide to [Installing the Agoric SDK](/getting-started/), ensure you have `agoric` available from your command line, and then you'll be ready to [get started](/getting-started/) building your vision with a complete security architecture at your fingertips.
 
 You're welcome to come chat with our engineers on [Agoric Discord](https://agoric.com/discord).
 
