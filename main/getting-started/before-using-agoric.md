@@ -34,7 +34,7 @@ agoric --version # should print the version number of the SDK
 
 Now you are ready proceed to [starting a project](/getting-started/start-a-project.md).
 
-If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `/Users/bin` directory, you may need to add `/Users/bin` to your PATH.
+If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `~/bin` directory, you may need to add `~/bin` to your PATH.
 
 ::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation is a good overview of the Agoric SDK setup process,
