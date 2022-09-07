@@ -16,25 +16,14 @@ git clone https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
 yarn install
 yarn build
-```
-
-### Add the `agoric` command to your PATH
-
-The `agoric` command is a shell script that uses `yarn` to run the Agoric SDK from the `agoric-sdk` directory. To use it from any directory on MacOS, add it to your path:
-
-```shell
-mkdir -p ~/bin
-yarn link-cli ~/bin/agoric # installs a small "agoric" script
-echo $PATH # show current PATH
-export PATH=$PATH:$HOME/bin # adds the parent directory to your PATH
-echo $PATH # show updated PATH to include the parent directory of Agoric folder
-# RESTART YOUR SHELL FOR CHANGES TO TAKE EFFECT #
+yarn link-cli ~/bin/agoric # creates an Agoric directory to reference
+export PATH=$PATH:/bin # adds the parent directory to your PATH
 agoric --version # should print the version number of the SDK
 ```
 
 Now you are ready proceed to [starting a project](/getting-started/start-a-project.md).
 
-If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `~/bin` directory, you may need to add `~/bin` to your PATH.
+If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `/Users/bin` directory, you may need to add `/Users/bin` to your PATH.
 
 ::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation is a good overview of the Agoric SDK setup process,
