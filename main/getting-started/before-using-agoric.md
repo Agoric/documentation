@@ -23,7 +23,8 @@ yarn build
 The `agoric` command is a shell script that uses `yarn` to run the Agoric SDK from the `agoric-sdk` directory. To use it from any directory on MacOS, add it to your path:
 
 ```shell
-yarn link-cli ~/bin/agoric # creates an Agoric directory to reference
+mkdir -p ~/bin
+yarn link-cli ~/bin/agoric # installs a small "agoric" script
 echo $PATH # show current PATH
 export PATH=$PATH:$HOME/bin # adds the parent directory to your PATH
 echo $PATH # show updated PATH to include the parent directory of Agoric folder
