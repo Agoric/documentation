@@ -10,13 +10,13 @@ heroImage: https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/log
 actionText: Try Beta Dapps → # text that goes in the button
 actionLink: /getting-started/beta.html # go-to link when clicking on button
 features:
-  - title: New Protocol
+  - title: Electronic Rights Transfer Protocol (ERTP)
     details: Agoric empowers individuals to securely execute transactions, establish new markets, and craft novel patterns of exchange — without centralized control.
 
-  - title: Better security architecture with OCAPs
-    details: Agoric uses an object-capability (ocap) security architecture, in which access to a programming object itself is the authority to use the object.
+  - title: Better security architecture with Ocaps
+    details: Agoric uses an object-capability model (Ocaps) security architecture, in which access to a programming object itself is the authority to use the object.
 
-  - title: Securely Create and Transfer
+  - title: Securely Create and Transfer Assetss
     details: All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
 
 footer: Apache-2.0 Licensed | Copyright © 2022 - Agoric
