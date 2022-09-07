@@ -46,7 +46,7 @@ footer: Apache-2.0 Licensed | Copyright © 2022 - Agoric
 ## The Platform
 Building on 30 years of experience, Agoric is developing a secure distributed ocap platform for smart contracts and market-oriented programming. Our platform supports the development of smart contracts and market institutions across many different scales, from large public blockchains to small two-party contracts.
 
-Our Ocaps platform consists of:
+Our OCaps platform consists of:
 
 - A robust architecture for building secure smart contracts.
 - A foundation in JavaScript for maximum reach.
