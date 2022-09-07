@@ -56,4 +56,4 @@ Our Ocaps platform consists of:
 
 ## Build Beta Dapps
 
-This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone begin by [getting started](/getting-started/beta.html) with a deployed application as a user. You'll start by getting your wallet set up, including getting some mock assets to play with. Then you'll be able to play experiment the deployed application, see how it works, and starting envisioning your own Dapp.
+This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone begin by [getting started](/getting-started/beta.md) with a deployed application as a user. You'll start by getting your wallet set up, including getting some mock assets to play with. Then you'll be able to play experiment the deployed application, see how it works, and starting envisioning your own Dapp.
