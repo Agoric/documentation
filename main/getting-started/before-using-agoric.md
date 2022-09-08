@@ -17,13 +17,13 @@ cd agoric-sdk
 yarn install
 yarn build
 yarn link-cli ~/bin/agoric # creates an Agoric directory to reference
-export PATH=$PATH:/bin # adds the parent directory to your PATH
+export PATH=$PATH:~/bin # adds the parent directory to your PATH
 agoric --version # should print the version number of the SDK
 ```
 
 Now you are ready proceed to [starting a project](/getting-started/start-a-project.md).
 
-If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `/Users/bin` directory, you may need to add `/Users/bin` to your PATH.
+If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `/bin` directory, you may need to add `/bin` to your PATH.
 
 ::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation is a good overview of the Agoric SDK setup process,
@@ -47,7 +47,7 @@ The Agoric SDK is supported on
 
 - To open a terminal on MacOS, see **Applications>Utilities>terminal** in the **Finder**.
 - To launch a terminal on Linux, use the **Terminal** application.
-- To access WSL from Windows, see the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
+- To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 - To use a Docker container, see the [Docker documentation](https://docs.docker.com/) and the [Agoric container images](https://hub.docker.com/u/agoric).
 
 ## Install Node.js 14.15.0 or higher
