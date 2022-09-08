@@ -29,7 +29,9 @@ Play around with the mock assets we've kindly pre-stocked your wallet with.
 
 ## Start Building Things ##
 
-Learn more about [getting started](/getting-started/) with the Agoric SDK.
+Learn more about [getting started](/getting-started/before-using-agoric.md) with the Agoric SDK.
+
+After your environment is set up, you can [start building](/getting-started/start-a-project.md) your own smart contracts and dapps.
 
 [Join Our Discord Community](https://agoric.com/discord) and chat with us and other developers.
 
