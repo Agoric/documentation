@@ -95,6 +95,11 @@ priced in a second asset.
 A coin voting contract in which votes are weighted by 
 the escrowed governance tokens.
 
+### [Parity Stability Module](./parity-stability-module.md) (PSM)
+The PSM supports efficiently minting/burning a stable token at a 
+specified fixed ratio to a reference stable token.
+
+
 ## Minting
 
 ### [Mint Payments](./mint-payments.md) 
