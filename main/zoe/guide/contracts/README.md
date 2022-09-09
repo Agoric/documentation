@@ -56,6 +56,9 @@ A contract for giving quotes that can be exercised. The quotes are
 guaranteed to be exercisable because they are actually options with 
 escrowed underlying assets.
 
+### [Stake Factory](./stake-factory.md)
+A contract for providing loans on the basis of staked assets that earn rewards.
+
 ## AMM (Automatic Market Maker) contract
 
 ### [ConstantProduct AMM](./constantProductAMM.md)
