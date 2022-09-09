@@ -91,6 +91,10 @@ priced in a second asset.
 
 ## Governance
 
+### [Asset Reserve](./asset-reserve.md)
+Asset Reserve holds onto assets for the Inter Protocol, and can
+dispense it for various purposes under governance control. 
+
 ### [Escrow To Vote](./escrow-to-vote.md )
 A coin voting contract in which votes are weighted by 
 the escrowed governance tokens.
@@ -98,7 +102,6 @@ the escrowed governance tokens.
 ### [Parity Stability Module](./parity-stability-module.md) (PSM)
 The PSM supports efficiently minting/burning a stable token at a 
 specified fixed ratio to a reference stable token.
-
 
 ## Minting
 
