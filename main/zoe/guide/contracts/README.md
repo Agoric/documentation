@@ -20,9 +20,9 @@ higher-level abstraction.
 
 These contracts create various sorts of financial instruments.
 
-### [Treasury](./treasury.md)
+### [Vault](./vault.md)
 
-The Treasury is the primary mechanism for making IST (the Agoric stable-value
+The Vault is the primary mechanism for making IST (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
 loans against supported types of collateral. The creator of the contract can
 add new types of collateral. (This is expected to be under the control of
