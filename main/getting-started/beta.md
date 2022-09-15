@@ -3,7 +3,7 @@ Release Version: Baltic
 
 ![Agoric Banner](./assets/agoric-banner-2.png)
 
-Welcome to Phase 1 of the Agoric Beta!
+### Welcome to Phase 1 of the Agoric Beta!
 
 This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone start by interacting
 with the deployed application as a user. You'll start by getting your wallet set up, including getting some mock assets to play with
@@ -29,7 +29,9 @@ Play around with the mock assets we've kindly pre-stocked your wallet with.
 
 ## Start Building Things ##
 
-[Start Coding](/getting-started/) with a description of how to use our documentation to get started.
+Learn more about [getting started](/getting-started/before-using-agoric.md) with the Agoric SDK.
+
+After your environment is set up, you can [start building](/getting-started/start-a-project.md) your own smart contracts and dapps.
 
 [Join Our Discord Community](https://agoric.com/discord) and chat with us and other developers.
 
@@ -74,18 +76,17 @@ has not been exercised by the deadline, its underlying assets are paid to the co
 as a refund of their escrowed assets.
 
 ## Developer Experience
-Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience. In our beta, you can expect the following:
+Agoric is a team of engineers. We've based our developer experience on our decades of open-source software experience to make [getting started](/getting-started/) as easy as possible. In our beta, you can expect the following:
 
 * VS Code with debugging support
 * Ability to build and test locally
 * Types included to accelerate your local development
 * Rapid testing iteration with the Ava test infrastructure
 
-### Ready to get started?
-[Start Coding](/getting-started/)
-
 ### Stuck on something?
-Chat with our engineers on [Agoric Discord](https://agoric.com/discord).
+Be sure to check out our guide to [Installing the Agoric SDK](/getting-started/), ensure you have `agoric` available from your command line, and then you'll be ready to [get started](/getting-started/) building your vision with a complete security architecture at your fingertips.
+
+You're welcome to come chat with our engineers on [Agoric Discord](https://agoric.com/discord).
 
 ### Connect with us on socials?
 Follow us on [Twitter](https://twitter.com/agoric), [Telegram](https://t.me/agoricsystems) and [LinkedIn](https://www.linkedin.com/company/agoric/).
