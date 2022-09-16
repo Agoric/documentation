@@ -199,12 +199,6 @@ module.exports = {
           children: [],
         },
         {
-          title: 'Development Cycle',
-          path: '/getting-started/development-cycle.html',
-          collapsible: false,
-          children: [],
-        },
-        {
           title: 'Deploying Smart Contracts',
           path: '/getting-started/deploying.html',
           collapsible: false,
