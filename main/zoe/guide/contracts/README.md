@@ -6,6 +6,35 @@ While Zoe provides the means to build custom smart contracts, there is a good ch
 want to use one that follows a commonly-used structure. Therefore, we currently provide several
 pre-built contracts that can be imported and run on Zoe:
 
+## Inter Protocol
+
+### [Automated Market Maker](./constantProductAMM.md) (AMM)
+An automated market maker with multiple liquidity pools that can trade
+between any pair of funded currencies. It charges a poolFee (added to the
+liquidity pools) and a protocolFee (set aside for the benefit of the Agoric
+economy). These fees are subject to change by votes controlled by and made
+visible by the governance system.
+
+### [Vault](./vault.md)
+
+The Vault is the primary mechanism for making IST (the Agoric stable-value
+currency) available to participants in the economy. It does this by issuing
+loans against supported types of collateral. The creator of the contract can
+add new types of collateral. (This is expected to be under the control of
+on-chain governance after the initial currencies are defined when the contract
+starts up.)
+
+### [Parity Stability Module](./parity-stability-module.md) (PSM)
+The PSM supports efficiently minting/burning a stable token at a 
+specified fixed ratio to a reference stable token.
+
+### [Stake Factory](./stake-factory.md)
+A contract for providing loans on the basis of staked assets that earn rewards.
+
+### [Asset Reserve](./asset-reserve.md)
+Asset Reserve holds onto assets for the Inter Protocol, and can
+dispense it for various purposes under governance control. 
+
 ## Oracles
 
 ### [Oracle Contract](./oracle.md) 
@@ -19,15 +48,6 @@ higher-level abstraction.
 ## DeFi Contracts
 
 These contracts create various sorts of financial instruments.
-
-### [Vault](./vault.md)
-
-The Vault is the primary mechanism for making IST (the Agoric stable-value
-currency) available to participants in the economy. It does this by issuing
-loans against supported types of collateral. The creator of the contract can
-add new types of collateral. (This is expected to be under the control of
-on-chain governance after the initial currencies are defined when the contract
-starts up.)
 
 ### [Loan Contract](./loan.md)
 A basic collateralized loan contract.
@@ -56,18 +76,6 @@ A contract for giving quotes that can be exercised. The quotes are
 guaranteed to be exercisable because they are actually options with 
 escrowed underlying assets.
 
-### [Stake Factory](./stake-factory.md)
-A contract for providing loans on the basis of staked assets that earn rewards.
-
-## AMM (Automatic Market Maker) contract
-
-### [ConstantProduct AMM](./constantProductAMM.md)
-An automated market maker with multiple liquidity pools that can trade
-between any pair of funded currencies. It charges a poolFee (added to the
-liquidity pools) and a protocolFee (set aside for the benefit of the Agoric
-economy). These fees are subject to change by votes controlled by and made
-visible by the governance system.
-
 ## Generic Sales/Trading Contracts
 
 These contracts involve trading or selling ERTP digital assets.
@@ -94,37 +102,27 @@ priced in a second asset.
 
 ## Governance
 
-### [Asset Reserve](./asset-reserve.md)
-Asset Reserve holds onto assets for the Inter Protocol, and can
-dispense it for various purposes under governance control. 
-
 ### [Escrow To Vote](./escrow-to-vote.md )
 A coin voting contract in which votes are weighted by 
 the escrowed governance tokens.
 
-### [Parity Stability Module](./parity-stability-module.md) (PSM)
-The PSM supports efficiently minting/burning a stable token at a 
-specified fixed ratio to a reference stable token.
+## Quick Examples
 
-## Minting
+### [Automatic Refund](./automatic-refund.md) 
+A trivial contract that gives the user back what they put in.
 
 ### [Mint Payments](./mint-payments.md) 
 An example of minting fungible tokens.
+
+## NFT Experiments
 
 ### [Mint and Sell NFTs](./mint-and-sell-nfts.md) 
 A contract that mints NFTs and sells them through 
 a separate sales contract.
 
-## Misc
-
 ### [Use Obj Example](./use-obj-example.md) 
 An example of how you might associate the ability to take 
 an action with ownership of a particular digital asset. In 
 this case, you can color a pixel if you own the NFT for the pixel.
-
-## Trivial Examples
-
-### [Automatic Refund](./automatic-refund.md) 
-A trivial contract that gives the user back what they put in.
 
 If you want to build your own smart contract, start with the [Zoe API](../../api/README.md)
