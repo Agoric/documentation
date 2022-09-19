@@ -20,11 +20,6 @@ module.exports = [
         link: '/getting-started/start-a-project',
       },
       {
-        text: 'Development Cycle',
-        ariaLabel: 'Development Cycle Menu',
-        link: '/getting-started/development-cycle',
-      },
-      {
         text: 'Deploying Smart Contracts',
         ariaLabel: 'Deploying Menu',
         link: '/getting-started/deploying',

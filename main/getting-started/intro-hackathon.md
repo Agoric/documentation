@@ -31,7 +31,7 @@ out our more [detailed documentation](./start-a-project.md).
 3. **[Agoric Stack](/platform/README.md)**: An intro to the Agoric technical stack.
 4. **[Agoric Dapp Guide](/dapps/README.md)** and **[Agoric Dapp
    Templates](/dapps/dapp-templates.md)**: Pre-written dapps with 
-   UI you can install as a template, such as our constant product AMM, Autoswap.
+   UI you can install as a template, such as our constant product AMM.
 5. **[Agoric Contracts](/zoe/guide/contracts/README.md)**: Pre-written contracts you can browse and reuse.
 
 ## Videos

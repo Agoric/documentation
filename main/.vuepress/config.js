@@ -199,12 +199,6 @@ module.exports = {
           children: [],
         },
         {
-          title: 'Development Cycle',
-          path: '/getting-started/development-cycle.html',
-          collapsible: false,
-          children: [],
-        },
-        {
           title: 'Deploying Smart Contracts',
           path: '/getting-started/deploying.html',
           collapsible: false,
@@ -302,7 +296,6 @@ module.exports = {
             '/zoe/api/zoe',
             '/zoe/api/zoe-contract-facet',
             '/zoe/api/zoe-helpers',
-            '/zoe/api/fees-and-metering',
             '/zoe/api/contract-support/price-authority',
             '/zoe/api/contract-support/ratio-math',
           ],
@@ -324,7 +317,7 @@ module.exports = {
     editLinkText: 'Help us improve this page!',
 
     zoeVersion: 'v0.24.0',
-    zoeDocsUpdated: 'May 27, 2022',
+    zoeDocsUpdated: 'August 25, 2022',
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the
