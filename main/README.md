@@ -15,8 +15,8 @@ features:
   - title: Electronic Rights Transfer Protocol (ERTP)
     details: Agoric empowers individuals to securely execute transactions, establish new markets, and craft novel patterns of exchange — without centralized control.
 
-  - title: Better security architecture with Ocaps
-    details: Agoric uses an object-capability model (Ocaps) security architecture, in which access to a programming object itself is the authority to use the object.
+  - title: Better security architecture with OCaps
+    details: Agoric uses an object-capability model (OCaps) security architecture, in which access to a programming object itself is the authority to use the object.
 
   - title: Securely Create and Transfer Assetss
     details: All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
