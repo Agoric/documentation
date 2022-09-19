@@ -4,15 +4,7 @@
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/50cd3e240fb33079948fa03b32bda86276879b4a/packages/inter-protocol/src/stakeFactory/stakeFactory.js#L16) (Last updated: Sept 8, 2022)
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
 
-In addition to brands and issuers for `Staked`, `Minted`, and attestation,
-terms of the contract include a periodic `InterestRate`
-plus a `LoanFee` proportional to the amount borrowed, as well as
-a `MintingRatio` of funds to (mint and) loan per unit of staked asset.
-These terms are subject to change by the `Electorate`
-and `electionManager` terms.
-
-As in vaultFactory, `timerService` provides the periodic signal to
-charge interest according to `chargingPeriod` and `recordingPeriod`.
+The stakeFactory contract provides loans on the basis of staked assets that earn rewards.
 
 The public facet provides access to invitations to get a loan
 or to return an attestation in order to release a lien on staked assets.
@@ -27,4 +19,14 @@ using `{ want: { Debt: amountWanted }}`.
 Then, using the invitationMakers pattern, use `AdjustBalances` to
 pay down the loan or otherwise adjust the `Debt` and `Attestation`.
 
-Finally, `Close` the loan, providing `{ give: Debt: debtAmount }}`
+Finally, `Close` the loan, providing `{ give: Debt: debtAmount }}`.
+
+In addition to brands and issuers for `Staked`, `Minted`, and attestation,
+terms of the contract include a periodic `InterestRate`
+plus a `LoanFee` proportional to the amount borrowed, as well as
+a `MintingRatio` of funds to (mint and) loan per unit of staked asset.
+These terms are subject to change by the `Electorate`
+and `electionManager` terms.
+
+As in vaultFactory, `timerService` provides the periodic signal to
+charge interest according to `chargingPeriod` and `recordingPeriod`.
