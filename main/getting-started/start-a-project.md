@@ -4,8 +4,11 @@
 The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
 :::
 
-Do not proceed unless you've [installed the Agoric SDK](/getting-started/before-using-agoric.md).
-If `agoric --version` is available, then you're ready for our first Agoric _Dapp_ (decentralized application)!
+Before we begin, you should use `agoric --version` to double-check that you have [installed the Agoric SDK](/getting-started/before-using-agoric.md).
+
+If it is available, then you successfully installed the Agoric SDK. If not, then please do so before continuing. 
+
+After you've [installed the Agoric SDK](/getting-started/before-using-agoric.md), then you're ready for your first _Agoric Dapp_ (decentralized application) by continuing the instructions below. 
 
 We'll be running **three terminal windows**. See below: 
 
