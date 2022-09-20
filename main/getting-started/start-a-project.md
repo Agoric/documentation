@@ -29,6 +29,9 @@ This presentation includes starting a project, but note an outdated detail:
 
 ## Initialize `demo` from Dapp Template
 
+The following section will explain how to initialize a demo, install the Agoric SDK
+into the Dapp template, and then launch the Agoric Solo Client and Simulated Blockchain.
+
 Use the [Agoric CLI](/guides/agoric-cli/commands.md) to fetch from a Dapp template
 and put it in a `demo` directory _not located in your `agoric-sdk` clone_:
 
@@ -38,15 +41,13 @@ and put it in a `demo` directory _not located in your `agoric-sdk` clone_:
 cd $HOME
 agoric init demo # use `agoric init $DIRNAME` with any name you like
 cd demo
-agoric install
+agoric install # will take a minute to install all dependencies
 agoric start --verbose # `agoric start --reset` to start over
 ```
 
-The name `demo` is an arbitrary suggestion. The default template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
+The name `demo` is an arbitrary suggestion. 
 
-Learn more about the [available dapp templates](/dapps/dapp-templates.md).
-
-It may take a minute or so to install all the dependencies.
+Learn more about the [available dapp templates](/dapps/dapp-templates.md). Our default starter template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
 
 ::: tip Mac Dev Tools
 On a Mac, you must first install
@@ -55,13 +56,11 @@ On a Mac, you must first install
 
 Leave this process and its logs running in its own terminal window.
 
-
-
 ## Open the Agoric Wallet and REPL
 
 ```sh secondary style2
 # Terminal 2
-cd demo # new terminal window
+cd demo
 agoric open --repl
 ```
 
@@ -95,7 +94,7 @@ The web user interface communicates with the API in the solo client as well as t
 ```sh secondary style3
 # Terminal 3
 cd demo # if not already there
-cd ui && yarn start 
+cd ui && yarn start
 ```
 
 Leave this running in its own terminal window and visit [http://localhost:3000](http://localhost:3000) in a web browser.
