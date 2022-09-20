@@ -1,7 +1,7 @@
 # Installing the Agoric SDK
 
 To write JavaScript smart contracts using the Agoric Zoe framework,
-first install the Agoric Software Development Kit (SDK). The Agoric SDK is currently supported on macOS, Linux, WSL, and Docker. There is currently **no support** for Windows 10 or Windows 11.
+first install the Agoric Software Development Kit (SDK). The Agoric SDK is currently supported on MacOS, Linux, and Windows Subsystem for Linux (WSL). There is currently **no support** for Windows 10 or Windows 11.
 
 After installing the Agoric SDK, you can proceed to [starting a project](/getting-started/start-a-project.md) with the Agoric CLI to create and deploy [smart contracts](/getting-started/deploying.md).
 
@@ -43,16 +43,14 @@ The Agoric SDK is supported on
 <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>,
 <a href="https://www.apple.com/macos/">MacOS</a>,
 <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (WSL)</a>, and
-<a href="https://www.docker.com/">Docker</a>.
 
 - To open a terminal on MacOS, see **Applications>Utilities>terminal** in the **Finder**.
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
-- To use a Docker container, see the [Docker documentation](https://docs.docker.com/) and the [Agoric container images](https://hub.docker.com/u/agoric).
 
 ## Install Node.js 14.15.0 or higher
 
-Download from [NodeJS](https://nodejs.org/) and follow the instructions for your platform.
+Download from [Node.js](https://nodejs.org/) and follow the instructions for your platform.
 
 ## Install Yarn package manager
 
