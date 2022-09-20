@@ -4,13 +4,13 @@
 The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
 :::
 
-Now that you have [installed the Agoric SDK](/getting-started/before-using-agoric.md),
-let's try out your first Agoric _Dapp_ (decentralized application).
+Before we begin, you should use `agoric --version` to double-check that you have [installed the Agoric SDK](/getting-started/before-using-agoric.md).
 
-We'll be running **three terminal windows**, and
-[dapp template initialization](#initialize-demo-from-dapp-template) in the first
-window will create their shared working directory.
+If it is available, then you successfully installed the Agoric SDK. If not, then please do so before continuing. 
 
+After you've [installed the Agoric SDK](/getting-started/before-using-agoric.md), then you're ready for your first _Agoric Dapp_ (decentralized application) by continuing the instructions below. 
+
+We'll be running **three terminal windows**. See below: 
 
  1. ```sh
     # Terminal 1: simulated blockchain and "solo" client
@@ -32,73 +32,38 @@ This presentation includes starting a project, but note an outdated detail:
 
 ## Initialize `demo` from Dapp Template
 
+The following section will explain how to initialize a demo, install the Agoric SDK
+into the Dapp template, and then launch the Agoric Solo Client and Simulated Blockchain.
+
 Use the [Agoric CLI](/guides/agoric-cli/commands.md) to fetch from a Dapp template
 and put it in a `demo` directory _not located in your `agoric-sdk` clone_:
 
-
 ```sh
 # Terminal 1
-# Don't use your agoric-sdk clone as the parent of the demo directory.
-# It doesn't have to be your home directory; any other directory will do.
+# Don't use your agoric-sdk as the parent of the demo directory.
 cd $HOME
-agoric init demo
-```
-
-The name `demo` is an arbitrary suggestion; in general,
-use `agoric init $DIRNAME` with any name you like.
-
-The default template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
-Learn more about the [available dapp templates](/dapps/dapp-templates.md).
-
-### Install the Agoric SDK in the Dapp
-
-```sh
-# Terminal 1
+agoric init demo # use `agoric init $DIRNAME` with any name you like
 cd demo
-agoric install
+agoric install # will take a minute to install all dependencies
+agoric start --verbose # `agoric start --reset` to start over
 ```
 
-It may take a minute or so to install all the dependencies.
+The name `demo` is an arbitrary suggestion. 
+
+Learn more about the [available dapp templates](/dapps/dapp-templates.md). Our default starter template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
 
 ::: tip Mac Dev Tools
 On a Mac, you must first install
 [Xcode](https://apps.apple.com/us/app/xcode/id497799835)
 :::
 
-## Start the Agoric Solo Client and Simulated Blockchain
-
-```sh
-# Terminal 1
-cd demo # if not already there
-agoric start
-
-# if the process was interrupted or crashed
-# rerun the command above and it should resume
-
-# to reset and start over
-agoric start --reset
-```
-
 Leave this process and its logs running in its own terminal window.
-## Deploy the Contract and API
-
-In a separate terminal, deploy the contract to the simulated blockchain
-and the API to the solo client.
-
-```sh secondary style2
-# Terminal 2
-cd demo # if not already there
-agoric deploy ./contract/deploy.js ./api/deploy.js
-```
-
-We'll cover [deploying smart contracts](/getting-started/deploying.md)
-in detail later.
 
 ## Open the Agoric Wallet and REPL
 
 ```sh secondary style2
 # Terminal 2
-cd demo # if not already there
+cd demo
 agoric open --repl
 ```
 
@@ -107,6 +72,23 @@ This should automatically open [http://127.0.0.1:8000](http://127.0.0.1:8000) in
 To begin using the wallet, click the "Connect Solo Wallet" button.
 
 ![agoric wallet solo connection](./assets/agoric-open-repl-1.png)
+
+After your solo wallet is connected, then you're ready to deploy the contract and API. 
+
+## Deploy the Contract and API
+
+In our second terminal, deploy the contract to the simulated blockchain
+and the API to the solo client.
+
+```sh secondary style2
+# Terminal 2
+cd demo # if not already there
+agoric deploy ./contract/deploy.js 
+agoric deploy ./api/deploy.js
+```
+
+We'll cover [deploying smart contracts](/getting-started/deploying.md)
+in detail later.
 
 ## Start the Dapp User Interface
 
