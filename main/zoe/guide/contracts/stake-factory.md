@@ -19,7 +19,7 @@ using `{ want: { Debt: amountWanted }}`.
 Then, using the invitationMakers pattern, use `AdjustBalances` to
 pay down the loan or otherwise adjust the `Debt` and `Attestation`.
 
-Finally, `Close` the loan, providing `{ give: Debt: debtAmount }}`.
+Finally, `Close` the loan, providing `{ give: { Debt: debtAmount } }`.
 
 In addition to brands and issuers for `Staked`, `Minted`, and attestation,
 terms of the contract include a periodic `InterestRate`
