@@ -68,6 +68,7 @@ yarn --version # 1.22.10 or higher
 ## Install Git
 
 Follow [Git installation instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or use your platform's package manager.
+
 ```shell
 npm install --global git
 git --version # 2.25.0 or higher
@@ -121,3 +122,9 @@ To check that it's installed correctly:
 ```shell
 agoric --version # v0.16.0 "community-dev" branch
 ```
+
+If the install was successful, you are ready to proceed to [starting a project](/getting-started/start-a-project.md).
+
+Should `agoric` not be found, then you may need to add the parent directory of where your `yarn link-cli` command created a "agoric" directory.
+
+Please see the [Linux add to \$PATH: Fix "command not found" error (Linux & Mac) - YouTube](https://www.youtube.com/watch?v=gkqsLRDnqlA) for more information.
