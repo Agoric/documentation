@@ -12,12 +12,11 @@ If you're familar with JavaScript development tools such as `node`, `yarn`, and 
 ```shell
 node --version # 14.15.0 or higher
 npm install --global yarn
-git clone https://github.com/Agoric/agoric-sdk
+git clone -b community-dev https://github.com/Agoric/agoric-sdk # "community-dev" branch
 cd agoric-sdk
 yarn install
 yarn build
 yarn link-cli ~/bin/agoric # creates an Agoric directory to reference
-export PATH=$PATH:~/bin # adds the parent directory to your PATH
 agoric --version # should print the version number of the SDK
 ```
 
@@ -64,15 +63,11 @@ npm install --global yarn
 ## Clone the Agoric SDK
 
 ```shell
-git clone https://github.com/Agoric/agoric-sdk
+git clone -b community-dev https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
 ```
 
-To update an existing clone:
-
-```shell
-git pull
-```
+Cloning and installing the Agoric SDK can take a while. Please be patient.
 
 ## Install NPM dependencies
 
@@ -88,6 +83,8 @@ yarn install
 yarn build
 ```
 
+**Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for Windows 10 or Windows 11.
+
 ## Install `agoric` CLI
 
 Install the `agoric` command-line interface in a convenient place in your `$PATH` such as:
@@ -101,6 +98,10 @@ or:
 ```shell
 sudo yarn link-cli /usr/local/bin/agoric
 ```
+
+**Note:** Run `echo $PATH` to see your current `$PATH`. Here you'll see which directory you should use for `yarn link-cli`.
+
+## Check the version
 
 To check that it's installed correctly:
 
