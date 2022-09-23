@@ -51,6 +51,10 @@ The Agoric SDK is supported on
 
 Download from [Node.js](https://nodejs.org/) and follow the instructions for your platform.
 
+```shell
+node --version # 14.15.0 or higher
+```
+
 ## Install Yarn package manager
 
 Follow [Yarn Installation](https://classic.yarnpkg.com/en/docs/install)
@@ -58,6 +62,15 @@ instructions; for example:
 
 ```shell
 npm install --global yarn
+yarn --version # 1.22.10 or higher
+```
+
+## Install Git
+
+Follow [Git installation instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or use your platform's package manager.
+```shell
+npm install --global git
+git --version # 2.25.0 or higher
 ```
 
 ## Clone the Agoric SDK
@@ -106,5 +119,5 @@ sudo yarn link-cli /usr/local/bin/agoric
 To check that it's installed correctly:
 
 ```shell
-agoric --version
+agoric --version # v0.16.0 "community-dev" branch
 ```
