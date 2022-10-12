@@ -260,7 +260,7 @@ const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = make
 const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
 const goodAmounts = Array(10).fill(AmountMath.make(quatloosBrand, 10n));
 
-const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
+const arrayOfNewPayments = quatloosIssuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
 // Set original amount to 1000n
