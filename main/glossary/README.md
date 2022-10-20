@@ -7,8 +7,7 @@ This page lists words, expressions, or concepts used by the Agoric technology st
 
 ## Agoric CLI
 
-A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
-See the [Agoric CLI Guide](/guides/agoric-cli/).
+A command line interface for initializing, deploying, and starting Agoric projects, as well as installing dependencies. See the [Agoric CLI documentation](/conceptual/agoric-cli/) for more information.
 
 ## AllegedName
 
