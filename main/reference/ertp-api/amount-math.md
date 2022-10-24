@@ -1,4 +1,4 @@
-# AmountMath
+# AmountMath Object
 
 Logic for manipulating `amounts`.
 
@@ -11,8 +11,8 @@ To use the `AmountMath` library, import it from ERTP:
 The `AmountMath` library lets you manipulate amounts, such as by adding two amounts together. 
 However, remember that we have two types of amounts, fungible and non-fungible. While a fungible 
 amount has natural numbers for its value, a non-fungible amount has an array of elements, such as 
-strings, numbers, objects or records, for its value. Even though very different addition processes
-are performed, `AmountMath.add()` and other `AmountMath()` methods work for both types of amounts. 
+strings, numbers, objects, or records, for its value. Even though very different mathematical processes
+are performed, `AmountMath()` methods work for both types of amounts. 
 
 The `AmountMath` library methods are polymorphic. All of the operations work for both fungible 
 and non-fungible assets. Which method is used is 
@@ -22,11 +22,11 @@ specified when `issuerKit()` creates the issuer and brand.
 We recommend you import the two `AssetKind` values from `@agoric/ERTP` instead of making the 
 strings yourself. 
 - `AssetKind.NAT` (`nat`): Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
-- `AssetKind.SET` (`set`): Used with non-fungible assets. Values are arrays of objects such as strings.
+- `AssetKind.SET` (`set`): Used with non-fungible assets. Values are arrays of objects (e.g., strings).
 
 Use `makeIssuerKit(allegedName, assetKind, displayInfo)` to specify which `AssetKind` 
-your contract uses. The second parameter, `assetKind` is optional and 
-defaults to `AssetKind.NAT` if not given. For example
+your contract uses. The second parameter, `assetKind`, is optional and 
+defaults to `AssetKind.NAT` if not given. Similarly, the `displayInfo` parameter is optional and defaults to undefined if not given. For example
 ```js
 import { AssetKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to AssetKind.NAT and undefined displayInfo
@@ -59,11 +59,10 @@ such as a hardened array of strings.
 
 Recall that `BigInt`s are written with an `n` at the end: `10n`, `137n`, etc.
 
-## Brand parameters
+## Brand Parameters
 
-Note that many `AmountMath` methods have a `brand` argument, either required or
-optional. For the ones with an optional `brand` argument, you should use it if
-you need to do an "absolute" check on the brand in the `amount` argument(s).
+Note that many `AmountMath` methods have a `brand` parameters. For the ones with an optional `brand` argument, you should use it if
+you need to do an "absolute" check on the brand in the `amount` argument.
 In this case, you want to use the `brand` you got from the issuer (or from Zoe)
 as the optional parameter to compare the `amount` `brand`(s) to. If they are
 not equal, an error is thrown.

@@ -10,7 +10,7 @@ getting an error message listing all the valid methods.
 Running `agoric open --repl==only` opens a browser tab that shows only the REPL, and not
 the combination of Wallet UI and REPL area. When issuing commands to the Wallet from the
 REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. For more
-information about `E()`, see the [`E()` section](/guides/js-programming/eventual-send.md) in 
+information about `E()`, see the [`E()` section](/conceptual/js-programming/eventual-send.md) in 
 the Distributed JavaScript Programming Guide.
 
 There are two objects on which the Wallet API commands work:

@@ -7,7 +7,7 @@ for that instance. A Zoe Contract Facet is accessed synchronously from within th
 and usually is referred to in code as `zcf`.
 
 The contract instance is launched by `E(zoe).startInstance()`, and is given access to
-the `zcf` object during that launch (see [Contract Requirements](/zoe/guide/contract-requirements.md)).
+the `zcf` object during that launch (see [Contract Requirements](/conceptual/zoe/contract-requirements.md)).
 In the operations below, `instance` is the handle for the running contract instance.
 
 ## `zcf.makeZCFMint(keyword, assetKind, displayInfo)`
@@ -94,7 +94,7 @@ const myAmountKeywordRecord =
   - `zcfMint.burnLosses({ Token: amount }, seat);`getIssuerRecord()`
 
 ## `zcf.getInvitationIssuer()`
-- Returns: [`{Issuer}`](/ertp/api/issuer.md)
+- Returns: [`{Issuer}`](../ertp-api/issuer.md)
 
 Zoe has a single `invitationIssuer` for the entirety of its
 lifetime. This method returns the Zoe `InvitationIssuer`, which
@@ -132,7 +132,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
-- Returns: [`{Promise<Invitation>}`](/ertp/api/payment.md#payment)
+- Returns: [`{Promise<Invitation>}`](../ertp-api/payment.md#payment)
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
 of an ERTP `payment`. They are associated with the `invitationIssuer` and its `mint`, which 
@@ -185,7 +185,7 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
-    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/guides/js-programming/notifiers.md).
+    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/conceptual/js-programming/notifiers.md).
 ### `ZCFSeat.getProposal()`
   - Returns: `{ProposalRecord}`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules
@@ -433,7 +433,7 @@ const { brands, issuers, maths, terms } = zcf.getTerms()
 ## `zcf.getZoeService()`
 - Returns: [ZoeService](./zoe.md)
 
-This is the only way to get the user-facing [Zoe Service API](/zoe/api/zoe.md#zoe) to
+This is the only way to get the user-facing [Zoe Service API](./zoe.md#zoe) to
 the contract code as well.
 ```js
 // Making an offer to another contract instance in the contract.

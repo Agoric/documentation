@@ -1,11 +1,12 @@
-# Purse
+# Purse Class
+
 `Purses` hold digital assets. They are created to hold assets of a single `brand`,
 and their `brand` cannot be changed. For example, you might create a `purse` to
 hold Quatloos. That `purse` can only hold Quatloos; it can't hold Moola or theater
 tickets or anything else. And you can't change that `purse` so that it now holds
-Moola instead; you need to create a `purse` that holds only Moola.
+Moola instead. You would need to create a `purse` that holds only Moola.
 
-Digital assets in `purses` and `payments` can be any of:
+Digital assets in `purses` can be any of:
 - Currency-like, such as our imaginary Quatloos currency.
 - Goods-like digital assets, such as magic weapons for use in a game or theater tickets.
 - Other kinds of rights, such as the right to participate in a particular contract.
@@ -36,8 +37,23 @@ quatloosPurse1 = quatloosIssuer.makeEmptyPurse();
 quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
 
-## `purse.getCurrentAmount()`
-- Returns: `{Amount}`
+## purse.getCurrentAmount Method
+
+Gets the `purse`'s current balance.
+
+```
+purse.getCurrentAmount()
+```
+
+### Parameters
+
+None.
+
+### Returns
+
+Amount object
+
+Amount objects contain two members:
 
 Describe the `purse`'s current balance as an Amount.
 The returned Amount `value` might be empty, and might be different the next time you
@@ -149,10 +165,12 @@ depositOnlyFacet.receive(payment);
 ```
 
 ## `purse.withdraw(amount)`
+
+
 - `amount` `{Amount}`
 - Returns: `{Payment}`
 
-Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
+Withdraws the specified `amount` of digital assets from the `purse` into a new `payment` object.
 
 If the call succeeds, it immediately extracts the value into a new `payment`. 
 The caller won't get the new `payment` until a later turn, since the call is (nearly always) remote.

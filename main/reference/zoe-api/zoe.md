@@ -1,4 +1,4 @@
-# Zoe
+# Zoe Service
 
 <Zoe-Version/>
 
@@ -12,7 +12,7 @@ is referred to via `zoe`, which only supports asynchronous invocation. Operation
 invoked asynchronously using the [`E` helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies).
 All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a `Presence` for another remote object (e.g. in another contract or service, running on another chain, etc.). Async messages can be sent using `E` with either promises or presences.
 
-For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send.md).
+For more information about using `E`, see the section on it in [Agoric's JavaScript Distributed Programming Guide](/conceptual/js-programming/eventual-send.md).
 :::
 
 ## `E(zoe).getBrands(instance)`
@@ -413,7 +413,7 @@ and an operation to request that the offer exit, as follows:
   - You use a `notifier` wherever some piece of code has changing state that other
     code wants updates on. The updates can be anything the contract wants to publish.
     For example, you could notify about price changes, new currency pools, etc. See also
-    [Notifiers and Subscriptions](/guides/js-programming/notifiers.md)
+    [Notifiers and Subscriptions](/conceptual/js-programming/notifiers.md)
 ### `E(UserSeat).hasExited()`
   - Returns: `{ Promise<Boolean> }`
   - Returns `true` if the seat has exited, `false` if it is still active.
