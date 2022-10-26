@@ -37,7 +37,7 @@ quatloosPurse1 = quatloosIssuer.makeEmptyPurse();
 quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
 
-## purse.getCurrentAmount Method
+## `purse.getCurrentAmount()`
 
 Gets the `purse`'s current balance.
 
@@ -73,7 +73,7 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 - Returns: `{Notifier<Amount>}`
 
 Returns a lossy notifier for changes to this purse's balance. For more details,
-see [Notifiers](/guides/js-programming/notifiers.md).
+see [Notifiers](/conceptual/js-programming/notifiers.md).
 
 ```js
 const notifier = purse.getCurrentAmountNotifier();

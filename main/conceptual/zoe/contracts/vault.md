@@ -81,7 +81,7 @@ interest is accrued, and how frequently interest is compounded.
 #### UI support
 
 The following are returned in `offerResults` when calling `openLoan` for the
-benefit of the user's [wallet](/guides/wallet/).
+benefit of the user's [wallet](/conceptual/wallet/).
 
      uiNotifier,
      invitationMakers: { AdjustBalances, CloseVault }

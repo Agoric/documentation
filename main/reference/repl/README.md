@@ -68,11 +68,11 @@ Several `home` objects are either for internal Agoric use only or have been depr
 are listed together in the final section. External developers should ignore them and not try to use
 them.
 
-### [`wallet`](/guides/wallet/api.md)
+### [`wallet`](../wallet-api.md)
 Holds on-chain digital assets and object capabilities on behalf of the user.
 The header link takes you to the standard non-REPL specific `wallet` API documentation. When calling
 `wallet` API methods from the REPL, `wallet` must be prefaced by `home.` and use `E()`. For 
-example, `E(home.wallet).getPurses()`. [Full Wallet API documentation.](/guides/wallet/api.md) 
+example, `E(home.wallet).getPurses()`. [Full Wallet API documentation.](/conceptual/wallet/) 
 
 ### [`chainTimerService`](./timerServices.md)
 On-chain time authority used to schedule events. [Full `chainTimerService` documentation.](./timerServices.md)
@@ -93,13 +93,13 @@ IBC implementation that lets vats open and close listening ports,
 connect and disconnect to/from remote ports, and send and receive 
 data over those connections. [Full `ibcport` documentation.](./networking.md)
 
-### [`zoe`](/zoe/api/zoe.md)
+### [`zoe`](../zoe-api/zoe.md)
 Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
 digital assets and guaranteeing users get either what they want or get a refund of what 
 they escrowed. Even if the contract is buggy or malicious. The header link takes you to the 
 standard, non-REPL specific, `zoe` API documentation. When calling any of the `zoe` API 
 methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For 
-example, `E(home.zoe).getFoo()`. [Full Zoe API documentation.](/zoe/api/zoe.md)
+example, `E(home.zoe).getFoo()`. [Full Zoe API documentation.](../zoe-api/zoe.md)
 
 ### [`priceAuthority`](./priceAuthority.md)
 Get price quotes for pairs of digital assets. [Full `priceAuthority` documentation.](./priceAuthority.md)
@@ -107,7 +107,7 @@ Get price quotes for pairs of digital assets. [Full `priceAuthority` documentati
 ### [`scratch`](./scratch.md)
 An off-chain, private, place to store key-value pairs on your ag-solo for later use. [Full `scratch` documentation.](./scratch.md)
 
-### Deprecated and Internal-only Objects
+### Deprecated and Internal-Only Objects
 
 - `contractHost`: Replaced by the `spawner` object.
 - `faucet`: Internal for chain setup.

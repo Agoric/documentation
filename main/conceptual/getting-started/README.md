@@ -1,93 +1,126 @@
-# Agoric Documentation Guide
+# Installing the Agoric SDK
 
-::: tip Beta status
-The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
+To write JavaScript smart contracts using the Agoric Zoe framework, first install the Agoric Software Development Kit (SDK). The Agoric SDK is currently supported on MacOS, Linux, and Windows Subsystem for Linux (WSL). There is currently **no support** for native Windows 10 or native Windows 11.
+
+After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with the Agoric CLI to create and deploy [smart contracts](./deploying.md).
+
+## Quick Start
+
+If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
+
+```shell
+node --version # 14.15.0 or higher
+npm install --global yarn
+git clone -b community-dev https://github.com/Agoric/agoric-sdk # "community-dev" branch
+cd agoric-sdk
+yarn install
+yarn build
+yarn link-cli ~/bin/agoric # creates an Agoric directory to reference
+agoric --version # should print the version number of the SDK
+```
+
+Now you are ready proceed to [starting a project](./start-a-project.md).
+
+If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `~/bin` directory, you may need to add `~/bin` to your PATH.
+
+::: tip Watch: Prepare Your Agoric Environment (November 2020)
+This presentation is a good overview of the Agoric SDK setup process,
+though a few details are out of date:
+
+- node version: 12.x is too old; use 14.15.0 or higher
+- skip `git checkout hackathon-2020-11`; use the default `master` branch
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+**Note:** Video omits adding the Agoric SDK to your PATH.
 :::
 
-Agoric provides three main types of documentation, as well as links to
-"big picture" presentations and papers and links to our source code on GitHub. This page
-describes our documentation structure, where documents are, and when you should use them, 
-as well as what order to read them.
+## Platform: Linux Shell or Equivalent
 
-Our three main documentation types are:
-- **Getting Started**: These are the first things you should
-read. They cover what to do to install, set up, and start
-using Agoric's smart contract tools. They also introduce those tools and
-their underlying concepts and designs.
-- **Guides**: These are more detailed and complete descriptions
-of our tools and their concepts, designs, and usage. They include
-descriptions and examples of how to do various tasks with Agoric
-software.
-- **Reference**: These are the specs for our APIs and commands,
-  as well as checklist tables that specify and explain the
-  steps for extended procedures, such as installing Agoric
-  software.
+The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>, <a href="https://www.apple.com/macos/">MacOS</a>, and <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (WSL)</a>.
 
-Some documents fall into multiple categories. For example, our Agoric
-installation document is both a Reference and a Getting Started document.
+- To open a terminal on MacOS, see **Applications>Utilities>terminal** in the **Finder**.
+- To launch a terminal on Linux, use the **Terminal** application.
+- To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 
-You should read them in this order:
-1. **[Before Using the Agoric SDK](./before-using-agoric.md)**: 
-How to install software that the Agoric SDK depends on.
-2. **[Start a Project](./start-a-project.md)**: A
-  procedure checklist that walks you through creating a new Agoric SDK 
-  project from scratch. 
-3. **[ERTP Introduction](./ertp-introduction.md)**:
-  A Getting Started document that briefly explains the concepts and components of Agoric's Electronic
-  Rights Transfer Protocol (ERTP) which is the heart of Agoric
-  software.
-4. **[Zoe Introduction](./intro-zoe.md)**: 
-  A Getting Started document that briefly explains the concepts and components of Zoe, our reusable smart contract 
-  for writing other smart contracts in JavaScript. Zoe implements our guarantee that users
-  either get what they wanted from the contract or a full refund of what they put up for it. 
-5. **[Agoric Platform/Stack](/platform/README.md)**: A brief introduction to the complete Agoric platform/technical stack.
-6. **[Agoric Dapp Guide](/dapps/README.md)**: 
-   A Dapp is a decentralized application, typically with a browser-based user interface, a public
-   API server, and a contract running on the Agoric blockchain. This document explains a Dapp's
-   basic directory and file structure.
-7. **[Deploying Smart Contracts](./deploying.md)**: 
-  A brief description of the tools and processes for deploying contracts to the chain and
-  application code to the application server.
-8. **[JavaScript Distributed Programming Guide](/guides/js-programming/)**: 
-  We've made some Agoric-specific additions at various layers, including concepts, syntax, 
-  and additions to the Agoric library. You should know about and understand these before 
-  programming on the Agoric platform.
-8. **[ERTP Guide](/ertp/guide/README.md)**: 
-  A detailed description of ERTP concepts, design, components, and commands. 
-  Includes examples of command usage. You should also look at the ERTP API 
-  documentation, accessible from the ERTP documentation sidebar menu.
-9. **[Zoe Guide](/zoe/guide/README.md)**: 
-  A detailed description of Zoe concepts, design, components, and commands. 
-  Includes examples of command usage. You should also look at the Zoe API 
-  documentation, accessible from the Zoe documentation sidebar menu.
+## Install Node.js 14.15.0 or Higher
 
-When needed, refer to the **[ERTP API Reference](/ertp/api/)**, **[Zoe API
-Reference](/zoe/api/)**, **[Wallet Guide and API Reference](/guides/wallet)**,
-and **[Agoric CLI Guide](/guides/agoric-cli/)** for details about 
-their respective commands. The Wallet Guide also covers the Wallet UI and 
-general working with the Agoric Wallet.
+Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing version 16.18 rather than 18.11.
 
-You can access a REPL (Read-Eval-Print Loop). From the REPL and its `home` object,
-developers can use all the on-chain commands that deployment scripts use to deploy
-contracts and Dapps. See the **[REPL Guide](/repl/)** for details.
+```shell
+node --version # 14.15.0 or higher
+```
 
-You use Agoric's Dynamic IBC ([Inter-Blockchain Communication Protocol](https://cosmos.network/ibc)), aka dIBC, 
-to connect to services on other blockchains or make services on the Agoric blockchain available to other blockchains. 
-See our **[dIBC Guide](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md)** for more information.
+## Install the Yarn Package Manager
 
-To familiarize yourself with working Agoric smart contracts, take a look at our 
-**[Sample Contracts](/zoe/guide/contracts/README.md)**. 
+Follow [Yarn Installation](https://classic.yarnpkg.com/en/docs/install)
+instructions. For example:
 
-We also have an **[Agoric Glossary](/glossary/)** for terms we've given Agoric-context
-definitions to (i.e. what does *mint* mean in an Agoric context?).
+```shell
+npm install --global yarn
+yarn --version # 1.22.10 or higher
+```
 
-For more about Agoric's ideas, plans, and goals, see our **[Homepage](https://agoric.com/)**. 
+## Install Git
 
-Our **[Papers](https://agoric.com/papers/)** page has links to various documents you may find useful, 
-such as conference talks, white papers, conference papers, etc. that discuss Agoric's technical background and ideas.
+Follow [Git installation instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or use your platform's package manager.
 
-Agoric's **[YouTube channel](https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg)** has tutorials, company calls, 
-and other talks by Agoric engineers and management.
+```shell
+npm install --global git
+git --version # 2.25.0 or higher
+```
 
-Finally, we have links to the ultimate documentation; the **[GitHub
-repositories](https://github.com/Agoric/)** for the code that defines the Agoric SDK.
+## Clone the Agoric SDK
+
+```shell
+git clone -b community-dev https://github.com/Agoric/agoric-sdk
+cd agoric-sdk
+```
+
+Cloning and installing the Agoric SDK can take a while. Please be patient.
+
+## Install NPM Dependencies
+
+```shell
+yarn install
+```
+
+**Note:** If you run into errors during install or build, make sure you have build-essential installed. `gcc --version`.
+
+## Build Packages
+
+```shell
+yarn build
+```
+
+**Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for native Windows 10 or native Windows 11.
+
+## Install Agoric CLI
+
+Install the Agoric CLI (Command Line Interface) in a convenient place in your `$PATH` such as:
+
+```shell
+yarn link-cli ~/bin/agoric
+```
+
+or:
+
+```shell
+sudo yarn link-cli /usr/local/bin/agoric
+```
+
+**Note:** Run `echo $PATH` to see your current `$PATH`. Here you'll see which directory you should use for `yarn link-cli`.
+
+## Check the Agoric Version
+
+To check that it's installed correctly:
+
+```shell
+agoric --version # v0.16.0 "community-dev" branch
+```
+
+If the install was successful, you are ready to proceed to [starting a project](./start-a-project.md).
+
+Should `agoric` not be found, then you may need to add the parent directory of where your `yarn link-cli` command created the "agoric-sdk" directory.
+
+Please see the youtube video [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) for more information.

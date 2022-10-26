@@ -11,7 +11,7 @@ A dapp is a *decentralized application* which typically has a browser-based user
 
 ## Using a Dapp
 
-If you have installed the [Agoric CLI](../getting-started/before-using-agoric.md) and you want to try running a dapp locally on a simulated Agoric VM (i.e., it won't be running on an actual public chain), do the following:
+If you have installed the [Agoric CLI](../getting-started/) and you want to try running a dapp locally on a simulated Agoric VM (i.e., it won't be running on an actual public chain), do the following:
 
 1. Checkout the latest beta release of the SDK.
 
@@ -58,8 +58,8 @@ In the Agoric system, components are written in Javascript.
 The following are the important directories in an Agoric dapp project:
 
 - [`contract/`](#contract-directory) defines the on-chain smart contract.
-- [`api/`](#api) defines the chain-connected server's `/api` HTTP endpoint.
-- [`ui/`](#ui) defines the browser user interface connecting users' personal wallets and the API server.
+- [`api/`](#api-directory) defines the chain-connected server's `/api` HTTP endpoint.
+- [`ui/`](#ui-directory) defines the browser user interface connecting users' personal wallets and the API server.
 
 Other files and directories in this top-level folder should not typically be modified.
 

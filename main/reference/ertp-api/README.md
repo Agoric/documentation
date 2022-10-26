@@ -6,12 +6,10 @@ The Agoric platform is at the beta stage. It is in the process of being formally
 
 The ERTP API has the following classes:
 
-| Classes | Description |
-| --- | --- |
-| [Issuer](./issuer.md) | 
-| [Mint](./mint.md) | 
-| [Brand](./brand.md) | 
-| [Purse](./purse.md) | 
-| [Payment](./payment.md) | 
-| [AmountMath](./amount-math.md) | 
-| [DisplayInfo](./displayInfo.md) | 
+* [Issuer](./issuer.md) 
+* [Mint](./mint.md) 
+* [Brand](./brand.md) 
+* [Purse](./purse.md) 
+* [Payment](./payment.md) 
+* [AmountMath](./amount-math.md) 
+* [DisplayInfo](./displayInfo.md)

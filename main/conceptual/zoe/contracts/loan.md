@@ -26,13 +26,13 @@ loaned amount and interest must be of the same (separate) brand.
    percent. The default is 150, meaning that collateral should be
    worth at least 150% of the loan. If the value of the collateral
    drops below `mmr`, liquidation can occur.
-* [`priceAuthority`](/zoe/guide/price-authority.md) - used for getting the current value of
+* [`priceAuthority`](/conceptual/zoe/price-authority.md) - used for getting the current value of
    collateral and setting liquidation triggers.
 * `autoswapInstance` - The running contract instance for 
    [AMM](./constantProductAMM.md) installation. The `publicFacet`
    of the instance is used to make an invitation to sell the
    collateral on liquidation.
-* `periodNotifier` - the [notifier](/guides/js-programming/notifiers.md) used for notifications
+* `periodNotifier` - the [notifier](/conceptual/js-programming/notifiers.md) used for notifications
    that a period has passed, on which compound interest will be
    calculated using the `interestRate`.
 * `interestRate` - the rate in [basis points](https://www.investopedia.com/terms/b/basispoint.asp) that will be multiplied
@@ -112,7 +112,7 @@ is defined by the `interestRate` parameter.
 
 The `borrowFacet` has methods to get the current amount owed
 (`E(borrowFacet).getRecentCollateralAmount()`), or get a
-[notifier](/guides/js-programming/notifiers.md) that will be updated when the debt
+[notifier](/conceptual/js-programming/notifiers.md) that will be updated when the debt
 is recalculated. The contract also reveals the last timestamp at which debt was
 recalculated: (`E(borrowFacet).getLastCalculationTimestamp()`).
 
@@ -125,7 +125,7 @@ collateral falls below a trigger value defined by the `mmr` parameter:
 <<< @/snippets/zoe/contracts/test-loan.js#liquidate
 
 The borrower can self-forewarn about a potential liquidation by setting up their own margin calls.
-They do this by getting the [`priceAuthority`](/zoe/guide/price-authority.md) from the terms and calling:
+They do this by getting the [`priceAuthority`](/conceptual/zoe/price-authority.md) from the terms and calling:
 
 <<< @/snippets/zoe/contracts/test-loan.js#customMarginCall
 

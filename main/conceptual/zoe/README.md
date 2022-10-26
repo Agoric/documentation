@@ -139,7 +139,7 @@ Let's dive back into the [Atomic Swap contract](/conceptual/zoe/contracts/atomic
 
 The contract first confirms that `issuers` are set up for the **Asset** and **Price** keywords. Those are the two items that will be swapped.
 
-The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers.html#assertissuerkeywords-zcf-keywords). It
+The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers.md#assertissuerkeywords-zcf-keywords). It
 checks properties of the running contract instance's terms.
 ```js
 const start = zcf => {
@@ -152,7 +152,7 @@ the contract. When the associated `creatorInvitation` is used to make an offer, 
 with the `seat` for that offer.
 
 This contract uses the
-[`assertProposalShape` helper function](/reference/zoe-api/zoe-helpers.html#assertproposalshape-seat-expected) to
+[`assertProposalShape` helper function](/reference/zoe-api/zoe-helpers.md#assertproposalshape-seat-expected) to
 check that the offer proposes the kind of trade the contract accepts. In this case, offers must
 have a proposal of the form:
 ```js

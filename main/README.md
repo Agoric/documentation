@@ -8,7 +8,7 @@ home: true # use default home page layout (hero image with text, features sectio
 heroImage: https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg
 ## Action button
 actionText: Get Started → # text that goes in the button
-actionLink: /conceptual/getting-started/before-using-agoric.html # go-to link when clicking on button
+actionLink: /conceptual/getting-started/ # go-to link when clicking on button
 
 ## Features section
 features:
@@ -53,7 +53,3 @@ Our OCaps platform consists of:
 - A cryptographic routing fabric for inter-chain interoperability.
 - A library of market abstractions and a framework for securely composing them.
 - A framework for secure user interaction.
-
-## Build Beta Dapps
-
-This documentation site goes into detail about the Agoric system. For Beta, we recommend everyone begin by [getting started](/conceptual/getting-started/beta.md) with a deployed application as a user. You'll start by getting your wallet set up, including getting some mock assets to play with. Then you'll be able to experiment with the deployed application, see how it works, and start envisioning your own dapp.

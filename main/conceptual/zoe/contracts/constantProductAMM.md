@@ -107,7 +107,7 @@ const BLDProceedsAmount = E(saraBLDPurse).deposit(BLDProceeds);
 E(saraAtmPurse).deposit(atmRefund);
 ```
 
-###  Creating a new Pool
+###  Creating a New Pool
 
 When the contract is first instantiated, there won't be any pools ready for
 trading. `addPool()` adds a new currency, which can then be funded.  (All
@@ -196,7 +196,7 @@ An instance of the ConstantProduct AMM is managed by a contractGovernor, which
 controls the ability to change contract parameters and add new types of collateral.
 The contractGovernor adds these four methods to the contract's publicFacet:
 
-* `getSubscription()`: get a [Subscription](/guides/js-programming/notifiers.md) that
+* `getSubscription()`: get a [Subscription](/conceptual/js-programming/notifiers.md) that
     updates when votes are called.
 * `getContractGovernor()`: returns the contractGovernor for verification.
 * `getGovernedParamsValues()`: returns a structure showing the current values of

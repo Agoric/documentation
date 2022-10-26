@@ -423,7 +423,7 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 ## Passable
 
 A *passable* is something that can be marshalled (see the
-[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence))
+[Marshaling section in the JavaScript Distributed Programming Guide](/conceptual/js-programming/far.md#marshaling-by-copy-or-by-presence))
 and sent to and from remote objects.
 
 ## Payment

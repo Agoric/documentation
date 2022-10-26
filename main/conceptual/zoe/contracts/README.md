@@ -12,7 +12,7 @@ pre-built contracts that can be imported and run on Zoe:
 A low-level oracle contract for querying [Chainlink](https://docs.chain.link/docs/request-and-receive-data#config)
 or other oracles. 
 
-### [PriceAuthority](/zoe/guide/price-authority.md)
+### [PriceAuthority](/conceptual/zoe/price-authority.md)
 To use an price oracle in your own contract, we recommend using the `priceAuthority`
 higher-level abstraction.
 
@@ -116,4 +116,4 @@ this case, you can color a pixel if you own the NFT for the pixel.
 ### [Automatic Refund](./automatic-refund.md) 
 A trivial contract that gives the user back what they put in.
 
-If you want to build your own smart contract, start with the [Zoe API](../../api/README.md)
+If you want to build your own smart contract, start with the [Zoe API](/reference/zoe-api/)

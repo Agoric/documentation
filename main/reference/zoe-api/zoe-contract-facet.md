@@ -433,7 +433,7 @@ const { brands, issuers, maths, terms } = zcf.getTerms()
 ## `zcf.getZoeService()`
 - Returns: [ZoeService](./zoe.md)
 
-This is the only way to get the user-facing [Zoe Service API](./zoe.md#zoe) to
+This is the only way to get the user-facing [Zoe Service API](./zoe.md) to
 the contract code as well.
 ```js
 // Making an offer to another contract instance in the contract.

@@ -280,7 +280,7 @@ In other words, I don't make you an offer that I'll sell you a ticket to *Hamilt
 I make you an offer by sending a description
 of what I'm willing to swap ("I will exchange a *Hamilton* ticket for $300").
 If the offer is accepted, **then** I send you the actual asset (enjoy the show!) and you send me the actual $300 (I'll enjoy spending it!).
-In the Agoric stack, assets of the exchange are escrowed with [Zoe](/getting-started/intro-zoe.md).
+In the Agoric stack, assets of the exchange are escrowed with [Zoe](/conceptual/zoe/).
 
 ## Object Capabilities and ERTP
 

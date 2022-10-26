@@ -54,7 +54,7 @@ someAmount: {
 
 `values` describe how much of something can be owned or shared.
 A value is either a non-negative `BigInt` for a fungible amount
-or, for a non-fungible amount, [copyArray](/guides/js-programming/far.md#passstyleof-api)
+or, for a non-fungible amount, [copyArray](/conceptual/js-programming/far.md#passstyleof-api)
 such as a hardened array of strings.
 
 Recall that `BigInt`s are written with an `n` at the end: `10n`, `137n`, etc.
@@ -307,6 +307,6 @@ what it does and how to use it.
   - Returns the `amount` description of the `payment`
 - [`issuer.getAssetKind()`](./issuer.md#issuer-getassetkind)
   - Returns the `AssetKind` of the `issuer`'s associated math helpers.
-- [`zcf.getAssetKind(brand)`](/zoe/api/zoe-contract-facet.md#zcf-getassetkind-brand)
+- [`zcf.getAssetKind(brand)`](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
   - Returns the `AssetKind` associated with the `brand`.
 

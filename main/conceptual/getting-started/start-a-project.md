@@ -4,11 +4,11 @@
 The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
 :::
 
-Before we begin, you should use `agoric --version` to double-check that you have [installed the Agoric SDK](./before-using-agoric.md).
+Before we begin, you should use `agoric --version` to double-check that you have [installed the Agoric SDK](./README.md).
 
 If it is available, then you successfully installed the Agoric SDK. If not, then please do so before continuing. 
 
-After you've [installed the Agoric SDK](./before-using-agoric.md), then you're ready for your first _Agoric Dapp_ (decentralized application) by continuing the instructions below. 
+After you've [installed the Agoric SDK](./README.md), then you're ready for your first _Agoric Dapp_ (decentralized application) by continuing the instructions below. 
 
 We'll be running three terminal windows. See below: 
 
@@ -35,7 +35,7 @@ This presentation includes starting a project, but note an outdated detail:
 The following section will explain how to initialize the default dapp template, install the Agoric SDK
 into the dapp template, and then launch the Agoric Solo Client and Simulated Blockchain.
 
-Use the [Agoric CLI](../agoric-cli/commands.md) to fetch from a dapp template
+Use the [Agoric CLI](../agoric-cli/) to fetch from a dapp template
 and put it in a directory _not located in your `agoric-sdk` clone_. We named the directory "demo", but you can name the folder whatever you like.
 
 ```sh
