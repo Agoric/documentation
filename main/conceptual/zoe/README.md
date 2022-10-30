@@ -1,220 +1,262 @@
 # Zoe Overview
 
-<Zoe-Version/>
-
-::: tip Beta status
-The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
-:::
-
-This guide assumes some knowledge of the [ERTP
-fundamentals](../ertp/).
-
 ## What is Zoe?
 
-__For users__: Zoe guarantees that as a user of a smart contract, you
-will either get what you wanted or get a full refund, even if the
-smart contract is buggy or malicious. (In fact, the smart contract
-never has access to your digital assets.)
+Zoe is Agoric's smart contract framework. Use Zoe to:
 
-__For developers__: Zoe provides a safety net so you can focus on what
-your smart contract does best, without worrying about your users
-losing their assets due to a bug in the code that you wrote. Writing a
-smart contract on Zoe is easy; all of the Zoe smart contracts are
-written in the familiar language of JavaScript.
+* **Run your code on-chain**
+* **Mint new digital assets**
+* **Credibly trade assets**
 
-## Sounds Like Magic. How Does It Actually Work?
+## Why Use Zoe?
 
-To use Zoe, we put things in terms of "offers". An offer proposal is a statement about what you want and what you're willing to offer. It turns out, many smart contracts (apart from gifts and one-way payments) involve an exchange of digital assets that can be put in terms of offer proposals. We can say things like, "I'll give you [three wool for two bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the particulars of structuring an offer proposal here](./proposal.md).
+### For Users ###
 
-Offers are a structured way of describing user intent. To a certain
-extent, an offer's rules (called a *proposal*) are the user's
-*contractual understanding* of the agreement they are entering into.
+**Zoe is safer.** Traditionally, putting digital assets in a smart
+contract has carried the risk of losing them. But Zoe guarantees you get either
+what you wanted or a full refund of the assets you put in. You will
+never leave a smart contract empty-handed, even if it is buggy or malicious.
 
-You might have noticed that the offer doesn't specify the mechanism by
-which the exchange happens. The offer doesn't say whether the item you
-want is up for auction, in an exchange, or part of a private trade.
-The offer doesn't mention the particular mechanism because an
-important part of the design of Zoe is a __separation of concerns__.
+### For Developers ###
 
-Zoe is responsible for enforcing what we call "offer safety", and the
-smart contract that runs on top of Zoe is responsible for figuring out
-a proposed reallocation of resources. To use an auction as an example,
-the smart contract is responsible for figuring out who wins the
-auction and how much they pay, but Zoe handles the escrowing of the
-bids and the payments. You can think of this as similar to e-commerce
-websites using a separate payment-processor so that they don't have to
-handle the credit cards themselves.
+**Zoe is easier.**  Traditionally, writing a smart contract meant
+learning a new, untried language. And don't make any mistakes - if you
+do, your users might lose millions.
 
-### What Is "Offer Safety"?
+However, you write Zoe contracts in a secure subset of JavaScript.
+Moreover, Zoe automatically escrows all user digital assets and
+handles their subsequent payout. **Even a buggy contract can't cause
+users to lose their assets.**
 
-Zoe guarantees offer safety, which means that when a user makes an offer
-and it is escrowed with Zoe, Zoe guarantees that the user either
-gets back what they said they wanted, or gets back (i.e., is refunded) what they
-originally offered and escrowed.
+### Contracts on Zoe
 
-When a user escrows with Zoe, they get back
-a JavaScript promise for a future payout. Let's
-look a particular example to see how this works.
+Agoric has written [a number of example contracts that you can
+use](/zoe/guide/contracts/), including:
+* an [Automated Market Maker (AMM)
+  implementation](/zoe/guide/contracts/constantProductAMM.md)
+* a [covered call option contract](./contracts/covered-call.md)
+* an [OTC Desk market maker contract](./contracts/otc-desk.md)
+* contracts for [minting fungible](./contracts/mint-payments.md) and
+  [non-fungible tokens](./contracts/mint-and-sell-nfts.md)
 
-## An Example: A Swap
+## Using an Example Zoe Smart Contract
 
-I want to trade my three bricks for five wool. You realize you have
-five wool and agree to the deal. Without Zoe, you might send
-me the five wool, and I might disappear without ever giving you the
-three bricks. With Zoe, we can safely trade with each other,
-even if we don't trust each other. We are assured that at worst, if
-the swap contract behaves badly, we both get a refund, and at
-best, we both get what we wanted.
+You must have a Zoe invitation to a specific contract instance to join
+and participate in it. Let's imagine your friend Alice has sent an
+invitation for a contract instance to your [wallet](/conceptual/wallet/).
 
-Let's look at the basic [Atomic Swap contract](/conceptual/zoe/contracts/atomic-swap.md)
-(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
+Compare this to a smart contract on Ethereum. On Ethereum, the smart
+contract developer must guard against malicious calls and store an
+internal access control list to check whether the message sender is
+allowed to send such a message. Zoe, built on Agoric's [object
+capability](/glossary/#object-capabilities) security model, is just
+easier.
 
-Here's a high-level overview of what happens:
-1. I make an instance of the swap contract, and get an invitation to
-   participate in the contract.
-2. I make an offer through Zoe by presenting my invitation, a proposal
-   of 3 bricks for 5 wool, and a payment with the 3 bricks. Zoe escrows
-   the bricks and returns me a seat (a `UserSeat` to be precise) in the
-   contract, from which I can get the results of my offer, the payouts, etc.
-3. The result of processing my offer is an invitation for my counterparty.
-   I send you that invitation to participate in this contract instance.
-4. You inspect the invitation and verify it was created by the
-   `atomicSwap` contract code.
-5. You use your invitation to make your matching offer with Zoe (5 wool for
-   3 bricks). You get your own seat with which to access your payout and offer results.
-6. The contract confirms that our offers match, and reallocates our bricks
-   and wool and exits our offers. That will resolve our respective payout
-   promises, mine to the five wool that I wanted, and yours to the three
-   bricks that you wanted. Success!
+This particular invitation is for an [Atomic Swap
+contract](/zoe/guide/contracts/atomic-swap.md).
+In an Atomic Swap, one party puts up digital assets they want to
+exchange and sends an invitation to a second party for them to
+possibly complete the exchange. In this example, Alice has already
+escrowed the assets she wants to swap and is asking you to pay a
+specified price to receive her digital assets.
 
-## How to Write Smart Contracts
+### Inspecting an Invitation
 
-Writing smart contracts that run on Zoe is easy. Let's look
-at a simple contract like [Automatic Refund](/conceptual/zoe/contracts/automatic-refund.md)
-(link includes [real contract
-code](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/automaticRefund.js)).
-It only does one thing, and it's pretty useless&mdash;it gives you back what you put in.
+So you have an invitation, but how do you use it? First, you use Zoe
+to inspect and validate the invitation.
 
-```js
-const start = zcf => {
-  const refund = seat => {
-    seat.exit();
-    return `The offer was accepted`;
-  };
-  const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund');
+<<< @/snippets/test-intro-zoe.js#details
 
-  const publicFacet = Far('publicFacet', {
-    makeInvitation: makeRefundInvitation,
-  });
+::: warning Note
 
-  const creatorInvitation = makeRefundInvitation();
+E() is part of the Agoric platform and is used to [call methods on
+remote objects and receive a promise for the
+result](/guides/js-programming/eventual-send.md).
+Code on the Agoric platform is put in separate environments, called
+[vats](/glossary/#vat), for security. Zoe is a remote object in its own vat,
+so we must use E().
+:::
 
-  return harden({ creatorInvitation, publicFacet });
-};
+Invitations include information about their contract's installation.
+Essentially, this is the contract's source code as installed on Zoe.
+From this overall contract installation, people use Zoe to create and
+run specific instances of the contract. For example, if a real estate
+company has a contract for selling a house, they would create an
+instance of the contract for each individual house they have up for
+sale.
 
-harden(start);
-export { start };
-```
-Whenever we create a new object or array, we recursively
-freeze it with `harden`. You can learn more about `harden` in the
-[Endo and Hardened JavaScript
-documentation](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md).
+You use object identity comparison to quickly check that you recognize
+this contract installation, without having to compare source code
+line-by-line. If the installation matches, you're
+sure the invitation is for participating in an instance of the
+expected contract rather than an unknown and possibly malicious one.
 
-The `automaticRefund` contract behavior is implemented in `refund`.
-It just tells Zoe to exit the offer, which gives the user their payout
-through Zoe.
+<<< @/snippets/test-intro-zoe.js#isCorrectCode
 
-A smart contract on Zoe must export a function named `start` that
-takes a single parameter: `zcf`, which is the contract-internal API
-for Zoe. The `start` function must return an object with any of
-several optional properties:
-- **creatorInvitation**: An invitation only available to the creator of the contract instance.
-- **creatorFacet**: An object with operations made accessible only to the creator.
-- **publicFacet**: An object with operations available to any client with access to the instance.
+However, if you don't recognize the installation, you can inspect its
+code directly by calling:
 
-## Diving Deeper
+<<< @/snippets/test-intro-zoe.js#inspectCode
 
-Let's dive back into the [Atomic Swap contract](/conceptual/zoe/contracts/atomic-swap.md)
-(link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
-
-The contract first confirms that `issuers` are set up for the **Asset** and **Price** keywords. Those are the two items that will be swapped.
-
-The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers.md#assertissuerkeywords-zcf-keywords). It
-checks properties of the running contract instance's terms.
-```js
-const start = zcf => {
-  assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
+In most cases, the bundle contains a base64-encoded zip file that you can
+extract for review:
+```sh
+echo "$endoZipBase64" | base64 -d > bundle.zip
+unzip bundle.zip
 ```
 
-The `makeMatchingInvitation()` handler is for the contract instance's creator, and it
-makes the `invitation` for the other party to use. At the end of this section, we'll see how it's incorporated into
-the contract. When the associated `creatorInvitation` is used to make an offer, `makeMatchingInvitation()` is invoked
-with the `seat` for that offer.
+Contracts can add their own specific information to invitations. In
+this case, the Atomic Swap contract adds information about what is
+being traded: the `asset` [amount](/conceptual/ertp/amounts.md#amounts)
+Alice has escrowed, and the `price` amount that you must pay to get it.
+Note that both are _descriptions_ of digital assets with no intrinsic value of their own.
 
-This contract uses the
-[`assertProposalShape` helper function](/reference/zoe-api/zoe-helpers.md#assertproposalshape-seat-expected) to
-check that the offer proposes the kind of trade the contract accepts. In this case, offers must
-have a proposal of the form:
-```js
-{
-  give: { Asset: amount1 },
-  want: { Price: amount2 },
-}
-```
+### Making an Offer
 
-`amount1` and `amount2` are amounts with the correct issuers for the keywords.
-The contract then uses `getProposal()` to extract the properties of the proposal for later matching.
-```js
-  const makeMatchingInvitation = firstSeat => {
-    assertProposalShape(firstSeat, {
-      give: { Asset: null },
-      want: { Price: null },
-    });
-    const { want, give } = firstSeat.getProposal();
-```
+You've successfully checked out the invitation, so now you can make an
+offer.
 
-`makeMatchingInvitation()` then constructs a `matchingSeatOfferHandler()` handler
-for the second offer, with the first offer's `want` and `give` in scope. This second
-handler is responsible for the final step.
-It uses the [`swap` helper  function](/reference/zoe-api/zoe-helpers.md#swap-zcf-leftseat-rightseat)
-to attempt asset reallocation between the two seats as described above and then
-(whether or not the attempt succeeds) exits both seats, making payouts available to
-both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
-```js
-    const matchingSeatOfferHandler = matchingSeat => {
-      const swapResult = swap(zcf, firstSeat, matchingSeat);
-      zcf.shutdown();
-      return swapResult;
-    };
-```
+An offer has three required parts:
+* a Zoe invitation
+* a proposal
+* a [payment](/conceptual/ertp/purses-and-payments.md#payments) containing
+  the digital assets you're offering to swap
 
-Now let's put it together. The final step of `makeMatchingInvitation()`
-is to create and return the second party's invitation, using
-`matchingSeatOfferHandler()` and including custom properties for the proposal of the invited offer.
-```js
-    const matchingSeatInvitation = zcf.makeInvitation(
-      matchingSeatOfferHandler,
-      'matchOffer',
-      {
-        asset: give.Asset,
-        price: want.Price,
-      },
-    );
-    return matchingSeatInvitation;
-  };
-```
+The `proposal` states what you want from the offer, and what you will
+give in return. Zoe uses the proposal as an invariant to ensure you
+don't lose your assets in the trade. This invariant is known as **offer
+safety**.
 
-Finally, the `start` function makes an invitation for the instance's creator
-and returns it as `creatorInvitation`.
-```js
-  const creatorInvitation = zcf.makeInvitation(
-    makeMatchingInvitation,
-    'firstOffer',
-  );
-  return { creatorInvitation };
-};
-```
+You use the invitation's `asset` and `price` amounts to make your
+proposal. Let's say `asset` is an amount of 3 Moola, and `price` is an amount
+of 7 Simoleans (Moola and Simoleans are made-up currencies for this example).
 
-The `creatorInvitation` is only available to the contract instance's creator
-(see [`startInstance`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)).
-The creator can use it to make their own offer, or can send it to some other party.
+<<< @/snippets/test-intro-zoe.js#ourProposal
+
+Proposals must use Keywords, which are
+[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
+properties that start with an upper case letter and contain no non-ASCII characters.
+Here, the specific keywords, `Asset` and `Price`, are [determined by the
+contract code](/zoe/guide/contracts/atomic-swap.md).
+
+You said you would give 7 Simoleans, so you must send 7 Simoleans as a payment.
+You happen to have some Simoleans lying around in a Simolean
+[purse](/conceptual/ertp/purses-and-payments.md) (used to hold digital
+assets of a specific type). You withdraw a payment of 7 Simoleans from
+the purse for your offer, and construct an object using the same
+Keyword as your `proposal.give`:
+
+<<< @/snippets/test-intro-zoe.js#getPayments
+
+Now you need to [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) your
+just created `proposal` and `payments` objects. Hardening is
+transitively freezing an object. For security reasons, we must harden
+any objects that will be passed to a remote object like Zoe.
+
+<<< @/snippets/test-intro-zoe.js#harden
+
+You've put the required pieces together, so now you can make an offer:
+
+<<< @/snippets/test-intro-zoe.js#offer
+
+At this point, Zoe confirms your invitation's validity and [burns](/glossary/#burn) it.
+Zoe also escrows your payments, representing their value as
+amounts in your [current allocation](/reference/zoe-api/zoe.md#e-userseat-getcurrentallocation)
+in the contract.
+
+### Using Your UserSeat
+
+Making an offer as a user returns a [UserSeat](/reference/zoe-api/zoe.md#userseat-object)
+representing your position in the ongoing contract instance (your
+"seat at the table"). You can use this seat to:
+
+1. Exit the contract.
+2. Get information about your position such as your current allocation.
+3. Get your payouts from Zoe.
+
+Check that your offer was successful:
+
+<<< @/snippets/test-intro-zoe.js#offerResult
+
+In response to your offer, the `atomicSwap` contract returns the
+message: "The offer has been accepted. Once the contract has been
+completed, please check your payout." Other contracts and offers may
+return something different. The offer's result is entirely up to the
+contract.
+
+### Getting Payouts
+
+The `atomicSwap` contract of this example is over once the second
+party escrows the correct assets. You can get your payout of Moola
+with the Keyword you used ('Asset'):
+
+<<< @/snippets/test-intro-zoe.js#getPayout
+
+Alice also receives her payouts:
+
+<div class="language-js secondary">
+
+<<< @/snippets/test-intro-zoe.js#alicePayout
+
+</div>
+
+## Writing and Installing a Contract
+
+Now that you've seen how to participate in a contract instance, let's
+look at how you'd create a contract and its instances.
+
+Let's pretend Alice wrote that contract from scratch, even though
+`atomicSwap` is one of Agoric's example contracts (see [Atomic Swap](./contracts/atomic-swap.md)).
+Note: All Zoe contracts must have this format:
+
+::: details Show contract format
+<<< @/snippets/contract-format.js#contractFormat
+:::
+
+Alice fills in this code template with `atomicSwap`'s particulars.
+To install this particular code, Alice first must bundle it off-chain,
+meaning the code and its imports are flattened together:
+
+<<< @/snippets/test-intro-zoe.js#importBundleSource
+
+<<< @/snippets/test-intro-zoe.js#bundle
+
+Then Alice must install it on Zoe:
+
+<<< @/snippets/test-intro-zoe.js#install
+
+The return value is an `installation`, which we saw
+[earlier](#inspecting-an-invitation). It is an
+object identifying a particular piece of code installed on Zoe. It can
+be compared to other installations, and you can call
+`E(atomicSwapInstallation).getBundle()` to see the code itself.
+
+### Creating an Instance
+
+Now Alice uses the installation to create a new instance. She must
+also tell Zoe about the ERTP issuers she wants to use, by specifying
+their role with Keywords. Alice was escrowing Moola, so she uses the
+keyword `Asset` to label the `moolaIssuer`. She wanted Simoleans, so
+she uses the keyword `Price` to label the `simoleanIssuer`.
+
+<<< @/snippets/test-intro-zoe.js#startInstance
+
+Even the creator of a contract instance needs an invitation to
+participate in it. Alice uses the returned `creatorInvitation` to
+make an offer, from which she gets an invitation that can be sent to
+the counter-party.
+
+<<< @/snippets/test-intro-zoe.js#aliceOffer
+
+## Zoe's Two Sides: Zoe Service and Zoe Contract Facet (ZCF)
+
+You may have noticed the contract code's `start` method has a `zcf`
+parameter. This is the Zoe Contract Facet. Zoe has two sides: the Zoe
+Service, which you've seen users interact with, and the Zoe Contract
+Facet (ZCF), which is accessible to the contract code. Note that users
+have access to the Zoe Service, but do not have access to ZCF.
+Contract code has access to ZCF *and* can get access to the Zoe
+Service.
+
+To learn more about the Zoe Service, Zoe Contract Facet, and Zoe
+Helper APIs, [see our Zoe API documentation](/reference/zoe-api/).

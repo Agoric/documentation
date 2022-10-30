@@ -7,7 +7,7 @@ page/process. Typing `E(home.wallet).foo()` in the REPL returns the names of all
 API methods by the clever method of asking it to evaluate a non-existent API method and
 getting an error message listing all the valid methods.
 
-Running `agoric open --repl==only` opens a browser tab that shows only the REPL, and not
+Running `agoric open --repl only` opens a browser tab that shows only the REPL, and not
 the combination of Wallet UI and REPL area. When issuing commands to the Wallet from the
 REPL, they must be of the form `E(home.wallet).<Wallet API command and arguments>`. For more
 information about `E()`, see the [`E()` section](/conceptual/js-programming/eventual-send.md) in 
@@ -21,7 +21,7 @@ There are two objects on which the Wallet API commands work:
   exposed via the iframe/WebSocket bridge that a Dapp UI can use to access the
   wallet.
   
-## Wallet API commands
+## Wallet API Commands
 
 ### `getBridge()`
 - Returns: `{Promise<WalletBridge>}`
@@ -78,7 +78,7 @@ Returns all the purses associated with this wallet.
 
 Returns the `purse` object with the given petname
     
-## WalletBridge API commands    
+## WalletBridge API Commands    
     
 These methods can be used by an untrusted Dapp without breaching the wallet's 
 integrity.  They are also exposed via the iframe/WebSocket bridge that a 

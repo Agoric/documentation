@@ -9,21 +9,6 @@ In general, you'll want to issue the Agoric CLI (Command Line Interface) command
 5. `agoric deploy`
 6. `agoric open`
 
-There are some general options for all commands, whose usage is:
-```
-agoric [options] [command]
-```
-They are:
-- `-V`, `--version`
-  - Outputs the version number.
-- `--docker-tag <tag>`
-  - Uses the specified tag of any started Docker containers. Defaults to `latest`.
-- `--sdk`
-  - Uses the Agoric SDK containing this program.
-- `-v`, `--verbose`
-  - Causes the command to be run in verbose mode. Multiple occurrences increase verbosity.
-- `-h`, `--help`
-  - Displays help for the command.
 
 ## agoric init
 

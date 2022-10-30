@@ -1,4 +1,6 @@
-
+---
+sidebar: auto
+---
 # Glossary
 
 This page lists words, expressions, or concepts used by the Agoric technology stack.

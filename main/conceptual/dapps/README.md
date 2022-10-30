@@ -1,10 +1,5 @@
 # Agoric Dapps
 
-::: warning Changes in the Beta Release Candidate
-[Learn more about the changes to Zoe, contracts, and dapps in the
-Beta Release Candidate](../getting-started/beta.md).
-:::
-
 **This is a generic guide to Agoric Dapp projects**
 
 A dapp is a *decentralized application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.

@@ -1,4 +1,4 @@
-# Vault contract
+# Vault Contract
 
 <Zoe-Version/>
 
@@ -57,7 +57,7 @@ borrower must give at least the current `debtAmount` in order to close out the
 loan and retrieve their collateral. Since any excess will be returned, it is
 safe to overpay to cover variations in pricing.
 
-### Interest and liquidation
+### Interest and Liquidation
 
 Parameters (subject to governance) specific to each collateral type set the
 interest rate and required collateralization ratio.
@@ -78,7 +78,7 @@ annual rate.
 to all loans. They can be adjusted (by governance) to change how frequently
 interest is accrued, and how frequently interest is compounded.
 
-#### UI support
+#### UI Support
 
 The following are returned in `offerResults` when calling `openLoan` for the
 benefit of the user's [wallet](/conceptual/wallet/).
@@ -86,12 +86,12 @@ benefit of the user's [wallet](/conceptual/wallet/).
      uiNotifier,
      invitationMakers: { AdjustBalances, CloseVault }
 
-## Adding Collateral types
+## Adding Collateral Types
 
 The creatorFacet has a method `addVaultType()` that allows someone to add new
 collateral types and specify the parameters for its loans.
 
-## Implementation detail
+## Implementation Detail
 
 ### Vats
 
@@ -111,13 +111,3 @@ The Vault's public API includes `makeVaultInvitation()` and
 to the issuer of `IST` so anyone can hold, spend and recognize IST.
 `makeVaultInvitation()` is described above under [Borrowers](#borrowers)
 
-### Roadmap
-
- * Finer control over liquidation: we think liquidation should be sensitive to
-  market depth and trade volumes.
- * Vaults in individual Vats: for better isolation and security, we want to put
-  each vault in a separate vat.
- * Limits on IST issued per collateral type: limiting the amount of IST that
-   can be issued for each collateral might blunt some attacks
- * Adding new collateral types will be made subject to governance rather
-   than being included in the creatorFacet.

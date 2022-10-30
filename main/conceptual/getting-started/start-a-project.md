@@ -1,9 +1,5 @@
 # Starting a Project
 
-::: tip Beta status
-The Agoric platform is at the beta stage. It is in the process of being formally evaluated for vulnerabilities, and is undergoing security treatment and hardening to support mainnet-1 launch. Do not use for production purposes. 
-:::
-
 Before we begin, you should use `agoric --version` to double-check that you have [installed the Agoric SDK](./README.md).
 
 If it is available, then you successfully installed the Agoric SDK. If not, then please do so before continuing. 

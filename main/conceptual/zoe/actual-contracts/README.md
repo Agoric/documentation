@@ -2,10 +2,9 @@
 
 <Zoe-Version/>
 
-While Zoe provides the means to build custom smart contracts, there is a good chance you will
-want to use one that follows a commonly-used structure. Therefore, we currently provide several
-pre-built contracts that can be imported and run on Zoe:
+The following Zoe contracts are automatically deployed on-chain:
 
 
-
-If you want to build your own smart contract, start with the [Zoe API](/reference/zoe-api/)
+| Contract | Description |
+| --- | --- |
+| [PSM](./psm.md) | The Parity Stability Module (PSM) supports efficiently minting/burning an Inter Stable Token (IST) at a specified fixed ratio to an external stable token. |

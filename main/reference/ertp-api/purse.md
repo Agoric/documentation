@@ -1,4 +1,4 @@
-# Purse Class
+# Purse
 
 `Purses` hold digital assets. They are created to hold assets of a single `brand`,
 and their `brand` cannot be changed. For example, you might create a `purse` to
