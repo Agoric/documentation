@@ -22,17 +22,6 @@ MintLimit - refers to the max amount of IST, net of burns, that can be minted by
 
 The PSM keywords are **In** and **Out**. The contract treats the two keywords symmetrically. New offers are created and existing offers accepted in either direction.
 
-{ give: { Asset: simoleans(5) }, want: { Price: quatloos(3) } }
-{ give: { Price: quatloos(8) }, want: { Asset: simoleans(3) } }
-Note: Here we used a shorthand for assets whose values are 5 simoleons, 3 quatloos, 8 quatloos, and 3 simoleons. Elsewhere this might have been done by creating amounts inline (i.e. AmountMath.make(quatloosBrand, 8n)). Or by creating amounts outside the proposal and assigning them to variables. For example, const quatloos8 = AmountMath.make(quatloosBrand, 8n); and then using quatloos8 as the value for Price in the second clause above.
-
-The want term is an exact amount to exchange, while the give term is a limit that may be improved on. This simple exchange does not partially fill orders.
-
-The publicFacet is returned when the contract is started.
-
-
-
-
 The PSM has two primary functions: 
 
 1. **wantMinted(seat, given, wanted)** - The user gives the PSM an accepted external stable token, which causes the PSM to mint an IST and give it to the user.
