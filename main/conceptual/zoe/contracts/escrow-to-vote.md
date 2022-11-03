@@ -1,4 +1,4 @@
-# Escrow To Vote
+# Escrow To Vote Contract
 
 <Zoe-Version/>
 

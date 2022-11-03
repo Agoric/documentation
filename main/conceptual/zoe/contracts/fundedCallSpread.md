@@ -1,4 +1,4 @@
-# Funded Call Spread
+# Funded Call Spread Contract
 
 <Zoe-Version/>
 

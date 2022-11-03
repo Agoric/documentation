@@ -1,4 +1,4 @@
-# The Low-level Oracle Query Contract
+# Oracle Query Contract
 
 <Zoe-Version/>
 

@@ -1,4 +1,4 @@
-# Use Object Example
+# Use Object Contract
 
 <Zoe-Version/>
 

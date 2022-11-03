@@ -1,4 +1,4 @@
-# Barter Exchange
+# Barter Exchange Contract
 
 <Zoe-Version/>
 

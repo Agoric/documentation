@@ -1,4 +1,4 @@
-# Automatic Refund
+# Automatic Refund Contract
 
 <Zoe-Version/>
 

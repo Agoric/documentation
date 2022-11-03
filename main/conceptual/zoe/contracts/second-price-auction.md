@@ -1,4 +1,4 @@
-# Second-price auction
+# Second-Price Auction Contract
 
 <Zoe-Version/>
 
@@ -30,7 +30,7 @@ fungible brand. Make the bidder invitations by calling
 offer. Each bidder can submit an offer: ```js { give: { Bid: null }
 want: { Asset: null } }.  ```
 
-## Public second-price auction
+## Public Second-Price Auction
 
 In this particular "public" second-price auction, anyone who has access to the
 auction instance can make a bid by submitting a proposal.

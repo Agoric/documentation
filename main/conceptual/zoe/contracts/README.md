@@ -10,7 +10,7 @@ pre-built example contracts that can be imported and run on Zoe. Note that none 
 
 | Contract | Description |
 | --- | --- |
-| [Oracle](./oracle.md) | A low-level oracle contract for querying [Chainlink](https://docs.chain.link/docs/request-and-receive-data#config) or other oracles. |
+| [Oracle Query](./oracle.md) | A low-level oracle contract for querying [Chainlink](https://docs.chain.link/docs/request-and-receive-data#config) or other oracles. |
 | [PriceAuthority](/conceptual/zoe/price-authority.md) | To use an price oracle in your own contract, we recommend using the `priceAuthority` higher-level abstraction. |
 
 ## DeFi Contracts
@@ -41,7 +41,7 @@ These contracts involve trading or selling ERTP digital assets.
 | [Sell Items](./sell-items.md) | A generic sales contract, mostly used for selling NFTs for money. |
 | [Atomic Swap](./atomic-swap.md) | A basic trade of digital assets between two parties. |
 | [Barter Exchange](./barter-exchange.md) | An exchange with an order book letting all kinds of goods to be offered for explicit barter swaps. |
-| [Second-price Auction](./second-price-auction.md) | An auction in which the highest bidder wins and pays the second-highest bid. This version doesn't conceal the bids (an essential aspect of second price auctions). Therefore, **it should not be used in production**. |
+| [Second-Price Auction](./second-price-auction.md) | An auction in which the highest bidder wins and pays the second-highest bid. This version doesn't conceal the bids (an essential aspect of second price auctions). Therefore, **it should not be used in production**. |
 | [Simple Exchange](./simple-exchange.md) | A basic exchange with an order book for one asset, priced in a second asset. |
 
 ## Governance Contract
@@ -61,5 +61,5 @@ These contracts involve trading or selling ERTP digital assets.
 
 | Contract | Description |
 | --- | --- |
-| [Use Obj Example](./use-obj-example.md) | An example of how you might associate the ability to take an action with ownership of a particular digital asset. In this case, you can color a pixel if you own the NFT for the pixel. |
+| [Use Object](./use-obj-example.md) | An example of how you might associate the ability to take an action with ownership of a particular digital asset. In this case, you can color a pixel if you own the NFT for the pixel. |
 | [Automatic Refund](./automatic-refund.md) | A trivial contract that gives the user back what they put in. |

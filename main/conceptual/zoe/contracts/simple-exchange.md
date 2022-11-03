@@ -1,4 +1,4 @@
-# Simple Exchange
+# Simple Exchange Contract
 
 <Zoe-Version/>
 
@@ -49,7 +49,7 @@ const { instance } = await E(zoe).getInvitationDetails(simpleExchangeInvitation)
 const aliceInvitation = await E(publicFacet).makeInvitation();
 ```
 
-## Adding an order
+## Adding an Order
 
 A user, Alice, escrows with Zoe to create a sell order. She wants to sell 3
 moola and receive at least 4 simoleans in return:
@@ -74,7 +74,7 @@ const aliceSeat = await E(zoe).offer(
 );
 ```
 
-## Buying an order
+## Buying an Order
 
 Bob knows about the simple exchange, and hears about Alice's
 offer. It sounds like a good deal to him, so he checks the installation

@@ -1,4 +1,4 @@
-# Mint and Sell NFTs
+# Mint and Sell NFTs Contract
 
 <Zoe-Version/>
 

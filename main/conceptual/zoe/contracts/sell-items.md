@@ -1,4 +1,4 @@
-# Sell Items
+# Sell Items Contract
 
 <Zoe-Version/>
 

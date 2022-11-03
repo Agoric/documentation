@@ -56,11 +56,6 @@ module.exports = [
       link: '/conceptual/zoe/'
       },
       {
-      text: 'Deployed Zoe Contracts',
-      ariaLabel: 'Deployed Zoe Contracts',
-      link: '/conceptual/zoe/actual-contracts/'
-      },
-      {
       text: 'Example Zoe Contracts',
       ariaLabel: 'Example Zoe Contracts',
       link: '/conceptual/zoe/contracts/'

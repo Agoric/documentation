@@ -1,4 +1,4 @@
-# Atomic Swap
+# Atomic Swap Contract
 
 <Zoe-Version/>
 

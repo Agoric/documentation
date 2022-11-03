@@ -1,4 +1,4 @@
-# ConstantProduct AMM
+# ConstantProduct AMM Contract
 
 <Zoe-Version/>
 

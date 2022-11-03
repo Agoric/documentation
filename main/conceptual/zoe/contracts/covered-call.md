@@ -1,4 +1,4 @@
-# Covered Call
+# Covered Call Contract
 
 <Zoe-Version/>
 

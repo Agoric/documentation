@@ -1,4 +1,4 @@
-# Mint Payments
+# Mint Payments Contract
 
 <Zoe-Version/>
 

@@ -1,4 +1,4 @@
-# Priced Call Spread
+# Priced Call Spread Contract
 
 <Zoe-Version/>
 

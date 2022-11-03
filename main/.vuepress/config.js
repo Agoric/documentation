@@ -154,15 +154,6 @@ module.exports = {
               '/conceptual/zoe/price-authority',
             ],
         },
-          {
-              title: 'Deployed Zoe Contracts',
-              path: '/conceptual/zoe/actual-contracts/',
-              collapsible: false,
-              children: [
-                '/conceptual/zoe/actual-contracts/',
-                '/conceptual/zoe/actual-contracts/PSM',
-            ],
-        },
         {
             title: 'Example Zoe Contracts',
             path: '/conceptual/zoe/contracts/',

@@ -1,4 +1,4 @@
-# Loan
+# Loan Contract
 
 <Zoe-Version/>
 
@@ -139,7 +139,3 @@ regardless of its current price.
 Even if the price is worse or better than what our `priceAuthority`
 quoted, we still liquidate.
 
-## Future directions
-* Add ability to liquidate partially
-* Add ability to withdraw excess collateral
-* Add ability to repay partially
