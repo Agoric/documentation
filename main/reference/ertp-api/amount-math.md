@@ -54,7 +54,7 @@ someAmount: {
 
 `values` describe how much of something can be owned or shared.
 A value is either a non-negative `BigInt` for a fungible amount
-or, for a non-fungible amount, [copyArray](/conceptual/js-programming/far.md#passstyleof-api)
+or, for a non-fungible amount, [copyArray](/guides/js-programming/far.md#passstyleof-api)
 such as a hardened array of strings.
 
 Recall that `BigInt`s are written with an `n` at the end: `10n`, `137n`, etc.

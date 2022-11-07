@@ -7,7 +7,7 @@ This page lists words, expressions, or concepts used by the Agoric technology st
 
 ## Agoric CLI
 
-A command line interface for initializing, deploying, and starting Agoric projects, as well as installing dependencies. See the [Agoric CLI documentation](/conceptual/agoric-cli/) for more information.
+A command line interface for initializing, deploying, and starting Agoric projects, as well as installing dependencies. See the [Agoric CLI documentation](/guides/agoric-cli/) for more information.
 
 ## AllegedName
 
@@ -57,7 +57,7 @@ five tickets is performed by set union rather than by arithmetic.
   of [Key](#key) values subject to the same constraints as
   those of `AssetKind.COPY_SET` but allowed to be present more than once.
 
-For more information, see the [ERTP documentation's AmountMath section](/conceptual/ertp/amount-math.md)
+For more information, see the [ERTP documentation's AmountMath section](/guides/ertp/amount-math.md)
 and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
 ## Amount
@@ -78,7 +78,7 @@ sword. They don't send you the actual 5 Quatloos; that only happens when there i
 trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
 a new `amount` does **not** create new assets.
 
-For more information, see the [ERTP documentation's Amounts section](/conceptual/ertp/amounts.md)
+For more information, see the [ERTP documentation's Amounts section](/guides/ertp/amounts.md)
 and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
 ## AssetHolder
@@ -88,7 +88,7 @@ digital assets in the quantity specified by an [amount](#amount).
 
 ## BigInt
 
-In [ERTP AmountMath](/conceptual/ertp/amount-math.md), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
+In [ERTP AmountMath](/guides/ertp/amount-math.md), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
 
 [Timer Services](/reference/repl/timerServices.md) also use `BigInt` for absolute and relative times.
 
@@ -111,7 +111,7 @@ appropriate for an object, do not use the board to communicate access to it.
 Identifies the type of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amount).
-For more information, see the [ERTP documentation's Brand section](/conceptual/ertp/amounts.md#brands)
+For more information, see the [ERTP documentation's Brand section](/guides/ertp/amounts.md#brands)
 and the [ERTP API's Brand section](/reference/ertp-api/brand.md).
 
 ## Bundle
@@ -181,7 +181,7 @@ in another vat, machine, or blockchain. It takes as its argument either a local 
 or a [presence](#presence) for a remote object or a promise for a local or remote object, and
 sends messages to the object using normal message-sending syntax. The local proxy forwards all messages to the remote object to deal with.
 All `E()` calls return a promise for the eventual result. For more detail, see
-the [`E()` section in the Distributed JavaScript page](/conceptual/js-programming/eventual-send.md).
+the [`E()` section in the Distributed JavaScript page](/guides/js-programming/eventual-send.md).
 
 ## Endo
 
@@ -215,7 +215,7 @@ have a reference, it can't. For more on object capabilities, see [this post](htt
 
 Key ERTP concepts include [Issuers](#issuer), [Mints](#mint),
 [Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also
-see the [ERTP documentation](/conceptual/ertp/) and [ERTP API documentation](/reference/ertp-api/).
+see the [ERTP documentation](/guides/ertp/) and [ERTP API documentation](/reference/ertp-api/).
 
 ## Escrow
 
@@ -322,7 +322,7 @@ payments of their asset type (splitting, combining, burning, and exclusively cla
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid.
 
-For more information, see the [ERTP documentation's Issuer section](/conceptual/ertp/issuers-and-mints.md)
+For more information, see the [ERTP documentation's Issuer section](/guides/ertp/issuers-and-mints.md)
 and the [ERTP API's Issuer section](/reference/ertp-api/issuer.md).
 
 ## Key
@@ -363,7 +363,7 @@ They interact with Purses, Payments, Brands, and Issuers in the same ways.
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
 However, issuers and brands associated with either an ERTP mint or a ZCFMint are the same concepts and have the same methods.
 
-For more information on ERTP mints, see the [ERTP documentation's Mint section](/conceptual/ertp/issuers-and-mints.md)
+For more information on ERTP mints, see the [ERTP documentation's Mint section](/guides/ertp/issuers-and-mints.md)
 and the [ERTP API's Mint section](/reference/ertp-api/mint.md). For more information about ZCFMints,
 see the [ZCF API `zcf.makeZCFMint()`](/reference/zoe-api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo).
 
@@ -382,7 +382,7 @@ as they are not interchangeable (and may have different prices). See also [fungi
 ## Notifier
 
 A notifier provides a stream of updates describing changes to the state of an [offer](#offer) or other object.
-For more information, see [Notifiers and Subscriptions](/conceptual/js-programming/notifiers.md).
+For more information, see [Notifiers and Subscriptions](/guides/js-programming/notifiers.md).
 
 ## Object Capabilities
 
@@ -425,7 +425,7 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 ## Passable
 
 A *passable* is something that can be marshalled (see the
-[Marshaling section in the JavaScript Distributed Programming Guide](/conceptual/js-programming/far.md#marshaling-by-copy-or-by-presence))
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence))
 and sent to and from remote objects.
 
 ## Payment
@@ -433,7 +433,7 @@ and sent to and from remote objects.
 Payments hold assets created by [mints](#mint), specifically assets intended for transfer
 from one party to another. All assets of a payment are of the same [brand](#brand).
 
-For more information, see the [ERTP documentation's Payments section](/conceptual/ertp/purses-and-payments.md#payments)
+For more information, see the [ERTP documentation's Payments section](/guides/ertp/purses-and-payments.md#payments)
 and the [ERTP API's Payments section](/reference/ertp-api/payment.md).
 
 ## Payout
@@ -455,7 +455,7 @@ as Mom, Grandpa, Kate S., etc. In the Agoric platform, petnames are used in [wal
 
 A local version of a remote object that serves as the remote object's proxy.
 If `obj` is a presence of a remote object, you can send messages to the remote object by using `E()` on `obj`.
-For more information, see the [JavaScript Distributed Programming Guide](/conceptual/js-programming/).
+For more information, see the [JavaScript Distributed Programming Guide](/guides/js-programming/).
 
 ## Proposal
 
@@ -477,7 +477,7 @@ they are willing to give or want to get.
 A purse holds [amounts](#amount) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand), often for arbitrarily long periods of time.
 When transfer is desired, a purse can move part of its held balance to a [payment](#payment).
 
-For more information, see the [ERTP documentation's Purses section](/conceptual/ertp/purses-and-payments.md#purses-and-payments) and the
+For more information, see the [ERTP documentation's Purses section](/guides/ertp/purses-and-payments.md#purses-and-payments) and the
 [ERTP API's Purses section](/reference/ertp-api/purse.md).
 
 ## Quatloos
@@ -540,7 +540,7 @@ Other values may be represented as a CopySet of strings naming particular rights
 arbitrary objects representing the rights directly (usually [non-fungible](#non-fungible) assets).
 Values must be [Keys](#key).
 
-For more information, see the [ERTP documentation's Value section](/conceptual/ertp/amounts.md#values).
+For more information, see the [ERTP documentation's Value section](/guides/ertp/amounts.md#values).
 
 ## Vat
 
@@ -548,7 +548,7 @@ A vat is a unit of isolation.
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
 communicate with other vats and their objects and functions, but can only communicate asynchronously.
 
-For more information, see the [Vat section in the Distributed JS Programming documentation](/conceptual/js-programming/#vats-the-unit-of-synchrony).
+For more information, see the [Vat section in the Distributed JS Programming documentation](/guides/js-programming/#vats-the-unit-of-synchrony).
 
 ## Wallet
 
@@ -556,7 +556,7 @@ The overall place a party keeps their assets of all brands. For example, your wa
 [purses](#purse), 8 Moola purses, and 2 Simoleons purses. A wallet can distinguish between [issuers](#issuer).
 Dapps can propose [offers](#offer) to a wallet. If a user accepts the offer proposal,
 the wallet makes an offer on the user's behalf and deposits the [payout](#payout) in the user's [purses](#purse).
-See the [Wallet Guide and API](/conceptual/wallet/).
+See the [Wallet Guide and API](/guides/wallet/).
 
 ## ZCF
 

@@ -7,7 +7,7 @@ for that instance. A Zoe Contract Facet is accessed synchronously from within th
 and usually is referred to in code as `zcf`.
 
 The contract instance is launched by `E(zoe).startInstance()`, and is given access to
-the `zcf` object during that launch (see [Contract Requirements](/conceptual/zoe/contract-requirements.md)).
+the `zcf` object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements.md)).
 In the operations below, `instance` is the handle for the running contract instance.
 
 ## `zcf.makeZCFMint(keyword, assetKind, displayInfo)`
@@ -185,7 +185,7 @@ to manipulate the offer. The queries and operations are as follows:
   - Returns a `notifier` associated with the `seat`'s `allocation`. You use a `notifier`
     wherever some piece of code has changing state that other code wants updates on.
     This `notifier` provides updates on changing `allocations` for this `seat`, and tells
-    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/conceptual/js-programming/notifiers.md).
+    when the `seat` has been exited. For more on `notifiers`, see the [Distributed Programming Guide](/guides/js-programming/notifiers.md).
 ### `ZCFSeat.getProposal()`
   - Returns: `{ProposalRecord}`
   - A `Proposal` is represented by a `ProposalRecord`. It is the rules

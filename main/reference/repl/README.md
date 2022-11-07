@@ -72,7 +72,7 @@ them.
 Holds on-chain digital assets and object capabilities on behalf of the user.
 The header link takes you to the standard non-REPL specific `wallet` API documentation. When calling
 `wallet` API methods from the REPL, `wallet` must be prefaced by `home.` and use `E()`. For 
-example, `E(home.wallet).getPurses()`. [Full Wallet API documentation.](/conceptual/wallet/) 
+example, `E(home.wallet).getPurses()`. [Full Wallet API documentation.](/guides/wallet/) 
 
 ### [`chainTimerService`](./timerServices.md)
 On-chain time authority used to schedule events. [Full `chainTimerService` documentation.](./timerServices.md)

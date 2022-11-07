@@ -8,7 +8,7 @@ home: true # use default home page layout (hero image with text, features sectio
 heroImage: https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg
 ## Action button
 actionText: Get Started → # text that goes in the button
-actionLink: /conceptual/getting-started/ # go-to link when clicking on button
+actionLink: /guides/getting-started/ # go-to link when clicking on button
 
 ## Features section
 features:
@@ -30,7 +30,7 @@ footer: Apache-2.0 Licensed | Copyright © 2022 - Agoric
   </p>
   <Button-Action-Link
     text="Explore ERTP"
-    link="/conceptual/ertp/"
+    link="/guides/ertp/"
   />
 </div>
 <br>
@@ -39,7 +39,7 @@ footer: Apache-2.0 Licensed | Copyright © 2022 - Agoric
   </p>
   <Button-Action-Link
     text="Build on Zoe"
-    link="/conceptual/zoe/"
+    link="/guides/zoe/"
   />
 </div>
 

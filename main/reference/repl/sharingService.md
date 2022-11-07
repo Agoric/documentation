@@ -7,7 +7,7 @@ Agoric architecture, but can be useful for hackathons and demos.
 connected to the same remote chain vat. You can then
 use a named *shared map* to pass items to and from another vat.
 
-Shared maps are conceptually similar to a physical bulletin
+Shared maps are guidesly similar to a physical bulletin
 board. However, each shared map is only intended to be shared
 between two parties. If you have access to a shared map, you can
 append objects to or remove objects from that shared map. 

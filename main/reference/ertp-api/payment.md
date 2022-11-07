@@ -4,6 +4,11 @@ expected to soon be in transit. It can be deposited in `purses`,
 split into or combined with multiple `payments`, and claimed (getting
 an exclusive `payment` and revoking access from anyone else). 
 
+Digital assets in `payments` can be any of:
+- Currency-like, such as our imaginary Quatloos currency.
+- Goods-like digital assets, such as magic weapons for use in a game or theater tickets.
+- Other kinds of rights, such as the right to participate in a particular contract.
+
 A `payment` is linear, meaning either a `payment` has its full
 original balance, or it is used up entirely. You cannot partially use a
 `payment`. In other words, if a `payment` is 10 Quatloos, you can't

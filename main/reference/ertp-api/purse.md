@@ -38,24 +38,9 @@ quatloosPurse2 = quatloosIssuer.makeEmptyPurse();
 ```
 
 ## `purse.getCurrentAmount()`
+- Returns: `{Amount}`
 
-Gets the `purse`'s current balance.
-
-```
-purse.getCurrentAmount()
-```
-
-### Parameters
-
-None.
-
-### Returns
-
-Amount object
-
-Amount objects contain two members:
-
-Describe the `purse`'s current balance as an Amount.
+Returns the `purse`'s current balance as an Amount.
 The returned Amount `value` might be empty, and might be different the next time you
 call `getCurrentAmount()` on the same `purse` if assets have been deposited or
 withdrawn in the interim.
@@ -73,7 +58,7 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 - Returns: `{Notifier<Amount>}`
 
 Returns a lossy notifier for changes to this purse's balance. For more details,
-see [Notifiers](/conceptual/js-programming/notifiers.md).
+see [Notifiers](/guides/js-programming/notifiers.md).
 
 ```js
 const notifier = purse.getCurrentAmountNotifier();
