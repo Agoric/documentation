@@ -1,1 +1,0 @@
-This folder contains the conceptual (i.e., non-API reference) topics for the Agoric documentation.

@@ -12,17 +12,17 @@ module.exports = [
       {
         text: 'Installing the Agoric SDK',
         ariaLabel: 'Installing the Agoric SDK Menu',
-        link: '/conceptual/getting-started/',
+        link: '/guides/getting-started/',
       },
       {
         text: 'Starting a Project',
         ariaLabel: 'Starting a Project Menu',
-        link: '/conceptual/getting-started/start-a-project',
+        link: '/guides/getting-started/start-a-project',
       },
       {
         text: 'Deploying Smart Contracts',
         ariaLabel: 'Deploying Menu',
-        link: '/conceptual/getting-started/deploying',
+        link: '/guides/getting-started/deploying',
       },
     ]
   },
@@ -33,37 +33,37 @@ module.exports = [
       {
       text: 'Agoric CLI',
       ariaLabel: 'Agoric CLI',
-      link: '/conceptual/agoric-cli/',
+      link: '/guides/agoric-cli/',
       },
       {
       text: 'JavaScript Framework',
       ariaLabel: 'JavaScript Framework',
-      link: '/conceptual/js-programming/',
+      link: '/guides/js-programming/',
       },
       {
       text: 'Wallet',
       ariaLabel: 'Wallet',
-      link: '/conceptual/wallet/'
+      link: '/guides/wallet/'
       },
       {
       text: 'ERTP',
       ariaLabel: 'ERTP',
-      link: '/conceptual/ertp/'
+      link: '/guides/ertp/'
       },
       {
       text: 'Zoe',
       ariaLabel: 'Zoe',
-      link: '/conceptual/zoe/'
+      link: '/guides/zoe/'
       },
       {
       text: 'Example Zoe Contracts',
       ariaLabel: 'Example Zoe Contracts',
-      link: '/conceptual/zoe/contracts/'
+      link: '/guides/zoe/contracts/'
       },
       {
       text: 'Agoric Dapps',
       ariaLabel: 'Agoric Dapps',
-      link: '/conceptual/dapps/'
+      link: '/guides/dapps/'
       },
     ]
   },
