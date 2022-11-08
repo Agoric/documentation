@@ -12,7 +12,7 @@ the sections below.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/52SgGFpWjsY?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 :::
 
-## Vats: the unit of synchrony
+## Vats: the Unit of Synchrony
 
 The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) as web browsers and Node.js.
 Each event loop has a message queue, a call stack of frames, and a heap of objects:

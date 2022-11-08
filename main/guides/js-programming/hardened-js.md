@@ -9,28 +9,26 @@ The last 10 minutes are Q&A._
 :::
 
 
-## Counter Example
+## Example Secure JavaScript Code
 
-In case you thought JavaScript cannot be used to write
-reliable, secure smart contracts, we begin with this
-counter example. :)
+Below is an example of a reliable, secure smart contract written in JavaScript.
 
 <<< @/snippets/test-hardened-js.js#makeCounter
 
-We'll unpack this a bit [below](#objects-and-the-maker-pattern), but for now,
+We'll unpack this a bit [below](#objects-and-the-maker-pattern), but for now please
 note the use of functions and records:
 
- - `makeCounter` is a function
- - Each call to `makeCounter` creates a new "instance":
+ - `makeCounter` is a function.
+ - Each call to `makeCounter` creates a new instance:
    - a new record with two properties, `incr` and `decr`, and
    - a new `count` variable.
  - The `incr` and `decr` properties are visible from
    outside the object.
- - The the `count` variable is encapsulated; only the
+ - The `count` variable is encapsulated; only the
    `incr` and `decr` methods can access it.
- - Each of these instances is isolated from each other
+ - Each of these instances is isolated from each other.
 
-## Counter: Separation of Duties
+## Separation of Duties
 
 Suppose we want to keep track of the number of people
 inside a room by having an `entryGuard` count up when
@@ -51,32 +49,32 @@ uses a proposed syntax for [eventual send](./eventual-send.md),
 which we will get to soon.
 :::
 
-## Object-capabilities (ocaps)
+## Object Capabilities (ocaps)
 
 The separation of duties illustrates the core idea
 of _object capabilities_: an object reference familiar
 from object programming _is_ a permission.
 
 In this figure, Alice says: `bob.greet(carol)`
-![alice calls bob.greet(carol)](../../assets/Introduction.svg)
+![alice calls bob.greet(carol)](../assets/Introduction.svg)
 
 If object Bob has no reference to object Carol,
-then Bob cannot invoke Carol; it cannot
+then Bob cannot invoke Carol; Bob can't
 provoke whatever behavior Carol would have.
 
-If Alice has a reference Bob and invokes Bob,
+If Alice has a reference to Bob and invokes Bob,
 passing Carol as an argument, then Alice has both
 used her permission to invoke Bob _and_ given Bob
 permission to invoke Carol.
 
-We refer to these object references as _object-capabilities_ or _ocaps_.
+We refer to these object references as _object capabilities_ or _ocaps_.
 
 ## The Principle of Least Authority (POLA)
 
 OCaps give us a natural way to express the
 [principle of least authority](https://en.wikipedia.org/wiki/Principle_of_least_privilege), where each object
 is only given the permission it needs to do its legitimate job,
-such as only giving the `entryGuard` the ability to increment the counter.
+e.g., only giving the `entryGuard` the ability to increment the counter.
 
 This limits the damage that can happen if there is an exploitable bug.
 
@@ -96,7 +94,7 @@ This `eslint` configuration provides tool support.
 
 1. If working from an empty directory, a package.json file must first be created by running `yarn init` or `yarn init -y`.
 2. From there, we can install eslint into our project along with the jessie.js eslint-plugin by running `yarn add eslint @jessie.js/eslint-plugin`.
-3. The final step is to set up our project's eslint configuration inside of the package.json file by adding in the following code block.
+3. The final step is to set up our project's eslint configuration inside of the package.json file by adding the following code block.
 
 ```json
 "eslintConfig" : {
@@ -110,7 +108,7 @@ This `eslint` configuration provides tool support.
 }
 ```
 
-Now, the contents of the package.json file should look similiar to the snippet below.
+Now the contents of the package.json file should look similiar to the snippet below.
 
 ```json
 {
@@ -130,16 +128,16 @@ Now, the contents of the package.json file should look similiar to the snippet b
 }
 ```
 
-### Linting jessie.js code
+### Linting jessie.js Code
 
 1. Put `// @jessie-check` at the beginning of your `.js` source file.
 2. Run `yarn eslint --fix path/to/your-source.js`
-3. In the event that eslint finds issues with the code, follow the linter's advice to edit your file, and then repeat the step above.
+3. If eslint finds issues with the code, follow the linter's advice to edit your file, and then repeat the step above.
 
-The details of Jessie have evolved with experience; as a result, here
-we use `(count += 1)` where in the video shows `{ return count++; }`.
+The details of Jessie have evolved with experience. As a result, here
+we use `(count += 1)` whereas the video shows `{ return count++; }`.
 
-## Objects and the _maker_ pattern
+## Objects and the _maker_ Pattern
 
 Let's unpack the `makeCounter` example a bit.
 
@@ -153,7 +151,7 @@ using the _maker pattern_:
 
 <<< @/snippets/test-hardened-js.js#maker
 
-::: tip Use lexically scoped variables rather than properties of this.
+::: tip Use lexically scoped variables rather than properties of `this`.
 The style above avoids boilerplate such as `this.x = x; this.y = y`.
 :::
 
@@ -163,7 +161,7 @@ syntax rather than `function makePoint(x, y) { ... }` declarations
 for conciseness and to avoid `this`.
 :::
 
-## Defensive objects with `harden()`
+## Defensive Objects with harden()
 
 By default, anyone can clobber the properties of
 our objects so that they fail to conform to the expected API:
@@ -177,7 +175,7 @@ covers its tracks so that we don't notice:
 
 Our goal is **defensive correctness**: a program is _defensively correct_ if it remains correct despite arbitrary behavior on the part of its clients. _For further discussion, see [Concurrency Among Strangers](http://erights.org/talks/promises/paper/tgc05.pdf) and other [Agoric papers on Robust Composition](https://papers.agoric.com/papers/#robust-composition)_.
 
-To prevent tampering, use [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden), which is a deep form of [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
+To prevent tampering, use the [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden) function, which is a deep form of [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
 
 <<< @/snippets/test-hardened-js.js#defensiveMaker
 
@@ -192,7 +190,7 @@ across a trust boundary. It's important to `harden()` an object before exposing 
 Note that hardening a class instance also hardens the class.
 For more details, see [harden API in the `ses` package](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden)
 :::
-## Objects with state
+## Objects with State
 
 Now let's review the `makeCounter` example:
 
@@ -206,23 +204,23 @@ in [JavaScript closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript
 To see how this works in detail, you may want to step through this
 [visualization of the code](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=):
 
-[![makeCounter code animation](../../assets/counter-animation.png)](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=)
+[![makeCounter code animation](../assets/counter-animation.png)](https://pythontutor.com/live.html#code=const%20makeCounter%20%3D%20%28%29%20%3D%3E%20%7B%0A%20%20let%20count%20%3D%200%3B%0A%20%20const%20it%20%3D%20%7B%0A%20%20%20%20incr%3A%20%28%29%20%3D%3E%20%28count%20%2B%3D%201%29,%0A%20%20%20%20decr%3A%20%28%29%20%3D%3E%20%28count%20-%3D%201%29,%0A%20%20%7D%3B%0A%20%20return%20Object.freeze%28it%29%3B%0A%7D%3B%0A%0Aconst%20c1%20%3D%20makeCounter%28%29%3B%0A%0Aconst%20c2%20%3D%20makeCounter%28%29%3B%0Aconsole.log%28c2.incr%28%29%29%3B%0Aconsole.log%28%5Bc1.incr%28%29,%20c2.incr%28%29%5D%29%3B&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-live.js&py=js&rawInputLstJSON=%5B%5D&textReferences=)
 
-## Hardening JavaScript: strict mode
+## Hardening JavaScript: Strict Mode
 
-The first step to hardening JavaScript is that Hardened JavaScript
+The first step to hardening JavaScript is understanding that Hardened JavaScript
 is always in [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode).
 
 [![Subsetting JavaScript](https://raw.githubusercontent.com/endojs/Jessie/HEAD/docs/jessie.png)](https://github.com/endojs/Jessie#subsetting-ecmascript)
 
 One way that you would notice this is if you
-accidentally assign to a frozen property: this will throw a `TypeError`
+try to assign a value to a frozen property: this will throw a `TypeError`
 rather than silently failing.
 
-Important benefits of strict mode include complete encapsulation
-(no `caller` etc.) and reliable static scoping.
+Operating in strict mode yields the important benefits of complete encapsulation (no `caller` etc.)
+and reliable static scoping.
 
-## Hardening JavaScript: frozen built-ins
+## Hardening JavaScript: Frozen Built-ins
 
 One form of authority that is too widely available in
 ordinary JavaScript is the ability to redefine built-ins
@@ -231,8 +229,8 @@ Consider this `changePassword` function:
 
 <<< @/snippets/test-no-ses.js#changePassword
 
-In ordinary JavaScript, since someone might have redefined
-the `includes` method on `Array` objects, we run the risk of stolen passwords:
+In ordinary JavaScript we run the risk of stolen passwords because someone might have redefined
+the `includes` method on `Array` objects:
 
 <<< @/snippets/test-no-ses.js#exfiltrate
 
@@ -276,10 +274,10 @@ or not:
    - `setImmediate`, `clearImmediate`, `setTimeout`
      - but `Promise` is available, so sometimes
        `Promise.resolve().then(_ => fn())` suffices
-     - see also [Timer Service](/repl/timerServices.md)
+     - see also [Timer Service](/reference/repl/timerServices.md)
    - `require` (Use `import` module syntax instead.)
    - `localStorage`
-      - [SwingSet](/platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
+      - [SwingSet](../platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
       - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/store).
    - `global` (Use `globalThis` instead.)
  - authority-free but host-defined:
@@ -294,13 +292,13 @@ These compartments have `console` and `assert` globals from [the `ses` package](
 Don't rely on `console.log` for printing, though; it is for debugging
 only, and in a blockchain consensus context, it may do nothing at all.
 
-You can create a new `Compartment` object; when you do, you can
+You can create a new `Compartment` object. When you do, you can
 decide whether to enforce OCap discipline by calling
 `harden(compartment.globalThis)` or not. If not, beware that
 all objects in the compartment have authority to communicate with
 all other objects via properties of `globalThis`.
 
-## Types: advisory
+## Types: Advisory
 
 [Type checking JavaScript files with TypeScript](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html)
 can help prevent certain classes of coding errors. We recommend this style rather than
@@ -322,7 +320,7 @@ const makeCounter = init => {
 };
 ```
 
-If we're not careful, our clients can cause us to mis-behave:
+If we're not careful, our clients can cause us to misbehave:
 
 ```
 > const evil = makeCounter('poison')
@@ -339,7 +337,7 @@ launch the missiles!
 2
 ```
 
-## Types: defensive
+## Types: Defensive
 
 To be defensively correct, we need runtime validation for any inputs that cross trust boundaries:
 

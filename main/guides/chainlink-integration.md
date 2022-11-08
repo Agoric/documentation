@@ -8,7 +8,7 @@ actually on-chain.
 
 Using Chainlink on Agoric provides two main features:
 - Price feeds are exposed on Agoric via the on-chain `home.priceAuthority`. This is an
-  officially-sponsored [price authority](/zoe/guide/price-authority.md) built
+  officially-sponsored [price authority](/guides/zoe/price-authority.md) built
   from aggregating several Chainlink nodes.
 - [Chainlink's Any API](https://docs.chain.link/docs/request-and-receive-data)
   can initiate a job on a single oracle and return its results
@@ -21,7 +21,7 @@ software](https://github.com/Agoric/dapp-oracle/blob/HEAD/chainlink-agoric/READM
 ## Price Authority
 
 To test your contract against a locally-simulated price authority, just follow
-the instructions in [the Price Authority API](/zoe/api/contract-support/price-authority.md).
+the instructions in [the Price Authority API](/reference/zoe-api/contract-support/price-authority.md).
 
 To use the curated on-chain price authority, see `home.priceAuthority`.  For 
 example, to get a quote for selling `30 Testnet.$LINK` in `Testnet.$USD`:
@@ -40,7 +40,7 @@ const { quoteAmount: { value: [{ amountOut: usdAmount, timestamp }] } } = await 
 ## Any API
 
 To use Chainlink's Any API, you need to get an instance of the
-[Low-level Oracle Query Contract](/zoe/guide/contracts/oracle.md) and submit a
+[Low-level Oracle Query Contract](/guides/zoe/contracts/oracle.md) and submit a
 query of the form:
 
 ```js

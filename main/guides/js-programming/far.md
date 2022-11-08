@@ -1,7 +1,7 @@
 
-# `Far()`, Remotable, and Marshaling
+# Far(), Remotable, and Marshaling
 
-To export objects such as from our [counter example](./hardened-js.md#counter-example)
+To export objects such as from the [Example Secure JavaScript Code](./hardened-js.md#example-secure-javascript-code)
 to make them available to other vats, mark them as _remotable_ using [Far](#far-api):
 
 <<< @/snippets/test-distributed-programming.js#importFar
@@ -10,26 +10,26 @@ to make them available to other vats, mark them as _remotable_ using [Far](#far-
 ## Marshaling by Copy or by Presence
 
 Recall that the first step in an [eventual send](./eventual-send.md#eventual-send) is
-to _marshal_ the method name and structured arguments; that is: to make them into a single string.
-This is like [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) but it can handle values such as `undefined` and `BigInt`s.
+to _marshal_ the method name and arguments (i.e., to make them into a single string).
+This is like [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify), but it can handle values such as `undefined` and `BigInt`s.
 Also, while many forms of data are copied between vats,
 remotables are marshalled so that they become remote _presences_ when unmarshaled:
 
-![counter remote presence](../../assets/remote-presence-fig.svg)
+![counter remote presence](../assets/remote-presence-fig.svg)
 
-Then another vat can make and use the exported counters:
+Another vat can then make and use the exported counters:
 
 <<< @/snippets/test-distributed-programming.js#useFarCounter
 
-## Pass Styles and `harden`
+## Pass Styles and harden
 
 Calls to remote presences must only contain *passable* arguments and return *passable* results.
 There are three kinds of passables:
-   * Remotables: objects with methods that can be called using `E()` eventual send notation
-   * Pass-by-copy data, such as numbers or hardened structures
-   * Promises for passables
+   * Remotables: objects with methods that can be called using `E()` eventual send notation.
+   * Pass-by-copy data, such as numbers or hardened structures.
+   * Promises for passables.
 
-Every object exported from a smart contract, such a `publicFacet` or
+Every object exported from a smart contract, such as `publicFacet` or
 `creatorFacet`, must be passable. All objects used in your contract's external API must
 be passable. All passables must be hardened.
 
@@ -38,7 +38,7 @@ some pass-by-copy data that we passed to it:
 
 ```js
 let amount1 = { brand: brand1, value: 10n };
-await E(item).setPrice(amount1); // Throws, but let's imagine it doesn't.
+await E(item).setPrice(amount1); // Throws an error, but let's imagine it doesn't.
 amount1.value = 20n;
 ```
 
@@ -47,27 +47,26 @@ is `20n` in the local vat but `10n` in the remote vat. (Worse: the remote vat
 might be the same as the local vat.) Requiring `harden()` for pass-by-copy
 data leads to behavior across vats that is straightforward to reason about.
 
-### `passStyleOf` API
+### passStyleOf API
 
 `passStyleOf(passable)`
  - `passable` `{Passable}`
  - Returns: `{PassStyle}`
 
-
 A Passable is a hardened value that may be marshalled.
 It is classified as one of the following `PassStyle` values:
-   * atomic pass-by-copy primitives (`"undefined" | "null" |
-     "boolean" | "number" | "bigint" | "string" | "symbol"`),
-   * pass-by-copy containers that contain other Passables (`"copyArray" | "copyRecord"`),
-   * special cases, which also contain other Passables (`"error"`).
-   * so-called `PassableCap` leafs (`"remotable" | "promise"`).
+   * Atomic pass-by-copy primitives (`"undefined" | "null" |
+     "boolean" | "number" | "bigint" | "string" | "symbol"`).
+   * Pass-by-copy containers that contain other Passables (`"copyArray" | "copyRecord"`).
+   * Special cases, which also contain other Passables (`"error"`).
+   * So-called `PassableCap` leafs (`"remotable" | "promise"`).
 
 ::: tip Check `passStyleOf` when handling untrusted structured data
 Just as you would use `typeof` to check that an argument is
-a string or number, use `passStyleOf` to when you expect, say, a `copyRecord`;
+a string or number, use `passStyleOf` when you expect, say, a `copyRecord`;
 this prevents malicious clients from playing tricks with cyclic data etc.
 :::
-## `Far()` API
+## Far() API
 
 `Far(farName, object-with-methods)`
 - `farName` `{ String }`
@@ -80,10 +79,10 @@ up when logged through the `console`, for example with `console.log`.
 The `object-with-methods` parameter should be an object whose properties are the functions serving 
 as the object's methods.
 
-The `Far()` function marks an object as remotable.  `Far()` also:
+The `Far()` function marks an object as remotable. `Far()` also:
 - Hardens the object.
-- Checks that all property values are functions and throws otherwise.
-  - accessors (`get()` and `set()`) are not allowed.
+- Checks that all property values are functions and throws an error otherwise.
+  - Accessors (i.e., `get()` and `set()`) are not allowed.
 - Records the object's interface name.
 
 ::: tip Avoid accidental exports
