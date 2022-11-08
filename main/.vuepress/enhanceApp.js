@@ -30,6 +30,7 @@ export default ({ router }) => {
     { path: '/guides/wallet/api.html', redirect: '/reference/wallet-api.html' },
     { path: '/zoe/api/', redirect: '/reference/zoe-api/' },
     { path: '/zoe/api/zoe.html', redirect: '/reference/zoe-api/zoe.html' },
+    { path: '/getting-started/beta.html', redirect: '/guides/getting-started/' },
   ];
   redirects.forEach(config => router.addRoute(config));
 } 
