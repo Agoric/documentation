@@ -61,6 +61,11 @@ module.exports = [
       link: '/guides/zoe/contracts/'
       },
       {
+      text: 'Deployed Zoe Contracts',
+      ariaLabel: 'Deployed Zoe Contracts',
+      link: '/guides/zoe/actual-contracts/'
+      },
+      {
       text: 'Agoric Dapps',
       ariaLabel: 'Agoric Dapps',
       link: '/guides/dapps/'

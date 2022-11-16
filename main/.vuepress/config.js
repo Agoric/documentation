@@ -181,6 +181,15 @@ module.exports = {
             ],
         },
         {
+            title: 'Deployed Zoe Contracts',
+            path: '/guides/zoe/actual-contracts/',
+            collapsible: false,
+            children: [
+                '/guides/zoe/actual-contracts/',
+                '/guides/zoe/actual-contracts/PSM',
+            ],
+        },
+        {
            title: 'Agoric Dapps',
            path: '/guides/dapps/',
            collapsible: false,
