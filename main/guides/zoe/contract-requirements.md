@@ -1,12 +1,12 @@
-# Contract Requirements
+# Contract Requirements 
 
 <Zoe-Version/>
 
 When writing a smart contract to run on Zoe, you need
 to know the proper format and other expectations. 
 
-A Zoe contract is a JavaScript file that can import other JavaScript
-code, including:
+A Zoe smart contract is a  JavaScript module that exports a `start` function
+and may import other code, including:
 
 * [@endo/harden](https://www.npmjs.com/package/@endo/harden): A package for recursively deep-freezing.
 * [@endo/nat](https://www.npmjs.com/package/@endo/nat): A package
