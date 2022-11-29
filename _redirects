@@ -1,2 +1,33 @@
 # Send to a 404 error page on the main site for things we don't recognize.
 /documentation/* https://agoric.com/notfound/documentation/:splat 302
+/wallet-api/ /guides/wallet/ 
+/wallet-api.html /guides/wallet/ 
+/chainlink-integration/ /guides/chainlink-integration/ 
+/chainlink-integration.html /guides/chainlink-integration/ 
+/distributed-programming/ /guides/js-programming/ 
+/distributed-programming.html /guides/js-programming/ 
+/getting-started/agoric-cli-guide/ /guides/agoric-cli/ 
+/getting-started/agoric-cli-guide.html /guides/agoric-cli/ 
+/guides/js-programming/ses/ses-guide.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.html 
+/guides/js-programming/ses/ses-reference.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/reference.html 
+/guides/js-programming/ses/lockdown.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.html 
+/getting-started/before-using-agoric.html /guides/getting-started/ 
+/getting-started/start-a-project.html /guides/getting-started/start-a-project.html 
+/guides/agoric-cli/commands.html /guides/agoric-cli/ 
+/dapps/ /guides/dapps/ 
+/ertp/guide/ /guides/ertp/ 
+/ertp/guide/amounts.html /guides/ertp/amounts.html 
+/platform /guides/platform/:splat 
+/zoe/guide/ /guides/zoe/ 
+/getting-started/intro-zoe.html /guides/zoe/offer-enforcement.html 
+/zoe/guide/offer-safety.html /guides/zoe/offer-safety.html 302
+/zoe/guide/contracts/ /guides/zoe/contracts/ 
+/zoe/guide/contracts/oracle.html /guides/zoe/contracts/oracle.html 
+/ertp/api/ /reference/ertp-api/ 
+/ertp/api/issuer.html /reference/ertp-api/issuer.html 
+/repl/ /reference/repl/ 
+/repl/timerServices.html /reference/repl/timerServices.html 
+/guides/wallet/api.html /reference/wallet-api.html 
+/zoe/api/ /reference/zoe-api/ 
+/zoe/api/zoe.html /reference/zoe-api/zoe.html 
+/getting-started/beta.html /guides/getting-started/ 
