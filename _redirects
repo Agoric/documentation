@@ -1,5 +1,4 @@
 # Send to a 404 error page on the main site for things we don't recognize.
-/documentation/* https://agoric.com/notfound/documentation/:splat 302
 /wallet-api/ /guides/wallet/ 
 /wallet-api.html /guides/wallet/ 
 /chainlink-integration/ /guides/chainlink-integration/ 
@@ -17,12 +16,13 @@
 /dapps/ /guides/dapps/ 
 /ertp/guide/ /guides/ertp/ 
 /ertp/guide/amounts.html /guides/ertp/amounts.html 
-/platform /guides/platform/:splat 
+/platform /guides/platform/
+/platform/* /guides/platform/:splat 
 /zoe/guide/ /guides/zoe/ 
 /getting-started/intro-zoe.html /guides/zoe/offer-enforcement.html 
-/zoe/guide/offer-safety.html /guides/zoe/offer-safety.html 302
+/zoe/guide/offer-safety.html /guides/zoe/offer-safety 302
 /zoe/guide/contracts/ /guides/zoe/contracts/ 
-/zoe/guide/contracts/oracle.html /guides/zoe/contracts/oracle.html 
+/zoe/guide/contracts/oracle.html /guides/zoe/contracts/oracle.html
 /ertp/api/ /reference/ertp-api/ 
 /ertp/api/issuer.html /reference/ertp-api/issuer.html 
 /repl/ /reference/repl/ 
