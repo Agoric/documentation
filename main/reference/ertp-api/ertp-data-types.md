@@ -1,4 +1,14 @@
-# DisplayInfo Record
+# ERTP Data Types
+
+## DisplayInfo
+
+## AssetKind
+
+## Amount
+
+## Value
+
+I don't think values are data types, actually.
 
 A **DisplayInfo** record is associated with a **[brand](./brand.md)** and gives information about how to display that 
 **brand**'s amounts. A **DisplayInfo** record has one optional property, **decimalPlaces**, which takes a non-negative integer value.

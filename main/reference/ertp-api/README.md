@@ -1,11 +1,14 @@
 # ERTP API
 
-The ERTP API has the following classes:
+The ERTP API supports the following objects:
 
-* [Issuer](./issuer.md) 
-* [Mint](./mint.md) 
-* [Brand](./brand.md) 
-* [Purse](./purse.md) 
-* [Payment](./payment.md) 
-* [AmountMath](./amount-math.md) 
-* [DisplayInfo](./displayInfo.md)
+| Object | Description |
+| --- | --- |
+| [issuer](./issuer.md) |  |
+| [mint](./mint.md) |   | 
+| [brand](./brand.md) |  |
+| [purse](./purse.md) |  |
+| [payment](./payment.md) |   |
+| [DisplayInfo](./displayInfo.md) |  |
+| [AmountMath](./amount-math.md) |  |
+
