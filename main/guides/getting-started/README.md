@@ -15,7 +15,7 @@ git clone -b community-dev https://github.com/Agoric/agoric-sdk # "community-dev
 cd agoric-sdk
 yarn install
 yarn build
-yarn link-cli ~/bin/agoric # creates an executable script for PATH reference
+yarn link-cli ~/bin/agoric # creates an executable script
 agoric --version # should print the version number of the SDK
 ```
 
