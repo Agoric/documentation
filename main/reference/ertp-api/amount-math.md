@@ -1,4 +1,4 @@
-# AmountMath Library
+# AmountMath Object
 
 Logic for manipulating **amounts**.
 
@@ -293,6 +293,22 @@ const subtractedList = AmountMath.subtract(listAmountA, listAmountC)
 const badList = AmountMath.subtract(listAmountA, listAmountB)
 ```
 
+## AmountMath.min(x, y, brand?)
+- **x** **Amount**
+- **y** **Amount**
+- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- Returns: **Amount**
+
+TBD
+
+## AmountMath.max(x, y, brand?)
+- **x** **Amount**
+- **y** **Amount**
+- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- Returns: **Amount**
+
+TBD
+
 ## Related Methods
 
 The following methods on other ERTP components and objects also either operate
@@ -307,8 +323,3 @@ what it does and how to use it.
 - [**zcf.getAssetKind(brand)**](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
   - Returns the **AssetKind** associated with the **brand**.
 
-## Deprecated Methods
-
-* **makeLocalAmountMath(issuer)** DEPRECATED Mar 20, 2021
-* **AmountMath.getBrand()** DEPRECATED Mar 20, 2021
-* **AmountMath.getAmountMathKind()** DEPRECATED Mar 20, 2021

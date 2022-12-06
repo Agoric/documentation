@@ -1,18 +1,18 @@
-# mint Object
+# Mint Object
 
-Only a **mint** can issue new digital assets. 
+Only a **Mint** can issue new digital assets. 
 
-A **mint** has a one-to-one relationship with both an **[issuer](./issuer.md)** and a **[brand](./brand.md)**.
-So it can only mint new assets of that **brand** and is the only **mint** that can mint
-new assets of that **brand**.
+A **Mint** has a one-to-one relationship with both an **[Issuer](./issuer.md)** and a **[Brand](./brand.md)**.
+So it can only mint new assets of that **Brand** and is the only **Mint** that can mint
+new assets of that **Brand**.
 
-**mints** are created by cqlling the **[makeIssueKit()](./issuer.md#makeissuerkit-allegedname-assetkind?-displayinfo)** method. See the **[issuer](./issuer.md)** documentation for detailed information about how to use this method.
+**Mints** are created by cqlling the **[makeIssueKit()](./issuer.md#makeissuerkit-allegedname-assetkind?-displayinfo)** function. See the **[Issuer](./issuer.md)** documentation for detailed information about how to use this function.
 
-## mint.getIssuer()
-- Returns: **[issuer](./issuer.md)**
+## Mint.getIssuer()
+- Returns: **[Issuer](./issuer.md)**
 
-Returns the **issuer** uniquely associated with this **mint**. From their creation, a **mint** is always
-in an unchangeable one-to-one relationship with a particular **issuer**. 
+Returns the **Issuer** uniquely associated with this **Mint**. From its creation, a **Mint** is always
+in an unchangeable one-to-one relationship with a particular **Issuer**. 
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
@@ -22,13 +22,13 @@ const quatloosMintIssuer = quatloosMint.getIssuer();
 issuer === quatloosMintIssuer;
 ```
 
-## mint.mintPayment(newAmount)
+## Mint.mintPayment(newAmount)
 - **newAmount** **Amount**
-- Returns: **[payment](./payment.md)**
+- Returns: **[Payment](./payment.md)**
 
-Creates and returns new digital assets of the **mint**'s associated **[brand](./brand.md)**.
-From their creation, a **mint** is always in an unchangeable
-one-to-one relationship with a **brand**.
+Creates and returns new digital assets of the **Mint**'s associated **[Brand](./brand.md)**.
+From its creation, a **Mint** is always in an unchangeable
+one-to-one relationship with a **Brand**.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint
@@ -36,8 +36,8 @@ const { issuer: quatloosIssuer, mint: quatloosMint
 
 const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
 // newPayment will have a balance of 1000 Quatloos
-const newPayment = quatloosMint.mintPayment(quatloos1000);
+const newPayment = quatloosMint.MintPayment(quatloos1000);
 ```
 
-**Important**: **mint.mintPayment()** is the <ins>only</ins> way
+**Important**: **Mint.mintPayment()** is the <ins>only</ins> way
 to create new digital assets. There is no other way.
