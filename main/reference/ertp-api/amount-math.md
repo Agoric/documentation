@@ -1,18 +1,18 @@
 # AmountMath Object
 
-Logic for manipulating **amounts**.
+Logic for manipulating **[Amounts](./ertp-data-types.md#amount)**.
 
 ## Importing and Using AmountMath
 
-To use the **AmountMath** library, import it from ERTP:
+To use **AmountMath**, import it from ERTP:
 - `import { AmountMath } from '@agoric/ertp';`
 
 ## Brand Parameters
 
-Note that many **AmountMath** methods have a **[brand](./brand.md)** parameter. For the ones with an optional **brand** argument, you should use it if
-you need to do an "absolute" check on the brand in the **amount** argument.
-In this case, you want to use the **brand** you got from the issuer (or from Zoe)
-as the optional parameter to compare the **amount** **brand**(s) to. If they are
+Note that many **AmountMath** methods have a **[Brand](./brand.md)** parameter. For the ones with an optional **Brand** argument, you should use it if
+you need to do an "absolute" check on the **Brand** in the **Amount** parameter.
+In this case, you want to use the **Brand** you got from the **Issuer** (or from Zoe)
+as the optional parameter to compare the **Amount** **Brand**(s) to. If they are
 not equal, an error is thrown.
 
 
@@ -33,9 +33,8 @@ const amount837 = AmountMath.make(quatloosBrand, 837n);
 - **allegedAmount** **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Amount**
 
-Makes sure an **Amount** is for the specified **Brand** and if so, returns it.
-If it's not valid, the method throws an exception. This method is used to 
-check if an **Amount** is actually for the expected **Brand**.
+Makes sure an **Amount** is for the specified *brand* and if so, returns it.
+If the **Amount** is for an invalid **Brand**, this method throws an exception.
 
 ```js
 const quatloos50 = AmountMath.make(quatloosBrand, 50n);
@@ -61,9 +60,9 @@ const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 - **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)**
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
-Returns the **Amount** representing an empty **Amount** for the **brand** argument's 
+Returns the **Amount** representing an empty **Amount** for the *brand* parameter's 
 **Brand**. This is the identity element for **AmountMath.add()** 
-and **AmountMath.subtract()**. The empty **value** depends 
+and **AmountMath.subtract()**. The empty **Value** depends 
 on whether the **assetKind** is **AssetKind.NAT** (**0n**) or **AssetKind.SET** (**[]**).
 
 ```js
@@ -78,7 +77,7 @@ const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 - Returns: **Amount**
 
 Returns the **Amount** representing an empty **Amount**, using another
-**Amount** as the template for the **[Brand](./brand.md)** and **assetKind**.
+**Amount** as the template for the **[Brand](./brand.md)** and **[Value](./ertp-data-types.md#value)**.
 
 ```js
 // quatloosAmount837 = { value: 837n, brand: quatloos }
@@ -89,12 +88,12 @@ const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 
 ## AmountMath.isEmpty(amount, brand?)
 - **amount** **[Amount](./ertp-data-types.md#amount)**
-- **brand?** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- **brand?** **[Brand](./brand.md)** - Optional, defaults to **undefined**
 - Returns: **Boolean**
 
 Returns **true** if the **Amount** is empty. Otherwise returns **false**.
 
-If the *brand* argument doesn't match the **Amount**'s **Brand**, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 ```js
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
@@ -110,8 +109,8 @@ const result = AmountMath.isEmpty(quatloos1);
 ## AmountMath.isGTE(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
-- Returns: **boolean**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- Returns: **Boolean**
 
 Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is greater than or equal to
 the **Value** of *rightAmount*. Both **Amount** arguments must have the same
@@ -144,14 +143,14 @@ AmountMath.isGTE(quatloos5, quatloos5);
 ## AmountMath.isEqual(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
-- Returns: **boolean**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- Returns: **Boolean**
 
 Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is equal to
 the **Value** of *rightAmount*. Both **Amount** arguments must have the same
 **Brand**.
 
-If the *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 For non-fungible **Values**, "equal to" depends on the value of the
 **Brand's** **[AssetKind](./ertp-data-types.md#assetkind)**. 
@@ -180,21 +179,20 @@ AmountMath.isEqual(empty, quatloos10);
 ## AmountMath.add(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
 - Returns: **Amount**
 
 Returns a new **Amount** that is the union of *leftAmount* and *rightAmount*. Both
 arguments must be of the same **Brand**.
 
-The **brand** argument is optional, defaulting to **undefined**.
-If it does not match the **amounts** **brand**, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
-For fungible **amounts** this means adding their **values**. For non-fungible
-**amounts**, it usually means including all of the elements from *leftAmount*
+For fungible **Amounts** this means adding their **[Values](./ertp-data-types.md#value)**. For non-fungible
+**Amounts**, it usually means including all of the elements from *leftAmount*
 and *rightAmount*.
 
-If either *leftAmount* or *rightAmount* is empty, it just returns the non-empty 
-**amount** argument. If both are empty, it returns an empty **amount**.
+If either *leftAmount* or *rightAmount* is empty, this method returns the non-empty 
+**Amount** argument. If both are empty, this method returns an empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
@@ -209,22 +207,21 @@ const combinedList = AmountMath.add(listAmountA, listAmountB);
 ## AmountMath.subtract(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
 - Returns: **Amount**
 
 Returns a new **Amount** that is the *leftAmount* minus the *rightAmount* (i.e., 
 everything in the *leftAmount* that is not in the *rightAmount*). If *leftAmount* 
-doesn't include *rightAmount* (subtraction results in a negative), it throws an 
+doesn't include *rightAmount* (subtraction results in a negative), this method throws an 
 error. Because *leftAmount* must include *rightAmount*, this is **not** 
 equivalent to set subtraction.
 
-*leftAmount* and *rightAmount* must be of the same **brand**.
+*leftAmount* and *rightAmount* must be of the same **Brand**.
 
-The **brand** argument is optional, defaulting to **undefined**.
-If it does not match the **amounts** **brand**, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
-If the **rightAmount** is empty, it returns the **leftAmount**. If both arguments are
-empty, it returns an empty **amount**.
+If *rightAmount* is empty, this method returns *leftAmount*. If both arguments are
+empty, this method returns an empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
@@ -241,30 +238,38 @@ const badList = AmountMath.subtract(listAmountA, listAmountB)
 ```
 
 ## AmountMath.min(x, y, brand?)
-- **x** **Amount**
+- **x** **[Amount](./ertp-data-types.md#amount)**
 - **y** **Amount**
-- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
 - Returns: **Amount**
 
-TBD
+Returns the minimum value between *x* and *y*.
+
+*x* and *y* must be of the same **Brand**. If they're not, an error is thrown.
+
+If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an error is thrown.
 
 ## AmountMath.max(x, y, brand?)
-- **x** **Amount**
+- **x** **[Amount](./ertp-data-types.md#amount)**
 - **y** **Amount**
-- **brand** **[Brand](./brand.md)** (optional, defaults to **undefined**)
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
 - Returns: **Amount**
 
-TBD
+Returns the maximum value between *x* and *y*.
+
+*x* and *y* must be of the same **Brand**. If they're not, an error is thrown.
+
+If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an error is thrown.
 
 ## Related Methods
 
 The following methods on other ERTP components and objects also either operate
 on or return an **Amount** or **AssetKind**.
 
-- [**Issuer.getAmountOf(payment)**](./issuer.md#issuer-getamountof-payment)
-  - Returns the **Amount** of the **Payment**
+- [**Issuer.getAmountOf()**](./issuer.md#issuer-getamountof-payment)
+  - Returns the **Amount** of a **Payment**.
 - [**Issuer.getAssetKind()**](./issuer.md#issuer-getassetkind)
   - Returns the **AssetKind** of the **Issuer**'s associated math helpers.
-- [**zcf.getAssetKind(brand)**](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
-  - Returns the **AssetKind** associated with the **Brand**.
+- [**zcf.getAssetKind()**](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
+  - Returns the **AssetKind** associated with a **Brand**.
 

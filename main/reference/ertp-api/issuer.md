@@ -17,8 +17,9 @@ are ephemeral, so any object created there dies as soon as the script ends.
 
 ## makeIssuerKit(allegedName, assetKind?, displayInfo?)
 - **allegedName** **String** 
-- **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)** - optional, defaults to **AssetKind.NAT**
-- **displayInfo** **[DisplayInfo](./ertp-data-types.md#displayinfo)** - optional, defaults to **undefined**
+- **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**
+- **displayInfo** **[DisplayInfo](./ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**
+- **optShutdownWithFailure** - Optional, defaults to **undefined**
 - Returns **IssuerKit**. This is an object with three properties:
 	- **issuer** **Issuer**
 	- **mint** **[Mint](./mint.md)**
@@ -35,9 +36,6 @@ The optional *assetKind* specifies the kind of math to use with the digital asse
 Each implements all of the same set of API methods (i.e., **[AmountMath](./amount-math.md)** methods are 
 polymorphic). We recommend you import and use the **AssetKind** values from **@agoric/ertp** 
 instead of using **Strings**. 
-- **AssetKind.NAT** (**nat**): Used with fungible assets. **Amount** **Values** are natural numbers (i.e., non-negative BigInts). This is the default value for the *AssetKind* parameter.
-- **AssetKind.SET** (**set**): Used with non-fungible assets. **Amount** **Values** are arrays that can
-  include strings, numbers, objects, or anything comparable. The **Amount** **Values** can't include promises, **[Purses](./purse.md)**, or **[Payments](./payment.md)**.
 
 The optional *displayInfo* tells the UI how to display **[Amounts](./ertp-data-types.md#amount)** of this **Brand**.
 
@@ -72,7 +70,7 @@ should not be trusted as accurate because there is
 no public registry or expectation of uniqueness. This
 means there can be multiple **Issuers**, **[Mints](./mint.md)**, or **[Brands](./brand.md)** with the
 same alleged name, and thus the name by itself does not
-uniquely identify an **Issuer**. Rather, the **[Brand]** does that.
+uniquely identify an **Issuer**. Rather, the **Brand** does that.
 
 To put it another way, nothing stops anyone from creating an **Issuer**
 with the alleged name *Quatloos* (or *BTC*, or whatever), regardless of whether
@@ -88,9 +86,9 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 ## Issuer.getAssetKind()
 - Returns: **[AssetKind](./ertp-data-types.md#assetkind)**
 
-Return the kind of the **Issuer**'s asset: either **AssetKind.NAT** ("nat") or **AssetKind.SET** ("set").
+Returns the kind of the **Issuer**'s asset: either **AssetKind.NAT** ("nat") or **AssetKind.SET** ("set").
 
-The **assetKind** value specifies what kind of values are used in **[Amounts](./ertp-data-types.md#amount)** for this **Issuer**. 
+The **AssetKind** specifies what kind of values are used in **[Amounts](./ertp-data-types.md#amount)** for this **Issuer**. 
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -105,7 +103,7 @@ moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET**
 
 Describes the **Payment**'s balance as an **Amount**. Because a **Payment** from an untrusted
 source cannot be trusted to provide its own true value, the **Issuer** must be used to
-validate its **Brand** and report how much the returned **Amount** contains.
+validate its **[Brand](./brand.md)** and report how much the returned **Amount** contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosmint, brand: quatloosbrand} = makeIssuerKit('quatloos');
@@ -117,8 +115,8 @@ quatloosIssuer.getAmountOf(quatloospayment); // returns an amount of 100 Quatloo
 - Returns: **[Brand](./brand.md)** 
 
 Returns the **Brand** for the **Issuer**. The **Brand** indicates the kind of digital asset
-and is the same for the **Issuer**'s associated **Mint**, and any **Purses** and **Payments** of this particular
-kind. The **Brand** is not closely held, so this function should not be trusted to identify
+and is the same for the **Issuer**'s associated **[Mint](./mint.md)**, and any **[Purses](./purse.md)** and **[Payments](./payment.md)** of this particular
+kind. The **Brand** is not closely held, so this method should not be trusted to identify
 an **Issuer** alone. Fake digital assets and amounts can use another **Issuer's** **Brand**.
 
 ```js
@@ -130,7 +128,7 @@ const quatloosbrand = quatloosIssuer.getBrand();
 ## Issuer.makeEmptypurse()
 - Returns: **[Purse](./purse.md)**
 
-Makes and returns an empty **Purse** that holds assets of the **Brand** associated with the **Issuer**.
+Makes and returns an empty **Purse** that holds assets of the **[Brand](./brand.md)** associated with the **Issuer**.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -150,7 +148,7 @@ and returns an **Amount** of what was burned.
 the code insists the **Payment** balance is equal to *optAmount*, to prevent sending the wrong **Payment**
 and other confusion.  
 
-If the **Payment** is a promise, the operation proceeds after it resolves to a **Payment**.
+If the *Payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosmint, brand: quatloosbrand } = 
@@ -162,9 +160,9 @@ const paymentToBurn = quatloosmint.mintpayment(amountToBurn);
 const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
-## Issuer.claim(payment, optAmount)
+## Issuer.claim(payment, optAmount?)
 - **payment** **[Payment](./payment.md)**
-- **optAmount** **[Amount](./ertp-data-types.md#amount)** 
+- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional
 - Returns: **Payment** 
 
 Transfer all digital assets from *payment* to a new **Payment** and consume the
@@ -186,7 +184,7 @@ const originalpayment = quatloosmint.mintpayment(amountExpectedToTransfer);
 const newpayment = quatloosIssuer.claim(originalpayment, amountToTransfer);
 ```
 
-## Issuer.combine(paymentsArray, optTotalAmount)
+## Issuer.combine(paymentsArray, optTotalAmount?)
 - **paymentsArray** **Array &lt;Payment>**
 - **optTotalAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment**
@@ -195,7 +193,7 @@ Combines multiple payments into one new payment. If any item in *paymentsArray* 
 a promise, the operation proceeds after each such promise resolves to a payment.
 All payments in *paymentsArray* are consumed and made unavailable for later use.
 
-If the optional *optTotalAmount* is present, the total value of all **Payments** in **paymentsArray**
+If the optional *optTotalAmount* is present, the total value of all **Payments** in *paymentsArray*
 must equal *optTotalAmount* or it throws an error.
 
 Each **Payment** in *paymentsArray* must be associated with the same **Brand** as **Issuer**.
