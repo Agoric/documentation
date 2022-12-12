@@ -231,7 +231,7 @@ module.exports = {
               '/reference/ertp-api/purse',
               '/reference/ertp-api/payment',
               '/reference/ertp-api/amount-math',
-              '/reference/ertp-api/displayInfo',
+              '/reference/ertp-api/ertp-data-types',
             ],
           },
         {
