@@ -11,7 +11,7 @@ If you're familar with JavaScript development tools such as `node`, `yarn`, and 
 ```shell
 node --version # 14.15.0 or higher
 npm install --global yarn
-git clone -b community-dev https://github.com/Agoric/agoric-sdk # "community-dev" branch
+git clone https://github.com/Agoric/agoric-sdk # "community-dev" branch
 cd agoric-sdk
 yarn install
 yarn build
@@ -73,7 +73,7 @@ git --version # 2.25.0 or higher
 ## Clone the Agoric SDK
 
 ```shell
-git clone -b community-dev https://github.com/Agoric/agoric-sdk
+git clone https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
 ```
 

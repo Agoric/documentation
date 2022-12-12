@@ -16,7 +16,7 @@ All of these relationships are unchangeable. For example, if a **Mint** is creat
 can never create non-*Quatloos* assets. Similarly, the *Quatloos* **Brand** will always be associated with  
 the  *Quatloos* **Mint** and *Quatloos* **Issuer**.
 
-## Brand.isMyIssuer(issuer)
+## Brand.isMyIssuer(allegedIssuer)
 - **allegedIssuer** **[Issuer](./issuer.md)**
 - Returns: **Boolean**
 
@@ -24,7 +24,7 @@ Returns **true** if *allegedIssuer* is the **Brand**'s **Issuer**. Returns **fal
 
 Note that a **Brand** from an untrusted source can misrepresent its association with
 an **Issuer**. The claim should be cross-checked using the **Issuer's**
-[**issuer.getBrand()**](./issuer.md#issuer-getBrand) method for mutual agreement.
+[**issuer.getBrand()**](./issuer.md#issuer-getbrand) method for mutual agreement.
 
 ```js
 const isIssuer = Brand.isMyIssuer(issuer);
@@ -50,7 +50,7 @@ const name = Brand.getAllegedName();
 ```
 
 ## Brand.getDisplayInfo()
-- Returns: **[DisplayInfo](./displayinfo.md)**
+- Returns: **[DisplayInfo](./ertp-data-types.md#displayinfo)**
 
 Returns the **DisplayInfo** associated with the **Brand**. 
 
@@ -74,7 +74,7 @@ TBD.
 ## Related Methods
 
 The following methods on other ERTP components are also related to the **Brand** object.
-- [**Issuer.getBrand()**](./issuer.md#issuer-getBrand): Returns
+- [**Issuer.getBrand()**](./issuer.md#issuer-getbrand): Returns
 the **Brand** for the **Issuer**.  
-- [**Payment.getAllegedBrand()**](./payment.md#payment-getallegedBrand): Returns
+- [**Payment.getAllegedBrand()**](./payment.md#payment-getallegedbrand): Returns
 the **Payment**'s alleged **Brand**.

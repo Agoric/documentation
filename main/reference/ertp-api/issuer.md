@@ -17,8 +17,8 @@ are ephemeral, so any object created there dies as soon as the script ends.
 
 ## makeIssuerKit(allegedName, assetKind?, displayInfo?)
 - **allegedName** **String** 
-- **assetKind** **AssetKind** - optional, defaults to **AssetKind.NAT**
-- **displayInfo** **[DisplayInfo](./displayInfo.md)** - optional, defaults to **undefined**
+- **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)** - optional, defaults to **AssetKind.NAT**
+- **displayInfo** **[DisplayInfo](./ertp-data-types.md#displayinfo)** - optional, defaults to **undefined**
 - Returns **IssuerKit**. This is an object with three properties:
 	- **issuer** **Issuer**
 	- **mint** **[Mint](./mint.md)**
@@ -39,7 +39,7 @@ instead of using **Strings**.
 - **AssetKind.SET** (**set**): Used with non-fungible assets. **Amount** **Values** are arrays that can
   include strings, numbers, objects, or anything comparable. The **Amount** **Values** can't include promises, **[Purses](./purse.md)**, or **[Payments](./payment.md)**.
 
-The optional *displayInfo* tells the UI how to display **[Amounts](/glossary/#amount)** of this **Brand**.
+The optional *displayInfo* tells the UI how to display **[Amounts](./ertp-data-types.md#amount)** of this **Brand**.
 
 ```js
 import { AssetKind, makeIssuerKit } from '@agoric/ertp';
@@ -86,18 +86,11 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 ```
 
 ## Issuer.getAssetKind()
-- Returns: **AssetKind**
+- Returns: **[AssetKind](./ertp-data-types.md#assetkind)**
 
 Return the kind of the **Issuer**'s asset: either **AssetKind.NAT** ("nat") or **AssetKind.SET** ("set").
 
-The **assetKind** value specifies what kind of values are used in **[Amounts](/glossary/#amount)** for this Issuer. 
-
-**AmountMath** works for all the different kinds of values. 
-- **AssetKind.NAT** (**nat**): Used with fungible assets. **Amount** values are natural 
-  numbers (non-negative **BigInts**). This is the default value.
-- **AssetKind.SET** (**set**): Used with non-fungible assets. **Amount** values are arrays 
-  that can include strings, numbers, objects, or anything comparable. But not promises,
-  purses, or payments.
+The **assetKind** value specifies what kind of values are used in **[Amounts](./ertp-data-types.md#amount)** for this **Issuer**. 
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -105,9 +98,10 @@ quatloosIssuer.getAssetKind(); // Returns 'nat', also known as AssetKind.NAT, th
 const { issuer: moolaIssuer } = makeIssuerKit('moola', AssetKind.SET);
 moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET**
 ```
+
 ## Issuer.getAmountOf(payment)
 - **payment** **[Payment](./payment.md)**
-- Returns: **[Amount](/glossary/#amount)**
+- Returns: **[Amount](./ertp-data-types.md#amount)**
 
 Describes the **Payment**'s balance as an **Amount**. Because a **Payment** from an untrusted
 source cannot be trusted to provide its own true value, the **Issuer** must be used to
@@ -119,7 +113,7 @@ const quatloospayment = quatloosmint.mintpayment(AmountMath.make(quatloosbrand, 
 quatloosIssuer.getAmountOf(quatloospayment); // returns an amount of 100 Quatloos 
 ```
 
-## Issuer.getbrand()
+## Issuer.getBrand()
 - Returns: **[Brand](./brand.md)** 
 
 Returns the **Brand** for the **Issuer**. The **Brand** indicates the kind of digital asset
@@ -129,7 +123,7 @@ an **Issuer** alone. Fake digital assets and amounts can use another **Issuer's*
 
 ```js
 const { issuer: quatloosIssuer, brand: quatloosbrand } = makeIssuerKit('quatloos');
-const quatloosbrand = quatloosIssuer.getbrand();
+const quatloosbrand = quatloosIssuer.getBrand();
 // brand === quatloosbrand
 ```
 
@@ -145,14 +139,14 @@ const quatloospurse = quatloosIssuer.makeEmptypurse();
 
 ## **Issuer.burn(payment, optAmount?)**
 - **payment** **[Payment](./payment.md)**
-- **optAmount** **Amount** - Optional.
+- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Amount**
 
 Destroys all of the digital assets in the **Payment**,
 making them unavailable for later use,
 and returns an **Amount** of what was burned.
 
-*optAmount* is optional. If **optAmount** is present, 
+*optAmount* is optional. If *optAmount* is present, 
 the code insists the **Payment** balance is equal to *optAmount*, to prevent sending the wrong **Payment**
 and other confusion.  
 
@@ -170,17 +164,17 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 
 ## Issuer.claim(payment, optAmount)
 - **payment** **[Payment](./payment.md)**
-- **optAmount** **Amount** 
+- **optAmount** **[Amount](./ertp-data-types.md#amount)** 
 - Returns: **Payment** 
 
-Transfer all digital assets from **payment** to a new **Payment** and consume the
+Transfer all digital assets from *payment* to a new **Payment** and consume the
 original, making it unavailable for later use.
 
 *optAmount* is optional. 
 If *optAmount* is present, *payment*'s balance must be
 equal to *optAmount*, to prevent sending the wrong **Payment** and other confusion. 
 If *optAmount* does not equal the balance in the original *payment*
-then it throws an error.  
+then this method throws an error.  
 
 If the **Payment** is a promise, the operation proceeds after it resolves to a **Payment**.
 
@@ -194,7 +188,7 @@ const newpayment = quatloosIssuer.claim(originalpayment, amountToTransfer);
 
 ## Issuer.combine(paymentsArray, optTotalAmount)
 - **paymentsArray** **Array &lt;Payment>**
-- **optTotalAmount** **Amount** - Optional.
+- **optTotalAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment**
 
 Combines multiple payments into one new payment. If any item in *paymentsArray* is
@@ -220,7 +214,7 @@ const combinedpayment = quatloosIssuer.combine(payments);
 
 ## Issuer.split(payment, paymentAmountA)
 - **payment** **[Payment](./payment.md)**
-- **paymentAmountA** **Amount**
+- **paymentAmountA** **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Array &lt;Payment>**
 
 Splits a single **Payment** into two new **Payments**, A and B, according to *paymentAmountA*.
@@ -277,5 +271,6 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - **payment** **[Payment](./payment.md)**
 - Returns: **Boolean**
 
-Returns **true** if the *payment* was created by the **Issuer** and is available for use (i.e., it hasn't been consumed or burned).
+Returns **true** if the *payment* was created by the **Issuer** and is available for use 
+(i.e., it hasn't been consumed or burned).
 If *payment* is a promise, the method proceeds after it resolves to a **Payment**.

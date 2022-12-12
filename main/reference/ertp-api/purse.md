@@ -13,7 +13,7 @@ While each **Purse** can only hold assets of one **Brand**, any number of **Purs
 created that hold that **Brand**. So you could have, say, three *Quatloos* **Purses**, your
 friend Alice could have eight *Quatloos* **Purses**, and so on. 
 
-You change a **Purse**'s balance by calling either **[Purse.deposit()](#Purse-deposit-payment-optamount)** or **[Purse.withdraw()](#Purse-withdraw-amount)** on it. A **Purse** can be empty, which if it holds 
+You change a **Purse**'s balance by calling either **[Purse.deposit()](#purse-deposit-payment-optamount)** or **[Purse.withdraw()](#purse-withdraw-amount)** on it. A **Purse** can be empty, which if it holds 
 a fungible currency means it has a value of 0. If it holds a non-fungible asset (e.g., theater tickets),
 then the **Purse** simply doesn't contain any assets if it's empty.
 
@@ -68,20 +68,20 @@ const checkNotifier = async () => {
 ```
 
 ## Purse.deposit(payment, optAmount?)
-- **payment** **[payment](./payment.md)**
-- **optAmount** **Amount** - Optional. 
+- **payment** **[Payment](./payment.md)**
+- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional. 
 - Returns: **Amount**
 
-Deposit all the contents of **payment** into **Purse**, returning an **amount** describing the
-**payment**'s digital assets (i.e. the deposited amount). If the optional argument *optAmount* does not equal the balance of
-**payment**, or if **payment** is a promise, it throws an error.
+Deposit all the contents of *payment* into the **Purse**, returning an **Amount** describing the
+**Payment**'s digital assets (i.e. the deposited amount). If the optional argument *optAmount* does not equal the balance of
+*payment*, or if *payment* is a promise, this method throws an error.
 
 While the above applies to local and remote **Purses**, for remote **Purses** there may be effects on 
 this operation due to the use of promises and asynchronicity. You 
-have to have a non-promise **payment** before calling **Purse.deposit()**. 
+have to have a non-promise **Payment** before calling **Purse.deposit()**. 
 When you call **Purse.deposit()** you get a response back (after waiting for the round trip) 
 telling you if it succeeded. All later arriving calls see the value has been transferred 
-into the **Purse**, and the **payment** is no longer valid.
+into the **Purse**, and the **Payment** is no longer valid.
 
 If any withdrawals are waiting for promises to resolve, a deposit operation
 may pass them by. This is safe, as even if all the assets are withdrawn, the
@@ -106,10 +106,10 @@ const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 ## Purse.getDepositFacet()
 - Returns: **DepositFacet**
 
-Creates and returns a new deposit-only facet of the **Purse** that allows arbitrary other parties to deposit **[payments](./payment.md)** into the **Purse** without the ability to check its balance or withdraw from it.
-This makes it a safe way to let other people send you **payments**.
+Creates and returns a new deposit-only facet of the **Purse** that allows arbitrary other parties to deposit **[Payments](./payment.md)** into the **Purse** without the ability to check its balance or withdraw from it.
+This makes it a safe way to let other people send you **Payments**.
 
-You can only deposit a **payment** into a deposit facet that's the same **brand** as the original **Purse**
+You can only deposit a **Payment** into a deposit facet that's the same **Brand** as the original **Purse**
 takes.
  
 ```js
@@ -128,15 +128,15 @@ Note the difference in method names for adding assets between a **Purse** and it
 To add assets to a **Purse** directly, you use **Purse.deposit()**. To add assets
 to a **Purse** via its **depositFacet**, you use **depositFacet.receive()**.
 
-## depositFacet.receive(payment, optAmount?)
-- **payment** **Payment**
-- **optAmount** **Amount** (optional)
+## DepositFacet.receive(payment, optAmount?)
+- **payment** **[Payment](./payment.md)**
+- **optAmount** **[Amount](./ertp-data-types.md#amount)** (optional)
 - Returns **Amount**
 
-The **depositFacet** takes the **payment** and adds it to the balance of the facet's associated **Purse**. 
+The **DepositFacet** takes the **Payment** and adds it to the balance of the **DepositFacet**'s associated **Purse**. 
 
-If the optional argument **optAmount** does not equal the balance of
-**payment**, or if **payment** is an unresolved promise, it throws an error.
+If the optional argument *optAmount* does not equal the balance of
+*payment*, or if *payment* is an unresolved promise, this method throws an error.
 
 ```js
 const depositOnlyFacet = Purse.getDepositFacet();
@@ -148,13 +148,13 @@ depositOnlyFacet.receive(payment);
 
 ## Purse.withdraw(amount)
 
-- **amount** **Amount**
-- Returns: **[payment](./payment.md)**
+- **amount** **[Amount](./ertp-data-types.md#amount)**
+- Returns: **[Payment](./payment.md)**
 
-Withdraws the specified **amount** of digital assets from the **Purse** into a new **payment** object.
+Withdraws the specified **Amount** of digital assets from the **Purse** into a new **Payment** object.
 
-If the call succeeds, it immediately extracts the value into a new **payment**. 
-The caller won't get the new **payment** until a later turn, since the call is (nearly always) remote.
+If the call succeeds, it immediately extracts the value into a new **Payment**. 
+The caller won't get the new **Payment** until a later turn, since the call is (nearly always) remote.
 But as soon as the message is processed, the value is gone from the **Purse**.
 
 ```js
@@ -177,11 +177,11 @@ Purse.getCurrentAmount();
 ```
 
 ## Purse.getAllegedBrand()
-- Returns: **[brand](./brand.md)**
+- Returns: **[Brand](./brand.md)**
 
-Returns an alleged brand (Note: a **Brand**, not a **string** as **allegedName()** methods do), 
-indicating what kind of digital asset the Purse purports to hold. This can identify the 
-Purse's brand if the Purse was made by a trusted issuer using **issuer.makeEmptyPurse()**.
+Returns an alleged brand (Note: a **Brand**, not a **String** as **allegedName()** methods do), 
+indicating what kind of digital asset the **Purse** purports to hold. This can identify the 
+**Purse**'s **Brand** if the **Purse** was made by a trusted **[Issuer](./issuer.md)** using **[Issuer.makeEmptyPurse()](./issuer.md#issuer-makeemptypurse)**.
 
 ```js
 const PurseBrand = quatloosPurse.getAllegedBrand();
