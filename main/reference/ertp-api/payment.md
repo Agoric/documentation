@@ -16,7 +16,7 @@ take out, say, only 3 *Quatloos* from it.
 
 However, you can split a **Payment** into multiple **Payments**. For example, you could split a 
 10 *Quatloos* **Payment** into two new **Payments** of 3 *Quatloos* and 7 *Quatloos* by calling the
-**[Issuer.split()](./issuer.md#issuer-split-payment-paymentAmountA)** method which consumes the 
+**[Issuer.split()](./issuer.md#issuer-split-payment-paymentamounta)** method which consumes the 
 original 10 *Quatloos* **Payment** and creates two new smaller **Payments.
 
 **Payments** are often received from other actors. Since they are not self-verifying,
@@ -27,7 +27,7 @@ To convert a **Payment** into a new **Purse**:
 2. Use the **Issuer** to create an empty **Purse**.
 3. Deposit the **Payment** into the new **Purse**. 
 
-**[Purse.deposit()](./purse.md#purse-deposit-payment-optAmount)** consumes the **Payment**,
+**[Purse.deposit()](./purse.md#purse-deposit-payment-optamount)** consumes the **Payment**,
 making it unavailable for later use.
 
 ## Payment.getAllegedBrand()

@@ -65,7 +65,7 @@ const quatloosDisplay = quatloosBrand.getDisplayInfo;
 ```
 
 ## Brand.getAmountShape()
-- Returns: **amountShape**
+- Returns: **[amountShape](./ertp-data-types.md#amountshape)**
 
 TBD. 
 

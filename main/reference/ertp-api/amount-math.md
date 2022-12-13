@@ -9,8 +9,9 @@ To use **AmountMath**, import it from ERTP:
 
 ## Brand Parameters
 
-Note that many **AmountMath** methods have a **[Brand](./brand.md)** parameter. For the ones with an optional **Brand** argument, you should use it if
-you need to do an "absolute" check on the **Brand** in the **Amount** parameter.
+Note that many **AmountMath** methods have an optional **[Brand](./brand.md)** parameter. 
+For these methods, you should pass in a **Brand** argument you got from  when
+you need to do an "absolute" check on the **Brand** within an **Amount** parameter.
 In this case, you want to use the **Brand** you got from the **Issuer** (or from Zoe)
 as the optional parameter to compare the **Amount** **Brand**(s) to. If they are
 not equal, an error is thrown.

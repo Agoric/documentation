@@ -18,29 +18,42 @@ someAmount: {
 }
 ```
 
+## AmountShape
+
+An **AmountShape** is a description of non-fungible digital assets. Similar to **[Amount](#amount)**, **AmountShape** has 2 properties
+
+```js
+someAmountShape: {
+  brand: someBrand,
+  valueShape: someValueShape
+}
+```
+
 ## Value
 
 **Values** describe how much of something can be owned or shared.
-For fungible **[Amounts](#amount)**, a **Value** is a non-negative **BigInt**.
-For non-fungible **Amounts**, a **Value** is a [copyArray](/guides/js-programming/far.md#passstyleof-api)
+For fungible **[Amounts](#amount)**, **Values** are non-negative **BigInts**.
+For non-fungible **Amounts**, **Values** are [copyArrays](/guides/js-programming/far.md#passstyleof-api)
 (e.g., a hardened array of strings).
 
 Recall that **BigInt**s are written with an *n* at the end: **10n**, **137n**, etc.
 
 ## AssetKind
 
-There are two kinds of **[Amounts](#amount)**: fungible and non-fungible. Fungible 
+There are several different kinds of **[Amounts](#amount)**: fungible and non-fungible. Fungible 
 **Amounts** have natural numbers for their **[Values](#value)**, while non-fungible **Amounts** have
 an array of elements (e.g., strings, numbers, or objects) for their **Values**. Even though
 very different mathematical processes are performed, **[AmountMath](./amount-math.md)** methods work for
 both types of **Amounts**.
 
-We recommend you import the two **AssetKind** values from **@agoric/ERTP** instead of making the 
+We recommend you import the **AssetKind** values from **@agoric/ERTP** instead of making the 
 strings yourself. 
-- **AssetKind.NAT** (**nat**): Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
-- **AssetKind.SET** (**set**): Used with non-fungible assets. Values are arrays of objects (e.g., strings).
+- **AssetKind.NAT** : Used with fungible assets. Values are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
+- **AssetKind.SET** : Deprecated.
+- **AssetKind.COPY_SET** : Used with non-fungible assets. Values are arrays of objects (e.g., strings).
+- **AssetKind.COPY_BAG** : Used with non-fungible assets. Values are arrays of objects (e.g., strings).
 
-Use **[makeIssuerKit()](./issuer.md#makeissuerKit-allegedname-assetkind?-displayinfo)** to specify which **AssetKind** 
+Use **[makeIssuerKit()](./issuer.md#makeissuerkit-allegedname-assetkind?-displayinfo?-optShutdownWithFailure?-elementShape)** to specify which **AssetKind** 
 your contract uses. See the **[Issuer](./issuer.md)** documentation for details on how to use this method.
 
 ```js

@@ -132,7 +132,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - `offerHandler` `{ZCFSeat => Object}`
 - `description` `{String}`
 - `customProperties` `{Object}`
-- Returns: [`{Promise<Invitation>}`](../ertp-api/payment.md#payment)
+- Returns: [`{Promise<Invitation>}`](../ertp-api/payment.md)
 
 Make a credible Zoe `invitation` for a smart contract. Note that `invitations` are a special case
 of an ERTP `payment`. They are associated with the `invitationIssuer` and its `mint`, which 

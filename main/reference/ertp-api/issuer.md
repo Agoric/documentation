@@ -15,11 +15,12 @@ validate an untrusted **Payment** of that **Brand**.
 **Note**: You should not create an **Issuer** in a deploy script. Deploy scripts 
 are ephemeral, so any object created there dies as soon as the script ends.
 
-## makeIssuerKit(allegedName, assetKind?, displayInfo?)
+## makeIssuerKit(allegedName, assetKind?, displayInfo?, optShutdownWithFailure?, elementShape?)
 - **allegedName** **String** 
 - **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**
 - **displayInfo** **[DisplayInfo](./ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**
 - **optShutdownWithFailure** - Optional, defaults to **undefined**
+- **elementShape**
 - Returns **IssuerKit**. This is an object with three properties:
 	- **issuer** **Issuer**
 	- **mint** **[Mint](./mint.md)**
@@ -32,7 +33,7 @@ The *allegedName* becomes part of the **Brand** in asset descriptions. It
 doesn't have to be a **String**, but it will only be used for its value. It
 is useful for debugging and double-checking assumptions, but should not be trusted.
 
-The optional *assetKind* specifies the kind of math to use with the digital assets. 
+The optional *assetKind* parameter specifies the kind of math to use with the digital assets. 
 Each implements all of the same set of API methods (i.e., **[AmountMath](./amount-math.md)** methods are 
 polymorphic). We recommend you import and use the **AssetKind** values from **@agoric/ertp** 
 instead of using **Strings**. 
@@ -168,11 +169,9 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 Transfer all digital assets from *payment* to a new **Payment** and consume the
 original, making it unavailable for later use.
 
-*optAmount* is optional. 
 If *optAmount* is present, *payment*'s balance must be
 equal to *optAmount*, to prevent sending the wrong **Payment** and other confusion. 
-If *optAmount* does not equal the balance in the original *payment*
-then this method throws an error.  
+If *optAmount* does not equal the balance in the original *payment* an error is thrown.  
 
 If the **Payment** is a promise, the operation proceeds after it resolves to a **Payment**.
 
@@ -238,7 +237,7 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldpayment, AmountMath.make(qu
 - Returns: **Array &lt;Payment>**
 
 Splits a single **Payment** into multiple **Payments**.
-The returned array includes a **Payment** item corresponding to each **Amount** of **amounts**, in order.
+The returned array includes a **Payment** item corresponding to each **Amount** in the *amountArray* parameter, in order.
 
 The original **Payment** is consumed and made unavailable for later use.
 
