@@ -11,7 +11,7 @@ To use **AmountMath**, import it from ERTP:
 
 Note that many **AmountMath** methods have an optional **[Brand](./brand.md)** parameter. 
 For these methods, you should pass in a **Brand** argument you got from  when
-you need to do an "absolute" check on the **Brand** within an **Amount** parameter.
+you need to do an "absolute" check on the **Brand** within an **[Amount](./ertp-data-types.md#amount)** parameter.
 In this case, you want to use the **Brand** you got from the **Issuer** (or from Zoe)
 as the optional parameter to compare the **Amount** **Brand**(s) to. If they are
 not equal, an error is thrown.
@@ -89,7 +89,7 @@ const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 
 ## AmountMath.isEmpty(amount, brand?)
 - **amount** **[Amount](./ertp-data-types.md#amount)**
-- **brand?** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand?** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **Amount** is empty. Otherwise returns **false**.
@@ -110,14 +110,14 @@ const result = AmountMath.isEmpty(quatloos1);
 ## AmountMath.isGTE(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is greater than or equal to
 the **Value** of *rightAmount*. Both **Amount** arguments must have the same
 **Brand**.
 
-If the *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 For non-fungible **Values**, what "greater than or equal to" is depends on the 
 kind of **AmountMath**. For example, { 'seat 1', 'seat 2' } is considered
@@ -144,7 +144,7 @@ AmountMath.isGTE(quatloos5, quatloos5);
 ## AmountMath.isEqual(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is equal to
@@ -180,7 +180,7 @@ AmountMath.isEqual(empty, quatloos10);
 ## AmountMath.add(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns a new **Amount** that is the union of *leftAmount* and *rightAmount*. Both
@@ -208,12 +208,12 @@ const combinedList = AmountMath.add(listAmountA, listAmountB);
 ## AmountMath.subtract(leftAmount, rightAmount, brand?)
 - **leftAmount** **[Amount](./ertp-data-types.md#amount)**
 - **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns a new **Amount** that is the *leftAmount* minus the *rightAmount* (i.e., 
 everything in the *leftAmount* that is not in the *rightAmount*). If *leftAmount* 
-doesn't include *rightAmount* (subtraction results in a negative), this method throws an 
+doesn't include *rightAmount* (i.e., subtraction results in a negative), this method throws an 
 error. Because *leftAmount* must include *rightAmount*, this is **not** 
 equivalent to set subtraction.
 
@@ -241,7 +241,7 @@ const badList = AmountMath.subtract(listAmountA, listAmountB)
 ## AmountMath.min(x, y, brand?)
 - **x** **[Amount](./ertp-data-types.md#amount)**
 - **y** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns the minimum value between *x* and *y*.
@@ -253,7 +253,7 @@ If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an 
 ## AmountMath.max(x, y, brand?)
 - **x** **[Amount](./ertp-data-types.md#amount)**
 - **y** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns the maximum value between *x* and *y*.

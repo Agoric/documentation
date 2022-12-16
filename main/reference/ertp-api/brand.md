@@ -54,8 +54,8 @@ const name = Brand.getAllegedName();
 
 Returns the **DisplayInfo** associated with the **Brand**. 
 
-You use a **DisplayInfo** record at the dapp and UI levels to correctly 
-display amounts. For fungible tokens, use the **decimalPlaces** property
+You use a **DisplayInfo** object at the dapp and UI levels to correctly 
+display **[Amounts](./ertp-data-types.md#amount)**. For fungible tokens, use the **decimalPlaces** property
 to display their value in the commonly used denomination, rather than 
 the smallest denomination used for financial accounting (e.g.,
 displaying in dollars rather than cents).
@@ -65,10 +65,9 @@ const quatloosDisplay = quatloosBrand.getDisplayInfo;
 ```
 
 ## Brand.getAmountShape()
-- Returns: **[amountShape](./ertp-data-types.md#amountshape)**
+- Returns: **[AmountShape](./ertp-data-types.md#amountshape)**
 
-TBD. 
-
+Returns the **AmountShape** for a Brand associated with a non-fungible asset. 
 
 
 ## Related Methods

@@ -49,25 +49,25 @@ const allegedBrand = Payment.getAllegedBrand();
 The following methods on other ERTP components either operate
 on or return a **Payment**.
 
-- [**Issuer.burn(payment, optAmount)**](./issuer.md#issuer-burn-payment-optamount)
+- [**Issuer.burn()**](./issuer.md#issuer-burn-payment-optamount)
   - Destroys all of the digital assets in the **Payment**.
-- [**Issuer.claim(payment, optAmount)**](./issuer.md#issuer-claim-payment-optamount)
+- [**Issuer.claim()**](./issuer.md#issuer-claim-payment-optamount)
   - Transfers all digital assets from *payment* to a new **Payment**.
-- [**Issuer.combine(paymentsArray)**](./issuer.md#issuer-combine-paymentsarray-opttotalamount)
+- [**Issuer.combine()**](./issuer.md#issuer-combine-paymentsarray-opttotalamount)
   - Combines multiple **Payments** into one new **Payment**.
-- [**issuer.getAmountOf(payment)**](./issuer.md#issuer-getamountof-payment)
+- [**issuer.getAmountOf()**](./issuer.md#issuer-getamountof-payment)
   - Describes the **Payment**'s balance as an **Amount**.
-- [**issuer.isLive(payment)**](./issuer.md#issuer-islive-payment)
+- [**issuer.isLive()**](./issuer.md#issuer-islive-payment)
   - Returns **true** if the **Payment** was created by the **Issuer** and is available for use (i.e., has not been consumed or burned).
-- [**Issuer.split(payment, paymentAmountA)**](./issuer.md#issuer-split-payment-paymentamounta)
+- [**Issuer.split()**](./issuer.md#issuer-split-payment-paymentamounta)
   - Splits a single **Payment** into two new **Payments**.
-- [**Issuer.splitMany(payment, amountArray)**](./issuer.md#issuer-splitmany-payment-amountarray)
+- [**Issuer.splitMany()**](./issuer.md#issuer-splitmany-payment-amountarray)
   - Split a single **Payment** into multiple **Payments**.
-- [**Mint.mintPayment(newAmount)**](./mint.md#mint-mintpayment-newamount)
+- [**Mint.mintPayment()**](./mint.md#mint-mintpayment-newamount)
   - Create new digital assets of the **Mint**'s associated **Brand**.
-- [**Purse.deposit(payment, optAmount)**](./purse.md#purse-deposit-payment-optamount)
+- [**Purse.deposit()**](./purse.md#purse-deposit-payment-optamount)
   - Deposits all the contents of *payment* into the **Purse**.
 - [**Purse.getDepositFacet()**](./purse.md#purse-getdepositfacet)
   - Creates and returns a new deposit-only facet of the **Purse** that allows arbitrary other parties to deposit **Payments** into the **Purse**.
-- [**Purse.withdraw(amount)**](./purse.md#purse-withdraw-amount)
+- [**Purse.withdraw()**](./purse.md#purse-withdraw-amount)
   - Withdraws the *amount* of specified digital assets from **Purse** into a new **Payment**.
