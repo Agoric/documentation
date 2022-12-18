@@ -1,6 +1,8 @@
 # Brand Object
-A **Brand** identifies the asset type of the **[Issuer](./issuer.md)** and **[Mint](./mint.md)** associated with the **Brand**. A given **Brand** has a one-to-one relationship
-with an **Issuer** and a **Mint**, and a zero-to-many relationship with **[Purses](./purse.md)** and **[Payments](./payment.md)**.
+A **Brand** identifies the asset type of the **[Issuer](./issuer.md)** and **[Mint](./mint.md)**
+associated with the **Brand**. A given **Brand** has a one-to-one relationship
+with an **Issuer** and a **Mint**, and a zero-to-many relationship with **[Purses](./purse.md)**
+and **[Payments](./payment.md)**.
 
 For example, if you were to create a **Brand** that uses *Quatloos*:
 - There would be exactly one *Quatloos* **Issuer**.
@@ -8,13 +10,10 @@ For example, if you were to create a **Brand** that uses *Quatloos*:
 - There could be any number of **Purses** that could hold *Quatloos*.
 - There could be any number of **Payments** that could hold *Quatloos*.
 
-Recipients of a 
-purported **Amount** cannot use the **Brand** by itself to verify its authenticity,
-since the **Brand** can be reused by a misbehaving **Issuer**.
-
-All of these relationships are unchangeable. For example, if a **Mint** is created that makes new *Quatloos*, it
-can never create non-*Quatloos* assets. Similarly, the *Quatloos* **Brand** will always be associated with  
-the  *Quatloos* **Mint** and *Quatloos* **Issuer**.
+All of these relationships are unchangeable. For example, if a **Mint** is created that makes 
+new *Quatloos*, it can never create non-*Quatloos* assets. Similarly, the *Quatloos* **Brand** 
+will always be associated with 
+the *Quatloos* **Mint** and *Quatloos* **Issuer**.
 
 ## Brand.isMyIssuer(allegedIssuer)
 - **allegedIssuer** **[Issuer](./issuer.md)**
@@ -24,10 +23,10 @@ Returns **true** if *allegedIssuer* is the **Brand**'s **Issuer**. Returns **fal
 
 Note that a **Brand** from an untrusted source can misrepresent its association with
 an **Issuer**. The claim should be cross-checked using the **Issuer's**
-[**issuer.getBrand()**](./issuer.md#issuer-getbrand) method for mutual agreement.
+[**Issuer.getBrand()**](./issuer.md#issuer-getbrand) method for mutual agreement.
 
 ```js
-const isIssuer = Brand.isMyIssuer(issuer);
+const isIssuer = brand.isMyIssuer(issuer);
 ```
 
 ## Brand.getAllegedName()
@@ -46,7 +45,7 @@ To put it another way, nothing stops different people from creating multiple
 *Quatloos* **Issuer**. The alleged name is just a human readable string which is 
 helpful for debugging.
 ```js
-const name = Brand.getAllegedName();
+const name = brand.getAllegedName();
 ```
 
 ## Brand.getDisplayInfo()
@@ -61,19 +60,19 @@ the smallest denomination used for financial accounting (e.g.,
 displaying in dollars rather than cents).
 
 ```js
-const quatloosDisplay = quatloosBrand.getDisplayInfo;
+const quatloosDisplay = quatloosBrand.getDisplayInfo();
 ```
 
 ## Brand.getAmountShape()
 - Returns: **[AmountShape](./ertp-data-types.md#amountshape)**
 
-Returns the **AmountShape** for a Brand associated with a non-fungible asset. 
+Returns the **AmountShape** for a **Brand** associated with a non-fungible asset. 
 
 
 ## Related Methods
 
 The following methods on other ERTP components are also related to the **Brand** object.
 - [**Issuer.getBrand()**](./issuer.md#issuer-getbrand): Returns
-the **Brand** for the **Issuer**.  
+the **Brand** for the **Issuer**.
 - [**Payment.getAllegedBrand()**](./payment.md#payment-getallegedbrand): Returns
 the **Payment**'s alleged **Brand**.

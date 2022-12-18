@@ -9,8 +9,14 @@ The ERTP API supports the following objects:
 | [Brand](./brand.md) | Identifies the asset type of the associated **Issuer** and **Mint**. |
 | [Purse](./purse.md) | Holds digital assets. |
 | [Payment](./payment.md) | Holds digital assets that are in transit. |
-| [AmountMath](./amount-math.md) | Used to manipulate **[Amounts](./ertp-data-types.md#amount)**. |
 
+
+
+The ETRP API uses the following library:
+
+| Object | Description |
+| --- | --- |
+| [AmountMath](./amount-math.md) | The **AmountMath** object has several methods which can be used to manipulate and analyze **[Amounts](./ertp-data-types.md#amount)**. |
 
 
 The ERTP API introduces and uses the following data types:

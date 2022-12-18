@@ -13,7 +13,18 @@ While each **Purse** can only hold assets of one **Brand**, any number of **Purs
 created that hold that **Brand**. So you could have, say, three *Quatloos* **Purses**, your
 friend Alice could have eight *Quatloos* **Purses**, and so on. 
 
-You change a **Purse**'s balance by calling either **[Purse.deposit()](#purse-deposit-payment-optamount)** or **[Purse.withdraw()](#purse-withdraw-amount)** on it. A **Purse** can be empty, which if it holds 
+**Purses** are created by calling the **[Issuer.makeEmptyPurse()](./issuer.md#issuer-makeemptypurse)**
+method on the **[Issuer](./issuer.md)** associated with the **Brand** of assets you want the
+new **Purse** to hold.
+
+```js
+const {issuer: quatloosIssuer} = makeIssuerKit{'quatloos'};
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
+```
+
+You change a **Purse**'s balance by calling either
+**[Purse.deposit()](#purse-deposit-payment-optamount)** or 
+**[Purse.withdraw()](#purse-withdraw-amount)** on it. A **Purse** can be empty, which if it holds 
 a fungible currency means it has a value of 0. If it holds a non-fungible asset (e.g., theater tickets),
 then the **Purse** simply doesn't contain any assets if it's empty.
 
@@ -39,13 +50,13 @@ const currentBalance = quatloosPurse.getCurrentAmount();
 ```
 
 ## Purse.getCurrentAmountNotifier()
-- Returns: **Notifier&lt;Amount>**
+- Returns: **Notifier&lt;[Amount](./ertp-data-types.md#amount)>**
 
 Returns a lossy notifier for changes to this **Purse**'s balance. For more details,
 see [Notifiers](/guides/js-programming/notifiers.md).
 
 ```js
-const notifier = Purse.getCurrentAmountNotifier();
+const notifier = purse.getCurrentAmountNotifier();
 let nextUpdate = notifier.getUpdateSince();
 
 const checkNotifier = async () => {
@@ -87,7 +98,6 @@ const depositAmountA = quatloosPurse.deposit(payment, quatloos123);
 const secondPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
 // Throws error
 const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
-
 ```
 
 ## Purse.withdraw(amount)
@@ -104,20 +114,20 @@ But as soon as the message is processed, the value is gone from the **Purse**.
 ```js
 // Create a Purse and give it a balance of 10 Quatloos
 const { issuer, mint, brand } = makeIssuerKit('quatloos');
-const Purse = issuer.makeEmptyPurse();
+const purse = issuer.makeEmptyPurse();
 const payment = mint.mintPayment(AmountMath.make(brand, 10n));
 const quatloos10 = AmountMath.make(brand, 10n);
-Purse.deposit(payment, quatloos10);
+purse.deposit(payment, quatloos10);
 
 // Withdraw an amount of 3 from the Purse
 const quatloos3 = AmountMath.make(brand, 3n);
-const withdrawalPayment = Purse.withdraw(quatloos3);
+const withdrawalPayment = purse.withdraw(quatloos3);
 
 // The balance of the withdrawal payment is 3 Quatloos
 issuer.getAmountOf(withdrawalPayment);
 
 // The new balance of the Purse is 7 Quatloos
-Purse.getCurrentAmount();
+purse.getCurrentAmount();
 ```
 
 ## Purse.getAllegedBrand()
@@ -128,7 +138,7 @@ indicating what kind of digital asset the **Purse** purports to hold. This can i
 **Purse**'s **Brand** if the **Purse** was made by a trusted **[Issuer](./issuer.md)** using **[Issuer.makeEmptyPurse()](./issuer.md#issuer-makeemptypurse)**.
 
 ```js
-const PurseBrand = quatloosPurse.getAllegedBrand();
+const purseBrand = quatloosPurse.getAllegedBrand();
 ```
 
 ## Purse.getDepositFacet()
@@ -137,7 +147,7 @@ const PurseBrand = quatloosPurse.getAllegedBrand();
 Creates and returns a **DepositFacet**, a new deposit-only facet of the **Purse** that allows 
 other parties to deposit **[Payments](./payment.md)** into the **Purse** without the ability
 to check the **Purse's** balance or withdraw from it.
-Theis makes it a safe way to let other people send you **Payments**.
+This makes it a safe way to let other people send you **Payments**.
 
 You can only deposit a **Payment** into a **DepositFacet** that's the same **[Brand](./brand.md)** as the original **Purse**.
  

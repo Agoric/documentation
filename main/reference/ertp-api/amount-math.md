@@ -1,6 +1,6 @@
 # AmountMath Object
 
-Logic for manipulating **[Amounts](./ertp-data-types.md#amount)**.
+Library for manipulating and analyzing **[Amounts](./ertp-data-types.md#amount)**.
 
 ## Importing and Using AmountMath
 
@@ -14,7 +14,7 @@ For these methods, you should pass in a **Brand** argument you got from  when
 you need to do an "absolute" check on the **Brand** within an **[Amount](./ertp-data-types.md#amount)** parameter.
 In this case, you want to use the **Brand** you got from the **Issuer** (or from Zoe)
 as the optional parameter to compare the **Amount** **Brand**(s) to. If they are
-not equal, an error is thrown.
+not equal, an error is thrown and no changes are made.
 
 
 ## AmountMath.make(brand, allegedValue)
@@ -64,7 +64,7 @@ const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 Returns the **Amount** representing an empty **Amount** for the *brand* parameter's 
 **Brand**. This is the identity element for **AmountMath.add()** 
 and **AmountMath.subtract()**. The empty **Value** depends 
-on whether the **assetKind** is **AssetKind.NAT** (**0n**) or **AssetKind.SET** (**[]**).
+on whether the *assetKind* is **AssetKind.NAT** (*0n*), **AssetKind.COPY_SET** (*[]*), or **AssetKind.COPY_BAG** (*[]*).
 
 ```js
 // Returns an empty amount.
@@ -94,7 +94,7 @@ const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 
 Returns **true** if the **Amount** is empty. Otherwise returns **false**.
 
-If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**'s **Brand**, an error is thrown.
 
 ```js
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
@@ -197,7 +197,7 @@ If either *leftAmount* or *rightAmount* is empty, this method returns the non-em
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
-const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.SET');
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET');
 const listAmountA = AmountMath.make(myItemsBrand, ['1','2','4']);
 const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 
@@ -226,7 +226,7 @@ empty, this method returns an empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
-const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.SET');
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET');
 const listAmountA = AmountMath.make(myItemsBrand, ['1','2','4']);
 const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 const listAmountC = AmountMath.make(myItemsBrand, ['2']);
@@ -250,6 +250,14 @@ Returns the minimum value between *x* and *y*.
 
 If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an error is thrown.
 
+```js
+const smallerAmount = AmountMath.make(quatloosBrand, 5n);
+const largerAmount = AmountMath.make(quatloosBrand, 10n);
+
+//returns smallerAmount
+const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
+```
+
 ## AmountMath.max(x, y, brand?)
 - **x** **[Amount](./ertp-data-types.md#amount)**
 - **y** **Amount**
@@ -261,6 +269,14 @@ Returns the maximum value between *x* and *y*.
 *x* and *y* must be of the same **Brand**. If they're not, an error is thrown.
 
 If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an error is thrown.
+
+```js
+const smallerAmount = AmountMath.make(quatloosBrand, 5n);
+const largerAmount = AmountMath.make(quatloosBrand, 10n);
+
+//returns largerAmount
+const comparisonResult = AmountMath.max(smallerAmount, largerAmount);
+```
 
 ## Related Methods
 

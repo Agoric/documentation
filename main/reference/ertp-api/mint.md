@@ -36,8 +36,10 @@ const { issuer: quatloosIssuer, mint: quatloosMint
 
 const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
 // newPayment will have a balance of 1000 Quatloos
-const newPayment = quatloosMint.MintPayment(quatloos1000);
+const newPayment = quatloosMint.mintPayment(quatloos1000);
 ```
 
-**Important**: **Mint.mintPayment()** is the <ins>only</ins> way
+::: tip Important
+**Mint.mintPayment()** is the <ins>only</ins> way
 to create new digital assets. There is no other way.
+:::

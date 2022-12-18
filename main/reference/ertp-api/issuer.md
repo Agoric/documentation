@@ -33,33 +33,43 @@ The *allegedName* becomes part of the **Brand** in asset descriptions. It
 doesn't have to be a **String**, but it will only be used for its value. It
 is useful for debugging and double-checking assumptions, but should not be trusted.
 
-The optional *assetKind* parameter specifies the kind of asset associated with the **Issuer** about to be created. If no **AssetKind** argument is passed into the method, then the **Issuer**'s asset kind defaults to **AssetKind.NAT**. **[AmountMath](./amount-math.md)**'s methods work with all the kinds of assets, but exactly what math or manipulation is performed varies depending on the **AssetKind**. 
+The optional *assetKind* parameter specifies the kind of asset associated with the **Issuer** about 
+to be created. If no **AssetKind** argument is passed into the method, then the **Issuer**'s asset 
+kind defaults to **AssetKind.NAT**. **[AmountMath](./amount-math.md)**'s methods work with all the 
+kinds of assets, but exactly what math or manipulation is performed varies depending on 
+the **AssetKind**. 
 
-The optional *displayInfo* parameter tells the UI how to display **[Amounts](./ertp-data-types.md#amount)** of this **Brand**.
+The optional *displayInfo* parameter tells the UI how to 
+display **[Amounts](./ertp-data-types.md#amount)** of this **Brand**.
 
-The optional *optShutdownWithFailure* parameter shouold be used in mission-critical function calls. This parameter is a function that will stop program flow and throw an error if there is any unexpected behavior when this function is called.
+The optional *optShutdownWithFailure* parameter should be used for mission-critical
+**Issuers**. This parameter is a function that will stop the vat hosting the 
+**Issuer** if **Issuer** invariants are violated.
 
-The optional *elementShape* parameter is only used when creating an **Issuer** that has a non-fungible asset associated with it. When used, the *elementShape* parameter is an object with however many properties are required to describe the asset. This object sets the *valueShape's* properties of the asset's **[AmountShape](./ertp-data-types.md#amountshape)**.
+The optional *elementShape* parameter is only used when creating an **Issuer** that
+has a non-fungible asset associated with it. When used, the *elementShape* parameter is an object 
+with however many properties are required to describe the asset. This object sets the 
+*valueShape's* properties of the asset's **[AmountShape](./ertp-data-types.md#amountshape)**.
 
 
 ```js
 import { AssetKind, makeIssuerKit } from '@agoric/ertp';
 makeIssuerKit('quatloos'); // Defaults to AssetKind.NAT
-makeIssuerKit('title', AssetKind.SET);
+makeIssuerKit('title', AssetKind.COPY_SET);
 ```
 
 ```js
-const { Issuer: quatloosIssuer, mint: quatloosmint, brand: quatloosbrand } = 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');
 // This is merely an amount, describing assets, not minting assets
-const quatloos2 = AmountMath.make(quatloosbrand, 2n);
+const quatloos2 = AmountMath.make(quatloosBrand, 2n);
 
-const { issuer: titleIssuer, mint: titlemint, brand: titlebrand } = 
+const { issuer: titleIssuer, mint: titleMint, brand: titleBrand } = 
       makeIssuerKit('propertyTitle');
 // These are merely amounts describing digital assets, not minting assets.
-const cornerProperty = AmountMath.make(propertyTitlebrand, ['1292826']);
-const adjacentProperty = AmountMath.make(propertyTitlebrand, ['1028393']);
-const combinedProperty = AmountMath.make(propertyTitlebrand, ['1292826', '1028393']);
+const cornerProperty = AmountMath.make(propertyTitleBrand, ['1292826']);
+const adjacentProperty = AmountMath.make(propertyTitleBrand, ['1028393']);
+const combinedProperty = AmountMath.make(propertyTitleBrand, ['1292826', '1028393']);
 ```
 
 ## Issuer.getAllegedName()
@@ -96,8 +106,8 @@ The **AssetKind** specifies what kind of values are used in **[Amounts](./ertp-d
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 quatloosIssuer.getAssetKind(); // Returns 'nat', also known as AssetKind.NAT, the default value.
-const { issuer: moolaIssuer } = makeIssuerKit('moola', AssetKind.SET);
-moolaIssuer.getAssetKind(); // Returns 'set', also known as 'AssetKind.SET'
+const { issuer: moolaIssuer } = makeIssuerKit('moola', AssetKind.COPY_SET);
+moolaIssuer.getAssetKind(); // Returns 'copy_set', also known as 'AssetKind.COPY_SET'
 ```
 
 ## Issuer.getAmountOf(payment)
@@ -109,9 +119,9 @@ source cannot be trusted to provide its own true value, the **Issuer** must be u
 validate its **[Brand](./brand.md)** and report how much the returned **Amount** contains.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosmint, brand: quatloosbrand} = makeIssuerKit('quatloos');
-const quatloospayment = quatloosmint.mintpayment(AmountMath.make(quatloosbrand, 100n));
-quatloosIssuer.getAmountOf(quatloospayment); // returns an amount of 100 Quatloos 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand} = makeIssuerKit('quatloos');
+const quatloosPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
+quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
 
 ## Issuer.getBrand()
@@ -123,19 +133,19 @@ kind. The **Brand** is not closely held, so this method should not be trusted to
 an **Issuer** alone. Fake digital assets and amounts can use another **Issuer's** **Brand**.
 
 ```js
-const { issuer: quatloosIssuer, brand: quatloosbrand } = makeIssuerKit('quatloos');
-const quatloosbrand = quatloosIssuer.getBrand();
-// brand === quatloosbrand
+const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const quatloosBrand = quatloosIssuer.getBrand();
+// brand === quatloosBrand
 ```
 
-## Issuer.makeEmptypurse()
+## Issuer.makeEmptyPurse()
 - Returns: **[Purse](./purse.md)**
 
 Makes and returns an empty **Purse** that holds assets of the **[Brand](./brand.md)** associated with the **Issuer**.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
-const quatloospurse = quatloosIssuer.makeEmptypurse();
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
 ## **Issuer.burn(payment, optAmount?)**
@@ -144,20 +154,21 @@ const quatloospurse = quatloosIssuer.makeEmptypurse();
 - Returns: **Amount**
 
 Destroys all of the digital assets in the **Payment**,
-making them unavailable for later use,
+making it unavailable for later use,
 and returns an **Amount** of what was burned.
 
-If an optional *optAmount* argument is passed into the method, 
-*payment*'s balance must be equal to *optAmount* in order to prevent sending the wrong **Payment**. 
-If *optAmount* does not equal the balance in the original **Payment** an error is thrown.
+If an *optAmount* argument is passed into the method, 
+*payment*'s balance must be equal to *optAmount* in order to prevent claiming the wrong **Payment**. 
+If *optAmount* does not equal the balance in the original **Payment** an error is thrown,
+and the original **Payment** is unmodified.
 
 If *payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosmint, brand: quatloosbrand } = 
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
       makeIssuerKit('quatloos');     
-const amountToBurn = AmountMath.make(quatloosbrand, 10n);
-const paymentToBurn = quatloosmint.mintpayment(amountToBurn);
+const amountToBurn = AmountMath.make(quatloosBrand, 10n);
+const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
 // burntAmount should equal 10 Quatloos
 const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
@@ -171,18 +182,19 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 Transfers all digital assets from *payment* to a new **Payment** and consumes the
 original **Payment**, making it unavailable for later use.
 
-If the optional *optAmount* is passed into the method, *payment*'s balance must be
-equal to *optAmount*, to prevent sending the wrong **Payment**. 
-If *optAmount* does not equal the balance in the original **Payment** an error is thrown.  
+If the *optAmount* argument is passed into the method, *payment*'s balance must be
+equal to *optAmount*, to prevent claiming the wrong **Payment**. 
+If *optAmount* does not equal the balance in the original **Payment** an error is thrown,
+and the original **Payment** is unmodified.
 
 If *payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
 ```js
-const { mint: quatloosmint, issuer: quatloosIssuer, brand: quatloosbrand } = makeIssuerKit('quatloos');
-const amountExpectedToTransfer = AmountMath.make(quatloosbrand, 2n);
-const originalpayment = quatloosmint.mintpayment(amountExpectedToTransfer);
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const amountExpectedToTransfer = AmountMath.make(quatloosBrand, 2n);
+const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
-const newpayment = quatloosIssuer.claim(originalpayment, amountToTransfer);
+const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## Issuer.combine(paymentsArray, optTotalAmount?)
@@ -191,25 +203,26 @@ const newpayment = quatloosIssuer.claim(originalpayment, amountToTransfer);
 - Returns: **Payment**
 
 Combines multiple **Payments** into one new **Payment**. If any item in *paymentsArray* is
-a promise, the operation proceeds after each such promise resolves to a **Payment**.
+a promise, the operation proceeds after each such promises resolve to a **Payment**.
 All **Payments** in *paymentsArray* are consumed and made unavailable for later use.
 
-If the optional *optTotalAmount* is passed into the method,
+If the *optTotalAmount* argument is passed into the method,
 the total value of all **Payments** in *paymentsArray*
-must equal *optTotalAmount* or the method throws an error.
+must equal *optTotalAmount*. If they don't, the method throws an error,
+and the original **Payment** is unmodified.
 
 Each **Payment** in *paymentsArray* must be associated with the same **[Brand](./brand.md)** as the **Issuer**.
 
 ```js
-const { mint: quatloosmint, issuer: quatloosIssuer, brand: quatloosbrand } = makeIssuerKit('quatloos');
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
 // create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
-  payments.push(quatloosmint.mintpayment(AmountMath.make(quatloosbrand, 1n)));
+  payments.push(quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 1n)));
 }
 
 // combinedpayment equals 100
-const combinedpayment = quatloosIssuer.combine(payments);
+const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
 ## Issuer.split(payment, paymentAmountA)
@@ -228,10 +241,10 @@ If *payment* is a promise, the operation proceeds after it resolves to a **Payme
 *payment* and *paymentAmountA* must both be associated with the same **[Brand](./brand.md)** as the **Issuer**.
 
 ```js
-const { mint: quatloosmint, issuer: quatloosIssuer, brand: quatloosbrand } = makeIssuerKit('quatloos');
-const oldpayment = quatloosmint.mintpayment(AmountMath.make(quatloosbrand, 20n));
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 20n));
 // After the split, paymentA has 5 quatloos and paymentB has 15.
-const [paymentA, paymentB] = quatloosIssuer.split(oldpayment, AmountMath.make(quatloosbrand, 5n));
+const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(quatloosBrand, 5n));
 ```
 
 ## Issuer.splitMany(payment, amountArray)
@@ -250,18 +263,18 @@ If the **Amounts** in *amountArray* don't add up to the value of *payment*, the 
 *payment* and each **Amount** in *amountArray* must be associated with the same **[Brand](./brand.md)** as **Issuer**.
 
 ```js
-const { mint: quatloosmint, issuer: quatloosIssuer, brand: quatloosbrand} = makeIssuerKit('quatloos');
-const oldpayment = quatloosmint.mintpayment(AmountMath.make(quatloosbrand, 100n));
-const goodAmounts = Array(10).fill(AmountMath.make(quatloosbrand, 10n));
+const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = makeIssuerKit('quatloos');
+const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
+const goodAmounts = Array(10).fill(AmountMath.make(quatloosBrand, 10n));
 
-const arrayOfNewpayments = quatloos.Issuer.splitMany(oldpayment, goodAmounts);
+const arrayOfNewPayments = quatloos.Issuer.splitMany(oldPayment, goodAmounts);
 
 // The total amount in the amountArray must equal the original payment amount
 // Set original amount to 1000n
-const payment = quatloosmint.mintpayment(AmountMath.make(quatloosbrand, 1000n));
+const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 1000n));
 
 // Total amounts in badAmounts equal 20n, when it should equal 1000n
-const badAmounts = Array(2).fill(AmountMath.make(quatloosbrand, 10n));
+const badAmounts = Array(2).fill(AmountMath.make(quatloosBrand, 10n));
 
 // 20n does not equal 1000n, so throws error
 quatloosIssuer.splitMany(payment, badAmounts);
@@ -272,6 +285,6 @@ quatloosIssuer.splitMany(payment, badAmounts);
 - Returns: **Boolean**
 
 Returns **true** if the *payment* was created by the **Issuer** and is available for use 
-(i.e., it hasn't been consumed or burned).
+(i.e., it hasn't been consumed).
 
 If *payment* is a promise, the method proceeds after it resolves to a **Payment**.
