@@ -203,7 +203,7 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 - Returns: **Payment**
 
 Combines multiple **Payments** into one new **Payment**. If any item in *paymentsArray* is
-a promise, the operation proceeds after each such promises resolve to a **Payment**.
+a promise, the operation proceeds after each such promise resolves to a **Payment**.
 All **Payments** in *paymentsArray* are consumed and made unavailable for later use.
 
 If the *optTotalAmount* argument is passed into the method,
@@ -249,7 +249,7 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 
 ## Issuer.splitMany(payment, amountArray)
 - **payment** **[Payment](./payment.md)**
-- **amountArray** **Array &lt;Amount>**
+- **amountArray** **Array &lt;[Amount](./ertp-data-types.md#amount)>**
 - Returns: **Array &lt;Payment>**
 
 Splits a single **Payment** into multiple **Payments**.

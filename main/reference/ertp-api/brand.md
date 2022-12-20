@@ -1,7 +1,7 @@
 # Brand Object
 A **Brand** identifies the asset type of the **[Issuer](./issuer.md)** and **[Mint](./mint.md)**
 associated with the **Brand**. A given **Brand** has a one-to-one relationship
-with an **Issuer** and a **Mint**, and a zero-to-many relationship with **[Purses](./purse.md)**
+with an **Issuer** and a **Mint**, and a one-to-many relationship with **[Purses](./purse.md)**
 and **[Payments](./payment.md)**.
 
 For example, if you were to create a **Brand** that uses *Quatloos*:
