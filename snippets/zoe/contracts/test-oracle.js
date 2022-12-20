@@ -14,9 +14,7 @@ import { E } from '@endo/eventual-send';
 import { Far } from '@endo/marshal';
 
 test('oracle contract', async t => {
-  const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
-  const feePurse = E(zoeService).makeFeePurse();
-  const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
+  const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
 
   // #region bundle
   const contractUrl = await importMetaResolve(
