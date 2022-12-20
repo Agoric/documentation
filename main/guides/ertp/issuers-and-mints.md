@@ -37,7 +37,7 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/reference/ertp-api/).
 
 - **Create issuer operation**
-  - [`makeIssuerKit(allegedName, assetKind, displayInfo=)`](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo)
+  - [`makeIssuerKit()`](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
     - Create and return a new `issuer` and its associated `mint` and `brand`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
@@ -88,7 +88,7 @@ the `issuer` itself acknowledges the association.
 - [`mint.getIssuer()`](/reference/ertp-api/mint.md#mint-getissuer)
   - Return the `issuer` uniquely associated with the `mint`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer
-- [`brand.isMyIssuer(issuer)`](/reference/ertp-api/brand.md#brand-ismyissuer-issuer)
+- [`brand.isMyIssuer(issuer)`](/reference/ertp-api/brand.md#brand-ismyissuer-allegedissuer)
   - Return `true` if `issuer` is the brand's `issuer`, `false` if not.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isMyIssuer
 
@@ -121,7 +121,7 @@ API Reference](/ertp/api/).
 - [`mint.mintPayment(newAmount)`](/reference/ertp-api/mint.md#mint-mintpayment-newamount)
   - Create new digital assets of the `mint`'s associated `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
-- [`makeIssuerKit(allegedName, assetKind, displayInfo)`](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo)
+- [`makeIssuerKit(allegedName, assetKind, displayInfo)`](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
   - Create and return a new `issuer` and its associated `mint` and `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
 

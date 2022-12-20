@@ -53,7 +53,7 @@ and example of each `brand` method. For more detail, click the method's name
 to go to its entry in the [ERTP
 API Reference](/reference/ertp-api/). 
 
-- [`brand.isMyIssuer(issuer)`](/reference/ertp-api/brand.md#brand-ismyissuer-issuer)
+- [`brand.isMyIssuer(issuer)`](/reference/ertp-api/brand.md#brand-ismyissuer-allegedissuer)
   - Returns `true` if the `issuer` argument matches the `issuer` associated with the `brand`.
     We have this method because the `issuer` is authoritative and the `brand` is not. You can
     create a `payment`, `purse`, or `amount` with a `brand` that claims a particular `issuer`,
