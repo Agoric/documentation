@@ -5,8 +5,8 @@ ERTP introduces and uses several data types.
 ## Amount
 
 An **Amount** is a description of digital assets, answering the
-questions "how much?" and "of what kind?". It is an **[AmountValue](#amountvalue)** ("how much?")
-labeled with a **[Brand](./brand.md)** ("of what kind?"). The **[AmountMath](./amount-math.md)** object
+questions "how much?" (its **[AmountValue](#amountvalue)**) and "of what kind?" (its **[Brand](./brand.md)**).
+The **[AmountMath](./amount-math.md)** object
 introduces a library of methods that can be used to manipulate and analyze **Amounts**.
 
 Note that **Amounts** can describe either fungible or non-fungible assets.
