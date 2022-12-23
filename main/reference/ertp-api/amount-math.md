@@ -25,8 +25,7 @@ not equal, an error is thrown and no changes are made.
 Creates an **Amount** from a given **Brand** and **AmountValue**.
 
 ```js
-// amount837 = { brand: quatloosBrand, value: 837n }
-const amount837 = AmountMath.make(quatloosBrand, 837n);
+const bid = AmountMath.make(quatloosBrand, 300n);
 ```
 
 ## AmountMath.coerce(brand, allegedAmount)
@@ -34,13 +33,11 @@ const amount837 = AmountMath.make(quatloosBrand, 837n);
 - **allegedAmount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Amount**
 
-Makes sure an **Amount** is for the specified *brand* and if so, returns it.
-If the **Amount** is for an invalid **Brand**, this method throws an exception.
+Verifies that an **Amount** is for the specified *brand* and returns a new equivalent **Amount**.
+If the **Amount** is not for the specified **Brand**, an error is thrown.
 
 ```js
-const quatloos50 = AmountMath.make(quatloosBrand, 50n);
-// Returns the same amount as quatloos50
-const verifiedAmount = AmountMath.coerce(quatloosBrand, allegedAmount); 
+const verifiedAmount = AmountMath.coerce(quatloosBrand, bid);
 ```
 
 ## AmountMath.getValue(brand, amount)
@@ -54,8 +51,9 @@ Returns the **AmountValue** from the given **Amount**.
 const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 
 // Returns 123n
-const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
+AmountMath.getValue(quatloosBrand, quatloos123);
 ```
+
 ## AmountMath.makeEmpty(brand, assetKind)
 - **brand**: **[Brand](./brand.md)**
 - **assetKind**: **[AssetKind](./ertp-data-types.md#assetkind)**
@@ -67,9 +65,7 @@ and **AmountMath.subtract()**. The empty **AmountValue** depends
 on whether the *assetKind* is **AssetKind.NAT** (`0n`), **AssetKind.COPY_SET** (`[]`), or **AssetKind.COPY_BAG** (`[]`).
 
 ```js
-// Returns an empty amount.
-// Since this is a fungible assetKind it returns an amount
-// with 0n as its value.
+// Returns an amount with 0n as its value
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 ```
 
@@ -77,14 +73,13 @@ const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 - **amount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Amount**
 
-Returns the **Amount** representing an empty **Amount**, using another
-**Amount** as the template for the **[Brand](./brand.md)** and **[AmountValue](./ertp-data-types.md#amountvalue)**.
+Returns an empty **Amount** for the **Brand** of the *amount* parameter.
 
 ```js
-// quatloosAmount837 = { brand: quatloos, value: 837n }
-const quatloosAmount837 = AmountMath.make(quatloosBrand, 837n);
-// Returns an amount = { brand: quatloos, value: 0n }
-const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
+// bid = { brand: quatloosBrand, value: 300n }
+const bid = AmountMath.make(quatloosBrand, 300n);
+// Returns { brand: quatloosBrand, value: 0n }
+const zeroQuatloos = AmountMath.makeEmptyFromAmount(bid);
 ```
 
 ## AmountMath.isEmpty(amount, brand?)
@@ -114,15 +109,14 @@ const result = AmountMath.isEmpty(quatloos1);
 - Returns: **Boolean**
 
 Returns **true** if the **[AmountValue](./ertp-data-types.md#amountvalue)** of *leftAmount* is greater than or equal to
-the **AmountValue** of *rightAmount*. Both **Amount** arguments must have the same
-**Brand**.
+the **AmountValue** of *rightAmount*.
+Both **Amount** arguments must have the same **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 For non-fungible **AmountValues**, what "greater than or equal to" is depends on the 
 kind of **AmountMath**. For example, { 'seat 1', 'seat 2' } is considered
-greater than { 'seat 2' } because the former both contains all of the latter's 
-content and has additional elements.
+greater than { 'seat 2' } because the former is a strict superset of the latter.
 
 ```js
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
@@ -148,8 +142,8 @@ AmountMath.isGTE(quatloos5, quatloos5);
 - Returns: **Boolean**
 
 Returns **true** if the **[AmountValue](./ertp-data-types.md#amountvalue)** of *leftAmount* is equal to
-the **AmountValue** of *rightAmount*. Both **Amount** arguments must have the same
-**Brand**.
+the **AmountValue** of *rightAmount*.
+Both **Amount** arguments must have the same **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
@@ -157,9 +151,8 @@ For non-fungible **AmountValues**, "equal to" depends on the value of the
 **Brand's** **[AssetKind](./ertp-data-types.md#assetkind)**. 
 
 For example, { 'seat 1', 'seat 2' } is considered
-unequal to { 'seat 2' } because the number of items in the former is
-different from that of the latter. Similarly { 'seat 1',  'seat 3'  } and { 'seat 2' } 
-are considered unequal because the latter has elements that are not contained in the former.
+unequal to { 'seat 2' } because the number of elements differ.
+{ 'seat 1'  } is considered unequal to { 'seat 2' } because the elements do not match.
 
 ```js
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
@@ -183,8 +176,8 @@ AmountMath.isEqual(empty, quatloos10);
 - **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
-Returns a new **Amount** that is the union of *leftAmount* and *rightAmount*. Both
-arguments must be of the same **Brand**.
+Returns a new **Amount** that is the combination of *leftAmount* and *rightAmount*.
+Both **Amount** arguments must have the same **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
@@ -192,12 +185,12 @@ For fungible **Amounts** this means adding their **[AmountValues](./ertp-data-ty
 **Amounts**, it usually means including all of the elements from *leftAmount*
 and *rightAmount*.
 
-If either *leftAmount* or *rightAmount* is empty, this method returns the non-empty 
-**Amount** argument. If both are empty, this method returns an empty **Amount**.
+If either argument is empty, this method returns an **Amount** equivalent to the other argument.
+If both are empty, this method returns an empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
-const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET');
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET);
 const listAmountA = AmountMath.make(myItemsBrand, ['1','2','4']);
 const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 
@@ -213,11 +206,11 @@ const combinedList = AmountMath.add(listAmountA, listAmountB);
 
 Returns a new **Amount** that is the *leftAmount* minus the *rightAmount* (i.e., 
 everything in the *leftAmount* that is not in the *rightAmount*). If *leftAmount* 
-doesn't include *rightAmount* (i.e., subtraction results in a negative), this method throws an 
-error. Because *leftAmount* must include *rightAmount*, this is **not** 
+doesn't include *rightAmount* (e.g., subtraction results in a negative), an error is thrown.
+Because *leftAmount* must include *rightAmount*, this is **not**
 equivalent to set subtraction.
 
-*leftAmount* and *rightAmount* must be of the same **Brand**.
+Both **Amount** arguments must have the same **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
@@ -226,7 +219,7 @@ empty, this method returns an empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
-const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET');
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET);
 const listAmountA = AmountMath.make(myItemsBrand, ['1','2','4']);
 const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 const listAmountC = AmountMath.make(myItemsBrand, ['2']);
@@ -234,7 +227,7 @@ const listAmountC = AmountMath.make(myItemsBrand, ['2']);
 // Returns ['1', '4']
 const subtractedList = AmountMath.subtract(listAmountA, listAmountC)
 
-// Throws error
+// Throws an error
 const badList = AmountMath.subtract(listAmountA, listAmountB)
 ```
 
@@ -246,15 +239,15 @@ const badList = AmountMath.subtract(listAmountA, listAmountB)
 
 Returns the minimum value between *x* and *y*.
 
-*x* and *y* must be of the same **Brand**. If they're not, an error is thrown.
+Both **Amount** arguments must have the same **Brand**.
 
-If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 ```js
 const smallerAmount = AmountMath.make(quatloosBrand, 5n);
 const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
-// Returns smallerAmount
+// Returns an amount equivalent to smallerAmount
 const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
 ```
 
@@ -266,15 +259,15 @@ const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
 
 Returns the maximum value between *x* and *y*.
 
-*x* and *y* must be of the same **Brand**. If they're not, an error is thrown.
+Both **Amount** arguments must have the same **Brand**.
 
-If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an error is thrown.
+If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 ```js
 const smallerAmount = AmountMath.make(quatloosBrand, 5n);
 const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
-// Returns largerAmount
+// Returns an amount equivalent to largerAmount
 const comparisonResult = AmountMath.max(smallerAmount, largerAmount);
 ```
 
@@ -289,4 +282,3 @@ on or return an **Amount** or **AssetKind**.
   - Returns the **AssetKind** of the **Issuer**'s associated math helpers.
 - [**zcf.getAssetKind()**](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
   - Returns the **AssetKind** associated with a **Brand**.
-
