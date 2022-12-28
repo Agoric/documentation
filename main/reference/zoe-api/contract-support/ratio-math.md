@@ -3,14 +3,14 @@
 These functions let you apply a ratio (a fraction) to an amount, multiplying or
 dividing an amount by a ratio of two natural numbers. Ratios consist of a
 *numerator* and a *denominator*. Both of these consist of a value and a brand,
-just like `amounts`. A ratio cannot have a denominator value of 0.
+just like **amounts**. A ratio cannot have a denominator value of 0.
 
 The ratio functions have to be imported.
 
-The most common kind of `Ratio` is applied to an `Amount` of a particular brand
+The most common kind of **Ratio** is applied to an **Amount** of a particular brand
 and produces results of the same brand.
 
-`Ratios` can also have two brands, essentially typing them such as miles per
+**Ratios** can also have two brands, essentially typing them such as miles per
 hour or US dollars for Swiss francs (an exchange rate ratio) (i.e. the numerator
 is one brand and the denominator is another). Keep in mind that a ratio function
 should make sense when used with a dual-branded ratio.
@@ -28,19 +28,33 @@ up or down. These operations produce Amounts, so they have to end by converting
 the ratio to an integer with a division. This may require roundoff, and correct
 calculations require that the caller choose which is appropriate.
 
-## `makeRatio(numerator, numeratorBrand, denominator, denominatorBrand)`
-- `numerator`: `{ BigInt }`
-- `numeratorBrand`: `{ Brand }`
-- `denominator`: `{ BigInt }` defaults to 100n
-- `denominatorBrand)`: `{ Brand }`  defaults to `numeratorBrand` value
-- Returns: `{ numerator: { Value , Brand }, denominator: { Value, Brand } }` 
+## assertIsRatio(ratio)
+- **ratio** **Record**
+- Returns: **void**
 
-Makes a `Ratio`, representing a fraction and consisting of a record containing
-two `Amounts`. It is a pass-by-copy record. 
+Throws an error if the argument is not a valid ratio.
 
-By default, the `denominator` is 100; i.e. the ratio is a percent. 
+Throws messages for errors:
+- **Ratio ${ratio} must be a record with 2 fields.**
+- **Parameter must be a Ratio record, but ${ratio} has ${q(name)**
 
-By default, the `denominatorBrand` value is the same as the `numeratorBrand`
+```js
+assertIsRatio(aRatio);
+```
+
+## makeRatio(numerator, numeratorBrand, denominator?, denominatorBrand?)
+- **numerator** **BigInt**
+- **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
+- **denominator** **BigInt** - Optional, defaults to 100n.
+- **denominatorBrand)** **Brand** - Optional, defaults to **numeratorBrand** value.
+- Returns: **numerator: { Value , Brand }, denominator: { Value, Brand }**
+
+Makes a **Ratio**, representing a fraction and consisting of a record containing
+two **Amounts**. It is a pass-by-copy record. 
+
+By default, the **denominator** is 100; i.e. the ratio is a percent. 
+
+By default, the **denominatorBrand** value is the same as the **numeratorBrand**
 value. 
 
 A ratio has these restrictions: 
@@ -54,14 +68,14 @@ const ratio = makeRatio(50n, quatloosBrand);
 const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 ```
 
-## `makeRatioFromAmounts(numeratorAmount, denominatorAmount)`
-- `numeratorAmount`: `{ Amount }`
-- `denominatorAmount`: `{ Amount }`
-- Returns: `{ numerator: { value , brand }, denominator: { value, brand } }` 
+## makeRatioFromAmounts(numeratorAmount, denominatorAmount)
+- **numeratorAmount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **denominatorAmount** **Amount**
+- Returns: **numerator: { value , brand }, denominator: { value, brand }**
 
-Makes a `Ratio`, representing a fraction and consisting of an immutable pair 
-of two `Amounts`.  The `numeratorAmount` is the ratio's numerator and
-the `denominatorAmount` is the ratio's denominator. It is a pass-by-copy 
+Makes a **Ratio**, representing a fraction and consisting of an immutable pair 
+of two **Amounts**.  The *numeratorAmount* is the ratio's numerator and
+the *denominatorAmount* is the ratio's denominator. It is a pass-by-copy 
 record. 
 
 A ratio has these restrictions: 
@@ -74,32 +88,25 @@ const dollar = AmountMath.make(centsBrand, 100n);
 const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 ```
 
-## `assertIsRatio(ratio)`
-- `ratio`: `{ Record }`
-- Returns: `void`
+//New Method
+## multiplyHelper (amount, ratio, divideOp)
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **Ratio**
+- **divideOp**
 
-Throws an error if the argument is not a valid ratio.
 
-Throws messages for errors:
-- `Ratio ${ratio} must be a record with 2 fields.`
-- `Parameter must be a Ratio record, but ${ratio} has ${q(name)}`
+## floorMultiplyBy(amount, ratio)
+## ceilMultiplyBy(amount, ratio)
+- **amount** **Amount**
+- **ratio** **Ratio**
+- Returns: **Amount**
 
-```js
-assertIsRatio(aRatio);
-```
-
-## `floorMultiplyBy(amount, ratio)`
-## `ceilMultiplyBy(amount, ratio)`
-- `amount`: `{ Amount }`
-- `ratio`: `{ Ratio }`
-- Returns: `{ Amount }`
-
-Returns an immutable `Amount`.  Its brand is the `ratio`'s *numerator*'s brand.
+Returns an immutable **Amount**.  Its brand is the **ratio**'s *numerator*'s brand.
 Note the denominator brand has to be the same as the amount brand.
 
 The resulting value is determined by:
-1. Multiplying the `amount` value by the `ratio`'s numerator's value.
-2. Dividing the result from step 1 by the `ratio`'s denominator's value.
+1. Multiplying the **amount** value by the **ratio**'s numerator's value.
+2. Dividing the result from step 1 by the **ratio**'s denominator's value.
 3. If that results in an integer, that value is returned, otherwise, the value
   is rounded down (for floorMultiplyBy) or up (for ceilMultiplyBy) to the next
   integer.
@@ -110,13 +117,13 @@ would go
 2. 141 / 5 = 28.2
 3. Floor(28.2) = 28
 
-If the numerator's brand was Swiss francs, the result would be an `Amount` of
+If the numerator's brand was Swiss francs, the result would be an **Amount** of
 28 Swiss francs.
 
 Throws errors with messages: 
-- `Expected an amount: ${amount})`:  First argument isn't an `Amount`. 
-- `amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
-  ratio.denominator.brand`: The amount and ratio's denominator must have the same brand. 
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+- **amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
+  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand. 
     
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
@@ -125,17 +132,17 @@ const Dollars47 = AmountMath.make(dollarBrand, 47n);
 const exchange = multiplyBy(Dollars100, exchangeRatio);
 ```
 
-## ` floorDivideBy(amount, ratio)`
-## ` ceilDivideBy(amount, ratio)`
-- `amount`: `{ Amount }`
-- `ratio`: `{ Ratio }`
-- Returns: `{ Amount }`
+## floorDivideBy(amount, ratio)
+## ceilDivideBy(amount, ratio)
+- **amount** **Amount**
+- **ratio** **Ratio**
+- Returns: **Amount**
 
-Returns an immutable `Amount`.  Its brand is the `ratio`'s *denominator*'s brand.
+Returns an immutable **Amount**.  Its brand is the **ratio**'s *denominator*'s brand.
 
 The resulting value is determined by:
-1. Multiplying the `amount` value by the `ratio`'s denominator's value.
-2. Dividing the result from step 1 by the `ratio`'s numerator's value.
+1. Multiplying the **amount** value by the **ratio**'s denominator's value.
+2. Dividing the result from step 1 by the **ratio**'s numerator's value.
 3. If that results in an integer, that value is returned, otherwise, the value
   is rounded down (for floorDivideBy) or up (for ceilDivideBy) to the next
   integer.
@@ -146,15 +153,14 @@ would go
 2. 235 / 3 = 78.33333...
 3. Floor(78.3333...) = 78
 
-If the denominator's brand was US dollars, the result would be an `Amount` of
+If the denominator's brand was US dollars, the result would be an **Amount** of
 78 US dollars.
 
 Throws errors with messages: 
-- `Expected an amount: ${amount})`:  First argument isn't an `Amount`. 
-- `amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand`: The 
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The 
   amount and ratio's numerator must have the same brand. 
-  
-```js
+
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
 const Dollars47 = AmountMath.make(dollarBrand, 47n);
@@ -162,15 +168,16 @@ const Dollars47 = AmountMath.make(dollarBrand, 47n);
 const exchange = divideBy(Dollars100, exchangeRatio);
 ```
 
-## `invertRatio(ratio)`
-- `ratio`: `{ Ratio }`
-- Returns: `{ Ratio }`
+## invertRatio(ratio)
+- **ratio** **Ratio**
+- Returns: **Ratio**
 
-Returns a `Ratio` such that the `ratio` argument's numerator is the returned value's
-denominator and the `ratio` argument's denominator is the returned value's numerator.
+Returns a **Ratio** such that the **ratio** argument's numerator is the returned value's
+denominator and the **ratio** argument's denominator is the returned value's numerator.
 
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
 // Returns a ratio of 5 US dollars / 3 swiss Francs
 const invertedRatio = invertRatio(exchangeRatio);
+```
 
