@@ -18,7 +18,9 @@ import { resolve as importMetaResolve } from 'import-meta-resolve';
 import url from 'url';
 
 test('loan contract', async t => {
-  const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
+  const {
+    zoeServices: { zoeService: zoe },
+  } = makeZoeKit(makeFakeVatAdmin().admin);
 
   const contractUrl = await importMetaResolve(
     '@agoric/zoe/src/contracts/loan/index.js',

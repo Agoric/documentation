@@ -17,7 +17,9 @@ import bundleSource from '@endo/bundle-source';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 
 test('intro to zoe', async t => {
-  const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
+  const {
+    zoeServices: { zoeService: zoe },
+  } = makeZoeKit(makeFakeVatAdmin().admin);
   const moolaKit = makeIssuerKit('moola');
   const simoleanKit = makeIssuerKit('simoleans');
 
@@ -129,7 +131,9 @@ test('intro to zoe', async t => {
 });
 
 test('intro to zoe - contract-format', async t => {
-  const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
+  const {
+    zoeServices: { zoeService: zoe },
+  } = makeZoeKit(makeFakeVatAdmin().admin);
   const atomicSwapUrl = await importMetaResolve(
     './contract-format.js',
     import.meta.url,
