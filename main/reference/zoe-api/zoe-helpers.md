@@ -5,21 +5,22 @@ patterns into reusable helpers.
 
 All of the ZoeHelper methods are described below. To use any of them, import it
 directly from **@agoric/zoe/src/contractSupport/index.js**. For example, the
-following imports the two ZoeHelpers **assertIssuerKeywords()** and
-**assertProposalShape()**:
+following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assertissuerkeywords-zcf-expected)** and
+**[assertProposalShape()](#assertproposalshape-seat-expected)**:
+
 ```js
 import {
   assertIssuerKeywords,
   assertProposalShape,
 } from '@agoric/zoe/src/contractSupport/index.js';
 ```
-Note that almost all ZoeHelpers require **zcf**, a **ContractFacet** as a first argument.
-ZoeHelpers are contract helpers, in that they are useful to contract code. Contracts are started up by Zoe, 
+
+ZoeHelper functions are contract helpers, in that they are useful to contract code. Contracts are started up by Zoe, 
 and **zcf** is passed in as a parameter to **start()**. 
 
 ## assertIssuerKeywords(zcf, expected)
-- **zcf** **ContractFacet** 
-- **expected** **Array &lt;String>**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)** 
+- **expected** **Array&lt;String>**
 
 Checks that keywords submitted by the contract instance creator
 match what the contract expects. The function throws an error if incorrect or extra keywords are passed
@@ -35,20 +36,20 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
 ## satisfies(zcf, seat, update)
-- **zcf** **ContractFacet**
-- **seat** **ZCFSeat**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **seat** **[ZCFSeat](./zcfseat.md)**
 - **update** **AmountKeywordRecord**
 - Returns: **Boolean** 
 
 Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
 **proposal.want**. Note this is half of the offer safety check; 
-it does not check if the allocation constitutes a refund.
+it does not check if the **[Allocation](./zoe-data-types.md#allocation)** constitutes a refund.
 The update is merged with **currentAllocation** such that
-**update**'s values prevail if the keywords are the same. If they
+*update*'s values prevail if the keywords are the same. If they
 are not the same, the **keyword** and **value** is just added to the **currentAllocation**.
 
 The following example code uses **satisfies()** to define a **satisfiedBy()** comparison
-method between two **seats**. It checks if the second **seat** argument's **currentAllocation**
+function between two **seats**. It checks if the second **seat** argument's *currentAllocation*
 satisfies the first **seat** argument's **proposal.want**. 
 
 It then calls **satisfiedBy()** on both orders of the two **seats**. If both satisfy each other,
@@ -66,8 +67,8 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
 ```
 
 ## swap(zcf, leftSeat, rightSeat)
-- **zcf** **ContractFacet**
-- **leftSeat** **ZCFSeat**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **leftSeat** **[ZCFSeat](./zcfseat.md)**
 - **rightSeat** **ZCFSeat**
 - Returns: **defaultAcceptanceMsg**
 
@@ -79,7 +80,6 @@ Use **swap()** when all of these are true:
   - The **seats**' wants can be fulfilled from the other **seat**.
   - No further **seat** interaction is desired.
 
-This method always takes **zcf** as its first argument.
 
 If the two **seats** can trade, they swap their compatible assets,
 exiting both **seats**. It returns the message **The offer has been accepted. 
@@ -100,8 +100,8 @@ swap(zcf, firstSeat, secondSeat);
 ```
 
 ## swapExact(zcf, leftSeat, rightSeat)
-- **zcf** **ContractFacet**
-- **leftSeat** **ZCFSeat**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **leftSeat** **[ZCFSeat](./zcfseat.md)**
 - **rightSeat** **ZCFSeat**
 - Returns: **defaultAcceptanceMsg**
 
@@ -114,8 +114,6 @@ Use **swap()** or **swapExact()** when both of these are true:
 
 For **swap()** only, both **seats** use the same keywords. This does **not** 
 hold for **swapExact()**
-
-This method always takes **zcf** as its first argument.
 
 **exactSwap()** is a special case of **swap()** such that it is successful only
 if both seats gain everything they want and lose everything they were willing to give.
@@ -139,7 +137,7 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 
 //New Method
 ## fitProposalShape(seat, proposalShape)
-- **seat** **ZCFSeat**
+- **seat** **[ZCFSeat](./zcfseat.md)**
 - **proposalShape** **Pattern**
 
 /**
@@ -159,17 +157,15 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
  */
 
 ## assertProposalShape(seat, expected)
-- **seat** **ZCFSeat**
+- **seat** **[ZCFSeat](./zcfseat.md)**
 - **expected** **ExpectedRecord**
-- Returns: **void**
+- Returns: **Void**
 
-This is the only ZoeHelper that does **not** take 'zcf' as its first argument.
-
-Check the seat's proposal against an **expected** record that says
+Checks the seat's proposal against an *expected* record that says
 what shape of proposal is acceptable.
  
-By "shape", we mean the **give**, **want**, and exit rule keywords of the proposal must be equal to 
-those in **expected**. Note that exit rule keywords are optional in **expected**. Also, none of the 
+By "shape", we mean the **give**, **want**, and **exit** rule keywords of the proposal must be equal to 
+those in *expected*. Note that **exit** rule keywords are optional in *expected*. Also, none of the 
 values of those keywords are checked.
 
 This **ExpectedRecord** is like a **Proposal**, but the amounts in **want**
@@ -194,10 +190,10 @@ const sell = seat => {
 ```
 
 ## assertNatAssetKind(zcf, brand)
-- **zcf** **ContractFacet**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **brand** **[Brand](/reference/ertp-api/brand.md)**
 - Returns: **Boolean**
-- 
+
 Asserts that the *brand* is [AssetKind.NAT](/reference/ertp-api/ertp-data-types.md#assetkind).
 This means the corresponding **[Mint](/reference/ertp-api/mint.md)** creates fungible assets.
 
@@ -212,8 +208,8 @@ import {
  ```
 
 ## depositToSeat(zcf, recipientSeat, amounts, payments)
-- **zcf** **ContractFacet**
-- **recipientSeat** **ZCFSeat**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **recipientSeat** **[ZCFSeat](./zcfseat.md)**
 - **amounts** **AmountKeywordRecord**
 - **payments** **PaymentPKeywordRecord**
 - Returns: **Promise&lt;String>**
@@ -234,8 +230,8 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 ```
 
 ## withdrawFromSeat(zcf, seat, amounts)
-- **zcf** **ContractFacet **
-- **seat** **ZCFSeat**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md) **
+- **seat** **[ZCFSeat](./zcfseat.md)**
 - **amounts** **AmountKeywordRecord**
 - Returns: **Promise&lt;PaymentPKeywordRecord>**
 
@@ -254,7 +250,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
-- **zcf** **ContractFacet**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **issuerKeywordRecord** **IssuerKeywordRecord**
 - Returns: **Promise&lt;PaymentPKeywordRecord>**
 
@@ -282,11 +278,11 @@ await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 
 //Has new parameter, offerArgs
 ## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat, offerArgs)
-- **zcf** **ContractFacet**
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **invitation** **ERef&lt;Invitation>**
-- **keywordMapping** **KeywordKeywordRecord=**
+- **keywordMapping** **KeywordRecord**
 - **proposal** **Proposal**
-- **fromSeat** **ZCFSeat**
+- **fromSeat** **[ZCFSeat](./zcfseat.md)**
 - **toSeat** **ZCFSeat**
 - **offerArgs**
 - Returns: **OfferToReturns**
@@ -314,7 +310,7 @@ from the contracts indicated by using "A" or "B" in the keyword name.
 // Map the keywords in contractA to the keywords in contractB
   const keywordMapping = harden({
     TokenA1: 'TokenB1',
-    TokenA2: 'TokenB2',
+    TokenA2: 'TokenB2'
   });
 ```
 
@@ -331,6 +327,6 @@ Its two properties are:
    keywordMapping, // {}
    proposal,
    fromSeat,
-   lenderSeat,
+   lenderSeat
  );
 ```

@@ -46,7 +46,7 @@ const quoteIssuer = await E(pAuthority).getQuoteIssuer(
 - **brandOut** **Brand**
 - Returns: **TimerService | Promise&lt;TimerService>**
 
-Gets the timer used in **PriceQuotes** for a given *brandIn*/*brandOut* pair. 
+Gets the timer used in **[PriceQuotes](./zoe-data-types.md#pricequote)** for a given *brandIn*/*brandOut* pair. 
 
 ```js
 const myTimer = E(pAuthority).getTimerService(collateral.brand, loanKit.brand);
@@ -55,7 +55,7 @@ const myTimer = E(pAuthority).getTimerService(collateral.brand, loanKit.brand);
 ## E(pAuthority).makeQuoteNotifier(amountIn, brandOut)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **brandOut** **[Brand](/reference/ertp-api/brand.md)**
-- Returns: **ERef&lt;Notifier&lt;PriceQuote>>**
+- Returns: **ERef&lt;Notifier&lt;[PriceQuote](./zoe-data-types.md#pricequote)>>**
 
 Be notified of the latest **PriceQuotes** for a given *amountIn*. The issuing
 rate may be very different between **priceAuthorities**.
@@ -67,7 +67,7 @@ const myNotifier = E(pAuthority).makeQuoteNotifier(quatloos100, usdBrand);
 ## E(pAuthority).quoteGiven(amountIn, brandOut)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **brandOut** **[Brand](/reference/ertp-api/brand.md)**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 Gets a quote on demand corresponding to *amountIn*.
 
@@ -78,9 +78,9 @@ const quote = await E(pAuthority).quoteGiven(moola500, quatloosBrand);
 ## E(pAuthority).quoteWanted(brandIn, amountOut)
 - **brandIn** **[Brand](/reference/ertp-api/brand.md)**
 - **amountOut** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
-Get a quote on demand corresponding to *amountOut*.
+Gets a quote on demand corresponding to *amountOut*.
 
 ```js
 const quote = await E(pAuthority).quoteWanted(quatloosBrand, moola500);
@@ -90,7 +90,7 @@ const quote = await E(pAuthority).quoteWanted(quatloosBrand, moola500);
 - **deadline** **Timestamp**
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **brandOut** **[Brand](/reference/ertp-api/brand.md)**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 Resolves after *deadline* passes on the **priceAuthority**’s **timerService** with the price 
 quote of *amountIn* at that time. Note that *deadline*'s value is a **BigInt**.
@@ -102,7 +102,7 @@ const priceQuoteOnThisAtTime = E(pAuthority).quoteAtTime(7n, quatloosAmount34, u
 ## E(pAuthority).quoteWhenGT(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 Resolves when a price quote of *amountIn* exceeds *amountOutLimit*.
 
@@ -116,7 +116,7 @@ const quote = E(pAuthority).quoteWhenGT(
 ## E(pAuthority).quoteWhenGTE(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 Resolves when a price quote of *amountIn* reaches or exceeds *amountOutLimit*.
 
@@ -130,7 +130,7 @@ const quote = E(pAuthority).quoteWhenGTE(
 ## E(pAuthority).quoteWhenLT(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 Resolves when a price quote of *amountIn* drops below *amountOutLimit*.
 
@@ -144,7 +144,7 @@ const quote = E(pAuthority).quoteWhenLT(
 ## E(pAuthority).quoteWhenLTE(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;PriceQuote>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 Resolves when a price quote of *amountIn* reaches or drops below *amountOutLimit*.
 
@@ -154,30 +154,11 @@ const quote = E(pAuthority).quoteWhenLTE(
     AmountMath.make(brands.Out, 974n)
   );
 ```
-## MutableQuote Object
-
-Use a **MutableQuote** when you expect to make multiple calls, replacing the trigger
-value. If you just need a single quote, and won't change the trigger level, then use
-a non-mutable quote.
-
-There are four *mutable quote* methods, which return a **MutableQuote** object with the methods:
-- **cancel(e)**
-  - **e**** String **
-  - Causes the **Promise** to reject with the message **e**. When the promise is used with a **E.when()**
-    the message is part of the rejection notification. 
-- **getPromise()**
-  - Returns: **Promise&lt;PriceQuote>**
-- **updateLevel(newAmountIn, newAmountOutLimit)**
-  - **newAmountIn** ** Amount **
-  - **newAmountOutLimit** ** Amount **
-  - Changes the **MutableQuote**'s trigger levels to the specified values without requiring a second **Promise**.
-    **newAmountIn** and **newAmountOutLimit**'s brands must match the original **amountIn** and **newAmountOutLimit**
-    brands respectively. 
 
 ## E(pAuthority).mutableQuoteWhenGT(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;MutableQuote>**
+- Returns: **Promise&lt;[MutableQuote](./mutable-quote.md)>**
 
 Resolves when a price quote of *amountIn* exceeds *amountOutLimit*.
 
@@ -191,7 +172,7 @@ const quote = E(pAuthority).mutableQuoteWhenGT(
 ## E(pAuthority).mutableQuoteWhenGTE(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;MutableQuote>**
+- Returns: **Promise&lt;[MutableQuote](./mutable-quote.md)>**
 
 Resolves when a price quote of *amountIn* reaches or exceeds
 *amountOutLimit*.
@@ -206,7 +187,7 @@ const quote = E(pAuthority).mutableQuoteWhenGTE(
 ## E(pAuthority).mutableQuoteWhenLT(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;MutableQuote>**
+- Returns: **Promise&lt;[MutableQuote](./mutable-quote.md)>**
 
 Resolves when a price quote of *amountIn* drops below
 *amountOutLimit*.
@@ -221,7 +202,7 @@ const quote = E(pAuthority).mutableQuoteWhenLT(
 ## E(pAuthority).mutableQuoteWhenLTE(amountIn, amountOutLimit)
 - **amountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **amountOutLimit** **Amount**
-- Returns: **Promise&lt;MutableQuote>**
+- Returns: **Promise&lt;[MutableQuote](./mutable-quote.md)>**
 
 Resolves when a price quote of *amountIn* reaches or drops below
 *amountOutLimit*.

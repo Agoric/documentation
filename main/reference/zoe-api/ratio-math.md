@@ -29,8 +29,8 @@ the ratio to an integer with a division. This may require roundoff, and correct
 calculations require that the caller choose which is appropriate.
 
 ## assertIsRatio(ratio)
-- **ratio** **Record**
-- Returns: **void**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- Returns: **Void**
 
 Throws an error if the argument is not a valid ratio.
 
@@ -47,7 +47,7 @@ assertIsRatio(aRatio);
 - **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
 - **denominator** **BigInt** - Optional, defaults to 100n.
 - **denominatorBrand)** **Brand** - Optional, defaults to **numeratorBrand** value.
-- Returns: **numerator: { Value , Brand }, denominator: { Value, Brand }**
+- Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
 Makes a **Ratio**, representing a fraction and consisting of a record containing
 two **Amounts**. It is a pass-by-copy record. 
@@ -71,7 +71,7 @@ const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 ## makeRatioFromAmounts(numeratorAmount, denominatorAmount)
 - **numeratorAmount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **denominatorAmount** **Amount**
-- Returns: **numerator: { value , brand }, denominator: { value, brand }**
+- Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
 Makes a **Ratio**, representing a fraction and consisting of an immutable pair 
 of two **Amounts**.  The *numeratorAmount* is the ratio's numerator and
@@ -91,14 +91,14 @@ const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 //New Method
 ## multiplyHelper (amount, ratio, divideOp)
 - **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **Ratio**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - **divideOp**
 
 
 ## floorMultiplyBy(amount, ratio)
 ## ceilMultiplyBy(amount, ratio)
-- **amount** **Amount**
-- **ratio** **Ratio**
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**.  Its brand is the **ratio**'s *numerator*'s brand.
@@ -127,15 +127,15 @@ Throws errors with messages:
     
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
-const Dollars47 = AmountMath.make(dollarBrand, 47n);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 28 Swiss francs
-const exchange = multiplyBy(Dollars100, exchangeRatio);
+const exchange = multiplyBy(dollars100, exchangeRatio);
 ```
 
 ## floorDivideBy(amount, ratio)
 ## ceilDivideBy(amount, ratio)
-- **amount** **Amount**
-- **ratio** **Ratio**
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**.  Its brand is the **ratio**'s *denominator*'s brand.
@@ -163,16 +163,16 @@ Throws errors with messages:
 
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
-const Dollars47 = AmountMath.make(dollarBrand, 47n);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 78 Swiss francs
-const exchange = divideBy(Dollars100, exchangeRatio);
+const exchange = divideBy(dollars100, exchangeRatio);
 ```
 
 ## invertRatio(ratio)
-- **ratio** **Ratio**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Ratio**
 
-Returns a **Ratio** such that the **ratio** argument's numerator is the returned value's
+Returns a **Ratio** such that the **Ratio** argument's numerator is the returned value's
 denominator and the **ratio** argument's denominator is the returned value's numerator.
 
 ```js

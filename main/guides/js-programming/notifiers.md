@@ -155,10 +155,10 @@ Individual contracts can use notifiers and subscriptions to provide updates givi
 
 The following methods use or return notifiers.
 
-- [`ZCFSeat.getNotifier()`](/reference/zoe-api/zoe-contract-facet.md#zcfseat-getnotifier)
+- [`ZCFSeat.getNotifier()`](/reference/zoe-api/zcfseat.md#zcfseat-getnotifier)
    - Part of the Zoe Contract Facet API. Returns a notifier associated with the seat's allocation. It provides updates on changing
    allocations for this seat, and tells when the seat has been exited.
-- [`UserSeat.getNotifier()`](/reference/zoe-api/zoe.md#e-userseat-getnotifier)
+- [`UserSeat.getNotifier()`](/reference/zoe-api/user-seat.md#e-userseat-getnotifier)
   - Part of the Zoe Service API. Returns a notifier associated with the seat. Its updates can be anything the contract wants to publish, such as
      price changes, new currency pools, etc.
 - [`purse.getCurrentAmountNotifier()`](/reference/ertp-api/purse.md#purse-getcurrentamountnotifier)

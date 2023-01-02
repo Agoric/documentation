@@ -17,11 +17,11 @@ The Zoe API is divided into the following sections:
 - [ZoeHelpers for writing contracts](./zoe-helpers.md) -
   Functions that extract common contract code and patterns into
   reusable helpers.
-- [Price Authority](./contract-support/price-authority.md) -
+- [Price Authority](./price-authority.md) -
   Functions related to `priceAuthority` objects that provide a price feed, on-demand
   quotes, and wakeups for various time and price conditions. See the Zoe documentation's 
   [Price Authority section](/guides/zoe/price-authority.md).
-- [Ratio Math](./contract-support/ratio-math.md) -
+- [Ratio Math](./ratio-math.md) -
   Functions that perform math operations on Amounts by ratios of two natural numbers (i.e. fractions).
 
 

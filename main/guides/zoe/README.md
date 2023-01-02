@@ -161,12 +161,12 @@ You've put the required pieces together, so now you can make an offer:
 
 At this point, Zoe confirms your invitation's validity and [burns](/glossary/#burn) it.
 Zoe also escrows your payments, representing their value as
-amounts in your [current allocation](/reference/zoe-api/zoe.md#e-userseat-getcurrentallocation)
+amounts in your [current allocation](/reference/zoe-api/user-seat.md#e-userseat-getcurrentallocation)
 in the contract.
 
 ### Using Your UserSeat
 
-Making an offer as a user returns a [UserSeat](/reference/zoe-api/zoe.md#userseat-object)
+Making an offer as a user returns a [UserSeat](/reference/zoe-api/user-seat.md)
 representing your position in the ongoing contract instance (your
 "seat at the table"). You can use this seat to:
 

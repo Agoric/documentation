@@ -31,7 +31,7 @@ const { want, give, exit } = sellerSeat.getProposal();
 
 ## ZCFSeat.exit(completion)
    - **completion** **Object**
-   - Returns: **void**
+   - Returns: **Void**
 
 Causes the **seat** to exit, concluding its existence. All **payouts**, if any,
 are made, and the **seat** object can no longer interact with the contract.
@@ -43,11 +43,11 @@ Any other still open seats or outstanding promises and the contract instance con
 
 ## ZCFSeat.fail(msg)
    - **msg** **String**
-   - Returns: **void**
+   - Returns: **Void**
 
 The **seat** exits, displaying the optional **msg** string, if there is one, on the console.
 This is equivalent to exiting, except that **exit** is successful while
-**fail()** signals an error occurred while processing the offer. The contract
+**ZCFSeat.fail()** signals an error occurred while processing the offer. The contract
 still gets its current **allocation** and the **seat** can no longer interact with the contract.
 Any other still open seats or outstanding promises and the contract instance continue.
 
@@ -65,7 +65,7 @@ Returns **true** if the **seat** has exited, **false** if it is still active.
 
 //Delete method?
 ## ZCFSeat.getNotifier()
-  - Returns: **Notifier&lt;Allocation>**
+  - Returns: **Notifier&lt;[Allocation](./zoe-data-types.md#allocation)>**
 
 Returns a **notifier** associated with the **seat**'s **allocation**. You use a **notifier**
 wherever some piece of code has changing state that other code wants updates on. 
@@ -74,8 +74,8 @@ when the **seat** has been exited. For more on **notifiers**, see the [Distribut
 
 ## ZCFSeat.getAmountAllocated(keyword, brand)
   - **keyword** **String**
-  - **brand** **[Brand](/reference/etrp-api/brand.md)**
-  - Returns: **[Amount](/reference/etrp-api/etrp-data-types.md#amount)**
+  - **brand** **[Brand](/reference/ertp-api/brand.md)**
+  - Returns: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 
 Returns the **Amount** from the part of the **allocation** that matches the
 *keyword* and *brand*. If the *keyword* is not in the **allocation**, it
@@ -88,7 +88,7 @@ gets the **allocation** of one keyword at a time, while **getCurrentAllocation()
 all the current **allocations** at once.
 
 ## ZCFSeat.getCurrentAllocation()
-  - Returns: **&lt;Allocation>**
+  - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
 An **Allocation** is an **AmountKeywordRecord** of key-value pairs where
 the key is a keyword such as **Asset** or **Price** applicable to the
@@ -116,13 +116,13 @@ An **Allocation** example:
 
 
 ## ZCFSeat.getStagedAllocation()
-  - Returns: **&lt;Allocation>**
+  - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
 Gets and returns the **stagedAllocation**, which is the allocation committed if the seat is
 reallocated over, if offer safety holds and rights are conserved.
 
 ## ZCFSeat.isOfferSafe(newAllocation)
-   - **newAllocation** **Allocation**
+   - **newAllocation** **[Allocation](./zoe-data-types.md#allocation)**
    - Returns **Boolean**
 
 Takes an **allocation** as an argument and returns **true** if that **allocation**
@@ -148,7 +148,7 @@ of the allocation. For example, if we start with a new, empty, allocation:
 ```js
 // Make an empty seat.
 const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();  
-// The allocation is currently empty, i.e. ****
+// The allocation is currently empty, i.e. `{}`
 const stagedAllocation = zcfSeat1.getStagedAllocation();
 const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
 // Try to incrementBy empty. This succeeds, and the keyword is added
@@ -204,7 +204,7 @@ allocation by a non-empty amount is an error, while decrementing an empty alloca
 is effectively a null operation with no effects.
 
 ## ZCFSeat.clear()
-  - Returns: **void**
+  - Returns: **Void**
 
 Deletes the **ZCFSeat**'s current staged allocation, if any.
 
@@ -212,8 +212,8 @@ Deletes the **ZCFSeat**'s current staged allocation, if any.
 ## ZCFSeat.hasStagedAllocation()
   - Returns: **Boolean**
 
-Returns **true** if there is a staged allocation, i.e. whether **incrementBy()** or
-**decrementBy()** has been called and **clear()**
+Returns **true** if there is a staged allocation, i.e., whether **ZCFSeat.incrementBy()** or
+**ZCFSeat.decrementBy()** has been called and **ZCFSeat.clear()**
 and **reallocate()** have not. Otherwise returns **false**.
 
 

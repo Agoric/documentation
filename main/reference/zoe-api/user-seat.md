@@ -21,7 +21,7 @@ and an operation to request that the offer exit, as follows:
 
 //Delete?
 ## E(UserSeat).getCurrentAllocation()
-  - Returns: **Promise&lt;Allocation>**
+  - Returns: **Promise&lt;[Allocation](./zoe-data-types.md#allocation)>**
 
 An **Allocation** is an **AmountKeywordRecord** of key-value pairs where
 the key is a keyword such as **Asset** or **Price** applicable to the
@@ -72,7 +72,7 @@ escrowed assets in accordance with the result of the transaction. Returns a reco
 containing all the **payout** **payments** associated with the **seat**'s offers.
 
 ## E(UserSeat).getPayout(keyword)
-  - Returns: **Promise&lt;Payment>**
+  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
 A **payout** is a **payment** that goes to a party in a successful transaction, redirecting
 escrowed assets in accordance with the result of the transaction. Returns the **payout**
@@ -86,7 +86,7 @@ for the Automated Refund Dapp, it's the string "The offer was accepted". In
 the Covered Call example, it's a call option, which is an assayable **invitation**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is set by the returned result of the **offerHandlers** function passed
-as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler- description-customproperties-proposalshape))**.
+as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape))**.
 
 
 //Delete?

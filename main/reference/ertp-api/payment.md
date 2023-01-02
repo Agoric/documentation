@@ -55,9 +55,9 @@ on or return a **Payment**.
   - Transfers all digital assets from *payment* to a new **Payment**.
 - [**Issuer.combine()**](./issuer.md#issuer-combine-paymentsarray-opttotalamount)
   - Combines multiple **Payments** into one new **Payment**.
-- [**issuer.getAmountOf()**](./issuer.md#issuer-getamountof-payment)
+- [**Issuer.getAmountOf()**](./issuer.md#issuer-getamountof-payment)
   - Describes the **Payment**'s balance as an **Amount**.
-- [**issuer.isLive()**](./issuer.md#issuer-islive-payment)
+- [**Issuer.isLive()**](./issuer.md#issuer-islive-payment)
   - Returns **true** if the **Payment** was created by the **Issuer** and is available for use (i.e., has not been consumed or burned).
 - [**Issuer.split()**](./issuer.md#issuer-split-payment-paymentamounta)
   - Splits a single **Payment** into two new **Payments**.

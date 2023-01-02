@@ -12,16 +12,16 @@ In the operations below, **instance** is the handle for the running contract ins
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
 - **keyword** **String**
-- **assetKind** **AssetKind** Optional, defaults to **AssetKind.NAT**.
-- **displayInfo** **DisplayInfo** Optional.
-- Returns: **Promise&lt;ZCFMint>**
+- **assetKind** **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
+- **displayInfo** **[DisplayInfo](/reference/ertp-api/ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
+- Returns: **Promise&lt;[ZCFMint](./zcfmint.md)>**
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
-instead of relying on an asynchronous ERTP **mint**. The optional **displayInfo** parameter takes values
-like ** decimalPlaces: 16 ** that tell the UI how to display values associated with the created mint's 
+instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint.md)**. The optional *displayInfo* parameter takes values
+like **decimalPlaces: 16** that tell the UI how to display values associated with the created mint's 
 brand. It defaults to undefined.
 
-**Important**: **ZCFMints** do **not** have the same methods as an ERTP **mint**. Do not try to use
+**Important**: **ZCFMints** do **not** have the same methods as an ERTP **Mint**. Do not try to use
 ERTP methods on a **ZCFMint** or vice versa.
 
 **Important**: On the other hand, the **issuer** and **brand** associated with a **zcfMint**
@@ -33,7 +33,7 @@ The following demonstrates **zcf.makeZCFMint**:
 **Note**: The call to make the **ZCFMint** is asynchronous, but
 calls to the resulting **ZCFMint** are synchronous.
 ```js
-const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.SET);
+const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.COPY_SET);
 const { brand, issuer } = mySynchronousMint.getIssuerRecord();
 mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 ```
@@ -42,7 +42,7 @@ mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
 - **mintGains(gains, zcfSeat)**
 - **burnLosses(losses, zcfSeat)**
 
-### AmountKeywordRecord
+## AmountKeywordRecord
 
 **AmountKeywordRecord** is a record in which the keys are keywords, and
 the values are **amounts**. Keywords are unique identifiers per contract,
@@ -70,36 +70,8 @@ const myAmountKeywordRecord =
 }
 ```
 
-### ZCFMint.getIssuerRecord()
-  - Returns: **IssuerRecord**
-
-Returns an **issuerRecord** containing the **issuer** and **brand** associated with the **zcfMint**.
-
-### ZCFMint.mintGains(gains, zcfSeat?)
-  - **gains** **AmountKeywordRecord**
-  - **zcfSeat** **ZCFSeat** - Optional.
-  - Returns: **ZCFSeat**
-
-All **amounts** in **gains** must be of this **ZCFMint**'s **brand**.
-The **gains**' keywords are in that **seat**'s namespace.
-Mint the **gains** **amount** of assets and add them to
-that **seat**'s **allocation**. If a **seat** is provided,
-it is returned. Otherwise a new **seat** is returned.
-  - **zcfMint.mintGains({ Token: amount }, seat);**
-
-### ZCFMint.burnLosses(losses, zcfSeat)
-  - **losses** **AmountKeywordRecord**
-  - **zcfSeat** **ZCFSeat**
-  - Returns: void
-
-All **amounts** in **losses** must be of this **ZCFMint**'s **brand**.
-The **losses**' keywords are in that **seat**'s namespace.
-Subtract **losses** from that **seat**'s **allocation**, then
-burn that **amount** of assets from the pooled **purse**.
-  - **zcfMint.burnLosses({ Token: amount }, seat);**getIssuerRecord()**
-
 ## zcf.getInvitationIssuer()
-- Returns: [**Issuer**](../ertp-api/issuer.md)
+- Returns: **[Issuer](/reference/ertp-api/issuer.md)**
 
 Zoe has a single **invitationIssuer** for the entirety of its
 lifetime. This method returns the Zoe **InvitationIssuer**, which
@@ -114,7 +86,7 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
-- **issuer** **Issuer**
+- **issuer** **[Issuer](/reference/ertp-api/issuer.md)**
 - **keyword** **String**
 - Returns: **Promise&lt;IssuerRecord>**
 
@@ -162,7 +134,7 @@ const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ```
 
 ## zcf.makeEmptySeatKit()
-- Returns: **ZCFSeat, Promise&lt;UserSeat>**
+- Returns: **ZCFSeat, Promise&lt;[UserSeat](./user-seat.md)>**
 
 Returns an empty **ZCFSeat** and a promise for a **UserSeat**
 
@@ -192,7 +164,7 @@ Returns the **Issuer** of the *brand* argument.
 
 ## zcf.getAssetKind(brand)
 - **brand** **[Brand](/reference/ertp-api/brand.md)**
-- Returns: **[AssetKind](/reference/ertp-api/etrp-data-types.md#assetkind)**
+- Returns: **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)**
 
 Returns the **AssetKind** associated with the *brand* argument.
 ```js
@@ -200,7 +172,8 @@ const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
 ```
 
 ## zcf.stopAcceptingOffers()
-- The contract requests Zoe to not accept offers for this contract instance. 
+
+The contract requests Zoe to not accept offers for this contract instance. 
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
 ## zcf.shutdown(completion)
@@ -240,7 +213,7 @@ The returned values look like:
     brands: { A: moolaKit.brand, B: simoleanKit.brand },
     issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
     customTermA: 'something',
-    customTermB: 'something else',
+    customTermB: 'something else'
  };
  ```
 
@@ -265,7 +238,7 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 
 ## zcf.assertUniqueKeyword(keyword)
 - **keyword** **String**
-- Returns: Undefined
+- Returns: **Undefined**
 
 Checks if a keyword is valid and not already used as a **brand** in this **instance** (i.e. unique)
 and could be used as a new **brand** to make an **issuer**. Throws an appropriate error if it's not
@@ -275,7 +248,7 @@ zcf.assertUniqueKeyword(keyword);
 ```
 ## zcf.reallocate(seats)
 - **seats** **ZCFSeats[]** (at least two)
-- Returns: **void**
+- Returns: **Void**
 
 **zcf.reallocate()** commits the staged allocations for each of its seat arguments,
 making their staged allocations their current allocations. **zcf.reallocate()** then
@@ -308,7 +281,7 @@ allocations change. A reallocation can only effect offer safety for
 those **seats**, and since rights are conserved for the change, overall
 rights are unchanged.
 
-**reallocate()** throws this error:
+**zcf.reallocate()** throws this error:
 - **reallocating must be done over two or more seats**
 
 ```js

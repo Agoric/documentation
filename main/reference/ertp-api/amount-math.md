@@ -89,7 +89,7 @@ const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 
 ## AmountMath.isEmpty(amount, brand?)
 - **amount** **[Amount](./ertp-data-types.md#amount)**
-- **brand?** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **Amount** is empty. Otherwise returns **false**.

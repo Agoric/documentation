@@ -46,7 +46,73 @@ to pass in any arguments that should not be part of the public terms.
 `privateArgs` is an object with keys and values as decided by the caller of
 `startInstance`. If no private arguments are passed, `privateArgs` is undefined.
 ```js
+const start = (zcf, privt Facet](/reference/zoe-api/zoe-contract-facet.md) and is
+the first argument provided to the contract.
+The second argument, `privateArgs`, is used by the caller of `startInstance`
+to pass in any arguments that should not be part of the public terms.
+`privateArgs` is an object with keys and values as decided by the caller of
+`startInstance`. If no private arguments are passed, `privateArgs` is undefined.
+```js
 const start = (zcf, privateArgs) => {
+  ...
+  // your code here
+  return harden({ creatorFacet, creatorInvitation, publicFacet });
+}
+harden(start);
+export { start };
+```
+
+The contract must return a record with any (or none) of the following:
+- **creatorFacet**: An object, usually with admin authority. It is only given to the entity
+that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
+contract `instance`. It might create `invitations` for other parties, or take actions that
+are unrelated to making offers.
+- **creatorInvitation**: A Zoe `invitation` only given to the entity that 
+calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current 
+contract `instance`. This is usually used when a party has to make an offer first, 
+such as escrowing the underlying good for sale in an auction or covered call.
+- **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`. 
+Use the `publicFacet` for general queries and actions, such as getting the current price 
+or creating public `invitations`.
+
+The contract can contain arbitrary JavaScript code, but there are a few things you'll want
+to do in order to act as a contract, and interact with Zoe and zcf (the internal contract
+facet).
+
+For users to make offers, the contract has to include a handler with the
+code for what to do when the `invitation` is used to make an offer. This handler is passed
+to `zcf.makeInvitation()`, and the resulting `invitation` is made available (using the
+`creatorFacet`, the `publicFacet`, or whatever makes sense for the particular contract.
+
+For instance, AtomicSwap makes two `invitations`. The first is used to create the initial
+offer, so it defines the terms that the counterparty responds to. The second party
+needs to make a matching offer, so there are more constraints.
+
+Use `zcf.makeInvitation()` to create the first party's `invitation`:
+
+``` js
+  const creatorInvitation = zcf.makeInvitation(
+    makeMatchingInvitation,
+    'firstOffer',
+  );
+```
+
+`makeMatchingInvitation()` creates the second `invitation`.
+
+``` js
+    const matchingSeatInvitation = zcf.makeInvitation(
+      matchingSeatOfferHandler,
+      'matchOffer',
+      {
+        asset: give.Asset,
+        price: want.Price,
+      },
+    );
+```
+
+The third argument (which is optional and wasn't needed for the first `invitation`) says
+the counterparty has to offer an `amount` matching the first party's `want.Price`,
+and shoateArgs) => {
   ...
   // your code here
   return harden({ creatorFacet, creatorInvitation, publicFacet });
@@ -129,7 +195,7 @@ between multiple offers, or create new assets to order.
 ## Making an Invitation
 
 To create an invitation in the contract, use the Zoe Contract
-Facet method [`zcf.makeInvitation`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties).
+Facet method [`zcf.makeInvitation`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
 
 ## Using bundleSource
 

@@ -19,10 +19,10 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 - **instance** **Instance**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
-Returns a **BrandKeywordRecord** containing all **[Brands](/reference/etrp-api/brand.md)** defined in the contract **instance**.
+Returns a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the contract **instance**.
 
 A **BrandKeywordRecord** is a record where the keys are keywords,
-and the values are the **Brands** for particular **[Issuers](/reference/etrp-api/issuer.md)**.
+and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer.md)**.
 
 ```js
 // Call example
@@ -41,7 +41,7 @@ const brandKeywordRecord = {
 - **instance** **Instance**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
-Returns an **IssuerKeywordRecord** containing all **[Issuers](/reference/etrp-api/issuer.md)** defined in the *instance* argument.
+Returns an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
 
 An **IssuerKeywordRecord** is a record where the keys are keywords,
 and the values are **Issuers**.
@@ -63,7 +63,7 @@ const issuerKeywordRecord = {
 - **instance** **Instance**
 - Returns: **Object**
 
-Returns the terms of the *instance* argument, including its **[Issuers](/reference/etrp-api/issuer.md)**, **[Brands](/reference/etrp-api/brand.md)**, and any
+Returns the terms of the *instance* argument, including its **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and any
 custom terms. The returned values look like:
 
 ```js
@@ -98,7 +98,7 @@ const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
 ```
 
 ## E(zoe).getInvitationIssuer()
-- Returns **[Issuer](/reference/etrp-api/issuer.md)**
+- Returns **[Issuer](/reference/ertp-api/issuer.md)**
 
 Zoe has a single **invitationIssuer** for its entire
 lifetime. By having a reference to Zoe, a user can get the **invitationIssuer**. This lets the user claim any
@@ -106,13 +106,13 @@ invitation they receive from someone else by calling **E(invitationIssuer).claim
 untrusted invitation as the argument. During the claiming process, the **invitationIssuer** validates
 the invitation.
 
-The **[Mint](/reference/etrp-api/mint.md)** associated with the **invitationIssuer**
-creates **invitations** in the form of ERTP **[Payments](/reference/etrp-api/payment.md)** that represent the right to interact with
+The **[Mint](/reference/ertp-api/mint.md)** associated with the **invitationIssuer**
+creates **invitations** in the form of ERTP **[Payments](/reference/ertp-api/payment.md)** that represent the right to interact with
 a smart contract in particular ways.
 
 The **invitationIssuer** has two methods, both of which take an **invitation** as an argument.
 Remember, an **invitation** is just a special case of an ERTP **Payment**, so **claim()** and
-**getAmountOf()** are the same as for other **issuers**.
+**getAmountOf()** are the same as for other **Issuers**.
 
 A successful call of **invitationIssuer.claim(invitation)** means you are assured the **invitation**
 is recognized as valid by the **invitationIssuer**. You are also assured the **invitation** is exclusively yours
@@ -161,7 +161,7 @@ An **installation** is an object with one property:
 // bundleSource takes source code files and
 // bundles them together in the format install expects.
 import bundleSource from '@endo/bundle-source';
-const bundle = await bundleSource(pathResolve(**./src/contract.js**));
+const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(zoe).install(bundle);
 ```
 
@@ -250,7 +250,7 @@ instance's **issuers** (as key-value pairs) and **terms**
 for the contract.
 
 The **issuerKeywordRecord** is an optional record mapping string names (keywords)
-to issuers, such as ** Asset: quatlooIssuer**. Keywords must begin
+to issuers, such as **Asset: quatlooIssuer**. Keywords must begin
 with a capital letter and must be ASCII. Parties to the contract will
 use the keywords to index their proposal and their payments.
 
@@ -312,7 +312,7 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInsta
 - **proposal** **Proposal** - Optional.
 - **paymentKeywordRecord** **PaymentKeywordRecord** - Optional.
 - **offerArgs** **Object** - Optional,
-- Returns: **Promise&lt;UserSeat>**
+- Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
 Used to make an offer to the contract that created the **invitation** that is
 provided as the first argument.
@@ -327,7 +327,7 @@ Zoe Contract Facet. There is one vat that contains the Zoe Service.
 The invocation normally includes a **proposal** (the
 rules under which they want to exercise the offer) and **payments** that correspond 
 to the **give** property of the **proposal**. The payments will be escrowed by Zoe. If
-either the **proposal **or **payments** are empty, indicate this by
+either the **proposal** or **payments** are empty, indicate this by
 omitting that argument or passing **undefined**, instead of passing an
 empty record.
 
@@ -347,7 +347,7 @@ const myProposal = harden({
   want: { Price: moola(15n) },
   exit: { afterDeadline: {
     timer,
-    deadline: 100n,
+    deadline: 100n
   }}
 })
 ```

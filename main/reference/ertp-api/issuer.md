@@ -198,7 +198,7 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## Issuer.combine(paymentsArray, optTotalAmount?)
-- **paymentsArray** **Array &lt;[Payment](./payment.md)>**
+- **paymentsArray** **Array&lt;[Payment](./payment.md)>**
 - **optTotalAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment**
 
@@ -228,7 +228,7 @@ const combinedPayment = quatloosIssuer.combine(payments);
 ## Issuer.split(payment, paymentAmountA)
 - **payment** **[Payment](./payment.md)**
 - **paymentAmountA** **[Amount](./ertp-data-types.md#amount)**
-- Returns: **Array &lt;Payment>**
+- Returns: **Array&lt;Payment>**
 
 Splits a single **Payment** into two new **Payments**, A and B, according to *paymentAmountA*.
 For example, if the **Payment** is for 10 *Quatloos*, and *paymentAmountA* is 3 *Quatloos*,
@@ -249,8 +249,8 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 
 ## Issuer.splitMany(payment, amountArray)
 - **payment** **[Payment](./payment.md)**
-- **amountArray** **Array &lt;[Amount](./ertp-data-types.md#amount)>**
-- Returns: **Array &lt;Payment>**
+- **amountArray** **Array&lt;[Amount](./ertp-data-types.md#amount)>**
+- Returns: **Array&lt;Payment>**
 
 Splits a single **Payment** into multiple **Payments**.
 The returned array includes a **Payment** item corresponding to each **Amount** in the *amountArray* parameter, in order.

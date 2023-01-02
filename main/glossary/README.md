@@ -500,8 +500,8 @@ the `offerHandler` in the contract code. It is used within contracts and with [`
 The two seat facets have slightly different methods but represent the same seat and offer in progress.
 The term comes from the expression "having a seat at the table" with regards to participating in a negotiation.
 
-For more details, see the [ZCFSeat documentation](/reference/zoe-api/zoe-contract-facet.md#zcfseat-object) and
-the [UserSeat documentation](/reference/zoe-api/zoe.md#userseat-object).
+For more details, see the [ZCFSeat documentation](/reference/zoe-api/zcfseat.md) and
+the [UserSeat documentation](/reference/zoe-api/user-seat.md).
 
 ## Semi-fungible
 
