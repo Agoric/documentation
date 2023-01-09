@@ -16,11 +16,11 @@ When the promise is used with a **E.when()** the message is part of the rejectio
 - Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
 
 ## MutableQuote.updateLevel(newAmountIn, newAmountOutLimit)
-- **newAmountIn** **Amount**
+- **newAmountIn** **[Amount](reference/ertp-api/ertp-data-types.md#amount)**
 - **newAmountOutLimit** **Amount**
 
 Changes the **MutableQuote**'s trigger levels to the specified values without requiring a second **Promise**.
 
-**newAmountIn** and **newAmountOutLimit**'s brands must match the original 
-**amountIn** and **newAmountOutLimit** brands respectively. 
+*newAmountIn*'s and *newAmountOutLimit*'s **[Brands](/reference/ertp-api/brand.md)** must match the original 
+*amountIn* and *amountOutLimit* **Brands**, respectively. 
 

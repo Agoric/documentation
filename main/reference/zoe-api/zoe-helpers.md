@@ -1,9 +1,9 @@
 # ZoeHelper Functions
 
-ZoeHelpers are functions that extract common contract code and
+The ZoeHelper functions extract common contract code and
 patterns into reusable helpers.
 
-All of the ZoeHelper methods are described below. To use any of them, import it
+All of the ZoeHelper functions are described below. To use any of them, import themn
 directly from **@agoric/zoe/src/contractSupport/index.js**. For example, the
 following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assertissuerkeywords-zcf-expected)** and
 **[assertProposalShape()](#assertproposalshape-seat-expected)**:
@@ -11,7 +11,7 @@ following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assert
 ```js
 import {
   assertIssuerKeywords,
-  assertProposalShape,
+  assertProposalShape
 } from '@agoric/zoe/src/contractSupport/index.js';
 ```
 
@@ -22,13 +22,13 @@ and **zcf** is passed in as a parameter to **start()**.
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)** 
 - **expected** **Array&lt;String>**
 
-Checks that keywords submitted by the contract instance creator
-match what the contract expects. The function throws an error if incorrect or extra keywords are passed
+Checks that the keywords in the *expected* argument match what the contract expects. 
+The function throws an error if incorrect or extra keywords are passed
 in, or if there are keywords missing. The keyword order is irrelevant.
 
 ```js
 import {
-  assertIssuerKeywords,
+  assertIssuerKeywords
 } from '@agoric/zoe/src/contractSupport/index.js';
 
 // proposals for this contract instance use keywords 'Asset' and 'Price'
@@ -93,7 +93,7 @@ If the swap fails, no assets transfer, and both left and right **seats** are exi
 
 ```js
 import {
-  swap,
+  swap
 } from '@agoric/zoe/src/contractSupport.js';
 
 swap(zcf, firstSeat, secondSeat);
@@ -129,7 +129,7 @@ If the swap fails, no assets transfer, and both left and right **seats** are exi
 
 ```js
 import {
-  swapExact,
+  swapExact
 } from '@agoric/zoe/src/contractSupport/index.js';
 
 const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
@@ -175,7 +175,7 @@ these expectations, that **proposal** is rejected (and refunded).
 
 ```js
 import {
-  assertProposalShape,
+  assertProposalShape
 } from '@agoric/zoe/src/contractSupport/index.js';
 
 const sellAssetForPrice = harden({
@@ -201,7 +201,7 @@ If **false** throws with message **brand must be AssetKind.NAT**.
 
 ```js
 import {
-  assertNatAssetKind,
+  assertNatAssetKind
 } from '@agoric/zoe/src/contractSupport/index.js';
 
  assertNatAssetKind(zcf, quatloosBrand);
@@ -244,7 +244,7 @@ If the seat has exited, aborts with the message **The seat cannot have exited.**
 Unlike **depositToSeat()**, a **PaymentKeywordRecord** is returned, not a success message.
 ```js
 import {
-  withdrawFromSeat,
+  withdrawFromSeat
 } from '@agoric/zoe/src/contractSupport/index.js';
 const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2n) });
 ```
@@ -266,15 +266,6 @@ import {
 } from '@agoric/zoe/src/contractSupport/index.js';
 await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 ```
-
-//New Method
-## mapKeywords(keywordRecord, keywordMapping)
-- **keywordRecord** ????
-- **keywordMapping** ????
-
-//New Method
-## reverse (keywordRecord)
-- **keywordRecord** ???
 
 //Has new parameter, offerArgs
 ## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat, offerArgs)

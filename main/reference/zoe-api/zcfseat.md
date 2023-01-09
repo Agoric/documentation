@@ -10,8 +10,12 @@ associated offer, such as the amounts of assets that are currently
 allocated to the offer. It also includes synchronous operations
 to manipulate the offer. The queries and operations are as follows:
 
-//New Method
-## ZCFSeat.getSubscriber
+
+## ZCFSeat.getSubscriber()
+- Returns: **Subscriber**
+
+
+TBD
 
 ## ZCFSeat.getProposal()
   - Returns: **ProposalRecord**
@@ -60,17 +64,8 @@ throw seat.fail(Error('you did it wrong'));
 ## ZCFSeat.hasExited()
   - Returns: **Boolean**
 
-Returns **true** if the **seat** has exited, **false** if it is still active.
+Returns **true** if the **ZCFSeat** has exited, **false** if it is still active.
 
-
-//Delete method?
-## ZCFSeat.getNotifier()
-  - Returns: **Notifier&lt;[Allocation](./zoe-data-types.md#allocation)>**
-
-Returns a **notifier** associated with the **seat**'s **allocation**. You use a **notifier**
-wherever some piece of code has changing state that other code wants updates on. 
-This **notifier** provides updates on changing **allocations** for this **seat**, and tells
-when the **seat** has been exited. For more on **notifiers**, see the [Distributed Programming Guide](/guides/js-programming/notifiers.md).
 
 ## ZCFSeat.getAmountAllocated(keyword, brand)
   - **keyword** **String**
@@ -113,7 +108,6 @@ An **Allocation** example:
   Price: AmountMath.make(quatloosBrand, 9n)
 }
 ```
-
 
 ## ZCFSeat.getStagedAllocation()
   - Returns: **[Allocation](./zoe-data-types.md#allocation)**

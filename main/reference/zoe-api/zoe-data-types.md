@@ -48,7 +48,37 @@ These are the details exposed by E(zoe).getInvitationDetails():
 
 ## Allocation
 
+**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting a **Proposal**.
+
+For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after successfully exiting a **Proposal**, the **Allocation** would look like:
+
+```js
+{
+  Quatloos: 5n
+  Widgets: 3n
+}
+```
+
 ## PriceQuote
+
+
+A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
+current price level at a particular time. The significant content (prices 
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated
+in the **[Payment](/reference/ertp-api/payment.md)** for veracity. 
+A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
+balance of the **Payment**.
+ 
+```js
+const { quoteAmount, quotePayment } = priceQuote;
+```
+
+**PriceQuotes** are returned in two forms: 
+- **PriceDescription**
+  - Always includes **amountIn**, **amountOut**, the quote's **Timestamp**,
+    and the **TimerService** the **TimeStamp** is relative to.
+- **PriceDescription** wrapped as a **QuoteAuthority** issued payment. 
+  - This lets quotes be shared in a format letting others verify the time and values. 
 
 ## Ratio
 

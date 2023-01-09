@@ -3,19 +3,24 @@
 <Zoe-Version/>
 
 Zoe provides a framework for deploying and working with smart contracts. It is accessed
-as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe has a single **invitationIssuer** for the entirety of its lifetime. By having a reference to Zoe, a user can get the **invitationIssuer** and thus validate any **invitation** they receive from someone else.
+as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe
+has a single **invitationIssuer** for the entirety of its lifetime. By having a reference to Zoe, a user
+can get the **invitationIssuer** and thus validate any **invitation** they receive from someone else.
 
 ::: tip Zoe is accessed asynchronously
 The Zoe service is accessed asynchronously, using a standards-track library extension
 to JavaScript that uses promises as remote references. In code, the Zoe service instance
 is referred to via **zoe**, which only supports asynchronous invocation. Operations are
 invoked asynchronously using the [**E** helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies).
-All such operations immediately return a promise for their result. That may eventually fulfill to a local value, or to a **Presence** for another remote object (e.g., in another contract or service, running on another chain, etc.). Asynchronous messages can be sent using **E** with either promises or presences.
+All such operations immediately return a promise for their result. That may eventually fulfill to a
+local value, or to a **Presence** for another remote object (e.g., in another contract or service,
+running on another chain, etc.). Asynchronous messages can be sent using **E** with either promises or
+presences.
 
 For more information about using **E**, see the [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send.md).
 :::
 
-## E(zoe).getBrands(instance)
+## E(Zoe).getBrands(instance)
 - **instance** **Instance**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
@@ -26,7 +31,7 @@ and the values are the **Brands** for particular **[Issuers](/reference/ertp-api
 
 ```js
 // Call example
-const brandKeywordRecord = await E(zoe).getBrands(instance);
+const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```
 
 ```js
@@ -37,7 +42,7 @@ const brandKeywordRecord = {
 };
 ```
 
-## E(zoe).getIssuers(instance)
+## E(Zoe).getIssuers(instance)
 - **instance** **Instance**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
@@ -48,7 +53,7 @@ and the values are **Issuers**.
 
 ```js
 // Call example
-const issuerKeywordRecord = await E(zoe).getIssuers(instance);
+const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```
 
 ```js
@@ -59,7 +64,7 @@ const issuerKeywordRecord = {
 };
 ```
 
-## E(zoe).getTerms(instance)
+## E(Zoe).getTerms(instance)
 - **instance** **Instance**
 - Returns: **Object**
 
@@ -79,10 +84,10 @@ custom terms. The returned values look like:
 ```
  
 ```js
-const terms = await E(zoe).getTerms(instance);
+const terms = await E(Zoe).getTerms(instance);
 ```
 
-## E(zoe).getPublicFacet(instance)
+## E(Zoe).getPublicFacet(instance)
 - **instance** **Instance**
 - Returns: **Promise&lt;PublicFacet>**
 
@@ -94,10 +99,10 @@ Since a facet is defined just as any other object, the contract adds methods to 
 any object.
 
 ```js
-const ticketSalesPublicFacet = await E(zoe).getPublicFacet(sellItemsInstance);
+const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance);
 ```
 
-## E(zoe).getInvitationIssuer()
+## E(Zoe).getInvitationIssuer()
 - Returns **[Issuer](/reference/ertp-api/issuer.md)**
 
 Zoe has a single **invitationIssuer** for its entire
@@ -119,7 +124,7 @@ is recognized as valid by the **invitationIssuer**. You are also assured the **i
 and no one else has access to it.
 
 ```js
-const invitationIssuer = await E(zoe).getInvitationIssuer();
+const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // Here a user, Bob, has received an untrusted invitation from Alice.
 // Bob uses the trusted **invitationIssuer** from Zoe to
 // transform the untrusted invitation to a trusted one
@@ -129,7 +134,7 @@ const { value: invitationValue } =
 ```
 
 
-## E(zoe).getInvitationDetails(invitation)
+## E(Zoe).getInvitationDetails(invitation)
 - **invitation** **Invitation**
 - Returns **Promise&lt;Object>**
 
@@ -144,10 +149,10 @@ details about the **invitation**:
 
 ```js
 const invitation = await invitationIssuer.claim(untrustedInvitation);
-const invitationValue = await E(zoe).getInvitationDetails(invitation);
+const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 ```
 
-## E(zoe).install(bundle)
+## E(Zoe).install(bundle)
 - **bundle** **SourceBundle**
 - Returns: **Promise&lt;Installation>**
 
@@ -162,33 +167,36 @@ An **installation** is an object with one property:
 // bundles them together in the format install expects.
 import bundleSource from '@endo/bundle-source';
 const bundle = await bundleSource(pathResolve(`./src/contract.js`));
-const installationP = await E(zoe).install(bundle);
+const installationP = await E(Zoe).install(bundle);
 ```
 
 //New Method w/out signature
-## E(zoe).getConfiguration
+## E(Zoe).getConfiguration
 
 //New Method
-## E(zoe).getFeeIssuer()
+## E(Zoe).getFeeIssuer()
 
 // New method
-## E(zoe).installBundleID(bundleId) {
+## E(Zoe).installBundleID(bundleId) {
           const { state } = this;
           return state.dataAccess.installBundleID(bundleId);
         },
 
 //New method
-## E(zoe).setOfferFilter(instance, filters)
+## E(Zoe).setOfferFilter(instance, filters)
 
-//New method
-## E(zoe).getOfferFilter(instance) 
+## E(Zoe).getOfferFilter(instance)
+- **instance** **Instance**
+- Returns: **????**
+
+TBD
 
 //New Method
-## E(zoe).getBundleIDFromInstallation(installation) 
+## E(Zoe).getBundleIDFromInstallation(installation) 
 
 
 
-## E(zoe).getInstance(invitation)
+## E(Zoe).getInstance(invitation)
 - **invitation** **Invitation**
 - Returns: **Promise&lt;Instance>**
 
@@ -203,14 +211,16 @@ these methods:
 - **getPublicFacet()**
 
 ```js
-const instance = await E(zoe).getInstance(invitation);
+const instance = await E(Zoe).getInstance(invitation);
 ```
 
-//New Method
-## E(zoe).getProposalShapeForInvitation(invitation) 
+## E(Zoe).getProposalShapeForInvitation(invitation) 
+- **invitation** **Invitation**
+- Returns: **[Pattern](./zoe-data-types.md#pattern)**
 
+TBD
 
-## E(zoe).getInstallation(invitation)
+## E(Zoe).getInstallation(invitation)
 - **invitation** **Invitation**
 - Returns: **Promise&lt;Installation>**
 
@@ -220,10 +230,10 @@ An **installation** is an object with one property:
 - **bundle**:  The contract source code, accessible via **bundle.source**, and other info.
 
 ```js
-const installation = await E(zoe).getInstallation(invitation);
+const installation = await E(Zoe).getInstallation(invitation);
 ```
 
-## E(zoe).getInstallationForInstance(instance)
+## E(Zoe).getInstallationForInstance(instance)
 - **instance** **Instance**
 - Returns **Promise&lt;Installation>**
 
@@ -234,10 +244,10 @@ the underlying code. This method can be used as part of a process to
 inspect the underlying code for a running contract **instance**.
 
 ```js
-const installation = await E(zoe).getInstallationForInstance(instance);
+const installation = await E(Zoe).getInstallationForInstance(instance);
 ```
 
-## E(zoe).startInstance(installation, issuerKeywordRecord?, terms?, privateArgs?)
+## E(Zoe).startInstance(installation, issuerKeywordRecord?, terms?, privateArgs?)
 - **installation** **ERef&lt;Installation>**
 - **issuerKeywordRecord** **IssuerKeywordRecord** - Optional.
 - **terms** **Object** - Optional.
@@ -304,7 +314,7 @@ const issuerKeywordRecord = {
   'Price': quatlooIssuer
 };
 const terms = { numBids: 3 };
-const { creatorFacet, publicFacet, creatorInvitation } = await E(zoe).startInstance(
+const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInstance(
   installation, issuerKeywordRecord, terms);
 ```
 ## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs?)

@@ -46,16 +46,14 @@ assertIsRatio(aRatio);
 - **numerator** **BigInt**
 - **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
 - **denominator** **BigInt** - Optional, defaults to 100n.
-- **denominatorBrand)** **Brand** - Optional, defaults to **numeratorBrand** value.
+- **denominatorBrand)** **Brand** - Optional, defaults to the *numeratorBrand* value.
 - Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
 Makes a **Ratio**, representing a fraction and consisting of a record containing
-two **Amounts**. It is a pass-by-copy record. 
+two **Amounts**. It is a pass-by-value record. 
 
-By default, the **denominator** is 100; i.e. the ratio is a percent. 
+By default, the *denominator* is 100n (i.e., the ratio is a percent). 
 
-By default, the **denominatorBrand** value is the same as the **numeratorBrand**
-value. 
 
 A ratio has these restrictions: 
 - Both the numerator value and denominator value must be natural numbers. 
@@ -75,7 +73,7 @@ const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 
 Makes a **Ratio**, representing a fraction and consisting of an immutable pair 
 of two **Amounts**.  The *numeratorAmount* is the ratio's numerator and
-the *denominatorAmount* is the ratio's denominator. It is a pass-by-copy 
+the *denominatorAmount* is the ratio's denominator. It is a pass-by-value 
 record. 
 
 A ratio has these restrictions: 
@@ -88,15 +86,7 @@ const dollar = AmountMath.make(centsBrand, 100n);
 const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 ```
 
-//New Method
-## multiplyHelper (amount, ratio, divideOp)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
-- **divideOp**
-
-
 ## floorMultiplyBy(amount, ratio)
-## ceilMultiplyBy(amount, ratio)
 - **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
@@ -108,7 +98,7 @@ The resulting value is determined by:
 1. Multiplying the **amount** value by the **ratio**'s numerator's value.
 2. Dividing the result from step 1 by the **ratio**'s denominator's value.
 3. If that results in an integer, that value is returned, otherwise, the value
-  is rounded down (for floorMultiplyBy) or up (for ceilMultiplyBy) to the next
+  is rounded down to the next
   integer.
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
@@ -132,8 +122,51 @@ const dollars47 = AmountMath.make(dollarBrand, 47n);
 const exchange = multiplyBy(dollars100, exchangeRatio);
 ```
 
+## ceilMultiplyBy(amount, ratio)
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- Returns: **Amount**
+
+Returns an immutable **Amount**.  Its brand is the **ratio**'s *numerator*'s brand.
+Note the denominator brand has to be the same as the amount brand.
+
+The resulting value is determined by:
+1. Multiplying the **amount** value by the **ratio**'s numerator's value.
+2. Dividing the result from step 1 by the **ratio**'s denominator's value.
+3. If that results in an integer, that value is returned, otherwise, the value
+  is rounded up to the next
+  integer.
+
+For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
+would go
+1. 47 * 3 = 141
+2. 141 / 5 = 28.2
+3. Ceiling(28.2) = 29
+
+If the numerator's brand was Swiss francs, the result would be an **Amount** of
+28 Swiss francs.
+
+Throws errors with messages: 
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+- **amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
+  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand. 
+    
+```js
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
+// Returns an amount of 29 Swiss francs
+const exchange = multiplyBy(dollars100, exchangeRatio);
+```
+
+## multiplyBy(amount, ratio)
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- Returns: **Amount**
+
+TBD
+
+
 ## floorDivideBy(amount, ratio)
-## ceilDivideBy(amount, ratio)
 - **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 - **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
@@ -144,7 +177,7 @@ The resulting value is determined by:
 1. Multiplying the **amount** value by the **ratio**'s denominator's value.
 2. Dividing the result from step 1 by the **ratio**'s numerator's value.
 3. If that results in an integer, that value is returned, otherwise, the value
-  is rounded down (for floorDivideBy) or up (for ceilDivideBy) to the next
+  is rounded down to the next
   integer.
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
@@ -168,6 +201,48 @@ const dollars47 = AmountMath.make(dollarBrand, 47n);
 const exchange = divideBy(dollars100, exchangeRatio);
 ```
 
+## ceilDivideBy(amount, ratio)
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- Returns: **Amount**
+
+Returns an immutable **Amount**.  Its brand is the **ratio**'s *denominator*'s brand.
+
+The resulting value is determined by:
+1. Multiplying the **amount** value by the **ratio**'s denominator's value.
+2. Dividing the result from step 1 by the **ratio**'s numerator's value.
+3. If that results in an integer, that value is returned, otherwise, the value
+  is rounded up to the next
+  integer.
+
+For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
+would go
+1. 47 * 5 = 235
+2. 235 / 3 = 78.33333...
+3. Ceiling(78.3333...) = 79
+
+If the denominator's brand was US dollars, the result would be an **Amount** of
+79 US dollars.
+
+Throws errors with messages: 
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The 
+  amount and ratio's numerator must have the same brand. 
+
+```js
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
+// Returns an amount of 79 Swiss francs
+const exchange = divideBy(dollars100, exchangeRatio);
+```
+
+## divideBy(amount, ratio)
+- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- Returns: **Amount**
+
+TBD
+
 ## invertRatio(ratio)
 - **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Ratio**
@@ -181,3 +256,107 @@ const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
 const invertedRatio = invertRatio(exchangeRatio);
 ```
 
+## addRatios(left, right)
+- **left** **[Ratio](./zoe-data-types.md#ratio)**
+- **right** **Ratio**
+- Returns: **Ratio**
+
+Returns a **Ratio** that's the sum of the *left* and *right* parameters.
+
+The **[Brands](/reference/ertp-api/brand.md)** of the *numerators* of *left* and *right* must be
+identical. similarly, the **Brands** of the *denominators* of *left* and
+*right* must also be identical. If either of these conditions aren't met, then no **Ratio** is returned
+and an error is thrown instead.
+
+If the *denominator* values aren't identical, then both ratios are multiplied by the lowest common
+denominator, and then the ratios are added.
+
+For example:
+
+1. Let's assume *left* = {numerator: 44n kilometers, denominator: 3n hours} and 
+*right* = {numerator: 25n kilometers, denominator: 2n hours}.
+2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in 
+*left* = {numerator: 88n kilometers, denominator: 6n hours} and  *right* = {numerator: 75n kilometers, denominator: 6n hours}
+3. *left* and *right* would then be added together, resulting in {numerator: 163n kilometers, denominator: 6n hours}.
+This **Ratio** would then be returned.
+
+
+## subtractRatios(left, right)
+- **left** **[Ratio](./zoe-data-types.md#ratio)**
+- **right** **Ratio**
+- Returns: **Ratio**
+
+Returns a **Ratio** that's the result when the *right* parameter is subtracted from the *left* one.
+
+The **[Brands](/reference/ertp-api/brand.md)** of the *numerators* of *left* and *right* must be
+identical. similarly, the **Brands** of the *denominators* of *left* and
+*right* must also be identical. If either of these conditions aren't met, then no **Ratio** is returned
+and an error is thrown instead.
+
+If the *denominator* values aren't identical, then both ratios are multiplied by the lowest common
+denominator, and then *right* is subtracted from *left*.
+
+For example:
+
+1. Let's assume *left* = {numerator: 44n kilometers, denominator: 3n hours} and 
+*right* = {numerator: 25n kilometers, denominator: 2n hours}.
+2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in 
+*left* = {numerator: 88n kilometers, denominator: 6n hours} and  *right* = {numerator: 75n kilometers, denominator: 6n hours}
+3. *right* would then be subtracted from *left* would then be added together, resulting in {numerator: 13n kilometers, denominator: 6n hours}.
+This **Ratio** would then be returned.
+
+## multiplyRatios(left, right)
+- **left** **[Ratio](./zoe-data-types.md#ratio)**
+- **right** **Ratio**
+- Returns: **Ratio**
+
+Returns a **Ratio** that's the product of the *left* and *right* parameters.
+
+The **[Brands](/reference/ertp-api/brand.md)** of the *numerators* of *left* and *right* must be
+identical. similarly, the **Brands** of the *denominators* of *left* and
+*right* must also be identical. If either of these conditions aren't met, then no **Ratio** is returned
+and an error is thrown instead.
+
+## oneMinus(ratio)
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- Returns: **Ratio**
+
+TBD
+
+## ratioGTE(left, right)
+- **left** **[Ratio]((./zoe-data-types.md#ratio)**
+- **right** **Ratio**
+- Returns: **Boolean**
+
+TBD
+
+## ratiosSame(left, right)
+- **left** **[Ratio](./zoe-data-types.md#ratio)**
+- **right** **Ratio**
+- Returns: **Boolean**
+
+Returns **true** if and only if the **[Value](/reference/ertp-api/ertp-data-types.md#value)** and
+**[Brand](/reference/ertp-api/brand.md)** of the *numerator
+
+TBD
+
+## quantize(ratio, newDen)
+- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **newDen** ????
+- Returns: **Ratio**
+
+TBD
+
+## parseRatio(numeric, numeratorBrand, denominatorBrand?)
+- **numeric** **[Ratio](./zoe-data-types.md#ratio)**
+- **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
+- **denominatorBrand** **Brand** - Optional, defaults to *numeratorBrand*.
+- Returns: **Boolean**
+
+TBD
+
+## assertParsableNumber(specimen)
+- **specimen** ???
+- Returns: ??? {asserts specimen is ParsableNumber}
+
+TBD

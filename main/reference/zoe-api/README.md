@@ -25,3 +25,30 @@ The Zoe API is divided into the following sections:
   Functions that perform math operations on Amounts by ratios of two natural numbers (i.e. fractions).
 
 
+
+The Zoe API supports the following objects:
+
+| Object | Description |
+| --- | --- |
+| [Zoe Service](./zoe.md) |  |
+| [Zoe Contract Facet](./zoe-contract-facet.md) | |
+| [Price Authority](./price-authority.md) | |
+|
+
+
+The Zoe API uses the following libraries:
+
+| Object | Description |
+| --- | --- |
+| [ZoeHelpers for writing contracts](./zoe-helpers.md) | |
+| [Ratio Math](./ratio-math.md) |  |
+
+
+The Zoe API introduces and uses the following data types:
+
+| Data Type | Description |
+| --- | --- |
+| | |
+
+
+
