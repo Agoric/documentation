@@ -5,14 +5,14 @@ steps below.
 
 If you wish to restore from a recent community snapshot, please follow the instructions under [Current Community Snapshot](#current-community-snapshot) below.
 
-| Current |     Upgrade Name     | Upgrade Height |                  Git Hash                |    Repo    |          Docker Tag        |
-| ------- |--------------------- | -------------- | ---------------------------------------- | ---------- | -------------------------- |
-|         | agoric-3.1 (genesis) |     2,115,669  | a2ebcdb21418bb157f9c747a042b2a859b2a5986 |    ag0     |             N/A            |
-|         | agoric-upgrade-5     |     3,565,000  | a2ebcdb21418bb157f9c747a042b2a859b2a5986 |    ag0     |             N/A            |
-|         | agoric-upgrade-6     |     5,901,622  | 31c78ba3aa872b54c4de448763c5b8044b8f950c |    ag0     |             N/A            |
-|         | agoric-upgrade-7-2   |     6,263,783  | f4759c9f15b869c453f847a63ba734cacb9a991a |    ag0     |             N/A            |
-|         | agoric-upgrade-8     |     7,179,262  | 2c812d22161cd297587979b262eab6e2cc76e23d |    agd     |    agoric/agoric-sdk:29    |
-| Current | agoric-upgrade-8-1   |     7,179,262  | 08ca9d4fd8413da59b73d53e12851fe00583ddc1 |    agd     |    agoric/agoric-sdk:30    |
+| Current |     Upgrade Name     | Upgrade Height |                  Git Hash                |    Repo    |            Docker Tag          |
+| ------- |--------------------- | -------------- | ---------------------------------------- | ---------- | ------------------------------ |
+|         | agoric-3.1 (genesis) |     2,115,669  | a2ebcdb21418bb157f9c747a042b2a859b2a5986 |    ag0     | agoric/ag0:agoric-upgrade-3.1  |
+|         | agoric-upgrade-5     |     3,565,000  | a2ebcdb21418bb157f9c747a042b2a859b2a5986 |    ag0     | agoric/ag0:agoric-upgrade-5    |
+|         | agoric-upgrade-6     |     5,901,622  | 31c78ba3aa872b54c4de448763c5b8044b8f950c |    ag0     | agoric/ag0:agoric-upgrade-6    |
+|         | agoric-upgrade-7-2   |     6,263,783  | f4759c9f15b869c453f847a63ba734cacb9a991a |    ag0     | agoric/ag0:agoric-upgrade-7-2  |
+|         | agoric-upgrade-8     |     7,179,262  | 2c812d22161cd297587979b262eab6e2cc76e23d |    agd     |      agoric/agoric-sdk:29      |
+| Current | agoric-upgrade-8-1   |     7,179,262  | 08ca9d4fd8413da59b73d53e12851fe00583ddc1 |    agd     |      agoric/agoric-sdk:30      |
 
 #### A note on syncing from genesis
 
