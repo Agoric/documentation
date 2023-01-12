@@ -14,6 +14,9 @@ If you wish to restore from a recent community snapshot, please follow the instr
 |         | agoric-upgrade-8     |     7,179,262  | 2c812d22161cd297587979b262eab6e2cc76e23d |    agd     |    agoric/agoric-sdk:29    |
 | Current | agoric-upgrade-8-1   |     7,179,262  | 08ca9d4fd8413da59b73d53e12851fe00583ddc1 |    agd     |    agoric/agoric-sdk:30    |
 
+#### A note on syncing from genesis
+
+Syncing from genesis requires a significant amount of time (upwards of a week).  If you desire to start up a node quicker than that, however without all transaction history, consider using a snapshot from the community.  e.g. from [dsrv](https://www.allthatnode.com/agoric.dsrv), [polkachu](https://www.polkachu.com/tendermint_snapshots/agoric), or others.
 
 ### agoric-3.1
 
