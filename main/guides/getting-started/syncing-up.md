@@ -3,7 +3,7 @@
 To run a node on the `agoric-3` network from scratch, please follow the 
 steps below.
 
-If you wish to restore from a recent community snapshot, please follow the instructions from the heading [Current Community Snapshot](#current-community-snapshot).
+If you wish to restore from a recent community snapshot, please follow the instructions under [Current Community Snapshot](#current-community-snapshot) below.
 
 | Current |     Upgrade Name     | Upgrade Height |                  Git Hash                |    Repo    |          Docker Tag        |
 | ------- |--------------------- | -------------- | ---------------------------------------- |    ag0     |             N/A            |
