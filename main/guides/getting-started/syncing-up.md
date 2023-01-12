@@ -6,7 +6,7 @@ steps below.
 If you wish to restore from a recent community snapshot, please follow the instructions under [Current Community Snapshot](#current-community-snapshot) below.
 
 | Current |     Upgrade Name     | Upgrade Height |                  Git Hash                |    Repo    |          Docker Tag        |
-| ------- |--------------------- | -------------- | ---------------------------------------- |    ag0     |             N/A            |
+| ------- |--------------------- | -------------- | ---------------------------------------- | ---------- | -------------------------- |
 |         | agoric-3.1 (genesis) |     2,115,669  | a2ebcdb21418bb157f9c747a042b2a859b2a5986 |    ag0     |             N/A            |
 |         | agoric-upgrade-5     |     3,565,000  | a2ebcdb21418bb157f9c747a042b2a859b2a5986 |    ag0     |             N/A            |
 |         | agoric-upgrade-6     |     5,901,622  | 31c78ba3aa872b54c4de448763c5b8044b8f950c |    ag0     |             N/A            |
