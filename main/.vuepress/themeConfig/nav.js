@@ -24,6 +24,11 @@ module.exports = [
         ariaLabel: 'Deploying Menu',
         link: '/guides/getting-started/deploying',
       },
+      {
+        text: 'Syncing Up to Mainnet',
+        ariaLabel: 'Syncing Up to Mainnet',
+        link: '/guides/getting-started/syncing-up',
+      },
     ]
   },
   {
