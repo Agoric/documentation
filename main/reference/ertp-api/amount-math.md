@@ -185,8 +185,8 @@ For fungible **Amounts** this means adding their **[AmountValues](./ertp-data-ty
 **Amounts**, it usually means including all of the elements from *leftAmount*
 and *rightAmount*.
 
-If either argument is empty, this method returns an **Amount** equivalent to the other argument.
-If both are empty, this method returns an empty **Amount**.
+If one of *leftAmount* or *rightAmount* is empty, this method returns an **Amount** equivalent to the other.
+If both are empty, this method returns a new empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
