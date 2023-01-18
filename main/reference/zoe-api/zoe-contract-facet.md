@@ -6,7 +6,7 @@ A Zoe Contract Facet is an API object for a running contract instance to access 
 for that instance. A Zoe Contract Facet is accessed synchronously from within the contract,
 and usually is referred to in code as **zcf**.
 
-The contract instance is launched by **E(zoe).startInstance()**, and is given access to
+The contract instance is launched by **E(Zoe).startInstance()**, and is given access to
 the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements.md)).
 In the operations below, **instance** is the handle for the running contract instance.
 
@@ -71,15 +71,9 @@ const myAmountKeywordRecord =
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: **[Issuer](/reference/ertp-api/issuer.md)**
+- Returns: **[InvitationIssuer](./zoe-data-types.md#invitationissuer)**
 
-Zoe has a single **invitationIssuer** for the entirety of its
-lifetime. This method returns the Zoe **InvitationIssuer**, which
-validates user-received **invitations** to participate
-in contract instances. 
-
-"All **invitations** come from this single **invitation** **issuer** and its **mint**, which 
-mint **invitations** and validate their **amounts**."
+Returns the **InvitationIssuer** for the Zoe instance.
 
 ```js
 const invitationIssuer = await zcf.getInvitationIssuer();
@@ -90,23 +84,22 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 - **keyword** **String**
 - Returns: **Promise&lt;IssuerRecord>**
 
-Informs Zoe about an **issuer** and returns a promise for acknowledging
-when the **issuer** is added and ready. The **keyword** is the one associated
-with the new **issuer**. It returns a promise for **issuerRecord** of the new **issuer**
+Informs Zoe about an **Issuer** and returns a promise for acknowledging
+when the **Issuer** is added and ready. The *keyword* is the one associated
+with the new **Issuer**. This method returns a promise for an **IssuerRecord** of the new **Issuer**
 
-This saves an **issuer** in Zoe's records for this contract **instance**.
-It also has saved the **issuer** information such that Zoe can handle offers involving
-this **issuer** and ZCF can provide the **issuerRecord** synchronously on request.
+This saves an **Issuer** in Zoe's records for this contract **instance**.
+It also has saved the **Issuer** information such that Zoe can handle offers involving
+this **Issuer** and ZCF can provide the **IssuerRecord** synchronously on request.
 
 An **IssuerRecord** has two fields, each of which holds the namesake object
-associated with the **issuer** value of the record:
-**issuerRecord.brand** and **issuerRecord.issuer**.
+associated with the **Issuer** value of the record:
+**IssuerRecord.brand** and **IssuerRecord.issuer**.
 
 ```js
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
-//Has new parameter
 ## zcf.makeInvitation(offerHandler, description, customProperties, proposalShape?)
 - **offerHandler** **ZCFSeat => Object**
 - **description** **String**
@@ -134,7 +127,7 @@ const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ```
 
 ## zcf.makeEmptySeatKit()
-- Returns: **ZCFSeat, Promise&lt;[UserSeat](./user-seat.md)>**
+- Returns: **[ZCFSeat](./zcfseat.md), Promise&lt;[UserSeat](./user-seat.md)>**
 
 Returns an empty **ZCFSeat** and a promise for a **UserSeat**
 
@@ -172,11 +165,13 @@ const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
 ```
 
 ## zcf.stopAcceptingOffers()
+- Returns: None.
 
 The contract requests Zoe to not accept offers for this contract instance. 
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
 ## zcf.shutdown(completion)
+- Returns: None.
 
 Shuts down the entire vat and contract instance and gives payouts.
 
@@ -196,8 +191,10 @@ message.
 zcf.shutdown();
 ```
 
-//New Method w/out signature
-## zcf.shutdownWithFailure
+## zcf.shutdownWithFailure()
+- Returns: None.
+
+TBD
 
 ## zcf.getTerms()
 - Returns: **Object**
@@ -210,12 +207,12 @@ The returned values look like:
 // where brands and issuers are keywordRecords, like:
 
 {
-    brands: { A: moolaKit.brand, B: simoleanKit.brand },
-    issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
-    customTermA: 'something',
-    customTermB: 'something else'
- };
- ```
+  brands: { A: moolaKit.brand, B: simoleanKit.brand },
+  issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
+  customTermA: 'something',
+  customTermB: 'something else'
+};
+```
 
 Note that there is also an **E(zoe).getTerms(instance)**. Often the choice of which to use is not which method
 to use, but which of Zoe Service or ZCF you have access to. On the contract side, you more easily have access
@@ -248,7 +245,7 @@ zcf.assertUniqueKeyword(keyword);
 ```
 ## zcf.reallocate(seats)
 - **seats** **ZCFSeats[]** (at least two)
-- Returns: **Void**
+- Returns: None.
 
 **zcf.reallocate()** commits the staged allocations for each of its seat arguments,
 making their staged allocations their current allocations. **zcf.reallocate()** then

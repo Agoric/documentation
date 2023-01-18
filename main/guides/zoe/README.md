@@ -161,7 +161,7 @@ You've put the required pieces together, so now you can make an offer:
 
 At this point, Zoe confirms your invitation's validity and [burns](/glossary/#burn) it.
 Zoe also escrows your payments, representing their value as
-amounts in your [current allocation](/reference/zoe-api/user-seat.md#e-userseat-getcurrentallocation)
+amounts in your **[Allocation](/reference/zoe-api/zoe-data-types.md#allocation)**
 in the contract.
 
 ### Using Your UserSeat

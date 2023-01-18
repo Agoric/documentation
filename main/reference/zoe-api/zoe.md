@@ -4,13 +4,13 @@
 
 Zoe provides a framework for deploying and working with smart contracts. It is accessed
 as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe
-has a single **invitationIssuer** for the entirety of its lifetime. By having a reference to Zoe, a user
-can get the **invitationIssuer** and thus validate any **invitation** they receive from someone else.
+has a single **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** for the entirety of its lifetime. By having a reference to Zoe, a user
+can get the **InvitationIssuer** and thus validate any **invitation** they receive from someone else.
 
 ::: tip Zoe is accessed asynchronously
 The Zoe service is accessed asynchronously, using a standards-track library extension
 to JavaScript that uses promises as remote references. In code, the Zoe service instance
-is referred to via **zoe**, which only supports asynchronous invocation. Operations are
+is referred to via **Zoe**, which only supports asynchronous invocation. Operations are
 invoked asynchronously using the [**E** helper for async messaging](https://github.com/tc39/proposal-eventual-send#e-and-esendonly-convenience-proxies).
 All such operations immediately return a promise for their result. That may eventually fulfill to a
 local value, or to a **Presence** for another remote object (e.g., in another contract or service,
@@ -24,9 +24,9 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 - **instance** **Instance**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
-Returns a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the contract **instance**.
+Returns a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
 
-A **BrandKeywordRecord** is a record where the keys are keywords,
+A **BrandKeywordRecord** is an object where the keys are keywords,
 and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer.md)**.
 
 ```js
@@ -37,8 +37,9 @@ const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```js
 // Record example
 const brandKeywordRecord = {
-  Asset: quatloosBrand,
-  Price: moolaBrand,
+  FirstCurrency: quatloosBrand,
+  SecondCurrency: moolaBrand,
+  //etc.
 };
 ```
 
@@ -48,7 +49,7 @@ const brandKeywordRecord = {
 
 Returns an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
 
-An **IssuerKeywordRecord** is a record where the keys are keywords,
+An **IssuerKeywordRecord** is an object where the keys are keywords,
 and the values are **Issuers**.
 
 ```js
@@ -59,8 +60,8 @@ const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```js
 // Record example
 const issuerKeywordRecord = {
-  Asset: quatloosIssuer,
-  Price: moolaIssuer,
+  FirstCurrency: quatloosIssuer,
+  SecondCurrency: moolaIssuer,
 };
 ```
 
@@ -80,6 +81,7 @@ custom terms. The returned values look like:
   issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
   customTermA: 'something',
   customTermB: 'something else',
+  //All other customTerms
 };
 ```
  
@@ -103,25 +105,9 @@ const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance);
 ```
 
 ## E(Zoe).getInvitationIssuer()
-- Returns **[Issuer](/reference/ertp-api/issuer.md)**
+- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types.md#invitationissuer)>**
 
-Zoe has a single **invitationIssuer** for its entire
-lifetime. By having a reference to Zoe, a user can get the **invitationIssuer**. This lets the user claim any
-invitation they receive from someone else by calling **E(invitationIssuer).claim()** with the
-untrusted invitation as the argument. During the claiming process, the **invitationIssuer** validates
-the invitation.
-
-The **[Mint](/reference/ertp-api/mint.md)** associated with the **invitationIssuer**
-creates **invitations** in the form of ERTP **[Payments](/reference/ertp-api/payment.md)** that represent the right to interact with
-a smart contract in particular ways.
-
-The **invitationIssuer** has two methods, both of which take an **invitation** as an argument.
-Remember, an **invitation** is just a special case of an ERTP **Payment**, so **claim()** and
-**getAmountOf()** are the same as for other **Issuers**.
-
-A successful call of **invitationIssuer.claim(invitation)** means you are assured the **invitation**
-is recognized as valid by the **invitationIssuer**. You are also assured the **invitation** is exclusively yours
-and no one else has access to it.
+Returns the **InvitationIssuer** for the Zoe instance.
 
 ```js
 const invitationIssuer = await E(Zoe).getInvitationIssuer();
@@ -133,13 +119,12 @@ const { value: invitationValue } =
     await E(invitationIssuer).getAmountOf(invitation);
 ```
 
-
 ## E(Zoe).getInvitationDetails(invitation)
 - **invitation** **Invitation**
 - Returns **Promise&lt;Object>**
 
-Takes an **invitation** as an argument and returns an object containing the following
-details about the **invitation**:
+Takes an **Invitation** as an argument and returns an object containing the following
+details about the **Invitation**:
 
 - **installation** **Installation**: The contract's installation in Zoe.
 - **instance** **Instance**: The contract instance this invitation is for.
@@ -157,9 +142,9 @@ const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 - Returns: **Promise&lt;Installation>**
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
-Returns an **installation** object.
+Returns an **Installation** object.
 
-An **installation** is an object with one property:
+An **Installation** is an object with one property:
 - **bundle**:  The contract source code, accessible via **bundle.source**, and other info.
 
 ```js
@@ -170,20 +155,27 @@ const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(Zoe).install(bundle);
 ```
 
-//New Method w/out signature
-## E(Zoe).getConfiguration
+## E(Zoe).getConfiguration()
+- Returns: **???**
 
-//New Method
+TBD
+
 ## E(Zoe).getFeeIssuer()
+- Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
 
-// New method
+Returns an **Issuer** that can mint ISTs.
+
 ## E(Zoe).installBundleID(bundleId) {
           const { state } = this;
           return state.dataAccess.installBundleID(bundleId);
         },
 
-//New method
+TBD
+
+
 ## E(Zoe).setOfferFilter(instance, filters)
+
+TBD
 
 ## E(Zoe).getOfferFilter(instance)
 - **instance** **Instance**
@@ -191,10 +183,12 @@ const installationP = await E(Zoe).install(bundle);
 
 TBD
 
-//New Method
+
 ## E(Zoe).getBundleIDFromInstallation(installation) 
+- **installation** **Installation**
+- Returns: **Promise&lt;>**
 
-
+TBD
 
 ## E(Zoe).getInstance(invitation)
 - **invitation** **Invitation**
@@ -216,7 +210,7 @@ const instance = await E(Zoe).getInstance(invitation);
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
 - **invitation** **Invitation**
-- Returns: **[Pattern](./zoe-data-types.md#pattern)**
+- Returns: **Promise&lt;[Pattern](./zoe-data-types.md#pattern)>**
 
 TBD
 
@@ -255,12 +249,10 @@ const installation = await E(Zoe).getInstallationForInstance(instance);
 - Returns: **Promise&lt;StartInstanceResult>**
 
 Creates an instance of the installed smart contract specified by
-the *installation* argument. You must also specify the
-instance's **issuers** (as key-value pairs) and **terms**
-for the contract.
+the *installation* argument.
 
 The **issuerKeywordRecord** is an optional record mapping string names (keywords)
-to issuers, such as **Asset: quatlooIssuer**. Keywords must begin
+to issuers, such as **FirstCurrency: quatlooIssuer**. Keywords must begin
 with a capital letter and must be ASCII. Parties to the contract will
 use the keywords to index their proposal and their payments.
 

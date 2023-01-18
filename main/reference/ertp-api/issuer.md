@@ -72,7 +72,7 @@ const adjacentProperty = AmountMath.make(propertyTitleBrand, ['1028393']);
 const combinedProperty = AmountMath.make(propertyTitleBrand, ['1292826', '1028393']);
 ```
 
-## Issuer.getAllegedName()
+## anIssuer.getAllegedName()
 - Returns: **allegedName**
 
 Returns the **allegedName** for the **Issuer**.
@@ -96,7 +96,7 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 // quatloosIssuerAllegedName === 'quatloos'
 ```
 
-## Issuer.getAssetKind()
+## anIssuer.getAssetKind()
 - Returns: **[AssetKind](./ertp-data-types.md#assetkind)**
 
 Returns the kind of the **Issuer**'s asset.
@@ -110,7 +110,7 @@ const { issuer: moolaIssuer } = makeIssuerKit('moola', AssetKind.COPY_SET);
 moolaIssuer.getAssetKind(); // Returns 'copy_set', also known as 'AssetKind.COPY_SET'
 ```
 
-## Issuer.getAmountOf(payment)
+## anIssuer.getAmountOf(payment)
 - **payment** **[Payment](./payment.md)**
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
@@ -124,7 +124,7 @@ const quatloosPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
 
-## Issuer.getBrand()
+## anIssuer.getBrand()
 - Returns: **[Brand](./brand.md)** 
 
 Returns the **Brand** for the **Issuer**. The **Brand** indicates the kind of digital asset
@@ -138,7 +138,7 @@ const quatloosBrand = quatloosIssuer.getBrand();
 // brand === quatloosBrand
 ```
 
-## Issuer.makeEmptyPurse()
+## anIssuer.makeEmptyPurse()
 - Returns: **[Purse](./purse.md)**
 
 Makes and returns an empty **Purse** that holds assets of the **[Brand](./brand.md)** associated with the **Issuer**.
@@ -148,7 +148,7 @@ const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
-## **Issuer.burn(payment, optAmount?)**
+## **anIssuer.burn(payment, optAmount?)**
 - **payment** **[Payment](./payment.md)**
 - **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Amount**
@@ -174,7 +174,7 @@ const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
-## Issuer.claim(payment, optAmount?)
+## anIssuer.claim(payment, optAmount?)
 - **payment** **[Payment](./payment.md)**
 - **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment** 
@@ -197,7 +197,7 @@ const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
-## Issuer.combine(paymentsArray, optTotalAmount?)
+## anIssuer.combine(paymentsArray, optTotalAmount?)
 - **paymentsArray** **Array&lt;[Payment](./payment.md)>**
 - **optTotalAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment**
@@ -225,7 +225,7 @@ for (let i = 0; i < 100; i += 1) {
 const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
-## Issuer.split(payment, paymentAmountA)
+## anIssuer.split(payment, paymentAmountA)
 - **payment** **[Payment](./payment.md)**
 - **paymentAmountA** **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Array&lt;Payment>**
@@ -247,7 +247,7 @@ const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 20n))
 const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(quatloosBrand, 5n));
 ```
 
-## Issuer.splitMany(payment, amountArray)
+## anIssuer.splitMany(payment, amountArray)
 - **payment** **[Payment](./payment.md)**
 - **amountArray** **Array&lt;[Amount](./ertp-data-types.md#amount)>**
 - Returns: **Array&lt;Payment>**
@@ -280,7 +280,7 @@ const badAmounts = Array(2).fill(AmountMath.make(quatloosBrand, 10n));
 quatloosIssuer.splitMany(payment, badAmounts);
 ```
 
-## Issuer.isLive(payment)
+## anIssuer.isLive(payment)
 - **payment** **[Payment](./payment.md)**
 - Returns: **Boolean**
 

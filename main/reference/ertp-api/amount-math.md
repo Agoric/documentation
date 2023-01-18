@@ -283,9 +283,9 @@ const comparisonResult = AmountMath.max(smallerAmount, largerAmount);
 The following methods on other ERTP components and objects also either operate
 on or return an **Amount** or **AssetKind**.
 
-- [**Issuer.getAmountOf()**](./issuer.md#issuer-getamountof-payment)
+- [**anIssuer.getAmountOf()**](./issuer.md#anissuer-getamountof-payment)
   - Returns the **Amount** of a **Payment**.
-- [**Issuer.getAssetKind()**](./issuer.md#issuer-getassetkind)
+- [**anIssuer.getAssetKind()**](./issuer.md#anissuer-getassetkind)
   - Returns the **AssetKind** of the **Issuer**'s associated math helpers.
 - [**zcf.getAssetKind()**](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
   - Returns the **AssetKind** associated with a **Brand**.

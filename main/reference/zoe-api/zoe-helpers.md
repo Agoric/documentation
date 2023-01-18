@@ -3,7 +3,7 @@
 The ZoeHelper functions extract common contract code and
 patterns into reusable helpers.
 
-All of the ZoeHelper functions are described below. To use any of them, import themn
+All of the ZoeHelper functions are described below. To use any of them, import them
 directly from **@agoric/zoe/src/contractSupport/index.js**. For example, the
 following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assertissuerkeywords-zcf-expected)** and
 **[assertProposalShape()](#assertproposalshape-seat-expected)**:
@@ -21,6 +21,7 @@ and **zcf** is passed in as a parameter to **start()**.
 ## assertIssuerKeywords(zcf, expected)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)** 
 - **expected** **Array&lt;String>**
+- Returns: None.
 
 Checks that the keywords in the *expected* argument match what the contract expects. 
 The function throws an error if incorrect or extra keywords are passed
@@ -89,7 +90,7 @@ Any surplus remains with whichever **seat** has the surplus.
 For example if **seat** A gives 5 Quatloos and **seat** B only 
 wants 3 Quatloos, **seat** A retains 2 Quatloos.
 
-If the swap fails, no assets transfer, and both left and right **seats** are exited.
+If the swap fails, no assets transfer, and both *leftSeat* and *rightSeat* are exited.
 
 ```js
 import {
@@ -125,7 +126,7 @@ If the two **seats** can trade, they swap their compatible assets,
 exiting both **seats**. It returns the message **The offer has been accepted. 
 Once the contract has been completed, please check your payout**.
 
-If the swap fails, no assets transfer, and both left and right **seats** are exited.
+If the swap fails, no assets transfer, and both *leftSeat* and *rightSeat* are exited.
 
 ```js
 import {
@@ -159,7 +160,7 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 ## assertProposalShape(seat, expected)
 - **seat** **[ZCFSeat](./zcfseat.md)**
 - **expected** **ExpectedRecord**
-- Returns: **Void**
+- Returns: None.
 
 Checks the seat's proposal against an *expected* record that says
 what shape of proposal is acceptable.
@@ -254,7 +255,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 - **issuerKeywordRecord** **IssuerKeywordRecord**
 - Returns: **Promise&lt;PaymentPKeywordRecord>**
 
-Saves all of the issuers in an **issuersKeywordRecord** to ZCF, using
+Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
 
 This does **not** error if any of the keywords already exist. If the keyword is

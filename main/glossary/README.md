@@ -139,7 +139,7 @@ unzip bundle.zip
 
 Destroy digital assets. Burning a [payment](#payment) additionally makes it
 unavailable for later use. See
-[`issuer.burn(payment, optAmount)`](/reference/ertp-api/issuer.md#issuer-burn-payment-optamount).
+[anIssuer.burn()](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount).
 
 ## Comparable
 
