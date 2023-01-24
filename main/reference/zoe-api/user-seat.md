@@ -42,20 +42,21 @@ const { want, give, exit } = sellerSeat.getProposal();
   - Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 A **payout** is a **payment** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns a record
+escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
 containing all the **payout** **payments** associated with the **seat**'s offers.
 
 ## E(UserSeat).getPayout(keyword)
   - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
 A **payout** is a **payment** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns the **payout**
+escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **payout**
 **payment** associated with the **keyword** argument.
 
 ## E(UserSeat).getOfferResult()
   - Returns: **Promise&lt;OfferResult>**
 
-The returned **OfferResult** can be literally anything. For example, in tests
+Returns a **Promise** for an **OfferResult**. The **OfferResult** can be literally anything. 
+For example, in tests
 for the Automated Refund Dapp, it's the string "The offer was accepted". In
 the Covered Call example, it's a call option, which is an assayable **invitation**
 to buy the underlying asset. Strings and invitations are the most common things returned.
@@ -81,7 +82,7 @@ gets its current **allocation** and the **seat** can no longer interact with the
 ## E(UserSeat).numWantsSatisfied()
 - Returns: **Promise&lt;Number>**
 
-Returns a number which indicates the result of the exited **Proposal**, as described below:
+Returns a **Promise** for a number which indicates the result of the exited **Proposal**, as described below:
 
 | Number Returned | Description |
 | --- | --- |
@@ -90,7 +91,7 @@ Returns a number which indicates the result of the exited **Proposal**, as descr
 
 
 ## E(UserSeat).getExitSubscriber()
-- Returns: **Subscriber**
+- Returns: **Promise&lt;Subscriber>**
 
 TBD
 
@@ -98,6 +99,6 @@ TBD
 ## E(UserSeat).getFinalAllocation()
 - Returns: **Promise&lt;[Allocation](./zoe-data-types.md#allocation)>**
 
-Returns the **Allocation** when the **UserSeat** exits the **proposal**.
+Returns a **Promise** for the **Allocation** when the **UserSeat** exits the **proposal**.
 
 

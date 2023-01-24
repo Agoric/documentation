@@ -35,7 +35,7 @@ const { want, give, exit } = sellerSeat.getProposal();
 
 ## ZCFSeat.exit(completion)
    - **completion** **Object**
-   - Returns: **Void**
+   - Returns: None.
 
 Causes the **seat** to exit, concluding its existence. All **payouts**, if any,
 are made, and the **seat** object can no longer interact with the contract.
@@ -47,7 +47,7 @@ Any other still open seats or outstanding promises and the contract instance con
 
 ## ZCFSeat.fail(msg)
    - **msg** **String**
-   - Returns: **Void**
+   - Returns: None.
 
 The **seat** exits, displaying the optional **msg** string, if there is one, on the console.
 This is equivalent to exiting, except that **exit** is successful while
@@ -113,7 +113,7 @@ An **Allocation** example:
   - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
 Gets and returns the **stagedAllocation**, which is the allocation committed if the seat is
-reallocated over, if offer safety holds and rights are conserved.
+reallocated over, if offer safety holds, and rights are conserved.
 
 ## ZCFSeat.isOfferSafe(newAllocation)
    - **newAllocation** **[Allocation](./zoe-data-types.md#allocation)**
@@ -198,7 +198,7 @@ allocation by a non-empty amount is an error, while decrementing an empty alloca
 is effectively a null operation with no effects.
 
 ## ZCFSeat.clear()
-  - Returns: **Void**
+  - Returns: None.
 
 Deletes the **ZCFSeat**'s current staged allocation, if any.
 

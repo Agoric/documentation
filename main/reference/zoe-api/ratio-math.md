@@ -164,13 +164,13 @@ The resulting **Amount** is determined by:
 1. Multiplying the *amount* value by the *ratio*'s numerator's value.
 2. Dividing the result from step 1 by the *ratio*'s denominator's value.
 3. If that results in an integer, that value is returned. Otherwise, the value
-  is rounded to the nearest integer according to the standard mathematical rules for rounding.
+  is rounded to the nearest integer according to [banker's rounding rules](https://en.wikipedia.org/wiki/Rounding#Rounding_half_to_even).
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
 1. 47 * 3 = 141
 2. 141 / 5 = 28.2
-3. StandardRounding(28.2) = 28
+3. BankersRounding(28.2) = 28
 
 Throws errors with messages: 
 - **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
@@ -257,13 +257,13 @@ The resulting value is determined by:
 1. Multiplying the *amount* value by the *ratio*'s denominator's value.
 2. Dividing the result from step 1 by the *ratio*'s numerator's value.
 3. If that results in an integer, that value is returned. Otherwise, the value
-  is rounded to the nearest integer according to the standard mathematical rules for rounding.
+  is rounded to the nearest integer according to [banker's rounding rules](https://en.wikipedia.org/wiki/Rounding#Rounding_half_to_even).
 
 For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
 would go
 1. 47 * 5 = 235
 2. 235 / 3 = 78.33333...
-3. StandardRounding(78.3333...) = 78
+3. BankersRounding(78.3333...) = 78
 
 Throws errors with messages: 
 - **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
@@ -364,7 +364,9 @@ This function requires the *ratio* argument to be between 0 and 1. It also requi
 - **right** **Ratio**
 - Returns: **Boolean**
 
-TBD
+Returns **true** if *left* is larger than or equal to *right*, **false** otherwise.
+
+An error is returned
 
 ## ratiosSame(left, right)
 - **left** **[Ratio](./zoe-data-types.md#ratio)**
@@ -390,27 +392,15 @@ TBD
  */
 
 ## parseRatio(numeric, numeratorBrand, denominatorBrand?)
-- **numeric** **[Ratio](./zoe-data-types.md#ratio)**
+- **numeric** **[ParsableNumber](./zoe-data-types.md#parsablenumber)**
 - **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
 - **denominatorBrand** **Brand** - Optional, defaults to *numeratorBrand*.
-- Returns: **Boolean**
+- Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
-/**
- * Create a ratio from a given numeric value.
- *
- * @param {ParsableNumber} numeric
- * @param {Brand} numeratorBrand
- * @param {Brand} [denominatorBrand]
- * @returns {Ratio}
- */
+Creates a **Ratio** from the *numeric* argument, and returns that **Ratio**.
 
 ## assertParsableNumber(specimen)
-- **specimen** ???
-- Returns: ??? {asserts specimen is ParsableNumber}
+- **specimen** **Object**
+- Returns: None.
 
-TBD
-
-/**
- * @param {unknown} specimen
- * @returns {asserts specimen is ParsableNumber}
- */
+Throws an error if the argument is not a **[ParsableNumber](./zoe-data-types.md#parsablenumber)**.

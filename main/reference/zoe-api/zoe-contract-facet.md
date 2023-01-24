@@ -17,16 +17,17 @@ In the operations below, **instance** is the handle for the running contract ins
 - Returns: **Promise&lt;[ZCFMint](./zcfmint.md)>**
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
-instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint.md)**. The optional *displayInfo* parameter takes values
+instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint.md)**.
+The optional *displayInfo* parameter takes values
 like **decimalPlaces: 16** that tell the UI how to display values associated with the created mint's 
 brand. It defaults to undefined.
 
 **Important**: **ZCFMints** do **not** have the same methods as an ERTP **Mint**. Do not try to use
 ERTP methods on a **ZCFMint** or vice versa.
 
-**Important**: On the other hand, the **issuer** and **brand** associated with a **zcfMint**
+**Important**: On the other hand, the **[Issuer](/reference/ertp-api/issuer.md)** and **[Brand](/reference/ertp-api/brand.md)** associated with a **zcfMint**
 do have the same methods as their ERTP-derived counterparts. Assets created by a **zcfMint** are treated
-the same as ERTP **mint**-created assets by ERTP methods.
+the same as ERTP **Mint**-created assets by ERTP methods.
 
 The following demonstrates **zcf.makeZCFMint**:
 
@@ -129,11 +130,11 @@ const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
 ## zcf.makeEmptySeatKit()
 - Returns: **[ZCFSeat](./zcfseat.md), Promise&lt;[UserSeat](./user-seat.md)>**
 
-Returns an empty **ZCFSeat** and a promise for a **UserSeat**
+Returns an empty **ZCFSeat** and a **Promise** for a **UserSeat**
 
 Zoe uses **seats** to represent offers, and has two seat facets (a
 particular view or API of an object;
-there may be multiple such APIs per object) a **ZCFSeat** and a **UserSeat**.
+there may be multiple such facets per object) a **ZCFSeat** and a **UserSeat**.
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
@@ -191,7 +192,8 @@ message.
 zcf.shutdown();
 ```
 
-## zcf.shutdownWithFailure()
+## zcf.shutdownWithFailure(reason)
+-**reason** **Error**
 - Returns: None.
 
 TBD
@@ -199,7 +201,7 @@ TBD
 ## zcf.getTerms()
 - Returns: **Object**
 
-Returns the **issuers**, **brands**, and custom **terms** the current contract **instance** was instantiated with.
+Returns the **[Issuers](/reference/ertp-api/issuers.md)**, **[Brands](/reference/ertp-api/brand.md)**, and custom **terms** the current contract **instance** was instantiated with.
 
 The returned values look like:
 ```js
@@ -238,7 +240,7 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 - Returns: **Undefined**
 
 Checks if a keyword is valid and not already used as a **brand** in this **instance** (i.e. unique)
-and could be used as a new **brand** to make an **issuer**. Throws an appropriate error if it's not
+and could be used as a new **Brand** to make an **Issuer**. Throws an appropriate error if it's not
 a valid keyword, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
@@ -265,7 +267,7 @@ it will never abort part way through. It will completely succeed or it will
 fail before any seats have their current allocation changed.
 
 The reallocation only succeeds if it:
-1. Conserves rights (the specified **amounts** have the same total value as the
+1. Conserves rights (the specified **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** have the same total value as the
   current total amount)
 2. Is 'offer-safe' for all parties involved. 
 

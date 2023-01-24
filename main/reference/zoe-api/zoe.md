@@ -24,7 +24,7 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 - **instance** **Instance**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
-Returns a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
+Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
 
 A **BrandKeywordRecord** is an object where the keys are keywords,
 and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer.md)**.
@@ -47,7 +47,7 @@ const brandKeywordRecord = {
 - **instance** **Instance**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
-Returns an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
+Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
 
 An **IssuerKeywordRecord** is an object where the keys are keywords,
 and the values are **Issuers**.
@@ -67,9 +67,9 @@ const issuerKeywordRecord = {
 
 ## E(Zoe).getTerms(instance)
 - **instance** **Instance**
-- Returns: **Object**
+- Returns: **Promise&lt;Object>**
 
-Returns the terms of the *instance* argument, including its **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and any
+Returns a **Promise** for the terms of the *instance* argument, including its **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and any
 custom terms. The returned values look like:
 
 ```js
@@ -93,7 +93,7 @@ const terms = await E(Zoe).getTerms(instance);
 - **instance** **Instance**
 - Returns: **Promise&lt;PublicFacet>**
 
-Returns a **PublicFacet** containing the public facet defined for the *instance* argument.
+Returns a **Promise** for the **PublicFacet** defined for the *instance* argument.
 
 A contract instance's **PublicFacet** is an object available via Zoe to anyone knowing that **instance**.
 You use it for general queries and actions, such as getting a current price or creating public invitations.
@@ -107,7 +107,7 @@ const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance);
 ## E(Zoe).getInvitationIssuer()
 - Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types.md#invitationissuer)>**
 
-Returns the **InvitationIssuer** for the Zoe instance.
+Returns a **Promise** for the **InvitationIssuer** for the Zoe instance.
 
 ```js
 const invitationIssuer = await E(Zoe).getInvitationIssuer();
@@ -123,7 +123,7 @@ const { value: invitationValue } =
 - **invitation** **Invitation**
 - Returns **Promise&lt;Object>**
 
-Takes an **Invitation** as an argument and returns an object containing the following
+Takes an **Invitation** as an argument and returns a **Promise** for an object containing the following
 details about the **Invitation**:
 
 - **installation** **Installation**: The contract's installation in Zoe.
@@ -139,13 +139,12 @@ const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 
 ## E(Zoe).install(bundle)
 - **bundle** **SourceBundle**
-- Returns: **Promise&lt;Installation>**
+- Returns: **Promise&lt;[Installation](./zoe-data-types.md#installation)>**
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
-Returns an **Installation** object.
+Returns a **Promise** for an **Installation** object.
 
-An **Installation** is an object with one property:
-- **bundle**:  The contract source code, accessible via **bundle.source**, and other info.
+
 
 ```js
 // bundleSource takes source code files and
@@ -163,7 +162,7 @@ TBD
 ## E(Zoe).getFeeIssuer()
 - Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
 
-Returns an **Issuer** that can mint ISTs.
+Returns a **Promise** for an **Issuer** that can mint ISTs.
 
 ## E(Zoe).installBundleID(bundleId) {
           const { state } = this;
@@ -173,10 +172,6 @@ Returns an **Issuer** that can mint ISTs.
 TBD
 
 
-## E(Zoe).setOfferFilter(instance, filters)
-
-TBD
-
 ## E(Zoe).getOfferFilter(instance)
 - **instance** **Instance**
 - Returns: **????**
@@ -185,7 +180,7 @@ TBD
 
 
 ## E(Zoe).getBundleIDFromInstallation(installation) 
-- **installation** **Installation**
+- **installation** **[Installation](./zoe-data-types.md#installation)**
 - Returns: **Promise&lt;>**
 
 TBD
@@ -216,12 +211,10 @@ TBD
 
 ## E(Zoe).getInstallation(invitation)
 - **invitation** **Invitation**
-- Returns: **Promise&lt;Installation>**
+- Returns: **Promise&lt;[Installation](./zoe-data-types.md#installation)>**
 
 Returns a **Promise** for the contract **installation** the **invitation**'s contract instance uses.
 
-An **installation** is an object with one property:
-- **bundle**:  The contract source code, accessible via **bundle.source**, and other info.
 
 ```js
 const installation = await E(Zoe).getInstallation(invitation);
@@ -229,7 +222,7 @@ const installation = await E(Zoe).getInstallation(invitation);
 
 ## E(Zoe).getInstallationForInstance(instance)
 - **instance** **Instance**
-- Returns **Promise&lt;Installation>**
+- Returns **Promise&lt;[Installation](./zoe-data-types.md#installation)>**
 
 Returns a **Promise** for the contract **installation** used by the
 **instance**. An **instance** is the unique identifier for the running,
@@ -242,7 +235,7 @@ const installation = await E(Zoe).getInstallationForInstance(instance);
 ```
 
 ## E(Zoe).startInstance(installation, issuerKeywordRecord?, terms?, privateArgs?)
-- **installation** **ERef&lt;Installation>**
+- **installation** **ERef&lt;[Installation](./zoe-data-types.md#installation)>**
 - **issuerKeywordRecord** **IssuerKeywordRecord** - Optional.
 - **terms** **Object** - Optional.
 - **privateArgs** **Object** - Optional.
@@ -270,7 +263,7 @@ among multiple contracts, pass in the following as **privateArgs**:
 { externalMint: myExternalMint }
 ```
 
-It returns a promise for a **StartInstanceResult** object. The object consists of:
+It returns a **Promise** for a **StartInstanceResult** object. The object consists of:
 
 - **adminFacet** **AdminFacet**
 - **creatorFacet** **any**
@@ -302,13 +295,14 @@ an invitation to escrow and sell goods. Remember that Zoe invitations are
 represented as a **Payment**.
 ```js
 const issuerKeywordRecord = {
-  'Asset': moolaIssuer,
-  'Price': quatlooIssuer
+  Asset: moolaIssuer,
+  Price: quatlooIssuer
 };
 const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInstance(
   installation, issuerKeywordRecord, terms);
 ```
+
 ## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs?)
 - **invitation** **Invitation|Promise&lt;Invitation>**
 - **proposal** **Proposal** - Optional.
@@ -362,12 +356,13 @@ const myProposal = harden({
  
 ```js
 const paymentKeywordRecord = {
-  'Asset' : quatloosPayment,
-  'Price' : moolaPayment
+  Asset : quatloosPayment,
+  Price : moolaPayment
 };
 ```
 
 ## OfferArgs
+
 **offerArgs** is an optional object record. It can be used to pass
 additional arguments to the **offerHandler** contract code associated
 with the invitation. It is up to the contract code whether it chooses

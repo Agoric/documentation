@@ -19,32 +19,31 @@ These are the details exposed by E(zoe).getInvitationDetails():
 ## InvitationIssuer
 
 **InvitationIssuers** are special types of **[Issuers](/reference/ertp-api/issuer.md)**. Every Zoe
-instance has a single **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the Zoe instance's **InvitationIssuer** and its **[Mint](/reference/ertp-api/issuer.md)**, which 
-mints **Invitations** and validates their **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
+instance has a single **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come
+from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
 
-The **Mint** associated with the **InvitationIssuer**
-creates **invitations** in the form of ERTP **[Payments](/reference/ertp-api/payment.md)** that represent the right to interact with
-a smart contract in particular ways.
+**InvitationIssuers** have all the methods of regular **Issuers**, but the two methods that qre most often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)** and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
 
-The **invitationIssuer** has two methods, both of which take an **invitation** as an argument.
-Remember, an **invitation** is just a special case of an ERTP **Payment**, so **claim()** and
-**getAmountOf()** are the same as for other **Issuers**.
-
-A successful call of **invitationIssuer.claim(invitation)** means you are assured the **invitation**
-is recognized as valid by the **invitationIssuer**. You are also assured the **invitation** is exclusively yours
-and no one else has access to it.
+A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into
+the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
+is exclusively yours and no one else has access to it.
 
 ## Installation
 
+Represents a Zoe contract installation object. It has one property:
+
+- **bundle**: The contract source code, accessible via **bundle.source**, and other info.
+
 ## Instance
+
+## ParsableNumber
+
+A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 
 ## Proposal
 
-## OfferArgs
-
-
-
 ## Pattern
+
 
 
 
