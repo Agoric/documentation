@@ -2,9 +2,8 @@
 /* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
 import { test } from './prepare-test-env-ava.js';
 
-import { E } from '@endo/eventual-send';
 // #region importFar
-import { Far, passStyleOf } from '@endo/marshal';
+import { E, Far, passStyleOf } from '@endo/far';
 // #endregion importFar
 
 test('remote counter', async t => {
