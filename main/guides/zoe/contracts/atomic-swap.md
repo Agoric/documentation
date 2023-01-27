@@ -4,16 +4,16 @@
 
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js) (Last updated: Sep 12, 2020)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 If I want to trade one kind of asset for another kind, I could send
 you the asset and ask you to send the other kind back. But, you
 could behave opportunistically by receiving my asset and giving
-nothing back. 
+nothing back.
 
-To solve this problem, Zoe-based swap contracts let users 
-securely trade one kind of digital asset for another kind. 
-By using Zoe for escrow and offer safety, they insure no 
+To solve this problem, Zoe-based swap contracts let users
+securely trade one kind of digital asset for another kind.
+By using Zoe for escrow and offer safety, they insure no
 user can ever behave opportunistically.
 
 In our `atomicSwap` contract, anyone can securely swap with a counterparty.
@@ -37,8 +37,8 @@ const { creatorInvitation } =
 Then Alice escrows her offer with Zoe. She passes in two
 things; the actual ERTP payments of her offer, and a
 `proposal`. Zoe uses the proposal to protect Alice from the
-smart contract (which may have been written by someone else) 
-and other participants. 
+smart contract (which may have been written by someone else)
+and other participants.
 
 A proposal has three parts:
 - `give`: What this party will give to the swap. Used by Zoe to enforce offer safety (Alice will get back what she gave or what she wanted).
@@ -59,7 +59,7 @@ const aliceProposal = harden({
 const alicePayment = await E(aliceMoolaPurse).withdraw(threeMoola);
 ```
 
-For Alice to escrow with Zoe, she needs to use her invitation.  
+For Alice to escrow with Zoe, she needs to use her invitation.
 Then she makes her offer and receives a `seat`. The `seat`
 gives her access to the offer's result and her payouts.
 
@@ -100,8 +100,8 @@ assert(AmountMath.isEqual(bobInvitationValue.price, simoleans(7)), details`wrong
 ```
 
 Bob decides to exercise the invitation, and to escrow his payments. He then
-uses his invitation to make an offer, the same way that Alice used hers. 
-But Bob has written his proposal to match Alice's (notice that the `give` 
+uses his invitation to make an offer, the same way that Alice used hers.
+But Bob has written his proposal to match Alice's (notice that the `give`
 and `want` clauses are reversed from Alice's proposal):
 
 ```js secondary style2
@@ -133,7 +133,7 @@ const moolaRefundAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
 const simoleanGainAmount = aliceSimoleansPurse.deposit(alicePricePayout);
 ```
 
-Bob's payout is also available. Since he already knows what Alice's offer was, 
+Bob's payout is also available. Since he already knows what Alice's offer was,
 he doesn't need to look for a simolean refund.
 
 ```js secondary style2

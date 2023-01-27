@@ -3,12 +3,12 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/otcDesk.js) (Last updated: Mar 1, 2022)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 ![Building a Composable DeFi Contract](./assets/title.jpg)
 
 This is the OTC Desk contract from the ["Building a
-Composable DeFi Contract" episode of Cosmos Code With 
+Composable DeFi Contract" episode of Cosmos Code With
 Us](https://cosmos.network/series/code-with-us/building-a-composable-defi-contract).
 
 [Watch the replay of the

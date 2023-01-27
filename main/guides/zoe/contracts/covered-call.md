@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/coveredCall.js) (Last updated: Sep 12, 2020)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The owner of an asset can use a covered call to give someone else the right
 to buy the asset at a certain price, called the strike price. That right
@@ -148,7 +148,7 @@ const swapIssuerKeywordRecord = harden({
 const bobSwapSeat =
   await E(zoe).startInstance(swapInstallation, swapIssuerKeywordRecord);
 ```
-  
+
 Bob specifies that he wants to swap the invitation for 1 buck, and escrows
 the covered call invitation. In exchange, he gets a swap invitation he can
 share.

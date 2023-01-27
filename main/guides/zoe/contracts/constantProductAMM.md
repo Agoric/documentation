@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: Aug 15, 2022)
-##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 
 The Constant Product AMM is an automated market maker (AMM) that supports multiple
@@ -71,7 +71,7 @@ const quote = E(publicFacet).getOutputPrice(
   AmountMath.makeEmpty(ATMBrand),
 );
   ```
-  
+
 Let's assume the quote says she needs to provide 216 ATM. Sara believes the
 price is somewhat volatile, and she doesn't want to make repeated calls, so she pads
 her offer. If the appropriate pools don't exist, she'll get an error (`brands were

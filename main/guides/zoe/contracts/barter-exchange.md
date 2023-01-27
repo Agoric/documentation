@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/a564c6081976d7b66b3cdf54e0ba8903c8f1ee6d/packages/zoe/src/contracts/barterExchange.js) (Last updated: Sep 14, 2020)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 Barter Exchange takes offers for trading arbitrary goods for one another.
 
@@ -16,7 +16,7 @@ registration of issuers, it can handle trades between goods of any
 type. It's like conventional "barter" in that there's no common
 currency. "I have cantaloupes and am looking for pillow cases." It
 keeps an order book, and each time it receives a new offer, it looks
-for matches throughout the order book. 
+for matches throughout the order book.
 
 The Barter Exchange only accepts offers that look like
 `{ give: { In: amount }, want: { Out: amount}` }
