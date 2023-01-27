@@ -5,7 +5,7 @@
 # website at localhost:8080 by default
 ####
 home: true # use default home page layout (hero image with text, features section)
-heroImage: https://agoric.com/wp-content/themes/agoric_2021_theme/assets/img/logo.svg
+heroImage: /logo.svg
 ## Action button
 actionText: Get Started → # text that goes in the button
 actionLink: /guides/getting-started/ # go-to link when clicking on button
@@ -44,6 +44,7 @@ footer: Apache-2.0 Licensed | Copyright © 2022 - Agoric
 </div>
 
 ## The Platform
+
 Building on 30 years of experience, Agoric is developing a secure distributed object-capabilities (OCap) platform for smart contracts and market-oriented programming. Our platform supports the development of smart contracts and market institutions across many different scales, from large public blockchains to small two-party contracts.
 
 Our OCaps platform consists of:
