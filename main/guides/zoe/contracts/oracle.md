@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4c4da6a7ae76aebbff2af48613008978eb04462b/packages/zoe/src/contracts/oracle.js) (Last updated: Jan 31, 2022)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 **NOTE: You almost certainly do not want to use this contract directly.
 Instead, please read the [Chainlink integration
@@ -26,7 +26,7 @@ documentation](/guides/chainlink-integration.md).
 ## Making a Free Query
 
 To make a free query, obtain the `publicFacet` for the oracle contract
-instance. 
+instance.
 
 <<< @/snippets/zoe/contracts/test-oracle.js#freeQuery
 
@@ -57,7 +57,7 @@ a `creatorFacet`.
 You will need to use the creatorFacet to initialize an
 `oracleHandler`. The `oracleHandler` is what will actually be queried,
 so we do not want to put it in the contract terms, which are publicly
-accessible. 
+accessible.
 
 <<< @/snippets/zoe/contracts/test-oracle.js#initialize
 
@@ -66,5 +66,3 @@ accessible.
 The contract expects all `oracleHandlers` to offer the following API:
 
 <<< @/snippets/zoe/contracts/test-oracle.js#API
-
-

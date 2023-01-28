@@ -7,9 +7,9 @@ various time and price conditions.
 ## Examples
 
 To see a `priceAuthority` in use, see the [Loan
-contract](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts/loan)
+contract](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/loan)
 and the [Call Spread
-contracts](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts/callSpread).
+contracts](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/callSpread).
 
 ## Receiving a Quote
 
@@ -48,13 +48,12 @@ requested.
 
 ## Mutable Price Quotes
 
-`MutableQuote`'s method `getPromise()` returns a `Promise` for a `PriceQuote`, 
-which is the same as what is returned by the `quoteWhenLTE()` API method and variants. 
+`MutableQuote`'s method `getPromise()` returns a `Promise` for a `PriceQuote`,
+which is the same as what is returned by the `quoteWhenLTE()` API method and variants.
 Effectively, the non-mutable price quote methods return a single `PriceQuote`, while
-the mutable price quote methods return a reusable object which can be manipulated 
-by changing its trigger levels or by cancelling it. 
+the mutable price quote methods return a reusable object which can be manipulated
+by changing its trigger levels or by cancelling it.
 
 ## API Reference
 
 The Price Authority API reference is a section of the [Zoe API reference](/reference/zoe-api/contract-support/price-authority.md)
-

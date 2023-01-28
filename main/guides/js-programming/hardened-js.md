@@ -278,7 +278,7 @@ or not:
    - `require` (Use `import` module syntax instead.)
    - `localStorage`
       - [SwingSet](../platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
-      - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/store).
+      - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/master/packages/store).
    - `global` (Use `globalThis` instead.)
  - authority-free but host-defined:
    - `Buffer`
