@@ -260,7 +260,6 @@ module.exports = {
             '/reference/zoe-api/zcfseat',
             '/reference/zoe-api/zcfmint',
             '/reference/zoe-api/price-authority',
-            '/reference/zoe-api/mutable-quote',
             '/reference/zoe-api/zoe-helpers',
             '/reference/zoe-api/ratio-math',
             '/reference/zoe-api/zoe-data-types',
