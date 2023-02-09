@@ -11,13 +11,12 @@ allocated to the offer. It also includes synchronous operations
 to manipulate the offer. The queries and operations are as follows:
 
 
-## ZCFSeat.getSubscriber()
-- Returns: **Subscriber**
+## aZCFSeat.getSubscriber()
+- Returns: **[Subscriber](./zoe-data-types.md#subscriber)**
 
+Returns the **Subscriber** for the seat.
 
-TBD
-
-## ZCFSeat.getProposal()
+## aZCFSeat.getProposal()
   - Returns: **ProposalRecord**
 
 A **Proposal** is represented by a **ProposalRecord**. It is the rules
@@ -33,7 +32,7 @@ contract that they are entering when they make an offer. See
 const { want, give, exit } = sellerSeat.getProposal();
 ```
 
-## ZCFSeat.exit(completion)
+## aZCFSeat.exit(completion)
    - **completion** **Object**
    - Returns: None.
 
@@ -43,9 +42,9 @@ The **completion** argument is usually a string, but this is not required. Its
 only use is for the notification sent to the contract instance's **done()** function. 
 Any other still open seats or outstanding promises and the contract instance continue.
 
-**Note**: You should not use **ZCFSeat.exit()** when exiting with an error. Use the method **[ZCFSeat.fail()](#zcfseat-fail-msg)** instead. 
+**Note**: You should not use **ZCFSeat.exit()** when exiting with an error. Use the method **[ZCFSeat.fail()](#azcfseat-fail-msg)** instead. 
 
-## ZCFSeat.fail(msg)
+## aZCFSeat.fail(msg)
    - **msg** **String**
    - Returns: None.
 
@@ -61,35 +60,35 @@ Agoric recommends you exit a seat with an error as follows
 throw seat.fail(Error('you did it wrong'));
 ```
 
-## ZCFSeat.hasExited()
+## aZCFSeat.hasExited()
   - Returns: **Boolean**
 
 Returns **true** if the **ZCFSeat** has exited, **false** if it is still active.
 
-
-## ZCFSeat.getAmountAllocated(keyword, brand)
+## aZCFSeat.getAmountAllocated(keyword, brand)
   - **keyword** **String**
   - **brand** **[Brand](/reference/ertp-api/brand.md)**
   - Returns: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 
-Returns the **Amount** from the part of the **allocation** that matches the
-*keyword* and *brand*. If the *keyword* is not in the **allocation**, it
+Returns the **Amount** from the part of the **[Allocation](./zoe-data-types.md#allocation)** that matches the
+*keyword* and *brand*. If the *keyword* is not in the **Allocation**, it
 returns an empty **Amount** of the *brand* argument. (After
 **ZCFSeat.exit()** has been called, it continues to report the final allocation balance, 
 which was transferred to a payout.)
 
 This is similar to the next method, **getCurrentAllocation()**. **getAmountAllocated()**
-gets the **allocation** of one keyword at a time, while **getCurrentAllocation()** returns
-all the current **allocations** at once.
+gets the **Allocation** of one keyword at a time, while **getCurrentAllocation()** returns
+all the current **Allocations** at once.
 
-## ZCFSeat.getCurrentAllocation()
+## aZCFSeat.getCurrentAllocation()
   - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
 An **Allocation** is an **AmountKeywordRecord** of key-value pairs where
 the key is a keyword such as **Asset** or **Price** applicable to the
 contract. The value is an **amount** with its **value** and **brand**.
 
-**Allocations** represent the **amounts** to be paid out to each **seat** on exit. (After
+**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid
+out to each **seat** on exit. (After
 **exit()** has been called, the final allocation balances, which were transferred to
 payouts, continue to be reported.)
 Normal reasons for exiting are the user requesting to exit or the contract
@@ -109,13 +108,13 @@ An **Allocation** example:
 }
 ```
 
-## ZCFSeat.getStagedAllocation()
+## aZCFSeat.getStagedAllocation()
   - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
 Gets and returns the **stagedAllocation**, which is the allocation committed if the seat is
 reallocated over, if offer safety holds, and rights are conserved.
 
-## ZCFSeat.isOfferSafe(newAllocation)
+## aZCFSeat.isOfferSafe(newAllocation)
    - **newAllocation** **[Allocation](./zoe-data-types.md#allocation)**
    - Returns **Boolean**
 
@@ -127,9 +126,8 @@ It checks whether **newAllocation** fully satisfies
 **proposal.want**. Both can be fully satisfied. See the ZoeHelper
 [**satisfies()**](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
 
-
-## ZCFSeat.incrementBy(amountKeywordRecord)
-  - **amountKeywordRecord** **AmountKeywordRecord**
+## aZCFSeat.incrementBy(amountKeywordRecord)
+  - **amountKeywordRecord** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
   - Returns: **AmountKeyRecord**
 
 Adds the **amountKeywordRecord** argument to the **ZCFseat**'s staged allocation and returns the 
@@ -153,8 +151,9 @@ t.deepEqual(zcfSeat1.getStagedAllocation(), { IST: empty  });
 While this incremented the allocation by an empty amount, any amount would have been added to the 
 allocation in the same way. 
 
-## ZCFSeat.decrementBy(amountKeywordRecord)
-  - **amountKeywordRecord** **AmountKeywordRecord**
+
+## aZCFSeat.decrementBy(amountKeywordRecord)
+  - **amountKeywordRecord** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
   - Returns: **AmountKeywordRecord**
 
 Subtracts the **amountKeywordRecord** argument from the **ZCFseat**'s staged allocation and returns the
@@ -197,13 +196,13 @@ It throws an error because you cannot subtract something from nothing. So trying
 allocation by a non-empty amount is an error, while decrementing an empty allocation by an empty amount
 is effectively a null operation with no effects.
 
-## ZCFSeat.clear()
+## aZCFSeat.clear()
   - Returns: None.
 
 Deletes the **ZCFSeat**'s current staged allocation, if any.
 
 
-## ZCFSeat.hasStagedAllocation()
+## aZCFSeat.hasStagedAllocation()
   - Returns: **Boolean**
 
 Returns **true** if there is a staged allocation, i.e., whether **ZCFSeat.incrementBy()** or

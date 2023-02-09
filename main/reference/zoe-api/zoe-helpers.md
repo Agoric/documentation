@@ -15,7 +15,8 @@ import {
 } from '@agoric/zoe/src/contractSupport/index.js';
 ```
 
-ZoeHelper functions are contract helpers, in that they are useful to contract code. Contracts are started up by Zoe, 
+ZoeHelper functions are contract helpers, in that they are useful to contract code. 
+Contracts are started up by Zoe, 
 and **zcf** is passed in as a parameter to **start()**. 
 
 ## assertIssuerKeywords(zcf, expected)
@@ -39,7 +40,7 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ## satisfies(zcf, seat, update)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat** **[ZCFSeat](./zcfseat.md)**
-- **update** **AmountKeywordRecord**
+- **update** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
 - Returns: **Boolean** 
 
 Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
@@ -73,14 +74,12 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
 - **rightSeat** **ZCFSeat**
 - Returns: **defaultAcceptanceMsg**
 
-**Note**: In **swap(),** 
-for both **seats**, everything a **seat** wants is given to it, having been
+For both **seats**, everything a **seat** wants is given to it, having been
 taken from the other **seat**. **swap()** exits both **seats**.
 Use **swap()** when all of these are true:
   - Both **seats** use the same keywords.
   - The **seats**' wants can be fulfilled from the other **seat**.
   - No further **seat** interaction is desired.
-
 
 If the two **seats** can trade, they swap their compatible assets,
 exiting both **seats**. It returns the message **The offer has been accepted. 
@@ -106,17 +105,15 @@ swap(zcf, firstSeat, secondSeat);
 - **rightSeat** **ZCFSeat**
 - Returns: **defaultAcceptanceMsg**
 
-In **swap()** and **swapExact()**,
-for both seats, everything a seat wants is given to it, having been
-taken from the other seat. **swap()** and **swapExact()** exit both seats.
-Use **swap()** or **swapExact()** when both of these are true:
+For both seats, everything a seat wants is given to it, having been
+taken from the other seat. **swapExact()** exits both seats.
+Use **swapExact()** when both of these are true:
   - The **seats**' wants can be fulfilled from the other **seat**.
   - No further **seat** interaction is desired.
 
-For **swap()** only, both **seats** use the same keywords. This does **not** 
-hold for **swapExact()**
+Note that unlike the **swap()** function, *leftSeat* and *rightSeat* don't necessarily use the same keywords.
 
-**exactSwap()** is a special case of **swap()** such that it is successful only
+**swapExact()** is a special case of **swap()** such that it is successful only
 if both seats gain everything they want and lose everything they were willing to give.
 It is only good for exact and entire swaps where each
 seat wants everything that the other seat has. The benefit of using
@@ -136,10 +133,10 @@ import {
 const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 ```
 
-//New Method
 ## fitProposalShape(seat, proposalShape)
 - **seat** **[ZCFSeat](./zcfseat.md)**
-- **proposalShape** **Pattern**
+- **proposalShape** **[Pattern](./zoe-data-types.md#pattern)**
+- Returns: None.
 
 /**
  * @typedef ExpectedRecord
@@ -155,6 +152,27 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
  *
  * @param {ZCFSeat} seat
  * @param {Pattern} proposalShape
+ */
+
+/**
+ * Check the seat's proposal against an `expected` record that says
+ * what "shape" of proposal is acceptable.
+ *
+ * Note that by our current terminology, this function is misnamed because
+ * we use
+ * ["Shape" to refer to patterns](https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js#L56-L74),
+ * and the `expected` argument is not such a pattern. Rather it is an ad-hoc
+ * pattern-like special case record that is different and much less expressive.
+ *
+ * This ExpectedRecord is like a Proposal, but the amounts in 'want'
+ * and 'give' should be null; the exit clause should specify a rule with
+ * null contents. If the client submits an offer which does not match
+ * these expectations, the seat will be exited (and payments refunded).
+ *
+ * @deprecated Use optional `proposalShape` argument to `makeInvitation` with
+ * a genuine pattern.
+ * @param {ZCFSeat} seat
+ * @param {ExpectedRecord} expected
  */
 
 ## assertProposalShape(seat, expected)
@@ -205,14 +223,14 @@ import {
   assertNatAssetKind
 } from '@agoric/zoe/src/contractSupport/index.js';
 
- assertNatAssetKind(zcf, quatloosBrand);
- ```
+assertNatAssetKind(zcf, quatloosBrand);
+```
 
 ## depositToSeat(zcf, recipientSeat, amounts, payments)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **recipientSeat** **[ZCFSeat](./zcfseat.md)**
-- **amounts** **AmountKeywordRecord**
-- **payments** **PaymentPKeywordRecord**
+- **amounts** **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
+- **payments** **PaymentKeywordRecord**
 - Returns: **Promise&lt;String>**
 
 Deposits payments such that their amounts are reallocated to a seat.
@@ -233,8 +251,8 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 ## withdrawFromSeat(zcf, seat, amounts)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md) **
 - **seat** **[ZCFSeat](./zcfseat.md)**
-- **amounts** **AmountKeywordRecord**
-- Returns: **Promise&lt;PaymentPKeywordRecord>**
+- **amounts** **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
+- Returns: **Promise&lt;PaymentKeywordRecord>**
 
 Withdraws payments from a seat. Note that withdrawing the amounts of
 the payments must not and cannot violate offer safety for the seat. The
@@ -253,7 +271,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ## saveAllIssuers(zcf, issuerKeywordRecord)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **issuerKeywordRecord** **IssuerKeywordRecord**
-- Returns: **Promise&lt;PaymentPKeywordRecord>**
+- Returns: **Promise&lt;PaymentKeywordRecord>**
 
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
@@ -268,33 +286,32 @@ import {
 await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 ```
 
-//Has new parameter, offerArgs
 ## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat, offerArgs)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **invitation** **ERef&lt;Invitation>**
+- **invitation** **ERef&lt;[Invitation](./zoe-data-types.md#invitation)>**
 - **keywordMapping** **KeywordRecord**
 - **proposal** **Proposal**
 - **fromSeat** **[ZCFSeat](./zcfseat.md)**
 - **toSeat** **ZCFSeat**
-- **offerArgs**
+- **offerArgs** **Object**
 - Returns: **OfferToReturns**
 
 **offerTo()** makes an offer from your current contract instance (which
 we'll call "contractA") to another contract instance (which we'll call
-"contractB"). It withdraws offer payments from the **fromSeat** in
-contractA and deposits any payouts in the **toSeat**, also a contractA
-seat. Note that **fromSeat** and **toSeat** may be the same seat, which is
-the default condition (i.e. **toSeat** is an optional parameter
-defaulting to **fromSeat**'s value). **offerTo** can be used to make an
+"contractB"). It withdraws offer payments from the *fromSeat* in
+contractA and deposits any payouts in the *toSeat*, also a contractA
+seat. Note that *fromSeat* and *toSeat* may be the same seat, which is
+the default condition (i.e. *toSeat* is an optional parameter
+defaulting to *fromSeat*'s value). **offerTo()** can be used to make an
 offer from any contract instance to any other contract instance, as
-long as the **fromSeat** allows the withdrawal without violating
+long as the *fromSeat* allows the withdrawal without violating
 offer-safety. To be clear, this does mean that contractA and contractB
 do not have to be instances of the same contract. 
 
-**zcf** is contractA's Zoe contract facet. The **invitation** parameter is an invitation 
-to contractB. The **proposal** parameter is the proposal part of the offer made to contractB.
+*zcf* is contractA's Zoe contract facet. The *invitation* parameter is an invitation 
+to contractB. The *proposal* parameter is the proposal part of the offer made to contractB.
 
-**keywordMapping** is a record of the keywords used in contractA mapped to the 
+*keywordMapping* is a record of the keywords used in contractA mapped to the 
 keywords for contractB. Note that the pathway to deposit the payout back to
 contractA reverses this mapping. It looks like this, where the keywords are
 from the contracts indicated by using "A" or "B" in the keyword name.
@@ -305,6 +322,18 @@ from the contracts indicated by using "A" or "B" in the keyword name.
     TokenA2: 'TokenB2'
   });
 ```
+
+*offerArgs* is an object that can be used to pass
+additional arguments to the **offerHandler** of contractB's contract code.
+Which arguments should be included within *offerArgs* is determined by the
+contract in question; each contract can define whatever additional arguments it requires. If no
+additional arguments are defined for a particular contract, then the *offerArgs* argument can be
+omitted entirely. It is up to the contract code how it chooses to handle any unexpected or missing
+arguments within *offerArgs*.
+
+Contract code should be careful interacting with *offerArgs*. These values need input validation
+before being used by the contract code since they are coming directly from the user and may
+have malicious behavior.
 
 The **OfferToReturns** return value is a promise for an object containing
 the **userSeat** for the offer to the other contract, and a promise (**deposited**) 

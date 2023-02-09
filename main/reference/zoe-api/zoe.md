@@ -21,7 +21,7 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 :::
 
 ## E(Zoe).getBrands(instance)
-- **instance** **Instance**
+- **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
 Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
@@ -44,7 +44,7 @@ const brandKeywordRecord = {
 ```
 
 ## E(Zoe).getIssuers(instance)
-- **instance** **Instance**
+- **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
 Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
@@ -66,7 +66,7 @@ const issuerKeywordRecord = {
 ```
 
 ## E(Zoe).getTerms(instance)
-- **instance** **Instance**
+- **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;Object>**
 
 Returns a **Promise** for the terms of the *instance* argument, including its **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and any
@@ -90,12 +90,12 @@ const terms = await E(Zoe).getTerms(instance);
 ```
 
 ## E(Zoe).getPublicFacet(instance)
-- **instance** **Instance**
+- **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;PublicFacet>**
 
 Returns a **Promise** for the **PublicFacet** defined for the *instance* argument.
 
-A contract instance's **PublicFacet** is an object available via Zoe to anyone knowing that **instance**.
+A contract instance's **PublicFacet** is an object available via Zoe to anyone knowing that **Instance**.
 You use it for general queries and actions, such as getting a current price or creating public invitations.
 Since a facet is defined just as any other object, the contract adds methods to the **PublicFacet** just like you would
 any object.
@@ -112,7 +112,7 @@ Returns a **Promise** for the **InvitationIssuer** for the Zoe instance.
 ```js
 const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // Here a user, Bob, has received an untrusted invitation from Alice.
-// Bob uses the trusted **invitationIssuer** from Zoe to
+// Bob uses the trusted **InvitationIssuer** from Zoe to
 // transform the untrusted invitation to a trusted one
 const invitation = await invitationIssuer.claim(untrustedInvitation);
 const { value: invitationValue } =
@@ -120,16 +120,16 @@ const { value: invitationValue } =
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns **Promise&lt;Object>**
 
 Takes an **Invitation** as an argument and returns a **Promise** for an object containing the following
 details about the **Invitation**:
 
-- **installation** **Installation**: The contract's installation in Zoe.
-- **instance** **Instance**: The contract instance this invitation is for.
-- **invitationHandle** **Handle**: A handle used to refer to this invitation.
-- **description** **String**: Describes the purpose of this **invitation**. Use it
+- **installation** **[Installation](./zoe-data-types.md#installation)**: The contract's Zoe installation.
+- **instance** **[Instance](./zoe-data-types.md#instance)**: The contract instance this invitation is for.
+- **invitationHandle** **Handle**: A handle used to refer to this **Invitation**.
+- **description** **String**: Describes the purpose of this **Invitation**. Use it
    to match the invitation to the role it plays in the contract.
 
 ```js
@@ -144,54 +144,50 @@ const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
 Returns a **Promise** for an **Installation** object.
 
-
-
 ```js
 // bundleSource takes source code files and
 // bundles them together in the format install expects.
-import bundleSource from '@endo/bundle-source';
+import bundleSource from '@endto/bundle-source';
 const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(Zoe).install(bundle);
 ```
 
 ## E(Zoe).getConfiguration()
-- Returns: **???**
+- Returns: **Promise&lt;Object>**
 
-TBD
+Returns the configuration settings for the Zoe contract.
 
 ## E(Zoe).getFeeIssuer()
 - Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
 
 Returns a **Promise** for an **Issuer** that can mint ISTs.
 
-## E(Zoe).installBundleID(bundleId) {
-          const { state } = this;
-          return state.dataAccess.installBundleID(bundleId);
-        },
+## E(Zoe).installBundleID(bundleId)
+- bundleId **BundleId**
+- Returns: **Promise&lt;[Installation](./zoe-data-types.md#installation)>**
 
-TBD
+Reserved for future use.
 
 
 ## E(Zoe).getOfferFilter(instance)
-- **instance** **Instance**
-- Returns: **????**
+- **instance** **[Instance](./zoe-data-types.md#instance)**
+- Returns: **Array&lt;String>**
 
-TBD
-
+Returns all the offer keywords that have been disabled, if any. Offer keywords may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
 
 ## E(Zoe).getBundleIDFromInstallation(installation) 
 - **installation** **[Installation](./zoe-data-types.md#installation)**
-- Returns: **Promise&lt;>**
+- Returns: **Promise&lt;BundleId>**
 
-TBD
+Reserved for future use.
 
 ## E(Zoe).getInstance(invitation)
-- **invitation** **Invitation**
-- Returns: **Promise&lt;Instance>**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- Returns: **Promise&lt;[Instance](./zoe-data-types.md#instance)>**
 
 Returns a **Promise** for the contract **instance** the **invitation** is part of.
 
-While **instances** are opaque objects, you can get information about them via
+While **Instances** are opaque objects, you can get information about them via
 these methods:
 
 - **getBrands()**
@@ -204,24 +200,23 @@ const instance = await E(Zoe).getInstance(invitation);
 ```
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;[Pattern](./zoe-data-types.md#pattern)>**
 
-TBD
+Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
 ## E(Zoe).getInstallation(invitation)
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;[Installation](./zoe-data-types.md#installation)>**
 
 Returns a **Promise** for the contract **installation** the **invitation**'s contract instance uses.
-
 
 ```js
 const installation = await E(Zoe).getInstallation(invitation);
 ```
 
 ## E(Zoe).getInstallationForInstance(instance)
-- **instance** **Instance**
+- **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns **Promise&lt;[Installation](./zoe-data-types.md#installation)>**
 
 Returns a **Promise** for the contract **installation** used by the
@@ -250,7 +245,7 @@ with a capital letter and must be ASCII. Parties to the contract will
 use the keywords to index their proposal and their payments.
 
 The **terms** are values used by this contract instance, such as the
-number of bids an auction will wait for before closing. These values may
+number of bids an auction w ill wait for before closing. These values may
 be different for different instances of the same contract, but the contract
 defines what variables need their values passed in as **terms**.
 
@@ -303,11 +298,11 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
   installation, issuerKeywordRecord, terms);
 ```
 
-## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs?)
+## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs)
 - **invitation** **Invitation|Promise&lt;Invitation>**
 - **proposal** **Proposal** - Optional.
 - **paymentKeywordRecord** **PaymentKeywordRecord** - Optional.
-- **offerArgs** **Object** - Optional,
+- **offerArgs** **Object**
 - Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
 Used to make an offer to the contract that created the **invitation** that is
@@ -363,15 +358,17 @@ const paymentKeywordRecord = {
 
 ## OfferArgs
 
-**offerArgs** is an optional object record. It can be used to pass
+*offerArgs* is an object that can be used to pass
 additional arguments to the **offerHandler** contract code associated
-with the invitation. It is up to the contract code whether it chooses
-to handle any **offerArgs** passed to it or whether it drops them.
+with the invitation. Which arguments should be included within *offerArgs* is determined by the
+contract in question; each contract can define whatever additional arguments it requires. If no
+additional arguments are defined for a particular contract, then the *offerArgs* argument can be
+omitted entirely. It is up to the contract code how it chooses to handle any unexpected or missing
+arguments within *offerArgs*.
 
-Zoe checks that **offerArgs** is a **copyRecord**, but the contract code
-should be careful interacting with the values of the **offerArgs**
-object. These values need input validation before being used by the
-contract code since they are coming directly from the user and may
+
+Contract code should be careful interacting with *offerArgs*. These values need input validation
+before being used by the contract code since they are coming directly from the user and may
 have malicious behavior.
 
 

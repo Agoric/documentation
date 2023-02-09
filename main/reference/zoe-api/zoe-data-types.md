@@ -1,9 +1,5 @@
 # Zoe Data Types
 
-## PublicFacet
-
-????
-
 ## Invitation
 
 These are the details exposed by E(zoe).getInvitationDetails():
@@ -28,24 +24,52 @@ A successful call of **anInvitationIssuer.claim()** means you are assured the **
 the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
 is exclusively yours and no one else has access to it.
 
-## Installation
 
-Represents a Zoe contract installation object. It has one property:
-
-- **bundle**: The contract source code, accessible via **bundle.source**, and other info.
 
 ## Instance
+
+**Instances** are opaque objects that represent contract instances. You can get information about them via
+these methods:
+
+- **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
+- **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
+- **[E(Zoe).getTerms()](./zoe.md#e-zoe-geterms-instance)**
+- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
 
 ## ParsableNumber
 
 A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 
-## Proposal
 
-## Pattern
+## Subscription
 
+## AmountKeywordRecord
 
+**AmountKeywordRecord** is a record in which the keys are keywords, and
+the values are **amounts**. Keywords are unique identifiers per contract,
+that tie together the **proposal**, **payments** to be escrowed, and **payouts**
+to the user. In the below example, **Asset** and **Price** are keywords.
 
+Users should submit their **payments** using keywords:
+```js
+const payments = { Asset: quatloosPayment };
+```
+
+And, users will receive their **payouts** with keywords as the keys of a **payout**:
+```js
+quatloosPurse.deposit(payout.Asset);
+```
+
+For example:
+```js
+const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+const quatloos9 = AmountMath.make(quatloosBrand, 9n);
+const myAmountKeywordRecord =
+{
+  Asset: quatloos5,
+  Price: quatloos9
+}
+```
 
 ## Allocation
 
@@ -83,25 +107,17 @@ const { quoteAmount, quotePayment } = priceQuote;
 
 ## Ratio
 
-
-These functions let you apply a ratio (a fraction) to an amount, multiplying or
-dividing an amount by a ratio of two natural numbers. Ratios consist of a
-*numerator* and a *denominator*. Both of these consist of a value and a brand,
-just like **amounts**. A ratio cannot have a denominator value of 0.
+**Ratios** are pass-by-value records that consist of a
+*numerator* and a *denominator*. Both of these consist of a
+**[Value](/reference/ertp-api/ertp-data-types.md#value)** and a **[Brand](/reference/ertp-api/brand.md)**,
+just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
+A **Ratio** cannot have a denominator value of 0.
 
 The ratio functions have to be imported.
 
-The most common kind of **Ratio** is applied to an **Amount** of a particular brand
-and produces results of the same brand.
+The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand**
+and produces results of the same **Brand**.
 
-**Ratios** can also have two brands, essentially typing them such as miles per
-hour or US dollars for Swiss francs (an exchange rate ratio) (i.e. the numerator
-is one brand and the denominator is another). Keep in mind that a ratio function
-should make sense when used with a dual-branded ratio.
+**Ratios** can also have two different **Brands**, essentially typing them such as miles per
+hour or US dollars for Swiss francs (an exchange rate ratio).
 
-For example, when multiplying an amount by a ratio, the result has the ratio
-numerator's brand.  So the amount should have the same brand as the ratio's
-denominator to cancel it out; e.g. 5 gallons * (10 miles / 1 gallon) = 50
-miles. Similarly, dividing an amount by a ratio returns a result amount with the
-denominator's brand, so the amount should be the same brand as the numerator to
-cancel it out.

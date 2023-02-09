@@ -1,13 +1,17 @@
 # ZCFMint Object
 
+An object used by the **[Zoe Contract Facet](./zoe-contract-facet.md)** to issue digital assets. It's
+very similar to the **[Mint](/reference/ertp-api/mint.md)** object, but it has a more limited set of
+methods.
 
-## ZCFMint.getIssuerRecord()
+## aZCFMint.getIssuerRecord()
   - Returns: **IssuerRecord**
 
-Returns an **issuerRecord** containing the **issuer** and **brand** associated with the **zcfMint**.
+Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer.md)** and
+**[Brand](/reference/ertp-api/brand.md)** associated with the **zcfMint**.
 
-## ZCFMint.mintGains(gains, zcfSeat?)
-  - **gains** **AmountKeywordRecord**
+## aZCFMint.mintGains(gains, zcfSeat?)
+  - **gains** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
   - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: **ZCFSeat**
 
@@ -16,17 +20,16 @@ The **gains**' keywords are in that **seat**'s namespace.
 Mint the **gains** **amount** of assets and add them to
 that **seat**'s **allocation**. If a **seat** is provided,
 it is returned. Otherwise a new **seat** is returned.
-  - **zcfMint.mintGains({ Token: amount }, seat);**
 
-## ZCFMint.burnLosses(losses, zcfSeat)
-  - **losses** **AmountKeywordRecord**
-  - **zcfSeat** **[ZCFSeat](./zcfseat.md)**
-  - Returns: **Void**
+## aZCFMint.burnLosses(losses, zcfSeat?)
+  - **losses** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
+  - Returns: None.
 
-All **amounts** in **losses** must be of this **ZCFMint**'s **brand**.
-The **losses**' keywords are in that **seat**'s namespace.
-Subtract **losses** from that **seat**'s **allocation**, then
+All **amounts** in *losses* must be of this **ZCFMint**'s **brand**.
+The *losses*' keywords are in that **seat**'s namespace.
+Subtract *losses* from that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**, then
 burn that **amount** of assets from the pooled **purse**.
-  - **zcfMint.burnLosses({ Token: amount }, seat);**getIssuerRecord()**
+
 
 

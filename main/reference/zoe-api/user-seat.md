@@ -39,18 +39,19 @@ const { want, give, exit } = sellerSeat.getProposal();
 ```
 
 ## E(UserSeat).getPayouts()
-  - Returns: **Promise&lt;PaymentPKeywordRecord>**
+  - Returns: **Promise&lt;PaymentKeywordRecord>**
 
-A **payout** is a **payment** that goes to a party in a successful transaction, redirecting
+A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction, redirecting
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
-containing all the **payout** **payments** associated with the **seat**'s offers.
+containing all the **Payout** **Payments** associated with the **seat**'s offers.
 
 ## E(UserSeat).getPayout(keyword)
-  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
+- **keyword** **String**
+- Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
-A **payout** is a **payment** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **payout**
-**payment** associated with the **keyword** argument.
+A **Payout** is a **Payment** that goes to a party in a successful transaction, redirecting
+escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **Payout**
+**Payment** associated with the *keyword* argument.
 
 ## E(UserSeat).getOfferResult()
   - Returns: **Promise&lt;OfferResult>**
@@ -58,7 +59,7 @@ escrowed assets in accordance with the result of the transaction. Returns a **Pr
 Returns a **Promise** for an **OfferResult**. The **OfferResult** can be literally anything. 
 For example, in tests
 for the Automated Refund Dapp, it's the string "The offer was accepted". In
-the Covered Call example, it's a call option, which is an assayable **invitation**
+the Covered Call example, it's a call option, which is an assayable **Invitation**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is set by the returned result of the **offerHandlers** function passed
 as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape))**.
@@ -69,14 +70,14 @@ as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvit
 Returns **true** if the seat has exited, **false** if it's still active.
 
 ## E(UserSeat).tryExit()
-  - Returns **Void**
+  - Returns: None.
 
 Note: Only works if the **seat**'s **proposal** has an **OnDemand** **exit** clause.
 Zoe's offer-safety guarantee applies no matter how a **seat**'s interaction with
 a contract ends. Under normal
 circumstances, the participant might be able to call **tryExit()**, or the
 contract might do something explicitly. On exiting, the seat holder
-gets its current **allocation** and the **seat** can no longer interact with the contract.
+gets its current **[Allocation](./zoe-data-types.md#allocation)** and the **seat** can no longer interact with the contract.
 
 
 ## E(UserSeat).numWantsSatisfied()
@@ -91,9 +92,9 @@ Returns a **Promise** for a number which indicates the result of the exited **Pr
 
 
 ## E(UserSeat).getExitSubscriber()
-- Returns: **Promise&lt;Subscriber>**
+- Returns: **Promise&lt;[Subscriber](./zoe-data-types.md#subscriber)>**
 
-TBD
+Returns the **Subscriber** for the seat.
 
 
 ## E(UserSeat).getFinalAllocation()

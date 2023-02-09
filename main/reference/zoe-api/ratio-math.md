@@ -1,38 +1,15 @@
 # Ratio Math Functions
 
-These functions let you apply a ratio (a fraction) to an amount, multiplying or
-dividing an amount by a ratio of two natural numbers. Ratios consist of a
-*numerator* and a *denominator*. Both of these consist of a value and a brand,
-just like **amounts**. A ratio cannot have a denominator value of 0.
+These functions let you apply a **[Ratio](./zoe-data-types.md#ratio)** (a fraction) to an amount, multiplying or
+dividing an amount by a ratio of two natural numbers.
 
-The ratio functions have to be imported.
-
-The most common kind of **Ratio** is applied to an **Amount** of a particular brand
-and produces results of the same brand.
-
-**Ratios** can also have two brands, essentially typing them such as miles per
-hour or US dollars for Swiss francs (an exchange rate ratio) (i.e. the numerator
-is one brand and the denominator is another). Keep in mind that a ratio function
-should make sense when used with a dual-branded ratio.
-
-For example, when multiplying an amount by a ratio, the result has the ratio
-numerator's brand.  So the amount should have the same brand as the ratio's
-denominator to cancel it out; e.g. 5 gallons * (10 miles / 1 gallon) = 50
-miles. Similarly, dividing an amount by a ratio returns a result amount with the
-denominator's brand, so the amount should be the same brand as the numerator to
-cancel it out.
-
-In order to support precision calculations, the multiplication and division
-operations require that the caller specify whether the result should be rounded
-up or down. These operations produce Amounts, so they have to end by converting
-the ratio to an integer with a division. This may require roundoff, and correct
-calculations require that the caller choose which is appropriate.
+The Ratio Math functions have to be imported.
 
 ## assertIsRatio(ratio)
 - **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: None.
 
-Throws an error if the argument is not a valid ratio.
+Throws an error if the argument is not a valid **Ratio**.
 
 Throws messages for errors:
 - **Ratio ${ratio} must be a record with 2 fields.**
@@ -49,15 +26,9 @@ assertIsRatio(aRatio);
 - **denominatorBrand)** **Brand** - Optional, defaults to the *numeratorBrand* value.
 - Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
-Returns a **Ratio**, representing a fraction and consisting of a record containing
-two **Amounts**. It is a pass-by-value record. 
+Returns a **Ratio** based on the arguments passed into the function.
 
 By default, the *denominator* is 100n (i.e., the **Ratio** is a percent). 
-
-
-A ratio has these restrictions: 
-- Both the numerator value and denominator value must be natural numbers. 
-- The denominator cannot be 0. 
 
 ```js
 // Use default values to create a ratio of 50 / 100 Quatloos
@@ -73,12 +44,7 @@ const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 
 Returns a **Ratio**, representing a fraction and consisting of an immutable pair 
 of two **Amounts**.  The *numeratorAmount* is the **Ratio's** numerator and
-the *denominatorAmount* is the **Ratio's** denominator. It is a pass-by-value 
-record. 
-
-A ratio has these restrictions: 
-- Both the numerator value and denominator value must be natural numbers. 
-- The denominator cannot be 0. 
+the *denominatorAmount* is the **Ratio's** denominator.
 
 ```js
 const fiftyCents = AmountMath.make(centsBrand, 50n);
@@ -92,7 +58,7 @@ const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s
-numerator's **Brand**. Note that the denominator **Brand** has to be the same as the **Amount** **Brand**.
+numerator's **Brand**. Note that the denominator **Brand** has to be the same as the *amount* **Brand**.
 
 The resulting **Amount** is determined by:
 1. Multiplying the *amount* value by the *ratio*'s numerator's value.
@@ -101,7 +67,7 @@ The resulting **Amount** is determined by:
   is rounded down to the next
   integer.
 
-For example, if the *amount* value is 47 and the ratio is 3 / 5, the calculation
+For example, if the *amount* value is 47 and the *ratio* is 3 / 5, the calculation
 would go
 1. 47 * 3 = 141
 2. 141 / 5 = 28.2
@@ -125,7 +91,7 @@ const exchange = floorMultiplyBy(dollars47, exchangeRatio);
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s
-numerator's **Brand**. Note that the denominator **Brand** has to be the same as the **Amount** **Brand**.
+numerator's **Brand**. Note that the denominator **Brand** has to be the same as the *amount* **Brand**.
 
 The resulting **Amount** is determined by:
 1. Multiplying the *amount* value by the *ratio*'s numerator's value.
@@ -134,7 +100,7 @@ The resulting **Amount** is determined by:
   is rounded up to the next
   integer.
 
-For example, if the *amount* value is 47 and the ratio is 3 / 5, the calculation
+For example, if the *amount* value is 47 and the *ratio* is 3 / 5, the calculation
 would go
 1. 47 * 3 = 141
 2. 141 / 5 = 28.2
@@ -158,7 +124,7 @@ const exchange = ceilMultiplyBy(dollars47, exchangeRatio);
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s
-numerator's **Brand**. Note that the denominator **Brand** has to be the same as the **Amount** **Brand**.
+numerator's **Brand**. Note that the denominator **Brand** has to be the same as the *amount* **Brand**.
 
 The resulting **Amount** is determined by:
 1. Multiplying the *amount* value by the *ratio*'s numerator's value.
@@ -166,7 +132,7 @@ The resulting **Amount** is determined by:
 3. If that results in an integer, that value is returned. Otherwise, the value
   is rounded to the nearest integer according to [banker's rounding rules](https://en.wikipedia.org/wiki/Rounding#Rounding_half_to_even).
 
-For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
+For example, if the *amount* value is 47 and the *ratio* is 3 / 5, the calculation
 would go
 1. 47 * 3 = 141
 2. 141 / 5 = 28.2
@@ -197,7 +163,7 @@ The resulting value is determined by:
 3. If that results in an integer, that value is returned. Otherwise, the value
   is rounded down to the next integer.
 
-For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
+For example, if the *amount* value is 47 and the *ratio* is 3 / 5, the calculation
 would go
 1. 47 * 5 = 235
 2. 235 / 3 = 78.33333...
@@ -228,7 +194,7 @@ The resulting value is determined by:
 3. If that results in an integer, that value is returned. Otherwise, the value
   is rounded up to the next integer.
 
-For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
+For example, if the *amount* value is 47 and the *ratio* is 3 / 5, the calculation
 would go
 1. 47 * 5 = 235
 2. 235 / 3 = 78.33333...
@@ -259,7 +225,7 @@ The resulting value is determined by:
 3. If that results in an integer, that value is returned. Otherwise, the value
   is rounded to the nearest integer according to [banker's rounding rules](https://en.wikipedia.org/wiki/Rounding#Rounding_half_to_even).
 
-For example, if the amount value is 47 and the ratio is 3 / 5, the calculation
+For example, if the *amount* value is 47 and the *ratio* is 3 / 5, the calculation
 would go
 1. 47 * 5 = 235
 2. 235 / 3 = 78.33333...
@@ -281,8 +247,8 @@ const exchange = divideBy(dollars47, exchangeRatio);
 - **ratio** **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Ratio**
 
-Returns a **Ratio** such that the **Ratio** argument's numerator is the returned value's
-denominator and the **ratio** argument's denominator is the returned value's numerator.
+Returns a **Ratio** such that the *ratio* argument's numerator is the returned value's
+denominator and the *ratio* argument's denominator is the returned value's numerator.
 
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
@@ -302,8 +268,8 @@ identical. similarly, the **Brands** of the *denominators* of *left* and
 *right* must also be identical. If either of these conditions aren't met, then no **Ratio** is returned
 and an error is thrown instead.
 
-If the *denominator* values aren't identical, then both ratios are multiplied by the lowest common
-denominator, and then the ratios are added.
+If the *denominator* values aren't identical, then both **Ratios** are multiplied by the lowest common
+denominator, and then the **Ratios** are added.
 
 For example:
 
@@ -327,7 +293,7 @@ identical. similarly, the **Brands** of the *denominators* of *left* and
 *right* must also be identical. If either of these conditions aren't met, then no **Ratio** is returned
 and an error is thrown instead.
 
-If the *denominator* values aren't identical, then both ratios are multiplied by the lowest common
+If the *denominator* values aren't identical, then both **Ratios** are multiplied by the lowest common
 denominator, and then *right* is subtracted from *left*.
 
 For example:
@@ -357,7 +323,7 @@ and an error is thrown instead.
 
 Subtracts the *ratio* argument from 1 and returns the resultant **Ratio**.
 
-This function requires the *ratio* argument to be between 0 and 1. It also requires the numerator and denominator **[Brands]((/reference/ertp-api/brand.md)** to be the same. If either of these conditions aren't met, an error is thrown and no **Ratio** is returned.
+This function requires the *ratio* argument to be between 0 and 1. It also requires the numerator and denominator **[Brands](/reference/ertp-api/brand.md)** to be the same. If either of these conditions aren't met, an error is thrown and no **Ratio** is returned.
 
 ## ratioGTE(left, right)
 - **left** **[Ratio](./zoe-data-types.md#ratio)**
@@ -366,30 +332,27 @@ This function requires the *ratio* argument to be between 0 and 1. It also requi
 
 Returns **true** if *left* is larger than or equal to *right*, **false** otherwise.
 
-An error is returned
+An error is returned if the **[Brands](/reference/ertp-api/brand.md)** of *left* and *right*
+aren't identical.
 
 ## ratiosSame(left, right)
 - **left** **[Ratio](./zoe-data-types.md#ratio)**
 - **right** **Ratio**
 - Returns: **Boolean**
 
-Returns **true** if and only if the **[Value](/reference/ertp-api/ertp-data-types.md#value)** and
-**[Brand](/reference/ertp-api/brand.md)** of the *numerator
+Returns **true** if the *left* and *right* **Ratios** are the same, **false** otherwise. Note that for
+the two **Ratios** to be considered the same, the 
+**[Value](/reference/ertp-api/ertp-data-types.md#value)** and **[Brand](/reference/ertp-api/brand.md)**
+of both the *numerator* and *denominator* of one **Ratio** must be identical to the **Value** and
+**Brand** of the *numerator* and *denominator* of the other **Ratio**. 
 
-TBD
 
 ## quantize(ratio, newDen)
 - **ratio** **[Ratio](./zoe-data-types.md#ratio)**
-- **newDen** ????
+- **newDen** **BigInt**
 - Returns: **Ratio**
 
-/**
- * Make an equivalant ratio with a new denominator
- *
- * @param {Ratio} ratio
- * @param {bigint} newDen
- * @returns {Ratio}
- */
+Creates and returns a new **Ratio** that's equivalent to the *ratio* argument, but with a new denominator specified by the *newDen* argument.
 
 ## parseRatio(numeric, numeratorBrand, denominatorBrand?)
 - **numeric** **[ParsableNumber](./zoe-data-types.md#parsablenumber)**

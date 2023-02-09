@@ -27,48 +27,17 @@ ERTP methods on a **ZCFMint** or vice versa.
 
 **Important**: On the other hand, the **[Issuer](/reference/ertp-api/issuer.md)** and **[Brand](/reference/ertp-api/brand.md)** associated with a **zcfMint**
 do have the same methods as their ERTP-derived counterparts. Assets created by a **zcfMint** are treated
-the same as ERTP **Mint**-created assets by ERTP methods.
+the same as assets created by ERTP **Mint** methods.
 
 The following demonstrates **zcf.makeZCFMint**:
 
 **Note**: The call to make the **ZCFMint** is asynchronous, but
 calls to the resulting **ZCFMint** are synchronous.
+
 ```js
 const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.COPY_SET);
 const { brand, issuer } = mySynchronousMint.getIssuerRecord();
-mySynchronousMint.mintGains({ MyKeyword: amount }, seat);
-```
-**ZCFMints** have three methods, two of which use an **AmountKeywordRecord**
-- **getIssuerRecord()**
-- **mintGains(gains, zcfSeat)**
-- **burnLosses(losses, zcfSeat)**
-
-## AmountKeywordRecord
-
-**AmountKeywordRecord** is a record in which the keys are keywords, and
-the values are **amounts**. Keywords are unique identifiers per contract,
-that tie together the **proposal**, **payments** to be escrowed, and **payouts**
-to the user. In the below example, **Asset** and **Price** are keywords.
-
-Users should submit their **payments** using keywords:
-```js
-const payments = { Asset: quatloosPayment };
-```
-
-And, users will receive their **payouts** with keywords as the keys of a **payout**:
-```js
-quatloosPurse.deposit(payout.Asset);
-```
-
-For example:
-```js
-const quatloos5 = AmountMath.make(quatloosBrand, 5n);
-const quatloos9 = AmountMath.make(quatloosBrand, 9n);
-const myAmountKeywordRecord =
-{
-  Asset: quatloos5,
-  Price: quatloos9
-}
+mySynchronousMint.mintGains({ myKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
@@ -101,11 +70,12 @@ associated with the **Issuer** value of the record:
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
-## zcf.makeInvitation(offerHandler, description, customProperties, proposalShape?)
+## zcf.makeInvitation(offerHandler, description, customProperties?, proposalShape?)
 - **offerHandler** **ZCFSeat => Object**
 - **description** **String**
-- **customProperties** **Object**
-- Returns: [**Promise&lt;Invitation>**](../ertp-api/payment.md)
+- **customProperties** **Object** - Optional.
+- **proposalShape** **[Pattern](./zoe-data-types.md#pattern)** - Optional.
+- Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
 Make a credible Zoe **invitation** for a smart contract. Note that **invitations** are a special case
 of an ERTP **payment**. They are associated with the **invitationIssuer** and its **mint**, which 
@@ -140,7 +110,7 @@ const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
 
 ## zcf.getInstance()
-- Returns: **Instance**
+- Returns: **[Instance](./zoe-data-types.md#instance)**
 
 The contract code can request its own current instance, so it can be sent elsewhere.
 
@@ -172,6 +142,7 @@ The contract requests Zoe to not accept offers for this contract instance.
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
 ## zcf.shutdown(completion)
+- **completion** **Usually (but not always) a String**
 - Returns: None.
 
 Shuts down the entire vat and contract instance and gives payouts.
@@ -183,7 +154,7 @@ Call when:
 - You want nothing more to happen in the contract, and
 - You don't want to take any more offers
 
-The **completion** argument is usually a string, but this 
+The *completion* argument is usually a **String**, but this 
 is not required. It is used for the notification sent to the
 contract instance's **done()** function. Any still open seats or
 other outstanding promises are closed with a generic 'vat terminated' 
@@ -193,15 +164,28 @@ zcf.shutdown();
 ```
 
 ## zcf.shutdownWithFailure(reason)
--**reason** **Error**
+- **reason** **Error**
 - Returns: None.
 
-TBD
+Shuts down the entire vat and contract instance due to an error.
+
+All open **seats** associated with the current **instance** have **fail()**
+called on them.
+
+The *reason* argument is a JavaScript error object. 
+It is used for the notification sent to the
+contract instance's **done()** function. Any still open seats or
+other outstanding promises are closed with the relevant 
+error message.
+
+```js
+zcf.shutdownWithFailure();
+```
 
 ## zcf.getTerms()
 - Returns: **Object**
 
-Returns the **[Issuers](/reference/ertp-api/issuers.md)**, **[Brands](/reference/ertp-api/brand.md)**, and custom **terms** the current contract **instance** was instantiated with.
+Returns the **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and custom **terms** the current contract **instance** was instantiated with.
 
 The returned values look like:
 ```js
@@ -246,7 +230,7 @@ a valid keyword, or is not unique.
 zcf.assertUniqueKeyword(keyword);
 ```
 ## zcf.reallocate(seats)
-- **seats** **ZCFSeats[]** (at least two)
+- **seats** **[ZCFSeats](./zcfseat.md)[]** (at least two)
 - Returns: None.
 
 **zcf.reallocate()** commits the staged allocations for each of its seat arguments,
