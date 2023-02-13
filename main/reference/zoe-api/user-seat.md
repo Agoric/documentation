@@ -92,9 +92,9 @@ Returns a **Promise** for a number which indicates the result of the exited **Pr
 
 
 ## E(UserSeat).getExitSubscriber()
-- Returns: **Promise&lt;[Subscriber](./zoe-data-types.md#subscriber)>**
+- Returns: **Promise&lt;Subscriber>**
 
-Returns the **Subscriber** for the seat.
+Returns a **Promise** for the **Subscriber** for the seat.
 
 
 ## E(UserSeat).getFinalAllocation()

@@ -74,7 +74,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - **offerHandler** **ZCFSeat => Object**
 - **description** **String**
 - **customProperties** **Object** - Optional.
-- **proposalShape** **[Pattern](./zoe-data-types.md#pattern)** - Optional.
+- **proposalShape** **Pattern** - Optional.
 - Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
 Make a credible Zoe **invitation** for a smart contract. Note that **invitations** are a special case

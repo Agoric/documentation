@@ -1,5 +1,58 @@
 # Zoe Data Types
 
+Zoe introduces and uses several data types.
+
+## Allocation
+
+**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting a **Proposal**.
+
+For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after successfully exiting a **Proposal**, the **Allocation** would look like:
+
+```js
+{
+  Quatloos: 5n
+  Widgets: 3n
+}
+```
+
+## AmountKeywordRecord
+
+**AmountKeywordRecord** is a record in which the keys are keywords, and
+the values are **amounts**. Keywords are unique identifiers per contract
+that tie together the **proposal**, **payments** to be escrowed, and **payouts**
+to the user. In the below example, **Asset** and **Price** are keywords.
+
+Users should submit their **payments** using keywords:
+```js
+const payments = { Asset: quatloosPayment };
+```
+
+Users will receive their **payouts** with keywords as the keys of a **payout**:
+```js
+quatloosPurse.deposit(payout.Asset);
+```
+
+For example:
+```js
+const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+const quatloos9 = AmountMath.make(quatloosBrand, 9n);
+const myAmountKeywordRecord =
+{
+  Asset: quatloos5,
+  Price: quatloos9
+}
+```
+
+## Instance
+
+**Instances** are opaque objects that represent contract instances. You can get information about them via
+these methods:
+
+- **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
+- **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
+- **[E(Zoe).getTerms()](./zoe.md#e-zoe-getterms-instance)**
+- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
+
 ## Invitation
 
 These are the details exposed by E(zoe).getInvitationDetails():
@@ -24,72 +77,30 @@ A successful call of **anInvitationIssuer.claim()** means you are assured the **
 the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
 is exclusively yours and no one else has access to it.
 
+## MutableQuote
 
+A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
+current price level at a particular time. The significant content (prices 
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated
+in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
 
-## Instance
+**MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
+value. If you just need a single quote, and won't change the trigger level, you should use
+**PriceQuotes**.
 
-**Instances** are opaque objects that represent contract instances. You can get information about them via
-these methods:
-
-- **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
-- **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
-- **[E(Zoe).getTerms()](./zoe.md#e-zoe-geterms-instance)**
-- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
+A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
+balance of the **Payment**.
 
 ## ParsableNumber
 
 A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
-
-
-## Subscription
-
-## AmountKeywordRecord
-
-**AmountKeywordRecord** is a record in which the keys are keywords, and
-the values are **amounts**. Keywords are unique identifiers per contract,
-that tie together the **proposal**, **payments** to be escrowed, and **payouts**
-to the user. In the below example, **Asset** and **Price** are keywords.
-
-Users should submit their **payments** using keywords:
-```js
-const payments = { Asset: quatloosPayment };
-```
-
-And, users will receive their **payouts** with keywords as the keys of a **payout**:
-```js
-quatloosPurse.deposit(payout.Asset);
-```
-
-For example:
-```js
-const quatloos5 = AmountMath.make(quatloosBrand, 5n);
-const quatloos9 = AmountMath.make(quatloosBrand, 9n);
-const myAmountKeywordRecord =
-{
-  Asset: quatloos5,
-  Price: quatloos9
-}
-```
-
-## Allocation
-
-**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting a **Proposal**.
-
-For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after successfully exiting a **Proposal**, the **Allocation** would look like:
-
-```js
-{
-  Quatloos: 5n
-  Widgets: 3n
-}
-```
 
 ## PriceQuote
 
 
 A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
 current price level at a particular time. The significant content (prices 
-and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and repeated
 in the **[Payment](/reference/ertp-api/payment.md)** for veracity. 
 A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
 balance of the **Payment**.

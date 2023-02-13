@@ -1,3 +1,5 @@
+# NOT CURRENTLY INCLUDED IN THE PUBLISHED DOCS; PLEASE IGNORE
+
 # MutableQuote Object
 
 Use a **MutableQuote** when you expect to make multiple calls, replacing the trigger

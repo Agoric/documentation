@@ -135,45 +135,10 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 
 ## fitProposalShape(seat, proposalShape)
 - **seat** **[ZCFSeat](./zcfseat.md)**
-- **proposalShape** **[Pattern](./zoe-data-types.md#pattern)**
+- **proposalShape** **Pattern**
 - Returns: None.
 
-/**
- * @typedef ExpectedRecord
- * @property {Record&lt;Keyword, null>} [want]
- * @property {Record&lt;pKeyword, null>} [give]
- * @property {Partial&lt;Record&lt;keyof ProposalRecord['exit'], null>>} [exit]
- */
-
-/**
- * Check the seat's proposal against `proposalShape`.
- * If the client submits an offer which does not match
- * these expectations, the seat will be exited (and payments refunded).
- *
- * @param {ZCFSeat} seat
- * @param {Pattern} proposalShape
- */
-
-/**
- * Check the seat's proposal against an `expected` record that says
- * what "shape" of proposal is acceptable.
- *
- * Note that by our current terminology, this function is misnamed because
- * we use
- * ["Shape" to refer to patterns](https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js#L56-L74),
- * and the `expected` argument is not such a pattern. Rather it is an ad-hoc
- * pattern-like special case record that is different and much less expressive.
- *
- * This ExpectedRecord is like a Proposal, but the amounts in 'want'
- * and 'give' should be null; the exit clause should specify a rule with
- * null contents. If the client submits an offer which does not match
- * these expectations, the seat will be exited (and payments refunded).
- *
- * @deprecated Use optional `proposalShape` argument to `makeInvitation` with
- * a genuine pattern.
- * @param {ZCFSeat} seat
- * @param {ExpectedRecord} expected
- */
+Checks the seat's proposal against the *proposalShape* argument. If the proposal does not match *proposalShape*, the seat will be exited and all **[Payments](/reference/ertp-api/payment.md)** will be refunded.
 
 ## assertProposalShape(seat, expected)
 - **seat** **[ZCFSeat](./zcfseat.md)**

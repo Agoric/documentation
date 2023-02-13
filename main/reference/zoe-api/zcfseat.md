@@ -12,7 +12,7 @@ to manipulate the offer. The queries and operations are as follows:
 
 
 ## aZCFSeat.getSubscriber()
-- Returns: **[Subscriber](./zoe-data-types.md#subscriber)**
+- Returns: **Subscriber**
 
 Returns the **Subscriber** for the seat.
 
