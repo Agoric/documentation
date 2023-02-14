@@ -109,6 +109,22 @@ module.exports = [
     link: '/glossary/'
   },
   {
+    text: 'New Features',
+    ariaLabel: 'New Features Menu',
+    items: [
+      {
+        text: 'Upgrade',
+        ariaLabel: 'Upgrade Temp Doc Link',
+        link: 'https://agoric.com/'
+      },      
+      {
+        text: 'Patterns',
+        ariaLabel: 'Patterns Source Code Link',
+        link: 'https://agoric.com/'
+      },
+    ]
+  },
+  {
     text: 'Learn More',
     ariaLabel: 'Learn More Menu',
     items: [
