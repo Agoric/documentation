@@ -120,7 +120,7 @@ const { value: invitationValue } =
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
-- **invitation** **Invitation](./zoe-data-types.md#invitation)**
+- **invitation** **Invitation**
 - Returns **Promise&lt;Object>**
 
 Takes an **Invitation** as an argument and returns a **Promise** for an object containing the following
@@ -182,7 +182,7 @@ Returns all the offer keywords that have been disabled, if any. Offer keywords m
 Reserved for future use.
 
 ## E(Zoe).getInstance(invitation)
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation** **Invitation**
 - Returns: **Promise&lt;[Instance](./zoe-data-types.md#instance)>**
 
 Returns a **Promise** for the contract **instance** the **invitation** is part of.
@@ -200,13 +200,13 @@ const instance = await E(Zoe).getInstance(invitation);
 ```
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation** **Invitation**
 - Returns: **Promise&lt;Pattern>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
 ## E(Zoe).getInstallation(invitation)
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation** **Invitation**
 - Returns: **Promise&lt;Installation>**
 
 Returns a **Promise** for the contract **installation** the **invitation**'s contract instance uses.

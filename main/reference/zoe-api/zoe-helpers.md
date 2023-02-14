@@ -253,7 +253,7 @@ await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 
 ## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat, offerArgs)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **invitation** **ERef&lt;[Invitation](./zoe-data-types.md#invitation)>**
+- **invitation** **ERef&lt;Invitation>**
 - **keywordMapping** **KeywordRecord**
 - **proposal** **Proposal**
 - **fromSeat** **[ZCFSeat](./zcfseat.md)**

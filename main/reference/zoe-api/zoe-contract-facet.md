@@ -75,7 +75,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - **description** **String**
 - **customProperties** **Object** - Optional.
 - **proposalShape** **Pattern** - Optional.
-- Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
+- Returns: **Promise&lt;Invitation>**
 
 Make a credible Zoe **invitation** for a smart contract. Note that **invitations** are a special case
 of an ERTP **payment**. They are associated with the **invitationIssuer** and its **mint**, which 

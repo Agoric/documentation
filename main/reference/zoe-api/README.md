@@ -8,47 +8,41 @@ The Zoe framework provides a way to write smart contracts without having to worr
 Start creating your own contract or build on any of our existing contracts.
 Explore our pre-built contracts [here](/guides/zoe/contracts/README.md).
 
-The Zoe API is divided into the following sections:
-
-- [Zoe Service](./zoe.md) - 
-  The methods for deploying and working with smart contracts.
-- [Zoe Contract Facet](./zoe-contract-facet.md) -
-  These Zoe methods can be called synchronously by contract code. A contract can use the Zoe Contract Facet (zcf) to do things like reallocate among offers or complete an offer.
-- [ZoeHelpers for writing contracts](./zoe-helpers.md) -
-  Functions that extract common contract code and patterns into
-  reusable helpers.
-- [Price Authority](./price-authority.md) -
-  Functions related to `priceAuthority` objects that provide a price feed, on-demand
-  quotes, and wakeups for various time and price conditions. See the Zoe documentation's 
-  [Price Authority section](/guides/zoe/price-authority.md).
-- [Ratio Math](./ratio-math.md) -
-  Functions that perform math operations on Amounts by ratios of two natural numbers (i.e. fractions).
-
-
-
 The Zoe API supports the following objects:
 
 | Object | Description |
 | --- | --- |
-| [Zoe Service](./zoe.md) |  |
-| [Zoe Contract Facet](./zoe-contract-facet.md) | |
-| [Price Authority](./price-authority.md) | |
-|
+| [Zoe Service](./zoe.md) | Deploy and work with smart contracts. |
+| [UserSeat](./user-seat.md) | Used outside contracts to access or manipulate offers. |
+| [Zoe Contract Facet](./zoe-contract-facet.md) | Accesses a running contract instance. |
+| [ZCFSeat](./zcfseat.md) | Used within contracts to access or manipulate offers. |
+| [ZCFMint](./zcfmint.md) | Used by the **[Zoe Contract Facet](./zoe-contract-facet.md)** to issue digital assets. |
+| [Price Authority](./price-authority.md) | Gives reliable quotes for prices. |
+
 
 
 The Zoe API uses the following libraries:
 
-| Object | Description |
+| Library | Description |
 | --- | --- |
-| [ZoeHelpers for writing contracts](./zoe-helpers.md) | |
-| [Ratio Math](./ratio-math.md) |  |
+| [ZoeHelpers](./zoe-helpers.md) | Functions that extract common contract code and patterns into reusable helpers. |
+| [Ratio Math](./ratio-math.md) | Functions that let you create and manipulate **[Ratios](./zoe-data-types.md#ratio)**. |
 
 
 The Zoe API introduces and uses the following data types:
 
 | Data Type | Description |
 | --- | --- |
-| | |
+| [Allocation](./zoe-data-types.md#allocation) | The **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting a **Proposal** |
+| [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | Records in which the keys are keywords and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
+| [Instance](./zoe-data-types.md#instance) | Opaque objects that represent contract instances. |
+| [InvitationIssuer](./zoe-data-types.md#invitationissuer) | Special types of **[Issuers](/reference/ertp-api/issuer.md)** that represent the **Issuer** that has the power to generate **Invitations** for the contract. |
+| [MutableQuote](./zoe-data-types.md#mutablequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when multiple calls, replacing the trigger value, are expected. |
+| [ParsableNumber](./zoe-data-types.md#parsablenumber) | Defined as a **bigint**, **number**, or **string** |
+| [PriceQuote](./zoe-data-types.md#pricequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when only a single calls is expected. |
+| [Ratio](./zoe-data-types.md#ratio) | Pass-by-value record that consists of a *numerator* **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a *denominator* **Amount**. |
+
+
 
 
 

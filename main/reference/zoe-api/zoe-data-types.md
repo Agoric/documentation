@@ -45,25 +45,12 @@ const myAmountKeywordRecord =
 
 ## Instance
 
-**Instances** are opaque objects that represent contract instances. You can get information about them via
-these methods:
+**Instances** are opaque objects that represent contract instances. You can get information about them via these methods:
 
 - **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
 - **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
 - **[E(Zoe).getTerms()](./zoe.md#e-zoe-getterms-instance)**
 - **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
-
-## Invitation
-
-These are the details exposed by E(zoe).getInvitationDetails():
-
-
-- **installation** **Installation**: The contract's installation in Zoe.
-- **instance** **Instance**: The contract instance this invitation is for.
-- **invitationHandle** **Handle**: A handle used to refer to this invitation.
-- **description** **String**: Describes the purpose of this **invitation**. Use it
-   to match the invitation to the role it plays in the contract.
-
 
 ## InvitationIssuer
 
@@ -96,7 +83,6 @@ balance of the **Payment**.
 A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 
 ## PriceQuote
-
 
 A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
 current price level at a particular time. The significant content (prices 
