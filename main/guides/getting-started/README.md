@@ -8,7 +8,7 @@ After installing the Agoric SDK, you can proceed to [starting a project](./start
 
 ### Automated Install
 
-If you're using VS Code as your code editor, install the official [Agoric Extension](https://marketplace.visualstudio.com/items?itemName=danbmky.agoric-vscode) to automate the install process:
+If you're using VS Code as your code editor, install the official [Agoric Extension](https://marketplace.visualstudio.com/items?itemName=danbmky.agoric-vscode) to automate the Agoric SDK install process:
 
 - Open the **Extensions** sidebar in VS Code. `View → Extensions`
 - Search for `Agoric`, choose "Agoric" by **danbmky**
