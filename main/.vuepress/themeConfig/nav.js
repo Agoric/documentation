@@ -113,14 +113,14 @@ module.exports = [
     ariaLabel: 'New Features Menu',
     items: [
       {
-        text: 'Upgrade',
-        ariaLabel: 'Upgrade Temp Doc Link',
-        link: 'https://agoric.com/'
+        text: 'Upgrading Contracts',
+        ariaLabel: 'Upgrade Contracts Doc Link',
+        link: 'https://github.com/Agoric/agoric-sdk/pull/6916'
       },      
       {
         text: 'Patterns',
         ariaLabel: 'Patterns Source Code Link',
-        link: 'https://agoric.com/'
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js'
       },
     ]
   },
