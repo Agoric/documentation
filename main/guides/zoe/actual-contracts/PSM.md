@@ -84,26 +84,26 @@ tokens you want to receive.
 	const giveMintedAmount = AmountMath.make(istBrand, 200_000_000n);
 	const wantAnchorAmount = AmountMath.make(anchorBrand, 200_000_000n);
 	```
-3. Create a proposal. Use the keywords **In** and **Out**, where **In** is the amount
+3. Create (and harden) a proposal. Use the keywords **In** and **Out**, where **In** is the amount
 of IST tokens you’re offering, and **Out** is the amount of external stable tokens you
 expect to receive. Note that because the PSM will always be able to act as the other
 trading partner, this proposal doesn’t have (or need) an exit condition.
 	```js
-	const myProposal = { 
-	  give: {In: giveMintedAmount },
-	  want: {Out: wantAnchorAmount }
-    };
+	const myProposal = harden({ 
+	  give: { In: giveMintedAmount },
+	  want: { Out: wantAnchorAmount },
+    });
 	```
 4. Create a payment record containing the IST tokens you’re trading to the PSM.
 	```js
-	const myPaymentRecord = {In: mintedPayment };
+	const myPaymentRecord = harden({ In: mintedPayment });
 	```
-5. Create the offer, remembering to harden the proposal & payment record.
+5. Create the offer.
 	```js
 	const seat = E(zoe).offer(
 	  myInvitation,
-	  harden(myProposal),
-	  harden(myPaymentRecord)
+	  myProposal,
+	  myPaymentRecord,
 	);
 	```
 
