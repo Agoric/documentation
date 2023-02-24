@@ -12,7 +12,7 @@ token for the interchain ecosystem on the Agoric chain. IST is designed to maint
 with the US dollar (USD) for broad accessibility and provides Agoric and the interchain
 ecosystem users an asset with minimum price volatility. In addition, IST is the native 
 fee token for the Agoric platform and provides some of the core functionality and stability 
-for the Agoric cryptoeconomy. Currently the PSM is the only minter of ISTs.
+for the Agoric cryptoeconomy. Currently the PSM is the only minter of IST.
 
 Which external stable tokens are supported is determined by governance in the form of a
 vote of the economic committee. Governance may elect to only support one external stable token,
