@@ -1,12 +1,12 @@
 # UserSeat Object
 
-Zoe uses **seats** to access or manipulate offers. They let contracts and users interact
-with them. Zoe has two kinds of seats. **ZCFSeats**
+Within Zoe, **seats** are used by contracts and users to access or manipulate offers.
+Zoe has two kinds of seats. **[ZCFSeats](./zcfseat.md)**
 are used within contracts and with **zcf** methods. **UserSeats** represent offers external to
-Zoe and the contract. The party who exercises an invitation and sends the **offer()** message
+Zoe and the contract. The party who exercises an **Invitation** and sends the **offer()** message
 to Zoe gets a **UserSeat** that can check payouts' status or retrieve the result of
 processing the offer in the contract. This varies, but examples
-are a **string** and an **invitation** for another seat.
+are a **String** and an **Invitation** for another seat.
 
 Also, a **UserSeat** can be handed to an agent outside Zoe and the contract, letting
 them query or monitor the current state, access the payouts and result,
@@ -22,7 +22,7 @@ and an operation to request that the offer exit, as follows:
   - Returns: **Promise&lt;ProposalRecord>**
 
 A **Proposal** is represented by a **ProposalRecord**. It is the rules
-accompanying the escrow of **payments** dictating what the user expects
+accompanying the escrow of **[Payments](/reference/ertp-api/payment.md)** dictating what the user expects
 to get back from Zoe. It has keys **give**, **want**, and
 **exit**. **give** and **want** are records with keywords as keys and
 **amounts** as values. If it is compatible with the contract, the
@@ -62,7 +62,7 @@ for the Automated Refund Dapp, it's the string "The offer was accepted". In
 the Covered Call example, it's a call option, which is an assayable **Invitation**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is set by the returned result of the **offerHandlers** function passed
-as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape))**.
+as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape)**.
 
 ## E(UserSeat).hasExited()
   - Returns: **Promise&lt;Boolean>**

@@ -30,17 +30,17 @@ A **BrandKeywordRecord** is an object where the keys are keywords,
 and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer.md)**.
 
 ```js
-// Call example
-const brandKeywordRecord = await E(Zoe).getBrands(instance);
-```
-
-```js
 // Record example
 const brandKeywordRecord = {
   FirstCurrency: quatloosBrand,
   SecondCurrency: moolaBrand,
   //etc.
 };
+```
+
+```js
+// Call example
+const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```
 
 ## E(Zoe).getIssuers(instance)
@@ -53,16 +53,16 @@ An **IssuerKeywordRecord** is an object where the keys are keywords,
 and the values are **Issuers**.
 
 ```js
-// Call example
-const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
-```
-
-```js
 // Record example
 const issuerKeywordRecord = {
   FirstCurrency: quatloosIssuer,
   SecondCurrency: moolaIssuer,
 };
+```
+
+```js
+// Call example
+const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```
 
 ## E(Zoe).getTerms(instance)
@@ -73,10 +73,8 @@ Returns a **Promise** for the terms of the *instance* argument, including its **
 custom terms. The returned values look like:
 
 ```js
-{ brands, issuers, customTermA, customTermB ... }
-//where brands and issuers are keywordRecords, like:
-
 {
+  //brands and issuers are keywordRecords
   brands: { A: moolaKit.brand, B: simoleanKit.brand },
   issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
   customTermA: 'something',
@@ -114,9 +112,9 @@ const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // Here a user, Bob, has received an untrusted invitation from Alice.
 // Bob uses the trusted **InvitationIssuer** from Zoe to
 // transform the untrusted invitation to a trusted one
-const invitation = await invitationIssuer.claim(untrustedInvitation);
+const trustedInvitation = await invitationIssuer.claim(untrustedInvitation);
 const { value: invitationValue } =
-    await E(invitationIssuer).getAmountOf(invitation);
+    await E(invitationIssuer).getAmountOf(trustedInvitation);
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
@@ -155,31 +153,18 @@ const installationP = await E(Zoe).install(bundle);
 ## E(Zoe).getConfiguration()
 - Returns: **Promise&lt;Object>**
 
-Returns the configuration settings for the Zoe contract.
+Returns a **Promise** for the configuration settings for the Zoe contract.
 
 ## E(Zoe).getFeeIssuer()
 - Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
 
 Returns a **Promise** for an **Issuer** that can mint ISTs.
 
-## E(Zoe).installBundleID(bundleId)
-- bundleId **BundleId**
-- Returns: **Promise&lt;Installation>**
-
-Reserved for future use.
-
-
 ## E(Zoe).getOfferFilter(instance)
 - **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Array&lt;String>**
 
 Returns all the offer keywords that have been disabled, if any. Offer keywords may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
-
-## E(Zoe).getBundleIDFromInstallation(installation) 
-- **installation** **Installation**
-- Returns: **Promise&lt;BundleId>**
-
-Reserved for future use.
 
 ## E(Zoe).getInstance(invitation)
 - **invitation** **Invitation**
@@ -313,7 +298,7 @@ All contracts each run in a new vat with their own version of the
 Zoe Contract Facet. There is one vat that contains the Zoe Service.
 :::
 
-## Proposals and Payments
+### Proposals and Payments
 
 The invocation normally includes a **proposal** (the
 rules under which they want to exercise the offer) and **payments** that correspond 
@@ -356,7 +341,7 @@ const paymentKeywordRecord = {
 };
 ```
 
-## OfferArgs
+### OfferArgs
 
 *offerArgs* is an object that can be used to pass
 additional arguments to the **offerHandler** contract code associated
@@ -371,4 +356,15 @@ Contract code should be careful interacting with *offerArgs*. These values need 
 before being used by the contract code since they are coming directly from the user and may
 have malicious behavior.
 
+## E(Zoe).installBundleID(bundleId)
+- bundleId **BundleId**
+- Returns: **Promise&lt;Installation>**
+
+Reserved for future use.
+
+## E(Zoe).getBundleIDFromInstallation(installation) 
+- **installation** **Installation**
+- Returns: **Promise&lt;BundleId>**
+
+Reserved for future use.
 

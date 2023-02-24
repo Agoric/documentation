@@ -4,6 +4,8 @@ An object used by the **[Zoe Contract Facet](./zoe-contract-facet.md)** to issue
 very similar to the **[Mint](/reference/ertp-api/mint.md)** object, but it has a more limited set of
 methods.
 
+**ZCFMints** are created and returned by **Zoe Contract Facet's** **[zcf.makeZCFMint()](./zoe-contract-facet.md#zcf-makezcfmint-keyword-assetKind-displayInfo)** method.
+
 ## aZCFMint.getIssuerRecord()
   - Returns: **IssuerRecord**
 
@@ -15,10 +17,10 @@ Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer
   - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: **ZCFSeat**
 
-All **amounts** in **gains** must be of this **ZCFMint**'s **brand**.
-The **gains**' keywords are in that **seat**'s namespace.
-Mint the **gains** **amount** of assets and add them to
-that **seat**'s **allocation**. If a **seat** is provided,
+All **amounts** in *gains* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
+The *gains*' keywords are in that **seat**'s namespace.
+Mint the *gains* **Amount** of assets and add them to
+that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** is provided,
 it is returned. Otherwise a new **seat** is returned.
 
 ## aZCFMint.burnLosses(losses, zcfSeat?)
@@ -26,10 +28,10 @@ it is returned. Otherwise a new **seat** is returned.
   - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: None.
 
-All **amounts** in *losses* must be of this **ZCFMint**'s **brand**.
+All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
 The *losses*' keywords are in that **seat**'s namespace.
 Subtract *losses* from that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**, then
-burn that **amount** of assets from the pooled **purse**.
+burn that **amount** of assets from the pooled **[Purse](/reference/ertp-api/purse.md)**.
 
 
 
