@@ -69,7 +69,7 @@ const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 - **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;Object>**
 
-Returns a **Promise** for the terms of the *instance* argument, including its **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and any
+Returns a **Promise** for the terms of the *instance* argument, including its **[Brands](/reference/ertp-api/brand.md)**, **[Issuers](/reference/ertp-api/issuer.md)**, and any
 custom terms. The returned values look like:
 
 ```js
@@ -222,10 +222,11 @@ const installation = await E(Zoe).getInstallationForInstance(instance);
 - Returns: **Promise&lt;StartInstanceResult>**
 
 Creates an instance of the installed smart contract specified by
-the *installation* argument.
+the *installation* argument. All contracts each run in a new vat with their own version of the
+Zoe Contract Facet. There is one vat that contains the Zoe Service.
 
-The **issuerKeywordRecord** is an optional record mapping string names (keywords)
-to issuers, such as **FirstCurrency: quatlooIssuer**. Keywords must begin
+The *issuerKeywordRecord* is an optional record mapping string names (keywords)
+to **[Issuers](/reference/ertp-api/issuer.md)**, such as **FirstCurrency: quatlooIssuer**. Keywords must begin
 with a capital letter and must be ASCII. Parties to the contract will
 use the keywords to index their proposal and their payments.
 
@@ -283,6 +284,7 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
   installation, issuerKeywordRecord, terms);
 ```
 
+
 ## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs)
 - **invitation** **Invitation|Promise&lt;Invitation>**
 - **proposal** **Proposal** - Optional.
@@ -290,13 +292,8 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
 - **offerArgs** **Object**
 - Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
-Used to make an offer to the contract that created the **invitation** that is
+Used to make an offer to the contract that created the **Invitation** that is
 provided as the first argument.
-
-::: tip Vat per Contract
-All contracts each run in a new vat with their own version of the
-Zoe Contract Facet. There is one vat that contains the Zoe Service.
-:::
 
 ### Proposals and Payments
 

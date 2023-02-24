@@ -272,3 +272,17 @@ sellerSeat.incrementBy(buyerSeat.decrementBy({ Money: providedMoney }));
 buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
 zcf.reallocate(buyerSeat, sellerSeat);
 ```
+
+## zcf.setOfferFilter(strings)
+- **strings** **Array&lt;String>**
+- Returns: None.
+
+Disables all the offer keywords contained in the *strings* argument, preventing any users from using or accessing the specified keywords. This might be done either to disable keywords that are proving problematic or to debug undesirable behavior.
+
+Note that a keyword can be re-enabled by calling this method again and simply not including the keyword in the *strings* argument.
+
+## zcf.getOfferFilter()
+- Returns: **Array&lt;String>**
+
+Returns all the offer keywords that have been disabled, if any. Offer keywords may be disabled using
+the **[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method if they prove problematic in some fashion, or to debug undesired behavior.

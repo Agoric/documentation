@@ -4,7 +4,7 @@ An object used by the **[Zoe Contract Facet](./zoe-contract-facet.md)** to issue
 very similar to the **[Mint](/reference/ertp-api/mint.md)** object, but it has a more limited set of
 methods.
 
-**ZCFMints** are created and returned by **Zoe Contract Facet's** **[zcf.makeZCFMint()](./zoe-contract-facet.md#zcf-makezcfmint-keyword-assetKind-displayInfo)** method.
+**ZCFMints** are created and returned by **Zoe Contract Facet's** **[zcf.makeZCFMint()](./zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo)** method.
 
 ## aZCFMint.getIssuerRecord()
   - Returns: **IssuerRecord**
