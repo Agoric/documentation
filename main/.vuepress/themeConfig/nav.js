@@ -120,7 +120,7 @@ module.exports = [
       {
         text: 'Patterns',
         ariaLabel: 'Patterns Source Code Link',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js/'
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js'
       },
       {
         text: 'Smart Wallet',
@@ -130,7 +130,7 @@ module.exports = [
       {
         text: 'Upgrading Contracts',
         ariaLabel: 'Upgrade Contracts Doc Link',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade/'
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade'
       },   
     ]
   },
