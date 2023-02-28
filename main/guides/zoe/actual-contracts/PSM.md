@@ -20,7 +20,8 @@ in which case only one PSM will be instantiated.
 
 ## Instantiating the PSM
 
-There will be one instance of the PSM for each supported external stable token. 
+Each PSM instance pairs IST with one other token. To allow trading IST with
+multiple tokens, instantiate the PSM contract once for each.
 
 ## Creating an Offer
 
