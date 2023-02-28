@@ -17,17 +17,17 @@ For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after su
 
 ## AmountKeywordRecord
 
-**AmountKeywordRecord** is a record in which the keys are keywords, and
-the values are **amounts**. Keywords are unique identifiers per contract
+**AmountKeywordRecord** is a record in which the property names are **[Keywords](#keywords)**, and
+the values are **amounts**. **Keywords** are unique identifiers per contract
 that tie together the **proposal**, **payments** to be escrowed, and **payouts**
-to the user. In the below example, **Asset** and **Price** are keywords.
+to the user. In the below example, **Asset** and **Price** are **Keywords**.
 
-Users should submit their **payments** using keywords:
+Users should submit their **payments** using **Keywords**:
 ```js
 const payments = { Asset: quatloosPayment };
 ```
 
-Users will receive their **payouts** with keywords as the keys of a **payout**:
+Users will receive their **payouts** with **Keywords** as the keys of a **payout**:
 ```js
 quatloosPurse.deposit(payout.Asset);
 ```
@@ -45,7 +45,7 @@ const myAmountKeywordRecord =
 
 ## Instance
 
-**Instances** are opaque objects that represent contract instances. You can get information about them via these methods:
+**Instances** are handles to opaque objects that represent contract instances. You can get information about them via these methods:
 
 - **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
 - **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
@@ -63,6 +63,10 @@ from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instanc
 A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into
 the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
 is exclusively yours and no one else has access to it.
+
+## Keyword
+
+An ASCII identifier string that must begin with an upper case letter.
 
 ## MutableQuote
 

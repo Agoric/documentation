@@ -16,12 +16,11 @@ The Zoe API supports the following objects:
 | [UserSeat](./user-seat.md) | Used outside contracts to access or manipulate offers. |
 | [Zoe Contract Facet](./zoe-contract-facet.md) | Accesses a running contract instance. |
 | [ZCFSeat](./zcfseat.md) | Used within contracts to access or manipulate offers. |
-| [ZCFMint](./zcfmint.md) | Used by the **[Zoe Contract Facet](./zoe-contract-facet.md)** to issue digital assets. |
-| [Price Authority](./price-authority.md) | Gives reliable quotes for prices. |
+| [ZCFMint](./zcfmint.md) | Used by a contract to issue digital assets. |
+| [Price Authority](./price-authority.md) | Gives quotes for prices. |
 
 
-
-The Zoe API uses the following libraries:
+The Zoe API provides the following libraries:
 
 | Library | Description |
 | --- | --- |
@@ -33,12 +32,13 @@ The Zoe API introduces and uses the following data types:
 
 | Data Type | Description |
 | --- | --- |
-| [Allocation](./zoe-data-types.md#allocation) | The **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting a **Proposal** |
-| [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | Records in which the keys are keywords and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
-| [Instance](./zoe-data-types.md#instance) | Opaque objects that represent contract instances. |
+| [Allocation](./zoe-data-types.md#allocation) | The **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting an **Offer**. |
+| [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | Records in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
+| [Instance](./zoe-data-types.md#instance) | A handle to an opaque object that represents a contract instance. |
 | [InvitationIssuer](./zoe-data-types.md#invitationissuer) | Special types of **[Issuers](/reference/ertp-api/issuer.md)** that represent the **Issuer** that has the power to generate **Invitations** for the contract. |
+| [Keyword](./zoe-data-types.md#keyword) | An ASCII identifier string that must begin with an upper case letter. |
 | [MutableQuote](./zoe-data-types.md#mutablequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when multiple calls, replacing the trigger value, are expected. |
-| [ParsableNumber](./zoe-data-types.md#parsablenumber) | Defined as a **bigint**, **number**, or **string** |
+| [ParsableNumber](./zoe-data-types.md#parsablenumber) | Defined as a **bigint**, **number**, or **string**. |
 | [PriceQuote](./zoe-data-types.md#pricequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when only a single calls is expected. |
 | [Ratio](./zoe-data-types.md#ratio) | Pass-by-value record that consists of a *numerator* **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a *denominator* **Amount**. |
 
