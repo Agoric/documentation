@@ -26,7 +26,7 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 
 Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
 
-A **BrandKeywordRecord** is an object where the keys are keywords,
+A **BrandKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types.md#keyword)**,
 and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer.md)**.
 
 ```js
@@ -49,7 +49,7 @@ const brandKeywordRecord = await E(Zoe).getBrands(instance);
 
 Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
 
-An **IssuerKeywordRecord** is an object where the keys are keywords,
+An **IssuerKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types.md#keyword)**,
 and the values are **Issuers**.
 
 ```js
@@ -164,7 +164,7 @@ Returns a **Promise** for an **Issuer** that can mint ISTs.
 - **instance** **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Array&lt;String>**
 
-Returns all the offer keywords that have been disabled, if any. Offer keywords may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
+Returns all the offer **[Keywords](./zoe-data-types.md#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
 
 ## E(Zoe).getInstance(invitation)
 - **invitation** **Invitation**
@@ -225,10 +225,9 @@ Creates an instance of the installed smart contract specified by
 the *installation* argument. All contracts each run in a new vat with their own version of the
 Zoe Contract Facet. There is one vat that contains the Zoe Service.
 
-The *issuerKeywordRecord* is an optional record mapping string names (keywords)
-to **[Issuers](/reference/ertp-api/issuer.md)**, such as **FirstCurrency: quatlooIssuer**. Keywords must begin
-with a capital letter and must be ASCII. Parties to the contract will
-use the keywords to index their proposal and their payments.
+The *issuerKeywordRecord* is an optional object mapping **[Keywords](./zoe-data-types.md#keyword)**
+to **[Issuers](/reference/ertp-api/issuer.md)**, such as **FirstCurrency: quatlooIssuer**.
+Parties to the contract will use the **Keywords** to index their proposal and their payments.
 
 The **terms** are values used by this contract instance, such as the
 number of bids an auction w ill wait for before closing. These values may
@@ -325,7 +324,7 @@ const myProposal = harden({
 })
 ```
 
-**paymentKeywordRecord** is a record with keywords as keys, with
+**paymentKeywordRecord** is a record with **[Keywords](./zoe-data-types.md#keyword)** as keys and with
  values of the actual **payments** to be escrowed. A **payment** is
  expected for every entry under **give**.
 
