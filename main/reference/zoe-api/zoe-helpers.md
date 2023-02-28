@@ -24,9 +24,9 @@ and **zcf** is passed in as a parameter to **start()**.
 - **expected** **Array&lt;String>**
 - Returns: None.
 
-Checks that the keywords in the *expected* argument match what the contract expects. 
-The function throws an error if incorrect or extra keywords are passed
-in, or if there are keywords missing. The keyword order is irrelevant.
+Checks that the **[Keywords](./zoe-data-types.md#keyword)** in the *expected* argument match what the contract expects. 
+The function throws an error if incorrect or extra **Keywords** are passed
+in, or if there are **Keywords** missing. The **Keyword** order is irrelevant.
 
 ```js
 import {
@@ -47,8 +47,8 @@ Returns **true** if an update to a **seat**'s **currentAllocation** satisfies it
 **proposal.want**. Note this is half of the offer safety check; 
 it does not check if the **[Allocation](./zoe-data-types.md#allocation)** constitutes a refund.
 The update is merged with **currentAllocation** such that
-*update*'s values prevail if the keywords are the same. If they
-are not the same, the **keyword** and **value** is just added to the **currentAllocation**.
+*update*'s values prevail if the **[Keywords](./zoe-data-types.md#keyword)** are the same. If they
+are not the same, the **Keyword** and **value** is just added to the **currentAllocation**.
 
 The following example code uses **satisfies()** to define a **satisfiedBy()** comparison
 function between two **seats**. It checks if the second **seat** argument's *currentAllocation*
@@ -77,7 +77,7 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
 For both **seats**, everything a **seat** wants is given to it, having been
 taken from the other **seat**. **swap()** exits both **seats**.
 Use **swap()** when all of these are true:
-  - Both **seats** use the same keywords.
+  - Both **seats** use the same **[Keywords](./zoe-data-types.md#keyword)**.
   - The **seats**' wants can be fulfilled from the other **seat**.
   - No further **seat** interaction is desired.
 
@@ -111,13 +111,13 @@ Use **swapExact()** when both of these are true:
   - The **seats**' wants can be fulfilled from the other **seat**.
   - No further **seat** interaction is desired.
 
-Note that unlike the **swap()** function, *leftSeat* and *rightSeat* don't necessarily use the same keywords.
+Note that unlike the **swap()** function, *leftSeat* and *rightSeat* don't necessarily use the same **[Keywords](./zoe-data-types.md#keyword)**.
 
 **swapExact()** is a special case of **swap()** such that it is successful only
 if both seats gain everything they want and lose everything they were willing to give.
 It is only good for exact and entire swaps where each
 seat wants everything that the other seat has. The benefit of using
-this method is that the keywords of each seat do not matter.
+this method is that the **Keywords** of each seat do not matter.
 
 If the two **seats** can trade, they swap their compatible assets,
 exiting both **seats**. It returns the message **The offer has been accepted. 
@@ -148,9 +148,9 @@ Checks the seat's proposal against the *proposalShape* argument. If the proposal
 Checks the seat's proposal against an *expected* record that says
 what shape of proposal is acceptable.
  
-By "shape", we mean the **give**, **want**, and **exit** rule keywords of the proposal must be equal to 
-those in *expected*. Note that **exit** rule keywords are optional in *expected*. Also, none of the 
-values of those keywords are checked.
+By "shape", we mean the **give**, **want**, and **exit** rule **[Keywords](./zoe-data-types.md#keyword)** of the proposal must be equal to 
+those in *expected*. Note that **exit** rule **Keywords** are optional in *expected*. Also, none of the 
+values of those **Keywords** are checked.
 
 This **ExpectedRecord** is like a **Proposal**, but the amounts in **want**
 and **give** should be **null**; the **exit** clause should specify a rule with
@@ -200,7 +200,7 @@ assertNatAssetKind(zcf, quatloosBrand);
 
 Deposits payments such that their amounts are reallocated to a seat.
 The **amounts** and **payments** records must have corresponding
-keywords.
+**[Keywords](./zoe-data-types.md#keyword)**.
 
 If the seat has exited, aborts with the message **The recipientSeat cannot have exited.**
 
@@ -214,14 +214,14 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 ```
 
 ## withdrawFromSeat(zcf, seat, amounts)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md) **
+- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat** **[ZCFSeat](./zcfseat.md)**
 - **amounts** **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
 - Returns: **Promise&lt;PaymentKeywordRecord>**
 
 Withdraws payments from a seat. Note that withdrawing the amounts of
 the payments must not and cannot violate offer safety for the seat. The
-**amounts** and **payments** records must have corresponding keywords.
+**amounts** and **payments** records must have corresponding **[Keywords](./zoe-data-types.md#keyword)**.
 
 If the seat has exited, aborts with the message **The seat cannot have exited.**
 
@@ -241,7 +241,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
 
-This does **not** error if any of the keywords already exist. If the keyword is
+This does **not** error if any of the [Keywords](./zoe-data-types.md#keyword) already exist. If the **Keyword** is
 already present, it is ignored.
 
 ```js
@@ -276,10 +276,10 @@ do not have to be instances of the same contract.
 *zcf* is contractA's Zoe contract facet. The *invitation* parameter is an invitation 
 to contractB. The *proposal* parameter is the proposal part of the offer made to contractB.
 
-*keywordMapping* is a record of the keywords used in contractA mapped to the 
-keywords for contractB. Note that the pathway to deposit the payout back to
-contractA reverses this mapping. It looks like this, where the keywords are
-from the contracts indicated by using "A" or "B" in the keyword name.
+*keywordMapping* is a record of the **[Keywords](./zoe-data-types.md#keyword)** used in contractA mapped to the 
+**Keywords** for contractB. Note that the pathway to deposit the payout back to
+contractA reverses this mapping. It looks like this, where the **Keywords** are
+from the contracts indicated by using "A" or "B" in the **Keyword** name.
 ```js
 // Map the keywords in contractA to the keywords in contractB
   const keywordMapping = harden({

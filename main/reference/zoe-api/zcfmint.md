@@ -18,7 +18,7 @@ Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer
   - Returns: **ZCFSeat**
 
 All **amounts** in *gains* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
-The *gains*' keywords are in that **seat**'s namespace.
+The *gains*' **[Keywords](./zoe-data-types.md#keyword)** are in that **seat**'s namespace.
 Mint the *gains* **Amount** of assets and add them to
 that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** is provided,
 it is returned. Otherwise a new **seat** is returned.
@@ -29,7 +29,7 @@ it is returned. Otherwise a new **seat** is returned.
   - Returns: None.
 
 All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
-The *losses*' keywords are in that **seat**'s namespace.
+The *losses*' **[Keywords](./zoe-data-types.md#keyword)** are in that **seat**'s namespace.
 Subtract *losses* from that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**, then
 burn that **amount** of assets from the pooled **[Purse](/reference/ertp-api/purse.md)**.
 

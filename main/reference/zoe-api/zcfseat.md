@@ -42,7 +42,7 @@ The **completion** argument is usually a string, but this is not required. Its
 only use is for the notification sent to the contract instance's **done()** function. 
 Any other still open seats or outstanding promises and the contract instance continue.
 
-**Note**: You should not use **ZCFSeat.exit()** when exiting with an error. Use the method **[ZCFSeat.fail()](#azcfseat-fail-msg)** instead. 
+**Note**: You should not use **aZCFSeat.exit()** when exiting with an error. Use the method **[aZCFSeat.fail()](#azcfseat-fail-msg)** instead. 
 
 ## aZCFSeat.fail(msg)
    - **msg** **String**
@@ -66,28 +66,28 @@ throw seat.fail(Error('you did it wrong'));
 Returns **true** if the **ZCFSeat** has exited, **false** if it is still active.
 
 ## aZCFSeat.getAmountAllocated(keyword, brand)
-  - **keyword** **String**
+  - **keyword** **[Keyword](./zoe-data-types.md#keyword)**
   - **brand** **[Brand](/reference/ertp-api/brand.md)**
   - Returns: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
 
 Returns the **Amount** from the part of the **[Allocation](./zoe-data-types.md#allocation)** that matches the
 *keyword* and *brand*. If the *keyword* is not in the **Allocation**, it
 returns an empty **Amount** of the *brand* argument. (After
-**ZCFSeat.exit()** has been called, it continues to report the final allocation balance, 
+**aZCFSeat.exit()** has been called, it continues to report the final allocation balance, 
 which was transferred to a payout.)
 
 This is similar to the next method, **getCurrentAllocation()**. **getAmountAllocated()**
-gets the **Allocation** of one keyword at a time, while **getCurrentAllocation()** returns
+gets the **Allocation** of one **Keyword** at a time, while **getCurrentAllocation()** returns
 all the current **Allocations** at once.
 
 ## aZCFSeat.getCurrentAllocation()
   - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
 An **Allocation** is an **AmountKeywordRecord** of key-value pairs where
-the key is a keyword such as **Asset** or **Price** applicable to the
-contract. The value is an **amount** with its **value** and **brand**.
+the key is a **[Keyword](./zoe-data-types.md#keyword)** such as **Asset** or **Price** applicable to the
+contract. The value is an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** with its **value** and **brand**.
 
-**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid
+**Allocations** represent the **Amounts** to be paid
 out to each **seat** on exit. (After
 **exit()** has been called, the final allocation balances, which were transferred to
 payouts, continue to be reported.)
@@ -135,7 +135,7 @@ same **amountKeywordRecord** so it can be reused in another call. Note that this
 **zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))** work as a usage pattern. 
 
 Note that you can add amounts to original or staged allocations which do not have the
-specified keyword for the amount. The result is for the keyword and amount to become part
+specified **[Keyword](./zoe-data-types.md#keyword)** for the amount. The result is for the **Keyword** and amount to become part
 of the allocation. For example, if we start with a new, empty, allocation:
 ```js
 // Make an empty seat.
@@ -160,11 +160,11 @@ Subtracts the **amountKeywordRecord** argument from the **ZCFseat**'s staged all
 same **amountKeywordRecord** so it can be used in another call.  Note that this lets
 **zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))** work as a usage pattern.  
 
-The amounts to subtract cannot be greater than the staged allocation (i.e. negative 
+The amounts to subtract cannot be greater than the staged allocation (i.e., negative 
 results are not allowed).
 
 **decrementBy()** has different behavior from **incrementBy()** if the original or staged allocation 
-does not have the keyword specified for an amount in the **amountKeywordRecord** argument. There are two
+does not have the **[Keyword](./zoe-data-types.md#keyword)** specified for an amount in the **amountKeywordRecord** argument. There are two
 cases to look at; when the corresponding amount to subtract is empty and when it isn't. 
 ```js
 // Make an empty seat.
@@ -176,12 +176,12 @@ const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
 zcfSeat1.decrementBy({ IST: empty });
 t.deepEqual(zcfSeat1.getStagedAllocation(), {});
 ```
-The result here is **not** to add the keyword to the allocation. It wasn't there to begin with, and
+The result here is **not** to add the **Keyword** to the allocation. It wasn't there to begin with, and
 the operation was to try to subtract it from the allocation. Subtracting something that's not there
 does not add it to the original value. For example, if I tell you I'm taking away the Mona Lisa from
 you and you are not the Louvre and don't have it, you still don't have it after I try to take it away.
 In the above example, trying to take away an empty amount from an empty allocation is effectively a
-null operation; the allocation is still empty, didn't add the new keyword, and no error is thrown. 
+null operation; the allocation is still empty, didn't add the new **Keyword**, and no error is thrown. 
 
 However, decrementing a non-empty amount from an empty allocation has a different result. For example:
 ```js
