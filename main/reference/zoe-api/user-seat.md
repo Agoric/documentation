@@ -24,8 +24,8 @@ and an operation to request that the offer exit, as follows:
 A **Proposal** is represented by a **ProposalRecord**. It is the rules
 accompanying the escrow of **[Payments](/reference/ertp-api/payment.md)** dictating what the user expects
 to get back from Zoe. It has keys **give**, **want**, and
-**exit**. **give** and **want** are records with keywords as keys and
-**amounts** as values. If it is compatible with the contract, the
+**exit**. **give** and **want** are records with **[Keywords](./zoe-data-types.md#keyword)** as keys and
+**[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** as values. If it is compatible with the contract, the
 contract tries to satisfy it. If not, the contract kicks the **seat** out.
 
 Offer safety is always enforced; if kicked out, the user gets back
@@ -45,8 +45,9 @@ A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a p
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
 containing all the **Payout** **Payments** associated with the **seat**'s offers.
 
+
 ## E(UserSeat).getPayout(keyword)
-- **keyword** **String**
+- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
 A **Payout** is a **Payment** that goes to a party in a successful transaction, redirecting

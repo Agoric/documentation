@@ -11,7 +11,7 @@ the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/c
 In the operations below, **instance** is the handle for the running contract instance.
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
-- **keyword** **String**
+- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
 - **assetKind** **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
 - **displayInfo** **[DisplayInfo](/reference/ertp-api/ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
 - Returns: **Promise&lt;[ZCFMint](./zcfmint.md)>**
@@ -51,7 +51,7 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 
 ## zcf.saveIssuer(issuer, keyword)
 - **issuer** **[Issuer](/reference/ertp-api/issuer.md)**
-- **keyword** **String**
+- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Promise&lt;IssuerRecord>**
 
 Informs Zoe about an **Issuer** and returns a promise for acknowledging
@@ -220,12 +220,12 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
 
 ## zcf.assertUniqueKeyword(keyword)
-- **keyword** **String**
+- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Undefined**
 
-Checks if a keyword is valid and not already used as a **brand** in this **instance** (i.e. unique)
+Checks if a **Keyword** is valid and not already used as a **Brand** in this **Instance** (i.e., unique)
 and could be used as a new **Brand** to make an **Issuer**. Throws an appropriate error if it's not
-a valid keyword, or is not unique.
+a valid **Keyword**, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
@@ -277,12 +277,12 @@ zcf.reallocate(buyerSeat, sellerSeat);
 - **strings** **Array&lt;String>**
 - Returns: None.
 
-Disables all the offer keywords contained in the *strings* argument, preventing any users from using or accessing the specified keywords. This might be done either to disable keywords that are proving problematic or to debug undesirable behavior.
+Disables all the offer **[Keywords](./zoe-data-types.md#keyword)** contained in the *strings* argument, preventing any users from using or accessing the specified **Keywords**. This might be done either to disable **Keywords** that are proving problematic or to debug undesirable behavior.
 
-Note that a keyword can be re-enabled by calling this method again and simply not including the keyword in the *strings* argument.
+Note that a **Keyword** can be re-enabled by calling this method again and simply not including the **Keyword** in the *strings* argument.
 
 ## zcf.getOfferFilter()
 - Returns: **Array&lt;String>**
 
-Returns all the offer keywords that have been disabled, if any. Offer keywords may be disabled using
+Returns all the offer **[Keywords](./zoe-data-types.md#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled using
 the **[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method if they prove problematic in some fashion, or to debug undesired behavior.
