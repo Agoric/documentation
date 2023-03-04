@@ -157,7 +157,7 @@ test('ertp guide issuers and mints payment methods', async t => {
   // total amounts in badQuatloosAmounts equal 20, when it should equal 1000
   const badQuatloosAmounts = Array(2).fill(AmountMath.make(quatloosBrand, 10n));
   // throws error
-  t.throwsAsync(
+  await t.throwsAsync(
     () =>
       quatloosIssuer.splitMany(
         anotherQuatloosPayment,
