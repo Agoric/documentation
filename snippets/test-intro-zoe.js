@@ -68,7 +68,9 @@ test('intro to zoe', async t => {
 
   // #region details
   const invitationDetails = await E(zoe).getInvitationDetails(invitation);
-  const { installation, asset, price } = invitationDetails;
+  const { installation, customDetails } = invitationDetails;
+  assert(typeof customDetails === 'object');
+  const { asset, price } = customDetails;
   // #endregion details
 
   // #region isCorrectCode

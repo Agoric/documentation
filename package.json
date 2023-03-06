@@ -87,6 +87,7 @@
       "es6": true
     },
     "globals": {
+      "assert": "readonly",
       "harden": "readonly"
     },
     "rules": {
