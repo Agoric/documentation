@@ -12,7 +12,8 @@ If you wish to restore from a recent community snapshot, please follow the instr
 |         | agoric-upgrade-6     |     5,901,622  | 31c78ba3aa872b54c4de448763c5b8044b8f950c |    ag0     | agoric/ag0:agoric-upgrade-6    |
 |         | agoric-upgrade-7-2   |     6,263,783  | f4759c9f15b869c453f847a63ba734cacb9a991a |    ag0     | agoric/ag0:agoric-upgrade-7-2  |
 |         | agoric-upgrade-8     |     7,179,262  | 2c812d22161cd297587979b262eab6e2cc76e23d |    agd     |      agoric/agoric-sdk:29      |
-| Current | agoric-upgrade-8-1   |     7,179,262  | 08ca9d4fd8413da59b73d53e12851fe00583ddc1 |    agd     |      agoric/agoric-sdk:30      |
+|         | agoric-upgrade-8-1   |     7,179,262  | 08ca9d4fd8413da59b73d53e12851fe00583ddc1 |    agd     |      agoric/agoric-sdk:30      |
+| Current | agoric-upgrade-9.    |     8,941,749  | 636c850161d29c0368b4dec03c90e2674e8d6479 |    agd     |      agoric/agoric-sdk:31      |
 
 #### A note on syncing from genesis
 
@@ -70,6 +71,7 @@ noted in the readme.
 
 1. `git clone https://github.com/agoric/agoric-sdk.git; cd agoric-sdk && git checkout tags/agoric-upgrade-8`
 1. `yarn install && yarn build`
+1. `(cd packages/cosmic-swingset && make)`
 1. `agd start`
 
 After more than 10 blocks have successfully synced, stop the `agd` process 
@@ -79,11 +81,18 @@ It is recommended to upgrade to `agoric-upgrade-8-1` as soon as you have success
 produced a handful of blocks with the `agoric-upgrade-8` upgrade.
 
 ### agoric-upgrade-8-1
-#### Current Community Snapshot
 
 1. `git clone https://github.com/agoric/agoric-sdk.git;  agoric-sdk && git checkout tags/agoric-upgrade-8-1`
 1. `yarn install && yarn build`
+1. `(cd packages/cosmic-swingset && make)`
 1. `agd start`
 
+### agoric-upgrade-9
+#### Current Community Snapshot
 
+The `agoric-upgrade-9` release requires Go version 1.18 or higher.
 
+1. `git clone https://github.com/agoric/agoric-sdk.git;  agoric-sdk && git checkout tags/agoric-upgrade-9`
+1. `yarn install && yarn build`
+1. `(cd packages/cosmic-swingset && make)`
+1. `agd start`
