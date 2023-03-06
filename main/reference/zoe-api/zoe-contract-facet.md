@@ -75,23 +75,23 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - **description** **String**
 - **customProperties** **Object** - Optional.
 - **proposalShape** **Pattern** - Optional.
-- Returns: **Promise&lt;Invitation>**
+- Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
-Make a credible Zoe **invitation** for a smart contract. Note that **invitations** are a special case
+Make a credible Zoe **Invitation** for a smart contract. Note that **Invitations** are a special case
 of an ERTP **payment**. They are associated with the **invitationIssuer** and its **mint**, which 
-validate and mint **invitations**. **zcf.makeInvitation()** serves as an interface to
+validate and mint **Invitations**. **zcf.makeInvitation()** serves as an interface to
 the **invitation** **mint**.
 
-The **invitation**'s
+The **Invitation**'s
 **value** specifies:
 - The specific contract **instance**.
 - The Zoe **installation**.
-- A unique **handle**.
+- A unique **[Handle](./zoe-data-types.md#handle)**.
 
-The second argument is a required **description** for the **invitation**,
-and should include whatever information is needed for a potential recipient of the **invitation**
-to know what they are getting in the optional **customProperties** argument, which is
-put in the **invitation**'s **value**.
+The second argument is a required *description* for the **Invitation**,
+and should include whatever information is needed for a potential recipient of the **Invitation**
+to know what they are getting in the optional *customProperties* argument, which is
+put in the **Invitation**'s **value**.
 
 ```js
 const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')

@@ -42,6 +42,9 @@ const myAmountKeywordRecord =
   Price: quatloos9
 }
 ```
+## Handle
+
+**Handles&** within Zoe have a slightly different definition than in regular JavaScript. They are **Far** objects without any methods whose only useful property are their unique unforgeable identities. They're often created in order to designate some other object, where the **Handles** can be passed around as reliable designators without giving access to the designated ojects.
 
 ## Instance
 
@@ -51,6 +54,10 @@ const myAmountKeywordRecord =
 - **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
 - **[E(Zoe).getTerms()](./zoe.md#e-zoe-getterms-instance)**
 - **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
+
+## Invitation
+
+TBD
 
 ## InvitationIssuer
 

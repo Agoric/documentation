@@ -253,7 +253,7 @@ await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 
 ## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat, offerArgs)
 - **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **invitation** **ERef&lt;Invitation>**
+- **invitation** **ERef&lt;[Invitation](./zoe-data-types.md#invitation)>**
 - **keywordMapping** **KeywordRecord**
 - **proposal** **Proposal**
 - **fromSeat** **[ZCFSeat](./zcfseat.md)**
@@ -273,7 +273,7 @@ long as the *fromSeat* allows the withdrawal without violating
 offer-safety. To be clear, this does mean that contractA and contractB
 do not have to be instances of the same contract. 
 
-*zcf* is contractA's Zoe contract facet. The *invitation* parameter is an invitation 
+*zcf* is contractA's Zoe contract facet. The *invitation* parameter is an **Invitation** 
 to contractB. The *proposal* parameter is the proposal part of the offer made to contractB.
 
 *keywordMapping* is a record of the **[Keywords](./zoe-data-types.md#keyword)** used in contractA mapped to the 

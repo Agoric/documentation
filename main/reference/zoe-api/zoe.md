@@ -5,7 +5,7 @@
 Zoe provides a framework for deploying and working with smart contracts. It is accessed
 as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe
 has a single **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** for the entirety of its lifetime. By having a reference to Zoe, a user
-can get the **InvitationIssuer** and thus validate any **invitation** they receive from someone else.
+can get the **InvitationIssuer** and thus validate any **[Invitation](./zoe-data-types.md#invitation)** they receive from someone else.
 
 ::: tip Zoe is accessed asynchronously
 The Zoe service is accessed asynchronously, using a standards-track library extension
@@ -94,7 +94,7 @@ const terms = await E(Zoe).getTerms(instance);
 Returns a **Promise** for the **PublicFacet** defined for the *instance* argument.
 
 A contract instance's **PublicFacet** is an object available via Zoe to anyone knowing that **Instance**.
-You use it for general queries and actions, such as getting a current price or creating public invitations.
+You use it for general queries and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types.md#invitation)**.
 Since a facet is defined just as any other object, the contract adds methods to the **PublicFacet** just like you would
 any object.
 
@@ -118,7 +118,7 @@ const { value: invitationValue } =
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns **Promise&lt;Object>**
 
 Takes an **Invitation** as an argument and returns a **Promise** for an object containing the following
@@ -126,7 +126,7 @@ details about the **Invitation**:
 
 - **installation** **Installation**: The contract's Zoe installation.
 - **instance** **[Instance](./zoe-data-types.md#instance)**: The contract instance this invitation is for.
-- **invitationHandle** **Handle**: A handle used to refer to this **Invitation**.
+- **invitationHandle** **[Handle](./zoe-data-types.md#handle)**: A **Handle** used to refer to this **Invitation**.
 - **description** **String**: Describes the purpose of this **Invitation**. Use it
    to match the invitation to the role it plays in the contract.
 
@@ -158,7 +158,7 @@ Returns a **Promise** for the configuration settings for the Zoe contract.
 ## E(Zoe).getFeeIssuer()
 - Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
 
-Returns a **Promise** for an **Issuer** that can mint ISTs.
+Returns a **Promise** for an **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.
 
 ## E(Zoe).getOfferFilter(instance)
 - **instance** **[Instance](./zoe-data-types.md#instance)**
@@ -167,10 +167,10 @@ Returns a **Promise** for an **Issuer** that can mint ISTs.
 Returns all the offer **[Keywords](./zoe-data-types.md#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
 
 ## E(Zoe).getInstance(invitation)
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;[Instance](./zoe-data-types.md#instance)>**
 
-Returns a **Promise** for the contract **instance** the **invitation** is part of.
+Returns a **Promise** for the contract **instance** the **Invitation** is part of.
 
 While **Instances** are opaque objects, you can get information about them via
 these methods:
@@ -185,16 +185,16 @@ const instance = await E(Zoe).getInstance(invitation);
 ```
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;Pattern>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
 ## E(Zoe).getInstallation(invitation)
-- **invitation** **Invitation**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;Installation>**
 
-Returns a **Promise** for the contract **installation** the **invitation**'s contract instance uses.
+Returns a **Promise** for the contract **installation** the **Invitation**'s contract instance uses.
 
 ```js
 const installation = await E(Zoe).getInstallation(invitation);
@@ -258,7 +258,7 @@ The **adminFacet** has one method:
 
 A **publicFacet** is an object available via Zoe to anyone knowing
 the instance they are associated with. The **publicFacet** is used for general queries
-and actions, such as getting a current price or creating public invitations. Since a
+and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types.md#invitation)**. Since a
 facet is defined just as any other object,
 the contract developer can add methods to them just like they would any object.
 
@@ -268,10 +268,10 @@ should use it to encapsulate things that the contract runner might not want to s
 or might want to control the distribution of. The party who starts the contract
 should carefully consider the impact before sharing access to the **creatorFacet**.
 
-**creatorInvitation** is an invitation that the contract instance creator can use.
+**creatorInvitation** is an **Invitation** that the contract instance creator can use.
 It is usually used in contracts where the creator immediately sells
 something (auctions, swaps, etc.), so it's helpful for the creator to have
-an invitation to escrow and sell goods. Remember that Zoe invitations are
+an **Invitation** to escrow and sell goods. Remember that Zoe **Invitations** are
 represented as a **Payment**.
 ```js
 const issuerKeywordRecord = {
@@ -285,7 +285,7 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
 
 
 ## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs)
-- **invitation** **Invitation|Promise&lt;Invitation>**
+- **invitation** **[Invitation](./zoe-data-types.md#invitation)|Promise&lt;Invitation>**
 - **proposal** **Proposal** - Optional.
 - **paymentKeywordRecord** **PaymentKeywordRecord** - Optional.
 - **offerArgs** **Object**

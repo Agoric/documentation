@@ -3,7 +3,7 @@
 Within Zoe, **seats** are used by contracts and users to access or manipulate offers.
 Zoe has two kinds of seats. **[ZCFSeats](./zcfseat.md)**
 are used within contracts and with **zcf** methods. **UserSeats** represent offers external to
-Zoe and the contract. The party who exercises an **Invitation** and sends the **offer()** message
+Zoe and the contract. The party who exercises an **[Invitation](./zoe-data-types.md#invitation)** and sends the **offer()** message
 to Zoe gets a **UserSeat** that can check payouts' status or retrieve the result of
 processing the offer in the contract. This varies, but examples
 are a **String** and an **Invitation** for another seat.
@@ -60,7 +60,7 @@ escrowed assets in accordance with the result of the transaction. Returns a **Pr
 Returns a **Promise** for an **OfferResult**. The **OfferResult** can be literally anything. 
 For example, in tests
 for the Automated Refund Dapp, it's the string "The offer was accepted". In
-the Covered Call example, it's a call option, which is an assayable **Invitation**
+the Covered Call example, it's a call option, which is an assayable **[Invitation](./zoe-data-types.md#invitation)**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is set by the returned result of the **offerHandlers** function passed
 as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape)**.
