@@ -46,6 +46,16 @@ escrowed assets in accordance with the result of the transaction. Returns a **Pr
 containing all the **Payout** **Payments** associated with the **seat**'s offers.
 
 
+```js
+// Record example
+const paymentKeywordRecord = {
+  FirstPayment: quatloosPayment,
+  SecondPayment: moolaPayment,
+  //etc.
+};
+```
+
+
 ## E(UserSeat).getPayout(keyword)
 - **keyword** **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**

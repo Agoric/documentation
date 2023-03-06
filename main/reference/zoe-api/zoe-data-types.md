@@ -59,6 +59,12 @@ const myAmountKeywordRecord =
 
 TBD
 
+For most purposes, a good enough approximation is that an Invitation is indeed a kind of Payment.
+
+Technically, an Invitation is a non-fungible eright that can be held in payments or purses, just like any other eright. An Invitation payment would be a Payment holding an Invitation. An Invitation payment is a kind of Payment.
+
+But we almost always just use a Payment holding a single Invitation in order to pass around Invitations, so we normally elide the difference.
+
 ## InvitationIssuer
 
 **InvitationIssuers** are special types of **[Issuers](/reference/ertp-api/issuer.md)**. Every Zoe

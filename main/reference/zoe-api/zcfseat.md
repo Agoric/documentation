@@ -111,7 +111,7 @@ An **Allocation** example:
 ## aZCFSeat.getStagedAllocation()
   - Returns: **[Allocation](./zoe-data-types.md#allocation)**
 
-Gets and returns the **stagedAllocation**, which is the allocation committed if the seat is
+Gets and returns the **stagedAllocation**, which is the **Allocation** committed if the seat is
 reallocated over, if offer safety holds, and rights are conserved.
 
 ## aZCFSeat.isOfferSafe(newAllocation)
