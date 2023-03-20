@@ -13,7 +13,7 @@ If you wish to restore from a recent community snapshot, please follow the instr
 |         | agoric-upgrade-7-2   |     6,263,783  | f4759c9f15b869c453f847a63ba734cacb9a991a |    ag0     | agoric/ag0:agoric-upgrade-7-2  |
 |         | agoric-upgrade-8     |     7,179,262  | 2c812d22161cd297587979b262eab6e2cc76e23d |    agd     |      agoric/agoric-sdk:29      |
 |         | agoric-upgrade-8-1   |     7,179,262  | 08ca9d4fd8413da59b73d53e12851fe00583ddc1 |    agd     |      agoric/agoric-sdk:30      |
-| Current | agoric-upgrade-9.    |     8,941,749  | 636c850161d29c0368b4dec03c90e2674e8d6479 |    agd     |      agoric/agoric-sdk:31      |
+| Current | agoric-upgrade-9     |     8,941,749  | 636c850161d29c0368b4dec03c90e2674e8d6479 |    agd     |      agoric/agoric-sdk:31      |
 
 #### A note on syncing from genesis
 
