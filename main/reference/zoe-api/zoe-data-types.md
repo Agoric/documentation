@@ -17,7 +17,7 @@ For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after su
 
 ## AmountKeywordRecord
 
-**AmountKeywordRecord** is a record in which the property names are **[Keywords](#keywords)**, and
+**AmountKeywordRecord** is a record in which the property names are **[Keywords](#keyword)**, and
 the values are **amounts**. **Keywords** are unique identifiers per contract
 that tie together the **proposal**, **payments** to be escrowed, and **payouts**
 to the user. In the below example, **Asset** and **Price** are **Keywords**.
