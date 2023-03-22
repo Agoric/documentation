@@ -8,7 +8,7 @@ new assets of that **Brand**.
 
 **Mints** are created by cqlling the **[makeIssuerKit()](./issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function. See the **[Issuer](./issuer.md)** documentation for detailed information about how to use this function.
 
-## Mint.getIssuer()
+## aMint.getIssuer()
 - Returns: **[Issuer](./issuer.md)**
 
 Returns the **Issuer** uniquely associated with this **Mint**. From its creation, a **Mint** is always
@@ -22,7 +22,7 @@ const quatloosMintIssuer = quatloosMint.getIssuer();
 issuer === quatloosMintIssuer;
 ```
 
-## Mint.mintPayment(newAmount)
+## aMint.mintPayment(newAmount)
 - **newAmount** **[Amount](./ertp-data-types.md#amount)**
 - Returns: **[Payment](./payment.md)**
 
@@ -40,6 +40,6 @@ const newPayment = quatloosMint.mintPayment(quatloos1000);
 ```
 
 ::: tip Important
-**Mint.mintPayment()** is the <ins>only</ins> way
+**aMint.mintPayment()** is the <ins>only</ins> way
 to create new digital assets. There is no other way.
 :::
