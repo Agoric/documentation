@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/simpleExchange.js) (Last updated: Sep 12, 2020)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The "simple exchange" is a very basic, un-optimized exchange. It
 has an order book for one asset, priced in a second asset. The order
@@ -24,8 +24,8 @@ accepted in either direction.
 { give: { Asset: simoleans(5) }, want: { Price: quatloos(3) } }
 { give: { Price: quatloos(8) }, want: { Asset: simoleans(3) } }
 ```
-Note: Here we used a shorthand for assets whose values are 5 simoleons, 3 
-quatloos, 8 quatloos, and 3 simoleons. Elsewhere this might have been done 
+Note: Here we used a shorthand for assets whose values are 5 simoleons, 3
+quatloos, 8 quatloos, and 3 simoleons. Elsewhere this might have been done
 by creating `amounts` inline (i.e. `AmountMath.make(quatloosBrand, 8n)`). Or by
 creating `amounts` outside the proposal and assigning them to variables.
 For example, `const quatloos8 = AmountMath.make(quatloosBrand, 8n);` and then using

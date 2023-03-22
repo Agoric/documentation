@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/loan/index.js) (Last updated: Nov 23, 2021)
-##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The basic loan contract has two parties, a *lender* and a *borrower*.
 It lets the borrower add collateral of a particular brand and get a
@@ -16,7 +16,7 @@ The loan does not have a distinct end time. Rather, if the
 value of the collateral changes such that insufficient margin is
 provided, the collateral is liquidated, and the loan is closed. At any
 time, the borrower can add collateral or repay the loan with interest,
-closing the loan. 
+closing the loan.
 
 Note that all collateral must be of the same brand and all of the
 loaned amount and interest must be of the same (separate) brand.
@@ -28,7 +28,7 @@ loaned amount and interest must be of the same (separate) brand.
    drops below `mmr`, liquidation can occur.
 * [`priceAuthority`](/guides/zoe/price-authority.md) - used for getting the current value of
    collateral and setting liquidation triggers.
-* `autoswapInstance` - The running contract instance for 
+* `autoswapInstance` - The running contract instance for
    [AMM](./constantProductAMM.md) installation. The `publicFacet`
    of the instance is used to make an invitation to sell the
    collateral on liquidation.
@@ -104,7 +104,7 @@ The contract shuts down under any one of 3 conditions:
 3. An error occurs when trying to use the priceAuthority.
    * The lender gets the collateral, and the borrower keeps their loan.
 
-## Debt and Interest Calculation 
+## Debt and Interest Calculation
 
 Interest is calculated and compounded when the
 `periodNotifier` pushes a new value. The interest rate per period
@@ -120,7 +120,7 @@ recalculated: (`E(borrowFacet).getLastCalculationTimestamp()`).
 
 Liquidation is scheduled using the `priceAuthority` parameter.
 Specifically, the contract gets a promise resolved when the value of the
-collateral falls below a trigger value defined by the `mmr` parameter: 
+collateral falls below a trigger value defined by the `mmr` parameter:
 
 <<< @/snippets/zoe/contracts/test-loan.js#liquidate
 
@@ -138,4 +138,3 @@ Actual liquidation is done through an AMM
 regardless of its current price.
 Even if the price is worse or better than what our `priceAuthority`
 quoted, we still liquidate.
-

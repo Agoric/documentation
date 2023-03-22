@@ -53,7 +53,7 @@ test('callSpread, mid-strike', async t => {
   const carolBucksPurse = bucksIssuer.makeEmptyPurse();
 
   const manualTimer = buildManualTimer(console.log, 0n);
-  const priceAuthority = makeTestPriceAuthority(
+  const priceAuthority = await makeTestPriceAuthority(
     brands,
     [20n, 45n],
     manualTimer,
@@ -84,9 +84,14 @@ test('callSpread, mid-strike', async t => {
   // #endregion startInstance
 
   // #region invitationDetails
-  const invitationDetail = await E(zoe).getInvitationDetails(creatorInvitation);
-  const longOptionAmount = invitationDetail.longAmount;
-  const shortOptionAmount = invitationDetail.shortAmount;
+  const invitationDetails = await E(zoe).getInvitationDetails(
+    creatorInvitation,
+  );
+  const { customDetails } = invitationDetails;
+  assert(typeof customDetails === 'object');
+
+  const longOptionAmount = customDetails.longAmount;
+  const shortOptionAmount = customDetails.shortAmount;
   // #endregion invitationDetails
 
   // #region creatorInvitation
@@ -128,9 +133,12 @@ test('callSpread, mid-strike', async t => {
   );
 
   // #region verifyTerms
-  const optionValue = shortOptionAmount.value[0];
-  const carolTerms = await E(zoe).getTerms(optionValue.instance);
-  t.is('short', optionValue.position);
+  const shortDetails = shortOptionAmount.value[0];
+  const { customDetails: shortCustomDetails } = shortDetails;
+  assert(typeof shortCustomDetails === 'object');
+
+  const carolTerms = await E(zoe).getTerms(shortDetails.instance);
+  t.is('short', shortCustomDetails.position);
   t.is(3n, carolTerms.expiration);
   t.is(manualTimer, carolTerms.timer);
   t.is(priceAuthority, carolTerms.priceAuthority);
@@ -212,16 +220,19 @@ test('pricedCallSpread, mid-strike', async t => {
   // region validatePricedInvitation
   const invitationIssuer = await E(zoe).getInvitationIssuer();
   const longAmount = await E(invitationIssuer).getAmountOf(longInvitation);
-  const longOptionValue = longAmount.value[0];
-  const longOption = longOptionValue.option;
+  const longDetails = longAmount.value[0];
+  const { customDetails: longCustomDetails } = longDetails;
+  assert(typeof longCustomDetails === 'object');
 
-  t.is(installation, longOptionValue.installation);
-  t.is('long', longOptionValue.position);
-  t.is(225n, longOptionValue.collateral);
+  const longOption = longCustomDetails.option;
+
+  t.is(installation, longDetails.installation);
+  t.is('long', longCustomDetails.position);
+  t.is(225n, longCustomDetails.collateral);
   // endregion validatePricedInvitation
 
   // region checkTerms-priced
-  const bobTerms = await E(zoe).getTerms(longOptionValue.instance);
+  const bobTerms = await E(zoe).getTerms(longDetails.instance);
   t.truthy(AmountMath.isEqual(simoleans(2n), bobTerms.underlyingAmount));
   t.truthy(AmountMath.isEqual(bucks(300n), bobTerms.settlementAmount));
   // endregion checkTerms-priced
@@ -230,7 +241,7 @@ test('pricedCallSpread, mid-strike', async t => {
   // region exercisePricedInvitation
   const bobProposal = harden({
     want: { Option: longOption },
-    give: { Collateral: bucks(longOptionValue.collateral) },
+    give: { Collateral: bucks(longCustomDetails.collateral) },
   });
   const bobFundingSeat = await E(zoe).offer(await longInvitation, bobProposal, {
     Collateral: bobBucksPayment,
@@ -252,14 +263,17 @@ test('pricedCallSpread, mid-strike', async t => {
   );
 
   const shortAmount = await E(invitationIssuer).getAmountOf(shortInvitation);
-  const shortOptionValue = shortAmount.value[0];
-  t.is('short', shortOptionValue.position);
-  const shortOption = shortOptionValue.option;
+  const shortDetails = shortAmount.value[0];
+  const { customDetails: shortCustomDetails } = shortDetails;
+  assert(typeof shortCustomDetails === 'object');
+
+  t.is('short', shortCustomDetails.position);
+  const shortOption = shortCustomDetails.option;
 
   // carol makes an offer for the short option
   const carolProposal = harden({
     want: { Option: shortOption },
-    give: { Collateral: bucks(shortOptionValue.collateral) },
+    give: { Collateral: bucks(shortCustomDetails.collateral) },
   });
   const carolFundingSeat = await E(zoe).offer(
     await shortInvitation,

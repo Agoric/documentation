@@ -4,7 +4,7 @@
   "description": "Documentation of Agoric products",
   "type": "module",
   "engines": {
-    "node": ">=11.0"
+    "node": "^16"
   },
   "scripts": {
     "docs:dev": "vuepress dev main",
@@ -87,6 +87,7 @@
       "es6": true
     },
     "globals": {
+      "assert": "readonly",
       "harden": "readonly"
     },
     "rules": {

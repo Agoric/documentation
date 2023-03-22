@@ -3,7 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Aug 15, 2022)
-##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe/src/contracts)
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 
 The Vault is the primary mechanism for making `IST` (the Agoric stable-value
@@ -110,4 +110,3 @@ The Vault's public API includes `makeVaultInvitation()` and
 `getAmm()` returns the public facet of the AMM. `getRunIssuer()` provides access
 to the issuer of `IST` so anyone can hold, spend and recognize IST.
 `makeVaultInvitation()` is described above under [Borrowers](#borrowers)
-

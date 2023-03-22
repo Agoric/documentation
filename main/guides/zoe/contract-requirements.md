@@ -1,9 +1,9 @@
-# Contract Requirements 
+# Contract Requirements
 
 <Zoe-Version/>
 
 When writing a smart contract to run on Zoe, you need
-to know the proper format and other expectations. 
+to know the proper format and other expectations.
 
 A Zoe smart contract is a  JavaScript module that exports a `start` function
 and may import other code, including:
@@ -23,10 +23,10 @@ A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a
 separate file, for example) and import them.
 
-A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/HEAD/packages/ses). Some legacy
+A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
 JavaScript code is incompatible with Hardened JavaScript, because Lockdown freezes the
 JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
-mutate these. 
+mutate these.
 
 If you add this type annotation, TypeScript-aware tools
 (IDEs like vsCode and WebStorm) will inform the developer about parameters
@@ -61,12 +61,12 @@ The contract must return a record with any (or none) of the following:
 that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
 contract `instance`. It might create `invitations` for other parties, or take actions that
 are unrelated to making offers.
-- **creatorInvitation**: A Zoe `invitation` only given to the entity that 
-calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current 
-contract `instance`. This is usually used when a party has to make an offer first, 
+- **creatorInvitation**: A Zoe `invitation` only given to the entity that
+calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
+contract `instance`. This is usually used when a party has to make an offer first,
 such as escrowing the underlying good for sale in an auction or covered call.
-- **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`. 
-Use the `publicFacet` for general queries and actions, such as getting the current price 
+- **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`.
+Use the `publicFacet` for general queries and actions, such as getting the current price
 or creating public `invitations`.
 
 The contract can contain arbitrary JavaScript code, but there are a few things you'll want
