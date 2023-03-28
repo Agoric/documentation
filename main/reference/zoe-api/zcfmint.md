@@ -6,13 +6,13 @@ methods.
 
 **ZCFMints** are created and returned by **Zoe Contract Facet's** **[zcf.makeZCFMint()](./zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo)** method.
 
-## aZCFMint.getIssuerRecord()
+## ZCFMint.getIssuerRecord()
   - Returns: **IssuerRecord**
 
 Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer.md)** and
 **[Brand](/reference/ertp-api/brand.md)** associated with the **zcfMint**.
 
-## aZCFMint.mintGains(gains, zcfSeat?)
+## ZCFMint.mintGains(gains, zcfSeat?)
   - **gains** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
   - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: **ZCFSeat**
@@ -23,7 +23,7 @@ Mint the *gains* **Amount** of assets and add them to
 that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** is provided,
 it is returned. Otherwise a new **seat** is returned.
 
-## aZCFMint.burnLosses(losses, zcfSeat?)
+## ZCFMint.burnLosses(losses, zcfSeat?)
   - **losses** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
   - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: None.
