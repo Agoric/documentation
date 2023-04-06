@@ -38,13 +38,13 @@ and put it in a directory _not located in your `agoric-sdk` clone_. We named the
 # Terminal 1
 # Don't use your agoric-sdk as the parent of the demo directory.
 cd $HOME
-agoric init demo # use `agoric init $DIRNAME` with any name you like
+agoric init --dapp-template dapp-card-store demo # use `agoric init --dapp-template dapp-card-store $DIRNAME` with any name you like
 cd demo
-agoric install # will take a minute to install all dependencies
-agoric start --verbose # `agoric start --reset` to start over
+agoric install community-dev # will take a minute to install all dependencies
+agoric start --verbose --reset # `agoric start --reset` to start over
 ```
 
-Learn more about the [available dapp templates](../dapps/dapp-templates.md). Our default dapp template is the [Fungible Faucet Dapp](https://github.com/Agoric/dapp-fungible-faucet).
+Learn more about the [available dapp templates](../dapps/dapp-templates.md).
 
 ::: tip Mac Dev Tools
 On a Mac, you must first install
@@ -96,32 +96,36 @@ cd ui && yarn start
 
 Leave this running in its own terminal window and visit [http://localhost:3000](http://localhost:3000) in a web browser.
 
-Once here, you will be asked to enable the dapp in your Agoric wallet.
-
-![dapp fungible faucet ui - needs approval](./assets/agoric-ui-dapp-needs-approval.png)
-
 ## Connect the Dapp to the Agoric Wallet
 
-Navigate back to [http://127.0.0.1:8000](http://127.0.0.1:8000) and accept the Dapp's request to connect to your wallet.
+1. Once here, you will be asked to enable the dapp in your Agoric wallet.
 
-![agoric wallet - dapp approval prompt](./assets/agoric-wallet-dapp-approval.png)
+![dapp card store ui - needs approval](./assets/must-enable-dapp.png)
 
-Navigating to the "Dapps" section of the Agoric Wallet should now show that you have successfully connected.
+1. Navigate back to [http://127.0.0.1:8000](http://127.0.0.1:8000) and accept the Dapp's request to connect to your wallet.
 
-![Agoric Wallet Dapps Section](./assets/agoric-wallet-dapps-section.png)
+![agoric wallet - dapp approval prompt](./assets/accept-dapp-connection.png)
 
-## Use the Dapp to collect your (simulated) tokens
+2. Navigate back to [the dapp](http://localhost:3000) and it should load the baseball cards to bid on
 
-Once your wallet has been connected, return to [http://localhost:3000](http://localhost:3000) and click the "Mint Fungible Tokens" button.
+![dapp card store ui - loading cards](./assets/card-store-ui.png)
 
-![agoric ui - accept offer in wallet](./assets/agoric-ui-accept-offer.png)
+## Use the Dapp to bid on and buy a baseball card
 
-Navigate back to [http://127.0.0.1:8000](http://127.0.0.1:8000) to approve the offer and collect the tokens.
+1. In the dapp, you should be able to click on a baseball card to `BID` on it in an action. Enter `Bid ammount` to submit an offer to buy the card.
 
-![agoric wallet - accept offer](./assets/agoric-wallet-approve-offer.png)
+   ![Bid on Card](./assets/bid-on-card.png)
 
-Your wallet's FungibleFaucet purse will now hold 1000 FungibleFaucet tokens.
+1. In the wallet, `Approve` the `Proposed` offer to bid on a card.
 
-![agoric wallet - accept offer](./assets/agoric-ui-offer-accepted.png)
+   ![Proposed Offer](./assets/proposed-offer.png)
+
+1. In the wallet, the offer will be in a `Pending` state while the auction for the card to complete. The auction takes up to 300 seconds.
+
+   ![Pending Offer](./assets/pending-offer.png)
+
+1. In the wallet, your offer will transition to an `Accepted` state when the auction ends. Your `cardStore.Card` purse will now contain a card
+
+   ![Accepted Offer](./assets/accepted-offer.png)
 
 Visit the [wallet UI](../wallet/ui.md#wallet-ui) documentation for more information.
