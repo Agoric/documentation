@@ -28,10 +28,10 @@ This presentation includes starting a project, but note an outdated detail:
 
 ## Initialize the Default Dapp Template
 
-The following section will explain how to initialize the default dapp template, install the Agoric SDK
-into the dapp template, and then launch the Agoric Solo Client and Simulated Blockchain.
+The following section will explain how to initialize the default Dapp template, install the Agoric SDK
+into the Dapp template, and then launch the Agoric Solo Client and Simulated Blockchain.
 
-Use the [Agoric CLI](../agoric-cli/) to fetch from a dapp template
+Use the [Agoric CLI](../agoric-cli/) to fetch from a Dapp template
 and put it in a directory _not located in your `agoric-sdk` clone_. We named the directory "demo", but you can name the folder whatever you like.
 
 ```sh
@@ -44,7 +44,7 @@ agoric install community-dev # will take a minute to install all dependencies
 agoric start --verbose --reset # `agoric start --reset` to start over
 ```
 
-Learn more about the [available dapp templates](../dapps/dapp-templates.md).
+Learn more about the [available Dapp templates](../dapps/dapp-templates.md).
 
 ::: tip Mac Dev Tools
 On a Mac, you must first install
@@ -98,21 +98,21 @@ Leave this running in its own terminal window and visit [http://localhost:3000](
 
 ## Connect the Dapp to the Agoric Wallet
 
-1. Once here, you will be asked to enable the dapp in your Agoric wallet.
+1. Once here, you will be asked to enable the Dapp in your Agoric wallet.
 
-![dapp card store ui - needs approval](./assets/must-enable-dapp.png)
+![Dapp card store ui - needs approval](./assets/must-enable-dapp.png)
 
 1. Navigate back to [http://127.0.0.1:8000](http://127.0.0.1:8000) and accept the Dapp's request to connect to your wallet.
 
-![agoric wallet - dapp approval prompt](./assets/accept-dapp-connection.png)
+![agoric wallet - Dapp approval prompt](./assets/accept-dapp-connection.png)
 
-2. Navigate back to [the dapp](http://localhost:3000) and it should load the baseball cards to bid on
+2. Navigate back to [the Dapp](http://localhost:3000) and it should load the baseball cards to bid on
 
-![dapp card store ui - loading cards](./assets/card-store-ui.png)
+![Dapp card store ui - loading cards](./assets/card-store-ui.png)
 
 ## Use the Dapp to bid on and buy a baseball card
 
-1. In the dapp, you should be able to click on a baseball card to `BID` on it in an action. Enter `Bid ammount` to submit an offer to buy the card.
+1. In the Dapp, you should be able to click on a baseball card to `BID` on it in an action. Enter `Bid ammount` to submit an offer to buy the card.
 
    ![Bid on Card](./assets/bid-on-card.png)
 
@@ -124,7 +124,7 @@ Leave this running in its own terminal window and visit [http://localhost:3000](
 
    ![Pending Offer](./assets/pending-offer.png)
 
-1. In the wallet, your offer will transition to an `Accepted` state when the auction ends. Your `cardStore.Card` purse will now contain a card
+1. In the wallet, your offer will transition to an `Accepted` state when the auction ends. Your `cardStore.Card` purse will now contain a card.
 
    ![Accepted Offer](./assets/accepted-offer.png)
 
