@@ -142,7 +142,6 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/zoe/',
-            '/guides/zoe/offer-enforcement',
             '/guides/zoe/offer-safety',
             '/guides/zoe/proposal',
             '/guides/zoe/contract-requirements',
