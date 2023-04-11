@@ -131,9 +131,9 @@ module.exports = {
           children: [
             '/guides/ertp/',
             '/guides/ertp/amounts',
-            '/guides/ertp/amount-math',
             '/guides/ertp/issuers-and-mints',
             '/guides/ertp/purses-and-payments',
+            '/guides/ertp/amount-math',
           ],
         },
         {
