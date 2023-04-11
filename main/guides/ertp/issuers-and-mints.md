@@ -3,79 +3,77 @@
 ## Issuers
 ![Issuer structure](./assets/issuers-and-assets.svg)
 
-**Note**: You should not create an Issuer in a deploy script. Deploy scripts are ephemeral, so any object 
+**Note**: You should not create an **[Issuer](/reference/ertp-api/issuer.md)** in a deploy script. Deploy scripts are ephemeral, so any object 
 created there dies as soon as the script stops.
 
-Behind the scenes, an `issuer` maps minted digital assets to their location in a `purse`
-or `payment`. An `issuer` verifies, moves, and manipulates digital assets. 
-Its special admin facet is a `mint` which it has a one-to-one
-relationship with. Only a `mint` can issue new digital assets; an `issuer` cannot.
+Behind the scenes, an **Issuer** maps minted digital assets to their location in a **[Purse](/reference/ertp-api/purse.md)**
+or **[Payment](/reference/ertp-api/payment.md)**. An **Issuer** verifies, moves, and manipulates digital assets. 
+Its special admin facet is a **[Mint](/reference/ertp-api/mint.md)** which it has a one-to-one
+relationship with. Only a **Mint** can issue new digital assets; an **Issuer** cannot.
 
-An `issuer` also has a one-to-one relationship with a `brand`. So, if
-our `brand` is the imaginary currency Quatloos, only
-the `issuer` in the one-to-one relationship with the Quatloos `brand`
+An **Issuer** also has a one-to-one relationship with a **[Brand](/reference/ertp-api/brand.md)**. So, if
+our **Brand** is the imaginary currency *Quatloos*, only
+the **Issuer** in the one-to-one relationship with the *Quatloos* **Brand**
 can:
-- Create a new empty `purse` that can store Quatloos.
-- Manipulate a `payment` in Quatloos to be claimed, split, combined,
+- Create a new empty **Purse** that can store *Quatloos*.
+- Manipulate a **Payment** in *Quatloos* to be claimed, split, combined,
 burned, or have its amount received.
 
-An `issuer` should be obtained from a trusted source and
-then relied upon as the authority as to whether an untrusted `payment`
-of the same `brand` is valid.
+An **Issuer** should be obtained from a trusted source and
+then relied upon as the authority as to whether an untrusted **Payment**
+of the same **Brand** is valid.
  
 ![Issuer methods](./assets/issuer1.svg)
 
-`Issuer` methods:
-- Return information about an `issuer`.
-- Create a new `issuer`.
-- Create a new `purse`. 
-- Operate on `payment` arguments.
+**Issuer** methods:
+- Return information about an **Issuer**.
+- Create new **Issuers**.
+- Create new **Purses**. 
+- Operate on **Payment** arguments.
 
 The following is
-a brief description and example of each `Issuer` method. For
-more detail, click the method's name to go to its entry in the [ERTP
-API Reference](/reference/ertp-api/).
+a brief description of each **Issuer** method.
 
-- **Create issuer operation**
+- **Create Issuer operation**
   - [makeIssuerKit()](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
-    - Create and return a new `issuer` and its associated `mint` and `brand`.
+    - Creates and returns a new **Issuer**  and its associated **Mint** and **Brand**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
-- **Get information about the issuer operations**
+- **Get information about the Issuer operations**
   - [anIssuer.getAllegedName()](/reference/ertp-api/issuer.md#anissuer-getallegedname)
-    - Return the `allegedName` for the `issuer` (the non-trusted human-readable name of its associated `brand`).
+    - Returns the **allegedName** for the **Issuer** (i.e., the non-trusted human-readable name of its associated **Brand**).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
   - [anIssuer.getAssetKind()](/reference/ertp-api/issuer.md#anissuer-getassetkind)
-    - Return the kind of the `issuer`'s asset; either `AssetKind.NAT` ("nat") or `AssetKind.SET` ("set").
+    - Returns the **[AssetKind](/reference/ertp-api/ertp-dara-types.md#assetkind)** of the **Issuer**'s asset.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAssetKind
   - [anIssuer.getBrand()](/reference/ertp-api/issuer.md#anissuer-getbrand)
-    - Return the `brand` for the `issuer`.
+    - Returns the **Brand** associated with the **Issuer**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getBrand
 - **Purse operation**
   - [anIssuer.makeEmptyPurse()](/reference/ertp-api/issuer.md#anissuer-makeemptypurse)
-    - Make and return an empty `purse` for holding assets of the `brand` associated with the `issuer`.
+    - Makes and returns an empty **Purse** for holding assets of the **Brand** associated with the **Issuer**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
 - **Payment operations**
-  - [anIssuer.burn(payment, optAmount)](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount)
-    - Destroy all of the digital assets in the `payment`.
+  - [anIssuer.burn()](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount)
+    - Destroys all of the digital assets in a **Payment**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
-  - [anIssuer.claim(payment, optAmount)](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)
-    - Transfer all digital assets from `payment` to a new Payment.
+  - [anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)
+    - Transfers all digital assets from a **Payment** to a new **Payment**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#claim
-  - [anIssuer.combine(paymentsArray)](/reference/ertp-api/issuer.md#anissuer-combine-paymentsarray-opttotalamount)
-    - Combine multiple Payments into one new Payment.
+  - [anIssuer.combine()](/reference/ertp-api/issuer.md#anissuer-combine-paymentsarray-opttotalamount)
+    - Combines multiple **Payments** into one new **Payment**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
-  - [anIssuer.getAmountOf(payment)](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)
-    - Describe the `payment`'s balance as an Amount.
+  - [anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)
+    - Describes a **Payment**'s balance expressed as an **[Amount](/reference/ertp-api/ertp-dara-types.md#amount)**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
-  - [anIssuer.isLive(payment)](/reference/ertp-api/issuer.md#anissuer-islive-payment)
-    - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
+  - [anIssuer.isLive()](/reference/ertp-api/issuer.md#anissuer-islive-payment)
+    - Returns **true** if a **Payment** was created by the **Issuer** and is available for use (i.e., it hasn't been consumed or burned).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isLive
-  - [anIssuer.split(payment, paymentAmountA)](/reference/ertp-api/issuer.md#anissuer-split-payment-paymentamounta)
-    - Split a single `payment` into two new Payments.
+  - [anIssuer.split()](/reference/ertp-api/issuer.md#anissuer-split-payment-paymentamounta)
+    - Splits a single **Payment** into two new **Payments**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
   - [anIssuer.splitMany(payment, paymentAmountArray)](/reference/ertp-api/issuer.md#anissuer-splitmany-payment-amountarray)
-    - Split a single `payment` into multiple Payments.
+    - Splits a single **Payment** into multiple **Payments**x.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitMany
 
 
@@ -95,33 +93,25 @@ the `issuer` itself acknowledges the association.
 ## Mints
 ![Mint methods](./assets/mint.svg)
 
-A `mint` issues new digital assets of its associated `brand` as a new 
-`payment` object. These assets may be currency-like (our imaginary
-Quatloos currency), goods-like valuables (magic swords for games), or
-electronic rights (the right to participate in a contract). Only a
-holder of a `mint` object can create new assets from it. 
-
-In other words, let's say there
-are 1000 Quatloos in circulation. Only holders of the Quatloos associated
-`mint` can make any more Quatloos that'd boost the amount in circulation to, say, 2000.
+A **[Mint](/reference/ertp-api/mint.md)** issues new digital assets of its associated **[Brand](/reference/ertp-api/brand.md)** as a new 
+**[Payment](/reference/ertp-api/payment.md)** object. These assets may be currency-like (e.g., our imaginary
+*Quatloos* currency), goods-like valuables (e.g., magic swords for games), or
+electronic rights (e.g., the right to participate in a contract). Only a
+holder of a **Mint** object can create new assets from it. 
 
 Since these relationships are one-to-one and unchangeable:
-- A `mint` created to make an asset `brand`, say Quatloos, can only create that `brand` asset.
-For example, only Quatloos, not Moola or anything else.
-- A `mint` that creates an asset `brand` is the only `mint` that can create that `brand`. Only
-the one Quatloos `mint` can create new Quatloos.
-- A `mint` that creates an asset `brand` can never be changed to create a different `brand`.
-So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
+- A **Mint** created to make an asset **Brand** (e.g., *Quatloos*) can only create that **Brand** asset.
+For example, only *Quatloos*, not *Moola* or anything else.
+- A **Mint** that creates an asset **Brand** is the only **Mint** that can create that **Brand**. Only
+the one *Quatloos* **Mint** can create new *Quatloos*.
+- A **Mint** that creates an asset **Brand** can never be changed to create a different **Brand**.
+Thus, a *Quatloos* **Mint** can never become a *Moola* **Mint**, or any other non-*Quatloos* asset.
 
-There are two `mint` methods, and the method that creates new mints. Click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/).
+There are two **Mint** methods.
 - [aMint.getIssuer()](/reference/ertp-api/mint.md#amint-getissuer)
-  - Return the `issuer` uniquely associated with the `mint`.
+  - Returns the **[Issuer](/reference/ertp-api/issuer.md)** associated with the **Mint**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer
 - [aMint.mintPayment()](/reference/ertp-api/mint.md#amint-mintpayment-newamount)
-  - Create new digital assets of the `mint`'s associated `brand`.
+  - Creates new digital assets of the **Mint**'s associated **Brand**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
-- [makeIssuerKit()](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
-  - Create and return a new `issuer` and its associated `mint` and `brand`.
-  - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
 
