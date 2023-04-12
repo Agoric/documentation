@@ -106,48 +106,46 @@ In addition, the method to create a new, empty, **Purse** is called on an **[Iss
 
 ![Payment methods](./assets/payment.svg)   
 
-Payments hold digital assets intended to be transferred to another party.
-They are linear, meaning that either a `payment` has its full
+**[Payments](reference/ertp-api/payment.md)** hold digital assets intended to be transferred to another party.
+They are linear, meaning that either a **Payment** has its full
 original balance, or it is used up entirely. It is impossible to
-partially use a `payment`. 
+partially use a **Payment**. 
 
-In other words, if you create a `payment` containing
-10 Quatloos, the `payment` will always either contain 
-10 Quatloos or it will be deleted from its `issuer` records and no
-longer have any value. While a `payment` can be either combined with others or
-split into multiple `payments`, in both cases the original `payment(s)`
-are consumed and the results put in one or more new `payments`.
+In other words, if you create a **Payment** containing
+10 *Quatloos*, the **Payment** will always either contain 
+10 *Quatloos* or it will be deleted from its **[Issuer](/reference/ertp-api/issuer.md))** records and no
+longer have any value. While a **Payment** can be either combined with others or
+split into multiple **Payments**, in both cases the original **Payment(s)**
+are consumed and the results put in one or more new **Payments**.
 
-A `payment` can be deposited into a purse, split into multiple
-`payments`, combined with other `payments`, or claimed (getting an exclusive `payment` and revoking access from anyone else).
+A **Payment** can be deposited into a **[Purse](/reference/ertp-api/purse.md)**, split into multiple
+**Payments**, combined with other **Payments**, or claimed (i.e., getting an exclusive **Payment** and revoking access from anyone else).
 
-A `payment` is often received from other parties, but is not self-verifying
+A **Payment** is often received from other parties, but is not self-verifying
 and cannot be trusted to provide its own true value.
 To get the verified balance
-of a `payment`, use the `getAmountOf(payment)` method on the trusted `issuer`
-for the `payment`'s `brand`.
+of a **Payment**, use the **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)** method on the trusted **Issuer**
+for the **Payment**'s **[Brand](/reference/ertp-api/brand.md)**.
 
-To get the `issuer` for a `brand` you didn't create, 
+To get the **Issuer** for a **Brand** you didn't create, 
 ask someone you trust. For example, the venue creating tickets for shows
-can be trusted to give you the tickets' `issuer`. Or, a friend might have 
+can be trusted to give you the tickets' **Issuer**. Alternately, a friend might have 
 a cryptocurrency they like, and, if you trust them, you might accept 
-that the `issuer` they give you is valid.
+that the **Issuer** they give you is valid.
 
-To consume a `payment` into a new `purse`:
-1. Get the `payment`'s trusted `issuer`.
-2. Use the `issuer` to create an empty `purse` for that `brand`.
-3. Deposit the `payment` into the new `purse`.
+To consume a **Payment** into a new **Purse**:
+1. Get the **Payment**'s trusted **Issuer**.
+2. Use the **Issuer** to create an empty **Purse** for that **Brand**.
+3. Deposit the **Payment** into the new **Purse**.
 
-`Payments` have only one API method, but many methods for other ERTP components
-have `payments` as arguments and effectively operate on a `payment`. The following is a
-brief description and example of each `payment`-related method. For
-more detail, click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/).
+**Payments** have only one method, but many methods for other ERTP components
+have **Payments** as arguments and effectively operate on a **Payment**. The following is a
+brief description and example of each **Payment**-related method.
 - [aPayment.getAllegedBrand()](/reference/ertp-api/payment.md#apayment-getallegedbrand)
-  - Return the `brand` indicating the kind of digital asset this `payment` purports to be
-    and which `issuer` to use with it.
-    Because `payments` are not trusted, any method calls on them should be treated
-    with suspicion and verified elsewhere. Any successful operation by an `issuer` on a `payment` verifies it.
+  - Returns the **Brand** indicating the kind of digital asset this **Payment** purports to be
+    and which **Issuer** to use with it.
+    Because **Payments** are not trusted, any method calls on them should be treated
+    with suspicion and verified elsewhere. Any successful operation by an **Issuer** on a **Payment** verifies it.
 
 ### Other Objects' Payment-Related Methods
 
