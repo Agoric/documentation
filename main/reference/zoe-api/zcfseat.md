@@ -1,11 +1,10 @@
 # ZCFSeat Object
 
-Zoe uses **seats** to access or manipulate offers. Seats represent active
-offers and let contracts and users interact with them. Two kinds of seats
-represent a single position, and allow interaction from within a contract
-and from the outside. **ZCFSeats** are used within contracts and with **zcf** methods.
-**UserSeats** represent offers external to Zoe and the contract. The two
-facets share an allocation, and changes made from either side affect both.
+Zoe uses **seats** to access or manipulate offers. Seats represent active offers and let
+contracts and users interact with them. Two kinds of seats represent a single
+position. **ZCFSeats** are used within contracts and with **zcf** methods.  **UserSeats**
+represent offers outside the contract. The two facets provide access to the same allocation,
+and changes made from either side affect both.
 
 A **ZCFSeat** includes synchronous queries for the current state of the
 associated offer, such as the amounts of assets that are currently
@@ -40,9 +39,10 @@ const { want, give, exit } = sellerSeat.getProposal();
 
 Causes the **seat** to exit, preventing further changes to its allocation. All **payouts**,
 if any, are made, and the **seat** object can no longer interact with the contract. The
-**completion** argument is usually a string, but this is not required. Its
-only use is for the notification sent to the corresponding userSeat's exitSubscriber. 
-Any other still open seats or outstanding promises and the contract instance continue.
+**completion** argument is usually a string, but this is not required. Its only use is for
+the notification sent to the corresponding **UserSeat**'s
+**[exitSubscriber.](./user-seat.md#e-userseat-getexitsubscriber)** Any other still open
+seats or outstanding promises and the contract instance continue.
 
 **Note**: You should not use **aZCFSeat.exit()** when exiting with an error. Use the method **[aZCFSeat.fail()](#azcfseat-fail-msg)** instead. 
 
