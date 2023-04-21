@@ -23,12 +23,6 @@ A **[Price Authority](/reference/zoe-api/price-authority.md)** can be used in co
 (usually specified in the terms of a contract) to provide a price feed, on-demand quotes, 
 and wakeups for various time and price conditions.
 
-## Examples
-
-To see a `priceAuthority` in use, see the [Loan
-contract](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/loan)
-and the [Call Spread
-contracts](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/callSpread).
 
 ## Receiving a Quote
 
@@ -42,28 +36,28 @@ const { quoteAmount, quotePayment } = priceQuote;
 ```
 
 Because these are ERTP **Amounts** and **Payments**, they have **[Issuers](/reference/ertp-api/issuer.md)**, and
-the **Payments** are minted by an ERTP **[Mint](/reference/ertp-api/mint.md)**. A quote issuer and mint 
-be shared by several `priceAuthorities`, and a `priceAuthority` may
-use several quoteIssuers.
+the **Payments** are minted by an ERTP **[Mint](/reference/ertp-api/mint.md)**. A **QuoteIssuer** and 
+**Mint** can be shared by several **PriceAuthorities**, and a single **PriceAuthority** may
+use several **QuoteIssuers**.
 
-Importantly, you can confirm the brand of a quote and that it was minted by the
-mint associated with the quoteIssuer by using the `quoteIssuer` to obtain the
-`quoteAmount` of the `quotePayment`:
+Importantly, you can confirm the **[Brand](/reference/ertp-api/brand.md)** of a quote and that it was minted by the
+**Mint** associated with the **QuoteIssuer** by using the **QuoteIssuer** to obtain the
+**QuoteAmount** of the **QuotePayment**:
 
 ```js
 const verifiedQuoteAmount = await E(quoteIssuer).getAmountOf(quotePayment);
 ```
 
-Once you have a `quoteAmount` (or a `verifiedQuoteAmount`), you can extract the
-quoted amounts:
+Once you have a **QuoteAmount** (or a **VerifiedQuoteAmount**), you can extract the
+quoted **Amounts**:
 
 ```js
 const [{ value: { amountIn, amountOut, timestamp, timer }] = quoteAmount;
 ```
 
-This means that the `priceAuthority` asserts that when `timestamp` according to
-`timer` happened, you could sell `amountIn` and receive `amountOut` for it.
-`amountIn` and `amountOut` are ERTP amounts for the `brandIn` and `brandOut` you
+This means that the **PriceAuthority** asserts that when *timestamp* according to
+*timer* happened, you could sell *amountIn* and receive *amountOut* for it.
+*amountIn* and *amountOut* are ERTP **Amounts** for the *brandIn* and *brandOut* you
 requested.
 
 ## Mutable Price Quotes
