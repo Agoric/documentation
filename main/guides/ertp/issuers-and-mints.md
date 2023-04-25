@@ -44,7 +44,7 @@ a brief description of each **Issuer** method.
     - Returns the **allegedName** for the **Issuer** (i.e., the non-trusted human-readable name of its associated **Brand**).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
   - [anIssuer.getAssetKind()](/reference/ertp-api/issuer.md#anissuer-getassetkind)
-    - Returns the **[AssetKind](/reference/ertp-api/ertp-dara-types.md#assetkind)** of the **Issuer**'s asset.
+    - Returns the **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)** of the **Issuer**'s asset.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAssetKind
   - [anIssuer.getBrand()](/reference/ertp-api/issuer.md#anissuer-getbrand)
     - Returns the **Brand** associated with the **Issuer**.
@@ -64,7 +64,7 @@ a brief description of each **Issuer** method.
     - Combines multiple **Payments** into one new **Payment**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
   - [anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)
-    - Describes a **Payment**'s balance expressed as an **[Amount](/reference/ertp-api/ertp-dara-types.md#amount)**.
+    - Describes a **Payment**'s balance expressed as an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
   - [anIssuer.isLive()](/reference/ertp-api/issuer.md#anissuer-islive-payment)
     - Returns **true** if a **Payment** was created by the **Issuer** and is available for use (i.e., it hasn't been consumed or burned).

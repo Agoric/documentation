@@ -106,7 +106,7 @@ In addition, the method to create a new, empty, **Purse** is called on an **[Iss
 
 ![Payment methods](./assets/payment.svg)   
 
-**[Payments](reference/ertp-api/payment.md)** hold digital assets intended to be transferred to another party.
+**[Payments](/reference/ertp-api/payment.md)** hold digital assets intended to be transferred to another party.
 They are linear, meaning that either a **Payment** has its full
 original balance, or it is used up entirely. It is impossible to
 partially use a **Payment**. 

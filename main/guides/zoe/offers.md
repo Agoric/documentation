@@ -1,5 +1,68 @@
 # Offers
 
+You must have a Zoe **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)** to a specific contract instance to join
+and participate in it. Let's imagine your friend Alice has sent you an
+**Invitation** for a contract instance to your [wallet](/guides/wallet/).
+
+Compare this to a smart contract on *Ethereum*. On *Ethereum*, the smart
+contract developer must guard against malicious calls and store an
+internal access control list to check whether the message sender is
+allowed to send such a message. Zoe, built on Agoric's [object
+capability](/glossary/#object-capabilities) security model, is significantly
+easier.
+
+
+## Inspecting An Invitation
+
+Before you use any **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)**, you should 
+always first inspect and validate the **Invitation**.
+
+<<< @/snippets/test-intro-zoe.js#details
+
+::: warning Note
+
+E() is part of the Agoric platform and is used to [call methods on
+remote objects and receive a promise for the
+result](/guides/js-programming/eventual-send.md).
+Code on the Agoric platform is put in separate environments, called
+[vats](/glossary/#vat), for security. Zoe is a remote object in its own vat,
+so we must use E().
+:::
+
+Invitations include information about their contract's installation.
+Essentially, this is the contract's source code as installed on Zoe.
+From this overall contract installation, people use Zoe to create and
+run specific instances of the contract. For example, if a real estate
+company has a contract for selling a house, they would create an
+instance of the contract for each individual house they have up for
+sale.
+
+You use object identity comparison to quickly check that you recognize
+this contract installation, without having to compare source code
+line-by-line. If the installation matches, you're
+sure the invitation is for participating in an instance of the
+expected contract rather than an unknown and possibly malicious one.
+
+<<< @/snippets/test-intro-zoe.js#isCorrectCode
+
+However, if you don't recognize the installation, you can inspect its
+code directly by calling:
+
+<<< @/snippets/test-intro-zoe.js#inspectCode
+
+In most cases, the bundle contains a base64-encoded zip file that you can
+extract for review:
+```sh
+echo "$endoZipBase64" | base64 -d > bundle.zip
+unzip bundle.zip
+```
+
+Contracts can add their own specific information to invitations. In
+this case, the Atomic Swap contract adds information about what is
+being traded: the `asset` [amount](/guides/ertp/amounts.md#amounts)
+Alice has escrowed, and the `price` amount that you must pay to get it.
+Note that both are _descriptions_ of digital assets with no intrinsic value of their own.
+
 ## Making An offer
 
 To make an offer, you use **[E(zoe).offer()](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs)**, which takes three arguments:

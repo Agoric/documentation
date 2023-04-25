@@ -55,7 +55,7 @@ A **Brand** has four associated methods.
   - Returns the **Brand**'s alleged name, but should not be trusted as accurate.
   - <<< @/snippets/ertp/guide/test-amounts.js#getAllegedName
 - [aBrand.getDisplayInfo()](/reference/ertp-api/brand.md#abrand-getdisplayinfo)
-  - Returns the **[DisplayInfo](reference/ertp-api/ertp-data-types.md#displayinfo)** associated with the
+  - Returns the **[DisplayInfo](/reference/ertp-api/ertp-data-types.md#displayinfo)** associated with the
     **Brand**. The **DisplayInfo**
     tells the UI how to correctly display **Values** associated with the **Brand**.
   - <<< @/snippets/ertp/guide/test-amounts.js#getDisplayInfo

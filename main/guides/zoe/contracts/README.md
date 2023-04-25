@@ -11,7 +11,7 @@ pre-built example contracts that can be imported and run on Zoe. Note that none 
 | Contract | Description |
 | --- | --- |
 | [Oracle Query](./oracle.md) | A low-level oracle contract for querying [Chainlink](https://docs.chain.link/docs/request-and-receive-data#config) or other oracles. |
-| [PriceAuthority](/guides/zoe/price-authority.md) | To use an price oracle in your own contract, we recommend using the `priceAuthority` higher-level abstraction. |
+| [PriceAuthority](/guides/zoe/readme.md#price-authority) | To use an price oracle in your own contract, we recommend using the `priceAuthority` higher-level abstraction. |
 
 ## DeFi Contracts
 

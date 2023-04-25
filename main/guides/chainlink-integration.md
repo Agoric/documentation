@@ -8,7 +8,7 @@ actually on-chain.
 
 Using Chainlink on Agoric provides two main features:
 - Price feeds are exposed on Agoric via the on-chain `home.priceAuthority`. This is an
-  officially-sponsored [price authority](/guides/zoe/price-authority.md) built
+  officially-sponsored [price authority](/reference/zoe-api/price-authority.md) built
   from aggregating several Chainlink nodes.
 - [Chainlink's Any API](https://docs.chain.link/docs/request-and-receive-data)
   can initiate a job on a single oracle and return its results

@@ -1,5 +1,9 @@
 # Writing Contracts
 
+Zoe acts as the Contract Host to secure users from malicious developers but it is also a rich framework for smart contract developers to show their skills and creativity.
+
+In Agoric smart contracts are deployed and accessed through Zoe. smart contracts must have the following structure;
+
 ## Contract Requirements
 
 Every Zoe contract must export a method called start. It's usually the last line of the contract.
@@ -20,8 +24,85 @@ creatorFacet: The word creator means the user who deployed this contract. Theref
 publicFacet: This is the API contract exposes to the whole world. publicFacet is accessible via the Zoe interface.
 
 
-## Structures of a Contract
+## Structure of a Contract
 
+All Zoe contracts must have the following format:
+
+::: details Show contract format
+```
+// @ts-check
+// Checks the types as defined in JSDoc comments
+
+// Add imports here
+
+// Optional: you may wish to use the Zoe helpers in
+// @agoric/zoe/src/contractSupport/index.js
+import { swap as _ } from '@agoric/zoe/src/contractSupport/index.js';
+
+// Import the Zoe types
+import '@agoric/zoe/exported.js';
+
+/**
+* [Contract Description Here]
+*
+* @type {ContractStartFn}
+  */
+const start = (zcf, _privateArgs) => {
+// ZCF: the Zoe Contract Facet
+
+// privateArgs: any arguments to be made available to the contract
+// code by the contract owner that should not be in the public
+// terms.
+
+// Add contract logic here, including the
+// handling of offers and the making of invitations.
+
+// Example: This is an example of an offerHandler
+// which just gives a refund payout automatically.
+const myOfferHandler = zcfSeat => {
+zcfSeat.exit();
+const offerResult = 'success';
+return offerResult;
+};
+
+// Example: This is an invitation that, if used to make
+// an offer will trigger `myOfferHandler`, giving a
+// refund automatically.
+const invitation = zcf.makeInvitation(myOfferHandler, 'myInvitation');
+
+// Optional: Methods added to this object are available
+// to the creator of the instance.
+const creatorFacet = {};
+
+// Optional: Methods added to this object are available
+// to anyone who knows about the contract instance.
+// Price queries and other information requests can go here.
+const publicFacet = {};
+
+return harden({
+   creatorInvitation: invitation, // optional
+   creatorFacet, // optional
+   publicFacet, // optional
+  });
+};
+
+harden(start);
+export { start };
+```
+:::
+
+1. Every Zoe contract must export a method called **start()**. It's usually the last line of the contract.
+	```
+    export { start }; 
+    ```
+2. The **start()** method should accept a **zcf** object as its first argument. *zcf* stands for *[Zoe Contract Facet](/reference/zoe-api/zoe-contract-facet.md)* which is an API smart contract developers use to interact with Zoe.
+3. By convention, most Zoe contracts return the following: (Note: Contracts aren't required to return any of these.)
+	* **creatorInvitation**: A Zoe **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)**
+    only given to the entity that calls **[E(zoe).startInstance()](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)**;
+    i.e., the party that was the creator of the current contract **[Instance](/reference/zoe-api/zoe-data-types.md#instance)**. 
+    This is usually used when a party has to make an offer first, such as escrowing the underlying good for sale in an auction or covered call.
+	* **creatorFacet**: An API with methods available only to the creator of the contract instance. (e.g., administrative powers) **creatorFacet** is usually only available during the deployment of the contract, so the creator should hold on to the reference to this API.
+	* **publicFacet**: An API with methods available to anybody who has access to the contract instance.
 
 A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a
@@ -29,12 +110,12 @@ separate file, for example) and import them.
 
 A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
 JavaScript code is incompatible with Hardened JavaScript, because Lockdown freezes the
-JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
+JavaScript objects you start out with (the primordials, such as **Object**), and some legacy code tries to
 mutate these.
 
 If you add this type annotation, TypeScript-aware tools
-(IDEs like vsCode and WebStorm) will inform the developer about parameters
-and return values for your contract and `zcf` methods and warn about mismatches.
+(e.g., IDEs like vsCode and WebStorm) will inform the developer about parameters
+and return values for your contract and **[zcf](/reference/zoe-api/zoe-contract-facet.md)** methods and warn about mismatches.
 Put it right before the start of your contract code.
 
 ```js
@@ -60,18 +141,6 @@ harden(start);
 export { start };
 ```
 
-The contract must return a record with any (or none) of the following:
-- **creatorFacet**: An object, usually with admin authority. It is only given to the entity
-that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
-contract `instance`. It might create `invitations` for other parties, or take actions that
-are unrelated to making offers.
-- **creatorInvitation**: A Zoe `invitation` only given to the entity that
-calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
-contract `instance`. This is usually used when a party has to make an offer first,
-such as escrowing the underlying good for sale in an auction or covered call.
-- **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`.
-Use the `publicFacet` for general queries and actions, such as getting the current price
-or creating public `invitations`.
 
 The contract can contain arbitrary JavaScript code, but there are a few things you'll want
 to do in order to act as a contract, and interact with Zoe and zcf (the internal contract
