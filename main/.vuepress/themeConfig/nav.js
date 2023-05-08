@@ -61,6 +61,11 @@ module.exports = [
       link: '/guides/zoe/'
       },
       {
+      text: 'Deploying to Agoric Testnet',
+      ariaLabel: 'Coreeval',
+      link: '/guides/coreeval/'
+      },      
+      {
       text: 'Example Zoe Contracts',
       ariaLabel: 'Example Zoe Contracts',
       link: '/guides/zoe/contracts/'
