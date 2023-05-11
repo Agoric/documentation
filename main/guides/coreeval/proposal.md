@@ -1,6 +1,6 @@
 # Code the Proposal
 
-You will need to write a proposal script that requests storageNode powers and passes them to the contract via privateArgs. For example, [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm.js) is the proposal we created for the PSM contract:
+You will need to write a proposal script that runs the contract, and possibly does additional things depending on your needs. (Usually these additional things will be dependent on a governance vote.) For example, [here](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm.js) is a proposal Agoric created for the PSM contract:
 
 ```jsx
 /* global startPSM */

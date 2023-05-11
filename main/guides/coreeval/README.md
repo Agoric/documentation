@@ -1,8 +1,8 @@
-# Deploying to Agoric Testnet
+# Injecting Code to Agoric Testnet
 
-In order for an Agoric contract to publish data without having the user pay fees, the use of a chain storage node is required. A chain storage node is an object that can be passed to a contract by submitting a proposal using cosmos-sdk level API ([swingset.CoreEval](https://community.agoric.com/t/blder-dao-governance-using-arbitrary-code-injection-swingset-coreeval/99)). The proposal runs a script that gets access to the chain storage node and starts an instance of the contract, passing the storage node as a privateArg to the contract.
+Agoric facilitates safely injecting code to the Agoric testnet, usually for the purpose of running a contract and modifying it based on the result of a governance vote. To do so, we submit a proposal using cosmos-sdk level API ([swingset.CoreEval](https://community.agoric.com/t/blder-dao-governance-using-arbitrary-code-injection-swingset-coreeval/99)). The proposal runs a script that runs the contract, and possibly runs an additional script, depending on the result of a governance vote.
 
-To deploy a contract, you need to do the following:
+To do this, do the following:
 
 1. [Code the permissions that the proposal will require](./permissions.md).
 2. [Code the proposal itself](./proposal.md).
