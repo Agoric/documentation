@@ -19,9 +19,34 @@ ZoeHelper functions are contract helpers, in that they are useful to contract co
 Contracts are started up by Zoe, 
 and **zcf** is passed in as a parameter to **start()**. 
 
+## atomicRearrange(zcf, transfers)
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
+- **transfers**: **TransferPart[]**
+- Returns: None.
+
+Asks Zoe to rearrange the [Allocation](./zoe-data-types.md#allocation) among the seats
+mentioned in *transfers*. This is a set of changes to allocations that must satisfy
+ * several constraints. If these constraints are all met, then the
+ * reallocation happens atomically. Otherwise it does not happen
+ * at all.
+ *
+
+* All the mentioned seats are still live -- enforced by ZCF.
+* The overall transfer is expressed as an array of `TransferPart`.
+ *      Each individual `TransferPart` is one of
+ *       - A transfer from a `fromSeat` to a `toSeat`.
+ *         This is not needed for Zoe's safety, as Zoe does
+           its own overall conservation check. Rather, it helps catch
+           and diagnose contract bugs earlier.
+ *       - A taking from a `fromSeat`'s allocation. See the `fromOnly`
+           helper.
+         - A giving into a `toSeat`'s allocation. See the `toOnly`
+           helper.
+
+
 ## assertIssuerKeywords(zcf, expected)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)** 
-- **expected** **Array&lt;String>**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
+- **expected**: **Array&lt;String>**
 - Returns: None.
 
 Checks that the **[Keywords](./zoe-data-types.md#keyword)** in the *expected* argument match what the contract expects. 
@@ -38,9 +63,9 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
 ## satisfies(zcf, seat, update)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **seat** **[ZCFSeat](./zcfseat.md)**
-- **update** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **seat**: **[ZCFSeat](./zcfseat.md)**
+- **update**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
 - Returns: **Boolean** 
 
 Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
@@ -69,9 +94,9 @@ if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
 ```
 
 ## swap(zcf, leftSeat, rightSeat)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **leftSeat** **[ZCFSeat](./zcfseat.md)**
-- **rightSeat** **ZCFSeat**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **leftSeat**: **[ZCFSeat](./zcfseat.md)**
+- **rightSeat**: **ZCFSeat**
 - Returns: **defaultAcceptanceMsg**
 
 For both **seats**, everything a **seat** wants is given to it, having been
@@ -100,9 +125,9 @@ swap(zcf, firstSeat, secondSeat);
 ```
 
 ## swapExact(zcf, leftSeat, rightSeat)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **leftSeat** **[ZCFSeat](./zcfseat.md)**
-- **rightSeat** **ZCFSeat**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **leftSeat**: **[ZCFSeat](./zcfseat.md)**
+- **rightSeat**: **ZCFSeat**
 - Returns: **defaultAcceptanceMsg**
 
 For both seats, everything a seat wants is given to it, having been
@@ -134,15 +159,15 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 ```
 
 ## fitProposalShape(seat, proposalShape)
-- **seat** **[ZCFSeat](./zcfseat.md)**
-- **proposalShape** **Pattern**
+- **seat**: **[ZCFSeat](./zcfseat.md)**
+- **proposalShape**: **Pattern**
 - Returns: None.
 
 Checks the seat's proposal against the *proposalShape* argument. If the proposal does not match *proposalShape*, the seat will be exited and all **[Payments](/reference/ertp-api/payment.md)** will be refunded.
 
 ## assertProposalShape(seat, expected)
-- **seat** **[ZCFSeat](./zcfseat.md)**
-- **expected** **ExpectedRecord**
+- **seat**: **[ZCFSeat](./zcfseat.md)**
+- **expected**: **ExpectedRecord**
 - Returns: None.
 
 Checks the seat's proposal against an *expected* record that says
@@ -174,8 +199,8 @@ const sell = seat => {
 ```
 
 ## assertNatAssetKind(zcf, brand)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **brand** **[Brand](/reference/ertp-api/brand.md)**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **brand**: **[Brand](/reference/ertp-api/brand.md)**
 - Returns: **Boolean**
 
 Asserts that the *brand* is [AssetKind.NAT](/reference/ertp-api/ertp-data-types.md#assetkind).
@@ -192,10 +217,10 @@ assertNatAssetKind(zcf, quatloosBrand);
 ```
 
 ## depositToSeat(zcf, recipientSeat, amounts, payments)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **recipientSeat** **[ZCFSeat](./zcfseat.md)**
-- **amounts** **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- **payments** **PaymentKeywordRecord**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **recipientSeat**: **[ZCFSeat](./zcfseat.md)**
+- **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
+- **payments**: **PaymentKeywordRecord**
 - Returns: **Promise&lt;String>**
 
 Deposits payments such that their amounts are reallocated to a seat.
@@ -214,9 +239,9 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 ```
 
 ## withdrawFromSeat(zcf, seat, amounts)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **seat** **[ZCFSeat](./zcfseat.md)**
-- **amounts** **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **seat**: **[ZCFSeat](./zcfseat.md)**
+- **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
 - Returns: **Promise&lt;PaymentKeywordRecord>**
 
 Withdraws payments from a seat. Note that withdrawing the amounts of
@@ -234,8 +259,8 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **issuerKeywordRecord** **IssuerKeywordRecord**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **issuerKeywordRecord**: **IssuerKeywordRecord**
 - Returns: **Promise&lt;PaymentKeywordRecord>**
 
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
@@ -252,13 +277,13 @@ await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 ```
 
 ## offerTo(zcf, invitation, keywordMapping, proposal, fromSeat, toSeat, offerArgs)
-- **zcf** **[ZoeContractFacet](./zoe-contract-facet.md)**
-- **invitation** **ERef&lt;[Invitation](./zoe-data-types.md#invitation)>**
-- **keywordMapping** **KeywordRecord**
-- **proposal** **Proposal**
-- **fromSeat** **[ZCFSeat](./zcfseat.md)**
-- **toSeat** **ZCFSeat**
-- **offerArgs** **Object**
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **invitation**: **ERef&lt;[Invitation](./zoe-data-types.md#invitation)>**
+- **keywordMapping**: **KeywordRecord**
+- **proposal**: **Proposal**
+- **fromSeat**: **[ZCFSeat](./zcfseat.md)**
+- **toSeat**: **ZCFSeat**
+- **offerArgs**: **Object**
 - Returns: **OfferToReturns**
 
 **offerTo()** makes an offer from your current contract instance (which

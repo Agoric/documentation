@@ -54,9 +54,8 @@ const paymentKeywordRecord = {
 };
 ```
 
-
 ## E(UserSeat).getPayout(keyword)
-- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
+- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
 A **Payout** is a **Payment** that goes to a party in a successful transaction, redirecting

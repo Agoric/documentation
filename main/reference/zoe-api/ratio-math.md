@@ -6,7 +6,7 @@ dividing an amount by a ratio of two natural numbers.
 The Ratio Math functions have to be imported.
 
 ## assertIsRatio(ratio)
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: None.
 
 Throws an error if the argument is not a valid **Ratio**.
@@ -20,10 +20,10 @@ assertIsRatio(aRatio);
 ```
 
 ## makeRatio(numerator, numeratorBrand, denominator?, denominatorBrand?)
-- **numerator** **BigInt**
-- **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
-- **denominator** **BigInt** - Optional, defaults to 100n.
-- **denominatorBrand)** **Brand** - Optional, defaults to the *numeratorBrand* value.
+- **numerator**: **BigInt**
+- **numeratorBrand**: **[Brand](/reference/ertp-api/brand.md)**
+- **denominator**: **BigInt** - Optional, defaults to 100n.
+- **denominatorBrand)**: **Brand** - Optional, defaults to the *numeratorBrand* value.
 - Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
 Returns a **Ratio** based on the arguments passed into the function.
@@ -38,8 +38,8 @@ const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 ```
 
 ## makeRatioFromAmounts(numeratorAmount, denominatorAmount)
-- **numeratorAmount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **denominatorAmount** **Amount**
+- **numeratorAmount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **denominatorAmount**: **Amount**
 - Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
 Returns a **Ratio**, representing a fraction and consisting of an immutable pair 
@@ -53,8 +53,8 @@ const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 ```
 
 ## floorMultiplyBy(amount, ratio)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **amount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s
@@ -86,8 +86,8 @@ const exchange = floorMultiplyBy(dollars47, exchangeRatio);
 ```
 
 ## ceilMultiplyBy(amount, ratio)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **amount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s
@@ -119,8 +119,8 @@ const exchange = ceilMultiplyBy(dollars47, exchangeRatio);
 ```
 
 ## multiplyBy(amount, ratio)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **amount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s
@@ -151,8 +151,8 @@ const exchange = multiplyBy(dollars47, exchangeRatio);
 ```
 
 ## floorDivideBy(amount, ratio)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **amount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s denominator's **Brand**.
@@ -182,8 +182,8 @@ const exchange = floorDivideBy(dollars47, exchangeRatio);
 ```
 
 ## ceilDivideBy(amount, ratio)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **amount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s denominator's **Brand**.
@@ -213,8 +213,8 @@ const exchange = ceilDivideBy(dollars47, exchangeRatio);
 ```
 
 ## divideBy(amount, ratio)
-- **amount** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **amount**: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Amount**
 
 Returns an immutable **Amount**. Its **[Brand](/reference/ertp-api/brand.md)** is the *ratio*'s denominator's **Brand**.
@@ -244,7 +244,7 @@ const exchange = divideBy(dollars47, exchangeRatio);
 ```
 
 ## invertRatio(ratio)
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Ratio**
 
 Returns a **Ratio** such that the *ratio* argument's numerator is the returned value's
@@ -257,8 +257,8 @@ const invertedRatio = invertRatio(exchangeRatio);
 ```
 
 ## addRatios(left, right)
-- **left** **[Ratio](./zoe-data-types.md#ratio)**
-- **right** **Ratio**
+- **left**: **[Ratio](./zoe-data-types.md#ratio)**
+- **right**: **Ratio**
 - Returns: **Ratio**
 
 Returns a **Ratio** that's the sum of the *left* and *right* parameters.
@@ -282,8 +282,8 @@ This **Ratio** would then be returned.
 
 
 ## subtractRatios(left, right)
-- **left** **[Ratio](./zoe-data-types.md#ratio)**
-- **right** **Ratio**
+- **left**: **[Ratio](./zoe-data-types.md#ratio)**
+- **right**: **Ratio**
 - Returns: **Ratio**
 
 Returns a **Ratio** that's the result when the *right* parameter is subtracted from the *left* one.
@@ -306,8 +306,8 @@ For example:
 This **Ratio** would then be returned.
 
 ## multiplyRatios(left, right)
-- **left** **[Ratio](./zoe-data-types.md#ratio)**
-- **right** **Ratio**
+- **left**: **[Ratio](./zoe-data-types.md#ratio)**
+- **right**: **Ratio**
 - Returns: **Ratio**
 
 Returns a **Ratio** that's the product of the *left* and *right* parameters.
@@ -318,7 +318,7 @@ identical. similarly, the **Brands** of the *denominators* of *left* and
 and an error is thrown instead.
 
 ## oneMinus(ratio)
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
 - Returns: **Ratio**
 
 Subtracts the *ratio* argument from 1 and returns the resultant **Ratio**.
@@ -326,8 +326,8 @@ Subtracts the *ratio* argument from 1 and returns the resultant **Ratio**.
 This function requires the *ratio* argument to be between 0 and 1. It also requires the numerator and denominator **[Brands](/reference/ertp-api/brand.md)** to be the same. If either of these conditions aren't met, an error is thrown and no **Ratio** is returned.
 
 ## ratioGTE(left, right)
-- **left** **[Ratio](./zoe-data-types.md#ratio)**
-- **right** **Ratio**
+- **left**: **[Ratio](./zoe-data-types.md#ratio)**
+- **right**: **Ratio**
 - Returns: **Boolean**
 
 Returns **true** if *left* is larger than or equal to *right*, **false** otherwise.
@@ -336,8 +336,8 @@ An error is returned if the **[Brands](/reference/ertp-api/brand.md)** of *left*
 aren't identical.
 
 ## ratiosSame(left, right)
-- **left** **[Ratio](./zoe-data-types.md#ratio)**
-- **right** **Ratio**
+- **left**: **[Ratio](./zoe-data-types.md#ratio)**
+- **right**: **Ratio**
 - Returns: **Boolean**
 
 Returns **true** if the *left* and *right* **Ratios** are the same, **false** otherwise. Note that for
@@ -348,22 +348,22 @@ of both the *numerator* and *denominator* of one **Ratio** must be identical to 
 
 
 ## quantize(ratio, newDen)
-- **ratio** **[Ratio](./zoe-data-types.md#ratio)**
-- **newDen** **BigInt**
+- **ratio**: **[Ratio](./zoe-data-types.md#ratio)**
+- **newDen**: **BigInt**
 - Returns: **Ratio**
 
 Creates and returns a new **Ratio** that's equivalent to the *ratio* argument, but with a new denominator specified by the *newDen* argument.
 
 ## parseRatio(numeric, numeratorBrand, denominatorBrand?)
-- **numeric** **[ParsableNumber](./zoe-data-types.md#parsablenumber)**
-- **numeratorBrand** **[Brand](/reference/ertp-api/brand.md)**
-- **denominatorBrand** **Brand** - Optional, defaults to *numeratorBrand*.
+- **numeric**: **[ParsableNumber](./zoe-data-types.md#parsablenumber)**
+- **numeratorBrand**: **[Brand](/reference/ertp-api/brand.md)**
+- **denominatorBrand**: **Brand** - Optional, defaults to *numeratorBrand*.
 - Returns: **[Ratio](./zoe-data-types.md#ratio)**
 
 Creates a **Ratio** from the *numeric* argument, and returns that **Ratio**.
 
 ## assertParsableNumber(specimen)
-- **specimen** **Object**
+- **specimen**: **Object**
 - Returns: None.
 
 Throws an error if the argument is not a **[ParsableNumber](./zoe-data-types.md#parsablenumber)**.

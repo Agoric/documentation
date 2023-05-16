@@ -17,8 +17,9 @@ For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after su
 
 ## AmountKeywordRecord
 
-**AmountKeywordRecord** is a record in which the property names are **[Keywords](#keyword)**, and
-the values are **amounts**. **Keywords** are unique identifiers per contract
+**AmountKeywordRecords** are records in which the property names are **[Keywords](#keyword)**, and
+the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. **Keywords** are 
+unique identifiers per contract
 that tie together the **proposal**, **payments** to be escrowed, and **payouts**
 to the user. In the below example, **Asset** and **Price** are **Keywords**.
 
@@ -44,7 +45,7 @@ const myAmountKeywordRecord =
 ```
 ## Handle
 
-**Handles&** within Zoe have a slightly different definition than in regular JavaScript. They are **Far** objects without any methods whose only useful property are their unique unforgeable identities. They're often created in order to designate some other object, where the **Handles** can be passed around as reliable designators without giving access to the designated ojects.
+**Handles** within Zoe have a slightly different definition than in regular JavaScript. They are **Far** objects without any methods whose only useful property are their unique identities. They're often created in order to designate some other object, where the **Handles** can be passed around as reliable designators without giving access to the designated objects.
 
 ## Instance
 
@@ -57,13 +58,11 @@ const myAmountKeywordRecord =
 
 ## Invitation
 
-TBD
-
-For most purposes, a good enough approximation is that an Invitation is indeed a kind of Payment.
-
-Technically, an Invitation is a non-fungible eright that can be held in payments or purses, just like any other eright. An Invitation payment would be a Payment holding an Invitation. An Invitation payment is a kind of Payment.
-
-But we almost always just use a Payment holding a single Invitation in order to pass around Invitations, so we normally elide the difference.
+An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright
+that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
+eright. An **Invitation** **Payment** would be a **Payment** holding an **Invitation**. Because we
+almost always just use a **Payment** holding a single **Invitation** in order to pass around
+**Invitations**, we normally elide the difference.
 
 ## InvitationIssuer
 
@@ -71,7 +70,9 @@ But we almost always just use a Payment holding a single Invitation in order to 
 instance has a single **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come
 from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
 
-**InvitationIssuers** have all the methods of regular **Issuers**, but the two methods that qre most often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)** and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
+**InvitationIssuers** have all the methods of regular **Issuers**, but the two methods that qre most
+often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
+and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
 
 A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into
 the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
@@ -114,7 +115,7 @@ const { quoteAmount, quotePayment } = priceQuote;
 
 **PriceQuotes** are returned in two forms: 
 - **PriceDescription**
-  - Always includes **amountIn**, **amountOut**, the quote's **Timestamp**,
+  - Always includes **amountIn**, **amountOut**, the quote's **TimeStamp**,
     and the **TimerService** the **TimeStamp** is relative to.
 - **PriceDescription** wrapped as a **QuoteAuthority** issued payment. 
   - This lets quotes be shared in a format letting others verify the time and values. 
@@ -127,11 +128,9 @@ const { quoteAmount, quotePayment } = priceQuote;
 just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
 A **Ratio** cannot have a denominator value of 0.
 
-The ratio functions have to be imported.
-
 The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand**
 and produces results of the same **Brand**.
 
 **Ratios** can also have two different **Brands**, essentially typing them such as miles per
-hour or US dollars for Swiss francs (an exchange rate ratio).
+hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 

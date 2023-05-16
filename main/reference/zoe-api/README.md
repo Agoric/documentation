@@ -12,7 +12,7 @@ The Zoe API supports the following objects:
 
 | Object | Description |
 | --- | --- |
-| [Zoe Service](./zoe.md) | Deploy and work with smart contracts. |
+| [Zoe Service](./zoe.md) | Deploys and works with smart contracts. |
 | [UserSeat](./user-seat.md) | Used outside contracts to access or manipulate offers. |
 | [Zoe Contract Facet](./zoe-contract-facet.md) | Accesses a running contract instance. |
 | [ZCFSeat](./zcfseat.md) | Used within contracts to access or manipulate offers. |
@@ -33,8 +33,8 @@ The Zoe API introduces and uses the following data types:
 | Data Type | Description |
 | --- | --- |
 | [Allocation](./zoe-data-types.md#allocation) | The **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting an **Offer**. |
-| [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | Records in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
-| [Handle](./zoe-data-types.md#handle) | TBD  |
+| [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | A record in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
+| [Handle](./zoe-data-types.md#handle) | A **Far** object without any methods whose only useful property is its unique identity. |
 | [Instance](./zoe-data-types.md#instance) | A handle to an opaque object that represents a contract instance. |
 | [Invitation](./zoe-data-types.md#invitation) | TBD |
 | [InvitationIssuer](./zoe-data-types.md#invitationissuer) | An **[Issuer](/reference/ertp-api/issuer.md)** for **[Invitations](./zoe-data-types.md#invitation)**, which grant the right to participate in a contract. |
