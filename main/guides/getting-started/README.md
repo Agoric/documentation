@@ -9,8 +9,7 @@ After installing the Agoric SDK, you can proceed to [starting a project](./start
 If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
 
 ```shell
-brew install jq # Install jQuery
-node --version # 18.16.0 or higher
+node --version # 16.19.1 or higher
 npm install --global yarn # Install yarn for package management
 git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
 cd agoric-sdk
@@ -28,7 +27,7 @@ If `agoric` is not found, then you may need to add the parent directory of where
 This presentation is a good overview of the Agoric SDK setup process,
 though a few details are out of date:
 
-- node version: 12.x is too old; use 18.16.0 or higher
+- node version: 12.x is too old; use 16.19.1 or higher
 - skip `git checkout hackathon-2020-11`; use the `community-dev` branch
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -44,20 +43,12 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 
-## Install jQuery
+## Install Node.js 16.19.1 or Higher
 
-Install jQuery by running the following command.
-
-```shell
-brew install jq
-```
-
-## Install Node.js 18.16.0 or Higher
-
-Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing the LTS version of node 18.
+Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing the LTS version of node 16.
 
 ```shell
-node --version # 18.16.0 or higher
+node --version # 16.19.1 or higher
 ```
 
 ## Install the Yarn Package Manager
