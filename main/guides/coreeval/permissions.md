@@ -1,10 +1,10 @@
-# Coding Permissions
+# Declaring Required Capabilities
 
-Write a json file with the permissions that the proposal will need. For example,
+Write a json file declaring the capabilities that the proposal will need. For example,
 [gov-add-psm-permit.json](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm-permit.json) 
-is the proposal Agoric created for the PSM contract. Note that permissions are set by listing the
-permission and setting it to any truthy value. Thus,`"bankManager": true` and `"bankManager": 'hello'` are
-equivalent; they both set the `bankManager` permission.
+declares capabilities needed to start a new PSM contract. Note that capabilities are declared using
+their name as a property along with any truthy value. For example,`"bankManager": true` and 
+`"bankManager": 'hello'` are equivalent; they both set the `bankManager` capability.
 
 ::: details Show example permissions file
 ```
@@ -58,7 +58,7 @@ equivalent; they both set the `bankManager` permission.
 ```
 :::
 
-## Consume Section
+## Top Level Consume Section
 
 In this section you need to set all the permissions that your contract will need to be able to use
 (i.e., "consume"). Some of the listed permissions in the example PSM permission file above are of
@@ -69,11 +69,11 @@ general interest to most contracts, while others are more specific to the PSM co
 * **board**: Grants write access to the [board name service](/guides/wallet/README.md#the-agoric-board).
 * **chainStorage**: Grants write access to the chain storage node, which is required when running `agd query` commands. Thus, most contracts will need access to this.
 * **zoe**: When this permission is set, it grants access to the Zoe framework. All contracts will need access to this.
-* **feeMintAccess**: When this permission is set, the contract will be able to create digital assets. Only contracts that mint privileged Agoric digital assets (i.e., not the unprivileged **[zcf.makeZDFMint()](/reference/zoe-api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo)**) will need access to this.
+* **feeMintAccess**: When this permission is set, the contract will be able to create digital assets. Only contracts that mint privileged Agoric digital assets (i.e., not the unprivileged **[zcf.makeZCFMint()](/reference/zoe-api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo)**) will need access to this.
 * **economicCommitteeCreatorFacet**, **econCharterKit**, **provisionPoolStartResult**: These 3 permissions are required by governed contracts.
 * **chainTimerService**: When this permission is set, it grants access to the *chainTimerService*. All governed contracts need access to this so they know when a vote is complete.
 
-## Produce Section
+## Top Level Produce Section
 
 Specifies what, if anything, the contract produces. For example, the example PSM contract produces *testFirstAnchorKit* which is used for testing purposes.
 
@@ -87,7 +87,7 @@ Specifies what instances, if any, the contract produces or consumes.
 
 ## Issuer Section
 
-Specifies what **[Issuers](/reference/ertp-api/issuer.md)**,, if any, the contract produces or consumes.
+Specifies what **[Issuers](/reference/ertp-api/issuer.md)**, if any, the contract produces or consumes.
 
 ## Brand Section
 
