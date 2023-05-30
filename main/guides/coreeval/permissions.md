@@ -3,7 +3,7 @@
 Write a json file with the permissions that the proposal will need. For example,
 [gov-add-psm-permit.json](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm-permit.json) 
 is the proposal Agoric created for the PSM contract. Note that permissions are set by listing the
-permission and setting it to any String. Thus,`"bankManager": true` and `"bankManager": false` are
+permission and setting it to any truthy value. Thus,`"bankManager": true` and `"bankManager": 'hello'` are
 equivalent; they both set the `bankManager` permission.
 
 ::: details Show example permissions file
@@ -87,10 +87,10 @@ Specifies what instances, if any, the contract produces or consumes.
 
 ## Issuer Section
 
-Specifies what digital assets, if any, the contract issuer can produce or consume.
+Specifies what **[Issuers](/reference/ertp-api/issuer.md)**,, if any, the contract produces or consumes.
 
 ## Brand Section
 
-Specifies what **[Brands](/reference/ertp-api/brand.md)**, if any, the contract can produce or consume.
+Specifies what **[Brands](/reference/ertp-api/brand.md)**, if any, the contract produces or consumes.
 Note that any **Brands** associated with digital assets that the contract mints 
 are not included in this section, unless they're also produced or consumed in some other capacity.
