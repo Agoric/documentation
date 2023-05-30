@@ -6,7 +6,7 @@ To do this, do the following:
 
 1. [Code the permit list that the proposal will require](./permissions.md).
 2. [Code the proposal itself](./proposal.md).
-3. [Create a local testnet](./local-testnet.md).
+3. [Deploy the proposal to a local testnet](./local-testnet.md).
 
 
 
