@@ -18,7 +18,7 @@ cd agoric-sdk
 yarn install # Ask yarn to install all the dependant node packages
 yarn build # Build the agoric-sdk packages
 cd packages/cosmic-swingset
-make #Build the cosmic-swingset package
+make # Build the cosmic-swingset package
 cd ../..
 yarn link-cli ~/bin/agoric # Create an Agoric directory to reference
 agoric --version # This should print the version number of the SDK
