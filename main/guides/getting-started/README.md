@@ -17,6 +17,9 @@ git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone th
 cd agoric-sdk
 yarn install # Ask yarn to install all the dependant node packages
 yarn build # Build the agoric-sdk packages
+cd packages/cosmic-swingset
+make #Build the cosmic-swingset package
+cd ../..
 yarn link-cli ~/bin/agoric # Create an Agoric directory to reference
 agoric --version # This should print the version number of the SDK
 ```
@@ -104,7 +107,7 @@ Cloning and installing the Agoric SDK can take a while. Please be patient.
 yarn install
 ```
 
-**Note:** If you run into errors during install or build, make sure you have build-essential installed. `gcc --version`.
+**Note:** If you run into errors during install or build, make sure you have build-essential components installed. `gcc --version`.
 
 ## Build Packages
 
@@ -114,17 +117,26 @@ yarn build
 
 **Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for native Windows 10 or native Windows 11.
 
+## Build the Cosmic Swingset Package
+
+```shell
+cd packages/cosmic-swingset
+make
+```
+
 ## Install Agoric CLI
 
 Install the Agoric CLI (Command Line Interface) in a convenient place in your `$PATH` such as:
 
 ```shell
+cd ../..
 yarn link-cli ~/bin/agoric
 ```
 
 or:
 
 ```shell
+cd ../..
 sudo yarn link-cli /usr/local/bin/agoric
 ```
 
