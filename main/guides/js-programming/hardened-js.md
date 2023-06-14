@@ -9,9 +9,9 @@ The last 10 minutes are Q&A._
 :::
 
 
-## Example Secure JavaScript Code
+## Example Hardened JavaScript Code
 
-Below is an example of a reliable, secure smart contract written in JavaScript.
+The example below demonstrates several features of Hardened JavaScript.
 
 <<< @/snippets/test-hardened-js.js#makeCounter
 
