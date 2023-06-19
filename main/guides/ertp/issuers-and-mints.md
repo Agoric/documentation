@@ -37,44 +37,44 @@ more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/reference/ertp-api/).
 
 - **Create issuer operation**
-  - [`makeIssuerKit()`](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
+  - [makeIssuerKit()](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
     - Create and return a new `issuer` and its associated `mint` and `brand`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
 - **Get information about the issuer operations**
-  - [`issuer.getAllegedName()`](/reference/ertp-api/issuer.md#issuer-getallegedname)
+  - [anIssuer.getAllegedName()](/reference/ertp-api/issuer.md#anissuer-getallegedname)
     - Return the `allegedName` for the `issuer` (the non-trusted human-readable name of its associated `brand`).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
-  - [`issuer.getAssetKind()`](/reference/ertp-api/issuer.md#issuer-getassetkind)
+  - [anIssuer.getAssetKind()](/reference/ertp-api/issuer.md#anissuer-getassetkind)
     - Return the kind of the `issuer`'s asset; either `AssetKind.NAT` ("nat") or `AssetKind.SET` ("set").
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAssetKind
-  - [`issuer.getBrand()`](/reference/ertp-api/issuer.md#issuer-getbrand)
+  - [anIssuer.getBrand()](/reference/ertp-api/issuer.md#anissuer-getbrand)
     - Return the `brand` for the `issuer`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getBrand
 - **Purse operation**
-  - [`issuer.makeEmptyPurse()`](/reference/ertp-api/issuer.md#issuer-makeemptypurse)
+  - [anIssuer.makeEmptyPurse()](/reference/ertp-api/issuer.md#anissuer-makeemptypurse)
     - Make and return an empty `purse` for holding assets of the `brand` associated with the `issuer`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
 - **Payment operations**
-  - [`issuer.burn(payment, optAmount)`](/reference/ertp-api/issuer.md#issuer-burn-payment-optamount)
+  - [anIssuer.burn(payment, optAmount)](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount)
     - Destroy all of the digital assets in the `payment`.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
-  - [`issuer.claim(payment, optAmount)`](/reference/ertp-api/issuer.md#issuer-claim-payment-optamount)
+  - [anIssuer.claim(payment, optAmount)](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)
     - Transfer all digital assets from `payment` to a new Payment.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#claim
-  - [`issuer.combine(paymentsArray)`](/reference/ertp-api/issuer.md#issuer-combine-paymentsarray-opttotalamount)
+  - [anIssuer.combine(paymentsArray)](/reference/ertp-api/issuer.md#anissuer-combine-paymentsarray-opttotalamount)
     - Combine multiple Payments into one new Payment.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
-  - [`issuer.getAmountOf(payment)`](/reference/ertp-api/issuer.md#issuer-getamountof-payment)
+  - [anIssuer.getAmountOf(payment)](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)
     - Describe the `payment`'s balance as an Amount.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
-  - [`issuer.isLive(payment)`](/reference/ertp-api/issuer.md#issuer-islive-payment)
+  - [anIssuer.isLive(payment)](/reference/ertp-api/issuer.md#anissuer-islive-payment)
     - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isLive
-  - [`issuer.split(payment, paymentAmountA)`](/reference/ertp-api/issuer.md#issuer-split-payment-paymentamounta)
+  - [anIssuer.split(payment, paymentAmountA)](/reference/ertp-api/issuer.md#anissuer-split-payment-paymentamounta)
     - Split a single `payment` into two new Payments.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
-  - [`issuer.splitMany(payment, paymentAmountArray)`](/reference/ertp-api/issuer.md#issuer-splitmany-payment-amountarray)
+  - [anIssuer.splitMany(payment, paymentAmountArray)](/reference/ertp-api/issuer.md#anissuer-splitmany-payment-amountarray)
     - Split a single `payment` into multiple Payments.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitMany
 
@@ -85,10 +85,10 @@ API Reference](/reference/ertp-api/).
 A `mint`, `brand`, or `purse` is actually associated with an `issuer` only if
 the `issuer` itself acknowledges the association.
 
-- [`mint.getIssuer()`](/reference/ertp-api/mint.md#mint-getissuer)
+- [aMint.getIssuer()](/reference/ertp-api/mint.md#amint-getissuer)
   - Return the `issuer` uniquely associated with the `mint`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer
-- [`brand.isMyIssuer(issuer)`](/reference/ertp-api/brand.md#brand-ismyissuer-allegedissuer)
+- [aBrand.isMyIssuer(issuer)](/reference/ertp-api/brand.md#abrand-ismyissuer-allegedissuer)
   - Return `true` if `issuer` is the brand's `issuer`, `false` if not.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isMyIssuer
 
@@ -115,13 +115,13 @@ So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos 
 
 There are two `mint` methods, and the method that creates new mints. Click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/).
-- [`mint.getIssuer()`](/reference/ertp-api/mint.md#mint-getissuer)
+- [aMint.getIssuer()](/reference/ertp-api/mint.md#amint-getissuer)
   - Return the `issuer` uniquely associated with the `mint`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer
-- [`mint.mintPayment(newAmount)`](/reference/ertp-api/mint.md#mint-mintpayment-newamount)
+- [aMint.mintPayment()](/reference/ertp-api/mint.md#amint-mintpayment-newamount)
   - Create new digital assets of the `mint`'s associated `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
-- [`makeIssuerKit(allegedName, assetKind, displayInfo)`](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
+- [makeIssuerKit()](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
   - Create and return a new `issuer` and its associated `mint` and `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
 

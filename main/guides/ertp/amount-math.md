@@ -80,8 +80,8 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
  
 ## Methods On Other Objects
 
-These methods return a `AssetKind`: 
-- [issuer.getAssetKind()](/reference/ertp-api/issuer.md#issuer-getassetkind)
+These methods return an **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)**: 
+- [anIssuer.getAssetKind()](/reference/ertp-api/issuer.md#anissuer-getassetkind)
   - Returns the `AssetKind` of the `issuer`'s `brand`. (`AssetKind.NAT` or `AssetKind.SET`).
   - <<< @/snippets/ertp/guide/test-amount-math.js#getAssetKind2
 - [zcf.getAssetKind(brand)](/reference/zoe-api/zoe-contract-facet.md#zcf-getassetkind-brand)
