@@ -45,6 +45,7 @@ The second argument, `privateArgs`, is used by the caller of `startInstance`
 to pass in any arguments that should not be part of the public terms.
 `privateArgs` is an object with keys and values as decided by the caller of
 `startInstance`. If no private arguments are passed, `privateArgs` is undefined.
+
 ```js
 const start = (zcf, privateArgs) => {
   ...
@@ -83,24 +84,24 @@ needs to make a matching offer, so there are more constraints.
 
 Use `zcf.makeInvitation()` to create the first party's `invitation`:
 
-``` js
-  const creatorInvitation = zcf.makeInvitation(
-    makeMatchingInvitation,
-    'firstOffer',
-  );
+```js
+const creatorInvitation = zcf.makeInvitation(
+  makeMatchingInvitation,
+  'firstOffer',
+);
 ```
 
 `makeMatchingInvitation()` creates the second `invitation`.
 
-``` js
-    const matchingSeatInvitation = zcf.makeInvitation(
-      matchingSeatOfferHandler,
-      'matchOffer',
-      {
-        asset: give.Asset,
-        price: want.Price,
-      },
-    );
+```js
+const matchingSeatInvitation = zcf.makeInvitation(
+  matchingSeatOfferHandler,
+  'matchOffer',
+  {
+    asset: give.Asset,
+    price: want.Price,
+  },
+);
 ```
 
 The third argument (which is optional and wasn't needed for the first `invitation`) says
@@ -114,22 +115,23 @@ the simple case that each party wants what the other offered. If the terms match
 gives each the `payout` they asked for, and closes out the contract. If the terms don't
 match, they each get back what they brought to the exchange, and it's still over.
 
-``` js
-    const matchingSeatOfferHandler = matchingSeat => {
-      const swapResult = swap(zcf, firstSeat, matchingSeat);
-      zcf.shutdown();
-      return swapResult;
-    };
+```js
+const matchingSeatOfferHandler = matchingSeat => {
+  const swapResult = swap(zcf, firstSeat, matchingSeat);
+  zcf.shutdown();
+  return swapResult;
+};
 ```
 
 If you study other contracts, you'll see they all have this basic format. Depending
 on their goals, they may do additional bookkeeping, or try to find compatible terms
 between multiple offers, or create new assets to order.
 
+
 ## Making an Invitation
 
 To create an invitation in the contract, use the Zoe Contract
-Facet method [`zcf.makeInvitation`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties).
+Facet method [`zcf.makeInvitation`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
 
 ## Using bundleSource
 

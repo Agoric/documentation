@@ -7,7 +7,7 @@ The wallet facilitates several core user interactions within the Agoric ecosyste
 
 ## Dapps
 
-To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://local.agoric.com/.
+To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://wallet.agoric.app/locator/.
 
 Before the dapp is able to make offers, the connection must be accepted from the wallet. Incoming dapp connections can be managed from the Dashboard view:
 

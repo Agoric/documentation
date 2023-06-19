@@ -60,7 +60,7 @@ test('loan contract', async t => {
 
   const timer = buildManualTimer(console.log);
 
-  const priceAuthority = makeFakePriceAuthority({
+  const priceAuthority = await makeFakePriceAuthority({
     actualBrandIn: collateralBrand,
     actualBrandOut: loanBrand,
     priceList: [4, 2],
