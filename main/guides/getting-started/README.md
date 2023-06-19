@@ -10,7 +10,6 @@ If you're familar with JavaScript development tools such as `node`, `yarn`, and 
 
 ```shell
 go version # Version 1.20.3 or higher
-jq --version
 node --version # LTS version such as 18.16.0
 npm install --global yarn # Install yarn for package management
 git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
@@ -55,15 +54,6 @@ Download Go from [go.dev/doc/install](https://go.dev/doc/install) and follow the
 ```shell
 go version # Version 1.20.3 or higher
 ```
-
-## Install jq
-
-Download jq from [jqlang.github.io/jq/](https://jqlang.github.io/jq/) and follow the instructions for your platform.
-
-```shell
-jq --version
-```
-
 
 ## Install Node.js
 
