@@ -11,7 +11,7 @@ If you're familar with JavaScript development tools such as `node`, `yarn`, and 
 ```shell
 go version
 jq --version
-node --version # 18.16.0 or higher
+node --version # LTS version such as 18.16.0
 npm install --global yarn # Install yarn for package management
 git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
 cd agoric-sdk
@@ -32,7 +32,7 @@ If `agoric` is not found, then you may need to add the parent directory of where
 This presentation is a good overview of the Agoric SDK setup process,
 though a few details are out of date:
 
-- node version: 12.x is too old; use 18.16.0 or higher
+- node version: 12.x is too old; use the LTS version 18.16.0 or a later LTS version
 - skip `git checkout hackathon-2020-11`; use the `community-dev` branch
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -65,13 +65,15 @@ jq --version
 ```
 
 
-## Install Node.js 18.16.0 or Higher
+## Install Node.js LTS Version
 
 Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing the LTS version of node 18.
 
 ```shell
-node --version # 18.16.0 or higher
+node --version # LTS version such as 18.16.0
 ```
+
+**Note:** Agoric will support all even numbered versions of Node.js. 
 
 ## Install the Yarn Package Manager
 
