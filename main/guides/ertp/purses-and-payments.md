@@ -31,8 +31,8 @@ whatever assets already exist there. So a 3 Quatloos deposit
 into a `purse` with 8 Quatloos results in a `purse` with 11 Quatloos.
 
 When adding a `payment` to a `purse`, you must add the entire `payment`. To
-only add part of a `payment`, you must first call [`issuer.split()`](/reference/ertp-api/issuer.md#issuer-split-payment-paymentamounta)
-or [`issuer.splitMany()`](/reference/ertp-api/issuer.md#issuer-splitmany-payment-amountarray)
+only add part of a `payment`, you must first call [anIssuer.split()](/reference/ertp-api/issuer.md#anissuer-split-payment-paymentamounta)
+or [anIssuer.splitMany()](/reference/ertp-api/issuer.md#anissuer-splitmany-payment-amountarray)
 to split it into two or more new `payments`.
 
 `mints` create entirely new digital assets and put them in a new `payment`.
@@ -82,23 +82,23 @@ to a party, you should tell them what `brand` it accepts.
 The following is a brief description and example of each `purse` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/reference/ertp-api/).
-- [`purse.getCurrentAmount()`](/reference/ertp-api/purse.md#purse-getcurrentamount)
+- [aPurse.getCurrentAmount()](/reference/ertp-api/purse.md#apurse-getcurrentamount)
   - Describe the `purse`'s current balance as an Amount. Note that a `purse` can be empty.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getCurrentAmount
-- [`purse.withdraw(amount)`](/reference/ertp-api/purse.md#purse-withdraw-amount)
+- [aPurse.withdraw(amount)](/reference/ertp-api/purse.md#apurse-withdraw-amount)
   - Withdraw the `amount` of specified digital assets from this `purse` into a new `payment`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
-- [`purse.deposit(payment, optAmount)`](/reference/ertp-api/purse.md#purse-deposit-payment-optamount)
+- [aPurse.deposit(payment, optAmount)](/reference/ertp-api/purse.md#apurse-deposit-payment-optamount)
   - Deposit all the contents of `payment` into this `purse`, returning an `amount` describing the
 `payment`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
-- [`purse.getDepositFacet()`](/reference/ertp-api/purse.md#purse-getdepositfacet)
+- [aPurse.getDepositFacet()](/reference/ertp-api/purse.md#apurse-getdepositfacet)
   - Return a deposit-only facet on the `purse`. Note that the command to add a `payment`'s
     assets via a `DepositFacet` is not `deposit()` but `receive()` as shown here.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
 
 In addition, the method to create a new, empty, `purse` is called on an `issuer`:
-- [`issuer.makeEmptyPurse()`](/reference/ertp-api/issuer.md#issuer-makeemptypurse)
+- [anIssuer.makeEmptyPurse()](/reference/ertp-api/issuer.md#anissuer-makeemptypurse)
   - Make and return an empty `purse` that holds assets of the `brand` associated with the `issuer`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
 ## Payments
@@ -142,7 +142,7 @@ have `payments` as arguments and effectively operate on a `payment`. The followi
 brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/ertp/api/).
-- [`payment.getAllegedBrand()`](/reference/ertp-api/payment.md#payment-getallegedbrand)
+- [aPayment.getAllegedBrand()](/reference/ertp-api/payment.md#apayment-getallegedbrand)
   - Return the `brand` indicating the kind of digital asset this `payment` purports to be
     and which `issuer` to use with it.
     Because `payments` are not trusted, any method calls on them should be treated
@@ -150,36 +150,36 @@ API Reference](/ertp/api/).
 
 ### Other Objects' Payment-Related Methods
 
-- [`issuer.burn(payment, optAmount)`](/reference/ertp-api/issuer.md#issuer-burn-payment-optamount)
+- [anIssuer.burn(payment, optAmount)](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount)
   - Destroy all of the digital assets in the `payment`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
-- [`issuer.claim(payment, optAmount)`](/reference/ertp-api/issuer.md#issuer-claim-payment-optamount)
+- [anIissuer.claim(payment, optAmount)](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)
   - Transfer all digital assets from `payment` to a new Payment.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#claim
-- [`issuer.combine(paymentsArray)`](/reference/ertp-api/issuer.md#issuer-combine-paymentsarray-opttotalamount)
+- [anIssuer.combine(paymentsArray)](/reference/ertp-api/issuer.md#anissuer-combine-paymentsarray-opttotalamount)
   - Combine multiple Payments into one new Payment.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#combine
-- [`issuer.getAmountOf(payment)`](/reference/ertp-api/issuer.md#issuer-getamountof-payment)
+- [anIssuer.getAmountOf(payment)](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)
   - Describe the `payment`'s balance as an Amount.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
-- [`issuer.isLive(payment)`](/reference/ertp-api/issuer.md#issuer-islive-payment)
+- [anIssuer.isLive(payment)](/reference/ertp-api/issuer.md#anissuer-islive-payment)
   - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
-- [`issuer.split(payment, paymentAmountA)`](/reference/ertp-api/issuer.md#issuer-split-payment-paymentamounta)
+- [anIssuer.split(payment, paymentAmountA)](/reference/ertp-api/issuer.md#anissuer-split-payment-paymentamounta)
   - Split a single `payment` into two new Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
-- [`issuer.splitMany(payment, amountArray)`](/reference/ertp-api/issuer.md#issuer-splitmany-payment-amountarray)
+- [anIssuer.splitMany(payment, amountArray)](/reference/ertp-api/issuer.md#anissuer-splitmany-payment-amountarray)
   - Split a single `payment` into multiple Payments.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
-- [`mint.mintPayment(newAmount)`](/reference/ertp-api/mint.md#mint-mintpayment-newamount)
+- [aMint.mintPayment(newAmount)](/reference/ertp-api/mint.md#amint-mintpayment-newamount)
   - Create new digital assets of the `mint`'s associated `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
-- [`purse.deposit(payment, optAmount)`](/reference/ertp-api/purse.md#purse-deposit-payment-optamount)
+- [aPurse.deposit(payment, optAmount)](/reference/ertp-api/purse.md#apurse-deposit-payment-optamount)
   - Deposit all the contents of `payment` into `purse`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
-- [`purse.getDepositFacet()`](/reference/ertp-api/purse.md#purse-getdepositfacet)
+- [aPurse.getDepositFacet()](/reference/ertp-api/purse.md#apurse-getdepositfacet)
   - Create and return a new deposit-only facet of the `purse` that allows arbitrary other parties to deposit Payments into `purse`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
-- [`purse.withdraw(amount)`](/reference/ertp-api/purse.md#purse-withdraw-amount)
+- [aPurse.withdraw(amount)](/reference/ertp-api/purse.md#apurse-withdraw-amount)
   - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#withdraw
 

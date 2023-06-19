@@ -15,7 +15,7 @@ new *Quatloos*, it can never create non-*Quatloos* assets. Similarly, the *Quatl
 will always be associated with 
 the *Quatloos* **Mint** and *Quatloos* **Issuer**.
 
-## Brand.isMyIssuer(allegedIssuer)
+## aBrand.isMyIssuer(allegedIssuer)
 - **allegedIssuer** **[Issuer](./issuer.md)**
 - Returns: **Boolean**
 
@@ -23,13 +23,13 @@ Returns **true** if *allegedIssuer* is the **Brand**'s **Issuer**. Returns **fal
 
 Note that a **Brand** from an untrusted source can misrepresent its association with
 an **Issuer**. The claim should be cross-checked using the **Issuer's**
-[**Issuer.getBrand()**](./issuer.md#issuer-getbrand) method for mutual agreement.
+[**anIssuer.getBrand()**](./issuer.md#anissuer-getbrand) method for mutual agreement.
 
 ```js
 const isIssuer = brand.isMyIssuer(issuer);
 ```
 
-## Brand.getAllegedName()
+## aBrand.getAllegedName()
 - Returns: **String**
 
 Returns the alleged name of the **Brand**.
@@ -48,7 +48,7 @@ helpful for debugging.
 const name = brand.getAllegedName();
 ```
 
-## Brand.getDisplayInfo()
+## aBrand.getDisplayInfo()
 - Returns: **[DisplayInfo](./ertp-data-types.md#displayinfo)**
 
 Returns the **DisplayInfo** associated with the **Brand**. 
@@ -63,7 +63,7 @@ displaying in dollars rather than cents).
 const quatloosDisplay = quatloosBrand.getDisplayInfo();
 ```
 
-## Brand.getAmountShape()
+## aBrand.getAmountShape()
 - Returns: **[AmountShape](./ertp-data-types.md#amountshape)**
 
 Returns the **AmountShape** for a **Brand** associated with a non-fungible asset. 
@@ -72,7 +72,7 @@ Returns the **AmountShape** for a **Brand** associated with a non-fungible asset
 ## Related Methods
 
 The following methods on other ERTP components are also related to the **Brand** object.
-- [**Issuer.getBrand()**](./issuer.md#issuer-getbrand): Returns
+- [**anIssuer.getBrand()**](./issuer.md#anissuer-getbrand): Returns
 the **Brand** for the **Issuer**.
-- [**Payment.getAllegedBrand()**](./payment.md#payment-getallegedbrand): Returns
+- [**aPayment.getAllegedBrand()**](./payment.md#apayment-getallegedbrand): Returns
 the **Payment**'s alleged **Brand**.
