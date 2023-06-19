@@ -2,6 +2,7 @@
 
 You will need to write a proposal script that runs the contract, and possibly does additional things depending on your needs. (Usually these additional things will be dependent on a governance vote.) For example, [gov-add-psm.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm.js) is a proposal Agoric created for the PSM contract:
 
+::: details Show example proposal
 ```jsx
 /* global startPSM */
 // @ts-nocheck
@@ -51,9 +52,4 @@ const main = async permittedPowers => {
 main;
 
 ```
-
-Bundle your contract by navigating to `<agoric-sdk>/packages/vats` and running
-
-```
-yarn bundle-source --cache-json bundles/ <PATH_TO_CONTRACT> <CONTRACT_NAME>
-```
+:::

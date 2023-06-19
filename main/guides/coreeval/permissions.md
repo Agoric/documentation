@@ -75,11 +75,13 @@ general interest to most contracts, while others are more specific to the PSM co
 
 ## Top Level Produce Section
 
-Specifies what, if anything, the contract produces. For example, the example PSM contract produces *testFirstAnchorKit* which is used for testing purposes.
+Specifies what, if anything, the contract produces. For example, the example PSM contract 
+produces *testFirstAnchorKit* which is used for testing purposes.
 
 ## Installation Section 
 
-Specifies what well-known installations the contract requires. At a minimum, the contract itself should be listed as an installation. Governed contracts should include a *contractGovernor* installation.
+Specifies what well-known installations the contract requires. At a minimum, the contract itself should
+be listed as an installation. Governed contracts should include a *contractGovernor* installation.
 
 ## Instance Section
 
