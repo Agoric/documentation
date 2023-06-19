@@ -13,7 +13,7 @@ While each **Purse** can only hold assets of one **Brand**, any number of **Purs
 created that hold that **Brand**. So you could have, say, three *Quatloos* **Purses**, your
 friend Alice could have eight *Quatloos* **Purses**, and so on. 
 
-**Purses** are created by calling the **[Issuer.makeEmptyPurse()](./issuer.md#issuer-makeemptypurse)**
+**Purses** are created by calling the **[anIssuer.makeEmptyPurse()](./issuer.md#anissuer-makeemptypurse)**
 method on the **[Issuer](./issuer.md)** associated with the **Brand** of assets you want the
 new **Purse** to hold.
 
@@ -23,8 +23,8 @@ const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
 You change a **Purse**'s balance by calling either
-**[Purse.deposit()](#purse-deposit-payment-optamount)** or 
-**[Purse.withdraw()](#purse-withdraw-amount)** on it. A **Purse** can be empty, which if it holds 
+**[aPurse.deposit()](#apurse-deposit-payment-optamount)** or 
+**[aPurse.withdraw()](#apurse-withdraw-amount)** on it. A **Purse** can be empty, which if it holds 
 a fungible currency means it has a value of 0. If it holds a non-fungible asset (e.g., theater tickets),
 then the **Purse** simply doesn't contain any assets if it's empty.
 
@@ -32,12 +32,12 @@ Unlike **[Payments](./payment.md)**, **Purses** are not meant to be sent to othe
 To transfer digital assets, you should withdraw a **Payment** from a **Purse** and
 send the **Payment** to another party.
 
-## Purse.getCurrentAmount()
+## aPurse.getCurrentAmount()
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
 Returns the **Purse**'s current balance as an **Amount**.
 The returned **Amount** **[Value](./ertp-data-types.md#value)** might be empty, and might be different the next time you
-call **Purse.getCurrentAmount()** on the same **Purse** if assets have been deposited or
+call **aPurse.getCurrentAmount()** on the same **Purse** if assets have been deposited or
 withdrawn in the interim.
 
 ```js
@@ -49,7 +49,7 @@ const quatloosPurse.deposit(quatloos5);
 const currentBalance = quatloosPurse.getCurrentAmount();
 ```
 
-## Purse.getCurrentAmountNotifier()
+## aPurse.getCurrentAmountNotifier()
 - Returns: **Notifier&lt;[Amount](./ertp-data-types.md#amount)>**
 
 Returns a lossy notifier for changes to this **Purse**'s balance. For more details,
@@ -65,7 +65,7 @@ const checkNotifier = async () => {
 };
 ```
 
-## Purse.deposit(payment, optAmount?)
+## aPurse.deposit(payment, optAmount?)
 - **payment** **[Payment](./payment.md)**
 - **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional. 
 - Returns: **Amount**
@@ -76,8 +76,8 @@ Deposit all the contents of *payment* into the **Purse**, returning an **Amount*
 
 While the above applies to local and remote **Purses**, for remote **Purses** there may be effects on 
 this operation due to the use of promises and asynchronicity. You 
-have to have a non-promise **Payment** before calling **Purse.deposit()**. 
-When you call **Purse.deposit()** you get a response back (after waiting for the round trip) 
+have to have a non-promise **Payment** before calling **aPurse.deposit()**. 
+When you call **aPurse.deposit()** you get a response back (after waiting for the round trip) 
 telling you if it succeeded. All later arriving calls see the value has been transferred 
 into the **Purse**, and the **Payment** is no longer valid.
 
@@ -100,7 +100,7 @@ const secondPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 10
 const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 ```
 
-## Purse.withdraw(amount)
+## aPurse.withdraw(amount)
 
 - **amount** **[Amount](./ertp-data-types.md#amount)**
 - Returns: **[Payment](./payment.md)**
@@ -130,18 +130,18 @@ issuer.getAmountOf(withdrawalPayment);
 purse.getCurrentAmount();
 ```
 
-## Purse.getAllegedBrand()
+## aPurse.getAllegedBrand()
 - Returns: **[Brand](./brand.md)**
 
 Returns an alleged brand (Note: a **Brand**, not a **String** as **allegedName()** methods do), 
 indicating what kind of digital asset the **Purse** purports to hold. This can identify the 
-**Purse**'s **Brand** if the **Purse** was made by a trusted **[Issuer](./issuer.md)** using **[Issuer.makeEmptyPurse()](./issuer.md#issuer-makeemptypurse)**.
+**Purse**'s **Brand** if the **Purse** was made by a trusted **[Issuer](./issuer.md)** using **[anIssuer.makeEmptyPurse()](./issuer.md#anissuer-makeemptypurse)**.
 
 ```js
 const purseBrand = quatloosPurse.getAllegedBrand();
 ```
 
-## Purse.getDepositFacet()
+## aPurse.getDepositFacet()
 - Returns: **DepositFacet**
 
 Creates and returns a **DepositFacet**, a new deposit-only facet of the **Purse** that allows 
@@ -152,22 +152,22 @@ This makes it a safe way to let other people send you **Payments**.
 You can only deposit a **Payment** into a **DepositFacet** that's the same **[Brand](./brand.md)** as the original **Purse**.
  
 ```js
-const depositOnlyFacet = Purse.getDepositFacet();
+const depositOnlyFacet = purse.getDepositFacet();
 
 // Give depositOnlyFacet to someone else. Anyone with a deposit facet reference can tell it to receive
 // a payment, thus depositing the payment assets in the Purse associated with the deposit facet.
 depositOnlyFacet.receive(payment);
 ```
 Once you have created a **DepositFacet**, there is one method you can call 
-on it, **[DepositFacet.receive()](#depositfacet-receive-payment-optamount)**. The **DepositFacet** takes a **Payment** 
+on it, **[aDepositFacet.receive()](#adepositfacet-receive-payment-optamount)**. The **DepositFacet** takes a **Payment** 
 and adds it to the balance of the **DepositFacet**'s associated **Purse**. The **Payment** 
 must be of the same **Brand** as what the **Purse** holds.
 
 Note the difference in method names for adding assets between a **Purse** and its **DepositFacet**.
-To add assets to a **Purse** directly, you use **Purse.deposit()**. To add assets
-to a **Purse** via its **DepositFacet**, you use **DepositFacet.receive()**.
+To add assets to a **Purse** directly, you use **aPurse.deposit()**. To add assets
+to a **Purse** via its **DepositFacet**, you use **aDepositFacet.receive()**.
 
-## DepositFacet.receive(payment, optAmount?)
+## aDepositFacet.receive(payment, optAmount?)
 - **payment** **[Payment](./payment.md)**
 - **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns **Amount**
@@ -178,7 +178,7 @@ If the optional argument *optAmount* does not equal the balance of
 *payment*, or if *payment* is an unresolved promise, this method throws an error.
 
 ```js
-const depositOnlyFacet = Purse.getDepositFacet();
+const depositOnlyFacet = purse.getDepositFacet();
 
 // Give depositOnlyFacet to someone else. Anyone with a deposit facet reference can tell it to receive
 // a payment, thus depositing the payment assets in the Purse associated with the deposit facet.
