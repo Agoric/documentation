@@ -13,19 +13,19 @@ The Agoric CLI (Command Line Interface) implements a local-chain-multiuser scena
 	```sh
 	cd agoric-sdk/packages/cosmic-swingset && make
 	```
-4. Check that the `ag-cosmos-helper` binary is in your `$PATH` by running the following. 
+4. Check that the `agd` binary is in your `$PATH` by running the following. 
 
 	```sh
 	# Display the directory that should be in your $PATH.
 	echo ${GOBIN-${GOPATH-$HOME/go}/bin}
 	# Attempt to run a binary that was installed there.
-    ag-cosmos-helper version --long
+    agd version --long
 	```
 	(If the binary doesn't work, you need to add it to your `$PATH`.)
 5. Start a real local chain by running the following command. If you want to start the Agoric process afresh, add the `--reset` option at the end.
 
 	```sh
-	agoric start local-chain
+	agoric start local-chain --rebuild
 	```
 
 There won’t be any running clients yet, but the chain will start and be fully functional.
@@ -66,7 +66,7 @@ agoric deploy <PATH-TO-DEPLOY.JS>
 
 Note that port 8000 is the default for `agoric deploy` operations. To deploy to an ag-solo running on a different port, use `agoric deploy --hostport=127.0.0.1:<PORT-NUMBER>`.
 
-To use your dapp UI with different clients, you’ll need to connect to https://local.agoric.com in different browsers (or different profiles of the same browser). You'll then need to fill out the localhost address of the ag-solo that you want to use with that browser. This connects the processes in the browser to their own wallets so they do not share per-client data such as cookies, storage, etc. You should test your UI in each browser.
+To use your dapp UI with different clients, you’ll need to connect to https://wallet.agoric.app/locator/ in different browsers (or different profiles of the same browser). You'll then need to fill out the localhost address of the ag-solo that you want to use with that browser. This connects the processes in the browser to their own wallets so they do not share per-client data such as cookies, storage, etc. You should test your UI in each browser.
 
 ## Example
 
@@ -77,8 +77,8 @@ Here is an example usage scenario.
 	```sh
 	# Build the Golang dependencies.
 	(cd agoric-sdk/packages/cosmic-swingset && make)
-	# Check that ag-cosmos-helper binary is in your $PATH and working
-	ag-cosmos-helper version --long
+	# Check that agd binary is in your $PATH and working
+	agd version --long
 	# Initialize a Dapp directory.
 	agoric init foo
 	# Change to the Dapp directory.
@@ -98,7 +98,7 @@ Here is an example usage scenario.
 	# Repeat for any other ag-solos you wish to start (8002, 8003, etc)
 	```
 2. Configure the first client browser.
-3. Open a browser (or a new profile), and navigate to https://local.agoric.com/.
+3. Open a browser (or a new profile), and navigate to https://wallet.agoric.app/locator/.
 
 	![Agoric Registration](./assets/Agoric-Registration.png)
 4. Keep the recommended address (`http://localhost:8000`).
@@ -111,7 +111,7 @@ Here is an example usage scenario.
 ### Configure an Additional Client Browser
 
 1. Open a different browser. Not just another tab or window, but a completely different browser or browser profile that doesn’t share cookies with any other ag-solo’s browser. For example, if you had an open Chrome window, create a new Chrome profile, or open a Firefox or Safari window. 
-2. Navigate to `https://local.agoric.com/` and, in the resulting page, set the address to `http://localhost:8001`.
+2. Navigate to `https://wallet.agoric.app/locator/` and, in the resulting page, set the address to `http://localhost:8001`.
 3. Click **Save**.
 4. Click **Open** and verify that it opens a wallet page. (**Note**: You won't have access yet.)
 5. Type `console.log(8001)` in the REPL, hit **Enter**, and see the `console.log` command and output in the REPL's history.
@@ -131,4 +131,4 @@ agoric deploy contract/deploy.js api/deploy.js
 
 Navigate to `http://localhost:3000` in each browser/profile for which you want to use the UI.  
 When the UI opens your wallet, the browser should navigate to the same URL you entered in that browser
-or profile’s `https://local.agoric.com` page.
+or profile’s `https://wallet.agoric.app/locator/` page.
