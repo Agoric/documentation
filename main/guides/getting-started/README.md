@@ -9,14 +9,14 @@ After installing the Agoric SDK, you can proceed to [starting a project](./start
 If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
 
 ```shell
-node --version # 14.15.0 or higher
-npm install --global yarn
-git clone https://github.com/Agoric/agoric-sdk # "community-dev" branch
+node --version # 16.19.1 or higher
+npm install --global yarn # Install yarn for package management
+git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
 cd agoric-sdk
-yarn install
-yarn build
-yarn link-cli ~/bin/agoric # creates an Agoric directory to reference
-agoric --version # should print the version number of the SDK
+yarn install # Ask yarn to install all the dependant node packages
+yarn build # Build the agoric-sdk packages
+yarn link-cli ~/bin/agoric # Create an Agoric directory to reference
+agoric --version # This should print the version number of the SDK
 ```
 
 Now you are ready proceed to [starting a project](./start-a-project.md).
@@ -27,8 +27,8 @@ If `agoric` is not found, then you may need to add the parent directory of where
 This presentation is a good overview of the Agoric SDK setup process,
 though a few details are out of date:
 
-- node version: 12.x is too old; use 14.15.0 or higher
-- skip `git checkout hackathon-2020-11`; use the default `master` branch
+- node version: 12.x is too old; use 16.19.1 or higher
+- skip `git checkout hackathon-2020-11`; use the `community-dev` branch
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -43,12 +43,12 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 
-## Install Node.js 14.15.0 or Higher
+## Install Node.js 16.19.1 or Higher
 
-Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing version 16.18 rather than 18.11.
+Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing the LTS version of node 16.
 
 ```shell
-node --version # 14.15.0 or higher
+node --version # 16.19.1 or higher
 ```
 
 ## Install the Yarn Package Manager
@@ -73,7 +73,7 @@ git --version # 2.25.0 or higher
 ## Clone the Agoric SDK
 
 ```shell
-git clone https://github.com/Agoric/agoric-sdk
+git clone --branch community-dev https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
 ```
 
@@ -116,7 +116,7 @@ sudo yarn link-cli /usr/local/bin/agoric
 To check that it's installed correctly:
 
 ```shell
-agoric --version # v0.16.0 "community-dev" branch
+agoric --version # v0.18.2 "community-dev" branch
 ```
 
 If the install was successful, you are ready to proceed to [starting a project](./start-a-project.md).
