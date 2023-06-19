@@ -53,7 +53,7 @@ test('callSpread, mid-strike', async t => {
   const carolBucksPurse = bucksIssuer.makeEmptyPurse();
 
   const manualTimer = buildManualTimer(console.log, 0n);
-  const priceAuthority = makeTestPriceAuthority(
+  const priceAuthority = await makeTestPriceAuthority(
     brands,
     [20n, 45n],
     manualTimer,

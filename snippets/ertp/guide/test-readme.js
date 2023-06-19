@@ -6,7 +6,7 @@ import { E } from '@endo/eventual-send';
 // We need to disable this lint until @agoric/vats is released
 // and adopted in package.json.
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { makeBoard } from '@agoric/vats/src/lib-board.js';
+import { makeFakeBoard } from '@agoric/vats/tools/board-utils.js';
 
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 
@@ -48,7 +48,7 @@ test('ertp guide readme', async t => {
   const aliceQuatloosDepositFacet = aliceQuatloosPurse.getDepositFacet();
   // #endregion depositFacet
 
-  const board = makeBoard();
+  const board = makeFakeBoard();
 
   // #region getId
   const aliceQuatloosDepositFacetId = await E(board).getId(

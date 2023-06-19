@@ -1,7 +1,7 @@
 
 # Far(), Remotable, and Marshaling
 
-To export objects such as from the [Example Secure JavaScript Code](./hardened-js.md#example-secure-javascript-code)
+To export objects such as from the [Example Secure JavaScript Code](./hardened-js.md#example-hardened-javascript-code)
 to make them available to other vats, mark them as _remotable_ using [Far](#far-api):
 
 <<< @/snippets/test-distributed-programming.js#importFar
