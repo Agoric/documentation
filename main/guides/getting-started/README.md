@@ -9,7 +9,7 @@ After installing the Agoric SDK, you can proceed to [starting a project](./start
 If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
 
 ```shell
-go version
+go version # Version 1.20.3 or higher
 jq --version
 node --version # LTS version such as 18.16.0
 npm install --global yarn # Install yarn for package management
@@ -48,12 +48,12 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 
-## Install Go
+## Install Go Version 1.20.3 or Higher
 
 Download Go from [go.dev/doc/install](https://go.dev/doc/install) and follow the instructions for your platform.
 
 ```shell
-go version
+go version # Version 1.20.3 or higher
 ```
 
 ## Install jq
