@@ -48,7 +48,7 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 
-## Install Go Version 1.20.3 or Higher
+## Install Go
 
 Download Go from [go.dev/doc/install](https://go.dev/doc/install) and follow the instructions for your platform.
 
@@ -65,7 +65,7 @@ jq --version
 ```
 
 
-## Install Node.js LTS Version
+## Install Node.js
 
 Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing the LTS version of node 18.
 
@@ -122,8 +122,7 @@ yarn build
 ## Build the Cosmic Swingset Package
 
 ```shell
-cd packages/cosmic-swingset
-make
+(cd packages/cosmic-swingset && make)
 ```
 
 ## Install Agoric CLI
@@ -131,14 +130,12 @@ make
 Install the Agoric CLI (Command Line Interface) in a convenient place in your `$PATH` such as:
 
 ```shell
-cd ../..
 yarn link-cli ~/bin/agoric
 ```
 
 or:
 
 ```shell
-cd ../..
 sudo yarn link-cli /usr/local/bin/agoric
 ```
 
