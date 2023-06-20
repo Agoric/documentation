@@ -32,7 +32,7 @@ To create, start, and deploy an Agoric governance proposal to a local Agoric Tes
 
 5. Wait for the first block to be produced.
 6. Open a second terminal.
-7. Within the second terminal, navigate to `<agoric-sdk>/bin` and submit the governance proposal by running the following command.
+7. Within the second terminal, navigate to `<agoric-sdk>/bin` and submit the governance proposal by running the following command. (Make sure to enter "y" when asked to confirm the transaction.)
 
 	```
     ./agd --chain-id=agoriclocal --title=<Insert your own title> --description=<Insert your description> --home=<PATH to your project folder>/_agstate/keys --keyring-backend=test --from=provision tx gov submit-proposal swingset-core-eval <PATH to permissions> <PATH to proposal>
