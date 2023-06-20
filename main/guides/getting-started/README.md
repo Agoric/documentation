@@ -1,8 +1,11 @@
 # Installing the Agoric SDK
 
-To write JavaScript smart contracts using the Agoric Zoe framework, first install the Agoric Software Development Kit (SDK). The Agoric SDK is currently supported on MacOS, Linux, and Windows Subsystem for Linux (WSL). There is currently **no support** for native Windows 10 or native Windows 11.
+To write JavaScript smart contracts using the Agoric Zoe framework, first install the Agoric Software
+Development Kit (SDK). The Agoric SDK is currently supported on MacOS, Linux, and Windows Subsystem for
+Linux (WSL). There is currently **no support** for native Windows 10 or native Windows 11. 
 
-After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with the Agoric CLI to create and deploy [smart contracts](./deploying.md).
+After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with 
+the Agoric CLI to create and deploy [smart contracts](./deploying.md).
 
 ## Quick Start
 
@@ -16,9 +19,7 @@ git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone th
 cd agoric-sdk
 yarn install # Ask yarn to install all the dependant node packages
 yarn build # Build the agoric-sdk packages
-cd packages/cosmic-swingset
-make # Build the cosmic-swingset package
-cd ../..
+(cd packages/cosmic-swingset && make) # Build the cosmic-swingset package
 yarn link-cli ~/bin/agoric # Create an Agoric directory to reference
 agoric --version # This should print the version number of the SDK
 ```
@@ -57,13 +58,14 @@ go version # Version 1.20.3 or higher
 
 ## Install Node.js
 
-Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform. We recommend installing the LTS version of node 18.
+Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform.
+We recommend installing the LTS version of node 18.
 
 ```shell
 node --version # LTS version such as 18.16.0
 ```
 
-**Note:** Agoric will support all even numbered versions of Node.js. 
+**Note:** Agoric will support all long-term support (LTS) versions of Node.js. 
 
 ## Install the Yarn Package Manager
 
@@ -99,7 +101,7 @@ Cloning and installing the Agoric SDK can take a while. Please be patient.
 yarn install
 ```
 
-**Note:** If you run into errors during install or build, make sure you have build-essential components installed. `gcc --version`.
+**Note:** If you run into errors during install or build, make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, you can run `sudo apt get install build-essential` to install these tools.
 
 ## Build Packages
 
