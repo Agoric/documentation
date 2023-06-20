@@ -150,6 +150,17 @@ module.exports = {
           ],
         },
         {
+          title: 'Injecting Code to Agoric Testnet',
+          path: '/guides/coreeval/',
+          collapsible: false,
+          children: [
+            '/guides/coreeval/',
+            '/guides/coreeval/permissions',
+            '/guides/coreeval/proposal',
+            '/guides/coreeval/local-testnet',
+          ],
+        },        
+        {
           title: 'Example Zoe Contracts',
           path: '/guides/zoe/contracts/',
           collapsible: false,
