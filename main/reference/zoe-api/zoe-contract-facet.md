@@ -277,12 +277,22 @@ zcf.reallocate(buyerSeat, sellerSeat);
 - **strings** **Array&lt;String>**
 - Returns: None.
 
-Disables all the offer **[Keywords](./zoe-data-types.md#keyword)** contained in the *strings* argument, preventing any users from using or accessing the specified **Keywords**. This might be done either to disable **Keywords** that are proving problematic or to debug undesirable behavior.
+Prohibit invocation of invitatations whose description include any of the strings.
+Any of the strings that end with a colon (:) will be treated as a prefix,
+and invitations whose description string begins with the string (including the colon)
+will be burned and not processed if passed to **E(Zoe).offer()**.
 
-Note that a **Keyword** can be re-enabled by calling this method again and simply not including the **Keyword** in the *strings* argument.
+It is expected that most contracts will never invoke this function directly. It is
+intended to be used by **governance** in a legible way, so that the contract's
+governance process can take emergency action in order to stop processing when necessary.
+
+Note that blocked strings can be re-enabled by calling this method again and simply not
+including that string in the *strings* argument.
 
 ## zcf.getOfferFilter()
 - Returns: **Array&lt;String>**
 
-Returns all the offer **[Keywords](./zoe-data-types.md#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled using
-the **[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method if they prove problematic in some fashion, or to debug undesired behavior.
+Returns all the strings that have been disabled for use in invitations, if any.
+A contract's invitations may be disabled using the
+**[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
+that they provide a vulnerability.
