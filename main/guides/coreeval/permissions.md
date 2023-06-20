@@ -94,5 +94,3 @@ Specifies what **[Issuers](/reference/ertp-api/issuer.md)**, if any, the contrac
 ## Brand Section
 
 Specifies what **[Brands](/reference/ertp-api/brand.md)**, if any, the contract produces or consumes.
-Note that any **Brands** associated with digital assets that the contract mints 
-are not included in this section, unless they're also produced or consumed in some other capacity.
