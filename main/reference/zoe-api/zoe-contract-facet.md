@@ -41,7 +41,7 @@ mySynchronousMint.mintGains({ myKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: **[InvitationIssuer](./zoe-data-types.md#invitationissuer)**
+- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types.md#invitationissuer)>**
 
 Returns the **InvitationIssuer** for the Zoe instance.
 
@@ -230,6 +230,31 @@ a valid **Keyword**, or is not unique.
 zcf.assertUniqueKeyword(keyword);
 ```
 
+## zcf.setOfferFilter(strings)
+- **strings**: **Array&lt;String>**
+- Returns: None.
+
+Prohibit invocation of invitatations whose description include any of the strings.
+Any of the strings that end with a colon (:) will be treated as a prefix,
+and invitations whose description string begins with the string (including the colon)
+will be burned and not processed if passed to **E(Zoe).offer()**.
+
+It is expected that most contracts will never invoke this function directly. It is
+intended to be used by **governance** in a legible way, so that the contract's
+governance process can take emergency action in order to stop processing when necessary.
+
+Note that blocked strings can be re-enabled by calling this method again and simply not
+including that string in the *strings* argument.
+
+## zcf.getOfferFilter()
+- Returns: **Array&lt;String>**
+
+Returns all the strings that have been disabled for use in invitations, if any.
+A contract's invitations may be disabled using the
+**[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
+that they provide a vulnerability.
+
+
 ::: warning DEPRECATED
 ## zcf.reallocate(seats)
 - **seats**: **[ZCFSeats](./zcfseat.md)[]** (at least two)
@@ -275,29 +300,7 @@ buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
 zcf.reallocate(buyerSeat, sellerSeat);
 ```
 
-**Note**: This method has been deprecated. Use **[AtomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
 :::
 
-## zcf.setOfferFilter(strings)
-- **strings**: **Array&lt;String>**
-- Returns: None.
 
-Prohibit invocation of invitatations whose description include any of the strings.
-Any of the strings that end with a colon (:) will be treated as a prefix,
-and invitations whose description string begins with the string (including the colon)
-will be burned and not processed if passed to **E(Zoe).offer()**.
-
-It is expected that most contracts will never invoke this function directly. It is
-intended to be used by **governance** in a legible way, so that the contract's
-governance process can take emergency action in order to stop processing when necessary.
-
-Note that blocked strings can be re-enabled by calling this method again and simply not
-including that string in the *strings* argument.
-
-## zcf.getOfferFilter()
-- Returns: **Array&lt;String>**
-
-Returns all the strings that have been disabled for use in invitations, if any.
-A contract's invitations may be disabled using the
-**[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
-that they provide a vulnerability.

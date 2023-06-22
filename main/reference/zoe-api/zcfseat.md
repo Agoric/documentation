@@ -137,7 +137,7 @@ It checks whether **newAllocation** fully satisfies
 Gets and returns the **stagedAllocation**, which is the **Allocation** committed if the seat is
 reallocated over, if offer safety holds, and rights are conserved.
 
-**Note**: This method has been deprecated. Use **[AtomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
@@ -148,7 +148,7 @@ Returns **true** if there is a staged allocation, i.e., whether **ZCFSeat.increm
 **ZCFSeat.decrementBy()** has been called and **ZCFSeat.clear()**
 and **reallocate()** have not. Otherwise returns **false**.
 
-**Note**: This method has been deprecated. Use **[AtomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
@@ -177,7 +177,7 @@ t.deepEqual(zcfSeat1.getStagedAllocation(), { IST: empty  });
 While this incremented the allocation by an empty amount, any amount would have been added to the 
 allocation in the same way.
 
-**Note**: This method has been deprecated. Use **[AtomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
@@ -225,7 +225,16 @@ It throws an error because you cannot subtract something from nothing. So trying
 allocation by a non-empty amount is an error, while decrementing an empty allocation by an empty amount
 is effectively a null operation with no effects.
 
-**Note**: This method has been deprecated. Use **[AtomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+:::
+
+::: warning DEPRECATED
+## aZCFSeat.clear()
+  - Returns: None.
+
+Deletes the **ZCFSeat**'s current staged allocation, if any,
+
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
 :::
 
 

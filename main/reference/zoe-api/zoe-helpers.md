@@ -21,28 +21,49 @@ and **zcf** is passed in as a parameter to **start()**.
 
 ## atomicRearrange(zcf, transfers)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
-- **transfers**: **TransferPart[]**
+- **transfers**: **Array&lt;[TransferPart](./zoe-data-types.md#transferpart)>**
 - Returns: None.
 
-Asks Zoe to rearrange the [Allocation](./zoe-data-types.md#allocation) among the seats
-mentioned in *transfers*. This is a set of changes to allocations that must satisfy
- * several constraints. If these constraints are all met, then the
- * reallocation happens atomically. Otherwise it does not happen
- * at all.
- *
+Asks Zoe to rearrange the **[Allocations](./zoe-data-types.md#allocation)** among the seats
+mentioned in *transfers*. *transfers* are a set of changes to **Allocations** that must satisfy
+several constraints. If these constraints are all met, then the
+reallocation happens atomically. Otherwise an error is thrown and it does not happen
+at all. The constraints are as follows.
 
-* All the mentioned seats are still live -- enforced by ZCF.
-* The overall transfer is expressed as an array of `TransferPart`.
- *      Each individual `TransferPart` is one of
- *       - A transfer from a `fromSeat` to a `toSeat`.
- *         This is not needed for Zoe's safety, as Zoe does
-           its own overall conservation check. Rather, it helps catch
-           and diagnose contract bugs earlier.
- *       - A taking from a `fromSeat`'s allocation. See the `fromOnly`
-           helper.
-         - A giving into a `toSeat`'s allocation. See the `toOnly`
-           helper.
+ * All the mentioned seats are still live.
+ * There aren't any outstanding stagings for any of the mentioned seats.
 
+	Stagings are a reallocation mechanism that has been
+    deprecated in favor of this **atomicRearrange()** function.
+    To prevent confusion, each reallocation can only be
+    expressed in the old way or the new way, but not a mixture.
+ * Overall conservation must be maintained. In other words, the reallocated
+    **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** must balance out to zero.
+
+Note that you can manually construct the **TransferParts** that make up the *transfers* array manually,
+or you can use the helper functions **[fromOnly()](#fromonly-fromseat-fromamounts)** or 
+**[toOnly()](#toonly-toseat-toamounts)** to create simple **TransferParts** that only contain 
+two of the possible 4 potential fields.
+
+## fromOnly(fromSeat, fromAmounts)
+- **fromSeat**: **[ZCFSeat](./zcfseat.md)**
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
+
+Returns a **TransferPart** when a reallocation only involves taking an 
+**[Allocation](./zoe-data-types.md#allocation)** from the **ZCFSeat** specified by *fromSeat*.
+**TransferParts** are used as part of the *transfer* argument of the 
+**[atomicRearrange()](#atomicrearrange-zcf-transfers)** function.
+
+## toOnly(toSeat, toAmounts)
+- **toSeat**: **[ZCFSeat](./zcfseat.md)**
+- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
+
+Returns a **TransferPart** when a reallocation only involves giving an 
+**[Allocation](./zoe-data-types.md#allocation)** to the **ZCFSeat** specified by *toSeat*.
+**TransferParts** are used as part of the *transfer* argument of the 
+**[atomicRearrange()](#atomicrearrange-zcf-transfers)** function.
 
 ## assertIssuerKeywords(zcf, expected)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
@@ -266,7 +287,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
 
-This does **not** error if any of the [Keywords](./zoe-data-types.md#keyword) already exist. If the **Keyword** is
+This does **not** error if any of the **[Keywords](./zoe-data-types.md#keyword)** already exist. If the **Keyword** is
 already present, it is ignored.
 
 ```js

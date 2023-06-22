@@ -3,7 +3,10 @@
 <Zoe-Version/>
 
 
-The Zoe framework provides a way to write smart contracts without having to worry about [offer safety](/guides/zoe/offer-safety.md). To use Zoe, we put things in terms of "offers". An offer proposal is a statement about what you want and what you're willing to offer. It turns out, many smart contracts (apart from gifts and one-way payments) involve an exchange of digital assets that can be put in terms of offer proposals.
+The Zoe framework provides a way to write smart contracts without having to worry about [offer safety](/guides/zoe/offer-safety.md). 
+To use Zoe, we put things in terms of "offers". An offer proposal is a statement about what you want and
+what you're willing to offer. It turns out, many smart contracts (apart from gifts and one-way payments)
+involve an exchange of digital assets that can be put in terms of offer proposals.
 
 Start creating your own contract or build on any of our existing contracts.
 Explore our pre-built contracts [here](/guides/zoe/contracts/README.md).
@@ -36,13 +39,14 @@ The Zoe API introduces and uses the following data types:
 | [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | A record in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
 | [Handle](./zoe-data-types.md#handle) | A **Far** object without any methods whose only useful property is its unique identity. |
 | [Instance](./zoe-data-types.md#instance) | A handle to an opaque object that represents a contract instance. |
-| [Invitation](./zoe-data-types.md#invitation) | TBD |
+| [Invitation](./zoe-data-types.md#invitation) | A non-fungible eright that can be held in **[Payment](/reference/ertp-api/payment.md)** or **[Purses](/reference/ertp-api/purse.md)**, just like any other eright. |
 | [InvitationIssuer](./zoe-data-types.md#invitationissuer) | An **[Issuer](/reference/ertp-api/issuer.md)** for **[Invitations](./zoe-data-types.md#invitation)**, which grant the right to participate in a contract. |
 | [Keyword](./zoe-data-types.md#keyword) | An ASCII identifier string that must begin with an upper case letter. |
 | [MutableQuote](./zoe-data-types.md#mutablequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when multiple calls, replacing the trigger value, are expected. |
 | [ParsableNumber](./zoe-data-types.md#parsablenumber) | Defined as a **bigint**, **number**, or **string**. |
 | [PriceQuote](./zoe-data-types.md#pricequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when only a single calls is expected. |
 | [Ratio](./zoe-data-types.md#ratio) | Pass-by-value record that consists of a *numerator* **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a *denominator* **Amount**. |
+| [TransferPart](./zoe-data-types.md#transferpart) | One or two **[Allocation](./zoe-data-types.md#allocation)** changes among existing **[ZCFSeats](./zcfseat.md)**. **TransferParts** are the individual elements of the *transfer* array passed into the **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. |
 
 
 

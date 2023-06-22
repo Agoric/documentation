@@ -4,7 +4,8 @@ Zoe introduces and uses several data types.
 
 ## Allocation
 
-**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting a **Proposal**.
+**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid
+out to each seat upon exiting a **Proposal**.
 
 For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after successfully exiting a **Proposal**, the **Allocation** would look like:
 
@@ -45,11 +46,15 @@ const myAmountKeywordRecord =
 ```
 ## Handle
 
-**Handles** within Zoe have a slightly different definition than in regular JavaScript. They are **Far** objects without any methods whose only useful property are their unique identities. They're often created in order to designate some other object, where the **Handles** can be passed around as reliable designators without giving access to the designated objects.
+**Handles** within Zoe have a slightly different definition than in regular JavaScript. They are **Far**
+objects without any methods whose only useful property are their unique identities. They're often
+created in order to designate some other object, where the **Handles** can be passed around as reliable
+designators without giving access to the designated objects.
 
 ## Instance
 
-**Instances** are handles to opaque objects that represent contract instances. You can get information about them via these methods:
+**Instances** are handles to opaque objects that represent contract instances. You can get information
+about them via these methods:
 
 - **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
 - **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
@@ -62,7 +67,7 @@ An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It
 that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
 eright. An **Invitation** **Payment** would be a **Payment** holding an **Invitation**. Because we
 almost always just use a **Payment** holding a single **Invitation** in order to pass around
-**Invitations**, we normally elide the difference.
+**Invitations**, the difference is normally elided.
 
 ## InvitationIssuer
 
@@ -134,3 +139,24 @@ and produces results of the same **Brand**.
 **Ratios** can also have two different **Brands**, essentially typing them such as miles per
 hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 
+## TransferPart
+
+**TransferParts** are the individual elements of the *transfer* array passed into the 
+**[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
+represents one or two **[Allocation](#allocation)** changes among existing 
+**[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 fields, none of which are mandatory:
+
+* **fromSeat**?: **ZCFSeat** - The seat from which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being taken.
+* **toSeat**?: **ZCFSeat** - The seat to which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being given.
+* **fromAmounts**?: **[AmountKeywordRecord](#amountkeywordrecord)** - The **AmountKeywordRecord** which will be taken from the *fromSeat*.
+* **toAmounts**?: **AmountKeywordRecord** - The **AmountKeywordRecord** which will be given to the *toSeat*.
+
+If a *fromSeat* is specified, then a *fromAmounts* is required. This does *not* hold true for *toSeat*;
+you can specify a *toSeat* without specifying a *toAmounts*.
+
+**TransferParts** can be automatically created by using the helper functions 
+**[fromOnly()](./zoe-helpers.md#fromonly-fromseat-fromamounts)** or 
+**[toOnly()](./zoe-helpers.md#toonly-toseat-toamounts)**. 
+Of course, as with any JavaScript datatype, you can also manually create **TransferParts**. 
+Note that if you manually create a **TransferPart**, you'll need to set any fields that you 
+don't include to **undefined**.

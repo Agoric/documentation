@@ -285,7 +285,7 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
 
 
 ## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs)
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation)|Promise&lt;Invitation>**
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;Invitation>**
 - **proposal**: **Proposal** - Optional.
 - **paymentKeywordRecord**: **PaymentKeywordRecord** - Optional.
 - **offerArgs**: **Object**
