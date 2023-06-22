@@ -23,16 +23,10 @@ Now you are ready proceed to [starting a project](./start-a-project.md).
 
 If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `~/bin` directory, you may need to add `~/bin` to your PATH.
 
-::: tip Watch: Prepare Your Agoric Environment (November 2020)
-This presentation is a good overview of the Agoric SDK setup process,
-though a few details are out of date:
+::: tip Watch: Prepare Your Agoric Environment (May 2022)
+This video is a good overview of the Agoric SDK setup process.
 
-- node version: 12.x is too old; use 16.19.1 or higher
-- skip `git checkout hackathon-2020-11`; use the `community-dev` branch
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-**Note:** Video omits adding the Agoric SDK to your PATH.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VrXlGwKh0zk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 :::
 
 ## Platform: Linux Shell or Equivalent

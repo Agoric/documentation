@@ -18,12 +18,12 @@ We'll be running **three terminal windows**. See below:
     # Terminal 3: web user interface
     ```
 
-::: tip Watch: Prepare Your Agoric Environment (November 2020)
-This presentation includes starting a project, but note an outdated detail:
+::: tip Watch: Prepare Your Agoric Environment (May 2022)
+This video shows how to get started with Agoric SDK.
 
  - In the REPL `x~.go()` tildot support has been postponed; use `E(x).go()` instead.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VrXlGwKh0zk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 :::
 
 ## Initialize the Default Dapp Template
