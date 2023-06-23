@@ -17,7 +17,7 @@ the sections below.
 The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) as web browsers and Node.js.
 Each event loop has a message queue, a call stack of frames, and a heap of objects:
 
-![heap, stack, and queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop/the_javascript_runtime_environment_example.svg)
+![heap, stack, and queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_Loop/the_javascript_runtime_environment_example.svg)
 
 We refer to this combination of an event loop with a message queue, a stack, and a heap as a _vat_.
 
