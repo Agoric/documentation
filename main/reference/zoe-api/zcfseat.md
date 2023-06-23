@@ -7,17 +7,8 @@ represent offers outside the contract. The two facets provide access to the same
 and changes made from either side affect both.
 
 A **ZCFSeat** includes synchronous queries for the current state of the
-associated offer, such as the amounts of assets that are currently# ZCFSeat Object
-
-Zoe uses **seats** to access or manipulate offers. Seats represent active offers and let
-contracts and users interact with them. Two kinds of seats represent a single
-position. **ZCFSeats** are used within contracts and with **zcf** methods.  **UserSeats**
-represent offers outside the contract. The two facets provide access to the same allocation,
-and changes made from either side affect both.
-
-A **ZCFSeat** includes synchronous queries for the current state of the
 associated offer, such as the amounts of assets that are currently
-allocated to the offer. It also includes synchronous operations
+assigned to the **ZCFSeat** Object. It also includes synchronous operations
 to manipulate the offer. The queries and operations are as follows:
 
 ## aZCFSeat.getSubscriber()

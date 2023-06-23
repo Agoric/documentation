@@ -53,8 +53,8 @@ designators without giving access to the designated objects.
 
 ## Instance
 
-**Instances** are handles to opaque objects that represent contract instances. You can get information
-about them via these methods:
+An **Instance** is a handle that represents an instance of a contract.
+You can get information about the contract instance via these methods:
 
 - **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
 - **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
@@ -120,8 +120,8 @@ const { quoteAmount, quotePayment } = priceQuote;
 
 **PriceQuotes** are returned in two forms: 
 - **PriceDescription**
-  - Always includes **amountIn**, **amountOut**, the quote's **TimeStamp**,
-    and the **TimerService** the **TimeStamp** is relative to.
+  - Always includes **amountIn**, **amountOut**, the quote's **Timestamp**,
+    and the **TimerService** the **Timestamp** is relative to.
 - **PriceDescription** wrapped as a **QuoteAuthority** issued payment. 
   - This lets quotes be shared in a format letting others verify the time and values. 
 
@@ -151,12 +151,12 @@ represents one or two **[Allocation](#allocation)** changes among existing
 * **fromAmounts**?: **[AmountKeywordRecord](#amountkeywordrecord)** - The **AmountKeywordRecord** which will be taken from the *fromSeat*.
 * **toAmounts**?: **AmountKeywordRecord** - The **AmountKeywordRecord** which will be given to the *toSeat*.
 
-If a *fromSeat* is specified, then a *fromAmounts* is required. This does *not* hold true for *toSeat*;
-you can specify a *toSeat* without specifying a *toAmounts*.
+If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to *toSeat*.
 
-**TransferParts** can be automatically created by using the helper functions 
-**[fromOnly()](./zoe-helpers.md#fromonly-fromseat-fromamounts)** or 
-**[toOnly()](./zoe-helpers.md#toonly-toseat-toamounts)**. 
-Of course, as with any JavaScript datatype, you can also manually create **TransferParts**. 
-Note that if you manually create a **TransferPart**, you'll need to set any fields that you 
+**TransferParts** that represent one side of a transfer
+can be created using the helper functions
+**[fromOnly()](./zoe-helpers.md#fromonly-fromseat-fromamounts)** or
+**[toOnly()](./zoe-helpers.md#toonly-toseat-toamounts)**.
+Of course, as with any JavaScript datatype, you can also manually create **TransferParts**.
+Note that if you manually create a **TransferPart**, you'll need to set any fields that you
 don't include to **undefined**.
