@@ -12,8 +12,7 @@ Also, a **UserSeat** can be handed to an agent outside Zoe and the contract, let
 them query or monitor the current state, access the payouts and result,
 and, if it's allowed for this seat, call **tryExit()**.
 
-Since anyone can attempt to exit the seat if they have a reference to it,
-you should only share a **UserSeat** with trusted parties.
+Take care when sharing a **UserSeat**, since it includes authority to (attempt to) exit the seat.
 
 **UserSeat** includes queries for the associated offer's current state
 and an operation to request that the offer exit, as follows:
