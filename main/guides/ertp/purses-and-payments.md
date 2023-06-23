@@ -152,7 +152,7 @@ brief description and example of each **Payment**-related method.
 - [anIssuer.burn()](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount)
   - Destroys all of the digital assets in the **Payment**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
-- [anIissuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)
+- [anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)
   - Transfers all digital assets from the **Payment** argument to a new **Payment**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#claim
 - [anIssuer.combine()](/reference/ertp-api/issuer.md#anissuer-combine-paymentsarray-opttotalamount)

@@ -7,7 +7,7 @@ you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties. 
 
 ERTP uses [OCaps (object capabilities)](../../glossary/#object-capabilities)
-to enforce access control. In an Ocaps system, there aren't any  
+to enforce access control. In an Ocaps system, there aren't any
 Access Control Lists(ACLs). Instead, your capabilities are defined by the object references you hold. 
 Thus, if your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
@@ -342,7 +342,7 @@ JavaScript implements `Promise` objects, and recently added the two keywords `as
 * #### Object Capabilities
   In order to understand what an `electronic right` is we first need to take a look at the concept called `Object Capabilities`.
 
-  ![Figure 1: Granovetter Diagram](../literatureWork/images/granovetterOperator.png)
+  !Figure 1: Granovetter Diagram(../literatureWork/images/granovetterOperator.png)
 
   The diagram above demonstrates the social relationships between people and was designed by The sociologist Mark Granovetter. The Object Capabilities 
 discipline refers to this diagram as `Granovetter Operator` and uses it to illustrate the relationships between objects.

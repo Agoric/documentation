@@ -60,7 +60,7 @@ A **Brand** has four associated methods.
     tells the UI how to correctly display **Values** associated with the **Brand**.
   - <<< @/snippets/ertp/guide/test-amounts.js#getDisplayInfo
 - [aBrand.getAmountShape()](/reference/ertp-api/brand.md#abrand-getamountshape)
-  - Returns the **[AmountShape](reference/ertp-api/ertp-data-types.md#amountshape)** associated with the
+  - Returns the **[AmountShape](/reference/ertp-api/ertp-data-types.md#amountshape)** associated with the
     **Brand**. The **AmountShape** describes non-fungible assets in a similar manner to how **Amounts**
     describe fungible assets.
 
