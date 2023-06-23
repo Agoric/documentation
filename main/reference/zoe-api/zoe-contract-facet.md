@@ -7,7 +7,7 @@ for that instance. A Zoe Contract Facet is accessed synchronously from within th
 and usually is referred to in code as **zcf**.
 
 The contract instance is launched by **E(Zoe).startInstance()**, and is given access to
-the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements.md)).
+the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/writing-contracts.md)).
 In the operations below, **instance** is the handle for the running contract instance.
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
