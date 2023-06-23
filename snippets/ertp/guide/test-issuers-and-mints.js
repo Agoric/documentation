@@ -3,6 +3,15 @@ import { test } from '../../prepare-test-env-ava.js';
 
 import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
 
+// TODO `claim`,`combine`, `split`, and `splitMany' are deprecated.
+// Stop documenting, importing, and testing them.
+import {
+  claim,
+  combine,
+  split,
+  splitMany,
+} from '@agoric/ertp/src/legacy-payment-helpers.js';
+
 test('ertp guide issuers and mints makeIssuerKit', async t => {
   // #region makeIssuerKit
   const {
@@ -77,6 +86,8 @@ test('ertp guide issuers and mints payment methods', async t => {
     mint: quatloosMint,
   } = makeIssuerKit('quatloos');
 
+  const recoveryPurse = quatloosIssuer.makeEmptyPurse();
+
   // #region getAmountOf
   const quatloosPayment = quatloosMint.mintPayment(
     AmountMath.make(quatloosBrand, 100n),
@@ -96,7 +107,8 @@ test('ertp guide issuers and mints payment methods', async t => {
   // #region claim
   const amountToTransfer = AmountMath.make(quatloosBrand, 2n);
   const originalPayment = quatloosMint.mintPayment(amountToTransfer);
-  const newPayment = await quatloosIssuer.claim(
+  const newPayment = await claim(
+    recoveryPurse,
     originalPayment,
     amountToTransfer,
   );
@@ -111,7 +123,7 @@ test('ertp guide issuers and mints payment methods', async t => {
     payments.push(quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 1n)));
   }
   // combinedPayment equals 100
-  const combinedPayment = quatloosIssuer.combine(harden(payments));
+  const combinedPayment = combine(recoveryPurse, harden(payments));
   // #endregion combine
 
   t.deepEqual(await quatloosIssuer.getAmountOf(combinedPayment), {
@@ -123,7 +135,8 @@ test('ertp guide issuers and mints payment methods', async t => {
   const oldPayment = quatloosMint.mintPayment(
     AmountMath.make(quatloosBrand, 30n),
   );
-  const [paymentA, paymentB] = await quatloosIssuer.split(
+  const [paymentA, paymentB] = await split(
+    recoveryPurse,
     oldPayment,
     AmountMath.make(quatloosBrand, 10n),
   );
@@ -143,7 +156,8 @@ test('ertp guide issuers and mints payment methods', async t => {
     AmountMath.make(quatloosBrand, 10n),
   );
 
-  const arrayOfNewPayments = await quatloosIssuer.splitMany(
+  const arrayOfNewPayments = await splitMany(
+    recoveryPurse,
     oldQuatloosPayment,
     harden(goodQuatloosAmounts),
   );
@@ -157,9 +171,10 @@ test('ertp guide issuers and mints payment methods', async t => {
   // total amounts in badQuatloosAmounts equal 20, when it should equal 1000
   const badQuatloosAmounts = Array(2).fill(AmountMath.make(quatloosBrand, 10n));
   // throws error
-  t.throwsAsync(
+  await t.throwsAsync(
     () =>
-      quatloosIssuer.splitMany(
+      splitMany(
+        recoveryPurse,
         anotherQuatloosPayment,
         harden(badQuatloosAmounts),
       ),

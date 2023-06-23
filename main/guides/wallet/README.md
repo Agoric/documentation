@@ -1,7 +1,7 @@
 # Agoric Wallet
 
 This page documents the *Agoric Wallet*, including its use of *petnames* and its place in the Agoric Platform
-architecture. For a tour of the Wallet UI, see [here](./ui.md). For the Wallet API, see [here](/reference/wallet-api.md).
+architecture. See also [tour of the Wallet UI](./ui.md), [Wallet API reference](/reference/wallet-api.md).
 
 ## Wallet and Agoric Architecture
 
