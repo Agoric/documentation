@@ -140,7 +140,7 @@ Let's dive back into the [Atomic Swap contract](/guides/zoe/contracts/atomic-swa
 
 The contract first confirms that `issuers` are setup for the `Asset` and `Price` keywords. Those are the two items that will be swapped.
 
-The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers.md#assertissuerkeywords-zcf-keywords). It
+The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers.md#assertissuerkeywords-zcf-expected). It
 checks properties of the running contract instance's terms.
 ```js
 const start = zcf => {
