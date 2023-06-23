@@ -39,7 +39,7 @@ The Zoe API introduces and uses the following data types:
 | [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | A record in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
 | [Handle](./zoe-data-types.md#handle) | A **Far** object without any methods whose only useful property is its unique identity. |
 | [Instance](./zoe-data-types.md#instance) | A handle to an opaque object that represents a contract instance. |
-| [Invitation](./zoe-data-types.md#invitation) | A non-fungible eright that can be held in **[Payment](/reference/ertp-api/payment.md)** or **[Purses](/reference/ertp-api/purse.md)**, just like any other eright. |
+| [Invitation](./zoe-data-types.md#invitation) | A non-fungible eright that can be held in **[Payments](/reference/ertp-api/payment.md)** or **[Purses](/reference/ertp-api/purse.md)**, just like any other eright. |
 | [InvitationIssuer](./zoe-data-types.md#invitationissuer) | An **[Issuer](/reference/ertp-api/issuer.md)** for **[Invitations](./zoe-data-types.md#invitation)**, which grant the right to participate in a contract. |
 | [Keyword](./zoe-data-types.md#keyword) | An ASCII identifier string that must begin with an upper case letter. |
 | [MutableQuote](./zoe-data-types.md#mutablequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when multiple calls, replacing the trigger value, are expected. |
