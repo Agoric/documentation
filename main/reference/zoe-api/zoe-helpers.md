@@ -39,11 +39,33 @@ at all. The constraints are as follows.
     expressed in the old way or the new way, but not a mixture.
  * Overall conservation must be maintained. In other words, the reallocated
     **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** must balance out to zero.
+ *  Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
+	 as long as either it gets the assets described in the want section of its proposal, or it retains
+     all of the assets specified in the give section of the proposal. This constraint applies to the
+     entire atomicRearrangement, not to the individual **TransferParts**.
 
 Note that you can manually construct the **TransferParts** that make up the *transfers* array manually,
 or you can use the helper functions **[fromOnly()](#fromonly-fromseat-fromamounts)** or 
 **[toOnly()](#toonly-toseat-toamounts)** to create simple **TransferParts** that only contain 
 two of the possible 4 potential fields.
+
+## atomicTransfer(zcf, fromSeat?, toSeat?, fromAmounts?, toAmounts?)
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
+- **fromSeat**: **[ZCFSeat](./zcfseat.md)** - Optional, defaults to **undefined**.
+- **toSeat**: **ZCFSeat** - Optional, defaults to **undefined**.
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)** - Optional, defaults to **undefined**.
+- **toAmounts**: **AmountKeywordRecord** - Optional, defaults to **undefined**.
+- Returns: None.
+
+TBD
+
+port const atomicTransfer = (
+  zcf,
+  fromSeat = undefined,
+  toSeat = undefined,
+  fromAmounts = undefined,
+  toAmounts = undefined,
+) => atomicRearrange(zcf, harden([[fromSeat, toSeat, fromAmounts, toAmounts]]));
 
 ## fromOnly(fromSeat, fromAmounts)
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)**

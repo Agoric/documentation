@@ -151,12 +151,15 @@ represents one or two **[Allocation](#allocation)** changes among existing
 * **fromAmounts**?: **[AmountKeywordRecord](#amountkeywordrecord)** - The **AmountKeywordRecord** which will be taken from the *fromSeat*.
 * **toAmounts**?: **AmountKeywordRecord** - The **AmountKeywordRecord** which will be given to the *toSeat*.
 
-If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to *toSeat*.
+If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without
+specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to
+*toSeat*.
 
 **TransferParts** that represent one side of a transfer
 can be created using the helper functions
 **[fromOnly()](./zoe-helpers.md#fromonly-fromseat-fromamounts)** or
 **[toOnly()](./zoe-helpers.md#toonly-toseat-toamounts)**.
 Of course, as with any JavaScript datatype, you can also manually create **TransferParts**.
-Note that if you manually create a **TransferPart**, you'll need to set any fields that you
-don't include to **undefined**.
+If you manually create a **TransferPart** and don't include the *fromSeat*, *toSeat*, and/or
+*fromAmounts* fields, you'll need to set the missing fields to **undefined**. (Note that if you don't
+include the *toAmounts* field, there's no need to set it to **udefined**; you can simply omit it.)
