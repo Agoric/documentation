@@ -9,9 +9,9 @@ The last 10 minutes are Q&A._
 :::
 
 
-## Example Secure JavaScript Code
+## Example Hardened JavaScript Code
 
-Below is an example of a reliable, secure smart contract written in JavaScript.
+The example below demonstrates several features of Hardened JavaScript.
 
 <<< @/snippets/test-hardened-js.js#makeCounter
 
@@ -278,7 +278,7 @@ or not:
    - `require` (Use `import` module syntax instead.)
    - `localStorage`
       - [SwingSet](../platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
-      - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/store).
+      - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/master/packages/store).
    - `global` (Use `globalThis` instead.)
  - authority-free but host-defined:
    - `Buffer`

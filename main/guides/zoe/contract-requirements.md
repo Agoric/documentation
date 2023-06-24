@@ -1,9 +1,9 @@
-# Contract Requirements 
+# Contract Requirements
 
 <Zoe-Version/>
 
 When writing a smart contract to run on Zoe, you need
-to know the proper format and other expectations. 
+to know the proper format and other expectations.
 
 A Zoe smart contract is a  JavaScript module that exports a `start` function
 and may import other code, including:
@@ -23,10 +23,10 @@ A Zoe contract will be bundled up, so you should feel free to divide
 your contract into multiple files (perhaps putting helper functions in a
 separate file, for example) and import them.
 
-A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/HEAD/packages/ses). Some legacy
+A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
 JavaScript code is incompatible with Hardened JavaScript, because Lockdown freezes the
 JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
-mutate these. 
+mutate these.
 
 If you add this type annotation, TypeScript-aware tools
 (IDEs like vsCode and WebStorm) will inform the developer about parameters
@@ -45,6 +45,7 @@ The second argument, `privateArgs`, is used by the caller of `startInstance`
 to pass in any arguments that should not be part of the public terms.
 `privateArgs` is an object with keys and values as decided by the caller of
 `startInstance`. If no private arguments are passed, `privateArgs` is undefined.
+
 ```js
 const start = (zcf, privateArgs) => {
   ...
@@ -60,12 +61,12 @@ The contract must return a record with any (or none) of the following:
 that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
 contract `instance`. It might create `invitations` for other parties, or take actions that
 are unrelated to making offers.
-- **creatorInvitation**: A Zoe `invitation` only given to the entity that 
-calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current 
-contract `instance`. This is usually used when a party has to make an offer first, 
+- **creatorInvitation**: A Zoe `invitation` only given to the entity that
+calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
+contract `instance`. This is usually used when a party has to make an offer first,
 such as escrowing the underlying good for sale in an auction or covered call.
-- **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`. 
-Use the `publicFacet` for general queries and actions, such as getting the current price 
+- **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`.
+Use the `publicFacet` for general queries and actions, such as getting the current price
 or creating public `invitations`.
 
 The contract can contain arbitrary JavaScript code, but there are a few things you'll want
@@ -83,24 +84,24 @@ needs to make a matching offer, so there are more constraints.
 
 Use `zcf.makeInvitation()` to create the first party's `invitation`:
 
-``` js
-  const creatorInvitation = zcf.makeInvitation(
-    makeMatchingInvitation,
-    'firstOffer',
-  );
+```js
+const creatorInvitation = zcf.makeInvitation(
+  makeMatchingInvitation,
+  'firstOffer',
+);
 ```
 
 `makeMatchingInvitation()` creates the second `invitation`.
 
-``` js
-    const matchingSeatInvitation = zcf.makeInvitation(
-      matchingSeatOfferHandler,
-      'matchOffer',
-      {
-        asset: give.Asset,
-        price: want.Price,
-      },
-    );
+```js
+const matchingSeatInvitation = zcf.makeInvitation(
+  matchingSeatOfferHandler,
+  'matchOffer',
+  {
+    asset: give.Asset,
+    price: want.Price,
+  },
+);
 ```
 
 The third argument (which is optional and wasn't needed for the first `invitation`) says
@@ -114,22 +115,23 @@ the simple case that each party wants what the other offered. If the terms match
 gives each the `payout` they asked for, and closes out the contract. If the terms don't
 match, they each get back what they brought to the exchange, and it's still over.
 
-``` js
-    const matchingSeatOfferHandler = matchingSeat => {
-      const swapResult = swap(zcf, firstSeat, matchingSeat);
-      zcf.shutdown();
-      return swapResult;
-    };
+```js
+const matchingSeatOfferHandler = matchingSeat => {
+  const swapResult = swap(zcf, firstSeat, matchingSeat);
+  zcf.shutdown();
+  return swapResult;
+};
 ```
 
 If you study other contracts, you'll see they all have this basic format. Depending
 on their goals, they may do additional bookkeeping, or try to find compatible terms
 between multiple offers, or create new assets to order.
 
+
 ## Making an Invitation
 
 To create an invitation in the contract, use the Zoe Contract
-Facet method [`zcf.makeInvitation`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties).
+Facet method [`zcf.makeInvitation`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
 
 ## Using bundleSource
 

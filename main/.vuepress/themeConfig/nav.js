@@ -24,6 +24,11 @@ module.exports = [
         ariaLabel: 'Deploying Menu',
         link: '/guides/getting-started/deploying',
       },
+      {
+        text: 'Syncing Up to Mainnet',
+        ariaLabel: 'Syncing Up to Mainnet',
+        link: '/guides/getting-started/syncing-up',
+      },
     ]
   },
   {
@@ -55,6 +60,11 @@ module.exports = [
       ariaLabel: 'Zoe',
       link: '/guides/zoe/'
       },
+      {
+      text: 'Injecting Code to Agoric Testnet',
+      ariaLabel: 'Coreeval',
+      link: '/guides/coreeval/'
+      },      
       {
       text: 'Example Zoe Contracts',
       ariaLabel: 'Example Zoe Contracts',
@@ -102,6 +112,32 @@ module.exports = [
     text: 'Glossary',
     ariaLabel: 'Glossary Menu',
     link: '/glossary/'
+  },
+  {
+    text: 'New Features',
+    ariaLabel: 'New Features Menu',
+    items: [    
+      {
+        text: 'Governance',
+        ariaLabel: 'Governance Internal Documentation',
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/docs/'
+      },
+      {
+        text: 'Patterns',
+        ariaLabel: 'Patterns Source Code Link',
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js'
+      },
+      {
+        text: 'Smart Wallet',
+        ariaLabel: 'Smart Wallet Internal Documentation',
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md'
+      },   
+      {
+        text: 'Upgrading Contracts',
+        ariaLabel: 'Upgrade Contracts Doc Link',
+        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade'
+      },   
+    ]
   },
   {
     text: 'Learn More',
