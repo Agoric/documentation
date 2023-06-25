@@ -17,11 +17,11 @@ node --version # LTS version such as 18.16.0
 npm install --global yarn # Install yarn for package management
 git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
 cd agoric-sdk
-yarn install # Ask yarn to install all the dependant node packages
-yarn build # Build the agoric-sdk packages
-(cd packages/cosmic-swingset && make) # Build the cosmic-swingset package
-yarn link-cli ~/bin/agoric # Create an Agoric directory to reference
-agoric --version # This should print the version number of the SDK
+yarn install # Asks yarn to install all the dependant node packages
+yarn build # Builds the agoric-sdk packages
+(cd packages/cosmic-swingset && make) # Builds the cosmic-swingset package
+yarn link-cli ~/bin/agoric # Creates an executable script
+agoric --version # Prints the version number of the SDK
 ```
 
 Now you are ready proceed to [starting a project](./start-a-project.md).
