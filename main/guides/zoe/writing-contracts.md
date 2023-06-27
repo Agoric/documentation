@@ -29,7 +29,7 @@ publicFacet: This is the API contract exposes to the whole world. publicFacet is
 All Zoe contracts must have the following format:
 
 ::: details Show contract format
-```
+```js
 // @ts-check
 // Checks the types as defined in JSDoc comments
 
@@ -92,7 +92,7 @@ export { start };
 :::
 
 1. Every Zoe contract must export a method called **start()**. It's usually the last line of the contract.
-	```
+	```js
     export { start }; 
     ```
 2. The **start()** method should accept a **zcf** object as its first argument. *zcf* stands for *[Zoe Contract Facet](/reference/zoe-api/zoe-contract-facet.md)* which is an API smart contract developers use to interact with Zoe.
