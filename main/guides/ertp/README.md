@@ -4,7 +4,9 @@ ERTP (*Electronic Rights Transfer Protocol*)
 is Agoric's token standard for transferring tokens and other digital assets in
 JavaScript. Using the [ERTP API](/reference/ertp-api/),
 you can easily create and use digital assets, all of which are
-transferred exactly the same way and with exactly the same security properties. 
+transferred exactly the same way and with exactly the same security properties.
+
+## Object Capabilities
 
 ERTP uses [OCaps (object capabilities)](../../glossary/#object-capabilities)
 to enforce access control. In an Ocaps system, there aren't any
@@ -16,47 +18,71 @@ reference, it can't. For more on object capabilities, see
 
 ## ERTP Concepts Overview
 
+### Other Section
+
+Agoric uses ERTP to trade `eright`s like money, NFTs etc. The version of ERTP Agoric uses has the following structure;
+
+<img src="https://docs.agoric.com/assets/img/relationships1.6963650c.svg" width='60%'>
+
+At the center of the above structure, there are three basic components: `Issuer`, `Mint` and `Brand`. 
+Here's the relationship between these three components;
+
+<img src="https://docs.agoric.com/assets/img/relationships2.392c65c9.svg" width='60%'>
+
+As you can see there's a `one-to-one` relationship between every `Issuer`, `Mint` and `Brand`. 
+
+* **Issuer**: The source of truth for the digital asset. Issuer is the authority everyone trusts when trading
+this currency. Below is a diagram showing how the issuer manages to be the source of truth.
+  <img src="https://user-images.githubusercontent.com/109155000/211854454-65bff5c0-e945-40cb-a2bc-3ff4e177afa5.png" width='60%'>
+* **Brand**: A unique object that is used to identify the digital asset we're working with. Brand information
+can be shared publicly.
+* **Mint**: The only way to print money of the `Brand` associated with this mint object.
+
+This `one-to-one` relationship between `Issuer`, `Mint` and `Brand` is very important to keep the system secure.
+Hence, they're immutable.
+
+There are some other components that we must mention if we're going to talk about ERTP. They are,
+* **Amount**: A representation of the actual asset. Amounts are not money. They're just an abstraction to make working with digital assets secure and easier.
+* **Payment**: The form that an actual digital asset takes during a transfer. 
+* **Purse**: The form of digital asset in a non-transfer state.
+
 ### Asset
 
-There are three kinds of assets:
-[fungible](../../glossary/#fungible),
-[non-fungible](../../glossary/#non-fungible), and
-[semi-fungible](../../glossary/#semi-fungible).
+There are three kinds of assets: fungible, non-fungible, and semi-fungible.
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
 which five of your one-dollar bills you give them.
 
-Non-fungible assets have the same brand, but are not interchangeable. For example, you might have 100
-theater tickets. But someone wanting to buy even a General Admission ticket from you will want one
-for a specific date and time. This might also affect the price; you'll want to charge more
-for a Friday evening ticket than a Wednesday matinee ticket, even if it's for the same show.
+Non-fungible assets have the same **[Brand](/reference/ertp-api/brand.md)**, but are not interchangeable. For
+example, you might have 100 theater tickets. But someone wanting to buy even a General Admission
+ticket from you will want one for a specific date and time. This might also affect the price;
+you'll want to charge more for a Friday evening ticket than a Wednesday matinee ticket,
+even if it's for the same show.
 
 Semi-fungible assets have distinct forms which are not interchangeable
-with each other, but in which instances of a single form may interchangeable with
+with each other, but in which instances of a single form may be interchangeable with
 other instances of the same form.
 For example, theater tickets for a single show might be partitioned into General Admission
 and Balcony sections, where a holder may sit in any seat of the respective section.
 
 ### Amount
 
-Assets are described by **[Amount](./amounts.md)** records consisting of a `brand` and a `value`.
-- **[Brand](./amounts.md#brands)**: An asset's type.
+Assets are described by **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** records consisting of a **Brand** and a **Value**.
+- **[Brand](/reference/ertp-api/brand.md)**: An asset's type.
   You can think of this as the answer to the question "What is it?" about an asset.
-- **[Value](./amounts.md#values)**:  An asset's size.
+- **[Value](/reference/ertp-api/ertp-data-types.md#value)**:  An asset's size.
   You can think of this as the answer to the questions "how many?" or "how much?" about an asset.
 
-**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
-economic scarcity or intrinsic value.
-
-So, using the fictional currency Quatloos, you could have an asset described as being "400 Quatloos",
-where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
-whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
+So, using the fictional currency *Quatloos*, you could have an asset described as being "400 Quatloos",
+where *400n* is the **Value** and *Quatloos* is the **Brand**. For now, we'll just look at fungible assets
+whose **Values** have to be non-negative integers represented as **BigInts** (thus the appended "n" on that **Value**). 
 
 ### AmountMath
 
-ERTP uses the **[AmountMath](./amount-math.md)** library for operations such as adding, subtracting,
-and comparing amount values (such as when depositing to or withdrawing assets from a purse).
+ERTP uses the **[AmountMath](/reference/ertp-api/amount-math.md)** library for operations such as adding, subtracting,
+and comparing **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** values (such as when
+depositing to or withdrawing assets from a **[Purse](/reference/ertp-api/purse.md)**).
 
 ### Brand
 
@@ -84,9 +110,9 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 ### Purses and Payments
 
 We've already mentioned our final two concepts:
-- **[Purse](./purses-and-payments.md#purses)**: An
+- **[Purse](/reference/ertp-api/purse.md)**: An
   object for holding digital assets of a specific `brand`.
-- **[Payment](./purses-and-payments.md#payments)**:
+- **[Payment](/reference/ertp-api/payment.md)**:
   An object for transferring digital assets of a specific `brand` to another party.
 
 Similar to other component instances, a `purse` and a `payment` only work with one
@@ -143,66 +169,49 @@ the `payment` is automatically consumed and the 7 Quatloos are now resident
 in the `purse`. If you'd used an existing `purse` that contained, say, 17 Quatloos, these 7 would have been
 added to them so the `purse` balance would be 24 Quatloos. 
 
-### Transferring an Asset
+## Transferring an Asset
 
 ![Asset transfer](./assets/asset-transfer.svg)
-Start with your `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
+Start with your *quatloosPurse* that holds 7 *Quatloos*. Let's say you decide you want to send 5 *Quatloos* to 
 another party named Alice.
 
-<<< @/snippets/ertp/guide/test-readme.js#five
+1. Create a new *Quatloos*-branded **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** with a **[Value](/reference/ertp-api/ertp-data-types.md#value)** of 5 to describe what you want to withdraw.
 
-First you create a new Quatloos branded `amount` with a `value` of 5 to describe what you want to withdraw.
-Remember, an `amount` is just a description of assets, not the actual assets.
+	<<< @/snippets/ertp/guide/test-readme.js#five
 
-<<< @/snippets/ertp/guide/test-readme.js#withdraw
+2. Tell your **[Purse](/reference/ertp-api/purse.md)** containing *Quatloos* that you want to withdraw the specified **Amount** from it. The withdrawn 5 *Quatloos* goes into a **[Payment](/reference/ertp-api/payment.md)**.
 
-Now you tell your Quatloos containing `purse` that you want to withdraw the specified `amount` from 
-it. The withdrawn 5 Quatloos goes into a `payment`
+	<<< @/snippets/ertp/guide/test-readme.js#withdraw
 
-You've got your `payment` for 5 Quatloos, but how do you get it to Alice? She needs to
-do some work first so there's somewhere for her to put it and a way of getting it to
-her rather than someone else.
+3. Alice now needs to do some work first so there's somewhere for her to put the 5 *Quatloos* **Payment**. Let's assume Alice already has a Quatloos **Purse** of her own. To let other parties safely deposit *Quatloos* into it, Alice needs to create a [deposit facet](../../glossary/#deposit-facet) for that **Purse**.
 
-<div class="language-js secondary">
+	Anyone who has access to a deposit facet can deposit assets to its **Purse** but can't either make a withdrawal from the **Purse** or get its balance. It's like being able to send money to a friend via their email address; you can't then take money out of your friend's accounts or find out how much is in them.
 
-<<< @/snippets/ertp/guide/test-readme.js#depositFacet
+	<div class="language-js secondary">
 
-</div>
+	<<< @/snippets/ertp/guide/test-readme.js#depositFacet
 
-Assume Alice already has a Quatloos `purse` of her own. To let other
-parties safely deposit Quatloos into it, she creates
-a [deposit facet](../../glossary/#deposit-facet) for that `purse`.
-Anyone who has access to a deposit facet can deposit
-assets to its `purse` but cannot either make a withdrawal from the `purse` or get its balance. It's like
-being able to send money to a friend via their email address; you can't then take money out
-of your friend's accounts or find out how much is in them.
+	</div>
 
-<div class="language-js secondary">
-
-<<< @/snippets/ertp/guide/test-readme.js#getId
-
-</div>
-
-Alice puts her deposit facet on Agoric's [Board](/glossary/#board-agoric-board),
+4. Alice puts her deposit facet on Agoric's [Board](/glossary/#board-agoric-board),
 a key-value "bulletin board" that lets her make it generally available for use.
 
-The Board is a basic bulletin board type system where users can post an Id for a value and
+	The Board is a basic bulletin board type system where users can post an Id for a value and
 others can get the value just by knowing the Id. Alice can make her Id(s) known by any
 communication method she likes; private email, an email blast to a mailing list or many individuals,
 buying an ad on a website, tv program, or newspaper, listing it on her website, etc.
 
-<<< @/snippets/ertp/guide/test-readme.js#getValue
+	<div class="language-js secondary">
 
-Remember, ERTP's use of OCaps requires that you have access to an object in order 
-to run methods on it. So someone who wants to use Alice's deposit facet 
-has to first get it off the Board.
- 
-Alice tells you the Board Id associated with her Quatloos `purse` deposit facet. You get the Id associated value,
-which gives you the reference to that deposit facet. You then just tell the facet to receive your `payment`
-of 5 Quatloos. 
+	<<< @/snippets/ertp/guide/test-readme.js#getId
 
-Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quatloos `purse` having 5 more Quatloos
-in it, and the 5 Quatloos `payment` consumed when the transfer happened.
+	</div>
+
+5. Get a reference to Alice's deposit facet from the Board. Alice tells you the Board Id associated with her *Quatloos* **Purse** deposit facet. You get the Id associated value, which gives you the reference to that deposit facet. You then just tell the facet to receive your **Payment** of 5 *Quatloos*. 
+
+	<<< @/snippets/ertp/guide/test-readme.js#getValue
+
+6. After all this, your *Quatloos* **Purse** has 2 *Quatloos* (7 - 5), while Alice's *Quatloos* **Purse** has 5 additional *Quatloos* in it. Your 5 *Quatloos* **Payment** was consumed when the transfer happened.
 
 The `E()` notation is a local "bridge" that lets you invoke methods on remote objects.
 It takes a local representative (a [presence](../../glossary/#presence)) for a remote object
@@ -247,15 +256,7 @@ is a separate `payment`. You can transfer and deposit a non-fungible asset `paym
 
 
 
-## Object Capabilities and ERTP
 
-ERTP uses [object capabilities](../../glossary/#object-capabilities).
-You can only use an object and issue commands to it if you have access to that object, not
-just its human-readable name or similar. For example, I might know (or make a good guess), 
-that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'. 
-But unless I have the actual `mint` object associated with the `quatloos` `brand` object, I 
-can't use it to create a million Quatloos and bet them all on Captain Kirk to win his gladiatorial
-match on [Triskelion](https://en.wikipedia.org/wiki/The_Gamesters_of_Triskelion).
 
 ## Security Properties
 

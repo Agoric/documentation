@@ -5,8 +5,7 @@ Depositing and withdrawing assets from a
 all require adding and subtracting digital assets.
 ERTP uses the **[AmountMath](/reference/ertp-api/amount-math.md)** library for all these operations. 
 
-The **AmountMath** methods work for both fungible and non-fungible assets. 
-
+The **AmountMath** methods work for all types of assets: fungible, non-fungible, and semi-fungible. 
 
 The following is a brief description of the **AmountMath** methods.
 
