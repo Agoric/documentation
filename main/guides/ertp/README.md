@@ -18,44 +18,21 @@ reference, it can't. For more on object capabilities, see
 
 ## ERTP Concepts Overview
 
-### Other Section
+ERTP has the following structure:
 
-Agoric uses ERTP to trade `eright`s like money, NFTs etc. The version of ERTP Agoric uses has the following structure;
+![ERTP object relationships](./assets/relationships1.svg)
 
-<img src="https://docs.agoric.com/assets/img/relationships1.6963650c.svg" width='60%'>
+### Digital Assets
 
-At the center of the above structure, there are three basic components: `Issuer`, `Mint` and `Brand`. 
-Here's the relationship between these three components;
-
-<img src="https://docs.agoric.com/assets/img/relationships2.392c65c9.svg" width='60%'>
-
-As you can see there's a `one-to-one` relationship between every `Issuer`, `Mint` and `Brand`. 
-
-* **Issuer**: The source of truth for the digital asset. Issuer is the authority everyone trusts when trading
-this currency. Below is a diagram showing how the issuer manages to be the source of truth.
-  <img src="https://user-images.githubusercontent.com/109155000/211854454-65bff5c0-e945-40cb-a2bc-3ff4e177afa5.png" width='60%'>
-* **Brand**: A unique object that is used to identify the digital asset we're working with. Brand information
-can be shared publicly.
-* **Mint**: The only way to print money of the `Brand` associated with this mint object.
-
-This `one-to-one` relationship between `Issuer`, `Mint` and `Brand` is very important to keep the system secure.
-Hence, they're immutable.
-
-There are some other components that we must mention if we're going to talk about ERTP. They are,
-* **Amount**: A representation of the actual asset. Amounts are not money. They're just an abstraction to make working with digital assets secure and easier.
-* **Payment**: The form that an actual digital asset takes during a transfer. 
-* **Purse**: The form of digital asset in a non-transfer state.
-
-### Asset
-
-There are three kinds of assets: fungible, non-fungible, and semi-fungible.
+There are three kinds of digital assets: fungible, non-fungible, and semi-fungible.
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
 which five of your one-dollar bills you give them.
 
-Non-fungible assets have the same **[Brand](/reference/ertp-api/brand.md)**, but are not interchangeable. For
-example, you might have 100 theater tickets. But someone wanting to buy even a General Admission
+Non-fungible assets have the same **[Brand](/reference/ertp-api/brand.md)**, but are not
+interchangeable. For example, you might have 100 theater tickets. But someone wanting to buy 
+even a General Admission
 ticket from you will want one for a specific date and time. This might also affect the price;
 you'll want to charge more for a Friday evening ticket than a Wednesday matinee ticket,
 even if it's for the same show.
@@ -65,6 +42,28 @@ with each other, but in which instances of a single form may be interchangeable 
 other instances of the same form.
 For example, theater tickets for a single show might be partitioned into General Admission
 and Balcony sections, where a holder may sit in any seat of the respective section.
+
+### Issuer, Mint, and Brand
+
+At the center of ERTP, there are three basic components: **[Issuer](/reference/ertp-api/issuer.md)**, 
+**[Mint](/reference/ertp-api/mint.md)**, and **[Brand](/reference/ertp-api/brand.md)**. 
+Here's the relationship between these three components:
+
+![ERTP object relationships 2](./assets/relationships2.svg) 
+
+As you can see there's a one-to-one relationship between every **Issuer**, **Mint**, and **Brand**. 
+
+* **Issuer**: The source of truth for the digital asset. Issuer is the authority everyone trusts when trading this currency.
+* **Brand**: A unique object that is used to identify the digital asset we're working with.
+* **Mint**: The only way to print digital assets of the **Brand** associated with this **Mint** object.
+
+This one-to-one relationship between **Issuer**, **Mint**, and **Brand** is very important to keep the system secure. Hence, they're immutable.
+
+There are some other components that we must mention if we're going to talk about ERTP. They are,
+* **Amount**: A representation of the actual asset. Amounts are not money. They're just an abstraction to make working with digital assets secure and easier.
+* **Payment**: The form that an actual digital asset takes during a transfer. 
+* **Purse**: The form of digital asset in a non-transfer state.
+
 
 ### Amount
 
@@ -131,7 +130,7 @@ deliberately stripped down to their basic, core, functionality. Optional paramet
 are not shown, nor are some significant concepts which would make this introduction more confusing. Those 
 are covered on the component-specific pages.
 
-### Asset Creation and Storage
+## Creation and Storage of Assets
 
 ![Asset creation](./assets/asset-creation.svg)
 
