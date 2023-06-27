@@ -312,6 +312,7 @@ key:value pairs:
   by its **timer** and **deadline** properties.
   **timer** must be a timer, and **deadline** must be a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) value interpreted with respect to the timer.
   Some example timers use Unix epoch time, while others count block height.
+  The proposer cannot exit the seat before the deadline, but the contract can exit the seat early on their behalf.
 
 ```js
 const myProposal = harden({
