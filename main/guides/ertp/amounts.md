@@ -25,6 +25,35 @@ issue (e.g., a theater ticket's date, time, row, and seat positions).
 **AmountMath** library. It executes the logic of how **Amounts** change when
 digital assets are merged, separated, or otherwise manipulated.
 
+### Amounts Are Not Assets
+
+Despite how it may seem, an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is not an asset in and of itself.
+It merely *describes* assets along the two axes of what they are
+(their **[Brand](/reference/ertp-api/brand.md)**) and how much there are 
+(their **[Value](/reference/ertp-api/ertp-data-types.md#value)**).
+**Amounts** are used to negotiate without sending/sharing actual assets until a deal is made.
+
+For example, if I want to make you an offer to buy an asset, (e.g., a magic sword in a game) I'll send you
+an **Amount** describing the asset of 5 *Quatloos* I'm willing to trade for your sword. I don't send you the actual
+5 *Quatloos*; that only happens when we agree on the trade terms and I send you a **[Payment](/reference/ertp-api/payment.md)**: of 5 *Quatloos*, the
+actual asset.
+If you reject my offer, I can change it so the **Amount** I offer is 10 *Quatloos*. I haven't added actual
+assets to what I send you; I've only changed the description of the assets in the offer I'm making for the sword.
+
+Making a new **Amount** doesn't create any new assets.
+ERTP assets can only be created by their **[Mint](/reference/ertp-api/mint.md)** returning a new **Payment** containing the assets.
+Since an **Amount** is just a description of an asset, it's like a drawing of a ten dollar bill, while
+an asset is analogous to an actual ten dollar bill printed by an authorized facility with value
+derived from its government backing.
+
+In other words, I don't make you an offer that I'll sell you a ticket to Hamilton for $300 by sending
+you an actual ticket any more than you'd send me $300 before finding out what I'm willing to give you
+for it. Instead,
+I make you an offer by sending a description
+of what I'm willing to swap (e.g., "I will exchange a *Hamilton* ticket for $300").
+If the offer is accepted, only then would I send you the actual asset and you would send me the actual $300.
+In the Agoric stack, assets of the exchange are escrowed with [Zoe](/guides/zoe/).
+
 ## Brands
 
 A **[Brand](/reference/ertp-api/brand.md)**  object is an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** object's type of digital asset, such as

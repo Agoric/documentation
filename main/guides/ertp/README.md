@@ -97,18 +97,6 @@ Quatloos purse or Quatloos payment, it can never hold anything other than Quatlo
 However, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
 
-## Method Naming Structure
-
-ERTP methods use a template for their names. Knowing what a particular method name prefix represents
-can help you when reading code. For consistency, you may want to also use this template for your Agoric
-code.
-
-- `make<Foo>()`: Creates a new Foo object and returns only that object.
-- `make<Foo>Kit()`: Creates a new Foo object as well as other things. It returns some combination of useful things, usually including the new Foo object. But not always; sometimes Foo is conceptual, and, for example, instead of a single object, two facets are returned.
-- `create<Foo>()`: Creates a new Foo, but doesn't return it. 
-- `get<Foo>()`: Returns a Foo that already exists. 
-- `provide<Foo>()`: If Foo already exists, returns it. If not, it creates a new Foo and returns that.
-
 ## Life of Assets
 
 Let's look at some asset operation lifecycles. While it's very rare for an asset to be destroyed, as opposed to being
@@ -257,31 +245,7 @@ First you define an `amount` description for each ticket you want to issue.
 Then you use your `mint` for the appropriate `brand` to create an asset for each ticket. Each ticket asset
 is a separate `payment`. You can transfer and deposit a non-fungible asset `payment` just like a fungible one.
 
-## Amounts Are Not Assets
 
-**IMPORTANT**: Despite how it may seem, an `amount` is not an asset in and of itself.
-It merely _describes_ assets along the two axes of what they are and how much there are (`brand` and `value`).
-Amounts are used to negotiate without sending/sharing actual assets until a deal is made.
-
-For example, if I want to make you an offer to buy an asset, let's say a magic sword in a game, I'll send you
-an `amount` describing the asset of 5 Quatloos I'm willing to trade for your sword. I don't send you the actual
-5 Quatloos; that only happens when we agree on the trade terms and I send you a `payment` of 5 Quatloos, the
-actual asset.
-If you reject my offer, I can change it so the `amount` I specify is for 10 Quatloos. I haven't added actual
-assets of 5 Quatloos to what I send you, only the description of assets in the offer I'm making for the sword.
-
-Making a new `amount` does not create any new assets. Nor does adding two `amounts`, since an `amount` is immutable, the
-addition just creates a new `amount` while the original two still exist.
-ERTP assets can only be created by their `mint` returning a new `payment` containing them.
-Since an `amount` is just a description of an asset, it's like a drawing of a ten dollar bill, while
-an `asset` is analogous to an actual ten dollar bill printed by an authorized facility with value
-derived from its government backing.
-
-In other words, I don't make you an offer that I'll sell you a ticket to *Hamilton* for $300 by sending you an actual ticket any more than you'd send me $300 before finding out what I'm willing to give you for it. Instead,
-I make you an offer by sending a description
-of what I'm willing to swap ("I will exchange a *Hamilton* ticket for $300").
-If the offer is accepted, **then** I send you the actual asset (enjoy the show!) and you send me the actual $300 (I'll enjoy spending it!).
-In the Agoric stack, assets of the exchange are escrowed with [Zoe](/guides/zoe/).
 
 ## Object Capabilities and ERTP
 

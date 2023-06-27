@@ -1,4 +1,4 @@
-# Issuers and  Mints
+# Issuers and Mints
 
 ## Issuers
 ![Issuer structure](./assets/issuers-and-assets.svg)
