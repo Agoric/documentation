@@ -21,7 +21,7 @@ of any particular **Brand**. Neither a **Purse** nor a **Payment** can ever chan
 associated **Brand**.
 
 Each **Purse** and **Payment** object contains a specific amount of digital assets,
-which may be none at all ("empty" in [AmountMath](./amount-math.md) terms). In the same way
+which may be none at all ("empty" in [AmountMath](/reference/ertp-api/amount-math.md) terms). In the same way
 you might have separate bank accounts for different purposes,
 you can have separate **Purses** for the same **Brand** of digital asset.
 One of your **Purses** might hold 2 *Quatloos* while another holds 9000 *Quatloos*.
@@ -184,8 +184,10 @@ brief description and example of each **Payment**-related method.
 
 ## Purse and Payment Example
 
-The following code creates a new `purse` for the `quatloos` brand, deposits
-10 Quatloos into the `purse`, withdraws 3 Quatloos from the `purse` into a
-`payment`, and finally returns an `amount` describing what's currently in the `purse`, 7 Quatloos.
+The following code creates a new **[Purse](/reference/ertp-api/purse.md)** for the 
+*Quatloos* **[Brand](/reference/ertp-api/brand.md)**, deposits 10 *Quatloos* into the **Purse**,
+withdraws 3 *Quatloos* from the **Purse** into a **[Payment](/reference/ertp-api/payment.md)**,
+and finally returns an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** describing 
+what's currently in the **Purse** (i.e., 7 *Quatloos*).
 
 <<< @/snippets/ertp/guide/test-purses-and-payments.js#example
