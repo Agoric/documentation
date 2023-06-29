@@ -150,7 +150,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Injecting Code to Agoric Testnet',
+          title: 'Running Code on Testnet',
           path: '/guides/coreeval/',
           collapsible: false,
           children: [
