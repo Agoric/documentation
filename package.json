@@ -4,15 +4,15 @@
   "description": "Documentation of Agoric products",
   "type": "module",
   "engines": {
-    "node": "^16"
+    "node": "^16.13 || ^18.12"
   },
   "scripts": {
-    "docs:dev": "vuepress dev main",
-    "docs:build": "vuepress build main",
-    "docs:build-cf": "vuepress build main && cp _redirects main/.vuepress/dist/",
-    "docs:build-root": "yarn docs:build && yarn docs:re-root && cp _redirects main/.vuepress/dist-root/",
+    "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev main",
+    "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main",
+    "docs:build-cf": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main && cp _redirects main/.vuepress/dist/",
+    "docs:build-root": "NODE_OPTIONS=--openssl-legacy-provider yarn docs:build && yarn docs:re-root && cp _redirects main/.vuepress/dist-root/",
     "docs:re-root": "cd main && mkdir -p .vuepress/dist-root/ && cp -rp .vuepress/dist/ .vuepress/dist-root/documentation/",
-    "check-links": "vuepress check-md main",
+    "check-links": "NODE_OPTIONS=--openssl-legacy-provider vuepress check-md main",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
