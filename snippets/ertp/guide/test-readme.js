@@ -29,8 +29,11 @@ test('ertp guide readme', async t => {
   const quatloosPayment = quatloosMint.mintPayment(quatloosSeven);
   // #endregion mintPayment
 
-  // #region deposit
+  // #region purse
   const quatloosPurse = quatloosIssuer.makeEmptyPurse();
+  // #endregion purse
+
+  // #region deposit
   quatloosPurse.deposit(quatloosPayment);
   // #endregion deposit
 
