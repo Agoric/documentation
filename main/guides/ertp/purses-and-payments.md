@@ -1,10 +1,5 @@
 # Purses and Payments
 
-There are different kinds of digital assets:
-- Currency-like, such as our imaginary *Quatloos*.
-- Goods-like, such as theater tickets or magic weapons for use in a game.
-- Abstract rights, such as participation in a particular contract.
-
 In ERTP, digital assets always exist in either a **Purse** or a **Payment** object.
 - **[Purse](/reference/ertp-api/purse.md)**: Holds
   an amount of same-branded digital assets until part or
@@ -72,7 +67,9 @@ deposit facet, which deposits it into its associated **Purse**. However, no one 
 use a deposit facet to either make a withdrawal from its **Purse** or get the **Purse**'s balance.
 
 If you have a deposit facet, you make a deposit to its associated **Purse** by calling 
-**[DepositFacet.receive()](/reference/ertp-api/purse.md#adepositfacet-receive-payment-optamount)**. Note that you add a **Payment** to a **Purse** with a **Purse.deposit()** method, while you add a **Payment** to a **depositFacet** with a **DepositFacet.receive()** method.
+**[DepositFacet.receive()](/reference/ertp-api/purse.md#adepositfacet-receive-payment-optamount)**.
+Note that you add a **Payment** to a **Purse** with a **Purse.deposit()** method, while you add a
+**Payment** to a **depositFacet** with a **DepositFacet.receive()** method.
 
 The **Payment**'s **[Brand](/reference/ertp-api/brand.md)** must match that of the **Purse**.
 Otherwise it throws an error.
