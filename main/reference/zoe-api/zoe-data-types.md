@@ -162,4 +162,4 @@ can be created using the helper functions
 Of course, as with any JavaScript datatype, you can also manually create **TransferParts**.
 If you manually create a **TransferPart** and don't include the *fromSeat*, *toSeat*, and/or
 *fromAmounts* fields, you'll need to set the missing fields to **undefined**. (Note that if you don't
-include the *toAmounts* field, there's no need to set it to **udefined**; you can simply omit it.)
+include the *toAmounts* field, there's no need to set it to **undefined**; you can simply omit it.)
