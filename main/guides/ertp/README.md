@@ -59,15 +59,15 @@ immutable once they're created.
 
 There are a couple additional ERTP components:
 
-* **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**: A representation of the actual asset. **Amounts** are not assets; they're just an abstraction to make working with assets secure and easier. See the **[Amounts](./amounts.md#amounts)** documentation for additional information.
-* **[Payment](/reference/ertp-api/payment.md)**: The form that digital assets take during a transfer. See the **[Payment](./purses-and-payments.md#payments)** documentation for additional information.
-* **[Purse](/reference/ertp-api/purse.md)**: The form of digital assets in a non-transfer state. See the **[Purse](./purses-and-payments.md#purses)** documentation for additional information.
+* **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**: A representation of the actual asset. **Amounts** are not assets; they're just an abstraction to make working with assets secure and easier. See the [Amounts](./amounts.md#amounts) documentation for additional information.
+* **[Payment](/reference/ertp-api/payment.md)**: The form that digital assets take during a transfer. See the [Payment](./purses-and-payments.md#payments) documentation for additional information.
+* **[Purse](/reference/ertp-api/purse.md)**: The form of digital assets in a non-transfer state. See the [Purse](./purses-and-payments.md#purses) documentation for additional information.
 
 ### AmountMath
 
 ERTP uses the **[AmountMath](/reference/ertp-api/amount-math.md)** library for operations such as adding, subtracting,
 and comparing **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** values (such as when
-depositing to or withdrawing assets from a **[Purse](/reference/ertp-api/purse.md)**).
+depositing to or withdrawing assets from a **[Purse](/reference/ertp-api/purse.md)**). See the [AmountMath](./amount-math.md) documentation for additional information.
 
 ## Creation and Storage of an Asset
 
@@ -175,43 +175,6 @@ It takes a local representative (a [presence](../../glossary/#presence)) for a r
 as an argument and sends messages to the remote object. This is explained in more detail at the
 [`E()` section in the Distributed JavaScript page](../js-programming/eventual-send.md).
 
-## Creating and Using Non-Fungible Assets
-
-Say you own the Agoric Theatre and want to sell tickets to seats for a play. Tickets are non-fungible assets, 
-as they refer to a specific seat for a specific show at a specific time and date. It matters to
-buyers which ticket they get.
-
-The Agoric Theatre has 1114 seats numbered `1` to `1114`.
-An object representing a valid ticket has the properties:
-- `seat`: A number.
-- `show`: A string describing the show.
-- `start`: A string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString).
-
-<<< @/snippets/ertp/guide/test-readme.js#ticketValues
-
-To create tickets, you first create JavaScript objects that each represent a ticket.
-Then, because you need to specify the amount of digital assets to be minted, 
-you can use `AmountMath` to make an amount. In this case, you're making tickets
-for one performance of *Hamilton*.
-
-<<< @/snippets/ertp/guide/test-readme.js#makeTicketIssuer
-
-As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
-The difference from when you created a fungible asset is that you have to use a second argument,
-in this case `AssetKind.SET`.
-
-There are two `AssetKinds`. Each one polymorphically implements the same set of methods. 
-- `AssetKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
-- `AssetKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
-
-<<< @/snippets/ertp/guide/test-readme.js#ticketPayments
-
-First you define an `amount` description for each ticket you want to issue. 
-
-Then you use your `mint` for the appropriate `brand` to create an asset for each ticket. Each ticket asset
-is a separate `payment`. You can transfer and deposit a non-fungible asset `payment` just like a fungible one.
-
-
 ## Security Properties
 
 ERTP `purses` have a `deposit` method which takes a `payment`
@@ -235,9 +198,13 @@ The security advantage is that the other party can only use the deposit facet to
 
 ## Promises
 
-Several ERTP methods are *asynchronous* and instead of immediately returning their expected value, return a *promise* for that value.
+Several ERTP methods are asynchronous. Rather than immediately returning their expected object,
+they instead return a **Promise** for that object.
 
-JavaScript implements `Promise` objects, and recently added the two keywords `async` and `await` to simplify working with them. For general, and extensive, information about JavaScript's implementation, see [javascript.info](https://javascript.info/async) or [MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous).
+JavaScript implements **Promise** objects and recently added the keywords `async` and `await` to
+simplify working with them. For information about JavaScript's implementation of **Promise** objects,
+`async`, and `await`, see [javascript.info](https://javascript.info/async) or
+[MDN](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous).
 
 
 ## Table of Content
