@@ -1,4 +1,4 @@
-# Offers
+# Invitations and Offers
 
 You must have a Zoe **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)** to a specific contract instance to join
 and participate in it. Let's imagine your friend Alice has sent you an
@@ -11,6 +11,16 @@ allowed to send such a message. Zoe, built on Agoric's [object
 capability](/glossary/#object-capabilities) security model, is significantly
 easier.
 
+## Invitations
+
+**[Invitations](/reference/zoe-api/zoe-data-types.md#invitation)** are a special case of ERTP **[Payments](/reference/ertp-api/payment.md)**. They are linked to a specific contract **[Instance](/reference/zoe-api/zoe-data-types.md#instance)**, and
+having one gives you the right to participate in that contract **Instance**, for example, by making offers in it.
+
+There are two main ways for contract users to get an **Invitation**:
+- If you create the contract **Instance**, you get a special creator **Invitation**.
+- Someone (possibly you) who holds the right objects has created an **Invitation** for a contract **Instance** and gives it to
+  you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
+  doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
 
 ## Inspecting An Invitation
 
@@ -59,27 +69,18 @@ unzip bundle.zip
 
 Contracts can add their own specific information to invitations. In
 this case, the Atomic Swap contract adds information about what is
-being traded: the `asset` [amount](/guides/ertp/amounts.md#amounts)
-Alice has escrowed, and the `price` amount that you must pay to get it.
+being traded: the `asset` **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+Alice has escrowed, and the `price` **Amount** that you must pay to get it.
 Note that both are _descriptions_ of digital assets with no intrinsic value of their own.
 
-## Making An offer
+## Making an Offer
 
 To make an offer, you use **[E(zoe).offer()](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs)**, which takes three arguments:
 - An **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)** to participate in this contract instance.
 - A **Proposal** stating your offer conditions.
 - The **[Payments](/reference/ertp-api/payment.md)** escrowed for the offer, each in association with a `proposal`-specified keyword.
 
-## Invitations
 
-`Invitations` are a special case of ERTP `payments`. They are linked to a specific contract `instance`, and
-having one gives you the right to participate in that contract `instance`, for example, by making offers in it.
-
-There are two main ways for contract users to get an `invitation`:
-- If you create the contract `instance`, you get a special creator `invitation`.
-- Someone (possibly you) who holds the right objects has created an `invitation` for a contract `instance` and gives it to
-  you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
-  doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
 
 ## Proposals
 
@@ -99,8 +100,8 @@ In the example above, **Asset** and **Price** are the keywords. However, in an a
 the keywords might be **Asset** and **Bid**.
 
 The `AmountMath.make(quatloosBrand, 4n)` is just making an ERTP `amount`, or description of digital assets.
-In this case, 4 of our imaginary Quatloos currency. `AmountMath.make(moolaBrand, 15n)` is making 
-an `amount` of 15 of our imaginary Moola currency. (The appended "n" indicates that the numbers are
+In this case, 4 of our imaginary *Quatloos* currency. `AmountMath.make(moolaBrand, 15n)` is making 
+an `amount` of 15 of our imaginary *Moola* currency. (The appended "n" indicates that the numbers are
 represented as `BigInts` rather than `Numbers`)
 
 **Note**: It's important to understand that `amounts` are just descriptions of assets with no

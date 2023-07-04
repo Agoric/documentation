@@ -1,5 +1,9 @@
 # Zoe Overview
 
+Zoe plays a key role in establishing trust between users and developers. How? In some other big networks like Ethereum, a smart contract developer has the full access to users assets inside the contract code. This enables some malicious developers to perform some bad actions. But in an ocaps system this should never happen. The motto in a ocaps system is: Do not bring security, remove insecurity. Zoe brings this mindset to smart contract development. The way Zoe does that is through escrowing. A smart contract is where mutually suspicious parties trade rights. Zoe locks/escrows the rights of all parties until one of the conditions is met in the contract. A developer has no direct access to rights but instead they implement the required logic by using Amounts. Remember Amounts from ERTP section? This is how ERTP and Zoe works together to establish secure trading of erights.
+
+------------------
+
 Zoe is the layer where all the smart contracts are installed and run. It plays a key role in establishing trust between users and developers. How? In some other big networks like Ethereum, a smart contract developer has the full access to users assets inside the contract code. This enables some malicious developers to perform some bad actions. But in an ocaps system this should never happen. The motto in a ocaps system is: Do not bring security, remove insecurity. Zoe brings this mindset to smart contract development. The way Zoe does that is through escrowing. A smart contract is where mutually suspicious parties trade rights. Zoe locks/escrows the rights of all parties until one of the conditions is met in the contract. A developer has no direct access to rights but instead they implement the required logic by using Amounts. Remember Amounts from ERTP section? This is how ERTP and Zoe works together to establish secure trading of erights.
 
 ## Offer Safety
