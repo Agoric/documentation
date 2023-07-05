@@ -22,7 +22,7 @@ The following is a brief description of the **AmountMath** methods.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isEmpty
 - [AmountMath.isGTE()](/reference/ertp-api/amount-math.md#amountmath-isgte-leftamount-rightamount-brand)
     - Returns **true** if the *leftAmount* argument is greater than or equal
-      to the &rightAmount* argument, otherwise it returns **false**.
+      to the *rightAmount* argument, otherwise it returns **false**.
       The method throws an error if the optional **Brand** argument isn't the same as the **Brands** of the **Amount** arguments.
     - <<< @/snippets/ertp/guide/test-amount-math.js#isGTE
 - [AmountMath.isEqual()](/reference/ertp-api/amount-math.md#amountmath-isequal-leftamount-rightamount-brand)

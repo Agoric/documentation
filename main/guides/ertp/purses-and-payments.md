@@ -3,7 +3,7 @@
 In ERTP, digital assets always exist in either a **Purse** or a **Payment** object.
 - **[Purse](/reference/ertp-api/purse.md)**: Holds
   an amount of same-branded digital assets until part or
-  all of them are withdrawn into a **Payment**. A new **Purse** is created
+  all of them are withdrawn into a **Payment**. **Purses** are used for long-term storage of assets. A new **Purse** is created
   by an **[Issuer](/reference/ertp-api/issuer.md)** and can only hold assets of that **Issuer**'s **[Brand](/reference/ertp-api/brand.md)**.
 - **[Payment](/reference/ertp-api/payment.md)**:
   Holds a quantity of same-branded digital assets to transfer to another party.
@@ -18,8 +18,8 @@ associated **Brand**.
 Each **Purse** and **Payment** object contains a specific amount of digital assets,
 which may be none at all ("empty" in [AmountMath](/reference/ertp-api/amount-math.md) terms). In the same way
 you might have separate bank accounts for different purposes,
-you can have separate **Purses** for the same **Brand** of digital asset.
-One of your **Purses** might hold 2 *Quatloos* while another holds 9000 *Quatloos*.
+you can have separate **Purses** for the same **Brand** of digital assets.
+One of your **Purses** might hold 2 *Quatloos* while another might hold 9000 *Quatloos*.
 
 When you deposit assets into a **Purse**, they are added to
 whatever assets already exist there. So a 3 *Quatloos* deposit
@@ -32,7 +32,7 @@ to split it into two or more **Payments**.
 
 **[Mints](/reference/ertp-api/mint.md)** create entirely new digital assets and put them in a new **Payment**.
 You also create a **Payment** by withdrawing assets from a **Purse**, by splitting an
-existing **Payment**, or by combining multiple **Payments** into asingle new one. Note
+existing **Payment**, or by combining multiple **Payments** into a single new one. Note
 the **Brand** of the new **Payment** is the same as the associated **Brand** of its originating **Mint**, **Purse**, or **Payment**.
 
 In ERTP, assets are not transferred directly from one **Purse** to another.
@@ -51,11 +51,11 @@ In the Agoric stack, the actual send and receive operations are provided by
 ## Purses
 
 You change a **[Purse](/reference/ertp-api/purse.md)**'s balance by calling either 
-**[Purse.deposit()](/reference/ertp-api/purse.md#apurse-deposit-payment-optamount)** (to add assets) or
-**[Purse.withdraw()](/reference/ertp-api/purse.md#apurse-withdraw-amount)** (to remove assets) on it. 
+**[aPurse.deposit()](/reference/ertp-api/purse.md#apurse-deposit-payment-optamount)** (to add assets) or
+**[aPurse.withdraw()](/reference/ertp-api/purse.md#apurse-withdraw-amount)** (to remove assets) on it. 
 A **Purse** can be empty, which for
 fungible assets means it has a value of 0. For non-fungible
-assets, such as theater tickets, it doesn't have any tickets.
+assets, such as theater tickets, an empty **Purse** means that it doesn't have any tickets.
 
 Unlike **[Payments](/reference/ertp-api/payment.md)**, **Purses** are not meant to be sent to others. To transfer 
 digital assets, you should withdraw a **Payment** from a **Purse** and send 
@@ -63,8 +63,7 @@ the **Payment** to another party.
 
 You can create a [deposit facet](../../glossary/#deposit-facet) for a **Purse**.
 Deposit facets are either sent to other parties or made publicly known. Any party can deposit a **Payment** into the
-deposit facet, which deposits it into its associated **Purse**. However, no one can
-use a deposit facet to either make a withdrawal from its **Purse** or get the **Purse**'s balance.
+deposit facet, which deposits it into its associated **Purse**. However, deposit facets can't be used to make a withdrawal from its **Purse** nor can it be used to get the **Purse**'s balance.
 
 If you have a deposit facet, you make a deposit to its associated **Purse** by calling 
 **[DepositFacet.receive()](/reference/ertp-api/purse.md#adepositfacet-receive-payment-optamount)**.
@@ -110,7 +109,7 @@ partially use a **Payment**.
 
 In other words, if you create a **Payment** containing
 10 *Quatloos*, the **Payment** will always either contain 
-10 *Quatloos* or it will be deleted from its **[Issuer](/reference/ertp-api/issuer.md))** records and no
+10 *Quatloos* or it will be deleted from its **[Issuer](/reference/ertp-api/issuer.md)** records and no
 longer have any value. While a **Payment** can be either combined with others or
 split into multiple **Payments**, in both cases the original **Payment(s)**
 are consumed and the results put in one or more new **Payments**.
@@ -135,9 +134,9 @@ To consume a **Payment** into a new **Purse**:
 2. Use the **Issuer** to create an empty **Purse** for that **Brand**.
 3. Deposit the **Payment** into the new **Purse**.
 
-**Payments** have only one method, but many methods for other ERTP components
-have **Payments** as arguments and effectively operate on a **Payment**. The following is a
-brief description and example of each **Payment**-related method.
+**Payments** have only one method, but many other ERTP components accept **Payments** as arguments for
+their methods and effectively operate on a **Payment**. The following is a
+brief description of each **Payment**-related method.
 - [aPayment.getAllegedBrand()](/reference/ertp-api/payment.md#apayment-getallegedbrand)
   - Returns the **Brand** indicating the kind of digital asset this **Payment** purports to be
     and which **Issuer** to use with it.
@@ -159,7 +158,7 @@ brief description and example of each **Payment**-related method.
   - Describes the **Payment**'s balance as an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
 - [anIssuer.isLive()](/reference/ertp-api/issuer.md#anissuer-islive-payment)
-  - Returns **true** if the **Payment** was created by the **Issuer** and is available for use (i.e., it hasn'y been consumed or burned).
+  - Returns **true** if the **Payment** was created by the **Issuer** and is available for use (i.e., it hasn't been consumed or burned).
 - [anIssuer.split()](/reference/ertp-api/issuer.md#anissuer-split-payment-paymentamounta)
   - Splits a single **Payment** into two new **Payments**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
@@ -167,13 +166,13 @@ brief description and example of each **Payment**-related method.
   - Splits a single **Payment** into multiple **Payments**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
 - [aMint.mintPayment()](/reference/ertp-api/mint.md#amint-mintpayment-newamount)
-  - Creates new digital assets of the **[Mint](/reference/ertp-api/mint.md))**'s associated **Brand**.
+  - Creates new digital assets of the **[Mint](/reference/ertp-api/mint.md)**'s associated **Brand**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
 - [aPurse.deposit()](/reference/ertp-api/purse.md#apurse-deposit-payment-optamount)
   - Deposits all the contents of **Payment** into **Purse**.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#deposit
 - [aPurse.getDepositFacet()](/reference/ertp-api/purse.md#apurse-getdepositfacet)
-  - Creates and returns a new deposit-only facet of the **Purse** that allows arbitrary other parties to deposit **Payments** into **Purse**.
+  - Creates and returns a new deposit-only facet of the **Purse** that allows other parties to deposit **Payments** into **Purse**.
   - <<< @/snippets/ertp/guide/test-purses-and-payments.js#getDepositFacet
 - [aPurse.withdraw()](/reference/ertp-api/purse.md#apurse-withdraw-amount)
   - Withdraws the **Amount** of specified digital assets from **Purse** into a new **Payment**.

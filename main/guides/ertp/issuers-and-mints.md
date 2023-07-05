@@ -25,7 +25,7 @@ of the same **Brand** is valid.
  
 ![Issuer methods](./assets/issuer1.svg)
 
-**Issuer** methods:
+**Issuer** methods can:
 - Return information about an **Issuer**.
 - Create new **Issuers**.
 - Create new **Purses**. 
@@ -34,12 +34,12 @@ of the same **Brand** is valid.
 The following is
 a brief description of each **Issuer** method.
 
-- **Create Issuer operation**
+- **Create Issuer**
   - [makeIssuerKit()](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
-    - Creates and returns a new **Issuer**  and its associated **Mint** and **Brand**.
+    - Creates and returns a new **Issuer** and its associated **Mint** and **Brand**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#import
       <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKit
-- **Get information about the Issuer operations**
+- **Get Information about the Issuer**
   - [anIssuer.getAllegedName()](/reference/ertp-api/issuer.md#anissuer-getallegedname)
     - Returns the **allegedName** for the **Issuer** (i.e., the non-trusted human-readable name of its associated **Brand**).
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getAllegedName
@@ -49,11 +49,11 @@ a brief description of each **Issuer** method.
   - [anIssuer.getBrand()](/reference/ertp-api/issuer.md#anissuer-getbrand)
     - Returns the **Brand** associated with the **Issuer**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#getBrand
-- **Purse operation**
+- **Purse Operation**
   - [anIssuer.makeEmptyPurse()](/reference/ertp-api/issuer.md#anissuer-makeemptypurse)
     - Makes and returns an empty **Purse** for holding assets of the **Brand** associated with the **Issuer**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeEmptyPurse
-- **Payment operations**
+- **Payment Operations**
   - [anIssuer.burn()](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount)
     - Destroys all of the digital assets in a **Payment**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#burn
@@ -73,21 +73,21 @@ a brief description of each **Issuer** method.
     - Splits a single **Payment** into two new **Payments**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#split
   - [anIssuer.splitMany(payment, paymentAmountArray)](/reference/ertp-api/issuer.md#anissuer-splitmany-payment-amountarray)
-    - Splits a single **Payment** into multiple **Payments**x.
+    - Splits a single **Payment** into multiple **Payments**.
     - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#splitMany
 
 
-**Related Methods:**
+**Related Methods**
 
-**Note**: These methods help you find the right `issuer`, but aren't authoritative.
-A `mint`, `brand`, or `purse` is actually associated with an `issuer` only if
-the `issuer` itself acknowledges the association.
+**Note**: These methods help you find the right **Issuer**, but aren't authoritative.
+A **Mint**, **Brand**, or **Purse** is actually associated with an **Issuer** only if
+the **Issuer** itself acknowledges the association.
 
 - [aMint.getIssuer()](/reference/ertp-api/mint.md#amint-getissuer)
-  - Return the `issuer` uniquely associated with the `mint`.
+  - Returns the **Issuer** uniquely associated with the **Mint**.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer
 - [aBrand.isMyIssuer(issuer)](/reference/ertp-api/brand.md#abrand-ismyissuer-allegedissuer)
-  - Return `true` if `issuer` is the brand's `issuer`, `false` if not.
+  - Returns **true** if *issuer* is the **Brand**'s **Issuer**, **false** if not.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#isMyIssuer
 
 ## Mints
@@ -103,9 +103,9 @@ Since these relationships are one-to-one and unchangeable:
 - A **Mint** created to make an asset **Brand** (e.g., *Quatloos*) can only create that **Brand** asset.
 For example, only *Quatloos*, not *Moola* or anything else.
 - A **Mint** that creates an asset **Brand** is the only **Mint** that can create that **Brand**. Only
-the one *Quatloos* **Mint** can create new *Quatloos*.
+the single *Quatloos* **Mint** can create new *Quatloos*.
 - A **Mint** that creates an asset **Brand** can never be changed to create a different **Brand**.
-Thus, a *Quatloos* **Mint** can never become a *Moola* **Mint**, or any other non-*Quatloos* asset.
+Thus, a *Quatloos* **Mint** can never become a *Moola* **Mint**, or any other non-*Quatloos* **Mint**.
 
 There are two **Mint** methods.
 - [aMint.getIssuer()](/reference/ertp-api/mint.md#amint-getissuer)
