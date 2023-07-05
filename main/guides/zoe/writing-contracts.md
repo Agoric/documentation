@@ -48,41 +48,41 @@ import '@agoric/zoe/exported.js';
 * @type {ContractStartFn}
   */
 const start = (zcf, _privateArgs) => {
-// ZCF: the Zoe Contract Facet
+   // ZCF: the Zoe Contract Facet
 
-// privateArgs: any arguments to be made available to the contract
-// code by the contract owner that should not be in the public
-// terms.
+   // privateArgs: any arguments to be made available to the contract
+   // code by the contract owner that should not be in the public
+   // terms.
 
-// Add contract logic here, including the
-// handling of offers and the making of invitations.
+   // Add contract logic here, including the
+   // handling of offers and the making of invitations.
 
-// Example: This is an example of an offerHandler
-// which just gives a refund payout automatically.
-const myOfferHandler = zcfSeat => {
-zcfSeat.exit();
-const offerResult = 'success';
-return offerResult;
-};
+   // Example: This is an example of an offerHandler
+   // which just gives a refund payout automatically.
+   const myOfferHandler = zcfSeat => {
+      zcfSeat.exit();
+      const offerResult = 'success';
+      return offerResult;
+   };
 
-// Example: This is an invitation that, if used to make
-// an offer will trigger `myOfferHandler`, giving a
-// refund automatically.
-const invitation = zcf.makeInvitation(myOfferHandler, 'myInvitation');
+   // Example: This is an invitation that, if used to make
+   // an offer will trigger `myOfferHandler`, giving a
+   // refund automatically.
+   const invitation = zcf.makeInvitation(myOfferHandler, 'myInvitation');
 
-// Optional: Methods added to this object are available
-// to the creator of the instance.
-const creatorFacet = {};
+   // Optional: Methods added to this object are available
+   // to the creator of the instance.
+   const creatorFacet = {};
 
-// Optional: Methods added to this object are available
-// to anyone who knows about the contract instance.
-// Price queries and other information requests can go here.
-const publicFacet = {};
+   // Optional: Methods added to this object are available
+   // to anyone who knows about the contract instance.
+   // Price queries and other information requests can go here.
+   const publicFacet = {};
 
-return harden({
-   creatorInvitation: invitation, // optional
-   creatorFacet, // optional
-   publicFacet, // optional
+   return harden({
+      creatorInvitation: invitation, // optional
+      creatorFacet, // optional
+      publicFacet, // optional
   });
 };
 

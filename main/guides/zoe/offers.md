@@ -1,9 +1,7 @@
 # Invitations and Offers
 
-You must have a Zoe **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)** to a specific contract instance to join
-and participate in it. Let's imagine your friend Alice has sent you an
-**Invitation** for a contract instance to your [wallet](/guides/wallet/).
-
+You must have a Zoe **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)** to a specific
+contract instance to join and participate in it.
 Compare this to a smart contract on *Ethereum*. On *Ethereum*, the smart
 contract developer must guard against malicious calls and store an
 internal access control list to check whether the message sender is
@@ -13,16 +11,19 @@ easier.
 
 ## Invitations
 
-**[Invitations](/reference/zoe-api/zoe-data-types.md#invitation)** are a special case of ERTP **[Payments](/reference/ertp-api/payment.md)**. They are linked to a specific contract **[Instance](/reference/zoe-api/zoe-data-types.md#instance)**, and
-having one gives you the right to participate in that contract **Instance**, for example, by making offers in it.
+**[Invitations](/reference/zoe-api/zoe-data-types.md#invitation)** are a special case of ERTP
+**[Payments](/reference/ertp-api/payment.md)**. They are linked to a specific contract
+**[Instance](/reference/zoe-api/zoe-data-types.md#instance)**, and
+having one gives you the right to participate in that contract **Instance** (e.g., by making offers in it).
 
 There are two main ways for contract users to get an **Invitation**:
 - If you create the contract **Instance**, you get a special creator **Invitation**.
-- Someone (possibly you) who holds the right objects has created an **Invitation** for a contract **Instance** and gives it to
-  you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
-  doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
+- Someone (possibly you) who holds the right objects has created an **Invitation** for a contract
+**Instance** and gives it to you in some way. An **Invitation** might be sent to you, or it might be
+posted on a public online location. It doesn't matter (nor does Zoe specify or have any requirements)
+how or why you obtained the **Invitation**; the only thing that matters is that you have it.
 
-## Inspecting An Invitation
+## Inspecting an Invitation
 
 Before you use any **[Invitation](/reference/zoe-api/zoe-data-types.md#invitation)**, you should 
 always first inspect and validate the **Invitation**.
@@ -62,6 +63,7 @@ code directly by calling:
 
 In most cases, the bundle contains a base64-encoded zip file that you can
 extract for review:
+
 ```sh
 echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip

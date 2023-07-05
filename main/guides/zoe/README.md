@@ -1,5 +1,20 @@
 # Zoe Overview
 
+![Sample Echange Diagram](./assets/contractHost.png) 
+
+Once we obtain tradeable electronic rights, we need a secure layer to enable trading of those rights. That is exactly what a contract does as the quote above states. But this raises another problem. How are we going to secure the contract from malicious users? In the diagram above Alice and Bob agree on[2];
+
+The issuers of each of the rights at stake.
+The source code of the contract.
+Who is to play which side of the contract.
+A third party they mutually trust to run their agreed code, whatever it is, honestly
+This third party Alice and Bob mutually trust to run their code is Contract Host. Zoe is designed by Agoric to serve as the contract host in Agoric ecosystem. It is the layer where all the smart contracts are installed and run.
+
+
+
+------------
+
+
 Zoe plays a key role in establishing trust between users and developers. How? In some other big networks like Ethereum, a smart contract developer has the full access to users assets inside the contract code. This enables some malicious developers to perform some bad actions. But in an ocaps system this should never happen. The motto in a ocaps system is: Do not bring security, remove insecurity. Zoe brings this mindset to smart contract development. The way Zoe does that is through escrowing. A smart contract is where mutually suspicious parties trade rights. Zoe locks/escrows the rights of all parties until one of the conditions is met in the contract. A developer has no direct access to rights but instead they implement the required logic by using Amounts. Remember Amounts from ERTP section? This is how ERTP and Zoe works together to establish secure trading of erights.
 
 ------------------
@@ -302,15 +317,3 @@ Conclusion: `userSeat` is part of the `Zoe Service` API.
 #### How does a contract pass rights to a `userSeat`? Enter `zcfSeat`!
 
 `zcfSeat` is what is handed to the contract per offer execution. It contains the user's payments in a escrowed state(contract developer cannot access) and the proposal itself so that the contract developers can enforce required logic. Once the assets are reallocated between `zcfSeat`s inside a contract, they can be withdrawn from the `userSeat`.
-
-### Contract Development Experience
-
-#### How do you feel about TDD?
-
-Smart Contract Development is a field that it's almost a `must` to do TDD since test environments are too costly in terms of developer feedback time.
-
-#### Enter `Ava`
-
-Agoric uses `ava` as their unit testing framework. It's useful to [check out it's docs](https://github.com/avajs/ava) before starting the development.
-
-Let's see some code!
