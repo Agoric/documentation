@@ -40,10 +40,12 @@ const { want, give, exit } = sellerSeat.getProposal();
 ## E(UserSeat).getPayouts()
   - Returns: **Promise&lt;PaymentKeywordRecord>**
 
-A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction, redirecting
+A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a
+successful transaction, redirecting
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
 containing all the **Payout** **Payments** associated with the **seat**'s offers.
 
+The returned **Promise** object will only resolve when the **UserSeat** exits.
 
 ```js
 // Record example
@@ -62,6 +64,8 @@ const paymentKeywordRecord = {
 A **Payout** is a **Payment** that goes to a party in a successful transaction, redirecting
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **Payout**
 **Payment** associated with the *keyword* argument.
+
+The returned **Promise** object will only resolve when the **UserSeat** exits.
 
 ## E(UserSeat).getOfferResult()
   - Returns: **Promise&lt;OfferResult>**
