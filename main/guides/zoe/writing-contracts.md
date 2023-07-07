@@ -1,28 +1,31 @@
 # Writing Contracts
 
+
+A Zoe smart contract is a  JavaScript module that exports a `start` function
+and may import other code.
+A Zoe contract will be bundled up, so you should feel free to divide
+your contract into multiple files (perhaps putting helper functions in a
+separate file, for example) and import them.
+
+A Zoe contract needs to be able to run under [Agoric's SES shim for Hardened JavaScript](https://github.com/endojs/endo/tree/master/packages/ses). Some legacy
+JavaScript code is incompatible with Hardened JavaScript, because Lockdown freezes the
+JavaScript objects you start out with (the primordials, such as `Object`), and some legacy code tries to
+mutate these.
+
+If you add this type annotation, TypeScript-aware tools
+(IDEs like vsCode and WebStorm) will inform the developer about parameters
+and return values for your contract and `zcf` methods and warn about mismatches.
+Put it right before the start of your contract code.
+
+```js
+/**
+ * @type {ContractStartFn}
+ */
+ ```
+
 Zoe acts as the Contract Host to secure users from malicious developers but it is also a rich framework for smart contract developers to show their skills and creativity.
 
 In Agoric smart contracts are deployed and accessed through Zoe. smart contracts must have the following structure;
-
-## Contract Requirements
-
-Every Zoe contract must export a method called start. It's usually the last line of the contract.
-export { start }; 
-The start method should accept a zcf object as its first argument. zcf stands for Zoe Contract Facet which is an API the smart contract developers to interact with Zoe.
-Use arrow function definitions instead of function keyword;
-// Do
-const start = (zcf) => {
- // Method body
-}
-
-// Do not do
-function start(zcf) {
- // Method body
-}
-By convention, most Zoe contracts return two APIs: creatorFacet and publicFacet;
-creatorFacet: The word creator means the user who deployed this contract. Therefore, only this API should contain methods that have administrative powers. creatorFacet is only available during the deployment of the contract. So the creator should hold on to this reference. Because once it's gone, it's gone.
-publicFacet: This is the API contract exposes to the whole world. publicFacet is accessible via the Zoe interface.
-
 
 ## Structure of a Contract
 
@@ -141,7 +144,6 @@ harden(start);
 export { start };
 ```
 
-
 The contract can contain arbitrary JavaScript code, but there are a few things you'll want
 to do in order to act as a contract, and interact with Zoe and zcf (the internal contract
 facet).
@@ -199,3 +201,5 @@ const matchingSeatOfferHandler = matchingSeat => {
 If you study other contracts, you'll see they all have this basic format. Depending
 on their goals, they may do additional bookkeeping, or try to find compatible terms
 between multiple offers, or create new assets to order.
+
+
