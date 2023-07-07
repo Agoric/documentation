@@ -46,10 +46,10 @@ const myAmountKeywordRecord =
 ```
 ## Handle
 
-**Handles** within Zoe have a slightly different definition than in regular JavaScript. They are **Far**
-objects without any methods whose only useful property are their unique identities. They're often
-created in order to designate some other object, where the **Handles** can be passed around as reliable
-designators without giving access to the designated objects.
+**Handles** are **Far** objects without any methods whose only useful property are their
+unique identities. They're often created in order to designate some other object, where the
+**Handles** can be passed around as reliable designators without giving access to the
+designated objects.
 
 ## Instance
 
@@ -75,7 +75,7 @@ almost always just use a **Payment** holding a single **Invitation** in order to
 instance has a single **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come
 from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
 
-**InvitationIssuers** have all the methods of regular **Issuers**, but the two methods that qre most
+**InvitationIssuers** have all the methods of regular **Issuers**, but the two methods that are most
 often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
 and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
 
@@ -144,7 +144,7 @@ hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 **TransferParts** are the individual elements of the *transfer* array passed into the 
 **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
 represents one or two **[Allocation](#allocation)** changes among existing 
-**[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 fields, none of which are mandatory:
+**[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, none of which are mandatory:
 
 * **fromSeat**?: **ZCFSeat** - The seat from which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being taken.
 * **toSeat**?: **ZCFSeat** - The seat to which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being given.
