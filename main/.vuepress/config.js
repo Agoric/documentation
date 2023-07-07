@@ -144,6 +144,7 @@ module.exports = {
             '/guides/zoe/',
             '/guides/zoe/writing-contracts',
             '/guides/zoe/offers',
+            '/guides/zoe/price-authority'
           ],
         },
         {
