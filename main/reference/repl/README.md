@@ -141,3 +141,19 @@ History[3] [Object Alleged: VirtualPurseKit purse]{}
 Command[4] E(history[3]).withdraw({ brand: history[1], value: 10n })
 History[4] [Object Alleged: IST payment]{}
 ```
+
+### Local Variable Assignment
+
+Instead of always needing to work with the `history[N]` object, the REPL also allows us to assign local variables. Please keep in mind that some variables should not be assigned until they are a fully resolved promise, otherwise you will end up with a reference to a promise instead of a value.
+
+The example code in the Making Amounts and Payments section could also be written as:
+
+```js
+COMMAND[1] issuer = E(home.agoricNames).lookup('issuer', 'IST')
+COMMAND[2] E(issuer).getBrand()
+HISTORY[2] [Object Alleged: IST brand]{}
+COMMAND[3] brand = history[2] // we need the promise to resolve, before we assign it
+COMMAND[4] myISTPurse = E(home.wallet).getPurse('Agoric stable token') // petname for the purse
+COMMAND[5] tenISTAmount = { brand, value: 10n }
+COMMAND[6] tenISTPayment = E(myISTPurse).withdraw(tenISTAmount)
+```
