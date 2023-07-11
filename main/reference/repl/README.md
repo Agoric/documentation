@@ -122,3 +122,22 @@ An off-chain, private, place to store key-value pairs on your ag-solo for later 
 - `uploads`: Deprecated name for `scratch`.
 - `vattp`: Privileged object for internal use.
 
+### Making Amounts and Payments
+
+**[Amounts](../../glossary/#amount)** are required to make **[Payments](../ertp-api/payment)**, but **[AmountMath](../ertp-api/amount-math)** is not available in the REPL. To make an Amount, you can create an object with the required keys - `brand` and `value`.
+
+Payments need to be hardened, or frozen, before they can be sent to a remote object. Luckily, any time **[Eventual Send](../../guides/js-programming/eventual-send)** `E(target).method(...args)` is called, the `@endo/far` library will automatically harden the `args` for us. So we do not need to explicitly call `harden()` in the REPL. 
+
+To make a payment for an amount of 10 IST from your **[purse](../ertp-api/purse)**, you would enter something like the following in the REPL:
+```js
+Command[0] E(home.agoricNames).lookup('issuer', 'IST')
+History[0] [Object Alleged: IST issuer]{}
+Command[1] E(history[0]).getBrand()
+History[1] [Object Alleged: IST brand]{}
+Command[2] E(home.wallet).getPurses() // view your available purses
+History[2] [["Agoric stable token",[Object Alleged: VirtualPurseKit purse]{}], ...]
+Command[3] E(home.wallet).getPurse('Agoric stable token') // petname for the purse
+History[3] [Object Alleged: VirtualPurseKit purse]{}
+Command[4] E(history[3]).withdraw({ brand: history[1], value: 10n })
+History[4] [Object Alleged: IST payment]{}
+```
