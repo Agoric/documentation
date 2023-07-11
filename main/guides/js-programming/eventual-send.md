@@ -23,6 +23,8 @@ E(zoe).install(bundle)
   .catch(err => { ... });
 ```
 
+Since any call to `E(target).method(...args)` may be remote, Endo automatically hardens the `args`. So in the above example, we did not need to call `harden(bundle)` since Eventual Send handles this for us.
+
 ## Eventual Send
 
 One of the ways [Zoe partitions risk](https://www.youtube.com/watch?v=T6h6TMuVHKQ&t=368s) is by running in its own [vat](../../glossary/README.md#vat), separate from any smart contract that might
