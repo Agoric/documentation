@@ -1,12 +1,13 @@
 # ZoeHelper Functions
 
-The ZoeHelper functions extract common contract code and
-patterns into reusable helpers.
+The ZoeHelper functions provide convenient abstractions for accessing Zoe functionality from within
+contracts. In most cases, you pass a reference to zcf or one or more seats.
 
 All of the ZoeHelper functions are described below. To use any of them, import them
 directly from **@agoric/zoe/src/contractSupport/index.js**. For example, the
 following imports the two ZoeHelper functions **[assertIssuerKeywords()](#assertissuerkeywords-zcf-expected)** and
 **[assertProposalShape()](#assertproposalshape-seat-expected)**:
+
 
 ```js
 import {
@@ -15,20 +16,15 @@ import {
 } from '@agoric/zoe/src/contractSupport/index.js';
 ```
 
-ZoeHelper functions are contract helpers, in that they are useful to contract code. 
-Contracts are started up by Zoe, 
-and **zcf** is passed in as a parameter to **start()**. 
-
 ## atomicRearrange(zcf, transfers)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
 - **transfers**: **Array&lt;[TransferPart](./zoe-data-types.md#transferpart)>**
 - Returns: None.
 
-Asks Zoe to rearrange the **[Allocations](./zoe-data-types.md#allocation)** among the seats
-mentioned in *transfers*. *transfers* are a set of changes to **Allocations** that must satisfy
-several constraints. If these constraints are all met, then the
-reallocation happens atomically. Otherwise an error is thrown and it does not happen
-at all. The constraints are as follows.
+Asks Zoe to rearrange the **[Allocations](./zoe-data-types.md#allocation)** among the seats mentioned in
+*transfers*. *transfers* are a set of changes to **Allocations** that must satisfy several
+constraints. If these constraints are all met, then the reallocation happens atomically. Otherwise an
+error is thrown and none of the propossed changes has any effect. The constraints are as follows.
 
  * All the mentioned seats are still live.
  * There aren't any outstanding stagings for any of the mentioned seats.
@@ -38,65 +34,63 @@ at all. The constraints are as follows.
     To prevent confusion, each reallocation can only be
     expressed in the old way or the new way, but not a mixture.
  * Overall conservation must be maintained. In other words, the reallocated
-    **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** must balance out to zero.
+    **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** must balance out.
  * Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
 	 as long as either it gets the assets described in the want section of its proposal, or it retains
-     all of the assets specified in the give section of the proposal. This constraint applies to the
-     entire atomicRearrangement, not to the individual **TransferParts**.
+     all of the assets specified in the give section of the proposal. This constraint applies to each
+     seat across the entire atomicRearrangement, not to the individual **TransferParts**.
 
-Note that you can manually construct the **TransferParts** that make up the *transfers* array manually,
-or you can use the helper functions **[fromOnly()](#fromonly-fromseat-fromamounts)** or 
-**[toOnly()](#toonly-toseat-toamounts)** to create simple **TransferParts** that only contain 
-two of the possible 4 potential fields.
-
-## atomicTransfer(zcf, fromSeat?, toSeat?, fromAmounts?, toAmounts?)
-- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 
-- **fromSeat**: **[ZCFSeat](./zcfseat.md)** - Optional, defaults to **undefined**.
-- **toSeat**: **ZCFSeat** - Optional, defaults to **undefined**.
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)** - Optional, defaults to **undefined**.
-- **toAmounts**: **AmountKeywordRecord** - Optional, defaults to **undefined**.
-- Returns: None.
-
-Asks Zoe to rearrange the **[Allocations](./zoe-data-types.md#allocation)** among the seats
-mentioned in *fromSeat* and *toSeat*. The reallocations must satisfy
-several constraints. If these constraints are all met, then the
-reallocation happens atomically. Otherwise an error is thrown and it does not happen
-at all. The constraints are as follows.
-
- * All the mentioned seats are still live.
- * There aren't any outstanding stagings for any of the mentioned seats.
- * Overall conservation must be maintained. In other words, the reallocated
-    **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** must balance out to zero.
- * Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
-	 as long as either it gets the assets described in the want section of its proposal, or it retains
-     all of the assets specified in the give section of the proposal.
-
-If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without
-specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to
-*toSeat*. If you don't include a *fromSeat*, *toSeat*, and/or
-*fromAmounts* argument, you'll need to set the missing arguments to **undefined**.
-(Note that if you don't
-include the *toAmounts* argument, there's no need to set it to **undefined**; you can simply omit it.)
+Note that you can construct the **TransferParts** that make up the *transfers* array manually, or for
+transfers that only include one seat, you can use the helper functions
+**[fromOnly()](#fromonly-fromseat-fromamounts)** and **[toOnly()](#toonly-toseat-toamounts)** to create
+**TransferParts** that only use a subset of the fields.
 
 ## fromOnly(fromSeat, fromAmounts)
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)**
 - **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
-Returns a **TransferPart** when a reallocation only involves taking an 
-**[Allocation](./zoe-data-types.md#allocation)** from the **ZCFSeat** specified by *fromSeat*.
-**TransferParts** are used as part of the *transfer* argument of the 
-**[atomicRearrange()](#atomicrearrange-zcf-transfers)** function.
+Returns a **TransferPart** which only takes **fromAmounts** from *fromSeat*. **TransferParts** are used
+as part of the *transfer* argument of the **[atomicRearrange()](#atomicrearrange-zcf-transfers)**
+function.
 
 ## toOnly(toSeat, toAmounts)
 - **toSeat**: **[ZCFSeat](./zcfseat.md)**
 - **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
-Returns a **TransferPart** when a reallocation only involves giving an 
-**[Allocation](./zoe-data-types.md#allocation)** to the **ZCFSeat** specified by *toSeat*.
-**TransferParts** are used as part of the *transfer* argument of the 
-**[atomicRearrange()](#atomicrearrange-zcf-transfers)** function.
+Returns a **TransferPart** which only gives **toAmount** to *toSeat*. **TransferParts** are used as part
+of the *transfer* argument of the **[atomicRearrange()](#atomicrearrange-zcf-transfers)** function.
+
+## atomicTransfer(zcf, fromSeat, toSeat, fromAmounts, toAmounts?)
+- **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
+- **fromSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
+- **toSeat**: **ZCFSeat** - Optional.
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)** - Optional.
+- **toAmounts**: **AmountKeywordRecord** - Optional, defaults to **fromAmounts**.
+- Returns: None.
+
+Asks Zoe to rearrange the **[Allocations](./zoe-data-types.md#allocation)** among the seats mentioned in
+*fromSeat* and *toSeat*. The reallocations must satisfy several constraints. If these constraints are all
+met, then the reallocation happens atomically. Otherwise an error is thrown and none of the proposed
+changes has any effect. The constraints are as follows.
+
+ * All the mentioned seats are still live.
+ * There aren't any outstanding stagings for any of the mentioned seats.
+
+	Stagings are a reallocation mechanism that has been
+    deprecated in favor of this **atomicRearrange()** function.
+    To prevent confusion, each reallocation can only be
+    expressed in the old way or the new way, but not a mixture.
+ * Overall conservation must be maintained. In other words, the reallocated
+    **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** must balance out.
+ * Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
+	 as long as either it gets the assets described in the want section of its proposal, or it retains
+     all of the assets specified in the give section of the proposal. This constraint applies to each
+     seat across the entire atomicRearrangement, not to the individual **TransferParts**.
+
+When you don't specify *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and
+given to *toSeat*.
 
 ## assertIssuerKeywords(zcf, expected)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)** 

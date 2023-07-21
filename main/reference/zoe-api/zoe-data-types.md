@@ -65,17 +65,15 @@ You can get information about the contract instance via these methods:
 
 An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright
 that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
-eright. An **Invitation** **Payment** would be a **Payment** holding an **Invitation**. Because we
-almost always just use a **Payment** holding a single **Invitation** in order to pass around
-**Invitations**, the difference is normally elided.
+eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
 
 ## InvitationIssuer
 
-**InvitationIssuers** are special types of **[Issuers](/reference/ertp-api/issuer.md)**. Every Zoe
-instance has a single **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come
-from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
+The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe
+instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the
+**[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
 
-**InvitationIssuers** have all the methods of regular **Issuers**, but the two methods that are most
+**InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most
 often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
 and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
 
@@ -141,10 +139,11 @@ hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 
 ## TransferPart
 
-**TransferParts** are the individual elements of the *transfer* array passed into the 
+**TransferParts** are the individual elements of the *transfer* array passed into the
 **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
-represents one or two **[Allocation](#allocation)** changes among existing 
-**[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, none of which are mandatory:
+represents one or two **[Allocation](#allocation)** changes among existing
+**[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, each of which can be elided
+in some cases:
 
 * **fromSeat**?: **ZCFSeat** - The seat from which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being taken.
 * **toSeat**?: **ZCFSeat** - The seat to which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being given.

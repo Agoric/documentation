@@ -46,9 +46,6 @@ The Zoe API introduces and uses the following data types:
 | [ParsableNumber](./zoe-data-types.md#parsablenumber) | Defined as a **bigint**, **number**, or **string**. |
 | [PriceQuote](./zoe-data-types.md#pricequote) | Statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time when only a single calls is expected. |
 | [Ratio](./zoe-data-types.md#ratio) | Pass-by-value record that consists of a *numerator* **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a *denominator* **Amount**. |
-| [TransferPart](./zoe-data-types.md#transferpart) | One or two **[Allocation](./zoe-data-types.md#allocation)** changes among existing **[ZCFSeats](./zcfseat.md)**. **TransferParts** are the individual elements of the *transfer* array passed into the **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. |
-
-
-
+| [TransferPart](./zoe-data-types.md#transferpart) |  **[Allocation](./zoe-data-types.md#allocation)** changes for one or two existing **[ZCFSeats](./zcfseat.md)**. **TransferParts** are the individual elements of the *transfer* array passed into the **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. |
 
 
