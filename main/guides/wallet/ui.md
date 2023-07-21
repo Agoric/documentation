@@ -1,4 +1,3 @@
-
 # Wallet UI
 
 From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
@@ -23,7 +22,7 @@ Dapps can be removed so that they are no longer able to propose offers.
 
 ## Offers
 
-After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](../zoe/#what-is-zoe)").
+After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](/guides/zoe/README.md#offer-safety)").
 
 When an offer is proposed (usually from some interaction in a dapp), it will appear in the dashboard view:
 

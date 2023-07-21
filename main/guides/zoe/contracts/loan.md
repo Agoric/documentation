@@ -26,7 +26,7 @@ loaned amount and interest must be of the same (separate) brand.
    percent. The default is 150, meaning that collateral should be
    worth at least 150% of the loan. If the value of the collateral
    drops below `mmr`, liquidation can occur.
-* [`priceAuthority`](/guides/zoe/price-authority.md) - used for getting the current value of
+* [`priceAuthority`](/guides/zoe/readme.md#price-authority) - used for getting the current value of
    collateral and setting liquidation triggers.
 * `autoswapInstance` - The running contract instance for
    [AMM](./constantProductAMM.md) installation. The `publicFacet`
@@ -125,7 +125,7 @@ collateral falls below a trigger value defined by the `mmr` parameter:
 <<< @/snippets/zoe/contracts/test-loan.js#liquidate
 
 The borrower can self-forewarn about a potential liquidation by setting up their own margin calls.
-They do this by getting the [`priceAuthority`](/guides/zoe/price-authority.md) from the terms and calling:
+They do this by getting the [`priceAuthority`](/guides/zoe/readme.md#price-authority) from the terms and calling:
 
 <<< @/snippets/zoe/contracts/test-loan.js#customMarginCall
 

@@ -1,60 +1,57 @@
 # Price Authority
 
-A `priceAuthority` can be used in contracts (usually specified in the
+A **[PriceAuthority](/reference/zoe-api/price-authority.md)** can be used in contracts (usually specified in the
 terms of a contract) to provide a price feed, on-demand quotes, and wakeups for
 various time and price conditions.
 
 ## Examples
 
-To see a `priceAuthority` in use, see the [Loan
+To see a **[PriceAuthority](/reference/zoe-api/price-authority.md)** in use, see the [Loan
 contract](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/loan)
 and the [Call Spread
 contracts](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts/callSpread).
 
 ## Receiving a Quote
 
-A `priceAuthority` has a number of different methods that will return
-official `priceQuotes`. A `priceQuote` is a record with an amount and a payment,
-where the amount is also the current balance of the payment:
+A **[PriceAuthority](/reference/zoe-api/price-authority.md)** has a number of different methods that will return
+official **[PriceQuotes](/reference/zoe-api/zoe-data-types.md#pricequote)**. A **PriceQuote** is a record with an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a **[Payment](/reference/ertp-api/payment.md)**,
+where the **Amount** is also the current balance of the **Payment**:
 
 ```js
 const { quoteAmount, quotePayment } = priceQuote;
 ```
 
-Because these are ERTP amounts and payments, they have issuers. And
-the payments are minted by an ERTP mint. A quote issuer and mint may
-be shared by several `priceAuthorities`, and a `priceAuthority` may
-use several quoteIssuers.
+Because these are ERTP **Amounts** and **Payments**, they have **[Issuers](/reference/ertp-api/issuer.md)**, and
+the **Payments** are minted by an ERTP **[Mint](/reference/ertp-api/mint.md)**. A quote **Issuer** and **Mint** may
+be shared by several **PriceAuthorities**, and a **PriceAuthority** may
+use several **QuoteIssuers**.
 
-Importantly, you can confirm the brand of a quote and that it was minted by the
-mint associated with the quoteIssuer by using the `quoteIssuer` to obtain the
-`quoteAmount` of the `quotePayment`:
+Importantly, you can confirm the **[Brand](/reference/ertp-api/brand.md)** of a **PriceQuote** and that it was minted by the
+**Mint** associated with the **QuoteIssuer** by using the **QuoteIssuer** to obtain the
+**QuoteAmount** of the **QuotePayment**:
 
 ```js
 const verifiedQuoteAmount = await E(quoteIssuer).getAmountOf(quotePayment);
 ```
 
-Once you have a `quoteAmount` (or a `verifiedQuoteAmount`), you can extract the
-quoted amounts:
+Once you have a **QuoteAmount** (or a **VerifiedQuoteAmount**), you can extract the
+quoted **Amounts**:
 
 ```js
 const [{ value: { amountIn, amountOut, timestamp, timer }] = quoteAmount;
 ```
 
-This means that the `priceAuthority` asserts that when `timestamp` according to
-`timer` happened, you could sell `amountIn` and receive `amountOut` for it.
-`amountIn` and `amountOut` are ERTP amounts for the `brandIn` and `brandOut` you
+This means that the **PriceAuthority** asserts that when **Timestamp** according to
+**Timer** happened, you could sell *amountIn* and receive *amountOut* for it.
+*amountIn* and *amountOut* are ERTP **Amounts** for the *brandIn* and *brandOut* you
 requested.
 
 ## Mutable Price Quotes
 
-`MutableQuote`'s method `getPromise()` returns a `Promise` for a `PriceQuote`,
-which is the same as what is returned by the `quoteWhenLTE()` API method and variants.
-Effectively, the non-mutable price quote methods return a single `PriceQuote`, while
+**[MutableQuote](/reference/zoe-api/zoe-data-types.md#mutablequote)**'s method **getPromise()** returns a **Promise** for a **[PriceQuote](/reference/zoe-api/zoe-data-types.md#pricequote)**,
+which is the same as what is returned by the **[E(PriceAuthority).quoteWhenLTE()](/reference/zoe-api/price-authority.md#e-priceauthority-quotewhenlte-amountin-amountoutlimit)**method and variants.
+Effectively, the non-mutable price quote methods return a single **PriceQuote**, while
 the mutable price quote methods return a reusable object which can be manipulated
 by changing its trigger levels or by cancelling it.
 
-## API Reference
-
-The Price Authority API reference is a section of the [Zoe API reference](/reference/zoe-api/price-authority.md)
 

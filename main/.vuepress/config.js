@@ -131,7 +131,7 @@ module.exports = {
           children: [
             '/guides/ertp/',
             '/guides/ertp/amounts',
-            '/guides/ertp/amount-math',
+            '/guides/ertp/amount-math',            
             '/guides/ertp/issuers-and-mints',
             '/guides/ertp/purses-and-payments',
           ],
@@ -142,11 +142,9 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/zoe/',
-            '/guides/zoe/offer-enforcement',
-            '/guides/zoe/offer-safety',
-            '/guides/zoe/proposal',
-            '/guides/zoe/contract-requirements',
-            '/guides/zoe/price-authority',
+            '/guides/zoe/writing-contracts',
+            '/guides/zoe/offers',
+            '/guides/zoe/price-authority'
           ],
         },
         {
