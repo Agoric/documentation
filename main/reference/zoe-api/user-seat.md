@@ -14,6 +14,13 @@ and, if it's allowed for this seat, call **tryExit()**.
 
 Take care when sharing a **UserSeat**, since it includes authority to (attempt to) exit the seat.
 
+These methods are all documented as returning Promises, since they are always called remotely,
+but that obscures the fact that they are expected to resolve at semantically different times.
+Some return a value promptly, and others return a promise that won't be fulfilled until the
+seat is exited. **getOfferResult()** resolves at the discretion of the contract. The
+descriptions below will call out explicitly the cases in which the value is not guaranteed to
+be resolved promptly.
+
 **UserSeat** includes queries for the associated offer's current state
 and an operation to request that the offer exit, as follows:
 
@@ -54,6 +61,8 @@ const paymentKeywordRecord = {
 };
 ```
 
+This promise will be resolved when the seat exits.
+
 ## E(UserSeat).getPayout(keyword)
 - **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
@@ -62,21 +71,35 @@ A **Payout** is a **Payment** that goes to a party in a successful transaction, 
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **Payout**
 **Payment** associated with the *keyword* argument.
 
+This promise will be resolved when the seat exits.
+
 ## E(UserSeat).getOfferResult()
   - Returns: **Promise&lt;OfferResult>**
 
 Returns a **Promise** for an **OfferResult**. The **OfferResult** can be literally anything. 
-For example, in tests
-for the Automated Refund Dapp, it's the string "The offer was accepted". In
+For example, in tests for the Automated Refund Dapp, it's the string "The offer was accepted". In
 the Covered Call example, it's a call option, which is an assayable **[Invitation](./zoe-data-types.md#invitation)**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is set by the returned result of the **offerHandlers** function passed
 as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape)**.
 
+Since the contract can return whatever it wants as an offerResult, there is no guarantee that the
+promise will resolve promptly.
+
 ## E(UserSeat).hasExited()
   - Returns: **Promise&lt;Boolean>**
 
-Returns **true** if the seat has exited, **false** if it's still active.
+Returns **true** if the seat has exited, **false** if it's still active. The value is returned
+promptly.
+
+If you want to take some action when the seat does exit, use **getExitSubscriber()** and call
+```
+const subscriber = E(seat).getExitSubscriber();
+E.when(E(subscriber).getUpdateSince(), () => takeAction());
+```
+
+The eventual send to the subscriber will survive upgrade of the contract. Waiting on any of the
+promises would be broken in the case of a contract upgrade.
 
 ## E(UserSeat).tryExit()
   - Returns: None.
@@ -88,7 +111,6 @@ circumstances, the participant might be able to call **tryExit()**, or the
 contract might do something explicitly. On exiting, the seat holder
 gets its current **[Allocation](./zoe-data-types.md#allocation)** and the **seat** can no longer interact with the contract.
 
-
 ## E(UserSeat).numWantsSatisfied()
 - Returns: **Promise&lt;Number>**
 
@@ -99,6 +121,7 @@ Returns a **Promise** for a number which indicates the result of the exited **Pr
 | 0 | The user didn't get what they wanted from the **Proposal**, so their offer was refunded. |
 | 1 | The user got what they wanted from the **Proposal**, so their offer is spent & gone. |
 
+This promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getExitSubscriber()
 - Returns: **Promise&lt;Subscriber>**
@@ -110,5 +133,4 @@ Returns a **Promise** for the **Subscriber** for the seat.
 - Returns: **Promise&lt;[Allocation](./zoe-data-types.md#allocation)>**
 
 Returns a **Promise** for the **Allocation** when the **UserSeat** exits the **proposal**.
-
-
+This promise will be resolved promptly once the seat exits.
