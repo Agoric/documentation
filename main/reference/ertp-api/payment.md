@@ -17,7 +17,7 @@ take out, say, only 3 *Quatloos* from it.
 However, you can split a **Payment** into multiple **Payments**. For example, you could split a 
 10 *Quatloos* **Payment** into two new **Payments** of 3 *Quatloos* and 7 *Quatloos* by calling the
 **[anIssuer.split()](./issuer.md#anissuer-split-payment-paymentamounta)** method which consumes the 
-original 10 *Quatloos* **Payment** and creates two new smaller **Payments.
+original 10 *Quatloos* **Payment** and creates two new smaller **Payments**.
 
 **Payments** are often received from other actors. Since they are not self-verifying,
 you cannot trust **Payments**. To get the verified balance of a **Payment**, call the **[anIssuer.getAmountOf()](./issuer.md#anissuer-getamountof-payment)** method.
