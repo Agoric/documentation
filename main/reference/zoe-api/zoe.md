@@ -153,12 +153,14 @@ const installationP = await E(Zoe).install(bundle);
 ## E(Zoe).getConfiguration()
 - Returns: **Promise&lt;Object>**
 
-Returns a **Promise** for the configuration settings for the Zoe contract.
+Returns a **Promise** for information about the feeIssuer.
+(The **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.)
+It consists of the issuer's name, assetKind, and displayInfo.
 
 ## E(Zoe).getFeeIssuer()
 - Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
 
-Returns a **Promise** for an **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.
+Returns a **Promise** for the **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.
 
 ## E(Zoe).getOfferFilter(instance)
 - **instance**: **[Instance](./zoe-data-types.md#instance)**
