@@ -18,8 +18,8 @@ not equal, an error is thrown and no changes are made.
 
 
 ## AmountMath.make(brand, allegedValue)
-- **brand** **[Brand](./brand.md)**
-- **allegedValue** **[Value](./ertp-data-types.md#value)**
+- **brand**: **[Brand](./brand.md)**
+- **allegedValue**: **[Value](./ertp-data-types.md#value)**
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
 Creates an **Amount** from a given **Value** and a **Brand**.
@@ -30,8 +30,8 @@ const amount837 = AmountMath.make(quatloosBrand, 837n);
 ```
 
 ## AmountMath.coerce(brand, allegedAmount)
-- **brand** **[Brand](./brand.md)**
-- **allegedAmount** **[Amount](./ertp-data-types.md#amount)**
+- **brand**: **[Brand](./brand.md)**
+- **allegedAmount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Amount**
 
 Makes sure an **Amount** is for the specified *brand* and if so, returns it.
@@ -44,8 +44,8 @@ const verifiedAmount = AmountMath.coerce(quatloosBrand, allegedAmount);
 ```
 
 ## AmountMath.getValue(brand, amount)
-- **brand** **[Brand](./brand.md)**
-- **amount** **[Amount](./ertp-data-types.md#amount)**
+- **brand**: **[Brand](./brand.md)**
+- **amount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **[Value](./ertp-data-types.md#amount)**
 
 Returns the **Value** from the given **Amount**.
@@ -57,8 +57,8 @@ const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 ```
 ## AmountMath.makeEmpty(brand, assetKind)
-- **brand** **[Brand](./brand.md)**
-- **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)**
+- **brand**: **[Brand](./brand.md)**
+- **assetKind**: **[AssetKind](./ertp-data-types.md#assetkind)**
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
 Returns the **Amount** representing an empty **Amount** for the *brand* parameter's 
@@ -74,7 +74,7 @@ const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 ```
 
 ## AmountMath.makeEmptyFromAmount(amount)
-- **amount** **[Amount](./ertp-data-types.md#amount)**
+- **amount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Amount**
 
 Returns the **Amount** representing an empty **Amount**, using another
@@ -88,8 +88,8 @@ const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 ```
 
 ## AmountMath.isEmpty(amount, brand?)
-- **amount** **[Amount](./ertp-data-types.md#amount)**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **amount**: **[Amount](./ertp-data-types.md#amount)**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **Amount** is empty. Otherwise returns **false**.
@@ -108,9 +108,9 @@ const result = AmountMath.isEmpty(quatloos1);
 ```
 
 ## AmountMath.isGTE(leftAmount, rightAmount, brand?)
-- **leftAmount** **[Amount](./ertp-data-types.md#amount)**
-- **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **leftAmount**: **[Amount](./ertp-data-types.md#amount)**
+- **rightAmount**: **Amount**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is greater than or equal to
@@ -142,9 +142,9 @@ AmountMath.isGTE(quatloos5, quatloos5);
 ```
 
 ## AmountMath.isEqual(leftAmount, rightAmount, brand?)
-- **leftAmount** **[Amount](./ertp-data-types.md#amount)**
-- **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **leftAmount**: **[Amount](./ertp-data-types.md#amount)**
+- **rightAmount**: **Amount**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
 Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is equal to
@@ -178,9 +178,9 @@ AmountMath.isEqual(empty, quatloos10);
 ```
 
 ## AmountMath.add(leftAmount, rightAmount, brand?)
-- **leftAmount** **[Amount](./ertp-data-types.md#amount)**
-- **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **leftAmount**: **[Amount](./ertp-data-types.md#amount)**
+- **rightAmount**: **Amount**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns a new **Amount** that is the union of *leftAmount* and *rightAmount*. Both
@@ -206,9 +206,9 @@ const combinedList = AmountMath.add(listAmountA, listAmountB);
 ```
 
 ## AmountMath.subtract(leftAmount, rightAmount, brand?)
-- **leftAmount** **[Amount](./ertp-data-types.md#amount)**
-- **rightAmount** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **leftAmount**: **[Amount](./ertp-data-types.md#amount)**
+- **rightAmount**: **Amount**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns a new **Amount** that is the *leftAmount* minus the *rightAmount* (i.e., 
@@ -239,9 +239,9 @@ const badList = AmountMath.subtract(listAmountA, listAmountB)
 ```
 
 ## AmountMath.min(x, y, brand?)
-- **x** **[Amount](./ertp-data-types.md#amount)**
-- **y** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **x**: **[Amount](./ertp-data-types.md#amount)**
+- **y**: **Amount**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns the minimum value between *x* and *y*.
@@ -259,9 +259,9 @@ const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
 ```
 
 ## AmountMath.max(x, y, brand?)
-- **x** **[Amount](./ertp-data-types.md#amount)**
-- **y** **Amount**
-- **brand** **[Brand](./brand.md)** - Optional, defaults to **undefined**.
+- **x**: **[Amount](./ertp-data-types.md#amount)**
+- **y**: **Amount**
+- **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Amount**
 
 Returns the maximum value between *x* and *y*.

@@ -61,8 +61,8 @@ module.exports = [
       link: '/guides/zoe/'
       },
       {
-      text: 'Injecting Code to Agoric Testnet',
-      ariaLabel: 'Coreeval',
+      text: 'Permissioned Contract Deployment',
+      ariaLabel: 'Permissioned Contract Deployment',
       link: '/guides/coreeval/'
       },      
       {

@@ -11,9 +11,9 @@ the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/c
 In the operations below, **instance** is the handle for the running contract instance.
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
-- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
-- **assetKind** **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
-- **displayInfo** **[DisplayInfo](/reference/ertp-api/ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
+- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
+- **assetKind**: **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
+- **displayInfo**: **[DisplayInfo](/reference/ertp-api/ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
 - Returns: **Promise&lt;[ZCFMint](./zcfmint.md)>**
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
@@ -41,7 +41,7 @@ mySynchronousMint.mintGains({ myKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: **[InvitationIssuer](./zoe-data-types.md#invitationissuer)**
+- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types.md#invitationissuer)>**
 
 Returns the **InvitationIssuer** for the Zoe instance.
 
@@ -50,8 +50,8 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
-- **issuer** **[Issuer](/reference/ertp-api/issuer.md)**
-- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
+- **issuer**: **[Issuer](/reference/ertp-api/issuer.md)**
+- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Promise&lt;IssuerRecord>**
 
 Informs Zoe about an **Issuer** and returns a promise for acknowledging
@@ -71,13 +71,13 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
 ## zcf.makeInvitation(offerHandler, description, customProperties?, proposalShape?)
-- **offerHandler** **ZCFSeat => Object**
-- **description** **String**
-- **customProperties** **Object** - Optional.
-- **proposalShape** **Pattern** - Optional.
+- **offerHandler**: **ZCFSeat => Object**
+- **description**: **String**
+- **customProperties**: **Object** - Optional.
+- **proposalShape**: **Pattern** - Optional.
 - Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
-Make a credible Zoe **Invitation** for a smart contract. Note that **Invitations** are a special case
+Makes a credible Zoe **Invitation** for a smart contract. Note that **Invitations** are a special case
 of an ERTP **payment**. They are associated with the **invitationIssuer** and its **mint**, which 
 validate and mint **Invitations**. **zcf.makeInvitation()** serves as an interface to
 the **invitation** **mint**.
@@ -115,19 +115,19 @@ const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 The contract code can request its own current instance, so it can be sent elsewhere.
 
 ## zcf.getBrandForIssuer(issuer)
-- **issuer** **[Issuer](/reference/ertp-api/issuer.md)**
+- **issuer**: **[Issuer](/reference/ertp-api/issuer.md)**
 - Returns: **[Brand](/reference/ertp-api/brand.md)**
 
 Returns the **Brand** associated with the *issuer*.
 
 ## zcf.getIssuerForBrand(brand)
-- **brand** **[Brand](/reference/ertp-api/brand.md)**
+- **brand**: **[Brand](/reference/ertp-api/brand.md)**
 - Returns: **[Issuer](/reference/ertp-api/issuer.md)**
 
 Returns the **Issuer** of the *brand* argument.
 
 ## zcf.getAssetKind(brand)
-- **brand** **[Brand](/reference/ertp-api/brand.md)**
+- **brand**: **[Brand](/reference/ertp-api/brand.md)**
 - Returns: **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)**
 
 Returns the **AssetKind** associated with the *brand* argument.
@@ -142,7 +142,7 @@ The contract requests Zoe to not accept offers for this contract instance.
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
 ## zcf.shutdown(completion)
-- **completion** **Usually (but not always) a String**
+- **completion**: **Usually (but not always) a String**
 - Returns: None.
 
 Shuts down the entire vat and contract instance and gives payouts.
@@ -164,7 +164,7 @@ zcf.shutdown();
 ```
 
 ## zcf.shutdownWithFailure(reason)
-- **reason** **Error**
+- **reason**: **Error**
 - Returns: None.
 
 Shuts down the entire vat and contract instance due to an error.
@@ -220,7 +220,7 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
 
 ## zcf.assertUniqueKeyword(keyword)
-- **keyword** **[Keyword](./zoe-data-types.md#keyword)**
+- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
 - Returns: **Undefined**
 
 Checks if a **Keyword** is valid and not already used as a **Brand** in this **Instance** (i.e., unique)
@@ -229,8 +229,35 @@ a valid **Keyword**, or is not unique.
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
+
+## zcf.setOfferFilter(strings)
+- **strings**: **Array&lt;String>**
+- Returns: None.
+
+Prohibit invocation of invitatations whose description include any of the strings.
+Any of the strings that end with a colon (:) will be treated as a prefix,
+and invitations whose description string begins with the string (including the colon)
+will be burned and not processed if passed to **E(Zoe).offer()**.
+
+It is expected that most contracts will never invoke this function directly. It is
+intended to be used by **governance** in a legible way, so that the contract's
+governance process can take emergency action in order to stop processing when necessary.
+
+Note that blocked strings can be re-enabled by calling this method again and simply not
+including that string in the *strings* argument.
+
+## zcf.getOfferFilter()
+- Returns: **Array&lt;String>**
+
+Returns all the strings that have been disabled for use in invitations, if any.
+A contract's invitations may be disabled using the
+**[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
+that they provide a vulnerability.
+
+
+::: warning DEPRECATED
 ## zcf.reallocate(seats)
-- **seats** **[ZCFSeats](./zcfseat.md)[]** (at least two)
+- **seats**: **[ZCFSeats](./zcfseat.md)[]** (at least two)
 - Returns: None.
 
 **zcf.reallocate()** commits the staged allocations for each of its seat arguments,
@@ -273,26 +300,7 @@ buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
 zcf.reallocate(buyerSeat, sellerSeat);
 ```
 
-## zcf.setOfferFilter(strings)
-- **strings** **Array&lt;String>**
-- Returns: None.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+:::
 
-Prohibit invocation of invitatations whose description include any of the strings.
-Any of the strings that end with a colon (:) will be treated as a prefix,
-and invitations whose description string begins with the string (including the colon)
-will be burned and not processed if passed to **E(Zoe).offer()**.
 
-It is expected that most contracts will never invoke this function directly. It is
-intended to be used by **governance** in a legible way, so that the contract's
-governance process can take emergency action in order to stop processing when necessary.
-
-Note that blocked strings can be re-enabled by calling this method again and simply not
-including that string in the *strings* argument.
-
-## zcf.getOfferFilter()
-- Returns: **Array&lt;String>**
-
-Returns all the strings that have been disabled for use in invitations, if any.
-A contract's invitations may be disabled using the
-**[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
-that they provide a vulnerability.

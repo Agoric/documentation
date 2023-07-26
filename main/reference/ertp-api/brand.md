@@ -16,7 +16,7 @@ will always be associated with
 the *Quatloos* **Mint** and *Quatloos* **Issuer**.
 
 ## aBrand.isMyIssuer(allegedIssuer)
-- **allegedIssuer** **[Issuer](./issuer.md)**
+- **allegedIssuer**: **[Issuer](./issuer.md)**
 - Returns: **Boolean**
 
 Returns **true** if *allegedIssuer* is the **Brand**'s **Issuer**. Returns **false** if it's not.
