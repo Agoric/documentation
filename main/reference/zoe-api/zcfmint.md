@@ -13,8 +13,8 @@ Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer
 **[Brand](/reference/ertp-api/brand.md)** associated with the **zcfMint**.
 
 ## aZCFMint.mintGains(gains, zcfSeat?)
-  - **gains** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
-  - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
+  - **gains**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: **ZCFSeat**
 
 All **amounts** in *gains* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
@@ -24,9 +24,9 @@ that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** 
 it is returned. Otherwise a new **seat** is returned.
 
 ## aZCFMint.burnLosses(losses, zcfSeat?)
-  - **losses** **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
-  - **zcfSeat** **[ZCFSeat](./zcfseat.md)** - Optional.
-  - Returns: None.
+  - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
+  - Returns: None
 
 All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
 The *losses*' **[Keywords](./zoe-data-types.md#keyword)** are in that **seat**'s namespace.

@@ -23,7 +23,7 @@ issuer === quatloosMintIssuer;
 ```
 
 ## aMint.mintPayment(newAmount)
-- **newAmount** **[Amount](./ertp-data-types.md#amount)**
+- **newAmount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **[Payment](./payment.md)**
 
 Creates and returns new digital assets of the **Mint**'s associated **[Brand](./brand.md)**.

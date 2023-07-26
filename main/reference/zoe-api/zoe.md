@@ -21,7 +21,7 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 :::
 
 ## E(Zoe).getBrands(instance)
-- **instance** **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
 Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
@@ -44,7 +44,7 @@ const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```
 
 ## E(Zoe).getIssuers(instance)
-- **instance** **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
 Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
@@ -66,7 +66,7 @@ const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```
 
 ## E(Zoe).getTerms(instance)
-- **instance** **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;Object>**
 
 Returns a **Promise** for the terms of the *instance* argument, including its **[Brands](/reference/ertp-api/brand.md)**, **[Issuers](/reference/ertp-api/issuer.md)**, and any
@@ -88,7 +88,7 @@ const terms = await E(Zoe).getTerms(instance);
 ```
 
 ## E(Zoe).getPublicFacet(instance)
-- **instance** **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Promise&lt;PublicFacet>**
 
 Returns a **Promise** for the **PublicFacet** defined for the *instance* argument.
@@ -118,16 +118,16 @@ const { value: invitationValue } =
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
 - Returns **Promise&lt;Object>**
 
 Takes an **Invitation** as an argument and returns a **Promise** for an object containing the following
 details about the **Invitation**:
 
-- **installation** **Installation**: The contract's Zoe installation.
-- **instance** **[Instance](./zoe-data-types.md#instance)**: The contract instance this invitation is for.
-- **invitationHandle** **[Handle](./zoe-data-types.md#handle)**: A **Handle** used to refer to this **Invitation**.
-- **description** **String**: Describes the purpose of this **Invitation**. Use it
+- **installation**: **Installation**: The contract's Zoe installation.
+- **instance**: **[Instance](./zoe-data-types.md#instance)**: The contract instance this invitation is for.
+- **invitationHandle**: **[Handle](./zoe-data-types.md#handle)**: A **Handle** used to refer to this **Invitation**.
+- **description**: **String**: Describes the purpose of this **Invitation**. Use it
    to match the invitation to the role it plays in the contract.
 
 ```js
@@ -136,7 +136,7 @@ const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 ```
 
 ## E(Zoe).install(bundle)
-- **bundle** **SourceBundle**
+- **bundle**: **SourceBundle**
 - Returns: **Promise&lt;Installation>**
 
 Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
@@ -161,13 +161,13 @@ Returns a **Promise** for the configuration settings for the Zoe contract.
 Returns a **Promise** for an **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.
 
 ## E(Zoe).getOfferFilter(instance)
-- **instance** **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types.md#instance)**
 - Returns: **Array&lt;String>**
 
 Returns all the offer **[Keywords](./zoe-data-types.md#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
 
 ## E(Zoe).getInstance(invitation)
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;[Instance](./zoe-data-types.md#instance)>**
 
 Returns a **Promise** for the contract **instance** the **Invitation** is part of.
@@ -185,13 +185,13 @@ const instance = await E(Zoe).getInstance(invitation);
 ```
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;Pattern>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
 ## E(Zoe).getInstallation(invitation)
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
 - Returns: **Promise&lt;Installation>**
 
 Returns a **Promise** for the contract **installation** the **Invitation**'s contract instance uses.
@@ -201,7 +201,7 @@ const installation = await E(Zoe).getInstallation(invitation);
 ```
 
 ## E(Zoe).getInstallationForInstance(instance)
-- **instance** **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types.md#instance)**
 - Returns **Promise&lt;Installation>**
 
 Returns a **Promise** for the contract **installation** used by the
@@ -215,10 +215,10 @@ const installation = await E(Zoe).getInstallationForInstance(instance);
 ```
 
 ## E(Zoe).startInstance(installation, issuerKeywordRecord?, terms?, privateArgs?)
-- **installation** **ERef&lt;Installation>**
-- **issuerKeywordRecord** **IssuerKeywordRecord** - Optional.
-- **terms** **Object** - Optional.
-- **privateArgs** **Object** - Optional.
+- **installation**: **ERef&lt;Installation>**
+- **issuerKeywordRecord**: **IssuerKeywordRecord** - Optional.
+- **terms**: **Object** - Optional.
+- **privateArgs**: **Object** - Optional.
 - Returns: **Promise&lt;StartInstanceResult>**
 
 Creates an instance of the installed smart contract specified by
@@ -245,11 +245,11 @@ among multiple contracts, pass in the following as **privateArgs**:
 
 It returns a **Promise** for a **StartInstanceResult** object. The object consists of:
 
-- **adminFacet** **AdminFacet**
-- **creatorFacet** **any**
-- **publicFacet** **any**
-- **instance** **Instance**
-- **creatorInvitation** **Payment | undefined**
+- **adminFacet**: **AdminFacet**
+- **creatorFacet**: **any**
+- **publicFacet**: **any**
+- **instance**: **Instance**
+- **creatorInvitation**: **Payment | undefined**
 
 The **adminFacet** has one method:
 - **getVatShutdownPromise()**    
@@ -285,10 +285,10 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
 
 
 ## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs)
-- **invitation** **[Invitation](./zoe-data-types.md#invitation)|Promise&lt;Invitation>**
-- **proposal** **Proposal** - Optional.
-- **paymentKeywordRecord** **PaymentKeywordRecord** - Optional.
-- **offerArgs** **Object**
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;Invitation>**
+- **proposal**: **Proposal** - Optional.
+- **paymentKeywordRecord**: **PaymentKeywordRecord** - Optional.
+- **offerArgs**: **Object**
 - Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
 Used to make an offer to the contract that created the **Invitation** that is
@@ -353,13 +353,13 @@ before being used by the contract code since they are coming directly from the u
 have malicious behavior.
 
 ## E(Zoe).installBundleID(bundleId)
-- bundleId **BundleId**
+- bundleId: **BundleId**
 - Returns: **Promise&lt;Installation>**
 
 Reserved for future use.
 
 ## E(Zoe).getBundleIDFromInstallation(installation) 
-- **installation** **Installation**
+- **installation**: **Installation**
 - Returns: **Promise&lt;BundleId>**
 
 Reserved for future use.
