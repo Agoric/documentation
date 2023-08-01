@@ -271,7 +271,6 @@ module.exports = {
             '/reference/repl/',
             '/reference/repl/timerServices.html',
             '/reference/repl/board.html',
-            '/reference/repl/sharingService.html',
             '/reference/repl/networking.html',
             '/reference/repl/priceAuthority.html',
             '/reference/repl/scratch.html',

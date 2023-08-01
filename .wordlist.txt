@@ -622,8 +622,6 @@ ses
 setWakeup
 sevenSimoleans
 SharedMap
-sharingService
-sharingService's
 sidebarDepth
 simolean
 simoleanAmountMath
