@@ -58,7 +58,7 @@ available, just type `home` into the REPL:
 
 ```js
 Command[1] home
-History[1] {"chainTimerService":[Presence o-50],"sharingService":[Presence o-51],"contractHost":[Presence o-52],"ibcport":[Presence o-53],"registrar":[Presence o-54],"registry":[Presence o-55],"zoe":[Presence o-56],"localTimerService":[Presence o-57],"uploads":[Presence o-58],"spawner":[Presence o-59],"wallet":[Presence o-60],"network":[Presence o-61],"http":[Presence o-62]}
+History[1] {"chainTimerService":[Presence o-50],"contractHost":[Presence o-52],"ibcport":[Presence o-53],"registrar":[Presence o-54],"registry":[Presence o-55],"zoe":[Presence o-56],"localTimerService":[Presence o-57],"uploads":[Presence o-58],"spawner":[Presence o-59],"wallet":[Presence o-60],"network":[Presence o-61],"http":[Presence o-62]}
 ```
 The results of what is entered into the REPL is saved under `history[N]`
 
@@ -82,11 +82,6 @@ Local off-chain time authority used to schedule events. [Full `localTimerService
 
 ### [`board`](./board.md)
 Shared on-chain location where users can post generally accessible values. [Full `board` documentation.](./board.md)
-
-### [`sharingService`](./sharingService.md)
-Share on-chain objects with other users without making them
-available to the general public. In particular, you can share 
-items between vats connected to the same remote chain. [Full `sharingService` documentation.](./sharingService.md)
 
 ### [`ibcport`](./networking.md)
 IBC implementation that lets vats open and close listening ports, 
