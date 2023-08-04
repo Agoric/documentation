@@ -1,15 +1,13 @@
 # Installing the Agoric SDK
 
 To write JavaScript smart contracts using the Agoric Zoe framework, first install the Agoric Software
-Development Kit (SDK). The Agoric SDK is currently supported on MacOS, Linux, and Windows Subsystem for
-Linux (WSL). There is currently **no support** for native Windows 10 or native Windows 11. 
+Development Kit (SDK).
 
-After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with 
-the Agoric CLI to create and deploy [smart contracts](./deploying.md).
+After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md).
 
 ## Quick Start
 
-If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
+If you're on a [supported platform](#platform-linux-shell-or-equivalent) (MacOS, Linux, or WSL) and you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
 
 ```shell
 go version # Version 1.20.3 or higher
@@ -114,7 +112,9 @@ yarn install
 yarn build
 ```
 
-**Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for native Windows 10 or native Windows 11.
+**Note:** If this `yarn build` step fails, check that you are on a
+[supported platform](#platform-linux-shell-or-equivalent) and
+not native Windows.
 
 ## Build the Cosmic Swingset Package
 
