@@ -1,10 +1,7 @@
 # Starting a Project
 
-Before we begin, you should use `agoric --version` to double-check that you have [installed the Agoric SDK](./README.md).
+After you've [installed the Agoric SDK](./README.md) (_recall: use `agoric --version` to confirm._), you're ready for your first _Agoric Dapp_ (decentralized application).
 
-If it is available, then you successfully installed the Agoric SDK. If not, then please do so before continuing. 
-
-After you've [installed the Agoric SDK](./README.md), then you're ready for your first _Agoric Dapp_ (decentralized application) by continuing the instructions below. 
 
 We'll be running **three terminal windows**. See below: 
 
