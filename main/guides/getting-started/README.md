@@ -48,6 +48,11 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
 
+::: tip Mac Dev Tools
+On a Mac, you must first install
+[Xcode](https://apps.apple.com/us/app/xcode/id497799835)
+:::
+
 ## Install Go
 
 Download Go from [go.dev/doc/install](https://go.dev/doc/install) and follow the instructions for your platform.

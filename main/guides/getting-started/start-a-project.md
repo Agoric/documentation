@@ -43,10 +43,6 @@ agoric start --verbose --reset # `agoric start --reset` to start over
 
 Learn more about the [available Dapp templates](../dapps/dapp-templates.md).
 
-::: tip Mac Dev Tools
-On a Mac, you must first install
-[Xcode](https://apps.apple.com/us/app/xcode/id497799835)
-:::
 
 Leave this process and its logs running in its own terminal window.
 
