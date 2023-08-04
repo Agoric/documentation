@@ -25,8 +25,8 @@ This presentation includes starting a project, but note an outdated detail:
 
 ## Initialize the Default Dapp Template
 
-The following section will explain how to initialize the default Dapp template, install the Agoric SDK
-into the Dapp template, and then launch the Agoric Solo Client and Simulated Blockchain.
+The following section will explain how to initialize the default Dapp template, and install the Agoric SDK
+into the Dapp template.
 
 Use the [Agoric CLI](../agoric-cli/) to fetch from a Dapp template
 and put it in a directory _not located in your `agoric-sdk` clone_. We named the directory "demo", but you can name the folder whatever you like.
@@ -38,11 +38,16 @@ cd $HOME
 agoric init --dapp-template dapp-card-store demo # use `agoric init --dapp-template dapp-card-store $DIRNAME` with any name you like
 cd demo
 agoric install community-dev # will take a minute to install all dependencies
-agoric start --verbose --reset # `agoric start --reset` to start over
 ```
 
 Learn more about the [available Dapp templates](../dapps/dapp-templates.md).
 
+## Start Agoric Solo Client and Simulated Blockchain
+
+```sh
+# Terminal 1
+agoric start --verbose --reset # `agoric start --reset` to start over
+```
 
 Leave this process and its logs running in its own terminal window.
 
