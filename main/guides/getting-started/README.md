@@ -24,7 +24,7 @@ agoric --version # Prints the version number of the SDK
 
 Now you are ready proceed to [starting a project](./start-a-project.md).
 
-If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `~/bin` directory, you may need to add `~/bin` to your PATH.
+_If you get "command not found", see [troubleshooting below](#install-agoric-cli)._
 
 ::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation is a good overview of the Agoric SDK setup process,
@@ -138,6 +138,12 @@ sudo yarn link-cli /usr/local/bin/agoric
 
 **Note:** Run `echo $PATH` to see your current `$PATH`. Here you'll see which directory you should use for `yarn link-cli`.
 
+::: tip Troubleshooting "command not found"
+Watch:
+
+- [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) 6:19 Mar 2018.
+  :::
+
 ## Check the Agoric Version
 
 To check that it's installed correctly:
@@ -148,6 +154,4 @@ agoric --version # v0.18.2 "community-dev" branch
 
 If the install was successful, you are ready to proceed to [starting a project](./start-a-project.md).
 
-Should `agoric` not be found, then you may need to add the parent directory of where your `yarn link-cli` command created the "agoric-sdk" directory.
 
-Please see the youtube video [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) for more information.
