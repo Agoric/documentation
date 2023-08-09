@@ -4,8 +4,11 @@ import { test } from './prepare-test-env-ava.js';
 
 import { E } from '@endo/eventual-send';
 // #region importFar
-import { Far, passStyleOf } from '@endo/marshal';
+import { Far } from '@endo/far';
 // #endregion importFar
+// #region import-pass-style
+import { passStyleOf } from '@endo/pass-style';
+// #endregion import-pass-style
 
 test('remote counter', async t => {
   const assert = cond => t.true(cond);
