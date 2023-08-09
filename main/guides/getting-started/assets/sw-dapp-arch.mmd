@@ -1,0 +1,25 @@
+sequenceDiagram
+  actor client
+
+  box aqua Cosmos SDK layer
+  participant chain
+  end
+
+  box darksalmon Hardened JS VM
+  participant walletFactory
+  participant zoe
+  participant contract
+  end
+
+    client->>chain: Offer tx
+    chain->>walletFactory: Offer Spec
+    walletFactory->>+zoe: Offer
+    walletFactory-->>chain: Offer status
+    client->>+chain: vstorage query
+    chain-->>-client: Offer status
+    zoe->>+contract: Proposal
+    contract-->>-zoe: reallocations
+    zoe-->>-walletFactory: payouts
+    walletFactory-->>chain: Offer status
+    client->>+chain: vstorage query
+    chain-->>-client: Offer status
