@@ -36,24 +36,55 @@ module.exports = {
       'script',
       {},
       `
-    const logoUrlChanger = setInterval(function() {
-    //Anchor above the logo image
-    const homeEls = document.getElementsByClassName("home-link");
-    if(homeEls.length > 0) {
-      const homeEl = homeEls[0];
-      homeEl.setAttribute("href", "https://agoric.com");
-      homeEl.setAttribute("onclick", "return false;");
-      clearInterval(logoUrlChanger);
+    const fixups = new Map([
+      ['homeLink', () => {
+        //Anchor above the logo image
+        const homeEls = document.getElementsByClassName("home-link");
+        if(!homeEls.length) {
+          return false;
+        }
+        //Actual logo image
+        const homeEl = homeEls[0];
+        homeEl.setAttribute("href", "https://agoric.com");
+        homeEl.setAttribute("onclick", "return false;");
+        return true;
+      }],
+      ['logo', () => {
+        const logoEls = document.getElementsByClassName("logo")
+        if(!logoEls.length) {
+          return false;
+        }
+        const logoEl = logoEls[0]
+        logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+        return true;
+      }],
+    ]);
+    if (location.hash) {
+      fixups.set('jumpToMain', () => {
+        const mainEls = document.getElementsByTagName("main");
+        if (!mainEls.length) {
+          return false;
+        }
+        const old = location.hash;
+        location.hash = '';
+        location.hash = old;
+        return true;
+      });
     }
 
-    //Actual logo image
-    const logoEls = document.getElementsByClassName("logo")
-    if(logoEls.length > 0) {
-      const logoEl = logoEls[0]
-      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
-      clearInterval(logoUrlChanger);
-    }
-   }, 1000) `,
+    const fixupInterval = setInterval(function() {
+      for (const [id, fixup] of fixups) {
+        // console.log('trying fixup', id);
+        if (fixup()) {
+          fixups.delete(id);
+        }
+      }
+      if (!fixups.size) {
+        clearInterval(fixupInterval);
+        // console.log('fixups are done');
+      }
+    }, 500);
+    `,
     ],
   ],
 
@@ -95,9 +126,9 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/getting-started/',
-            '/guides/getting-started/start-a-project.html',
-            '/guides/getting-started/deploying.html',
-            '/guides/getting-started/syncing-up.html',
+            '/guides/getting-started/start-a-project',
+            '/guides/getting-started/deploying',
+            '/guides/getting-started/syncing-up',
           ],
         },
         {
@@ -159,7 +190,7 @@ module.exports = {
             '/guides/coreeval/proposal',
             '/guides/coreeval/local-testnet',
           ],
-        },        
+        },
         {
           title: 'Example Zoe Contracts',
           path: '/guides/zoe/contracts/',
