@@ -1,4 +1,50 @@
+function isRouteExists(router, path) {
+  const pathLower = path.toLowerCase();
+  return router.options.routes.some(
+    route => route.path.toLowerCase() === pathLower,
+  );
+}
+
+// Extracted from https://github.com/vuejs/vuepress/issues/3142
+function patchRoutesToPreserveFragments(router) {
+  router.beforeHooks = [];
+  router.beforeEach((to, from, next) => {
+    if (isRouteExists(router, to.path)) {
+      next();
+    } else if (!/(\/|\.html)$/.test(to.path)) {
+      const endingSlashUrl = `${to.path}/`;
+      const endingHtmlUrl = `${to.path}.html`;
+      if (isRouteExists(router, endingHtmlUrl)) {
+        next({
+          ...to,
+          path: endingHtmlUrl,
+        });
+      } else if (isRouteExists(router, endingSlashUrl)) {
+        next({
+          ...to,
+          path: endingSlashUrl,
+        });
+      } else {
+        next();
+      }
+    } else if (/\/$/.test(to.path)) {
+      const endingHtmlUrl = `${to.path.replace(/\/$/, '')}.html`;
+      if (isRouteExists(router, endingHtmlUrl)) {
+        next({
+          ...to,
+          path: endingHtmlUrl,
+        });
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  });
+}
+
 export default ({ router }) => {
+  patchRoutesToPreserveFragments(router);
   const redirects = [
     { path: '/wallet-api/', redirect: '/guides/wallet/' },
     { path: '/wallet-api.html', redirect: '/guides/wallet/' },
