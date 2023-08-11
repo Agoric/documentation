@@ -36,42 +36,34 @@ module.exports = {
       'script',
       {},
       `
+    const withSelector = (selector, callback) => {
+      const el = document.querySelector(selector);
+      if (el) {
+        callback(el);
+      }
+      return el;
+    };
     const fixups = new Map([
-      ['homeLink', () => {
-        //Anchor above the logo image
-        const homeEls = document.getElementsByClassName("home-link");
-        if(!homeEls.length) {
-          return false;
-        }
-        //Actual logo image
-        const homeEl = homeEls[0];
+      // Update the "home" link to target agoric.com while intercepting clicks
+      // such that those outside of its image continue routing to the root of
+      // the documentation site.
+      ['homeLink', () => withSelector(".home-link", homeEl => {
         homeEl.setAttribute("href", "https://agoric.com");
         homeEl.setAttribute("onclick", "return false;");
-        return true;
-      }],
-      ['logo', () => {
-        const logoEls = document.getElementsByClassName("logo")
-        if(!logoEls.length) {
-          return false;
-        }
-        const logoEl = logoEls[0]
+      })],
+      ['homeLinkLogo', () => withSelector(".logo", logoEl => {
         logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
-        return true;
-      }],
+      })],
     ]);
     if (location.hash) {
-      fixups.set('jumpToMain', () => {
-        const mainEls = document.getElementsByTagName("main");
-        if (!mainEls.length) {
-          return false;
-        }
+      // Re-navigate to the page target once content has loaded.
+      fixups.set('jumpToTarget', () => withSelector("main", _mainEl => {
         const old = location.hash;
         location.hash = '';
         location.hash = old;
-        return true;
-      });
+      }));
     }
-
+    // Poll until all fixups complete.
     const fixupInterval = setInterval(function() {
       for (const [id, fixup] of fixups) {
         // console.log('trying fixup', id);
