@@ -36,24 +36,55 @@ module.exports = {
       'script',
       {},
       `
-    const logoUrlChanger = setInterval(function() {
-    //Anchor above the logo image
-    const homeEls = document.getElementsByClassName("home-link");
-    if(homeEls.length > 0) {
-      const homeEl = homeEls[0];
-      homeEl.setAttribute("href", "https://agoric.com");
-      homeEl.setAttribute("onclick", "return false;");
-      clearInterval(logoUrlChanger);
+    const fixups = new Map([
+      ['homeLink', () => {
+        //Anchor above the logo image
+        const homeEls = document.getElementsByClassName("home-link");
+        if(!homeEls.length) {
+          return false;
+        }
+        //Actual logo image
+        const homeEl = homeEls[0];
+        homeEl.setAttribute("href", "https://agoric.com");
+        homeEl.setAttribute("onclick", "return false;");
+        return true;
+      }],
+      ['logo', () => {
+        const logoEls = document.getElementsByClassName("logo")
+        if(!logoEls.length) {
+          return false;
+        }
+        const logoEl = logoEls[0]
+        logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
+        return true;
+      }],
+    ]);
+    if (location.hash) {
+      fixups.set('jumpToMain', () => {
+        const mainEls = document.getElementsByTagName("main");
+        if (!mainEls.length) {
+          return false;
+        }
+        const old = location.hash;
+        location.hash = '';
+        location.hash = old;
+        return true;
+      });
     }
 
-    //Actual logo image
-    const logoEls = document.getElementsByClassName("logo")
-    if(logoEls.length > 0) {
-      const logoEl = logoEls[0]
-      logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
-      clearInterval(logoUrlChanger);
-    }
-   }, 1000) `,
+    const fixupInterval = setInterval(function() {
+      for (const [id, fixup] of fixups) {
+        // console.log('trying fixup', id);
+        if (fixup()) {
+          fixups.delete(id);
+        }
+      }
+      if (!fixups.size) {
+        clearInterval(fixupInterval);
+        // console.log('fixups are done');
+      }
+    }, 500);
+    `,
     ],
   ],
 
@@ -112,10 +143,10 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/js-programming/',
-            '/guides/js-programming/hardened-js',
-            '/guides/js-programming/eventual-send',
-            '/guides/js-programming/far',
-            '/guides/js-programming/notifiers',
+            '/guides/js-programming/hardened-js.html',
+            '/guides/js-programming/eventual-send.html',
+            '/guides/js-programming/far.html',
+            '/guides/js-programming/notifiers.html',
           ],
         },
         {
@@ -130,10 +161,10 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/ertp/',
-            '/guides/ertp/amounts',
-            '/guides/ertp/amount-math',
-            '/guides/ertp/issuers-and-mints',
-            '/guides/ertp/purses-and-payments',
+            '/guides/ertp/amounts.html',
+            '/guides/ertp/amount-math.html',
+            '/guides/ertp/issuers-and-mints.html',
+            '/guides/ertp/purses-and-payments.html',
           ],
         },
         {
@@ -142,11 +173,11 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/zoe/',
-            '/guides/zoe/offer-enforcement',
-            '/guides/zoe/offer-safety',
-            '/guides/zoe/proposal',
-            '/guides/zoe/contract-requirements',
-            '/guides/zoe/price-authority',
+            '/guides/zoe/offer-enforcement.html',
+            '/guides/zoe/offer-safety.html',
+            '/guides/zoe/proposal.html',
+            '/guides/zoe/contract-requirements.html',
+            '/guides/zoe/price-authority.html',
           ],
         },
         {
@@ -155,35 +186,35 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/coreeval/',
-            '/guides/coreeval/permissions',
-            '/guides/coreeval/proposal',
-            '/guides/coreeval/local-testnet',
+            '/guides/coreeval/permissions.html',
+            '/guides/coreeval/proposal.html',
+            '/guides/coreeval/local-testnet.html',
           ],
-        },        
+        },
         {
           title: 'Example Zoe Contracts',
           path: '/guides/zoe/contracts/',
           collapsible: false,
           children: [
             '/guides/zoe/contracts/',
-            '/guides/zoe/contracts/oracle',
-            '/guides/zoe/contracts/vault',
-            '/guides/zoe/contracts/loan',
-            '/guides/zoe/contracts/fundedCallSpread',
-            '/guides/zoe/contracts/pricedCallSpread',
-            '/guides/zoe/contracts/covered-call',
-            '/guides/zoe/contracts/otc-desk',
-            '/guides/zoe/contracts/constantProductAMM',
-            '/guides/zoe/contracts/sell-items',
-            '/guides/zoe/contracts/atomic-swap',
-            '/guides/zoe/contracts/barter-exchange',
-            '/guides/zoe/contracts/second-price-auction',
-            '/guides/zoe/contracts/simple-exchange',
-            '/guides/zoe/contracts/escrow-to-vote',
-            '/guides/zoe/contracts/mint-payments',
-            '/guides/zoe/contracts/mint-and-sell-nfts',
-            '/guides/zoe/contracts/use-obj-example',
-            '/guides/zoe/contracts/automatic-refund',
+            '/guides/zoe/contracts/oracle.html',
+            '/guides/zoe/contracts/vault.html',
+            '/guides/zoe/contracts/loan.html',
+            '/guides/zoe/contracts/fundedCallSpread.html',
+            '/guides/zoe/contracts/pricedCallSpread.html',
+            '/guides/zoe/contracts/covered-call.html',
+            '/guides/zoe/contracts/otc-desk.html',
+            '/guides/zoe/contracts/constantProductAMM.html',
+            '/guides/zoe/contracts/sell-items.html',
+            '/guides/zoe/contracts/atomic-swap.html',
+            '/guides/zoe/contracts/barter-exchange.html',
+            '/guides/zoe/contracts/second-price-auction.html',
+            '/guides/zoe/contracts/simple-exchange.html',
+            '/guides/zoe/contracts/escrow-to-vote.html',
+            '/guides/zoe/contracts/mint-payments.html',
+            '/guides/zoe/contracts/mint-and-sell-nfts.html',
+            '/guides/zoe/contracts/use-obj-example.html',
+            '/guides/zoe/contracts/automatic-refund.html',
           ],
         },
         {
@@ -192,7 +223,7 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/zoe/actual-contracts/',
-            '/guides/zoe/actual-contracts/PSM',
+            '/guides/zoe/actual-contracts/PSM.html',
           ],
         },
         {
@@ -201,8 +232,8 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/dapps/',
-            '/guides/dapps/dapp-templates',
-            '/guides/dapps/starting-multiuser-dapps',
+            '/guides/dapps/dapp-templates.html',
+            '/guides/dapps/starting-multiuser-dapps.html',
           ],
         },
         {
@@ -213,7 +244,7 @@ module.exports = {
         },
         {
           title: 'Chainlink Integration',
-          path: '/guides/chainlink-integration',
+          path: '/guides/chainlink-integration.html',
           collapsible: false,
           children: [],
         },
@@ -221,7 +252,7 @@ module.exports = {
       '/reference/': [
         {
           title: 'Wallet API',
-          path: '/reference/wallet-api',
+          path: '/reference/wallet-api.html',
           collapsible: false,
           children: [],
         },
@@ -231,13 +262,13 @@ module.exports = {
           collapsible: false,
           children: [
             '/reference/ertp-api/',
-            '/reference/ertp-api/issuer',
-            '/reference/ertp-api/mint',
-            '/reference/ertp-api/brand',
-            '/reference/ertp-api/purse',
-            '/reference/ertp-api/payment',
-            '/reference/ertp-api/amount-math',
-            '/reference/ertp-api/ertp-data-types',
+            '/reference/ertp-api/issuer.html',
+            '/reference/ertp-api/mint.html',
+            '/reference/ertp-api/brand.html',
+            '/reference/ertp-api/purse.html',
+            '/reference/ertp-api/payment.html',
+            '/reference/ertp-api/amount-math.html',
+            '/reference/ertp-api/ertp-data-types.html',
           ],
         },
         {
@@ -246,12 +277,12 @@ module.exports = {
           collapsible: false,
           children: [
             '/reference/repl/',
-            '/reference/repl/timerServices',
-            '/reference/repl/board',
-            '/reference/repl/sharingService',
-            '/reference/repl/networking',
-            '/reference/repl/priceAuthority',
-            '/reference/repl/scratch',
+            '/reference/repl/timerServices.html',
+            '/reference/repl/board.html',
+            '/reference/repl/sharingService.html',
+            '/reference/repl/networking.html',
+            '/reference/repl/priceAuthority.html',
+            '/reference/repl/scratch.html',
           ],
         },
         {
@@ -260,15 +291,15 @@ module.exports = {
           collapsible: false,
           children: [
             '/reference/zoe-api/',
-            '/reference/zoe-api/zoe',
-            '/reference/zoe-api/user-seat',
-            '/reference/zoe-api/zoe-contract-facet',
-            '/reference/zoe-api/zcfseat',
-            '/reference/zoe-api/zcfmint',
-            '/reference/zoe-api/price-authority',
-            '/reference/zoe-api/zoe-helpers',
-            '/reference/zoe-api/ratio-math',
-            '/reference/zoe-api/zoe-data-types',
+            '/reference/zoe-api/zoe.html',
+            '/reference/zoe-api/user-seat.html',
+            '/reference/zoe-api/zoe-contract-facet.html',
+            '/reference/zoe-api/zcfseat.html',
+            '/reference/zoe-api/zcfmint.html',
+            '/reference/zoe-api/price-authority.html',
+            '/reference/zoe-api/zoe-helpers.html',
+            '/reference/zoe-api/ratio-math.html',
+            '/reference/zoe-api/zoe-data-types.html',
           ],
         },
       ],
