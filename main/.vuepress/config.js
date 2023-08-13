@@ -36,47 +36,39 @@ module.exports = {
       'script',
       {},
       `
-    const fixups = new Map([
-      ['homeLink', () => {
-        //Anchor above the logo image
-        const homeEls = document.getElementsByClassName("home-link");
-        if(!homeEls.length) {
-          return false;
-        }
-        //Actual logo image
-        const homeEl = homeEls[0];
-        homeEl.setAttribute("href", "https://agoric.com");
-        homeEl.setAttribute("onclick", "return false;");
-        return true;
-      }],
-      ['logo', () => {
-        const logoEls = document.getElementsByClassName("logo")
-        if(!logoEls.length) {
-          return false;
-        }
-        const logoEl = logoEls[0]
-        logoEl.setAttribute("onclick", "document.location='https://agoric.com';return false;");
-        return true;
-      }],
-    ]);
+    /** @type {Map<[...anySelectors: string[]], (elems: (Element | null)[]) => unknown>} */
+    const fixups = new Map();
+
+    // Update the "home" link to target agoric.com while intercepting clicks
+    // such that those outside of its image continue routing to the root of
+    // the documentation site.
+    fixups.set(['.home-link', '.logo'], ([homeEl, logoEl]) => {
+      if (homeEl) {
+        homeEl.setAttribute('href', 'https://agoric.com');
+        homeEl.setAttribute('onclick', 'return false;');
+      }
+      if (logoEl) {
+        logoEl.setAttribute('onclick', "document.location='https://agoric.com';return false;");
+      }
+    });
+
     if (location.hash) {
-      fixups.set('jumpToMain', () => {
-        const mainEls = document.getElementsByTagName("main");
-        if (!mainEls.length) {
-          return false;
-        }
+      // Re-navigate to the page target once content has loaded.
+      fixups.set(['main'], _elems => {
         const old = location.hash;
         location.hash = '';
         location.hash = old;
-        return true;
       });
     }
 
+    // Poll until all fixups trigger by matching at least one element.
     const fixupInterval = setInterval(function() {
-      for (const [id, fixup] of fixups) {
-        // console.log('trying fixup', id);
-        if (fixup()) {
-          fixups.delete(id);
+      for (const [selectors, fixup] of fixups) {
+        const elems = selectors.map(sel => document.querySelector(sel));
+        if (elems.some(el => el)) {
+          // console.log('fixup', selectors);
+          fixups.delete(selectors);
+          Promise.resolve(elems).then(fixup);
         }
       }
       if (!fixups.size) {
