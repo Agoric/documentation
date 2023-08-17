@@ -164,6 +164,24 @@ Zoe also escrows your payments, representing their value as
 amounts in your **[Allocation](/reference/zoe-api/zoe-data-types.md#allocation)**
 in the contract.
 
+::: tip Troubleshooting missing brands in offers
+
+If you see...
+
+```
+Error#1: key Object [Alleged: IST brand] {} not found in collection brandToIssuerRecord
+```
+
+then it may be that your offer uses brands that are not known to the contract.
+Use [E(zoe).getTerms()](/reference/zoe-api/zoe.html#e-zoe-getterms-instance) to find out what issuers
+are known to the contract.
+
+If you're writing or instantiating the contract, you can tell the contract about issuers
+when you are [creating an instance](#creating-an-instance) or by using
+[zcf.saveIssuer()](/reference/zoe-api/zoe-contract-facet.html#zcf-saveissuer-issuer-keyword).
+
+:::
+
 ### Using Your UserSeat
 
 Making an offer as a user returns a [UserSeat](/reference/zoe-api/user-seat.md)
