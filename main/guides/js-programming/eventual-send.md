@@ -75,6 +75,12 @@ If an ordinary synchronous call (`obj.method()`) fails because the method doesn'
 
 ## E() and Marshal: A Closer Look
 
+::: tip Watch: Office Hours Discussion of Marshal
+
+- [Office Hours: ... marshalling w/board ids, ... \#8069](https://github.com/Agoric/agoric-sdk/discussions/8069) July 2023
+
+:::
+
 If you just want to use the SDK to write smart contracts, **feel
 free to skip this section**. But in case you're working
 on something that requires more detailed understanding,
