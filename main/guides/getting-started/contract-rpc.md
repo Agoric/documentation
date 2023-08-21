@@ -149,6 +149,12 @@ We recognize `"method":"executeOffer"` and such, but
 
 ### Marshalling Amounts and Instances
 
+::: tip Watch: Office Hours Discussion of Marshal
+
+- [Office Hours: ... marshalling w/board ids, ... \#8069](https://github.com/Agoric/agoric-sdk/discussions/8069) July 2023
+
+:::
+
 To start with, amounts include `bigint`s. The `@endo/marshal` API handles those:
 
 <<< @/snippets/test-marshal.js#marshal-json-steroids
