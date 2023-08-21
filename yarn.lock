@@ -6296,7 +6296,7 @@ eslint@^7.27.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-esm@agoric-labs/esm#Agoric-built, "esm@github:agoric-labs/esm#Agoric-built":
+esm@agoric-labs/esm#Agoric-built:
   version "3.2.25"
   resolved "https://codeload.github.com/agoric-labs/esm/tar.gz/3603726ad4636b2f865f463188fcaade6375638e"
 
@@ -10986,8 +10986,9 @@ rollup@^2.47.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-"rollup@github:endojs/endo#rollup-2.7.1-patch-1":
+rollup@endojs/endo#rollup-2.7.1-patch-1:
   version "2.70.1-endo.1"
+  uid "54060e784a4dbe77b6692f17344f4d84a198530d"
   resolved "https://codeload.github.com/endojs/endo/tar.gz/54060e784a4dbe77b6692f17344f4d84a198530d"
   optionalDependencies:
     fsevents "~2.3.2"
@@ -11192,10 +11193,10 @@ ses@^0.15.1, ses@^0.15.11, ses@^0.15.17, ses@^0.15.9:
   resolved "https://registry.yarnpkg.com/ses/-/ses-0.15.17.tgz#84e20cd08fb294989c6499942d220bd6604e1884"
   integrity sha512-T8XKsR5LGV57ilyqE4InFJKWVniEEFGai0CjuVJPju9LvnjYPXvZ7V8jP7sGtJ500ApRVgNBCu+5ZcSUhiuXig==
 
-ses@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/ses/-/ses-0.16.0.tgz#d405fff49daa8e19b1b04344e2a752c9268afa72"
-  integrity sha512-2oKCzl3W24aNqBifLWWEh3OGd+78+SY1GVKWP5ogrqBOjs3X1trwE2akx5pX4M1MFExqXoJGav1CmCq2KBMqOg==
+ses@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/ses/-/ses-0.16.1.tgz#b447aa8a6f7f5826e2ba8ff66a566f1e1a74cca6"
+  integrity sha512-yLgBL+IC7cfMz7DWlTAbZaZUVavO3U14G8gqKPE0jqQgxkvN1KDx3c1UW9q/YgU3UpxuhxnjUMOfyAfEF9pNxA==
 
 ses@^0.17.0:
   version "0.17.1"
