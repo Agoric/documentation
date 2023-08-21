@@ -173,12 +173,12 @@ Error#1: key Object [Alleged: IST brand] {} not found in collection brandToIssue
 ```
 
 then it may be that your offer uses brands that are not known to the contract.
-Use [E(zoe).getTerms()](/reference/zoe-api/zoe.html#e-zoe-getterms-instance) to find out what issuers
+Use [E(zoe).getTerms()](/reference/zoe-api/zoe.md#e-zoe-getterms-instance) to find out what issuers
 are known to the contract.
 
 If you're writing or instantiating the contract, you can tell the contract about issuers
 when you are [creating an instance](#creating-an-instance) or by using
-[zcf.saveIssuer()](/reference/zoe-api/zoe-contract-facet.html#zcf-saveissuer-issuer-keyword).
+[zcf.saveIssuer()](/reference/zoe-api/zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
 
 :::
 
