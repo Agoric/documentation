@@ -83,7 +83,9 @@ is exclusively yours and no one else has access to it.
 
 ## Keyword
 
-An ASCII identifier string that must begin with an upper case letter.
+An ASCII identifier string that must begin with an upper case letter
+in order to avoid collisions with JavaScript properties such as `toString`.
+(For more detail, see [Why do Zoe keywords have to start with a capital letter? #8241](https://github.com/Agoric/agoric-sdk/discussions/8241).)
 
 ## MutableQuote
 
