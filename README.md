@@ -19,4 +19,4 @@ and the Interchain Foundation](https://cosmos.network/ibc)
 
 
 * Want to run the full Agoric vm? You can [get started
-here](https://agoric.com/documentation/getting-started/#overview)
+right away](https://docs.agoric.com/guides/getting-started/)
