@@ -17,9 +17,7 @@ node --version # LTS version such as 18.16.0
 npm install --global yarn # Install yarn for package management
 git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
 cd agoric-sdk
-yarn install # Asks yarn to install all the dependant node packages
-yarn build # Builds the agoric-sdk packages
-(cd packages/cosmic-swingset && make) # Builds the cosmic-swingset package
+./bin/agd build # Build the agoric-sdk
 yarn link-cli ~/bin/agoric # Creates an executable script
 agoric --version # Prints the version number of the SDK
 ```
@@ -47,6 +45,8 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To open a terminal on MacOS, see **Applications>Utilities>terminal** in the **Finder**.
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
+
+**Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for native Windows 10 or native Windows 11.
 
 ## Install Go
 
@@ -79,10 +79,9 @@ yarn --version # 1.22.10 or higher
 
 ## Install Git
 
-Follow [Git installation instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or use your platform's package manager.
+Follow [Git installation instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or use your platform's package manager.  Then check to make sure `git` is the right version:
 
 ```shell
-npm install --global git
 git --version # 2.25.0 or higher
 ```
 
@@ -95,27 +94,16 @@ cd agoric-sdk
 
 Cloning and installing the Agoric SDK can take a while. Please be patient.
 
-## Install NPM Dependencies
+<a name="build-the-cosmic-swingset-package"></a>
+## Build the SDK
 
 ```shell
-yarn install
+./bin/agd build
 ```
 
-**Note:** If you run into errors during install or build, make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, you can run `sudo apt get install build-essential` to install these tools.
+**Note:** If you run into errors during build, make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, you can run `sudo apt get install build-essential` to install these tools.
 
-## Build Packages
-
-```shell
-yarn build
-```
-
-**Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for native Windows 10 or native Windows 11.
-
-## Build the Cosmic Swingset Package
-
-```shell
-(cd packages/cosmic-swingset && make)
-```
+**Note:** Do not separate the components of the Agoric SDK.  You can move or copy the entire built `agoric-sdk` tree to a different location, or create a symlink from `agoric-sdk/bin/agd` somewhere in your `$PATH`.  However, if you just copy `agd` somewhere else and try to run it, `agd` will not be able to locate all of its dependencies.
 
 ## Install Agoric CLI
 
@@ -143,6 +131,6 @@ agoric --version # v0.18.2 "community-dev" branch
 
 If the install was successful, you are ready to proceed to [starting a project](./start-a-project.md).
 
-Should `agoric` not be found, then you may need to add the parent directory of where your `yarn link-cli` command created the "agoric-sdk" directory.
+Should `agoric` not be found, then you may need to add the parent directory of your `yarn link-cli` command argument (`~/bin` or `/usr/local/bin` in the above example) to your `$PATH`.
 
 Please see the youtube video [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) for more information.
