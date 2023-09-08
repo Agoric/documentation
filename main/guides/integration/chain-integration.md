@@ -28,7 +28,7 @@ The chain can also be accessed via JavaScript using the [`cosmjs` library](https
 # Tools
 ## Building `agd`
 
-The `agd` command line tool can be built as described in the Agoric [getting-started documentation](https://docs.agoric.com/guides/getting-started). The "Build the Cosmic Swingset Package" step generates `agd`. To confirm that `agd` is in you `$PATH`, execute
+The `agd` command line tool can be built as described in the Agoric [getting-started documentation](https://docs.agoric.com/guides/getting-started#build-the-cosmic-swingset-package). The linked step builds `agd`. To confirm that `agd` is in your `$PATH`, execute
 ```
 agd version --long
 ```
