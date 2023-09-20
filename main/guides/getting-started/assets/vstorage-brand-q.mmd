@@ -12,7 +12,7 @@ sequenceDiagram
 
     agoricNames->>chainStorage: E(root).makeChildNode('brand')
     chainStorage-->>agoricNames: brandNode
-    agoricNames-->>chainStorage: E(invbrandNodeNode).setValue('...IST...')
-    chainStorage->>chain: change(<br>'published.agoricNames.brand',<br> '...IST...')
-    client->>chain: Data(<br>'published.agoricNames.brand')
+    agoricNames-->>chainStorage: E(brandNode).setValue('...IST...')
+    chainStorage->>chain: change('published.agoricNames.brand', '...IST...')
+    client->>chain: query('published.agoricNames.brand')
     chain-->>client: '...IST...'
