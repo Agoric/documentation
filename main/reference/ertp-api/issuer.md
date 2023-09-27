@@ -16,15 +16,15 @@ validate an untrusted **Payment** of that **Brand**.
 are ephemeral, so any object created there dies as soon as the script ends.
 
 ## makeIssuerKit(allegedName, assetKind?, displayInfo?, optShutdownWithFailure?, elementShape?)
-- **allegedName** **String** 
-- **assetKind** **[AssetKind](./ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
-- **displayInfo** **[DisplayInfo](./ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
+- **allegedName**: **String** 
+- **assetKind**: **[AssetKind](./ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
+- **displayInfo**: **[DisplayInfo](./ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
 - **optShutdownWithFailure** - Optional, defaults to **undefined**.
 - **elementShape** - Optional, defaults to **undefined**.
 - Returns **IssuerKit**. This is an object with three properties:
-	- **issuer** **Issuer**
-	- **mint** **[Mint](./mint.md)**
- 	- **brand** **[Brand](./brand.md)**
+	- **issuer**: **Issuer**
+	- **mint**: **[Mint](./mint.md)**
+ 	- **brand**: **[Brand](./brand.md)**
 
 Creates and returns a new **Issuer** and its associated **Mint** and **Brand**.
 All three are in unchangeable one-to-one relationships with each other. 
@@ -111,7 +111,7 @@ moolaIssuer.getAssetKind(); // Returns 'copy_set', also known as 'AssetKind.COPY
 ```
 
 ## anIssuer.getAmountOf(payment)
-- **payment** **[Payment](./payment.md)**
+- **payment**: **[Payment](./payment.md)**
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
 Describes the **Payment**'s balance as an **Amount**. Because a **Payment** from an untrusted
@@ -148,9 +148,11 @@ const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
-## anIssuer.burn(payment, optAmount?)
-- **payment** **[Payment](./payment.md)**
-- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
+
+## **anIssuer.burn(payment, optAmount?)**
+- **payment**: **[Payment](./payment.md)**
+- **optAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
+
 - Returns: **Amount**
 
 Destroys all of the digital assets in the **Payment**,
@@ -175,8 +177,8 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
 ## anIssuer.claim(payment, optAmount?)
-- **payment** **[Payment](./payment.md)**
-- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
+- **payment**: **[Payment](./payment.md)**
+- **optAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment** 
 
 Transfers all digital assets from *payment* to a new **Payment** and consumes the
@@ -198,8 +200,8 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## anIssuer.combine(paymentsArray, optTotalAmount?)
-- **paymentsArray** **Array&lt;[Payment](./payment.md)>**
-- **optTotalAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
+- **paymentsArray**: **Array&lt;[Payment](./payment.md)>**
+- **optTotalAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns: **Payment**
 
 Combines multiple **Payments** into one new **Payment**. If any item in *paymentsArray* is
@@ -226,8 +228,8 @@ const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
 ## anIssuer.split(payment, paymentAmountA)
-- **payment** **[Payment](./payment.md)**
-- **paymentAmountA** **[Amount](./ertp-data-types.md#amount)**
+- **payment**: **[Payment](./payment.md)**
+- **paymentAmountA**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Array&lt;Payment>**
 
 Splits a single **Payment** into two new **Payments**, A and B, according to *paymentAmountA*.
@@ -248,8 +250,8 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 ```
 
 ## anIssuer.splitMany(payment, amountArray)
-- **payment** **[Payment](./payment.md)**
-- **amountArray** **Array&lt;[Amount](./ertp-data-types.md#amount)>**
+- **payment**: **[Payment](./payment.md)**
+- **amountArray**: **Array&lt;[Amount](./ertp-data-types.md#amount)>**
 - Returns: **Array&lt;Payment>**
 
 Splits a single **Payment** into multiple **Payments**.
@@ -281,7 +283,7 @@ quatloosIssuer.splitMany(payment, badAmounts);
 ```
 
 ## anIssuer.isLive(payment)
-- **payment** **[Payment](./payment.md)**
+- **payment**: **[Payment](./payment.md)**
 - Returns: **Boolean**
 
 Returns **true** if the *payment* was created by the **Issuer** and is available for use 

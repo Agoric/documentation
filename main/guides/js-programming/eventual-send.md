@@ -1,8 +1,7 @@
 # Eventual Send with E()
 
 In web browsers, a common pattern of remote communication is using the
-[asynchronous fetch API with promises](
-https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#promises):
+[asynchronous fetch API with promises](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#promises):
 
 <<< @/snippets/test-distributed-programming.js#asyncFetch
 
@@ -12,7 +11,7 @@ a [deploy script](../getting-started/deploying.md) may want to use the
 [Zoe Service API](/reference/zoe-api/zoe.md) to install a contract on a blockchain.
 But the deploy script cannot call `zoe.install(bundle)`, because it does not have local
 access to the `zoe` object. However, the deploy
-script is given a `zoe` *remote presence*. To call methods on the
+script is given a `zoe` _remote presence_. To call methods on the
 actual Zoe object, the deploy script can do:
 
 ```js
@@ -32,16 +31,16 @@ use too much compute time or heap space. The smart contracts also run in separat
 
 What happens when we call `E(zoe).install(bundle)` is an _eventual send_:
 
- 1. A message consisting of the method name `install`
+1.  A message consisting of the method name `install`
     with the `bundle` argument [marshaled](./far.md)
     to a flat string and queued for delivery to
     the vat that `zoe` comes from.
- 2. `E(zoe).install(bundle)` returns a promise for the result.
- 3. The `then` and `catch` methods queue callbacks for when the promise
+2.  `E(zoe).install(bundle)` returns a promise for the result.
+3.  The `then` and `catch` methods queue callbacks for when the promise
     is resolved or rejected.
     Execution continues until the stack is empty and thus this
     turn through the event loop completes.
- 4. _Eventually_ `zoe` responds, which results in a new message
+4.  _Eventually_ `zoe` responds, which results in a new message
     in this vat's message queue and a new turn through the event loop.
     The message is de-serialized and the results are passed to the relevant callback.
 
@@ -51,9 +50,9 @@ must be _asynchronous_.
 
 The `E()` wrapper works with:
 
-  - Remote presences (local proxies for objects in remote vats).
-  - Local objects (in the same vat).
-  - Promises for remote presences or local objects.
+- Remote presences (local proxies for objects in remote vats).
+- Local objects (in the same vat).
+- Promises for remote presences or local objects.
 
 In all cases, `E(x).method(...args)` returns a promise.
 
@@ -68,13 +67,61 @@ round trip suffices for both method calls.
 The `E()` function creates a
 forwarder that doesn't know what methods the remote object has.
 If you misspell or incorrectly capitalize the method name,
-the local environment can't tell you've done so. You'll only find out at runtime when the 
+the local environment can't tell you've done so. You'll only find out at runtime when the
 remote object complains that it doesn't know that method.
 
 If an ordinary synchronous call (`obj.method()`) fails because the method doesn't exist, the `obj` may be remote, in which case `E(obj).method()` might work.
 :::
 
+## E() and Marshal: A Closer Look
+
+::: tip Watch: Office Hours Discussion of Marshal
+
+- [Office Hours: ... marshalling w/board ids, ... \#8069](https://github.com/Agoric/agoric-sdk/discussions/8069) July 2023
+
+:::
+
+If you just want to use the SDK to write smart contracts, **feel
+free to skip this section**. But in case you're working
+on something that requires more detailed understanding,
+let's take a look at how `E(x).method(...args)` is marshalled.
+
+In [@endo/marshal](https://github.com/endojs/endo/tree/master/packages/marshal#readme) docs, we see:
+
+> The `marshal` module helps with conversion of "capability-bearing data", in
+> which some portion of the structured input represents "pass-by-proxy" or
+> "pass-by-presence" objects that should be serialized into values referencing
+> special "slot identifiers". The `toCapData()` function returns a "CapData"
+> structure: an object with a `body` containing a serialization of the input data,
+> and a `slots` array holding the slot identifiers. `fromCapData()` takes this
+> CapData structure and returns the object graph. There is no generic way to
+> convert between pass-by-presence objects and slot identifiers, so the marshaller
+> is parameterized with a pair of functions to create the slot identifiers and turn
+> them back into proxies/presences.
+
+For example, we can marshal a remotable counter using the slot identifier `c1`:
+
+<<< @/snippets/test-marshal.js#marshal-remotable
+
+Each end of a connection between vats typically keeps
+a table to translate slots to capabilities and back:
+
+<<< @/snippets/test-marshal.js#marshal-table
+
+Each call to `E(rx)` makes a proxy for the reciver `rx`;
+each `E(rx).p` property reference invokes the `get` proxy trap.
+From the `get` trap, `E` returns a function that queues
+`rx`, `p`, and its arguments (in marshalled form) and returns a promise:
+
+<<< @/snippets/test-marshal.js#marshal-messages-e
+
+Now we can see the result in some detail. Note the way the promise from
+`E(zoe).install()` is passed to `E(zoe).startInstance()`.
+
+<<< @/snippets/test-marshal.js#marshal-messages
+
 ::: tip Watch: How Agoric Solves Reentrancy Hazards (November 2020)
 for more on eventual send and remote communication
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/38oTyVv_D9I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 :::

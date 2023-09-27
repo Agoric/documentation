@@ -20,6 +20,11 @@ module.exports = [
         link: '/guides/getting-started/start-a-project',
       },
       {
+        text: 'Smart Wallet Dapp Architecture',
+        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+        link: '/guides/getting-started/contract-rpc',
+      },
+      {
         text: 'Deploying Smart Contracts',
         ariaLabel: 'Deploying Menu',
         link: '/guides/getting-started/deploying',
@@ -29,72 +34,72 @@ module.exports = [
         ariaLabel: 'Syncing Up to Mainnet',
         link: '/guides/getting-started/syncing-up',
       },
-    ]
+    ],
   },
   {
-  text: 'Agoric Components',
-  ariaLabel: 'Agoric Components Menu',
-  items: [
+    text: 'Agoric Components',
+    ariaLabel: 'Agoric Components Menu',
+    items: [
       {
-      text: 'Agoric CLI',
-      ariaLabel: 'Agoric CLI',
-      link: '/guides/agoric-cli/',
+        text: 'Agoric CLI',
+        ariaLabel: 'Agoric CLI',
+        link: '/guides/agoric-cli/',
       },
       {
-      text: 'JavaScript Framework',
-      ariaLabel: 'JavaScript Framework',
-      link: '/guides/js-programming/',
+        text: 'JavaScript Framework',
+        ariaLabel: 'JavaScript Framework',
+        link: '/guides/js-programming/',
       },
       {
-      text: 'Wallet',
-      ariaLabel: 'Wallet',
-      link: '/guides/wallet/'
+        text: 'Wallet',
+        ariaLabel: 'Wallet',
+        link: '/guides/wallet/',
       },
       {
-      text: 'ERTP',
-      ariaLabel: 'ERTP',
-      link: '/guides/ertp/'
+        text: 'ERTP',
+        ariaLabel: 'ERTP',
+        link: '/guides/ertp/',
       },
       {
-      text: 'Zoe',
-      ariaLabel: 'Zoe',
-      link: '/guides/zoe/'
+        text: 'Zoe',
+        ariaLabel: 'Zoe',
+        link: '/guides/zoe/',
       },
       {
-      text: 'Injecting Code to Agoric Testnet',
-      ariaLabel: 'Coreeval',
-      link: '/guides/coreeval/'
-      },      
-      {
-      text: 'Example Zoe Contracts',
-      ariaLabel: 'Example Zoe Contracts',
-      link: '/guides/zoe/contracts/'
+        text: 'Permissioned Contract Deployment',
+        ariaLabel: 'Permissioned Contract Deployment',
+        link: '/guides/coreeval/',
       },
       {
-      text: 'Deployed Zoe Contracts',
-      ariaLabel: 'Deployed Zoe Contracts',
-      link: '/guides/zoe/actual-contracts/'
+        text: 'Example Zoe Contracts',
+        ariaLabel: 'Example Zoe Contracts',
+        link: '/guides/zoe/contracts/',
       },
       {
-      text: 'Agoric Dapps',
-      ariaLabel: 'Agoric Dapps',
-      link: '/guides/dapps/'
+        text: 'Deployed Zoe Contracts',
+        ariaLabel: 'Deployed Zoe Contracts',
+        link: '/guides/zoe/actual-contracts/',
       },
-    ]
+      {
+        text: 'Agoric Dapps',
+        ariaLabel: 'Agoric Dapps',
+        link: '/guides/dapps/',
+      },
+    ],
   },
   {
     text: 'API Reference',
     ariaLabel: 'API Reference Menu',
     items: [
       {
-          text: 'Wallet API',
-          ariaLabel: 'Wallet API Menu',
-          link: '/reference/wallet-api',
+        text: 'Wallet API',
+        ariaLabel: 'Wallet API Menu',
+        link: '/reference/wallet-api',
       },
       {
-          text: 'ERTP API',
-          ariaLabel: 'ERTP API Menu',
-          link: '/reference/ertp-api/',
+        text: 'ERTP API',
+        ariaLabel: 'ERTP API Menu',
+        link: '/reference/ertp-api/',
       },
       {
         text: 'REPL API',
@@ -106,38 +111,42 @@ module.exports = [
         ariaLabel: 'ZOE API Menu',
         link: '/reference/zoe-api/',
       },
-    ]
+    ],
   },
   {
     text: 'Glossary',
     ariaLabel: 'Glossary Menu',
-    link: '/glossary/'
+    link: '/glossary/',
   },
   {
     text: 'New Features',
     ariaLabel: 'New Features Menu',
-    items: [    
+    items: [
       {
         text: 'Governance',
         ariaLabel: 'Governance Internal Documentation',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/docs/'
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/docs/',
       },
       {
         text: 'Patterns',
         ariaLabel: 'Patterns Source Code Link',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js'
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js',
       },
       {
         text: 'Smart Wallet',
         ariaLabel: 'Smart Wallet Internal Documentation',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md'
-      },   
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
+      },
       {
         text: 'Upgrading Contracts',
         ariaLabel: 'Upgrade Contracts Doc Link',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade'
-      },   
-    ]
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade',
+      },
+    ],
   },
   {
     text: 'Learn More',
@@ -146,23 +155,23 @@ module.exports = [
       {
         text: 'Agoric',
         ariaLabel: 'Agoric Homepage Link',
-        link: 'https://agoric.com/'
-      },      
+        link: 'https://agoric.com/',
+      },
       {
         text: 'Papers',
         ariaLabel: 'Papers Page Link',
-        link: 'https://agoric.com/papers/'
+        link: 'https://agoric.com/papers/',
       },
       {
         text: 'YouTube',
         ariaLabel: 'Agoric YouTube Channel Page Link',
-        link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/'
-      },     
+        link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/',
+      },
       {
         text: 'Github',
         ariaLabel: 'Agoric Github Link',
-        link: 'https://github.com/Agoric/'
-      }
-    ]
-  },  
-]
+        link: 'https://github.com/Agoric/',
+      },
+    ],
+  },
+];

@@ -1,0 +1,18 @@
+sequenceDiagram
+  actor client
+
+  box aqua Cosmos SDK layer
+  participant chain
+  end
+
+  box darksalmon Hardened JS VM
+  participant chainStorage
+  participant agoricNames
+  end
+
+    agoricNames->>chainStorage: E(root).makeChildNode('brand')
+    chainStorage-->>agoricNames: brandNode
+    agoricNames-->>chainStorage: E(brandNode).setValue('...IST...')
+    chainStorage->>chain: change('published.agoricNames.brand', '...IST...')
+    client->>chain: query('published.agoricNames.brand')
+    chain-->>client: '...IST...'

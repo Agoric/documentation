@@ -66,8 +66,8 @@ const checkNotifier = async () => {
 ```
 
 ## aPurse.deposit(payment, optAmount?)
-- **payment** **[Payment](./payment.md)**
-- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional. 
+- **payment**: **[Payment](./payment.md)**
+- **optAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional. 
 - Returns: **Amount**
 
 Deposit all the contents of *payment* into the **Purse**, returning an **Amount** describing the
@@ -102,7 +102,7 @@ const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 
 ## aPurse.withdraw(amount)
 
-- **amount** **[Amount](./ertp-data-types.md#amount)**
+- **amount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **[Payment](./payment.md)**
 
 Withdraws the specified **Amount** of digital assets from the **Purse** into a new **Payment** object.
@@ -168,8 +168,8 @@ To add assets to a **Purse** directly, you use **aPurse.deposit()**. To add asse
 to a **Purse** via its **DepositFacet**, you use **aDepositFacet.receive()**.
 
 ## aDepositFacet.receive(payment, optAmount?)
-- **payment** **[Payment](./payment.md)**
-- **optAmount** **[Amount](./ertp-data-types.md#amount)** - Optional.
+- **payment**: **[Payment](./payment.md)**
+- **optAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
 - Returns **Amount**
 
 The **DepositFacet** takes the **Payment** and adds it to the balance of the **DepositFacet**'s associated **Purse**. 
