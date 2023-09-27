@@ -254,11 +254,13 @@ calls for limiting globals to immutable data and deterministic functions
 (eliminating "ambient authority" in the diagram above).
 
 Hardened JavaScript includes a `Compartment` API for enforcing OCap discipline.
-Only the [standard, built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
-such as `Object`, `Array`, and `Promise` are globally available by default
-(with an option for carefully controlled exceptions such as `console.log`).
-With the default `Compartment` options, the non-deterministic `Math.random`
-is not available and `Date.now()` always returns `NaN`.
+Only the [standard, built-in
+objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
+such as `Object`, `Array`, and `Promise` are globally available by default (with
+an option for carefully controlled exceptions such as `console.log`).  With the
+default `Compartment` options, the non-deterministic `Math.random` and
+`Date.now()` are not available.  (Earlier versions of Hardened JavaScript
+provided `Compartment` with a `Date.now()` that always returned `NaN`.)
 
 Almost all existing JS code was written to run under Node.js or inside a browser,
 so it's easy to conflate the environment features with JavaScript itself. For
