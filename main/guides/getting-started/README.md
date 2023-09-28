@@ -131,7 +131,7 @@ or:
 sudo yarn link-cli /usr/local/bin/agoric
 ```
 
-**Note:** Run `echo $PATH | tr : '\n'` to see directories in your current `$PATH`, which are good candidates for where to have `yarn link-cli` place the executable.
+**Note:** Run `echo $PATH` to see directories in your current path, separated by colons. These are good candidates for where to have `yarn link-cli` place the executable.
 
 ## Check the Agoric Version
 
