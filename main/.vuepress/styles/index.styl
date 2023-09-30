@@ -91,12 +91,50 @@
 
 .flex
   display flex
+  border thin
+
+  &--auto
+    flex-basis auto
+
+  @--nowrap
+    flex-flow nowrap
+
+  &--row
+    flex-direction row
 
   &--column
     flex-direction column
 
   &--center
     align-items center
+
+  @--one
+    flex-grow 1
+
+.home-col
+  display flex
+  border thin
+  flex-direction column
+  width 100%
+  align-items stretch
+
+.home-row
+  display flex
+  border thin
+  flex-direction row
+  flex-flow nowrap
+  flex-basis auto
+  width 100%
+  height 8em
+
+.home-button
+  flex-grow 1
+  border-style solid
+  border-color LightGrey
+  margin: .25em
+  padding 1em
+  vertical-align top
+  width 30%
 
 .zoe-version
   font-size: .75em

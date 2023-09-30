@@ -5,10 +5,6 @@
 # website at localhost:8080 by default
 ####
 home: false # use default home page layout (hero image with text, features section)
-# heroImage: /logo.svg
-## Action button
-# actionText: Get Started → # text that goes in the button
-# actionLink: /guides/getting-started/ # go-to link when clicking on button
 
 ## Features section
 # features:
@@ -25,9 +21,27 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
 ---
 
 <div class="flex flex--column flex--left">
-  <h1>Agoric documentation</h1>
-  <div>
-    The Agoric platform makes it possible to write safer smart contracts with your JavaSCript skillset.
+  <h2>Agoric documentation</h2>
+  <div style="margin-bottom: 1em;">
+    The Agoric platform makes it possible to write safer smart contracts with your JavaScript skillset.
+  </div>
+  <div class="home-col">
+    <HomeButtonRow
+      title1="What's Agoric"
+      text1="Learn about Agoric and its Javascript platform"
+      title2="Getting Started"
+      text2="Set up your environment and start building apps"
+      title3="Contract Framework"
+      text3="Set up your environment and start building"
+    />
+    <HomeButtonRow
+      title1="Token Standards"
+      text1="Understand the ins and outs of Agoric's ERTP standard"
+      title2="Samples"
+      text2="Look through our smart contract and dapp examples"
+      title3="Integrations"
+      text3="Browse through our catalogue of integrations"
+     />
   </div>
 </div>
 
@@ -71,7 +85,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
   <div>
     Check out our primer on writing programmable smart contracts in JavaScript!
   </div>
-  <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Em32hztid_k?si=9CTt0mB1M7VtFMiR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Em32hztid_k?si=9CTt0mB1M7VtFMiR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
 </div>
 
 <div class="flex flex--column flex--left">
