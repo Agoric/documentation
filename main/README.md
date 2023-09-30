@@ -33,9 +33,9 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
   title5="Samples"
   text5="Look through our smart contract and dapp examples"
   link5="/guides/zoe/contracts/"
-  title6="Integrations"
-  text6="Browse through our catalogue of integrations"
-  link6="/guides/chainlink-integration.html#overview"
+  title6="Bounties"
+  text6="A rotating list of incentivized bounties to grow our platform"
+  link6="https://components.agoric.com/bounties/open-bounties"
   /></div>
 
   <HomeButtonHeader
@@ -58,9 +58,9 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
     title5="IBC"
     text5="The protocol ensuring Agoric is interoperable with 60÷ chains"
     link5="https://ibc.cosmos.network/main"
-    title6="Bounties"
-    text6="A rotating list of incentivized bounties to grow our platform"
-    link6="https://components.agoric.com/bounties/open-bounties"
+    title6="Integrations"
+    text6="Browse through our catalogue of integrations"
+    link6="/guides/chain-integration.html#overview"
     />
 
 <div class="home-section">
