@@ -8,6 +8,10 @@ home: false # use default home page layout (hero image with text, features secti
 footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
 ---
 
+<div class="home-banner">
+  Receive our latest tutorials, webinar invites, and much more! <a href="https://agoric.com/dev-newsletter" style="color: white;"">Join our newsletter</a>
+</div>
+
 <div class="home-section">
   <HomeButtonHeader
     title="Agoric documentation"
