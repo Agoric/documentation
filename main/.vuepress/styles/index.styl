@@ -91,16 +91,6 @@
 
 .flex
   display flex
-  border thin
-
-  &--auto
-    flex-basis auto
-
-  @--nowrap
-    flex-flow nowrap
-
-  &--row
-    flex-direction row
 
   &--column
     flex-direction column
@@ -108,44 +98,27 @@
   &--center
     align-items center
 
-  @--one
-    flex-grow 1
+
+.button-grid-wrapper
+  display grid
+  grid-template-columns repeat(3, 33.3%)
+  grid-template-rows repeat(minmax(1, 2), 50%)
+  row-gap .25em
+  column-gap .25em
 
 .home-section
-  display flex
-  border thin
-  flex-direction column
-  align-items left
-
-.home-col
-  border thin
   width 100%
-
-.home-row
-  display flex
-  border thin
-  flex-direction row
-  flex-flow nowrap
-  flex-basis auto
-  width 100%
-  min-height 7em
 
 .home-button
-  flex-grow 1
   border-style solid
   border-color LightGrey
-  margin .25em
-  padding 1em
+  padding .5em
   vertical-align top
-  width 30%
   position relative
+  min-height 4em
 
 .home-banner
-  display flex
-  align-items stretch
-  justify-content center
-  min-width 100%
-  width 100%
+  text-align center
   background #d73252
   color white
   padding 1em

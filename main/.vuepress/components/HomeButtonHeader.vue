@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1 style="margin-bottom: .25em">{{ title }}</h1>
+  <div class="home-section">
+    <h1 style="margin-bottom: .25em;">{{ title }}</h1>
     <div style="margin-bottom: 1em;">
     {{ text }}
     </div>
