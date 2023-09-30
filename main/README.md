@@ -25,7 +25,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
   text2="Set up your environment and start building apps"
   link2="/guides/getting-started/"
   title3="Contract Framework"
-  text3="Set up your environment and start building"
+  text3="See the safety properties of our Zoe Framework"
   link3="/guides/zoe/"
   title4="Token Standards"
   text4="Understand the ins and outs of Agoric's ERTP standard"
