@@ -71,7 +71,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
   <h3 style="margin-top: 0em;">
     <a href="/guides/js-programming/hardened-js.html">Learn the basics of HardenedJS</a>
   </h3>
-  It's just JavaScript but with extra safety features - see why MetaMask uses it to safely run their Snaps technology for 30M+ customers.
+  It's JavaScript with the safety you expect - see why MetaMask uses it to safely run their Snaps technology for 30M+ customers.
   <h3>
     <a href="/guides/zoe/">See the safety properties of our Zoe Framework</a>
   </h3>
