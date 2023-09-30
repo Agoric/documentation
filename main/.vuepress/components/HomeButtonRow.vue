@@ -2,24 +2,33 @@
     <div class="home-col">
         <div class="home-row">
             <div class="home-button" style="width: 30%">
-                <a :href=link1>{{ title1 }}</a>
+                <a :href=link1>
+                    {{ title1 }}
+                    <span class="link-spanner"></span>
+                </a>
                 <br/>
                 <div style="margin-top: .5em;">
-                {{ text1 }}
+                    {{ text1 }}
                 </div>
             </div>
             <div class="home-button" style="width: 30%">
-                <a :href=link2>{{ title2 }}</a>
+                <a :href=link2>
+                    {{ title2 }}
+                    <span class="link-spanner"></span>
+                </a>
                 <br/>
                 <div style="margin-top: .5em;">
-                {{ text2 }}
+                    {{ text2 }}
                 </div>
             </div>
             <div class="home-button" style="width: 30%">
-                <a :href=link3>{{ title3 }}</a>
+                <a :href=link3>
+                    {{ title3 }}
+                    <span class="link-spanner"></span>
+                </a>
                 <br/>
                 <div style="margin-top: .5em;">
-                {{ text3 }}
+                    {{ text3 }}
                 </div>
             </div>
         </div>
