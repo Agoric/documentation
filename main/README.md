@@ -56,7 +56,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
     text4="Our battle-tested consensus mechanism"
     link4="https://docs.cosmos.network/"
     title5="IBC"
-    text5="The protocol ensuring Agoric is interoperable with 60÷ chains"
+    text5="The protocol ensuring Agoric is interoperable with 60+ chains"
     link5="https://ibc.cosmos.network/main"
     title6="Integrations"
     text6="Browse through our catalogue of integrations"
