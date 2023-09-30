@@ -24,16 +24,16 @@
             </div>
         </div>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
   /**
-   * @file HomeButton
+   * @file HomeButtonRow
    * @
    * @module components
    */
   export default {
-    name: 'HomeButton',
+    name: 'HomeButtonRow',
   
     props: {
       title1: {
@@ -83,4 +83,4 @@
       },
     }
   }
-  </script>
+</script>
