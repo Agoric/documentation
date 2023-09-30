@@ -7,7 +7,7 @@
     "node": "^16.13 || ^18.12"
   },
   "scripts": {
-    "docs:dev": "vuepress dev main",
+    "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev main",
     "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main",
     "docs:build-cf": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main && cp _redirects main/.vuepress/dist/",
     "docs:build-root": "NODE_OPTIONS=--openssl-legacy-provider yarn docs:build && yarn docs:re-root && cp _redirects main/.vuepress/dist-root/",

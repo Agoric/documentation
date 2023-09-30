@@ -20,7 +20,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
 <HomeButtonRow
   title1="What's Agoric"
   text1="Learn about Agoric and its Javascript platform"
-  link1="/guides/what-is-agoric/"
+  link1="https://www.agoric.com"
   title2="Getting Started"
   text2="Set up your environment and start building apps"
   link2="/guides/getting-started/"
