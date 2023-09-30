@@ -4,7 +4,7 @@
 # run `yarn docs:dev` at any time to start local dev server and access
 # website at localhost:8080 by default
 ####
-home: false # use default home page layout (hero image with text, features section)
+home: false
 footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
 ---
 
