@@ -98,6 +98,44 @@
   &--center
     align-items center
 
+
+.button-grid-wrapper
+  display grid
+  grid-template-columns repeat(3, 33.3%)
+  grid-template-rows repeat(minmax(1, 2), 50%)
+  row-gap .25em
+  column-gap .25em
+
+.home-section
+  width 100%
+
+.home-button
+  border-style solid
+  border-color LightGrey
+  padding .5em
+  vertical-align top
+  position relative
+  min-height 4em
+
+.home-banner
+  text-align center
+  background #d73252
+  color white
+  padding 1em
+
+.link-spanner
+  position absolute
+  width 100%
+  height 100%
+  top 0
+  left  0
+  z-index 1
+
+.youtube-embed
+  aspect-ratio 16/9
+  width 100%
+  max-height 315
+
 .zoe-version
   font-size: .75em
   border-bottom: 1px #2c3e50 solid
