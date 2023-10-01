@@ -47,7 +47,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
     text1="View transactions across the Agoric chain"
     link1="https://bigdipper.live/agoric"
     title2="Keplr Wallet"
-    text2="A native wallet running with HardenedJS under the hood"
+    text2="Sign transactions with the most popular wallet in Cosmos"
     link2="https://www.keplr.app/download"
     title3="Component Library"
     text3="Pre-built smart contracts for DeFi, NFTs, and cross-chain!"
