@@ -13,31 +13,33 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
 </div>
 
 <div class="home-section">
-<HomeButtonHeader
-  title="Agoric documentation"
-  text="The Agoric platform makes it possible to write safer smart contracts with your JavaScript skill set."
-/>
-<HomeButtonRow
-  title1="What's Agoric"
-  text1="Learn about Agoric and its JavaScript platform"
-  link1="https://www.agoric.com"
-  title2="Getting Started"
-  text2="Set up your environment and start building apps"
-  link2="/guides/getting-started/"
-  title3="Contract Framework"
-  text3="See the safety properties of our Zoe Framework"
-  link3="/guides/zoe/"
-  title4="Token Standards"
-  text4="Understand the ins and outs of Agoric's ERTP standard"
-  link4="/guides/ertp/"
-  title5="Samples"
-  text5="Look through our smart contract and dapp examples"
-  link5="/guides/zoe/contracts/"
-  title6="Bounties"
-  text6="A rotating list of incentivized bounties to grow our platform"
-  link6="https://components.agoric.com/bounties/open-bounties"
-  /></div>
+  <HomeButtonHeader
+    title="Agoric documentation"
+    text="The Agoric platform makes it possible to write safer smart contracts with your JavaScript skill set."
+  />
+  <HomeButtonRow
+    title1="What's Agoric"
+    text1="Learn about Agoric and its JavaScript platform"
+    link1="https://www.agoric.com"
+    title2="Getting Started"
+    text2="Set up your environment and start building apps"
+    link2="/guides/getting-started/"
+    title3="Contract Framework"
+    text3="See the safety properties of our Zoe Framework"
+    link3="/guides/zoe/"
+    title4="Token Standards"
+    text4="Understand the ins and outs of Agoric's ERTP standard"
+    link4="/guides/ertp/"
+    title5="Samples"
+    text5="Look through our smart contract and dapp examples"
+    link5="/guides/zoe/contracts/"
+    title6="Bounties"
+    text6="A rotating list of incentivized bounties to grow our platform"
+    link6="https://components.agoric.com/bounties/open-bounties"
+    />
+</div>
 
+<div class="home-section">
   <HomeButtonHeader
     title="Blockchain resources"
     text="The tools your need to get the job done."
@@ -62,6 +64,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
     text6="Browse through our catalogue of integrations"
     link6="/guides/integration/chain-integration"
     />
+  </div>
 
 <div class="home-section">
   <HomeButtonHeader
@@ -78,24 +81,31 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
   From Offer Safety to the POLA, the Zoe Framework protects devs (and users) while writing your smart contract logic.
 </div>
 
-<HomeButtonHeader
-    title="Videos"
-    text="Check out our primer on writing programmable smart contracts in JavaScript!"
-  />
-<iframe max-width="560" max-height="315" src="https://www.youtube-nocookie.com/embed/Em32hztid_k?si=9CTt0mB1M7VtFMiR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+<div class="home-section">
+  <HomeButtonHeader
+      title="Videos"
+      text="Check out our primer on writing programmable smart contracts in JavaScript!"
+    />
 
-<HomeButtonHeader
-    title="Connect with us"
-    text=""
+  <div>
+<iframe class="youtube-embed" src="https://www.youtube-nocookie.com/embed/Em32hztid_k?si=3bfO6P4vEWV-qoKd&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+</div>
+
+<div class="home-section">
+  <HomeButtonHeader
+      title="Connect with us"
+      text=""
+    />
+  <HomeButtonRow
+    title1="Office Hours"
+    text1="Workshop ideas with our engineers every Wednesday!"
+    link1="https://agoric.com/office-hours"
+    title2="Discord"
+    text2="Meet our developer community and make friend <3"
+    link2="https://agoric.com/discord"
+    title3="Twitter"
+    text3="Catch up on all things Agoric product, events, and more"
+    link3="https://twitter.com/agoric"
   />
-<HomeButtonRow
-  title1="Office Hours"
-  text1="Workshop ideas with our engineers every Wednesday!"
-  link1="https://agoric.com/office-hours"
-  title2="Discord"
-  text2="Meet our developer community and make friend <3"
-  link2="https://agoric.com/discord"
-  title3="Twitter"
-  text3="Catch up on all things Agoric product, events, and more"
-  link3="https://twitter.com/agoric"
-/>
+</div>
