@@ -60,7 +60,7 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
     link5="https://ibc.cosmos.network/main"
     title6="Integrations"
     text6="Browse through our catalogue of integrations"
-    link6="/guides/chain-integration.html#overview"
+    link6="/guides/integration/chain-integration"
     />
 
 <div class="home-section">
