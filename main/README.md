@@ -15,11 +15,11 @@ footer: Apache-2.0 Licensed | Copyright © 2023 - Agoric
 <div class="home-section">
 <HomeButtonHeader
   title="Agoric documentation"
-  text="The Agoric platform makes it possible to write safer smart contracts with your JavaScript skillset."
+  text="The Agoric platform makes it possible to write safer smart contracts with your JavaScript skill set."
 />
 <HomeButtonRow
   title1="What's Agoric"
-  text1="Learn about Agoric and its Javascript platform"
+  text1="Learn about Agoric and its JavaScript platform"
   link1="https://www.agoric.com"
   title2="Getting Started"
   text2="Set up your environment and start building apps"
