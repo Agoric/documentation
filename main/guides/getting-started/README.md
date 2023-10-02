@@ -119,7 +119,7 @@ yarn build
 
 ## Install Agoric CLI
 
-Install the Agoric CLI (Command Line Interface) in a convenient place in your `$PATH` such as:
+Use `yarn link-cli` to install the Agoric CLI (Command Line Interface) in a convenient place of your choosing such as:
 
 ```shell
 yarn link-cli ~/bin/agoric
@@ -131,7 +131,7 @@ or:
 sudo yarn link-cli /usr/local/bin/agoric
 ```
 
-**Note:** Run `echo $PATH` to see your current `$PATH`. Here you'll see which directory you should use for `yarn link-cli`.
+**Note:** Run `echo $PATH` to see directories in your current path, separated by colons. These are good candidates for where to have `yarn link-cli` place the executable.
 
 ## Check the Agoric Version
 
