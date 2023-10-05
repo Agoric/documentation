@@ -7,6 +7,12 @@ Linux (WSL). There is currently **no support** for native Windows 10 or native W
 After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with 
 the Agoric CLI to create and deploy [smart contracts](./deploying.md).
 
+## Getting Support
+
+- Chat with peers on the [Agoric Discord](https://agoric.com/discord)
+- Join weekly [Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
+- Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
+
 ## Quick Start
 
 If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
