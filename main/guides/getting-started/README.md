@@ -7,6 +7,12 @@ Linux (WSL). There is currently **no support** for native Windows 10 or native W
 After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with 
 the Agoric CLI to create and deploy [smart contracts](./deploying.md).
 
+## Getting Support
+
+- Chat with peers on the [Agoric Discord](https://agoric.com/discord)
+- Join weekly [Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
+- Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
+
 ## Quick Start
 
 If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
@@ -119,7 +125,7 @@ yarn build
 
 ## Install Agoric CLI
 
-Install the Agoric CLI (Command Line Interface) in a convenient place in your `$PATH` such as:
+Use `yarn link-cli` to install the Agoric CLI (Command Line Interface) in a convenient place of your choosing such as:
 
 ```shell
 yarn link-cli ~/bin/agoric
@@ -131,7 +137,7 @@ or:
 sudo yarn link-cli /usr/local/bin/agoric
 ```
 
-**Note:** Run `echo $PATH` to see your current `$PATH`. Here you'll see which directory you should use for `yarn link-cli`.
+**Note:** Run `echo $PATH` to see directories in your current path, separated by colons. These are good candidates for where to have `yarn link-cli` place the executable.
 
 ## Check the Agoric Version
 

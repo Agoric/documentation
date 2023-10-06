@@ -30,6 +30,11 @@ module.exports = [
         link: '/guides/getting-started/deploying',
       },
       {
+        text: 'Permissioned Contract Deployment',
+        ariaLabel: 'Permissioned Contract Deployment',
+        link: '/guides/coreeval/',
+      },
+      {
         text: 'Syncing Up to Mainnet',
         ariaLabel: 'Syncing Up to Mainnet',
         link: '/guides/getting-started/syncing-up',
@@ -64,11 +69,6 @@ module.exports = [
         text: 'Zoe',
         ariaLabel: 'Zoe',
         link: '/guides/zoe/',
-      },
-      {
-        text: 'Permissioned Contract Deployment',
-        ariaLabel: 'Permissioned Contract Deployment',
-        link: '/guides/coreeval/',
       },
       {
         text: 'Example Zoe Contracts',
