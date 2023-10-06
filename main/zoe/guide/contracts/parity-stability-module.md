@@ -35,5 +35,5 @@ const seat = E(zoe).offer(
    const payouts = E(seat).getPayouts();
 ```
 
-The contract also supports trading the other way, by burning the chain's stable
-token and paying the external token.
+The contract also supports trading the other way, (when the contract has those external
+assets on hand) by burning the chain's stable token and paying the external token.
