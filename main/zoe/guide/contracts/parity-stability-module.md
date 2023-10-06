@@ -17,12 +17,11 @@ keep any of the chain's stable token on hand. It is minted on demand, and
 burned when received.
 
 The two trading requests, `makeWantMintedInvitation` and `makeGiveMintedInvitation` 
-are used to create invitations to trade. The invitation is a promise for a
-payment that will be redeemed when the offer is made. The offer specifies the
-amount of the external token to be traded, and the amount of the chain's stable
-token to be received. The offer is escrowed, and the contract waits for the
-counterparty to make the matching offer. The contract then mints the stable token
-and pays it to the offer creator, and pays the external token to the counterparty.
+are used to create invitations to trade. The proposal specifies the amount of the
+external token being provided, and the amount of the chain's stable token to be
+received. The contract mints the stable token and pays it to the offer creator and
+the received external tokens are held by the contract and can be sold to later
+callers of `makeGiveMintedInvitation()`.
 
 ```js
 const seat = E(zoe).offer(
