@@ -100,6 +100,12 @@ Leave this running in its own terminal window and visit [http://localhost:3000](
 
 1. Once here, you will be asked to enable the Dapp in your Agoric wallet.
 
+::: tip Dapp Not Loading?
+
+If this Dapp store UI message does not load after a few seconds, try refreshing the page.
+
+:::
+
 ![Dapp card store ui - needs approval](./assets/must-enable-dapp.png)
 
 1. Navigate back to [http://127.0.0.1:8000](http://127.0.0.1:8000) and accept the Dapp's request to connect to your wallet.
