@@ -12,73 +12,43 @@ module.exports = [
       {
         text: 'Installing the Agoric SDK',
         ariaLabel: 'Installing the Agoric SDK Menu',
-        link: '/getting-started/before-using-agoric',
+        link: '/guides/getting-started/',
       },
       {
         text: 'Starting a Project',
         ariaLabel: 'Starting a Project Menu',
-        link: '/getting-started/start-a-project',
+        link: '/guides/getting-started/start-a-project',
       },
       {
-        text: 'Development Cycle',
-        ariaLabel: 'Development Cycle Menu',
-        link: '/getting-started/development-cycle',
+        text: 'Smart Wallet Dapp Architecture',
+        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+        link: '/guides/getting-started/contract-rpc',
       },
       {
         text: 'Deploying Smart Contracts',
         ariaLabel: 'Deploying Menu',
-        link: '/getting-started/deploying',
+        link: '/guides/getting-started/deploying',
       },
       {
-        text: 'ERTP Introduction',
-        ariaLabel: 'ERTP Introduction Menu',
-        link: '/getting-started/ertp-introduction',
+        text: 'Permissioned Contract Deployment',
+        ariaLabel: 'Permissioned Contract Deployment',
+        link: '/guides/coreeval/',
       },
       {
-        text: 'Zoe Introduction',
-        ariaLabel: 'Zoe Introduction Menu',
-        link: '/getting-started/intro-zoe',
+        text: 'Syncing Up to Mainnet',
+        ariaLabel: 'Syncing Up to Mainnet',
+        link: '/guides/getting-started/syncing-up',
       },
-      {
-        text: 'Agoric CLI Guide and API',
-        ariaLabel: 'Agoric CLI Guide Menu',
-        link: '/guides/agoric-cli/',
-      },
-      {
-        text: 'Agoric Beta',
-        ariaLabel: 'Agoric Beta',
-        link: '/getting-started/beta',
-      },
-      {
-        text: 'Documentation Guide',
-        ariaLabel: 'Documentation Guide Menu',
-        link: '/getting-started/',
-      },
-    ]
+    ],
   },
   {
-    text: 'Guides',
-    ariaLabel: 'Guides',
+    text: 'Agoric Components',
+    ariaLabel: 'Agoric Components Menu',
     items: [
       {
-        text: 'Agoric CLI Guide and API',
-        ariaLabel: 'Agoric CLI Guide and API',
+        text: 'Agoric CLI',
+        ariaLabel: 'Agoric CLI',
         link: '/guides/agoric-cli/',
-      },
-      {
-        text: 'Agoric Dapps',
-        ariaLabel: 'Dapps Guide',
-        link: '/dapps/',
-      },
-      {
-        text: 'ERTP',
-        ariaLabel: 'ERTP Guide',
-        link: '/ertp/guide/'
-      },
-      {
-        text: 'Zoe',
-        ariaLabel: 'Zoe Guide',
-        link: '/zoe/guide/'
       },
       {
         text: 'JavaScript Framework',
@@ -86,107 +56,97 @@ module.exports = [
         link: '/guides/js-programming/',
       },
       {
-        text: 'Wallet Guide and API',
-        ariaLabel: 'Wallet API Guide and API',
-        link: '/guides/wallet/'
+        text: 'Wallet',
+        ariaLabel: 'Wallet',
+        link: '/guides/wallet/',
       },
       {
-        text: 'REPL',
-        ariaLabel: 'REPL',
-        link: '/repl/',
+        text: 'ERTP',
+        ariaLabel: 'ERTP',
+        link: '/guides/ertp/',
       },
       {
-        text: 'Chainlink Integration',
-        ariaLabel: 'Chainlink Integration',
-        link: '/guides/chainlink-integration',
+        text: 'Zoe',
+        ariaLabel: 'Zoe',
+        link: '/guides/zoe/',
       },
       {
-        text: 'Dynamic IBC (dIBC)',
-        ariaLabel: 'dIBC Guide',
-        link: 'https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md'
+        text: 'Example Zoe Contracts',
+        ariaLabel: 'Example Zoe Contracts',
+        link: '/guides/zoe/contracts/',
       },
       {
-        text: 'Documentation',
-        ariaLabel: 'Documentation Guide',
-        link: '/getting-started/',
+        text: 'Deployed Zoe Contracts',
+        ariaLabel: 'Deployed Zoe Contracts',
+        link: '/guides/zoe/actual-contracts/',
+      },
+      {
+        text: 'Agoric Dapps',
+        ariaLabel: 'Agoric Dapps',
+        link: '/guides/dapps/',
       },
     ],
   },
   {
-    text: 'Zoe',
-    ariaLabel: 'Zoe Menu',
-    link: '/zoe/guide',
+    text: 'API Reference',
+    ariaLabel: 'API Reference Menu',
     items: [
       {
-        text: 'Introduction',
-        ariaLabel: 'Zoe Introduction Link',
-        link: '/getting-started/intro-zoe'
-     },
-     {
-        text: 'Guide',
-        ariaLabel: 'Zoe Guide Link',
-        link: '/zoe/guide/'
+        text: 'Wallet API',
+        ariaLabel: 'Wallet API Menu',
+        link: '/reference/wallet-api',
       },
       {
-        text: 'Contracts',
-        ariaLabel: 'Zoe Contracts Link',
-        link: '/zoe/guide/contracts/'
+        text: 'ERTP API',
+        ariaLabel: 'ERTP API Menu',
+        link: '/reference/ertp-api/',
       },
       {
-        text: 'API',
-        ariaLabel: 'Zoe API',
-        link: '/zoe/api/'
+        text: 'REPL API',
+        ariaLabel: 'REPL API Menu',
+        link: '/reference/repl/',
       },
       {
-        text: 'Github',
-        ariaLabel: 'Zoe Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/zoe'
-      }
+        text: 'Zoe API',
+        ariaLabel: 'ZOE API Menu',
+        link: '/reference/zoe-api/',
+      },
     ],
-  },
-  {
-    text: 'ERTP', // spaces to add some distance to next link
-    ariaLabel: 'ERTP Menu',
-    link: '/ertp/guide/',
-    items: [
-       {
-        text: 'Introduction',
-        ariaLabel: 'ERTP Introduction Link',
-        link: '/getting-started/ertp-introduction/',
-      },
-     {
-        text: 'Guide',
-        ariaLabel: 'ERTP Guide Link',
-        link: '/ertp/guide/'
-      },
-      {
-        text: 'API',
-        ariaLabel: 'ERTP API Link',
-        link: '/ertp/api/'
-      },
-      {
-        text: 'Github',
-        ariaLabel: 'ERTP Github Link',
-        link: 'https://github.com/Agoric/agoric-sdk/tree/HEAD/packages/ERTP'
-      }
-    ]
-  },
-  {
-    text: 'Platform',
-    ariaLabel: 'Platform Menu',
-    link: '/platform/',
-    items: [
-       {
-        text: 'Agoric Stack',
-        ariaLabel: 'Agoric Stack Link',
-        link: '/platform/',
-      },
-    ]
   },
   {
     text: 'Glossary',
     ariaLabel: 'Glossary Menu',
-    link: '/glossary/'
+    link: '/glossary/',
+  },
+  {
+    text: 'New Features',
+    ariaLabel: 'New Features Menu',
+    items: [
+      {
+        text: 'Governance',
+        ariaLabel: 'Governance Internal Documentation',
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/docs/',
+      },
+      {
+        text: 'Patterns',
+        ariaLabel: 'Patterns Source Code Link',
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js',
+      },
+      {
+        text: 'Smart Wallet',
+        ariaLabel: 'Smart Wallet Internal Documentation',
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
+      },
+      {
+        text: 'Upgrading Contracts',
+        ariaLabel: 'Upgrade Contracts Doc Link',
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade',
+      },
+    ],
   },
   {
     text: 'Learn More',
@@ -195,23 +155,23 @@ module.exports = [
       {
         text: 'Agoric',
         ariaLabel: 'Agoric Homepage Link',
-        link: 'https://agoric.com/'
-      },      
+        link: 'https://agoric.com/',
+      },
       {
         text: 'Papers',
         ariaLabel: 'Papers Page Link',
-        link: 'https://agoric.com/papers/'
+        link: 'https://agoric.com/papers/',
       },
       {
         text: 'YouTube',
         ariaLabel: 'Agoric YouTube Channel Page Link',
-        link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/'
-      },     
+        link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/',
+      },
       {
         text: 'Github',
         ariaLabel: 'Agoric Github Link',
-        link: 'https://github.com/Agoric/'
-      }
-    ]
-  },  
-]
+        link: 'https://github.com/Agoric/',
+      },
+    ],
+  },
+];

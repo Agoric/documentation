@@ -7,7 +7,7 @@ The wallet facilitates several core user interactions within the Agoric ecosyste
 
 ## Dapps
 
-To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://local.agoric.com/.
+To interact with a dapp, it first must be connected in the wallet. The dapp will attempt to connect to the wallet instance registered at https://wallet.agoric.app/locator/.
 
 Before the dapp is able to make offers, the connection must be accepted from the wallet. Incoming dapp connections can be managed from the Dashboard view:
 
@@ -23,7 +23,7 @@ Dapps can be removed so that they are no longer able to propose offers.
 
 ## Offers
 
-After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](https://agoric.com/documentation/zoe/guide/#what-is-zoe)").
+After connecting to a dapp, it is able to propose offers in the user's wallet. Offers are a unique concept to Agoric's Zoe framework. Users are guaranteed to receive that they are asking for in an offer, or get a full refund (a property called "[Offer Safety](../zoe/#what-is-zoe)").
 
 When an offer is proposed (usually from some interaction in a dapp), it will appear in the dashboard view:
 

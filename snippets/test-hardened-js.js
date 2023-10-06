@@ -57,9 +57,15 @@ test('assign to frozen property fails', t => {
   );
 });
 
-test('Date.now() always returns NaN', t => {
+test('Date.now() is not available or returns NaN', t => {
   const c1 = new Compartment();
-  t.is(c1.evaluate(`Date.now()`), NaN);
+  try {
+    t.is(c1.evaluate(`Date.now()`), NaN, 'legacy Date.now() is NaN');
+  } catch (e) {
+    // New API: throws instead of NaN.
+    t.throws(() => c1.evaluate(`Date.now()`), { message: /^secure mode\b/ });
+    t.throws(() => c1.evaluate(`new Date()`), { message: /^secure mode\b/ });
+  }
 });
 
 test('Math.random is not available', t => {

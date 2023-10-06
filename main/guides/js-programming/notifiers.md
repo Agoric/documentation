@@ -1,6 +1,6 @@
 # Notifiers and Subscriptions
 
-*Notifiers* and *Subscriptions* both let a service notify clients of state changes.
+*Notifiers* and *subscriptions* both let a service notify clients of state changes.
 Specifically, both are abstractions for producing and consuming asynchronous
 value sequences. They rely on promises to deliver a stream of messages allowing
 many clients to receive notifications without the originator having to track a subscription list.
@@ -24,15 +24,15 @@ The sequence may continue indefinitely or terminate in one of two ways:
    error object, but can be any JavaScript value.
 
 `Finish` and `Fail` are final values. To avoid confusion, for iteration values in
-this doc, "final" and "non-final" just refer to position in an iteration, and not
+this doc, "final" and "non-final" merely refer to position in an iteration, and not
 "final" in the sense of the Java keyword or similar.
 
 ## NotifierKit and SubscriptionKit
 
 `makeNotifierKit()` makes an` {updater, notifier}` pair, while `makeSubscriptionKit()`
 makes a similar` {publication, subscription}` pair. Each pair’s first
-element (`updater` or `publication`) produces the async iteration which is then
-consumed using each pair’s second element (`notifier` or `subscription`).
+element (i.e., `updater` or `publication`) produces the async iteration which is then
+consumed using each pair’s second element (i.e., `notifier` or `subscription`).
 ```js
 import { makeNotifierKit } from '@agoric/notifier';
 import { makeSubscriptionKit } from '@agoric/notifier';
@@ -52,7 +52,7 @@ are often appropriate when the iteration represents a changing quantity, like a 
 balance, and the consumer is updating a UI that doesn't care about any older and stale
 non-final values. Notifiers only communicate values at the rate they're consumed, bounded
 by the network round-trip time, and many non-final values are never communicated if the
-quantity changes quickly. The notifier's lossy nature enables this optimization.
+quantity changes quickly. Notifiers' lossy nature enables this optimization.
 
 `notifier` and `subscription` both implement the JavaScript `AsyncIterable` API to consume the iteration. `updater` and `publication` implement the `IterationObserver` API, as defined by Agoric (JavaScript has no standard for producing iterations). For both pairs, `IterationObserver` only produces the iteration. `AsyncIterable` consumes the iteration.
 
@@ -65,10 +65,10 @@ using the `AsyncIterable` API. Each NotifierKit consumer iteration is a lossy sa
 The following properties hold for every sampling subset:
 - Any non-final value from the producer may be missing from the sampling subset.
 - Every non-final value in the sampling subset is a non-final value from the producer
-  (e.g. if "7" is in the subset, then it was in the original producer iteration).
+  (e.g., if "7" is in the subset, then it was in the original producer iteration).
 - Every non-final value in the sampling subset appears in producer order
-  (e.g. if the producer sequence is 1, 3, 8, 5, 9,
-  the sampling subset is guaranteed to not be 8, 1, 5).
+  (e.g., If the producer sequence is 1, 3, 8, 5, 9,
+  the sampling subset is guaranteed to not be 8, 1, 5.).
 - The sampling subset has the same termination value as the iteration from the producer.
 
 When a new iteration value is available, either it or a later value promptly
@@ -104,7 +104,7 @@ does not become available to any subset starting at 13 or Fail.
 Each subscription is an `AsyncIterable` that produces any number of
 `AsyncIterators`. These `AsyncIterators` are `SubsciptionIterators` which also
 have a `subscribe()` method. Calling a `subscribe()` method makes a
-`Subscription` whose starting point is that `SubscriptionIterator`'s current
+`Subscription` whose starting point is that of the `SubscriptionIterator`'s current
 position.
 
 ## Methods
@@ -120,7 +120,7 @@ The `updater` and `publication` both have the same three methods:
   - Closes the stream of state changes, indicates a failure to finish
     satisfactorily, and supplies a reason for the failure to consumers. Does not provide
     a next state. Instead, it causes the Promise to be rejected with the reason,
-    signalling that the monitored object hit an error condition.
+    signalling that the monitored object encountered an error condition.
 
 The `notifier` has an additional method that the `subscription` does not:
 - `getUpdateSince(previousUpdateCount)`
@@ -129,7 +129,7 @@ The `notifier` has an additional method that the `subscription` does not:
     `value` is the new value from the publisher.
     `updateCount` is a piece of data for use with `getUpdateSince`
     to request notification the _next_ time there's a new value.
-    If the state becomes final (e.g. when a Zoe seat exits), `updateCount` will be
+    If the state becomes final (e.g., when a Zoe seat exits), `updateCount` will be
     undefined. If there's an error, the promise for the record is
     rejected and no further values can exist.
   - If `getUpdateSince` is called without `previousUpdateCount`, or with any
@@ -140,7 +140,7 @@ The `notifier` has an additional method that the `subscription` does not:
 
 ## Notifiers and Subscriptions in Zoe
 
-[Zoe](/zoe/api/) provides updates on the state of seats within a contract. The updates
+[Zoe](/reference/zoe-api/) provides updates on the state of seats within a contract. The updates
 from Zoe indicate changes to seat allocation and seat exits.
 These are available from `E(userSeat).getNotifier()` and `zcfSeat.getNotifier()`,
 each of which provide a long-lived notifier object associated with a particular
@@ -153,39 +153,32 @@ Zoe's updates for an offer show the current allocation that will be paid if the 
 
 Individual contracts can use notifiers and subscriptions to provide updates giving current prices or other contract-specific details.
 
-The following methods use or return notifiers. Click on the name to go to their
-full documentation:
+The following methods use or return notifiers.
 
-- [`ZCFSeat.getNotifier()`](/zoe/api/zoe-contract-facet.md#zcfseat-getnotifier)
-   - Part of the Zoe Contract Facet API, returns a notifier associated with the seat's allocation. It provides updates on changing
-   allocations for this seat, and tells when the seat has been exited.
-- [`UserSeat.getNotifier()`](/zoe/api/zoe.md#e-userseat-getnotifier)
-  - Part of the Zoe API, returns a notifier associated with the seat. Its updates can be anything the contract wants to publish, such as
-     price changes, new currency pools, etc.
-- [`purse.getCurrentAmountNotifier()`](/ertp/api/purse.md#purse-getcurrentamountnotifier)
-   - Part of the ERTP API, returns a lossy notifier for changes to this purse's balance.
-- [`getPursesNotifier()`](/guides/wallet/api.md#getpursesnotifier)
-   - Part of the Wallet API, it returns a notifier that follows changes in the purses in the Wallet.
-- [`getOffersNotifier()`](/guides/wallet/api.md#getoffersnotifier)
-   - Part of the Wallet API, it returns a notifier that follows changes to the offers received by the Wallet.
-- [`makeQuoteNotifier(amountIn,brandOut)`](/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
-   - Part of the PriceAuthority API, notifies the latest `PriceQuotes` for the given `amountIn`.
-- [`getPriceNotifier(brandIn, brandOut)`](/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
-   - Part of the PriceAuthority API, returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
+- [aPurse.getCurrentAmountNotifier()](/reference/ertp-api/purse.md#apurse-getcurrentamountnotifier)
+   - Part of the ERTP API. Returns a lossy notifier for changes to this purse's balance.
+- [getPursesNotifier()](/reference/wallet-api.md#getpursesnotifier)
+   - Part of the Wallet API. It returns a notifier that follows changes in the purses in the Wallet.
+- [getOffersNotifier()](/reference/wallet-api.md#getoffersnotifier)
+   - Part of the Wallet API. It returns a notifier that follows changes to the offers received by the Wallet.
+- [makeQuoteNotifier(amountIn,brandOut)](/reference/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
+   - Part of the PriceAuthority API. Notifies the latest `PriceQuotes` for the given `amountIn`.
+- [getPriceNotifier(brandIn, brandOut)](/reference/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
+   - Part of the PriceAuthority API. Returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
      different rates.
-- [`E(home.localTimerService).makeNotifier(delay, interval)` and
-  `E(home.chainTimerService).makeNotifier(delay, interval)`](/repl/timerServices.md#e-home-chain-or-local-timerservice-makenotifier-delay-interval)
-   - Part of the REPL's TimerService functionality, it creates and returns a `Notifier` object
+- [E(home.localTimerService).makeNotifier(delay, interval) and
+  E(home.chainTimerService).makeNotifier(delay, interval)](/repl/timerServices.md#e-home-chain-or-local-timerservice-makenotifier-delay-interval)
+   - Part of the REPL's TimerService API. It creates and returns a `Notifier` object
      that repeatedly delivers updates at times that are a multiple of the provided `interval` value,
      with the first update happening after the provided `delay` value.
 
 ## Examples
 
-### Subscription example
+### Subscription Example
 
-Let’s look at a subscription example. We have three characters; Paula the publisher, and subscribers Alice and Bob. While Alice and Bob both consume Paula's published iteration, they use different tools to do so.
+Let’s look at a subscription example. We have three characters: Paula the publisher, and Alice and Bob the subscribers. While Alice and Bob both consume Paula's published iteration, they use different tools to do so.
 
-First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with non-final sequence 'a', 'b' and 'done' as its completion value.
+First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with the non-final sequence 'a', 'b' and 'done' as its completion value.
 ```js
 const { publication, subscription } = makeSubscriptionKit();
 // Paula the publisher says
@@ -195,7 +188,7 @@ publication.finish('done');
 ```
 Remember, a `SubscriptionKit` is lossless. It conveys all of an async iteration’s non-final values, as well as the final value.
 
-You can use the JavaScript `AsyncIterable` API directly, but either the JavaScript for-await-of syntax or the `observeIteration` adaptor are more convenient. Here,
+You can use the JavaScript `AsyncIterable` API directly, but both the JavaScript for-await-of syntax and the `observeIteration` adaptor are more convenient. Here,
 Alice uses the former, and then Bob uses the latter.
 
 Subscriber Alice consumes the iteration using the for-await-of loop. She can see
@@ -233,11 +226,11 @@ observeIteration(subscription, observer);
 // non-final-value b
 // finished done
 ```
-### Notifier example
+### Notifier Example
 
 A `NotifierKit` is a lossy conveyor of non-final values, but does
 losslessly convey termination. Let's say the subscription example above
-started with the following instead of `makeSubscriptionKit()`
+started with the following instead of `makeSubscriptionKit()`.
 ```js
 const { updater, notifier } = makeNotifierKit();
 ```
@@ -255,9 +248,9 @@ to the consumers; they cannot cause the kit to malfunction or prevent the code
 producing values from making progress. The consumers cannot cause each other to
 hang or miss values.
 
-For distributed operation, all the iteration values&mdash;non-final values,
-successful completion value, failure reason&mdash;must be `Passable`; values that
-can somehow be passed between vats. The rest of this doc assumes all these
+For distributed operations, all the iteration values&mdash;non-final values,
+successful completion value, failure reason&mdash;must be *Passable*, which means they're values that
+can somehow be passed between [vats](../../glossary/README.md#vat). The rest of this doc assumes all these
 values are Passable.
 
 The `makeNotifierKit()` or `makeSubscriptionKit()` call makes the notifier/updater
@@ -279,7 +272,7 @@ not terrible, but Bob does better using `getSharableSubscriptionInternals()`
 (provided by `SubscriptionKit`). This lets Bob make a local `AsyncIterable` that
 coordinates better with producer Paula's `IterationObserver`.
 
-Subscriber Alice's above code is less forgiving. She's using JavaScript's
+Subscriber Alice's code, located in the [Subscription Example section](#subscription-example) above, is less forgiving. She's using JavaScript's
 for-await-of loop which requires a local `AsyncIterable`. It cannot handle a
 remote reference to an `AsyncIterable` at Paula's site. Alice has to make an
 `AsyncIterable` at her site by using `getSharableSubsciptionInternals()`. She can
@@ -291,10 +284,10 @@ const localSubscription =
   makeSubscription(E(subscription).getSharableSubsciptionInternals());
   consume(localSubscription);
 ```
-The above used a SubscriptionKit. NotifierKits have a similar pair of a
+The code above uses a SubscriptionKit. NotifierKits have a similar pair of a
 `getSharableNotifierInternals()` method and a `makeNotifier`. However, this
-technique requires Alice know what kind of possibly-remote `AsyncIterable`
-she has, and to have the required making function code locally available.
+technique requires that Alice know what kind of a possibly remote `AsyncIterable`
+she has, and she must have the required making function code locally available.
 
 Alternatively, Alice can generically mirror any possibly remote `AsyncIterable` by
 making a new local pair and plugging them together with `observeIteration`.
@@ -306,8 +299,8 @@ const {
 observeIteration(subscription, adapterPublication);
 consume(adapterSubscription);
 ```
-This works when subscription is a reference to any `AsyncIterable`. If Alice only
-needs to consume in a lossy manner, she can use` makeNotifierKit()` instead, which
+This works when subscription is a reference to a `AsyncIterable`. If Alice only
+needs to consume in a lossy manner, she can use the `makeNotifierKit()` method instead, which
 still works independently of what kind of `AsyncIterable` subscription is a
 reference to.
 

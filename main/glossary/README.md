@@ -7,8 +7,7 @@ This page lists words, expressions, or concepts used by the Agoric technology st
 
 ## Agoric CLI
 
-A command line interface for installing dependencies and initializing, deploying, and starting Agoric projects.
-See the [Agoric CLI Guide](/guides/agoric-cli/).
+A command line interface for initializing, deploying, and starting Agoric projects, as well as installing dependencies. See the [Agoric CLI documentation](/guides/agoric-cli/) for more information.
 
 ## AllegedName
 
@@ -58,8 +57,8 @@ five tickets is performed by set union rather than by arithmetic.
   of [Key](#key) values subject to the same constraints as
   those of `AssetKind.COPY_SET` but allowed to be present more than once.
 
-For more information, see the [ERTP Guide's AmountMath section](/ertp/guide/amount-math.md)
-and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
+For more information, see the [ERTP documentation's AmountMath section](/guides/ertp/amount-math.md)
+and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
 ## Amount
 
@@ -79,8 +78,8 @@ sword. They don't send you the actual 5 Quatloos; that only happens when there i
 trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
 a new `amount` does **not** create new assets.
 
-For more information, see the [ERTP Guide's Amounts section](/ertp/guide/amounts.md)
-and the [ERTP API's AmountMath section](/ertp/api/amount-math.md).
+For more information, see the [ERTP documentation's Amounts section](/guides/ertp/amounts.md)
+and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
 ## AssetHolder
 
@@ -89,9 +88,9 @@ digital assets in the quantity specified by an [amount](#amount).
 
 ## BigInt
 
-In [ERTP AmountMath](/ertp/guide/amount-math.md), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
+In [ERTP AmountMath](/guides/ertp/amount-math.md), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
 
-[Timer Services](/repl/timerServices.md) also use `BigInt` for absolute and relative times.
+[Timer Services](/reference/repl/timerServices.md) also use `BigInt` for absolute and relative times.
 
 `BigInt`s are written with an `n` suffix: `0n`, `1n`, `2n`, ... or created with `BigInt("123")`
 or `BigInt(123)`.
@@ -112,8 +111,8 @@ appropriate for an object, do not use the board to communicate access to it.
 Identifies the type of [issuer](#issuer), such as "[Quatloos](#quatloos)",
 "[Moola](#moola)", etc. Brands are one of the two elements that
 make up an [amount](#amount).
-For more information, see the [ERTP Guide's Brand section](/ertp/guide/amounts.md#brands)
-and the [ERTP API's Brand section](/ertp/api/brand.md).
+For more information, see the [ERTP documentation's Brand section](/guides/ertp/amounts.md#brands)
+and the [ERTP API's Brand section](/reference/ertp-api/brand.md).
 
 ## Bundle
 
@@ -140,7 +139,7 @@ unzip bundle.zip
 
 Destroy digital assets. Burning a [payment](#payment) additionally makes it
 unavailable for later use. See
-[`issuer.burn(payment, optAmount)`](/ertp/api/issuer.md#issuer-burn-payment-optamount).
+[anIssuer.burn()](/reference/ertp-api/issuer.md#anissuer-burn-payment-optamount).
 
 ## Comparable
 
@@ -160,7 +159,7 @@ If they have ten houses for sale, they have ten different contract instances.
 
 ## Creator Invitation
 
-An [invitation](#invitation) optionally returned by [`startInstance()`](/zoe/api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
+An [invitation](#invitation) optionally returned by [`startInstance()`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
 creator can use. It is usually used in contracts where the creator immediately
 sells something (auctions, swaps, etc.).
 
@@ -216,8 +215,7 @@ have a reference, it can't. For more on object capabilities, see [this post](htt
 
 Key ERTP concepts include [Issuers](#issuer), [Mints](#mint),
 [Purses](#purse), [Payments](#payment), [Brands](#brand), and [Amounts](#amount). Also
-see the [ERTP Introduction](/getting-started/ertp-introduction.md),
-[ERTP Guide](/ertp/guide/), and [ERTP API](/ertp/api/).
+see the [ERTP documentation](/guides/ertp/) and [ERTP API documentation](/reference/ertp-api/).
 
 ## Escrow
 
@@ -235,7 +233,7 @@ See [`E()`](#e) above.
 Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
 - `onDemand: null`: (Default) The offering party can cancel on demand.
 - `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. See [Proposals and payments](/zoe/api/zoe.md#proposals-and-payments).
+- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. See [Proposals and payments](/reference/zoe-api/zoe.md#proposals-and-payments).
 
 ## Facet
 
@@ -290,7 +288,7 @@ is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
 Contracts often return a creator invitation on their instantiation, in case the contract instantiator wants
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
-Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(Zoe).offer()`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
+Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(Zoe).offer()`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
 An invitation's [amount](#amount) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
@@ -324,8 +322,8 @@ payments of their asset type (splitting, combining, burning, and exclusively cla
 payments). An issuer from a trusted source can determine if an untrusted payment of
 its asset type is valid.
 
-For more information, see the [ERTP Guide's Issuer section](/ertp/guide/issuers-and-mints.md)
-and the [ERTP API's Issuer section](/ertp/api/issuer.md).
+For more information, see the [ERTP documentation's Issuer section](/guides/ertp/issuers-and-mints.md)
+and the [ERTP API's Issuer section](/reference/ertp-api/issuer.md).
 
 ## Key
 
@@ -365,9 +363,9 @@ They interact with Purses, Payments, Brands, and Issuers in the same ways.
 ZCFMints and ERTP mints do **not** have the same methods. Do not try to use ERTP methods on a ZCFMint or vice versa.
 However, issuers and brands associated with either an ERTP mint or a ZCFMint are the same concepts and have the same methods.
 
-For more information on ERTP mints, see the [ERTP Guide's Mint section](/ertp/guide/issuers-and-mints.md)
-and the [ERTP API's Mint section](/ertp/api/mint.md). For more information about ZCFMints,
-see the [ZCF API `zcf.makeZCFMint()`](/zoe/api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo).
+For more information on ERTP mints, see the [ERTP documentation's Mint section](/guides/ertp/issuers-and-mints.md)
+and the [ERTP API's Mint section](/reference/ertp-api/mint.md). For more information about ZCFMints,
+see the [ZCF API `zcf.makeZCFMint()`](/reference/zoe-api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo).
 
 ## Moola
 
@@ -415,7 +413,7 @@ to the amount in the proposal they're willing to give. The payments are automati
 according to the contract code. An offer gets a [payout](#payout) of some combination of what the party originally contributed
 and what others have contributed. The specific payout is determined by the contract code.
 
-See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/zoe/api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs).
+See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs).
 
 ## Offer Safety
 
@@ -435,8 +433,8 @@ and sent to and from remote objects.
 Payments hold assets created by [mints](#mint), specifically assets intended for transfer
 from one party to another. All assets of a payment are of the same [brand](#brand).
 
-For more information, see the [ERTP Guide's Payments section](/ertp/guide/purses-and-payments.md#payments)
-and the [ERTP API's Payments section](/ertp/api/payment.md).
+For more information, see the [ERTP documentation's Payments section](/guides/ertp/purses-and-payments.md#payments)
+and the [ERTP API's Payments section](/reference/ertp-api/payment.md).
 
 ## Payout
 
@@ -479,8 +477,8 @@ they are willing to give or want to get.
 A purse holds [amounts](#amount) of assets issued by a particular [mint](#mint) that are all of the same [brand](#brand), often for arbitrarily long periods of time.
 When transfer is desired, a purse can move part of its held balance to a [payment](#payment).
 
-For more information, see the [ERTP Guide's Purses section](/ertp/guide/purses-and-payments.md#purses-and-payments) and the
-[ERTP API's Purses section](/ertp/api/purse.md).
+For more information, see the [ERTP documentation's Purses section](/guides/ertp/purses-and-payments.md#purses-and-payments) and the
+[ERTP API's Purses section](/reference/ertp-api/purse.md).
 
 ## Quatloos
 
@@ -497,13 +495,13 @@ current allocation as a [payout](#payout).
 Zoe uses a seat to represent an [offer](#offer) in progress, and has two seat [facets](#facet) representing
 two views of the same seat; a `ZCFSeat` and a `UserSeat`. The `UserSeat` is returned to the user who made an
 offer, and can check [payout](#payout) status or retrieve their results. The `ZCFSeat` is the argument passed to
-the `offerHandler` in the contract code. It is used within contracts and with [`zcf` methods](/zoe/api/zoe-contract-facet.md).
+the `offerHandler` in the contract code. It is used within contracts and with [`zcf` methods](/reference/zoe-api/zoe-contract-facet.md).
 
 The two seat facets have slightly different methods but represent the same seat and offer in progress.
 The term comes from the expression "having a seat at the table" with regards to participating in a negotiation.
 
-For more details, see the [ZCFSeat documentation](/zoe/api/zoe-contract-facet.md#zcfseat-object) and
-the [UserSeat documentation](/zoe/api/zoe.md#userseat-object).
+For more details, see the [ZCFSeat documentation](/reference/zoe-api/zcfseat.md) and
+the [UserSeat documentation](/reference/zoe-api/user-seat.md).
 
 ## Semi-fungible
 
@@ -525,7 +523,7 @@ An imaginary currency Agoric documentation uses in examples.
 
 ## Terms
 
-Contract instances have associated terms, gotten via [`E(zoe).getTerms(instance)`](/zoe/api/zoe.md#e-zoe-getterms-instance),
+Contract instances have associated terms, gotten via [`E(zoe).getTerms(instance)`](/reference/zoe-api/zoe.md#e-zoe-getterms-instance),
 which include the instance's associated [issuers](#issuer), [brands](#brand), and any custom terms. For
 example, you might have a general auction contract. When someone instantiates it,
 they provide terms applicable only to that instance. For some instances of
@@ -542,7 +540,7 @@ Other values may be represented as a CopySet of strings naming particular rights
 arbitrary objects representing the rights directly (usually [non-fungible](#non-fungible) assets).
 Values must be [Keys](#key).
 
-For more information, see the [ERTP Guide's Value section](/ertp/guide/amounts.md#values).
+For more information, see the [ERTP documentation's Value section](/guides/ertp/amounts.md#values).
 
 ## Vat
 
@@ -550,7 +548,7 @@ A vat is a unit of isolation.
 Objects and functions in a JavaScript vat can communicate synchronously with one another. Vats and their contents can
 communicate with other vats and their objects and functions, but can only communicate asynchronously.
 
-For more information, see the [Vat section in the Distributed JS Programming Guide](/guides/js-programming/#vats-the-unit-of-synchrony)
+For more information, see the [Vat section in the Distributed JS Programming documentation](/guides/js-programming/#vats-the-unit-of-synchrony).
 
 ## Wallet
 
@@ -565,7 +563,7 @@ See the [Wallet Guide and API](/guides/wallet/).
 *ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe
 Contract Facet methods can be called synchronously by contract code.
 
-See the [ZCF API](/zoe/api/zoe-contract-facet.md).
+See the [ZCF API](/reference/zoe-api/zoe-contract-facet.md).
 
 ## ZCFMint
 
@@ -574,8 +572,8 @@ See [Mint](#mint).
 ## Zoe Helpers
 
 A set of API helper methods for writing contracts. These methods extract common contract code and
-patterns into reusable helpers. See the [Zoe Helpers API](/zoe/api/zoe-helpers.md).
+patterns into reusable helpers. See the [Zoe Helpers API](/reference/zoe-api/zoe-helpers.md).
 
 ## Zoe Service
 
-A set of API methods for deploying and working with smart contracts. See [Zoe Service API](/zoe/api/zoe.md).
+A set of API methods for deploying and working with smart contracts. See [Zoe Service API](/reference/zoe-api/zoe.md).

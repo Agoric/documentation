@@ -4,14 +4,15 @@
   "description": "Documentation of Agoric products",
   "type": "module",
   "engines": {
-    "node": ">=11.0"
+    "node": "^16.13 || ^18.12"
   },
   "scripts": {
-    "docs:dev": "vuepress dev main",
-    "docs:build": "vuepress build main",
-    "docs:build-root": "yarn docs:build && yarn docs:re-root && cp _redirects main/.vuepress/dist-root/",
+    "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev main",
+    "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main",
+    "docs:build-cf": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main && cp _redirects main/.vuepress/dist/",
+    "docs:build-root": "NODE_OPTIONS=--openssl-legacy-provider yarn docs:build && yarn docs:re-root && cp _redirects main/.vuepress/dist-root/",
     "docs:re-root": "cd main && mkdir -p .vuepress/dist-root/ && cp -rp .vuepress/dist/ .vuepress/dist-root/documentation/",
-    "check-links": "vuepress check-md main",
+    "check-links": "NODE_OPTIONS=--openssl-legacy-provider vuepress check-md main",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
@@ -36,7 +37,10 @@
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {
     "@agoric/zoe": "beta",
-    "@endo/marshal": "^0.6.3",
+    "@endo/far": "^0.2.19",
+    "@endo/marshal": "^0.8.6",
+    "@endo/patterns": "^0.2.3",
+    "@endo/pass-style": "^0.1.6",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
@@ -45,6 +49,7 @@
     "@agoric/ertp": "beta",
     "@agoric/notifier": "beta",
     "@agoric/solo": "beta",
+    "@agoric/vats": "beta",
     "@endo/bundle-source": "^2.1.1",
     "@endo/eventual-send": "^0.14.8",
     "@endo/init": "^0.5.43",
@@ -61,7 +66,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "import-meta-resolve": "^1.1.1",
     "prettier": "^1.19.1",
-    "ses": "^0.15.11",
+    "ses": "^0.16.1",
     "vuepress": "^1.8.2",
     "vuepress-plugin-check-md": "0.0.2"
   },
@@ -86,6 +91,7 @@
       "es6": true
     },
     "globals": {
+      "assert": "readonly",
       "harden": "readonly"
     },
     "rules": {

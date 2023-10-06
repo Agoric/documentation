@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.17.x]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Select a branch on agoric-sdk to test against by adding text to the body of the
     # pull request. For example: #agoric-sdk-branch: zoe-release-0.7.0
@@ -35,14 +35,14 @@ jobs:
           return agoricSdkBranch;
 
     - name: Checkout agoric-sdk
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: Agoric/agoric-sdk
         path: agoric-sdk
         ref: ${{steps.get-branch.outputs.result}}
   
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 

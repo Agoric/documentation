@@ -1,0 +1,11 @@
+sequenceDiagram
+
+  box darksalmon Hardened JS VM
+  participant walletFactory
+  participant zoe
+  participant contract
+  end
+
+    walletFactory->>contract: makeBattleInvitation('troll')
+    contract-->>zoe: makeInvitation(...)
+    zoe-->>walletFactory: invitation
