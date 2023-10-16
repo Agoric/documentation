@@ -1,11 +1,9 @@
 # Installing the Agoric SDK
 
 To write JavaScript smart contracts using the Agoric Zoe framework, first install the Agoric Software
-Development Kit (SDK). The Agoric SDK is currently supported on MacOS, Linux, and Windows Subsystem for
-Linux (WSL). There is currently **no support** for native Windows 10 or native Windows 11. 
+Development Kit (SDK).
 
-After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md) with 
-the Agoric CLI to create and deploy [smart contracts](./deploying.md).
+After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md).
 
 ## Getting Support
 
@@ -15,7 +13,7 @@ the Agoric CLI to create and deploy [smart contracts](./deploying.md).
 
 ## Quick Start
 
-If you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
+If you're on a [supported platform](#platform-linux-shell-or-equivalent) (MacOS, Linux, or WSL) and you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
 
 ```shell
 go version # Version 1.20.3 or higher
@@ -32,7 +30,7 @@ agoric --version # Prints the version number of the SDK
 
 Now you are ready proceed to [starting a project](./start-a-project.md).
 
-If `agoric` is not found, then you may need to add the parent directory of where your `yarn link-cli` command created a folder. For example, if you created a folder called `Agoric` in your `~/bin` directory, you may need to add `~/bin` to your PATH.
+_If you get "command not found", see [troubleshooting below](#install-agoric-cli)._
 
 ::: tip Watch: Prepare Your Agoric Environment (November 2020)
 This presentation is a good overview of the Agoric SDK setup process,
@@ -53,6 +51,11 @@ The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Lin
 - To open a terminal on MacOS, see **Applications>Utilities>terminal** in the **Finder**.
 - To launch a terminal on Linux, use the **Terminal** application.
 - To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
+
+::: tip Mac Dev Tools
+On a Mac, you must first install
+[Xcode](https://apps.apple.com/us/app/xcode/id497799835)
+:::
 
 ## Install Go
 
@@ -115,7 +118,9 @@ yarn install
 yarn build
 ```
 
-**Note:** MacOS, Linux, and WSL are currently supported. There is currently **no support** for native Windows 10 or native Windows 11.
+**Note:** If this `yarn build` step fails, check that you are on a
+[supported platform](#platform-linux-shell-or-equivalent) and
+not native Windows.
 
 ## Build the Cosmic Swingset Package
 
@@ -139,6 +144,12 @@ sudo yarn link-cli /usr/local/bin/agoric
 
 **Note:** Run `echo $PATH` to see directories in your current path, separated by colons. These are good candidates for where to have `yarn link-cli` place the executable.
 
+::: tip Troubleshooting "command not found"
+Watch:
+
+- [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) 6:19 Mar 2018.
+  :::
+
 ## Check the Agoric Version
 
 To check that it's installed correctly:
@@ -149,6 +160,4 @@ agoric --version # v0.18.2 "community-dev" branch
 
 If the install was successful, you are ready to proceed to [starting a project](./start-a-project.md).
 
-Should `agoric` not be found, then you may need to add the parent directory of where your `yarn link-cli` command created the "agoric-sdk" directory.
 
-Please see the youtube video [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) for more information.
