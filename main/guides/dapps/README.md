@@ -24,6 +24,10 @@ If you have installed the [Agoric CLI](../getting-started/) and you want to try 
 	cd my-fungible-faucet
 	# Install the project dependencies
 	agoric install
+	# Move to the contract directory
+ 	cd contract
+ 	# Run the yarn test command
+ 	yarn test
 	# Start the Agoric VM
 	agoric start --reset
 	```
