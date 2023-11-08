@@ -1,8 +1,6 @@
 # SubQuery Indexing
 
-This document explains how to consume [Chainlink
-oracles](https://chain.link) when unit testing, integration testing, and
-actually on-chain.
+This document explains how to index Agoric blockchain data with SubQuery's open source data indexer.
 
 ## Overview
 
