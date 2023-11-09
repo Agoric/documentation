@@ -20,15 +20,15 @@ SubQuery is open-source, meaning you have the freedom to run it in the following
 
 * Locally on your own computer, or a cloud provider of your choosing. View the instructions on how to run SubQuery locally [here](https://academy.subquery.network/run_publish/run.html).
 
-You can publish it to SubQuery's enterprise-level [Managed Service](https://managedservice.subquery.network/login), where we'll host your SubQuery project in production ready services for mission critical data with zero-downtime blue/green deployments. There even is a generous free tier. [Find out how](https://academy.subquery.network/run_publish/publish.html).
+* You can publish it to SubQuery's enterprise-level [Managed Service](https://managedservice.subquery.network/login), where we'll host your SubQuery project in production ready services for mission critical data with zero-downtime blue/green deployments. There even is a generous free tier. [Find out how](https://academy.subquery.network/run_publish/publish.html).
 
-You can publish it to the decentralised SubQuery Network, the most open, performant, reliable, and scalable data service for dApp developers. The SubQuery Network indexes and services data to the global community in an incentivised and verifiable way and supports Agoric from launch.
+* You can publish it to the decentralised SubQuery Network, the most open, performant, reliable, and scalable data service for dApp developers. The SubQuery Network indexes and services data to the global community in an incentivised and verifiable way and supports Agoric from launch.
 
 ## Resources
 Here are some additional resources to help you get started:
 * [SubQuery Website](https://subquery.network/?utm_source=agoric&utm_medium=partner-docs)
 * [Documentation](https://academy.subquery.network/?utm_source=agoric&utm_medium=partner-docs)
 * [SubQuery Agoric Support Announcement](https://subquery.medium.com/subquery-now-supports-builders-on-agoric-with-fast-data-indexing-27da34a9050c?utm_source=agoric&utm_medium=partner-docs)
-* [Agoric Quick Start](https://academy.subquery.network/quickstart/quickstart_chains/cosmos-agoric.html?utm_source=agoric&utm_medium=partner-docs)
+* [Agoric Quick Start Guide](https://academy.subquery.network/quickstart/quickstart_chains/cosmos-agoric.html?utm_source=agoric&utm_medium=partner-docs)
 * [Agoric Starter Project](https://github.com/subquery/cosmos-subql-starter/tree/main/Agoric/agoric-starter?utm_source=agoric&utm_medium=partner-docs)
 * [Discord Support](https://discord.com/invite/subquery/?utm_source=agoric&utm_medium=partner-docs)
