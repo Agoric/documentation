@@ -68,7 +68,7 @@ go version # Version 1.20.3 or higher
 ## Install Node.js
 
 Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform.
-We recommend installing the LTS version of node 18.
+We support Long Term Support (LTS) versions of node; currently, version 18.
 
 ```shell
 node --version # LTS version such as 18.16.0
