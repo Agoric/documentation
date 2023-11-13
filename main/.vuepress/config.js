@@ -242,6 +242,12 @@ module.exports = {
           collapsible: false,
           children: [],
         },
+        {
+          title: 'SubQuery Indexing',
+          path: '/guides/subquery-indexing.html',
+          collapsible: false,
+          children: [],
+        },
       ],
       '/reference/': [
         {
