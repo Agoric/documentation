@@ -93,7 +93,7 @@ produced a handful of blocks with the `agoric-upgrade-8` upgrade.
 
 The `agoric-upgrade-9` release requires Go version 1.18 or higher.
 
-1. `git clone https://github.com/agoric/agoric-sdk.git; agoric-sdk && git checkout tags/agoric-upgrade-9`
+1. `git clone https://github.com/agoric/agoric-sdk.git; cd agoric-sdk && git checkout tags/agoric-upgrade-9`
 1. `yarn install && yarn build`
 1. `(cd packages/cosmic-swingset && make)`
 1. `agd start`
