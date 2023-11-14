@@ -6,7 +6,7 @@ After you've [installed the Agoric SDK](./README.md) (_recall: use `agoric --ver
 ::: tip Beta Dapp Architecture
 The Dapp architecture presented here is a beta preview of
 our eventual permissionless contract deployment model,
-extending our [Distributed Computing Framework](./js-programming/)
+extending our [Distributed Computing Framework](../js-programming/)
 to a stateful peer on end-user machines.
 
 The [Mainnet-1 launch](https://agoric.com/blog/announcements/agoric-composable-smart-contract-framework-reaches-mainnet-1-milestone)
