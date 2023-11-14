@@ -61,7 +61,15 @@ agoric open --repl
 
 This should automatically open [http://127.0.0.1:8000](http://127.0.0.1:8000) in a new browser window or tab.
 
-To begin using the wallet, click the "Connect Solo Wallet" button.
+To begin using the wallet, click the Settings button.
+
+![agoric wallet settings button](./assets/settingsButton.png)
+
+Then make sure you click on the "Solo Wallet" button.
+
+![agoric wallet connect_solo wallet](./assets/soloWallet.png)
+
+This should create an "Access Token" -> Click Connect Solo Wallet.
 
 ![agoric wallet solo connection](./assets/agoric-open-repl-1.png)
 
@@ -81,6 +89,16 @@ agoric deploy ./api/deploy.js
 
 We'll cover [deploying smart contracts](./deploying.md)
 in detail later.
+
+## Point Your Agoric Wallet to localhost
+
+Navigate to [https://wallet.agoric.app/locator/](https://wallet.agoric.app/locator/)
+
+Ensure your wallet is pointed to `http://127.0.0.1:8000` and NOT `https://wallet.agoric.app`
+
+![agoric wallet point_to_localhost](./assets/pointToLocalhost.png)
+
+This will make sure that your Browser-based Agoric Client Wallet will support offer-safe interaction with your Baseball Card Dapp.
 
 ## Start the Dapp User Interface
 
