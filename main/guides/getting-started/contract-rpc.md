@@ -11,7 +11,7 @@ Wallet Architecture, dapps consist of
 ![smart wallet dapp sequence diagram](./assets/sw-dapp-arch.svg)
 
 1. A client formats an offer, signs it, and broadcasts it.
-2. The offer is routed to the `walletFactory` contract, which finds (or creates) the `smartWallet` object associated with the signer's addres and uses it to execute the offer.
+2. The offer is routed to the `walletFactory` contract, which finds (or creates) the `smartWallet` object associated with the signer's address and uses it to execute the offer.
 3. The `smartWallet` calls `E(zoe).offer(...)` and monitors the status of
    the offer, emitting it for clients to query.
 4. Zoe escrows the payments and forwards the proposal to the contract
