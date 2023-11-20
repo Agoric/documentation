@@ -71,7 +71,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
 ## zcf.makeInvitation(offerHandler, description, customProperties?, proposalShape?)
-- **offerHandler**: **ZCFSeat => Object**
+- **offerHandler**: **(seat: ZCFSeat, offerArgs?: CopyRecord) => any**
 - **description**: **String**
 - **customProperties**: **Object** - Optional.
 - **proposalShape**: **Pattern** - Optional.
@@ -88,7 +88,12 @@ The **Invitation**'s
 - The Zoe **installation**.
 - A unique **[Handle](./zoe-data-types.md#handle)**.
 
-The second argument is a required *description* for the **Invitation**,
+**offerHandler** is a required function accepting a **ZCFSeat** and **offerArgs**
+(which will be present if and only if provided to
+[`E(Zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs))
+and returning arbitrary offer results.
+
+**description** is a required string describing the **Invitation**,
 and should include whatever information is needed for a potential recipient of the **Invitation**
 to know what they are getting in the optional *customProperties* argument, which is
 put in the **Invitation**'s **value**.

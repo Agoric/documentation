@@ -4,10 +4,11 @@
 
 ## Making An offer
 
-To make an offer, you use [`E(zoe).offer()`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), which takes three arguments:
+To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), which takes up to four arguments:
 - An **invitation** to participate in this contract instance.
 - A **proposal** stating your offer conditions.
-- The **payments** escrowed for the offer, each in association with a `proposal`-specified keyword.
+- The **payments** escrowed for the offer, each corresponding with a **give** [Keyword](/reference/zoe-api/zoe-data-types.md#keyword) in **proposal**.
+- **offerArgs** expressing additional arguments for the **offerHandler** associated with the invitation by [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
 
 ## Invitations
 
@@ -64,6 +65,19 @@ const paymentKeywordRecord = {
   'Price' : moolaPayment 
 };
 ```
+
+## Offer Arguments
+
+To pass additional arguments to the **offerHandler** contract code associated with the
+invitation, send them in an **offerArgs** record.
+Each contract can define the properties it supports and which are required, and
+is responsible for handling any unexpected or missing arguments.
+
+::: danger
+Contract code should be careful interacting with **offerArgs**. These values need input validation
+before being used since they are coming directly from the user and may have malicious behavior.
+:::
+
 ## Returned Value
 
 `offer()` returns a `UserSeat` object. Its name comes from the concept of "having a seat at the table" 
