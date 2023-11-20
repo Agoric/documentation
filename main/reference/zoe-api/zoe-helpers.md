@@ -47,7 +47,7 @@ transfers that only include one seat, you can use the helper functions
 
 ## fromOnly(fromSeat, fromAmounts)
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)**
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
 Returns a **TransferPart** which only takes **fromAmounts** from *fromSeat*. **TransferParts** are used
@@ -56,7 +56,7 @@ function.
 
 ## toOnly(toSeat, toAmounts)
 - **toSeat**: **[ZCFSeat](./zcfseat.md)**
-- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
 Returns a **TransferPart** which only gives **toAmount** to *toSeat*. **TransferParts** are used as part
@@ -66,7 +66,7 @@ of the *transfer* argument of the **[atomicRearrange()](#atomicrearrange-zcf-tra
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
 - **toSeat**: **ZCFSeat** - Optional.
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)** - Optional.
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
 - **toAmounts**: **AmountKeywordRecord** - Optional, defaults to **fromAmounts**.
 - Returns: None.
 
@@ -113,7 +113,7 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ## satisfies(zcf, seat, update)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat**: **[ZCFSeat](./zcfseat.md)**
-- **update**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **update**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **Boolean** 
 
 Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its

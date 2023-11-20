@@ -13,7 +13,7 @@ Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer
 **[Brand](/reference/ertp-api/brand.md)** associated with the **zcfMint**.
 
 ## aZCFMint.mintGains(gains, zcfSeat?)
-  - **gains**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **gains**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
   - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: **ZCFSeat**
 
@@ -24,7 +24,7 @@ that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** 
 it is returned. Otherwise a new **seat** is returned.
 
 ## aZCFMint.burnLosses(losses, zcfSeat?)
-  - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
   - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: None
 

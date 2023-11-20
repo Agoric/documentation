@@ -144,7 +144,7 @@ and **reallocate()** have not. Otherwise returns **false**.
 
 ::: warning DEPRECATED
 ## aZCFSeat.incrementBy(amountKeywordRecord)
-  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
   - Returns: **AmountKeyRecord**
 
 Adds the **amountKeywordRecord** argument to the **ZCFseat**'s staged allocation and returns the 
@@ -173,7 +173,7 @@ allocation in the same way.
 
 ::: warning DEPRECATED
 ## aZCFSeat.decrementBy(amountKeywordRecord)
-  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
   - Returns: **AmountKeywordRecord**
 
 Subtracts the **amountKeywordRecord** argument from the **ZCFseat**'s staged allocation and returns the

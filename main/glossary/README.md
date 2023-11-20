@@ -337,10 +337,9 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 
 ## Keyword
 
-A keyword is a property name string that is a valid
-[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
-starts with an upper case letter, and contains no non-ASCII characters.
-A KeywordRecord is a CopyRecord in which every property name is a keyword.
+A *Keyword* is a string that is a valid ASCII identifier
+and starts with an upper case letter.
+See **[Zoe Data Types](/reference/zoe-api/zoe-data-types.md#keyword)**.
 
 ## Mint
 
@@ -424,9 +423,14 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 
 ## Passable
 
-A *passable* is something that can be marshalled (see the
-[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence))
-and sent to and from remote objects.
+A *passable* is something that can be sent to and from remote objects.
+Passables include pass-by-copy primitive values such as numbers and strings and
+pass-by-reference values such as Remotables and Promises.
+Passables also include hardened acyclic pass-by-copy containers that recursively terminate
+in non-container passables, such as CopyArrays like `harden(['foo', 'bar'])` and
+CopyRecords like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`.
+See the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
 
 ## Payment
 

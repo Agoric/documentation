@@ -54,7 +54,7 @@ intrinsic value. `payments` hold actual digital assets.
 
 ## Escrowed Payments
 
-Using the same keywords as your `proposal`, you must specify a `PaymentKeywordRecord`.
+Using the same keywords as your `proposal`, you must specify a [PaymentKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord).
 This is a record with the keywords as keys, and `payments` containing digital assets as
 values. Zoe escrows these `payments` on behalf of this offer until the offer is completed
 or rejected or the assets are reassigned to another offer. 
