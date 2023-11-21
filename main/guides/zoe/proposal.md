@@ -12,12 +12,12 @@ To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-
 
 ## Invitations
 
-`Invitations` are a special case of ERTP `payments`. They are linked to a specific contract `instance`, and
-having one gives you the right to participate in that contract `instance`, for example, by making offers in it.
+An [Invitation](/reference/zoe-api/zoe-data-types.md#invitation) is a special case of ERTP [Payment](/reference/ertp-api/payment.md). Each is linked to a specific contract [Instance](/reference/zoe-api/zoe-data-types.md#instance), and
+having one gives you the right to participate in that contract instance, for example, by making offers in it.
 
-There are two main ways for contract users to get an `invitation`:
-- If you create the contract `instance`, you get a special creator `invitation`.
-- Someone (possibly you) who holds the right objects has created an `invitation` for a contract `instance` and gives it to
+There are two main ways for contract users to get an invitation:
+- If you create the contract instance, you get a special creator invitation.
+- Someone (possibly you) who holds the right objects has created an invitation for a contract instance and gives it to
   you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
   doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
 
@@ -38,7 +38,7 @@ payments to be escrowed, and payouts to users.
 In the example above, "Asset" and "Price" are the Keywords. However, in an auction contract,
 the Keywords might be "Asset" and "Bid".
 
-Each `AmountMath.make` call above is just making an ERTP [Amount](/reference/ertp-api/ertp-data-types.html#amount), or description of digital assets.
+Each `AmountMath.make` call above is just making an ERTP [Amount](/reference/ertp-api/ertp-data-types.md#amount), or description of digital assets.
 In this case, `AmountMath.make(quatloosBrand, 4n)` creates a description of 4 units
 of our imaginary Quatloos currency and `AmountMath.make(moolaBrand, 15n)` creates a description
 of 15 units of our imaginary Moola currency. (The "n" appended after each number indicates that
@@ -47,7 +47,7 @@ rather than a [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/R
 
 ::: warning Note
 It's important to understand that Amounts are just descriptions of assets with no
-intrinsic value. [Payments](/reference/ertp-api/payment.html) hold actual digital assets.
+intrinsic value. [Payments](/reference/ertp-api/payment.md) hold actual digital assets.
 :::
 
 **exit** specifies how the offer can be can cancelled. It must conform to one of three shapes:
@@ -60,7 +60,7 @@ For more details, see [Proposals](/reference/zoe-api/zoe.md#proposals).
 
 ## Escrowed Payments
 
-Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord) containing [Payments](/reference/ertp-api/payment.html) of the corresponding digital assets.
+Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord) containing [Payments](/reference/ertp-api/payment.md) of the corresponding digital assets.
 Zoe escrows these payments on behalf of your offer until it is completed
 or rejected or the assets are reassigned to another offer.
 ```js

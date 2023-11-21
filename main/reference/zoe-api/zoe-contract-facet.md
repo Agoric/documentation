@@ -77,13 +77,9 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - **proposalShape**: **Pattern** - Optional.
 - Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
-Makes a credible Zoe **Invitation** for a smart contract. Note that **Invitations** are a special case
-of an ERTP **payment**. They are associated with the **invitationIssuer** and its **mint**, which 
-validate and mint **Invitations**. **zcf.makeInvitation()** serves as an interface to
-the **invitation** **mint**.
-
-The **Invitation**'s
-**value** specifies:
+Uses the Zoe **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** to _mint_
+a credible **Invitation** for a smart contract.
+The returned **Invitation**'s **value** specifies:
 - The specific contract **instance**.
 - The Zoe **installation**.
 - A unique **[Handle](./zoe-data-types.md#handle)**.

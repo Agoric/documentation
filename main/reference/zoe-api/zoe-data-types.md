@@ -35,9 +35,8 @@ You can get information about the contract instance via these methods:
 
 ## Invitation
 
-An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright
-that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
-eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
+An **Invitation** is a **[Payment](/reference/ertp-api/payment.md)** holding a non-fungible eright created by an **[InvitationIssuer](#invitationissuer)**.
+An **Invitation Payment** is a **Payment** holding an **Invitation**.
 
 ## InvitationIssuer
 
