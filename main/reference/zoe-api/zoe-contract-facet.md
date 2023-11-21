@@ -91,7 +91,7 @@ and returning arbitrary offer results.
 
 **description** is a required string describing the **Invitation**,
 and should include whatever information is needed for a potential recipient of the **Invitation**
-to know what they are getting in the optional *customProperties* argument, which is
+to know what they are getting in the optional **customProperties** argument, which is
 put in the **Invitation**'s **value**.
 
 ```js
