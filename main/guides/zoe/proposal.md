@@ -23,46 +23,50 @@ There are two main ways for contract users to get an `invitation`:
 
 ## Proposals
 
-Proposals are records with **give**, **want**, and **exit** keys.
+Proposals are records with **give**, **want**, and/or **exit** keys.
 
 ```js
 const myProposal = harden({
-  give: { Asset: AmountMath.make(quatloosBrand, 4n)},
+  give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
   exit: { onDemand: null },
-})
+});
 ```
-**give** and **want** use keywords defined by the contract.
-Keywords are unique identifiers per contract, that tie together the proposal,
-payments to be escrowed, and payouts to the user.
-In the example above, **Asset** and **Price** are the keywords. However, in an auction contract,
-the keywords might be **Asset** and **Bid**.
+**give** and **want** use [Keywords](/reference/zoe-api/zoe-data-types.md#keyword) defined by the contract.
+Keywords are unique identifiers per contract, that tie together proposals,
+payments to be escrowed, and payouts to users.
+In the example above, "Asset" and "Price" are the Keywords. However, in an auction contract,
+the Keywords might be "Asset" and "Bid".
 
-The `AmountMath.make(quatloosBrand, 4n)` is just making an ERTP `amount`, or description of digital assets.
-In this case, 4 of our imaginary Quatloos currency. `AmountMath.make(moolaBrand, 15n)` is making 
-an `amount` of 15 of our imaginary Moola currency. (The appended "n" indicates that the numbers are
-represented as `BigInts` rather than `Numbers`)
+Each `AmountMath.make` call above is just making an ERTP [Amount](/reference/ertp-api/ertp-data-types.html#amount), or description of digital assets.
+In this case, `AmountMath.make(quatloosBrand, 4n)` creates a description of 4 units
+of our imaginary Quatloos currency and `AmountMath.make(moolaBrand, 15n)` creates a description
+of 15 units of our imaginary Moola currency. (The "n" appended after each number indicates that
+it is represented as a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+rather than a [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number))
 
-**Note**: It's important to understand that `amounts` are just descriptions of assets with no
-intrinsic value. `payments` hold actual digital assets.
+::: warning Note
+It's important to understand that Amounts are just descriptions of assets with no
+intrinsic value. [Payments](/reference/ertp-api/payment.html) hold actual digital assets.
+:::
 
-`exit` determines how an offer can be can cancelled:
-- `onDemand: null`: (Default) The offering party can cancel on demand.
-- `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline,
-  as determined by its `timer` and `deadline` properties. See
-  [Proposals and payments](/reference/zoe-api/zoe.md#proposals-and-payments).
+**exit** specifies how the offer can be can cancelled. It must conform to one of three shapes:
+- `{ onDemand: null }`: (Default) The offering party can cancel on demand.
+- `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
+  as determined by its `timer` and `deadline` properties.
+
+For more details, see [Proposals](/reference/zoe-api/zoe.md#proposals).
 
 ## Escrowed Payments
 
-Using the same keywords as your `proposal`, you must specify a [PaymentKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord).
-This is a record with the keywords as keys, and `payments` containing digital assets as
-values. Zoe escrows these `payments` on behalf of this offer until the offer is completed
-or rejected or the assets are reassigned to another offer. 
+Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord) containing [Payments](/reference/ertp-api/payment.html) of the corresponding digital assets.
+Zoe escrows these payments on behalf of your offer until it is completed
+or rejected or the assets are reassigned to another offer.
 ```js
-const paymentKeywordRecord = { 
-  'Asset' : quatloosPayment, 
-  'Price' : moolaPayment 
+const payments = {
+  Asset: quatloosPayment,
+  Price: moolaPayment,
 };
 ```
 
@@ -80,7 +84,5 @@ before being used since they are coming directly from the user and may have mali
 
 ## Returned Value
 
-`offer()` returns a `UserSeat` object. Its name comes from the concept of "having a seat at the table" 
-for the contract's execution. 
-
-
+`E(zoe).offer(...)` returns a promise for a `UserSeat` object. Its name comes from the concept of
+"having a seat at the table" for the contract's execution.

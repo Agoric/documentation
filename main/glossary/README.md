@@ -230,10 +230,8 @@ See [`E()`](#e) above.
 
 ## Exit Rule
 
-Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
-- `onDemand: null`: (Default) The offering party can cancel on demand.
-- `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. See [Proposals and payments](/reference/zoe-api/zoe.md#proposals-and-payments).
+An object specifying how an [offer](#offer) can be cancelled, such as on demand or by a deadline.
+For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#proposals).
 
 ## Facet
 
@@ -412,7 +410,7 @@ to the amount in the proposal they're willing to give. The payments are automati
 according to the contract code. An offer gets a [payout](#payout) of some combination of what the party originally contributed
 and what others have contributed. The specific payout is determined by the contract code.
 
-See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs).
+See [Offers](/guides/zoe/proposal.md).
 
 ## Offer Safety
 
@@ -463,18 +461,20 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 
 ## Proposal
 
-Proposals are records with `give`, `want`, and `exit` properties. [Offers](#offer) must include a proposal, which states
-what asset you want, what asset you will give for it, and how/when the offer maker can cancel the offer
-(see [Exit Rule](#exit-rule) for details on the last). For example:
+Proposals are records with `give`, `want`, and/or `exit` properties respectively
+expressing [offer](#offer) conditions regarding what assets will be given, what
+must be received in exchange, and an [exit rule](#exit-rule) defining how/when
+the offer can be canceled. For example:
 ```js
 const myProposal = harden({
-  give: { Asset: AmountMath.make(quatloosBrand, 4)},
-  want: { Price: AmountMath.make(moolaBrand, 15) },
-  exit: { onDemand: null }
-})
+  give: { Asset: AmountMath.make(quatloosBrand, 4n) },
+  want: { Price: AmountMath.make(moolaBrand, 15n) },
+  exit: { onDemand: null },
+});
 ```
-`give` and `want` use [keywords](#keyword) defined by the contract. Each specifies via an [amount](#amount) a description of what
-they are willing to give or want to get.
+`give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing what will be respectively given or received.
+
+See [Offers](/guides/zoe/proposal.md).
 
 ## Purse
 
