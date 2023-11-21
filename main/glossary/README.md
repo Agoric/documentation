@@ -159,7 +159,7 @@ If they have ten houses for sale, they have ten different contract instances.
 
 ## Creator Invitation
 
-An [invitation](#invitation) optionally returned by [`startInstance()`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
+An [invitation](#invitation) optionally returned by [`E(zoe).startInstance(...)`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
 creator can use. It is usually used in contracts where the creator immediately
 sells something (auctions, swaps, etc.).
 
@@ -286,7 +286,7 @@ For more details, see [What developers need to know about inter-blockchain commu
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
 Contracts often return a creator invitation on their instantiation, in case the contract instantiator wants
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
-Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(Zoe).offer()`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
+Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
 An invitation's [amount](#amount) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
