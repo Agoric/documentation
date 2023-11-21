@@ -171,7 +171,7 @@ appropriately branded assets to the purse, but cannot withdraw assets from the p
 ## dIBC
 
 Dynamic version of the [Inter-Blockchain Communication](#ibc) protocol.
-See [here](https://github.com/Agoric/agoric-sdk/blob/HEAD/packages/SwingSet/docs/networking.md) for more details.
+For more details, see the [agoric-sdk `network` package](https://github.com/Agoric/agoric-sdk/tree/master/packages/network).
 
 ## E()
 
@@ -280,8 +280,8 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) for 
 
 ## IBC
 
-The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other. A short article about IBC
-is available [here](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
+The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other.
+For more details, see [What developers need to know about inter-blockchain communication](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
 ## Invitation
 

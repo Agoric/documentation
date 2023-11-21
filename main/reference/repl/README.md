@@ -1,7 +1,8 @@
 # Agoric REPL
 
-**Note**: This page describes the Agoric REPL. For information about the `Node.js` REPL, 
-click [here](https://nodejs.org/api/repl.html).
+**Note**: This page describes the Agoric REPL.
+If you are instead looking for information about `node` or the Node.js REPL, see
+[Node.js documentation](https://nodejs.org/api/repl.html).
 
 ## Introduction
 
