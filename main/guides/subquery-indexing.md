@@ -6,9 +6,7 @@ This document explains how to index Agoric blockchain data with SubQuery's open 
 
 SubQuery is a leading blockchain data indexer that provides developers with fast, flexible, universal, open source and decentralised APIs for web3 projects. SubQuery SDK allows developers to get rich indexed data and build intuitive and immersive decentralised applications in a faster and more efficient way. SubQuery supports 100+ ecosystems including Agoric Cosmos, Ethereum, Polygon, Polkadot, Algorand, NEAR, and Avalanche.
 
-Another one of SubQuery's competitive advantages is the ability to aggregate data not only within a chain but across multiple blockchains all within a single project. This allows the creation of feature-rich dashboard analytics, multi-chain block scanners, or projects that index IBC transactions across zones.
-
-Other advantages include superior performance with multiple RPC endpoint configurations, multi-worker capabilities and a configurable caching architecture. To find out more, visit our [documentation](https://academy.subquery.network/).
+Features include multiple RPC endpoint configurations, multi-worker capabilities and a configurable caching architecture. To find out more, visit our [documentation](https://academy.subquery.network/).
 
 ## Getting started
 Take a look at this [SubQuery Starter Project](https://github.com/subquery/cosmos-subql-starter/tree/main/Agoric/agoric-starter) that introduces SubQuery's Agoric support by indexing all transfer events and messages on the Agoric network.
