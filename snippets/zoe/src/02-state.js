@@ -1,16 +1,13 @@
 import { Far } from '@endo/far';
 
-export const start = _z => {
-  // Contracts can use ordinary variables for state
-  // that lasts between transactions.
+// #region startfn
+export const start = () => {
   let value = 'Hello, World!';
-  const publicFacet = Far('ValueCell', {
-    get: () => value,
-    set: v => (value = v),
-  });
+  const get = () => value;
+  const set = v => (value = v);
 
-  return { publicFacet };
+  return {
+    publicFacet: Far('ValueCell', { get, set }),
+  };
 };
-
-// p.s. Fits in a tweet!
-// https://twitter.com/DeanTribble/status/1433268983977820161
+// #endregion startfn

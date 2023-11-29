@@ -1,20 +1,12 @@
 import { Far } from '@endo/far';
 
-export const start = _z => {
+export const start = () => {
   let value = 'Hello, World!';
+  const get = () => value;
+  const set = v => (value = v);
 
-  // We can limit the public API to read-only
-  // by omitting the set() method
-  const publicFacet = Far('ValueView', {
-    get: () => value,
-  });
-
-  // The creatorFacet is provided only to the
-  // caller of E(zoe).startInstance()
-  const creatorFacet = Far('ValueCell', {
-    get: () => value,
-    set: v => (value = v),
-  });
-
-  return { publicFacet, creatorFacet };
+  return {
+    publicFacet: Far('ValueView', { get }),
+    creatorFacet: Far('ValueCell', { get, set }),
+  };
 };

@@ -170,6 +170,7 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/getting-started/',
+            '/guides/getting-started/contract-basics.html',
             '/guides/getting-started/contract-rpc.html',
             '/guides/getting-started/deploying.html',
             '/guides/getting-started/syncing-up.html',
