@@ -350,7 +350,7 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 
 ## Keyword
 
-A *Keyword* is a string that is a valid ASCII identifier
+A *Keyword* is a string that is an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
 and starts with an upper case letter.
 See **[Zoe Data Types](/reference/zoe-api/zoe-data-types.md#keyword)**.
 

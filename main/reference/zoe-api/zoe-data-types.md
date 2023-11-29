@@ -56,7 +56,7 @@ is exclusively yours and no one else has access to it.
 
 A **Keyword** is a unique identifier string within a contract for tying together the 
 **issuers** in its **proposals**, **payments**, and **payouts**.
-It must be a valid ASCII [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
+It must be an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
 and start with an upper case letter in order to avoid collisions with JavaScript properties
 such as `toString` when used as a property name in a record.
 (For more detail, see [Why do Zoe keywords have to start with a capital letter? #8241](https://github.com/Agoric/agoric-sdk/discussions/8241).)
