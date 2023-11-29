@@ -236,7 +236,7 @@ zcf.assertUniqueKeyword(keyword);
 - Returns: None.
 
 Prohibit invocation of invitatations whose description include any of the strings.
-Any of the strings that end with a colon (:) will be treated as a prefix,
+Any of the strings that end with a colon (`:`) will be treated as a prefix,
 and invitations whose description string begins with the string (including the colon)
 will be burned and not processed if passed to **E(Zoe).offer()**.
 
