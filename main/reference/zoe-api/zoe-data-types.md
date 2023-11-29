@@ -66,7 +66,7 @@ such as `toString` when used as a property name in a record.
 ## KeywordRecord
 
 A **KeywordRecord** is a [CopyRecord](/glossary/#copyrecord) in which every property name
-is a **[Keyword](#keyword)**, such as `harden({ Currency: quatloosBrand, CurrencyUnit: 100n })`.
+is a **[Keyword](#keyword)**, such as `harden({ Asset: moolaIssuer, Bid: simoleanIssuer })`.
 Subtypes further constrain property values (for example, an
 **AmountKeywordRecord** is a **KeywordRecord** in which every value is an
 **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a
