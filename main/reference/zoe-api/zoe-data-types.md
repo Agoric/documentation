@@ -62,7 +62,7 @@ such as `toString` when used as a property name in a record.
 (For more detail, see [Why do Zoe keywords have to start with a capital letter? #8241](https://github.com/Agoric/agoric-sdk/discussions/8241).)
 `NaN` and `Infinity` are also not allowed as keywords.
 
-<a name="amountkeywordrecord"></a>
+<a id="amountkeywordrecord"></a>
 ## KeywordRecord
 
 A **KeywordRecord** is a [CopyRecord](/glossary/#passable) in which every property name

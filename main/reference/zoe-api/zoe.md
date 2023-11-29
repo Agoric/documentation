@@ -295,7 +295,7 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
 
 Used to make an offer to the contract that created the **invitation**.
 
-<a name="proposals-and-payments"></a>
+<a id="proposals-and-payments"></a>
 ### Proposals
 
 **proposal** must be either `undefined` or a record with **give**, **want**, and/or **exit** properties
