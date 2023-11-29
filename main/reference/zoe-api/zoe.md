@@ -290,7 +290,7 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
 - **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 - **proposal**: **[Proposal](/glossary/#proposal)** - Optional.
 - **paymentKeywordRecord**: **[PaymentKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
-- **offerArgs**: **[CopyRecord](/glossary/#passable)** - Optional.
+- **offerArgs**: **[CopyRecord](/glossary/#copyrecord)** - Optional.
 - Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
 Used to make an offer to the contract that created the **invitation**.

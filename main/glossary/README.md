@@ -157,6 +157,21 @@ code defining how that agreement works. When the realtor has a new house to sell
 they instantiate a new instance of their standard contract for that specific property.
 If they have ten houses for sale, they have ten different contract instances.
 
+## CopyArray
+
+A [hardened](#harden) acyclic array in which each element is [passable](#passable), such as
+`harden(['foo', 'bar'])`.
+For more information, see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
+
+## CopyRecord
+
+A [hardened](#harden) acyclic plain object [dictionary](https://en.wikipedia.org/wiki/Associative_array)
+in which each key is a string and each value is [passable](#passable), such as
+`harden({ keys: [0, 1], values: ['foo', 'bar'] })`.
+For more information, see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
+
 ## Creator Invitation
 
 An [invitation](#invitation) optionally returned by [`E(zoe).startInstance(...)`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
@@ -424,10 +439,11 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 A *passable* is something that can be sent to and from remote objects.
 Passables include pass-by-copy primitive values such as numbers and strings and
 pass-by-reference values such as Remotables and Promises.
-Passables also include hardened acyclic pass-by-copy containers that recursively terminate
-in non-container passables, such as CopyArrays like `harden(['foo', 'bar'])` and
-CopyRecords like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`.
-See the
+Passables also include [hardened](#harden) acyclic pass-by-copy containers that
+recursively terminate in non-container passables, such as
+[CopyArrays](#copyarray) and [CopyRecords](#copyrecord).
+
+For more information, see the
 [Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
 
 ## Payment

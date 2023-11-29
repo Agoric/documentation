@@ -65,7 +65,7 @@ such as `toString` when used as a property name in a record.
 <a id="amountkeywordrecord"></a>
 ## KeywordRecord
 
-A **KeywordRecord** is a [CopyRecord](/glossary/#passable) in which every property name
+A **KeywordRecord** is a [CopyRecord](/glossary/#copyrecord) in which every property name
 is a **[Keyword](#keyword)**, such as `harden({ Currency: quatloosBrand, CurrencyUnit: 100n })`.
 Subtypes further constrain property values (for example, an
 **AmountKeywordRecord** is a **KeywordRecord** in which every value is an

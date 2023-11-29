@@ -73,7 +73,7 @@ const payments = {
 ## Offer Arguments
 
 To pass additional arguments to the **offerHandler** contract code associated with the
-invitation, send them in an **offerArgs** record.
+invitation, send them in an **offerArgs** [CopyRecord](/glossary/#copyrecord).
 Each contract can define the properties it supports and which are required, and
 is responsible for handling any unexpected or missing arguments.
 
