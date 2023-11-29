@@ -122,7 +122,6 @@ module.exports = {
             '/guides/getting-started/start-a-project.html',
             '/guides/getting-started/contract-rpc.html',
             '/guides/getting-started/deploying.html',
-            '/guides/getting-started/syncing-up.html',
           ],
         },
         {
