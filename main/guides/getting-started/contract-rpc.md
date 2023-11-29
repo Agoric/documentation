@@ -112,7 +112,7 @@ The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) con
 ## Specifying Offers
 
 Recall that for an agent within the JavaScript VM,
-[E(zoe).offer(...)](../../reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs) takes an `Invitation` and optionally a `Proposal` with `{ give, want }`, a `PaymentKeywordRecord`, and `offerArgs`; it returns a `UserSeat` from which we can [getPayouts()](../../reference/zoe-api/user-seat.md#e-userseat-getpayouts).
+[E(zoe).offer(...)](../../reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs) takes an `Invitation` and optionally a `Proposal` with `{ give, want }`, a `PaymentPKeywordRecord`, and `offerArgs`; it returns a `UserSeat` from which we can [getPayouts()](../../reference/zoe-api/user-seat.md#e-userseat-getpayouts).
 
 ![Zoe API diagram, simplified](./assets/zoe-simp.svg)
 

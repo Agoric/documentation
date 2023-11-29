@@ -60,7 +60,7 @@ For more details, see [Proposals](/reference/zoe-api/zoe.md#proposals).
 
 ## Escrowed Payments
 
-Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord) containing [Payments](/reference/ertp-api/payment.md) of the corresponding digital assets.
+Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentPKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord) containing [Payments](/reference/ertp-api/payment.md) of the corresponding digital assets.
 Zoe escrows these payments on behalf of your offer until it is completed
 or rejected or the assets are reassigned to another offer.
 ```js

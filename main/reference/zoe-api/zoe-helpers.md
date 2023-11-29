@@ -268,7 +268,7 @@ assertNatAssetKind(zcf, quatloosBrand);
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **recipientSeat**: **[ZCFSeat](./zcfseat.md)**
 - **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- **payments**: **PaymentKeywordRecord**
+- **payments**: **PaymentPKeywordRecord**
 - Returns: **Promise&lt;String>**
 
 Deposits payments such that their amounts are reallocated to a seat.
@@ -290,7 +290,7 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat**: **[ZCFSeat](./zcfseat.md)**
 - **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- Returns: **Promise&lt;PaymentKeywordRecord>**
+- Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 Withdraws payments from a seat. Note that withdrawing the amounts of
 the payments must not and cannot violate offer safety for the seat. The
@@ -298,7 +298,7 @@ the payments must not and cannot violate offer safety for the seat. The
 
 If the seat has exited, aborts with the message **The seat cannot have exited.**
 
-Unlike **depositToSeat()**, a **PaymentKeywordRecord** is returned, not a success message.
+Unlike **depositToSeat()**, a **PaymentPKeywordRecord** is returned, not a success message.
 ```js
 import {
   withdrawFromSeat
@@ -309,7 +309,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ## saveAllIssuers(zcf, issuerKeywordRecord)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **issuerKeywordRecord**: **IssuerKeywordRecord**
-- Returns: **Promise&lt;PaymentKeywordRecord>**
+- Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
