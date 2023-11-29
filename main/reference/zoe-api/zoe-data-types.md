@@ -35,13 +35,13 @@ You can get information about the contract instance via these methods:
 
 ## Invitation
 
-An **Invitation** is a **[Payment](/reference/ertp-api/payment.md)** holding a non-fungible eright created by an **[InvitationIssuer](#invitationissuer)**.
+An **Invitation** is a **[Payment](/reference/ertp-api/payment.md)** holding a non-fungible eright created by the **[InvitationIssuer](#invitationissuer)**.
 An **Invitation Payment** is a **Payment** holding an **Invitation**.
 
 ## InvitationIssuer
 
-The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe
-instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the
+The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**.
+Zoe has a single **InvitationIssuer** for its entire lifetime. All **Invitations** come from the
 **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
 
 **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most

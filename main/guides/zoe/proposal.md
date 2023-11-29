@@ -16,7 +16,7 @@ An [Invitation](/reference/zoe-api/zoe-data-types.md#invitation) is a special ca
 having one gives you the right to participate in that contract instance, for example, by making offers in it.
 
 There are two main ways for contract users to get an invitation:
-- If you create the contract instance, you get a special creator invitation.
+- If you create the contract instance, the contract might supply a special creator invitation.
 - Someone (possibly you) who holds the right objects has created an invitation for a contract instance and gives it to
   you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
   doesn't matter (nor does Zoe specify or have any requirements) how or why it got to you, only that you have it.
@@ -46,11 +46,11 @@ it is represented as a [BigInt](https://developer.mozilla.org/en-US/docs/Web/Jav
 rather than a [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number))
 
 ::: warning Note
-It's important to understand that Amounts are just descriptions of assets with no
-intrinsic value. [Payments](/reference/ertp-api/payment.md) hold actual digital assets.
+Amounts are just _descriptions_ of assets, and have no intrinsic value of their own.
+In contrast, [Payments](/reference/ertp-api/payment.md) hold actual digital assets.
 :::
 
-**exit** specifies how the offer can be can cancelled. It must conform to one of three shapes:
+**exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
 - `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,

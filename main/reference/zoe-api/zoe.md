@@ -299,8 +299,12 @@ Used to make an offer to the contract that created the **invitation**.
 ### Proposals
 
 **proposal** must be either `undefined` or a record with **give**, **want**, and/or **exit** properties
-respectively expressing conditions regarding what assets will be given, what must be
-received in exchange, and an exit rule defining how/when the offer can be canceled.
+respectively expressing conditions regarding what is being given,
+what must be received in exchange to satisfy offer safety, and
+an exit rule defining how/when the offer can be canceled.
+Note that the contract is not obligated to accept the proposal;
+it may inspect it and reject it for any reason
+(in which case all payments will be returned promptly).
 
 ```js
 const myProposal = harden({
@@ -314,13 +318,13 @@ const myProposal = harden({
 In the example above, "Asset" and "Price" are the Keywords. However, in an auction contract,
 the Keywords might be "Asset" and "Bid".
 
-**exit** specifies how the offer can be can cancelled. It must conform to one of three shapes:
+**exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
 - `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
   as determined by its **timer** and **deadline** properties.
-  **timer** must be a timer, and **deadline** must be a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) value interpreted with respect to the timer.
-  Some timers use Unix epoch time, while others count block height.
+  **timer** must be a timer, and **deadline** must be timestamp understood by it.
+  (Some timers use Unix epoch time, while others count block height.)
   For more details, see [Timer Services](/reference/repl/timerServices.md).
 
 ### Payments

@@ -478,9 +478,10 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 ## Proposal
 
 Proposals are records with `give`, `want`, and/or `exit` properties respectively
-expressing [offer](#offer) conditions regarding what assets will be given, what
-must be received in exchange, and an [exit rule](#exit-rule) defining how/when
-the offer can be canceled. For example:
+expressing [offer](#offer) conditions regarding what assets will be given,
+what must be received in exchange to satisfy offer safety, and
+an [exit rule](#exit-rule) defining how/when the offer can be canceled.
+For example:
 ```js
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
