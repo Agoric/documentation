@@ -119,7 +119,6 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/getting-started/',
-            '/guides/getting-started/start-a-project.html',
             '/guides/getting-started/contract-rpc.html',
             '/guides/getting-started/deploying.html',
           ],
