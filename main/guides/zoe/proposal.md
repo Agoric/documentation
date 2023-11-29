@@ -79,7 +79,7 @@ is responsible for handling any unexpected or missing arguments.
 
 ::: danger
 Contract code should be careful interacting with **offerArgs**. These values need input validation
-before being used since they are coming directly from the user and may have malicious behavior.
+before being used since they are coming directly from the caller and may have malicious behavior.
 :::
 
 ## Returned Value

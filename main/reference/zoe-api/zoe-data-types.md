@@ -54,8 +54,8 @@ is exclusively yours and no one else has access to it.
 
 ## Keyword
 
-A **Keyword** is a unique identifier string within a contract for tying together its
-**proposals**, **payments**, and **payouts**.
+A **Keyword** is a unique identifier string within a contract for tying together the 
+**issuers** in its **proposals**, **payments**, and **payouts**.
 It must be a valid ASCII [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
 and start with an upper case letter in order to avoid collisions with JavaScript properties
 such as `toString` when used as a property name in a record.
