@@ -70,8 +70,8 @@ is a **[Keyword](#keyword)**, such as `harden({ Asset: moolaIssuer, Bid: simolea
 Subtypes further constrain property values (for example, an
 **AmountKeywordRecord** is a **KeywordRecord** in which every value is an
 **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a
-**PaymentKeywordRecord** is a **KeywordRecord** in which every value is a
-**[Payment](/reference/ertp-api/payment.md)**).
+**BrandKeywordRecord** is a **KeywordRecord** in which every value is a
+**[Brand](/guides/ertp/#brand)**).
 
 Users submit their **payments** and receive their **payouts** as **KeywordRecords**:
 ```js
