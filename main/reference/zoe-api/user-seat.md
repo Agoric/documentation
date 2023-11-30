@@ -49,7 +49,7 @@ const { want, give, exit } = sellerSeat.getProposal();
 
 A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction, redirecting
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
-containing all the **Payout** **Payments** associated with the **seat**'s offers.
+containing **Promises** for all the **Payout** **Payments** associated with the **seat**'s offers.
 
 
 ```js

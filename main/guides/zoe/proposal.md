@@ -13,7 +13,7 @@ To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-
 ## Invitations
 
 An [Invitation](/reference/zoe-api/zoe-data-types.md#invitation) is a special case of ERTP [Payment](/reference/ertp-api/payment.md). Each is linked to a specific contract [Instance](/reference/zoe-api/zoe-data-types.md#instance), and
-having one gives you the right to participate in that contract instance, for example, by making offers in it.
+having one gives you the right to participate in that contract instance by making offers in it.
 
 There are two main ways for contract users to get an invitation:
 - If you create the contract instance, the contract might supply a special creator invitation.

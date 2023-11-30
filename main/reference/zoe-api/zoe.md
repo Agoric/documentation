@@ -300,7 +300,7 @@ Used to make an offer to the contract that created the **invitation**.
 
 **proposal** must be either `undefined` or a record with **give**, **want**, and/or **exit** properties
 respectively expressing conditions regarding what is being given,
-what must be received in exchange to satisfy offer safety, and
+what is expected in exchange (protected by offer safety), and
 an exit rule defining how/when the offer can be canceled.
 Note that the contract is not obligated to accept the proposal;
 it may inspect it and reject it for any reason

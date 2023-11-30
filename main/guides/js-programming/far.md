@@ -36,9 +36,9 @@ There are four broad kinds of Passable:
   strings, and symbols that are either
   [well-known](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#well-known_symbols) or
   [registered](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry).
-- Acyclic pass-by-copy **containers** that recursively terminate in non-container passables, such as
-  _CopyArrays_ like `harden(['foo', 'bar'])` and
-  _CopyRecords_ like `harden({ keys: [0, 1], values: ['foo', 'bar'] })` and
+- Acyclic pass-by-copy **containers** that recursively terminate in non-container passables.
+  Such containers include _CopyArrays_ like `harden(['foo', 'bar'])`,
+  _CopyRecords_ like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`, and
   _CopyTaggeds_ representing higher-order types like CopySet, CopyBag, and CopyMap.
 - Pass-by-reference **_Remotables_**: objects that can be shared with remote systems which can then
   invoke methods using e.g. `E()` eventual send notation. Remotables are created by [`Far()`](#far-api)
@@ -94,7 +94,7 @@ this prevents malicious clients from playing tricks with cyclic data etc.
 `Far(farName, objectWithMethods)` marks an object as Remotable.
 
 - `farName` `{ String }`
-- `objectWithMethods` `{ Object }` `[remotable={}]`
+- `objectWithMethods` `{ Object }` - Optional.
 - Returns: A `Remotable` object.
 
 The `farName` parameter gives the `Remotable` an _interface name_ for debugging purposes, which only shows
@@ -112,6 +112,6 @@ Before succeeding, the `Far()` function:
 
 ::: tip Avoid accidental exports
 If an object should never be exposed to other vats, you should make it
-a point **not** to use `Far()` on it. If an object is not marked as a remotable but is accidentally
+a point **not** to use `Far()` on it. If an object is not marked as a Remotable but is accidentally
 exposed, an error is thrown. This prevents any vulnerability from such accidental exposure.
 :::

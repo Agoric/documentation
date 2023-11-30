@@ -439,9 +439,9 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 A *passable* is something that can be sent to and from remote objects.
 Passables include pass-by-copy primitive values such as numbers and strings and
 pass-by-reference values such as Remotables and Promises.
-Passables also include [hardened](#harden) acyclic pass-by-copy containers that
-recursively terminate in non-container passables, such as
-[CopyArrays](#copyarray) and [CopyRecords](#copyrecord).
+Passables also include [CopyArrays](#copyarray) and [CopyRecords](#copyrecord), which are
+[hardened](#harden) acyclic pass-by-copy containers that
+recursively terminate in non-container passables.
 
 For more information, see the
 [Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
@@ -459,8 +459,9 @@ and the [ERTP API's Payments section](/reference/ertp-api/payment.md).
 The assets paid out to a user when an [seat](#seat) exits, either successfully or not. The payout is always
 what the seat's current [allocation](#allocation) is.
 
-If there was a previous reallocation, the payout is different than what the user escrowed. If there is no reallocation
-before the seat exits, the payout is the same as what they escrowed.
+If there was a reallocation, the payout may be different than what the user escrowed
+(but still constrained by [offer safety](#offer-safety)).
+Otherwise, the payout is the same as what they escrowed.
 
 ## Petname
 
@@ -479,7 +480,7 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 
 Proposals are records with `give`, `want`, and/or `exit` properties respectively
 expressing [offer](#offer) conditions regarding what assets will be given,
-what must be received in exchange to satisfy offer safety, and
+what is expected in exchange (protected by [offer safety](#offer-safety)), and
 an [exit rule](#exit-rule) defining how/when the offer can be canceled.
 For example:
 ```js
@@ -489,7 +490,7 @@ const myProposal = harden({
   exit: { onDemand: null },
 });
 ```
-`give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing what will be respectively given or received.
+`give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing respectively what will be given and what is being requested in exchange.
 
 See [Offers](/guides/zoe/proposal.md).
 

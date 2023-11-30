@@ -79,7 +79,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 
 Uses the Zoe **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** to _mint_
 a credible **Invitation** for a smart contract.
-The returned **Invitation**'s **value** specifies:
+The returned **Invitation**'s **amount** specifies:
 - The specific contract **instance**.
 - The Zoe **installation**.
 - A unique **[Handle](./zoe-data-types.md#handle)**.
@@ -92,7 +92,9 @@ and returning arbitrary offer results.
 **description** is a required string describing the **Invitation**,
 and should include whatever information is needed for a potential recipient of the **Invitation**
 to know what they are getting in the optional **customProperties** argument, which is
-put in the **Invitation**'s **value**.
+put in the **Invitation**'s **amount**.
+Each one should be a string literal that is unique within its contract and
+used only as the argument to make invitations of a particular kind.
 
 ```js
 const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')

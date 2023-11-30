@@ -25,7 +25,7 @@ it is returned. Otherwise a new **seat** is returned.
 
 ## aZCFMint.burnLosses(losses, zcfSeat?)
   - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
-  - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
+  - **zcfSeat**: **[ZCFSeat](./zcfseat.md)**
   - Returns: None
 
 All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
