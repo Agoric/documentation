@@ -36,12 +36,12 @@ someAmountShape: {
 
 ## Value
 
-**Values** describe how much of something can be owned or shared.
-For fungible **[Amounts](#amount)**, **Values** are non-negative **BigInts**.
-For non-fungible **Amounts**, **Values** are [copyArrays](/guides/js-programming/far.md#passstyleof-api)
-(e.g., a hardened array of strings).
-
-Recall that **BigInt**s are written with an *n* at the end: **10n**, **137n**, etc.
+A **Value** is the part of an [Amount](#amount) that describes the value of something
+that can be owned or shared: how much, how many, or a description of a unique asset, such as
+$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
+For a fungible **Amount**, the **Value** is usually a non-negative **BigInt** such as `10n` or `137n`.
+For a non-fungible **Amount**, the **Value** might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
+Values must be [Keys](/glossary/#key).
 
 ## AssetKind
 

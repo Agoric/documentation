@@ -251,12 +251,12 @@ For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#proposals).
 ## Facet
 
 A *facet* is an object that exposes an API or particular view of some larger entity, which may be an object itself.
-You can make any number of facets of an entity. In JavaScript, you often make a facet by selecting methods from the entity,
-either directly or by destructuring:
+You can make any number of facets of an entity. In JavaScript, you often make a facet that forwards method calls:
 ```js
-const facet = {
-  myMethod: oldObject.method,
-}
+import { Far } from '@endo/far';
+const facet = Far('FacetName', {
+  myMethod: (...args) => oldObject.method(...args),
+});
 ```
 Two Agoric uses are:
 - *Deposit Facet*: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add
@@ -285,7 +285,7 @@ its [section in the JavaScript Distributed Programming Guide](https://github.com
 ## Hardened JavaScript (SES)
 
 Hardened JavaScript is a standards-track extension to the JavaScript standard.
-Hardening JavaScript turns the sandbox into firm ground, where you can code run
+Hardening JavaScript turns the sandbox into firm ground, where you can run code
 you don't completely trust, without being vulnerable to their bugs or bad
 intentions.
 See the [Endo and Hardened JavaScript Programming
@@ -554,13 +554,11 @@ it set at $10. They can specify the instance's minimum bid amount in its terms.
 
 ## Value
 
-Values are the part of an [amount](#amount) that describe the value of something
-that can be owned or shared: How much, how many, or a description of a unique asset, such as
-Pixel(3,2), $3, or “Seat J12 for the show September 27th at 9:00pm”.
-[Fungible](#fungible) values are usually represented by natural numbers.
-Other values may be represented as a CopySet of strings naming particular rights or
-arbitrary objects representing the rights directly (usually [non-fungible](#non-fungible) assets).
-Values must be [Keys](#key).
+A value is the part of an [Amount](#amount) that describes the value of something
+that can be owned or shared: how much, how many, or a description of a unique asset, such as
+$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
+For a [fungible](#fungible) Amount, the Value is usually a non-negative **BigInt** such as `10n` or `137n`.
+For a [non-fungible](#non-fungible) Amount, the Value might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
 
 For more information, see the [ERTP documentation's Value section](/guides/ertp/amounts.md#values).
 
