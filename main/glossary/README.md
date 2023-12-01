@@ -32,6 +32,27 @@ The contract can modify a seat's allocation as long as it never violates offer s
 assign assets that weren't already in some allocation and it can't assign them to more than one seat. Also, goods can't
 disappear from the total allocation.
 
+## Amount
+
+Amounts are the canonical descriptions of tradable goods. They are manipulated
+by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
+[purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
+abstract right to participate in a particular exchange.
+
+An amount is comprised of a [brand](#brand) with a [value](#value). For example, "4 Quatloos"
+is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
+
+**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
+economic scarcity or intrinsic value.
+For example, to make you an offer to buy a magic sword in a game,
+a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
+sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
+trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
+a new `amount` does **not** create new assets.
+
+For more information, see the [ERTP documentation's Amounts section](/guides/ertp/amounts.md)
+and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
+
 ## AmountMath
 
 The AmountMath library executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
@@ -60,26 +81,9 @@ five tickets is performed by set union rather than by arithmetic.
 For more information, see the [ERTP documentation's AmountMath section](/guides/ertp/amount-math.md)
 and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
-## Amount
 
-Amounts are the canonical descriptions of tradable goods. They are manipulated
-by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
-[purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
-abstract right to participate in a particular exchange.
 
-An amount is comprised of a [brand](#brand) with a [value](#value). For example, "4 Quatloos"
-is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
-**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
-economic scarcity or intrinsic value.
-For example, to make you an offer to buy a magic sword in a game,
-a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
-sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
-trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
-a new `amount` does **not** create new assets.
-
-For more information, see the [ERTP documentation's Amounts section](/guides/ertp/amounts.md)
-and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
 ## AssetHolder
 
