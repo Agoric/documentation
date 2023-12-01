@@ -45,23 +45,23 @@ const { want, give, exit } = sellerSeat.getProposal();
 ```
 
 ## E(UserSeat).getPayouts()
-  - Returns: **Promise&lt;PaymentPKeywordRecord>**
+  - Returns: **Promise&lt;[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)>**
 
-A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
-containing **Promises** for all the **Payout** **Payments** associated with the **seat**'s offers.
+Returns a **Promise** for a [KeywordRecord](./zoe-data-types.md#keywordrecord) containing **Promises** for all the **Payouts** associated with the **seat**'s offers.
+A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction,
+redirecting escrowed assets in accordance with the result of the transaction.
 
-This promise will be resolved when the seat exits.
+The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getPayout(keyword)
-- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
-- Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
+  - **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
+  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
-A **Payout** is a **Payment** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **Payout**
-**Payment** associated with the *keyword* argument.
+Returns a **Promise** for the **Payout** associated with the *keyword* argument.
+A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction,
+redirecting escrowed assets in accordance with the result of the transaction.
 
-This promise will be resolved when the seat exits.
+The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getOfferResult()
   - Returns: **Promise&lt;OfferResult>**
