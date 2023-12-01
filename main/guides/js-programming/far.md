@@ -104,8 +104,10 @@ this prevents malicious clients from playing tricks with cyclic data etc.
 The `farName` parameter gives the `Remotable` an _interface name_ for debugging purposes, which only shows
 up when logged through the `console`, for example with `console.log`.
 
-The `objectWithMethods` parameter should be an object whose properties are the functions serving
-as the object's methods.
+The optional `objectWithMethods` parameter should be an object
+whose properties are the functions serving as the object's methods.
+It MUST NOT already be hardened or even frozen (though `Far()` will harden it before returning successfully).
+If not provided, a new empty object will be used.
 
 Before succeeding, the `Far()` function:
 
