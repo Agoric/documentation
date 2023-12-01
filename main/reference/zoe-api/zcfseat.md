@@ -25,7 +25,7 @@ to get back from Zoe. It has keys **give**, **want**, and
 **exit**. **give** and **want** are records with **[Keywords](./zoe-data-types.md#keyword)** as keys and
 **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** as values. The **proposal** is a user's understanding of the
 contract that they are entering when they make an offer. See
-[**E(zoe).offer()**](./zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs) for full details.
+[`E(zoe).offer(...)`](./zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) for full details.
 
 - Example:
 ```js

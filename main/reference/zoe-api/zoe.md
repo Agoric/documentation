@@ -285,11 +285,12 @@ const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInsta
   installation, issuerKeywordRecord, terms);
 ```
 
+<a id="e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs"></a>
 
-## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs?)
+## E(Zoe).offer(invitation, proposal?, paymentPKeywordRecord?, offerArgs?)
 - **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 - **proposal**: **[Proposal](/glossary/#proposal)** - Optional.
-- **paymentKeywordRecord**: **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
+- **paymentPKeywordRecord**: **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
 - **offerArgs**: **[CopyRecord](/glossary/#copyrecord)** - Optional.
 - Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
@@ -329,7 +330,7 @@ the Keywords might be "Asset" and "Bid".
 
 ### Payments
 
-**paymentKeywordRecord** must be either `undefined` or a **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)**
+**paymentPKeywordRecord** must be either `undefined` or a **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)**
 containing the actual **payments** to be escrowed by Zoe.
 Every **Keyword** in **give** must also have a corresponding **payment**.
 

@@ -86,7 +86,7 @@ The returned **Invitation**'s **amount** specifies:
 
 **offerHandler** is a required function accepting a **ZCFSeat** and **offerArgs**
 (which will be present if and only if provided to
-[`E(Zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs))
+[`E(Zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs))
 and returning arbitrary offer results.
 
 **description** is a required string describing the **Invitation**,
