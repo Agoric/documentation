@@ -73,12 +73,11 @@ Subtypes further constrain property values (for example, an
 **PaymentPKeywordRecord** is a **KeywordRecord** in which every value is either a
 **[Payment](/reference/ertp-api/payment.md)** or a Promise for a Payment).
 
-Users submit their **payments** and receive their **payouts** as **KeywordRecords**:
+Users submit their **payments** as **KeywordRecords**:
 ```js
-quatloosPurse.deposit(payouts.Asset);
-const quatloos5 = AmountMath.make(quatloosBrand, 5n);
-const payments = {
-  Asset: quatloosPurse.withdraw(quatloos5),
+const aFistfulOfQuatloos = AmountMath.make(quatloosBrand, 1000n);
+const paymentKeywordRecord = {
+  Asset: quatloosPurse.withdraw(aFistfulOfQuatloos),
 };
 ```
 

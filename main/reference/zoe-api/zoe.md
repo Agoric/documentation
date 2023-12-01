@@ -334,10 +334,7 @@ containing the actual **payments** to be escrowed by Zoe.
 Every **Keyword** in **give** must also have a corresponding **payment**.
 
 ```js
-const paymentKeywordRecord = harden({
-  Asset: quatloosPayment,
-  Price: moolaPayment,
-});
+const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 ```
 
 <a href="offerargs"></a>

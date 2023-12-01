@@ -51,16 +51,6 @@ A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a p
 escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
 containing **Promises** for all the **Payout** **Payments** associated with the **seat**'s offers.
 
-
-```js
-// Record example
-const paymentKeywordRecord = {
-  FirstPayment: quatloosPayment,
-  SecondPayment: moolaPayment,
-  //etc.
-};
-```
-
 This promise will be resolved when the seat exits.
 
 ## E(UserSeat).getPayout(keyword)
