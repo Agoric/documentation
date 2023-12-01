@@ -35,8 +35,8 @@ You can get information about the contract instance via these methods:
 
 ## Invitation
 
-An **Invitation** is a **[Payment](/reference/ertp-api/payment.md)** holding a non-fungible eright created by the **[InvitationIssuer](#invitationissuer)**.
-An **Invitation Payment** is a **Payment** holding an **Invitation**.
+An **Invitation** is a non-fungible asset created by the **[InvitationIssuer](#invitationissuer)**.
+An **Invitation Payment** is a **[Payment](/reference/ertp-api/payment.md)** holding an **Invitation**.
 
 ## InvitationIssuer
 
