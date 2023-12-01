@@ -301,7 +301,7 @@ Used to make an offer to the contract that created the **invitation**.
 
 **proposal** must be either `undefined` or a record with **give**, **want**, and/or **exit** properties
 respectively expressing conditions regarding what is being given,
-what is expected in exchange (protected by offer safety), and
+what is desired in exchange (protected by offer safety), and
 an exit rule defining how/when the offer can be canceled.
 Note that the contract is not obligated to accept the proposal;
 it may inspect it and reject it for any reason
@@ -332,7 +332,7 @@ the Keywords might be "Asset" and "Bid".
 
 **paymentPKeywordRecord** must be either `undefined` or a **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)**
 containing the actual **payments** to be escrowed by Zoe.
-Every **Keyword** in **give** must also have a corresponding **payment**.
+Every **Keyword** in **give** must have a corresponding **payment**.
 
 ```js
 const paymentKeywordRecord = harden({ Asset: quatloosPayment });
@@ -343,7 +343,7 @@ const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 
 **offerArgs** is an optional CopyRecord that can be used to pass additional arguments to the
 **offerHandler** contract code associated with the invitation by
-[`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
+[`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 Each contract can define the properties it supports and which are required.
 
 ## E(Zoe).installBundleID(bundleId)

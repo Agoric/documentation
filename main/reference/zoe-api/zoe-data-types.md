@@ -40,9 +40,13 @@ An **Invitation Payment** is a **[Payment](/reference/ertp-api/payment.md)** hol
 
 ## InvitationIssuer
 
-The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**.
-Zoe has a single **InvitationIssuer** for its entire lifetime. All **Invitations** come from the
-**[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
+The **InvitationIssuer** is an **[Issuer](/reference/ertp-api/issuer.md)** that plays a
+special role throughout Zoe. Zoe has a single **InvitationIssuer** for its entire
+lifetime. All **Invitations** come from the **[Mint](/reference/ertp-api/mint.md)**
+associated with the Zoe instance's **InvitationIssuer**.
+
+The issuer is publicly available (via [`E(Zoe).getInvitationIssuer()`](./zoe-contract-facet.md#zcf-getinvitationissuer)),
+so the ability to validate invitations is widely available.
 
 **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most
 often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**

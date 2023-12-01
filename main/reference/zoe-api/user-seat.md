@@ -71,7 +71,7 @@ For example, in the [Automatic Refund](/guides/zoe/contracts/automatic-refund.md
 In the [Covered Call](/guides/zoe/contracts/covered-call.md) example, it's a call option, which is an assayable **[Invitation](./zoe-data-types.md#invitation)**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is the result returned by the **offerHandler** function passed
-in the first argument to [`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
+in the first argument to [`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 
 Since the contract can return whatever it wants as an offer result, there is no guarantee that the
 promise will resolve promptly.

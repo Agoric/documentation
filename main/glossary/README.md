@@ -480,7 +480,7 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 
 Proposals are records with `give`, `want`, and/or `exit` properties respectively
 expressing [offer](#offer) conditions regarding what assets will be given,
-what is expected in exchange (protected by [offer safety](#offer-safety)), and
+what is desired in exchange (protected by [offer safety](#offer-safety)), and
 an [exit rule](#exit-rule) defining how/when the offer can be canceled.
 For example:
 ```js

@@ -30,7 +30,7 @@ Mints the *gains* **Amount** of assets and adds them to *zcfSeat*'s **[Allocatio
 All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**
 and the *losses*' **[Keywords](./zoe-data-types.md#keyword)** must be defined by the contract instance in which *zcfSeat* is participating.
 Subtracts *losses* from *zcfSeat*'s **[Allocation](./zoe-data-types.md#allocation)**, then
-burns that **amount** of assets from the pooled **[Purse](/reference/ertp-api/purse.md)**.
+burns that **amount** from the assets escrowed by Zoe for this contract instance.
 
 
 

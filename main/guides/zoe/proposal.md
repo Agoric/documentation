@@ -8,12 +8,13 @@ To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-
 - An **invitation** to participate in this contract instance.
 - A **proposal** stating your offer conditions.
 - The **payments** escrowed for the offer, each corresponding with a **give** [Keyword](/reference/zoe-api/zoe-data-types.md#keyword) in **proposal**.
-- **offerArgs** expressing additional arguments for the **offerHandler** associated with the invitation by [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
+- **offerArgs** expressing additional arguments for the **offerHandler** associated with the invitation by [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 
 ## Invitations
 
 An [Invitation](/reference/zoe-api/zoe-data-types.md#invitation) is a special case of ERTP [Payment](/reference/ertp-api/payment.md). Each is linked to a specific contract [Instance](/reference/zoe-api/zoe-data-types.md#instance), and
-having one gives you the right to participate in that contract instance by making offers with it.
+having one gives you the right to participate in that contract instance
+by using that invitation as the first argument to `E(zoe).offer(...)`.
 
 There are two ways for contract users to get an invitation:
 - If you create the contract instance, the contract might supply a special creator invitation.

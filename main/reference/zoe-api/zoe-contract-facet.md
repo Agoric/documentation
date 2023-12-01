@@ -70,10 +70,11 @@ associated with the **Issuer** value of the record:
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
-## zcf.makeInvitation(offerHandler, description, customProperties?, proposalShape?)
+<a id="zcf-makeinvitation-offerhandler-description-customproperties-proposalshape"></a>
+## zcf.makeInvitation(offerHandler, description, customDetails?, proposalShape?)
 - **offerHandler**: **(seat: ZCFSeat, offerArgs?: CopyRecord) => any**
 - **description**: **String**
-- **customProperties**: **Object** - Optional.
+- **customDetails**: **Object** - Optional.
 - **proposalShape**: **Pattern** - Optional.
 - Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
@@ -91,10 +92,12 @@ and returning arbitrary offer results.
 
 **description** is a required string describing the **Invitation**,
 and should include whatever information is needed for a potential recipient of the **Invitation**
-to know what they are getting in the optional **customProperties** argument, which is
-put in the **Invitation**'s **amount**.
-Each one should be a string literal that is unique within its contract and
-used only as the argument to make invitations of a particular kind.
+to distinguish among this contract's invitations.
+Each description should be a string literal that is unique within its contract
+and used only as the argument to make invitations of a particular kind.
+
+The optional **customDetails** argument is included in the **Invitation**'s
+**amount** and not otherwise relied on by Zoe.
 
 ```js
 const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
@@ -240,7 +243,7 @@ zcf.assertUniqueKeyword(keyword);
 Prohibit invocation of invitatations whose description include any of the strings.
 Any of the strings that end with a colon (`:`) will be treated as a prefix,
 and invitations whose description string begins with the string (including the colon)
-will be burned and not processed if passed to **E(Zoe).offer()**.
+will not be processed if passed to **E(Zoe).offer()**. Instead, an exception will be thrown.
 
 It is expected that most contracts will never invoke this function directly. It is
 intended to be used by **governance** in a legible way, so that the contract's
