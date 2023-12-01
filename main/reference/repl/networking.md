@@ -60,7 +60,7 @@ The other side of `connect()` is a "listening port". These ports are waiting for
 To get a listening port, you need a `NetworkInterface` object (such as the one on your `ag-solo` under `home.network`) and ask it to `bind()` to an endpoint. You can either provide a specific port name, or allow the API to allocate a random one for you. The endpoint specifies the type of connection that this port will be able to accept (IBC, TCP, etc), and some properties of that connection. `bind()` uses a "multiaddress" to encode this information.
 
 ```js
-// ask for a random allocation - ends with a slash
+// Ask for a random allocation - ends with a slash
 E(home.network).bind('/ibc-port/')
   .then(port => usePort(port));
 

@@ -18,7 +18,7 @@ method on the **[Issuer](./issuer.md)** associated with the **Brand** of assets 
 new **Purse** to hold.
 
 ```js
-const {issuer: quatloosIssuer} = makeIssuerKit{'quatloos'};
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
@@ -86,8 +86,8 @@ may pass them by. This is safe, as even if all the assets are withdrawn, the
 deposit still works on an empty **Purse**.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
-      makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 123n));
 const quatloos123 = AmountMath.make(quatloosBrand, 123n);
@@ -158,6 +158,7 @@ const depositOnlyFacet = purse.getDepositFacet();
 // a payment, thus depositing the payment assets in the Purse associated with the deposit facet.
 depositOnlyFacet.receive(payment);
 ```
+
 Once you have created a **DepositFacet**, there is one method you can call 
 on it, **[aDepositFacet.receive()](#adepositfacet-receive-payment-optamount)**. The **DepositFacet** takes a **Payment** 
 and adds it to the balance of the **DepositFacet**'s associated **Purse**. The **Payment** 

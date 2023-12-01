@@ -51,8 +51,8 @@ this proposal doesn’t have (or need) an exit condition.
 
 	```js
 	const myProposal = { 
-	  give: {In: giveAnchorAmount },
-	  want: {Out: wantMintedAmount }
+	  give: { In: giveAnchorAmount },
+	  want: { Out: wantMintedAmount }
 	};
 	```
 4. Create a payment record containing the external stable tokens you’re trading to the PSM.

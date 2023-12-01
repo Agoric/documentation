@@ -124,7 +124,7 @@ Before a contract can be installed on Zoe, its source code must be bundled. This
 ```js
 import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
+  require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );
 ```
 The installation operation returns an `installation`, which is an object with a single

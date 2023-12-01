@@ -34,7 +34,7 @@ and the values are the **Brands** for particular **[Issuers](/reference/ertp-api
 const brandKeywordRecord = {
   FirstCurrency: quatloosBrand,
   SecondCurrency: moolaBrand,
-  //etc.
+  // etc.
 };
 ```
 
@@ -74,12 +74,12 @@ custom terms. The returned values look like:
 
 ```js
 {
-  //brands and issuers are keywordRecords
+  // Brands and issuers are keywordRecords
   brands: { A: moolaKit.brand, B: simoleanKit.brand },
   issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
   customTermA: 'something',
   customTermB: 'something else',
-  //All other customTerms
+  // All other customTerms
 };
 ```
  
@@ -114,7 +114,7 @@ const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // transform the untrusted invitation to a trusted one
 const trustedInvitation = await invitationIssuer.claim(untrustedInvitation);
 const { value: invitationValue } =
-    await E(invitationIssuer).getAmountOf(trustedInvitation);
+  await E(invitationIssuer).getAmountOf(trustedInvitation);
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
@@ -242,7 +242,7 @@ not be in the public terms. For example, to share minting authority
 among multiple contracts, pass in the following as **privateArgs**:
 
 ```js
-{ externalMint: myExternalMint }
+const privateArgs = { externalMint: myExternalMint };
 ```
 
 It returns a **Promise** for a **StartInstanceResult** object. The object consists of:
@@ -278,11 +278,11 @@ represented as a **Payment**.
 ```js
 const issuerKeywordRecord = {
   Asset: moolaIssuer,
-  Price: quatlooIssuer
+  Price: quatlooIssuer,
 };
 const terms = { numBids: 3 };
-const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInstance(
-  installation, issuerKeywordRecord, terms);
+const { creatorFacet, publicFacet, creatorInvitation } =
+  await E(Zoe).startInstance(installation, issuerKeywordRecord, terms);
 ```
 
 <a id="e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs"></a>

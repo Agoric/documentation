@@ -40,7 +40,7 @@ Any successful operation by an **Issuer** on a **Payment** verifies it.
 
 ```js
 const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 10n));
-//Should return 'quatloos'
+// Should return 'quatloos'
 const allegedBrand = payment.getAllegedBrand();
 ```
 

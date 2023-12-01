@@ -25,7 +25,7 @@ not equal, an error is thrown and no changes are made.
 Creates an **Amount** from a given **Value** and a **Brand**.
 
 ```js
-//amount837 = { value: 837n, brand: quatloos }
+// amount837 = { brand: quatloosBrand, value: 837n }
 const amount837 = AmountMath.make(quatloosBrand, 837n);
 ```
 
@@ -53,7 +53,7 @@ Returns the **Value** from the given **Amount**.
 ```js
 const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 
-// returns 123n
+// Returns 123n
 const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 ```
 ## AmountMath.makeEmpty(brand, assetKind)
@@ -64,7 +64,7 @@ const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 Returns the **Amount** representing an empty **Amount** for the *brand* parameter's 
 **Brand**. This is the identity element for **AmountMath.add()** 
 and **AmountMath.subtract()**. The empty **Value** depends 
-on whether the *assetKind* is **AssetKind.NAT** (*0n*), **AssetKind.COPY_SET** (*[]*), or **AssetKind.COPY_BAG** (*[]*).
+on whether the *assetKind* is **AssetKind.NAT** (`0n`), **AssetKind.COPY_SET** (`[]`), or **AssetKind.COPY_BAG** (`[]`).
 
 ```js
 // Returns an empty amount.
@@ -81,9 +81,9 @@ Returns the **Amount** representing an empty **Amount**, using another
 **Amount** as the template for the **[Brand](./brand.md)** and **[Value](./ertp-data-types.md#value)**.
 
 ```js
-// quatloosAmount837 = { value: 837n, brand: quatloos }
+// quatloosAmount837 = { brand: quatloos, value: 837n }
 const quatloosAmount837 = AmountMath.make(quatloosBrand, 837n);
-// Returns an amount = { value: 0n, brand: quatloos }
+// Returns an amount = { brand: quatloos, value: 0n }
 const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 ```
 
@@ -100,10 +100,10 @@ If the optional *brand* argument doesn't match the **Amount**'s **Brand**, an er
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 const quatloos1 = AmountMath.make(quatloosBrand, 1n);
 
-// returns true
+// Returns true
 const result = AmountMath.isEmpty(empty);
 
-// returns false
+// Returns false
 const result = AmountMath.isEmpty(quatloos1);
 ```
 
@@ -254,7 +254,7 @@ If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an 
 const smallerAmount = AmountMath.make(quatloosBrand, 5n);
 const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
-//returns smallerAmount
+// Returns smallerAmount
 const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
 ```
 
@@ -274,7 +274,7 @@ If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an 
 const smallerAmount = AmountMath.make(quatloosBrand, 5n);
 const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
-//returns largerAmount
+// Returns largerAmount
 const comparisonResult = AmountMath.max(smallerAmount, largerAmount);
 ```
 
