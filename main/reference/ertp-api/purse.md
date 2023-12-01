@@ -36,7 +36,7 @@ send the **Payment** to another party.
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
 Returns the **Purse**'s current balance as an **Amount**.
-The returned **Amount** **[Value](./ertp-data-types.md#value)** might be empty, and might be different the next time you
+The returned **Amount** **[AmountValue](./ertp-data-types.md#amountvalue)** might be empty, and might be different the next time you
 call **aPurse.getCurrentAmount()** on the same **Purse** if assets have been deposited or
 withdrawn in the interim.
 

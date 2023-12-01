@@ -39,7 +39,7 @@ by [issuers](#issuer) and [mints](#mint), and represent the goods and currency c
 [purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
 abstract right to participate in a particular exchange.
 
-An amount is comprised of a [brand](#brand) with a [value](#value). For example, "4 Quatloos"
+An amount is comprised of a [brand](#brand) with a [value](#amountvalue). For example, "4 Quatloos"
 is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
 **Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
@@ -71,7 +71,7 @@ five tickets is performed by set union rather than by arithmetic.
 - `AssetKind.COPY_SET`: Used with [non-fungible](#non-fungible) assets.
   Each amount value is a set of [Key](#key) values
   (strings, numbers, objects, etc.).
-  Values cannot include promises (they aren't keys), and should not
+  Amount values cannot include promises (they aren't keys), and should not
   include privileged objects such as payments and purses.
 - `AssetKind.COPY_BAG`: Used with [semi-fungible](#semi-fungible) assets.
   Each amount value is a [multiset](https://en.wikipedia.org/wiki/Multiset)
@@ -81,9 +81,16 @@ five tickets is performed by set union rather than by arithmetic.
 For more information, see the [ERTP documentation's AmountMath section](/guides/ertp/amount-math.md)
 and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
+<a id="value"></a>
+## AmountValue
 
+An AmountValue is the part of an [Amount](#amount) that describes the value of something
+that can be owned or shared: how much, how many, or a description of a unique asset, such as
+$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
+For a [fungible](#fungible) Amount, the AmountValue is usually a non-negative **BigInt** such as `10n` or `137n`.
+For a [non-fungible](#non-fungible) Amount, the AmountValue might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
 
-
+For more information, see the [ERTP documentation's AmountValue section](/guides/ertp/amounts.md#amountvalues).
 
 ## AssetHolder
 
@@ -350,7 +357,7 @@ If either side of the comparison contains promises and/or errors, equality is in
 If both are fulfilled down to [presences](#presence) and local state, then either they're the
 same all the way down, or they represent different objects.
 
-Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (see [AmountMath](#amountmath)). [Values](#value) must be Keys.
+Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (see [AmountMath](#amountmath)). [AmountValues](#amountvalue) must be Keys.
 
 ## Keyword
 
@@ -555,16 +562,6 @@ example, you might have a general auction contract. When someone instantiates it
 they provide terms applicable only to that instance. For some instances of
 the auction, they want the minimum bid set at $1000. At other instances, they'd like
 it set at $10. They can specify the instance's minimum bid amount in its terms.
-
-## Value
-
-A value is the part of an [Amount](#amount) that describes the value of something
-that can be owned or shared: how much, how many, or a description of a unique asset, such as
-$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
-For a [fungible](#fungible) Amount, the Value is usually a non-negative **BigInt** such as `10n` or `137n`.
-For a [non-fungible](#non-fungible) Amount, the Value might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
-
-For more information, see the [ERTP documentation's Value section](/guides/ertp/amounts.md#values).
 
 ## Vat
 

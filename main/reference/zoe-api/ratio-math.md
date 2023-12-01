@@ -342,8 +342,8 @@ aren't identical.
 
 Returns **true** if the *left* and *right* **Ratios** are the same, **false** otherwise. Note that for
 the two **Ratios** to be considered the same, the 
-**[Value](/reference/ertp-api/ertp-data-types.md#value)** and **[Brand](/reference/ertp-api/brand.md)**
-of both the *numerator* and *denominator* of one **Ratio** must be identical to the **Value** and
+**[AmountValue](/reference/ertp-api/ertp-data-types.md#amountvalue)** and **[Brand](/reference/ertp-api/brand.md)**
+of both the *numerator* and *denominator* of one **Ratio** must be identical to the **AmountValue** and
 **Brand** of the *numerator* and *denominator* of the other **Ratio**. 
 
 
