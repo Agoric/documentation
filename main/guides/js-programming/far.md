@@ -39,11 +39,15 @@ There are four broad kinds of Passable:
 - Acyclic pass-by-copy **containers** that recursively terminate in non-container passables.
   Such containers include _CopyArrays_ like `harden(['foo', 'bar'])`,
   _CopyRecords_ like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`, and
-  _CopyTaggeds_ representing higher-order types like CopySet, CopyBag, and CopyMap.
-- Pass-by-reference **_Remotables_**: objects that can be shared with remote systems which can then
-  invoke methods using e.g. `E()` eventual send notation. Remotables are created by [`Far()`](#far-api)
-  and related functions.
-- Pass-by-reference **Promises** for Passables.
+  _CopyTaggeds_ representing types like CopySet, CopyBag, and CopyMap
+  (which extend the `passStyleOf` level of abstraction with
+  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level.md#kindof-vs-passstyleof))
+- Pass-by-reference "**PassableCaps**":
+  - _Remotables_: objects that can be shared with remote systems which can then
+    invoke methods using e.g. `E()` eventual send notation. Remotables are created by [`Far()`](#far-api)
+    and related functions.
+  - _Promises_ for Passables.
+- As a special case, **Errors** are treated as pass-by-copy data that can also contain other Passables.
 
 Every object exported from a smart contract, such as `publicFacet` or
 `creatorFacet`, must be passable. All objects used in your contract's external API must
@@ -75,8 +79,8 @@ data leads to behavior across vats that is straightforward to reason about.
 `PassStyle` values correspond with the different kinds of Passable:
 - Pass-by-copy **primitive** values: `"undefined"`, `"null"`, `"boolean"`, `"number"`, `"bigint"`, `"string"`, or `"symbol"`.
 - Pass-by-copy **containers**: `"copyArray"`, `"copyRecord"`, or `"copyTagged"`.
-- So-called `PassableCap` pass-by-reference leafs (**Remotables** and **Promises**): `"remotable"` or `"promise"`.
-- Special cases, which also contain other Passables: `"error"`.
+- Pass-by-reference **PassableCaps**: `"remotable"` or `"promise"`.
+- Pass-by-copy **Errors**: `"error"`.
 
 If `passable` is not passable (for example, because it has not been hardened or has
 a non-trivial prototype chain), then `passStyleOf` will throw an error.
