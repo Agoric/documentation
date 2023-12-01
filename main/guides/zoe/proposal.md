@@ -13,9 +13,9 @@ To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-
 ## Invitations
 
 An [Invitation](/reference/zoe-api/zoe-data-types.md#invitation) is a special case of ERTP [Payment](/reference/ertp-api/payment.md). Each is linked to a specific contract [Instance](/reference/zoe-api/zoe-data-types.md#instance), and
-having one gives you the right to participate in that contract instance by making offers in it.
+having one gives you the right to participate in that contract instance by making offers with it.
 
-There are two main ways for contract users to get an invitation:
+There are two ways for contract users to get an invitation:
 - If you create the contract instance, the contract might supply a special creator invitation.
 - Someone (possibly you) who holds the right objects has created an invitation for a contract instance and gives it to
   you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
@@ -52,7 +52,7 @@ In contrast, [Payments](/reference/ertp-api/payment.md) hold actual digital asse
 
 **exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
-- `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to complete (finish or fail) their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
   as determined by its `timer` and `deadline` properties.
 

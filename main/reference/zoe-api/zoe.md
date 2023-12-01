@@ -320,7 +320,7 @@ the Keywords might be "Asset" and "Bid".
 
 **exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
-- `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
+- `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to complete (finish or fail) their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
   as determined by its **timer** and **deadline** properties.
   **timer** must be a timer, and **deadline** must be timestamp understood by it.
@@ -343,7 +343,7 @@ const paymentKeywordRecord = harden({
 <a href="offerargs"></a>
 ### Offer Arguments
 
-**offerArgs** is an object that can be used to pass additional arguments to the
+**offerArgs** is an optional CopyRecord that can be used to pass additional arguments to the
 **offerHandler** contract code associated with the invitation by
 [`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape).
 Each contract can define the properties it supports and which are required.

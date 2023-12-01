@@ -23,7 +23,7 @@ Mint the *gains* **Amount** of assets and add them to
 that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** is provided,
 it is returned. Otherwise a new **seat** is returned.
 
-## aZCFMint.burnLosses(losses, zcfSeat?)
+## aZCFMint.burnLosses(losses, zcfSeat)
   - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
   - **zcfSeat**: **[ZCFSeat](./zcfseat.md)**
   - Returns: None
