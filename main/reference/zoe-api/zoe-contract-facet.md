@@ -75,7 +75,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - **offerHandler**: **(seat: ZCFSeat, offerArgs?: CopyRecord) => any**
 - **description**: **String**
 - **customDetails**: **Object** - Optional.
-- **proposalShape**: **Pattern** - Optional.
+- **proposalShape**: **[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)** - Optional.
 - Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
 Uses the Zoe **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** to _mint_
@@ -93,14 +93,28 @@ and returning arbitrary offer results.
 **description** is a required string describing the **Invitation**,
 and should include whatever information is needed for a potential recipient of the **Invitation**
 to distinguish among this contract's invitations.
-Each description should be a string literal that is unique within its contract
+Each description should be a string literal that is unique within the source text of its contract
 and used only as the argument to make invitations of a particular kind.
 
 The optional **customDetails** argument is included in the **Invitation**'s
 **amount** and not otherwise relied on by Zoe.
 
+The optional **proposalShape** argument can be used to describe the required and allowed components of each proposal.
+Proposals that don't match the pattern will be rejected by Zoe without even being sent to the contract.
+
 ```js
-const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
+import { M } from "@endo/patterns";
+
+const waivedExitProposalShape = M.splitRecord(
+  // required properties
+  { exit: { waived: null } },
+  // optional properties
+  { give: M.record(), want: M.record() },
+  // unknown properties
+  M.record(),
+);
+const creatorInvitation =
+  zcf.makeInvitation(makeCallOption, 'makeCallOption', undefined, waivedExitProposalShape);
 ```
 
 ## zcf.makeEmptySeatKit()

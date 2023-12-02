@@ -208,7 +208,7 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 
 ## fitProposalShape(seat, proposalShape)
 - **seat**: **[ZCFSeat](./zcfseat.md)**
-- **proposalShape**: **Pattern**
+- **proposalShape**: **[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)**
 - Returns: None.
 
 Checks the seat's proposal against the *proposalShape* argument. If the proposal does not match *proposalShape*, the seat will be exited and all **[Payments](/reference/ertp-api/payment.md)** will be refunded.
