@@ -7,7 +7,7 @@ many clients to receive notifications without the originator having to track a s
 An object wanting to publish updates to interested clients makes a notifier or a
 subscription available to them.
 
-In JavaScript, async iterations are manipulated by `AsyncGenerators`, `AsyncIterables`, and `AsyncIterators`. For an introduction to them, see [here](https://javascript.info/async-iterators-generators).
+In JavaScript, async iterations are manipulated by `AsyncGenerators`, `AsyncIterables`, and `AsyncIterators`. For an introduction to them, see [Async iteration and generators](https://javascript.info/async-iterators-generators).
 
 ## Distributed Asynchronous Iteration
 

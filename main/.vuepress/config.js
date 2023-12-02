@@ -53,12 +53,57 @@ module.exports = {
       }
     });
 
-    if (location.hash) {
-      // Re-navigate to the page target once content has loaded.
+    if (location.hash && location.hash !== '#') {
+      // Once content has loaded, re-navigate to the page target
+      // without triggering interfering router/history/scroll logic.
+      const hash = location.hash;
       fixups.set(['main'], _elems => {
-        const old = location.hash;
-        location.hash = '';
-        location.hash = old;
+        const stopPropagation = evt => {
+          evt.stopImmediatePropagation();
+
+          const props = {};
+          const proto = Object.getPrototypeOf(evt);
+          const propSource = proto === Event.prototype ? {} : proto;
+          for (const name of Object.getOwnPropertyNames(propSource)) {
+            if (name !== 'constructor') props[name] = evt[name];
+          }
+          console.log('suppress', evt.type, { __proto__: evt, ...props });
+        };
+        const stopEvents = types => {
+          const restorers = types.map(type => {
+            window.addEventListener(type, stopPropagation, true);
+            return () => window.removeEventListener(type, stopPropagation, true);
+          });
+          const passEvents = () => {
+            // Run and drop references to all restore functions.
+            while (restorers.length > 0) restorers.pop()();
+          };
+          return passEvents;
+        };
+
+        // Navigate to the page itself as a blank slate.
+        const passStateEvents = stopEvents(['hashchange', 'popstate']);
+        const passScrollEvents = stopEvents(['scroll']);
+        location.replace('#');
+
+        // Restore state-change events, then navigate back to the target.
+        passStateEvents();
+        try {
+          const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+          if (target && target.innerHTML.trim() === '') {
+            document.documentElement.classList.add('scrollingToTarget');
+            target.scrollIntoView({ behavior: 'instant' });
+            document.documentElement.classList.remove('scrollingToTarget');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+        location.replace(hash);
+
+        // Restore scroll events and create a new history entry to be overridden
+        // if the initial target lacks a TOC entry to highlight.
+        passScrollEvents();
+        history.pushState(null, '', hash);
       });
     }
 
