@@ -16,34 +16,6 @@ For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after su
 }
 ```
 
-## AmountKeywordRecord
-
-**AmountKeywordRecords** are records in which the property names are **[Keywords](#keyword)**, and
-the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. **Keywords** are 
-unique identifiers per contract
-that tie together the **proposal**, **payments** to be escrowed, and **payouts**
-to the user. In the below example, **Asset** and **Price** are **Keywords**.
-
-Users should submit their **payments** using **Keywords**:
-```js
-const payments = { Asset: quatloosPayment };
-```
-
-Users will receive their **payouts** with **Keywords** as the keys of a **payout**:
-```js
-quatloosPurse.deposit(payout.Asset);
-```
-
-For example:
-```js
-const quatloos5 = AmountMath.make(quatloosBrand, 5n);
-const quatloos9 = AmountMath.make(quatloosBrand, 9n);
-const myAmountKeywordRecord =
-{
-  Asset: quatloos5,
-  Price: quatloos9
-}
-```
 ## Handle
 
 **Handles** are **Far** objects without any methods whose only useful property are their
@@ -63,15 +35,18 @@ You can get information about the contract instance via these methods:
 
 ## Invitation
 
-An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright
-that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
-eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
+An **Invitation** is a non-fungible asset created by the **[InvitationIssuer](#invitationissuer)**.
+An **Invitation Payment** is a **[Payment](/reference/ertp-api/payment.md)** holding an **Invitation**.
 
 ## InvitationIssuer
 
-The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe
-instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the
-**[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
+The **InvitationIssuer** is an **[Issuer](/reference/ertp-api/issuer.md)** that plays a
+special role throughout Zoe. Zoe has a single **InvitationIssuer** for its entire
+lifetime. All **Invitations** come from the **[Mint](/reference/ertp-api/mint.md)**
+associated with the Zoe instance's **InvitationIssuer**.
+
+The issuer is publicly available (via [`E(Zoe).getInvitationIssuer()`](./zoe-contract-facet.md#zcf-getinvitationissuer)),
+so the ability to validate invitations is widely available.
 
 **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most
 often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
@@ -83,10 +58,32 @@ is exclusively yours and no one else has access to it.
 
 ## Keyword
 
-An ASCII identifier string that must begin with an upper case letter
-in order to avoid collisions with JavaScript properties such as `toString`.
+A **Keyword** is a unique identifier string within a contract for tying together the 
+**issuers** in its **proposals**, **payments**, and **payouts**.
+It must be an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
+and start with an upper case letter in order to avoid collisions with JavaScript properties
+such as `toString` when used as a property name in a record.
 (For more detail, see [Why do Zoe keywords have to start with a capital letter? #8241](https://github.com/Agoric/agoric-sdk/discussions/8241).)
 `NaN` and `Infinity` are also not allowed as keywords.
+
+<a id="amountkeywordrecord"></a>
+## KeywordRecord
+
+A **KeywordRecord** is a [CopyRecord](/glossary/#copyrecord) in which every property name
+is a **[Keyword](#keyword)**, such as `harden({ Asset: moolaIssuer, Bid: simoleanIssuer })`.
+Subtypes further constrain property values (for example, an
+**AmountKeywordRecord** is a **KeywordRecord** in which every value is an
+**[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a
+**PaymentPKeywordRecord** is a **KeywordRecord** in which every value is either a
+**[Payment](/reference/ertp-api/payment.md)** or a Promise for a Payment).
+
+Users submit their **payments** as **KeywordRecords**:
+```js
+const aFistfulOfQuatloos = AmountMath.make(quatloosBrand, 1000n);
+const paymentKeywordRecord = {
+  Asset: quatloosPurse.withdraw(aFistfulOfQuatloos),
+};
+```
 
 ## MutableQuote
 
@@ -148,10 +145,10 @@ represents one or two **[Allocation](#allocation)** changes among existing
 **[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, each of which can be elided
 in some cases:
 
-* **fromSeat**?: **ZCFSeat** - The seat from which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being taken.
-* **toSeat**?: **ZCFSeat** - The seat to which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being given.
-* **fromAmounts**?: **[AmountKeywordRecord](#amountkeywordrecord)** - The **AmountKeywordRecord** which will be taken from the *fromSeat*.
-* **toAmounts**?: **AmountKeywordRecord** - The **AmountKeywordRecord** which will be given to the *toSeat*.
+* **fromSeat**?: **ZCFSeat** - The seat from which **amounts** are being taken.
+* **toSeat**?: **ZCFSeat** - The seat to which **amounts** are being given.
+* **fromAmounts**?: **[AmountKeywordRecord](#keywordrecord)** - The **amounts** which will be taken from the *fromSeat*.
+* **toAmounts**?: **AmountKeywordRecord** - The **amounts** which will be given to the *toSeat*.
 
 If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without
 specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to

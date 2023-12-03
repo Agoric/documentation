@@ -47,7 +47,7 @@ transfers that only include one seat, you can use the helper functions
 
 ## fromOnly(fromSeat, fromAmounts)
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)**
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
 Returns a **TransferPart** which only takes **fromAmounts** from *fromSeat*. **TransferParts** are used
@@ -56,7 +56,7 @@ function.
 
 ## toOnly(toSeat, toAmounts)
 - **toSeat**: **[ZCFSeat](./zcfseat.md)**
-- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
 Returns a **TransferPart** which only gives **toAmount** to *toSeat*. **TransferParts** are used as part
@@ -66,7 +66,7 @@ of the *transfer* argument of the **[atomicRearrange()](#atomicrearrange-zcf-tra
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
 - **toSeat**: **ZCFSeat** - Optional.
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)** - Optional.
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
 - **toAmounts**: **AmountKeywordRecord** - Optional, defaults to **fromAmounts**.
 - Returns: None.
 
@@ -113,7 +113,7 @@ assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ## satisfies(zcf, seat, update)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat**: **[ZCFSeat](./zcfseat.md)**
-- **update**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **update**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **Boolean** 
 
 Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
@@ -208,7 +208,7 @@ const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 
 ## fitProposalShape(seat, proposalShape)
 - **seat**: **[ZCFSeat](./zcfseat.md)**
-- **proposalShape**: **Pattern**
+- **proposalShape**: **[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)**
 - Returns: None.
 
 Checks the seat's proposal against the *proposalShape* argument. If the proposal does not match *proposalShape*, the seat will be exited and all **[Payments](/reference/ertp-api/payment.md)** will be refunded.
@@ -268,7 +268,7 @@ assertNatAssetKind(zcf, quatloosBrand);
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **recipientSeat**: **[ZCFSeat](./zcfseat.md)**
 - **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- **payments**: **PaymentKeywordRecord**
+- **payments**: **PaymentPKeywordRecord**
 - Returns: **Promise&lt;String>**
 
 Deposits payments such that their amounts are reallocated to a seat.
@@ -290,7 +290,7 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat**: **[ZCFSeat](./zcfseat.md)**
 - **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- Returns: **Promise&lt;PaymentKeywordRecord>**
+- Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 Withdraws payments from a seat. Note that withdrawing the amounts of
 the payments must not and cannot violate offer safety for the seat. The
@@ -298,7 +298,7 @@ the payments must not and cannot violate offer safety for the seat. The
 
 If the seat has exited, aborts with the message **The seat cannot have exited.**
 
-Unlike **depositToSeat()**, a **PaymentKeywordRecord** is returned, not a success message.
+Unlike **depositToSeat()**, a **PaymentPKeywordRecord** is returned, not a success message.
 ```js
 import {
   withdrawFromSeat
@@ -309,7 +309,7 @@ const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatlo
 ## saveAllIssuers(zcf, issuerKeywordRecord)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **issuerKeywordRecord**: **IssuerKeywordRecord**
-- Returns: **Promise&lt;PaymentKeywordRecord>**
+- Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).

@@ -157,9 +157,24 @@ code defining how that agreement works. When the realtor has a new house to sell
 they instantiate a new instance of their standard contract for that specific property.
 If they have ten houses for sale, they have ten different contract instances.
 
+## CopyArray
+
+A [hardened](#harden) acyclic array in which each element is [passable](#passable), such as
+`harden(['foo', 'bar'])`.
+For more information, see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
+
+## CopyRecord
+
+A [hardened](#harden) acyclic plain object [dictionary](https://en.wikipedia.org/wiki/Associative_array)
+in which each key is a string and each value is [passable](#passable), such as
+`harden({ keys: [0, 1], values: ['foo', 'bar'] })`.
+For more information, see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
+
 ## Creator Invitation
 
-An [invitation](#invitation) optionally returned by [`startInstance()`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
+An [invitation](#invitation) optionally returned by [`E(zoe).startInstance(...)`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) that the contract instance
 creator can use. It is usually used in contracts where the creator immediately
 sells something (auctions, swaps, etc.).
 
@@ -230,10 +245,8 @@ See [`E()`](#e) above.
 
 ## Exit Rule
 
-Part of an [offer](#offer) specifying how the offer can be cancelled/exited. There are three values:
-- `onDemand: null`: (Default) The offering party can cancel on demand.
-- `waived: null`: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- `afterDeadline: {…}`: The offer is automatically cancelled after a deadline, as determined by its `timer` and `deadline` properties. See [Proposals and payments](/reference/zoe-api/zoe.md#proposals-and-payments).
+An object specifying how an [offer](#offer) can be cancelled, such as on demand or by a deadline.
+For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#proposals).
 
 ## Facet
 
@@ -288,7 +301,7 @@ For more details, see [What developers need to know about inter-blockchain commu
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
 Contracts often return a creator invitation on their instantiation, in case the contract instantiator wants
 to immediately participate. Otherwise, the contract instance must create any additional invitations.
-Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(Zoe).offer()`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
+Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
 An invitation's [amount](#amount) includes the following properties:
 - The contract's installation in Zoe, including access to its source code.
@@ -337,10 +350,9 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 
 ## Keyword
 
-A keyword is a property name string that is a valid
-[identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
-starts with an upper case letter, and contains no non-ASCII characters.
-A KeywordRecord is a CopyRecord in which every property name is a keyword.
+A *Keyword* is a string that is an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
+starts with an upper case letter, and is not equal to "NaN" or "Infinity".
+See **[Zoe Data Types](/reference/zoe-api/zoe-data-types.md#keyword)**.
 
 ## Mint
 
@@ -413,7 +425,7 @@ to the amount in the proposal they're willing to give. The payments are automati
 according to the contract code. An offer gets a [payout](#payout) of some combination of what the party originally contributed
 and what others have contributed. The specific payout is determined by the contract code.
 
-See [`E(Zoe).offer(invitation, proposal, paymentKeywordRecord, offerArgs)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs).
+See [Offers](/guides/zoe/proposal.md).
 
 ## Offer Safety
 
@@ -424,9 +436,15 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 
 ## Passable
 
-A *passable* is something that can be marshalled (see the
-[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence))
-and sent to and from remote objects.
+A *passable* is something that can be sent to and from remote objects.
+Passables include pass-by-copy primitive values such as numbers and strings and
+pass-by-reference values such as Remotables and Promises.
+Passables also include [CopyArrays](#copyarray) and [CopyRecords](#copyrecord), which are
+[hardened](#harden) acyclic pass-by-copy containers that
+recursively terminate in non-container passables.
+
+For more information, see the
+[Marshaling section in the JavaScript Distributed Programming Guide](/guides/js-programming/far.md#marshaling-by-copy-or-by-presence).
 
 ## Payment
 
@@ -441,8 +459,9 @@ and the [ERTP API's Payments section](/reference/ertp-api/payment.md).
 The assets paid out to a user when an [seat](#seat) exits, either successfully or not. The payout is always
 what the seat's current [allocation](#allocation) is.
 
-If there was a previous reallocation, the payout is different than what the user escrowed. If there is no reallocation
-before the seat exits, the payout is the same as what they escrowed.
+If there was a reallocation, the payout may be different than what the user escrowed
+(but still constrained by [offer safety](#offer-safety)).
+Otherwise, the payout is the same as what they escrowed.
 
 ## Petname
 
@@ -459,18 +478,21 @@ For more information, see the [JavaScript Distributed Programming Guide](/guides
 
 ## Proposal
 
-Proposals are records with `give`, `want`, and `exit` properties. [Offers](#offer) must include a proposal, which states
-what asset you want, what asset you will give for it, and how/when the offer maker can cancel the offer
-(see [Exit Rule](#exit-rule) for details on the last). For example:
+Proposals are records with `give`, `want`, and/or `exit` properties respectively
+expressing [offer](#offer) conditions regarding what assets will be given,
+what is desired in exchange (protected by [offer safety](#offer-safety)), and
+an [exit rule](#exit-rule) defining how/when the offer can be canceled.
+For example:
 ```js
 const myProposal = harden({
-  give: { Asset: AmountMath.make(quatloosBrand, 4)},
-  want: { Price: AmountMath.make(moolaBrand, 15) },
-  exit: { onDemand: null }
-})
+  give: { Asset: AmountMath.make(quatloosBrand, 4n) },
+  want: { Price: AmountMath.make(moolaBrand, 15n) },
+  exit: { onDemand: null },
+});
 ```
-`give` and `want` use [keywords](#keyword) defined by the contract. Each specifies via an [amount](#amount) a description of what
-they are willing to give or want to get.
+`give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing respectively what will be given and what is being requested in exchange.
+
+See [Offers](/guides/zoe/proposal.md).
 
 ## Purse
 

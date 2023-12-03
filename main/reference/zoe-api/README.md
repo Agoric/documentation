@@ -36,7 +36,7 @@ The Zoe API introduces and uses the following data types:
 | Data Type | Description |
 | --- | --- |
 | [Allocation](./zoe-data-types.md#allocation) | The **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid out to each seat upon exiting an **Offer**. |
-| [AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord) | A record in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
+| [AmountKeywordRecord](./zoe-data-types.md#keywordrecord) | A record in which the property names are **Keywords** and the values are **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. |
 | [Handle](./zoe-data-types.md#handle) | A **Far** object without any methods whose only useful property is its unique identity. |
 | [Instance](./zoe-data-types.md#instance) | A handle to an opaque object that represents a contract instance. |
 | [Invitation](./zoe-data-types.md#invitation) | A non-fungible eright that can be held in **[Payments](/reference/ertp-api/payment.md)** or **[Purses](/reference/ertp-api/purse.md)**, just like any other eright. |
