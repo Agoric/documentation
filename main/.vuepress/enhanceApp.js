@@ -45,6 +45,16 @@ function patchRoutesToPreserveFragments(router) {
 
 export default ({ router }) => {
   patchRoutesToPreserveFragments(router);
+  // The router assumes everything is site-local, so manually implement external redirection
+  // to avoid Not Found URLs like 'https://docs.agoric.com/https:/github.com/...'.
+  // cf. https://github.com/vuejs/vue-router/issues/1280 and
+  // https://stackoverflow.com/questions/62254666/use-vue-router-for-redirecting-to-absolute-path
+  const makeExternalRedirect = target => {
+    const externalRedirect = () => {
+      location.assign(target);
+    };
+    return externalRedirect;
+  };
   const redirects = [
     { path: '/chainlink-integration.html', redirect: '/guides/chainlink-integration/' },
     { path: '/chainlink-integration/', redirect: '/guides/chainlink-integration/' },
@@ -62,9 +72,9 @@ export default ({ router }) => {
     { path: '/getting-started/intro-zoe.html', redirect: '/guides/zoe/offer-enforcement.html' },
     { path: '/getting-started/start-a-project.html', redirect: '/guides/getting-started/start-a-project.html' },
     { path: '/guides/agoric-cli/commands.html', redirect: '/guides/agoric-cli/' },
-    { path: '/guides/js-programming/ses/lockdown.html', redirect: 'https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.html' },
-    { path: '/guides/js-programming/ses/ses-guide.html', redirect: 'https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.html' },
-    { path: '/guides/js-programming/ses/ses-reference.html', redirect: 'https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/reference.html' },
+    { path: '/guides/js-programming/ses/lockdown.html', redirect: makeExternalRedirect('https://github.com/endojs/endo/blob/master/packages/ses/docs/lockdown.md') },
+    { path: '/guides/js-programming/ses/ses-guide.html', redirect: makeExternalRedirect('https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md') },
+    { path: '/guides/js-programming/ses/ses-reference.html', redirect: makeExternalRedirect('https://github.com/endojs/endo/blob/master/packages/ses/docs/reference.md') },
     { path: '/guides/wallet/api.html', redirect: '/reference/wallet-api.html' },
     { path: '/platform/', redirect: '/guides/platform/' },
     { path: '/repl/', redirect: '/reference/repl/' },
