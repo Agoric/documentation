@@ -84,11 +84,12 @@ return a `brand`.
   that it's genuine.
   - <<< @/snippets/ertp/guide/test-amounts.js#depositSomewhere
 
-## Values
+<a id="values"></a>
+## AmountValues
 
 ![Value methods](./assets/value.svg) 
 
-Values are the "how many" part of an `amount`. 
+AmountValues are the "how many" part of an `amount`. 
 
 Note that number values (for fungible assets) are represented as `BigInt`s and
 not `Number`s. Write `10n` rather than `10`.

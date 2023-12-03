@@ -50,7 +50,9 @@ with the key "afterDeadline":
 {
   give: { ... },
   want: { ... },
-  exit: {afterDeadline: { deadline: time, timer: chainTimer } },
+  exit: {
+    afterDeadline: { deadline: time, timer: chainTimer },
+  },
 }
 ```
 

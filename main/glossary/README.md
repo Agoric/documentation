@@ -32,6 +32,27 @@ The contract can modify a seat's allocation as long as it never violates offer s
 assign assets that weren't already in some allocation and it can't assign them to more than one seat. Also, goods can't
 disappear from the total allocation.
 
+## Amount
+
+Amounts are the canonical descriptions of tradable goods. They are manipulated
+by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
+[purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
+abstract right to participate in a particular exchange.
+
+An amount is comprised of a [brand](#brand) with a [value](#amountvalue). For example, "4 Quatloos"
+is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
+
+**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
+economic scarcity or intrinsic value.
+For example, to make you an offer to buy a magic sword in a game,
+a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
+sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
+trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
+a new `amount` does **not** create new assets.
+
+For more information, see the [ERTP documentation's Amounts section](/guides/ertp/amounts.md)
+and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
+
 ## AmountMath
 
 The AmountMath library executes the logic of how [amounts](#amount) are changed when digital assets are merged, separated,
@@ -50,7 +71,7 @@ five tickets is performed by set union rather than by arithmetic.
 - `AssetKind.COPY_SET`: Used with [non-fungible](#non-fungible) assets.
   Each amount value is a set of [Key](#key) values
   (strings, numbers, objects, etc.).
-  Values cannot include promises (they aren't keys), and should not
+  Amount values cannot include promises (they aren't keys), and should not
   include privileged objects such as payments and purses.
 - `AssetKind.COPY_BAG`: Used with [semi-fungible](#semi-fungible) assets.
   Each amount value is a [multiset](https://en.wikipedia.org/wiki/Multiset)
@@ -60,26 +81,16 @@ five tickets is performed by set union rather than by arithmetic.
 For more information, see the [ERTP documentation's AmountMath section](/guides/ertp/amount-math.md)
 and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
 
-## Amount
+<a id="value"></a>
+## AmountValue
 
-Amounts are the canonical descriptions of tradable goods. They are manipulated
-by [issuers](#issuer) and [mints](#mint), and represent the goods and currency carried by
-[purses](#purse) and [payments](#payment). They represent things like currency, stock, and the
-abstract right to participate in a particular exchange.
+An AmountValue is the part of an [Amount](#amount) that describes the value of something
+that can be owned or shared: how much, how many, or a description of a unique asset, such as
+$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
+For a [fungible](#fungible) Amount, the AmountValue is usually a non-negative **BigInt** such as `10n` or `137n`.
+For a [non-fungible](#non-fungible) Amount, the AmountValue might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
 
-An amount is comprised of a [brand](#brand) with a [value](#value). For example, "4 Quatloos"
-is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
-
-**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
-economic scarcity or intrinsic value.
-For example, to make you an offer to buy a magic sword in a game,
-a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
-sword. They don't send you the actual 5 Quatloos; that only happens when there is agreement on the
-trade terms and they send you a payment, not an amount, of 5 Quatloos, the actual asset. Creating
-a new `amount` does **not** create new assets.
-
-For more information, see the [ERTP documentation's Amounts section](/guides/ertp/amounts.md)
-and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math.md).
+For more information, see the [ERTP documentation's AmountValue section](/guides/ertp/amounts.md#amountvalues).
 
 ## AssetHolder
 
@@ -120,7 +131,7 @@ Before a contract can be installed on Zoe, its source code must be bundled. This
 ```js
 import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
-    require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
+  require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );
 ```
 The installation operation returns an `installation`, which is an object with a single
@@ -251,12 +262,12 @@ For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#proposals).
 ## Facet
 
 A *facet* is an object that exposes an API or particular view of some larger entity, which may be an object itself.
-You can make any number of facets of an entity. In JavaScript, you often make a facet by selecting methods from the entity,
-either directly or by destructuring:
+You can make any number of facets of an entity. In JavaScript, you often make a facet that forwards method calls:
 ```js
-const facet = {
-  myMethod: oldObject.method,
-}
+import { Far } from '@endo/far';
+const facet = Far('FacetName', {
+  myMethod: (...args) => oldObject.method(...args),
+});
 ```
 Two Agoric uses are:
 - *Deposit Facet*: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add
@@ -285,7 +296,7 @@ its [section in the JavaScript Distributed Programming Guide](https://github.com
 ## Hardened JavaScript (SES)
 
 Hardened JavaScript is a standards-track extension to the JavaScript standard.
-Hardening JavaScript turns the sandbox into firm ground, where you can code run
+Hardening JavaScript turns the sandbox into firm ground, where you can run code
 you don't completely trust, without being vulnerable to their bugs or bad
 intentions.
 See the [Endo and Hardened JavaScript Programming
@@ -346,7 +357,7 @@ If either side of the comparison contains promises and/or errors, equality is in
 If both are fulfilled down to [presences](#presence) and local state, then either they're the
 same all the way down, or they represent different objects.
 
-Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (see [AmountMath](#amountmath)). [Values](#value) must be Keys.
+Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (see [AmountMath](#amountmath)). [AmountValues](#amountvalue) must be Keys.
 
 ## Keyword
 
@@ -551,18 +562,6 @@ example, you might have a general auction contract. When someone instantiates it
 they provide terms applicable only to that instance. For some instances of
 the auction, they want the minimum bid set at $1000. At other instances, they'd like
 it set at $10. They can specify the instance's minimum bid amount in its terms.
-
-## Value
-
-Values are the part of an [amount](#amount) that describe the value of something
-that can be owned or shared: How much, how many, or a description of a unique asset, such as
-Pixel(3,2), $3, or “Seat J12 for the show September 27th at 9:00pm”.
-[Fungible](#fungible) values are usually represented by natural numbers.
-Other values may be represented as a CopySet of strings naming particular rights or
-arbitrary objects representing the rights directly (usually [non-fungible](#non-fungible) assets).
-Values must be [Keys](#key).
-
-For more information, see the [ERTP documentation's Value section](/guides/ertp/amounts.md#values).
 
 ## Vat
 

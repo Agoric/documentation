@@ -127,7 +127,7 @@ const { quoteAmount, quotePayment } = priceQuote;
 
 **Ratios** are pass-by-value records that consist of a
 *numerator* and a *denominator*. Both of these consist of a
-**[Value](/reference/ertp-api/ertp-data-types.md#value)** and a **[Brand](/reference/ertp-api/brand.md)**,
+**[AmountValue](/reference/ertp-api/ertp-data-types.md#amountvalue)** and a **[Brand](/reference/ertp-api/brand.md)**,
 just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
 A **Ratio** cannot have a denominator value of 0.
 

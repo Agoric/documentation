@@ -19,7 +19,7 @@ keeps an order book, and each time it receives a new offer, it looks
 for matches throughout the order book.
 
 The Barter Exchange only accepts offers that look like
-`{ give: { In: amount }, want: { Out: amount}` }
+`{ give: { In: amount }, want: { Out: amount }` }
 
 The want amount will be matched, while the give amount is a maximum. Each
 successful trader gets their `want` and may trade with counter-parties who
