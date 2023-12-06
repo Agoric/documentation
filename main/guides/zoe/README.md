@@ -4,22 +4,22 @@
 
 Zoe is Agoric's smart contract framework. Use Zoe to:
 
-* **Run your code on-chain**
-* **Mint new digital assets**
-* **Credibly trade assets**
+- **Run your code on-chain**
+- **Mint new digital assets**
+- **Credibly trade assets**
 
 ## Why Use Zoe?
 
-### For Users ###
+### For Users
 
 **Zoe is safer.** Traditionally, putting digital assets in a smart
 contract has carried the risk of losing them. But Zoe guarantees you get either
 what you wanted or a full refund of the assets you put in. You will
 never leave a smart contract empty-handed, even if it is buggy or malicious.
 
-### For Developers ###
+### For Developers
 
-**Zoe is easier.**  Traditionally, writing a smart contract meant
+**Zoe is easier.** Traditionally, writing a smart contract meant
 learning a new, untried language. And don't make any mistakes - if you
 do, your users might lose millions.
 
@@ -32,11 +32,12 @@ users to lose their assets.**
 
 Agoric has written [a number of example contracts that you can
 use](/zoe/guide/contracts/), including:
-* an [Automated Market Maker (AMM)
+
+- an [Automated Market Maker (AMM)
   implementation](/zoe/guide/contracts/constantProductAMM.md)
-* a [covered call option contract](./contracts/covered-call.md)
-* an [OTC Desk market maker contract](./contracts/otc-desk.md)
-* contracts for [minting fungible](./contracts/mint-payments.md) and
+- a [covered call option contract](./contracts/covered-call.md)
+- an [OTC Desk market maker contract](./contracts/otc-desk.md)
+- contracts for [minting fungible](./contracts/mint-payments.md) and
   [non-fungible tokens](./contracts/mint-and-sell-nfts.md)
 
 ## Using an Example Zoe Smart Contract
@@ -100,6 +101,7 @@ code directly by calling:
 
 In most cases, the bundle contains a base64-encoded zip file that you can
 extract for review:
+
 ```sh
 echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
@@ -117,9 +119,10 @@ You've successfully checked out the invitation, so now you can make an
 offer.
 
 An offer has three required parts:
-* a Zoe invitation
-* a proposal
-* a [payment](/guides/ertp/purses-and-payments.md#payments) containing
+
+- a Zoe invitation
+- a proposal
+- a [payment](/guides/ertp/purses-and-payments.md#payments) containing
   the digital assets you're offering to swap
 
 The `proposal` states what you want from the offer, and what you will
@@ -273,7 +276,7 @@ parameter. This is the Zoe Contract Facet. Zoe has two sides: the Zoe
 Service, which you've seen users interact with, and the Zoe Contract
 Facet (ZCF), which is accessible to the contract code. Note that users
 have access to the Zoe Service, but do not have access to ZCF.
-Contract code has access to ZCF *and* can get access to the Zoe
+Contract code has access to ZCF _and_ can get access to the Zoe
 Service.
 
 To learn more about the Zoe Service, Zoe Contract Facet, and Zoe
