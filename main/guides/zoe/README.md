@@ -2,7 +2,7 @@
 
 ## What is Zoe?
 
-Zoe is Agoric's smart contract framework. Use Zoe to:
+Zoe is the heart of Agoric's smart contract framework. Use Zoe to:
 
 - **Run your code on-chain**
 - **Mint new digital assets**
