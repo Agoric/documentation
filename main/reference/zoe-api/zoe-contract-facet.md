@@ -102,6 +102,21 @@ The optional **customDetails** argument is included in the **Invitation**'s
 The optional **proposalShape** argument can be used to describe the required and allowed components of each proposal.
 Proposals that don't match the pattern will be rejected by Zoe without even being sent to the contract.
 
+Patterns are constructed using the
+**[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object.
+**proposalShape**s are usually built from `M.splitRecord(required, optional, rest)`.
+
+```
+  M.splitRecord({
+    give: {
+      Collateral: makeNatAmountShape(collateralBrand),
+    },
+    want: {
+      Minted: makeNatAmountShape(debtBrand),
+    },
+  }),
+```
+
 ```js
 import { M } from "@endo/patterns";
 
