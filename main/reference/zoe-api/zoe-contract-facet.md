@@ -104,7 +104,7 @@ Proposals that don't match the pattern will be rejected by Zoe without even bein
 
 Patterns are constructed using the
 **[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object.
-**proposalShape**s are usually built from `M.splitRecord(required, optional, rest)`.
+**proposalShape**s are usually built from [`M.splitRecord(required, optional, rest)`](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html#splitRecord).
 
 ```
   M.splitRecord({
