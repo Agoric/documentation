@@ -28,6 +28,124 @@ Moreover, Zoe automatically escrows all user digital assets and
 handles their subsequent payout. **Even a buggy contract can't cause
 users to lose their assets.**
 
+::: warning TODO tone down the claims above
+
+:::
+
+## Bundling a Contract
+
+Recall from [deploying the basic dapp contract](../getting-started/#deploy-the-contract)
+that the first step was to _bundle_ all if its modules into a single artifact.
+We used the [agoric run](../agoric-cli/#agoric-run) command in that case.
+The core mechanism used in `agoric run` is a call to `bundleSource()`.
+
+In the `contract` directory of the
+[basic dapp project structure](../getting-started/#project-structure),
+run `test-bundle-source.js` following `ava` conventions:
+
+```sh
+cd contract
+yarn ava test/test-bundle-source.js
+```
+
+The results look something like...
+
+```console
+  ✔ bundleSource() bundles the contract for use with zoe (2.7s)
+    ℹ 1e1aeca9d3ebc0bd39130fe5ef6fbb077177753563db522d6623886da9b43515816df825f7ebcb009cbe86dcaf70f93b9b8595d1a87c2ab9951ee7a32ad8e572
+    ℹ Object @Alleged: BundleInstallation {}
+  ─
+
+  1 test passed
+```
+
+::: details Test Setup
+
+The test uses `createRequire` from the node `module` API to resolve the main module specifier:
+
+<<< @/snippets/zoe/contracts/test-bundle-source.js#bundleSourceImports
+
+<<< @/snippets/zoe/contracts/test-bundle-source.js#contractPath
+:::
+
+`bundleSource()` returns a bundle object with `moduleFormat`, a hash, and the contents:
+
+<<< @/snippets/zoe/contracts/test-bundle-source.js#testBundleSource{1}
+
+## Contract Installation
+
+To identify the code of contracts that parties consent to participate in, Zoe
+uses _Installation_ objects. Let's try it:
+
+```sh
+yarn ava test/test-contract.js -m 'Install the contract'
+```
+
+```
+  ✔ Install the contract
+    ℹ Object @Alleged: BundleInstallation {}
+```
+
+::: details Test Setup
+
+The test starts by using `makeZoeKitForTest` to set up zoe for testing:
+
+<<< @/snippets/zoe/contracts/test-bundle-source.js#importZoeForTest
+
+```js
+const { zoeService: zoe } = makeZoeKitForTest();
+```
+
+:::
+
+Using a bundle as in the previous section:
+
+```js{1}
+const installation = await E(zoe).install(bundle);
+t.log(installation);
+t.is(typeof installation, 'object');
+```
+
+## Starting a contract
+
+Now we're ready for the to start an instance of the contract:
+
+```sh
+yarn ava test/test-contract.js -m 'Start the contract'
+```
+
+```
+  ✔ Start the contract (652ms)
+    ℹ terms: {
+        joinPrice: {
+          brand: Object @Alleged: PlayMoney brand {},
+          value: 5n,
+        },
+      }
+    ℹ Object @Alleged: InstanceHandle {}
+```
+
+Contracts can be parameterized by _terms_.
+The price of joining the game is not fixed in the source code of this contract,
+but rather chosen when starting an _instance_ of the contract.
+Likewise, when starting an instance, we can choose which asset _issuers_
+the contract should use for its business:
+
+```js
+const money = makeIssuerKit('PlayMoney');
+const issuers = { Price: money.issuer };
+const terms = { joinPrice: AmountMath.make(money.brand, 5n) };
+t.log('terms:', terms);
+
+/** @type {ERef<Installation<GameContractFn>>} */
+const installation = E(zoe).install(bundle);
+const { instance } = await E(zoe).startInstance(installation, issuers, terms);
+t.log(instance);
+t.is(typeof instance, 'object');
+```
+
+_`makeIssuerKit` and `AmountMath.make` are covered in the [ERTP](../ertp/) section._
+
 ### Contracts on Zoe
 
 Agoric has written [a number of example contracts that you can
@@ -103,6 +221,9 @@ In most cases, the bundle contains a base64-encoded zip file that you can
 extract for review:
 
 ```sh
+@@@@@@
+jq -r .endoZipBase64 bundle-game1aginst.json | base64 -d >game1aginst.zip
+
 echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
 ```
