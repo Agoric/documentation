@@ -109,7 +109,7 @@ yarn install  # may take several minutes
 If you run into errors during install or build, make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, you can run `sudo apt get install build-essential` to install these tools.
 
 Also, check that you are on a
-[supported platform](#platform-linux-shell-or-equivalent) and
+[supported platform](#platform-requirements) and
 not native Windows.
 :::
 
@@ -163,7 +163,7 @@ Let's deploy the contract:
 yarn start:contract
 ```
 
-This `start:contract` script will do a number of things that we will cover in more detail later:
+This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx.md#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
 1. Bundle the contract with `agoric run ...`
 2. Collect some ATOM with `agd tx bank send ...`.
