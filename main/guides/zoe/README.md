@@ -133,9 +133,9 @@ go over in detail in the sections below.
 
 :::
 
-## Starting a contract
+## Starting a Contract Instance
 
-Now we're ready for the to start an instance of the [basic dapp](../getting-started/) contract:
+Now we're ready for the to start an _instance_ of the [basic dapp](../getting-started/) contract:
 
 ```sh
 yarn ava test/test-contract.js -m 'Start the contract'
@@ -154,7 +154,7 @@ yarn ava test/test-contract.js -m 'Start the contract'
 
 Contracts can be parameterized by _terms_.
 The price of joining the game is not fixed in the source code of this contract,
-but rather chosen when starting an _instance_ of the contract.
+but rather chosen when starting an instance of the contract.
 Likewise, when starting an instance, we can choose which asset _issuers_
 the contract should use for its business:
 
@@ -265,7 +265,7 @@ Use [E(zoe).getTerms()](/reference/zoe-api/zoe.md#e-zoe-getterms-instance) to fi
 are known to the contract.
 
 If you're writing or instantiating the contract, you can tell the contract about issuers
-when you are [creating an instance](#creating-an-instance) or by using
+when you are [creating an instance](#starting-a-contract-instance) or by using
 [zcf.saveIssuer()](/reference/zoe-api/zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
 
 :::
