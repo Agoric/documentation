@@ -91,7 +91,9 @@ unzip -l xyz.zip
 ## Contract Installation
 
 To identify the code of contracts that parties consent to participate in, Zoe
-uses _Installation_ objects. Let's try it:
+uses _Installation_ objects.
+
+Let's try it with the contract from our [basic dapp](../getting-started/):
 
 ```sh
 yarn ava test/test-contract.js -m 'Install the contract'
@@ -114,7 +116,7 @@ const { zoeService: zoe } = makeZoeKitForTest();
 
 :::
 
-Using a bundle as in the previous section:
+It gets an installation using a bundle as in the previous section:
 
 ```js{1}
 const installation = await E(zoe).install(bundle);
@@ -122,9 +124,18 @@ t.log(installation);
 t.is(typeof installation, 'object');
 ```
 
+The `installation` identifies the basic contract that we'll
+go over in detail in the sections below.
+
+::: details gameAssetContract.js listing
+
+<<< @/snippets/zoe/contracts/gameAssetContract.js#file
+
+:::
+
 ## Starting a contract
 
-Now we're ready for the to start an instance of the contract:
+Now we're ready for the to start an instance of the [basic dapp](../getting-started/) contract:
 
 ```sh
 yarn ava test/test-contract.js -m 'Start the contract'
@@ -147,7 +158,7 @@ but rather chosen when starting an _instance_ of the contract.
 Likewise, when starting an instance, we can choose which asset _issuers_
 the contract should use for its business:
 
-```js
+```js{8}
 const money = makeIssuerKit('PlayMoney');
 const issuers = { Price: money.issuer };
 const terms = { joinPrice: AmountMath.make(money.brand, 5n) };
@@ -169,13 +180,13 @@ as well as a `mint` for making assets consisting of collections (bags) of Places
 
 <<< @/snippets/zoe/contracts/gameAssetContract.js#start
 
-It defines a `joinShape`, `joinHandler` but doesn't do anything with them yet. They will come into play later. It defines and returns its `publicFacet` and stands by.
+It defines a `joinShape` and `joinHandler` but doesn't do anything with them yet. They will come into play later. It defines and returns its `publicFacet` and stands by.
 
 <<< @/snippets/zoe/contracts/gameAssetContract.js#started
 
 ## Trading with Offer Safety
 
-Now let's try trading:
+Our [basic dapp](../getting-started/) includes a test of trading:
 
 ```sh
 yarn ava test/test-contract.js -m 'Alice trades*'
@@ -207,7 +218,7 @@ yarn ava test/test-contract.js -m 'Alice trades*'
 
 We start by putting some money in a purse for Alice:
 
-```js
+```js{4}
 const alicePurse = money.issuer.makeEmptyPurse();
 const amountOfMoney = AmountMath.make(money.brand, 10n);
 const moneyPayment = money.mint.mintPayment(amountOfMoney);
@@ -229,7 +240,10 @@ for 1 Park Place and 1 Boardwalk, denominated in the game's `Place` brand; and s
 
 <<< @/snippets/zoe/contracts/test-alice-trade.js#makeProposal
 
-She then requests an _invitation_ to join the game; makes an _offer_ with this invitation, her proposal, and her payment; and awaits her Place payout:
+She then requests an _invitation_ to join the game; makes an _offer_ with
+(a promise for) this invitation, her proposal, and her payment;
+and awaits her **Places** payout:
+
 
 <<< @/snippets/zoe/contracts/test-alice-trade.js#trade
 
@@ -255,13 +269,13 @@ The contract gets Alice's `E(publicFacet).makeJoinInvitation()` call and uses `z
 
 <<< @/snippets/zoe/contracts/gameAssetContract.js#makeInvitation
 
-The handler is invoked with a _seat_ representing the party making the offer.
+The offer handler is invoked with a _seat_ representing the party making the offer.
 It extracts the `give` and `want` from the party's offer and checks that
 they are giving at least the `joinPrice` and not asking for too many
 places in return.
 
-With all these prerequisites met, it instructs `zcf` to mint the requested
-place assets, allocate what the player is giving into its own seat,
+With all these prerequisites met, the handler instructs `zcf` to mint the requested
+**Place** assets, allocate what the player is giving into its own `gameSeat`,
 and allocate the minted places to the player. Finally, it concludes its business with the player.
 
 <<< @/snippets/zoe/contracts/gameAssetContract.js#handler
@@ -269,7 +283,7 @@ and allocate the minted places to the player. Finally, it concludes its business
 Zoe checks that the contract's instructions are consistent with
 the offer and with conservation of assets. Then it allocates
 the escrowed payment to the contract's gameSeat and pays out
-the place NFTs to Alice.
+the place NFTs to Alice in response to the earlier `getPayout(...)` call.
 
 Alice asks the `Place` issuer what her payout is worth
 and tests that it's what she wanted.
