@@ -233,6 +233,9 @@ await alice(t, zoe, instance, alicePurse);
 
 Alice starts by using the `instance` to get the contract's `publicFacet` and `terms` from Zoe:
 
+<img src="./assets/trade-offer-safety-1.svg"
+  style="border: 2px solid" width="600" />
+
 <<< @/snippets/zoe/contracts/test-alice-trade.js#queryInstance
 
 Then she constructs a _proposal_ to give the `joinPrice` in exchange
@@ -244,6 +247,8 @@ She then requests an _invitation_ to join the game; makes an _offer_ with
 (a promise for) this invitation, her proposal, and her payment;
 and awaits her **Places** payout:
 
+<img src="./assets/trade-offer-safety-2.svg"
+  style="border: 2px solid" width="600" />
 
 <<< @/snippets/zoe/contracts/test-alice-trade.js#trade
 
@@ -267,6 +272,9 @@ when you are [creating an instance](#creating-an-instance) or by using
 
 The contract gets Alice's `E(publicFacet).makeJoinInvitation()` call and uses `zcf` to make an invitation with an associated handler, description, and proposal shape. Zoe gets Alice's `E(zoe).offer(...)` call, checks the proposal against the proposal shape, escrows the payment, and invokes the handler.
 
+<img src="./assets/trade-offer-safety-3.svg"
+  style="border: 2px solid" width="600" />
+
 <<< @/snippets/zoe/contracts/gameAssetContract.js#makeInvitation
 
 The offer handler is invoked with a _seat_ representing the party making the offer.
@@ -278,6 +286,9 @@ With all these prerequisites met, the handler instructs `zcf` to mint the reques
 **Place** assets, allocate what the player is giving into its own `gameSeat`,
 and allocate the minted places to the player. Finally, it concludes its business with the player.
 
+<img src="./assets/trade-offer-safety-4.svg"
+  style="border: 2px solid" width="600" />
+
 <<< @/snippets/zoe/contracts/gameAssetContract.js#handler
 
 Zoe checks that the contract's instructions are consistent with
@@ -287,6 +298,9 @@ the place NFTs to Alice in response to the earlier `getPayout(...)` call.
 
 Alice asks the `Place` issuer what her payout is worth
 and tests that it's what she wanted.
+
+<img src="./assets/trade-offer-safety-5.svg"
+  style="border: 2px solid" width="600" />
 
 <<< @/snippets/zoe/contracts/test-alice-trade.js#payouts
 
