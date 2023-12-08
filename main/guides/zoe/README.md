@@ -129,7 +129,7 @@ go over in detail in the sections below.
 
 ::: details gameAssetContract.js listing
 
-<<< @/snippets/zoe/contracts/gameAssetContract.js#file
+<<< @/snippets/zoe/src/gameAssetContract.js#file
 
 :::
 
@@ -178,11 +178,11 @@ The contract uses this `zcf` to get its terms. Likewise it uses `zcf` to
 make a `gameSeat` where it can store assets that it receives in trade
 as well as a `mint` for making assets consisting of collections (bags) of Places:
 
-<<< @/snippets/zoe/contracts/gameAssetContract.js#start
+<<< @/snippets/zoe/src/gameAssetContract.js#start
 
 It defines a `joinShape` and `joinHandler` but doesn't do anything with them yet. They will come into play later. It defines and returns its `publicFacet` and stands by.
 
-<<< @/snippets/zoe/contracts/gameAssetContract.js#started
+<<< @/snippets/zoe/src/gameAssetContract.js#started
 
 ## Trading with Offer Safety
 
