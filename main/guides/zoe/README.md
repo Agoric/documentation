@@ -275,7 +275,7 @@ The contract gets Alice's `E(publicFacet).makeJoinInvitation()` call and uses `z
 <img src="./assets/trade-offer-safety-3.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/gameAssetContract.js#makeInvitation
+<<< @/snippets/zoe/src/gameAssetContract.js#makeInvitation
 
 The offer handler is invoked with a _seat_ representing the party making the offer.
 It extracts the `give` and `want` from the party's offer and checks that
@@ -289,7 +289,7 @@ and allocate the minted places to the player. Finally, it concludes its business
 <img src="./assets/trade-offer-safety-4.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/gameAssetContract.js#handler
+<<< @/snippets/zoe/src/gameAssetContract.js#handler
 
 Zoe checks that the contract's instructions are consistent with
 the offer and with conservation of assets. Then it allocates
