@@ -180,7 +180,7 @@ module.exports = {
           path: '/guides/zoe/',
           collapsible: false,
           children: [
-            '/guides/getting-started/contract-basics.html',
+            '/guides/zoe/contract-basics.html',
             '/guides/zoe/',
             '/guides/zoe/offer-enforcement.html',
             '/guides/zoe/offer-safety.html',
