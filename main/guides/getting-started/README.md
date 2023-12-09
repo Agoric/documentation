@@ -26,11 +26,6 @@ As we begin, note that help is not far away:
 
 The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>, <a href="https://www.apple.com/macos/">MacOS</a>, and <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (WSL)</a>.
 
-::: tip Mac Dev Tools
-On a Mac, be sure to install
-[Xcode](https://apps.apple.com/us/app/xcode/id497799835).
-:::
-
 We support any long-term support (LTS) versions of Node.js.
 Download and install from [Node.js](https://nodejs.org/) if you don't
 already have `node`. Check to make sure:
@@ -38,6 +33,26 @@ already have `node`. Check to make sure:
 ```shell
 node --version # LTS version such as 18.16.0
 ```
+
+::: details Troubleshooting Symbol.dispose error from node v18.19.0
+
+Node v18.19.0 has a breadking change that results in...
+
+```
+Removing intrinsics.Symbol.dispose
+failed to delete intrinsics.Symbol.dispose (TypeError#1)
+TypeError#1: Cannot delete property 'dispose' of function Symbol() { [native code] }
+```
+
+This is a known issue, but updating this app with the fix may take some
+time. Meanwhile, please downgrade node to an earlier version.
+
+For reference:
+
+- [Node 18\.19 breaks release\-mainnet1B branch · agoric\-sdk \#8599](https://github.com/Agoric/agoric-sdk/issues/8599)
+- [feat\(ses\): tame Symbol so whitelist works by erights · endojs \#1579](https://github.com/endojs/endo/pull/1579)
+
+:::
 
 We use the `yarn` package manager. [Installing with corepack](https://yarnpkg.com/corepack) is what the `yarn` maintainers recommend:
 
@@ -49,7 +64,7 @@ yarn --version # 1.x
 For this getting started exercise, you will need:
 
 - [docker compose](https://docs.docker.com/compose/)
-- [Keplr wallet](https://www.keplr.app/) wallet.
+- [Keplr wallet](https://www.keplr.app/)
 
 ## Create a project with the basic starter kit
 
@@ -84,7 +99,7 @@ The `demo` directory now has:
 - **ui/** - web UI
 - **docker-compose.yml** - for running a local Agoric blockchain
 
-::: tip TODO: prune api, agstate
+::: details TODO: prune api, agstate
 
 Disregard these contents, for now:
 
@@ -104,18 +119,21 @@ cd demo
 yarn install  # may take several minutes
 ```
 
-::: tip Troubleshooting `yarn install`
+::: details Troubleshooting yarn install
 
-If you run into errors during install or build, make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, you can run `sudo apt get install build-essential` to install these tools.
-
-Also, check that you are on a
-[supported platform](#platform-requirements) and
+If you run into errors during `yarn install`,
+check that you are on a [supported platform](#platform-requirements) and
 not native Windows.
+
+Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`.
+On MacOS, be install
+[Xcode](https://apps.apple.com/us/app/xcode/id497799835).
+
 :::
 
 ## Start a local Agoric blockchain
 
-To run a local Agoric blockchain with [docker-compose](https://docs.docker.com/compose/):
+To run a local Agoric blockchain with [docker compose](https://docs.docker.com/compose/):
 
 ```sh
 yarn start:docker
@@ -145,7 +163,7 @@ agd_1  | 2023-12-05T20:52:43.946Z block-manager: block 957 commit
 
 Use control-C to stop viewing the logs and return to a shell prompt.
 
-::: tip Note: logs include benign error messages
+::: details Note: logs include benign error messages
 
 You can disregard messages such as:
 
@@ -176,7 +194,16 @@ This `start:contract` script will do a number of things that we will cover in mo
 
 ## Set up Keplr wallet and import account
 
-Install the [Keplr Wallet](https://www.keplr.app/) if you have not done so already. Then copy the _mnemonic phrase_ printed at the end of the previous step; for example copy `congress` thru `switch` in the following:
+::: warning Keep your own mnemonic seed phrase confidential!
+
+For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing.
+Using a **separate browser profile** is a good way to avoid accidentally
+using the wrong account when testing vs. with real assets.
+
+:::
+
+Install the [Keplr Wallet](https://www.keplr.app/) if you have not done so already. Then copy the _mnemonic phrase_ printed at the end of the previous step
+and use it to add an account. For example copy `congress` thru `switch` in the following:
 
 ```
 Import the following mnemonic into Keplr:
@@ -185,15 +212,7 @@ congress goose visual acid shine view pair fruit chaos boost cigar upgrade certa
 The resulting address should be: agoric1a3zu5aqw255q0tuxzy9aftvgheekw2wedz3xwq
 ```
 
-::: warning Keep your own mnemonic confidential!
-
-For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing.
-Using a **separate browser profile** is a good way to avoid accidentally
-using the wrong account when testing vs. with real assets.
-
-:::
-
-Import it into Keplr:
+::: details How to import mnemonic to add a Keplr wallet
 
 1. Inside your Keplr wallet browser extension, press the ‘Accounts’ icon on the top right corner and then click the ‘Add Wallet button.
 
@@ -211,9 +230,7 @@ Import it into Keplr:
 
 6. On the **Select Chains** page, hit **Save** (_choice of chain does not matter at this point._)
 
-::: tip See also Keplr docs
-
-The figures above are from...
+See also:
 
 - [Connect Additional Keplr Accounts](https://help.keplr.app/articles/how-to-connect-additional-keplr-accounts)
 - [Four Ways to Create a Keplr Account](https://help.keplr.app/articles/four-ways-to-create-a-keplr-account#:~:text=Import%20an%20Existing%20Account%20via%20Mnemonic%20Phrase)
@@ -253,12 +270,12 @@ and **want** a few places. Approve the offer to sign and broadcast it to the (lo
 
 <img alt="Confirm Transaction with Give / Want offer details"
 style="border: 1px solid"
-src="https://github.com/Agoric/documentation/assets/150986/fd724782-9480-4acf-8e10-e0da5c780248" />
+src="https://github.com/Agoric/documentation/assets/150986/fa2cec17-2ed4-465b-9394-f7c115b1cefe" />
 
 After a few seconds, the UI should show the places.
 
 <img alt="Purses display updated with wanted Places"
 style="border: 1px solid"
-src="https://github.com/Agoric/documentation/assets/150986/64c0fe24-8238-4839-add8-5c1007722756" />
+src="https://github.com/Agoric/documentation/assets/150986/11dbc9a7-253a-4b8f-8ca5-2c3a1efed123" />
 
 Congratulations! You are on your way to building dapps on Agoric.
