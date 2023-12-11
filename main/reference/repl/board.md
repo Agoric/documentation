@@ -61,7 +61,7 @@ Errors:
 ```js
 // Continuing from the example above in getValue(), the id returns its associated value
 command[3] E(home.board).getValue("1403739213")
-// returns the "abc" value
+// Returns the "abc" value
 history[3] [Alleged: presence o-102]{}
 ```  
   

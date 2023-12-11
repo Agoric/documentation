@@ -59,13 +59,13 @@ makeIssuerKit('title', AssetKind.COPY_SET);
 ```
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
-      makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 // This is merely an amount, describing assets, not minting assets
 const quatloos2 = AmountMath.make(quatloosBrand, 2n);
 
-const { issuer: titleIssuer, mint: titleMint, brand: titleBrand } = 
-      makeIssuerKit('propertyTitle');
+const { issuer: titleIssuer, mint: titleMint, brand: titleBrand } =
+  makeIssuerKit('propertyTitle');
 // These are merely amounts describing digital assets, not minting assets.
 const cornerProperty = AmountMath.make(propertyTitleBrand, ['1292826']);
 const adjacentProperty = AmountMath.make(propertyTitleBrand, ['1028393']);
@@ -119,7 +119,8 @@ source cannot be trusted to provide its own true value, the **Issuer** must be u
 validate its **[Brand](./brand.md)** and report how much the returned **Amount** contains.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand} = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 const quatloosPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
 quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloos 
 ```
@@ -167,8 +168,8 @@ and the original **Payment** is unmodified.
 If *payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } = 
-      makeIssuerKit('quatloos');     
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 const amountToBurn = AmountMath.make(quatloosBrand, 10n);
 const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 
@@ -192,7 +193,8 @@ and the original **Payment** is unmodified.
 If *payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 const amountExpectedToTransfer = AmountMath.make(quatloosBrand, 2n);
 const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
@@ -216,14 +218,15 @@ and the original **Payment** is unmodified.
 Each **Payment** in *paymentsArray* must be associated with the same **[Brand](./brand.md)** as the **Issuer**.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
-// create an array of 100 payments of 1 quatloo each
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
+// Create an array of 100 payments of 1 quatloo each
 const payments = [];
 for (let i = 0; i < 100; i += 1) {
   payments.push(quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 1n)));
 }
 
-// combinedpayment equals 100
+// combinedPayment equals 100
 const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
@@ -243,7 +246,8 @@ If *payment* is a promise, the operation proceeds after it resolves to a **Payme
 *payment* and *paymentAmountA* must both be associated with the same **[Brand](./brand.md)** as the **Issuer**.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 20n));
 // After the split, paymentA has 5 quatloos and paymentB has 15.
 const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(quatloosBrand, 5n));
@@ -265,7 +269,8 @@ If the **Amounts** in *amountArray* don't add up to the value of *payment*, the 
 *payment* and each **Amount** in *amountArray* must be associated with the same **[Brand](./brand.md)** as **Issuer**.
 
 ```js
-const { mint: quatloosMint, issuer: quatloosIssuer, brand: quatloosBrand} = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 const oldPayment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 100n));
 const goodAmounts = Array(10).fill(AmountMath.make(quatloosBrand, 10n));
 
