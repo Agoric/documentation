@@ -1,157 +1,149 @@
-# Starting a Project
-
-After you've [installed the Agoric SDK](./README.md) (_recall: use `agoric --version` to confirm._), you're ready for your first _Agoric Dapp_ (decentralized application).
+# Your First Agoric Dapp
 
 
-::: tip Beta Dapp Architecture
-The Dapp architecture presented here is a beta preview of
-our eventual permissionless contract deployment model,
-extending our [Distributed Computing Framework](../js-programming/)
-to a stateful peer on end-user machines.
+# How to Get Help
+Before getting started, there are some resources you might want to keep handy in case you get stuck, have questions, or are curious about any of the components. Getting in contact with us is easy! 
+- Join us for our Weekly [Developer Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
+- Come chat with us and other developers on the Official [Agoric Discord](https://agoric.com/discord)
+- Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
+- Visit and Tag [Agoric on X](https://twitter.com/agoric)
+- Send an Email to [Developer Relations](mailto://kbennett@agoric.com)
 
-The [Mainnet-1 launch](https://agoric.com/blog/announcements/agoric-composable-smart-contract-framework-reaches-mainnet-1-milestone)
-uses a ["smart wallet" architecture](./contract-rpc.md) with a lower client-side footprint.
-:::
 
-We'll be running **three terminal windows**. See below: 
+# Welcome!
+In this tutorial you will install the Agoric SDK as well as a simple application to test the functionality of Agoric.
+Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
- 1. ```sh
-    # Terminal 1: simulated blockchain and "solo" client
-    ```
- 2. ```sh secondary style2
-    # Terminal 2: contract interaction
-    ```
- 3. ```sh secondary style3
-    # Terminal 3: web user interface
-    ```
 
-::: tip Watch: Prepare Your Agoric Environment (November 2020)
-This presentation includes starting a project, but note an outdated detail:
+# Installing Curl
+Begin by installing the `curl` utility, if it's not already installed. If using Ubuntu you'll first need to run the command below to prevent an error when installing `curl`.
+`sudo apt-get update --fix-missing`
+![006](./assets/006.png)
 
- - In the REPL `x~.go()` tildot support has been postponed; use `E(x).go()` instead.
+Install the `curl` utility.
+`sudo apt install curl`
+![007](./assets/007.png)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-:::
 
-## Initialize the Default Dapp Template
+# Installing NVM and Node v18.16.0
+At this point the Node Version Manager (NVM) utility will be installed. NVM makes it easy to select the specific version of Node that will be required (v18.16.0).
+`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`
+![008](./assets/008.png)
 
-The following section will explain how to initialize the default Dapp template, and install the Agoric SDK
-into the Dapp template.
+Next, run the command:
+`source ~/.bashrc`
+![009](./assets/009.png)
 
-Use the [Agoric CLI](../agoric-cli/) to fetch from a Dapp template
-and put it in a directory _not located in your `agoric-sdk` clone_. We named the directory "demo", but you can name the folder whatever you like.
+Finally, install NVM with the command:
+`nvm install v18.16.0`
+![010](./assets/010.png)
 
-```sh
-# Terminal 1
-# Don't use your agoric-sdk as the parent of the demo directory.
-cd $HOME
-agoric init --dapp-template dapp-card-store demo # use `agoric init --dapp-template dapp-card-store $DIRNAME` with any name you like
-cd demo
-agoric install community-dev # will take a minute to install all dependencies
+
+# Installing Yarn
+Run the `corepack enable` command.
+`corepack enable`
+![023](./assets/023.png)
+
+Now run the `yarn –version` command
+`yarn –version`
+![049](./assets/049.png)
+
+
+# Installing Docker
+Now you'll install Docker using the two commands below. This first command will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 ```
+# Install Docker
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-Learn more about the [available Dapp templates](../dapps/dapp-templates.md).
-
-## Start Agoric Solo Client and Simulated Blockchain
-
-```sh
-# Terminal 1
-agoric start --verbose --reset # `agoric start --reset` to start over
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
 ```
+![027](./assets/027.png)
 
-Leave this process and its logs running in its own terminal window.
+Now you can install Docker!
+`sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
+![028](./assets/028.png)
 
-## Open the Agoric Wallet and REPL
+Now that Docker has been installed you'll need to add your user account to the Docker group.
+`sudo usermod -aG docker $USER`
+![029](./assets/029.png)
 
-```sh secondary style2
-# Terminal 2
-cd demo
-agoric open --repl
-```
+Now go ahead and reboot your image.
+![030](./assets/030.png)
 
-This should automatically open [http://127.0.0.1:8000](http://127.0.0.1:8000) in a new browser window or tab.
+Once your image has rebooted and you've logged back on, test that Docker works by running the `hello-world` sample.
+`docker run hello-world`
+![031](./assets/031.png)
 
-To begin using the wallet, click the Settings button.
 
-![agoric wallet settings button](./assets/settingsButton.png)
+# Installing the Sample Dapp
+Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
+`yarn create @agoric/dapp --dapp-base https://github.com/agoric-labs/ --dapp-template dapp-game-places demo`
+![024](./assets/024.png)
 
-Then make sure you click on the "Solo Wallet" button.
 
-![agoric wallet connect_solo wallet](./assets/soloWallet.png)
+# Install Dapp Dependencies
+Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
+`cd demo`
+`yarn install`
+![033](./assets/033.png)
 
-This should create an "Access Token" -> Click Connect Solo Wallet.
 
-![agoric wallet solo connection](./assets/agoric-open-repl-1.png)
+# Starting the Network
+Now go ahead and start the network using the `yarn start` command.
+`yarn start:docker`
+![034](./assets/034.png)
 
-After your solo wallet is connected, then you're ready to deploy the contract and API. 
+Once the network has started you can check the logs. Once you see messages showing blocks with a status of `commit` you can rest assured the network is running properly.
+`yarn docker:logs`
+![035](./assets/035.png)
 
-## Deploy the Contract and API
 
-In our second terminal, deploy the contract to the simulated blockchain
-and the API to the solo client.
+# Starting the Dapp Smart Contract
+Exit the log window and start the smart contract by running the `yarn start` command.
+`yarn start:contract`
+![036](./assets/036.png)
 
-```sh secondary style2
-# Terminal 2
-cd demo # if not already there
-agoric deploy ./contract/deploy.js 
-agoric deploy ./api/deploy.js
-```
 
-We'll cover [deploying smart contracts](./deploying.md)
-in detail later.
+# Installing Keplr Wallet
+Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser. 
+![037](./assets/037.png)
 
-## Point Your Agoric Wallet to localhost
+Once the plug-in has been installed, open Keplr and select the option to "Import an existing wallet". Then choose the option to "Use recovery phrase or private key".
+![038](./assets/038.png)
+![040](./assets/040.png)
 
-Navigate to [https://wallet.agoric.app/locator/](https://wallet.agoric.app/locator/)
+To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button. Note that your phrase will NOT be the same as the one shown in this guide, all phrases are unique!
+![039](./assets/039.png)
+![041](./assets/041.png)
 
-Ensure your wallet is pointed to `http://127.0.0.1:8000` and NOT `https://wallet.agoric.app`
+Give your new wallet a name and a password.
+![042](./assets/042.png)
 
-![agoric wallet point_to_localhost](./assets/pointToLocalhost.png)
+Ensure the "Cosmos Hub" chain is selected, then click "Save".
+![043](./assets/043.png)
 
-This will make sure that your Browser-based Agoric Client Wallet will support offer-safe interaction with your Baseball Card Dapp.
+Starting the Dapp
+To start the UI for the sample dapp, run the `yarn start:ui` command. Note the localhost link that appears on your terminal window. Open this link in your browser.
+![044](./assets/044.png)
+![045](./assets/045.png)
 
-## Start the Dapp User Interface
+From the browser UI, click the "Connect Wallet" button to connect your Keplr wallet. You will be asked to approve this connection.
+![046](./assets/046.png)
 
-The web user interface communicates with the API in the solo client as well as the wallet.
+Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
+![047](./assets/047.png)
 
-```sh secondary style3
-# Terminal 3
-cd demo # if not already there
-cd ui && yarn start
-```
+When the transaction is complete you will notice some IST has been debited from your wallet, and you are the owner of three new properties.
+![048](./assets/048.png)
 
-Leave this running in its own terminal window and visit [http://localhost:3000](http://localhost:3000) in a web browser.
-
-## Connect the Dapp to the Agoric Wallet
-
-1. Once here, you will be asked to enable the Dapp in your Agoric wallet.
-
-![Dapp card store ui - needs approval](./assets/must-enable-dapp.png)
-
-1. Navigate back to [http://127.0.0.1:8000](http://127.0.0.1:8000) and accept the Dapp's request to connect to your wallet.
-
-![agoric wallet - Dapp approval prompt](./assets/accept-dapp-connection.png)
-
-2. Navigate back to [the Dapp](http://localhost:3000) and it should load the baseball cards to bid on
-
-![Dapp card store ui - loading cards](./assets/card-store-ui.png)
-
-## Use the Dapp to bid on and buy a baseball card
-
-1. In the Dapp, you should be able to click on a baseball card to `BID` on it in an action. Enter `Bid ammount` to submit an offer to buy the card.
-
-   ![Bid on Card](./assets/bid-on-card.png)
-
-1. In the wallet, `Approve` the `Proposed` offer to bid on a card.
-
-   ![Proposed Offer](./assets/proposed-offer.png)
-
-1. In the wallet, the offer will be in a `Pending` state while the auction for the card to complete. The auction takes up to 300 seconds.
-
-   ![Pending Offer](./assets/pending-offer.png)
-
-1. In the wallet, your offer will transition to an `Accepted` state when the auction ends. Your `cardStore.Card` purse will now contain a card.
-
-   ![Accepted Offer](./assets/accepted-offer.png)
-
-Visit the [wallet UI](../wallet/ui.md#wallet-ui) documentation for more information.
+Congratulations! You've just completed your first Agoric dapp!
