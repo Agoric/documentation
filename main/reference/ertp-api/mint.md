@@ -18,7 +18,7 @@ in an unchangeable one-to-one relationship with a particular **Issuer**.
 const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos');
 const quatloosMintIssuer = quatloosMint.getIssuer();
 
-// returns true
+// Returns true
 issuer === quatloosMintIssuer;
 ```
 
@@ -31,8 +31,8 @@ From its creation, a **Mint** is always in an unchangeable
 one-to-one relationship with a **Brand**.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint
-        brand: quatloosBrand } = makeIssuerKit('quatloos');
+const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
+  makeIssuerKit('quatloos');
 
 const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
 // newPayment will have a balance of 1000 Quatloos

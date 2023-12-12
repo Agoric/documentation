@@ -25,7 +25,7 @@ The ERTP API introduces and uses the following data types:
 | --- | --- |
 | [Amount](./ertp-data-types.md#amount) | Describes digital assets, specifying the number and **[Brand](./brand.md)** of assets. Note that **Amounts** can describe either fungible or non-fungible assets. |
 | [AmountShape](./ertp-data-types.md#amountshape) | Describes digital assets, specifying the properties and **[Brand](./brand.md)** of assets. |
-| [Value](./ertp-data-types.md#value) | Describes how much of something there is. |
+| [AmountValue](./ertp-data-types.md#amountvalue) | Describes how much of something there is. |
 | [AssetKind](./ertp-data-types.md#assetkind) | Specifies whether an **Amount** is fungible or non-fungible. |
 | [DisplayInfo](./ertp-data-types.md#displayinfo) | Specifies how to display a **Brand**'s **Amounts**. |
 

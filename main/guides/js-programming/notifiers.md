@@ -208,7 +208,7 @@ const consume = async subscription => {
   }
 };
 consume(subscription);
-// eventually prints
+// Eventually prints:
 // non-final-value a
 // non-final-value b
 // the iteration finished
@@ -221,7 +221,7 @@ const observer = harden({
   fail: reason => console.log('failed', reason),
 });
 observeIteration(subscription, observer);
-// eventually prints
+// Eventually prints:
 // non-final-value a
 // non-final-value b
 // finished done

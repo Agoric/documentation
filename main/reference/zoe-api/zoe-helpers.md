@@ -47,7 +47,7 @@ transfers that only include one seat, you can use the helper functions
 
 ## fromOnly(fromSeat, fromAmounts)
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)**
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
 Returns a **TransferPart** which only takes **fromAmounts** from *fromSeat*. **TransferParts** are used
@@ -56,7 +56,7 @@ function.
 
 ## toOnly(toSeat, toAmounts)
 - **toSeat**: **[ZCFSeat](./zcfseat.md)**
-- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **toAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **[TransferPart](./zoe-data-types.md#transferpart)**
 
 Returns a **TransferPart** which only gives **toAmount** to *toSeat*. **TransferParts** are used as part
@@ -66,7 +66,7 @@ of the *transfer* argument of the **[atomicRearrange()](#atomicrearrange-zcf-tra
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **fromSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
 - **toSeat**: **ZCFSeat** - Optional.
-- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)** - Optional.
+- **fromAmounts**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
 - **toAmounts**: **AmountKeywordRecord** - Optional, defaults to **fromAmounts**.
 - Returns: None.
 
@@ -106,14 +106,14 @@ import {
   assertIssuerKeywords
 } from '@agoric/zoe/src/contractSupport/index.js';
 
-// proposals for this contract instance use keywords 'Asset' and 'Price'
+// Proposals for this contract instance use keywords 'Asset' and 'Price'
 assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
 ```
 
 ## satisfies(zcf, seat, update)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat**: **[ZCFSeat](./zcfseat.md)**
-- **update**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+- **update**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
 - Returns: **Boolean** 
 
 Returns **true** if an update to a **seat**'s **currentAllocation** satisfies its
@@ -131,14 +131,14 @@ It then calls **satisfiedBy()** on both orders of the two **seats**. If both sat
 it does a swap on them.
 
 ```js
-import {
-  satisfies,
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { satisfies } from '@agoric/zoe/src/contractSupport/index.js';
 
 const satisfiedBy = (xSeat, ySeat) =>
-        satisfies(zcf, xSeat, ySeat.getCurrentAllocation());
+  satisfies(zcf, xSeat, ySeat.getCurrentAllocation());
+
 if (satisfiedBy(offer, seat) && satisfiedBy(seat, offer)) {
-    swap(zcf, seat, offer);
+  swap(zcf, seat, offer);
+}
 ```
 
 ## swap(zcf, leftSeat, rightSeat)
@@ -165,9 +165,7 @@ wants 3 Quatloos, **seat** A retains 2 Quatloos.
 If the swap fails, no assets transfer, and both *leftSeat* and *rightSeat* are exited.
 
 ```js
-import {
-  swap
-} from '@agoric/zoe/src/contractSupport.js';
+import { swap } from '@agoric/zoe/src/contractSupport.js';
 
 swap(zcf, firstSeat, secondSeat);
 ```
@@ -199,16 +197,14 @@ Once the contract has been completed, please check your payout**.
 If the swap fails, no assets transfer, and both *leftSeat* and *rightSeat* are exited.
 
 ```js
-import {
-  swapExact
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { swapExact } from '@agoric/zoe/src/contractSupport/index.js';
 
 const swapMsg = swapExact(zcf, zcfSeatA, zcfSeatB);
 ```
 
 ## fitProposalShape(seat, proposalShape)
 - **seat**: **[ZCFSeat](./zcfseat.md)**
-- **proposalShape**: **Pattern**
+- **proposalShape**: **[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)**
 - Returns: None.
 
 Checks the seat's proposal against the *proposalShape* argument. If the proposal does not match *proposalShape*, the seat will be exited and all **[Payments](/reference/ertp-api/payment.md)** will be refunded.
@@ -231,14 +227,12 @@ and **give** should be **null**; the **exit** clause should specify a rule with
 these expectations, that **proposal** is rejected (and refunded). 
 
 ```js
-import {
-  assertProposalShape
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { assertProposalShape } from '@agoric/zoe/src/contractSupport/index.js';
 
 const sellAssetForPrice = harden({
-    give: { Asset: null },
-    want: { Price: null },
-  });
+  give: { Asset: null },
+  want: { Price: null },
+});
 const sell = seat => {
   assertProposalShape(seat, sellAssetForPrice);
   buySeats = swapIfCanTradeAndUpdateBook(buySeats, sellSeats, seat);
@@ -257,9 +251,7 @@ This means the corresponding **[Mint](/reference/ertp-api/mint.md)** creates fun
 If **false** throws with message **brand must be AssetKind.NAT**.
 
 ```js
-import {
-  assertNatAssetKind
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { assertNatAssetKind } from '@agoric/zoe/src/contractSupport/index.js';
 
 assertNatAssetKind(zcf, quatloosBrand);
 ```
@@ -268,7 +260,7 @@ assertNatAssetKind(zcf, quatloosBrand);
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **recipientSeat**: **[ZCFSeat](./zcfseat.md)**
 - **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- **payments**: **PaymentKeywordRecord**
+- **payments**: **PaymentPKeywordRecord**
 - Returns: **Promise&lt;String>**
 
 Deposits payments such that their amounts are reallocated to a seat.
@@ -280,9 +272,8 @@ If the seat has exited, aborts with the message **The recipientSeat cannot have 
 On success, returns the exported and settable **depositToSeatSuccessMsg** which
 defaults to **Deposit and reallocation successful.**
 ```js
-import {
-  depositToSeat,
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { depositToSeat } from '@agoric/zoe/src/contractSupport/index.js';
+
 await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment });
 ```
 
@@ -290,7 +281,7 @@ await depositToSeat(zcf, zcfSeat, { Dep: quatloos(2n) }, { Dep: quatloosPayment 
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **seat**: **[ZCFSeat](./zcfseat.md)**
 - **amounts**: **[AmountKeywordRecord](./zoe-data-types.md#allocation)**
-- Returns: **Promise&lt;PaymentKeywordRecord>**
+- Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 Withdraws payments from a seat. Note that withdrawing the amounts of
 the payments must not and cannot violate offer safety for the seat. The
@@ -298,18 +289,17 @@ the payments must not and cannot violate offer safety for the seat. The
 
 If the seat has exited, aborts with the message **The seat cannot have exited.**
 
-Unlike **depositToSeat()**, a **PaymentKeywordRecord** is returned, not a success message.
+Unlike **depositToSeat()**, a **PaymentPKeywordRecord** is returned, not a success message.
 ```js
-import {
-  withdrawFromSeat
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { withdrawFromSeat } from '@agoric/zoe/src/contractSupport/index.js';
+
 const paymentKeywordRecord = await withdrawFromSeat(zcf, zcfSeat, { With: quatloos(2n) });
 ```
 
 ## saveAllIssuers(zcf, issuerKeywordRecord)
 - **zcf**: **[ZoeContractFacet](./zoe-contract-facet.md)**
 - **issuerKeywordRecord**: **IssuerKeywordRecord**
-- Returns: **Promise&lt;PaymentKeywordRecord>**
+- Returns: **Promise&lt;PaymentPKeywordRecord>**
 
 Saves all of the issuers in an **IssuersKeywordRecord** to ZCF, using
 the method [**zcf.saveIssuer()**](./zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
@@ -318,9 +308,8 @@ This does **not** error if any of the **[Keywords](./zoe-data-types.md#keyword)*
 already present, it is ignored.
 
 ```js
-import {
-  saveAllIssuers,
-} from '@agoric/zoe/src/contractSupport/index.js';
+import { saveAllIssuers } from '@agoric/zoe/src/contractSupport/index.js';
+
 await saveAllIssuers(zcf, { G: gIssuer, D: dIssuer, P: pIssuer });
 ```
 
@@ -355,10 +344,10 @@ contractA reverses this mapping. It looks like this, where the **Keywords** are
 from the contracts indicated by using "A" or "B" in the **Keyword** name.
 ```js
 // Map the keywords in contractA to the keywords in contractB
-  const keywordMapping = harden({
-    TokenA1: 'TokenB1',
-    TokenA2: 'TokenB2'
-  });
+const keywordMapping = harden({
+  TokenA1: 'TokenB1',
+  TokenA2: 'TokenB2',
+});
 ```
 
 *offerArgs* is an object that can be used to pass
@@ -381,11 +370,11 @@ Its two properties are:
 - **deposited**: **Promise&lt;AmountKeywordRecord>**
 
 ```js
- const { userSeatPromise: AMMUserSeat, deposited } = zcf.offerTo(
-   swapInvitation,
-   keywordMapping, // {}
-   proposal,
-   fromSeat,
-   lenderSeat
- );
+const { userSeatPromise: AMMUserSeat, deposited } = zcf.offerTo(
+  swapInvitation,
+  keywordMapping, // {}
+  proposal,
+  fromSeat,
+  lenderSeat,
+);
 ```

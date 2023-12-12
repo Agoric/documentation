@@ -34,7 +34,7 @@ and the values are the **Brands** for particular **[Issuers](/reference/ertp-api
 const brandKeywordRecord = {
   FirstCurrency: quatloosBrand,
   SecondCurrency: moolaBrand,
-  //etc.
+  // etc.
 };
 ```
 
@@ -74,12 +74,12 @@ custom terms. The returned values look like:
 
 ```js
 {
-  //brands and issuers are keywordRecords
+  // Brands and issuers are keywordRecords
   brands: { A: moolaKit.brand, B: simoleanKit.brand },
   issuers: { A: moolaKit.issuer, B: simoleanKit.issuer },
   customTermA: 'something',
   customTermB: 'something else',
-  //All other customTerms
+  // All other customTerms
 };
 ```
  
@@ -114,7 +114,7 @@ const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // transform the untrusted invitation to a trusted one
 const trustedInvitation = await invitationIssuer.claim(untrustedInvitation);
 const { value: invitationValue } =
-    await E(invitationIssuer).getAmountOf(trustedInvitation);
+  await E(invitationIssuer).getAmountOf(trustedInvitation);
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
@@ -188,7 +188,7 @@ const instance = await E(Zoe).getInstance(invitation);
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
 - **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
-- Returns: **Promise&lt;Pattern>**
+- Returns: **Promise&lt;[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
@@ -242,7 +242,7 @@ not be in the public terms. For example, to share minting authority
 among multiple contracts, pass in the following as **privateArgs**:
 
 ```js
-{ externalMint: myExternalMint }
+const privateArgs = { externalMint: myExternalMint };
 ```
 
 It returns a **Promise** for a **StartInstanceResult** object. The object consists of:
@@ -278,81 +278,73 @@ represented as a **Payment**.
 ```js
 const issuerKeywordRecord = {
   Asset: moolaIssuer,
-  Price: quatlooIssuer
+  Price: quatlooIssuer,
 };
 const terms = { numBids: 3 };
-const { creatorFacet, publicFacet, creatorInvitation } = await E(Zoe).startInstance(
-  installation, issuerKeywordRecord, terms);
+const { creatorFacet, publicFacet, creatorInvitation } =
+  await E(Zoe).startInstance(installation, issuerKeywordRecord, terms);
 ```
 
+<a id="e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs"></a>
 
-## E(Zoe).offer(invitation, proposal?, paymentKeywordRecord?, offerArgs)
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;Invitation>**
-- **proposal**: **Proposal** - Optional.
-- **paymentKeywordRecord**: **PaymentKeywordRecord** - Optional.
-- **offerArgs**: **Object**
+## E(Zoe).offer(invitation, proposal?, paymentPKeywordRecord?, offerArgs?)
+- **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
+- **proposal**: **[Proposal](/glossary/#proposal)** - Optional.
+- **paymentPKeywordRecord**: **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
+- **offerArgs**: **[CopyRecord](/glossary/#copyrecord)** - Optional.
 - Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
 
-Used to make an offer to the contract that created the **Invitation** that is
-provided as the first argument.
+Used to make an offer to the contract that created the **invitation**.
 
-### Proposals and Payments
+<a id="proposals-and-payments"></a>
+### Proposals
 
-The invocation normally includes a **proposal** (the
-rules under which they want to exercise the offer) and **payments** that correspond 
-to the **give** property of the **proposal**. The payments will be escrowed by Zoe. If
-either the **proposal** or **payments** are empty, indicate this by
-omitting that argument or passing **undefined**, instead of passing an
-empty record.
-
-The optional **exit**'s value should be an **exitRule**, an object with three possible keys for
-key:value pairs:
-
-- **onDemand: null**: (Default) The offering party can cancel on demand.
-- **waived: null**: The offering party can't cancel and relies entirely on the smart contract to promptly finish their offer.
-- **afterDeadline**: The offer is automatically cancelled after a deadline, as determined 
-  by its **timer** and **deadline** properties.
-  **timer** must be a timer, and **deadline** must be a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) value interpreted with respect to the timer.
-  Some example timers use Unix epoch time, while others count block height.
+**proposal** must be either `undefined` or a record with **give**, **want**, and/or **exit** properties
+respectively expressing conditions regarding what is being given,
+what is desired in exchange (protected by offer safety), and
+an exit rule defining how/when the offer can be canceled.
+Note that the contract is not obligated to accept the proposal;
+it may inspect it and reject it for any reason
+(in which case all payments will be returned promptly).
 
 ```js
 const myProposal = harden({
-  give: { Asset: quatloos(4n)},
-  want: { Price: moola(15n) },
-  exit: { afterDeadline: {
-    timer,
-    deadline: 100n
-  }}
-})
+  give: { Asset: AmountMath.make(quatloosBrand, 4n) },
+  want: { Price: AmountMath.make(moolaBrand, 15n) },
+  exit: { onDemand: null },
+});
 ```
 
-**paymentKeywordRecord** is a record with **[Keywords](./zoe-data-types.md#keyword)** as keys and with
- values of the actual **payments** to be escrowed. A **payment** is
- expected for every entry under **give**.
+**give** and **want** use **[Keywords](./zoe-data-types.md#keyword)** defined by the contract.
+In the example above, "Asset" and "Price" are the Keywords. However, in an auction contract,
+the Keywords might be "Asset" and "Bid".
 
- **offer()** returns a promise for a **UserSeat**.
- 
+**exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
+- `{ onDemand: null }`: (Default) The offering party can cancel on demand.
+- `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to complete (finish or fail) their offer.
+- `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
+  as determined by its **timer** and **deadline** properties.
+  **timer** must be a timer, and **deadline** must be timestamp understood by it.
+  (Some timers use Unix epoch time, while others count block height.)
+  For more details, see [Timer Services](/reference/repl/timerServices.md).
+
+### Payments
+
+**paymentPKeywordRecord** must be either `undefined` or a **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)**
+containing the actual **payments** to be escrowed by Zoe.
+Every **Keyword** in **give** must have a corresponding **payment**.
+
 ```js
-const paymentKeywordRecord = {
-  Asset : quatloosPayment,
-  Price : moolaPayment
-};
+const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 ```
 
-### OfferArgs
+<a href="offerargs"></a>
+### Offer Arguments
 
-*offerArgs* is an object that can be used to pass
-additional arguments to the **offerHandler** contract code associated
-with the invitation. Which arguments should be included within *offerArgs* is determined by the
-contract in question; each contract can define whatever additional arguments it requires. If no
-additional arguments are defined for a particular contract, then the *offerArgs* argument can be
-omitted entirely. It is up to the contract code how it chooses to handle any unexpected or missing
-arguments within *offerArgs*.
-
-
-Contract code should be careful interacting with *offerArgs*. These values need input validation
-before being used by the contract code since they are coming directly from the user and may
-have malicious behavior.
+**offerArgs** is an optional CopyRecord that can be used to pass additional arguments to the
+**offerHandler** contract code associated with the invitation by
+[`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
+Each contract can define the properties it supports and which are required.
 
 ## E(Zoe).installBundleID(bundleId)
 - bundleId: **BundleId**

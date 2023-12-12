@@ -273,11 +273,11 @@ denominator, and then the **Ratios** are added.
 
 For example:
 
-1. Let's assume *left* = {numerator: 44n kilometers, denominator: 3n hours} and 
-*right* = {numerator: 25n kilometers, denominator: 2n hours}.
+1. Let's assume *left* = { numerator: 44n kilometers, denominator: 3n hours } and 
+*right* = { numerator: 25n kilometers, denominator: 2n hours }.
 2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in 
-*left* = {numerator: 88n kilometers, denominator: 6n hours} and  *right* = {numerator: 75n kilometers, denominator: 6n hours}
-3. *left* and *right* would then be added together, resulting in {numerator: 163n kilometers, denominator: 6n hours}.
+*left* = { numerator: 88n kilometers, denominator: 6n hours } and  *right* = { numerator: 75n kilometers, denominator: 6n hours }
+3. *left* and *right* would then be added together, resulting in { numerator: 163n kilometers, denominator: 6n hours }.
 This **Ratio** would then be returned.
 
 
@@ -298,11 +298,11 @@ denominator, and then *right* is subtracted from *left*.
 
 For example:
 
-1. Let's assume *left* = {numerator: 44n kilometers, denominator: 3n hours} and 
-*right* = {numerator: 25n kilometers, denominator: 2n hours}.
+1. Let's assume *left* = { numerator: 44n kilometers, denominator: 3n hours } and 
+*right* = { numerator: 25n kilometers, denominator: 2n hours }.
 2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in 
-*left* = {numerator: 88n kilometers, denominator: 6n hours} and  *right* = {numerator: 75n kilometers, denominator: 6n hours}
-3. *right* would then be subtracted from *left* would then be added together, resulting in {numerator: 13n kilometers, denominator: 6n hours}.
+*left* = { numerator: 88n kilometers, denominator: 6n hours } and  *right* = { numerator: 75n kilometers, denominator: 6n hours }
+3. *right* would then be subtracted from *left* would then be added together, resulting in { numerator: 13n kilometers, denominator: 6n hours }.
 This **Ratio** would then be returned.
 
 ## multiplyRatios(left, right)
@@ -342,8 +342,8 @@ aren't identical.
 
 Returns **true** if the *left* and *right* **Ratios** are the same, **false** otherwise. Note that for
 the two **Ratios** to be considered the same, the 
-**[Value](/reference/ertp-api/ertp-data-types.md#value)** and **[Brand](/reference/ertp-api/brand.md)**
-of both the *numerator* and *denominator* of one **Ratio** must be identical to the **Value** and
+**[AmountValue](/reference/ertp-api/ertp-data-types.md#amountvalue)** and **[Brand](/reference/ertp-api/brand.md)**
+of both the *numerator* and *denominator* of one **Ratio** must be identical to the **AmountValue** and
 **Brand** of the *numerator* and *denominator* of the other **Ratio**. 
 
 

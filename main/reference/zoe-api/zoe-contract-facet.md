@@ -70,31 +70,66 @@ associated with the **Issuer** value of the record:
 await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
-## zcf.makeInvitation(offerHandler, description, customProperties?, proposalShape?)
-- **offerHandler**: **ZCFSeat => Object**
+<a id="zcf-makeinvitation-offerhandler-description-customproperties-proposalshape"></a>
+## zcf.makeInvitation(offerHandler, description, customDetails?, proposalShape?)
+- **offerHandler**: **(seat: ZCFSeat, offerArgs?: CopyRecord) => any**
 - **description**: **String**
-- **customProperties**: **Object** - Optional.
-- **proposalShape**: **Pattern** - Optional.
+- **customDetails**: **Object** - Optional.
+- **proposalShape**: **[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)** - Optional.
 - Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
 
-Makes a credible Zoe **Invitation** for a smart contract. Note that **Invitations** are a special case
-of an ERTP **payment**. They are associated with the **invitationIssuer** and its **mint**, which 
-validate and mint **Invitations**. **zcf.makeInvitation()** serves as an interface to
-the **invitation** **mint**.
-
-The **Invitation**'s
-**value** specifies:
+Uses the Zoe **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** to _mint_
+a credible **Invitation** for a smart contract.
+The returned **Invitation**'s **amount** specifies:
 - The specific contract **instance**.
 - The Zoe **installation**.
 - A unique **[Handle](./zoe-data-types.md#handle)**.
 
-The second argument is a required *description* for the **Invitation**,
+**offerHandler** is a required function accepting a **ZCFSeat** and **offerArgs**
+(which will be present if and only if provided to
+[`E(Zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs))
+and returning arbitrary offer results.
+
+**description** is a required string describing the **Invitation**,
 and should include whatever information is needed for a potential recipient of the **Invitation**
-to know what they are getting in the optional *customProperties* argument, which is
-put in the **Invitation**'s **value**.
+to distinguish among this contract's invitations.
+Each description should be a string literal that is unique within the source text of its contract
+and used only as the argument to make invitations of a particular kind.
+
+The optional **customDetails** argument is included in the **Invitation**'s
+**amount** and not otherwise relied on by Zoe.
+
+The optional **proposalShape** argument can be used to describe the required and allowed components of each proposal.
+Proposals that don't match the pattern will be rejected by Zoe without even being sent to the contract.
+
+Patterns are constructed using the
+**[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object.
+**proposalShape**s are usually built from [`M.splitRecord(required, optional, rest)`](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html#splitRecord).
+
+```
+  M.splitRecord({
+    give: {
+      Collateral: makeNatAmountShape(collateralBrand),
+    },
+    want: {
+      Minted: makeNatAmountShape(debtBrand),
+    },
+  }),
+```
 
 ```js
-const creatorInvitation = zcf.makeInvitation(makeCallOption, 'makeCallOption')
+import { M } from "@endo/patterns";
+
+const waivedExitProposalShape = M.splitRecord(
+  // required properties
+  { exit: { waived: null } },
+  // optional properties
+  { give: M.record(), want: M.record() },
+  // unknown properties
+  M.record(),
+);
+const creatorInvitation =
+  zcf.makeInvitation(makeCallOption, 'makeCallOption', undefined, waivedExitProposalShape);
 ```
 
 ## zcf.makeEmptySeatKit()
@@ -235,9 +270,9 @@ zcf.assertUniqueKeyword(keyword);
 - Returns: None.
 
 Prohibit invocation of invitatations whose description include any of the strings.
-Any of the strings that end with a colon (:) will be treated as a prefix,
+Any of the strings that end with a colon (`:`) will be treated as a prefix,
 and invitations whose description string begins with the string (including the colon)
-will be burned and not processed if passed to **E(Zoe).offer()**.
+will not be processed if passed to **E(Zoe).offer()**. Instead, an exception will be thrown.
 
 It is expected that most contracts will never invoke this function directly. It is
 intended to be used by **governance** in a legible way, so that the contract's

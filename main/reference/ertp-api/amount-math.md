@@ -19,13 +19,13 @@ not equal, an error is thrown and no changes are made.
 
 ## AmountMath.make(brand, allegedValue)
 - **brand**: **[Brand](./brand.md)**
-- **allegedValue**: **[Value](./ertp-data-types.md#value)**
+- **allegedValue**: **[AmountValue](./ertp-data-types.md#amountvalue)**
 - Returns: **[Amount](./ertp-data-types.md#amount)**
 
-Creates an **Amount** from a given **Value** and a **Brand**.
+Creates an **Amount** from a given **Brand** and **AmountValue**.
 
 ```js
-//amount837 = { value: 837n, brand: quatloos }
+// amount837 = { brand: quatloosBrand, value: 837n }
 const amount837 = AmountMath.make(quatloosBrand, 837n);
 ```
 
@@ -46,14 +46,14 @@ const verifiedAmount = AmountMath.coerce(quatloosBrand, allegedAmount);
 ## AmountMath.getValue(brand, amount)
 - **brand**: **[Brand](./brand.md)**
 - **amount**: **[Amount](./ertp-data-types.md#amount)**
-- Returns: **[Value](./ertp-data-types.md#amount)**
+- Returns: **[AmountValue](./ertp-data-types.md#amountvalue)**
 
-Returns the **Value** from the given **Amount**.
+Returns the **AmountValue** from the given **Amount**.
 
 ```js
 const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 
-// returns 123n
+// Returns 123n
 const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 ```
 ## AmountMath.makeEmpty(brand, assetKind)
@@ -63,8 +63,8 @@ const myValue = AmountMath.getValue(quatloosBrand, quatloos123);
 
 Returns the **Amount** representing an empty **Amount** for the *brand* parameter's 
 **Brand**. This is the identity element for **AmountMath.add()** 
-and **AmountMath.subtract()**. The empty **Value** depends 
-on whether the *assetKind* is **AssetKind.NAT** (*0n*), **AssetKind.COPY_SET** (*[]*), or **AssetKind.COPY_BAG** (*[]*).
+and **AmountMath.subtract()**. The empty **AmountValue** depends 
+on whether the *assetKind* is **AssetKind.NAT** (`0n`), **AssetKind.COPY_SET** (`[]`), or **AssetKind.COPY_BAG** (`[]`).
 
 ```js
 // Returns an empty amount.
@@ -78,12 +78,12 @@ const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 - Returns: **Amount**
 
 Returns the **Amount** representing an empty **Amount**, using another
-**Amount** as the template for the **[Brand](./brand.md)** and **[Value](./ertp-data-types.md#value)**.
+**Amount** as the template for the **[Brand](./brand.md)** and **[AmountValue](./ertp-data-types.md#amountvalue)**.
 
 ```js
-// quatloosAmount837 = { value: 837n, brand: quatloos }
+// quatloosAmount837 = { brand: quatloos, value: 837n }
 const quatloosAmount837 = AmountMath.make(quatloosBrand, 837n);
-// Returns an amount = { value: 0n, brand: quatloos }
+// Returns an amount = { brand: quatloos, value: 0n }
 const quatloosAmount0 = AmountMath.makeEmptyFromAmount(quatloosAmount837);
 ```
 
@@ -100,10 +100,10 @@ If the optional *brand* argument doesn't match the **Amount**'s **Brand**, an er
 const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 const quatloos1 = AmountMath.make(quatloosBrand, 1n);
 
-// returns true
+// Returns true
 const result = AmountMath.isEmpty(empty);
 
-// returns false
+// Returns false
 const result = AmountMath.isEmpty(quatloos1);
 ```
 
@@ -113,13 +113,13 @@ const result = AmountMath.isEmpty(quatloos1);
 - **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
-Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is greater than or equal to
-the **Value** of *rightAmount*. Both **Amount** arguments must have the same
+Returns **true** if the **[AmountValue](./ertp-data-types.md#amountvalue)** of *leftAmount* is greater than or equal to
+the **AmountValue** of *rightAmount*. Both **Amount** arguments must have the same
 **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
-For non-fungible **Values**, what "greater than or equal to" is depends on the 
+For non-fungible **AmountValues**, what "greater than or equal to" is depends on the 
 kind of **AmountMath**. For example, { 'seat 1', 'seat 2' } is considered
 greater than { 'seat 2' } because the former both contains all of the latter's 
 content and has additional elements.
@@ -147,13 +147,13 @@ AmountMath.isGTE(quatloos5, quatloos5);
 - **brand**: **[Brand](./brand.md)** - Optional, defaults to **undefined**.
 - Returns: **Boolean**
 
-Returns **true** if the **[Value](./ertp-data-types.md#value)** of *leftAmount* is equal to
-the **Value** of *rightAmount*. Both **Amount** arguments must have the same
+Returns **true** if the **[AmountValue](./ertp-data-types.md#amountvalue)** of *leftAmount* is equal to
+the **AmountValue** of *rightAmount*. Both **Amount** arguments must have the same
 **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
-For non-fungible **Values**, "equal to" depends on the value of the
+For non-fungible **AmountValues**, "equal to" depends on the value of the
 **Brand's** **[AssetKind](./ertp-data-types.md#assetkind)**. 
 
 For example, { 'seat 1', 'seat 2' } is considered
@@ -188,7 +188,7 @@ arguments must be of the same **Brand**.
 
 If the optional *brand* argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
-For fungible **Amounts** this means adding their **[Values](./ertp-data-types.md#value)**. For non-fungible
+For fungible **Amounts** this means adding their **[AmountValues](./ertp-data-types.md#amountvalue)**. For non-fungible
 **Amounts**, it usually means including all of the elements from *leftAmount*
 and *rightAmount*.
 
@@ -254,7 +254,7 @@ If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an 
 const smallerAmount = AmountMath.make(quatloosBrand, 5n);
 const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
-//returns smallerAmount
+// Returns smallerAmount
 const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
 ```
 
@@ -274,7 +274,7 @@ If the optional *brand* argument doesn't match the **Brand** of *x* and *y*, an 
 const smallerAmount = AmountMath.make(quatloosBrand, 5n);
 const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
-//returns largerAmount
+// Returns largerAmount
 const comparisonResult = AmountMath.max(smallerAmount, largerAmount);
 ```
 

@@ -45,45 +45,35 @@ const { want, give, exit } = sellerSeat.getProposal();
 ```
 
 ## E(UserSeat).getPayouts()
-  - Returns: **Promise&lt;PaymentKeywordRecord>**
+  - Returns: **Promise&lt;[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)>**
 
-A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns a **Promise** for a record
-containing all the **Payout** **Payments** associated with the **seat**'s offers.
+Returns a **Promise** for a [KeywordRecord](./zoe-data-types.md#keywordrecord) containing **Promises** for all the **Payouts** associated with the **seat**'s offers.
+A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction,
+redirecting escrowed assets in accordance with the result of the transaction.
 
-
-```js
-// Record example
-const paymentKeywordRecord = {
-  FirstPayment: quatloosPayment,
-  SecondPayment: moolaPayment,
-  //etc.
-};
-```
-
-This promise will be resolved when the seat exits.
+The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getPayout(keyword)
-- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
-- Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
+  - **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
+  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
 
-A **Payout** is a **Payment** that goes to a party in a successful transaction, redirecting
-escrowed assets in accordance with the result of the transaction. Returns a **Promise** for the **Payout**
-**Payment** associated with the *keyword* argument.
+Returns a **Promise** for the **Payout** associated with the *keyword* argument.
+A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction,
+redirecting escrowed assets in accordance with the result of the transaction.
 
-This promise will be resolved when the seat exits.
+The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getOfferResult()
   - Returns: **Promise&lt;OfferResult>**
 
-Returns a **Promise** for an **OfferResult**. The **OfferResult** can be literally anything. 
-For example, in tests for the Automated Refund Dapp, it's the string "The offer was accepted". In
-the Covered Call example, it's a call option, which is an assayable **[Invitation](./zoe-data-types.md#invitation)**
+Returns a **Promise** for an **OfferResult**. The **OfferResult** can be any **[Passable](/glossary/#passable)**.
+For example, in the [Automatic Refund](/guides/zoe/contracts/automatic-refund.md) example, it's the string "The offer was accepted".
+In the [Covered Call](/guides/zoe/contracts/covered-call.md) example, it's a call option, which is an assayable **[Invitation](./zoe-data-types.md#invitation)**
 to buy the underlying asset. Strings and invitations are the most common things returned.
-The value is set by the returned result of the **offerHandlers** function passed
-as an argument to **[zcf.makeInvitation()](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customproperties-proposalshape)**.
+The value is the result returned by the **offerHandler** function passed
+in the first argument to [`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 
-Since the contract can return whatever it wants as an offerResult, there is no guarantee that the
+Since the contract can return whatever it wants as an offer result, there is no guarantee that the
 promise will resolve promptly.
 
 ## E(UserSeat).hasExited()

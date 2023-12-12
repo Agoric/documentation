@@ -13,25 +13,24 @@ Returns an **IssuerRecord** containing the **[Issuer](/reference/ertp-api/issuer
 **[Brand](/reference/ertp-api/brand.md)** associated with the **zcfMint**.
 
 ## aZCFMint.mintGains(gains, zcfSeat?)
-  - **gains**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
+  - **gains**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
   - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
   - Returns: **ZCFSeat**
 
-All **amounts** in *gains* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
-The *gains*' **[Keywords](./zoe-data-types.md#keyword)** are in that **seat**'s namespace.
-Mint the *gains* **Amount** of assets and add them to
-that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**. If a **seat** is provided,
-it is returned. Otherwise a new **seat** is returned.
+All **amounts** in *gains* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**
+and the *gains*' **[Keywords](./zoe-data-types.md#keyword)** should be defined by the contract instance in which *zcfSeat* is participating.
+If *zcfSeat* is not provided, a new **seat** is used.
+Mints the *gains* **Amount** of assets and adds them to *zcfSeat*'s **[Allocation](./zoe-data-types.md#allocation)**, then returns *zcfSeat*.
 
-## aZCFMint.burnLosses(losses, zcfSeat?)
-  - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#amountkeywordrecord)**
-  - **zcfSeat**: **[ZCFSeat](./zcfseat.md)** - Optional.
+## aZCFMint.burnLosses(losses, zcfSeat)
+  - **losses**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
+  - **zcfSeat**: **[ZCFSeat](./zcfseat.md)**
   - Returns: None
 
-All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**.
-The *losses*' **[Keywords](./zoe-data-types.md#keyword)** are in that **seat**'s namespace.
-Subtract *losses* from that **seat**'s **[Allocation](./zoe-data-types.md#allocation)**, then
-burn that **amount** of assets from the pooled **[Purse](/reference/ertp-api/purse.md)**.
+All **amounts** in *losses* must be of this **ZCFMint**'s **[Brand](/reference/ertp-api/brand.md)**
+and the *losses*' **[Keywords](./zoe-data-types.md#keyword)** must be defined by the contract instance in which *zcfSeat* is participating.
+Subtracts *losses* from *zcfSeat*'s **[Allocation](./zoe-data-types.md#allocation)**, then
+burns that **amount** from the assets escrowed by Zoe for this contract instance.
 
 
 

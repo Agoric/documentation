@@ -5,7 +5,7 @@ ERTP introduces and uses several data types.
 ## Amount
 
 An **Amount** is a description of digital assets, answering the
-questions "how much?" and "of what kind?". It is a **[Value](#value)** ("how much?")
+questions "how much?" and "of what kind?". It is an **[AmountValue](#amountvalue)** ("how much?")
 labeled with a **[Brand](./brand.md)** ("of what kind?"). The **[AmountMath](./amount-math.md)** object
 introduces a library of methods that can be used to manipulate and analyze **Amounts**.
 
@@ -34,23 +34,24 @@ someAmountShape: {
 }
 ```
 
-## Value
+<a id="value"></a>
+## AmountValue
 
-**Values** describe how much of something can be owned or shared.
-For fungible **[Amounts](#amount)**, **Values** are non-negative **BigInts**.
-For non-fungible **Amounts**, **Values** are [copyArrays](/guides/js-programming/far.md#passstyleof-api)
-(e.g., a hardened array of strings).
-
-Recall that **BigInt**s are written with an *n* at the end: **10n**, **137n**, etc.
+An **AmountValue** is the part of an [Amount](#amount) that describes the value of something
+that can be owned or shared: how much, how many, or a description of a unique asset, such as
+$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
+For a fungible **Amount**, the **AmountValue** is usually a non-negative **BigInt** such as `10n` or `137n`.
+For a non-fungible **Amount**, the **AmountValue** might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
+AmountValues must be [Keys](/glossary/#key).
 
 ## AssetKind
 
 There are several kinds of Assets.
 
-- **AssetKind.NAT** : Used with fungible assets. **Values** are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
+- **AssetKind.NAT** : Used with fungible assets. **AmountValues** are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
 - **AssetKind.SET** : Deprecated.
-- **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium). **Values** are arrays of objects.
-- **AssetKind.COPY_BAG** : Used with non-fungible assets where there can be duplicates. (e.g., weapons in a computer game). **Values** are arrays of objects.
+- **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium). **AmountValues** are arrays of objects.
+- **AssetKind.COPY_BAG** : Used with non-fungible assets where there can be duplicates. (e.g., weapons in a computer game). **AmountValues** are arrays of objects.
 
 Even though very different mathematical processes are performed,
 **[AmountMath](./amount-math.md)** methods work for all kinds of assets.
