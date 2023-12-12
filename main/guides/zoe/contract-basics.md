@@ -3,8 +3,8 @@
 Before we look at how to make a contract such as the one in [the
 basic dapp](./) in the previous section, let's cover some basics.
 
-A contract is a JavaScript module that exports a `start` function
-that defines the contract's API.
+A contract is defined by a JavaScript module that exports a `start` function
+that implements the contract's API.
 
 <<< @/snippets/zoe/src/01-hello.js#start
 
