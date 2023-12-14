@@ -6,7 +6,7 @@ Before getting started, there are some resources you might want to keep handy in
 - Join us for our Weekly [Developer Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
 - Come chat with us and other developers on the Official [Agoric Discord](https://agoric.com/discord)
 - Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
-- Visit and Tag [Agoric on X](https://twitter.com/agoric)
+- Write to us at https://twitter.com/agoric
 - Send an Email to [Developer Relations](mailto://kbennett@agoric.com)
 
 
