@@ -188,7 +188,26 @@ Please note that your phrase might not be the same as the one shown in this guid
 - For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing. 
 - Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets. 
 
-![Copying the mnemonic phrase](./assets/039.png)
+Note the mnemonic phrase in the output below:
+```waiting for block...
+1
+block produced
+done
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Import the following mnemonic into Keplr:
+survey thank matrix joke trim more make gossip spread yellow unfold under cash beach harsh fire blush achieve oak swamp pluck clock rocket leg
+
+The resulting address should be: agoric1xe269y3fhye8nrlduf826wgn499y6wmnv32tw5
+
+make: Leaving directory '/workspace/contract'
+Done in 34.95s.
+```
 
 ![Pasting the mnemonic phrase](./assets/041.png)
 
