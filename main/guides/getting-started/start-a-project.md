@@ -24,13 +24,13 @@ If you already have the `curl` utility installed, you can skip this section. Use
 
 If using Ubuntu you'll first need to run the command below to prevent an error when installing `curl`.
 
-```
+```sh
 sudo apt-get update --fix-missing
 ```
 
 Install the `curl` utility.
 
-```
+```sh
 sudo apt install curl
 ```
 
@@ -40,19 +40,19 @@ sudo apt install curl
 # Installing NVM and Node v18.16.0
 At this point the Node Version Manager (NVM) utility will be installed. NVM makes it easy to select the specific version of Node that will be required (v18.16.0).
 
-```
+```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 Next, run the command:
 
-```
+```sh
 source ~/.bashrc
 ```
 
 Finally, install NVM with the command:
 
-```
+```sh
 nvm install v18.16.0
 ```
 
@@ -60,13 +60,13 @@ nvm install v18.16.0
 # Installing Yarn
 Run the `corepack enable` command.
 
-```
+```sh
 corepack enable
 ```
 
 Now run the `yarn –version` command.
 
-```
+```sh
 yarn –version
 ```
 
@@ -74,7 +74,7 @@ yarn –version
 # Installing Docker
 Now you'll install Docker using the two commands below. This first command will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 
-```
+```sh
 # Install Docker
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -92,13 +92,13 @@ sudo apt-get update
 ```
 Now you can install Docker!
 
-```
+```sh
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
-```
+```sh
 sudo usermod -aG docker $USER
 ```
 
@@ -108,7 +108,7 @@ Now go ahead and reboot your image.
 
 Once your image has rebooted and you've logged back on, test that Docker works by running the `hello-world` sample.
 
-```
+```sh
 docker run hello-world
 ```
 
@@ -141,7 +141,7 @@ For more examples and ideas, visit:
 # Installing the Sample Dapp
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
-```
+```sh
 yarn create @agoric/dapp --dapp-template dapp-offer-up demo
 ```
 
@@ -149,11 +149,11 @@ yarn create @agoric/dapp --dapp-template dapp-offer-up demo
 # Install Dapp Dependencies
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
-```
+```sh
 cd demo
 ```
 
-```
+```sh
 yarn install
 ```
 
@@ -161,13 +161,13 @@ yarn install
 # Starting the Network
 Now go ahead and start the network using the `yarn start` command.
 
-```
+```sh
 yarn start:docker
 ```
 
 Once the network has started you can check the logs. Once you see messages showing blocks with a status of `commit` you can rest assured the network is running properly.
 
-```
+```sh
 yarn docker:logs
 ```
 
@@ -200,7 +200,7 @@ demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
 # Starting the Dapp Smart Contract
 Exit the log window and start the smart contract by running the `yarn start` command.
 
-```
+```sh
 yarn start:contract
 ```
 
