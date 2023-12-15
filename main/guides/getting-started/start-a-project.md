@@ -140,7 +140,29 @@ Once the network has started you can check the logs. Once you see messages showi
 
 ```yarn docker:logs```
 
-![Running the `yarn docker:logs` command](./assets/035.png)
+Your output should resemble this:
+
+```demo-agd-1  | 2023-12-15T19:07:45.530Z block-manager: block 11797 begin
+demo-agd-1  | 2023-12-15T19:07:45.534Z block-manager: block 11797 commit
+demo-agd-1  | 2023-12-15T19:07:46.539Z block-manager: block 11798 begin
+demo-agd-1  | 2023-12-15T19:07:46.543Z block-manager: block 11798 commit
+demo-agd-1  | 2023-12-15T19:07:47.557Z block-manager: block 11799 begin
+demo-agd-1  | 2023-12-15T19:07:47.560Z block-manager: block 11799 commit
+demo-agd-1  | 2023-12-15T19:07:48.572Z block-manager: block 11800 begin
+demo-agd-1  | 2023-12-15T19:07:48.577Z block-manager: block 11800 commit
+demo-agd-1  | 2023-12-15T19:07:49.590Z block-manager: block 11801 begin
+demo-agd-1  | 2023-12-15T19:07:49.593Z block-manager: block 11801 commit
+demo-agd-1  | 2023-12-15T19:07:50.628Z block-manager: block 11802 begin
+demo-agd-1  | 2023-12-15T19:07:50.633Z block-manager: block 11802 commit
+demo-agd-1  | 2023-12-15T19:07:51.642Z block-manager: block 11803 begin
+demo-agd-1  | 2023-12-15T19:07:51.645Z block-manager: block 11803 commit
+demo-agd-1  | 2023-12-15T19:07:52.674Z block-manager: block 11804 begin
+demo-agd-1  | 2023-12-15T19:07:52.678Z block-manager: block 11804 commit
+demo-agd-1  | 2023-12-15T19:07:53.681Z block-manager: block 11805 begin
+demo-agd-1  | 2023-12-15T19:07:53.685Z block-manager: block 11805 commit
+demo-agd-1  | 2023-12-15T19:07:54.698Z block-manager: block 11806 begin
+demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
+```
 
 
 # Starting the Dapp Smart Contract
@@ -160,9 +182,11 @@ Once the plug-in has been installed, open Keplr and select the option to "Import
 
 ![Choose the "Use recovery phrase or private key" option](./assets/040.png)
 
-To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button. Please note that your phrase might not be the same as the one shown in this guide! Remember, this is just a demo. In real-world scenarios ensuring proper security around mnemonic phrases is critical!
-For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing. 
-NOTE - Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets. 
+To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button. 
+
+Please note that your phrase might not be the same as the one shown in this guide! Remember, this is just a demo. In real-world scenarios ensuring proper security around mnemonic phrases is critical!
+- For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing. 
+- Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets. 
 
 ![Copying the mnemonic phrase](./assets/039.png)
 
