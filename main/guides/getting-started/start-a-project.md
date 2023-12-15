@@ -26,13 +26,10 @@ If using Ubuntu you'll first need to run the command below to prevent an error w
 
 ```sudo apt-get update --fix-missing```
 
-![Running the `sudo apt-get update --fix-missing` command](./assets/006.png)
-
 Install the `curl` utility.
 
 ```sudo apt install curl```
 
-![Running the `sudo apt install curl` command](./assets/007.png)
 </details>
 
 
@@ -41,19 +38,13 @@ At this point the Node Version Manager (NVM) utility will be installed. NVM make
 
 ```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash```
 
-![Running the `curl` command](./assets/008.png)
-
 Next, run the command:
 
 ```source ~/.bashrc```
 
-![Running the `source ~/.bashrc` command](./assets/009.png)
-
 Finally, install NVM with the command:
 
 ```nvm install v18.16.0```
-
-![Running the `nvm install` command](./assets/010.png)
 
 
 # Installing Yarn
@@ -61,13 +52,9 @@ Run the `corepack enable` command.
 
 ```corepack enable```
 
-![Running the `corepack enable` command](./assets/023.png)
-
 Now run the `yarn –version` command.
 
 ```yarn –version```
-
-![Running the `yarn –version` command](./assets/049.png)
 
 
 # Installing Docker
@@ -89,19 +76,13 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 ```
-![Running the commands to add Docker GPG keys to the system](./assets/027.png)
-
 Now you can install Docker!
 
 ```sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
 
-![Running the Docker installation command](./assets/028.png)
-
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
 ```sudo usermod -aG docker $USER```
-
-![Running the `sudo usermod` command](./assets/029.png)
 
 Now go ahead and reboot your image.
 
@@ -111,15 +92,35 @@ Once your image has rebooted and you've logged back on, test that Docker works b
 
 ```docker run hello-world```
 
-![Running the Hello World Docker test](./assets/031.png)
+The output of the `hello-world` example should be:
+
+```Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
 
 
 # Installing the Sample Dapp
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```yarn create @agoric/dapp --dapp-template dapp-offer-up demo```
-
-![Running the `yarn create` command](./assets/024.png)
 
 
 # Install Dapp Dependencies
@@ -129,15 +130,11 @@ Now navigate to the `demo` directory and run the `yarn install` command to insta
 
 ```yarn install```
 
-![Running the `yarn install` command](./assets/033.png)
-
 
 # Starting the Network
 Now go ahead and start the network using the `yarn start` command.
 
 ```yarn start:docker```
-
-![Running the `yarn start` command](./assets/034.png)
 
 Once the network has started you can check the logs. Once you see messages showing blocks with a status of `commit` you can rest assured the network is running properly.
 
@@ -151,8 +148,6 @@ Exit the log window and start the smart contract by running the `yarn start` com
 
 ```yarn start:contract```
 
-![Running the `yarn start:contract` command](./assets/036.png)
-
 
 # Installing Keplr Wallet
 Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser. 
@@ -163,7 +158,7 @@ Once the plug-in has been installed, open Keplr and select the option to "Import
 
 ![Choose the "Import an Existing Wallet" option](./assets/038.png)
 
-![Choose the "Use recory phrase or private key" option](./assets/040.png)
+![Choose the "Use recovery phrase or private key" option](./assets/040.png)
 
 To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button. Please note that your phrase might not be the same as the one shown in this guide! Remember, this is just a demo. In real-world scenarios ensuring proper security around mnemonic phrases is critical!
 For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing. 
