@@ -24,11 +24,15 @@ If you already have the `curl` utility installed, you can skip this section. Use
 
 If using Ubuntu you'll first need to run the command below to prevent an error when installing `curl`.
 
-```sudo apt-get update --fix-missing```
+```
+sudo apt-get update --fix-missing
+```
 
 Install the `curl` utility.
 
-```sudo apt install curl```
+```
+sudo apt install curl
+```
 
 </details>
 
@@ -36,11 +40,15 @@ Install the `curl` utility.
 # Installing NVM and Node v18.16.0
 At this point the Node Version Manager (NVM) utility will be installed. NVM makes it easy to select the specific version of Node that will be required (v18.16.0).
 
-```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash```
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
 
 Next, run the command:
 
-```source ~/.bashrc```
+```
+source ~/.bashrc
+```
 
 Finally, install NVM with the command:
 
@@ -50,11 +58,15 @@ Finally, install NVM with the command:
 # Installing Yarn
 Run the `corepack enable` command.
 
-```corepack enable```
+```
+corepack enable
+```
 
 Now run the `yarn –version` command.
 
-```yarn –version```
+```
+yarn –version
+```
 
 
 # Installing Docker
@@ -78,11 +90,15 @@ sudo apt-get update
 ```
 Now you can install Docker!
 
-```sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
-```sudo usermod -aG docker $USER```
+```
+sudo usermod -aG docker $USER
+```
 
 Now go ahead and reboot your image.
 
@@ -90,11 +106,14 @@ Now go ahead and reboot your image.
 
 Once your image has rebooted and you've logged back on, test that Docker works by running the `hello-world` sample.
 
-```docker run hello-world```
+```
+docker run hello-world
+```
 
 The output of the `hello-world` example should be:
 
-```Hello from Docker!
+```
+Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
 To generate this message, Docker took the following steps:
@@ -120,29 +139,40 @@ For more examples and ideas, visit:
 # Installing the Sample Dapp
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
-```yarn create @agoric/dapp --dapp-template dapp-offer-up demo```
+```
+yarn create @agoric/dapp --dapp-template dapp-offer-up demo
+```
 
 
 # Install Dapp Dependencies
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
-```cd demo```
+```
+cd demo
+```
 
-```yarn install```
+```
+yarn install
+```
 
 
 # Starting the Network
 Now go ahead and start the network using the `yarn start` command.
 
-```yarn start:docker```
+```
+yarn start:docker
+```
 
 Once the network has started you can check the logs. Once you see messages showing blocks with a status of `commit` you can rest assured the network is running properly.
 
-```yarn docker:logs```
+```
+yarn docker:logs
+```
 
 Your output should resemble this:
 
-```demo-agd-1  | 2023-12-15T19:07:45.530Z block-manager: block 11797 begin
+```
+demo-agd-1  | 2023-12-15T19:07:45.530Z block-manager: block 11797 begin
 demo-agd-1  | 2023-12-15T19:07:45.534Z block-manager: block 11797 commit
 demo-agd-1  | 2023-12-15T19:07:46.539Z block-manager: block 11798 begin
 demo-agd-1  | 2023-12-15T19:07:46.543Z block-manager: block 11798 commit
@@ -168,7 +198,9 @@ demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
 # Starting the Dapp Smart Contract
 Exit the log window and start the smart contract by running the `yarn start` command.
 
-```yarn start:contract```
+```
+yarn start:contract
+```
 
 
 # Installing Keplr Wallet
@@ -189,7 +221,8 @@ Please note that your phrase might not be the same as the one shown in this guid
 - Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets. 
 
 Note the mnemonic phrase in the output below:
-```waiting for block...
+```
+waiting for block...
 1
 block produced
 done
