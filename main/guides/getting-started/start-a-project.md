@@ -23,11 +23,13 @@ If you're using a fresh Linux installation or you do not already have the `curl`
 If you already have the `curl` utility installed, you can skip this section. Users running a freshly installed Linux environment will most likely need to run these steps to install `curl`.
 
 If using Ubuntu you'll first need to run the command below to prevent an error when installing `curl`.
+
 ```sudo apt-get update --fix-missing```
 
 ![Running the `sudo apt-get update --fix-missing` command](./assets/006.png)
 
 Install the `curl` utility.
+
 ```sudo apt install curl```
 
 ![Running the `sudo apt install curl` command](./assets/007.png)
@@ -36,16 +38,19 @@ Install the `curl` utility.
 
 # Installing NVM and Node v18.16.0
 At this point the Node Version Manager (NVM) utility will be installed. NVM makes it easy to select the specific version of Node that will be required (v18.16.0).
+
 ```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash```
 
 ![Running the `curl` command](./assets/008.png)
 
 Next, run the command:
+
 ```source ~/.bashrc```
 
 ![Running the `source ~/.bashrc` command](./assets/009.png)
 
 Finally, install NVM with the command:
+
 ```nvm install v18.16.0```
 
 ![Running the `nvm install` command](./assets/010.png)
@@ -53,11 +58,13 @@ Finally, install NVM with the command:
 
 # Installing Yarn
 Run the `corepack enable` command.
+
 ```corepack enable```
 
 ![Running the `corepack enable` command](./assets/023.png)
 
-Now run the `yarn –version` command
+Now run the `yarn –version` command.
+
 ```yarn –version```
 
 ![Running the `yarn –version` command](./assets/049.png)
@@ -65,6 +72,7 @@ Now run the `yarn –version` command
 
 # Installing Docker
 Now you'll install Docker using the two commands below. This first command will add the Docker GPG keys to your system, then add the repository to Apt for installation.
+
 ```
 # Install Docker
 # Add Docker's official GPG key:
@@ -84,11 +92,13 @@ sudo apt-get update
 ![Running the commands to add Docker GPG keys to the system](./assets/027.png)
 
 Now you can install Docker!
+
 ```sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
 
 ![Running the Docker installation command](./assets/028.png)
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
+
 ```sudo usermod -aG docker $USER```
 
 ![Running the `sudo usermod` command](./assets/029.png)
@@ -98,6 +108,7 @@ Now go ahead and reboot your image.
 ![Rebooting the system](./assets/030.png)
 
 Once your image has rebooted and you've logged back on, test that Docker works by running the `hello-world` sample.
+
 ```docker run hello-world```
 
 ![Running the Hello World Docker test](./assets/031.png)
@@ -105,6 +116,7 @@ Once your image has rebooted and you've logged back on, test that Docker works b
 
 # Installing the Sample Dapp
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
+
 ```yarn create @agoric/dapp --dapp-template dapp-offer-up demo```
 
 ![Running the `yarn create` command](./assets/024.png)
@@ -112,7 +124,9 @@ Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed
 
 # Install Dapp Dependencies
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
+
 ```cd demo```
+
 ```yarn install```
 
 ![Running the `yarn install` command](./assets/033.png)
@@ -120,11 +134,13 @@ Now navigate to the `demo` directory and run the `yarn install` command to insta
 
 # Starting the Network
 Now go ahead and start the network using the `yarn start` command.
+
 ```yarn start:docker```
 
 ![Running the `yarn start` command](./assets/034.png)
 
 Once the network has started you can check the logs. Once you see messages showing blocks with a status of `commit` you can rest assured the network is running properly.
+
 ```yarn docker:logs```
 
 ![Running the `yarn docker:logs` command](./assets/035.png)
@@ -132,6 +148,7 @@ Once the network has started you can check the logs. Once you see messages showi
 
 # Starting the Dapp Smart Contract
 Exit the log window and start the smart contract by running the `yarn start` command.
+
 ```yarn start:contract```
 
 ![Running the `yarn start:contract` command](./assets/036.png)
