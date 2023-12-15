@@ -52,7 +52,9 @@ source ~/.bashrc
 
 Finally, install NVM with the command:
 
-```nvm install v18.16.0```
+```
+nvm install v18.16.0
+```
 
 
 # Installing Yarn
