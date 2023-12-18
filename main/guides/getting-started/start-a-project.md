@@ -154,6 +154,8 @@ yarn create @agoric/dapp --dapp-template dapp-offer-up demo
 ## Install Dapp Dependencies
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
+Downloading all the required dependencies may take several minutes. The UI depends on the React framework, and the contract depends on the Agoric framework. The packages in this project also have development dependencies for testing, code formatting, and static analysis.
+
 ```sh
 cd demo
 ```
@@ -215,7 +217,7 @@ demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
 
 
 ## Starting the Dapp Smart Contract
-Exit the log window and start the smart contract by running the `yarn start` command.
+Use control-C to exit the logs, then start the smart contract:
 
 ```sh
 yarn start:contract
