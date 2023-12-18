@@ -1,7 +1,9 @@
 # Your First Agoric Dapp
+Getting your first Agoric application up and running!
 
+![Your first Agoric dapp](./assets/045_small.png)
 
-# How to Get Help
+## How to Get Help
 Before getting started, there are some resources you might want to keep handy in case you get stuck, have questions, or are curious about any of the components. Getting in contact with us is easy! 
 - Join us for our Weekly [Developer Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
 - Come chat with us and other developers on the Official [Agoric Discord](https://agoric.com/discord)
@@ -10,12 +12,13 @@ Before getting started, there are some resources you might want to keep handy in
 - Send an Email to [Developer Relations](mailto://devrel@agoric.com)
 
 
-# Welcome!
-In this tutorial you will install the Agoric SDK as well as a simple application to test the functionality of Agoric.
+## Welcome!
+In this tutorial you will install a simple application to test the functionality of Agoric.
+## Platform Requirements
 Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
 
-# Installing Curl Utility on Ubuntu
+## Installing Curl Utility on Ubuntu
 If you're using a fresh Linux installation or you do not already have the `curl` utility installed, please follow these steps...
 <details>
 <summary>Installing Curl Utility on Ubuntu</summary>
@@ -37,8 +40,8 @@ sudo apt install curl
 </details>
 
 
-# Installing NVM and Node v18.16.0
-At this point the Node Version Manager (NVM) utility will be installed. NVM makes it easy to select the specific version of Node that will be required (v18.16.0).
+## Installing NVM and Node
+At this point the Node Version Manager (NVM) utility will be installed. `nvm` makes it easy to select the specific version of [Node](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
 
 ```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -50,29 +53,29 @@ Next, run the command:
 source ~/.bashrc
 ```
 
-Finally, install NVM with the command:
+Finally, install Node with the command:
 
 ```sh
 nvm install v18.16.0
 ```
 
 
-# Installing Yarn
+## Installing Yarn
 Run the `corepack enable` command.
 
 ```sh
 corepack enable
 ```
 
-Now run the `yarn –version` command.
+Now run the `yarn --version` command.
 
 ```sh
-yarn –version
+yarn --version
 ```
 
 
-# Installing Docker
-Now you'll install Docker using the two commands below. This first command will add the Docker GPG keys to your system, then add the repository to Apt for installation.
+## Installing Docker
+Now you'll install Docker using the two steps below. This first block of commands will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 
 ```sh
 # Install Docker
@@ -102,7 +105,7 @@ Now that Docker has been installed you'll need to add your user account to the D
 sudo usermod -aG docker $USER
 ```
 
-Now go ahead and reboot your image.
+Now go ahead and reboot your environment.
 
 ![Rebooting the system](./assets/030.png)
 
@@ -138,7 +141,7 @@ For more examples and ideas, visit:
 ```
 
 
-# Installing the Sample Dapp
+## Installing the Sample Dapp
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```sh
@@ -146,7 +149,7 @@ yarn create @agoric/dapp --dapp-template dapp-offer-up demo
 ```
 
 
-# Install Dapp Dependencies
+## Install Dapp Dependencies
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
 ```sh
@@ -158,7 +161,7 @@ yarn install
 ```
 
 
-# Starting the Network
+## Starting the Network
 Now go ahead and start the network using the `yarn start` command.
 
 ```sh
@@ -197,7 +200,7 @@ demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
 ```
 
 
-# Starting the Dapp Smart Contract
+## Starting the Dapp Smart Contract
 Exit the log window and start the smart contract by running the `yarn start` command.
 
 ```sh
@@ -205,7 +208,7 @@ yarn start:contract
 ```
 
 
-# Installing Keplr Wallet
+## Installing Keplr Wallet
 Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser. 
 
 ![Installing the Keplr Wallet Plug-In](./assets/037.png)
