@@ -105,11 +105,13 @@ Now that Docker has been installed you'll need to add your user account to the D
 sudo usermod -aG docker $USER
 ```
 
-Now go ahead and reboot your environment.
+Since your user account was just added to the docker group, run the following command to re-evaluate group memberships.
 
-![Rebooting the system](./assets/030.png)
+```sh
+exec su -l $USER
+```
 
-Once your image has rebooted and you've logged back on, test that Docker works by running the `hello-world` sample.
+Now test that Docker works by running the `hello-world` sample.
 
 ```sh
 docker run hello-world
