@@ -12,8 +12,6 @@ Before getting started, there are some resources you might want to keep handy in
 - Send an Email to [Developer Relations](mailto://devrel@agoric.com)
 
 
-## Welcome!
-In this tutorial you will install a simple dapp to test the functionality of Agoric.
 ## Platform Requirements
 Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
