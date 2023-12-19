@@ -18,7 +18,7 @@ In this tutorial you will install a simple application to test the functionality
 Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
 
-## Installing Curl Utility on Ubuntu
+### Installing Curl Utility on Ubuntu
 If you're using a fresh Linux installation or you do not already have the `curl` utility installed, please follow these steps...
 <details>
 <summary>Installing Curl Utility on Ubuntu</summary>
@@ -40,7 +40,7 @@ sudo apt install curl
 </details>
 
 
-## Installing NVM and Node
+### Installing NVM and Node
 At this point the Node Version Manager (NVM) utility will be installed. `nvm` makes it easy to select the specific version of [Node](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
 
 ```sh
@@ -60,7 +60,7 @@ nvm install v18.16.0
 ```
 
 
-## Installing Yarn
+### Installing Yarn
 Run the `corepack enable` command.
 
 ```sh
@@ -74,7 +74,7 @@ yarn --version
 ```
 
 
-## Installing Docker
+### Installing Docker
 Now you'll install Docker using the two steps below. This first block of commands will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 
 ```sh
