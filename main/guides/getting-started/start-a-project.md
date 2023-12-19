@@ -1,5 +1,5 @@
 # Your First Agoric Dapp
-Getting your first Agoric dapp up and running!
+In these steps you will be getting your first Agoric dapp up and running!
 
 ![Your first Agoric dapp](./assets/045_small.png)
 
@@ -173,7 +173,7 @@ yarn install
   </details>
 
 ## Starting a Local Agoric Blockchain
-Now go ahead and start a local Agoric blockchain using the `yarn start` command.
+Now go ahead and start a local Agoric blockchain using the `yarn start` command. Note: This container is several gigabytes in size and may take a few minutes to download.
 
 ```sh
 yarn start:docker
@@ -212,7 +212,7 @@ demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
 
 
 ## Starting the Dapp Smart Contract
-Use control-C to exit the logs, then start the smart contract:
+Use control-C to exit the logs, then start the smart contract. Starting the contract may take a minute or two, so after running this command proceed to the next step.
 
 ```sh
 yarn start:contract
@@ -268,7 +268,7 @@ Click "Save".
 
 ![Save](./assets/043.png)
 
-Starting the Dapp
+## Starting the Dapp
 To start the UI for the sample dapp, run the `yarn start:ui` command. Note the localhost link that appears on your terminal window. Open this link in your browser.
 
 ![Running the `yarn start:ui` command](./assets/044.png)
@@ -279,6 +279,7 @@ From the browser UI, click the "Connect Wallet" button to connect your Keplr wal
 
 ![Connecting your wallet](./assets/046.png)
 
+## Making an Offer
 Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
 
 ![Making an offer](./assets/047.png)
@@ -287,4 +288,4 @@ When the transaction is complete you will notice some IST has been debited from 
 
 ![Finished transaction](./assets/048.png)
 
-Congratulations! You've just completed your first Agoric dapp!
+Congratulations! You got your first Agoric dapp up and running!
