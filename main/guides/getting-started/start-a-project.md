@@ -173,7 +173,7 @@ yarn install
   </details>
 
 ## Starting a Local Agoric Blockchain
-Now go ahead and start the network using the `yarn start` command.
+Now go ahead and start a local Agoric blockchain using the `yarn start` command.
 
 ```sh
 yarn start:docker
