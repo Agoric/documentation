@@ -1,5 +1,5 @@
 # Your First Agoric Dapp
-Getting your first Agoric application up and running!
+Getting your first Agoric dapp up and running!
 
 ![Your first Agoric dapp](./assets/045_small.png)
 
@@ -13,7 +13,7 @@ Before getting started, there are some resources you might want to keep handy in
 
 
 ## Welcome!
-In this tutorial you will install a simple application to test the functionality of Agoric.
+In this tutorial you will install a simple dapp to test the functionality of Agoric.
 ## Platform Requirements
 Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
