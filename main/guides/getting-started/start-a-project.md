@@ -15,9 +15,10 @@ Before getting started, there are some resources you might want to keep handy in
 ## Platform Requirements
 Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
+## Installing Prerequisites
+In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
 
 ### Installing Curl Utility on Ubuntu
-If you're using a fresh Linux installation or you do not already have the `curl` utility installed, please follow these steps...
 <details>
 <summary>Installing Curl Utility on Ubuntu</summary>
 
@@ -39,6 +40,9 @@ sudo apt install curl
 
 
 ### Installing NVM and Node
+<details>
+<summary>Installing NVM and Node on Ubuntu</summary>
+
 At this point the Node Version Manager (NVM) utility will be installed. `nvm` makes it easy to select the specific version of [Node](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
 
 ```sh
@@ -56,9 +60,14 @@ Finally, install Node with the command:
 ```sh
 nvm install v18.16.0
 ```
+</details>
 
 
 ### Installing Yarn
+
+<details>
+<summary>Installing Yarn on Ubuntu</summary>
+  
 Run the `corepack enable` command.
 
 ```sh
@@ -70,9 +79,14 @@ Now run the `yarn --version` command.
 ```sh
 yarn --version
 ```
+</details>
 
 
 ### Installing Docker
+
+<details>
+<summary>Installing Docker on Ubuntu</summary>
+
 Now you'll install Docker using the two steps below. This first block of commands will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 
 ```sh
@@ -139,7 +153,7 @@ Share images, automate workflows, and more with a free Docker ID:
 For more examples and ideas, visit:
  https://docs.docker.com/get-started/
 ```
-
+</details>
 
 ## Installing the Sample Dapp
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
