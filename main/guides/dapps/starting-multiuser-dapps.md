@@ -6,7 +6,7 @@ The Agoric CLI (Command Line Interface) implements a local-chain-multiuser scena
 
 ## Usage
 
-1. Initialize your dapp as described in the [Starting a Project](../getting-started/start-a-project) documentation. 
+1. Initialize your dapp as described in the [Starting a Project](../getting-started/) documentation.
 2. After using `agoric start` to test with the simulated chain, stop the simulated chain with Control-C.
 3. Compile the Golang dependencies in the Agoric SDK by running
 
