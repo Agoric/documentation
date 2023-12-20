@@ -287,19 +287,19 @@ To start the UI for the sample dapp, run the `yarn start:ui` command. Note the l
 
 ![Running the `yarn start:ui` command](./assets/044.png)
 
-![Open the link in your browser](./assets/045.png)
+![Open the link in your browser](./assets/new_002.png)
 
 From the browser UI, click the "Connect Wallet" button to connect your Keplr wallet. You will be asked to approve this connection.
 
-![Connecting your wallet](./assets/046.png)
+![Connecting your wallet](./assets/new_003.png)
 
 ## Making an Offer
 Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
 
-![Making an offer](./assets/047.png)
+![Making an offer](./assets/new_004.png)
 
 When the transaction is complete you will notice some IST has been debited from your wallet, and you are the owner of three new properties.
 
-![Finished transaction](./assets/048.png)
+![Finished transaction](./assets/new_006.png)
 
 Congratulations! You got your first Agoric dapp up and running!
