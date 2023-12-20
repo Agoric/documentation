@@ -1,7 +1,7 @@
 # Your First Agoric Dapp
 In these steps you will be getting your first Agoric dapp up and running!
 
-![Your first Agoric dapp](./assets/045_small.png)
+![Your first Agoric dapp](./assets/new_002_small.png)
 
 ## How to Get Help
 Before getting started, there are some resources you might want to keep handy in case you get stuck, have questions, or are curious about any of the components. Getting in contact with us is easy! 
