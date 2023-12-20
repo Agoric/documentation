@@ -8,7 +8,10 @@ module.exports = {
   description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
-    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }],
+    [
+      'meta',
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    ],
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
     [
       'style',
@@ -26,7 +29,10 @@ module.exports = {
     ],
     [
       'script',
-      { src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1', async: '' },
+      {
+        src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1',
+        async: '',
+      },
     ],
     [
       'script',
@@ -164,7 +170,6 @@ module.exports = {
           collapsible: false,
           children: [
             '/guides/getting-started/',
-            '/guides/getting-started/start-a-project.html',
             '/guides/getting-started/contract-rpc.html',
             '/guides/getting-started/deploying.html',
             '/guides/getting-started/syncing-up.html',
