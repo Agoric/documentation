@@ -31,7 +31,8 @@ test.before(t => {
   t.context.pwned = [];
 });
 
-test('password exfiltration', t => {
+// TODO: figure out how to test a non-SES env
+test.skip('password exfiltration', t => {
   setupUtility(t);
   changePassword('x', 'y');
   changePassword('x', 'z');

@@ -4,12 +4,12 @@
  * `test` function.
  */
 
-import '@endo/init/pre-bundle-source.js';
-import '@agoric/zoe/tools/prepare-test-env.js';
-// eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
+// export { test } from '@agoric/swingset-vat/tools/prepare-test-env-ava.js';
+
+// for VatData
+import '@agoric/swingset-vat/tools/prepare-test-env.js';
+
 import rawTest from 'ava';
+import { wrapTest } from '@endo/ses-ava';
 
-// XXX wrapTest not working https://github.com/endojs/endo/issues/1235
-// import { wrapTest } from '@endo/ses-ava';
-
-export const test = rawTest;
+export const test = wrapTest(rawTest);

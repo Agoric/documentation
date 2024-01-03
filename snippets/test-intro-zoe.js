@@ -1,10 +1,8 @@
 // @ts-check
 /* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
-
 import { test } from './prepare-test-env-ava.js';
 
-import url from 'url';
-import { resolve as importMetaResolve } from 'import-meta-resolve';
+import { createRequire } from 'module';
 
 import { E } from '@endo/eventual-send';
 import { makeZoeKit } from '@agoric/zoe';
@@ -15,6 +13,8 @@ import bundleSource from '@endo/bundle-source';
 // #endregion importBundleSource
 
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
+
+const nodeRequire = createRequire(import.meta.url);
 
 test('intro to zoe', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
@@ -34,11 +34,10 @@ test('intro to zoe', async t => {
   });
 
   // #region bundle
-  const atomicSwapUrl = await importMetaResolve(
+  const atomicSwapPath = nodeRequire.resolve(
     '@agoric/zoe/src/contracts/atomicSwap.js',
-    import.meta.url,
   );
-  const atomicSwapPath = url.fileURLToPath(atomicSwapUrl);
+  console.log('@@@', { atomicSwapPath });
   const atomicSwapBundle = await bundleSource(atomicSwapPath);
   // #endregion bundle
 
@@ -132,11 +131,7 @@ test('intro to zoe', async t => {
 
 test('intro to zoe - contract-format', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
-  const atomicSwapUrl = await importMetaResolve(
-    './contract-format.js',
-    import.meta.url,
-  );
-  const atomicSwapPath = url.fileURLToPath(atomicSwapUrl);
+  const atomicSwapPath = nodeRequire.resolve('./contract-format.js');
   const atomicSwapBundle = await bundleSource(atomicSwapPath);
   const atomicSwapInstallation = await E(zoe).install(atomicSwapBundle);
   const { creatorInvitation } = await E(zoe).startInstance(

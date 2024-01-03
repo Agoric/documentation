@@ -1,6 +1,6 @@
 // @jessie-check
 /* global Compartment */
-import { test } from './prepare-test-env-ava.js';
+import test from 'ava';
 
 test('Counter Example', t => {
   const assert = cond => t.true(cond);
