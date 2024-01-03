@@ -46,7 +46,7 @@ See also:
 
 ## ~~agoric init~~
 
-_Deprecated in favor of [yarn create @agoric/dapp](../getting-started/#create-a-project-with-the-basic-starter-kit)_
+_Deprecated in favor of [yarn create @agoric/dapp](../getting-started/#creating-your-dapp-from-a-template)_
 
 Creates a new dapp directory named `<project>` with contents copied from the `dapp-template` argument template.
 
