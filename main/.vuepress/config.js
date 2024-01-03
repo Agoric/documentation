@@ -169,7 +169,7 @@ module.exports = {
           path: '/guides/getting-started/',
           collapsible: false,
           children: [
-            '/guides/getting-started/'
+            '/guides/getting-started/',
             '/guides/getting-started/contract-rpc.html',
             '/guides/getting-started/deploying.html',
             '/guides/getting-started/syncing-up.html',
