@@ -35,7 +35,7 @@ users to lose their assets.**
 ## Bundling a Contract
 
 Recall from [deploying the basic dapp contract](../getting-started/#deploy-the-contract)
-that the first step was to _bundle_ all if its modules into a single artifact.
+that the first step was to _bundle_ all of its modules into a single artifact.
 We used the [agoric run](../agoric-cli/#agoric-run) command in that case.
 The core mechanism used in `agoric run` is a call to `bundleSource()`.
 
