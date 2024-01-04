@@ -18,7 +18,7 @@ a method of the contract's `publicFacet`:
 
 <<< @/snippets/zoe/src/01-hello.js#publicFacet
 
-We mark it `Far(...)` to allow callers from outside the contract
+We mark it `Far(...)` to allow callers to use it from outside the contract
 and give it a suggestive interface name for debugging.
 _We'll discuss [Far in more detail](../js-programming/far.md) later._
 
