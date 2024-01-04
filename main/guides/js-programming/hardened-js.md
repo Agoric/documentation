@@ -371,7 +371,7 @@ Careful study of this 8 minute presentation segment provides
 a firm foundation for writing smart contracts with Zoe.
 
 ::: tip Watch: The Mint Pattern
-8 minutes [starting at 25:00](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG),
+8 minutes [starting at 25:25](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG),
 in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=iyuo0ymTt4g&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 
 [![image](https://user-images.githubusercontent.com/150986/129462162-4599c0f4-8519-4a04-a707-88ef6e6044d7.png)
