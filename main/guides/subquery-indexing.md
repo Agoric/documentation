@@ -23,7 +23,7 @@ SubQuery is [open-source](https://opensource.org/osd/), licensed under the [GNU 
 
 * You can publish it to SubQuery's [Managed Service](https://managedservice.subquery.network/login), where SubQuery will host projects on your behalf. There is also a free tier. [Find out how](https://academy.subquery.network/run_publish/publish.html).
 
-* You can publish it to the[decentralised SubQuery Network](https://kepler.subquery.network/dashboard). The SubQuery Network indexes and services data to the global community in an incentivised and verifiable way and supports Agoric from launch.
+* You can publish it to the [decentralised SubQuery Network](https://kepler.subquery.network/dashboard). The SubQuery Network indexes and services data to the global community in an incentivised and verifiable way and supports Agoric from launch.
 
 ## Resources
 Here are some additional resources to help you get started using SubQuery with Agoric:
