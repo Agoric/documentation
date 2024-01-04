@@ -10,14 +10,9 @@ module.exports = [
     ariaLabel: 'Getting Started Menu',
     items: [
       {
-        text: 'Installing the Agoric SDK',
-        ariaLabel: 'Installing the Agoric SDK Menu',
+        text: 'Your First Agoric Dapp',
+        ariaLabel: 'Your First Agoric Dapp Menu',
         link: '/guides/getting-started/',
-      },
-      {
-        text: 'Starting a Project',
-        ariaLabel: 'Starting a Project Menu',
-        link: '/guides/getting-started/start-a-project',
       },
       {
         text: 'Smart Wallet Dapp Architecture',
@@ -33,11 +28,6 @@ module.exports = [
         text: 'Permissioned Contract Deployment',
         ariaLabel: 'Permissioned Contract Deployment',
         link: '/guides/coreeval/',
-      },
-      {
-        text: 'Syncing Up to Mainnet',
-        ariaLabel: 'Syncing Up to Mainnet',
-        link: '/guides/getting-started/syncing-up',
       },
     ],
   },

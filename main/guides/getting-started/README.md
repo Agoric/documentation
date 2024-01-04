@@ -1,163 +1,305 @@
-# Installing the Agoric SDK
+# Your First Agoric Dapp
+In these steps you will be getting your first Agoric dapp up and running!
 
-To write JavaScript smart contracts using the Agoric Zoe framework, first install the Agoric Software
-Development Kit (SDK).
+![Your first Agoric dapp](./assets/new_002_small2.png)
 
-After installing the Agoric SDK, you can proceed to [starting a project](./start-a-project.md).
-
-## Getting Support
-
-- Chat with peers on the [Agoric Discord](https://agoric.com/discord)
-- Join weekly [Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
+## How to Get Help
+Before getting started, there are some resources you might want to keep handy in case you get stuck, have questions, or are curious about any of the components. Getting in contact with us is easy! 
+- Join us for our Weekly [Developer Office Hours](https://github.com/Agoric/agoric-sdk/wiki/Office-Hours)
+- Come chat with us and other developers on the Official [Agoric Discord](https://agoric.com/discord)
 - Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
+- Send us a message on [X](https://twitter.com/agoric)
+- Send an Email to [Developer Relations](mailto://devrel@agoric.com)
 
-## Quick Start
 
-If you're on a [supported platform](#platform-linux-shell-or-equivalent) (MacOS, Linux, or WSL) and you're familar with JavaScript development tools such as `node`, `yarn`, and `git`:
+## Platform Requirements
+Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
-```shell
-go version # Version 1.20.3 or higher
-node --version # LTS version such as 18.16.0
-npm install --global yarn # Install yarn for package management
-git clone --branch community-dev https://github.com/Agoric/agoric-sdk # Clone the "community-dev" branch
-cd agoric-sdk
-yarn install # Asks yarn to install all the dependant node packages
-yarn build # Builds the agoric-sdk packages
-(cd packages/cosmic-swingset && make) # Builds the cosmic-swingset package
-yarn link-cli ~/bin/agoric # Creates an executable script
-agoric --version # Prints the version number of the SDK
+## Installing Prerequisites
+In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
+
+### Installing Curl Utility on Ubuntu
+<details>
+<summary>Installing Curl Utility on Ubuntu</summary>
+
+If you already have the `curl` utility installed, you can skip this section. Users running a freshly installed Linux environment will most likely need to run these steps to install `curl`.
+
+If using Ubuntu you'll first need to run the command below to prevent an error when installing `curl`.
+
+```sh
+sudo apt-get update --fix-missing
 ```
 
-Now you are ready proceed to [starting a project](./start-a-project.md).
+Install the `curl` utility.
 
-_If you get "command not found", see [troubleshooting below](#install-agoric-cli)._
-
-::: tip Watch: Prepare Your Agoric Environment (November 2020)
-This presentation is a good overview of the Agoric SDK setup process,
-though a few details are out of date:
-
-- node version: 12.x is too old; use the LTS version 18.16.0 or a later LTS version
-- skip `git checkout hackathon-2020-11`; use the `community-dev` branch
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/w0By22jYhJA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-**Note:** Video omits adding the Agoric SDK to your PATH.
-:::
-
-## Platform: Linux Shell or Equivalent
-
-The Agoric SDK is supported on <a href="https://en.wikipedia.org/wiki/Linux">Linux</a>, <a href="https://www.apple.com/macos/">MacOS</a>, and <a href="https://docs.microsoft.com/en-us/windows/wsl/">Windows Subsystem for Linux (WSL)</a>.
-
-- To open a terminal on MacOS, see **Applications>Utilities>terminal** in the **Finder**.
-- To launch a terminal on Linux, use the **Terminal** application.
-- To access WSL from Windows, visit the [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/).
-
-::: tip Mac Dev Tools
-On a Mac, you must first install
-[Xcode](https://apps.apple.com/us/app/xcode/id497799835)
-:::
-
-## Install Go
-
-Download Go from [go.dev/doc/install](https://go.dev/doc/install) and follow the instructions for your platform.
-
-```shell
-go version # Version 1.20.3 or higher
+```sh
+sudo apt install curl
 ```
 
-## Install Node.js
+</details>
 
-Download Node.js from [Node.js](https://nodejs.org/) and follow the instructions for your platform.
-We recommend installing the LTS version of node 18.
 
-```shell
-node --version # LTS version such as 18.16.0
+### Installing NVM and Node
+<details>
+<summary>Installing NVM and Node on Ubuntu</summary>
+
+At this point the Node Version Manager (NVM) utility will be installed. `nvm` makes it easy to select the specific version of [Node](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
+
+```sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
-**Note:** Agoric will support all long-term support (LTS) versions of Node.js. 
+Next, run the command:
 
-## Install the Yarn Package Manager
-
-Follow [Yarn Installation](https://classic.yarnpkg.com/en/docs/install)
-instructions. For example:
-
-```shell
-npm install --global yarn
-yarn --version # 1.22.10 or higher
+```sh
+source ~/.bashrc
 ```
 
-## Install Git
+Finally, install Node with the command:
 
-Follow [Git installation instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) or use your platform's package manager.
+```sh
+nvm install v18.16.0
+```
+</details>
 
-```shell
-npm install --global git
-git --version # 2.25.0 or higher
+
+### Installing Yarn
+
+<details>
+<summary>Installing Yarn on Ubuntu</summary>
+  
+Run the `corepack enable` command.
+
+```sh
+corepack enable
 ```
 
-## Clone the Agoric SDK
+Now run the `yarn --version` command.
 
-```shell
-git clone --branch community-dev https://github.com/Agoric/agoric-sdk
-cd agoric-sdk
+```sh
+yarn --version
+```
+</details>
+
+
+### Installing Docker
+
+<details>
+<summary>Installing Docker on Ubuntu</summary>
+
+Now you'll install Docker using the two steps below. This first block of commands will add the Docker GPG keys to your system, then add the repository to Apt for installation.
+
+```sh
+# Install Docker
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+Now you can install Docker!
+
+```sh
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-Cloning and installing the Agoric SDK can take a while. Please be patient.
+Now that Docker has been installed you'll need to add your user account to the Docker group.
 
-## Install NPM Dependencies
+```sh
+sudo usermod -aG docker $USER
+```
 
-```shell
+Since your user account was just added to the docker group, run the following command to re-evaluate group memberships.
+
+```sh
+exec su -l $USER
+```
+
+Now test that Docker works by running the `hello-world` sample.
+
+```sh
+docker run hello-world
+```
+
+The output of the `hello-world` example should be:
+
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
+</details>
+
+## Installing the Sample Dapp
+Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
+
+```sh
+yarn create @agoric/dapp --dapp-template dapp-offer-up demo
+```
+
+
+## Install Dapp Dependencies
+Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
+
+Downloading all the required dependencies may take several minutes. The UI depends on the React framework, and the contract depends on the Agoric framework. The packages in this project also have development dependencies for testing, code formatting, and static analysis.
+
+```sh
+cd demo
+```
+
+```sh
 yarn install
 ```
 
-**Note:** If you run into errors during install or build, make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, you can run `sudo apt get install build-essential` to install these tools.
+<details>
+ <summary>Troubleshooting yarn install</summary>
+  
+ If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows. 
+  
+ Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`. 
+ On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835). 
+  
+  </details>
 
-## Build Packages
+## Starting a Local Agoric Blockchain
+Now go ahead and start a local Agoric blockchain using the `yarn start` command. Note: This container is several gigabytes in size and may take a few minutes to download.
 
-```shell
-yarn build
+```sh
+yarn start:docker
 ```
 
-**Note:** If this `yarn build` step fails, check that you are on a
-[supported platform](#platform-linux-shell-or-equivalent) and
-not native Windows.
+Once the network has started you can check the logs. Once you see messages showing blocks with a status of `commit` you can rest assured the network is running properly.
 
-## Build the Cosmic Swingset Package
-
-```shell
-(cd packages/cosmic-swingset && make)
+```sh
+yarn docker:logs
 ```
 
-## Install Agoric CLI
+Your output should resemble this:
 
-Use `yarn link-cli` to install the Agoric CLI (Command Line Interface) in a convenient place of your choosing such as:
-
-```shell
-yarn link-cli ~/bin/agoric
+```
+demo-agd-1  | 2023-12-15T19:07:45.530Z block-manager: block 11797 begin
+demo-agd-1  | 2023-12-15T19:07:45.534Z block-manager: block 11797 commit
+demo-agd-1  | 2023-12-15T19:07:46.539Z block-manager: block 11798 begin
+demo-agd-1  | 2023-12-15T19:07:46.543Z block-manager: block 11798 commit
+demo-agd-1  | 2023-12-15T19:07:47.557Z block-manager: block 11799 begin
+demo-agd-1  | 2023-12-15T19:07:47.560Z block-manager: block 11799 commit
+demo-agd-1  | 2023-12-15T19:07:48.572Z block-manager: block 11800 begin
+demo-agd-1  | 2023-12-15T19:07:48.577Z block-manager: block 11800 commit
+demo-agd-1  | 2023-12-15T19:07:49.590Z block-manager: block 11801 begin
+demo-agd-1  | 2023-12-15T19:07:49.593Z block-manager: block 11801 commit
+demo-agd-1  | 2023-12-15T19:07:50.628Z block-manager: block 11802 begin
+demo-agd-1  | 2023-12-15T19:07:50.633Z block-manager: block 11802 commit
+demo-agd-1  | 2023-12-15T19:07:51.642Z block-manager: block 11803 begin
+demo-agd-1  | 2023-12-15T19:07:51.645Z block-manager: block 11803 commit
+demo-agd-1  | 2023-12-15T19:07:52.674Z block-manager: block 11804 begin
+demo-agd-1  | 2023-12-15T19:07:52.678Z block-manager: block 11804 commit
+demo-agd-1  | 2023-12-15T19:07:53.681Z block-manager: block 11805 begin
+demo-agd-1  | 2023-12-15T19:07:53.685Z block-manager: block 11805 commit
+demo-agd-1  | 2023-12-15T19:07:54.698Z block-manager: block 11806 begin
+demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
 ```
 
-or:
 
-```shell
-sudo yarn link-cli /usr/local/bin/agoric
+## Starting the Dapp Smart Contract
+Use control-C to exit the logs, then start the smart contract. Starting the contract may take a minute or two, so after running this command proceed to the next step.
+
+```sh
+yarn start:contract
 ```
 
-**Note:** Run `echo $PATH` to see directories in your current path, separated by colons. These are good candidates for where to have `yarn link-cli` place the executable.
 
-::: tip Troubleshooting "command not found"
-Watch:
+## Installing Keplr Wallet
+Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser. 
 
-- [Linux add to \$PATH: Fix "command not found" error (Linux & Mac)](https://www.youtube.com/watch?v=gkqsLRDnqlA) 6:19 Mar 2018.
-  :::
+![Installing the Keplr Wallet Plug-In](./assets/037.png)
 
-## Check the Agoric Version
+Once the plug-in has been installed, open Keplr and select the option to "Import an existing wallet". Then choose the option to "Use recovery phrase or private key".
 
-To check that it's installed correctly:
+![Choose the "Import an Existing Wallet" option](./assets/038.png)
 
-```shell
-agoric --version # v0.18.2 "community-dev" branch
+![Choose the "Use recovery phrase or private key" option](./assets/040.png)
+
+To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button. 
+
+Please note that your phrase might not be the same as the one shown in this guide! Remember, this is just a demo. In real-world scenarios ensuring proper security around mnemonic phrases is critical!
+- For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing. 
+- Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets. 
+
+Note the mnemonic phrase in the output below:
+```
+waiting for block...
+1
+block produced
+done
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
+Import the following mnemonic into Keplr:
+survey thank matrix joke trim more make gossip spread yellow unfold under cash beach harsh fire blush achieve oak swamp pluck clock rocket leg
+
+The resulting address should be: agoric1xe269y3fhye8nrlduf826wgn499y6wmnv32tw5
+
+make: Leaving directory '/workspace/contract'
+Done in 34.95s.
 ```
 
-If the install was successful, you are ready to proceed to [starting a project](./start-a-project.md).
+![Pasting the mnemonic phrase](./assets/041.png)
 
+Give your new wallet a name and a password.
 
+![Name the newly imported wallet](./assets/042.png)
+
+Click "Save".
+
+![Save](./assets/043.png)
+
+## Starting the Dapp
+To start the UI for the sample dapp, run the `yarn start:ui` command. Note the localhost link that appears on your terminal window. Open this link in your browser.
+
+![Running the `yarn start:ui` command](./assets/044.png)
+
+![Open the link in your browser](./assets/new_002.png)
+
+From the browser UI, click the "Connect Wallet" button to connect your Keplr wallet. You will be asked to approve this connection.
+
+![Connecting your wallet](./assets/new_003.png)
+
+## Making an Offer
+Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
+
+![Making an offer](./assets/new_004.png)
+
+When the transaction is complete you will notice some IST has been debited from your wallet, and you are the owner of three new properties.
+
+![Finished transaction](./assets/new_006.png)
+
+Congratulations! You got your first Agoric dapp up and running!
