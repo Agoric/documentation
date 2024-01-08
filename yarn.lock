@@ -3659,9 +3659,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vuepress/shared-utils@npm:^1.2.0":
-  version: 1.8.2
-  resolution: "@vuepress/shared-utils@npm:1.8.2"
+"@vuepress/shared-utils@patch:@vuepress/shared-utils@npm%3A1.9.10#~/.yarn/patches/@vuepress-shared-utils-npm-1.9.10-3029700873.patch":
+  version: 1.9.10
+  resolution: "@vuepress/shared-utils@patch:@vuepress/shared-utils@npm%3A1.9.10#~/.yarn/patches/@vuepress-shared-utils-npm-1.9.10-3029700873.patch::version=1.9.10&hash=907294"
   dependencies:
     chalk: "npm:^2.3.2"
     escape-html: "npm:^1.0.3"
@@ -3672,7 +3672,7 @@ __metadata:
     semver: "npm:^6.0.0"
     toml: "npm:^3.0.0"
     upath: "npm:^1.1.0"
-  checksum: 07a8b48ab8db221b3e443aba23a2c457c4ce56bada7802be131d7505a472e2637f5440edf8d077bd92c07aec372931b79e47be5ca2f719bf90a6d9e6522b558c
+  checksum: 368d737177993b0f042f3433cf39d9b68ed73e36cb0138ff8541fa5f59faaa3becd1f32647948dfe29d5b752a69ba413852c45f59024b33b16d688a9f736fd68
   languageName: node
   linkType: hard
 

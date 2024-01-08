@@ -143,5 +143,9 @@
   "prettier": {
     "trailingComma": "all",
     "singleQuote": true
+  },
+  "resolutions": {
+    "@vuepress/shared-utils@npm:^1.2.0": "patch:@vuepress/shared-utils@npm%3A1.9.10#~/.yarn/patches/@vuepress-shared-utils-npm-1.9.10-3029700873.patch",
+    "@vuepress/shared-utils@npm:1.9.10": "patch:@vuepress/shared-utils@npm%3A1.9.10#~/.yarn/patches/@vuepress-shared-utils-npm-1.9.10-3029700873.patch"
   }
 }
