@@ -68,8 +68,8 @@
     "import-meta-resolve": "^1.1.1",
     "prettier": "^1.19.1",
     "ses": "^0.16.1",
-    "vuepress": "^1.8.2",
-    "vuepress-plugin-check-md": "0.0.2"
+    "vuepress": "^1.9.10",
+    "vuepress-plugin-check-md": "0.0.3"
   },
   "globals": {
     "harden": "readonly"
