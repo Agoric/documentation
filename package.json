@@ -52,6 +52,7 @@
     "@agoric/ertp": "community-dev",
     "@agoric/notifier": "community-dev",
     "@agoric/solo": "community-dev",
+    "@agoric/store": "community-dev",
     "@agoric/vats": "community-dev",
     "@endo/bundle-source": "2.5.2-upstream-rollup",
     "@endo/eventual-send": "^0.17.2",
