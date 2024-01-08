@@ -155,7 +155,8 @@ For more examples and ideas, visit:
 ```
 </details>
 
-## Installing the Sample Dapp
+## Creating Your Dapp From a Template
+
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```sh
@@ -202,27 +203,23 @@ yarn docker:logs
 Your output should resemble this:
 
 ```
-demo-agd-1  | 2023-12-15T19:07:45.530Z block-manager: block 11797 begin
-demo-agd-1  | 2023-12-15T19:07:45.534Z block-manager: block 11797 commit
-demo-agd-1  | 2023-12-15T19:07:46.539Z block-manager: block 11798 begin
-demo-agd-1  | 2023-12-15T19:07:46.543Z block-manager: block 11798 commit
-demo-agd-1  | 2023-12-15T19:07:47.557Z block-manager: block 11799 begin
-demo-agd-1  | 2023-12-15T19:07:47.560Z block-manager: block 11799 commit
-demo-agd-1  | 2023-12-15T19:07:48.572Z block-manager: block 11800 begin
-demo-agd-1  | 2023-12-15T19:07:48.577Z block-manager: block 11800 commit
-demo-agd-1  | 2023-12-15T19:07:49.590Z block-manager: block 11801 begin
-demo-agd-1  | 2023-12-15T19:07:49.593Z block-manager: block 11801 commit
-demo-agd-1  | 2023-12-15T19:07:50.628Z block-manager: block 11802 begin
-demo-agd-1  | 2023-12-15T19:07:50.633Z block-manager: block 11802 commit
-demo-agd-1  | 2023-12-15T19:07:51.642Z block-manager: block 11803 begin
-demo-agd-1  | 2023-12-15T19:07:51.645Z block-manager: block 11803 commit
-demo-agd-1  | 2023-12-15T19:07:52.674Z block-manager: block 11804 begin
-demo-agd-1  | 2023-12-15T19:07:52.678Z block-manager: block 11804 commit
-demo-agd-1  | 2023-12-15T19:07:53.681Z block-manager: block 11805 begin
-demo-agd-1  | 2023-12-15T19:07:53.685Z block-manager: block 11805 commit
-demo-agd-1  | 2023-12-15T19:07:54.698Z block-manager: block 11806 begin
-demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
+demo-agd-1  | 2023-12-27T04:08:06.384Z block-manager: block 1003 begin
+demo-agd-1  | 2023-12-27T04:08:06.386Z block-manager: block 1003 commit
+demo-agd-1  | 2023-12-27T04:08:07.396Z block-manager: block 1004 begin
+demo-agd-1  | 2023-12-27T04:08:07.398Z block-manager: block 1004 commit
+demo-agd-1  | 2023-12-27T04:08:08.405Z block-manager: block 1005 begin
+demo-agd-1  | 2023-12-27T04:08:08.407Z block-manager: block 1005 commit
 ```
+
+::: details Note: logs include benign error messages
+
+You can disregard messages such as:
+
+- `v5: TypeError: target has no method "getDisplayInfo"`
+
+These are artifacts of replaying historical events.
+
+:::
 
 
 ## Starting the Dapp Smart Contract
