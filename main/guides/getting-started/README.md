@@ -155,7 +155,8 @@ For more examples and ideas, visit:
 ```
 </details>
 
-## Installing the Sample Dapp
+## Creating Your Dapp From a Template
+
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```sh
