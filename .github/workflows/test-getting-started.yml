@@ -20,6 +20,7 @@ jobs:
       - name: Install dependencies
         run: | 
           cd demo
+          corepack enable
           yarn install
       - name: Start the Docker container
         run: | 
