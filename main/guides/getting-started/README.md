@@ -232,7 +232,6 @@ Use control-C to exit the logs, then start the smart contract. Starting the cont
 yarn start:contract
 ```
 
-
 ## Installing Keplr Wallet
 Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser. 
 
@@ -283,7 +282,13 @@ Click "Save".
 ![Save](./assets/043.png)
 
 ## Starting the Dapp
-To start the UI for the sample dapp, run the `yarn start:ui` command. Note the localhost link that appears on your terminal window. Open this link in your browser.
+Start the UI for the sample dapp.
+
+```sh
+yarn start:ui
+```
+
+Note the localhost link that appears on your terminal window. Open this link in your browser.
 
 ![Running the `yarn start:ui` command](./assets/044.png)
 
