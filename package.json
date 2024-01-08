@@ -39,8 +39,8 @@
     "@agoric/zoe": "beta",
     "@endo/far": "^0.2.19",
     "@endo/marshal": "^0.8.6",
-    "@endo/patterns": "^0.2.3",
     "@endo/pass-style": "^0.1.6",
+    "@endo/patterns": "^0.2.3",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
@@ -70,7 +70,6 @@
     "vuepress": "^1.8.2",
     "vuepress-plugin-check-md": "0.0.2"
   },
-  "resolutions": {},
   "globals": {
     "harden": "readonly"
   },
