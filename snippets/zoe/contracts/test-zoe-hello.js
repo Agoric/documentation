@@ -1,6 +1,7 @@
 // #region test-imports
 import '@endo/init';
 import { E } from '@endo/far';
+// eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
 import test from 'ava';
 // #endregion test-imports
 import { start as startState } from '../src/02-state.js';
