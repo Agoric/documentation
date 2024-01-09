@@ -10,27 +10,14 @@ Zoe is the heart of Agoric's smart contract framework. Use Zoe to:
 
 ## Why Use Zoe?
 
-### For Users
+- **Zoe is Safer for Users:** A Zoe offer guarantees that you get either
+  what you wanted or a full refund of the assets you put in,
+  even if the contract is buggy or malicious.
 
-**Zoe is safer.** Traditionally, putting digital assets in a smart
-contract has carried the risk of losing them. But Zoe guarantees you get either
-what you wanted or a full refund of the assets you put in. You will
-never leave a smart contract empty-handed, even if it is buggy or malicious.
-
-### For Developers
-
-**Zoe is easier.** Traditionally, writing a smart contract meant
-learning a new, untried language. And don't make any mistakes - if you
-do, your users might lose millions.
-
-However, you write Zoe contracts in a secure subset of JavaScript.
-Moreover, Zoe automatically escrows all user digital assets and
-handles their subsequent payout. **Even a buggy contract can't cause
-users to lose their assets.**
-
-::: warning TODO tone down the claims above
-
-:::
+- **Zoe is Safer for Developers** For a given offer, if you
+  make a mistake with the amount of assets you take or give,
+  Zoe guarantees that your users will either get what they say
+  they wanted or get a refund.
 
 ## Bundling a Contract
 
