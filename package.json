@@ -37,6 +37,7 @@
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {
     "@agoric/zoe": "beta",
+    "@agoric/ertp": "beta",
     "@endo/far": "^0.2.19",
     "@endo/marshal": "^0.8.6",
     "@endo/patterns": "^0.2.3",

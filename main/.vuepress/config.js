@@ -176,6 +176,20 @@ module.exports = {
           ],
         },
         {
+          title: 'Zoe',
+          path: '/guides/zoe/',
+          collapsible: false,
+          children: [
+            '/guides/zoe/contract-basics.html',
+            '/guides/zoe/',
+            '/guides/zoe/offer-enforcement.html',
+            '/guides/zoe/offer-safety.html',
+            '/guides/zoe/proposal.html',
+            '/guides/zoe/contract-requirements.html',
+            '/guides/zoe/price-authority.html',
+          ],
+        },
+        {
           title: 'Agoric CLI',
           path: '/guides/agoric-cli/',
           collapsible: false,
@@ -212,19 +226,6 @@ module.exports = {
             '/guides/ertp/amount-math.html',
             '/guides/ertp/issuers-and-mints.html',
             '/guides/ertp/purses-and-payments.html',
-          ],
-        },
-        {
-          title: 'Zoe',
-          path: '/guides/zoe/',
-          collapsible: false,
-          children: [
-            '/guides/zoe/',
-            '/guides/zoe/offer-enforcement.html',
-            '/guides/zoe/offer-safety.html',
-            '/guides/zoe/proposal.html',
-            '/guides/zoe/contract-requirements.html',
-            '/guides/zoe/price-authority.html',
           ],
         },
         {
@@ -281,6 +282,8 @@ module.exports = {
             '/guides/dapps/',
             '/guides/dapps/dapp-templates.html',
             '/guides/dapps/starting-multiuser-dapps.html',
+            '/guides/getting-started/deploying.html',
+            '/guides/getting-started/contract-rpc.html',
           ],
         },
         {
