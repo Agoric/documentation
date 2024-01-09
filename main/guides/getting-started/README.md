@@ -18,27 +18,6 @@ Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linu
 ## Installing Prerequisites
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
 
-### Installing Curl Utility on Ubuntu
-<details>
-<summary>Installing Curl Utility on Ubuntu</summary>
-
-If you already have the `curl` utility installed, you can skip this section. Users running a freshly installed Linux environment will most likely need to run these steps to install `curl`.
-
-If using Ubuntu you'll first need to run the command below to prevent an error when installing `curl`.
-
-```sh
-sudo apt-get update --fix-missing
-```
-
-Install the `curl` utility.
-
-```sh
-sudo apt install curl
-```
-
-</details>
-
-
 ### Installing NVM and Node
 <details>
 <summary>Installing NVM and Node on Ubuntu</summary>
@@ -47,6 +26,10 @@ At this point the Node Version Manager (NVM) utility will be installed. `nvm` ma
 
 ```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
+or
+```sh
+wget -O- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 Next, run the command:
