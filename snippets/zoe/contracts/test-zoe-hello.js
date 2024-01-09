@@ -1,6 +1,3 @@
-// TODO: convince prettier that harden() is a global
-/* global harden */
-
 // #region test-imports
 import '@endo/init';
 import { E } from '@endo/far';
