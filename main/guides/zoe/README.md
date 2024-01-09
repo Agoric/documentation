@@ -134,7 +134,7 @@ go over in detail in the sections below.
 
 ## Starting a Contract Instance
 
-Now we're ready for the to start an _instance_ of the [basic dapp](../getting-started/) contract:
+Now we're ready to start an _instance_ of the [basic dapp](../getting-started/) contract:
 
 ```sh
 yarn ava test/test-contract.js -m 'Start the contract'
