@@ -235,12 +235,12 @@ Alice starts by using the `instance` to get the contract's `publicFacet` and `te
 <img src="./assets/trade-offer-safety-1.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/test-alice-trade.js#queryInstance
+<<< @/snippets/zoe/contracts/alice-trade.js#queryInstance
 
 Then she constructs a _proposal_ to give the `joinPrice` in exchange
 for 1 Park Place and 1 Boardwalk, denominated in the game's `Place` brand; and she withdraws a payment from her purse:
 
-<<< @/snippets/zoe/contracts/test-alice-trade.js#makeProposal
+<<< @/snippets/zoe/contracts/alice-trade.js#makeProposal
 
 She then requests an _invitation_ to join the game; makes an _offer_ with
 (a promise for) this invitation, her proposal, and her payment;
@@ -249,7 +249,7 @@ and awaits her **Places** payout:
 <img src="./assets/trade-offer-safety-2.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/test-alice-trade.js#trade
+<<< @/snippets/zoe/contracts/alice-trade.js#trade
 
 ::: details Troubleshooting missing brands in offers
 
@@ -301,7 +301,7 @@ and tests that it's what she wanted.
 <img src="./assets/trade-offer-safety-5.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/test-alice-trade.js#payouts
+<<< @/snippets/zoe/contracts/alice-trade.js#payouts
 
 ## Example Contracts
 
