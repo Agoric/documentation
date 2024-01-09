@@ -179,7 +179,10 @@ module.exports = {
           title: 'Agoric CLI',
           path: '/guides/agoric-cli/',
           collapsible: false,
-          children: ['/guides/agoric-cli/'],
+          children: [
+            '/guides/agoric-cli/',
+            '/guides/agoric-cli/agd-query-tx.html',
+          ],
         },
         {
           title: 'JavaScript Framework',
@@ -289,6 +292,12 @@ module.exports = {
         {
           title: 'Chainlink Integration',
           path: '/guides/chainlink-integration.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'SubQuery Indexing',
+          path: '/guides/subquery-indexing.html',
           collapsible: false,
           children: [],
         },

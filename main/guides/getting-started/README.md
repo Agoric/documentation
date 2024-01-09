@@ -13,7 +13,7 @@ Before getting started, there are some resources you might want to keep handy in
 
 
 ## Platform Requirements
-Currently Agoric supports [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), MacOS, and Linux. This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
+Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
 ## Installing Prerequisites
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
@@ -138,7 +138,8 @@ For more examples and ideas, visit:
 ```
 </details>
 
-## Installing the Sample Dapp
+## Creating Your Dapp From a Template
+
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```sh
@@ -165,7 +166,7 @@ yarn install
  If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows. 
   
  Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`. 
- On MacOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835). 
+ On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835). 
   
   </details>
 
@@ -185,27 +186,23 @@ yarn docker:logs
 Your output should resemble this:
 
 ```
-demo-agd-1  | 2023-12-15T19:07:45.530Z block-manager: block 11797 begin
-demo-agd-1  | 2023-12-15T19:07:45.534Z block-manager: block 11797 commit
-demo-agd-1  | 2023-12-15T19:07:46.539Z block-manager: block 11798 begin
-demo-agd-1  | 2023-12-15T19:07:46.543Z block-manager: block 11798 commit
-demo-agd-1  | 2023-12-15T19:07:47.557Z block-manager: block 11799 begin
-demo-agd-1  | 2023-12-15T19:07:47.560Z block-manager: block 11799 commit
-demo-agd-1  | 2023-12-15T19:07:48.572Z block-manager: block 11800 begin
-demo-agd-1  | 2023-12-15T19:07:48.577Z block-manager: block 11800 commit
-demo-agd-1  | 2023-12-15T19:07:49.590Z block-manager: block 11801 begin
-demo-agd-1  | 2023-12-15T19:07:49.593Z block-manager: block 11801 commit
-demo-agd-1  | 2023-12-15T19:07:50.628Z block-manager: block 11802 begin
-demo-agd-1  | 2023-12-15T19:07:50.633Z block-manager: block 11802 commit
-demo-agd-1  | 2023-12-15T19:07:51.642Z block-manager: block 11803 begin
-demo-agd-1  | 2023-12-15T19:07:51.645Z block-manager: block 11803 commit
-demo-agd-1  | 2023-12-15T19:07:52.674Z block-manager: block 11804 begin
-demo-agd-1  | 2023-12-15T19:07:52.678Z block-manager: block 11804 commit
-demo-agd-1  | 2023-12-15T19:07:53.681Z block-manager: block 11805 begin
-demo-agd-1  | 2023-12-15T19:07:53.685Z block-manager: block 11805 commit
-demo-agd-1  | 2023-12-15T19:07:54.698Z block-manager: block 11806 begin
-demo-agd-1  | 2023-12-15T19:07:54.702Z block-manager: block 11806 commit
+demo-agd-1  | 2023-12-27T04:08:06.384Z block-manager: block 1003 begin
+demo-agd-1  | 2023-12-27T04:08:06.386Z block-manager: block 1003 commit
+demo-agd-1  | 2023-12-27T04:08:07.396Z block-manager: block 1004 begin
+demo-agd-1  | 2023-12-27T04:08:07.398Z block-manager: block 1004 commit
+demo-agd-1  | 2023-12-27T04:08:08.405Z block-manager: block 1005 begin
+demo-agd-1  | 2023-12-27T04:08:08.407Z block-manager: block 1005 commit
 ```
+
+::: details Note: logs include benign error messages
+
+You can disregard messages such as:
+
+- `v5: TypeError: target has no method "getDisplayInfo"`
+
+These are artifacts of replaying historical events.
+
+:::
 
 
 ## Starting the Dapp Smart Contract
@@ -214,7 +211,6 @@ Use control-C to exit the logs, then start the smart contract. Starting the cont
 ```sh
 yarn start:contract
 ```
-
 
 ## Installing Keplr Wallet
 Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser. 
@@ -266,7 +262,13 @@ Click "Save".
 ![Save](./assets/043.png)
 
 ## Starting the Dapp
-To start the UI for the sample dapp, run the `yarn start:ui` command. Note the localhost link that appears on your terminal window. Open this link in your browser.
+Start the UI for the sample dapp.
+
+```sh
+yarn start:ui
+```
+
+Note the localhost link that appears on your terminal window. Open this link in your browser.
 
 ![Running the `yarn start:ui` command](./assets/044.png)
 
