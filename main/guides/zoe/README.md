@@ -34,13 +34,12 @@ users to lose their assets.**
 
 ## Bundling a Contract
 
-Recall from [deploying the basic dapp contract](../getting-started/#deploy-the-contract)
-that the first step was to _bundle_ all of its modules into a single artifact.
+In [deploying the basic dapp contract](../getting-started/#starting-the-dapp-smart-contract),
+the first step was to _bundle_ all of its modules into a single artifact.
 We used the [agoric run](../agoric-cli/#agoric-run) command in that case.
 The core mechanism used in `agoric run` is a call to `bundleSource()`.
 
-In the `contract` directory of the
-[basic dapp project structure](../getting-started/#project-structure),
+In the `contract` directory of the dapp,
 run `test-bundle-source.js` following `ava` conventions:
 
 ```sh
