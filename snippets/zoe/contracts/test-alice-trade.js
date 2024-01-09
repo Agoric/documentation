@@ -16,7 +16,7 @@ import { AmountMath } from '@agoric/ertp';
  * @param {ERef<import('@agoric/zoe/src/zoeService/utils').Instance<GameContractFn>>} instance
  * @param {Purse} purse
  */
-const alice = async (t, zoe, instance, purse) => {
+export const alice = async (t, zoe, instance, purse) => {
   // #region queryInstance
   const publicFacet = E(zoe).getPublicFacet(instance);
   const terms = await E(zoe).getTerms(instance);
