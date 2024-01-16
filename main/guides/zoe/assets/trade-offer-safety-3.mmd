@@ -1,0 +1,29 @@
+sequenceDiagram
+  autonumber
+
+  box aqua
+  actor A as Alice
+  end
+
+  box darksalmon
+  participant Zoe
+  end
+
+  box skyblue Contract
+  participant C as gameAssetContract
+  end
+
+    A-)C: makeJoinInvitation()
+    activate C
+    C--)Zoe: makeInvitation(joinHandler, ...)
+    deactivate C
+    activate Zoe
+    Zoe--)-C: invitation
+    activate C
+    C--)A: Invitation toJoin
+    deactivate C
+    A-)+Zoe: offer(toJoin, proposal, { Price })
+
+    Zoe--)Zoe: escrow Price pmt
+
+    Zoe--)-C: joinHandler(gameSeat)
