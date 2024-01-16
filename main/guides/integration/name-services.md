@@ -7,6 +7,8 @@ The Agoric chain has a few name services:
 
 ## agoricNames / agoricNamesAdmin - well known names
 
+Well-known names are chosen by [BLD staker governance](https://community.agoric.com/t/about-the-governance-category/15).
+
 To look up well-known objects, such as the BLD brand:
 
 ```js
@@ -36,22 +38,21 @@ Adding or updating an entry requires access to the corresponding _NameAdmin_ fac
 one of its descendants - most likely as part of [permissioned contract deployment](../coreeval/). For example:
 
 ```js
-const { instance } = await E(zoe).startInstance(myNewContract);
-const { brands: { Thing: thingBrand } } = await E(zoe).getTerms(instance);
+const { instance } = await E(zoe).startInstance(lemonadeStand);
+const { brands: { Lemonade: lemonadeBrand } } = await E(zoe).getTerms(instance);
 const brandAdmin = E(agoricNamesAdmin).lookupAdmin('brand');
-await E(brandAdmin).update('Thing', thingBrand);
+await E(brandAdmin).update('Lemonade', lemonadeBrand);
 ```
 
 ### agoricNames in vstorage
 
 The `NameAdmin` interface has an `onUpdate` method for registering a callback.
-This is used to reflec the brand entries, that is: `E(E(agoricNames).lookup('brand')).entries()`
+This is used to reflect the brand entries, that is: `E(E(agoricNames).lookup('brand')).entries()`
 into vstorage at `published.agoricNames.brand` each time they change.
 The entries for `instance` and the other keys of `agoricNames` are likewise reflected under `published.agoricNames`.
 See [marshalling amounts and instance](../getting-started/contract-rpc.md#marshalling-amounts-and-instances)
 for details on the format of the data stored in vstorage.
 
-_TODO: IOU a screenshot of the vstorage viewer_
 
 ## namesByAddress / namesByAddressAdmin, and depositFacet - per account namespace
 
