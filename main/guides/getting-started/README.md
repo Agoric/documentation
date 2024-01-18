@@ -18,7 +18,8 @@ Before getting started, there are some resources you might want to keep handy in
 
 As you're going through this tutorial it may be helpful to watch this video walkthrough, showing you all the steps and the desired outcome of each.
 
-<iframe width="560" height="315" src="https://youtu.be/huTI9_Gq2ow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/huTI9_Gq2ow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 :::
 
 ## Platform Requirements
