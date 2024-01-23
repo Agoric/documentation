@@ -349,9 +349,9 @@ When the transaction is complete you will notice some IST has been debited from 
 ![Finished transaction](./assets/new_006.png)
 
 Congratulations! You got your first Agoric dapp up and running! Now that you've got your first Agoric dapp up and running, let's focus on some key takeaways from this exercise:
-- Starting an Agoric Chain: You have learned the process to initialize and start a local Agoric blockchain. 
+- **Starting an Agoric Chain**: You have gained experience starting a local Agoric blockchain. 
 
-- Deploying a Contract: You have learned the steps to deploy a smart contract onto the Agoric platform!
+- **Deploying a Contract**: You have deployed a smart contract onto the Agoric platform!
 
 - Making an Offer: Finally, you've learned to make an offer and seen the conditional nature of the offers that can be made on the Agoric platform. As you saw, when attempting to submit less than 0.25 IST or purchase more than three items the offer is rejected.
 
