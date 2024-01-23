@@ -344,21 +344,15 @@ Once your wallet is connected, click on the "Make Offer" button to purchase 3 pr
 
 ![Making an offer](./assets/keplr-legible-offer.png)
 
-When the transaction is complete you will notice some IST has been debited from your wallet, and you are the owner of three new properties.
+When the transaction is complete you will notice some IST has been debited from your wallet, and you are the owner of three new properties. Feel free to experiment with offering less than the required 0.25 IST or attemping to purchase more than three items. You'll see these offers will not be accepted. Conditional offers like this are a key part of the Agoric platform!
 
 ![Finished transaction](./assets/new_006.png)
 
 Congratulations! You got your first Agoric dapp up and running! Now that you've got your first Agoric dapp up and running, let's focus on some key takeaways from this exercise:
 - Starting an Agoric Chain: You have learned the process to initialize and start a local Agoric blockchain. 
-```sh
-yarn start:docker
-```
 
 - Deploying a Contract: You have learned the steps to deploy a smart contract onto the Agoric platform!
-```sh
-yarn start:contract
-```
 
-- Making an Offer: Finally, you have learned how to make offers within the dapp and add items to your Keplr wallet!
+- Making an Offer: Finally, you've learned to make an offer and seen the conditional nature of the offers that can be made on the Agoric platform. As you saw, when attempting to submit less than 0.25 IST or purchase more than three items the offer is rejected.
 
 This tutorial serves as an essential stepping stone for developers looking to delve into decentralized app development on the Agoric platform. To learn more about building Agoric dapps, check out the rest of the docs on this site!
