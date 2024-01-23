@@ -33,7 +33,7 @@ const bid = AmountMath.make(quatloosBrand, 300n);
 - **allegedAmount**: **[Amount](./ertp-data-types.md#amount)**
 - Returns: **Amount**
 
-Verifies that an **Amount** is for the specified *brand* and returns a new equivalent **Amount**.
+Verifies that an **Amount** is for the specified *brand* and returns an equivalent **Amount**.
 If the **Amount** is not for the specified **Brand**, an error is thrown.
 
 ```js
@@ -186,7 +186,7 @@ For fungible **Amounts** this means adding their **[AmountValues](./ertp-data-ty
 and *rightAmount*.
 
 If one of *leftAmount* or *rightAmount* is empty, this method returns an **Amount** equivalent to the other.
-If both are empty, this method returns a new empty **Amount**.
+If both are empty, this method returns an empty **Amount**.
 
 ```js
 import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
