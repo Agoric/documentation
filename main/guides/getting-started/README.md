@@ -348,4 +348,17 @@ When the transaction is complete you will notice some IST has been debited from 
 
 ![Finished transaction](./assets/new_006.png)
 
-Congratulations! You got your first Agoric dapp up and running!
+Congratulations! You got your first Agoric dapp up and running! Now that you've got your first Agoric dapp up and running, let's focus on some key takeaways from this exercise:
+- Starting an Agoric Chain: You have learned the process to initialize and start a local Agoric blockchain. 
+```sh
+yarn start:docker
+```
+
+- Deploying a Contract: You have learned the steps to deploy a smart contract onto the Agoric platform!
+```sh
+yarn start:contract
+```
+
+- Making an Offer: Finally, you have learned how to make offers within the dapp and add items to your Keplr wallet!
+
+This tutorial serves as an essential stepping stone for developers looking to delve into decentralized app development on the Agoric platform. To learn more about building Agoric dapps, check out the rest of the docs on this site!
