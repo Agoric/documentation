@@ -3,9 +3,6 @@
   "version": "0.2.0",
   "description": "Documentation of Agoric products",
   "type": "module",
-  "engines": {
-    "node": "^18.12"
-  },
   "scripts": {
     "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev main",
     "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build main",
