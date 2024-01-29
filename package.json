@@ -4,7 +4,7 @@
   "description": "Documentation of Agoric products",
   "type": "module",
   "engines": {
-    "node": "^16.13 || ^18.12"
+    "node": "^18.12"
   },
   "scripts": {
     "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev main",
@@ -36,8 +36,8 @@
   },
   "homepage": "https://github.com/Agoric/documentation#readme",
   "dependencies": {
-    "@agoric/zoe": "beta",
-    "@agoric/ertp": "beta",
+    "@agoric/zoe": "community-dev",
+    "@agoric/ertp": "community-dev",
     "@endo/far": "^0.2.19",
     "@endo/marshal": "^0.8.6",
     "@endo/patterns": "^0.2.3",
@@ -45,17 +45,17 @@
     "typescript": "^4.0.3"
   },
   "devDependencies": {
-    "@agoric/assert": "beta",
-    "@agoric/cosmic-swingset": "beta",
-    "@agoric/ertp": "beta",
-    "@agoric/notifier": "beta",
-    "@agoric/solo": "beta",
-    "@agoric/vats": "beta",
-    "@endo/bundle-source": "^2.1.1",
-    "@endo/eventual-send": "^0.14.8",
-    "@endo/init": "^0.5.43",
-    "@endo/promise-kit": "^0.2.37",
-    "@endo/ses-ava": "^0.2.27",
+    "@agoric/assert": "community-dev",
+    "@agoric/cosmic-swingset": "community-dev",
+    "@agoric/ertp": "community-dev",
+    "@agoric/notifier": "community-dev",
+    "@agoric/solo": "community-dev",
+    "@agoric/vats": "community-dev",
+    "@endo/bundle-source": "2.5.2-upstream-rollup",
+    "@endo/eventual-send": "^0.17.2",
+    "@endo/init": "^0.5.56",
+    "@endo/promise-kit": "^0.2.56",
+    "@endo/ses-ava": "^0.2.40",
     "@typescript-eslint/parser": "^4.26.0",
     "ava": "^4.3.1",
     "eslint": "^7.27.0",
@@ -67,7 +67,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "import-meta-resolve": "^1.1.1",
     "prettier": "^1.19.1",
-    "ses": "^0.16.1",
+    "ses": "^0.18.8",
     "vuepress": "^1.8.2",
     "vuepress-plugin-check-md": "0.0.2"
   },
