@@ -303,7 +303,7 @@ From the browser UI, click the "Connect Wallet" button to connect your Keplr wal
 ## Making an Offer
 Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
 
-![Making an offer](./assets/new_004.png)
+![Making an offer](./assets/keplr-legible-offer.png)
 
 When the transaction is complete you will notice some IST has been debited from your wallet, and you are the owner of three new properties.
 
