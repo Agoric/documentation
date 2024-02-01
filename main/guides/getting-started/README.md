@@ -252,6 +252,15 @@ Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate
 
 ![Installing the Keplr Wallet Plug-In](./assets/037.png)
 
+::: warning
+
+Remember, this is just a demo. In real-world scenarios ensuring proper security around mnemonic phrases is critical!
+
+- For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing.
+- Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets.
+
+:::
+
 Once the plug-in has been installed, open Keplr and select the option to "Import an existing wallet". Then choose the option to "Use recovery phrase or private key".
 
 ![Choose the "Import an Existing Wallet" option](./assets/038.png)
@@ -260,10 +269,7 @@ Once the plug-in has been installed, open Keplr and select the option to "Import
 
 To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button.
 
-Please note that your phrase might not be the same as the one shown in this guide! Remember, this is just a demo. In real-world scenarios ensuring proper security around mnemonic phrases is critical!
-
-- For any mnemonic phrase you use to secure your own assets, **take care to keep it strictly confidential!** The mnemonic here is only for testing.
-- Using a **separate browser profile** is a good way to avoid accidentally using the wrong account when testing vs. with real assets.
+Please note that your phrase might not be the same as the one shown in this guide!
 
 Note the mnemonic phrase in the output below:
 
