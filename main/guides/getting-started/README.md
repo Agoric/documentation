@@ -263,9 +263,11 @@ Remember, this is just a demo. In real-world scenarios ensuring proper security 
 
 Once the plug-in has been installed, open Keplr and select the option to "Import an existing wallet". Then choose the option to "Use recovery phrase or private key".
 
-![Choose the "Import an Existing Wallet" option](./assets/038.png)
+<img alt='Choose the "Import an Existing Wallet" option' src="./assets/038.png"
+ width=300 />
 
-![Choose the "Use recovery phrase or private key" option](./assets/040.png)
+<img alt='Choose the "Use recovery phrase or private key" option' src="./assets/040.png"
+  width="500" />
 
 To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button.
 
@@ -294,7 +296,7 @@ make: Leaving directory '/workspace/contract'
 Done in 34.95s.
 ```
 
-![Pasting the mnemonic phrase](./assets/041.png)
+<img alt="Pasting the mnemonic phrase" src="./assets/041.png" width="400" />
 
 Give your new wallet a name and a password.
 
