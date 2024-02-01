@@ -246,11 +246,17 @@ This `start:contract` script will do a number of things that we will cover in mo
 
 While it's doing all that...
 
-## Installing Keplr Wallet
+## Setting up a Keplr Wallet Demo Account
 
-Next, you'll install the Keplr wallet plug-in. Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser.
+Next, ensure you have the [Keplr wallet plug-in](https://www.keplr.app/download) installed.
+
+<details><summary>Installing Keplr Wallet</summary>
+
+Open up your browser and navigate to [https://www.keplr.app/download](https://www.keplr.app/download). Select the version appropriate to your browser.
 
 ![Installing the Keplr Wallet Plug-In](./assets/037.png)
+
+</details>
 
 ::: warning
 
@@ -261,7 +267,7 @@ Remember, this is just a demo. In real-world scenarios ensuring proper security 
 
 :::
 
-Once the plug-in has been installed, open Keplr and select the option to "Import an existing wallet". Then choose the option to "Use recovery phrase or private key".
+Once the plug-in has been installed, open Keplr and select the option to **Import an existing wallet**. Then choose the option to **Use recovery phrase or private key**.
 
 <img alt='Choose the "Import an Existing Wallet" option' src="./assets/038.png"
  width=300 />
@@ -298,13 +304,15 @@ Done in 34.95s.
 
 <img alt="Pasting the mnemonic phrase" src="./assets/041.png" width="400" />
 
-Give your new wallet a name and a password.
+<details><summary>As usual, give your new wallet a name and a password.</summary>
 
 ![Name the newly imported wallet](./assets/042.png)
 
 Click "Save".
 
 ![Save](./assets/043.png)
+
+</details>
 
 ## Starting the Dapp
 
@@ -320,9 +328,15 @@ Note the localhost link that appears on your terminal window. Open this link in 
 
 ![Open the link in your browser](./assets/new_002.png)
 
-From the browser UI, click the "Connect Wallet" button to connect your Keplr wallet. You will be asked to approve this connection.
+From the browser UI, click the "Connect Wallet" button to connect your Keplr wallet.
+
+<details><summary>Adding Agoric local to Keplr</summary>
+
+Like any [non-native chain](https://chains.keplr.app/), the first time you use the local Agoric blockchain, Keplr will ask you to approve it:
 
 ![Connecting your wallet](./assets/new_003.png)
+
+</details>
 
 ## Making an Offer
 
