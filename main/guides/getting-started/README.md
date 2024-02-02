@@ -193,7 +193,7 @@ yarn install
 
 ## Starting a Local Agoric Blockchain
 
-Now go ahead and start a local Agoric blockchain using the `yarn start` command. Note: This container is several gigabytes in size and may take a few minutes to download.
+Now go ahead and start a local Agoric blockchain using the `yarn start:docker` command. Note: This container is several gigabytes in size and may take a few minutes to download.
 
 ```sh
 yarn start:docker
