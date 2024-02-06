@@ -4,7 +4,7 @@
 - TODO: INSERT VIDEO
 
 ## Prerequisities:
-- Deploying a Smart Contract requires the Agoric SDK. For steps on installing the Agoric SDK see the Explainer on [Starting a Local Chain](https://github.com/Agoric/documentation/blob/kbennett2000-patch-1/main/guides/getting-started/Explainer%20-%20How%20to%20Start%20a%20Local%20Chain.md)
+- Deploying a Smart Contract requires the Agoric SDK. For steps on installing the Agoric SDK see the Explainer on [Starting a Local Chain](/guides/getting-started/Explainer%20-%20How%20to%20Start%20a%20Local%20Chain.md)
 
 ## Create a Dapp
 - Use the `agoric init` command to initialize a new project.
