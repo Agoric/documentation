@@ -4,9 +4,11 @@ import { test } from '../../prepare-test-env-ava.js';
 import { AmountMath, makeIssuerKit } from '@agoric/ertp';
 
 test('ertp guide purse getCurrentAmount', async t => {
-  const { issuer: quatloosIssuer, brand: quatloosBrand, mint } = makeIssuerKit(
-    'quatloos',
-  );
+  const {
+    issuer: quatloosIssuer,
+    brand: quatloosBrand,
+    mint,
+  } = makeIssuerKit('quatloos');
 
   const quatloosPayment5 = mint.mintPayment(AmountMath.make(quatloosBrand, 5n));
 
@@ -34,6 +36,7 @@ test('ertp guide purse withdraw', async t => {
   const newPayment = quatloosPurse.withdraw(AmountMath.make(brand, 3n));
   // #endregion withdraw
 
+  await null;
   t.deepEqual(await issuer.getAmountOf(newPayment), AmountMath.make(brand, 3n));
 });
 

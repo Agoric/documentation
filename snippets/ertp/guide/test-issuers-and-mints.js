@@ -40,9 +40,8 @@ test('ertp guide issuers and mints makeIssuerKit', async t => {
 
 test('ertp guide issuers and mints getBrand', async t => {
   // #region getBrand
-  const { issuer: quatloosIssuer, brand: quatloosBrand } = makeIssuerKit(
-    'quatloos',
-  );
+  const { issuer: quatloosIssuer, brand: quatloosBrand } =
+    makeIssuerKit('quatloos');
   // myQuatloosBrand === quatloosBrand
   const myQuatloosBrand = quatloosIssuer.getBrand();
   // #endregion getBrand
@@ -73,6 +72,7 @@ test('ertp guide issuers and mints makeEmptyPurse', async t => {
   // The new empty purse contains 0 Quatloos
   const quatloosPurse = quatloosIssuer.makeEmptyPurse();
   // #endregion makeEmptyPurse
+  await null;
   t.deepEqual(await quatloosPurse.getCurrentAmount(), {
     brand: quatloosIssuer.getBrand(),
     value: 0n,
@@ -213,9 +213,8 @@ test('ertp guide issuers and mints payment methods', async t => {
 
 test('ertp guide issuers and mints mint.getIssuer', async t => {
   // #region mintGetIssuer
-  const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit(
-    'quatloos',
-  );
+  const { issuer: quatloosIssuer, mint: quatloosMint } =
+    makeIssuerKit('quatloos');
   const quatloosMintIssuer = quatloosMint.getIssuer();
   // returns true
   const sameIssuer = quatloosIssuer === quatloosMintIssuer;
@@ -225,9 +224,8 @@ test('ertp guide issuers and mints mint.getIssuer', async t => {
 
 test('ertp guide issuers and mints mint.mintPayment', async t => {
   // #region mintMintPayment
-  const { mint: quatloosMint, brand: quatloosBrand } = makeIssuerKit(
-    'quatloos',
-  );
+  const { mint: quatloosMint, brand: quatloosBrand } =
+    makeIssuerKit('quatloos');
   const quatloos1000 = AmountMath.make(quatloosBrand, 1000n);
   const newPayment = quatloosMint.mintPayment(quatloos1000);
   // #endregion mintMintPayment

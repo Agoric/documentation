@@ -7,6 +7,7 @@
 import '@agoric/zoe/tools/prepare-test-env.js';
 // eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
 import rawTest from 'ava';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { wrapTest } from '@endo/ses-ava';
 
 export const test = wrapTest(rawTest);
