@@ -4,7 +4,6 @@
  * `test` function.
  */
 
-import '@endo/init/pre-bundle-source.js';
 import '@agoric/zoe/tools/prepare-test-env.js';
 // eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
 import rawTest from 'ava';

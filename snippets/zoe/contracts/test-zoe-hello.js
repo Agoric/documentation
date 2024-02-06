@@ -1,5 +1,4 @@
 // #region test-imports
-import '@endo/init';
 import { E } from '@endo/far';
 // eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
 import test from 'ava';
