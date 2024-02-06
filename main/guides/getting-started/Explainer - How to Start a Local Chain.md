@@ -4,7 +4,7 @@ As you're going through this explainer it may be helpful to watch this video wal
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XT1S4E1h-jM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Installing Prerequisities:
-- Ensure Node is installed in your environment. If you need to install Node in your environment you can follow the [steps here](https://docs.agoric.com/guides/getting-started/#installing-nvm-and-node)
+- Ensure Node is installed in your environment. If you need to install Node in your environment you can follow the [steps here](/guides/getting-started/#installing-nvm-and-node)
 - Ensure Yarn is installed in your environment. If you need to install Yarn in your environment you can follow the [steps here](https://docs.agoric.com/guides/getting-started/#installing-yarn)
 
 ## Installing the Agoric SDK
