@@ -9,9 +9,9 @@ import '@agoric/zoe/exported.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { AmountMath } from '@agoric/ertp';
 
-import { setup } from '@agoric/zoe/test/unitTests/setupBasicMints.js';
-import { assertPayoutDeposit } from '@agoric/zoe/test/zoeTestHelpers.js';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
+import { assertPayoutDeposit } from '../test/zoeTestHelpers.js';
+import { setup } from '../test/setupBasicMints.js';
 
 const makeTestPriceAuthority = (brands, priceList, timer) =>
   makeFakePriceAuthority({
