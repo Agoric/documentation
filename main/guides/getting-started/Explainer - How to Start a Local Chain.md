@@ -42,7 +42,8 @@ agoric --version
 - Create a new project using the `agoric init` command:
 ```sh
 cd .. 
-agoric init testProject cd testProject
+agoric init testProject
+cd testProject
 ```
 
 - Install the Agoric components:
