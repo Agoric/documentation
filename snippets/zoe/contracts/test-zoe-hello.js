@@ -19,9 +19,10 @@ test('contract greets by name', async t => {
 // #region test-state
 test('state', async t => {
   const { publicFacet } = state.start();
-  t.is(await E(publicFacet).get(), 'Hello, World!');
-  await E(publicFacet).set(2);
-  t.is(await E(publicFacet).get(), 2);
+  const actual = await E(publicFacet).getRoomCount();
+  t.is(actual, 0);
+  await E(publicFacet).makeRoom(2);
+  t.is(await E(publicFacet).getRoomCount(), 1);
 });
 // #endregion test-state
 

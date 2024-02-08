@@ -44,11 +44,11 @@ A test that the `greet` method works as expected looks like:
 
 ## State
 
-Contracts can use ordinary variables for state.
+Contracts can use ordinary variables and data structures for state.
 
 <<< @/snippets/zoe/src/02-state.js#startfn
 
-Using `set` changes the results of the following call to `get`:
+Using `makeRoom` changes the results of the following call to `getRoomCount`:
 
 <<< @/snippets/zoe/contracts/test-zoe-hello.js#test-state
 
@@ -58,7 +58,7 @@ Ordinary heap state persists between contract invocations.
 
 We'll discuss more explicit state management for
 large numbers of objects (_virtual objects_) and
-objects that last across upgrades (_durable objects_) later.
+objects that last across upgrades ([durable objects](./contract-upgrade.md#durability)) later.
 
 :::
 

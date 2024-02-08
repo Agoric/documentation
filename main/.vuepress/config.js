@@ -178,7 +178,11 @@ module.exports = {
           title: 'Zoe',
           path: '/guides/zoe/',
           collapsible: false,
-          children: ['/guides/zoe/contract-basics.html', '/guides/zoe/'],
+          children: [
+            '/guides/zoe/contract-basics.html',
+            '/guides/zoe/',
+            '/guides/zoe/contract-upgrade.html',
+          ],
         },
         {
           title: 'Agoric CLI',
