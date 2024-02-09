@@ -119,7 +119,7 @@ are covered on the component-specific pages.
 
 ![Asset creation](./assets/asset-creation.svg)
 
-<<< @/snippets/ertp/guide/test-readme.js#makeIssuerKit
+<<< @/../snippets/ertp/guide/test-readme.js#makeIssuerKit
 
 First, you pass a string naming a new `brand` to
 `makeIssuerKit()`. As noted above, a `make<Foo>Kit()` method creates both a new Foo, in this case an `issuer`, and some other things.
@@ -129,7 +129,7 @@ are all in unchangeable one-to-one relationships with each other.
 
 In this case, you used the string 'quatloos' to name the `brand`.
 
-<<< @/snippets/ertp/guide/test-readme.js#seven
+<<< @/../snippets/ertp/guide/test-readme.js#seven
 
 Here you use `AmountMath` to make a new `amount` description of the asset you want to create.
 You need to specify what you want for the `value` of the new `amount`, in this case `7n`, as
@@ -138,13 +138,13 @@ well as what `brand` it will be.
 This returns an `amount` description stored in `quatloosSeven`. Remember, an `amount` is only a description
 of an asset, not an asset itself. `quatloosSeven` has no intrinsic value.
 
-<<< @/snippets/ertp/guide/test-readme.js#mintPayment
+<<< @/../snippets/ertp/guide/test-readme.js#mintPayment
 
 This mints a new asset of 7 Quatloos. In this case, since it's a `mint` operation, you are creating
 a new digital asset of 7 Quatloos. It's returned as a `payment`, so you want a place to store it for 
 the longer term. 
 
-<<< @/snippets/ertp/guide/test-readme.js#deposit
+<<< @/../snippets/ertp/guide/test-readme.js#deposit
 
 For long term storage, we prefer using a `purse`. `payments` are generally used to transfer assets rather than
 hold them for extended periods. First you create a new empty `purse` for Quatloos using
@@ -159,12 +159,12 @@ added to them so the `purse` balance would be 24 Quatloos.
 Start with your `quatloosPurse` that holds 7 Quatloos. You decide you want to send 5 Quatloos to 
 another party named Alice.
 
-<<< @/snippets/ertp/guide/test-readme.js#five
+<<< @/../snippets/ertp/guide/test-readme.js#five
 
 First you create a new Quatloos branded `amount` with a `value` of 5 to describe what you want to withdraw.
 Remember, an `amount` is just a description of assets, not the actual assets.
 
-<<< @/snippets/ertp/guide/test-readme.js#withdraw
+<<< @/../snippets/ertp/guide/test-readme.js#withdraw
 
 Now you tell your Quatloos containing `purse` that you want to withdraw the specified `amount` from 
 it. The withdrawn 5 Quatloos goes into a `payment`
@@ -175,7 +175,7 @@ her rather than someone else.
 
 <div class="language-js secondary">
 
-<<< @/snippets/ertp/guide/test-readme.js#depositFacet
+<<< @/../snippets/ertp/guide/test-readme.js#depositFacet
 
 </div>
 
@@ -189,7 +189,7 @@ of your friend's accounts or find out how much is in them.
 
 <div class="language-js secondary">
 
-<<< @/snippets/ertp/guide/test-readme.js#getId
+<<< @/../snippets/ertp/guide/test-readme.js#getId
 
 </div>
 
@@ -201,7 +201,7 @@ others can get the value just by knowing the Id. Alice can make her Id(s) known 
 communication method she likes; private email, an email blast to a mailing list or many individuals,
 buying an ad on a website, tv program, or newspaper, listing it on her website, etc.
 
-<<< @/snippets/ertp/guide/test-readme.js#getValue
+<<< @/../snippets/ertp/guide/test-readme.js#getValue
 
 Remember, ERTP's use of OCaps requires that you have access to an object in order 
 to run methods on it. So someone who wants to use Alice's deposit facet 
@@ -231,14 +231,14 @@ An object representing a valid ticket has the properties:
 - `show`: A string describing the show.
 - `start`: A string representing a [time/date in ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString).
 
-<<< @/snippets/ertp/guide/test-readme.js#ticketValues
+<<< @/../snippets/ertp/guide/test-readme.js#ticketValues
 
 To create tickets, you first create JavaScript objects that each represent a ticket.
 Then, because you need to specify the amount of digital assets to be minted, 
 you can use `AmountMath` to make an amount. In this case, you're making tickets
 for one performance of *Hamilton*.
 
-<<< @/snippets/ertp/guide/test-readme.js#makeTicketIssuer
+<<< @/../snippets/ertp/guide/test-readme.js#makeTicketIssuer
 
 As before, you use `makeIssuerKit()` to create a `mint` that can create Agoric Theatre ticket assets. 
 The difference from when you created a fungible asset is that you have to use a second argument,
@@ -248,7 +248,7 @@ There are two `AssetKinds`. Each one polymorphically implements the same set of 
 - `AssetKind.NAT`: Works with natural number `values` and fungible assets. Default value for `makeIssuerKit()`.
 - `AssetKind.SET`: Used with non-fungible assets, operates on an array of records (objects) with keys and values.
 
-<<< @/snippets/ertp/guide/test-readme.js#ticketPayments
+<<< @/../snippets/ertp/guide/test-readme.js#ticketPayments
 
 First you define an `amount` description for each ticket you want to issue. 
 

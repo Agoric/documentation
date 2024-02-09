@@ -3,7 +3,7 @@
 In web browsers, a common pattern of remote communication is using the
 [asynchronous fetch API with promises](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#promises):
 
-<<< @/snippets/test-distributed-programming.js#asyncFetch
+<<< @/../snippets/test-distributed-programming.js#asyncFetch
 
 In the Agoric platform, communicating with remote objects is similar,
 using the `E()` wrapper. For example,
@@ -101,24 +101,24 @@ In [@endo/marshal](https://github.com/endojs/endo/tree/master/packages/marshal#r
 
 For example, we can marshal a remotable counter using the slot identifier `c1`:
 
-<<< @/snippets/test-marshal.js#marshal-remotable
+<<< @/../snippets/test-marshal.js#marshal-remotable
 
 Each end of a connection between vats typically keeps
 a table to translate slots to capabilities and back:
 
-<<< @/snippets/test-marshal.js#marshal-table
+<<< @/../snippets/test-marshal.js#marshal-table
 
 Each call to `E(rx)` makes a proxy for the reciver `rx`;
 each `E(rx).p` property reference invokes the `get` proxy trap.
 From the `get` trap, `E` returns a function that queues
 `rx`, `p`, and its arguments (in marshalled form) and returns a promise:
 
-<<< @/snippets/test-marshal.js#marshal-messages-e
+<<< @/../snippets/test-marshal.js#marshal-messages-e
 
 Now we can see the result in some detail. Note the way the promise from
 `E(zoe).install()` is passed to `E(zoe).startInstance()`.
 
-<<< @/snippets/test-marshal.js#marshal-messages
+<<< @/../snippets/test-marshal.js#marshal-messages
 
 ::: tip Watch: How Agoric Solves Reentrancy Hazards (November 2020)
 for more on eventual send and remote communication

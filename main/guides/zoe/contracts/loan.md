@@ -70,7 +70,7 @@ the exit rule was `waived`, a borrower could hold on to their
 invitation and effectively lock up the lender's escrowed loan amount
 forever.
 
-<<< @/snippets/zoe/contracts/test-loan.js#lend
+<<< @/../snippets/zoe/contracts/test-loan.js#lend
 
 ## The Borrower
 
@@ -81,16 +81,16 @@ is exited at this point so the borrower gets the payout of their loan.
 The borrower also gets an object (`borrowFacet`) as their `offerResult` that
 lets them continue interacting with the contract.
 
-<<< @/snippets/zoe/contracts/test-loan.js#borrow
+<<< @/../snippets/zoe/contracts/test-loan.js#borrow
 
 Once the loan starts, the borrower can repay the loan in its
 entirety at any time (at which point the lender receives the loan amount back plus
 interest, and the contract closes), or add more collateral to prevent
 liquidation.
 
-<<< @/snippets/zoe/contracts/test-loan.js#closeLoanInvitation
+<<< @/../snippets/zoe/contracts/test-loan.js#closeLoanInvitation
 
-<<< @/snippets/zoe/contracts/test-loan.js#addCollateralInvitation
+<<< @/../snippets/zoe/contracts/test-loan.js#addCollateralInvitation
 
 ## Contract Shutdown
 
@@ -122,12 +122,12 @@ Liquidation is scheduled using the `priceAuthority` parameter.
 Specifically, the contract gets a promise resolved when the value of the
 collateral falls below a trigger value defined by the `mmr` parameter:
 
-<<< @/snippets/zoe/contracts/test-loan.js#liquidate
+<<< @/../snippets/zoe/contracts/test-loan.js#liquidate
 
 The borrower can self-forewarn about a potential liquidation by setting up their own margin calls.
 They do this by getting the [`priceAuthority`](/guides/zoe/price-authority.md) from the terms and calling:
 
-<<< @/snippets/zoe/contracts/test-loan.js#customMarginCall
+<<< @/../snippets/zoe/contracts/test-loan.js#customMarginCall
 
 where `myWarningLevel` is the value of the collateral in the Loan brand at which they
 want a reminder to add collateral.

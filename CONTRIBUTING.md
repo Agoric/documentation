@@ -241,7 +241,7 @@ regions in a file, including defining one region inside of another. Just be sure
 all the ones in a file different names.
 
 To include a defined snippet in a Markdown file, put a
-line like `<<< @/snippets/test-intro-zoe.js#install` in it.
+line like `<<< @/../snippets/test-intro-zoe.js#install` in it.
 Replace the `test-intro-zoe.js` with the filename in the snippets file.
 Replace the `install` with the name of the region you want included from
 the file.

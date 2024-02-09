@@ -13,7 +13,7 @@ The last 10 minutes are Q&A._
 
 The example below demonstrates several features of Hardened JavaScript.
 
-<<< @/snippets/test-hardened-js.js#makeCounter
+<<< @/../snippets/test-hardened-js.js#makeCounter
 
 We'll unpack this a bit [below](#objects-and-the-maker-pattern), but for now please
 note the use of functions and records:
@@ -38,7 +38,7 @@ when people exit the room.
 We can give the `entryGuard` access to the `incr` function
 and give the `exitGuard` access to the `decr` function.
 
-<<< @/snippets/test-hardened-js.js#entryExit
+<<< @/../snippets/test-hardened-js.js#entryExit
 
 The result is that the `entryGuard` can _only_ count up
 and the `exitGuard` can _only_ count down.
@@ -144,12 +144,12 @@ Let's unpack the `makeCounter` example a bit.
 JavaScript is somewhat novel in that objects need not belong to any
 class; they can just stand on their own:
 
-<<< @/snippets/test-hardened-js.js#singleton
+<<< @/../snippets/test-hardened-js.js#singleton
 
 We can make a new such object each time a function is called
 using the _maker pattern_:
 
-<<< @/snippets/test-hardened-js.js#maker
+<<< @/../snippets/test-hardened-js.js#maker
 
 ::: tip Use lexically scoped variables rather than properties of `this`.
 The style above avoids boilerplate such as `this.x = x; this.y = y`.
@@ -166,22 +166,22 @@ for conciseness and to avoid `this`.
 By default, anyone can clobber the properties of
 our objects so that they fail to conform to the expected API:
 
-<<< @/snippets/test-hardened-js.js#clobber
+<<< @/../snippets/test-hardened-js.js#clobber
 
 Worse yet is to clobber a property so that it misbehaves but
 covers its tracks so that we don't notice:
 
-<<< @/snippets/test-hardened-js.js#exploit
+<<< @/../snippets/test-hardened-js.js#exploit
 
 Our goal is **defensive correctness**: a program is _defensively correct_ if it remains correct despite arbitrary behavior on the part of its clients. _For further discussion, see [Concurrency Among Strangers](http://erights.org/talks/promises/paper/tgc05.pdf) and other [Agoric papers on Robust Composition](https://papers.agoric.com/papers/#robust-composition)_.
 
 To prevent tampering, use the [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden) function, which is a deep form of [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
 
-<<< @/snippets/test-hardened-js.js#defensiveMaker
+<<< @/../snippets/test-hardened-js.js#defensiveMaker
 
 Any attempt to modify the properties of a hardened object throws:
 
-<<< @/snippets/test-hardened-js.js#thwarted
+<<< @/../snippets/test-hardened-js.js#thwarted
 
 `harden()` should be called on all objects that will be transferred
 across a trust boundary. It's important to `harden()` an object before exposing the object by returning it or passing it to some other function.
@@ -194,7 +194,7 @@ For more details, see [harden API in the `ses` package](https://github.com/endoj
 
 Now let's review the `makeCounter` example:
 
-<<< @/snippets/test-hardened-js.js#counterAnimation
+<<< @/../snippets/test-hardened-js.js#counterAnimation
 
 Each call to `makeCounter` creates a new encapsulated `count` variable
 along with `incr` and `decr` functions. The `incr` and `decr` functions
@@ -227,12 +227,12 @@ ordinary JavaScript is the ability to redefine built-ins
 (shown above as "mutable primordials").
 Consider this `changePassword` function:
 
-<<< @/snippets/test-no-ses.js#changePassword
+<<< @/../snippets/test-no-ses.js#changePassword
 
 In ordinary JavaScript we run the risk of stolen passwords because someone might have redefined
 the `includes` method on `Array` objects:
 
-<<< @/snippets/test-no-ses.js#exfiltrate
+<<< @/../snippets/test-no-ses.js#exfiltrate
 
 In Hardened JavaScript, the `Object.assign` fails because `Array.prototype` and all other
 [standard, built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)

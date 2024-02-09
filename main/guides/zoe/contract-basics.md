@@ -6,17 +6,17 @@ basic dapp](./) in the previous section, let's cover some basics.
 A contract is defined by a JavaScript module that exports a `start` function
 that implements the contract's API.
 
-<<< @/snippets/zoe/src/01-hello.js#start
+<<< @/../snippets/zoe/src/01-hello.js#start
 
 Let's start with a contract with a simple `greet` function:
 
-<<< @/snippets/zoe/src/01-hello.js#greet
+<<< @/../snippets/zoe/src/01-hello.js#greet
 
 The `start` function can expose the `greet` function
 as part of the contract API by making it
 a method of the contract's `publicFacet`:
 
-<<< @/snippets/zoe/src/01-hello.js#publicFacet
+<<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
 We mark it `Far(...)` to allow callers to use it from outside the contract
 and give it a suggestive interface name for debugging.
@@ -24,7 +24,7 @@ _We'll discuss [Far in more detail](../js-programming/far.md) later._
 
 Putting it all together:
 
-<<< @/snippets/zoe/src/01-hello.js#contract
+<<< @/../snippets/zoe/src/01-hello.js#contract
 
 ## Using, testing a contract
 
@@ -34,23 +34,23 @@ Agoric contracts are typically tested
 using the [ava](https://github.com/avajs/ava) framework.
 They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js.md) environment:
 
-<<< @/snippets/zoe/contracts/test-zoe-hello.js#test-imports
+<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-imports
 
 _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send.md) later._
 
 A test that the `greet` method works as expected looks like:
 
-<<< @/snippets/zoe/contracts/test-zoe-hello.js#test1
+<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test1
 
 ## State
 
 Contracts can use ordinary variables for state.
 
-<<< @/snippets/zoe/src/02-state.js#startfn
+<<< @/../snippets/zoe/src/02-state.js#startfn
 
 Using `set` changes the results of the following call to `get`:
 
-<<< @/snippets/zoe/contracts/test-zoe-hello.js#test-state
+<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-state
 
 ::: tip Heap state is persistent
 
@@ -68,12 +68,12 @@ We can limit the `publicFacet` API to read-only by omitting the `set()` method.
 
 The `creatorFacet` is provided only to the caller who creates the contract instance.
 
-<<< @/snippets/zoe/src/03-access.js
+<<< @/../snippets/zoe/src/03-access.js
 
 Trying to `set` using the `publicFacet` throws, but
 using the `creatorFacet` works:
 
-<<< @/snippets/zoe/contracts/test-zoe-hello.js#test-access
+<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-access
 
 Note that the `set()` method has no access check inside it.
 Access control is based on separation of powers between

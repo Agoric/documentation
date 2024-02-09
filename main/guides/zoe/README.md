@@ -49,14 +49,14 @@ The results look something like...
 
 The test uses `createRequire` from the node `module` API to resolve the main module specifier:
 
-<<< @/snippets/zoe/contracts/test-bundle-source.js#bundleSourceImports
+<<< @/../snippets/zoe/contracts/test-bundle-source.js#bundleSourceImports
 
-<<< @/snippets/zoe/contracts/test-bundle-source.js#contractPath
+<<< @/../snippets/zoe/contracts/test-bundle-source.js#contractPath
 :::
 
 `bundleSource()` returns a bundle object with `moduleFormat`, a hash, and the contents:
 
-<<< @/snippets/zoe/contracts/test-bundle-source.js#testBundleSource{1}
+<<< @/../snippets/zoe/contracts/test-bundle-source.js#testBundleSource{1}
 
 ::: details Getting the zip file from inside a bundle
 
@@ -94,7 +94,7 @@ yarn ava test/test-contract.js -m 'Install the contract'
 
 The test starts by using `makeZoeKitForTest` to set up zoe for testing:
 
-<<< @/snippets/zoe/contracts/test-bundle-source.js#importZoeForTest
+<<< @/../snippets/zoe/contracts/test-bundle-source.js#importZoeForTest
 
 ```js
 const { zoeService: zoe } = makeZoeKitForTest();
@@ -115,7 +115,7 @@ go over in detail in the sections below.
 
 ::: details gameAssetContract.js listing
 
-<<< @/snippets/zoe/src/gameAssetContract.js#file
+<<< @/../snippets/zoe/src/gameAssetContract.js#file
 
 :::
 
@@ -164,11 +164,11 @@ The contract uses this `zcf` to get its terms. Likewise it uses `zcf` to
 make a `gameSeat` where it can store assets that it receives in trade
 as well as a `mint` for making assets consisting of collections (bags) of Places:
 
-<<< @/snippets/zoe/src/gameAssetContract.js#start
+<<< @/../snippets/zoe/src/gameAssetContract.js#start
 
 It defines a `joinShape` and `joinHandler` but doesn't do anything with them yet. They will come into play later. It defines and returns its `publicFacet` and stands by.
 
-<<< @/snippets/zoe/src/gameAssetContract.js#started
+<<< @/../snippets/zoe/src/gameAssetContract.js#started
 
 ## Trading with Offer Safety
 
@@ -222,12 +222,12 @@ Alice starts by using the `instance` to get the contract's `publicFacet` and `te
 <img src="./assets/trade-offer-safety-1.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/alice-trade.js#queryInstance
+<<< @/../snippets/zoe/contracts/alice-trade.js#queryInstance
 
 Then she constructs a _proposal_ to give the `joinPrice` in exchange
 for 1 Park Place and 1 Boardwalk, denominated in the game's `Place` brand; and she withdraws a payment from her purse:
 
-<<< @/snippets/zoe/contracts/alice-trade.js#makeProposal
+<<< @/../snippets/zoe/contracts/alice-trade.js#makeProposal
 
 She then requests an _invitation_ to join the game; makes an _offer_ with
 (a promise for) this invitation, her proposal, and her payment;
@@ -236,7 +236,7 @@ and awaits her **Places** payout:
 <img src="./assets/trade-offer-safety-2.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/alice-trade.js#trade
+<<< @/../snippets/zoe/contracts/alice-trade.js#trade
 
 ::: details Troubleshooting missing brands in offers
 
@@ -261,7 +261,7 @@ The contract gets Alice's `E(publicFacet).makeJoinInvitation()` call and uses `z
 <img src="./assets/trade-offer-safety-3.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/src/gameAssetContract.js#makeInvitation
+<<< @/../snippets/zoe/src/gameAssetContract.js#makeInvitation
 
 The offer handler is invoked with a _seat_ representing the party making the offer.
 It extracts the `give` and `want` from the party's offer and checks that
@@ -275,7 +275,7 @@ and allocate the minted places to the player. Finally, it concludes its business
 <img src="./assets/trade-offer-safety-4.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/src/gameAssetContract.js#handler
+<<< @/../snippets/zoe/src/gameAssetContract.js#handler
 
 Zoe checks that the contract's instructions are consistent with
 the offer and with conservation of assets. Then it allocates
@@ -288,7 +288,7 @@ and tests that it's what she wanted.
 <img src="./assets/trade-offer-safety-5.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/snippets/zoe/contracts/alice-trade.js#payouts
+<<< @/../snippets/zoe/contracts/alice-trade.js#payouts
 
 ## Example Contracts
 

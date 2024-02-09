@@ -120,7 +120,7 @@ In the Smart Wallet architecture, a client uses an `OfferSpec` to
 tell its `SmartWallet` how to conduct an offer.
 It includes an `invitationSpec` to say what invitation to pass to Zoe. For example:
 
-<<< @/snippets/test-marshal.js#exInvitationSpec
+<<< @/../snippets/test-marshal.js#exInvitationSpec
 
 Here the `SmartWallet` calls `E(zoe).getPublicFacet(instance)` and then
 uses the `publicInvitationMaker` and `invitationArgs` to call the contract's
@@ -137,12 +137,12 @@ For more `InvitationSpec` examples, see [How to make an offer from a dapp via th
 The client fills in the proposal, which instructs the `SmartWallet`
 to withdraw corresponding payments to send to Zoe.
 
-<<< @/snippets/test-marshal.js#exBridgeAction
+<<< @/../snippets/test-marshal.js#exBridgeAction
 
 But recall the `spend_action` field in `MsgWalletSpendAction` is a string.
 In fact, the expected string in this case is of the form:
 
-<<< @/snippets/test-marshal.js#exSpendActionCk
+<<< @/../snippets/test-marshal.js#exSpendActionCk
 
 We recognize `"method":"executeOffer"` and such, but
 `body:`, `slots:`, and `$1.Alleged: Gold Brand` need further explanation.
@@ -157,7 +157,7 @@ We recognize `"method":"executeOffer"` and such, but
 
 To start with, amounts include `bigint`s. The `@endo/marshal` API handles those:
 
-<<< @/snippets/test-marshal.js#marshal-json-steroids
+<<< @/../snippets/test-marshal.js#marshal-json-steroids
 
 To marshal brands and instances, recall from the discussion of [marshal in eventual send](../js-programming/eventual-send.md#e-and-marshal-a-closer-look)
 how remotables are marshalled with a translation table.
@@ -167,30 +167,30 @@ plain string identifiers for object identities and other passable _keys_ (that i
 Contracts and other services can use its table of identifiers as a marshal
 translation table:
 
-<<< @/snippets/test-marshal.js#boardMarshal
+<<< @/../snippets/test-marshal.js#boardMarshal
 
 To reverse the process, clients can mirror the on-chain board translation
 table by synthesizing a remotable for each reference marker received:
 
-<<< @/snippets/test-marshal.js#makeBoardContext
+<<< @/../snippets/test-marshal.js#makeBoardContext
 
 Now we can take results of vstorage queries for `Data('published.agoricNames.brand')` and `Data('published.agoricNames.instance')` unmarshal ("ingest") them:
 
-<<< @/snippets/test-marshal.js#useBoardContext
+<<< @/../snippets/test-marshal.js#useBoardContext
 
 And now we have all the pieces of the `BridgeAction` above.
 The marshalled form is:
 
-<<< @/snippets/test-marshal.js#exBridgeActionEq
+<<< @/../snippets/test-marshal.js#exBridgeActionEq
 
 We still don't quite have a single string for the `spend_action` field.
 We need to `stringify` the `CapData`:
 
-<<< @/snippets/test-marshal.js#exSpendAction
+<<< @/../snippets/test-marshal.js#exSpendAction
 
 And now we have the `spend_action` in the expected form:
 
-<<< @/snippets/test-marshal.js#exSpendActionCk
+<<< @/../snippets/test-marshal.js#exSpendActionCk
 
 The wallet factory can now `JSON.parse` this string
 into `CapData` and unmarshal it using a board marshaller

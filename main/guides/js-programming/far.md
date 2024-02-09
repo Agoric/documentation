@@ -7,7 +7,7 @@ Let's look more closely at an [eventual send](./eventual-send.md) between vats:
 In the exporting vat, we'll take the `makeCounter` [Hardened JavaScript example](./hardened-js.md#example-hardened-javascript-code) and refine it to make _remotable_ counters
 by marking them with [Far](#far-api):
 
-<<< @/snippets/test-distributed-programming.js#makeFarCounter
+<<< @/../snippets/test-distributed-programming.js#makeFarCounter
 
 ## Marshaling by Copy or by Presence
 
@@ -17,13 +17,13 @@ The [@endo/marshal](https://github.com/endojs/endo/tree/master/packages/marshal#
 Javascript values that cannot be expressed directly as JSON,
 such as `undefined` and `BigInt`s.
 
-<<< @/snippets/test-marshal.js#marshal-json-steroids
+<<< @/../snippets/test-marshal.js#marshal-json-steroids
 
 Also, while many forms of data are copied between vats,
 remotables are marshalled so that they become remote _presences_ when unmarshaled.
 Another vat can then make and use the exported counters:
 
-<<< @/snippets/test-distributed-programming.js#useFarCounter
+<<< @/../snippets/test-distributed-programming.js#useFarCounter
 
 ## Pass Styles and harden
 
@@ -69,7 +69,7 @@ data leads to behavior across vats that is straightforward to reason about.
 
 ## passStyleOf API
 
-<<< @/snippets/test-distributed-programming.js#import-pass-style
+<<< @/../snippets/test-distributed-programming.js#import-pass-style
 
 `passStyleOf(passable)` returns a `PassStyle` string that categorizes `passable`.
 
@@ -93,7 +93,7 @@ this prevents malicious clients from playing tricks with cyclic data etc.
 
 ## Far() API
 
-<<< @/snippets/test-distributed-programming.js#importFar
+<<< @/../snippets/test-distributed-programming.js#importFar
 
 `Far(farName, objectWithMethods)` marks an object as Remotable.
 

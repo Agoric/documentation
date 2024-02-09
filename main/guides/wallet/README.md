@@ -110,7 +110,7 @@ communication method you like; private email, an email blast to a mailing list
 or many individuals, buying an ad on a website, tv program, or newspaper, 
 listing it on your website, etc.
 
-<<< @/snippets/ertp/guide/test-readme.js#getValue
+<<< @/../snippets/ertp/guide/test-readme.js#getValue
 
 To get an object, such as a depositFacet, using the Board, first you have
 to be told what Board Id is associated with it. Using the `getValue()` method,
