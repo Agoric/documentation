@@ -2,6 +2,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './style.css'
+import '../styles/index.styl';
 import ButtonActionLink from '../components/Button-Action-Link.vue';
 import ButtonGoBack from '../components/Button-Go-Back.vue';
 import HomeButtonHeader from '../components/HomeButtonHeader.vue';
