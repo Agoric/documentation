@@ -166,35 +166,35 @@ export default defineConfig({
     sidebar: {
       '/guides/': [
         {
-          title: 'Getting Started',
-          path: '/guides/getting-started/',
+          text: 'Getting Started',
+          link: '/guides/getting-started/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/getting-started/',
             '/guides/getting-started/contract-rpc.html',
             '/guides/getting-started/deploying.html',
           ],
         },
         {
-          title: 'Zoe',
-          path: '/guides/zoe/',
+          text: 'Zoe',
+          link: '/guides/zoe/',
           collapsible: false,
-          children: ['/guides/zoe/contract-basics.html', '/guides/zoe/'],
+          items: ['/guides/zoe/contract-basics.html', '/guides/zoe/'],
         },
         {
-          title: 'Agoric CLI',
-          path: '/guides/agoric-cli/',
+          text: 'Agoric CLI',
+          link: '/guides/agoric-cli/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/agoric-cli/',
             '/guides/agoric-cli/agd-query-tx.html',
           ],
         },
         {
-          title: 'JavaScript Framework',
-          path: '/guides/js-programming/',
+          text: 'JavaScript Framework',
+          link: '/guides/js-programming/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/js-programming/',
             '/guides/js-programming/hardened-js.html',
             '/guides/js-programming/eventual-send.html',
@@ -203,16 +203,16 @@ export default defineConfig({
           ],
         },
         {
-          title: 'Wallet',
-          path: '/guides/wallet/',
+          text: 'Wallet',
+          link: '/guides/wallet/',
           collapsible: false,
-          children: ['/guides/wallet/', '/guides/wallet/ui'],
+          items: ['/guides/wallet/', '/guides/wallet/ui'],
         },
         {
-          title: 'ERTP',
-          path: '/guides/ertp/',
+          text: 'ERTP',
+          link: '/guides/ertp/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/ertp/',
             '/guides/ertp/amounts.html',
             '/guides/ertp/amount-math.html',
@@ -221,10 +221,10 @@ export default defineConfig({
           ],
         },
         {
-          title: 'Permissioned Contract Deployment',
-          path: '/guides/coreeval/',
+          text: 'Permissioned Contract Deployment',
+          link: '/guides/coreeval/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/coreeval/',
             '/guides/coreeval/permissions.html',
             '/guides/coreeval/proposal.html',
@@ -232,10 +232,10 @@ export default defineConfig({
           ],
         },
         {
-          title: 'Example Zoe Contracts',
-          path: '/guides/zoe/contracts/',
+          text: 'Example Zoe Contracts',
+          link: '/guides/zoe/contracts/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/zoe/contracts/',
             '/guides/zoe/contracts/oracle.html',
             '/guides/zoe/contracts/vault.html',
@@ -258,19 +258,19 @@ export default defineConfig({
           ],
         },
         {
-          title: 'Deployed Zoe Contracts',
-          path: '/guides/zoe/actual-contracts/',
+          text: 'Deployed Zoe Contracts',
+          link: '/guides/zoe/actual-contracts/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/zoe/actual-contracts/',
             '/guides/zoe/actual-contracts/PSM.html',
           ],
         },
         {
-          title: 'Agoric Dapps',
-          path: '/guides/dapps/',
+          text: 'Agoric Dapps',
+          link: '/guides/dapps/',
           collapsible: false,
-          children: [
+          items: [
             '/guides/dapps/',
             '/guides/dapps/dapp-templates.html',
             '/guides/dapps/starting-multiuser-dapps.html',
@@ -279,36 +279,36 @@ export default defineConfig({
           ],
         },
         {
-          title: 'Agoric Platform',
-          path: '/guides/platform/',
+          text: 'Agoric Platform',
+          link: '/guides/platform/',
           collapsible: false,
-          children: [],
+          items: [],
         },
         {
-          title: 'Chainlink Integration',
-          path: '/guides/chainlink-integration.html',
+          text: 'Chainlink Integration',
+          link: '/guides/chainlink-integration.html',
           collapsible: false,
-          children: [],
+          items: [],
         },
         {
-          title: 'SubQuery Indexing',
-          path: '/guides/subquery-indexing.html',
+          text: 'SubQuery Indexing',
+          link: '/guides/subquery-indexing.html',
           collapsible: false,
-          children: [],
+          items: [],
         },
       ],
       '/reference/': [
         {
-          title: 'Wallet API',
-          path: '/reference/wallet-api.html',
+          text: 'Wallet API',
+          link: '/reference/wallet-api.html',
           collapsible: false,
-          children: [],
+          items: [],
         },
         {
-          title: 'ERTP API',
-          path: '/reference/ertp-api/',
+          text: 'ERTP API',
+          link: '/reference/ertp-api/',
           collapsible: false,
-          children: [
+          items: [
             '/reference/ertp-api/',
             '/reference/ertp-api/issuer.html',
             '/reference/ertp-api/mint.html',
@@ -320,10 +320,10 @@ export default defineConfig({
           ],
         },
         {
-          title: 'REPL API',
-          path: '/reference/repl/',
+          text: 'REPL API',
+          link: '/reference/repl/',
           collapsible: false,
-          children: [
+          items: [
             '/reference/repl/',
             '/reference/repl/timerServices.html',
             '/reference/repl/board.html',
@@ -333,10 +333,10 @@ export default defineConfig({
           ],
         },
         {
-          title: 'Zoe API',
-          path: '/reference/zoe-api/',
+          text: 'Zoe API',
+          link: '/reference/zoe-api/',
           collapsible: false,
-          children: [
+          items: [
             '/reference/zoe-api/',
             '/reference/zoe-api/zoe.html',
             '/reference/zoe-api/user-seat.html',
