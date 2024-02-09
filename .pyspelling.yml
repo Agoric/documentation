@@ -11,5 +11,5 @@ matrix:
     ignores:
     - div
   sources:
-  - 'main/.vuepress/dist/**/*.html'
+  - 'main/.vitepress/dist/**/*.html'
   default_encoding: utf-8
