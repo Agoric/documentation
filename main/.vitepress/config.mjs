@@ -5,7 +5,7 @@ export default defineConfig({
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Documentation', // title for the site. prefix for all page titles and displayed in the navbar
+  title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
@@ -151,7 +151,7 @@ export default defineConfig({
   themeConfig: {
     sidebarDepth: 1,
     lastUpdated: 'Last Updated',
-    logo: '/logo.svg',
+    logo: '/agoric-logo-red.svg',
     /* --- NAVBAR (top) --- */
     nav,
     /* --- SIDEBAR --- */
@@ -160,7 +160,7 @@ export default defineConfig({
     // section
 
     // NOTES:
-    // Internal links: Must have a corresponding folder with a README.md file
+    // Internal links: Must have a corresponding folder with a index.md file
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
