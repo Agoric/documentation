@@ -524,12 +524,35 @@ export default defineConfig({
     zoeVersion: 'v0.24.0',
     zoeDocsUpdated: 'August 25, 2022',
 
-    /* --- SEARCH --- */
-    // Comes with built-in search functionality which builds its index from the
-    // h1, h2, and h3 headers
-    // Disable search by uncommenting the following line:
-    // search: false
-    // Customize how many suggestions will be shown with:
-    // searchMaxSuggestions: <numberOfSuggestions>
+    // https://vitepress.dev/reference/default-theme-search#local-search
+    // uses minisearch: https://github.com/lucaong/minisearch/
+    search: {
+      provider: 'local',
+      options: {
+        miniSearch: {
+          /**
+           * @type {Pick<import('minisearch').Options, 'extractField' | 'tokenize' | 'processTerm'>}
+           */
+          options: {
+            /* ... */
+          },
+          /**
+           * @type {import('minisearch').SearchOptions}
+           * @default
+           * { fuzzy: 0.2, prefix: true, boost: { title: 4, text: 2, titles: 1 } }
+           */
+          searchOptions: {
+            /* ... */
+          },
+          /**
+           * @param {string} src
+           * @param {import('vitepress').MarkdownEnv} env
+           * @param {import('markdown-it')} md
+           */
+          // _render(src, env, md) {
+          // },
+        },
+      },
+    },
   },
 });
