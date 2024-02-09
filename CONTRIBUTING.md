@@ -334,7 +334,7 @@ Each entry is an object with three or four properties:
 - `ariaLabel`: Labels this page element. Used to access it if the text is not visible.
 - `link`: Optional. Link to where the browser goes if you click the top menubar item itself, instead of a
   submenu item. Of the form `link: '/zoe/guide'` where the opening `/` starts the path at `main/`. In this
-  case, no filename was given, so it defaults to `guide`'s `README.md` file. If not present, the menubar
+  case, no filename was given, so it defaults to `guide`'s `index.md` file. If not present, the menubar
   entry is not clickable.
 - `items`: Optional. An array of submenu item objects, each of which is a single submenu item of its
   parent navbar item. Not present if the item doesn't have a submenu.
@@ -459,7 +459,7 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
 
 - `children`: An array of submenu items for this sidebar menu item. You just need to specify
   the file paths to where you want to go when the submenu item is clicked. VuePress uses the
-  file's (including default README.md files for folders) H1 level header text for the sidebar text.
+  file's (including default index.md files for folders) H1 level header text for the sidebar text.
   You can also specify what text to use using the form `{ title: 'Mint', path: '/api/mint' }`.
 
 ```js
@@ -513,6 +513,6 @@ export default ({ router }) => {
 The general format should be self-explanatory. However, there are two things you need to know that aren't apparent
 - VuePress treats `main` as the root of the folders. So all of the addresses start with `/` to represent `/main/`.
 - You'll notice there are two entries for every redirect, one where the redirected address ends with `.html` and
-  one where it ends with `/`. For each individual file that is not a `README.md`, there are two ways to access it.
+  one where it ends with `/`. For each individual file that is not a `index.md`, there are two ways to access it.
   So we cover both ways. No entry has a `.md` extension. The redirect happens after VuePress' build step, so there
   are no longer any Markdown files; they've been converted to .html. So that's what's redirected.
