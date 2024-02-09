@@ -168,7 +168,7 @@ export default defineConfig({
         {
           text: 'Getting Started',
           link: '/guides/getting-started/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Getting Started', link: '/guides/getting-started/' },
             {
@@ -184,7 +184,7 @@ export default defineConfig({
         {
           text: 'Zoe',
           link: '/guides/zoe/',
-          collapsible: false,
+          collapsed: true,
           items: [
             {
               text: 'Smart Contract Basics',
@@ -196,7 +196,7 @@ export default defineConfig({
         {
           text: 'Agoric CLI',
           link: '/guides/agoric-cli/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
             {
@@ -208,7 +208,7 @@ export default defineConfig({
         {
           text: 'JavaScript Framework',
           link: '/guides/js-programming/',
-          collapsible: false,
+          collapsed: true,
           items: [
             {
               text: 'JavaScript Framework for Secure Distributed Computing',
@@ -235,7 +235,7 @@ export default defineConfig({
         {
           text: 'Wallet',
           link: '/guides/wallet/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Agoric Wallet', link: '/guides/wallet/' },
             { text: 'Wallet UI', link: '/guides/wallet/ui' },
@@ -244,7 +244,7 @@ export default defineConfig({
         {
           text: 'ERTP',
           link: '/guides/ertp/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'ERTP Overview', link: '/guides/ertp/' },
             {
@@ -265,7 +265,7 @@ export default defineConfig({
         {
           text: 'Permissioned Contract Deployment',
           link: '/guides/coreeval/',
-          collapsible: false,
+          collapsed: true,
           items: [
             {
               text: 'Permissioned Contract Deployment',
@@ -288,7 +288,7 @@ export default defineConfig({
         {
           text: 'Example Zoe Contracts',
           link: '/guides/zoe/contracts/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Example Zoe Contracts', link: '/guides/zoe/contracts/' },
             {
@@ -365,7 +365,7 @@ export default defineConfig({
         {
           text: 'Deployed Zoe Contracts',
           link: '/guides/zoe/actual-contracts/',
-          collapsible: false,
+          collapsed: true,
           items: [
             {
               text: 'Deployed Zoe Contracts',
@@ -380,7 +380,7 @@ export default defineConfig({
         {
           text: 'Agoric Dapps',
           link: '/guides/dapps/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Agoric Dapps', link: '/guides/dapps/' },
             {
@@ -404,19 +404,19 @@ export default defineConfig({
         {
           text: 'Agoric Platform',
           link: '/guides/platform/',
-          collapsible: false,
+          collapsed: true,
           items: [],
         },
         {
           text: 'Chainlink Integration',
           link: '/guides/chainlink-integration.html',
-          collapsible: false,
+          collapsed: true,
           items: [],
         },
         {
           text: 'SubQuery Indexing',
           link: '/guides/subquery-indexing.html',
-          collapsible: false,
+          collapsed: true,
           items: [],
         },
       ],
@@ -424,13 +424,13 @@ export default defineConfig({
         {
           text: 'Wallet API',
           link: '/reference/wallet-api.html',
-          collapsible: false,
+          collapsed: true,
           items: [],
         },
         {
           text: 'ERTP API',
           link: '/reference/ertp-api/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'ERTP API', link: '/reference/ertp-api/' },
             { text: 'Issuer Object', link: '/reference/ertp-api/issuer.html' },
@@ -454,7 +454,7 @@ export default defineConfig({
         {
           text: 'REPL API',
           link: '/reference/repl/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Agoric REPL', link: '/reference/repl/' },
             {
@@ -473,18 +473,36 @@ export default defineConfig({
         {
           text: 'Zoe API',
           link: '/reference/zoe-api/',
-          collapsible: false,
+          collapsed: true,
           items: [
             { text: 'Zoe API', link: '/reference/zoe-api/' },
             { text: 'Zoe Service', link: '/reference/zoe-api/zoe.html' },
-            { text: 'UserSeat Object', link: '/reference/zoe-api/user-seat.html' },
-            { text: 'Zoe Contract Facet', link: '/reference/zoe-api/zoe-contract-facet.html' },
+            {
+              text: 'UserSeat Object',
+              link: '/reference/zoe-api/user-seat.html',
+            },
+            {
+              text: 'Zoe Contract Facet',
+              link: '/reference/zoe-api/zoe-contract-facet.html',
+            },
             { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat.html' },
             { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint.html' },
-            { text: 'PriceAuthority Object', link: '/reference/zoe-api/price-authority.html' },
-            { text: 'ZoeHelper Functions', link: '/reference/zoe-api/zoe-helpers.html' },
-            { text: 'Ratio Math Functions', link: '/reference/zoe-api/ratio-math.html' },
-            { text: 'Zoe Data Types', link: '/reference/zoe-api/zoe-data-types.html' },
+            {
+              text: 'PriceAuthority Object',
+              link: '/reference/zoe-api/price-authority.html',
+            },
+            {
+              text: 'ZoeHelper Functions',
+              link: '/reference/zoe-api/zoe-helpers.html',
+            },
+            {
+              text: 'Ratio Math Functions',
+              link: '/reference/zoe-api/ratio-math.html',
+            },
+            {
+              text: 'Zoe Data Types',
+              link: '/reference/zoe-api/zoe-data-types.html',
+            },
           ],
         },
       ],
