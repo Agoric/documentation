@@ -10,7 +10,6 @@
     "docs:build-cf": "NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects main/.vitepress/dist/",
     "docs:build-root": "NODE_OPTIONS=--openssl-legacy-provider yarn docs:build && yarn docs:re-root && cp _redirects main/.vitepress/dist-root/",
     "docs:re-root": "cd main && mkdir -p .vitepress/dist-root/ && cp -rp .vitepress/dist/ .vitepress/dist-root/documentation/",
-    "check-links": "exit 0; # NODE_OPTIONS=--openssl-legacy-provider vitepress check-md main",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
@@ -67,8 +66,7 @@
     "prettier": "^1.19.1",
     "ses": "^0.18.8",
     "stylus": "^0.62.0",
-    "vitepress": "^1.0.0-rc.42",
-    "vuepress-plugin-check-md": "0.0.2"
+    "vitepress": "^1.0.0-rc.42"
   },
   "resolutions": {},
   "globals": {

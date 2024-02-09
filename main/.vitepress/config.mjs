@@ -3,8 +3,6 @@ import { nav } from './themeConfig/nav.js';
 import { rewrites } from './themeConfig/rewrites.js';
 
 export default defineConfig({
-  // XXX temporary, so CI passes
-  ignoreDeadLinks: true,
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
@@ -135,9 +133,11 @@ export default defineConfig({
     `,
     ],
   ],
-
+  ignoreDeadLinks: [
+    // ignore all localhost links
+    /^https?:\/\/localhost/,
+  ],
   plugins: [
-    'check-md',
     [
       '@vuepress/last-updated',
       {

@@ -24,7 +24,7 @@ E(zoe).install(bundle)
 
 ## Eventual Send
 
-One of the ways [Zoe partitions risk](https://www.youtube.com/watch?v=T6h6TMuVHKQ&t=368s) is by running in its own [vat](../../glossary/README.md#vat), separate from any smart contract that might
+One of the ways [Zoe partitions risk](https://www.youtube.com/watch?v=T6h6TMuVHKQ&t=368s) is by running in its own [vat](../../glossary/index.md#vat), separate from any smart contract that might
 use too much compute time or heap space. The smart contracts also run in separate vats.
 
 ![Zoe in a separate vat](../assets/zoe-partitions-risk-slide.svg)

@@ -1,3 +1,11 @@
+/**
+ * @file client side redirects for vitepress
+ *
+ * Please include local redirects here. For external redirects, please
+ * use `_redirects_` in the project route. You may also way to include
+ * your local redirect in the `_redirects_` file as well.
+ */
+
 export const rewrites = {
   '/chainlink-integration': '/guides/chainlink-integration/',
   '/dapps': '/guides/dapps/',
@@ -11,13 +19,6 @@ export const rewrites = {
   '/getting-started/start-a-project':
     '/guides/getting-started/start-a-project/',
   '/guides/agoric-cli/commands': '/guides/agoric-cli/',
-  // XXX support external redirects
-  // '/guides/js-programming/ses/lockdown':
-  //   'https://github.com/endojs/endo/blob/master/packages/ses/docs/lockdown.md',
-  // '/guides/js-programming/ses/ses-guide':
-  //   'https://github.com/endojs/endo/blob/master/packages/ses/docs/guide.md',
-  // '/guides/js-programming/ses/ses-reference':
-  //   'https://github.com/endojs/endo/blob/master/packages/ses/docs/reference.md',
   '/guides/wallet/api': '/reference/wallet-api/',
   '/platform': '/guides/platform/',
   '/repl': '/reference/repl/',

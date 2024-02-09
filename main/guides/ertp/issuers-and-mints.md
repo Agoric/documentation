@@ -114,7 +114,7 @@ the one Quatloos `mint` can create new Quatloos.
 So a Quatloos `mint` can never become a Moola `mint`, or any other non-Quatloos asset.
 
 There are two `mint` methods, and the method that creates new mints. Click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/).
+API Reference](/reference/ertp-api/index.md).
 - [aMint.getIssuer()](/reference/ertp-api/mint.md#amint-getissuer)
   - Return the `issuer` uniquely associated with the `mint`.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#mintGetIssuer

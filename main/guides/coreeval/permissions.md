@@ -66,7 +66,7 @@ general interest to most contracts, while others are more specific to the PSM co
 
 * **agoricNamesAdmin**: Grants write access to the Agoric name service. This permission is somewhat specific to the PSM contract.
 * **bankManager**: Grants access to bank-related functionality within ERTP, allowing the contract to manipulate nearly all Cosmos assets in the chain. Because this capability is very powerful, this permission should only be granted to contracts that absolutely need it.
-* **board**: Grants write access to the [board name service](/guides/wallet/README.md#the-agoric-board).
+* **board**: Grants write access to the [board name service](/guides/wallet/index.md#the-agoric-board).
 * **chainStorage**: Grants write access to the chain storage node, which is required when running `agd query` commands. Thus, most contracts will need access to this.
 * **zoe**: When this permission is set, it grants access to the Zoe framework. All contracts will need access to this.
 * **feeMintAccess**: When this permission is set, the contract will be able to create digital assets. Only contracts that mint privileged Agoric digital assets (i.e., not the unprivileged **[zcf.makeZCFMint()](/reference/zoe-api/zoe-contract-facet.md#zcf-makezcfmint-keyword-assetkind-displayinfo)**) will need access to this.

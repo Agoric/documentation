@@ -9,7 +9,7 @@ what you're willing to offer. It turns out, many smart contracts (apart from gif
 involve an exchange of digital assets that can be put in terms of offer proposals.
 
 Start creating your own contract or build on any of our existing contracts.
-Explore our [pre-built contracts](/guides/zoe/contracts/README.md).
+Explore our [pre-built contracts](/guides/zoe/contracts/index.md).
 
 The Zoe API supports the following objects:
 

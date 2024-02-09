@@ -293,10 +293,10 @@ and tests that it's what she wanted.
 ## Example Contracts
 
 Agoric has written [a number of example contracts that you can
-use](/zoe/guide/contracts/), including:
+use](./contracts/index.md), including:
 
 - an [Automated Market Maker (AMM)
-  implementation](/zoe/guide/contracts/constantProductAMM.md)
+  implementation](./contracts/constantProductAMM.md)
 - a [covered call option contract](./contracts/covered-call.md)
 - an [OTC Desk market maker contract](./contracts/otc-desk.md)
 - contracts for [minting fungible](./contracts/mint-payments.md) and

@@ -141,7 +141,7 @@ To consume a `payment` into a new `purse`:
 have `payments` as arguments and effectively operate on a `payment`. The following is a
 brief description and example of each `payment`-related method. For
 more detail, click the method's name to go to its entry in the [ERTP
-API Reference](/ertp/api/).
+API Reference](/reference/ertp-api/index.md).
 - [aPayment.getAllegedBrand()](/reference/ertp-api/payment.md#apayment-getallegedbrand)
   - Return the `brand` indicating the kind of digital asset this `payment` purports to be
     and which `issuer` to use with it.
