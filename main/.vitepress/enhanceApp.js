@@ -1,3 +1,7 @@
+// XXX
+// vitepress does not seem to expose the vue router directly, so we'll
+// have to refactor this. some redirects are working in themeConfig/rewrites.js
+
 function isRouteExists(router, path) {
   const pathLower = path.toLowerCase();
   return router.options.routes.some(
