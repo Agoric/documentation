@@ -6,6 +6,7 @@
   "scripts": {
     "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vitepress dev main",
     "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vitepress build main",
+    "docs:preview": "NODE_OPTIONS=--openssl-legacy-provider vitepress preview main",
     "docs:build-cf": "NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects main/.vitepress/dist/",
     "docs:build-root": "NODE_OPTIONS=--openssl-legacy-provider yarn docs:build && yarn docs:re-root && cp _redirects main/.vitepress/dist-root/",
     "docs:re-root": "cd main && mkdir -p .vitepress/dist-root/ && cp -rp .vitepress/dist/ .vitepress/dist-root/documentation/",
