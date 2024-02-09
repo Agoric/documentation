@@ -26,7 +26,7 @@ process is:
 6. When all issues from the initial review are resolved, convert the PR from Draft to Ready For Review.
 7. Reviewers approve PR, you merge it with `main`.
 8. Pull Requests automatically run tests on their committed files.
-9. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically
+9. [VitePress](https://vitepress.dev/guide/what-is-vitepress) automatically
    processes any new or changed files for display.
 10. The [Agoric website's Documentation Section](https://agoric.com/documentation/) displays
    the VuePress processed files, which have been converted to HTML.
@@ -66,15 +66,16 @@ or similar for individual files/pages.
 
 ### README files
 
-VuePress converts Markdown files to an HTML file with the same base name. `README.md` files are an exception; they're
+VuePress converts Markdown files to an HTML file with the same base name. `index.md` files are an exception; they're
 renamed `index.html`, since that's the default file web servers expect to find in each directory. Navigating
-to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/README.md`.
-While it may seem odd, VuePress expects multiple `README.md` files in a repo; most folders will have one.
+to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/index.md`.
 
-The root README.md file must start with an H1 (`#` in Markdown) header. In fact, all our doc pages should start
-with that. But for READMEs, it's needed to generate search indexes and sidebars.
+The root index.md file must start with an H1 (`#` in Markdown) header. In fact, all our doc pages should start
+with that. But for Index.md's, it's needed to generate search indexes and sidebars.
 
-All directories/folders should have a `README.md` file, even if it's empty. They provide a landing page for
+Note - as of the Vitepress upgrade, sidebars are not automatically generated. You must add a `{text: '', link: ''}` entry to `main/.vitepress/config.js`.
+
+All directories/folders should have a `index.md` file, even if it's empty. They provide a landing page for
 the folder in the VuePress processed documentation structure.
 
 Lines with no special treatment are converted into standard HTML paragraph tags.
@@ -113,16 +114,16 @@ module.exports = {
     sidebar: [
       {
         title: 'Group 1',   // required
-        path: '/foo/',      // optional, link of the title, which should be an absolute path and must exist
+        link: '/foo/',      // optional, link of the title, which should be an absolute path and must exist
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
-        children: [
-          '/'
+        items: [
+          { text: '', link: '/' },
         ]
       },
       {
         title: 'Group 2',
-        children: [ /* ... */ ],
+        items: [ /* ... */ ],
         initialOpenGroupIndex: -1 // optional, defaults to 0, defines the index of initially opened subgroup
       }
     ]
@@ -493,6 +494,8 @@ consisting of all `h1`, `h2`, and `h3` header titles on the page.
 If you reorganize part of the Documentation repo or delete/deprecate a file in favor of a replacement,
 you should establish a site URL redirect from the old file to the new one, in case anyone external to
 Agoric has made a link or bookmarked the old file.
+
+If you need to redirect to an **external** website, this will be accomplished at the DNS/Hosting level (See [vitepress #2083](https://github.com/vuejs/vitepress/discussions/2083)). These are maintained in the project root's `_redirects` file. See [Cloudflare Pages Redirects](https://developers.cloudflare.com/pages/configuration/redirects/) for more details.
 
 Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of March 2021, ours
 looks like this:
