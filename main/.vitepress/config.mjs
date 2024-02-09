@@ -1,6 +1,7 @@
-const nav = require('./themeConfig/nav');
+import { defineConfig } from 'vitepress'
+import { nav } from './themeConfig/nav.js';
 
-module.exports = {
+export default defineConfig({
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/', // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
@@ -371,4 +372,4 @@ module.exports = {
     // Customize how many suggestions will be shown with:
     // searchMaxSuggestions: <numberOfSuggestions>
   },
-};
+});

@@ -4,7 +4,7 @@
 // Links must be absolute with trailing slash '/guide/'
 // Trailing slash implies it is looking for a .md file
 
-module.exports = [
+export const nav = [
   {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
