@@ -1,6 +1,12 @@
+<script setup>
+import { useData } from 'vitepress'
+const { theme } = useData()
+const { zoeVersion, zoeDocsUpdated } = theme.value
+</script>
+
 <template>
 <div class="zoe-version">
-    Zoe {{$themeConfig.zoeVersion}}. Last updated
-    {{$themeConfig.zoeDocsUpdated}}.
+    Zoe {{ zoeVersion }}. Last updated
+    {{ zoeDocsUpdated }}.
 </div>
 </template>
