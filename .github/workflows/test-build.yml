@@ -23,7 +23,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install and Build
+    - name: Install, Build, Check Links
       run: |
         yarn install
         yarn docs:build
@@ -33,7 +33,3 @@ jobs:
       with:
         root: main/.vitepress/dist
         extra: --ignore_re r'\ADuplicate ID "outbound-link-title".*'
-
-    - name: Vitepress checkmd
-      run: |
-        yarn check-links

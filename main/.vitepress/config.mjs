@@ -137,6 +137,9 @@ export default defineConfig({
     // ignore all localhost links
     /^https?:\/\/localhost/,
   ],
+  sitemap: {
+    hostname: 'https://docs.agoric.com',
+  },
   plugins: [],
   /* --- ROUTE REWRITES / REDIRECTS --- */
   rewrites,
@@ -173,11 +176,11 @@ export default defineConfig({
             { text: 'Getting Started', link: '/guides/getting-started/' },
             {
               text: 'Smart Wallet Dapp Architecture',
-              link: '/guides/getting-started/contract-rpc.html',
+              link: '/guides/getting-started/contract-rpc',
             },
             {
               text: 'Deploying Smart Contracts',
-              link: '/guides/getting-started/deploying.html',
+              link: '/guides/getting-started/deploying',
             },
           ],
         },
@@ -188,7 +191,7 @@ export default defineConfig({
           items: [
             {
               text: 'Smart Contract Basics',
-              link: '/guides/zoe/contract-basics.html',
+              link: '/guides/zoe/contract-basics',
             },
             { text: 'Zoe Overview', link: '/guides/zoe/' },
           ],
@@ -201,7 +204,7 @@ export default defineConfig({
             { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
             {
               text: 'Using agd to make queries and transactions',
-              link: '/guides/agoric-cli/agd-query-tx.html',
+              link: '/guides/agoric-cli/agd-query-tx',
             },
           ],
         },
@@ -216,19 +219,19 @@ export default defineConfig({
             },
             {
               text: 'Hardened JavaScript',
-              link: '/guides/js-programming/hardened-js.html',
+              link: '/guides/js-programming/hardened-js',
             },
             {
               text: 'Eventual Send with E()',
-              link: '/guides/js-programming/eventual-send.html',
+              link: '/guides/js-programming/eventual-send',
             },
             {
               text: 'Far(), Remotable, and Marshaling',
-              link: '/guides/js-programming/far.html',
+              link: '/guides/js-programming/far',
             },
             {
               text: 'Notifiers and Subscriptions',
-              link: '/guides/js-programming/notifiers.html',
+              link: '/guides/js-programming/notifiers',
             },
           ],
         },
@@ -249,16 +252,16 @@ export default defineConfig({
             { text: 'ERTP Overview', link: '/guides/ertp/' },
             {
               text: 'Amounts, Values, and Brands',
-              link: '/guides/ertp/amounts.html',
+              link: '/guides/ertp/amounts',
             },
-            { text: 'AmountMath', link: '/guides/ertp/amount-math.html' },
+            { text: 'AmountMath', link: '/guides/ertp/amount-math' },
             {
               text: 'Issuers and  Mints',
-              link: '/guides/ertp/issuers-and-mints.html',
+              link: '/guides/ertp/issuers-and-mints',
             },
             {
               text: 'Purses and Payments',
-              link: '/guides/ertp/purses-and-payments.html',
+              link: '/guides/ertp/purses-and-payments',
             },
           ],
         },
@@ -273,15 +276,15 @@ export default defineConfig({
             },
             {
               text: 'Declaring Required Capabilities',
-              link: '/guides/coreeval/permissions.html',
+              link: '/guides/coreeval/permissions',
             },
             {
               text: 'Code the Proposal',
-              link: '/guides/coreeval/proposal.html',
+              link: '/guides/coreeval/proposal',
             },
             {
               text: 'Deploy a Governance Proposal to a Local Testnet',
-              link: '/guides/coreeval/local-testnet.html',
+              link: '/guides/coreeval/local-testnet',
             },
           ],
         },
@@ -293,72 +296,72 @@ export default defineConfig({
             { text: 'Example Zoe Contracts', link: '/guides/zoe/contracts/' },
             {
               text: 'Oracle Query Contract',
-              link: '/guides/zoe/contracts/oracle.html',
+              link: '/guides/zoe/contracts/oracle',
             },
             {
               text: 'Vault Contract',
-              link: '/guides/zoe/contracts/vault.html',
+              link: '/guides/zoe/contracts/vault',
             },
-            { text: 'Loan Contract', link: '/guides/zoe/contracts/loan.html' },
+            { text: 'Loan Contract', link: '/guides/zoe/contracts/loan' },
             {
               text: 'Funded Call Spread Contract',
-              link: '/guides/zoe/contracts/fundedCallSpread.html',
+              link: '/guides/zoe/contracts/fundedCallSpread',
             },
             {
               text: 'Priced Call Spread Contract',
-              link: '/guides/zoe/contracts/pricedCallSpread.html',
+              link: '/guides/zoe/contracts/pricedCallSpread',
             },
             {
               text: 'Covered Call Contract',
-              link: '/guides/zoe/contracts/covered-call.html',
+              link: '/guides/zoe/contracts/covered-call',
             },
             {
               text: 'OTC Desk Contract',
-              link: '/guides/zoe/contracts/otc-desk.html',
+              link: '/guides/zoe/contracts/otc-desk',
             },
             {
               text: 'ConstantProduct AMM Contract',
-              link: '/guides/zoe/contracts/constantProductAMM.html',
+              link: '/guides/zoe/contracts/constantProductAMM',
             },
             {
               text: 'Sell Items Contract',
-              link: '/guides/zoe/contracts/sell-items.html',
+              link: '/guides/zoe/contracts/sell-items',
             },
             {
               text: 'Atomic Swap Contract',
-              link: '/guides/zoe/contracts/atomic-swap.html',
+              link: '/guides/zoe/contracts/atomic-swap',
             },
             {
               text: 'Barter Exchange Contract',
-              link: '/guides/zoe/contracts/barter-exchange.html',
+              link: '/guides/zoe/contracts/barter-exchange',
             },
             {
               text: 'Second-Price Auction Contract',
-              link: '/guides/zoe/contracts/second-price-auction.html',
+              link: '/guides/zoe/contracts/second-price-auction',
             },
             {
               text: 'Simple Exchange Contract',
-              link: '/guides/zoe/contracts/simple-exchange.html',
+              link: '/guides/zoe/contracts/simple-exchange',
             },
             {
               text: 'Escrow To Vote Contract',
-              link: '/guides/zoe/contracts/escrow-to-vote.html',
+              link: '/guides/zoe/contracts/escrow-to-vote',
             },
             {
               text: 'Mint Payments Contract',
-              link: '/guides/zoe/contracts/mint-payments.html',
+              link: '/guides/zoe/contracts/mint-payments',
             },
             {
               text: 'Mint and Sell NFTs Contract',
-              link: '/guides/zoe/contracts/mint-and-sell-nfts.html',
+              link: '/guides/zoe/contracts/mint-and-sell-nfts',
             },
             {
               text: 'Use Object Contract',
-              link: '/guides/zoe/contracts/use-obj-example.html',
+              link: '/guides/zoe/contracts/use-obj-example',
             },
             {
               text: 'Automatic Refund Contract',
-              link: '/guides/zoe/contracts/automatic-refund.html',
+              link: '/guides/zoe/contracts/automatic-refund',
             },
           ],
         },
@@ -373,7 +376,7 @@ export default defineConfig({
             },
             {
               text: 'PSM Contract',
-              link: '/guides/zoe/actual-contracts/PSM.html',
+              link: '/guides/zoe/actual-contracts/PSM',
             },
           ],
         },
@@ -385,19 +388,19 @@ export default defineConfig({
             { text: 'Agoric Dapps', link: '/guides/dapps/' },
             {
               text: 'Dapp Templates',
-              link: '/guides/dapps/dapp-templates.html',
+              link: '/guides/dapps/dapp-templates',
             },
             {
               text: 'Starting Multiuser Dapps',
-              link: '/guides/dapps/starting-multiuser-dapps.html',
+              link: '/guides/dapps/starting-multiuser-dapps',
             },
             {
               text: 'Deploying Smart Contracts',
-              link: '/guides/getting-started/deploying.html',
+              link: '/guides/getting-started/deploying',
             },
             {
               text: 'Smart Wallet Dapp Architecture',
-              link: '/guides/getting-started/contract-rpc.html',
+              link: '/guides/getting-started/contract-rpc',
             },
           ],
         },
@@ -409,13 +412,13 @@ export default defineConfig({
         },
         {
           text: 'Chainlink Integration',
-          link: '/guides/chainlink-integration.html',
+          link: '/guides/chainlink-integration',
           collapsed: true,
           items: [],
         },
         {
           text: 'SubQuery Indexing',
-          link: '/guides/subquery-indexing.html',
+          link: '/guides/subquery-indexing',
           collapsed: true,
           items: [],
         },
@@ -423,7 +426,7 @@ export default defineConfig({
       '/reference/': [
         {
           text: 'Wallet API',
-          link: '/reference/wallet-api.html',
+          link: '/reference/wallet-api',
           collapsed: true,
           items: [],
         },
@@ -433,21 +436,21 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'ERTP API', link: '/reference/ertp-api/' },
-            { text: 'Issuer Object', link: '/reference/ertp-api/issuer.html' },
-            { text: 'Mint Object', link: '/reference/ertp-api/mint.html' },
-            { text: 'Brand Object', link: '/reference/ertp-api/brand.html' },
-            { text: 'Purse Object', link: '/reference/ertp-api/purse.html' },
+            { text: 'Issuer Object', link: '/reference/ertp-api/issuer' },
+            { text: 'Mint Object', link: '/reference/ertp-api/mint' },
+            { text: 'Brand Object', link: '/reference/ertp-api/brand' },
+            { text: 'Purse Object', link: '/reference/ertp-api/purse' },
             {
               text: 'Payment Object',
-              link: '/reference/ertp-api/payment.html',
+              link: '/reference/ertp-api/payment',
             },
             {
               text: 'AmountMath Object',
-              link: '/reference/ertp-api/amount-math.html',
+              link: '/reference/ertp-api/amount-math',
             },
             {
               text: 'ERTP Data Types',
-              link: '/reference/ertp-api/ertp-data-types.html',
+              link: '/reference/ertp-api/ertp-data-types',
             },
           ],
         },
@@ -459,15 +462,15 @@ export default defineConfig({
             { text: 'Agoric REPL', link: '/reference/repl/' },
             {
               text: 'Timer Services',
-              link: '/reference/repl/timerServices.html',
+              link: '/reference/repl/timerServices',
             },
-            { text: 'The Agoric Board', link: '/reference/repl/board.html' },
-            { text: 'Network API', link: '/reference/repl/networking.html' },
+            { text: 'The Agoric Board', link: '/reference/repl/board' },
+            { text: 'Network API', link: '/reference/repl/networking' },
             {
               text: 'Price Authority',
-              link: '/reference/repl/priceAuthority.html',
+              link: '/reference/repl/priceAuthority',
             },
-            { text: 'Scratch', link: '/reference/repl/scratch.html' },
+            { text: 'Scratch', link: '/reference/repl/scratch' },
           ],
         },
         {
@@ -476,32 +479,32 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Zoe API', link: '/reference/zoe-api/' },
-            { text: 'Zoe Service', link: '/reference/zoe-api/zoe.html' },
+            { text: 'Zoe Service', link: '/reference/zoe-api/zoe' },
             {
               text: 'UserSeat Object',
-              link: '/reference/zoe-api/user-seat.html',
+              link: '/reference/zoe-api/user-seat',
             },
             {
               text: 'Zoe Contract Facet',
-              link: '/reference/zoe-api/zoe-contract-facet.html',
+              link: '/reference/zoe-api/zoe-contract-facet',
             },
-            { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat.html' },
-            { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint.html' },
+            { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
+            { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
             {
               text: 'PriceAuthority Object',
-              link: '/reference/zoe-api/price-authority.html',
+              link: '/reference/zoe-api/price-authority',
             },
             {
               text: 'ZoeHelper Functions',
-              link: '/reference/zoe-api/zoe-helpers.html',
+              link: '/reference/zoe-api/zoe-helpers',
             },
             {
               text: 'Ratio Math Functions',
-              link: '/reference/zoe-api/ratio-math.html',
+              link: '/reference/zoe-api/ratio-math',
             },
             {
               text: 'Zoe Data Types',
-              link: '/reference/zoe-api/zoe-data-types.html',
+              link: '/reference/zoe-api/zoe-data-types',
             },
           ],
         },
