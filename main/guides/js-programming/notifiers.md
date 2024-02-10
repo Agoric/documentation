@@ -157,9 +157,9 @@ The following methods use or return notifiers.
 
 - [aPurse.getCurrentAmountNotifier()](/reference/ertp-api/purse#apurse-getcurrentamountnotifier)
    - Part of the ERTP API. Returns a lossy notifier for changes to this purse's balance.
-- [getPursesNotifier()](/reference/wallet-api#getpursesnotifier)
+- [getPursesNotifier()](/reference/wallet-api/wallet-bridge#getpursesnotifier)
    - Part of the Wallet API. It returns a notifier that follows changes in the purses in the Wallet.
-- [getOffersNotifier()](/reference/wallet-api#getoffersnotifier)
+- [getOffersNotifier()](/reference/wallet-api/wallet-bridge#getoffersnotifier)
    - Part of the Wallet API. It returns a notifier that follows changes to the offers received by the Wallet.
 - [makeQuoteNotifier(amountIn,brandOut)](/reference/repl/priceAuthority#makequotenotifier-amountin-brandout)
    - Part of the PriceAuthority API. Notifies the latest `PriceQuotes` for the given `amountIn`.
