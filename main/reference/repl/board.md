@@ -20,7 +20,7 @@ This means anyone can access any Board-stored value. The Board is public,
 not private.
 
 Note that when calling from the REPL's `home` object, you must use 
-the [`E` syntax](/guides/js-programming/eventual-send.md)
+the [`E` syntax](/guides/js-programming/eventual-send)
 as shown below.
 
 ## `E(home.board).getId(value)`

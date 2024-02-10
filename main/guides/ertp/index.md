@@ -38,10 +38,10 @@ and Balcony sections, where a holder may sit in any seat of the respective secti
 
 ### Amount
 
-Assets are described by **[Amount](./amounts.md)** records consisting of a `brand` and a `value`.
-- **[Brand](./amounts.md#brands)**: An asset's type.
+Assets are described by **[Amount](./amounts)** records consisting of a `brand` and a `value`.
+- **[Brand](./amounts#brands)**: An asset's type.
   You can think of this as the answer to the question "What is it?" about an asset.
-- **[AmountValue](./amounts.md#amountvalues)**:  An asset's size.
+- **[AmountValue](./amounts#amountvalues)**:  An asset's size.
   You can think of this as the answer to the questions "how many?" or "how much?" about an asset.
 
 **Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
@@ -53,19 +53,19 @@ whose values have to be non-negative integers represented as BigInts (thus the a
 
 ### AmountMath
 
-ERTP uses the **[AmountMath](./amount-math.md)** library for operations such as adding, subtracting,
+ERTP uses the **[AmountMath](./amount-math)** library for operations such as adding, subtracting,
 and comparing amount values (such as when depositing to or withdrawing assets from a purse).
 
 ### Brand
 
 Most ERTP objects have a permanent constraint to working with or on one specific
-**[Brand](./amounts.md#brands)** established at their creation. If one is
+**[Brand](./amounts#brands)** established at their creation. If one is
 initially associated with Quatloos, it always associated with Quatloos and Quatloos only.
 In particular, a `brand` and its `mint` and its `issuer` are all in unchangeable respective
 one-to-one relationships with each other.
-- **[Mint](./issuers-and-mints.md#mints)**:
+- **[Mint](./issuers-and-mints#mints)**:
   The unique creator of digital assets of a particular `brand`.
-- **[Issuer](./issuers-and-mints.md#issuers)**:
+- **[Issuer](./issuers-and-mints#issuers)**:
   The source of truth of how many digital assets each `purse` and `payment` holds. An `issuer`
   is used to validate `payments` received from untrusted parties for the `brand` with which
   it is associated.
@@ -82,9 +82,9 @@ Let's look at an example. Suppose there is the "Quatloos" `brand`. That means th
 ### Purses and Payments
 
 We've already mentioned our final two concepts:
-- **[Purse](./purses-and-payments.md#purses)**: An
+- **[Purse](./purses-and-payments#purses)**: An
   object for holding digital assets of a specific `brand`.
-- **[Payment](./purses-and-payments.md#payments)**:
+- **[Payment](./purses-and-payments#payments)**:
   An object for transferring digital assets of a specific `brand` to another party.
 
 Similar to other component instances, a `purse` and a `payment` only work with one
@@ -217,7 +217,7 @@ in it, and the 5 Quatloos `payment` consumed when the transfer happened.
 The `E()` notation is a local "bridge" that lets you invoke methods on remote objects.
 It takes a local representative (a [presence](../../glossary/#presence)) for a remote object
 as an argument and sends messages to the remote object. This is explained in more detail at the
-[`E()` section in the Distributed JavaScript page](../js-programming/eventual-send.md).
+[`E()` section in the Distributed JavaScript page](../js-programming/eventual-send).
 
 ## Creating and Using Non-Fungible Assets
 

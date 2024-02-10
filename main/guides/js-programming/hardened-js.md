@@ -45,7 +45,7 @@ and the `exitGuard` can _only_ count down.
 
 ::: tip Eventual send syntax
 The `entryGuard ! use(counter.incr);` code in the video
-uses a proposed syntax for [eventual send](./eventual-send.md),
+uses a proposed syntax for [eventual send](./eventual-send),
 which we will get to soon.
 :::
 
@@ -276,7 +276,7 @@ or not:
    - `setImmediate`, `clearImmediate`, `setTimeout`
      - but `Promise` is available, so sometimes
        `Promise.resolve().then(_ => fn())` suffices
-     - see also [Timer Service](/reference/repl/timerServices.md)
+     - see also [Timer Service](/reference/repl/timerServices)
    - `require` (Use `import` module syntax instead.)
    - `localStorage`
       - [SwingSet](../platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.

@@ -4,7 +4,7 @@ You will need to write a proposal script that runs the contract, and possibly do
 depending on your needs. (Usually these additional things will be dependent on a governance vote.) For
 example, [gov-add-psm.js](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm.js) 
 is a proposal Agoric created for the PSM contract. It executes in an environment with globals such as
-**[E](../js-programming/eventual-send.md)** and **[Far](../js-programming/far.md#far-api)** provided.
+**[E](../js-programming/eventual-send)** and **[Far](../js-programming/far#far-api)** provided.
 
 ::: details Show example proposal
 ```jsx

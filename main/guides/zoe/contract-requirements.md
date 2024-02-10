@@ -39,7 +39,7 @@ Put it right before the start of your contract code.
  */
  ```
 Your contract code must export a function `start` as a non-default export.
-`zcf` is the [Zoe Contract Facet](/reference/zoe-api/zoe-contract-facet.md) and is
+`zcf` is the [Zoe Contract Facet](/reference/zoe-api/zoe-contract-facet) and is
 the first argument provided to the contract.
 The second argument, `privateArgs`, is used by the caller of `startInstance`
 to pass in any arguments that should not be part of the public terms.
@@ -131,7 +131,7 @@ between multiple offers, or create new assets to order.
 ## Making an Invitation
 
 To create an invitation in the contract, use the Zoe Contract
-Facet method [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
+Facet method [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 
 ## Using bundleSource
 

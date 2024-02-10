@@ -22,10 +22,10 @@ Returns the **Subscriber** for the seat.
 A **Proposal** is represented by a **ProposalRecord**. It is the rules
 accompanying the escrow of **payments** dictating what the user expects
 to get back from Zoe. It has keys **give**, **want**, and
-**exit**. **give** and **want** are records with **[Keywords](./zoe-data-types.md#keyword)** as keys and
-**[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** as values. The **proposal** is a user's understanding of the
+**exit**. **give** and **want** are records with **[Keywords](./zoe-data-types#keyword)** as keys and
+**[Amounts](/reference/ertp-api/ertp-data-types#amount)** as values. The **proposal** is a user's understanding of the
 contract that they are entering when they make an offer. See
-[`E(zoe).offer(...)`](./zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) for full details.
+[`E(zoe).offer(...)`](./zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) for full details.
 
 - Example:
 ```js
@@ -40,7 +40,7 @@ Causes the **seat** to exit, preventing further changes to its allocation. All *
 if any, are made, and the **seat** object can no longer interact with the contract. The
 **completion** argument is usually a string, but this is not required. Its only use is for
 the notification sent to the corresponding **UserSeat**'s
-**[exitSubscriber.](./user-seat.md#e-userseat-getexitsubscriber)** Any other still open
+**[exitSubscriber.](./user-seat#e-userseat-getexitsubscriber)** Any other still open
 seats or outstanding promises and the contract instance continue.
 
 **Note**: You should not use **aZCFSeat.exit()** when exiting with an error. Use the method **[aZCFSeat.fail()](#azcfseat-fail-msg)** instead. 
@@ -67,11 +67,11 @@ throw seat.fail(Error('you did it wrong'));
 Returns **true** if the **ZCFSeat** has exited, **false** if it is still active.
 
 ## aZCFSeat.getAmountAllocated(keyword, brand)
-  - **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
-  - **brand**: **[Brand](/reference/ertp-api/brand.md)**
-  - Returns: **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+  - **keyword**: **[Keyword](./zoe-data-types#keyword)**
+  - **brand**: **[Brand](/reference/ertp-api/brand)**
+  - Returns: **[Amount](/reference/ertp-api/ertp-data-types#amount)**
 
-Returns the **Amount** from the part of the **[Allocation](./zoe-data-types.md#allocation)** that matches the
+Returns the **Amount** from the part of the **[Allocation](./zoe-data-types#allocation)** that matches the
 *keyword* and *brand*. If the *keyword* is not in the **Allocation**, it
 returns an empty **Amount** of the *brand* argument. (After
 **aZCFSeat.exit()** has been called, it continues to report the final allocation balance, 
@@ -82,11 +82,11 @@ gets the **Allocation** of one **Keyword** at a time, while **getCurrentAllocati
 all the current **Allocations** at once.
 
 ## aZCFSeat.getCurrentAllocation()
-  - Returns: **[Allocation](./zoe-data-types.md#allocation)**
+  - Returns: **[Allocation](./zoe-data-types#allocation)**
 
 An **Allocation** is an **AmountKeywordRecord** of key-value pairs where
-the key is a **[Keyword](./zoe-data-types.md#keyword)** such as **Asset** or **Price** applicable to the
-contract. The value is an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** with its **value** and **brand**.
+the key is a **[Keyword](./zoe-data-types#keyword)** such as **Asset** or **Price** applicable to the
+contract. The value is an **[Amount](/reference/ertp-api/ertp-data-types#amount)** with its **value** and **brand**.
 
 **Allocations** represent the **Amounts** to be paid
 out to each **seat** on exit. (After
@@ -110,7 +110,7 @@ An **Allocation** example:
 ```
 
 ## aZCFSeat.isOfferSafe(newAllocation)
-   - **newAllocation**: **[Allocation](./zoe-data-types.md#allocation)**
+   - **newAllocation**: **[Allocation](./zoe-data-types#allocation)**
    - Returns **Boolean**
 
 Takes an **allocation** as an argument and returns **true** if that **allocation**
@@ -119,16 +119,16 @@ satisfies offer safety, **false** if it doesn't. Essentially, it checks
 It checks whether **newAllocation** fully satisfies
 **proposal.give** (giving a refund) or whether it fully satisfies
 **proposal.want**. Both can be fully satisfied. See the ZoeHelper
-[**satisfies()**](./zoe-helpers.md#satisfies-zcf-seat-update) method for more details.
+[**satisfies()**](./zoe-helpers#satisfies-zcf-seat-update) method for more details.
 
 ::: warning DEPRECATED
 ## aZCFSeat.getStagedAllocation()
-  - Returns: **[Allocation](./zoe-data-types.md#allocation)**
+  - Returns: **[Allocation](./zoe-data-types#allocation)**
 
 Gets and returns the **stagedAllocation**, which is the **Allocation** committed if the seat is
 reallocated over, if offer safety holds, and rights are conserved.
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
@@ -139,12 +139,12 @@ Returns **true** if there is a staged allocation, i.e., whether **ZCFSeat.increm
 **ZCFSeat.decrementBy()** has been called and **ZCFSeat.clear()**
 and **reallocate()** have not. Otherwise returns **false**.
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
 ## aZCFSeat.incrementBy(amountKeywordRecord)
-  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
+  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types#keywordrecord)**
   - Returns: **AmountKeyRecord**
 
 Adds the **amountKeywordRecord** argument to the **ZCFseat**'s staged allocation and returns the 
@@ -152,7 +152,7 @@ same **amountKeywordRecord** so it can be reused in another call. Note that this
 **zcfSeat1.incrementBy(zcfSeat2.decrementBy(amountKeywordRecord))** work as a usage pattern. 
 
 Note that you can add amounts to original or staged allocations which do not have the
-specified **[Keyword](./zoe-data-types.md#keyword)** for the amount. The result is for the **Keyword** and amount to become part
+specified **[Keyword](./zoe-data-types#keyword)** for the amount. The result is for the **Keyword** and amount to become part
 of the allocation. For example, if we start with a new, empty, allocation:
 ```js
 // Make an empty seat.
@@ -168,12 +168,12 @@ t.deepEqual(zcfSeat1.getStagedAllocation(), { IST: empty  });
 While this incremented the allocation by an empty amount, any amount would have been added to the 
 allocation in the same way.
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
 ## aZCFSeat.decrementBy(amountKeywordRecord)
-  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types.md#keywordrecord)**
+  - **amountKeywordRecord**: **[AmountKeywordRecord](./zoe-data-types#keywordrecord)**
   - Returns: **AmountKeywordRecord**
 
 Subtracts the **amountKeywordRecord** argument from the **ZCFseat**'s staged allocation and returns the
@@ -184,7 +184,7 @@ The amounts to subtract cannot be greater than the staged allocation (i.e., nega
 results are not allowed).
 
 **decrementBy()** has different behavior from **incrementBy()** if the original or staged allocation 
-does not have the **[Keyword](./zoe-data-types.md#keyword)** specified for an amount in the **amountKeywordRecord** argument. There are two
+does not have the **[Keyword](./zoe-data-types#keyword)** specified for an amount in the **amountKeywordRecord** argument. There are two
 cases to look at; when the corresponding amount to subtract is empty and when it isn't. 
 ```js
 // Make an empty seat.
@@ -216,7 +216,7 @@ It throws an error because you cannot subtract something from nothing. So trying
 allocation by a non-empty amount is an error, while decrementing an empty allocation by an empty amount
 is effectively a null operation with no effects.
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
 
 ::: warning DEPRECATED
@@ -225,7 +225,7 @@ is effectively a null operation with no effects.
 
 Deletes the **ZCFSeat**'s current staged allocation, if any,
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
 
 

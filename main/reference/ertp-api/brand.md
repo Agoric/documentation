@@ -1,8 +1,8 @@
 # Brand Object
-A **Brand** identifies the asset type of the **[Issuer](./issuer.md)** and **[Mint](./mint.md)**
+A **Brand** identifies the asset type of the **[Issuer](./issuer)** and **[Mint](./mint)**
 associated with the **Brand**. A given **Brand** has a one-to-one relationship
-with an **Issuer** and a **Mint**, and a one-to-many relationship with **[Purses](./purse.md)**
-and **[Payments](./payment.md)**.
+with an **Issuer** and a **Mint**, and a one-to-many relationship with **[Purses](./purse)**
+and **[Payments](./payment)**.
 
 For example, if you were to create a **Brand** that uses *Quatloos*:
 - There would be exactly one *Quatloos* **Issuer**.
@@ -16,14 +16,14 @@ will always be associated with
 the *Quatloos* **Mint** and *Quatloos* **Issuer**.
 
 ## aBrand.isMyIssuer(allegedIssuer)
-- **allegedIssuer**: **[Issuer](./issuer.md)**
+- **allegedIssuer**: **[Issuer](./issuer)**
 - Returns: **Boolean**
 
 Returns **true** if *allegedIssuer* is the **Brand**'s **Issuer**. Returns **false** if it's not.
 
 Note that a **Brand** from an untrusted source can misrepresent its association with
 an **Issuer**. The claim should be cross-checked using the **Issuer's**
-[**anIssuer.getBrand()**](./issuer.md#anissuer-getbrand) method for mutual agreement.
+[**anIssuer.getBrand()**](./issuer#anissuer-getbrand) method for mutual agreement.
 
 ```js
 const isIssuer = brand.isMyIssuer(issuer);
@@ -36,7 +36,7 @@ Returns the alleged name of the **Brand**.
 
 An alleged name is a human-readable string name of a type of digital asset.
 It should not be trusted as accurate since there is no public registry or 
-expectation of uniqueness. This means there can be multiple **[Issuers](./issuer.md)**, **[Mints](./mint.md)**, or **Brands** 
+expectation of uniqueness. This means there can be multiple **[Issuers](./issuer)**, **[Mints](./mint)**, or **Brands** 
 with the same alleged name, and thus the name by itself does not uniquely 
 identify an **Issuer**. Rather, the **Brand** object does that.
 
@@ -49,12 +49,12 @@ const name = brand.getAllegedName();
 ```
 
 ## aBrand.getDisplayInfo()
-- Returns: **[DisplayInfo](./ertp-data-types.md#displayinfo)**
+- Returns: **[DisplayInfo](./ertp-data-types#displayinfo)**
 
 Returns the **DisplayInfo** associated with the **Brand**. 
 
 You use a **DisplayInfo** object at the dapp and UI levels to correctly 
-display **[Amounts](./ertp-data-types.md#amount)**. For fungible tokens, use the **decimalPlaces** property
+display **[Amounts](./ertp-data-types#amount)**. For fungible tokens, use the **decimalPlaces** property
 to display their value in the commonly used denomination, rather than 
 the smallest denomination used for financial accounting (e.g.,
 displaying in dollars rather than cents).
@@ -64,7 +64,7 @@ const quatloosDisplay = quatloosBrand.getDisplayInfo();
 ```
 
 ## aBrand.getAmountShape()
-- Returns: **[AmountShape](./ertp-data-types.md#amountshape)**
+- Returns: **[AmountShape](./ertp-data-types#amountshape)**
 
 Returns the **AmountShape** for a **Brand** associated with a non-fungible asset. 
 
@@ -72,7 +72,7 @@ Returns the **AmountShape** for a **Brand** associated with a non-fungible asset
 ## Related Methods
 
 The following methods on other ERTP components are also related to the **Brand** object.
-- [**anIssuer.getBrand()**](./issuer.md#anissuer-getbrand): Returns
+- [**anIssuer.getBrand()**](./issuer#anissuer-getbrand): Returns
 the **Brand** for the **Issuer**.
-- [**aPayment.getAllegedBrand()**](./payment.md#apayment-getallegedbrand): Returns
+- [**aPayment.getAllegedBrand()**](./payment#apayment-getallegedbrand): Returns
 the **Payment**'s alleged **Brand**.

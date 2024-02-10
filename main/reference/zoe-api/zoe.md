@@ -4,8 +4,8 @@
 
 Zoe provides a framework for deploying and working with smart contracts. It is accessed
 as a long-lived and well-trusted service that enforces offer safety for the contracts that use it. Zoe
-has a single **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** for the entirety of its lifetime. By having a reference to Zoe, a user
-can get the **InvitationIssuer** and thus validate any **[Invitation](./zoe-data-types.md#invitation)** they receive from someone else.
+has a single **[InvitationIssuer](./zoe-data-types#invitationissuer)** for the entirety of its lifetime. By having a reference to Zoe, a user
+can get the **InvitationIssuer** and thus validate any **[Invitation](./zoe-data-types#invitation)** they receive from someone else.
 
 ::: tip Zoe is accessed asynchronously
 The Zoe service is accessed asynchronously, using a standards-track library extension
@@ -17,17 +17,17 @@ local value, or to a **Presence** for another remote object (e.g., in another co
 running on another chain, etc.). Asynchronous messages can be sent using **E** with either promises or
 presences.
 
-For more information about using **E**, see the [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send.md).
+For more information about using **E**, see the [Agoric's JavaScript Distributed Programming Guide](/guides/js-programming/eventual-send).
 :::
 
 ## E(Zoe).getBrands(instance)
-- **instance**: **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
-Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand.md)** defined in the *instance* argument.
+Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand)** defined in the *instance* argument.
 
-A **BrandKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types.md#keyword)**,
-and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer.md)**.
+A **BrandKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types#keyword)**,
+and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer)**.
 
 ```js
 // Record example
@@ -44,12 +44,12 @@ const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```
 
 ## E(Zoe).getIssuers(instance)
-- **instance**: **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
-Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer.md)** defined in the *instance* argument.
+Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer)** defined in the *instance* argument.
 
-An **IssuerKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types.md#keyword)**,
+An **IssuerKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types#keyword)**,
 and the values are **Issuers**.
 
 ```js
@@ -66,10 +66,10 @@ const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```
 
 ## E(Zoe).getTerms(instance)
-- **instance**: **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;Object>**
 
-Returns a **Promise** for the terms of the *instance* argument, including its **[Brands](/reference/ertp-api/brand.md)**, **[Issuers](/reference/ertp-api/issuer.md)**, and any
+Returns a **Promise** for the terms of the *instance* argument, including its **[Brands](/reference/ertp-api/brand)**, **[Issuers](/reference/ertp-api/issuer)**, and any
 custom terms. The returned values look like:
 
 ```js
@@ -88,13 +88,13 @@ const terms = await E(Zoe).getTerms(instance);
 ```
 
 ## E(Zoe).getPublicFacet(instance)
-- **instance**: **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;PublicFacet>**
 
 Returns a **Promise** for the **PublicFacet** defined for the *instance* argument.
 
 A contract instance's **PublicFacet** is an object available via Zoe to anyone knowing that **Instance**.
-You use it for general queries and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types.md#invitation)**.
+You use it for general queries and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types#invitation)**.
 Since a facet is defined just as any other object, the contract adds methods to the **PublicFacet** just like you would
 any object.
 
@@ -103,7 +103,7 @@ const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance);
 ```
 
 ## E(Zoe).getInvitationIssuer()
-- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types.md#invitationissuer)>**
+- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types#invitationissuer)>**
 
 Returns a **Promise** for the **InvitationIssuer** for the Zoe instance.
 
@@ -118,15 +118,15 @@ const { value: invitationValue } =
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns **Promise&lt;Object>**
 
 Takes an **Invitation** as an argument and returns a **Promise** for an object containing the following
 details about the **Invitation**:
 
 - **installation**: **Installation**: The contract's Zoe installation.
-- **instance**: **[Instance](./zoe-data-types.md#instance)**: The contract instance this invitation is for.
-- **invitationHandle**: **[Handle](./zoe-data-types.md#handle)**: A **Handle** used to refer to this **Invitation**.
+- **instance**: **[Instance](./zoe-data-types#instance)**: The contract instance this invitation is for.
+- **invitationHandle**: **[Handle](./zoe-data-types#handle)**: A **Handle** used to refer to this **Invitation**.
 - **description**: **String**: Describes the purpose of this **Invitation**. Use it
    to match the invitation to the role it plays in the contract.
 
@@ -154,23 +154,23 @@ const installationP = await E(Zoe).install(bundle);
 - Returns: **Promise&lt;Object>**
 
 Returns a **Promise** for information about the feeIssuer.
-(The **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.)
+(The **Issuer** whose associated **[Mint](/reference/ertp-api/mint)** can mint IST.)
 It consists of the issuer's name, assetKind, and displayInfo.
 
 ## E(Zoe).getFeeIssuer()
-- Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer.md)>**
+- Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer)>**
 
-Returns a **Promise** for the **Issuer** whose associated **[Mint](/reference/ertp-api/mint.md)** can mint IST.
+Returns a **Promise** for the **Issuer** whose associated **[Mint](/reference/ertp-api/mint)** can mint IST.
 
 ## E(Zoe).getOfferFilter(instance)
-- **instance**: **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Array&lt;String>**
 
-Returns all the offer **[Keywords](./zoe-data-types.md#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
+Returns all the offer **[Keywords](./zoe-data-types#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
 
 ## E(Zoe).getInstance(invitation)
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
-- Returns: **Promise&lt;[Instance](./zoe-data-types.md#instance)>**
+- **invitation**: **[Invitation](./zoe-data-types#invitation)**
+- Returns: **Promise&lt;[Instance](./zoe-data-types#instance)>**
 
 Returns a **Promise** for the contract **instance** the **Invitation** is part of.
 
@@ -187,13 +187,13 @@ const instance = await E(Zoe).getInstance(invitation);
 ```
 
 ## E(Zoe).getProposalShapeForInvitation(invitation) 
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns: **Promise&lt;[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
 ## E(Zoe).getInstallation(invitation)
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation)**
+- **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns: **Promise&lt;Installation>**
 
 Returns a **Promise** for the contract **installation** the **Invitation**'s contract instance uses.
@@ -203,7 +203,7 @@ const installation = await E(Zoe).getInstallation(invitation);
 ```
 
 ## E(Zoe).getInstallationForInstance(instance)
-- **instance**: **[Instance](./zoe-data-types.md#instance)**
+- **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns **Promise&lt;Installation>**
 
 Returns a **Promise** for the contract **installation** used by the
@@ -227,8 +227,8 @@ Creates an instance of the installed smart contract specified by
 the *installation* argument. All contracts each run in a new vat with their own version of the
 Zoe Contract Facet. There is one vat that contains the Zoe Service.
 
-The *issuerKeywordRecord* is an optional object mapping **[Keywords](./zoe-data-types.md#keyword)**
-to **[Issuers](/reference/ertp-api/issuer.md)**, such as **FirstCurrency: quatlooIssuer**.
+The *issuerKeywordRecord* is an optional object mapping **[Keywords](./zoe-data-types#keyword)**
+to **[Issuers](/reference/ertp-api/issuer)**, such as **FirstCurrency: quatlooIssuer**.
 Parties to the contract will use the **Keywords** to index their proposal and their payments.
 
 The **terms** are values used by this contract instance, such as the
@@ -260,7 +260,7 @@ The **adminFacet** has one method:
 
 A **publicFacet** is an object available via Zoe to anyone knowing
 the instance they are associated with. The **publicFacet** is used for general queries
-and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types.md#invitation)**. Since a
+and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types#invitation)**. Since a
 facet is defined just as any other object,
 the contract developer can add methods to them just like they would any object.
 
@@ -288,11 +288,11 @@ const { creatorFacet, publicFacet, creatorInvitation } =
 <a id="e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs"></a>
 
 ## E(Zoe).offer(invitation, proposal?, paymentPKeywordRecord?, offerArgs?)
-- **invitation**: **[Invitation](./zoe-data-types.md#invitation) | Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
+- **invitation**: **[Invitation](./zoe-data-types#invitation) | Promise&lt;[Invitation](./zoe-data-types#invitation)>**
 - **proposal**: **[Proposal](/glossary/#proposal)** - Optional.
-- **paymentPKeywordRecord**: **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)** - Optional.
+- **paymentPKeywordRecord**: **[PaymentPKeywordRecord](./zoe-data-types#keywordrecord)** - Optional.
 - **offerArgs**: **[CopyRecord](/glossary/#copyrecord)** - Optional.
-- Returns: **Promise&lt;[UserSeat](./user-seat.md)>**
+- Returns: **Promise&lt;[UserSeat](./user-seat)>**
 
 Used to make an offer to the contract that created the **invitation**.
 
@@ -315,7 +315,7 @@ const myProposal = harden({
 });
 ```
 
-**give** and **want** use **[Keywords](./zoe-data-types.md#keyword)** defined by the contract.
+**give** and **want** use **[Keywords](./zoe-data-types#keyword)** defined by the contract.
 In the example above, "Asset" and "Price" are the Keywords. However, in an auction contract,
 the Keywords might be "Asset" and "Bid".
 
@@ -326,11 +326,11 @@ the Keywords might be "Asset" and "Bid".
   as determined by its **timer** and **deadline** properties.
   **timer** must be a timer, and **deadline** must be timestamp understood by it.
   (Some timers use Unix epoch time, while others count block height.)
-  For more details, see [Timer Services](/reference/repl/timerServices.md).
+  For more details, see [Timer Services](/reference/repl/timerServices).
 
 ### Payments
 
-**paymentPKeywordRecord** must be either `undefined` or a **[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)**
+**paymentPKeywordRecord** must be either `undefined` or a **[PaymentPKeywordRecord](./zoe-data-types#keywordrecord)**
 containing the actual **payments** to be escrowed by Zoe.
 Every **Keyword** in **give** must have a corresponding **payment**.
 
@@ -343,7 +343,7 @@ const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 
 **offerArgs** is an optional CopyRecord that can be used to pass additional arguments to the
 **offerHandler** contract code associated with the invitation by
-[`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
+[`zcf.makeInvitation(...)`](./zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 Each contract can define the properties it supports and which are required.
 
 ## E(Zoe).installBundleID(bundleId)

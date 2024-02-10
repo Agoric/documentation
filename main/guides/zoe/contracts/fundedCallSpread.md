@@ -15,7 +15,7 @@ on the value of some good at a known future time. This video gives a
 
 There are two variants of the callSpread. This one is fully funded by its creator, who can then sell
 (or transfer another way) the options to other parties. The other is called the
-[pricedCallSpread](./pricedCallSpread.md). It allows the creator to specify the proportion of the
+[pricedCallSpread](./pricedCallSpread). It allows the creator to specify the proportion of the
 collateral that should be provided by the two parties. Each get an invitation to contribute a stated
 amount of collateral for a particular position.
 
@@ -42,7 +42,7 @@ The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a [timer](/reference/repl/timerServices.md), and must be recognized by `priceAuthority`.
+ * `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.

@@ -234,7 +234,7 @@ Use control-C to exit the logs, then start the smart contract. Starting the cont
 yarn start:contract
 ```
 
-This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx.md#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
+This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
 1. Bundle the contract with `agoric run ...`
 2. Collect some ATOM with `agd tx bank send ...`.

@@ -20,7 +20,7 @@ a method of the contract's `publicFacet`:
 
 We mark it `Far(...)` to allow callers to use it from outside the contract
 and give it a suggestive interface name for debugging.
-_We'll discuss [Far in more detail](../js-programming/far.md) later._
+_We'll discuss [Far in more detail](../js-programming/far) later._
 
 Putting it all together:
 
@@ -32,11 +32,11 @@ Let's use some tests to explore how a contract is used.
 
 Agoric contracts are typically tested
 using the [ava](https://github.com/avajs/ava) framework.
-They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js.md) environment:
+They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment:
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-imports
 
-_We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send.md) later._
+_We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._
 
 A test that the `greet` method works as expected looks like:
 
@@ -79,6 +79,6 @@ Note that the `set()` method has no access check inside it.
 Access control is based on separation of powers between
 the `publicFacet`, which is expected to be shared widely,
 and the `creatorFacet`, which is closely held.
-_We'll discuss this [object capabilities](../js-programming/hardened-js.md#object-capabilities-ocaps) approach more later._
+_We'll discuss this [object capabilities](../js-programming/hardened-js#object-capabilities-ocaps) approach more later._
 
 Next, let's look at minting and trading assets with [Zoe](../zoe/).

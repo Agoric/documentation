@@ -23,32 +23,32 @@ We refer to this combination of an event loop with a message queue, a stack, and
 
 Vats are the unit of synchrony. We can only use ordinary synchronous
 function calls within the same vat. But we can use asynchronous function calls
-(with [eventual send](./eventual-send.md)) either within the same vat or between vats.
+(with [eventual send](./eventual-send)) either within the same vat or between vats.
 Vats may be on remote machines, including massively replicated machines such as blockchains.
 
 ## Parts of the Framework
 
 The framework includes:
 
-- **[Hardened JavaScript](./hardened-js.md)**
+- **[Hardened JavaScript](./hardened-js)**
   - Hardened JavaScript provides a platform for
     making objects that can interact with code you don't completely trust,
     without being vulnerable to bugs or bad intentions.
-    We introduce [object capabilities](./hardened-js.md#object-capabilities-ocaps) and how to use them
-    to apply the [principle of least authority](./hardened-js.md#the-principle-of-least-authority-pola).
+    We introduce [object capabilities](./hardened-js#object-capabilities-ocaps) and how to use them
+    to apply the [principle of least authority](./hardened-js#the-principle-of-least-authority-pola).
 
-- **[`E()` for Eventual Send to Remote Presences](./eventual-send.md)**
+- **[`E()` for Eventual Send to Remote Presences](./eventual-send)**
   - The `E()` wrapper function lets
     you invoke methods within or between vats.
     Given a local representative (a *presence*) for a remote object,
     it sends messages to the origin of the presence.
     `E(obj).myMethod(...args)` is an asynchronous form of `obj.myMethod(...args)`.
 
-- **[`Far()`, Remoteable Objects, and Marshaling](./far.md)**
+- **[`Far()`, Remoteable Objects, and Marshaling](./far)**
   - Objects used across vats are called *remotables*.
     To mark an object for exporting from a vat, use the `Far()` function.
 
-- **[Notifiers and Subscriptions](./notifiers.md)**
+- **[Notifiers and Subscriptions](./notifiers)**
   - Notifiers and Subscriptions distribute state change
     updates. Both deliver an asynchronous stream of messages as a publish-subscribe system
     might, without requiring explicit management of lists of subscribers. Notifiers are

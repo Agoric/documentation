@@ -247,12 +247,12 @@ Error#1: key Object [Alleged: IST brand] {} not found in collection brandToIssue
 ```
 
 then it may be that your offer uses brands that are not known to the contract.
-Use [E(zoe).getTerms()](/reference/zoe-api/zoe.md#e-zoe-getterms-instance) to find out what issuers
+Use [E(zoe).getTerms()](/reference/zoe-api/zoe#e-zoe-getterms-instance) to find out what issuers
 are known to the contract.
 
 If you're writing or instantiating the contract, you can tell the contract about issuers
 when you are [creating an instance](#starting-a-contract-instance) or by using
-[zcf.saveIssuer()](/reference/zoe-api/zoe-contract-facet.md#zcf-saveissuer-issuer-keyword).
+[zcf.saveIssuer()](/reference/zoe-api/zoe-contract-facet#zcf-saveissuer-issuer-keyword).
 
 :::
 
@@ -293,14 +293,14 @@ and tests that it's what she wanted.
 ## Example Contracts
 
 Agoric has written [a number of example contracts that you can
-use](./contracts/index.md), including:
+use](./contracts/index), including:
 
 - an [Automated Market Maker (AMM)
-  implementation](./contracts/constantProductAMM.md)
-- a [covered call option contract](./contracts/covered-call.md)
-- an [OTC Desk market maker contract](./contracts/otc-desk.md)
-- contracts for [minting fungible](./contracts/mint-payments.md) and
-  [non-fungible tokens](./contracts/mint-and-sell-nfts.md)
+  implementation](./contracts/constantProductAMM)
+- a [covered call option contract](./contracts/covered-call)
+- an [OTC Desk market maker contract](./contracts/otc-desk)
+- contracts for [minting fungible](./contracts/mint-payments) and
+  [non-fungible tokens](./contracts/mint-and-sell-nfts)
 
 ::: warning Beta Features
 

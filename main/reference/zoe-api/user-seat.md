@@ -1,9 +1,9 @@
 # UserSeat Object
 
 Within Zoe, **seats** are used by contracts and users to access or manipulate offers.
-Zoe has two kinds of seats. **[ZCFSeats](./zcfseat.md)**
+Zoe has two kinds of seats. **[ZCFSeats](./zcfseat)**
 are used within contracts and with **zcf** methods. **UserSeats** represent offers external to
-Zoe and the contract. The party who exercises an **[Invitation](./zoe-data-types.md#invitation)** and sends the **offer()** message
+Zoe and the contract. The party who exercises an **[Invitation](./zoe-data-types#invitation)** and sends the **offer()** message
 to Zoe gets a **UserSeat** that can check payouts' status or retrieve the result of
 processing the offer in the contract. This varies, but examples
 are a **String** and an **Invitation** for another seat.
@@ -28,10 +28,10 @@ and an operation to request that the offer exit, as follows:
   - Returns: **Promise&lt;ProposalRecord>**
 
 A **Proposal** is represented by a **ProposalRecord**. It is the rules
-accompanying the escrow of **[Payments](/reference/ertp-api/payment.md)** dictating what the user expects
+accompanying the escrow of **[Payments](/reference/ertp-api/payment)** dictating what the user expects
 to get back from Zoe. It has keys **give**, **want**, and
-**exit**. **give** and **want** are records with **[Keywords](./zoe-data-types.md#keyword)** as keys and
-**[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** as values. If it is compatible with the contract, the
+**exit**. **give** and **want** are records with **[Keywords](./zoe-data-types#keyword)** as keys and
+**[Amounts](/reference/ertp-api/ertp-data-types#amount)** as values. If it is compatible with the contract, the
 contract tries to satisfy it. If not, the contract kicks the **seat** out.
 
 Offer safety is always enforced; if kicked out, the user gets back
@@ -45,20 +45,20 @@ const { want, give, exit } = sellerSeat.getProposal();
 ```
 
 ## E(UserSeat).getPayouts()
-  - Returns: **Promise&lt;[PaymentPKeywordRecord](./zoe-data-types.md#keywordrecord)>**
+  - Returns: **Promise&lt;[PaymentPKeywordRecord](./zoe-data-types#keywordrecord)>**
 
-Returns a **Promise** for a [KeywordRecord](./zoe-data-types.md#keywordrecord) containing **Promises** for all the **Payouts** associated with the **seat**'s offers.
-A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction,
+Returns a **Promise** for a [KeywordRecord](./zoe-data-types#keywordrecord) containing **Promises** for all the **Payouts** associated with the **seat**'s offers.
+A **Payout** is a **[Payment](/reference/ertp-api/payment)** that goes to a party in a successful transaction,
 redirecting escrowed assets in accordance with the result of the transaction.
 
 The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getPayout(keyword)
-  - **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
-  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment.md)>**
+  - **keyword**: **[Keyword](./zoe-data-types#keyword)**
+  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment)>**
 
 Returns a **Promise** for the **Payout** associated with the *keyword* argument.
-A **Payout** is a **[Payment](/reference/ertp-api/payment.md)** that goes to a party in a successful transaction,
+A **Payout** is a **[Payment](/reference/ertp-api/payment)** that goes to a party in a successful transaction,
 redirecting escrowed assets in accordance with the result of the transaction.
 
 The promise will be resolved promptly once the seat exits.
@@ -67,11 +67,11 @@ The promise will be resolved promptly once the seat exits.
   - Returns: **Promise&lt;OfferResult>**
 
 Returns a **Promise** for an **OfferResult**. The **OfferResult** can be any **[Passable](/glossary/#passable)**.
-For example, in the [Automatic Refund](/guides/zoe/contracts/automatic-refund.md) example, it's the string "The offer was accepted".
-In the [Covered Call](/guides/zoe/contracts/covered-call.md) example, it's a call option, which is an assayable **[Invitation](./zoe-data-types.md#invitation)**
+For example, in the [Automatic Refund](/guides/zoe/contracts/automatic-refund) example, it's the string "The offer was accepted".
+In the [Covered Call](/guides/zoe/contracts/covered-call) example, it's a call option, which is an assayable **[Invitation](./zoe-data-types#invitation)**
 to buy the underlying asset. Strings and invitations are the most common things returned.
 The value is the result returned by the **offerHandler** function passed
-in the first argument to [`zcf.makeInvitation(...)`](./zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
+in the first argument to [`zcf.makeInvitation(...)`](./zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 
 Since the contract can return whatever it wants as an offer result, there is no guarantee that the
 promise will resolve promptly.
@@ -99,7 +99,7 @@ Zoe's offer-safety guarantee applies no matter how a **seat**'s interaction with
 a contract ends. Under normal
 circumstances, the participant might be able to call **tryExit()**, or the
 contract might do something explicitly. On exiting, the seat holder
-gets its current **[Allocation](./zoe-data-types.md#allocation)** and the **seat** can no longer interact with the contract.
+gets its current **[Allocation](./zoe-data-types#allocation)** and the **seat** can no longer interact with the contract.
 
 ## E(UserSeat).numWantsSatisfied()
 - Returns: **Promise&lt;Number>**
@@ -120,7 +120,7 @@ Returns a **Promise** for the **Subscriber** for the seat.
 
 
 ## E(UserSeat).getFinalAllocation()
-- Returns: **Promise&lt;[Allocation](./zoe-data-types.md#allocation)>**
+- Returns: **Promise&lt;[Allocation](./zoe-data-types#allocation)>**
 
 Returns a **Promise** for the **Allocation** when the **UserSeat** exits the **proposal**.
 This promise will be resolved promptly once the seat exits.

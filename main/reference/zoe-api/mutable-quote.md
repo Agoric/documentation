@@ -15,14 +15,14 @@ Causes the **Promise** to reject with the message **e**.
 When the promise is used with a **E.when()** the message is part of the rejection notification. 
 
 ## aMutableQuote.getPromise()
-- Returns: **Promise&lt;[PriceQuote](./zoe-data-types.md#pricequote)>**
+- Returns: **Promise&lt;[PriceQuote](./zoe-data-types#pricequote)>**
 
 ## aMutableQuote.updateLevel(newAmountIn, newAmountOutLimit)
-- **newAmountIn** **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**
+- **newAmountIn** **[Amount](/reference/ertp-api/ertp-data-types#amount)**
 - **newAmountOutLimit** **Amount**
 
 Changes the **MutableQuote**'s trigger levels to the specified values without requiring a second **Promise**.
 
-*newAmountIn*'s and *newAmountOutLimit*'s **[Brands](/reference/ertp-api/brand.md)** must match the original 
+*newAmountIn*'s and *newAmountOutLimit*'s **[Brands](/reference/ertp-api/brand)** must match the original 
 *amountIn* and *amountOutLimit* **Brands**, respectively. 
 

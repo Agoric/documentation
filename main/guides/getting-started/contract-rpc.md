@@ -1,7 +1,7 @@
 # Smart Wallet Dapp Architecture
 
 The [Agoric Platform](../platform/) consists of smart contracts
-and services such as [Zoe](../zoe/) running in a [Hardened JavaScript](../js-programming/hardened-js.md) VM running on top of a Cosmos SDK consensus layer. Clients interact with the consensus layer by making
+and services such as [Zoe](../zoe/) running in a [Hardened JavaScript](../js-programming/hardened-js) VM running on top of a Cosmos SDK consensus layer. Clients interact with the consensus layer by making
 queries and submitting messages in signed transactions. In the Smart
 Wallet Architecture, dapps consist of
 
@@ -112,7 +112,7 @@ The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) con
 ## Specifying Offers
 
 Recall that for an agent within the JavaScript VM,
-[`E(zoe).offer(...)`](../../reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) takes an `Invitation` and optionally a `Proposal` with `{ give, want, exit }`, a `PaymentPKeywordRecord`, and `offerArgs`; it returns a `UserSeat` from which we can [getPayouts()](../../reference/zoe-api/user-seat.md#e-userseat-getpayouts).
+[`E(zoe).offer(...)`](../../reference/zoe-api/zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) takes an `Invitation` and optionally a `Proposal` with `{ give, want, exit }`, a `PaymentPKeywordRecord`, and `offerArgs`; it returns a `UserSeat` from which we can [getPayouts()](../../reference/zoe-api/user-seat#e-userseat-getpayouts).
 
 ![Zoe API diagram, simplified](./assets/zoe-simp.svg)
 
@@ -159,10 +159,10 @@ To start with, amounts include `bigint`s. The `@endo/marshal` API handles those:
 
 <<< @/../snippets/test-marshal.js#marshal-json-steroids
 
-To marshal brands and instances, recall from the discussion of [marshal in eventual send](../js-programming/eventual-send.md#e-and-marshal-a-closer-look)
+To marshal brands and instances, recall from the discussion of [marshal in eventual send](../js-programming/eventual-send#e-and-marshal-a-closer-look)
 how remotables are marshalled with a translation table.
 
-The [Agoric Board](../../reference/repl/board.md) is a well-known name service that issues
+The [Agoric Board](../../reference/repl/board) is a well-known name service that issues
 plain string identifiers for object identities and other passable _keys_ (that is: passable values excluding promises and errors).
 Contracts and other services can use its table of identifiers as a marshal
 translation table:

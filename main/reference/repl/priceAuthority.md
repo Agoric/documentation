@@ -4,7 +4,7 @@
 triggers and notifiers for changes in the price. 
 
 `PriceAuthority` objects use timer services. You should be familiar with the objects 
-and methods in the [REPL TimerService document](./timerServices.md) 
+and methods in the [REPL TimerService document](./timerServices) 
 
 ## Price quote objects
  

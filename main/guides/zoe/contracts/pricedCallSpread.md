@@ -15,7 +15,7 @@ on the value of some good at a known future time. This video gives a
 
 There are two variants of the callSpread.  In this version, the creator requests a pair of
 invitations, each of which enables the holder to obtain one of the positions by providing a started
-portion of the collateral. The other is called the [fundedCallSpread](./fundedCallSpread.md). It is
+portion of the collateral. The other is called the [fundedCallSpread](./fundedCallSpread). It is
 fully funded by its creator, who can then sell (or otherwise transfer) the options to other parties.
 The Zoe invitations representing options are produced in pairs.  The individual options are Zoe
 invitations whose details are inspectable by prospective purchasers.
@@ -43,7 +43,7 @@ The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a [timer](/reference/repl/timerServices.md), and must be recognized by `priceAuthority`.
+ * `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.

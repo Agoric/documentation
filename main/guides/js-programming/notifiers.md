@@ -155,19 +155,19 @@ Individual contracts can use notifiers and subscriptions to provide updates givi
 
 The following methods use or return notifiers.
 
-- [aPurse.getCurrentAmountNotifier()](/reference/ertp-api/purse.md#apurse-getcurrentamountnotifier)
+- [aPurse.getCurrentAmountNotifier()](/reference/ertp-api/purse#apurse-getcurrentamountnotifier)
    - Part of the ERTP API. Returns a lossy notifier for changes to this purse's balance.
-- [getPursesNotifier()](/reference/wallet-api.md#getpursesnotifier)
+- [getPursesNotifier()](/reference/wallet-api#getpursesnotifier)
    - Part of the Wallet API. It returns a notifier that follows changes in the purses in the Wallet.
-- [getOffersNotifier()](/reference/wallet-api.md#getoffersnotifier)
+- [getOffersNotifier()](/reference/wallet-api#getoffersnotifier)
    - Part of the Wallet API. It returns a notifier that follows changes to the offers received by the Wallet.
-- [makeQuoteNotifier(amountIn,brandOut)](/reference/repl/priceAuthority.md#makequotenotifier-amountin-brandout)
+- [makeQuoteNotifier(amountIn,brandOut)](/reference/repl/priceAuthority#makequotenotifier-amountin-brandout)
    - Part of the PriceAuthority API. Notifies the latest `PriceQuotes` for the given `amountIn`.
-- [getPriceNotifier(brandIn, brandOut)](/reference/repl/priceAuthority.md#getpricenotifier-brandin-brandout)
+- [getPriceNotifier(brandIn, brandOut)](/reference/repl/priceAuthority#getpricenotifier-brandin-brandout)
    - Part of the PriceAuthority API. Returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
      different rates.
 - [E(home.localTimerService).makeNotifier(delay, interval) and
-  E(home.chainTimerService).makeNotifier(delay, interval)](/reference/repl/timerServices.md#e-home-chain-or-local-timerservice-makenotifier-delay-interval)
+  E(home.chainTimerService).makeNotifier(delay, interval)](/reference/repl/timerServices#e-home-chain-or-local-timerservice-makenotifier-delay-interval)
    - Part of the REPL's TimerService API. It creates and returns a `Notifier` object
      that repeatedly delivers updates at times that are a multiple of the provided `interval` value,
      with the first update happening after the provided `delay` value.
@@ -250,7 +250,7 @@ hang or miss values.
 
 For distributed operations, all the iteration values&mdash;non-final values,
 successful completion value, failure reason&mdash;must be *Passable*, which means they're values that
-can somehow be passed between [vats](../../glossary/index.md#vat). The rest of this doc assumes all these
+can somehow be passed between [vats](../../glossary/index#vat). The rest of this doc assumes all these
 values are Passable.
 
 The `makeNotifierKit()` or `makeSubscriptionKit()` call makes the notifier/updater
