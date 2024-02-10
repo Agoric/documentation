@@ -128,7 +128,7 @@ const makeTranslationTable = (makeSlot, makeVal) => {
  * 1. A message consisting of the method name `install`
  *    with the `bundle` argument is marshaled..."
  *
- * [1]: https://docs.agoric.com/guides/js-programming/eventual-send.html#eventual-send
+ * [1]: https://docs.agoric.com/guides/js-programming/eventual-send#eventual-send
  */
 test.serial(
   'marshal messages from E(zoe).install(), E(zoe).startInstance()',
