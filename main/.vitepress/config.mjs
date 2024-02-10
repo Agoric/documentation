@@ -426,9 +426,18 @@ export default defineConfig({
       '/reference/': [
         {
           text: 'Wallet API',
-          link: '/reference/wallet-api',
+          link: '/reference/wallet-api/',
           collapsed: true,
-          items: [],
+          items: [
+            {
+              text: 'Wallet API Commands',
+              link: '/reference/wallet-api/wallet-commands',
+            },
+            {
+              text: 'WalletBridge API Commands',
+              link: '/reference/wallet-api/wallet-bridge',
+            },
+          ],
         },
         {
           text: 'ERTP API',

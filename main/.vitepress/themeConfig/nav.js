@@ -84,7 +84,7 @@ export const nav = [
       {
         text: 'Wallet API',
         ariaLabel: 'Wallet API Menu',
-        link: '/reference/wallet-api',
+        link: '/reference/wallet-api/',
       },
       {
         text: 'ERTP API',
