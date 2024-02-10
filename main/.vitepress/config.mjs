@@ -137,24 +137,20 @@ export default defineConfig({
     // ignore all localhost links
     /^https?:\/\/localhost/,
   ],
-  plugins: [
-    [
-      '@vuepress/last-updated',
-      {
-        dateOptions: {
-          dateStyle: 'medium',
-          timeStyle: 'long',
-          timeZone: 'Etc/UTC',
-        },
-      },
-    ],
-  ],
+  plugins: [],
   /* --- ROUTE REWRITES / REDIRECTS --- */
   rewrites,
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 1,
-    lastUpdated: 'Last Updated',
+    lastUpdated: {
+      text: 'Last Updated',
+      formatOptions: {
+        dateStyle: 'medium',
+        timeStyle: 'long',
+        timeZone: 'Etc/UTC',
+      },
+    },
     logo: '/agoric-logo-red.svg',
     /* --- NAVBAR (top) --- */
     nav,
