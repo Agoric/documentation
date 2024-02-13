@@ -7,9 +7,9 @@
 /distributed-programming.html /guides/js-programming/ 
 /getting-started/agoric-cli-guide/ /guides/agoric-cli/ 
 /getting-started/agoric-cli-guide.html /guides/agoric-cli/ 
-/guides/js-programming/ses/ses-guide.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.html 
-/guides/js-programming/ses/ses-reference.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/reference.html 
-/guides/js-programming/ses/lockdown.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.html 
+/guides/js-programming/ses/ses-guide.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md 
+/guides/js-programming/ses/ses-reference.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/reference.md 
+/guides/js-programming/ses/lockdown.html https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/lockdown.md 
 /getting-started/before-using-agoric.html /guides/getting-started/ 
 /getting-started/start-a-project.html /guides/getting-started/ 
 /guides/agoric-cli/commands.html /guides/agoric-cli/ 
