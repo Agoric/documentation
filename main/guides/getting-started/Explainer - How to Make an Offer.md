@@ -79,6 +79,10 @@ Finally, by taking a look at `components/Trade.tsx` we can see the passed `makeO
       </div>
 ```
 
+### The Result
+The `Trade.tsx` component button which calls the `makeOffer` function:
+![The Trade.tsx component button which calls the makeOffer function](./assets/keplr-legible-offer.png)
+
 ::: tip Video Walkthrough
 
 As you're going through this explainer it may be helpful to watch this video walkthrough.
@@ -86,8 +90,3 @@ As you're going through this explainer it may be helpful to watch this video wal
 <iframe width="560" height="315" src="https://www.youtube.com/embed/SbxygFIiXWA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 :::
-
-
-### The Result
-The `Trade.tsx` component button which calls the `makeOffer` function:
-![The Trade.tsx component button which calls the makeOffer function](./assets/keplr-legible-offer.png)
