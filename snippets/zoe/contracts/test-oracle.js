@@ -4,22 +4,24 @@
 import { test } from '../../prepare-test-env-ava.js';
 
 import url from 'url';
-import { resolve as importMetaResolve } from 'import-meta-resolve';
+import { createRequire } from 'module';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
 import bundleSource from '@endo/bundle-source';
 import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';
-import { assert, details } from '@agoric/assert';
 import { E } from '@endo/eventual-send';
 import { Far } from '@endo/marshal';
+
+const nodeRequire = createRequire(import.meta.url);
+
+const { details } = assert;
 
 test('oracle contract', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
 
   // #region bundle
-  const contractUrl = await importMetaResolve(
+  const contractUrl = await nodeRequire.resolve(
     '@agoric/zoe/src/contracts/oracle.js',
-    import.meta.url,
   );
   const contractPath = url.fileURLToPath(contractUrl);
   const contractBundle = await bundleSource(contractPath);

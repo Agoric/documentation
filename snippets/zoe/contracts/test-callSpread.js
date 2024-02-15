@@ -1,17 +1,18 @@
 /* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
 import { test } from '../../prepare-test-env-ava.js';
 
-import url from 'url';
-import { resolve as importMetaResolve } from 'import-meta-resolve';
+import { createRequire } from 'module';
 import bundleSource from '@endo/bundle-source';
 import { E } from '@endo/eventual-send';
 import '@agoric/zoe/exported.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { AmountMath } from '@agoric/ertp';
 
-import { setup } from '@agoric/zoe/test/unitTests/setupBasicMints.js';
-import { assertPayoutDeposit } from '@agoric/zoe/test/zoeTestHelpers.js';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
+import { assertPayoutDeposit } from '../test/zoeTestHelpers.js';
+import { setup } from '../test/setupBasicMints.js';
+
+const nodeRequire = createRequire(import.meta.url);
 
 const makeTestPriceAuthority = (brands, priceList, timer) =>
   makeFakePriceAuthority({
@@ -33,11 +34,9 @@ test('callSpread, mid-strike', async t => {
     zoe,
     brands,
   } = setup();
-  const contractUrl = await importMetaResolve(
+  const contractPath = await nodeRequire.resolve(
     '@agoric/zoe/src/contracts/callSpread/fundedCallSpread.js',
-    import.meta.url,
   );
-  const contractPath = url.fileURLToPath(contractUrl);
   const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
 
@@ -84,9 +83,8 @@ test('callSpread, mid-strike', async t => {
   // #endregion startInstance
 
   // #region invitationDetails
-  const invitationDetails = await E(zoe).getInvitationDetails(
-    creatorInvitation,
-  );
+  const invitationDetails =
+    await E(zoe).getInvitationDetails(creatorInvitation);
   const { customDetails } = invitationDetails;
   assert(typeof customDetails === 'object');
 
@@ -105,10 +103,8 @@ test('callSpread, mid-strike', async t => {
     aliceProposal,
     alicePayments,
   );
-  const {
-    LongOption: bobLongOption,
-    ShortOption: carolShortOption,
-  } = await aliceSeat.getPayouts();
+  const { LongOption: bobLongOption, ShortOption: carolShortOption } =
+    await aliceSeat.getPayouts();
   // #endregion creatorInvitation
 
   // #region bobExercise
@@ -166,11 +162,9 @@ test('pricedCallSpread, mid-strike', async t => {
     zoe,
     brands,
   } = setup();
-  const contractUrl = await importMetaResolve(
+  const contractPath = await nodeRequire.resolve(
     '@agoric/zoe/src/contracts/callSpread/pricedCallSpread.js',
-    import.meta.url,
   );
-  const contractPath = url.fileURLToPath(contractUrl);
   const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
 

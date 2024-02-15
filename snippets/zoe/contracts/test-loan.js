@@ -5,6 +5,7 @@
 /* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
 import { test } from '../../prepare-test-env-ava.js';
 
+import { createRequire } from 'module';
 import { AmountMath, makeIssuerKit } from '@agoric/ertp';
 import { makeNotifierKit } from '@agoric/notifier';
 import { makeZoeKit } from '@agoric/zoe';
@@ -14,17 +15,15 @@ import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import bundleSource from '@endo/bundle-source';
 import { E } from '@endo/eventual-send';
-import { resolve as importMetaResolve } from 'import-meta-resolve';
-import url from 'url';
+
+const nodeRequire = createRequire(import.meta.url);
 
 test('loan contract', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
 
-  const contractUrl = await importMetaResolve(
+  const contractPath = await nodeRequire.resolve(
     '@agoric/zoe/src/contracts/loan/index.js',
-    import.meta.url,
   );
-  const contractPath = url.fileURLToPath(contractUrl);
   const contractBundle = await bundleSource(contractPath);
   const installation = await E(zoe).install(contractBundle);
 
@@ -40,11 +39,9 @@ test('loan contract', async t => {
   } = makeIssuerKit('simoleans');
 
   // Create autoswap installation and instance
-  const autoswapUrl = await importMetaResolve(
+  const autoswapPath = await nodeRequire.resolve(
     '@agoric/zoe/src/contracts/autoswap.js',
-    import.meta.url,
   );
-  const autoswapPath = url.fileURLToPath(autoswapUrl);
   const autoswapBundle = await bundleSource(autoswapPath);
   const autoswapInstallation = await E(zoe).install(autoswapBundle);
 
@@ -136,15 +133,13 @@ test('loan contract', async t => {
   const invitationIssuer = await E(zoe).getInvitationIssuer();
 
   // #region closeLoanInvitation
-  const closeLoanInvitationPromise = E(
-    borrowFacetPromise,
-  ).makeCloseLoanInvitation();
+  const closeLoanInvitationPromise =
+    E(borrowFacetPromise).makeCloseLoanInvitation();
   // #endregion closeLoanInvitation
 
   // #region addCollateralInvitation
-  const addCollateralInvitationPromise = E(
-    borrowFacetPromise,
-  ).makeAddCollateralInvitation();
+  const addCollateralInvitationPromise =
+    E(borrowFacetPromise).makeAddCollateralInvitation();
   // #endregion addCollateralInvitation
 
   // #region debtNotifier

@@ -1,5 +1,4 @@
 // #region test-imports
-import '@endo/init';
 import { E } from '@endo/far';
 // eslint-disable-next-line import/no-unresolved -- https://github.com/avajs/ava/issues/2951
 import test from 'ava';
@@ -19,7 +18,8 @@ test('contract greets by name', async t => {
 // #region test-state
 test('state', async t => {
   const { publicFacet } = state.start();
-  t.is(await E(publicFacet).get(), 'Hello, World!');
+  const actual = await E(publicFacet).get();
+  t.is(actual, 'Hello, World!');
   await E(publicFacet).set(2);
   t.is(await E(publicFacet).get(), 2);
 });
@@ -28,7 +28,8 @@ test('state', async t => {
 // #region test-access
 test('access control', async t => {
   const { publicFacet, creatorFacet } = access.start();
-  t.is(await E(publicFacet).get(), 'Hello, World!');
+  const actual = await E(publicFacet).get();
+  t.is(actual, 'Hello, World!');
   await t.throwsAsync(E(publicFacet).set(2), { message: /no method/ });
   await E(creatorFacet).set(2);
   t.is(await E(publicFacet).get(), 2);

@@ -1,5 +1,4 @@
 // @jessie-check
-/* global Compartment */
 import { test } from './prepare-test-env-ava.js';
 
 test('Counter Example', t => {
@@ -58,17 +57,21 @@ test('assign to frozen property fails', t => {
 });
 
 test('Date.now() is not available or returns NaN', t => {
+  // eslint-disable-next-line no-restricted-syntax
   const c1 = new Compartment();
   try {
     t.is(c1.evaluate(`Date.now()`), NaN, 'legacy Date.now() is NaN');
   } catch (e) {
     // New API: throws instead of NaN.
+    // eslint-disable-next-line no-restricted-syntax
     t.throws(() => c1.evaluate(`Date.now()`), { message: /^secure mode\b/ });
+    // eslint-disable-next-line no-restricted-syntax
     t.throws(() => c1.evaluate(`new Date()`), { message: /^secure mode\b/ });
   }
 });
 
 test('Math.random is not available', t => {
+  // eslint-disable-next-line no-restricted-syntax
   const c1 = new Compartment();
   t.throws(() => c1.evaluate(`Math.random()`));
 });
@@ -157,6 +160,7 @@ test('cannot redefine includes method on Array', t => {
           return false;
         },
       }),
+    // eslint-disable-next-line no-restricted-syntax
     { message: /read only property/ },
   );
 });
@@ -212,6 +216,7 @@ test('basic counter', t => {
   t.is(c1.increment(), 3);
 });
 
+// eslint-disable-next-line no-restricted-syntax
 const makeWeakMap = () => new WeakMap();
 
 // region: makeMint0

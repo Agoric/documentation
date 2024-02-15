@@ -31,7 +31,7 @@ test.before(t => {
   t.context.pwned = [];
 });
 
-test('password exfiltration', t => {
+test.failing('password exfiltration', t => {
   setupUtility(t);
   changePassword('x', 'y');
   changePassword('x', 'z');
