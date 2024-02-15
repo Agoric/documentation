@@ -46,3 +46,14 @@ Note the calling the `yarn start:contract` command is the same as running `yarn 
 ```
 
 In the json snippet above note that the `start` command is running `yarn docker:make clean start-contract print-key`. 
+
+::: tip Video Walkthrough
+
+As you're going through this explainer it may be helpful to watch this video walkthrough.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pWZUHJqj_Lo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+:::
+
+
+
