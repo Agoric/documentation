@@ -455,7 +455,7 @@
     "@endo/patterns" "0.2.2"
     "@endo/promise-kit" "0.2.56"
 
-"@agoric/zone@^0.2.3-u13.0":
+"@agoric/zone@0.2.3-u13.0", "@agoric/zone@^0.2.3-u13.0":
   version "0.2.3-u13.0"
   resolved "https://registry.yarnpkg.com/@agoric/zone/-/zone-0.2.3-u13.0.tgz#218e6372bfd44122ca0a0524649f1b3acbd40c52"
   integrity sha512-NfH7fCrSI7wQ8wun8fhRBXEQdqkmjf4OdPXLwProYoxBIEJ4eML/CiGBDpE6DBeGDyS0YfJExcp7HV9nFsYi7g==
