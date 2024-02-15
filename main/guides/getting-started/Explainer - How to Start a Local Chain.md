@@ -21,3 +21,11 @@ In the `dapp-offer-up` sample dapp, configuration for the Agoric containers is s
 ```
 
 In the tutorial you first used the `yarn create` command to clone the dapp. Next you ran the `yarn install` command to install all required dependencies. Finally you ran the `yarn start:docker` command to start a local chain. You can see from the json code snippet above the this command was running `docker compose up -d` from the `contract` folder.
+
+::: tip Video Walkthrough
+
+As you're going through this explainer it may be helpful to watch this video walkthrough.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WJ1MlHudpuM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+:::
