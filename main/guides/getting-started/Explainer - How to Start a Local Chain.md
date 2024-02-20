@@ -3,7 +3,7 @@ As you saw in this tutorial, starting a local chain is easy!
 
 ## How it Works
 In the `dapp-offer-up` sample dapp, configuration for the Agoric containers is specified in the `package.json` file. Take note of the Docker specific parameters in the `script` section of `package.json` below:
-```
+```json
   "scripts": {
     "start:docker": "cd contract && docker compose up -d",
     "docker:logs": "cd contract; docker compose logs --tail 200 -f",
