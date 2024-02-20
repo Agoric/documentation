@@ -86,8 +86,7 @@ VitePress automatically builds search functionality and individual page menus fr
 You must have **only one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers
 on one page and that they aren't too long. Otherwise the sidebar menu for the page will be cluttered and hard to read and use.
 
-Individual pages do not automatically display a sidebar menu for their headers (As of March 2021, VitePress
-documentation implies they do. We've filed a PR with them).
+Individual pages do not automatically display a sidebar menu for their headers without the use of a plugin.
 To force an individual page sidebar menu, add the following YAML at the top of a page's source file (this file has this YAML at the top):
 ```js
 ---
@@ -259,7 +258,7 @@ Note that the PR will automatically test and lint files. The above is for local 
 
 ### Check Links
 
-To check internal VitePress links locally, run the shell command `yarn check-links` from anywhere in the
+To check internal VitePress links locally, run the shell command `yarn docs:build` from anywhere in the
 root of the local repo folder or below.
 
 Note this does **not** check either external links or router-links. Output is the text of any
