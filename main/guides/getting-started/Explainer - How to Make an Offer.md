@@ -40,7 +40,7 @@ const makeOffer = (giveValue: bigint, wantChoices: Record<string, bigint>) => {
 
 ### App.tsx
 We can see the `makeOffer` function being called when `App.tsx` is rendering the `Trade.tsx` component:
-```
+```tsx
   return (
     <>
       <Logos />
@@ -69,7 +69,7 @@ We can see the `makeOffer` function being called when `App.tsx` is rendering the
 
 ### Trade.tsx
 Finally, by taking a look at `components/Trade.tsx` we can see the passed `makeOffer` function being used to handle the click event on the 'Make an Offer' button.
-```
+```tsx
       <div>
         {walletConnected && (
           <button onClick={() => makeOffer(giveValue, choices)}>
