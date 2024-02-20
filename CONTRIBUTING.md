@@ -280,6 +280,8 @@ agoric install
 ```shell
 yarn docs:build
 ```
+The resulting build assets can be found in `/dist` in the project root.
+
 4. **Run**: To run a local server and see your changes in real time, run:
 ```shell
 yarn docs:dev
@@ -287,7 +289,13 @@ yarn docs:dev
 Most edit changes are immediately reflected in the browser, but
 applying site config changes may require stopping and restarting this program.
 
-View your local documentation site at `localhost:8080/documentation/`
+View your local documentation site at `localhost:5173`
+
+5. **Preview**: To preview a production build, run:
+```shell
+yarn docs:preview
+```
+View your local documentation site at `localhost:4173`
 
 ## Updating Zoe Version and DocsUpdated
 

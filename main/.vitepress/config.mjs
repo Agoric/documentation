@@ -5,6 +5,7 @@ import { rewrites } from './themeConfig/rewrites.js';
 export default defineConfig({
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/', // The base URL the site will be deployed at.
+  outDir: '../dist',
   /* --- HOME PAGE --- */
   title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
   description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
