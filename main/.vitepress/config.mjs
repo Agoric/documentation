@@ -194,6 +194,7 @@ export default defineConfig({
               link: '/guides/zoe/contract-basics',
             },
             { text: 'Zoe Overview', link: '/guides/zoe/' },
+            { text: 'Contract Upgrade', link: '/guides/zoe/contract-upgrade' },
           ],
         },
         {

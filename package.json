@@ -35,6 +35,7 @@
   "dependencies": {
     "@agoric/ertp": "community-dev",
     "@agoric/zoe": "community-dev",
+    "@agoric/zone": "0.2.3-u13.0",
     "@endo/far": "^0.2.19",
     "@endo/marshal": "^0.8.6",
     "@endo/pass-style": "^0.1.6",
@@ -140,6 +141,7 @@
   ],
   "prettier": {
     "trailingComma": "all",
+    "arrowParens": "avoid",
     "singleQuote": true
   }
 }

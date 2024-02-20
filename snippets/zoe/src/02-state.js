@@ -1,13 +1,25 @@
 import { Far } from '@endo/far';
 
 // #region startfn
+// #region heap-state
 export const start = () => {
-  let value = 'Hello, World!';
-  const get = () => value;
-  const set = v => (value = v);
+  const rooms = new Map();
+
+  const getRoomCount = () => rooms.size;
+  const makeRoom = id => {
+    let count = 0;
+    const room = Far('Room', {
+      getId: () => id,
+      incr: () => (count += 1),
+      decr: () => (count -= 1),
+    });
+    rooms.set(id, room);
+    return room;
+  };
+  // #endregion heap-state
 
   return {
-    publicFacet: Far('ValueCell', { get, set }),
+    publicFacet: Far('RoomMaker', { getRoomCount, makeRoom }),
   };
 };
 // #endregion startfn

@@ -159,6 +159,8 @@ t.is(typeof instance, 'object');
 
 _`makeIssuerKit` and `AmountMath.make` are covered in the [ERTP](../ertp/) section, along with `makeEmptyPurse`, `mintPayment`, and `getAmountOf` below._
 
+_See also [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)._
+
 Let's take a look at what happens in the contract when it starts. A _facet_ of Zoe, the _Zoe Contract Facet_, is passed to the contract `start` function.
 The contract uses this `zcf` to get its terms. Likewise it uses `zcf` to
 make a `gameSeat` where it can store assets that it receives in trade

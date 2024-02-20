@@ -36,15 +36,15 @@ agd version --long
 # FAQ
 
 - How are transactions encoded?
-https://docs.cosmos.network/v0.45/core/encoding.html
+[Cosmos SDK v0.45 Docs - Encoding](https://docs.cosmos.network/v0.45/core/encoding.html)
 - What data is needed to create a transaction (last block hash, nonce, sender public key, etc.)?
-https://docs.cosmos.network/v0.45/core/transactions.html#transaction-generation
+[Cosmos SDK v0.45 Docs - Transaction Generation](https://docs.cosmos.network/v0.45/core/transactions.html#transaction-generation)
 - What data is signed and how is that data obtained (for example truncated SHA256 of transaction data)?
-https://docs.cosmos.network/v0.45/core/transactions.html#transaction-generation
+[Cosmos SDK v0.45 Docs - Transaction Generation](https://docs.cosmos.network/v0.45/core/transactions.html#transaction-generation)
 - Do transactions expire?
-Transaction do not expire unless you specify --timeout-height: https://docs.cosmos.network/v0.45/core/transactions.html#transaction-generation
+Transaction do not expire unless you specify --timeout-height: [Cosmos SDK v0.45 Docs - Transaction Generation](https://docs.cosmos.network/v0.45/core/transactions.html#transaction-generation)
 However they do have a sequence number and may be invalidated if another transaction with the same sequence number is processed by the chain
 - How are addresses generated?
-https://docs.cosmos.network/v0.45/basics/accounts.html
+[Cosmos SDK v0.45 Docs - Accounts](https://docs.cosmos.network/v0.45/basics/accounts.html)
 - How is the blockchain queried?
-JSON-RPC, gRPC, REST  https://docs.cosmos.network/v0.45/run-node/interact-node.html
+JSON-RPC, gRPC, REST  [Cosmos SDK v0.45 Docs - Interact with Node](https://docs.cosmos.network/v0.45/run-node/interact-node.html)
