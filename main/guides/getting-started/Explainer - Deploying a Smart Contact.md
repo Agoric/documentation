@@ -12,7 +12,7 @@ Running the `yarn start:contract` command in the tutorial runs a script which ac
 - Finally, the script voted for the proposal and waited for the proposal to pass.
 
 Once again, we can reference the project's `package.json` file to learn a bit more about what `yarn start:contract` is doing behind the scenes.
-```
+```json
   "scripts": {
     "start:docker": "cd contract && docker compose up -d",
     "docker:logs": "cd contract; docker compose logs --tail 200 -f",
@@ -30,7 +30,7 @@ Once again, we can reference the project's `package.json` file to learn a bit mo
 ```
 
 Note the calling the `yarn start:contract` command is the same as running `yarn start` from the contract directory. We can look at `package.json` from the `contract` directory to learn even more:
-```
+```json
  "scripts": {
     "start:docker": "docker compose up -d",
     "docker:logs": "docker compose logs --tail 200 -f",
