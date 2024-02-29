@@ -136,8 +136,7 @@ VitePress turns Markdown links into HTML links. There are some quirks about how 
 
 First, our link checker does **not** check `router-link` style links. Please only use Markdown style links.
 
-Next, your Markdown links should be to the `.md` Markdown files in the Doc repo. VitePress processing changes
-both the `.md` files and links to them to be `.html`.
+Next, your Markdown links should be to the `.md` Markdown files in the Doc repo, but exclude the file extension. VitePress processing changes both the `.md` files and links to them to be `.html`.
 
 In general, use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
 open in the same browser tab when clicked on, absolute links open a new tab.
@@ -474,7 +473,7 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
       '/ertp/': [
         {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.md',
+          path: '/getting-started/ertp-introduction',
           collapsible: false,
           children: [
           ]
