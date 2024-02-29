@@ -97,6 +97,10 @@ For more information, see the [ERTP documentation's AmountValue section](/guides
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
 digital assets in the quantity specified by an [amount](#amount).
 
+## Bag
+
+A bag, or multiset, extends the concept of a set. Traditionally, sets can only contain one instance of a particular item. Bags extend this concept to allow multiple items of the same type to be store. In Agoric, bags are used to store [semi-fungible](https://docs.agoric.com/glossary/#semi-fungible) assets. For example, a bag might be used to store three potions, two scrolls, and four maps. A set would restrict you to only storing one of each of those items.
+
 ## BigInt
 
 In [ERTP AmountMath](/guides/ertp/amount-math.md), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
