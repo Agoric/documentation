@@ -30,6 +30,7 @@ As you're going through this tutorial it may be helpful to watch this video walk
 
 Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
+
 ## Installing Prerequisites
 
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
@@ -158,6 +159,24 @@ For more examples and ideas, visit:
 ```
 
 </details>
+
+::: tip Using a Mac?
+
+If you're using a Apple Mac with a Apple Silicon processor you will need to enable gRPC Fuse and disable Virtualization Framework in Docker desktop. To accomplish this first open Docker Desktop. Once open, click on the gear icon in the top right hand corner of the application to open Docker Desktop settings.
+
+![Open Docker Desktop settings](./assets/docker_001.png)
+
+
+Next, select the option for gRPC Fuse. Once selected you should then be able to uncheck the box labeled "Use Virtualization framework".
+
+![Change virtualization settings](./assets/docker_002.png)
+
+
+Finally click the "Apply & restart" button to apply your changes.
+
+![Apply new virtualization settings](./assets/docker_003.png)
+
+:::
 
 ## Creating Your Dapp From a Template
 
