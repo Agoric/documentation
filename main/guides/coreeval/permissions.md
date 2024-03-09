@@ -1,96 +1,55 @@
 # Declaring Required Capabilities
 
-Write a json file declaring the capabilities that the proposal will need. For example,
-[gov-add-psm-permit.json](https://github.com/Agoric/agoric-sdk/blob/master/packages/inter-protocol/test/psm/gov-add-psm-permit.json) 
-declares capabilities needed to start a new PSM contract. Note that capabilities are declared using
-their name as a property along with any truthy value. For example,`"bankManager": true` and 
-`"bankManager": 'hello'` are equivalent; they both set the `bankManager` capability.
+Most contract deployments don't need everything in `BootstrapPowers`.
+Verifying by inspection that they don't use any more than they need
+is notoriously difficult. So proposals come with
+a `BootstrapManifestPermit` to declare an upper limit on the capabilities they access. For a property access `powers.P`, if the permit has `{ P: true }`, then the access succeeds. In fact, any _truthy_ value will do.
+And recursively, a property access `powers.P.Q.R` is succeeds if
+the permit has `{ P: { Q: { R: true } } }`.
 
-::: details Show example permissions file
+The permit for `startSellConcertTicketsContract` is:
+
+```js
+/** @type { import("@agoric/vats/src/core/lib-boot").BootstrapManifestPermit } */
+export const permit = harden({
+  consume: {
+    agoricNames: true,
+    brandAuxPublisher: true,
+    startUpgradable: true, // to start contract and save adminFacet
+    zoe: true, // to get contract terms, including issuer/brand
+  },
+  installation: {
+    consume: { [contractName]: true },
+    produce: { [contractName]: true },
+  },
+  instance: { produce: { [contractName]: true } },
+  issuer: { consume: { IST: true }, produce: { Ticket: true } },
+  brand: { consume: { IST: true }, produce: { Ticket: true } },
+});
+
+export const main = startSellConcertTicketsContract;
 ```
-{
-  "consume": {
-    "agoricNamesAdmin": true,
-    "bankManager": true,
-    "board": true,
-    "chainStorage": true,
-    "zoe": "zoe",
-    "feeMintAccess": "zoe",
-    "economicCommitteeCreatorFacet": "economicCommittee",
-    "econCharterKit": true,
-    "provisionPoolStartResult": true,
-    "psmKit": true,
-    "chainTimerService": "timer"
-  },
-  "produce": {
-    "testFirstAnchorKit": true
-  },
-  "installation": {
-    "consume": {
-      "contractGovernor": true,
-      "psm": true,
-      "mintHolder": true
-    }
-  },
-  "instance": {
-    "consume": {
-      "economicCommittee": true
-    }
-  },
-  "issuer": {
-    "produce": {
-      "DAI": true
-    },
-    "consume": {
-      "DAI": true
-    }
-  },
-  "brand": {
-    "consume": {
-      "DAI": true,
-      "IST": true
-    },
-    "produce": {
-      "DAI": true
-    }
-  }
-}
-```
-:::
 
-## Top Level Consume Section
+## Selected BootstrapPowers
 
-In this section you need to set all the permissions that your contract will need to be able to use
-(i.e., "consume"). Some of the listed permissions in the example PSM permission file above are of
-general interest to most contracts, while others are more specific to the PSM contract.
+In the top level promise space, we have:
 
-* **agoricNamesAdmin**: Grants write access to the Agoric name service. This permission is somewhat specific to the PSM contract.
-* **bankManager**: Grants access to bank-related functionality within ERTP, allowing the contract to manipulate nearly all Cosmos assets in the chain. Because this capability is very powerful, this permission should only be granted to contracts that absolutely need it.
-* **board**: Grants write access to the [board name service](/guides/wallet/index#the-agoric-board).
-* **chainStorage**: Grants write access to the chain storage node, which is required when running `agd query` commands. Thus, most contracts will need access to this.
-* **zoe**: When this permission is set, it grants access to the Zoe framework. All contracts will need access to this.
-* **feeMintAccess**: When this permission is set, the contract will be able to create digital assets. Only contracts that mint privileged Agoric digital assets (i.e., not the unprivileged **[zcf.makeZCFMint()](/reference/zoe-api/zoe-contract-facet#zcf-makezcfmint-keyword-assetkind-displayinfo)**) will need access to this.
-* **economicCommitteeCreatorFacet**, **econCharterKit**, **provisionPoolStartResult**: These 3 permissions are required by governed contracts.
-* **chainTimerService**: When this permission is set, it grants access to the *chainTimerService*. All governed contracts need access to this so they know when a vote is complete.
+- **agoricNames**: read-only access to the [agoricNames](../integration/name-services.md#agoricnames-agoricnamesadmin-well-known-names) name service.
 
-## Top Level Produce Section
+- **board**: the [board](../integration/name-services.md#the-board-publishing-under-arbitrary-names) name service.
+  **Note: the board only grows; no mechanism to reclaim storage has been established.**
 
-Specifies what, if anything, the contract produces. For example, the example PSM contract 
-produces *testFirstAnchorKit* which is used for testing purposes.
+- **chainStorage**: to make storage nodes to write to vstorage.
+  **Warning: this includes the right to over-write previously allocated storage nodes.**
 
-## Installation Section 
+- **chainTimerService**: for getting the current timer and setting timer wake-ups; for example, at the conclusion of a governance vote.
+  **Note: this includes the right to schedule infinitely repeating events.**
 
-Specifies what well-known installations the contract requires. At a minimum, the contract itself should
-be listed as an installation. Governed contracts should include a *contractGovernor* installation.
+- **agoricNamesAdmin**: admin / update access to **agoricNames** and the name hubs it contains.
+  **Warning: this includes the right to over-write existing bindings to instances, brands, etc.**
 
-## Instance Section
+- **bankManager**: to manage reflection of cosmos
+  assets as ERTP assets: to register an issuer to correspond to a denom or to get a bank of purses for any address. **Warning: this includes the right to spend assets for any account.**
 
-Specifies what instances, if any, the contract produces or consumes.
-
-## Issuer Section
-
-Specifies what **[Issuers](/reference/ertp-api/issuer)**, if any, the contract produces or consumes.
-
-## Brand Section
-
-Specifies what **[Brands](/reference/ertp-api/brand)**, if any, the contract produces or consumes.
+- **zoe**: the Zoe service.
+  **Note: this includes the right to install any available bundle and start instances of any available installation.**
