@@ -11,8 +11,8 @@ Governance of the right to upgrade is a complex topic that we cover only briefly
 - When [BLD staker governance](https://community.agoric.com/t/about-the-governance-category/15) makes a decision to start a contract using [swingset.CoreEval](../coreeval/),
   to date, the `adminFacet` is stored in the bootstrap vat, allowing
   the BLD stakers to upgrade such a contract in a later `swingset.CoreEval`.
-- The `adminFacet` reference can be discarded, so that noone can upgrade
-  the contract from within the JavaScript VM. (BLD staker governace
+- The `adminFacet` reference can be discarded, so that no one can upgrade
+  the contract from within the JavaScript VM. (BLD staker governance
   could, in theory, change the VM itself.)
 - The `adminFacet` can be managed using the [@agoric/governance](https://github.com/Agoric/agoric-sdk/tree/master/packages/governance#readme) framework; for example, using the `committee.js` contract.
 
