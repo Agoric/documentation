@@ -164,7 +164,7 @@ For more examples and ideas, visit:
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```sh
-yarn create @agoric/dapp --dapp-template dapp-offer-up demo
+yarn create @agoric/dapp demo
 ```
 
 ## Install Dapp Dependencies
