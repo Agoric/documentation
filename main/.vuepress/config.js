@@ -169,7 +169,7 @@ module.exports = {
             path: '/guides/learn/',
             collapsible: true,
             children: [
-              '',// What is Agoric?
+              '/guides/',// What is Agoric?
               '/guides/wallet/', // Smart Wallet Dapp Architecture
               '/guides/getting-started/contract-rpc.html',// - Signing and Broadcasting Offers
               '/guides/getting-started/contract-rpc.html',// - Querying VStorage
