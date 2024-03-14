@@ -323,10 +323,18 @@ the Keywords might be "Asset" and "Bid".
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
 - `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to complete (finish or fail) their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
-  as determined by its **timer** and **deadline** properties.
+  as determined by its **timer** and **deadline** properties. The proposer cannot exit the seat before the deadline (the seat is in the **waived** state), but the contract can exit the proposer's seat early.
   **timer** must be a timer, and **deadline** must be timestamp understood by it.
   (Some timers use Unix epoch time, while others count block height.)
   For more details, see [Timer Services](/reference/repl/timerServices).
+
+### Proposal Shape
+
+A contract can enforce a certain proposal shape using the
+**[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object from `@endo/patterns`.
+
+For example, a contract holding an auction might require that all offers include an `afterDeadline` exit rule with a timestamp in the future.
+
 
 ### Payments
 
