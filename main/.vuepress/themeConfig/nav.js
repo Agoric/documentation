@@ -8,12 +8,12 @@ module.exports = [
   {
     text: 'Learn',
     ariaLabel: 'Learn Menu',
-    link: '/learn/',
+    link: '/guides/learn',
   },
   {
     text: 'Build',
     ariaLabel: 'Build Menu',
-    link: '/build/',
+    link: '/guides/build',
   },
   {
     text: 'Tutorials',
