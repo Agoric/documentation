@@ -201,9 +201,11 @@ module.exports = {
       "/reference/": [
         {
           title: "How to Build a Client UI",
-          path: "/",
+          path: "/guides/coreeval/",
           collapsible: true,
-          children: [],
+          children: [
+            "/guides/ertp/amounts.html", // - test, delete me
+          ],
         },
 
         {
