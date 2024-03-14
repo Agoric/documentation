@@ -163,7 +163,7 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
-      "/guides/": [
+      "Learn": [
         {
           title: "Introduction",
           path: "/guides/getting-started",
@@ -198,58 +198,49 @@ module.exports = {
           ],
         },
       ],
-      "/reference/": [
+      "Build": [
         {
-          title: "Wallet API",
-          path: "/reference/wallet-api.html",
-          collapsible: false,
+          title: "How to Build a Client UI",
+          path: "/guides/getting-started/how-to-build-client-UI.html",
+          collapsible: true,
           children: [],
         },
+
         {
-          title: "ERTP API",
-          path: "/reference/ertp-api/",
-          collapsible: false,
-          children: [
-            "/reference/ertp-api/",
-            "/reference/ertp-api/issuer.html",
-            "/reference/ertp-api/mint.html",
-            "/reference/ertp-api/brand.html",
-            "/reference/ertp-api/purse.html",
-            "/reference/ertp-api/payment.html",
-            "/reference/ertp-api/amount-math.html",
-            "/reference/ertp-api/ertp-data-types.html",
-          ],
-        },
-        {
-          title: "REPL API",
-          path: "/reference/repl/",
-          collapsible: false,
-          children: [
-            "/reference/repl/",
-            "/reference/repl/timerServices.html",
-            "/reference/repl/board.html",
-            "/reference/repl/networking.html",
-            "/reference/repl/priceAuthority.html",
-            "/reference/repl/scratch.html",
-          ],
-        },
-        {
-          title: "Zoe API",
-          path: "/reference/zoe-api/",
-          collapsible: false,
-          children: [
-            "/reference/zoe-api/",
-            "/reference/zoe-api/zoe.html",
-            "/reference/zoe-api/user-seat.html",
-            "/reference/zoe-api/zoe-contract-facet.html",
-            "/reference/zoe-api/zcfseat.html",
-            "/reference/zoe-api/zcfmint.html",
-            "/reference/zoe-api/price-authority.html",
-            "/reference/zoe-api/zoe-helpers.html",
-            "/reference/zoe-api/ratio-math.html",
-            "/reference/zoe-api/zoe-data-types.html",
-          ],
-        },
+            title: "Permissioned Deployments",
+            path: "/guides/coreeval/",
+            collapsible: true,
+            children: [],
+          },         
+
+          {
+            title: "Testing",
+            path: "/",
+            collapsible: true,
+            children: [],
+          },          
+
+          {
+            title: "Debugging",
+            path: "/",
+            collapsible: true,
+            children: [],
+          },          
+
+          {
+            title: "Agoric CLI",
+            path: "/guides/agoric-cli/",
+            collapsible: true,
+            children: [],
+          },          
+
+          {
+            title: "API Reference",
+            path: "/",
+            collapsible: true,
+            children: [],
+          },  
+
       ],
     },
     docsRepo: "Agoric/documentation",
