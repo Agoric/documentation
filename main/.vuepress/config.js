@@ -207,42 +207,36 @@ module.exports = {
             "/guides/ertp/amounts.html", // - test, delete me
           ],
         },
-
         {
-            title: "Permissioned Deployments",
-            path: "/guides/coreeval/",
-            collapsible: true,
-            children: [],
-          },         
-
-          {
-            title: "Testing",
-            path: "/",
-            collapsible: true,
-            children: [],
-          },          
-
-          {
-            title: "Debugging",
-            path: "/",
-            collapsible: true,
-            children: [],
-          },          
-
-          {
-            title: "Agoric CLI",
-            path: "/guides/agoric-cli/",
-            collapsible: true,
-            children: [],
-          },          
-
-          {
-            title: "API Reference",
-            path: "/",
-            collapsible: true,
-            children: [],
-          },  
-
+          title: "Permissioned Deployments",
+          path: "/guides/coreeval/",
+          collapsible: true,
+          children: [],
+        },
+        {
+          title: "Testing",
+          path: "/guides/coreeval/",
+          collapsible: true,
+          children: [],
+        },
+        {
+          title: "Debugging",
+          path: "/guides/coreeval/",
+          collapsible: true,
+          children: [],
+        },
+        {
+          title: "Agoric CLI",
+          path: "/guides/agoric-cli/",
+          collapsible: true,
+          children: [],
+        },
+        {
+          title: "API Reference",
+          path: "/guides/coreeval/",
+          collapsible: true,
+          children: [],
+        },
       ],
     },
     docsRepo: "Agoric/documentation",
