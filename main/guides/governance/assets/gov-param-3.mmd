@@ -1,0 +1,15 @@
+sequenceDiagram
+  autonumber
+
+  actor V1 as Voter1
+
+  participant Core as swaparoo<br>deployer
+
+  participant Zoe
+  participant Charter as swaparoo<br>charter
+
+    Core-)Charter: startInstance(econCommitteeCharter, ...)
+    Charter--)Core: { creatorFacet, ... }
+    Core--)Charter: E(creatorFacet).getVoterInvitations()
+    Charter--)Core: [invitationQ1]
+    Core--)V1: invitationQ1
