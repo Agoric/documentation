@@ -198,6 +198,60 @@ module.exports = {
           ],
         },
       ],
+      '/reference/': [
+        {
+          title: 'Wallet API',
+          path: '/reference/wallet-api.html',
+          collapsible: false,
+          children: [],
+        },
+        {
+          title: 'ERTP API',
+          path: '/reference/ertp-api/',
+          collapsible: false,
+          children: [
+            '/reference/ertp-api/',
+            '/reference/ertp-api/issuer.html',
+            '/reference/ertp-api/mint.html',
+            '/reference/ertp-api/brand.html',
+            '/reference/ertp-api/purse.html',
+            '/reference/ertp-api/payment.html',
+            '/reference/ertp-api/amount-math.html',
+            '/reference/ertp-api/ertp-data-types.html',
+          ],
+        },
+        {
+          title: 'REPL API',
+          path: '/reference/repl/',
+          collapsible: false,
+          children: [
+            '/reference/repl/',
+            '/reference/repl/timerServices.html',
+            '/reference/repl/board.html',
+            '/reference/repl/networking.html',
+            '/reference/repl/priceAuthority.html',
+            '/reference/repl/scratch.html',
+          ],
+        },
+        {
+          title: 'Zoe API',
+          path: '/reference/zoe-api/',
+          collapsible: false,
+          children: [
+            '/reference/zoe-api/',
+            '/reference/zoe-api/zoe.html',
+            '/reference/zoe-api/user-seat.html',
+            '/reference/zoe-api/zoe-contract-facet.html',
+            '/reference/zoe-api/zcfseat.html',
+            '/reference/zoe-api/zcfmint.html',
+            '/reference/zoe-api/price-authority.html',
+            '/reference/zoe-api/zoe-helpers.html',
+            '/reference/zoe-api/ratio-math.html',
+            '/reference/zoe-api/zoe-data-types.html',
+          ],
+        },
+      ],
+      /*
       "/reference/": [
         {
           title: "How to Build a Client UI",
@@ -238,6 +292,8 @@ module.exports = {
           children: [],
         },
       ],
+
+      */
     },
     docsRepo: "Agoric/documentation",
     // if your docs are not at the root of the repo:
