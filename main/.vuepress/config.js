@@ -169,7 +169,7 @@ module.exports = {
           path: "/guides/getting-started",
           collapsible: true,
           children: [
-            "/guides/", // What is Agoric?
+            "/guides/getting-started/what-is-agoric.html", // What is Agoric?
             "/guides/wallet/", // Smart Wallet Dapp Architecture
             "/guides/getting-started/deploying.html", // - Deploying Smart Contracts
             "/guides/zoe/contract-basics.html", // - Smart Contract Basics
