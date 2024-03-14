@@ -166,7 +166,7 @@ module.exports = {
       '/guides/': [
         {
             title: 'Introduction',
-            path: '/guides/learn/',
+            path: '/',
             collapsible: true,
             children: [
               '/guides/',// What is Agoric?
