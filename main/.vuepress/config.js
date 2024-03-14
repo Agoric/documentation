@@ -171,22 +171,10 @@ module.exports = {
             children: [
               '/guides/',// What is Agoric?
               '/guides/wallet/', // Smart Wallet Dapp Architecture
-              '/guides/getting-started/contract-rpc.html',// - Signing and Broadcasting Offers
-              '/guides/getting-started/contract-rpc.html',// - Querying VStorage
-              '/guides/getting-started/contract-rpc.html',// - Specifying Offers
-              '/guides/getting-started/contract-rpc.html',// - Smart Wallet VStorage Topics
-              '/guides/getting-started/contract-rpc.html',// - VBank Assets and Cosmos Bank Balances
               '/guides/getting-started/deploying.html',// - Deploying Smart Contracts
               '/guides/zoe/',// What is Zoe?
               '/guides/zoe/contract-basics.html',// - Smart Contract Basics
               '/guides/zoe/',// - Zoe Overview
-              '/guides/zoe/',// - What is Zoe?
-              '/guides/zoe/',// - Why Use Zoe?
-              '/guides/zoe/',// - Building a Contract
-              '/guides/zoe/',// - Contract Installation
-              '/guides/zoe/',// - Starting a Contract Instance
-              '/guides/zoe/',// - Trading with Offer Safety
-              '/guides/zoe/',// - Contract Upgrade
             ],
           },  
         {
