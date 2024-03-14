@@ -5,8 +5,8 @@ ERTP introduces and uses several data types.
 ## Amount
 
 An **Amount** is a description of digital assets, answering the
-questions "how much?" (its **[AmountValue](#amountvalue)**) and "of what kind?" (its **[Brand](./brand.md)**).
-The **[AmountMath](./amount-math.md)** object
+questions "how much?" (its **[AmountValue](#amountvalue)**) and "of what kind?" (its **[Brand](./brand)**).
+The **[AmountMath](./amount-math)** object
 introduces a library of methods that can be used to manipulate and analyze **Amounts**.
 
 Note that **Amounts** can describe either fungible or non-fungible assets.
@@ -21,11 +21,11 @@ someAmount: {
 ## AmountShape
 
 An **AmountShape** is a description of non-fungible digital assets. Similar to **[Amount](#amount)**,
-**AmountShape** has 2 properties: a **[Brand](./brand.md)**, which states what kind of asset this is,
+**AmountShape** has 2 properties: a **[Brand](./brand)**, which states what kind of asset this is,
 and a **ValueShape**, which is an object containing however many properties are required to describe
 this non-fungible asset. Note that an asset's **ValueShape** is defined by the *elementShape* parameter
-when the asset's **[Issuer](./issuer.md)** is created via the
-**[makeIssuerKit()](./issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function.
+when the asset's **[Issuer](./issuer)** is created via the
+**[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function.
 
 ```js
 someAmountShape: {
@@ -41,7 +41,7 @@ An **AmountValue** is the part of an [Amount](#amount) that describes the value 
 that can be owned or shared: how much, how many, or a description of a unique asset, such as
 $3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
 For a fungible **Amount**, the **AmountValue** is usually a non-negative **BigInt** such as `10n` or `137n`.
-For a non-fungible **Amount**, the **AmountValue** might be a [CopySet](/guides/js-programming/far.md#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
+For a non-fungible **Amount**, the **AmountValue** might be a [CopySet](/guides/js-programming/far#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
 AmountValues must be [Keys](/glossary/#key).
 
 ## AssetKind
@@ -54,10 +54,10 @@ There are several kinds of Assets.
 - **AssetKind.COPY_BAG** : Used with non-fungible assets where there can be duplicates. (e.g., weapons in a computer game). **AmountValues** are arrays of objects.
 
 Even though very different mathematical processes are performed,
-**[AmountMath](./amount-math.md)** methods work for all kinds of assets.
+**[AmountMath](./amount-math)** methods work for all kinds of assets.
 
-Use **[makeIssuerKit()](./issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** to specify which **AssetKind**
-your contract uses. See the **[Issuer](./issuer.md)** documentation for details on how to use this method.
+Use **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** to specify which **AssetKind**
+your contract uses. See the **[Issuer](./issuer)** documentation for details on how to use this method.
 
 ```js
 import { AssetKind, makeIssuerKit } from '@agoric/ertp';
@@ -67,7 +67,7 @@ makeIssuerKit('kitties', AssetKind.COPY_SET); // Defaults to undefined DisplayIn
 
 ## DisplayInfo
 
-A **DisplayInfo** data type is associated with a **[Brand](./brand.md)** and gives information about how
+A **DisplayInfo** data type is associated with a **[Brand](./brand)** and gives information about how
 to display that **Brand**'s **[Amounts](#amount)**. **DisplayInfo** has one optional property,
 **decimalPlaces**, which takes a non-negative integer value.
 

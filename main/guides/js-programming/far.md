@@ -1,29 +1,29 @@
 # Far(), Remotable, and Marshaling
 
-Let's look more closely at an [eventual send](./eventual-send.md) between vats:
+Let's look more closely at an [eventual send](./eventual-send) between vats:
 
 ![counter remote presence](../assets/remote-presence-fig.svg)
 
-In the exporting vat, we'll take the `makeCounter` [Hardened JavaScript example](./hardened-js.md#example-hardened-javascript-code) and refine it to make _remotable_ counters
+In the exporting vat, we'll take the `makeCounter` [Hardened JavaScript example](./hardened-js#example-hardened-javascript-code) and refine it to make _remotable_ counters
 by marking them with [Far](#far-api):
 
-<<< @/snippets/test-distributed-programming.js#makeFarCounter
+<<< @/../snippets/test-distributed-programming.js#makeFarCounter
 
 ## Marshaling by Copy or by Presence
 
-Recall that the first step in an [eventual send](./eventual-send.md#eventual-send) is
+Recall that the first step in an [eventual send](./eventual-send#eventual-send) is
 to _marshal_ the method name and arguments. [Marshalling](https://en.wikipedia.org/wiki/Marshalling_%28computer_science%29) is transforming a data structure into a format suitable for storage or transmission.
 The [@endo/marshal](https://github.com/endojs/endo/tree/master/packages/marshal#readme) package uses [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON), but it can handle
 Javascript values that cannot be expressed directly as JSON,
 such as `undefined` and `BigInt`s.
 
-<<< @/snippets/test-marshal.js#marshal-json-steroids
+<<< @/../snippets/test-marshal.js#marshal-json-steroids
 
 Also, while many forms of data are copied between vats,
 remotables are marshalled so that they become remote _presences_ when unmarshaled.
 Another vat can then make and use the exported counters:
 
-<<< @/snippets/test-distributed-programming.js#useFarCounter
+<<< @/../snippets/test-distributed-programming.js#useFarCounter
 
 ## Pass Styles and harden
 
@@ -41,7 +41,7 @@ There are four broad kinds of Passable:
   _CopyRecords_ like `harden({ keys: [0, 1], values: ['foo', 'bar'] })`, and
   _CopyTaggeds_ representing types like CopySet, CopyBag, and CopyMap
   (which extend the `passStyleOf` level of abstraction with
-  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level.md#kindof-vs-passstyleof))
+  [tag-specific shapes and semantics](https://github.com/endojs/endo/blob/master/packages/patterns/docs/marshal-vs-patterns-level#kindof-vs-passstyleof))
 - Pass-by-reference "**PassableCaps**":
   - _Remotables_: objects that can be shared with remote systems which can then
     invoke methods using e.g. `E()` eventual send notation. Remotables are created by [`Far()`](#far-api)
@@ -69,7 +69,7 @@ data leads to behavior across vats that is straightforward to reason about.
 
 ## passStyleOf API
 
-<<< @/snippets/test-distributed-programming.js#import-pass-style
+<<< @/../snippets/test-distributed-programming.js#import-pass-style
 
 `passStyleOf(passable)` returns a `PassStyle` string that categorizes `passable`.
 
@@ -93,7 +93,7 @@ this prevents malicious clients from playing tricks with cyclic data etc.
 
 ## Far() API
 
-<<< @/snippets/test-distributed-programming.js#importFar
+<<< @/../snippets/test-distributed-programming.js#importFar
 
 `Far(farName, objectWithMethods)` marks an object as Remotable.
 

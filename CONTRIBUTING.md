@@ -26,10 +26,10 @@ process is:
 6. When all issues from the initial review are resolved, convert the PR from Draft to Ready For Review.
 7. Reviewers approve PR, you merge it with `main`.
 8. Pull Requests automatically run tests on their committed files.
-9. [VuePress](https://vuepress.vuejs.org/guide/#how-it-works) automatically
+9. [VitePress](https://vitepress.dev/guide/what-is-vitepress) automatically
    processes any new or changed files for display.
 10. The [Agoric website's Documentation Section](https://agoric.com/documentation/) displays
-   the VuePress processed files, which have been converted to HTML.
+   the VitePress processed files, which have been converted to HTML.
 
 This doc explains:
 - The overall documentation structure.
@@ -47,7 +47,7 @@ This doc explains:
 
 `/main` is the root directory for all files for the documentation site. It is the base path and renders as `/`.
 `/main/README.md/` is the README file for the Agoric Documentation repo, and the homepage for the documentation
-section of the Agoric website. The homepage uses the default VuePress homepage theme.
+section of the Agoric website. The homepage uses the default VitePress homepage theme.
 
 ### Folders and Projects
 
@@ -55,7 +55,7 @@ Each project gets its own folder, often with `/api` and `/guide` subfolders as w
 well as `/main/zoe/api/` and `/main/zoe/guide/`. Projects can have additional subfolders as needed.
 
 Each folder should have its own `README.md`, which is an effective `index.html` equivalent in terms of rendering when someone navigates to
-the folder's URL. See the next section for an explanation of how VuePress uses READMEs.
+the folder's URL. See the next section for an explanation of how VitePress uses READMEs.
 
 Images, diagrams, and similar content-supporting files should go in an `assets` subfolder under the appropriate project folder.
 For example, if you have a `process.svg` image file with a diagram for the Zoe Guide's Invitations page, it
@@ -66,27 +66,27 @@ or similar for individual files/pages.
 
 ### README files
 
-VuePress converts Markdown files to an HTML file with the same base name. `README.md` files are an exception; they're
+VitePress converts Markdown files to an HTML file with the same base name. `index.md` files are an exception; they're
 renamed `index.html`, since that's the default file web servers expect to find in each directory. Navigating
-to `https://agoric.com/documentation/ertp/guide/` displays the VuePress processed `/main/ertp/guide/README.md`.
-While it may seem odd, VuePress expects multiple `README.md` files in a repo; most folders will have one.
+to `https://agoric.com/documentation/ertp/guide/` displays the VitePress processed `/main/ertp/guide/index.md`.
 
-The root README.md file must start with an H1 (`#` in Markdown) header. In fact, all our doc pages should start
-with that. But for READMEs, it's needed to generate search indexes and sidebars.
+The root index.md file must start with an H1 (`#` in Markdown) header. In fact, all our doc pages should start
+with that. But for Index.md's, it's needed to generate search indexes and sidebars.
 
-All directories/folders should have a `README.md` file, even if it's empty. They provide a landing page for
-the folder in the VuePress processed documentation structure.
+Note - as of the Vitepress upgrade, sidebars are not automatically generated. You must add a `{text: '', link: ''}` entry to `main/.vitepress/config.js`.
+
+All directories/folders should have a `index.md` file, even if it's empty. They provide a landing page for
+the folder in the VitePress processed documentation structure.
 
 Lines with no special treatment are converted into standard HTML paragraph tags.
 
 ### Sectioning Pages
 
-VuePress automatically builds search functionality and individual page menus from `h1`, `h2`, and `h3` headers (i.e. Markdown's `#`, `##`, and `###` commands).
+VitePress automatically builds search functionality and individual page menus from `h1`, `h2`, and `h3` headers (i.e. Markdown's `#`, `##`, and `###` commands).
 You must have **only one** `h1` per `.md` file. Be careful not to have too many `h2` and `h3` level headers
 on one page and that they aren't too long. Otherwise the sidebar menu for the page will be cluttered and hard to read and use.
 
-Individual pages do not automatically display a sidebar menu for their headers (As of March 2021, VuePress
-documentation implies they do. We've filed a PR with them).
+Individual pages do not automatically display a sidebar menu for their headers without the use of a plugin.
 To force an individual page sidebar menu, add the following YAML at the top of a page's source file (this file has this YAML at the top):
 ```js
 ---
@@ -97,7 +97,7 @@ Other ways of activating this are:
 
 Turn it on for the whole site:
 ```js
-// .vuepress/config.js
+// .vitepress/config.js
 module.exports = {
   themeConfig: {
     sidebar: 'auto'
@@ -107,22 +107,22 @@ module.exports = {
 
 Or, add a config entry, either as part of a group or as an individual page.
 ```js
-// .vuepress/config.js
+// .vitepress/config.js
 module.exports = {
   themeConfig: {
     sidebar: [
       {
         title: 'Group 1',   // required
-        path: '/foo/',      // optional, link of the title, which should be an absolute path and must exist
+        link: '/foo/',      // optional, link of the title, which should be an absolute path and must exist
         collapsable: false, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
-        children: [
-          '/'
+        items: [
+          { text: '', link: '/' },
         ]
       },
       {
         title: 'Group 2',
-        children: [ /* ... */ ],
+        items: [ /* ... */ ],
         initialOpenGroupIndex: -1 // optional, defaults to 0, defines the index of initially opened subgroup
       }
     ]
@@ -132,12 +132,11 @@ module.exports = {
 
 ## Writing Links
 
-VuePress turns Markdown links into HTML links. There are some quirks about how you should write Markdown links.
+VitePress turns Markdown links into HTML links. There are some quirks about how you should write Markdown links.
 
 First, our link checker does **not** check `router-link` style links. Please only use Markdown style links.
 
-Next, your Markdown links should be to the `.md` Markdown files in the Doc repo. VuePress processing changes
-both the `.md` files and links to them to be `.html`.
+Next, your Markdown links should be to the `.md` Markdown files in the Doc repo, but exclude the file extension. VitePress processing changes both the `.md` files and links to them to be `.html`.
 
 In general, use relative links instead of absolute ones for any links to files or folders in the Documentation repo. Relative links
 open in the same browser tab when clicked on, absolute links open a new tab.
@@ -148,11 +147,11 @@ the same folder as the file you're writing (something like `(./assets/my-diagram
 difficult to remember/figure out what the right syntax is for relative linking to a file two folders up, in a different upper folder, and then
 two levels down from there on a different branch of the file structure.
 
-Instead, VuePress considers `main` the top of the file hierarchy. So you can always get to, say, a Glossary entry
+Instead, VitePress considers `main` the top of the file hierarchy. So you can always get to, say, a Glossary entry
 by just linking to `(/glossary/#allocation)`; its path starting at `main`. Any path starting with just `/` starts
 at `main`. These links also open in the same browser tab.
 
-VuePress turns every header in a Markdown file into an HTML anchor you can link to, so clicking such a link takes you directly to
+VitePress turns every header in a Markdown file into an HTML anchor you can link to, so clicking such a link takes you directly to
 that file location (called *slugifying* by WordPress and other blogging platforms). A header link consists of its file
 name, with an appended `#` and appended altered header text. The header text in a link has been converted to
 to lower case and all non-alphanumerics, including spaces, have been replaced by hyphens. The two exceptions to the latter
@@ -241,7 +240,7 @@ regions in a file, including defining one region inside of another. Just be sure
 all the ones in a file different names.
 
 To include a defined snippet in a Markdown file, put a
-line like `<<< @/snippets/test-intro-zoe.js#install` in it.
+line like `<<< @/../snippets/test-intro-zoe.js#install` in it.
 Replace the `test-intro-zoe.js` with the filename in the snippets file.
 Replace the `install` with the name of the region you want included from
 the file.
@@ -258,7 +257,7 @@ Note that the PR will automatically test and lint files. The above is for local 
 
 ### Check Links
 
-To check internal VuePress links locally, run the shell command `yarn check-links` from anywhere in the
+To check internal VitePress links locally, run the shell command `yarn docs:build` from anywhere in the
 root of the local repo folder or below.
 
 Note this does **not** check either external links or router-links. Output is the text of any
@@ -280,6 +279,8 @@ agoric install
 ```shell
 yarn docs:build
 ```
+The resulting build assets can be found in `/dist` in the project root.
+
 4. **Run**: To run a local server and see your changes in real time, run:
 ```shell
 yarn docs:dev
@@ -287,11 +288,17 @@ yarn docs:dev
 Most edit changes are immediately reflected in the browser, but
 applying site config changes may require stopping and restarting this program.
 
-View your local documentation site at `localhost:8080/documentation/`
+View your local documentation site at `localhost:5173`
+
+5. **Preview**: To preview a production build, run:
+```shell
+yarn docs:preview
+```
+View your local documentation site at `localhost:4173`
 
 ## Updating Zoe Version and DocsUpdated
 
-In `[/.vuepress/config.js](/.vuepress/config.js)`, find the lines
+In `[/.vitepress/config.js](/.vitepress/config.js)`, find the lines
 ```
 zoeVersion: 'Beta Release v1.0.0',
 zoeDocsUpdated: 'Apr 7, 2021'
@@ -302,8 +309,8 @@ normally on line 3.
 
 ## Editing Site Menus
 
-VuePress processing adds a top menubar to all Documentation site pages. When viewing a doc in an
-overall grouping, such as Zoe docs or Getting Started docs, VuePress adds a specified sidebar menu of
+VitePress processing adds a top menubar to all Documentation site pages. When viewing a doc in an
+overall grouping, such as Zoe docs or Getting Started docs, VitePress adds a specified sidebar menu of
 other docs in that grouping. This section describes how to edit the top menubar and sidebar menus.
 
 **Note**: We do not know how to specify which sidebar menu to display if a document is in
@@ -318,14 +325,14 @@ But if you're viewing "Introduction to Zoe" itself, you'll always see the Gettin
 no way to have it sometimes (appropriately) display the Zoe sidebar menu instead.
 
 ### Configuration and navigation
-All configuration is handled in [`/main/.vuepress/config.js`](/.vuepress/config.js). Here you can:
+All configuration is handled in [`/main/.vitepress/config.js`](/.vitepress/config.js). Here you can:
 - Set and modify the website title and description.
 - Configure the top navigation bar.
 - Configure the various sidebar menus
 
 #### Configuring the top menubar
-Go to `[main/.vuepress/themeConfig/nav.js](/.vuepress/themeConfig/nav.js)` to configure the top
-navigation bar. `/main/.vuepress/config.js`, the overall VuePress configuration file, imports `nav.js`.
+Go to `[main/.vitepress/themeConfig/nav.js](/.vitepress/themeConfig/nav.js)` to configure the top
+navigation bar. `/main/.vitepress/config.js`, the overall VitePress configuration file, imports `nav.js`.
 
 Below is an abridged configuration of the top navigation bar showing an array of only two entries,
 Getting Started and Learn More.
@@ -334,7 +341,7 @@ Each entry is an object with three or four properties:
 - `ariaLabel`: Labels this page element. Used to access it if the text is not visible.
 - `link`: Optional. Link to where the browser goes if you click the top menubar item itself, instead of a
   submenu item. Of the form `link: '/zoe/guide'` where the opening `/` starts the path at `main/`. In this
-  case, no filename was given, so it defaults to `guide`'s `README.md` file. If not present, the menubar
+  case, no filename was given, so it defaults to `guide`'s `index.md` file. If not present, the menubar
   entry is not clickable.
 - `items`: Optional. An array of submenu item objects, each of which is a single submenu item of its
   parent navbar item. Not present if the item doesn't have a submenu.
@@ -419,7 +426,7 @@ entry from the `items` array.
 ```
 
 #### Configuring sidebar menus.
-Sidebar menus are configured in [`/.vuepress/config.js`](/.vuepress/config.js). There,
+Sidebar menus are configured in [`/.vitepress/config.js`](/.vitepress/config.js). There,
 sidebars are configured where it starts: `sidebar: {`.
 
 Here's an abridged version of the overall sidebar configuration, only showing the Getting Started
@@ -447,7 +454,7 @@ sidebar: {
 Below is an abridged version of the ERTP sidebar. Each item entry has five properties:
 - `title`: The string that appears in the sidebar menu for this item.
 - `path`: Where you go if you click on this menu item. As usual, the leading `/` denotes a path
-  starting at `main`. Note the full file name is given, including the `.md` suffix (which VuePress
+  starting at `main`. Note the full file name is given, including the `.md` suffix (which VitePress
   will change to `.html` during its processing).
 - `collapsible`: Can this item be collapsed? So far, we don't have any collapsible items, so
   always give this property the value `false`.
@@ -455,18 +462,18 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
   default is 2, which displays h3 and is the max, but if fewer levels
   are desired, the setting can be overridden at the sidebar item
   level. More information
-  [here](https://vuepress.vuejs.org/theme/default-theme-config.html#nested-header-links).
+  [here](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars).
 
 - `children`: An array of submenu items for this sidebar menu item. You just need to specify
-  the file paths to where you want to go when the submenu item is clicked. VuePress uses the
-  file's (including default README.md files for folders) H1 level header text for the sidebar text.
+  the file paths to where you want to go when the submenu item is clicked. VitePress uses the
+  file's (including default index.md files for folders) H1 level header text for the sidebar text.
   You can also specify what text to use using the form `{ title: 'Mint', path: '/api/mint' }`.
 
 ```js
       '/ertp/': [
         {
           title: 'ERTP Introduction',
-          path: '/getting-started/ertp-introduction.md',
+          path: '/getting-started/ertp-introduction',
           collapsible: false,
           children: [
           ]
@@ -485,7 +492,7 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
         },
       ],
 ```
-When viewing a page, VuePress has automatically constructed a sidebar menu entry for that page
+When viewing a page, VitePress has automatically constructed a sidebar menu entry for that page
 consisting of all `h1`, `h2`, and `h3` header titles on the page.
 
 ## Redirecting links
@@ -494,7 +501,9 @@ If you reorganize part of the Documentation repo or delete/deprecate a file in f
 you should establish a site URL redirect from the old file to the new one, in case anyone external to
 Agoric has made a link or bookmarked the old file.
 
-Go to (or create if not there) `documentation/main/.vuepress/enhanceApp.js` As of March 2021, ours
+If you need to redirect to an **external** website, this will be accomplished at the DNS/Hosting level (See [vitepress #2083](https://github.com/vuejs/vitepress/discussions/2083)). These are maintained in the project root's `_redirects` file. See [Cloudflare Pages Redirects](https://developers.cloudflare.com/pages/configuration/redirects/) for more details.
+
+Go to (or create if not there) `documentation/main/.vitepress/enhanceApp.js` As of March 2021, ours
 looks like this:
 ```js
 export default ({ router }) => {
@@ -511,8 +520,8 @@ export default ({ router }) => {
 }
 ```
 The general format should be self-explanatory. However, there are two things you need to know that aren't apparent
-- VuePress treats `main` as the root of the folders. So all of the addresses start with `/` to represent `/main/`.
+- VitePress treats `main` as the root of the folders. So all of the addresses start with `/` to represent `/main/`.
 - You'll notice there are two entries for every redirect, one where the redirected address ends with `.html` and
-  one where it ends with `/`. For each individual file that is not a `README.md`, there are two ways to access it.
-  So we cover both ways. No entry has a `.md` extension. The redirect happens after VuePress' build step, so there
+  one where it ends with `/`. For each individual file that is not a `index.md`, there are two ways to access it.
+  So we cover both ways. No entry has a `.md` extension. The redirect happens after VitePress' build step, so there
   are no longer any Markdown files; they've been converted to .html. So that's what's redirected.

@@ -50,7 +50,7 @@ The `NameAdmin` interface has an `onUpdate` method for registering a callback.
 This is used to reflect the brand entries, that is: `E(E(agoricNames).lookup('brand')).entries()`
 into vstorage at `published.agoricNames.brand` each time they change.
 The entries for `instance` and the other keys of `agoricNames` are likewise reflected under `published.agoricNames`.
-See [marshalling amounts and instance](../getting-started/contract-rpc.md#marshalling-amounts-and-instances)
+See [marshalling amounts and instance](../getting-started/contract-rpc#marshalling-amounts-and-instances)
 for details on the format of the data stored in vstorage.
 
 
@@ -103,5 +103,5 @@ can look up the object:
 const instance = await E(board).getValue('board023423')
 ```
 
-See also: [marshalling amounts and instance](../getting-started/contract-rpc.md#marshalling-amounts-and-instances)
+See also: [marshalling amounts and instance](../getting-started/contract-rpc#marshalling-amounts-and-instances)
 for details on using board ids to refer to objects from structures stored in vstorage,

@@ -24,7 +24,7 @@ payments) involve an exchange of digital assets that can be put in
 terms of offer proposals. We
 can say things like, "I'll give you [three wool for two
 bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the
-particulars of structuring an offer proposal here](./proposal.md).
+particulars of structuring an offer proposal here](./proposal).
 
 Offers are a structured way of describing user intent. To a certain
 extent, an offer's rules (called a *proposal*) are the user's
@@ -66,7 +66,7 @@ even if we don't trust each other. We are assured that at worst, if
 the swap contract behaves badly, we both get a refund, and at
 best, we get what we each wanted.
 
-Let's look at the basic [Atomic Swap contract](/guides/zoe/contracts/atomic-swap.md)
+Let's look at the basic [Atomic Swap contract](/guides/zoe/contracts/atomic-swap)
 (link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what happens:
@@ -91,7 +91,7 @@ Here's a high-level overview of what happens:
 ## How to Write Smart Contracts
 
 Writing smart contracts that run on Zoe is easy. Let's look
-at a simple contract like [Automatic Refund](/guides/zoe/contracts/automatic-refund.md)
+at a simple contract like [Automatic Refund](/guides/zoe/contracts/automatic-refund)
 (link includes [real contract
 code](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/automaticRefund.js)).
 It only does one thing, and it's pretty useless&mdash;it gives you back what you put in.
@@ -135,12 +135,12 @@ several optional properties:
 
 ## Diving Deeper
 
-Let's dive back into the [Atomic Swap contract](/guides/zoe/contracts/atomic-swap.md)
+Let's dive back into the [Atomic Swap contract](/guides/zoe/contracts/atomic-swap)
 (link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
 
 The contract first confirms that `issuers` are setup for the `Asset` and `Price` keywords. Those are the two items that will be swapped.
 
-The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers.md#assertissuerkeywords-zcf-expected). It
+The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers#assertissuerkeywords-zcf-expected). It
 checks properties of the running contract instance's terms.
 ```js
 const start = zcf => {
@@ -153,7 +153,7 @@ the contract. When the associated `creatorInvitation` is used to make an offer, 
 with the `seat` for that offer.
 
 This contract uses the
-[`assertProposalShape` helper function](/reference/zoe-api/zoe-helpers.md#assertproposalshape-seat-expected) to
+[`assertProposalShape` helper function](/reference/zoe-api/zoe-helpers#assertproposalshape-seat-expected) to
 check that the offer proposes the kind of trade the contract accepts. In this case, offers must
 have a proposal of the form:
 ```js
@@ -177,7 +177,7 @@ The contract then uses `getProposal()` to extract the properties of the proposal
 `makeMatchingInvitation()` then constructs a `matchingSeatOfferHandler()` handler
 for the second offer, with the first offer's `want` and `give` in scope. This second
 handler is responsible for the final step.
-It uses the [`swap` helper  function](/reference/zoe-api/zoe-helpers.md#swap-zcf-leftseat-rightseat)
+It uses the [`swap` helper  function](/reference/zoe-api/zoe-helpers#swap-zcf-leftseat-rightseat)
 to attempt asset reallocation between the two seats as described above and then
 (whether or not the attempt succeeds) exits both seats, making payouts available to
 both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
@@ -217,5 +217,5 @@ and returns it as `creatorInvitation`.
 ```
 
 The `creatorInvitation` is only available to the contract instance's creator
-(see [`startInstance`](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)).
+(see [`startInstance`](/reference/zoe-api/zoe#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)).
 The creator can use it to make their own offer, or can send it to some other party.

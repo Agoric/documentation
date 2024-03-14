@@ -69,39 +69,39 @@ Several `home` objects are either for internal Agoric use only or have been depr
 are listed together in the final section. External developers should ignore them and not try to use
 them.
 
-### [`wallet`](../wallet-api.md)
+### [`wallet`](../wallet-api/)
 Holds on-chain digital assets and object capabilities on behalf of the user.
 The header link takes you to the standard non-REPL specific `wallet` API documentation. When calling
 `wallet` API methods from the REPL, `wallet` must be prefaced by `home.` and use `E()`. For 
 example, `E(home.wallet).getPurses()`. [Full Wallet API documentation.](/guides/wallet/) 
 
-### [`chainTimerService`](./timerServices.md)
-On-chain time authority used to schedule events. [Full `chainTimerService` documentation.](./timerServices.md)
+### [`chainTimerService`](./timerServices)
+On-chain time authority used to schedule events. [Full `chainTimerService` documentation.](./timerServices)
 
-### [`localTimerService`](./timerServices.md)
-Local off-chain time authority used to schedule events. [Full `localTimerService` documentation.](./timerServices.md)
+### [`localTimerService`](./timerServices)
+Local off-chain time authority used to schedule events. [Full `localTimerService` documentation.](./timerServices)
 
-### [`board`](./board.md)
-Shared on-chain location where users can post generally accessible values. [Full `board` documentation.](./board.md)
+### [`board`](./board)
+Shared on-chain location where users can post generally accessible values. [Full `board` documentation.](./board)
 
-### [`ibcport`](./networking.md)
+### [`ibcport`](./networking)
 IBC implementation that lets vats open and close listening ports, 
 connect and disconnect to/from remote ports, and send and receive 
-data over those connections. [Full `ibcport` documentation.](./networking.md)
+data over those connections. [Full `ibcport` documentation.](./networking)
 
-### [`zoe`](../zoe-api/zoe.md)
+### [`zoe`](../zoe-api/zoe)
 Deploy and interact with smart contracts. Zoe protects smart contract users by escrowing
 digital assets and guaranteeing users get either what they want or get a refund of what 
 they escrowed. Even if the contract is buggy or malicious. The header link takes you to the 
 standard, non-REPL specific, `zoe` API documentation. When calling any of the `zoe` API 
 methods from the REPL, `zoe` must be prefaced by `home.` and use `E()`. For 
-example, `E(home.zoe).getFoo()`. [Full Zoe API documentation.](../zoe-api/zoe.md)
+example, `E(home.zoe).getFoo()`. [Full Zoe API documentation.](../zoe-api/zoe)
 
-### [`priceAuthority`](./priceAuthority.md)
-Get price quotes for pairs of digital assets. [Full `priceAuthority` documentation.](./priceAuthority.md)
+### [`priceAuthority`](./priceAuthority)
+Get price quotes for pairs of digital assets. [Full `priceAuthority` documentation.](./priceAuthority)
 
-### [`scratch`](./scratch.md)
-An off-chain, private, place to store key-value pairs on your ag-solo for later use. [Full `scratch` documentation.](./scratch.md)
+### [`scratch`](./scratch)
+An off-chain, private, place to store key-value pairs on your ag-solo for later use. [Full `scratch` documentation.](./scratch)
 
 ### Deprecated and Internal-Only Objects
 
@@ -109,7 +109,7 @@ An off-chain, private, place to store key-value pairs on your ag-solo for later 
 - `faucet`: Internal for chain setup.
 - `http`: `api/deploy.js` uses this to install new HTTP and WebSocket handlers in an
    ag-solo.  You should not need to use it. 
-- `network`: Privileged object for internal use. [Full Network documentation.](./networking.md)
+- `network`: Privileged object for internal use. [Full Network documentation.](./networking)
 - `plugin`: Privileged object for internal use.
 - `priceAuthorityAdmin`: Privileged object for internal use.
 - `registrar`: Deprecated.

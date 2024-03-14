@@ -12,7 +12,7 @@ In the [mainnet-1B release of agoric-sdk](https://github.com/Agoric/agoric-sdk/r
 | binaryVoteCounter | instantiated once for each question that a committee votes on |
 | econCommitteeCharter | controls what questions can be put to the economic committee |
 | contractGovernor | each governed contract is started by starting its governor |
-| [PSM](./PSM.md) | The Parity Stability Module (PSM) supports efficiently minting and burning Inter Stable Tokens (ISTs) in exchange for approved external stable tokens. |
+| [PSM](./PSM) | The Parity Stability Module (PSM) supports efficiently minting and burning Inter Stable Tokens (ISTs) in exchange for approved external stable tokens. |
 | vaultFactory| allows users to mint IST backed by collateral such as ATOM; hands off vaults to auctioneer when value of collateral in a vault falls below a governed threshold |
 | auctioneer | auctions collateral from liquidated vaults |
 | fluxAggregator | aggregates prices from oracle oeprators |

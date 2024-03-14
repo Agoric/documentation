@@ -15,7 +15,7 @@ on the value of some good at a known future time. This video gives a
 
 There are two variants of the callSpread. This one is fully funded by its creator, who can then sell
 (or transfer another way) the options to other parties. The other is called the
-[pricedCallSpread](./pricedCallSpread.md). It allows the creator to specify the proportion of the
+[pricedCallSpread](./pricedCallSpread). It allows the creator to specify the proportion of the
 collateral that should be provided by the two parties. Each get an invitation to contribute a stated
 amount of collateral for a particular position.
 
@@ -42,7 +42,7 @@ The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a [timer](/reference/repl/timerServices.md), and must be recognized by `priceAuthority`.
+ * `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.
@@ -52,7 +52,7 @@ strikePrice2, settlementAmount }`.
    stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
    asset in the strike currency.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#startInstance
+<<< @/../snippets/zoe/contracts/test-callSpread.js#startInstance
 
 ## Creating the Options
 
@@ -60,7 +60,7 @@ The terms specify all the details of the options. However, the options are not h
 creator provides the collateral that will make them valuable.  The creatorInvitation has
 customProperties including the amounts of the two options: `longAmount` and `shortAmount`.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#invitationDetails
+<<< @/../snippets/zoe/contracts/test-callSpread.js#invitationDetails
 
 The creator uses these option amounts to create an offer that ensures that they will get the two
 options in exchange for the funds. The proposal describes the desired options and provided
@@ -68,7 +68,7 @@ collateral. When the offer is made, a payout is returned containing the two opti
 positions are invitations which can be exercised for free, and provide the option payouts under the
 keyword `Collateral`.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#creatorInvitation
+<<< @/../snippets/zoe/contracts/test-callSpread.js#creatorInvitation
 
 ## Validating the Options
 
@@ -80,7 +80,7 @@ check that the expiration matches their expectations (here `3n` is a small integ
 manual timer in a test; in actual use, it might represent block height or wall clock time.) The
 strike prices and settlement amount are likewise visible.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#verifyTerms
+<<< @/../snippets/zoe/contracts/test-callSpread.js#verifyTerms
 
 ## Options can be Exercised Independently
 
@@ -89,7 +89,7 @@ option is exercised after the closing price is determined, the payouts will stil
 two options make their payment available as soon after exercise as the price is available, and
 neither waits for the other to exercise.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#bobExercise
+<<< @/../snippets/zoe/contracts/test-callSpread.js#bobExercise
 
 There is a
 [unit test](https://github.com/Agoric/agoric-sdk/blob/0b44d486390768fbf828e64ce52c99192f67ada0/packages/zoe/test/unitTests/contracts/test-callSpread.js#L440)

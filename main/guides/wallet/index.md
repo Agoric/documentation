@@ -1,7 +1,7 @@
 # Agoric Wallet
 
 This page documents the *Agoric Wallet*, including its use of *petnames* and its place in the Agoric Platform
-architecture. See also [tour of the Wallet UI](./ui.md), [Wallet API reference](/reference/wallet-api.md).
+architecture. See also [tour of the Wallet UI](./ui), [Wallet API reference](/reference/wallet-api/).
 
 ## Wallet and Agoric Architecture
 
@@ -110,7 +110,7 @@ communication method you like; private email, an email blast to a mailing list
 or many individuals, buying an ad on a website, tv program, or newspaper, 
 listing it on your website, etc.
 
-<<< @/snippets/ertp/guide/test-readme.js#getValue
+<<< @/../snippets/ertp/guide/test-readme.js#getValue
 
 To get an object, such as a depositFacet, using the Board, first you have
 to be told what Board Id is associated with it. Using the `getValue()` method,

@@ -7,17 +7,17 @@ for that instance. A Zoe Contract Facet is accessed synchronously from within th
 and usually is referred to in code as **zcf**.
 
 The contract instance is launched by **E(Zoe).startInstance()**, and is given access to
-the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements.md)).
+the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements)).
 In the operations below, **instance** is the handle for the running contract instance.
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
-- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
-- **assetKind**: **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
-- **displayInfo**: **[DisplayInfo](/reference/ertp-api/ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
-- Returns: **Promise&lt;[ZCFMint](./zcfmint.md)>**
+- **keyword**: **[Keyword](./zoe-data-types#keyword)**
+- **assetKind**: **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)** - Optional, defaults to **AssetKind.NAT**.
+- **displayInfo**: **[DisplayInfo](/reference/ertp-api/ertp-data-types#displayinfo)** - Optional, defaults to **undefined**.
+- Returns: **Promise&lt;[ZCFMint](./zcfmint)>**
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
-instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint.md)**.
+instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint)**.
 The optional *displayInfo* parameter takes values
 like **decimalPlaces: 16** that tell the UI how to display values associated with the created mint's 
 brand. It defaults to undefined.
@@ -25,7 +25,7 @@ brand. It defaults to undefined.
 **Important**: **ZCFMints** do **not** have the same methods as an ERTP **Mint**. Do not try to use
 ERTP methods on a **ZCFMint** or vice versa.
 
-**Important**: On the other hand, the **[Issuer](/reference/ertp-api/issuer.md)** and **[Brand](/reference/ertp-api/brand.md)** associated with a **zcfMint**
+**Important**: On the other hand, the **[Issuer](/reference/ertp-api/issuer)** and **[Brand](/reference/ertp-api/brand)** associated with a **zcfMint**
 do have the same methods as their ERTP-derived counterparts. Assets created by a **zcfMint** are treated
 the same as assets created by ERTP **Mint** methods.
 
@@ -41,7 +41,7 @@ mySynchronousMint.mintGains({ myKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
-- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types.md#invitationissuer)>**
+- Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types#invitationissuer)>**
 
 Returns the **InvitationIssuer** for the Zoe instance.
 
@@ -50,8 +50,8 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
-- **issuer**: **[Issuer](/reference/ertp-api/issuer.md)**
-- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
+- **issuer**: **[Issuer](/reference/ertp-api/issuer)**
+- **keyword**: **[Keyword](./zoe-data-types#keyword)**
 - Returns: **Promise&lt;IssuerRecord>**
 
 Informs Zoe about an **Issuer** and returns a promise for acknowledging
@@ -76,18 +76,18 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 - **description**: **String**
 - **customDetails**: **Object** - Optional.
 - **proposalShape**: **[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)** - Optional.
-- Returns: **Promise&lt;[Invitation](./zoe-data-types.md#invitation)>**
+- Returns: **Promise&lt;[Invitation](./zoe-data-types#invitation)>**
 
-Uses the Zoe **[InvitationIssuer](./zoe-data-types.md#invitationissuer)** to _mint_
+Uses the Zoe **[InvitationIssuer](./zoe-data-types#invitationissuer)** to _mint_
 a credible **Invitation** for a smart contract.
 The returned **Invitation**'s **amount** specifies:
 - The specific contract **instance**.
 - The Zoe **installation**.
-- A unique **[Handle](./zoe-data-types.md#handle)**.
+- A unique **[Handle](./zoe-data-types#handle)**.
 
 **offerHandler** is a required function accepting a **ZCFSeat** and **offerArgs**
 (which will be present if and only if provided to
-[`E(Zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs))
+[`E(Zoe).offer(...)`](/reference/zoe-api/zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs))
 and returning arbitrary offer results.
 
 **description** is a required string describing the **Invitation**,
@@ -133,7 +133,7 @@ const creatorInvitation =
 ```
 
 ## zcf.makeEmptySeatKit()
-- Returns: **[ZCFSeat](./zcfseat.md), Promise&lt;[UserSeat](./user-seat.md)>**
+- Returns: **[ZCFSeat](./zcfseat), Promise&lt;[UserSeat](./user-seat)>**
 
 Returns an empty **ZCFSeat** and a **Promise** for a **UserSeat**
 
@@ -145,25 +145,25 @@ const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
 
 ## zcf.getInstance()
-- Returns: **[Instance](./zoe-data-types.md#instance)**
+- Returns: **[Instance](./zoe-data-types#instance)**
 
 The contract code can request its own current instance, so it can be sent elsewhere.
 
 ## zcf.getBrandForIssuer(issuer)
-- **issuer**: **[Issuer](/reference/ertp-api/issuer.md)**
-- Returns: **[Brand](/reference/ertp-api/brand.md)**
+- **issuer**: **[Issuer](/reference/ertp-api/issuer)**
+- Returns: **[Brand](/reference/ertp-api/brand)**
 
 Returns the **Brand** associated with the *issuer*.
 
 ## zcf.getIssuerForBrand(brand)
-- **brand**: **[Brand](/reference/ertp-api/brand.md)**
-- Returns: **[Issuer](/reference/ertp-api/issuer.md)**
+- **brand**: **[Brand](/reference/ertp-api/brand)**
+- Returns: **[Issuer](/reference/ertp-api/issuer)**
 
 Returns the **Issuer** of the *brand* argument.
 
 ## zcf.getAssetKind(brand)
-- **brand**: **[Brand](/reference/ertp-api/brand.md)**
-- Returns: **[AssetKind](/reference/ertp-api/ertp-data-types.md#assetkind)**
+- **brand**: **[Brand](/reference/ertp-api/brand)**
+- Returns: **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)**
 
 Returns the **AssetKind** associated with the *brand* argument.
 ```js
@@ -220,7 +220,7 @@ zcf.shutdownWithFailure();
 ## zcf.getTerms()
 - Returns: **Object**
 
-Returns the **[Issuers](/reference/ertp-api/issuer.md)**, **[Brands](/reference/ertp-api/brand.md)**, and custom **terms** the current contract **instance** was instantiated with.
+Returns the **[Issuers](/reference/ertp-api/issuer)**, **[Brands](/reference/ertp-api/brand)**, and custom **terms** the current contract **instance** was instantiated with.
 
 The returned values look like:
 ```js
@@ -244,9 +244,9 @@ const { brands, issuers, maths, terms } = zcf.getTerms()
 ```
 
 ## zcf.getZoeService()
-- Returns: [ZoeService](./zoe.md)
+- Returns: [ZoeService](./zoe)
 
-This is the only way to get the user-facing [Zoe Service API](./zoe.md) to
+This is the only way to get the user-facing [Zoe Service API](./zoe) to
 the contract code as well.
 ```js
 // Making an offer to another contract instance in the contract.
@@ -255,7 +255,7 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
 
 ## zcf.assertUniqueKeyword(keyword)
-- **keyword**: **[Keyword](./zoe-data-types.md#keyword)**
+- **keyword**: **[Keyword](./zoe-data-types#keyword)**
 - Returns: **Undefined**
 
 Checks if a **Keyword** is valid and not already used as a **Brand** in this **Instance** (i.e., unique)
@@ -292,7 +292,7 @@ that they provide a vulnerability.
 
 ::: warning DEPRECATED
 ## zcf.reallocate(seats)
-- **seats**: **[ZCFSeats](./zcfseat.md)[]** (at least two)
+- **seats**: **[ZCFSeats](./zcfseat)[]** (at least two)
 - Returns: None.
 
 **zcf.reallocate()** commits the staged allocations for each of its seat arguments,
@@ -313,7 +313,7 @@ it will never abort part way through. It will completely succeed or it will
 fail before any seats have their current allocation changed.
 
 The reallocation only succeeds if it:
-1. Conserves rights (the specified **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** have the same total value as the
+1. Conserves rights (the specified **[Amounts](/reference/ertp-api/ertp-data-types#amount)** have the same total value as the
   current total amount)
 2. Is 'offer-safe' for all parties involved. 
 
@@ -335,7 +335,7 @@ buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
 zcf.reallocate(buyerSeat, sellerSeat);
 ```
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
 
 

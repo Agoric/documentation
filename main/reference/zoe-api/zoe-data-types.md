@@ -4,7 +4,7 @@ Zoe introduces and uses several data types.
 
 ## Allocation
 
-**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)** to be paid
+**Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types#amount)** to be paid
 out to each seat upon exiting a **Proposal**.
 
 For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after successfully exiting a **Proposal**, the **Allocation** would look like:
@@ -28,29 +28,29 @@ designated objects.
 An **Instance** is a handle that represents an instance of a contract.
 You can get information about the contract instance via these methods:
 
-- **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
-- **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
-- **[E(Zoe).getTerms()](./zoe.md#e-zoe-getterms-instance)**
-- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
+- **[E(Zoe).getBrands()](./zoe#e-zoe-getbrands-instance)**
+- **[E(Zoe).getIssuers()](./zoe#e-zoe-getissuers-instance)**
+- **[E(Zoe).getTerms()](./zoe#e-zoe-getterms-instance)**
+- **[E(Zoe).getPublicFacet()](./zoe#e-zoe-getpublicfacet-instance)**
 
 ## Invitation
 
 An **Invitation** is a non-fungible asset created by the **[InvitationIssuer](#invitationissuer)**.
-An **Invitation Payment** is a **[Payment](/reference/ertp-api/payment.md)** holding an **Invitation**.
+An **Invitation Payment** is a **[Payment](/reference/ertp-api/payment)** holding an **Invitation**.
 
 ## InvitationIssuer
 
-The **InvitationIssuer** is an **[Issuer](/reference/ertp-api/issuer.md)** that plays a
+The **InvitationIssuer** is an **[Issuer](/reference/ertp-api/issuer)** that plays a
 special role throughout Zoe. Zoe has a single **InvitationIssuer** for its entire
-lifetime. All **Invitations** come from the **[Mint](/reference/ertp-api/mint.md)**
+lifetime. All **Invitations** come from the **[Mint](/reference/ertp-api/mint)**
 associated with the Zoe instance's **InvitationIssuer**.
 
-The issuer is publicly available (via [`E(Zoe).getInvitationIssuer()`](./zoe-contract-facet.md#zcf-getinvitationissuer)),
+The issuer is publicly available (via [`E(Zoe).getInvitationIssuer()`](./zoe-contract-facet#zcf-getinvitationissuer)),
 so the ability to validate invitations is widely available.
 
 **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most
-often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
-and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
+often used are **[anIssuer.claim()](/reference/ertp-api/issuer#anissuer-claim-payment-optamount)**
+and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer#anissuer-getamountof-payment)**.
 
 A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into
 the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
@@ -73,9 +73,9 @@ A **KeywordRecord** is a [CopyRecord](/glossary/#copyrecord) in which every prop
 is a **[Keyword](#keyword)**, such as `harden({ Asset: moolaIssuer, Bid: simoleanIssuer })`.
 Subtypes further constrain property values (for example, an
 **AmountKeywordRecord** is a **KeywordRecord** in which every value is an
-**[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and a
+**[Amount](/reference/ertp-api/ertp-data-types#amount)** and a
 **PaymentPKeywordRecord** is a **KeywordRecord** in which every value is either a
-**[Payment](/reference/ertp-api/payment.md)** or a Promise for a Payment).
+**[Payment](/reference/ertp-api/payment)** or a Promise for a Payment).
 
 Users submit their **payments** as **KeywordRecords**:
 ```js
@@ -87,10 +87,10 @@ const paymentKeywordRecord = {
 
 ## MutableQuote
 
-A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
+A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the 
 current price level at a particular time. The significant content (prices 
-and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated
-in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)**, and repeated
+in the **[Payment](/reference/ertp-api/payment)** for veracity.
 
 **MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
 value. If you just need a single quote, and won't change the trigger level, you should use
@@ -105,10 +105,10 @@ A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 
 ## PriceQuote
 
-A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
+A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the 
 current price level at a particular time. The significant content (prices 
-and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and repeated
-in the **[Payment](/reference/ertp-api/payment.md)** for veracity. 
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)** and repeated
+in the **[Payment](/reference/ertp-api/payment)** for veracity. 
 A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
 balance of the **Payment**.
  
@@ -127,8 +127,8 @@ const { quoteAmount, quotePayment } = priceQuote;
 
 **Ratios** are pass-by-value records that consist of a
 *numerator* and a *denominator*. Both of these consist of a
-**[AmountValue](/reference/ertp-api/ertp-data-types.md#amountvalue)** and a **[Brand](/reference/ertp-api/brand.md)**,
-just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
+**[AmountValue](/reference/ertp-api/ertp-data-types#amountvalue)** and a **[Brand](/reference/ertp-api/brand)**,
+just like **[Amounts](/reference/ertp-api/ertp-data-types#amount)**.
 A **Ratio** cannot have a denominator value of 0.
 
 The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand**
@@ -140,9 +140,9 @@ hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 ## TransferPart
 
 **TransferParts** are the individual elements of the *transfer* array passed into the
-**[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
+**[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
 represents one or two **[Allocation](#allocation)** changes among existing
-**[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, each of which can be elided
+**[ZCFSeats](./zcfseat)**. Each **TransferPart** consists of 4 elements, each of which can be elided
 in some cases:
 
 * **fromSeat**?: **ZCFSeat** - The seat from which **amounts** are being taken.
@@ -156,8 +156,8 @@ specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fro
 
 **TransferParts** that represent one side of a transfer
 can be created using the helper functions
-**[fromOnly()](./zoe-helpers.md#fromonly-fromseat-fromamounts)** or
-**[toOnly()](./zoe-helpers.md#toonly-toseat-toamounts)**.
+**[fromOnly()](./zoe-helpers#fromonly-fromseat-fromamounts)** or
+**[toOnly()](./zoe-helpers#toonly-toseat-toamounts)**.
 Of course, as with any JavaScript datatype, you can also manually create **TransferParts**.
 If you manually create a **TransferPart** and don't include the *fromSeat*, *toSeat*, and/or
 *fromAmounts* fields, you'll need to set the missing fields to **undefined**. (Note that if you don't

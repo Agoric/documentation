@@ -62,7 +62,7 @@ There are a few requirements for the contract that differ from non-upgradable co
 
 The new code bundle declares that it supports upgrade by exporting a `prepare` function in place of `start`.
 
-<<< @/snippets/zoe/src/02b-state-durable.js#export-prepare
+<<< @/../snippets/zoe/src/02b-state-durable.js#export-prepare
 
 ### Durability
 
@@ -97,17 +97,17 @@ The `zone` API is a convenient way to manage durability. Its store methods integ
 
 ::: details import { makeDurableZone } ...
 
-<<< @/snippets/zoe/src/02b-state-durable.js#import-zone
+<<< @/../snippets/zoe/src/02b-state-durable.js#import-zone
 
 :::
 
-<<< @/snippets/zoe/src/02b-state-durable.js#zone1
+<<< @/../snippets/zoe/src/02b-state-durable.js#zone1
 
 ::: details What happens if we don't use baggage?
 
 When the contract instance is restarted, its [vat](../js-programming/#vats-the-unit-of-synchrony) gets a fresh heap, so [ordinary heap state](./contract-basics.md#state) does not survive upgrade. This implementation does not persist the rooms nor their counts between incarnations:
 
-<<< @/snippets/zoe/src/02-state.js#heap-state{2}
+<<< @/../snippets/zoe/src/02-state.js#heap-state{2}
 
 :::
 
@@ -115,18 +115,18 @@ When the contract instance is restarted, its [vat](../js-programming/#vats-the-u
 
 Use `zone.exoClass()` to define state and methods of kinds of durable objects such as `Room`:
 
-<<< @/snippets/zoe/src/02b-state-durable.js#exoclass
+<<< @/../snippets/zoe/src/02b-state-durable.js#exoclass
 
 Defining `publicFacet` as a singleton `exo` allows clients to
 continue to use it after an upgrade:
 
-<<< @/snippets/zoe/src/02b-state-durable.js#exo
+<<< @/../snippets/zoe/src/02b-state-durable.js#exo
 
 Now we have all the parts of an upgradable contract.
 
 ::: details full contract listing
 
-<<< @/snippets/zoe/src/02b-state-durable.js#contract
+<<< @/../snippets/zoe/src/02b-state-durable.js#contract
 
 :::
 

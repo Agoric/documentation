@@ -9,6 +9,6 @@ if such a proposal passes, its JavaScript code is run with ocaps extracted using
 
 To do try it out in a local testnet chain:
 
-1. [Declare the capabilities that the proposal will require](./permissions.md).
-2. [Code the proposal itself](./proposal.md).
-3. [Deploy the proposal to a local testnet](./local-testnet.md).
+1. [Declare the capabilities that the proposal will require](./permissions).
+2. [Code the proposal itself](./proposal).
+3. [Deploy the proposal to a local testnet](./local-testnet).

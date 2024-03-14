@@ -1,13 +1,13 @@
 # Issuer Object
 
 An **Issuer** is the authority on what holds digital assets of its kind. 
-While it cannot create new value by creating digital assets like a **[Mint](./mint.md)** can, 
-it recognizes and identifies **[Purses](./purse.md)** and **[Payments](./payment.md)** that carry actual value.
+While it cannot create new value by creating digital assets like a **[Mint](./mint)** can, 
+it recognizes and identifies **[Purses](./purse)** and **[Payments](./payment)** that carry actual value.
 It can create empty **Purses** and transform **Payments** (by splitting, 
 combining, burning, or exclusively claiming them). 
 
 An **Issuer** has an unchangeable one-to-one relationship with the **Mint** and
-**[Brand](./brand.md)** that were created with it. For any **Brands** for which you will accept
+**[Brand](./brand)** that were created with it. For any **Brands** for which you will accept
 **Payments** in, you should obtain its **Issuer** from a trusted source.
 You can then rely on that **Issuer** as the authority to 
 validate an untrusted **Payment** of that **Brand**.
@@ -17,14 +17,14 @@ are ephemeral, so any object created there dies as soon as the script ends.
 
 ## makeIssuerKit(allegedName, assetKind?, displayInfo?, optShutdownWithFailure?, elementShape?)
 - **allegedName**: **String** 
-- **assetKind**: **[AssetKind](./ertp-data-types.md#assetkind)** - Optional, defaults to **AssetKind.NAT**.
-- **displayInfo**: **[DisplayInfo](./ertp-data-types.md#displayinfo)** - Optional, defaults to **undefined**.
+- **assetKind**: **[AssetKind](./ertp-data-types#assetkind)** - Optional, defaults to **AssetKind.NAT**.
+- **displayInfo**: **[DisplayInfo](./ertp-data-types#displayinfo)** - Optional, defaults to **undefined**.
 - **optShutdownWithFailure** - Optional, defaults to **undefined**.
 - **elementShape** - Optional, defaults to **undefined**.
 - Returns **IssuerKit**. This is an object with three properties:
 	- **issuer**: **Issuer**
-	- **mint**: **[Mint](./mint.md)**
- 	- **brand**: **[Brand](./brand.md)**
+	- **mint**: **[Mint](./mint)**
+ 	- **brand**: **[Brand](./brand)**
 
 Creates and returns a new **Issuer** and its associated **Mint** and **Brand**.
 All three are in unchangeable one-to-one relationships with each other. 
@@ -35,12 +35,12 @@ is useful for debugging and double-checking assumptions, but should not be trust
 
 The optional *assetKind* parameter specifies the kind of asset associated with the **Issuer** about 
 to be created. If no **AssetKind** argument is passed into the method, then the **Issuer**'s asset 
-kind defaults to **AssetKind.NAT**. **[AmountMath](./amount-math.md)**'s methods work with all the 
+kind defaults to **AssetKind.NAT**. **[AmountMath](./amount-math)**'s methods work with all the 
 kinds of assets, but exactly what math or manipulation is performed varies depending on 
 the **AssetKind**. 
 
 The optional *displayInfo* parameter tells the UI how to 
-display **[Amounts](./ertp-data-types.md#amount)** of this **Brand**.
+display **[Amounts](./ertp-data-types#amount)** of this **Brand**.
 
 The optional *optShutdownWithFailure* parameter should be used for mission-critical
 **Issuers**. This parameter is a function that will stop the vat hosting the 
@@ -49,7 +49,7 @@ The optional *optShutdownWithFailure* parameter should be used for mission-criti
 The optional *elementShape* parameter is only used when creating an **Issuer** that
 has a non-fungible asset associated with it. When used, the *elementShape* parameter is an object 
 with however many properties are required to describe the asset. This object sets the 
-*valueShape's* properties of the asset's **[AmountShape](./ertp-data-types.md#amountshape)**.
+*valueShape's* properties of the asset's **[AmountShape](./ertp-data-types#amountshape)**.
 
 
 ```js
@@ -81,7 +81,7 @@ An alleged name is a human-readable string name
 of a kind of digital asset. An alleged name
 should not be trusted as accurate because there is
 no public registry or expectation of uniqueness. This
-means there can be multiple **Issuers**, **[Mints](./mint.md)**, or **[Brands](./brand.md)** with the
+means there can be multiple **Issuers**, **[Mints](./mint)**, or **[Brands](./brand)** with the
 same alleged name, and thus the name by itself does not
 uniquely identify an **Issuer**. Rather, the **Brand** does that.
 
@@ -97,11 +97,11 @@ const quatloosIssuerAllegedName = quatloosIssuer.getAllegedName();
 ```
 
 ## anIssuer.getAssetKind()
-- Returns: **[AssetKind](./ertp-data-types.md#assetkind)**
+- Returns: **[AssetKind](./ertp-data-types#assetkind)**
 
 Returns the kind of the **Issuer**'s asset.
 
-The **AssetKind** specifies what kind of values are used in **[Amounts](./ertp-data-types.md#amount)** for this **Issuer**. 
+The **AssetKind** specifies what kind of values are used in **[Amounts](./ertp-data-types#amount)** for this **Issuer**. 
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -111,12 +111,12 @@ moolaIssuer.getAssetKind(); // Returns 'copy_set', also known as 'AssetKind.COPY
 ```
 
 ## anIssuer.getAmountOf(payment)
-- **payment**: **[Payment](./payment.md)**
-- Returns: **[Amount](./ertp-data-types.md#amount)**
+- **payment**: **[Payment](./payment)**
+- Returns: **[Amount](./ertp-data-types#amount)**
 
 Describes the **Payment**'s balance as an **Amount**. Because a **Payment** from an untrusted
 source cannot be trusted to provide its own true value, the **Issuer** must be used to
-validate its **[Brand](./brand.md)** and report how much the returned **Amount** contains.
+validate its **[Brand](./brand)** and report how much the returned **Amount** contains.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
@@ -126,10 +126,10 @@ quatloosIssuer.getAmountOf(quatloosPayment); // returns an amount of 100 Quatloo
 ```
 
 ## anIssuer.getBrand()
-- Returns: **[Brand](./brand.md)** 
+- Returns: **[Brand](./brand)** 
 
 Returns the **Brand** for the **Issuer**. The **Brand** indicates the kind of digital asset
-and is the same for the **Issuer**'s associated **[Mint](./mint.md)**, and any **[Purses](./purse.md)** and **[Payments](./payment.md)** of this particular
+and is the same for the **Issuer**'s associated **[Mint](./mint)**, and any **[Purses](./purse)** and **[Payments](./payment)** of this particular
 kind. The **Brand** is not closely held, so this method should not be trusted to identify
 an **Issuer** alone. Fake digital assets and amounts can use another **Issuer's** **Brand**.
 
@@ -140,9 +140,9 @@ const quatloosBrand = quatloosIssuer.getBrand();
 ```
 
 ## anIssuer.makeEmptyPurse()
-- Returns: **[Purse](./purse.md)**
+- Returns: **[Purse](./purse)**
 
-Makes and returns an empty **Purse** that holds assets of the **[Brand](./brand.md)** associated with the **Issuer**.
+Makes and returns an empty **Purse** that holds assets of the **[Brand](./brand)** associated with the **Issuer**.
 
 ```js
 const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
@@ -151,8 +151,8 @@ const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 
 
 ## **anIssuer.burn(payment, optAmount?)**
-- **payment**: **[Payment](./payment.md)**
-- **optAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
+- **payment**: **[Payment](./payment)**
+- **optAmount**: **[Amount](./ertp-data-types#amount)** - Optional.
 
 - Returns: **Amount**
 
@@ -178,8 +178,8 @@ const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
 ## anIssuer.claim(payment, optAmount?)
-- **payment**: **[Payment](./payment.md)**
-- **optAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
+- **payment**: **[Payment](./payment)**
+- **optAmount**: **[Amount](./ertp-data-types#amount)** - Optional.
 - Returns: **Payment** 
 
 Transfers all digital assets from *payment* to a new **Payment** and consumes the
@@ -202,8 +202,8 @@ const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
 
 ## anIssuer.combine(paymentsArray, optTotalAmount?)
-- **paymentsArray**: **Array&lt;[Payment](./payment.md)>**
-- **optTotalAmount**: **[Amount](./ertp-data-types.md#amount)** - Optional.
+- **paymentsArray**: **Array&lt;[Payment](./payment)>**
+- **optTotalAmount**: **[Amount](./ertp-data-types#amount)** - Optional.
 - Returns: **Payment**
 
 Combines multiple **Payments** into one new **Payment**. If any item in *paymentsArray* is
@@ -215,7 +215,7 @@ the total value of all **Payments** in *paymentsArray*
 must equal *optTotalAmount*. If they don't, the method throws an error,
 and the original **Payment** is unmodified.
 
-Each **Payment** in *paymentsArray* must be associated with the same **[Brand](./brand.md)** as the **Issuer**.
+Each **Payment** in *paymentsArray* must be associated with the same **[Brand](./brand)** as the **Issuer**.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
@@ -231,8 +231,8 @@ const combinedPayment = quatloosIssuer.combine(payments);
 ```
 
 ## anIssuer.split(payment, paymentAmountA)
-- **payment**: **[Payment](./payment.md)**
-- **paymentAmountA**: **[Amount](./ertp-data-types.md#amount)**
+- **payment**: **[Payment](./payment)**
+- **paymentAmountA**: **[Amount](./ertp-data-types#amount)**
 - Returns: **Array&lt;Payment>**
 
 Splits a single **Payment** into two new **Payments**, A and B, according to *paymentAmountA*.
@@ -243,7 +243,7 @@ The original **Payment** is consumed and made unavailable for later use.
 
 If *payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
-*payment* and *paymentAmountA* must both be associated with the same **[Brand](./brand.md)** as the **Issuer**.
+*payment* and *paymentAmountA* must both be associated with the same **[Brand](./brand)** as the **Issuer**.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
@@ -254,8 +254,8 @@ const [paymentA, paymentB] = quatloosIssuer.split(oldPayment, AmountMath.make(qu
 ```
 
 ## anIssuer.splitMany(payment, amountArray)
-- **payment**: **[Payment](./payment.md)**
-- **amountArray**: **Array&lt;[Amount](./ertp-data-types.md#amount)>**
+- **payment**: **[Payment](./payment)**
+- **amountArray**: **Array&lt;[Amount](./ertp-data-types#amount)>**
 - Returns: **Array&lt;Payment>**
 
 Splits a single **Payment** into multiple **Payments**.
@@ -266,7 +266,7 @@ The original **Payment** is consumed and made unavailable for later use.
 If *payment* is a promise, the operation proceeds after it resolves to a **Payment**.
 
 If the **Amounts** in *amountArray* don't add up to the value of *payment*, the operation fails.
-*payment* and each **Amount** in *amountArray* must be associated with the same **[Brand](./brand.md)** as **Issuer**.
+*payment* and each **Amount** in *amountArray* must be associated with the same **[Brand](./brand)** as **Issuer**.
 
 ```js
 const { issuer: quatloosIssuer, mint: quatloosMint, brand: quatloosBrand } =
@@ -288,7 +288,7 @@ quatloosIssuer.splitMany(payment, badAmounts);
 ```
 
 ## anIssuer.isLive(payment)
-- **payment**: **[Payment](./payment.md)**
+- **payment**: **[Payment](./payment)**
 - Returns: **Boolean**
 
 Returns **true** if the *payment* was created by the **Issuer** and is available for use 

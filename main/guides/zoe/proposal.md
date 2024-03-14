@@ -4,15 +4,15 @@
 
 ## Making An offer
 
-To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe.md#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs), which takes up to four arguments:
+To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs), which takes up to four arguments:
 - An **invitation** to participate in this contract instance.
 - A **proposal** stating your offer conditions.
-- The **payments** escrowed for the offer, each corresponding with a **give** [Keyword](/reference/zoe-api/zoe-data-types.md#keyword) in **proposal**.
-- **offerArgs** expressing additional arguments for the **offerHandler** associated with the invitation by [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
+- The **payments** escrowed for the offer, each corresponding with a **give** [Keyword](/reference/zoe-api/zoe-data-types#keyword) in **proposal**.
+- **offerArgs** expressing additional arguments for the **offerHandler** associated with the invitation by [`zcf.makeInvitation(...)`](/reference/zoe-api/zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 
 ## Invitations
 
-An [Invitation](/reference/zoe-api/zoe-data-types.md#invitation) is a special case of ERTP [Payment](/reference/ertp-api/payment.md). Each is linked to a specific contract [Instance](/reference/zoe-api/zoe-data-types.md#instance), and
+An [Invitation](/reference/zoe-api/zoe-data-types#invitation) is a special case of ERTP [Payment](/reference/ertp-api/payment). Each is linked to a specific contract [Instance](/reference/zoe-api/zoe-data-types#instance), and
 having one gives you the right to participate in that contract instance
 by using that invitation as the first argument to `E(zoe).offer(...)`.
 
@@ -33,13 +33,13 @@ const myProposal = harden({
   exit: { onDemand: null },
 });
 ```
-**give** and **want** use [Keywords](/reference/zoe-api/zoe-data-types.md#keyword) defined by the contract.
+**give** and **want** use [Keywords](/reference/zoe-api/zoe-data-types#keyword) defined by the contract.
 Keywords are unique identifiers per contract, that tie together proposals,
 payments to be escrowed, and payouts to users.
 In the example above, "Asset" and "Price" are the Keywords. However, in an auction contract,
 the Keywords might be "Asset" and "Bid".
 
-Each `AmountMath.make` call above is just making an ERTP [Amount](/reference/ertp-api/ertp-data-types.md#amount), or description of digital assets.
+Each `AmountMath.make` call above is just making an ERTP [Amount](/reference/ertp-api/ertp-data-types#amount), or description of digital assets.
 In this case, `AmountMath.make(quatloosBrand, 4n)` creates a description of 4 units
 of our imaginary Quatloos currency and `AmountMath.make(moolaBrand, 15n)` creates a description
 of 15 units of our imaginary Moola currency. (The "n" appended after each number indicates that
@@ -48,7 +48,7 @@ rather than a [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/R
 
 ::: warning Note
 Amounts are just _descriptions_ of assets, and have no intrinsic value of their own.
-In contrast, [Payments](/reference/ertp-api/payment.md) hold actual digital assets.
+In contrast, [Payments](/reference/ertp-api/payment) hold actual digital assets.
 :::
 
 **exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
@@ -57,11 +57,11 @@ In contrast, [Payments](/reference/ertp-api/payment.md) hold actual digital asse
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
   as determined by its `timer` and `deadline` properties.
 
-For more details, see [Proposals](/reference/zoe-api/zoe.md#proposals).
+For more details, see [Proposals](/reference/zoe-api/zoe#proposals).
 
 ## Escrowed Payments
 
-Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentPKeywordRecord](/reference/zoe-api/zoe-data-types.md#keywordrecord) containing [Payments](/reference/ertp-api/payment.md) of the corresponding digital assets.
+Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentPKeywordRecord](/reference/zoe-api/zoe-data-types#keywordrecord) containing [Payments](/reference/ertp-api/payment) of the corresponding digital assets.
 Zoe escrows these payments on behalf of your offer until it is completed
 or rejected or the assets are reassigned to another offer.
 ```js

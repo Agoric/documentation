@@ -3,12 +3,12 @@
 In web browsers, a common pattern of remote communication is using the
 [asynchronous fetch API with promises](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#promises):
 
-<<< @/snippets/test-distributed-programming.js#asyncFetch
+<<< @/../snippets/test-distributed-programming.js#asyncFetch
 
 In the Agoric platform, communicating with remote objects is similar,
 using the `E()` wrapper. For example,
-a [deploy script](../getting-started/deploying.md) may want to use the
-[Zoe Service API](/reference/zoe-api/zoe.md) to install a contract on a blockchain.
+a [deploy script](../getting-started/deploying) may want to use the
+[Zoe Service API](/reference/zoe-api/zoe) to install a contract on a blockchain.
 But the deploy script cannot call `zoe.install(bundle)`, because it does not have local
 access to the `zoe` object. However, the deploy
 script is given a `zoe` _remote presence_. To call methods on the
@@ -24,7 +24,7 @@ E(zoe).install(bundle)
 
 ## Eventual Send
 
-One of the ways [Zoe partitions risk](https://www.youtube.com/watch?v=T6h6TMuVHKQ&t=368s) is by running in its own [vat](../../glossary/README.md#vat), separate from any smart contract that might
+One of the ways [Zoe partitions risk](https://www.youtube.com/watch?v=T6h6TMuVHKQ&t=368s) is by running in its own [vat](../../glossary/index#vat), separate from any smart contract that might
 use too much compute time or heap space. The smart contracts also run in separate vats.
 
 ![Zoe in a separate vat](../assets/zoe-partitions-risk-slide.svg)
@@ -32,7 +32,7 @@ use too much compute time or heap space. The smart contracts also run in separat
 What happens when we call `E(zoe).install(bundle)` is an _eventual send_:
 
 1.  A message consisting of the method name `install`
-    with the `bundle` argument [marshaled](./far.md)
+    with the `bundle` argument [marshaled](./far)
     to a flat string and queued for delivery to
     the vat that `zoe` comes from.
 2.  `E(zoe).install(bundle)` returns a promise for the result.
@@ -101,24 +101,24 @@ In [@endo/marshal](https://github.com/endojs/endo/tree/master/packages/marshal#r
 
 For example, we can marshal a remotable counter using the slot identifier `c1`:
 
-<<< @/snippets/test-marshal.js#marshal-remotable
+<<< @/../snippets/test-marshal.js#marshal-remotable
 
 Each end of a connection between vats typically keeps
 a table to translate slots to capabilities and back:
 
-<<< @/snippets/test-marshal.js#marshal-table
+<<< @/../snippets/test-marshal.js#marshal-table
 
 Each call to `E(rx)` makes a proxy for the reciver `rx`;
 each `E(rx).p` property reference invokes the `get` proxy trap.
 From the `get` trap, `E` returns a function that queues
 `rx`, `p`, and its arguments (in marshalled form) and returns a promise:
 
-<<< @/snippets/test-marshal.js#marshal-messages-e
+<<< @/../snippets/test-marshal.js#marshal-messages-e
 
 Now we can see the result in some detail. Note the way the promise from
 `E(zoe).install()` is passed to `E(zoe).startInstance()`.
 
-<<< @/snippets/test-marshal.js#marshal-messages
+<<< @/../snippets/test-marshal.js#marshal-messages
 
 ::: tip Watch: How Agoric Solves Reentrancy Hazards (November 2020)
 for more on eventual send and remote communication

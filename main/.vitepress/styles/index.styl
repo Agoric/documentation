@@ -156,3 +156,38 @@ div[class*="language-"].secondary
 
 div[class*="language-"].secondary.style3 pre
   background-color bisque
+
+.page
+  max-width: 1280px
+  margin: 0 auto
+  padding: 20px 0 100px 0
+
+  h1, h3
+    margin-top: 1em
+    margin-bottom: 0.25em
+    font-weight: 600
+    line-height: 1.25
+  h1
+    color: #2c3e50
+    font-size: 2.2rem
+  h3
+    font-size: 1.35rem
+  a
+    color: #d73252
+
+  @media (max-width: 1280px)
+    padding: 1.5rem
+
+  @media (max-width: 768px)
+    h1
+      font-size: 1.75rem
+    h3
+      font-size: 1.1rem
+    a
+      color: rgb(171, 35, 40)
+      font-weight: 500
+
+.dark
+  .page 
+    h1
+      color: rgba(255, 255, 245, 0.86)

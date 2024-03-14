@@ -7,7 +7,7 @@
 
 **NOTE: You almost certainly do not want to use this contract directly.
 Instead, please read the [Chainlink integration
-documentation](/guides/chainlink-integration.md)**
+documentation](/guides/chainlink-integration)**
 
 This contract lets other contracts or users make single free or fee-based
 queries to a generic oracle node (a single instance).  This provides a very
@@ -21,14 +21,14 @@ individual node.**
 
 Relying on just a single node can be both expensive and risky. Instead, use the
 higher-level APIs described in the [Chainlink integration
-documentation](/guides/chainlink-integration.md).
+documentation](/guides/chainlink-integration).
 
 ## Making a Free Query
 
 To make a free query, obtain the `publicFacet` for the oracle contract
 instance.
 
-<<< @/snippets/zoe/contracts/test-oracle.js#freeQuery
+<<< @/../snippets/zoe/contracts/test-oracle.js#freeQuery
 
 The `query` that is passed in could be in any format that the
 oracle accepts. The response can be in any format, as the oracle determines.
@@ -40,29 +40,29 @@ before, but this time, make a `queryInvitation`. Use the
 `queryInvitation` to make an offer and escrow the required payments in
 the `Fee` brand. The response will be the result of your offer.
 
-<<< @/snippets/zoe/contracts/test-oracle.js#paidQuery
+<<< @/../snippets/zoe/contracts/test-oracle.js#paidQuery
 
 ## Instantiating a New Oracle Contract
 
 If you want to create your own oracle contract instance, first bundle
 and install the code if it is not already installed.
 
-<<< @/snippets/zoe/contracts/test-oracle.js#bundle
+<<< @/../snippets/zoe/contracts/test-oracle.js#bundle
 
 Then start the contract instance. You will receive a `publicFacet` and
 a `creatorFacet`.
 
-<<< @/snippets/zoe/contracts/test-oracle.js#startInstance
+<<< @/../snippets/zoe/contracts/test-oracle.js#startInstance
 
 You will need to use the creatorFacet to initialize an
 `oracleHandler`. The `oracleHandler` is what will actually be queried,
 so we do not want to put it in the contract terms, which are publicly
 accessible.
 
-<<< @/snippets/zoe/contracts/test-oracle.js#initialize
+<<< @/../snippets/zoe/contracts/test-oracle.js#initialize
 
 ## The Oracle Handler API
 
 The contract expects all `oracleHandlers` to offer the following API:
 
-<<< @/snippets/zoe/contracts/test-oracle.js#API
+<<< @/../snippets/zoe/contracts/test-oracle.js#API

@@ -15,7 +15,7 @@ on the value of some good at a known future time. This video gives a
 
 There are two variants of the callSpread.  In this version, the creator requests a pair of
 invitations, each of which enables the holder to obtain one of the positions by providing a started
-portion of the collateral. The other is called the [fundedCallSpread](./fundedCallSpread.md). It is
+portion of the collateral. The other is called the [fundedCallSpread](./fundedCallSpread). It is
 fully funded by its creator, who can then sell (or otherwise transfer) the options to other parties.
 The Zoe invitations representing options are produced in pairs.  The individual options are Zoe
 invitations whose details are inspectable by prospective purchasers.
@@ -43,7 +43,7 @@ The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a [timer](/reference/repl/timerServices.md), and must be recognized by `priceAuthority`.
+ * `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
  * `expiration` is a time recognized by the `timer`.
  * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
  * `strikePrice2` must be greater than `strikePrice1`.
@@ -53,7 +53,7 @@ strikePrice2, settlementAmount }`.
    stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
    asset in the strike currency.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#startInstancePriced
+<<< @/../snippets/zoe/contracts/test-callSpread.js#startInstancePriced
 
 ## Creating the Option Invitations
 
@@ -61,7 +61,7 @@ The terms specify all the details of the options. A call to `creatorFacet.makeIn
 required to specify the share (as a whole number percentage in BigInt form) that will be contributed for the long
 position. It returns a pair of invitations.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#makeInvitationPriced
+<<< @/../snippets/zoe/contracts/test-callSpread.js#makeInvitationPriced
 
 The creator gives these invitations to the two parties (or might retain one for their own use.) When
 Bob receives an invitation, he can extract the value of the call spread option that he wants, and
@@ -69,26 +69,26 @@ create a proposal. The collateral required is also in the option's details. The 
 invitations can exercise with the required collateral to receive the actual call spread option
 positions.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#exercisePricedInvitation
+<<< @/../snippets/zoe/contracts/test-callSpread.js#exercisePricedInvitation
 
 ## Validating the Options
 
 The options are packaged as invitations so they are fully self-describing, and can be verified with
 Zoe, so their value is apparent to anyone who might be interested in them.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#validatePricedInvitation
+<<< @/../snippets/zoe/contracts/test-callSpread.js#validatePricedInvitation
 
 The details of the underlying call spread option are accessible from the terms associated with this
 instance of the contract.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#checkTerms-priced
+<<< @/../snippets/zoe/contracts/test-callSpread.js#checkTerms-priced
 
 ## Options can be Exercised Independently
 
  The option position invitations can be exercised for free, and provide their payouts under the
 keyword `Collateral`.
 
-<<< @/snippets/zoe/contracts/test-callSpread.js#bobExercise
+<<< @/../snippets/zoe/contracts/test-callSpread.js#bobExercise
 
 The contract doesn't rely on the options being exercised before the specified close. If either
 option is exercised after the closing price is determined, the payouts will still be available. The
