@@ -201,7 +201,7 @@ module.exports = {
       "/reference/": [
         {
           title: "How to Build a Client UI",
-          path: "/guides/getting-started/how-to-build-client-UI.html",
+          path: "/",
           collapsible: true,
           children: [],
         },
