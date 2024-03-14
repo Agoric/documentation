@@ -166,7 +166,7 @@ module.exports = {
       '/guides/': [
         {
             title: 'Introduction',
-            path: '/',
+            path: '/guides/getting-started',
             collapsible: true,
             children: [
               '/guides/',// What is Agoric?
@@ -177,16 +177,16 @@ module.exports = {
               '/guides/getting-started/contract-rpc.html',// - Smart Wallet VStorage Topics
               '/guides/getting-started/contract-rpc.html',// - VBank Assets and Cosmos Bank Balances
               '/guides/getting-started/deploying.html',// - Deploying Smart Contracts
-              '/zoe/',// What is Zoe?
-              '/zoe/contract-basics.html',// - Smart Contract Basics
-              '/zoe/',// - Zoe Overview
-              '/zoe/',// - What is Zoe?
-              '/zoe/',// - Why Use Zoe?
-              '/zoe/',// - Building a Contract
-              '/zoe/',// - Contract Installation
-              '/zoe/',// - Starting a Contract Instance
-              '/zoe/',// - Trading with Offer Safety
-              '/zoe/',// - Contract Upgrade
+              '/guides/zoe/',// What is Zoe?
+              '/guides/zoe/contract-basics.html',// - Smart Contract Basics
+              '/guides/zoe/',// - Zoe Overview
+              '/guides/zoe/',// - What is Zoe?
+              '/guides/zoe/',// - Why Use Zoe?
+              '/guides/zoe/',// - Building a Contract
+              '/guides/zoe/',// - Contract Installation
+              '/guides/zoe/',// - Starting a Contract Instance
+              '/guides/zoe/',// - Trading with Offer Safety
+              '/guides/zoe/',// - Contract Upgrade
             ],
           },  
         {
