@@ -13,6 +13,7 @@ module.exports = [
   {
     text: 'Build',
     ariaLabel: 'Build Menu',
+    link: '/build/',
   },
   {
     text: 'Tutorials',
