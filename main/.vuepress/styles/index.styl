@@ -160,9 +160,14 @@ div[class*="language-"].secondary
 div[class*="language-"].secondary.style3 pre
   background-color bisque
 
-.header .links {
+
+
+.header {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: flex-start; // This aligns child elements (like `.links`) to the left
 }
 
+.links {
+  display: flex;
+  justify-content: flex-start; // This aligns the navigation items within `.links` to the left
+}
