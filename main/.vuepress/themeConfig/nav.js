@@ -8,7 +8,7 @@ module.exports = [
   {
     text: 'Learn',
     ariaLabel: 'Learn Menu',
-    link: '/guides/learn',
+    link: '/guides/getting-started/what-is-agoric',
   },
   {
     text: 'Build',
