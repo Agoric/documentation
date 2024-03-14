@@ -163,6 +163,37 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
+      '/learn/': [
+        {
+          title: 'Introduction',
+          path: '/learn/introduction/',
+          collapsible: false,
+          children: [
+            '/wallet/',
+            '/getting-started/contract-rpc.html',
+            'getting-started/deploying.html',
+          ],
+        },
+        {
+          title: 'Beginner',
+          path: '/learn/beginner/',
+          collapsible: false,
+          children: [
+            '/wallet/',
+            '/wallet/ui.html',
+          ],
+        },
+        {
+          title: 'Advanced',
+          path: '/learn/advanced/',
+          collapsible: false,
+          children: [
+            '/wallet/',
+            '/wallet/ui.html',
+          ],
+        },        
+        ],
+        
       '/guides/': [
         {
           title: 'Getting Started',
@@ -300,6 +331,9 @@ module.exports = {
           children: [],
         },
       ],
+
+
+            
       '/reference/': [
         {
           title: 'Wallet API',
