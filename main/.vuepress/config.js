@@ -1,21 +1,21 @@
-const nav = require('./themeConfig/nav');
+const nav = require("./themeConfig/nav");
 
 module.exports = {
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
-  base: '/', // The base URL the site will be deployed at.
+  base: "/", // The base URL the site will be deployed at.
   /* --- HOME PAGE --- */
-  title: 'Documentation', // title for the site. prefix for all page titles and displayed in the navbar
-  description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
+  title: "Documentation", // title for the site. prefix for all page titles and displayed in the navbar
+  description: "Build, deploy and operate dApps and DeFi markets.", // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
     [
-      'meta',
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      "meta",
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
     ],
-    ['link', { rel: 'icon', href: '/favicon-full.ico' }],
+    ["link", { rel: "icon", href: "/favicon-full.ico" }],
     [
-      'style',
-      { type: 'text/css' },
+      "style",
+      { type: "text/css" },
       `
     .two-col-table td {
         width: 50%;
@@ -28,19 +28,19 @@ module.exports = {
     }`,
     ],
     [
-      'script',
+      "script",
       {
-        src: 'https://www.googletagmanager.com/gtag/js?id=UA-118217811-1',
-        async: '',
+        src: "https://www.googletagmanager.com/gtag/js?id=UA-118217811-1",
+        async: "",
       },
     ],
     [
-      'script',
+      "script",
       {},
       "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-118217811-1'); ",
     ],
     [
-      'script',
+      "script",
       {},
       `
     /** @type {Map<[...anySelectors: string[]], (elems: (Element | null)[]) => unknown>} */
@@ -133,14 +133,14 @@ module.exports = {
   ],
 
   plugins: [
-    'check-md',
+    "check-md",
     [
-      '@vuepress/last-updated',
+      "@vuepress/last-updated",
       {
         dateOptions: {
-          dateStyle: 'medium',
-          timeStyle: 'long',
-          timeZone: 'Etc/UTC',
+          dateStyle: "medium",
+          timeStyle: "long",
+          timeZone: "Etc/UTC",
         },
       },
     ],
@@ -149,8 +149,8 @@ module.exports = {
   /* --- DEFAULT THEME CONFIG --- */
   themeConfig: {
     sidebarDepth: 1,
-    lastUpdated: 'Last Updated',
-    logo: '/logo.svg',
+    lastUpdated: "Last Updated",
+    logo: "/logo.svg",
     /* --- NAVBAR (top) --- */
     nav,
     /* --- SIDEBAR --- */
@@ -163,222 +163,107 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
-      '/guides/': [
+      "/guides/": [
         {
-            title: 'Introduction',
-            path: '/guides/getting-started',
-            collapsible: true,
-            children: [
-              '/guides/',// What is Agoric?
-              '/guides/wallet/', // Smart Wallet Dapp Architecture
-              '/guides/getting-started/deploying.html',// - Deploying Smart Contracts
-              '/guides/zoe/',// What is Zoe?
-              '/guides/zoe/contract-basics.html',// - Smart Contract Basics
-              '/guides/zoe/',// - Zoe Overview
-            ],
-          },  
-        {
-          title: 'Getting Started',
-          path: '/guides/getting-started/',
-          collapsible: false,
+          title: "Introduction",
+          path: "/guides/getting-started",
+          collapsible: true,
           children: [
-            '/guides/getting-started/',
-            '/guides/getting-started/contract-rpc.html',
-            '/guides/getting-started/deploying.html',
+            "/guides/", // What is Agoric?
+            "/guides/wallet/", // Smart Wallet Dapp Architecture
+            "/guides/getting-started/deploying.html", // - Deploying Smart Contracts
+            "/guides/zoe/contract-basics.html", // - Smart Contract Basics
+            "/guides/zoe/", // - Zoe Overview
           ],
         },
         {
-          title: 'Zoe',
-          path: '/guides/zoe/',
-          collapsible: false,
+          title: "Beginner",
+          path: "/guides/getting-started",
+          collapsible: true,
           children: [
-            '/guides/zoe/contract-basics.html',
-            '/guides/zoe/',
-            '/guides/zoe/contract-upgrade.html',
+            "/guides/wallet/", // JavaScript Framework
+            "/guides/ertp/", // ERTP
+            "/guides/ertp/amounts.html", // - Amounts, Values, and Brands
+            "/guides/ertp/amount-math.html", // - AmountMath
+            "/guides/ertp/issuers-and-mints.html", // - Issuers and Mints
+            "/guides/ertp/purses-and-payments.html", // - Purses and Payments
           ],
         },
         {
-          title: 'Agoric CLI',
-          path: '/guides/agoric-cli/',
-          collapsible: false,
+          title: "Advanced",
+          path: "/guides/getting-started",
+          collapsible: true,
           children: [
-            '/guides/agoric-cli/',
-            '/guides/agoric-cli/agd-query-tx.html',
+            "/guides/platform/", // Agoric Platform
           ],
-        },
-        {
-          title: 'JavaScript Framework',
-          path: '/guides/js-programming/',
-          collapsible: false,
-          children: [
-            '/guides/js-programming/',
-            '/guides/js-programming/hardened-js.html',
-            '/guides/js-programming/eventual-send.html',
-            '/guides/js-programming/far.html',
-            '/guides/js-programming/notifiers.html',
-          ],
-        },
-        {
-          title: 'Wallet',
-          path: '/guides/wallet/',
-          collapsible: false,
-          children: ['/guides/wallet/', '/guides/wallet/ui'],
-        },
-        {
-          title: 'ERTP',
-          path: '/guides/ertp/',
-          collapsible: false,
-          children: [
-            '/guides/ertp/',
-            '/guides/ertp/amounts.html',
-            '/guides/ertp/amount-math.html',
-            '/guides/ertp/issuers-and-mints.html',
-            '/guides/ertp/purses-and-payments.html',
-          ],
-        },
-        {
-          title: 'Permissioned Contract Deployment',
-          path: '/guides/coreeval/',
-          collapsible: false,
-          children: [
-            '/guides/coreeval/',
-            '/guides/coreeval/permissions.html',
-            '/guides/coreeval/proposal.html',
-            '/guides/coreeval/local-testnet.html',
-          ],
-        },
-        {
-          title: 'Example Zoe Contracts',
-          path: '/guides/zoe/contracts/',
-          collapsible: false,
-          children: [
-            '/guides/zoe/contracts/',
-            '/guides/zoe/contracts/oracle.html',
-            '/guides/zoe/contracts/vault.html',
-            '/guides/zoe/contracts/loan.html',
-            '/guides/zoe/contracts/fundedCallSpread.html',
-            '/guides/zoe/contracts/pricedCallSpread.html',
-            '/guides/zoe/contracts/covered-call.html',
-            '/guides/zoe/contracts/otc-desk.html',
-            '/guides/zoe/contracts/constantProductAMM.html',
-            '/guides/zoe/contracts/sell-items.html',
-            '/guides/zoe/contracts/atomic-swap.html',
-            '/guides/zoe/contracts/barter-exchange.html',
-            '/guides/zoe/contracts/second-price-auction.html',
-            '/guides/zoe/contracts/simple-exchange.html',
-            '/guides/zoe/contracts/escrow-to-vote.html',
-            '/guides/zoe/contracts/mint-payments.html',
-            '/guides/zoe/contracts/mint-and-sell-nfts.html',
-            '/guides/zoe/contracts/use-obj-example.html',
-            '/guides/zoe/contracts/automatic-refund.html',
-          ],
-        },
-        {
-          title: 'Deployed Zoe Contracts',
-          path: '/guides/zoe/actual-contracts/',
-          collapsible: false,
-          children: [
-            '/guides/zoe/actual-contracts/',
-            '/guides/zoe/actual-contracts/PSM.html',
-          ],
-        },
-        {
-          title: 'Agoric Dapps',
-          path: '/guides/dapps/',
-          collapsible: false,
-          children: [
-            '/guides/dapps/',
-            '/guides/dapps/dapp-templates.html',
-            '/guides/dapps/starting-multiuser-dapps.html',
-            '/guides/getting-started/deploying.html',
-            '/guides/getting-started/contract-rpc.html',
-          ],
-        },
-        {
-          title: 'Agoric Platform',
-          path: '/guides/platform/',
-          collapsible: false,
-          children: [],
-        },
-        {
-          title: 'Chainlink Integration',
-          path: '/guides/chainlink-integration.html',
-          collapsible: false,
-          children: [],
-        },
-        {
-          title: 'SubQuery Indexing',
-          path: '/guides/subquery-indexing.html',
-          collapsible: false,
-          children: [],
         },
       ],
-      '/reference/': [
+      "/reference/": [
         {
-          title: 'Wallet API',
-          path: '/reference/wallet-api.html',
+          title: "Wallet API",
+          path: "/reference/wallet-api.html",
           collapsible: false,
           children: [],
         },
         {
-          title: 'ERTP API',
-          path: '/reference/ertp-api/',
+          title: "ERTP API",
+          path: "/reference/ertp-api/",
           collapsible: false,
           children: [
-            '/reference/ertp-api/',
-            '/reference/ertp-api/issuer.html',
-            '/reference/ertp-api/mint.html',
-            '/reference/ertp-api/brand.html',
-            '/reference/ertp-api/purse.html',
-            '/reference/ertp-api/payment.html',
-            '/reference/ertp-api/amount-math.html',
-            '/reference/ertp-api/ertp-data-types.html',
+            "/reference/ertp-api/",
+            "/reference/ertp-api/issuer.html",
+            "/reference/ertp-api/mint.html",
+            "/reference/ertp-api/brand.html",
+            "/reference/ertp-api/purse.html",
+            "/reference/ertp-api/payment.html",
+            "/reference/ertp-api/amount-math.html",
+            "/reference/ertp-api/ertp-data-types.html",
           ],
         },
         {
-          title: 'REPL API',
-          path: '/reference/repl/',
+          title: "REPL API",
+          path: "/reference/repl/",
           collapsible: false,
           children: [
-            '/reference/repl/',
-            '/reference/repl/timerServices.html',
-            '/reference/repl/board.html',
-            '/reference/repl/networking.html',
-            '/reference/repl/priceAuthority.html',
-            '/reference/repl/scratch.html',
+            "/reference/repl/",
+            "/reference/repl/timerServices.html",
+            "/reference/repl/board.html",
+            "/reference/repl/networking.html",
+            "/reference/repl/priceAuthority.html",
+            "/reference/repl/scratch.html",
           ],
         },
         {
-          title: 'Zoe API',
-          path: '/reference/zoe-api/',
+          title: "Zoe API",
+          path: "/reference/zoe-api/",
           collapsible: false,
           children: [
-            '/reference/zoe-api/',
-            '/reference/zoe-api/zoe.html',
-            '/reference/zoe-api/user-seat.html',
-            '/reference/zoe-api/zoe-contract-facet.html',
-            '/reference/zoe-api/zcfseat.html',
-            '/reference/zoe-api/zcfmint.html',
-            '/reference/zoe-api/price-authority.html',
-            '/reference/zoe-api/zoe-helpers.html',
-            '/reference/zoe-api/ratio-math.html',
-            '/reference/zoe-api/zoe-data-types.html',
+            "/reference/zoe-api/",
+            "/reference/zoe-api/zoe.html",
+            "/reference/zoe-api/user-seat.html",
+            "/reference/zoe-api/zoe-contract-facet.html",
+            "/reference/zoe-api/zcfseat.html",
+            "/reference/zoe-api/zcfmint.html",
+            "/reference/zoe-api/price-authority.html",
+            "/reference/zoe-api/zoe-helpers.html",
+            "/reference/zoe-api/ratio-math.html",
+            "/reference/zoe-api/zoe-data-types.html",
           ],
         },
       ],
     },
-    docsRepo: 'Agoric/documentation',
+    docsRepo: "Agoric/documentation",
     // if your docs are not at the root of the repo:
-    docsDir: 'main',
+    docsDir: "main",
     // if your docs are in a specific branch (defaults to 'master'):
-    docsBranch: 'main',
+    docsBranch: "main",
     // defaults to false, set to true to enable
     editLinks: true,
     // custom text for edit link. Defaults to "Edit this page"
-    editLinkText: 'Help us improve this page!',
+    editLinkText: "Help us improve this page!",
 
-    zoeVersion: 'v0.24.0',
-    zoeDocsUpdated: 'August 25, 2022',
+    zoeVersion: "v0.24.0",
+    zoeDocsUpdated: "August 25, 2022",
 
     /* --- SEARCH --- */
     // Comes with built-in search functionality which builds its index from the
