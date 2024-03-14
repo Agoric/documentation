@@ -163,96 +163,43 @@ module.exports = {
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
-      "/guides/": [
+      "/learn/": [
         {
           title: "Introduction",
-          path: "/guides/getting-started",
+          path: "/learn/getting-started",
           collapsible: true,
           children: [
-            "/guides/getting-started/what-is-agoric.html", // What is Agoric?
-            "/guides/wallet/", // Smart Wallet Dapp Architecture
-            "/guides/getting-started/deploying.html", // - Deploying Smart Contracts
-            "/guides/zoe/contract-basics.html", // - Smart Contract Basics
-            "/guides/zoe/", // - Zoe Overview
+            "/learn/getting-started/what-is-agoric.html", // What is Agoric?
+            "/learn/wallet/", // Smart Wallet Dapp Architecture
+            "/learn/getting-started/deploying.html", // - Deploying Smart Contracts
+            "/learn/zoe/contract-basics.html", // - Smart Contract Basics
+            "/learn/zoe/", // - Zoe Overview
           ],
         },
         {
           title: "Beginner",
-          path: "/guides/getting-started",
+          path: "/learn/getting-started",
           collapsible: true,
           children: [
-            "/guides/wallet/", // JavaScript Framework
-            "/guides/ertp/", // ERTP
-            "/guides/ertp/amounts.html", // - Amounts, Values, and Brands
-            "/guides/ertp/amount-math.html", // - AmountMath
-            "/guides/ertp/issuers-and-mints.html", // - Issuers and Mints
-            "/guides/ertp/purses-and-payments.html", // - Purses and Payments
+            "/learn/wallet/", // JavaScript Framework
+            "/learn/ertp/", // ERTP
+            "/learn/ertp/amounts.html", // - Amounts, Values, and Brands
+            "/learn/ertp/amount-math.html", // - AmountMath
+            "/learn/ertp/issuers-and-mints.html", // - Issuers and Mints
+            "/learn/ertp/purses-and-payments.html", // - Purses and Payments
           ],
         },
         {
           title: "Advanced",
-          path: "/guides/getting-started",
+          path: "/learn/getting-started",
           collapsible: true,
           children: [
-            "/guides/platform/", // Agoric Platform
+            "/learn/platform/", // Agoric Platform
           ],
         },
       ],
-      '/reference/': [
-        {
-          title: 'Wallet API',
-          path: '/reference/wallet-api.html',
-          collapsible: false,
-          children: [],
-        },
-        {
-          title: 'ERTP API',
-          path: '/reference/ertp-api/',
-          collapsible: false,
-          children: [
-            '/reference/ertp-api/',
-            '/reference/ertp-api/issuer.html',
-            '/reference/ertp-api/mint.html',
-            '/reference/ertp-api/brand.html',
-            '/reference/ertp-api/purse.html',
-            '/reference/ertp-api/payment.html',
-            '/reference/ertp-api/amount-math.html',
-            '/reference/ertp-api/ertp-data-types.html',
-          ],
-        },
-        {
-          title: 'REPL API',
-          path: '/reference/repl/',
-          collapsible: false,
-          children: [
-            '/reference/repl/',
-            '/reference/repl/timerServices.html',
-            '/reference/repl/board.html',
-            '/reference/repl/networking.html',
-            '/reference/repl/priceAuthority.html',
-            '/reference/repl/scratch.html',
-          ],
-        },
-        {
-          title: 'Zoe API',
-          path: '/reference/zoe-api/',
-          collapsible: false,
-          children: [
-            '/reference/zoe-api/',
-            '/reference/zoe-api/zoe.html',
-            '/reference/zoe-api/user-seat.html',
-            '/reference/zoe-api/zoe-contract-facet.html',
-            '/reference/zoe-api/zcfseat.html',
-            '/reference/zoe-api/zcfmint.html',
-            '/reference/zoe-api/price-authority.html',
-            '/reference/zoe-api/zoe-helpers.html',
-            '/reference/zoe-api/ratio-math.html',
-            '/reference/zoe-api/zoe-data-types.html',
-          ],
-        },
-      ],
-      /*
-      "/reference/": [
+
+      "/build/": [
         {
           title: "How to Build a Client UI",
           path: "/guides/coreeval/",
@@ -293,7 +240,6 @@ module.exports = {
         },
       ],
 
-      */
     },
     docsRepo: "Agoric/documentation",
     // if your docs are not at the root of the repo:
