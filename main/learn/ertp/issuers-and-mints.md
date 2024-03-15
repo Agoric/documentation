@@ -124,3 +124,4 @@ API Reference](/ertp/api/).
 - [makeIssuerKit()](/reference/ertp-api/issuer.md#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)
   - Create and return a new `issuer` and its associated `mint` and `brand`.
   - <<< @/snippets/ertp/guide/test-issuers-and-mints.js#makeIssuerKitMint
+

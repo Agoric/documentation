@@ -1,0 +1,20 @@
+sequenceDiagram
+  autonumber
+
+  box aqua
+  actor A as Alice
+  end
+
+  box darksalmon
+  participant Zoe
+  end
+
+  box skyblue Contract
+  participant C as gameAssetContract
+  end
+
+    A-)+Zoe: E(seat).getPayout('Places')
+    Note over Zoe: ... many steps above ...
+    Zoe--)-A: placesPayment
+    A-)+Zoe: E(issuers.Place).getAmountOf(placesPayment)
+    Zoe--)-A: { brand: Place brand,<br> value: [['Park Place, 1n], ['Boardwalk', 1n]]
