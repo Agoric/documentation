@@ -163,6 +163,12 @@ unavailable for later use. See
 
 Comparable is a deprecated synonym of [Key](#key).
 
+## Continuing Invitation Pattern
+
+A continuing invitation presumes a previous offer
+whose result includes capabilities to make further
+invitations. See [`source: 'continuing'`](/guides/getting-started/contract-rpc#source-continuing) in [Specifying Offers](/guides/getting-started/contract-rpc#specifying-offers) for details.
+
 ## Contract Installation and Contract Instance
 
 In Agoric documentation, _contract_ usually refers to a contract's source code that

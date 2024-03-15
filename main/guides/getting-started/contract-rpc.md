@@ -130,8 +130,41 @@ public facet.
 
 <!-- TODO: SVG diagram in /assets/ -->
 
-::: tip InvitationSpec Patterns
-For more `InvitationSpec` examples, see [How to make an offer from a dapp via the smart wallet? \(InvitationSpec Patterns\) · #8082](https://github.com/Agoric/agoric-sdk/discussions/8082) July 2023
+::: tip InvitationSpec Usage
+
+Supposing `spec` is an `InvitationSpec`, its `.source` is one of:
+
+- `purse` - to make an offer with an invitation that is already in the Invitation purse of the smart wallet and agrees with `spec` on `.instance` and `.description` properties. For example, in [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov), committee members use invitations sent to them when the committee was created.
+
+- `contract` - the smart wallet makes an invitation by calling a method on the public facet of a specified instance: `E(E(zoe).getPublicFacet(spec.instance)[spec.publicInvitationMaker](...spec.invitationArgs)`
+
+- `agoricContract` - for example, from [dapp-inter](https://github.com/Agoric/dapp-inter):
+
+```js
+{
+   source: 'agoricContract',
+   instancePath: ['VaultFactory'],
+   callPipe: [
+     ['getCollateralManager', [toLock.brand]],
+     ['makeVaultInvitation'],
+   ],
+ }
+```
+
+The smart wallet finds the instance using `E(agoricNames).lookup('instance', ...spec.instancePath)` and makes a chain of calls specified by `spec.callPipe`. Each entry in the callPipe is a `[methodName, args?]` pair used to execute a call on the preceding result. The end of the pipe is expected to return an Invitation.
+
+- <a name="source-continuing"></a>`continuing` - For example, `dapp-inter` uses the following `InvitationSpec` to adjust a vault:
+
+```js
+{
+  source: 'continuing',
+  previousOffer: vaultOfferId,
+  invitationMakerName: 'AdjustBalances',
+}
+```
+
+In this continuing offer, the smart wallet uses the `spec.previousOffer` id to look up the `.invitationMakers` property of the result of the previous offer. It uses `E(invitationMakers)[spec.invitationMakerName](...spec.invitationArgs)` to make an invitation.
+
 :::
 
 The client fills in the proposal, which instructs the `SmartWallet`
