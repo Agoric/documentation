@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from 'vitepress';
 import { nav } from './themeConfig/nav.js';
 import { rewrites } from './themeConfig/rewrites.js';
 
@@ -142,6 +142,7 @@ export default defineConfig({
             },
             { text: 'Zoe Overview', link: '/guides/zoe/' },
             { text: 'Contract Upgrade', link: '/guides/zoe/contract-upgrade' },
+            { text: 'Contract Governance', link: '/guides/governance/' },
           ],
         },
         {

@@ -113,12 +113,6 @@ export const nav = [
     ariaLabel: 'New Features Menu',
     items: [
       {
-        text: 'Governance',
-        ariaLabel: 'Governance Internal Documentation',
-        link:
-          'https://github.com/Agoric/agoric-sdk/blob/master/packages/governance/docs/',
-      },
-      {
         text: 'Patterns',
         ariaLabel: 'Patterns Source Code Link',
         link:
