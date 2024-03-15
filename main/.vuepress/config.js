@@ -202,39 +202,38 @@ module.exports = {
       "/build/": [
         {
           title: "How to Build a Client UI",
-          path: "/guides/coreeval/",
+          path: "/build/coreeval/",
           collapsible: true,
           children: [
-            "/guides/ertp/amounts.html", // - test, delete me
           ],
         },
         {
           title: "Permissioned Deployments",
-          path: "/guides/coreeval/",
+          path: "/build/coreeval/",
           collapsible: true,
           children: [],
         },
         {
           title: "Testing",
-          path: "/guides/coreeval/",
+          path: "/build/coreeval/",
           collapsible: true,
           children: [],
         },
         {
           title: "Debugging",
-          path: "/guides/coreeval/",
+          path: "/build/coreeval/",
           collapsible: true,
           children: [],
         },
         {
           title: "Agoric CLI",
-          path: "/guides/agoric-cli/",
+          path: "/build/agoric-cli/",
           collapsible: true,
           children: [],
         },
         {
           title: "API Reference",
-          path: "/guides/coreeval/",
+          path: "/build/coreeval/",
           collapsible: true,
           children: [],
         },
