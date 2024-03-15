@@ -1,6 +1,7 @@
 ---
 sidebar: auto
 ---
+
 # Glossary
 
 This page lists words, expressions, or concepts used by the Agoric technology stack.
@@ -42,7 +43,7 @@ abstract right to participate in a particular exchange.
 An amount is comprised of a [brand](#brand) with a [value](#amountvalue). For example, "4 Quatloos"
 is an amount with a value of "4" and a brand of the imaginary currency "Quatloos".
 
-**Important**: Amounts are *descriptions* of digital assets, not the actual assets. They have no
+**Important**: Amounts are _descriptions_ of digital assets, not the actual assets. They have no
 economic scarcity or intrinsic value.
 For example, to make you an offer to buy a magic sword in a game,
 a party sends you an amount describing the asset of 5 Quatloos they're willing to trade for your
@@ -61,6 +62,7 @@ updates its balance to 10 Quatloos. But a deposit of a non-fungible theater tick
 five tickets is performed by set union rather than by arithmetic.
 
 `AmountMath` has a single set of polymorphic methods that deal with different asset kinds:
+
 - `AssetKind.NAT`: Used with [fungible](#fungible) assets.
   Each amount value is a natural number (non-negative integer).
   This is the default `AssetKind`.
@@ -82,11 +84,12 @@ For more information, see the [ERTP documentation's AmountMath section](/guides/
 and the [ERTP API's AmountMath section](/reference/ertp-api/amount-math).
 
 <a id="value"></a>
+
 ## AmountValue
 
 An AmountValue is the part of an [Amount](#amount) that describes the value of something
 that can be owned or shared: how much, how many, or a description of a unique asset, such as
-$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
+\$3, Pixel(3,2), or “Seat J12 for the show September 27th at 9:00pm”.
 For a [fungible](#fungible) Amount, the AmountValue is usually a non-negative **BigInt** such as `10n` or `137n`.
 For a [non-fungible](#non-fungible) Amount, the AmountValue might be a [CopySet](/guides/js-programming/far#pass-styles-and-harden) containing strings naming particular rights or objects representing the rights directly.
 
@@ -128,19 +131,23 @@ and the [ERTP API's Brand section](/reference/ertp-api/brand).
 ## Bundle
 
 Before a contract can be installed on Zoe, its source code must be bundled. This is done by:
+
 ```js
 import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
   require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
 );
 ```
+
 The installation operation returns an `installation`, which is an object with a single
 `getBundle()` method for accessing an installed contract's source code.
 In most cases, the bundle contains a base64-encoded zip file that you can
 extract for review.
+
 ```js
 const { endoZipBase64 } = await E(installation).getBundle();
 ```
+
 ```sh
 echo "$endoZipBase64" | base64 -d > bundle.zip
 unzip bundle.zip
@@ -158,9 +165,9 @@ Comparable is a deprecated synonym of [Key](#key).
 
 ## Contract Installation and Contract Instance
 
-In Agoric documentation, *contract* usually refers to a contract's source code that
-defines how the contract works. A contract's source code is *installed* on Zoe. A
-contract is *instantiated* to create *contract instances*, which are the active
+In Agoric documentation, _contract_ usually refers to a contract's source code that
+defines how the contract works. A contract's source code is _installed_ on Zoe. A
+contract is _instantiated_ to create _contract instances_, which are the active
 execution of a contract's code running on Zoe.
 
 For example, a realtor has a standard house selling agreement. The contract is the
@@ -201,7 +208,7 @@ For more details, see the [agoric-sdk `network` package](https://github.com/Agor
 
 ## E()
 
-(Also referred to as *eventual send*) `E()` is a local "bridge" function that
+(Also referred to as _eventual send_) `E()` is a local "bridge" function that
 asynchronously invokes methods on local or remote objects, for example those
 in another vat, machine, or blockchain. It takes as its argument either a local object
 or a [presence](#presence) for a remote object or a promise for a local or remote object, and
@@ -230,7 +237,7 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md)
 
 ## ERTP
 
-*Electronic Rights Transfer Protocol* is a uniform way of transferring tokens and other digital assets,
+_Electronic Rights Transfer Protocol_ is a uniform way of transferring tokens and other digital assets,
 both [fungible](#fungible) and [non-fungible](#non-fungible), in JavaScript. All kinds of digital assets
 can easily be created and they can be all be transferred in exactly the same ways, with exactly the same security properties.
 
@@ -247,7 +254,7 @@ see the [ERTP documentation](/guides/ertp/) and [ERTP API documentation](/refere
 
 To give assets for a possible transaction to an impartial third party, who keeps them until specified conditions are satisfied.
 For example, Alice wants to sell Bob a ticket for $100. Alice escrows the ticket, and Bob escrows the $100, with Zoe. Zoe
-does not give Alice the $100 or Bob the ticket until it has both items. Since neither Alice nor Bob ever holds both items at
+does not give Alice the \$100 or Bob the ticket until it has both items. Since neither Alice nor Bob ever holds both items at
 once, they don't have to trust each other to do the transaction. Zoe automatically escrows payments for transaction offers.
 
 ## Eventual Send
@@ -261,18 +268,21 @@ For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe#proposals).
 
 ## Facet
 
-A *facet* is an object that exposes an API or particular view of some larger entity, which may be an object itself.
+A _facet_ is an object that exposes an API or particular view of some larger entity, which may be an object itself.
 You can make any number of facets of an entity. In JavaScript, you often make a facet that forwards method calls:
+
 ```js
 import { Far } from '@endo/far';
 const facet = Far('FacetName', {
   myMethod: (...args) => oldObject.method(...args),
 });
 ```
+
 Two Agoric uses are:
-- *Deposit Facet*: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add
+
+- _Deposit Facet_: A facet of a [purse](#purse). Anyone with a reference to its deposit facet object can add
   appropriately branded assets to the purse, but cannot withdraw assets from the purse or find out its balance.
-- *Public Facet*: A set of methods and properties for an object that a developer chooses to be publicly visible and usable.
+- _Public Facet_: A set of methods and properties for an object that a developer chooses to be publicly visible and usable.
 
 ## Fungible
 
@@ -315,6 +325,7 @@ to immediately participate. Otherwise, the contract instance must create any add
 Every [offer](#offer) to participate in a contract instance must include an invitation to that instance in the first argument to [`E(zoe).offer(...)`](/reference/zoe-api/zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs), and any wallet receiving one will validate it via the [InvitationIssuer](#invitationissuer).
 
 An invitation's [amount](#amount) includes the following properties:
+
 - The contract's installation in Zoe, including access to its source code.
 - The contract instance this invitation is for.
 - A handle used to refer to this invitation.
@@ -351,7 +362,7 @@ and the [ERTP API's Issuer section](/reference/ertp-api/issuer).
 
 ## Key
 
-A *Key* is a [passable](#passable) containing no promises or errors, and can
+A _Key_ is a [passable](#passable) containing no promises or errors, and can
 thus be synchronously compared for structural equivalence with another piece of data.
 If either side of the comparison contains promises and/or errors, equality is indeterminable.
 If both are fulfilled down to [presences](#presence) and local state, then either they're the
@@ -361,14 +372,14 @@ Keys can be used as elements of CopySets and CopyBags and as keys of CopyMaps (s
 
 ## Keyword
 
-A *Keyword* is a string that is an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
+A _Keyword_ is a string that is an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier),
 starts with an upper case letter, and is not equal to "NaN" or "Infinity".
 See **[Zoe Data Types](/reference/zoe-api/zoe-data-types#keyword)**.
 
 ## Mint
 
-[ERTP](#ertp) has a *mint* object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
-*ZCFMint*. Assets and AssetHolders created using ZCFMints can be used in all the same ways as assets created by other ERTP Mints.
+[ERTP](#ertp) has a _mint_ object, which creates digital assets. [ZCF](#zcf) provides a different interface to an ERTP mint, called a
+_ZCFMint_. Assets and AssetHolders created using ZCFMints can be used in all the same ways as assets created by other ERTP Mints.
 They interact with Purses, Payments, Brands, and Issuers in the same ways.
 
 - ERTP mints create digital assets and are the only ERTP objects with the authority to do so.
@@ -413,13 +424,14 @@ Objects have state, behavior, and references. Let's say Object A has references 
 and C, while B and C do not have references to each other. Thus, A can communicate with B and C,
 and B and C cannot communicate with each other. There is an effective zero-cost firewall between B and C.
 
-An *object capability system* constrains how references are obtained. You can't get one just by
+An _object capability system_ constrains how references are obtained. You can't get one just by
 knowing the name of a global variable or a public class. You can only get a reference via:
+
 - Creation: Functions that create objects get a reference to them.
 - Construction: Constructors can endow their constructed objects with references, including inherited references.
 - Introduction:
   - A has references to B and C.
-  - B and C do *not* have references to each other
+  - B and C do _not_ have references to each other
   - A sends B a reference to C.
     - B now has a reference to C and can communicate with C.
 
@@ -447,7 +459,7 @@ can immediately cause the [seat](#seat) to exit, getting back the amount it offe
 
 ## Passable
 
-A *passable* is something that can be sent to and from remote objects.
+A _passable_ is something that can be sent to and from remote objects.
 Passables include pass-by-copy primitive values such as numbers and strings and
 pass-by-reference values such as Remotables and Promises.
 Passables also include [CopyArrays](#copyarray) and [CopyRecords](#copyrecord), which are
@@ -494,6 +506,7 @@ expressing [offer](#offer) conditions regarding what assets will be given,
 what is desired in exchange (protected by [offer safety](#offer-safety)), and
 an [exit rule](#exit-rule) defining how/when the offer can be canceled.
 For example:
+
 ```js
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
@@ -501,6 +514,7 @@ const myProposal = harden({
   exit: { onDemand: null },
 });
 ```
+
 `give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing respectively what will be given and what is being requested in exchange.
 
 See [Offers](/guides/zoe/proposal).
@@ -581,7 +595,7 @@ See the [Wallet Guide and API](/guides/wallet/).
 
 ## ZCF
 
-*ZCF (Zoe Contract Facet)* is the [facet](#facet) of Zoe exposed to contract code. The Zoe
+_ZCF (Zoe Contract Facet)_ is the [facet](#facet) of Zoe exposed to contract code. The Zoe
 Contract Facet methods can be called synchronously by contract code.
 
 See the [ZCF API](/reference/zoe-api/zoe-contract-facet).
