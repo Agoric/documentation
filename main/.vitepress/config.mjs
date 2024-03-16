@@ -443,5 +443,30 @@ export default defineConfig({
         },
       },
     },
+    footer: {
+      copyright: `© ${new Date().getFullYear()} Agoric Systems Operating Company. All Rights Reserved.`,
+    },
+    socialLinks: [
+      {
+        icon: 'discord',
+        ariaLabel: 'Discord',
+        link: 'https://discord.com/invite/qDW8DRes4s',
+      },
+      {
+        icon: 'github',
+        ariaLabel: 'GitHub',
+        link: 'https://github.com/Agoric/agoric-sdk',
+      },
+      {
+        icon: 'twitter',
+        ariaLabel: 'Twitter',
+        link: 'https://twitter.com/agoric',
+      },
+      {
+        icon: 'youtube',
+        ariaLabel: 'YouTube',
+        link: 'https://www.youtube.com/@Agoric',
+      },
+    ],
   },
 });
