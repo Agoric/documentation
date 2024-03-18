@@ -43,7 +43,7 @@ Flags:
 
 In most cases, `agd query ...` is followed by a module name such as `bank`. An exception is `agd status`:
 
-### agd status
+## agd status
 
 Query remote node for status
 
@@ -93,7 +93,7 @@ Error: post failed: Post "https://devnet.rpc.agoric.net": dial tcp: address devn
 
 :::
 
-### agd query bank balances
+## agd query bank balances
 
 Query for account balances by address
 
@@ -116,7 +116,7 @@ $ agd query bank balances $addr -o json
 {"balances":[{"denom":"ubld","amount":"331000000"},{"denom":"uist","amount":"4854000000"}],...}
 ```
 
-### agd query gov proposals
+## agd query gov proposals
 
 Query for a all paginated proposals that match optional filters:
 
@@ -138,7 +138,7 @@ For accounts that control real negotiable assets, using
 a [consumer grade wallet](https://agoric.com/ecosystem/category/wallets) such as [Keplr](https://www.keplr.app/) is more straightforward.
 _Consider a hardware wallet such as a Ledger as well._
 
-### agd keys add
+## agd keys add
 
 Derive a new private key and encrypt to disk.
 
@@ -154,7 +154,7 @@ The flag `--recover` allows one to recover a key from a seed passphrase.
 - For compatibility with the ledger cosmos app, use `--ledger --coin-type 118` rather than the default 564.
 - To avoid signature prompts for testing, use `--keyring-backend=test` rather than the default, which is to use operating system key management. Use `--home=DIR` to store these keys under a different directory than `$HOME/.agoric`.
 
-### agd tx bank send
+## agd tx bank send
 
 Send funds from one account to another.
 
@@ -171,7 +171,7 @@ $ agd tx bank send $src $dest $amt \
 As usual, use `agd tx bank send --help` for documentation on
 flags such as `--yes`, `-b`, etc.
 
-### agd tx swingset install-bundle
+## agd tx swingset install-bundle
 
 ```
 agd tx swingset install-bundle --compress "@bundle1.json" \
@@ -181,7 +181,7 @@ agd tx swingset install-bundle --compress "@bundle1.json" \
 
 See also the [Agoric Gov Proposal Builder](https://cosgov.org/) web interface, especially for understanding storage fees.
 
-### agd tx gov submit-proposal swingset-core-eval
+## agd tx gov submit-proposal swingset-core-eval
 
 Usage:
 
@@ -203,7 +203,7 @@ agd tx gov submit-proposal swingset-core-eval "$PERMIT" "$SCRIPT" \
 
 The [Agoric Gov Proposal Builder](https://cosgov.org/) web interface provides a nice interface for this as well.
 
-### agd tx gov vote
+## agd tx gov vote
 
 Submit a vote for an active proposal. You can
 find the proposal-id by running [agd query gov proposals](#agd-query-gov-proposals).
