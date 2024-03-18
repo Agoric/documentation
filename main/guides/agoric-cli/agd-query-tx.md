@@ -208,14 +208,18 @@ The [Agoric Gov Proposal Builder](https://cosgov.org/) web interface provides a 
 Submit a vote for an active proposal. You can
 find the proposal-id by running [agd query gov proposals](#agd-query-gov-proposals).
 
-Example:
-
-```
-$ agd tx gov vote 1 yes --from mykey
-```
-
 Usage:
 
 ```
   agd tx gov vote [proposal-id] [option] [flags]
+```
+
+Example:
+
+```sh
+PROPOSAL=13
+agd tx gov vote $PROPOSAL yes \
+  --keyring-backend test --chain-id agoriclocal --from validator \
+  --gas auto --gas-adjustment 1.4 \
+  --broadcast-mode block --output json --yes
 ```
