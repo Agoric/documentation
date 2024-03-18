@@ -202,3 +202,20 @@ agd tx gov submit-proposal swingset-core-eval "$PERMIT" "$SCRIPT" \
 ```
 
 The [Agoric Gov Proposal Builder](https://cosgov.org/) web interface provides a nice interface for this as well.
+
+### agd tx gov vote
+
+Submit a vote for an active proposal. You can
+find the proposal-id by running [agd query gov proposals](#agd-query-gov-proposals).
+
+Example:
+
+```
+$ agd tx gov vote 1 yes --from mykey
+```
+
+Usage:
+
+```
+  agd tx gov vote [proposal-id] [option] [flags]
+```
