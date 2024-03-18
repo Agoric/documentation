@@ -135,8 +135,24 @@ $ agd query gov proposals --output json | \
 Making transactions requires setting up an **account** with a private key for signing. The [basic dapp local chain](../getting-started/#starting-a-local-agoric-blockchain) container has a number of keys set up for use with `--keyring-backend=test`. Use `agd keys list --keyring-backend=test` to see them.
 
 For accounts that control real negotiable assets, using
-a consumer grade wallet such as Keplr is more straightforward.
+a [consumer grade wallet](https://agoric.com/ecosystem/category/wallets) such as [Keplr](https://www.keplr.app/) is more straightforward.
 _Consider a hardware wallet such as a Ledger as well._
+
+### agd keys add
+
+Derive a new private key and encrypt to disk.
+
+Usage:
+
+```
+  agd keys add <name> [flags]
+```
+
+If run with `-i`, it will prompt the user for BIP44 path, BIP39 mnemonic, and passphrase.
+The flag `--recover` allows one to recover a key from a seed passphrase.
+
+- For compatibility with the ledger cosmos app, use `--ledger --coin-type 118` rather than the default 564.
+- To avoid signature prompts for testing, use `--keyring-backend=test` rather than the default, which is to use operating system key management. Use `--home=DIR` to store these keys under a different directory than `$HOME/.agoric`.
 
 ### agd tx bank send
 
