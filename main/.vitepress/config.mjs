@@ -206,15 +206,15 @@ export default defineConfig({
               link: '/guides/coreeval/',
             },
             {
-              text: 'Declaring Required Capabilities',
-              link: '/guides/coreeval/permissions',
-            },
-            {
-              text: 'Code the Proposal',
+              text: 'Write Code to Deploy a Contrcact',
               link: '/guides/coreeval/proposal',
             },
             {
-              text: 'Deploy a Governance Proposal to a Local Testnet',
+              text: 'Declare Required Capabilities',
+              link: '/guides/coreeval/permissions',
+            },
+            {
+              text: 'Submit Transactions',
               link: '/guides/coreeval/local-testnet',
             },
           ],
