@@ -4,7 +4,7 @@ Most contract deployments don't need everything in `BootstrapPowers`.
 Verifying by inspection that they don't use any more than they need
 is notoriously difficult. So proposals come with
 a `BootstrapManifestPermit` to declare an upper limit on the capabilities they access. For a property access `powers.P`, if the permit has `{ P: true }`, then the access succeeds. In fact, any _truthy_ value will do.
-And recursively, a property access `powers.P.Q.R` is succeeds if
+And recursively, a property access `powers.P.Q.R` succeeds if
 the permit has `{ P: { Q: { R: true } } }`.
 
 The permit for `startSellConcertTicketsContract` is:
@@ -51,5 +51,4 @@ In the top level promise space, we have:
 - **bankManager**: to manage reflection of cosmos
   assets as ERTP assets: to register an issuer to correspond to a denom or to get a bank of purses for any address. **Warning: this includes the right to spend assets for any account.**
 
-- **zoe**: the Zoe service.
-  **Note: this includes the right to install any available bundle and start instances of any available installation.**
+- **zoe**: the Zoe service
