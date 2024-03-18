@@ -349,9 +349,11 @@ When the transaction is complete you will notice some IST has been debited from 
 ![Finished transaction](./assets/new_006.png)
 
 Congratulations! You got your first Agoric dapp up and running! Now that you've got your first Agoric dapp up and running, let's focus on some key takeaways from this exercise:
-- **Starting an Agoric Chain**: You have gained experience starting a local Agoric blockchain. 
+
+- **Starting an Agoric Chain**: You have gained experience starting a local Agoric blockchain.
 
 - **Deploying a Contract**: You have deployed a smart contract onto the Agoric platform!
+  _Note: [testnet deployment, faucets, etc.](../coreeval/local-testnet) are discussed later._
 
 - **Making an Offer**: Finally, you've learned to make an offer and seen that offer constraints are enforced by the Agoric platform. This means user interface can't attempt to fool a user by showing a 0.25 IST when actually charging them a much higer amount, such as 500 IST. It's also important to note that the contract cannot take the 0.25 IST without satisfying the want constraint, nor can the contract take more than the 0.25 cents in the give contraint.
 
