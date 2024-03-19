@@ -20,7 +20,7 @@ Governance of the right to upgrade is a complex topic that we cover only briefly
 
 ## Upgrading a Contract
 
-Upgrading a contract instance means re-starting the contract using a different [code bundle](./#bundling-a-contract). Suppose we start a contract as usual, using
+Upgrading a contract instance means re-starting the contract using a different [code bundle](./contract-walkthru#bundling-a-contract). Suppose we start a contract as usual, using
 the bundle ID of a bundle we already sent to the chain:
 
 ```js

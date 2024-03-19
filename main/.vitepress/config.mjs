@@ -128,7 +128,10 @@ export default defineConfig({
               text: 'Smart Contract Basics',
               link: '/guides/zoe/contract-basics',
             },
-            { text: 'Zoe Overview', link: '/guides/zoe/' },
+            {
+              text: 'Complete Contract Walk-Through',
+              link: '/guides/zoe/contract-walkthru',
+            },
             { text: 'Contract Upgrade', link: '/guides/zoe/contract-upgrade' },
             { text: 'Contract Governance', link: '/guides/governance/' },
           ],
