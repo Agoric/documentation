@@ -40,25 +40,25 @@ features:
     details: Leverage IBC for instant, cross-chain asset interoperability.
     link: /guides/platform/
 
-  - icon: 🛠️
-    title: Seamless DX
-    details: Develop smart contracts using the world’s most popular programming language.
-    link: /guides/getting-started/
+  - icon: 💬
+    title: Discord
+    details: Meet our developer community and make friends.
+    link: https://agoric.com/discord
 
-  - icon: 🔒
-    title: Built-In Security
-    details: Deploy tamper-proof smart contracts in a VM hardened by the latest ECMAScript features.
-    link: /guides/js-programming/
+  - icon: 💡
+    title: Github Discussions
+    details: Ask questions. Share ideas.
+    link: https://github.com/Agoric/agoric-sdk/discussions
 
-  - icon: ⚙️
-    title: Modular SDK
-    details: Compose smart contracts and create digital assets with ease using object-capabilities.
-    link: /guides/zoe/contracts/
+  - icon: 🕘
+    title: Office Hours
+    details: Join us for open discussion, whether you're just getting started or deep into the details.
+    link: https://github.com/Agoric/agoric-sdk/wiki/Office-Hours
 
-  - icon: 🌐
-    title: Interoperable Ecosystem
-    details: Leverage IBC for instant, cross-chain asset interoperability.
-    link: /guides/platform/
+  - icon: 🐦
+    title: Twitter
+    details: Catch up on all things Agoric product, events, and more.
+    link: https://twitter.com/agoric
 ---
 
 <style>
