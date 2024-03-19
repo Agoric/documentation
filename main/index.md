@@ -25,15 +25,15 @@ features:
     details: Develop smart contracts using the world’s most popular programming language.
     link: /guides/getting-started/
 
+  - icon: ⚙️
+    title: Composable Smart Contracts
+    details: Build smart contracts and create digital assets. Partition risk and leverage safety properties.
+    link: /guides/zoe/
+
   - icon: 🔒
     title: Built-In Security
-    details: Deploy tamper-proof smart contracts in a VM hardened by the latest ECMAScript features.
+    details: Express access control using familiar patterns of objects.
     link: /guides/js-programming/
-
-  - icon: ⚙️
-    title: Modular SDK
-    details: Compose smart contracts and create digital assets with ease using object-capabilities.
-    link: /guides/zoe/contracts/
 
   - icon: 🌐
     title: Interoperable Ecosystem
