@@ -8,38 +8,12 @@ export const nav = [
   {
     text: 'Getting Started',
     ariaLabel: 'Getting Started Menu',
-    items: [
-      {
-        text: 'Your First Agoric Dapp',
-        ariaLabel: 'Your First Agoric Dapp Menu',
-        link: '/guides/getting-started/',
-      },
-      {
-        text: 'Smart Wallet Dapp Architecture',
-        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
-        link: '/guides/getting-started/contract-rpc',
-      },
-      {
-        text: 'Permissioned Contract Deployment',
-        ariaLabel: 'Permissioned Contract Deployment',
-        link: '/guides/coreeval/',
-      },
-    ],
+    link: '/guides/getting-started/',
   },
   {
     text: 'Agoric Components',
     ariaLabel: 'Agoric Components Menu',
     items: [
-      {
-        text: 'Agoric CLI',
-        ariaLabel: 'Agoric CLI',
-        link: '/guides/agoric-cli/',
-      },
-      {
-        text: 'JavaScript Framework',
-        ariaLabel: 'JavaScript Framework',
-        link: '/guides/js-programming/',
-      },
       {
         text: 'ERTP',
         ariaLabel: 'ERTP',
@@ -49,6 +23,11 @@ export const nav = [
         text: 'Zoe',
         ariaLabel: 'Zoe',
         link: '/guides/zoe/',
+      },
+      {
+        text: 'Smart Wallet Dapp Architecture',
+        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+        link: '/guides/getting-started/contract-rpc',
       },
       {
         text: 'Example Zoe Contracts',
@@ -61,16 +40,31 @@ export const nav = [
         link: '/guides/zoe/actual-contracts/',
       },
       {
-        text: 'Smart Wallet Dapp Architecture',
-        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
-        link: '/guides/getting-started/contract-rpc',
+        text: 'Permissioned Contract Deployment',
+        ariaLabel: 'Permissioned Contract Deployment',
+        link: '/guides/coreeval/',
+      },
+      {
+        text: 'JavaScript Framework',
+        ariaLabel: 'JavaScript Framework',
+        link: '/guides/js-programming/',
       },
     ],
   },
   {
-    text: 'API Reference',
-    ariaLabel: 'API Reference Menu',
+    text: 'Reference',
+    ariaLabel: 'Reference Menu',
     items: [
+      {
+        text: 'Glossary',
+        ariaLabel: 'Glossary Menu',
+        link: '/glossary/',
+      },
+      {
+        text: 'Agoric CLI',
+        ariaLabel: 'Agoric CLI',
+        link: '/guides/agoric-cli/',
+      },
       {
         text: 'ERTP API',
         ariaLabel: 'ERTP API Menu',
@@ -82,11 +76,6 @@ export const nav = [
         link: '/reference/zoe-api/',
       },
     ],
-  },
-  {
-    text: 'Glossary',
-    ariaLabel: 'Glossary Menu',
-    link: '/glossary/',
   },
   {
     text: 'New Features',
