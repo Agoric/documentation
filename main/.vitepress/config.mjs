@@ -125,10 +125,6 @@ export default defineConfig({
               text: 'Smart Wallet Dapp Architecture',
               link: '/guides/getting-started/contract-rpc',
             },
-            {
-              text: 'Deploying Smart Contracts',
-              link: '/guides/getting-started/deploying',
-            },
           ],
         },
         {
@@ -182,15 +178,6 @@ export default defineConfig({
               text: 'Notifiers and Subscriptions',
               link: '/guides/js-programming/notifiers',
             },
-          ],
-        },
-        {
-          text: 'Wallet',
-          link: '/guides/wallet/',
-          collapsed: true,
-          items: [
-            { text: 'Agoric Wallet', link: '/guides/wallet/' },
-            { text: 'Wallet UI', link: '/guides/wallet/ui' },
           ],
         },
         {
@@ -330,38 +317,12 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Agoric Dapps',
-          link: '/guides/dapps/',
-          collapsed: true,
-          items: [
-            { text: 'Agoric Dapps', link: '/guides/dapps/' },
-            {
-              text: 'Dapp Templates',
-              link: '/guides/dapps/dapp-templates',
-            },
-            {
-              text: 'Starting Multiuser Dapps',
-              link: '/guides/dapps/starting-multiuser-dapps',
-            },
-            {
-              text: 'Deploying Smart Contracts',
-              link: '/guides/getting-started/deploying',
-            },
-            {
-              text: 'Smart Wallet Dapp Architecture',
-              link: '/guides/getting-started/contract-rpc',
-            },
-          ],
+          text: 'Smart Wallet Dapp Architecture',
+          link: '/guides/getting-started/contract-rpc',
         },
         {
           text: 'Agoric Platform',
           link: '/guides/platform/',
-          collapsed: true,
-          items: [],
-        },
-        {
-          text: 'Chainlink Integration',
-          link: '/guides/chainlink-integration',
           collapsed: true,
           items: [],
         },

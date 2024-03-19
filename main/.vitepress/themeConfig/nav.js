@@ -20,11 +20,6 @@ export const nav = [
         link: '/guides/getting-started/contract-rpc',
       },
       {
-        text: 'Deploying Smart Contracts',
-        ariaLabel: 'Deploying Menu',
-        link: '/guides/getting-started/deploying',
-      },
-      {
         text: 'Permissioned Contract Deployment',
         ariaLabel: 'Permissioned Contract Deployment',
         link: '/guides/coreeval/',
@@ -44,11 +39,6 @@ export const nav = [
         text: 'JavaScript Framework',
         ariaLabel: 'JavaScript Framework',
         link: '/guides/js-programming/',
-      },
-      {
-        text: 'Wallet',
-        ariaLabel: 'Wallet',
-        link: '/guides/wallet/',
       },
       {
         text: 'ERTP',
@@ -71,9 +61,9 @@ export const nav = [
         link: '/guides/zoe/actual-contracts/',
       },
       {
-        text: 'Agoric Dapps',
-        ariaLabel: 'Agoric Dapps',
-        link: '/guides/dapps/',
+        text: 'Smart Wallet Dapp Architecture',
+        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+        link: '/guides/getting-started/contract-rpc',
       },
     ],
   },
@@ -82,19 +72,9 @@ export const nav = [
     ariaLabel: 'API Reference Menu',
     items: [
       {
-        text: 'Wallet API',
-        ariaLabel: 'Wallet API Menu',
-        link: '/reference/wallet-api/',
-      },
-      {
         text: 'ERTP API',
         ariaLabel: 'ERTP API Menu',
         link: '/reference/ertp-api/',
-      },
-      {
-        text: 'REPL API',
-        ariaLabel: 'REPL API Menu',
-        link: '/reference/repl/',
       },
       {
         text: 'Zoe API',
