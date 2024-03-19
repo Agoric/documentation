@@ -1,7 +1,7 @@
 # Smart Contract Basics
 
 Before we look at how to make a contract such as the one in [the
-basic dapp](./) in the previous section, let's cover some basics.
+basic dapp](../getting-started/) in the previous section, let's cover some basics.
 
 A contract is defined by a JavaScript module that exports a `start` function
 that implements the contract's API.
