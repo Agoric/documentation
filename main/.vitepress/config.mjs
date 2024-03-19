@@ -371,8 +371,6 @@ export default defineConfig({
           collapsed: true,
           items: [],
         },
-      ],
-      '/reference/': [
         {
           text: 'Wallet API',
           link: '/reference/wallet-api/',
