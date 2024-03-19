@@ -335,21 +335,6 @@ export default defineConfig({
       ],
       '/reference/': [
         {
-          text: 'Wallet API',
-          link: '/reference/wallet-api/',
-          collapsed: true,
-          items: [
-            {
-              text: 'Wallet API Commands',
-              link: '/reference/wallet-api/wallet-commands',
-            },
-            {
-              text: 'WalletBridge API Commands',
-              link: '/reference/wallet-api/wallet-bridge',
-            },
-          ],
-        },
-        {
           text: 'ERTP API',
           link: '/reference/ertp-api/',
           collapsed: true,
@@ -371,25 +356,6 @@ export default defineConfig({
               text: 'ERTP Data Types',
               link: '/reference/ertp-api/ertp-data-types',
             },
-          ],
-        },
-        {
-          text: 'REPL API',
-          link: '/reference/repl/',
-          collapsed: true,
-          items: [
-            { text: 'Agoric REPL', link: '/reference/repl/' },
-            {
-              text: 'Timer Services',
-              link: '/reference/repl/timerServices',
-            },
-            { text: 'The Agoric Board', link: '/reference/repl/board' },
-            { text: 'Network API', link: '/reference/repl/networking' },
-            {
-              text: 'Price Authority',
-              link: '/reference/repl/priceAuthority',
-            },
-            { text: 'Scratch', link: '/reference/repl/scratch' },
           ],
         },
         {
