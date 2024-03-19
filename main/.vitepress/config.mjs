@@ -450,7 +450,7 @@ export default defineConfig({
       {
         icon: 'discord',
         ariaLabel: 'Discord',
-        link: 'https://discord.com/invite/qDW8DRes4s',
+        link: 'https://agoric.com/discord',
       },
       {
         icon: 'github',
