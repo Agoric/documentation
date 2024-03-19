@@ -118,14 +118,6 @@ export default defineConfig({
         {
           text: 'Getting Started',
           link: '/guides/getting-started/',
-          collapsed: true,
-          items: [
-            { text: 'Getting Started', link: '/guides/getting-started/' },
-            {
-              text: 'Smart Wallet Dapp Architecture',
-              link: '/guides/getting-started/contract-rpc',
-            },
-          ],
         },
         {
           text: 'Zoe',
@@ -142,14 +134,23 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Agoric CLI',
-          link: '/guides/agoric-cli/',
+          text: 'ERTP',
+          link: '/guides/ertp/',
           collapsed: true,
           items: [
-            { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
+            { text: 'ERTP Overview', link: '/guides/ertp/' },
             {
-              text: 'Using agd to make queries and transactions',
-              link: '/guides/agoric-cli/agd-query-tx',
+              text: 'Amounts, Values, and Brands',
+              link: '/guides/ertp/amounts',
+            },
+            { text: 'AmountMath', link: '/guides/ertp/amount-math' },
+            {
+              text: 'Issuers and  Mints',
+              link: '/guides/ertp/issuers-and-mints',
+            },
+            {
+              text: 'Purses and Payments',
+              link: '/guides/ertp/purses-and-payments',
             },
           ],
         },
@@ -181,26 +182,20 @@ export default defineConfig({
           ],
         },
         {
-          text: 'ERTP',
-          link: '/guides/ertp/',
+          text: 'Agoric Platform',
+          link: '/guides/platform/',
           collapsed: true,
-          items: [
-            { text: 'ERTP Overview', link: '/guides/ertp/' },
-            {
-              text: 'Amounts, Values, and Brands',
-              link: '/guides/ertp/amounts',
-            },
-            { text: 'AmountMath', link: '/guides/ertp/amount-math' },
-            {
-              text: 'Issuers and  Mints',
-              link: '/guides/ertp/issuers-and-mints',
-            },
-            {
-              text: 'Purses and Payments',
-              link: '/guides/ertp/purses-and-payments',
-            },
-          ],
+          items: [],
         },
+        {
+          text: 'Smart Wallet Dapp Architecture',
+          link: '/guides/getting-started/contract-rpc',
+        },
+        {
+          text: 'Name Services: agoricNames, namesByAddress, board',
+          link: '/guides/integration/name-services',
+        },
+
         {
           text: 'Permissioned Contract Deployment',
           link: '/guides/coreeval/',
@@ -221,6 +216,21 @@ export default defineConfig({
             {
               text: 'Deploy a Governance Proposal to a Local Testnet',
               link: '/guides/coreeval/local-testnet',
+            },
+          ],
+        },
+        {
+          text: 'Deployed Zoe Contracts',
+          link: '/guides/zoe/actual-contracts/',
+          collapsed: true,
+          items: [
+            {
+              text: 'Deployed Zoe Contracts',
+              link: '/guides/zoe/actual-contracts/',
+            },
+            {
+              text: 'PSM Contract',
+              link: '/guides/zoe/actual-contracts/PSM',
             },
           ],
         },
@@ -302,29 +312,8 @@ export default defineConfig({
           ],
         },
         {
-          text: 'Deployed Zoe Contracts',
-          link: '/guides/zoe/actual-contracts/',
-          collapsed: true,
-          items: [
-            {
-              text: 'Deployed Zoe Contracts',
-              link: '/guides/zoe/actual-contracts/',
-            },
-            {
-              text: 'PSM Contract',
-              link: '/guides/zoe/actual-contracts/PSM',
-            },
-          ],
-        },
-        {
-          text: 'Smart Wallet Dapp Architecture',
-          link: '/guides/getting-started/contract-rpc',
-        },
-        {
-          text: 'Agoric Platform',
-          link: '/guides/platform/',
-          collapsed: true,
-          items: [],
+          text: 'Integrating with Agoric Network',
+          link: '/guides/integration/chain-integration',
         },
         {
           text: 'SubQuery Indexing',
@@ -334,6 +323,18 @@ export default defineConfig({
         },
       ],
       '/reference/': [
+        {
+          text: 'Agoric CLI',
+          link: '/guides/agoric-cli/',
+          collapsed: true,
+          items: [
+            { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
+            {
+              text: 'Using agd to make queries and transactions',
+              link: '/guides/agoric-cli/agd-query-tx',
+            },
+          ],
+        },
         {
           text: 'ERTP API',
           link: '/reference/ertp-api/',
