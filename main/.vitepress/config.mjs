@@ -473,10 +473,11 @@ export default defineConfig({
     docsDir: 'main',
     // if your docs are in a specific branch (defaults to 'master'):
     docsBranch: 'main',
-    // defaults to false, set to true to enable
-    editLinks: true,
     // custom text for edit link. Defaults to "Edit this page"
-    editLinkText: 'Help us improve this page!',
+    editLink: {
+      pattern: 'https://github.com/Agoric/documentation/edit/main/main/:path',
+      text: 'Help us improve this page!',
+    },
 
     zoeVersion: 'v0.24.0',
     zoeDocsUpdated: 'August 25, 2022',
