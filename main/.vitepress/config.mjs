@@ -224,7 +224,7 @@ export default defineConfig({
               link: '/guides/coreeval/',
             },
             {
-              text: 'Write Code to Deploy a Contrcact',
+              text: 'Write Code to Deploy a Contract',
               link: '/guides/coreeval/proposal',
             },
             {
