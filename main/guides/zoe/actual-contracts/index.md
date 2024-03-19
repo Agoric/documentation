@@ -1,7 +1,5 @@
 # Deployed Zoe Contracts
 
-<Zoe-Version/>
-
 In the [mainnet-1B release of agoric-sdk](https://github.com/Agoric/agoric-sdk/releases/tag/mainnet1B-rc3), the chain is configured to automatically deploy the following Zoe contracts. A [community post on Inter Protocol Vaults Contract Implementations](https://community.agoric.com/t/inter-protocol-vaults-contract-implementations/261) has a high level description.
 
 | Contract | Description |
