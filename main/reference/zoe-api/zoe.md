@@ -204,6 +204,7 @@ const instance = await E(Zoe).getInstance(invitation);
 - Returns: **Promise&lt;[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
+See also [Proposal Shapes](./zoe-contract-facet#proposal-shapes).
 
 ## E(Zoe).getInstallation(invitation)
 
@@ -350,14 +351,8 @@ the Keywords might be "Asset" and "Bid".
   (Some timers use Unix epoch time, while others count block height.)
   For more details, see [Timer Services](/reference/repl/timerServices).
 
-### Proposal Shape
-
-A contract can avoid invalid proposals
-
-using the
-**[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object from `@endo/patterns`.
-
-For example, a contract holding an auction might require that all offers include an `afterDeadline` exit rule with a timestamp in the future.
+A contract can avoid invalid proposals;
+see [Proposal Shapes](./zoe-contract-facet#proposal-shapes).
 
 ### Payments
 
