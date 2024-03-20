@@ -324,8 +324,6 @@ export default defineConfig({
           collapsed: true,
           items: [],
         },
-      ],
-      '/reference/': [
         {
           text: 'Agoric CLI',
           link: '/guides/agoric-cli/',
