@@ -11,6 +11,7 @@ the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/c
 In the operations below, **instance** is the handle for the running contract instance.
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
+
 - **keyword**: **[Keyword](./zoe-data-types#keyword)**
 - **assetKind**: **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)** - Optional, defaults to **AssetKind.NAT**.
 - **displayInfo**: **[DisplayInfo](/reference/ertp-api/ertp-data-types#displayinfo)** - Optional, defaults to **undefined**.
@@ -18,8 +19,8 @@ In the operations below, **instance** is the handle for the running contract ins
 
 Creates a synchronous Zoe mint, allowing users to mint and reallocate digital assets synchronously
 instead of relying on an asynchronous ERTP **[Mint](/reference/ertp-api/mint)**.
-The optional *displayInfo* parameter takes values
-like **decimalPlaces: 16** that tell the UI how to display values associated with the created mint's 
+The optional _displayInfo_ parameter takes values
+like **decimalPlaces: 16** that tell the UI how to display values associated with the created mint's
 brand. It defaults to undefined.
 
 **Important**: **ZCFMints** do **not** have the same methods as an ERTP **Mint**. Do not try to use
@@ -41,6 +42,7 @@ mySynchronousMint.mintGains({ myKeyword: amount }, seat);
 ```
 
 ## zcf.getInvitationIssuer()
+
 - Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types#invitationissuer)>**
 
 Returns the **InvitationIssuer** for the Zoe instance.
@@ -50,12 +52,13 @@ const invitationIssuer = await zcf.getInvitationIssuer();
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
+
 - **issuer**: **[Issuer](/reference/ertp-api/issuer)**
 - **keyword**: **[Keyword](./zoe-data-types#keyword)**
 - Returns: **Promise&lt;IssuerRecord>**
 
 Informs Zoe about an **Issuer** and returns a promise for acknowledging
-when the **Issuer** is added and ready. The *keyword* is the one associated
+when the **Issuer** is added and ready. The _keyword_ is the one associated
 with the new **Issuer**. This method returns a promise for an **IssuerRecord** of the new **Issuer**
 
 This saves an **Issuer** in Zoe's records for this contract **instance**.
@@ -71,7 +74,9 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 ```
 
 <a id="zcf-makeinvitation-offerhandler-description-customproperties-proposalshape"></a>
+
 ## zcf.makeInvitation(offerHandler, description, customDetails?, proposalShape?)
+
 - **offerHandler**: **(seat: ZCFSeat, offerArgs?: CopyRecord) => any**
 - **description**: **String**
 - **customDetails**: **Object** - Optional.
@@ -81,6 +86,7 @@ await zcf.saveIssuer(secondaryIssuer, keyword);
 Uses the Zoe **[InvitationIssuer](./zoe-data-types#invitationissuer)** to _mint_
 a credible **Invitation** for a smart contract.
 The returned **Invitation**'s **amount** specifies:
+
 - The specific contract **instance**.
 - The Zoe **installation**.
 - A unique **[Handle](./zoe-data-types#handle)**.
@@ -118,7 +124,7 @@ Patterns are constructed using the
 ```
 
 ```js
-import { M } from "@endo/patterns";
+import { M } from '@endo/patterns';
 
 const waivedExitProposalShape = M.splitRecord(
   // required properties
@@ -128,11 +134,16 @@ const waivedExitProposalShape = M.splitRecord(
   // unknown properties
   M.record(),
 );
-const creatorInvitation =
-  zcf.makeInvitation(makeCallOption, 'makeCallOption', undefined, waivedExitProposalShape);
+const creatorInvitation = zcf.makeInvitation(
+  makeCallOption,
+  'makeCallOption',
+  undefined,
+  waivedExitProposalShape,
+);
 ```
 
 ## zcf.makeEmptySeatKit()
+
 - Returns: **[ZCFSeat](./zcfseat), Promise&lt;[UserSeat](./user-seat)>**
 
 Returns an empty **ZCFSeat** and a **Promise** for a **UserSeat**
@@ -140,43 +151,51 @@ Returns an empty **ZCFSeat** and a **Promise** for a **UserSeat**
 Zoe uses **seats** to represent offers, and has two seat facets (a
 particular view or API of an object;
 there may be multiple such facets per object) a **ZCFSeat** and a **UserSeat**.
+
 ```js
 const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
 ```
 
 ## zcf.getInstance()
+
 - Returns: **[Instance](./zoe-data-types#instance)**
 
 The contract code can request its own current instance, so it can be sent elsewhere.
 
 ## zcf.getBrandForIssuer(issuer)
+
 - **issuer**: **[Issuer](/reference/ertp-api/issuer)**
 - Returns: **[Brand](/reference/ertp-api/brand)**
 
-Returns the **Brand** associated with the *issuer*.
+Returns the **Brand** associated with the _issuer_.
 
 ## zcf.getIssuerForBrand(brand)
+
 - **brand**: **[Brand](/reference/ertp-api/brand)**
 - Returns: **[Issuer](/reference/ertp-api/issuer)**
 
-Returns the **Issuer** of the *brand* argument.
+Returns the **Issuer** of the _brand_ argument.
 
 ## zcf.getAssetKind(brand)
+
 - **brand**: **[Brand](/reference/ertp-api/brand)**
 - Returns: **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)**
 
-Returns the **AssetKind** associated with the *brand* argument.
+Returns the **AssetKind** associated with the _brand_ argument.
+
 ```js
 const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
 ```
 
 ## zcf.stopAcceptingOffers()
+
 - Returns: None.
 
-The contract requests Zoe to not accept offers for this contract instance. 
+The contract requests Zoe to not accept offers for this contract instance.
 It can't be called from outside the contract unless the contract explicitly makes it accessible.
 
 ## zcf.shutdown(completion)
+
 - **completion**: **Usually (but not always) a String**
 - Returns: None.
 
@@ -186,19 +205,22 @@ All open **seats** associated with the current **instance** have **fail()**
 called on them.
 
 Call when:
+
 - You want nothing more to happen in the contract, and
 - You don't want to take any more offers
 
-The *completion* argument is usually a **String**, but this 
+The _completion_ argument is usually a **String**, but this
 is not required. It is used for the notification sent to the
 contract instance's **done()** function. Any still open seats or
-other outstanding promises are closed with a generic 'vat terminated' 
+other outstanding promises are closed with a generic 'vat terminated'
 message.
+
 ```js
 zcf.shutdown();
 ```
 
 ## zcf.shutdownWithFailure(reason)
+
 - **reason**: **Error**
 - Returns: None.
 
@@ -207,10 +229,10 @@ Shuts down the entire vat and contract instance due to an error.
 All open **seats** associated with the current **instance** have **fail()**
 called on them.
 
-The *reason* argument is a JavaScript error object. 
+The _reason_ argument is a JavaScript error object.
 It is used for the notification sent to the
 contract instance's **done()** function. Any still open seats or
-other outstanding promises are closed with the relevant 
+other outstanding promises are closed with the relevant
 error message.
 
 ```js
@@ -218,11 +240,13 @@ zcf.shutdownWithFailure();
 ```
 
 ## zcf.getTerms()
+
 - Returns: **Object**
 
 Returns the **[Issuers](/reference/ertp-api/issuer)**, **[Brands](/reference/ertp-api/brand)**, and custom **terms** the current contract **instance** was instantiated with.
 
 The returned values look like:
+
 ```js
 { brands, issuers, customTermA, customTermB ... }
 // where brands and issuers are keywordRecords, like:
@@ -239,15 +263,18 @@ Note that there is also an **E(zoe).getTerms(instance)**. Often the choice of wh
 to use, but which of Zoe Service or ZCF you have access to. On the contract side, you more easily have access
 to **zcf**, and **zcf** already knows what instance is running. So in contract code, you use **zcf.getTerms()**. From
 a user side, with access to Zoe Service, you use **E(zoe).getTerms()**.
+
 ```js
-const { brands, issuers, maths, terms } = zcf.getTerms()
+const { brands, issuers, maths, terms } = zcf.getTerms();
 ```
 
 ## zcf.getZoeService()
+
 - Returns: [ZoeService](./zoe)
 
 This is the only way to get the user-facing [Zoe Service API](./zoe) to
 the contract code as well.
+
 ```js
 // Making an offer to another contract instance in the contract.
 const zoeService = zcf.getZoeService();
@@ -255,17 +282,20 @@ E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
 ```
 
 ## zcf.assertUniqueKeyword(keyword)
+
 - **keyword**: **[Keyword](./zoe-data-types#keyword)**
 - Returns: **Undefined**
 
 Checks if a **Keyword** is valid and not already used as a **Brand** in this **Instance** (i.e., unique)
 and could be used as a new **Brand** to make an **Issuer**. Throws an appropriate error if it's not
 a valid **Keyword**, or is not unique.
+
 ```js
 zcf.assertUniqueKeyword(keyword);
 ```
 
 ## zcf.setOfferFilter(strings)
+
 - **strings**: **Array&lt;String>**
 - Returns: None.
 
@@ -279,9 +309,10 @@ intended to be used by **governance** in a legible way, so that the contract's
 governance process can take emergency action in order to stop processing when necessary.
 
 Note that blocked strings can be re-enabled by calling this method again and simply not
-including that string in the *strings* argument.
+including that string in the _strings_ argument.
 
 ## zcf.getOfferFilter()
+
 - Returns: **Array&lt;String>**
 
 Returns all the strings that have been disabled for use in invitations, if any.
@@ -289,33 +320,35 @@ A contract's invitations may be disabled using the
 **[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
 that they provide a vulnerability.
 
-
 ::: warning DEPRECATED
+
 ## zcf.reallocate(seats)
+
 - **seats**: **[ZCFSeats](./zcfseat)[]** (at least two)
 - Returns: None.
 
 **zcf.reallocate()** commits the staged allocations for each of its seat arguments,
 making their staged allocations their current allocations. **zcf.reallocate()** then
-transfers the assets escrowed in Zoe from one seat to another. Importantly, the assets 
+transfers the assets escrowed in Zoe from one seat to another. Importantly, the assets
 stay escrowed, with only the internal Zoe accounting of each seat's allocation changed.
 
 There must be at least two **ZCFSeats** in the array argument. Every **ZCFSeat**
 with a staged allocation must be included in the argument array or an error
 is thrown. If any seat in the argument array does not have a staged allocation,
-an error is thrown. 
+an error is thrown.
 
-On commit, the staged allocations become the seats' current allocations and 
+On commit, the staged allocations become the seats' current allocations and
 the staged allocations are deleted.
 
-Note: **reallocate()** is an *atomic operation*. To enforce offer safety, 
-it will never abort part way through. It will completely succeed or it will 
+Note: **reallocate()** is an _atomic operation_. To enforce offer safety,
+it will never abort part way through. It will completely succeed or it will
 fail before any seats have their current allocation changed.
 
 The reallocation only succeeds if it:
+
 1. Conserves rights (the specified **[Amounts](/reference/ertp-api/ertp-data-types#amount)** have the same total value as the
-  current total amount)
-2. Is 'offer-safe' for all parties involved. 
+   current total amount)
+2. Is 'offer-safe' for all parties involved.
 
 The reallocation is partial, only applying to the **seats** in the
 argument array. By induction, if rights conservation and
@@ -327,6 +360,7 @@ those **seats**, and since rights are conserved for the change, overall
 rights are unchanged.
 
 **zcf.reallocate()** throws this error:
+
 - **reallocating must be done over two or more seats**
 
 ```js
@@ -337,5 +371,3 @@ zcf.reallocate(buyerSeat, sellerSeat);
 
 **Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
 :::
-
-
