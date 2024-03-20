@@ -406,3 +406,23 @@ const { userSeatPromise: AMMUserSeat, deposited } = zcf.offerTo(
   lenderSeat,
 );
 ```
+
+## prepareRecorderKitMakers(baggage, marshaller)
+
+Convenience wrapper for DurablePublishKit and Recorder kinds.
+
+::: tip
+
+This defines two durable kinds. Must be called at most once per baggage.
+
+:::
+
+- `makeRecorderKit` is suitable for making a durable `RecorderKit` which can be held in Exo state.
+- `makeERecorderKit` is for closures that must return a `subscriber` synchronously but can defer the `recorder`.
+
+```js
+@param {import('@agoric/vat-data').Baggage} baggage
+@param {ERef<Marshaller>} marshaller
+```
+
+Source: [@agoric/zoe/src/contractSupport/recorder.js#L215](https://github.com/Agoric/agoric-sdk/blob/5a6cdeb0c18ae9700d706445acf402f8d1e873c3/packages/zoe/src/contractSupport/recorder.js#L215)
