@@ -25,7 +25,7 @@
       auction: 'see Inter Protocol',
       boardAux: 'auxiliary data for brands etc. keyed by boardId (since #49 2023-09-21)',
       committees: 'see Inter Protocol',
-      crabble: 'reserved by chain governance proposal #64 decided 23-12-18',
+      crabble: 'reserved by chain governance proposal #64 decided 2023-12-18',
       kread: 'reserved by chain governance proposal #53 decided 2023-10-01',
       priceFeed: 'see Inter Protocol',
       provisionPool: 'provideds initial IST during smart wallet provisioning',
