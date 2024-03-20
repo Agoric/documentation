@@ -21,10 +21,11 @@ For more information about using **E**, see the [Agoric's JavaScript Distributed
 :::
 
 ## E(Zoe).getBrands(instance)
+
 - **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;BrandKeywordRecord>**
 
-Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand)** defined in the *instance* argument.
+Returns a **Promise** for a **BrandKeywordRecord** containing all **[Brands](/reference/ertp-api/brand)** defined in the _instance_ argument.
 
 A **BrandKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types#keyword)**,
 and the values are the **Brands** for particular **[Issuers](/reference/ertp-api/issuer)**.
@@ -44,10 +45,11 @@ const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```
 
 ## E(Zoe).getIssuers(instance)
+
 - **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;IssuerKeywordRecord>**
 
-Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer)** defined in the *instance* argument.
+Returns a **Promise** for an **IssuerKeywordRecord** containing all **[Issuers](/reference/ertp-api/issuer)** defined in the _instance_ argument.
 
 An **IssuerKeywordRecord** is an object where the keys are **[Keywords](./zoe-data-types#keyword)**,
 and the values are **Issuers**.
@@ -66,10 +68,11 @@ const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```
 
 ## E(Zoe).getTerms(instance)
+
 - **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;Object>**
 
-Returns a **Promise** for the terms of the *instance* argument, including its **[Brands](/reference/ertp-api/brand)**, **[Issuers](/reference/ertp-api/issuer)**, and any
+Returns a **Promise** for the terms of the _instance_ argument, including its **[Brands](/reference/ertp-api/brand)**, **[Issuers](/reference/ertp-api/issuer)**, and any
 custom terms. The returned values look like:
 
 ```js
@@ -82,16 +85,17 @@ custom terms. The returned values look like:
   // All other customTerms
 };
 ```
- 
+
 ```js
 const terms = await E(Zoe).getTerms(instance);
 ```
 
 ## E(Zoe).getPublicFacet(instance)
+
 - **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Promise&lt;PublicFacet>**
 
-Returns a **Promise** for the **PublicFacet** defined for the *instance* argument.
+Returns a **Promise** for the **PublicFacet** defined for the _instance_ argument.
 
 A contract instance's **PublicFacet** is an object available via Zoe to anyone knowing that **Instance**.
 You use it for general queries and actions, such as getting a current price or creating public **[Invitations](./zoe-data-types#invitation)**.
@@ -103,6 +107,7 @@ const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance);
 ```
 
 ## E(Zoe).getInvitationIssuer()
+
 - Returns: **Promise&lt;[InvitationIssuer](./zoe-data-types#invitationissuer)>**
 
 Returns a **Promise** for the **InvitationIssuer** for the Zoe instance.
@@ -113,11 +118,13 @@ const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // Bob uses the trusted **InvitationIssuer** from Zoe to
 // transform the untrusted invitation to a trusted one
 const trustedInvitation = await invitationIssuer.claim(untrustedInvitation);
-const { value: invitationValue } =
-  await E(invitationIssuer).getAmountOf(trustedInvitation);
+const { value: invitationValue } = await E(invitationIssuer).getAmountOf(
+  trustedInvitation,
+);
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
+
 - **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns **Promise&lt;Object>**
 
@@ -128,7 +135,7 @@ details about the **Invitation**:
 - **instance**: **[Instance](./zoe-data-types#instance)**: The contract instance this invitation is for.
 - **invitationHandle**: **[Handle](./zoe-data-types#handle)**: A **Handle** used to refer to this **Invitation**.
 - **description**: **String**: Describes the purpose of this **Invitation**. Use it
-   to match the invitation to the role it plays in the contract.
+  to match the invitation to the role it plays in the contract.
 
 ```js
 const invitation = await invitationIssuer.claim(untrustedInvitation);
@@ -136,6 +143,7 @@ const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 ```
 
 ## E(Zoe).install(bundle)
+
 - **bundle**: **SourceBundle**
 - Returns: **Promise&lt;Installation>**
 
@@ -151,6 +159,7 @@ const installationP = await E(Zoe).install(bundle);
 ```
 
 ## E(Zoe).getConfiguration()
+
 - Returns: **Promise&lt;Object>**
 
 Returns a **Promise** for information about the feeIssuer.
@@ -158,17 +167,20 @@ Returns a **Promise** for information about the feeIssuer.
 It consists of the issuer's name, assetKind, and displayInfo.
 
 ## E(Zoe).getFeeIssuer()
+
 - Returns: **Promise&lt;[Issuer](/reference/ertp-api/issuer)>**
 
 Returns a **Promise** for the **Issuer** whose associated **[Mint](/reference/ertp-api/mint)** can mint IST.
 
 ## E(Zoe).getOfferFilter(instance)
+
 - **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns: **Array&lt;String>**
 
 Returns all the offer **[Keywords](./zoe-data-types#keyword)** that have been disabled, if any. Offer **Keywords** may be disabled if they prove problematic in some fashion, or to debug undesired behavior.
 
 ## E(Zoe).getInstance(invitation)
+
 - **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns: **Promise&lt;[Instance](./zoe-data-types#instance)>**
 
@@ -186,13 +198,15 @@ these methods:
 const instance = await E(Zoe).getInstance(invitation);
 ```
 
-## E(Zoe).getProposalShapeForInvitation(invitation) 
+## E(Zoe).getProposalShapeForInvitation(invitation)
+
 - **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns: **Promise&lt;[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
 
 ## E(Zoe).getInstallation(invitation)
+
 - **invitation**: **[Invitation](./zoe-data-types#invitation)**
 - Returns: **Promise&lt;Installation>**
 
@@ -203,6 +217,7 @@ const installation = await E(Zoe).getInstallation(invitation);
 ```
 
 ## E(Zoe).getInstallationForInstance(instance)
+
 - **instance**: **[Instance](./zoe-data-types#instance)**
 - Returns **Promise&lt;Installation>**
 
@@ -217,6 +232,7 @@ const installation = await E(Zoe).getInstallationForInstance(instance);
 ```
 
 ## E(Zoe).startInstance(installation, issuerKeywordRecord?, terms?, privateArgs?)
+
 - **installation**: **ERef&lt;Installation>**
 - **issuerKeywordRecord**: **IssuerKeywordRecord** - Optional.
 - **terms**: **Object** - Optional.
@@ -224,10 +240,10 @@ const installation = await E(Zoe).getInstallationForInstance(instance);
 - Returns: **Promise&lt;StartInstanceResult>**
 
 Creates an instance of the installed smart contract specified by
-the *installation* argument. All contracts each run in a new vat with their own version of the
+the _installation_ argument. All contracts each run in a new vat with their own version of the
 Zoe Contract Facet. There is one vat that contains the Zoe Service.
 
-The *issuerKeywordRecord* is an optional object mapping **[Keywords](./zoe-data-types#keyword)**
+The _issuerKeywordRecord_ is an optional object mapping **[Keywords](./zoe-data-types#keyword)**
 to **[Issuers](/reference/ertp-api/issuer)**, such as **FirstCurrency: quatlooIssuer**.
 Parties to the contract will use the **Keywords** to index their proposal and their payments.
 
@@ -254,9 +270,10 @@ It returns a **Promise** for a **StartInstanceResult** object. The object consis
 - **creatorInvitation**: **Payment | undefined**
 
 The **adminFacet** has one method:
-- **getVatShutdownPromise()**    
-  - Returns a promise that resolves to reason (the value passed to **fail(reason)**) or 
-    completion (the value passed to **exit(completion)**) when this newly started instance terminates. 
+
+- **getVatShutdownPromise()**
+  - Returns a promise that resolves to reason (the value passed to **fail(reason)**) or
+    completion (the value passed to **exit(completion)**) when this newly started instance terminates.
 
 A **publicFacet** is an object available via Zoe to anyone knowing
 the instance they are associated with. The **publicFacet** is used for general queries
@@ -275,19 +292,22 @@ It is usually used in contracts where the creator immediately sells
 something (auctions, swaps, etc.), so it's helpful for the creator to have
 an **Invitation** to escrow and sell goods. Remember that Zoe **Invitations** are
 represented as a **Payment**.
+
 ```js
 const issuerKeywordRecord = {
   Asset: moolaIssuer,
   Price: quatlooIssuer,
 };
 const terms = { numBids: 3 };
-const { creatorFacet, publicFacet, creatorInvitation } =
-  await E(Zoe).startInstance(installation, issuerKeywordRecord, terms);
+const { creatorFacet, publicFacet, creatorInvitation } = await E(
+  Zoe,
+).startInstance(installation, issuerKeywordRecord, terms);
 ```
 
 <a id="e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs"></a>
 
 ## E(Zoe).offer(invitation, proposal?, paymentPKeywordRecord?, offerArgs?)
+
 - **invitation**: **[Invitation](./zoe-data-types#invitation) | Promise&lt;[Invitation](./zoe-data-types#invitation)>**
 - **proposal**: **[Proposal](/glossary/#proposal)** - Optional.
 - **paymentPKeywordRecord**: **[PaymentPKeywordRecord](./zoe-data-types#keywordrecord)** - Optional.
@@ -297,6 +317,7 @@ const { creatorFacet, publicFacet, creatorInvitation } =
 Used to make an offer to the contract that created the **invitation**.
 
 <a id="proposals-and-payments"></a>
+
 ### Proposals
 
 **proposal** must be either `undefined` or a record with **give**, **want**, and/or **exit** properties
@@ -320,6 +341,7 @@ In the example above, "Asset" and "Price" are the Keywords. However, in an aucti
 the Keywords might be "Asset" and "Bid".
 
 **exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
+
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
 - `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to complete (finish or fail) their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
@@ -330,11 +352,12 @@ the Keywords might be "Asset" and "Bid".
 
 ### Proposal Shape
 
-A contract can enforce a certain proposal shape using the
+A contract can avoid invalid proposals
+
+using the
 **[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object from `@endo/patterns`.
 
 For example, a contract holding an auction might require that all offers include an `afterDeadline` exit rule with a timestamp in the future.
-
 
 ### Payments
 
@@ -347,6 +370,7 @@ const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 ```
 
 <a href="offerargs"></a>
+
 ### Offer Arguments
 
 **offerArgs** is an optional CopyRecord that can be used to pass additional arguments to the
@@ -355,14 +379,15 @@ const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 Each contract can define the properties it supports and which are required.
 
 ## E(Zoe).installBundleID(bundleId)
+
 - bundleId: **BundleId**
 - Returns: **Promise&lt;Installation>**
 
 Reserved for future use.
 
-## E(Zoe).getBundleIDFromInstallation(installation) 
+## E(Zoe).getBundleIDFromInstallation(installation)
+
 - **installation**: **Installation**
 - Returns: **Promise&lt;BundleId>**
 
 Reserved for future use.
-
