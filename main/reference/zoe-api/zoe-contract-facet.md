@@ -106,22 +106,15 @@ The optional **customDetails** argument is included in the **Invitation**'s
 **amount** and not otherwise relied on by Zoe.
 
 The optional **proposalShape** argument can be used to describe the required and allowed components of each proposal.
+
+### Proposal Shapes
+
 Proposals that don't match the pattern will be rejected by Zoe without even being sent to the contract.
 
-Patterns are constructed using the
+Patterns are often constructed using the
 **[M](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html)** (for '**M**atcher') object.
 **proposalShape**s are usually built from [`M.splitRecord(required, optional, rest)`](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html#splitRecord).
-
-```
-  M.splitRecord({
-    give: {
-      Collateral: makeNatAmountShape(collateralBrand),
-    },
-    want: {
-      Minted: makeNatAmountShape(debtBrand),
-    },
-  }),
-```
+For example, when making a covered call, to express that the offering party can't cancel:
 
 ```js
 import { M } from '@endo/patterns';
@@ -140,6 +133,55 @@ const creatorInvitation = zcf.makeInvitation(
   undefined,
   waivedExitProposalShape,
 );
+```
+
+Full details are in the [@endo/patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) package. Here's a handy reference:
+
+```js
+interface PatternMatchers {
+    and: ((...subPatts) => Matcher);
+    any: (() => Matcher);
+    array: ((limits?) => Matcher);
+    arrayOf: ((subPatt?, limits?) => Matcher);
+    bag: ((limits?) => Matcher);
+    bagOf: ((keyPatt?, countPatt?, limits?) => Matcher);
+    bigint: ((limits?) => Matcher);
+    boolean: (() => Matcher);
+    eq: ((key) => Matcher);
+    eref: ((subPatt) => any);
+    error: (() => Matcher);
+    gt: ((rightOperand) => Matcher);
+    gte: ((rightOperand) => Matcher);
+    key: (() => Matcher);
+    kind: ((kind) => Matcher);
+    lt: ((rightOperand) => Matcher);
+    lte: ((rightOperand) => Matcher);
+    map: ((limits?) => Matcher);
+    mapOf: ((keyPatt?, valuePatt?, limits?) => Matcher);
+    nat: ((limits?) => Matcher);
+    neq: ((key) => Matcher);
+    not: ((subPatt) => Matcher);
+    null: (() => null);
+    number: (() => Matcher);
+    opt: ((subPatt) => any);
+    or: ((...subPatts) => Matcher);
+    partial: ((basePatt, rest?) => Matcher);
+    pattern: (() => Matcher);
+    promise: (() => Matcher);
+    record: ((limits?) => Matcher);
+    recordOf: ((keyPatt?, valuePatt?, limits?) => Matcher);
+    remotable: ((label?) => Matcher);
+    scalar: (() => Matcher);
+    set: ((limits?) => Matcher);
+    setOf: ((keyPatt?, limits?) => Matcher);
+    split: ((basePatt, rest?) => Matcher);
+    splitArray: ((required, optional?, rest?) => Matcher);
+    splitRecord: ((required, optional?, rest?) => Matcher);
+    string: ((limits?) => Matcher);
+    symbol: ((limits?) => Matcher);
+    tagged: ((tagPatt?, payloadPatt?) => Matcher);
+    undefined: (() => Matcher);
+}
 ```
 
 ## zcf.makeEmptySeatKit()
