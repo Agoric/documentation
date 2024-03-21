@@ -9,6 +9,10 @@ export const nav = [
     text: 'Learn',
     items: [
       {
+        text: 'What is Agoric?',
+        link: '/what-is-agoric',
+      },
+      {
         text: 'Zoe Smart Contract Framework',
         link: '/guides/zoe/',
       },

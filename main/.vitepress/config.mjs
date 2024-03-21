@@ -120,6 +120,10 @@ export default defineConfig({
           collapsed: true,
           items: [
             {
+              text: 'What is Agoric?',
+              link: '/what-is-agoric',
+            },
+            {
               text: 'Zoe Smart Contract Framework',
               link: '/guides/zoe/',
               collapsed: true,
