@@ -20,6 +20,23 @@ hero:
     alt: Agoric
 
 features:
+  - icon: 🧑‍🎓️
+    title: Learn
+    details: Learn how Smart Contracts work on Agoric Platform
+    link: /guides/getting-started/
+
+  - icon: 🛠️
+    title: Buidl
+    details: Build Cross Chain Smart Contracts using Agoric Orchestration APIs
+    link: /guides/zoe/
+
+  - icon: 📑
+    title: Tutorials
+    details: Step by step instructions on how to get Started with Smart Contracts
+    link: /guides/getting-started/
+
+  - title: 3 or 4 across??
+
   - icon: 🛠️
     title: Seamless DX
     details: Develop smart contracts using the world’s most popular programming language.
