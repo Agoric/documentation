@@ -34,9 +34,10 @@ export const main = startSellConcertTicketsContract;
 
 In the top level promise space, we have:
 
-- **agoricNames**: read-only access to the [agoricNames](../integration/name-services.md#agoricnames-agoricnamesadmin-well-known-names) name service.
+- **agoricNames**: read-only access to the [agoricNames](../integration/name-services#agoricnames-agoricnamesadmin-well-known-names) name service.
 
-- **agoricNamesAdmin**: admin / update access to **agoricNames** and the name hubs it contains.
+- **agoricNamesAdmin**: admin / update access to [agoricNames](../integration/name-services#agoricnames-agoricnamesadmin-well-known-names) and the name hubs it contains.
+  **Warning: this includes access to over-write existing bindings to instances, brands, etc.**
   **Warning: this includes the right to over-write existing bindings to instances, brands, etc.**
 
 - **bankManager**: to manage reflection of cosmos
@@ -45,14 +46,14 @@ In the top level promise space, we have:
 - **board**: the [board](../integration/name-services.md#the-board-publishing-under-arbitrary-names) name service.
   **Note: the board only grows; no mechanism to reclaim storage has been established.**
 
-- **chainStorage**: to make storage nodes to write to vstorage.
-  **Warning: this includes the right to over-write previously allocated storage nodes.**
+- **chainStorage**: to make storage nodes to [write to vstorage](../zoe/pub-to-storage).
+  **Warning: this includes access to over-write previously allocated storage nodes.**
 
-- **chainTimerService**: for getting the current timer and setting timer wake-ups; for example, at the conclusion of a governance vote.
-  **Note: this includes the right to schedule infinitely repeating events.**
+- **chainTimerService**: for getting the current [timer](../../reference/repl/timerServices) and setting timer wake-ups; for example, at the conclusion of a governance vote.
+  **Note: this includes access to schedule infinitely repeating events.**
 
 - **priceAuthority**: access to get price quotes and triggers; see [Price Authority Guide](../zoe/price-authority).
 
 - **priceAuthorityAdmin**: access to add and replace sources of price quotes using [E(priceAuthorityAdmin).registerPriceAuthority()](../../reference/zoe-api/price-authority-admin#e-priceauthorityregistryadmin-registerpriceauthority-priceauthority-brandin-brandout-force)
 
-- **zoe**: the Zoe service
+- **zoe**: the [Zoe service](../../reference/zoe-api//zoe)
