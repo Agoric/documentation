@@ -44,6 +44,10 @@ export const nav = [
     text: 'Build',
     items: [
       {
+        text: 'Getting Started',
+        link: '/guides/getting-started/',
+      },
+      {
         text: 'Example Zoe Contracts',
         ariaLabel: 'Example Zoe Contracts',
         link: '/guides/zoe/contracts/',
