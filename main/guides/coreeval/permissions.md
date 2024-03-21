@@ -49,7 +49,8 @@ In the top level promise space, we have:
 - **chainStorage**: to make storage nodes to [write to vstorage](../zoe/pub-to-storage).
   **Warning: this includes access to over-write previously allocated storage nodes.**
 
-- **chainTimerService**: for getting the current [timer](../../reference/repl/timerServices) and setting timer wake-ups; for example, at the conclusion of a governance vote.
+- **chainTimerService**: for getting the current timer and setting timer wake-ups; for example, at the conclusion of a governance vote.
+  See [Timer Service API](../../reference/repl/timerServices).
   **Note: this includes access to schedule infinitely repeating events.**
 
 - **priceAuthority**: access to get price quotes and triggers; see [Price Authority Guide](../zoe/price-authority).
