@@ -114,286 +114,338 @@ export default defineConfig({
     // Links must be absolute with trailing slash '/guide/'
     // Trailing slash implies it is looking for a .md file
     sidebar: {
-      '/guides/': [
+      '/': [
         {
-          text: 'Getting Started',
-          link: '/guides/getting-started/',
-        },
-        {
-          text: 'Zoe',
-          link: '/guides/zoe/',
+          text: 'Learn',
           collapsed: true,
           items: [
             {
-              text: 'Smart Contract Basics',
-              link: '/guides/zoe/contract-basics',
+              text: 'Zoe Smart Contract Framework',
+              link: '/guides/zoe/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Smart Contract Basics',
+                  link: '/guides/zoe/contract-basics',
+                },
+                {
+                  text: 'Complete Contract Walk-Through',
+                  link: '/guides/zoe/contract-walkthru',
+                },
+                {
+                  text: 'Contract Upgrade',
+                  link: '/guides/zoe/contract-upgrade',
+                },
+                { text: 'Contract Governance', link: '/guides/governance/' },
+              ],
             },
             {
-              text: 'Complete Contract Walk-Through',
-              link: '/guides/zoe/contract-walkthru',
+              text: 'ERTP',
+              ariaLabel: 'ERTP',
+              link: '/guides/ertp/',
+              collapsed: true,
+              items: [
+                { text: 'ERTP Overview', link: '/guides/ertp/' },
+                {
+                  text: 'Amounts, Values, and Brands',
+                  link: '/guides/ertp/amounts',
+                },
+                { text: 'AmountMath', link: '/guides/ertp/amount-math' },
+                {
+                  text: 'Issuers and  Mints',
+                  link: '/guides/ertp/issuers-and-mints',
+                },
+                {
+                  text: 'Purses and Payments',
+                  link: '/guides/ertp/purses-and-payments',
+                },
+              ],
             },
-            { text: 'Contract Upgrade', link: '/guides/zoe/contract-upgrade' },
-            { text: 'Contract Governance', link: '/guides/governance/' },
-          ],
-        },
-        {
-          text: 'ERTP',
-          link: '/guides/ertp/',
-          collapsed: true,
-          items: [
-            { text: 'ERTP Overview', link: '/guides/ertp/' },
             {
-              text: 'Amounts, Values, and Brands',
-              link: '/guides/ertp/amounts',
-            },
-            { text: 'AmountMath', link: '/guides/ertp/amount-math' },
-            {
-              text: 'Issuers and  Mints',
-              link: '/guides/ertp/issuers-and-mints',
+              text: 'Smart Wallet Dapp Architecture',
+              ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+              link: '/guides/getting-started/contract-rpc',
             },
             {
-              text: 'Purses and Payments',
-              link: '/guides/ertp/purses-and-payments',
+              text: 'Smart Wallet',
+              ariaLabel: 'Smart Wallet Internal Documentation',
+              link:
+                'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
             },
-          ],
-        },
-        {
-          text: 'JavaScript Framework',
-          link: '/guides/js-programming/',
-          collapsed: true,
-          items: [
             {
-              text: 'JavaScript Framework for Secure Distributed Computing',
+              text: 'JavaScript Framework',
+              ariaLabel: 'JavaScript Framework',
               link: '/guides/js-programming/',
             },
             {
-              text: 'Hardened JavaScript',
-              link: '/guides/js-programming/hardened-js',
+              text: 'Papers',
+              ariaLabel: 'Papers Page Link',
+              link: 'https://agoric.com/papers/',
             },
             {
-              text: 'Eventual Send with E()',
-              link: '/guides/js-programming/eventual-send',
-            },
-            {
-              text: 'Far(), Remotable, and Marshaling',
-              link: '/guides/js-programming/far',
-            },
-            {
-              text: 'Notifiers and Subscriptions',
-              link: '/guides/js-programming/notifiers',
+              text: 'Agoric Platform',
+              link: '/guides/platform/',
+              collapsed: true,
+              items: [],
             },
           ],
         },
         {
-          text: 'Agoric Platform',
-          link: '/guides/platform/',
-          collapsed: true,
-          items: [],
-        },
-        {
-          text: 'Smart Wallet Dapp Architecture',
-          link: '/guides/getting-started/contract-rpc',
-        },
-        {
-          text: 'Name Services: agoricNames, namesByAddress, board',
-          link: '/guides/integration/name-services',
-        },
-
-        {
-          text: 'Permissioned Contract Deployment',
-          link: '/guides/coreeval/',
+          text: 'Build',
           collapsed: true,
           items: [
             {
-              text: 'Permissioned Contract Deployment',
-              link: '/guides/coreeval/',
+              text: 'Example Zoe Contracts',
+              ariaLabel: 'Example Zoe Contracts',
+              link: '/guides/zoe/contracts/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Example Zoe Contracts',
+                  link: '/guides/zoe/contracts/',
+                },
+                {
+                  text: 'Oracle Query Contract',
+                  link: '/guides/zoe/contracts/oracle',
+                },
+                {
+                  text: 'Vault Contract',
+                  link: '/guides/zoe/contracts/vault',
+                },
+                { text: 'Loan Contract', link: '/guides/zoe/contracts/loan' },
+                {
+                  text: 'Funded Call Spread Contract',
+                  link: '/guides/zoe/contracts/fundedCallSpread',
+                },
+                {
+                  text: 'Priced Call Spread Contract',
+                  link: '/guides/zoe/contracts/pricedCallSpread',
+                },
+                {
+                  text: 'Covered Call Contract',
+                  link: '/guides/zoe/contracts/covered-call',
+                },
+                {
+                  text: 'OTC Desk Contract',
+                  link: '/guides/zoe/contracts/otc-desk',
+                },
+                {
+                  text: 'ConstantProduct AMM Contract',
+                  link: '/guides/zoe/contracts/constantProductAMM',
+                },
+                {
+                  text: 'Sell Items Contract',
+                  link: '/guides/zoe/contracts/sell-items',
+                },
+                {
+                  text: 'Atomic Swap Contract',
+                  link: '/guides/zoe/contracts/atomic-swap',
+                },
+                {
+                  text: 'Barter Exchange Contract',
+                  link: '/guides/zoe/contracts/barter-exchange',
+                },
+                {
+                  text: 'Second-Price Auction Contract',
+                  link: '/guides/zoe/contracts/second-price-auction',
+                },
+                {
+                  text: 'Simple Exchange Contract',
+                  link: '/guides/zoe/contracts/simple-exchange',
+                },
+                {
+                  text: 'Escrow To Vote Contract',
+                  link: '/guides/zoe/contracts/escrow-to-vote',
+                },
+                {
+                  text: 'Mint Payments Contract',
+                  link: '/guides/zoe/contracts/mint-payments',
+                },
+                {
+                  text: 'Mint and Sell NFTs Contract',
+                  link: '/guides/zoe/contracts/mint-and-sell-nfts',
+                },
+                {
+                  text: 'Use Object Contract',
+                  link: '/guides/zoe/contracts/use-obj-example',
+                },
+                {
+                  text: 'Automatic Refund Contract',
+                  link: '/guides/zoe/contracts/automatic-refund',
+                },
+              ],
             },
-            {
-              text: 'Write Code to Deploy a Contract',
-              link: '/guides/coreeval/proposal',
-            },
-            {
-              text: 'Declare Required Capabilities',
-              link: '/guides/coreeval/permissions',
-            },
-            {
-              text: 'Submit Transactions',
-              link: '/guides/coreeval/local-testnet',
-            },
-          ],
-        },
-        {
-          text: 'Deployed Zoe Contracts',
-          link: '/guides/zoe/actual-contracts/',
-          collapsed: true,
-          items: [
             {
               text: 'Deployed Zoe Contracts',
+              ariaLabel: 'Deployed Zoe Contracts',
               link: '/guides/zoe/actual-contracts/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Deployed Zoe Contracts',
+                  link: '/guides/zoe/actual-contracts/',
+                },
+                {
+                  text: 'PSM Contract',
+                  link: '/guides/zoe/actual-contracts/PSM',
+                },
+              ],
             },
             {
-              text: 'PSM Contract',
-              link: '/guides/zoe/actual-contracts/PSM',
-            },
-          ],
-        },
-        {
-          text: 'Example Zoe Contracts',
-          link: '/guides/zoe/contracts/',
-          collapsed: true,
-          items: [
-            { text: 'Example Zoe Contracts', link: '/guides/zoe/contracts/' },
-            {
-              text: 'Oracle Query Contract',
-              link: '/guides/zoe/contracts/oracle',
-            },
-            {
-              text: 'Vault Contract',
-              link: '/guides/zoe/contracts/vault',
-            },
-            { text: 'Loan Contract', link: '/guides/zoe/contracts/loan' },
-            {
-              text: 'Funded Call Spread Contract',
-              link: '/guides/zoe/contracts/fundedCallSpread',
-            },
-            {
-              text: 'Priced Call Spread Contract',
-              link: '/guides/zoe/contracts/pricedCallSpread',
+              text: 'Permissioned Contract Deployment',
+              ariaLabel: 'Permissioned Contract Deployment',
+              link: '/guides/coreeval/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Permissioned Contract Deployment',
+                  link: '/guides/coreeval/',
+                },
+                {
+                  text: 'Write Code to Deploy a Contract',
+                  link: '/guides/coreeval/proposal',
+                },
+                {
+                  text: 'Declare Required Capabilities',
+                  link: '/guides/coreeval/permissions',
+                },
+                {
+                  text: 'Submit Transactions',
+                  link: '/guides/coreeval/local-testnet',
+                },
+              ],
             },
             {
-              text: 'Covered Call Contract',
-              link: '/guides/zoe/contracts/covered-call',
+              text: 'Name Services: agoricNames, namesByAddress, board',
+              link: '/guides/integration/name-services',
             },
             {
-              text: 'OTC Desk Contract',
-              link: '/guides/zoe/contracts/otc-desk',
+              text: 'Integrating with Agoric Network',
+              link: '/guides/integration/chain-integration',
             },
             {
-              text: 'ConstantProduct AMM Contract',
-              link: '/guides/zoe/contracts/constantProductAMM',
+              text: 'SubQuery Indexing',
+              link: '/guides/subquery-indexing',
+              collapsed: true,
+              items: [],
+            },
+
+            {
+              text: 'Glossary',
+              ariaLabel: 'Glossary Menu',
+              link: '/glossary/',
             },
             {
-              text: 'Sell Items Contract',
-              link: '/guides/zoe/contracts/sell-items',
+              text: 'Agoric CLI',
+              link: '/guides/agoric-cli/',
+              collapsed: true,
+              items: [
+                { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
+                {
+                  text: 'Using agd to make queries and transactions',
+                  link: '/guides/agoric-cli/agd-query-tx',
+                },
+              ],
             },
             {
-              text: 'Atomic Swap Contract',
-              link: '/guides/zoe/contracts/atomic-swap',
+              text: 'ERTP API',
+              link: '/reference/ertp-api/',
+              collapsed: true,
+              items: [
+                { text: 'ERTP API', link: '/reference/ertp-api/' },
+                { text: 'Issuer Object', link: '/reference/ertp-api/issuer' },
+                { text: 'Mint Object', link: '/reference/ertp-api/mint' },
+                { text: 'Brand Object', link: '/reference/ertp-api/brand' },
+                { text: 'Purse Object', link: '/reference/ertp-api/purse' },
+                {
+                  text: 'Payment Object',
+                  link: '/reference/ertp-api/payment',
+                },
+                {
+                  text: 'AmountMath Object',
+                  link: '/reference/ertp-api/amount-math',
+                },
+                {
+                  text: 'ERTP Data Types',
+                  link: '/reference/ertp-api/ertp-data-types',
+                },
+              ],
             },
             {
-              text: 'Barter Exchange Contract',
-              link: '/guides/zoe/contracts/barter-exchange',
-            },
-            {
-              text: 'Second-Price Auction Contract',
-              link: '/guides/zoe/contracts/second-price-auction',
-            },
-            {
-              text: 'Simple Exchange Contract',
-              link: '/guides/zoe/contracts/simple-exchange',
-            },
-            {
-              text: 'Escrow To Vote Contract',
-              link: '/guides/zoe/contracts/escrow-to-vote',
-            },
-            {
-              text: 'Mint Payments Contract',
-              link: '/guides/zoe/contracts/mint-payments',
-            },
-            {
-              text: 'Mint and Sell NFTs Contract',
-              link: '/guides/zoe/contracts/mint-and-sell-nfts',
-            },
-            {
-              text: 'Use Object Contract',
-              link: '/guides/zoe/contracts/use-obj-example',
-            },
-            {
-              text: 'Automatic Refund Contract',
-              link: '/guides/zoe/contracts/automatic-refund',
-            },
-          ],
-        },
-        {
-          text: 'Integrating with Agoric Network',
-          link: '/guides/integration/chain-integration',
-        },
-        {
-          text: 'SubQuery Indexing',
-          link: '/guides/subquery-indexing',
-          collapsed: true,
-          items: [],
-        },
-      ],
-      '/reference/': [
-        {
-          text: 'Agoric CLI',
-          link: '/guides/agoric-cli/',
-          collapsed: true,
-          items: [
-            { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
-            {
-              text: 'Using agd to make queries and transactions',
-              link: '/guides/agoric-cli/agd-query-tx',
-            },
-          ],
-        },
-        {
-          text: 'ERTP API',
-          link: '/reference/ertp-api/',
-          collapsed: true,
-          items: [
-            { text: 'ERTP API', link: '/reference/ertp-api/' },
-            { text: 'Issuer Object', link: '/reference/ertp-api/issuer' },
-            { text: 'Mint Object', link: '/reference/ertp-api/mint' },
-            { text: 'Brand Object', link: '/reference/ertp-api/brand' },
-            { text: 'Purse Object', link: '/reference/ertp-api/purse' },
-            {
-              text: 'Payment Object',
-              link: '/reference/ertp-api/payment',
-            },
-            {
-              text: 'AmountMath Object',
-              link: '/reference/ertp-api/amount-math',
-            },
-            {
-              text: 'ERTP Data Types',
-              link: '/reference/ertp-api/ertp-data-types',
+              text: 'Zoe API',
+              link: '/reference/zoe-api/',
+              collapsed: true,
+              items: [
+                { text: 'Zoe API', link: '/reference/zoe-api/' },
+                { text: 'Zoe Service', link: '/reference/zoe-api/zoe' },
+                {
+                  text: 'UserSeat Object',
+                  link: '/reference/zoe-api/user-seat',
+                },
+                {
+                  text: 'Zoe Contract Facet',
+                  link: '/reference/zoe-api/zoe-contract-facet',
+                },
+                { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
+                { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
+                {
+                  text: 'PriceAuthority Object',
+                  link: '/reference/zoe-api/price-authority',
+                },
+                {
+                  text: 'ZoeHelper Functions',
+                  link: '/reference/zoe-api/zoe-helpers',
+                },
+                {
+                  text: 'Ratio Math Functions',
+                  link: '/reference/zoe-api/ratio-math',
+                },
+                {
+                  text: 'Zoe Data Types',
+                  link: '/reference/zoe-api/zoe-data-types',
+                },
+              ],
             },
           ],
         },
         {
-          text: 'Zoe API',
-          link: '/reference/zoe-api/',
+          text: 'Tutorial',
+          link: '/guides/getting-started/',
+        },
+        {
+          text: 'Support',
           collapsed: true,
           items: [
-            { text: 'Zoe API', link: '/reference/zoe-api/' },
-            { text: 'Zoe Service', link: '/reference/zoe-api/zoe' },
             {
-              text: 'UserSeat Object',
-              link: '/reference/zoe-api/user-seat',
+              text: 'Agoric',
+              ariaLabel: 'Agoric Homepage Link',
+              link: 'https://agoric.com/',
             },
             {
-              text: 'Zoe Contract Facet',
-              link: '/reference/zoe-api/zoe-contract-facet',
-            },
-            { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
-            { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
-            {
-              text: 'PriceAuthority Object',
-              link: '/reference/zoe-api/price-authority',
+              text: 'Discord',
+              link: 'https://agoric.com/discord',
             },
             {
-              text: 'ZoeHelper Functions',
-              link: '/reference/zoe-api/zoe-helpers',
+              text: 'Github Discussions (Q&A)',
+              link: 'https://github.com/Agoric/agoric-sdk/discussions',
             },
             {
-              text: 'Ratio Math Functions',
-              link: '/reference/zoe-api/ratio-math',
+              text: 'Office Hours',
+              link: 'https://github.com/Agoric/agoric-sdk/wiki/Office-Hours',
             },
             {
-              text: 'Zoe Data Types',
-              link: '/reference/zoe-api/zoe-data-types',
+              text: 'Twitter',
+              link: 'https://twitter.com/agoric',
+            },
+            {
+              text: 'YouTube',
+              ariaLabel: 'Agoric YouTube Channel Page Link',
+              link: 'https://www.youtube.com/channel/UCpY91oQLh_Lp0mitdZ5bYWg/',
+            },
+            {
+              text: 'Github',
+              ariaLabel: 'Agoric Github Link',
+              link: 'https://github.com/Agoric/',
             },
           ],
         },
