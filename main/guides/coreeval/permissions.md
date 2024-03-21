@@ -36,6 +36,12 @@ In the top level promise space, we have:
 
 - **agoricNames**: read-only access to the [agoricNames](../integration/name-services.md#agoricnames-agoricnamesadmin-well-known-names) name service.
 
+- **agoricNamesAdmin**: admin / update access to **agoricNames** and the name hubs it contains.
+  **Warning: this includes the right to over-write existing bindings to instances, brands, etc.**
+
+- **bankManager**: to manage reflection of cosmos
+  assets as ERTP assets: to register an issuer to correspond to a denom or to get a bank of purses for any address. **Warning: this includes the right to spend assets for any account.**
+
 - **board**: the [board](../integration/name-services.md#the-board-publishing-under-arbitrary-names) name service.
   **Note: the board only grows; no mechanism to reclaim storage has been established.**
 
@@ -45,10 +51,8 @@ In the top level promise space, we have:
 - **chainTimerService**: for getting the current timer and setting timer wake-ups; for example, at the conclusion of a governance vote.
   **Note: this includes the right to schedule infinitely repeating events.**
 
-- **agoricNamesAdmin**: admin / update access to **agoricNames** and the name hubs it contains.
-  **Warning: this includes the right to over-write existing bindings to instances, brands, etc.**
+- **priceAuthority**: access to get price quotes and triggers; see [Price Authority Guide](../zoe/price-authority).
 
-- **bankManager**: to manage reflection of cosmos
-  assets as ERTP assets: to register an issuer to correspond to a denom or to get a bank of purses for any address. **Warning: this includes the right to spend assets for any account.**
+- **priceAuthorityAdmin**: access to add and replace sources of price quotes using [E(priceAuthorityAdmin).registerPriceAuthority()](../../reference/zoe-api/price-authority-admin#e-priceauthorityregistryadmin-registerpriceauthority-priceauthority-brandin-brandout-force)
 
 - **zoe**: the Zoe service

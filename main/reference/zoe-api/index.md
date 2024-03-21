@@ -19,7 +19,6 @@ The Zoe API supports the following objects:
 | [Zoe Contract Facet](./zoe-contract-facet) | Accesses a running contract instance.                  |
 | [ZCFSeat](./zcfseat)                       | Used within contracts to access or manipulate offers.  |
 | [ZCFMint](./zcfmint)                       | Used by a contract to issue digital assets.            |
-| [Price Authority](./price-authority)       | Gives quotes for prices.                               |
 
 The Zoe API provides the following libraries:
 
@@ -39,8 +38,6 @@ The Zoe API introduces and uses the following data types:
 | [Invitation](./zoe-data-types#invitation)             | A non-fungible eright that can be held in **[Payments](/reference/ertp-api/payment)** or **[Purses](/reference/ertp-api/purse)**, just like any other eright.                                                                                                                 |
 | [InvitationIssuer](./zoe-data-types#invitationissuer) | An **[Issuer](/reference/ertp-api/issuer)** for **[Invitations](./zoe-data-types#invitation)**, which grant the right to participate in a contract.                                                                                                                           |
 | [Keyword](./zoe-data-types#keyword)                   | An ASCII identifier string that must begin with an upper case letter.                                                                                                                                                                                                         |
-| [MutableQuote](./zoe-data-types#mutablequote)         | Statement from a **[PriceAuthority](./price-authority)** as to the current price level at a particular time when multiple calls, replacing the trigger value, are expected.                                                                                                   |
 | [ParsableNumber](./zoe-data-types#parsablenumber)     | Defined as a **bigint**, **number**, or **string**.                                                                                                                                                                                                                           |
-| [PriceQuote](./zoe-data-types#pricequote)             | Statement from a **[PriceAuthority](./price-authority)** as to the current price level at a particular time when only a single calls is expected.                                                                                                                             |
 | [Ratio](./zoe-data-types#ratio)                       | Pass-by-value record that consists of a _numerator_ **[Amount](/reference/ertp-api/ertp-data-types#amount)** and a _denominator_ **Amount**.                                                                                                                                  |
 | [TransferPart](./zoe-data-types#transferpart)         | **[Allocation](./zoe-data-types#allocation)** changes for one or two existing **[ZCFSeats](./zcfseat)**. **TransferParts** are the individual elements of the _transfer_ array passed into the **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** function. |

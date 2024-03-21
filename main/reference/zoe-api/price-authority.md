@@ -218,3 +218,38 @@ const quote = E(PriceAuthority).mutableQuoteWhenLTE(
   AmountMath.make(brands.Out, 974n),
 );
 ```
+
+## MutableQuote
+
+A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
+current price level at a particular time. The significant content (prices
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)**, and repeated
+in the **[Payment](/reference/ertp-api/payment)** for veracity.
+
+**MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
+value. If you just need a single quote, and won't change the trigger level, you should use
+**PriceQuotes**.
+
+A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current
+balance of the **Payment**.
+
+## PriceQuote
+
+A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
+current price level at a particular time. The significant content (prices
+and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)** and repeated
+in the **[Payment](/reference/ertp-api/payment)** for veracity.
+A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current
+balance of the **Payment**.
+
+```js
+const { quoteAmount, quotePayment } = priceQuote;
+```
+
+**PriceQuotes** are returned in two forms:
+
+- **PriceDescription**
+  - Always includes **amountIn**, **amountOut**, the quote's **Timestamp**,
+    and the **TimerService** the **Timestamp** is relative to.
+- **PriceDescription** wrapped as a **QuoteAuthority** issued payment.
+  - This lets quotes be shared in a format letting others verify the time and values.

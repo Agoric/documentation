@@ -290,12 +290,12 @@ export default defineConfig({
               collapsed: true,
               items: [
                 {
-                  text: 'Deployed Zoe Contracts',
-                  link: '/guides/zoe/actual-contracts/',
-                },
-                {
                   text: 'PSM Contract',
                   link: '/guides/zoe/actual-contracts/PSM',
+                },
+                {
+                  text: 'PriceAuthority Object',
+                  link: '/reference/zoe-api/price-authority',
                 },
               ],
             },
@@ -396,10 +396,6 @@ export default defineConfig({
                 },
                 { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
                 { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
-                {
-                  text: 'PriceAuthority Object',
-                  link: '/reference/zoe-api/price-authority',
-                },
                 {
                   text: 'ZoeHelper Functions',
                   link: '/reference/zoe-api/zoe-helpers',
