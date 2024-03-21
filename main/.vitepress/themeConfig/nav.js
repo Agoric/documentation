@@ -6,28 +6,46 @@
 
 export const nav = [
   {
-    text: 'Getting Started',
-    ariaLabel: 'Getting Started Menu',
-    link: '/guides/getting-started/',
-  },
-  {
-    text: 'Agoric Components',
-    ariaLabel: 'Agoric Components Menu',
+    text: 'Learn',
     items: [
+      {
+        text: 'Zoe Smart Contract Framework',
+        link: '/guides/zoe/',
+      },
       {
         text: 'ERTP',
         ariaLabel: 'ERTP',
         link: '/guides/ertp/',
       },
       {
-        text: 'Zoe',
-        ariaLabel: 'Zoe',
-        link: '/guides/zoe/',
-      },
-      {
         text: 'Smart Wallet Dapp Architecture',
         ariaLabel: 'Smart Wallet Dapp Architecture Menu',
         link: '/guides/getting-started/contract-rpc',
+      },
+      {
+        text: 'Smart Wallet',
+        ariaLabel: 'Smart Wallet Internal Documentation',
+        link:
+          'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
+      },
+      {
+        text: 'JavaScript Framework',
+        ariaLabel: 'JavaScript Framework',
+        link: '/guides/js-programming/',
+      },
+      {
+        text: 'Papers',
+        ariaLabel: 'Papers Page Link',
+        link: 'https://agoric.com/papers/',
+      },
+    ],
+  },
+  {
+    text: 'Build',
+    items: [
+      {
+        text: 'Getting Started',
+        link: '/guides/getting-started/',
       },
       {
         text: 'Example Zoe Contracts',
@@ -44,17 +62,6 @@ export const nav = [
         ariaLabel: 'Permissioned Contract Deployment',
         link: '/guides/coreeval/',
       },
-      {
-        text: 'JavaScript Framework',
-        ariaLabel: 'JavaScript Framework',
-        link: '/guides/js-programming/',
-      },
-    ],
-  },
-  {
-    text: 'Reference',
-    ariaLabel: 'Reference Menu',
-    items: [
       {
         text: 'Glossary',
         ariaLabel: 'Glossary Menu',
@@ -78,32 +85,11 @@ export const nav = [
     ],
   },
   {
-    text: 'New Features',
-    ariaLabel: 'New Features Menu',
-    items: [
-      {
-        text: 'Patterns',
-        ariaLabel: 'Patterns Source Code Link',
-        link:
-          'https://github.com/Agoric/agoric-sdk/blob/master/packages/store/src/types.js',
-      },
-      {
-        text: 'Smart Wallet',
-        ariaLabel: 'Smart Wallet Internal Documentation',
-        link:
-          'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
-      },
-      {
-        text: 'Upgrading Contracts',
-        ariaLabel: 'Upgrade Contracts Doc Link',
-        link:
-          'https://github.com/Agoric/agoric-sdk/blob/master/packages/zoe/README.md#upgrade',
-      },
-    ],
+    text: 'Tutorial',
+    link: '/guides/getting-started/',
   },
   {
-    text: 'Learn More',
-    ariaLabel: 'Learn More Menu',
+    text: 'Support',
     items: [
       {
         text: 'Agoric',
@@ -111,9 +97,20 @@ export const nav = [
         link: 'https://agoric.com/',
       },
       {
-        text: 'Papers',
-        ariaLabel: 'Papers Page Link',
-        link: 'https://agoric.com/papers/',
+        text: 'Discord',
+        link: 'https://agoric.com/discord',
+      },
+      {
+        text: 'Github Discussions (Q&A)',
+        link: 'https://github.com/Agoric/agoric-sdk/discussions',
+      },
+      {
+        text: 'Office Hours',
+        link: 'https://github.com/Agoric/agoric-sdk/wiki/Office-Hours',
+      },
+      {
+        text: 'Twitter',
+        link: 'https://twitter.com/agoric',
       },
       {
         text: 'YouTube',

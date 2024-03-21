@@ -20,25 +20,25 @@ hero:
     alt: Agoric
 
 features:
-  - icon: 🛠️
-    title: Seamless DX
-    details: Develop smart contracts using the world’s most popular programming language.
+  - icon: ❓
+    title: What is Agoric?
+    details: An overview of the Agoric chain and platform
+    link: /what-is-agoric
+
+  - icon: 🧑‍🎓️
+    title: Learn
+    details: Learn how Smart Contracts work on Agoric Platform
     link: /guides/getting-started/
 
-  - icon: ⚙️
-    title: Composable Smart Contracts
-    details: Build smart contracts and create digital assets. Partition risk and leverage safety properties.
+  - icon: 🛠️
+    title: Build
+    details: Build Cross Chain Smart Contracts using Agoric Orchestration APIs
     link: /guides/zoe/
 
-  - icon: 🔒
-    title: Built-In Security
-    details: Express access control using familiar patterns of objects.
-    link: /guides/js-programming/
-
-  - icon: 🌐
-    title: Interoperable Ecosystem
-    details: Leverage IBC for instant, cross-chain asset interoperability.
-    link: /guides/platform/
+  - icon: 📑
+    title: Tutorials
+    details: Step by step instructions on how to get Started with Smart Contracts
+    link: /guides/getting-started/
 
   - icon: 💬
     title: Discord
