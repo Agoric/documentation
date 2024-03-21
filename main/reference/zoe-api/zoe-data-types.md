@@ -7,12 +7,12 @@ Zoe introduces and uses several data types.
 **Allocations** represent the **[Amounts](/reference/ertp-api/ertp-data-types#amount)** to be paid
 out to each seat upon exiting a **Proposal**.
 
-For example, if a seat expected to be paid 5 *Quatloos* and 3 *Widgets* after successfully exiting a **Proposal**, the **Allocation** would look like:
+For example, if a seat expected to be paid 5 _Quatloos_ and 3 _Widgets_ after successfully exiting a **Proposal**, the **Allocation** would look like:
 
 ```js
 {
-  Quatloos: 5n
-  Widgets: 3n
+  Quatloos: 5n;
+  Widgets: 3n;
 }
 ```
 
@@ -58,7 +58,7 @@ is exclusively yours and no one else has access to it.
 
 ## Keyword
 
-A **Keyword** is a unique identifier string within a contract for tying together the 
+A **Keyword** is a unique identifier string within a contract for tying together the
 **issuers** in its **proposals**, **payments**, and **payouts**.
 It must be an ASCII-only [identifier](https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
 and start with an upper case letter in order to avoid collisions with JavaScript properties
@@ -67,6 +67,7 @@ such as `toString` when used as a property name in a record.
 `NaN` and `Infinity` are also not allowed as keywords.
 
 <a id="amountkeywordrecord"></a>
+
 ## KeywordRecord
 
 A **KeywordRecord** is a [CopyRecord](/glossary/#copyrecord) in which every property name
@@ -78,6 +79,7 @@ Subtypes further constrain property values (for example, an
 **[Payment](/reference/ertp-api/payment)** or a Promise for a Payment).
 
 Users submit their **payments** as **KeywordRecords**:
+
 ```js
 const aFistfulOfQuatloos = AmountMath.make(quatloosBrand, 1000n);
 const paymentKeywordRecord = {
@@ -87,8 +89,8 @@ const paymentKeywordRecord = {
 
 ## MutableQuote
 
-A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the 
-current price level at a particular time. The significant content (prices 
+A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
+current price level at a particular time. The significant content (prices
 and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)**, and repeated
 in the **[Payment](/reference/ertp-api/payment)** for veracity.
 
@@ -96,7 +98,7 @@ in the **[Payment](/reference/ertp-api/payment)** for veracity.
 value. If you just need a single quote, and won't change the trigger level, you should use
 **PriceQuotes**.
 
-A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
+A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current
 balance of the **Payment**.
 
 ## ParsableNumber
@@ -105,28 +107,29 @@ A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 
 ## PriceQuote
 
-A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the 
-current price level at a particular time. The significant content (prices 
+A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority)** as to the
+current price level at a particular time. The significant content (prices
 and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types#amount)** and repeated
-in the **[Payment](/reference/ertp-api/payment)** for veracity. 
-A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
+in the **[Payment](/reference/ertp-api/payment)** for veracity.
+A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current
 balance of the **Payment**.
- 
+
 ```js
 const { quoteAmount, quotePayment } = priceQuote;
 ```
 
-**PriceQuotes** are returned in two forms: 
+**PriceQuotes** are returned in two forms:
+
 - **PriceDescription**
   - Always includes **amountIn**, **amountOut**, the quote's **Timestamp**,
     and the **TimerService** the **Timestamp** is relative to.
-- **PriceDescription** wrapped as a **QuoteAuthority** issued payment. 
-  - This lets quotes be shared in a format letting others verify the time and values. 
+- **PriceDescription** wrapped as a **QuoteAuthority** issued payment.
+  - This lets quotes be shared in a format letting others verify the time and values.
 
 ## Ratio
 
 **Ratios** are pass-by-value records that consist of a
-*numerator* and a *denominator*. Both of these consist of a
+_numerator_ and a _denominator_. Both of these consist of a
 **[AmountValue](/reference/ertp-api/ertp-data-types#amountvalue)** and a **[Brand](/reference/ertp-api/brand)**,
 just like **[Amounts](/reference/ertp-api/ertp-data-types#amount)**.
 A **Ratio** cannot have a denominator value of 0.
@@ -139,26 +142,26 @@ hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 
 ## TransferPart
 
-**TransferParts** are the individual elements of the *transfer* array passed into the
+**TransferParts** are the individual elements of the _transfer_ array passed into the
 **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
 represents one or two **[Allocation](#allocation)** changes among existing
 **[ZCFSeats](./zcfseat)**. Each **TransferPart** consists of 4 elements, each of which can be elided
 in some cases:
 
-* **fromSeat**?: **ZCFSeat** - The seat from which **amounts** are being taken.
-* **toSeat**?: **ZCFSeat** - The seat to which **amounts** are being given.
-* **fromAmounts**?: **[AmountKeywordRecord](#keywordrecord)** - The **amounts** which will be taken from the *fromSeat*.
-* **toAmounts**?: **AmountKeywordRecord** - The **amounts** which will be given to the *toSeat*.
+- **fromSeat**?: **ZCFSeat** - The seat from which **amounts** are being taken.
+- **toSeat**?: **ZCFSeat** - The seat to which **amounts** are being given.
+- **fromAmounts**?: **[AmountKeywordRecord](#keywordrecord)** - The **amounts** which will be taken from the _fromSeat_.
+- **toAmounts**?: **AmountKeywordRecord** - The **amounts** which will be given to the _toSeat_.
 
-If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without
-specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to
-*toSeat*.
+If a _fromSeat_ is specified, then a _fromAmounts_ is required. When you specify a _toSeat_ without
+specifying a _toAmounts_, it means that the _fromAmount_ will be taken from _fromSeat_ and given to
+_toSeat_.
 
 **TransferParts** that represent one side of a transfer
 can be created using the helper functions
 **[fromOnly()](./zoe-helpers#fromonly-fromseat-fromamounts)** or
 **[toOnly()](./zoe-helpers#toonly-toseat-toamounts)**.
 Of course, as with any JavaScript datatype, you can also manually create **TransferParts**.
-If you manually create a **TransferPart** and don't include the *fromSeat*, *toSeat*, and/or
-*fromAmounts* fields, you'll need to set the missing fields to **undefined**. (Note that if you don't
-include the *toAmounts* field, there's no need to set it to **undefined**; you can simply omit it.)
+If you manually create a **TransferPart** and don't include the _fromSeat_, _toSeat_, and/or
+_fromAmounts_ fields, you'll need to set the missing fields to **undefined**. (Note that if you don't
+include the _toAmounts_ field, there's no need to set it to **undefined**; you can simply omit it.)
