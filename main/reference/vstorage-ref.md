@@ -1,18 +1,23 @@
 # VStorage Reference
 
+See also:
+
+- [Querying VStorage](/guides/getting-started/contract-rpc#querying-vstorage)
+- [x/vstorage module](https://github.com/Agoric/agoric-sdk/tree/003f0c2232815a8d64a3f9a5b05521a10160ce34/golang/cosmos/x/vstorage#readme)
+
 ## vstorage: top level keys
 
-> See https://github.com/Agoric/agoric-sdk/discussions/9115
+> The published and bundles keys are the most relevant to dapp development.
 
-    [
-      'activityhash',
-      'beansOwing',
-      'bundles',
-      'egress',
-      'highPrioritySenders',
-      'mailbox',
-      'published',
-    ]
+    {
+      activityhash: 'historical',
+      beansOwing: 'swingset execution fee accounting',
+      bundles: 'MsgInstallBundle outcome',
+      egress: 'reserved for future use',
+      highPrioritySenders: 'a priority mechanism',
+      mailbox: 'reserved for future use',
+      published: 'for the chainStorage API; see below',
+    }
 
 ## vstorage: published.\* keys
 
@@ -104,8 +109,6 @@
       reserveGovernor: Object @Alleged: InstanceHandle#board03365 {},
       'scaledPriceAuthority-stATOM': Object @Alleged: InstanceHandle#board05892 {},
       'stATOM-USD price feed': Object @Alleged: InstanceHandle#board04091 {},
-      swaparooCharter: Object @Alleged: InstanceHandle#board06299 {},
-      swaparooCommittee: Object @Alleged: InstanceHandle#board046100 {},
       walletFactory: Object @Alleged: InstanceHandle#board06366 {},
     }
 
@@ -304,6 +307,7 @@
 ## vstorage: provisionPool
 
 > published.provisionPool.governance
+> See also Inter Protocol governance.
 
     {
       current: {
@@ -349,6 +353,7 @@
 
 > The address of each provisioned smart wallet is a key under published.wallet.\*.
 > Here we show a hand-ful.
+> See also: [Smart Wallet VStorage Topics](/guides/getting-started/contract-rpc#smart-wallet-vstorage-topics)
 
     [
       'agoric1890064p6j3xhzzdf8daknd6kpvhw766ds8flgw',
