@@ -8,13 +8,19 @@ export default defineConfig({
   outDir: '../dist',
   /* --- HOME PAGE --- */
   title: 'Agoric Documentation', // title for the site. prefix for all page titles and displayed in the navbar
-  description: 'Build, deploy and operate dApps and DeFi markets.', // desc for the site; rendered as a <meta> tag in the page HTML
+  description: 'The blockchain framework tailored for JavaScript developers.', // desc for the site; rendered as a <meta> tag in the page HTML
   // Extra tags to inject into the page HTML <head>. You can specify each tag in the form of [tagName, { attrName: attrValue }, innerHTML?].
   head: [
     [
       'meta',
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
+    ['meta', { name: 'og:image', content: '/agoric-og.png' }],
+    ['meta', { name: 'og:type', content: 'website' }],
+    ['meta', { name: 'og:title', content: 'Agoric Documentation' }],
+    ['meta', { name: 'og:site_name', content: 'Agoric Documentation' }],
+    ['meta', { name: 'og:url', content: 'https://docs.agoric.com' }],
+    ['meta', { name: 'twitter:card', content: '/agoric-og.png' }],
     ['link', { rel: 'icon', href: '/favicon-full.ico' }],
     [
       'style',
