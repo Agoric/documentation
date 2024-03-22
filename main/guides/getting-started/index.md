@@ -2,11 +2,21 @@
 
 In these steps you will be getting your first Agoric dapp up and running!
 
-![Your first Agoric dapp](./assets/new_002_small2.png)
+::: tip Video Walkthrough
+
+As you're going through this tutorial it may be helpful to watch this video walkthrough, showing you all the steps and the desired outcome of each.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/huTI9_Gq2ow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+:::
 
 ## Your First Agoric Dapp - Offer Up
 
 The Offer Up Dapp allows users to view all listed items up for sale in a marketplace. The Dapp shows 3 items by default (maps, potions, and scrolls). As a user you are able to choose up to 3 total items (in any combination). You can then create an offer for an amount of at least 0.25 IST. Once you sign the transaction, you will see the 3 items in your wallet and your wallet amount deducted by the Offer amount.
+
+<img style="border: 2px solid grey"
+  alt="Screenshot: items listed on offer up"
+  src="./assets/new_002_small2.png" />
 
 ## How to Get Help
 
@@ -17,14 +27,6 @@ Before getting started, there are some resources you might want to keep handy in
 - Search and post [Q & A](https://github.com/Agoric/agoric-sdk/discussions/categories/q-a) in [agoric-sdk discussions](https://github.com/Agoric/agoric-sdk/discussions)
 - Send us a message on [X](https://twitter.com/agoric)
 - Send an Email to [Developer Relations](mailto://devrel@agoric.com)
-
-::: tip Video Walkthrough
-
-As you're going through this tutorial it may be helpful to watch this video walkthrough, showing you all the steps and the desired outcome of each.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/huTI9_Gq2ow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-:::
 
 ## Platform Requirements
 
