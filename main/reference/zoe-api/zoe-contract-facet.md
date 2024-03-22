@@ -1,4 +1,4 @@
-# Zoe Contract Facet
+# Zoe Contract Facet (ZCF)
 
 <Zoe-Version/>
 
