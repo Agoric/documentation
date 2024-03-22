@@ -82,8 +82,7 @@ changes has any effect. The constraints are as follows.
 - All the mentioned seats are still live.
 - There aren't any outstanding stagings for any of the mentioned seats.
 
-      	Stagings are a reallocation mechanism that has been
-
+  Stagings are a reallocation mechanism that has been
   deprecated in favor of this **atomicRearrange()** function.
   To prevent confusion, each reallocation can only be
   expressed in the old way or the new way, but not a mixture.
