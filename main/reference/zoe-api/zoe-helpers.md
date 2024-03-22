@@ -226,6 +226,10 @@ Checks the seat's proposal against the _proposalShape_ argument. If the proposal
 - **expected**: **ExpectedRecord**
 - Returns: None.
 
+**Note: Most uses of `assertProposalShape` are better
+expressed using the `proposalShape` argument
+of [zcf.makeInvitation()](./zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape)**.
+
 Checks the seat's proposal against an _expected_ record that says
 what shape of proposal is acceptable.
 
