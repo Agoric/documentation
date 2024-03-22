@@ -30,6 +30,7 @@ As you're going through this tutorial it may be helpful to watch this video walk
 
 Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
+
 ## Installing Prerequisites
 
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
@@ -159,12 +160,30 @@ For more examples and ideas, visit:
 
 </details>
 
+::: tip Using a Mac?
+
+If you're using a Apple Mac with a Apple Silicon processor you will need to enable gRPC Fuse and disable Virtualization Framework in Docker desktop. To accomplish this first open Docker Desktop. Once open, click on the gear icon in the top right hand corner of the application to open Docker Desktop settings.
+
+![Open Docker Desktop settings](./assets/docker_001.png)
+
+
+Next, select the option for gRPC Fuse. Once selected you should then be able to uncheck the box labeled "Use Virtualization framework".
+
+![Change virtualization settings](./assets/docker_002.png)
+
+
+Finally click the "Apply & restart" button to apply your changes.
+
+![Apply new virtualization settings](./assets/docker_003.png)
+
+:::
+
 ## Creating Your Dapp From a Template
 
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
 ```sh
-yarn create @agoric/dapp demo
+yarn create @agoric/dapp --dapp-template dapp-offer-up demo
 ```
 
 ## Install Dapp Dependencies
@@ -234,7 +253,7 @@ Use control-C to exit the logs, then start the smart contract. Starting the cont
 yarn start:contract
 ```
 
-This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
+This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx.md#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
 1. Bundle the contract with `agoric run ...`
 2. Collect some ATOM with `agd tx bank send ...`.
@@ -349,11 +368,9 @@ When the transaction is complete you will notice some IST has been debited from 
 ![Finished transaction](./assets/new_006.png)
 
 Congratulations! You got your first Agoric dapp up and running! Now that you've got your first Agoric dapp up and running, let's focus on some key takeaways from this exercise:
-
-- **Starting an Agoric Chain**: You have gained experience starting a local Agoric blockchain.
+- **Starting an Agoric Chain**: You have gained experience starting a local Agoric blockchain. 
 
 - **Deploying a Contract**: You have deployed a smart contract onto the Agoric platform!
-  _Note: [testnet deployment, faucets, etc.](../coreeval/local-testnet) are discussed later._
 
 - **Making an Offer**: Finally, you've learned to make an offer and seen that offer constraints are enforced by the Agoric platform. This means user interface can't attempt to fool a user by showing a 0.25 IST when actually charging them a much higer amount, such as 500 IST. It's also important to note that the contract cannot take the 0.25 IST without satisfying the want constraint, nor can the contract take more than the 0.25 cents in the give contraint.
 
