@@ -56,5 +56,4 @@ by changing its trigger levels or by cancelling it.
 
 ## API Reference
 
-The Price Authority API reference is a section of the [Zoe API reference](/reference/zoe-api/price-authority)
-
+See [Price Authority API](/reference/zoe-api/price-authority).
