@@ -73,6 +73,22 @@ remote object complains that it doesn't know that method.
 If an ordinary synchronous call (`obj.method()`) fails because the method doesn't exist, the `obj` may be remote, in which case `E(obj).method()` might work.
 :::
 
+::: tip Testing with Deep Stacks
+
+To get stack traces that cross vats:
+
+```
+TRACK_TURNS=enabled DEBUG=track-turns yarn test test/contract.test.js
+```
+
+See:
+
+- [\$DEBUG](https://github.com/Agoric/agoric-sdk/blob/master/docs/env.md#debug)
+- [\$TRACK_TURNS](https://github.com/Agoric/agoric-sdk/blob/master/docs/env.md#track_turns)
+- [\$LOCKDOWN_OPTIONS for better diagnositcs](https://github.com/Agoric/agoric-sdk/wiki/Developing-with-better-error-diagnostics)
+
+:::
+
 ## E() and Marshal: A Closer Look
 
 ::: tip Watch: Office Hours Discussion of Marshal
