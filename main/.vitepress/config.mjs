@@ -410,7 +410,7 @@ export default defineConfig({
                   link: '/reference/zoe-api/user-seat',
                 },
                 {
-                  text: 'Zoe Contract Facet',
+                  text: 'Zoe Contract Facet (ZCF)',
                   link: '/reference/zoe-api/zoe-contract-facet',
                 },
                 { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
