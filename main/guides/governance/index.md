@@ -46,7 +46,7 @@ Adding parameter governance to a contract consists mainly of using `handleParamG
 We pass it `zcf` so that it can `getTerms()` for initial parameter values, and we
 pass `paramTypes` to specify governed parameters and their types. `initialPoserInvitation`
 is necessary to set up replacing the electorate. `storageNode` and `marshaller` are used
-to publish values of the parameters to vstorage.
+to [publish values of the parameters to vstorage](../zoe/pub-to-storage).
 
 ```js
 import { handleParamGovernance } from '@agoric/governance/src/contractHelper.js';
