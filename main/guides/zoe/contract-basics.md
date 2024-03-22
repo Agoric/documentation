@@ -42,6 +42,12 @@ A test that the `greet` method works as expected looks like:
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test1
 
+See also:
+
+- [\$LOCKDOWN_OPTIONS for better diagnositcs](https://github.com/Agoric/agoric-sdk/wiki/Developing-with-better-error-diagnostics)
+- [\$DEBUG](https://github.com/Agoric/agoric-sdk/blob/master/docs/env.md#debug)
+- [\$TRACK_TURNS](https://github.com/Agoric/agoric-sdk/blob/master/docs/env.md#track_turns)
+
 ## State
 
 Contracts can use ordinary variables and data structures for state.
