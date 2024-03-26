@@ -180,6 +180,25 @@ export default defineConfig({
               text: 'JavaScript Framework',
               ariaLabel: 'JavaScript Framework',
               link: '/guides/js-programming/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Hardened JavaScript',
+                  link: '/guides/js-programming/hardened-js',
+                },
+                {
+                  text: 'Eventual Send with E()',
+                  link: '/guides/js-programming/eventual-send',
+                },
+                {
+                  text: 'Far(), Remotable, and Marshaling',
+                  link: '/guides/js-programming/far',
+                },
+                {
+                  text: 'Notifiers and Subscriptions',
+                  link: '/guides/js-programming/notifiers',
+                },
+              ],
             },
             {
               text: 'Papers',
