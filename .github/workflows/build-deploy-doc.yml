@@ -18,10 +18,10 @@ jobs:
     - name: Build Endo docs
       run: |
         cd endo
-        yarn add -D typedoc-plugin-markdown -W
-        yarn typedoc --plugin typedoc-plugin-markdown
+        yarn install
+        yarn typedoc-markdown
 
-    - name: Move Endo docs into main
+    - name: Move Endo docs into main/reference
       run: mv endo/api-docs main/reference/endo
 
     - name: Checkout agoric-sdk
@@ -33,11 +33,11 @@ jobs:
     - name: Build agoric-sdk docs
       run: |
         cd agoric-sdk
-        yarn add -D typedoc-plugin-markdown -W
+        yarn install
         yarn build
-        yarn typedoc --plugin typedoc-plugin-markdown
+        yarn typedoc-markdown
 
-    - name: Move agoric-sdk docs into main
+    - name: Move agoric-sdk docs into main/reference
       run: mv agoric-sdk/api-docs main/reference/agoric-sdk
 
     - name: Build Doc site
