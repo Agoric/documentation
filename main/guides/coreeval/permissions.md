@@ -52,6 +52,12 @@ In the top level promise space, we have:
 - **chainTimerService**: for getting the current [timer](../../reference/repl/timerServices) and setting timer wake-ups; for example, at the conclusion of a governance vote.
   **Note: this includes access to schedule infinitely repeating events.**
 
+- **namesByAddress**: for [looking up objects published under an address](../integration/name-services#namesbyaddress-namesbyaddressadmin-and-depositfacet-per-account-namespace); in particular,
+  a `depositFacet`.
+
+- **namesByAddressAdmin**: admin (write) access to **namesByAddress**.
+  **Warning: this includes access to re-direct where payments to an address go.**
+
 - **priceAuthority**: access to get price quotes and triggers; see [Price Authority Guide](../zoe/price-authority).
 
 - **priceAuthorityAdmin**: access to add and replace sources of price quotes using [E(priceAuthorityAdmin).registerPriceAuthority()](../../reference/zoe-api/price-authority-admin#e-priceauthorityregistryadmin-registerpriceauthority-priceauthority-brandin-brandout-force)
