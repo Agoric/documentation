@@ -65,7 +65,7 @@
     "prettier": "^1.19.1",
     "ses": "^0.18.8",
     "stylus": "^0.62.0",
-    "vitepress": "^1.0.0-rc.42"
+    "vitepress": "^1.0.1"
   },
   "resolutions": {},
   "globals": {
