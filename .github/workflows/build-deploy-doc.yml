@@ -1,0 +1,38 @@
+name: Build and Deploy documentation site
+
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: endojs/endo
+        path: endo
+
+    - name: Install and Build endo docs
+      run: |
+        cd endo
+        yarn install
+        yarn docs
+
+    - name: Move Endo docs into main
+      run: mv endo/api-docs main/reference/endo
+
+    - name: Build Doc site
+      run: |
+        yarn install
+        yarn docs:build-cf
+
+    # Based on https://github.com/cloudflare/wrangler-action?tab=readme-ov-file#deploy-your-pages-site-production--preview
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        command: pages deploy --project-name=documentation
