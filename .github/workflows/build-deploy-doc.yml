@@ -9,20 +9,35 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Checkout
+    - name: Checkout Endo
       uses: actions/checkout@v4
       with:
         repository: endojs/endo
         path: endo
 
-    - name: Install and Build endo docs
+    - name: Build Endo docs
       run: |
         cd endo
-        yarn install
-        yarn docs
+        yarn add -D typedoc-plugin-markdown -W
+        yarn typedoc --plugin typedoc-plugin-markdown
 
     - name: Move Endo docs into main
       run: mv endo/api-docs main/reference/endo
+
+    - name: Checkout agoric-sdk
+      uses: actions/checkout@v4
+      with:
+        repository: agoric/agoric-sdk
+        path: agoric-sdk
+
+    - name: Build agoric-sdk docs
+      run: |
+        cd agoric-sdk
+        yarn add -D typedoc-plugin-markdown -W
+        yarn typedoc --plugin typedoc-plugin-markdown
+
+    - name: Move agoric-sdk docs into main
+      run: mv agoric-sdk/api-docs main/reference/agoric-sdk
 
     - name: Build Doc site
       run: |
@@ -35,4 +50,4 @@ jobs:
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        command: pages deploy --project-name=documentation
+        command: pages deploy --project-name=documentation dist/
