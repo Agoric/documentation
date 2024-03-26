@@ -83,6 +83,11 @@ export default defineConfig({
   ignoreDeadLinks: [
     // ignore all localhost links
     /^https?:\/\/localhost/,
+    // ignore links that starts with ./packages/*
+    /^.\/packages\/*/,
+    './MAINTAINERS',
+    './CONTRIBUTING',
+    './LICENSE',
   ],
   sitemap: {
     hostname: 'https://docs.agoric.com',
