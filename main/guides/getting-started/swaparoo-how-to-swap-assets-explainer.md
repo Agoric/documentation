@@ -5,7 +5,7 @@ This smart contract is designed to allow two parties to swap assets between them
 Let's take a look at how this contract works:
 
 ## Setting up Fee Handling
-The contract retrieves the `feeIssuer` from the Zoe service, which is an issuer for the stable coin used for fees. It creates a `feeSeat` and a `feeShape` based on the `feeAmount` specified in the contract terms.
+The contract retrieves the `feeIssuer` from the Zoe service, which is an issuer for the stable token used for fees. It creates a `feeSeat` and a `feeShape` based on the `feeAmount` specified in the contract terms.
 ```js
 const stableIssuer = await E(zcf.getZoeService()).getFeeIssuer();
 const feeBrand = await E(stableIssuer).getBrand();
