@@ -34,6 +34,7 @@ jobs:
       run: |
         cd agoric-sdk
         yarn add -D typedoc-plugin-markdown -W
+        yarn build
         yarn typedoc --plugin typedoc-plugin-markdown
 
     - name: Move agoric-sdk docs into main
