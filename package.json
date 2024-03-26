@@ -7,7 +7,7 @@
     "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vitepress dev main",
     "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vitepress build main",
     "docs:preview": "NODE_OPTIONS=--openssl-legacy-provider vitepress preview main",
-    "docs:build-cf": "NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects dist/",
+    "docs:build-cf": "DEBUG='vitepress:*' NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects dist/",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
