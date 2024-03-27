@@ -45,10 +45,23 @@ jobs:
         yarn install
         yarn docs:build-cf
 
-    # Based on https://github.com/cloudflare/wrangler-action?tab=readme-ov-file#deploy-your-pages-site-production--preview
-    - name: Deploy to Cloudflare Pages
-      uses: cloudflare/wrangler-action@v3
+    - name: Publish to Cloudflare Pages
+      id: publish-to-cloudflare-pages
+      uses: cloudflare/pages-action@v1
       with:
+        wranglerVersion: '3'
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: 0c4635effffcd7f36d1b9f0425a4367a
-        command: pages deploy --project-name=documentation dist/
+        projectName: documentation
+        directory: dist/
+
+    - name: Comment with preview URL
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body:${{ steps.publish-to-cloudflare-pages.outputs.url }}
+          })
