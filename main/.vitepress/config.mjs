@@ -141,8 +141,7 @@ export default defineConfig({
             },
 
             {
-              text: 'Smart Wallet Dapp Architecture',
-              ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+              text: 'Building Client Dapps',
               link: '/guides/getting-started/contract-rpc',
             },
             {
