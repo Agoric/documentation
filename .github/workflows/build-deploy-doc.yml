@@ -47,13 +47,13 @@ jobs:
 
     - name: Publish to Cloudflare Pages
       id: publish-to-cloudflare-pages
-      uses: cloudflare/pages-action@v1
+      uses: cloudflare/wrangler-action@v3
       with:
-        wranglerVersion: '3'
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        # Cloudflare account ID is safe to be public
+        # Ref: https://github.com/cloudflare/wrangler-legacy/issues/209#issuecomment-541654484
         accountId: 0c4635effffcd7f36d1b9f0425a4367a
-        projectName: documentation
-        directory: dist/
+        command: pages deploy --project-name=documentation dist/
 
     - name: Comment with preview URL
       uses: actions/github-script@v7
@@ -63,5 +63,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body:${{ steps.publish-to-cloudflare-pages.outputs.url }}
+            body: 'Cloudflare Pages Preview URL: ${{ steps.publish-to-cloudflare-pages.outputs.deployment-url }}'
           })
