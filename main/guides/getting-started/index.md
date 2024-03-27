@@ -283,6 +283,8 @@ To import your wallet, you'll need to copy the following mnemonic phrase into Ke
 spike siege world rather ordinary upper napkin voice brush oppose junior route trim crush expire angry seminar anchor panther piano image pepper chest alone
 ```
 
+<!-- key comes from https://github.com/Agoric/agoric-3-proposals/tree/main/packages/synthetic-chain/public/upgrade-test-scripts/keys_for_test_only -->
+
 <img alt="Pasting the mnemonic phrase" src="./assets/041.png" width="400" />
 
 <details><summary>As usual, give your new wallet a name and a password.</summary>
