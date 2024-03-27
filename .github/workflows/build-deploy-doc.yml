@@ -19,7 +19,7 @@ jobs:
       run: |
         cd endo
         yarn install
-        yarn typedoc-markdown
+        yarn docs:markdown-for-agoric-documentation-repo
 
     - name: Move Endo docs into main/reference
       run: mv endo/api-docs main/reference/endo
@@ -35,7 +35,7 @@ jobs:
         cd agoric-sdk
         yarn install
         yarn build
-        yarn typedoc-markdown
+        yarn docs:markdown-for-agoric-documentation-repo
 
     - name: Move agoric-sdk docs into main/reference
       run: mv agoric-sdk/api-docs main/reference/agoric-sdk
@@ -50,5 +50,5 @@ jobs:
       uses: cloudflare/wrangler-action@v3
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        accountId: 0c4635effffcd7f36d1b9f0425a4367a
         command: pages deploy --project-name=documentation dist/
