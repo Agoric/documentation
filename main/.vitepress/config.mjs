@@ -116,22 +116,18 @@ export default defineConfig({
     sidebar: {
       '/': [
         {
-          text: 'Learn',
+          text: 'Build',
           collapsed: true,
           items: [
             {
-              text: 'What is Agoric?',
-              link: '/what-is-agoric',
+              text: 'Getting Started',
+              link: '/guides/getting-started/',
             },
             {
-              text: 'Zoe Smart Contract Framework',
-              link: '/guides/zoe/',
+              text: 'Smart Contract Basics',
+              link: '/guides/zoe/contract-basics',
               collapsed: true,
               items: [
-                {
-                  text: 'Smart Contract Basics',
-                  link: '/guides/zoe/contract-basics',
-                },
                 {
                   text: 'Complete Contract Walk-Through',
                   link: '/guides/zoe/contract-walkthru',
@@ -143,83 +139,114 @@ export default defineConfig({
                 { text: 'Contract Governance', link: '/guides/governance/' },
               ],
             },
-            {
-              text: 'ERTP',
-              ariaLabel: 'ERTP',
-              link: '/guides/ertp/',
-              collapsed: true,
-              items: [
-                { text: 'ERTP Overview', link: '/guides/ertp/' },
-                {
-                  text: 'Amounts, Values, and Brands',
-                  link: '/guides/ertp/amounts',
-                },
-                { text: 'AmountMath', link: '/guides/ertp/amount-math' },
-                {
-                  text: 'Issuers and  Mints',
-                  link: '/guides/ertp/issuers-and-mints',
-                },
-                {
-                  text: 'Purses and Payments',
-                  link: '/guides/ertp/purses-and-payments',
-                },
-              ],
-            },
+
             {
               text: 'Smart Wallet Dapp Architecture',
               ariaLabel: 'Smart Wallet Dapp Architecture Menu',
               link: '/guides/getting-started/contract-rpc',
             },
             {
-              text: 'Smart Wallet',
-              ariaLabel: 'Smart Wallet Internal Documentation',
-              link:
-                'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
-            },
-            {
-              text: 'JavaScript Framework',
-              ariaLabel: 'JavaScript Framework',
-              link: '/guides/js-programming/',
+              text: 'Permissioned Contract Deployment',
+              ariaLabel: 'Permissioned Contract Deployment',
+              link: '/guides/coreeval/',
               collapsed: true,
               items: [
                 {
-                  text: 'Hardened JavaScript',
-                  link: '/guides/js-programming/hardened-js',
+                  text: 'Write Code to Deploy a Contract',
+                  link: '/guides/coreeval/proposal',
                 },
                 {
-                  text: 'Eventual Send with E()',
-                  link: '/guides/js-programming/eventual-send',
+                  text: 'Declare Required Capabilities',
+                  link: '/guides/coreeval/permissions',
                 },
                 {
-                  text: 'Far(), Remotable, and Marshaling',
-                  link: '/guides/js-programming/far',
-                },
-                {
-                  text: 'Notifiers and Subscriptions',
-                  link: '/guides/js-programming/notifiers',
+                  text: 'Submit Transactions',
+                  link: '/guides/coreeval/local-testnet',
                 },
               ],
             },
             {
-              text: 'Papers',
-              ariaLabel: 'Papers Page Link',
-              link: 'https://agoric.com/papers/',
-            },
-            {
-              text: 'Agoric Platform',
-              link: '/guides/platform/',
+              text: 'Integrating with Agoric Network',
+              link: '/guides/integration/chain-integration',
               collapsed: true,
-              items: [],
+              items: [
+                {
+                  text: 'Name Services: agoricNames, namesByAddress, board',
+                  link: '/guides/integration/name-services',
+                },
+                {
+                  text: 'SubQuery Indexing',
+                  link: '/guides/subquery-indexing',
+                },
+              ],
             },
-          ],
-        },
-        {
-          text: 'Build',
-          collapsed: true,
-          items: [
             {
-              text: 'Getting Started',
-              link: '/guides/getting-started/',
+              text: 'Agoric CLI',
+              link: '/guides/agoric-cli/',
+              collapsed: true,
+              items: [
+                { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
+                {
+                  text: 'Using agd to make queries and transactions',
+                  link: '/guides/agoric-cli/agd-query-tx',
+                },
+              ],
+            },
+
+            {
+              text: 'ERTP API',
+              link: '/reference/ertp-api/',
+              collapsed: true,
+              items: [
+                { text: 'ERTP API', link: '/reference/ertp-api/' },
+                { text: 'Issuer Object', link: '/reference/ertp-api/issuer' },
+                { text: 'Mint Object', link: '/reference/ertp-api/mint' },
+                { text: 'Brand Object', link: '/reference/ertp-api/brand' },
+                { text: 'Purse Object', link: '/reference/ertp-api/purse' },
+                {
+                  text: 'Payment Object',
+                  link: '/reference/ertp-api/payment',
+                },
+                {
+                  text: 'AmountMath Object',
+                  link: '/reference/ertp-api/amount-math',
+                },
+                {
+                  text: 'ERTP Data Types',
+                  link: '/reference/ertp-api/ertp-data-types',
+                },
+              ],
+            },
+            {
+              text: 'Zoe API',
+              link: '/reference/zoe-api/',
+              collapsed: true,
+              items: [
+                { text: 'Zoe API', link: '/reference/zoe-api/' },
+                { text: 'Zoe Service', link: '/reference/zoe-api/zoe' },
+                {
+                  text: 'UserSeat Object',
+                  link: '/reference/zoe-api/user-seat',
+                },
+                {
+                  text: 'Zoe Contract Facet (ZCF)',
+                  link: '/reference/zoe-api/zoe-contract-facet',
+                },
+                { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
+                { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
+                {
+                  text: 'ZoeHelper Functions',
+                  link: '/reference/zoe-api/zoe-helpers',
+                },
+                {
+                  text: 'Ratio Math Functions',
+                  link: '/reference/zoe-api/ratio-math',
+                },
+                {
+                  text: 'Zoe Data Types',
+                  link: '/reference/zoe-api/zoe-data-types',
+                },
+              ],
             },
             {
               text: 'Example Zoe Contracts',
@@ -302,6 +329,53 @@ export default defineConfig({
                 },
               ],
             },
+          ],
+        },
+        {
+          text: 'Learn',
+          collapsed: true,
+          items: [
+            {
+              text: 'What is Agoric?',
+              link: '/what-is-agoric',
+            },
+            {
+              text: 'Agoric Platform',
+              link: '/guides/platform/',
+              collapsed: true,
+              items: [],
+            },
+            {
+              text: 'Zoe Smart Contract Framework',
+              link: '/guides/zoe/',
+            },
+            {
+              text: 'ERTP',
+              ariaLabel: 'ERTP',
+              link: '/guides/ertp/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Amounts, Values, and Brands',
+                  link: '/guides/ertp/amounts',
+                },
+                { text: 'AmountMath', link: '/guides/ertp/amount-math' },
+                {
+                  text: 'Issuers and  Mints',
+                  link: '/guides/ertp/issuers-and-mints',
+                },
+                {
+                  text: 'Purses and Payments',
+                  link: '/guides/ertp/purses-and-payments',
+                },
+              ],
+            },
+            {
+              text: 'JavaScript Framework',
+              ariaLabel: 'JavaScript Framework',
+              link: '/guides/js-programming/',
+            },
+
             {
               text: 'Deployed Zoe Contracts',
               ariaLabel: 'Deployed Zoe Contracts',
@@ -318,122 +392,19 @@ export default defineConfig({
                 },
               ],
             },
-            {
-              text: 'Permissioned Contract Deployment',
-              ariaLabel: 'Permissioned Contract Deployment',
-              link: '/guides/coreeval/',
-              collapsed: true,
-              items: [
-                {
-                  text: 'Permissioned Contract Deployment',
-                  link: '/guides/coreeval/',
-                },
-                {
-                  text: 'Write Code to Deploy a Contract',
-                  link: '/guides/coreeval/proposal',
-                },
-                {
-                  text: 'Declare Required Capabilities',
-                  link: '/guides/coreeval/permissions',
-                },
-                {
-                  text: 'Submit Transactions',
-                  link: '/guides/coreeval/local-testnet',
-                },
-              ],
-            },
-            {
-              text: 'Name Services: agoricNames, namesByAddress, board',
-              link: '/guides/integration/name-services',
-            },
-            {
-              text: 'Integrating with Agoric Network',
-              link: '/guides/integration/chain-integration',
-            },
-            {
-              text: 'SubQuery Indexing',
-              link: '/guides/subquery-indexing',
-              collapsed: true,
-              items: [],
-            },
 
             {
               text: 'Glossary',
               ariaLabel: 'Glossary Menu',
               link: '/glossary/',
             },
+
             {
-              text: 'Agoric CLI',
-              link: '/guides/agoric-cli/',
-              collapsed: true,
-              items: [
-                { text: 'Agoric CLI Reference', link: '/guides/agoric-cli/' },
-                {
-                  text: 'Using agd to make queries and transactions',
-                  link: '/guides/agoric-cli/agd-query-tx',
-                },
-              ],
-            },
-            {
-              text: 'ERTP API',
-              link: '/reference/ertp-api/',
-              collapsed: true,
-              items: [
-                { text: 'ERTP API', link: '/reference/ertp-api/' },
-                { text: 'Issuer Object', link: '/reference/ertp-api/issuer' },
-                { text: 'Mint Object', link: '/reference/ertp-api/mint' },
-                { text: 'Brand Object', link: '/reference/ertp-api/brand' },
-                { text: 'Purse Object', link: '/reference/ertp-api/purse' },
-                {
-                  text: 'Payment Object',
-                  link: '/reference/ertp-api/payment',
-                },
-                {
-                  text: 'AmountMath Object',
-                  link: '/reference/ertp-api/amount-math',
-                },
-                {
-                  text: 'ERTP Data Types',
-                  link: '/reference/ertp-api/ertp-data-types',
-                },
-              ],
-            },
-            {
-              text: 'Zoe API',
-              link: '/reference/zoe-api/',
-              collapsed: true,
-              items: [
-                { text: 'Zoe API', link: '/reference/zoe-api/' },
-                { text: 'Zoe Service', link: '/reference/zoe-api/zoe' },
-                {
-                  text: 'UserSeat Object',
-                  link: '/reference/zoe-api/user-seat',
-                },
-                {
-                  text: 'Zoe Contract Facet (ZCF)',
-                  link: '/reference/zoe-api/zoe-contract-facet',
-                },
-                { text: 'ZCFSeat Object', link: '/reference/zoe-api/zcfseat' },
-                { text: 'ZCFMint Object', link: '/reference/zoe-api/zcfmint' },
-                {
-                  text: 'ZoeHelper Functions',
-                  link: '/reference/zoe-api/zoe-helpers',
-                },
-                {
-                  text: 'Ratio Math Functions',
-                  link: '/reference/zoe-api/ratio-math',
-                },
-                {
-                  text: 'Zoe Data Types',
-                  link: '/reference/zoe-api/zoe-data-types',
-                },
-              ],
+              text: 'Papers',
+              ariaLabel: 'Papers Page Link',
+              link: 'https://agoric.com/papers/',
             },
           ],
-        },
-        {
-          text: 'Tutorial',
-          link: '/guides/getting-started/',
         },
         {
           text: 'Support',
@@ -449,7 +420,7 @@ export default defineConfig({
               link: 'https://agoric.com/discord',
             },
             {
-              text: 'Github Discussions (Q&A)',
+              text: 'Discussions (Q&A)',
               link: 'https://github.com/Agoric/agoric-sdk/discussions',
             },
             {

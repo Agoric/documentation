@@ -6,45 +6,6 @@
 
 export const nav = [
   {
-    text: 'Learn',
-    items: [
-      {
-        text: 'What is Agoric?',
-        link: '/what-is-agoric',
-      },
-      {
-        text: 'Zoe Smart Contract Framework',
-        link: '/guides/zoe/',
-      },
-      {
-        text: 'ERTP',
-        ariaLabel: 'ERTP',
-        link: '/guides/ertp/',
-      },
-      {
-        text: 'Smart Wallet Dapp Architecture',
-        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
-        link: '/guides/getting-started/contract-rpc',
-      },
-      {
-        text: 'Smart Wallet',
-        ariaLabel: 'Smart Wallet Internal Documentation',
-        link:
-          'https://github.com/Agoric/agoric-sdk/blob/master/packages/smart-wallet/README.md',
-      },
-      {
-        text: 'JavaScript Framework',
-        ariaLabel: 'JavaScript Framework',
-        link: '/guides/js-programming/',
-      },
-      {
-        text: 'Papers',
-        ariaLabel: 'Papers Page Link',
-        link: 'https://agoric.com/papers/',
-      },
-    ],
-  },
-  {
     text: 'Build',
     items: [
       {
@@ -52,14 +13,13 @@ export const nav = [
         link: '/guides/getting-started/',
       },
       {
-        text: 'Example Zoe Contracts',
-        ariaLabel: 'Example Zoe Contracts',
-        link: '/guides/zoe/contracts/',
+        text: 'Smart Contract Basics',
+        link: '/guides/zoe/contract-basics',
       },
       {
-        text: 'Deployed Zoe Contracts',
-        ariaLabel: 'Deployed Zoe Contracts',
-        link: '/guides/zoe/actual-contracts/',
+        text: 'Smart Wallet Dapp Architecture',
+        ariaLabel: 'Smart Wallet Dapp Architecture Menu',
+        link: '/guides/getting-started/contract-rpc',
       },
       {
         text: 'Permissioned Contract Deployment',
@@ -67,9 +27,8 @@ export const nav = [
         link: '/guides/coreeval/',
       },
       {
-        text: 'Glossary',
-        ariaLabel: 'Glossary Menu',
-        link: '/glossary/',
+        text: 'Integrating with Agoric Network',
+        link: '/guides/integration/chain-integration',
       },
       {
         text: 'Agoric CLI',
@@ -86,11 +45,58 @@ export const nav = [
         ariaLabel: 'ZOE API Menu',
         link: '/reference/zoe-api/',
       },
+      {
+        text: 'Example Zoe Contracts',
+        ariaLabel: 'Example Zoe Contracts',
+        link: '/guides/zoe/contracts/',
+      },
     ],
   },
+
   {
-    text: 'Tutorial',
-    link: '/guides/getting-started/',
+    text: 'Learn',
+    items: [
+      {
+        text: 'What is Agoric?',
+        link: '/what-is-agoric',
+      },
+      {
+        text: 'Agoric Platform',
+        link: '/guides/platform/',
+        collapsed: true,
+        items: [],
+      },
+
+      {
+        text: 'Zoe Smart Contract Framework',
+        link: '/guides/zoe/',
+      },
+      {
+        text: 'ERTP',
+        ariaLabel: 'ERTP',
+        link: '/guides/ertp/',
+      },
+      {
+        text: 'JavaScript Framework',
+        ariaLabel: 'JavaScript Framework',
+        link: '/guides/js-programming/',
+      },
+      {
+        text: 'Deployed Zoe Contracts',
+        ariaLabel: 'Deployed Zoe Contracts',
+        link: '/guides/zoe/actual-contracts/',
+      },
+      {
+        text: 'Glossary',
+        ariaLabel: 'Glossary Menu',
+        link: '/glossary/',
+      },
+      {
+        text: 'Papers',
+        ariaLabel: 'Papers Page Link',
+        link: 'https://agoric.com/papers/',
+      },
+    ],
   },
   {
     text: 'Support',
