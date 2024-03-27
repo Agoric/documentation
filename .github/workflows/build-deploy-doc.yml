@@ -1,6 +1,18 @@
 name: Build and Deploy documentation site
 
-on: [push]
+on:
+  # If it's a push to production branch, Cloudflare wrangler will deploy it as a
+  # production deployment
+  # The production branch for documentation project on Cloudflare is configured
+  # to be `main`
+  push:
+    branches:
+      - main
+  # If it's a push to a non-production branch, Cloudflare wrangler will deploy
+  # it as a preview deployment
+  pull_request:
+    branches:
+      - "*"
 
 jobs:
   build-and-deploy:
