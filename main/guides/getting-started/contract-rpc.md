@@ -1,4 +1,4 @@
-# Smart Wallet Dapp Architecture
+# Building Client Dapps
 
 The [Agoric Platform](../platform/) consists of smart contracts
 and services such as [Zoe](../zoe/) running in a [Hardened JavaScript](../js-programming/hardened-js) VM running on top of a Cosmos SDK consensus layer. Clients interact with the consensus layer by making
