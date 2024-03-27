@@ -1,5 +1,11 @@
 name: Build and Deploy documentation site
 
+# This workflow is a customized workflow to deploy docs site to Cloudflare
+# The reason we can no longer use Cloudflare's git integration to deploy docs
+# site anymore is that Cloudflare's git integration would only check out
+# documentation repo, whereas we need to check out both `endojs/endo` and
+# `agoric/agoric-sdk` repo to build the docs site.
+
 on:
   # If it's a push to production branch, Cloudflare wrangler will deploy it as a
   # production deployment
