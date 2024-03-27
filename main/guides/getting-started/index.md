@@ -277,32 +277,13 @@ Once the plug-in has been installed, open Keplr and select the option to **Impor
 <img alt='Choose the "Use recovery phrase or private key" option' src="./assets/040.png"
   width="500" />
 
-To import your wallet, you'll need to copy your mnemonic phrase into Keplr. You can find this series of 24 words back on your terminal window. Copy from this window into your Keplr wallet, then hit the "Import" button.
-
-Please note that your phrase might not be the same as the one shown in this guide!
-
-Note the mnemonic phrase in the output below:
+To import your wallet, you'll need to copy the following mnemonic phrase into Keplr.
 
 ```
-waiting for block...
-1
-block produced
-done
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Waiting for proposal to pass (status=PROPOSAL_STATUS_VOTING_PERIOD)
-Import the following mnemonic into Keplr:
-survey thank matrix joke trim more make gossip spread yellow unfold under cash beach harsh fire blush achieve oak swamp pluck clock rocket leg
-
-The resulting address should be: agoric1xe269y3fhye8nrlduf826wgn499y6wmnv32tw5
-
-make: Leaving directory '/workspace/contract'
-Done in 34.95s.
+spike siege world rather ordinary upper napkin voice brush oppose junior route trim crush expire angry seminar anchor panther piano image pepper chest alone
 ```
+
+<!-- key comes from https://github.com/Agoric/agoric-3-proposals/tree/main/packages/synthetic-chain/public/upgrade-test-scripts/keys_for_test_only -->
 
 <img alt="Pasting the mnemonic phrase" src="./assets/041.png" width="400" />
 
