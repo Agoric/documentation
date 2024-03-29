@@ -32,7 +32,7 @@ return 'invitation sent';
 - After the payment has been successfully made by calling `receive`, the function returns the string `'invitation sent'` to indicate that the invitation has been sent.
 
 ## Deposit Facets in Agoric
-In the Agoric smart contract framework, deposit facets are used as a secure way to transfer and manage digital assets and payments between parties. By calling the receive method on a deposit facet and passing in a payment or offer, the smart contract can safely deposit or transfer assets into the account associated with that facet.
+In the Agoric smart contract framework, deposit facets are used as a way to transfer and manage digital assets and payments between parties. By calling the receive method on a deposit facet and passing in a payment or offer, the smart contract can deposit or transfer assets into the account associated with that facet. [Click here](https://docs.agoric.com/guides/integration/name-services.html#namesbyaddress-namesbyaddressadmin-and-depositfacet-per-account-namespace) to learn more about Deposit Facets in Agoric.
 
 Deposit facets provide an abstraction layer for handling payments and ensure that the transfers are performed securely and reliably within the smart contract.
 
