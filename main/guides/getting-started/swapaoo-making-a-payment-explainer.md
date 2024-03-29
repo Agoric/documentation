@@ -2,7 +2,7 @@
 In this document, we'll explain how to send a payment to someone using their `agoric1...` address from an Agoric smart contract using a deposit facet.
 
 ## Code Snippet
-Let's take a look at the following code snippet from the Swaparoo contract:
+Let's take a look at the following code snippet from the Swaparoo contract from [dapp-agoric-basics](https://github.com/Agoric/dapp-agoric-basics):
 ```js
 const secondDepositFacet = await E(depositFacetFromAddr).lookup(
   secondPartyAddress,
