@@ -16,7 +16,7 @@ return 'invitation sent';
 
 ## Step-by-Step Explanation
 ### Retrieving the Deposit Facet:
-- `depositFacetFromAddr` is an object that provides a lookup function for deposit facets associated with addresses.
+- `depositFacetFromAddr` is an object that provides a lookup function for deposit facets associated with addresses. An example of an address might be `agoric1ydzxwh6f893jvpaslmaz6l8j2ulup9a7x8qvvq`.
 - The lookup function is called with `secondPartyAddress` and `'depositFacet'` as arguments to retrieve the deposit facet associated with the `secondPartyAddress`.
 - Since `lookup` is an asynchronous function that returns a promise, the `await` keyword is used to wait for the promise to resolve.
 - The resulting deposit facet is stored in the `secondDepositFacet` variable.
