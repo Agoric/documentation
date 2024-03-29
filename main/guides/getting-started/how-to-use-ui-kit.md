@@ -2,7 +2,7 @@
 The Agoric UI Kit is a collection of components and tools designed to help developers build graphical user interfaces for Agoric decentralized applications (dapps). It provides a set of reusable React components, utilities for reading contract data from vstorage, functions for connecting to the user's wallet, and methods for executing offers on the Agoric blockchain.
 
 ## Setup
-To use the Agoric UI Kit, you need to set up SES in your application environment. SES is a runtime for JavaScript that ensures the security and integrity of your Agoric dapp. Refer to the [SES setup example](https://github.com/Agoric/dapp-inter/blob/main/src/main.tsx#L1) for instructions on enabling SES in your application. 
+To use the Agoric UI Kit, please follow the [instructions documented in the `ui-kit` repository](https://github.com/Agoric/ui-kit/blob/main/packages/react-components/README.md).
 
 ## React Components
 The UI Kit provides a set of React components in the `packages/react-components` directory. These components are designed to make it easier to build user interfaces for Agoric dapps using React. To use these components, simply import them into your React application and integrate them into your UI.
@@ -39,8 +39,7 @@ watcher.watchLatest<Brands>(
 ```
 
 ### Connecting to User's Account (Keplr)
-The UI Kit provides the `makeAgoricWalletConnection` function to connect to the user's wallet using Keplr, a browser extension for interacting with Agoric and Cosmos-based blockchains. This function allows you to retrieve information about the user's purses (token accounts) and other account-related data.
-
+The UI Kit provides the `makeAgoricWalletConnection` function to connect to the user's wallet using Keplr, a browser extension for interacting with Agoric and Cosmos-based blockchains. This function allows you to retrieve information about the user's purses (token accounts) and other account-related data. Please note, if you are using React, you can use `@agoric/react-components` instead of this API.
 ```js
 import { subscribeLatest } from '@agoric/notifier';
 import { makeAgoricChainStorageWatcher } from '@agoric/rpc';
