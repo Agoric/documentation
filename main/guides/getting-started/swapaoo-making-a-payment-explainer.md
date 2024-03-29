@@ -26,7 +26,7 @@ return 'invitation sent';
 - The `receive` method is called on `secondDepositFacet`, passing `secondSeatInvitation` as an argument.
 - `secondSeatInvitation` is an [Invitation](https://docs.agoric.com/glossary/#invitation) to participate in the second seat (recall that invitations are payments).
 - Since `receive` is another asynchronous operation, the `await` keyword is again used to wait for it to complete.
-- By calling `receive` on the deposit facet with `secondSeatInvitation`, the payment or offer represented by `secondSeatInvitation` is effectively transferred or deposited into the account associated with `secondDepositFacet`.
+- By calling `receive` on the deposit facet with `secondSeatInvitation`, the payment represented by `secondSeatInvitation` is transferred or deposited into a purse associated with `secondDepositFacet`.
 
 ### Returning a Result:
 - After the payment has been successfully made by calling `receive`, the function returns the string `'invitation sent'` to indicate that the invitation has been sent.
