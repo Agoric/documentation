@@ -91,4 +91,4 @@ atomicRearrange(
 ```
 
 As you're going through this tutorial it may be helpful to watch this video walkthrough:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XU-5sDaIa7k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Wtq6dwsRdOQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
