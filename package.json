@@ -10,6 +10,7 @@
     "docs:build-endo": "cd endo; yarn install; yarn docs:markdown-for-agoric-documentation-repo; mv endo/api-docs main/reference/endo",
     "docs:build-agoric-sdk": "cd agoric-sdk; yarn install; yarn build; yarn docs:markdown-for-agoric-documentation-repo; mv agoric-sdk/api-docs main/reference/agoric-sdk",
     "docs:build-cf": "yarn docs:build-endo; yarn docs:build-agoric-sdk; DEBUG='vitepress:*' NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects dist/",
+    "git:update-submodules": "git submodule update --remote --merge",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
