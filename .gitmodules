@@ -1,0 +1,6 @@
+[submodule "agoric-sdk"]
+	path = agoric-sdk
+	url = https://github.com/Agoric/agoric-sdk
+[submodule "endo"]
+	path = endo
+	url = https://github.com/endojs/endo
