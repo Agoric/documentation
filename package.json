@@ -9,6 +9,7 @@
     "docs:preview": "NODE_OPTIONS=--openssl-legacy-provider vitepress preview main",
     "docs:build-endo": "cd endo; yarn install; yarn docs:markdown-for-agoric-documentation-repo; mv api-docs ../main/reference/endo",
     "docs:build-agoric-sdk": "cd agoric-sdk; yarn install; yarn build; yarn docs:markdown-for-agoric-documentation-repo; mv api-docs ../main/reference/agoric-sdk",
+    "//docs:build-cf": "echo 'XXX Cloudflare Pages deployment will automatically run `yarn install` right after `git clone`, but this will interfere with building markdown files for endo and agoric-sdk. So we remove node_modules directory before building markdown files and run `yarn install` before running vitepress'",
     "docs:build-cf": "rm -rf node_modules; yarn docs:build-endo; yarn docs:build-agoric-sdk; yarn install; DEBUG='vitepress:*' NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects dist/",
     "git:update-submodules": "git submodule update --remote --merge",
     "test": "ava",
