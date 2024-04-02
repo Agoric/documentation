@@ -280,7 +280,7 @@ Once the plug-in has been installed, open Keplr and select the option to **Impor
 To import your wallet, you'll need to copy the following mnemonic phrase into Keplr.
 
 ```
-spike siege world rather ordinary upper napkin voice brush oppose junior route trim crush expire angry seminar anchor panther piano image pepper chest alone
+tackle hen gap lady bike explain erode midnight marriage wide upset culture model select dial trial swim wood step scan intact what card symptom"
 ```
 
 <!-- key comes from https://github.com/Agoric/agoric-3-proposals/tree/main/packages/synthetic-chain/public/upgrade-test-scripts/keys_for_test_only -->
