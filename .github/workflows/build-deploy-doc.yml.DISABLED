@@ -1,57 +1,86 @@
-# Based on example at: https://github.com/marketplace/actions/deploy-to-github-pages
-
 name: Build and Deploy documentation site
+
+# This workflow is a customized workflow to deploy docs site to Cloudflare
+# The reason we can no longer use Cloudflare's git integration to deploy docs
+# site anymore is that Cloudflare's git integration would only check out
+# documentation repo, whereas we need to check out both `endojs/endo` and
+# `agoric/agoric-sdk` repo to build the docs site.
+
 on:
-  push:	
-    branches:	
+  # If it's a push to production branch, Cloudflare wrangler will deploy it as a
+  # production deployment
+  # The production branch for documentation project on Cloudflare is configured
+  # to be `main`
+  push:
+    branches:
       - main
+  # If it's a push to a non-production branch, Cloudflare wrangler will deploy
+  # it as a preview deployment
+  pull_request:
+    branches:
+      - "*"
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.3.1
-      with:
-        persist-credentials: false
+      uses: actions/checkout@v4
 
-    - name: Install and Build
+    - name: Checkout Endo
+      uses: actions/checkout@v4
+      with:
+        repository: endojs/endo
+        path: endo
+
+    - name: Build Endo docs
+      run: |
+        cd endo
+        yarn install
+        yarn docs:markdown-for-agoric-documentation-repo
+
+    - name: Move Endo docs into main/reference
+      run: mv endo/api-docs main/reference/endo
+
+    - name: Checkout agoric-sdk
+      uses: actions/checkout@v4
+      with:
+        repository: agoric/agoric-sdk
+        path: agoric-sdk
+
+    - name: Build agoric-sdk docs
+      run: |
+        cd agoric-sdk
+        yarn install
+        yarn build
+        yarn docs:markdown-for-agoric-documentation-repo
+
+    - name: Move agoric-sdk docs into main/reference
+      run: mv agoric-sdk/api-docs main/reference/agoric-sdk
+
+    - name: Build Doc site
       run: |
         yarn install
-        yarn docs:build
+        yarn docs:build-cf
 
-    - name: Configure SSH
-      run: |
-        mkdir -m0700 -p ~/.ssh/
-        echo "$SSH_KEY" > ~/.ssh/staging.key
-        chmod 600 ~/.ssh/staging.key
-        cat >>~/.ssh/config <<END
-        Host staging
-          HostName $SSH_HOST
-          User $SSH_USER
-          IdentityFile ~/.ssh/staging.key
-          StrictHostKeyChecking no
-        Host staging2
-          HostName $SSH_HOST2
-          User $SSH_USER
-          IdentityFile ~/.ssh/staging.key
-          StrictHostKeyChecking no
-        END
-      env:
-        SSH_USER: ${{ secrets.STAGING_SSH_USER }}
-        SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-        SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
-        SSH_HOST2: ${{ secrets.STAGING_SSH_HOST2 }}
-
-    - name: SSH check out and build (staging)
-      run: ssh staging 'cd documentation && git pull && yarn install --frozen-lockfile && yarn docs:build'
-
-    - name: SSH check out and build (staging2)
-      run: ssh staging2 'cd documentation && git pull && yarn install --frozen-lockfile && yarn docs:build'
-
-    - name: Deploy to gh-pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+    - name: Publish to Cloudflare Pages
+      id: publish-to-cloudflare-pages
+      uses: cloudflare/wrangler-action@v3
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Provided by github: https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#about-the-github_token-secret
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: main/.vitepress/dist # The folder the action should deploy
-        CLEAN: true # Automatically remove deleted files from the deploy branch
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        # Cloudflare account ID is safe to be public
+        # Ref: https://github.com/cloudflare/wrangler-legacy/issues/209#issuecomment-541654484
+        accountId: 0c4635effffcd7f36d1b9f0425a4367a
+        command: pages deploy --project-name=documentation dist/
+
+    - name: Comment with preview URL
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Cloudflare Pages Preview URL: ${{ steps.publish-to-cloudflare-pages.outputs.deployment-url }}'
+          })
