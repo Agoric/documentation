@@ -44,12 +44,6 @@ In this section you'll be installing prerequisite components into your environme
 At this point the Node Version Manager (NVM) utility will be installed. `nvm` makes it easy to select the specific version of [Node](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
 
 ```sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-```
-
-or
-
-```sh
 wget -O- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
@@ -62,7 +56,7 @@ source ~/.bashrc
 Finally, install Node with the command:
 
 ```sh
-nvm install v18.16.0
+nvm install --lts
 ```
 
 </details>
