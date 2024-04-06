@@ -1,0 +1,23 @@
+name: CF Deployment Logs
+on:
+  issue_comment:                                     
+    types: [created, edited]
+jobs:
+  fetch_comment_log:
+    if: ${{ (github.event.issue.pull_request) && (github.event.comment.user.login == 'cloudflare-pages[bot]' ) }}
+    runs-on: [ubuntu-latest]
+    steps:
+    
+      - name: Fetch & Print The Deployment Logs
+        uses: agoric-labs/cf-logs-fetcher@v1
+        with: 
+          cf_account_id: "0c4635effffcd7f36d1b9f0425a4367a"
+          cf_project: "documentation"
+          cf_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Cloudflare deployment logs are available [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          comment_tag: cflogs
