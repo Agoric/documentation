@@ -1,83 +1,34 @@
 # Modifying the Swaparoo Smart Contract
 
-Imagine a scenario where you wanted to modify the Swaparoo contract so that the contract fee is doubled, and this changed is governed through a voting process. To make these changes, you'll need to make the following edits to the smart contract code:
-- Ensure that the `Fee` parameter is included in the `governedParams` section of the `customTermsShape`. This allows the fee to be governed and modified through the contract's governance mechanism. In the Swaparoo contract, the `Fee` parameter is already included in the `governedParams`.
-- Utilize the `handleParamGovernance` function to set up the governance for the `Fee` parameter. This function is already being called in the `start` function with the necessary arguments.
-- Retrieve the current fee value using `params.getFee()` and use it to create the `feeShape` for the `makeFirstInvitation` function. In the Swaparoo contract code, this is already being done with the line:
-```js
-const feeShape = makeNatAmountShape(feeBrand, params.getFee().value);
-```
+To modify the `swapWithFee` contract so that the fee is doubled, you need to use the parameter governance features provided by the Agoric platform. Here's how you can do it:
 
-- To propose a change to the fee, you'll need to create a new proposal using the contract's governance mechanism. This typically involves calling a method on the `governorFacet` to create a new proposal. For example, you could propose doubling the fee like this:
-```js
-const newFee = AmountMath.make(feeBrand, params.getFee().value * 2n);
-const proposal = {
-  paramKey: 'Fee',
-  paramValue: newFee,
-};
-const proposalId = await E(governorFacet).createProposal(proposal);
-```
-- Once the proposal is created, participants with voting rights can cast their votes on the proposal. The voting process is typically handled by the governance mechanism and may involve calling methods on the `governorFacet` to vote in favor or against the proposal.
-- After the voting period ends, the proposal's outcome is determined based on the votes cast. If the proposal passes, the new fee value will be automatically applied to the contract. The exact threshold for a proposal to pass depends on the governance rules defined in the contract.
-- The updated fee value will be used for future invocations of the `makeFirstInvitation` function, and the contract will start charging the new fee amount.
+### Update the contract code to support parameter governance:
+- Import the necessary functions from `@agoric/governance/src/contractHelper.js`.
+- Define the parameter types for the governed parameters (in this case, `Fee`).
+- Modify the `start` function to include `handleParamGovernance` and get the `publicMixin`, `makeDurableGovernorFacet`, and `params`.
+- Update the `publicFacet` and `creatorFacet` to include the `publicMixin` and `makeDurableGovernorFacet`.
+- Deploy the updated contract code and start the contract instance.
 
-Keep in mind that modifying the fee requires the necessary permissions and voting power as defined by the contract's governance rules. Only authorized participants with sufficient voting rights will be able to propose and vote on fee changes.
+### Set up the committee (electorate) and election manager contracts:
+- Deploy the `committee.js` contract from `@agoric/governance` for the electorate.
+- Deploy the `econCommitteeCharter.js` contract from `@agoric/inter-protocol` for the election manager.
+- Obtain invitations for the committee members and send them to their smart wallets.
 
-Here's an example of how you could modify the Swaparoo contract to include a function for proposing a change to the fee:
+### Committee members accept the charter and committee invitations:
+- Each committee member uses their smart wallet to redeem the charter invitation and obtain the capability to put a question using `VoteOnParamChange`.
+- Each committee member also accepts the committee invitation to obtain the capability to vote.
 
-```js
-// ...
+### A committee member puts a question to double the fee:
+- The committee member creates an offer with the necessary `offerArgs`, including the new fee value (doubled) and the deadline.
+- The offer is made using the `VoteOnParamChange` capability obtained earlier.
 
-export const start = async (zcf, privateArgs, baggage) => {
-  // ...
+### Other committee members vote on the question:
+- Each committee member retrieves the question details from `vstorage` using the `questionHandle`.
+- They create an offer to vote on the question using the `makeVoteInvitation` capability obtained earlier.
 
-  const { publicMixin, makeDurableGovernorFacet, params } =
-    await handleParamGovernance(
-      zcf,
-      privateArgs.initialPoserInvitation,
-      paramTypes,
-      privateArgs.storageNode,
-      privateArgs.marshaller,
-    );
+### Once the deadline is reached and the question carries, the contract governor is notified:
+- The contract governor instructs the `swapWithFee` contract to change the fee to the new value (doubled).
+- The `swapWithFee` contract updates its parameters and publishes the changes to `vstorage`.
 
-  // ...
+By following these steps and utilizing the parameter governance features provided by Agoric, you can modify the `swapWithFee` contract to double the fee without directly changing the contract code. The changes are made through a governed process involving the committee members and the election manager.
 
-  const publicFacet = Far('Public', {
-    makeFirstInvitation,
-    ...publicMixin,
-  });
-  const limitedCreatorFacet = Far('Creator', {
-    makeCollectFeesInvitation() {
-      return makeCollectFeesInvitation(zcf, feeSeat, feeBrand, 'Fee');
-    },
-    async proposeFeeChange(newFeeValue) {
-      const newFee = AmountMath.make(feeBrand, newFeeValue);
-      const proposal = {
-        paramKey: 'Fee',
-        paramValue: newFee,
-      };
-      const proposalId = await E(governorFacet).createProposal(proposal);
-      return proposalId;
-    },
-  });
-  const { governorFacet } = makeDurableGovernorFacet(
-    baggage,
-    limitedCreatorFacet,
-  );
-  return harden({ publicFacet, creatorFacet: governorFacet });
-};
-```
-
-In this modified version, a new method called `proposeFeeChange` is added to the `limitedCreatorFacet`. This method takes a `newFeeValue` parameter, which represents the proposed new fee value.
-
-Inside the `proposeFeeChange` method:
-- The `newFee` amount is created using `AmountMath.make` with the `feeBrand` and the `newFeeValue`.
-- A proposal object is created with the paramKey set to `'Fee'` and the paramValue set to the `newFee` amount.
-- The `createProposal` method is called on the `governorFacet` with the proposal object, which creates a new proposal for changing the fee.
-- The `proposalId` returned by `createProposal` is then returned from the `proposeFeeChange` method.
-- To propose a change to the fee, you can now call the `proposeFeeChange` method on the `creatorFacet` with the desired new fee value. For example:
-```js
-const creatorFacet = await E(publicFacet).getCreatorFacet();
-const proposalId = await E(creatorFacet).proposeFeeChange(2n * params.getFee().value);
-```
-- This code proposes changing the fee to double its current value.
