@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress';
 import { nav } from './themeConfig/nav.js';
 import { rewrites } from './themeConfig/rewrites.js';
+import { apiSidebar } from './themeConfig/sidebar.js';
 
 export default defineConfig({
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
@@ -409,6 +410,11 @@ export default defineConfig({
               link: 'https://agoric.com/papers/',
             },
           ],
+        },
+        {
+          text: 'API',
+          collapsed: true,
+          ...apiSidebar,
         },
         {
           text: 'Support',
