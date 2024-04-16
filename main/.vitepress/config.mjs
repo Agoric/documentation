@@ -127,7 +127,7 @@ export default defineConfig({
             {
               text: 'Getting Started',
               link: '/guides/getting-started/',
-                items: [
+              items: [
                 {
                   text: 'Takeaway 1: Starting a Local Chain',
                   link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
@@ -140,7 +140,7 @@ export default defineConfig({
                   text: 'Takeaway 3: Making an Offer',
                   link: '/guides/getting-started/explainer-how-to-make-an-offer',
                 },
-              ],              
+              ],             
             },
             {
               text: 'Smart Contract Basics',
