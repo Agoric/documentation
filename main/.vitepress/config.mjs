@@ -127,6 +127,20 @@ export default defineConfig({
             {
               text: 'Getting Started',
               link: '/guides/getting-started/',
+                items: [
+                {
+                  text: 'Takeaway 1: Starting a Local Chain',
+                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
+                },
+                {
+                  text: 'Takeaway 2: Deploying a Smart Contract',
+                  link: '/guides/getting-started/explainer-deploying-a-smart-contact',
+                },
+                {
+                  text: 'Takeaway 3: Making an Offer',
+                  link: '/guides/getting-started/explainer-how-to-make-an-offer',
+                },
+              ],              
             },
             {
               text: 'Smart Contract Basics',
