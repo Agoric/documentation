@@ -411,6 +411,36 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Tutorials',
+          collapsed: true,
+          items: [
+            {
+              text: 'dapp-agoric-basics',
+              link: '/guides/getting-started/tutorial-dapp-agoric-basics',
+            },
+            {
+              text: 'Takeaway 1: Sell Concert Tickets Contract Overview',
+              link: '/guides/getting-started/sell-concert-tickets-contract-explainer',
+            },
+
+
+            {
+              text: 'Takeaway 2: Swaparoo Contract Overview',
+              link: '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
+            },
+
+            {
+              text: 'Takeaway 3: Sending Invitation Payments using an Address',
+              link: '/guides/getting-started/swaparoo-making-a-payment-explainer',
+            },
+
+            {
+              text: 'Takeaway 4: Modifying the Swaparoo Smart Contract',
+              link: '/guides/getting-started/explainer-how-to-modify-swaparoo',
+            },
+          ],
+        },        
+        {
           text: 'Support',
           collapsed: true,
           items: [
