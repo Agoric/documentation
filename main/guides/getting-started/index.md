@@ -56,7 +56,7 @@ source ~/.bashrc
 Finally, install Node with the command:
 
 ```sh
-nvm install --lts
+nvm install v18.18.0
 ```
 
 </details>
