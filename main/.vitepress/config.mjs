@@ -162,6 +162,12 @@ export default defineConfig({
             {
               text: 'Building Client Dapps',
               link: '/guides/getting-started/contract-rpc',
+              items: [
+                {
+                  text: 'This is a test',
+                  link: '/guides/getting-started/test',
+                },
+              ],
             },
             {
               text: 'Permissioned Contract Deployment',
