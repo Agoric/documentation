@@ -164,8 +164,8 @@ export default defineConfig({
               link: '/guides/getting-started/contract-rpc',
               items: [
                 {
-                  text: 'This is a test',
-                  link: '/guides/getting-started/test',
+                  text: 'Takeaway 1: Starting a Local Chain',
+                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
                 },
               ],
             },
