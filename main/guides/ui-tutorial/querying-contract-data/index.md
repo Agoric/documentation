@@ -48,6 +48,7 @@ And add some styling for it in `App.css` while we're at it:
   background: #171717;
   border-radius: 24px;
   margin-bottom: 16px;
+  padding: 16px;
 }
 ```
 
@@ -115,7 +116,7 @@ As you can see, this hook makes use of `chainStorageWatcher` to watch two vstora
 
 Go ahead and add this hook to the `Trade` component you made before this:
 
-```
+```tsx
 import { useContract } from './hooks';
 
 const Trade = () => {

@@ -14,7 +14,7 @@ This makes it easy to handle all the platform-specific implementation details, s
 Install the following dependencies:
 
 ```
-yarn add -D @agoric/react-components cosmos-kit@2.8.5 @interchain-ui/react@1.22.11
+yarn add -D @agoric/react-components@0.1.1-dev-1329752.0 cosmos-kit@2.8.5 @interchain-ui/react@1.22.11
 ```
 
 The `cosmos-kit` dependency is used to provide different wallets in the wallet connection modal.

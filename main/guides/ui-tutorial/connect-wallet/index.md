@@ -107,9 +107,7 @@ const Purses = () => {
             {istPurse ? (
               stringifyAmountValue(
                 istPurse.currentAmount,
-                // @ts-expect-error displayInfo missing type
                 istPurse.displayInfo.assetKind,
-                // @ts-expect-error displayInfo missing type
                 istPurse.displayInfo.decimalPlaces
               )
             ) : (
