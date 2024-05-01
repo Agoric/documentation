@@ -2,12 +2,12 @@
 
 The `AgoricProvider` provides a few things in the context of your app, accessible through hooks and components:
 
-- A wallet connection with cosmos-kit
-- Access to the user's purse balances, offers, and other smart wallet state
-- Callbacks for making offers and signing transactions
-- Access to a `chainStorageWatcher` for reading contract state
+- Wallet connection support for numerous wallets (using cosmos-kit).
+- Access to the user's purse balances, offers, and other smart wallet state.
+- Callbacks for making offers and signing transactions.
+- Access to a `chainStorageWatcher` for reading contract state.
 
-This makes it easy to handle all the platform-specific implementation and focus on the business logic and user experience when building your UIs.
+This makes it easy to handle all the platform-specific implementation details, so you can focus on the business logic and user experience when building your UIs.
 
 ### Dependencies
 
@@ -19,12 +19,12 @@ yarn add -D @agoric/react-components cosmos-kit@2.8.5 @interchain-ui/react@1.22.
 
 The `cosmos-kit` dependency is used to provide different wallets in the wallet connection modal.
 The `@interchain-ui/react` dependency will be used to provide themes and styles for some of the underlying
-components that `@agoric/react-components` uses. The Agoric components can be customized using the same
-`ThemeProvider`.
+components that `@agoric/react-components` uses. There are also many components provided there that may be handy when building your own app.
+The Agoric components can be customized using the same `ThemeProvider`.
 
 ### Adding the Provider
 
-Put the provider in the root of your application by editing `App.tsx`. We can also remove some of default demo UI at the same time.
+Put the provider in the root of your application by editing `App.tsx`. We can also remove some of default scaffolding UI at the same time.
 The end result should look something like this:
 
 ```typescript
@@ -63,9 +63,10 @@ function App() {
 export default App;
 ```
 
-Note: If you see a type error on the `wallets` prop, this is likely because `@agoric/react-components` is using
-an older version of `cosmos-kit` than what was installed in your app. To fix this, you can add `resolutions` to
-your `package.json` like so:
+You may have noticed the `defaultNetworkConfig` prop points to a local chain. This assumes
+that you are still running the local chain from [Getting Started](../../getting-started/index.md) in Docker. If you're not, make sure to follow those steps before proceeding.
+
+Note: If you see a type error on the `wallets` prop, this is likely because `@agoric/react-components` is using an older version of `cosmos-kit` than what was installed in your app. To fix this, you can add `resolutions` to your `package.json` like so:
 
 ```json
   "resolutions": {
@@ -76,8 +77,9 @@ your `package.json` like so:
 ## Testing it Out
 
 Try `yarn dev` after making these changes to make sure your app builds again. If you're having trouble, check
-out (FIXME: ADD LINK) `checkpoint-2` in the example repo. As you may notice, we already added a "Connect Wallet"
-button to the UI. In the next section, you'll learn how to access the user's account and purses.
+out the `checkpoint-2` branch in the example repo. As you may notice, we just added a "Connect Wallet"
+button to the UI. In the next section, we'll test it out, and learn how to access the user's account and purses.
 
+## Next
 
-(FIXME: ADD LINK) => Connect Wallet
+[Connect Wallet](../connect-wallet/index.md)

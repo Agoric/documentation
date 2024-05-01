@@ -6,6 +6,8 @@ There are a few libraries that make building Agoric UIs more convenient, all inc
 - [@agoric/web-components](https://github.com/Agoric/ui-kit/tree/main/packages/web-components): Used for accessing the smart wallet and making offers, as well as utilities for displaying asset balances and more.
 - [@agoric/react-components](https://github.com/Agoric/ui-kit/tree/main/packages/react-components): React components for doing all of the above and more, with convenient hooks and context for ease of use.
 
+This tutorial will make use of these libraries and provide pointers along the way for learning more about them.
+
 ## Scaffolding
 
 This tutorial will make use of [@agoric/react-components](https://github.com/Agoric/ui-kit/tree/main/packages/react-components) for greatest convenience, and hence the first step will be to scaffold a new React app with [Vite](https://vitejs.dev/). Create a new workspace and use the following command to scaffold a new `react-ts` app:
@@ -14,13 +16,11 @@ This tutorial will make use of [@agoric/react-components](https://github.com/Ago
 yarn create vite my-agoric-ui --template react-ts
 ```
 
-Follow the instructions outputted by the command and you should have a local dev server running with a bare-bones React app:
-
-(FIXME: ADD SCREENSHOT)
+Follow the instructions outputted by the command and you should have a local dev server running with a bare-bones React app.
 
 ## Hardening
 
-(FIXME: Explain Endo better) The next step is to install [Endo](https://github.com/endojs/endo), because the Agoric libraries depend on HardenedJS. To get it set up, we'll add a few dependencies:
+The next step is to install [Endo](https://github.com/endojs/endo), because the Agoric libraries depend on Hardened JavaScript. To get it set up, we'll add a few dependencies:
 
 ```
 yarn add -D ses @endo/eventual-send
@@ -61,6 +61,8 @@ And at the top of `src/main.tsx` import the new file:
 import './installSesLockdown.ts';
 ```
 
-Restart your app and it should load as before without errors. Now, the app is running with HardenedJS enabled and we're ready to continue.
+Restart your app and it should load as before without errors. Now, the app is running with Hardened JS enabled and we're ready to continue.
 
-(FIXME: ADD LINK) => Setting Up the Agoric Provider
+## Next
+
+[Setting Up the Agoric Provider](../agoric-provider/index.md)
