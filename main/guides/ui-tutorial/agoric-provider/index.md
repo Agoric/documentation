@@ -22,12 +22,19 @@ The `@interchain-ui/react` dependency will be used to provide themes and styles 
 components that `@agoric/react-components` uses. There are also many components provided there that may be handy when building your own app.
 The Agoric components can be customized using the same `ThemeProvider`.
 
+Note: If you see `yarn build` failing with memory errors, it might be due to an increased bundle size. To get around this, try
+adding this flag to `build` in `package.json`:
+
+```json
+  "build": "tsc && NODE_OPTIONS=--max-old-space-size=4096 vite build",
+```
+
 ### Adding the Provider
 
 Put the provider in the root of your application by editing `App.tsx`. We can also remove some of default scaffolding UI at the same time.
 The end result should look something like this:
 
-```typescript
+```tsx
 import { AgoricProvider, ConnectWalletButton } from '@agoric/react-components';
 import { wallets } from 'cosmos-kit';
 import { ThemeProvider, useTheme } from '@interchain-ui/react';

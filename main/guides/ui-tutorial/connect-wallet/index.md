@@ -108,7 +108,7 @@ const Purses = () => {
               stringifyAmountValue(
                 istPurse.currentAmount,
                 istPurse.displayInfo.assetKind,
-                istPurse.displayInfo.decimalPlaces
+                istPurse.displayInfo.decimalPlaces,
               )
             ) : (
               <i>Fetching balance...</i>
