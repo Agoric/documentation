@@ -12,9 +12,9 @@ With these basics in place, the world of Agoric UI development has opened up to 
 newly acquired knowledge, consider trying out the following tasks:
 
 - Spruce up your UI with `interchain-ui` components and try customizing the theme.
-- Add automated e2e testing using https://github.com/agoric-labs/synpress
+- Add automated e2e testing using https://github.com/agoric-labs/synpress.
 - Add a new item to the "Offer Up" contract and implement UI support for it.
-- Deploy the contract to a testnet and adding the `NetworkDropdown` component to your dapp to switch between networks.
+- Deploy the contract to a testnet and add the `NetworkDropdown` component to your dapp to switch between networks.
 - Write your own dapp and implement a custom UI for it.
 
 Check out the #dev channel in the Discord with any questions or feedback for future improvements on this guide.

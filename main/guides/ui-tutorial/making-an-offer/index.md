@@ -123,7 +123,6 @@ const Trade = () => {
 As you can see, you're storing `choices` with a `useState` hook. This way, as the user changes the inputs,
 the number of items of each type is updated. Later on you'll use `choices` to specify the offer.
 
-
 Next, you'll add an input to let the user specify the amount of IST they want to give in exchange for the items.
 First, get a reference to the IST purse with the `usePurse` you created earlier, and create a state hook for the IST value:
 
@@ -139,7 +138,7 @@ const Trade = () => {
 Next, use the `<AmountInput>` component to add an input for the IST "give" amount:
 
 ```tsx
-import { AmountInput } from '@agoric/react-components'; 
+import { AmountInput } from '@agoric/react-components';
 
 ...
 
@@ -209,13 +208,16 @@ const submitOffer = () => {
       if (update.status === 'refunded') {
         alert('Offer rejected');
       }
-    }
+    },
   );
 };
 ```
 
-This uses the `makeCopyBag` util to construct the Item amount in a way that the contract can understand.
-Add it to your dependencies:
+For specifics on how offers work, see [Specifying Offers](../../getting-started/contract-rpc.md#specifying-offers). The `makeOffer` function allows you to specify an
+`InvitationSpec`, automatically handles the marshalling aspect, and makes it easy to
+handle updates to the offer status.
+
+The function you just wrote uses the `makeCopyBag` util to construct the Item amount in a way that the contract can understand. Add it to your dependencies:
 
 ```
 yarn add -D @agoric/store@0.9.2
@@ -232,9 +234,11 @@ declare module '@agoric/store' {
 Now, simply add a button to submit the offer:
 
 ```tsx
-  {!!(brands && instance && makeOffer && istPurse) && (
+{
+  !!(brands && instance && makeOffer && istPurse) && (
     <button onClick={submitOffer}>Make Offer</button>
-  )}
+  );
+}
 ```
 
 Upon clicking the offer, you should see a Keplr window pop up to approve the transaction with the "Give" and "Want"

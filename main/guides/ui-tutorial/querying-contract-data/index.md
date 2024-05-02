@@ -38,9 +38,7 @@ export default Trade;
 And add some styling for it in `App.css` while we're at it:
 
 ```css
-...
-
-.trade {
+... .trade {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -112,9 +110,14 @@ export const useContract = () => {
 As you can see, this hook makes use of `chainStorageWatcher` to watch two vstorage paths, and logs the results to the console:
 
 - `published.agoricNames.instance` - The list of available contract instances on-chain, keyed by name.
-- `published.agoricNames.brand` - The list of available brands on-chain, keyed by name,
+- `published.agoricNames.brand` - The list of available brands on-chain, keyed by name.
 
-Go ahead and add this hook to the `Trade` component you made before this:
+The `chainStorageWatcher` handles all the vstorage queries and marshalling for you, so
+you get convenient access to the data from your application. It automatically polls
+and emits updates when the data on-chain changes. For more details about vstorage, see
+[Querying VStorage](../../getting-started/contract-rpc.md#querying-vstorage).
+
+Next, go ahead and add this hook to the `Trade` component you made before this:
 
 ```tsx
 import { useContract } from './hooks';
@@ -129,7 +132,6 @@ const Trade = () => {
 };
 
 export default Trade;
-
 ```
 
 You should now see the `brands` and `instances` being logged to the console. See if you
