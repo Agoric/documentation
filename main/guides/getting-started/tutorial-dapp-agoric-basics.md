@@ -11,7 +11,7 @@ To begin, you will need an environment with the pre-requisite components install
 ## Downloading the dapp
 Pull down the dapp from Github:
 ```bash
-yarn create @agoric/dapp --dapp-template dapp-agoric-basics agoric-basics --dapp-branch 977-mint-tickets-ui
+yarn create @agoric/dapp --dapp-template dapp-agoric-basics agoric-basics
 ```
 
 ## Installing dapp components
