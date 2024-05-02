@@ -97,6 +97,17 @@ export const nav = [
       },
     ],
   },
+
+  {
+    text: 'Tutorials',
+    items: [
+      {
+        text: 'dapp-agoric-basics',
+        link: '/guides/getting-started/tutorial-dapp-agoric-basics',
+      },
+    ],
+  },
+  
   {
     text: 'Support',
     items: [
