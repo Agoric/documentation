@@ -447,11 +447,6 @@ export default defineConfig({
               text: 'Takeaway 3: Sending Invitation Payments using an Address',
               link: '/guides/getting-started/swaparoo-making-a-payment-explainer',
             },
-
-            {
-              text: 'Takeaway 4: Modifying the Swaparoo Smart Contract',
-              link: '/guides/getting-started/explainer-how-to-modify-swaparoo',
-            },
           ],
         },        
         {
