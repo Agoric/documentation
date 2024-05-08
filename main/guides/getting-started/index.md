@@ -63,22 +63,10 @@ nvm install v18.18.0
 
 ### Installing Yarn
 
-<details>
-<summary>Installing Yarn on Ubuntu</summary>
-  
-Run the `corepack enable` command.
-
 ```sh
 corepack enable
+yarn --version # for verification
 ```
-
-Now run the `yarn --version` command.
-
-```sh
-yarn --version
-```
-
-</details>
 
 ### Installing Docker
 
@@ -88,7 +76,6 @@ yarn --version
 Now you'll install Docker using the two steps below. This first block of commands will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 
 ```sh
-# Install Docker
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
@@ -163,7 +150,7 @@ Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed
 yarn create @agoric/dapp demo
 ```
 
-## Install Dapp Dependencies
+## Installing Dapp Dependencies
 
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
@@ -178,14 +165,14 @@ yarn install
 ```
 
 <details>
- <summary>Troubleshooting yarn install</summary>
-  
- If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows. 
-  
- Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`. 
- On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835). 
-  
-  </details>
+<summary>Troubleshooting yarn install</summary>
+
+If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows.
+
+Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`.
+On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
+
+</details>
 
 ## Starting a Local Agoric Blockchain
 
