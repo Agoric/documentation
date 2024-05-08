@@ -63,22 +63,10 @@ nvm install v18.18.0
 
 ### Installing Yarn
 
-<details>
-<summary>Installing Yarn on Ubuntu</summary>
-  
-Run the `corepack enable` command.
-
 ```sh
 corepack enable
+yarn --version # for verification
 ```
-
-Now run the `yarn --version` command.
-
-```sh
-yarn --version
-```
-
-</details>
 
 ### Installing Docker
 
@@ -88,7 +76,6 @@ yarn --version
 Now you'll install Docker using the two steps below. This first block of commands will add the Docker GPG keys to your system, then add the repository to Apt for installation.
 
 ```sh
-# Install Docker
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
