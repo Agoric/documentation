@@ -41,7 +41,7 @@ In this section you'll be installing prerequisite components into your environme
 <details>
 <summary>Installing nvm and Node.js on Ubuntu</summary>
 
-At this point the [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility will be installed. `nvm` makes it easy to select the specific version of [Node.js](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
+At this point the [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility will be installed. `nvm` makes it easy to select the specific version of [Node.js](https://nodejs.org/) that will be required for this tutorial.
 
 First, follow the [nvm installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), including sourcing `nvm.sh` into the shell for later steps.
 ```sh
