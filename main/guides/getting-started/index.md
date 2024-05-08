@@ -178,14 +178,14 @@ yarn install
 ```
 
 <details>
- <summary>Troubleshooting yarn install</summary>
-  
- If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows. 
-  
- Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`. 
- On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835). 
-  
-  </details>
+<summary>Troubleshooting yarn install</summary>
+
+If you run into errors during `yarn install`, check that you are on a [supported platform](#platform-requirements) and not native Windows.
+
+Then make sure you have the relevant developer tools installed. For example, on Debian or Ubuntu Linux, run `sudo apt get install build-essential`.
+On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
+
+</details>
 
 ## Starting a Local Agoric Blockchain
 
