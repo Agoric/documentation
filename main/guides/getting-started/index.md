@@ -163,7 +163,7 @@ Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed
 yarn create @agoric/dapp demo
 ```
 
-## Install Dapp Dependencies
+## Installing Dapp Dependencies
 
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
