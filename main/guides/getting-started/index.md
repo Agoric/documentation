@@ -36,27 +36,31 @@ Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linu
 
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
 
-### Installing NVM and Node
+### Installing Node.js
 
 <details>
-<summary>Installing NVM and Node on Ubuntu</summary>
+<summary>Installing Node.js on Ubuntu</summary>
 
-At this point the Node Version Manager (NVM) utility will be installed. `nvm` makes it easy to select the specific version of [Node](https://nodejs.org/) that will be required for this tutorial (v18.16.0).
+This tutorial requires a specific version of [Node.js](https://nodejs.org/).
 
+The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it easy to select the right version.
+
+First, follow the [nvm installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), including sourcing `nvm.sh` into the shell.
 ```sh
-wget -O- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+# For example:
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
 
-Next, run the command:
-
-```sh
-source ~/.bashrc
-```
-
-Finally, install Node with the command:
-
+Then, install Node.js.
 ```sh
 nvm install v18.18.0
+```
+
+Finally, verify the Node.js version.
+```sh
+node --version
 ```
 
 </details>
