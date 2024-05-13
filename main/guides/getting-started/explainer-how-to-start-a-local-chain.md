@@ -11,7 +11,6 @@ In the `dapp-offer-up` sample dapp, configuration for the Agoric containers is s
     "docker:make": "cd contract; docker compose exec agd make -C /workspace/contract",
     "make:help": "make -C contract list",
     "start:contract": "cd contract && yarn start",
-    "print-key": "yarn docker:make print-acct",
     "start:ui": "cd ui && yarn dev",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test",
