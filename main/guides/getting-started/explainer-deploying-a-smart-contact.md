@@ -20,7 +20,6 @@ Once again, we can reference the project's `package.json` file to learn a bit mo
     "docker:make": "cd contract; docker compose exec agd make -C /workspace/contract",
     "make:help": "make -C contract list",
     "start:contract": "cd contract && yarn start",
-    "print-key": "yarn docker:make print-acct",
     "start:ui": "cd ui && yarn dev",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test",
@@ -37,7 +36,7 @@ Note the calling the `yarn start:contract` command is the same as running `yarn 
     "docker:bash": "docker compose exec agd bash",
     "docker:make": "docker compose exec agd make -C /workspace/contract",
     "make:help": "make list",
-    "start": "yarn docker:make clean start-contract print-key",
+    "start": "yarn docker:make clean start-contract",
     "build": "agoric run scripts/build-contract-deployer.js",
     "test": "ava --verbose",
     "lint": "eslint '**/*.js'",
@@ -45,7 +44,7 @@ Note the calling the `yarn start:contract` command is the same as running `yarn 
   },
 ```
 
-In the json snippet above note that the `start` command is running `yarn docker:make clean start-contract print-key`. 
+In the json snippet above note that the `start` command is running `yarn docker:make clean start-contract`. 
 
 ::: tip Video Walkthrough
 
