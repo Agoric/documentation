@@ -160,6 +160,10 @@ export default defineConfig({
             },
 
             {
+              text: 'UI Component Library',
+              link: '/guides/UIComponentLibrary/UIComponentsstart',
+            },
+            {
               text: 'Building Client Dapps',
               link: '/guides/getting-started/contract-rpc',
             },
