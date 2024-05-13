@@ -272,11 +272,12 @@ spike siege world rather ordinary upper napkin voice brush oppose junior route t
 
 <img alt="Pasting the mnemonic phrase" src="./assets/041.png" width="400" />
 
-<details><summary>As usual, give your new wallet a name and a password.</summary>
+<details><summary>Give your new wallet a name and a password. Click Next.</summary>
 
 ![Name the newly imported wallet](./assets/042.png)
+</details>
+<details><summary>In the next step, do not select any **chains** except for **Cosmos Hub**. Click "Save". </summary>
 
-Click "Save".
 
 ![Save](./assets/043.png)
 
