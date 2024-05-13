@@ -220,18 +220,18 @@ Use control-C to exit the logs, then start the smart contract. Starting the cont
 ```sh
 yarn start:contract
 ```
-
+<details>
+<summary>Behind the Scenes</summary>
 This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
 1. Bundle the contract with `agoric run ...`
-2. Collect some ATOM with `agd tx bank send ...`.
+2. Collect some ATOM with `agd tx bank send ...`. *ATOM refers to the native cryptocurrency of the Cosmos Network.*
 3. Use the ATOM to open a vault to mint enough IST to pay to install the bundles on chain with `agops vaults open ...`.
 4. Install the bundles on chain with `agd tx swingset install-bundle ...`.
 5. Collect enough BLD to pay for a governance deposit with `agd tx bank send ...`
 6. Make a governance proposal to start the contract with `agd tx gov submit-proposal swingset-core-eval ...`.
 7. Vote for the proposal; wait for it to pass.
-
-While it's doing all that...
+</details>
 
 ## 6. Setting up a Keplr Wallet Demo Account
 
