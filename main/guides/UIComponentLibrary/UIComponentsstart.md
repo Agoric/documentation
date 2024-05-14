@@ -43,7 +43,7 @@ Before getting started, there are some resources you might want to keep handy in
 Customizable Parameters
 | Parameter | Type | Description |
 |----------|----------|----------|
-| ClassName   | string   | CSS class name for the underlying <button> element   |
+| ClassName   | string   | CSS class name for the underlying `<button>` element   |
 
 ## Wallet Provisioning
 
@@ -69,7 +69,7 @@ Customizable Parameters
 |----------|----------|----------|
 | value   | bigint | null   | The current value of the input   |
 | decimalPlace   | number   | The number of decimal places used for displaying the denominated value   |
-| className   | string | undefined   | CSS class name for the underlying <input> element   |
+| className   | string | undefined   | CSS class name for the underlying `<input>` element   |
 | onChange   | undefined | (value: bigint) => void   | Callback for handling input changes   |
 | disabled   | boolean | undefined   | Whether or not the input is disabled. Defaults to false.   |
 
