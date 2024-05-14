@@ -91,7 +91,6 @@ Finally, verify the Node.js version.
 ```sh
 node --version
 ```
-
 </details>
 
 ### Installing Yarn
