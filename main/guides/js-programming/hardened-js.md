@@ -173,7 +173,7 @@ covers its tracks so that we don't notice:
 
 <<< @/../snippets/test-hardened-js.js#exploit
 
-Our goal is **defensive correctness**: a program is _defensively correct_ if it remains correct despite arbitrary behavior on the part of its clients. _For further discussion, see [Concurrency Among Strangers](http://erights.org/talks/promises/paper/tgc05.pdf) and other [Agoric papers on Robust Composition](https://papers.agoric.com/papers/#robust-composition)_.
+Our goal is **defensive correctness**: a program is _defensively correct_ if it remains correct despite arbitrary behavior on the part of its clients. _For further discussion, see [Concurrency Among Strangers](https://papers.agoric.com/papers/concurrency-among-strangers/abstract/) and other [Agoric papers on Robust Composition](https://papers.agoric.com/papers/#robust-composition)_.
 
 To prevent tampering, use the [harden](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden) function, which is a deep form of [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
 
