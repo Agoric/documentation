@@ -38,8 +38,6 @@ In this section you'll be installing prerequisite components into your environme
 
 ### Installing Node.js
 
-
-Test
 This tutorial requires a specific version of [Node.js](https://nodejs.org/).
 
 The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it easy to select the right version.
@@ -48,6 +46,8 @@ First, follow the [nvm installation instructions](https://github.com/nvm-sh/nvm?
 
 <details>
 <summary>Installing NVM on Ubuntu</summary>
+
+You can copy the following command on your shell and get it running
 
 ```sh
 # For example:
@@ -61,7 +61,6 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 <details>
 <summary>Installing NVM on MacOS</summary>
 
-#### Install Homebrew
 nvm is not available in the default package manager for Mac, so you will need to install Homebrew first. To do this, open a terminal window and run the following command:
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
