@@ -105,6 +105,10 @@ yarn --version # for verification
 <details>
 <summary>Installing Docker</summary>
 
+For docker, you can either download Docker UI using the steps on the [installation for Ubuntu](https://docs.docker.com/desktop/install/ubuntu/) or [installation for Ubuntu](https://docs.docker.com/desktop/install/mac-install/)
+
+To install via CLI, you can check following details.
+
 <details>
 <summary>Installing Docker on Ubuntu</summary>
 
