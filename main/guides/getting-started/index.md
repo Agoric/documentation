@@ -38,20 +38,45 @@ In this section you'll be installing prerequisite components into your environme
 
 ### Installing Node.js
 
-<details>
-<summary>Installing Node.js on Ubuntu</summary>
-
 This tutorial requires a specific version of [Node.js](https://nodejs.org/).
 
 The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it easy to select the right version.
 
 First, follow the [nvm installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), including sourcing `nvm.sh` into the shell.
+
+<details>
+<summary>Installing NVM on Ubuntu</summary>
+
 ```sh
 # For example:
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
+
+</details>
+
+<details>
+<summary>Installing NVM on MacOS</summary>
+
+#### Install Homebrew
+nvm is not available in the default package manager for Mac, so you will need to install Homebrew first. To do this, open a terminal window and run the following command:
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+Then, you can install nvm using Brew
+```sh
+brew install nvm
+```
+
+Add nvm to your shell profile: To make nvm available every time you open a new terminal window, you will need to add the following line to your shell profile (e.g., ~/.bash_profile or ~/.zshrc):
+
+```sh
+source $(brew --prefix nvm)/nvm.sh
+```
+
+</details>
 
 Then, install Node.js.
 ```sh
@@ -62,8 +87,6 @@ Finally, verify the Node.js version.
 ```sh
 node --version
 ```
-
-</details>
 
 ### Installing Yarn
 
