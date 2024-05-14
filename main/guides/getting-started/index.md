@@ -38,6 +38,9 @@ In this section you'll be installing prerequisite components into your environme
 
 ### Installing Node.js
 
+<details>
+<summary>Installing Node.js</summary>
+
 This tutorial requires a specific version of [Node.js](https://nodejs.org/).
 
 The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it easy to select the right version.
@@ -45,7 +48,7 @@ The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it
 First, follow the [nvm installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), including sourcing `nvm.sh` into the shell.
 
 <details>
-<summary>Installing NVM on Ubuntu</summary>
+<summary>Installing nvm on Ubuntu</summary>
 
 You can copy the following command on your shell and get it running
 
@@ -59,7 +62,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 </details>
 
 <details>
-<summary>Installing NVM on MacOS</summary>
+<summary>Installing nvm on MacOS</summary>
 
 nvm is not available in the default package manager for Mac, so you will need to install Homebrew first. To do this, open a terminal window and run the following command:
 ```sh
@@ -89,6 +92,8 @@ Finally, verify the Node.js version.
 node --version
 ```
 
+</details>
+
 ### Installing Yarn
 
 ```sh
@@ -97,6 +102,9 @@ yarn --version # for verification
 ```
 
 ### Installing Docker
+
+<details>
+<summary>Installing Docker</summary>
 
 <details>
 <summary>Installing Docker on Ubuntu</summary>
@@ -124,6 +132,18 @@ Now you can install Docker!
 ```sh
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+</details>
+
+<details>
+<summary>Installing Docker on MacOS</summary>
+Previously, you installed brew on your machine. You can install docker using the same command.
+
+```sh
+brew cask install docker
+```
+
+</details>
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
