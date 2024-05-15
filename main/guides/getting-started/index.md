@@ -32,7 +32,7 @@ Before getting started, there are some resources you might want to keep handy in
 
 Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
-## 1. Installing Prerequisites
+## Installing Prerequisites
 
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
 
@@ -146,7 +146,7 @@ For more examples and ideas, visit:
 
 </details>
 
-## 2. Creating Your Dapp From a Template
+## Creating Your Dapp From a Template
 
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
@@ -154,7 +154,7 @@ Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed
 yarn create @agoric/dapp demo
 ```
 
-## 3. Installing Dapp Dependencies
+## Installing Dapp Dependencies
 
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
@@ -178,7 +178,7 @@ On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id49779
 
 </details>
 
-## 4. Starting a Local Agoric Blockchain
+## Starting a Local Agoric Blockchain
 
 Now go ahead and start a local Agoric blockchain using the `yarn start:docker` command. Note: This container is several gigabytes in size and may take a few minutes to download.
 
@@ -213,7 +213,7 @@ These are artifacts of replaying historical events.
 
 :::
 
-## 5. Starting the Dapp Smart Contract
+## Starting the Dapp Smart Contract
 
 Use control-C to exit the logs, then start the smart contract. Starting the contract may take a minute or two, so after running this command proceed to the next step.
 
@@ -233,7 +233,7 @@ This `start:contract` script will do a number of things that we will cover in mo
 7. Vote for the proposal; wait for it to pass.
 </details>
 
-## 6. Setting up a Keplr Wallet Demo Account
+## Setting up a Keplr Wallet Demo Account
 
 Next, ensure you have the [Keplr wallet plug-in](https://www.keplr.app/download) installed.
 
@@ -283,7 +283,7 @@ spike siege world rather ordinary upper napkin voice brush oppose junior route t
 
 </details>
 
-## 7. Starting the Dapp
+## Starting the Dapp
 
 Start the UI for the sample dapp.
 
@@ -307,7 +307,7 @@ Like any [non-native chain](https://chains.keplr.app/), the first time you use t
 
 </details>
 
-## 8. Making an Offer
+## Making an Offer
 
 Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
 
