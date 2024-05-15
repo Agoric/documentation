@@ -32,7 +32,7 @@ Before getting started, there are some resources you might want to keep handy in
 
 Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
 
-## Installing Prerequisites
+## 1. Installing Prerequisites
 
 In this section you'll be installing prerequisite components into your environment. If you're working with your own environment rather than using a fresh Ubuntu install, you may already have some or all of these components already installed.
 
@@ -146,7 +146,7 @@ For more examples and ideas, visit:
 
 </details>
 
-## Creating Your Dapp From a Template
+## 2. Creating Your Dapp From a Template
 
 Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed in a subfolder named `demo`.
 
@@ -154,7 +154,7 @@ Now you'll use yarn to pull down the sample dapp. The sample dapp will be placed
 yarn create @agoric/dapp demo
 ```
 
-## Installing Dapp Dependencies
+## 3. Installing Dapp Dependencies
 
 Now navigate to the `demo` directory and run the `yarn install` command to install any solution dependencies.
 
@@ -178,7 +178,7 @@ On macOS, be sure to install [Xcode](https://apps.apple.com/us/app/xcode/id49779
 
 </details>
 
-## Starting a Local Agoric Blockchain
+## 4. Starting a Local Agoric Blockchain
 
 Now go ahead and start a local Agoric blockchain using the `yarn start:docker` command. Note: This container is several gigabytes in size and may take a few minutes to download.
 
@@ -213,27 +213,27 @@ These are artifacts of replaying historical events.
 
 :::
 
-## Starting the Dapp Smart Contract
+## 5. Starting the Dapp Smart Contract
 
 Use control-C to exit the logs, then start the smart contract. Starting the contract may take a minute or two, so after running this command proceed to the next step.
 
 ```sh
 yarn start:contract
 ```
-
+<details>
+<summary>Behind the Scenes</summary>
 This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
 1. Bundle the contract with `agoric run ...`
-2. Collect some ATOM with `agd tx bank send ...`.
+2. Collect some ATOM with `agd tx bank send ...`. *ATOM refers to the native cryptocurrency of the Cosmos Network.*
 3. Use the ATOM to open a vault to mint enough IST to pay to install the bundles on chain with `agops vaults open ...`.
 4. Install the bundles on chain with `agd tx swingset install-bundle ...`.
 5. Collect enough BLD to pay for a governance deposit with `agd tx bank send ...`
 6. Make a governance proposal to start the contract with `agd tx gov submit-proposal swingset-core-eval ...`.
 7. Vote for the proposal; wait for it to pass.
+</details>
 
-While it's doing all that...
-
-## Setting up a Keplr Wallet Demo Account
+## 6. Setting up a Keplr Wallet Demo Account
 
 Next, ensure you have the [Keplr wallet plug-in](https://www.keplr.app/download) installed.
 
@@ -272,17 +272,18 @@ spike siege world rather ordinary upper napkin voice brush oppose junior route t
 
 <img alt="Pasting the mnemonic phrase" src="./assets/041.png" width="400" />
 
-<details><summary>As usual, give your new wallet a name and a password.</summary>
+<details><summary>Give your new wallet a name and a password. Click Next.</summary>
 
 ![Name the newly imported wallet](./assets/042.png)
+</details>
+<details><summary>In the next step, do not select any **chains** except for **Cosmos Hub**. Click "Save". </summary>
 
-Click "Save".
 
 ![Save](./assets/043.png)
 
 </details>
 
-## Starting the Dapp
+## 7. Starting the Dapp
 
 Start the UI for the sample dapp.
 
@@ -306,7 +307,7 @@ Like any [non-native chain](https://chains.keplr.app/), the first time you use t
 
 </details>
 
-## Making an Offer
+## 8. Making an Offer
 
 Once your wallet is connected, click on the "Make Offer" button to purchase 3 properties. Approve the transaction in your Keplr wallet.
 
