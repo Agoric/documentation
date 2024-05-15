@@ -171,6 +171,29 @@ $ agd tx bank send $src $dest $amt \
 As usual, use `agd tx bank send --help` for documentation on
 flags such as `--yes`, `-b`, etc.
 
+## agd tx swingset provision-one
+
+Provision a smart wallet to interact with Zoe smart contracts.
+
+Usage:
+
+```sh
+agd tx swingset provision-one <nickname> <address> [<power-flag>[,...]] [flags]
+```
+
+Example:
+
+```sh
+KEY_NAME=user1
+NICKNAME=my-wallet
+KEYRING_BACKEND="--keyring-backend=test"
+ADDRESS=$(agd keys show $KEY_NAME $KEYRING_BACKEND | grep address | awk '{print $3}')
+
+agd tx swingset provision-one $NICKNAME $ADDRESS SMART_WALLET --from $KEY_NAME $KEYRING_BACKEND --chain-id agoriclocal -y -b block
+```
+
+See `MsgProvision` in [swingset/msgs.proto](https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-15/golang/cosmos/proto/agoric/swingset/msgs.proto#L86-L109) for more details.
+
 ## agd tx swingset install-bundle
 
 ```
