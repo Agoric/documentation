@@ -17,11 +17,15 @@ jobs:
         with:
           node-version: "18"
       - name: Creating Your Dapp From a Template
-        run: yarn create @agoric/dapp demo .
+        run: yarn create @agoric/dapp demo
       - name: Install dependencies
-        run: yarn install
+        run: | 
+          cd demo
+          yarn install
       - name: Start the Docker container
-        run: yarn start:docker
+        run: | 
+          cd demo
+          yarn start:docker
       - name: Wait for Docker container to be ready 
       #     cd demo
       #     yarn install
@@ -31,6 +35,7 @@ jobs:
       #     yarn build
       # # Borrowed from https://github.com/DCFoundation/cosmos-proposal-builder/blob/main/.github/workflows/pr.yml#L43-L61
         run: |
+          cd demo
           timeout 300 bash -c '
             TARGET_HEIGHT=1111
             SLEEP=10
@@ -49,7 +54,9 @@ jobs:
             done
           '
       - name: yarn start:contract
-        run: yarn start:contract
+        run: |
+          cd demo
+          yarn start:contract
       - name: verify contracts started onchain
         run: |
           curl http://localhost:1317/agoric/vstorage/data/published.agoricNames.instance | grep sellConcertTickets
