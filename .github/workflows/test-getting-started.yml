@@ -17,16 +17,19 @@ jobs:
         with:
           node-version: "18"
       - name: Creating Your Dapp From a Template
-        run: |
-        - yarn create @agoric/dapp demo
-          cd demo
-          yarn install
-          yarn start:docker
-      # - name: yarn docker:logs
-      #   run: yarn docker:logs
-          yarn build
-      # Borrowed from https://github.com/DCFoundation/cosmos-proposal-builder/blob/main/.github/workflows/pr.yml#L43-L61
-      - name: Wait for Docker container to be ready
+        run: yarn create @agoric/dapp demo .
+      - name: Install dependencies
+        run: yarn install
+      - name: Start the Docker container
+        run: yarn start:docker
+      - name: Wait for Docker container to be ready 
+      #     cd demo
+      #     yarn install
+      #     yarn start:docker
+      # # - name: yarn docker:logs
+      # #   run: yarn docker:logs
+      #     yarn build
+      # # Borrowed from https://github.com/DCFoundation/cosmos-proposal-builder/blob/main/.github/workflows/pr.yml#L43-L61
         run: |
           timeout 300 bash -c '
             TARGET_HEIGHT=1111
