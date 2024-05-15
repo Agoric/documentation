@@ -161,7 +161,7 @@ export default defineConfig({
 
             {
               text: 'UI Component Library',
-              link: '/guides/UIComponentLibrary/UIComponentsstart',
+              link: '/guides/getting-started/UIComponentsstart',
             },
             {
               text: 'Building Client Dapps',
