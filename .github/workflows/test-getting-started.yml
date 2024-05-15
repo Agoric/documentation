@@ -59,6 +59,4 @@ jobs:
           yarn start:contract
       - name: verify contracts started onchain
         run: |
-          curl http://localhost:1317/agoric/vstorage/data/published.agoricNames.instance | grep sellConcertTickets
-          curl http://localhost:1317/agoric/vstorage/data/published.agoricNames.instance | grep swaparoo
-          curl http://localhost:1317/agoric/vstorage/data/published.agoricNames.instance | grep postalService
+          curl http://localhost:1317/agoric/vstorage/data/published.agoricNames.instance | grep offerUp
