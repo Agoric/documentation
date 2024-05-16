@@ -21,6 +21,7 @@ Before getting started, there are some resources you might want to keep handy in
 - Amount Input
 - Chain Selector
 - Node Selector
+- Leap Elements
 
 ## Connect Wallet
 
