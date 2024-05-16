@@ -1,6 +1,7 @@
+## Welcome the Agoric UI Component Library!
 
 You'll find a collection of ready-to-use or pre-coded user interface elements that help accelerate your Agoric Dapp-building. These pre-designed elements include wallet connect buttons, chain selector, node selector, amount input and wallet provisioning.
-Utilization of these building blocks ensures best practices in design and accessibility.
+Utilization of these building blocks ensures best practices in design and accessibility of your Agoric dapp UI.
 
 ## Installation and Setup
 
@@ -14,10 +15,10 @@ yarn add @agoric/react-components
 
 ## UI Components List
 
-Before getting started, there are some resources you might want to keep handy in case you get stuck, have questions, or are curious about any of the components. Getting in contact with us is easy!
+The following is a list of available React UI components that you can immediately integrate into your dapp UI:
 
 - Connect Wallet
-- Wallet Provisioning
+- Smart Wallet Provisioning
 - Amount Input
 - Chain Selector
 - Node Selector
@@ -45,11 +46,13 @@ Customizable Parameters
 |----------|----------|----------|
 | ClassName   | string   | CSS class name for the underlying `<button>` element   |
 
-## Wallet Provisioning
+## Smart Wallet Provisioning
 
 <img style="border: 2px solid grey"
   alt="Screenshot: Wallet provision"
   src="./assets/walletprovision.png" />
+
+[Smart Wallet Provisioning](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#smart-wallet-provisioning) 
 
 See `AgoricProviderLite` component  -> `provisionNoticeContent` prop:  
 
@@ -63,6 +66,8 @@ Customizable Parameters
 <img style="border: 2px solid grey"
   alt="Screenshot: Amount Input"
   src="./assets/amountinput.png" />
+
+[Amount Input](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#amount-inputs) 
 
 Customizable Parameters
 | Parameter | Type | Description |
@@ -107,3 +112,11 @@ Customizable Parameters
 |----------|----------|----------|
 | isOpen   | boolean | undefined   | Whether or not the modal is open   |
 | onClose   | () => void   | Triggered when the user tries to close the modal   |
+
+## Leap Elements
+
+<img style="border: 2px solid grey"
+  alt="Screenshot: node selector"
+  src="./assets/leapelements.png" />
+
+- [Leap Elements](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#amount-inputs)
