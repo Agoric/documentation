@@ -28,6 +28,10 @@ Before getting started, there are some resources you might want to keep handy in
 - Send us a message on [X](https://twitter.com/agoric)
 - Send an Email to [Developer Relations](mailto://devrel@agoric.com)
 
+## Offer Up Setup - Overview
+
+![An Overview](./assets/getting_started_overview.png)
+
 ## Platform Requirements
 
 Currently Agoric supports macOS and Linux (including [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about)). This tutorial is based on an installation of [Ubuntu 22.04 LTS](https://ubuntu.com/download/desktop). If you're using a different operating system, some variation may be required.
