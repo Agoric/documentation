@@ -27,13 +27,6 @@ jobs:
           cd demo
           yarn start:docker
       - name: Wait for Docker container to be ready 
-      #     cd demo
-      #     yarn install
-      #     yarn start:docker
-      # # - name: yarn docker:logs
-      # #   run: yarn docker:logs
-      #     yarn build
-      # # Borrowed from https://github.com/DCFoundation/cosmos-proposal-builder/blob/main/.github/workflows/pr.yml#L43-L61
         run: |
           cd demo
           timeout 300 bash -c '
