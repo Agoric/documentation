@@ -25,19 +25,26 @@ Putting it all together:
 
 ## Using, testing a contract
 
-Let's use some tests to explore how a contract is used.
-
-Agoric contracts are typically tested
-using the [ava](https://github.com/avajs/ava) framework.
-They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment:
+Before we deploy or start our contract, it is usually a good idea to run a few tests that validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment as below:
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-imports
 
-_We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._
+We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Also note the `eslint-disable-next-line` command in the comment on line 3; this is needed in order to suppress an error that arises due to a known issue in `ava`.
 
-A test that the `greet` method works as expected looks like:
+Following these `import` statements, we write a simple test that validates that the `greet` method works as expected as below:
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test1
+
+Let's save this code in a file named `test-hello.js` and run the following command to execute the test:
+
+```sh
+npx ava --match="contract greets by name"
+```
+You should see the following output towards the end:
+```
+1 test passed
+```
+Congratulations! You have written and tested your first smart contract. Our next goal is to deploy this contract on the local blockchain and make it more interesting by adding some business logic to it.
 
 See also:
 
