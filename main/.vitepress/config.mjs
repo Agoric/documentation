@@ -130,17 +130,20 @@ export default defineConfig({
               items: [
                 {
                   text: 'Takeaway 1: Starting a Local Chain',
-                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
+                  link:
+                    '/guides/getting-started/explainer-how-to-start-a-local-chain',
                 },
                 {
                   text: 'Takeaway 2: Deploying a Smart Contract',
-                  link: '/guides/getting-started/explainer-deploying-a-smart-contact',
+                  link:
+                    '/guides/getting-started/explainer-deploying-a-smart-contact',
                 },
                 {
                   text: 'Takeaway 3: Making an Offer',
-                  link: '/guides/getting-started/explainer-how-to-make-an-offer',
+                  link:
+                    '/guides/getting-started/explainer-how-to-make-an-offer',
                 },
-              ],             
+              ],
             },
             {
               text: 'Smart Contract Basics',
@@ -435,24 +438,59 @@ export default defineConfig({
             {
               text: 'dapp-agoric-basics',
               link: '/guides/getting-started/tutorial-dapp-agoric-basics',
+              items: [
+                {
+                  text: 'Takeaway 1: Sell Concert Tickets Contract Overview',
+                  link:
+                    '/guides/getting-started/sell-concert-tickets-contract-explainer',
+                },
+
+                {
+                  text: 'Takeaway 2: Swaparoo Contract Overview',
+                  link:
+                    '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
+                },
+
+                {
+                  text:
+                    'Takeaway 3: Sending Invitation Payments using an Address',
+                  link:
+                    '/guides/getting-started/swaparoo-making-a-payment-explainer',
+                },
+              ],
             },
             {
-              text: 'Takeaway 1: Sell Concert Tickets Contract Overview',
-              link: '/guides/getting-started/sell-concert-tickets-contract-explainer',
-            },
-
-
-            {
-              text: 'Takeaway 2: Swaparoo Contract Overview',
-              link: '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
-            },
-
-            {
-              text: 'Takeaway 3: Sending Invitation Payments using an Address',
-              link: '/guides/getting-started/swaparoo-making-a-payment-explainer',
+              text: 'UI Tutorial',
+              link: '/guides/getting-started/ui-tutorial/intro',
+              items: [
+                {
+                  text: '1. Starting',
+                  link: '/guides/getting-started/ui-tutorial/starting',
+                },
+                {
+                  text: '2. Agoric Provider',
+                  link: '/guides/getting-started/ui-tutorial/agoric-provider',
+                },
+                {
+                  text: '3. Connect Wallet',
+                  link: '/guides/getting-started/ui-tutorial/connect-wallet',
+                },
+                {
+                  text: '4. Querying Vstorage',
+                  link: '/guides/getting-started/ui-tutorial/querying-vstorage',
+                },
+                {
+                  text: '5. Making an Offer',
+                  link: '/guides/getting-started/ui-tutorial/making-an-offer',
+                },
+                {
+                  text: '6. Conclusion',
+                  link: '/guides/getting-started/ui-tutorial/conclusion',
+                },
+              ],
             },
           ],
-        },        
+        },
         {
           text: 'Support',
           collapsed: true,

@@ -5,8 +5,4 @@ to act as a checkpoint.
 
 ## Prerequisites
 
-See [Getting Started](../getting-started/index.md) first to get your environment, including a local chain, up and running. This tutorial will walk through, from start to finish, how to build a UI for the "Offer Up" dapp as seen in that example.
-
-## Next
-
-[Starting Out](./starting/index.md)
+See [Getting Started](../../getting-started/index.md) first to get your environment, including a local chain, up and running. This tutorial will walk through, from start to finish, how to build a UI for the "Offer Up" dapp as seen in that example.

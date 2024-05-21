@@ -5,7 +5,7 @@ The `AgoricProvider` provides a few things in the context of your app, accessibl
 - Wallet connection support for numerous wallets (using cosmos-kit).
 - Access to the user's purse balances, offers, and other smart wallet state.
 - Callbacks for making offers and signing transactions.
-- Access to a `chainStorageWatcher` for reading contract state.
+- Access to a `chainStorageWatcher` for reading on-chain state from vstorage.
 
 This makes it easy to handle all the platform-specific implementation details, so you can focus on the business logic and user experience when building your UIs.
 
@@ -86,7 +86,3 @@ Note: If you see a type error on the `wallets` prop, this is likely because `@ag
 Try `yarn dev` after making these changes to make sure your app builds again. If you're having trouble, check
 out the `checkpoint-2` branch in the example repo. As you may notice, we just added a "Connect Wallet"
 button to the UI. In the next section, we'll test it out, and learn how to access the user's account and purses.
-
-## Next
-
-[Connect Wallet](../connect-wallet/index.md)

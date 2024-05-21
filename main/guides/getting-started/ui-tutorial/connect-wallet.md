@@ -133,7 +133,3 @@ interact with it.
 
 As usual, if you have any difficulties along the way, you can check out the `checkpoint-3`
 branch in the example repo.
-
-### Next
-
-[Querying Contract Data](../querying-contract-data/index.md)

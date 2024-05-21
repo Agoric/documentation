@@ -5,7 +5,7 @@ Throughout this tutorial, you've accomplished all the basics of building an Agor
 - Scaffolding a new React App.
 - Setting up `AgoricProvider` and connecting to a wallet.
 - Reading and rendering purse balances.
-- Reading contract data with `chainStorageWatcher`.
+- Reading vstorage data with `chainStorageWatcher`.
 - Making an offer to exchange some on-chain assets.
 
 With these basics in place, the world of Agoric UI development has opened up to you. To expand on your

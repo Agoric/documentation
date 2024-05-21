@@ -1,4 +1,4 @@
-## Querying Contract Data
+## Querying Vstorage
 
 A fundamental part of building a Dapp UI is interacting with smart contracts. How can a UI
 read data from a smart contract on the Agoric blockchain? This section will show you how,
@@ -17,7 +17,7 @@ Example:
 const { chainStorageWatcher } = useAgoric();
 ```
 
-### Finding the Contract on Chain
+### Querying Vstorage
 
 In order to submit an offer to a contract, we need to look it up on-chain first.
 We'll find it in vstorage under `published.agoricNames.instance` (see: [vstorage reference](../../../reference/vstorage-ref.md)).
@@ -115,7 +115,7 @@ As you can see, this hook makes use of `chainStorageWatcher` to watch two vstora
 The `chainStorageWatcher` handles all the vstorage queries and marshalling for you, so
 you get convenient access to the data from your application. It automatically polls
 and emits updates when the data on-chain changes. For more details about vstorage, see
-[Querying VStorage](../../getting-started/contract-rpc.md#querying-vstorage).
+[Querying VStorage](../../getting-started/contract-rpc.md#querying-vstorage) and [Publishing to Chain Storage](../../zoe/pub-to-storage.md)
 
 Next, go ahead and add this hook to the `Trade` component you made before this:
 
@@ -137,7 +137,3 @@ export default Trade;
 You should now see the `brands` and `instances` being logged to the console. See if you
 can spot the "offerUp" instance, and the "Item" brand. These were added when you deployed
 the contract to the chain, and we'll use them to specify our offer in the next section.
-
-### Next
-
-[Making an Offer](../making-an-offer/index.md)

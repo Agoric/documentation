@@ -62,7 +62,3 @@ import './installSesLockdown.ts';
 ```
 
 Restart your app and it should load as before without errors. Now, the app is running with Hardened JS enabled and we're ready to continue.
-
-## Next
-
-[Setting Up the Agoric Provider](../agoric-provider/index.md)
