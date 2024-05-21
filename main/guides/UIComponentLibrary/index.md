@@ -1,4 +1,4 @@
-## Welcome To Agoric's UI Component Library
+# Welcome To Agoric's UI Component Library
 
 You'll find a collection of ready-to-use or pre-coded user interface elements that help accelerate your Agoric Dapp-building. These pre-designed elements include wallet connect buttons, chain selector, node selector, amount input, smart wallet provisioning and leap elements.
 Utilization of these building blocks ensures best practices in design and accessibility.
