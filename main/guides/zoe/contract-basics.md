@@ -23,29 +23,30 @@ Putting it all together:
 
 <<< @/../snippets/zoe/src/01-hello.js#contract
 
+Let us save this code to a file named `01-hello.js` inside `src` directory. 
 ## Using, testing a contract
 
 Before we deploy or start our contract, it is usually a good idea to run a few tests that validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment as below:
 
-<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-imports
+<<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-imports
 
 We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Also note the `eslint-disable-next-line` command in the comment on line 3; this is needed in order to suppress an error that arises due to a known issue in `ava`.
 
 Following these `import` statements, we write a simple test that validates that the `greet` method works as expected as below:
 
-<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test1
+<<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test1
 
 
 Putting it all together:
 
 <<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-01-hello
 
-Let's save this code in a file named `test-hello.js` and run the following command to execute the test:
+Let's save this code in a file named `test-01-hello.js` in a `test` directory. Both `src` and `test` directories should lie in the same `contract` directory. Let us run the following command to execute the test:
 
 ```sh
 npx ava --match="contract greets by name"
 ```
-You should see the following output towards the end:
+You should see the following line towards the end of the output:
 ```
 1 test passed
 ```
