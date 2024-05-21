@@ -40,7 +40,7 @@ These React UI components can be immediately used to streamline your Agoric Dapp
 
 - [Connecting with Wallet Connect Button](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#integrating)
 - [Connecting without Wallet Connect Button](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#connecting-without-connectwalletbutton) 
-- [Using a Custom Chain Provider](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#connecting-without-connectwalletbutton)
+- [Using a Custom Chain Provider](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#using-a-custom-chainprovider)
 
 Customizable Parameters
 | Parameter | Type | Description |
