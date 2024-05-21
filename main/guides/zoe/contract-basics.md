@@ -35,6 +35,11 @@ Following these `import` statements, we write a simple test that validates that 
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test1
 
+
+Putting it all together:
+
+<<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-01-hello
+
 Let's save this code in a file named `test-hello.js` and run the following command to execute the test:
 
 ```sh
