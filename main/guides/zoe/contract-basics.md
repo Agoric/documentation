@@ -1,25 +1,22 @@
 # Smart Contract Basics
 
 Before we look at how to make a contract such as the one in [the
-basic dapp](../getting-started/) in the previous section, let's cover some basics.
+basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greetings message. We will simply call it _greetings smart contract_. 
 
-A contract is defined by a JavaScript module that exports a `start` function
-that implements the contract's API.
+A contract is defined by a JavaScript module that exports a `start` function. For our greetings smart contract, the declaration of `start` function looks like this:
 
 <<< @/../snippets/zoe/src/01-hello.js#start
 
-Let's start with a contract with a simple `greet` function:
+Apart from `start`, we can have extra functions in our contract. These functions may be defined outside or within the `start` function depending on whether they need access to the variables defined in the `start` function.  For the greetings smart contract, we will have a simple `greet` function (outside `start`) that takes a string as a parameter (for example, name of the person calling the function) and returns a customized greeting message.
 
 <<< @/../snippets/zoe/src/01-hello.js#greet
 
-The `start` function can expose the `greet` function
-as part of the contract API by making it
-a method of the contract's `publicFacet`:
+The `greet` function, along with any other function besides `start`, must be exposed through the `start` function before it can be called. This is accomplished using a special object called `publicFacet`, which is returned by the `start` function. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
 
 <<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
-We mark it `Far(...)` to allow callers to use it from outside the contract
-and give it a suggestive interface name for debugging.
+We wrap the reference to `greet` function in a `Far(...)` function call. This will allow callers to use it from outside the contract.
+We also give it a suggestive interface name `Hello` for debugging.
 _We'll discuss [Far in more detail](../js-programming/far) later._
 
 Putting it all together:
