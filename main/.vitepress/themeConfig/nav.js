@@ -18,7 +18,7 @@ export const nav = [
       },
       {
         text: 'UI Component Library',
-        link: '/guides/UIComponentLibrary/UIComponentsstart',
+        link: '/guides/UIComponentLibrary/',
       },
       {
         text: 'Building Client Dapps',
