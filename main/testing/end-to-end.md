@@ -6,7 +6,7 @@ sidebar: auto
 
 ## Overview
 
-[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework specifically designed for Decentralized Applications (DApps). Built on [Cypress.io](https://www.cypress.io/), it provides a robust and comprehensive testing environment. With `@agoric/synpress`, automating and testing interactions with the Keplr wallet becomes straightforward and efficient.
+[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework specifically designed for Decentralized Applications (DApps). Built on [Cypress.io](https://www.cypress.io/), it provides a fully-featured testing environment. `@agoric/synpress` makes it simple to automate and test interactions with the Keplr wallet.
 
 ## Getting Started
 
