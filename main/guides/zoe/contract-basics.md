@@ -7,11 +7,11 @@ A contract is defined by a JavaScript module that exports a `start` function. Fo
 
 <<< @/../snippets/zoe/src/01-hello.js#start
 
-Apart from `start`, we can have extra functions in our contract. These functions may be defined outside or within the `start` function depending on whether they need access to the variables defined in the `start` function.  For the greetings smart contract, we will have a simple `greet` function (outside `start`) that takes a string as a parameter (for example, name of the person calling the function) and returns a customized greeting message.
+For the greetings smart contract, we will have a simple `greet` function apart from `start` function. The `greet` function takes a string as a parameter (for example, name of the person calling the function) and returns a customized greeting message.
 
 <<< @/../snippets/zoe/src/01-hello.js#greet
 
-The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The publicFacet is returned by the start function, which initializes the contract. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
+The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The `publicFacet` is returned by the `start` function, which initializes the contract. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
 
 <<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
