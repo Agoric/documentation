@@ -11,11 +11,11 @@ Apart from `start`, we can have extra functions in our contract. These functions
 
 <<< @/../snippets/zoe/src/01-hello.js#greet
 
-The `greet` function, along with any other function besides `start`, must be exposed through the `start` function before it can be called. This is accomplished using a special object called `publicFacet`, which is returned by the `start` function. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
+The `greet` function, along with any other function besides `start`, must be exposed before it can be called. This is accomplished using a special object called `publicFacet`, which is returned by the `start` function. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
 
 <<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
-We wrap the reference to `greet` function in a `Far(...)` function call. This will allow callers to use it from outside the contract.
+We wrap the `greet` function in a `Far(...)` call to safely expose it as a remote object, accessible from outside the contract.
 We also give it a suggestive interface name `Hello` for debugging.
 _We'll discuss [Far in more detail](../js-programming/far) later._
 
@@ -26,7 +26,7 @@ Putting it all together:
 Let us save this code to a file named `01-hello.js` inside `src` directory. 
 ## Using, testing a contract
 
-Before we deploy or start our contract, it is usually a good idea to run a few tests that validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. They start with `@endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment as below:
+Before we deploy or start our contract, it is usually a good idea to run a few tests to validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment as below:
 
 <<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-imports
 
@@ -50,7 +50,7 @@ You should see the following line towards the end of the output:
 ```
 1 test passed
 ```
-Congratulations! You have written and tested your first smart contract. Our next goal is to deploy this contract on the local blockchain and make it more interesting by adding some business logic to it.
+Congratulations! You have written and tested your first smart contract. Our next goal is to deploy this contract on the local blockchain and make it more interesting by adding some business logic.
 
 See also:
 
