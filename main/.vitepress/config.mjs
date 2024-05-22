@@ -151,6 +151,18 @@ export default defineConfig({
               collapsed: true,
               items: [
                 {
+                  text: 'Greetings Smart Contract',
+                  link: '/guides/zoe/contract-hello',
+                },
+                {
+                  text: 'State Smart Contract',
+                  link: '/guides/zoe/contract-state',
+                },
+                {
+                  text: 'Access Control Smart Contract',
+                  link: '/guides/zoe/contract-access-control',
+                },
+                {
                   text: 'Complete Contract Walk-Through',
                   link: '/guides/zoe/contract-walkthru',
                 },
