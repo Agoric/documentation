@@ -429,6 +429,11 @@ export default defineConfig({
               ariaLabel: 'Papers Page Link',
               link: 'https://agoric.com/papers/',
             },
+            {
+              text: 'Testing',
+              ariaLabel: 'Testing',
+              link: '/testing/end-to-end',
+            },
           ],
         },
         {

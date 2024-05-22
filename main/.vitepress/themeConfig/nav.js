@@ -95,6 +95,11 @@ export const nav = [
         link: '/glossary/',
       },
       {
+        text: 'Testing',
+        ariaLabel: 'Testing',
+        link: '/testing/end-to-end',
+      },
+      {
         text: 'Papers',
         ariaLabel: 'Papers Page Link',
         link: 'https://agoric.com/papers/',
