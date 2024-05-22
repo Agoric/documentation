@@ -1,6 +1,6 @@
 # Understanding the Agoric Postal Service Contract
 
-This contract is implemented using the Zoe Contract Facet (ZCF) and demonstrates how to create and manage a basic postal service within the blockchain environment. Let's break down the main components and functionalities of this contract.
+This contract is implemented using the Zoe Contract Facet (ZCF) and demonstrates how to create and manage a basic postal service. Let's break down the main components and functionalities of this contract.
 
 ## Contract Structure and Components
 ## 1. Contract Setup:
