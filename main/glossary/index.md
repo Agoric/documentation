@@ -583,6 +583,8 @@ they provide terms applicable only to that instance. For some instances of
 the auction, they want the minimum bid set at $1000. At other instances, they'd like
 it set at $10. They can specify the instance's minimum bid amount in its terms.
 
+For example, see [starting the offer-up contract](/guides/zoe/contract-walkthru.html#starting-a-contract-instance).
+
 ## Vat
 
 A vat is a unit of isolation.
