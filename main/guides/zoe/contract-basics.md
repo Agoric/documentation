@@ -1,6 +1,6 @@
 # Smart Contract Basics
 
-his guide is designed to help developers understand how to write smart contracts efficiently and securely. Here, you will find detailed examples that demonstrate different functionalities and use-cases within the context of smart contracts starting from the very basics.
+This guide is designed to help developers understand how to write smart contracts efficiently and securely. Here, you will find detailed examples that demonstrate different functionalities and use-cases within the context of smart contracts starting from the very basics.
 
 ## Examples
 
