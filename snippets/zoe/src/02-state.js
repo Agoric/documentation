@@ -1,3 +1,4 @@
+// #region state-contract
 import { Far } from '@endo/far';
 
 // #region startfn
@@ -23,3 +24,4 @@ export const start = () => {
   };
 };
 // #endregion startfn
+// #endregion state-contract
