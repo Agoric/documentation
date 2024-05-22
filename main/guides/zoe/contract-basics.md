@@ -1,90 +1,25 @@
 # Smart Contract Basics
 
-Before we look at how to make a contract such as the one in [the
-basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greetings message. We will simply call it _hello-world smart contract_. 
+his guide is designed to help developers understand how to write smart contracts efficiently and securely. Here, you will find detailed examples that demonstrate different functionalities and use-cases within the context of smart contracts starting from the very basics.
 
-A contract is defined by a JavaScript module that exports a `start` function. For our hello-world smart contract, the declaration of `start` function looks like this:
+## Examples
 
-<<< @/../snippets/zoe/src/01-hello.js#start
+We provide three core examples to illustrate how to implement various smart contract functionalities:
 
-For the hello-world smart contract, we will have a simple `greet` function apart from `start` function. The `greet` function takes a string as a parameter (for example, name of the person calling the function) and returns a customized greeting message.
+### 1. Greetings Contract
+The **Greetings Contract** demonstrates how to create a simple contract that greets the caller. This example is perfect for understanding the basic structure and syntax of smart contracts.
 
-<<< @/../snippets/zoe/src/01-hello.js#greet
+### 2. State Contract
+The **State Contract** shows how to maintain a state or a variable within a smart contract. This is useful for contracts that need to store data or state across transactions.
 
-The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The `start` function returns an object with a `publicFacet` property. In the hello-world contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
+### 3. Access-Control Contract
+The **Access-Control Contract** provides an example of how to implement access control, ensuring that only authorized users can call certain functions within the smart contract.
 
-<<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
-We wrap the value of the `publicFacet` property in a `Far(...)` call to safely expose it as a remote object, accessible from outside the contract. This also gives it a suggestive interface name `Hello` for debugging.
-_We'll discuss [Far in more detail](../js-programming/far) later._
-
-Putting it all together:
-
-<<< @/../snippets/zoe/src/01-hello.js#contract
-
-Let us save this code to a file named `01-hello.js` inside `src` directory. 
-## Using, testing a contract
-
-Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment. We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Following these `import` statements, we write a simple test that validates that the `greet` method works as expected.
-
-Putting it all together:
-
-<<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-01-hello
-
-Let's save this code in a file named `test-01-hello.js` in a `test` directory. Both `src` and `test` directories should lie in the same `contract` directory. Let us run the following command to execute the test:
-
-```sh
-yarn ava --match="contract greets by name"
-```
-You should see the following line towards the end of the output:
-```
-1 test passed
-```
-Congratulations! You have written and tested your first smart contract. Our next goal is to learn about the state of a smart contract.
+Let us get started!
 
 See also:
 
 - [\$LOCKDOWN_OPTIONS for better diagnositcs](https://github.com/Agoric/agoric-sdk/wiki/Developing-with-better-error-diagnostics)
 - [\$DEBUG](https://github.com/Agoric/agoric-sdk/blob/master/docs/env.md#debug)
 - [\$TRACK_TURNS](https://github.com/Agoric/agoric-sdk/blob/master/docs/env.md#track_turns)
-
-## State
-
-Contracts can use ordinary variables and data structures for state.
-
-<<< @/../snippets/zoe/src/02-state.js#startfn
-
-Using `makeRoom` changes the results of the following call to `getRoomCount`:
-
-<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-state
-
-::: tip Heap state is persistent
-
-Ordinary heap state persists between contract invocations.
-
-We'll discuss more explicit state management for
-large numbers of objects (_virtual objects_) and
-objects that last across upgrades ([durable objects](./contract-upgrade#durability)) later.
-
-:::
-
-## Access Control with Objects
-
-We can limit the `publicFacet` API to read-only by omitting the `set()` method.
-
-The `creatorFacet` is provided only to the caller who creates the contract instance.
-
-<<< @/../snippets/zoe/src/03-access.js
-
-Trying to `set` using the `publicFacet` throws, but
-using the `creatorFacet` works:
-
-<<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-access
-
-Note that the `set()` method has no access check inside it.
-Access control is based on separation of powers between
-the `publicFacet`, which is expected to be shared widely,
-and the `creatorFacet`, which is closely held.
-_We'll discuss this [object capabilities](../js-programming/hardened-js#object-capabilities-ocaps) approach more later._
-
-Next, let's look at minting and trading assets with [Zoe](../zoe/).
