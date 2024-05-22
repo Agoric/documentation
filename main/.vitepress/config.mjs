@@ -446,10 +446,15 @@ export default defineConfig({
               text: 'Takeaway 2: Swaparoo Contract Overview',
               link: '/guides/getting-started/swaparoo-how-to-swap-assets-explainer',
             },
-
+            
             {
               text: 'Takeaway 3: Sending Invitation Payments using an Address',
               link: '/guides/getting-started/swaparoo-making-a-payment-explainer',
+            },
+            
+            {
+              text: 'Takeaway 4: Postal Service Contract Overview',
+              link: '/guides/getting-started/postal-service-contract-explainer',
             },
           ],
         },        
