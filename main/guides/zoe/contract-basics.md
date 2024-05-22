@@ -11,7 +11,7 @@ Apart from `start`, we can have extra functions in our contract. These functions
 
 <<< @/../snippets/zoe/src/01-hello.js#greet
 
-The `greet` function, along with any other function besides `start`, must be exposed before it can be called. This is accomplished using a special object called `publicFacet`, which is returned by the `start` function. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
+The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The publicFacet is returned by the start function, which initializes the contract. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
 
 <<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
@@ -30,7 +30,7 @@ Before we deploy or start our contract, it is usually a good idea to run a few t
 
 <<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-imports
 
-We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Also note the `eslint-disable-next-line` command in the comment on line 3; this is needed in order to suppress an error that arises due to a known issue in `ava`.
+We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Also note the `eslint-disable-next-line` comment on line 3; this is needed in order to suppress an error that arises due to a known issue in `ava`.
 
 Following these `import` statements, we write a simple test that validates that the `greet` method works as expected as below:
 
