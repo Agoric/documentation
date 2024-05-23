@@ -10,11 +10,11 @@ Anyone can add new rooms by making a call to `makeRoom` which is defined as:
 
 <<< @/../snippets/zoe/src/02-state.js#makeRoom
 
-Using `makeRoom` changes the results of the following call to `getRoomCount` which returns the number of rooms:
+Using `makeRoom` creates a new room, exposing these functions to be invoked on the newly added room, `getId`, `incr`, and `decr`. As you can see this pattern follows the `Object Capability model`, as whoever receives the room by invoking `makeRoom`, will now have access to these three methods. Following this, `rooms.set(id, room)` adds the newly created room, into the contract's map state variable. A call to `getRoomCount` function returns the number of rooms in this map.
 
 <<< @/../snippets/zoe/src/02-state.js#getRoomCount
 
-Putt it all together:
+Putting it all together:
 
 <<< @/../snippets/zoe/src/02-state.js#state-contract
 
