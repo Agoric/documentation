@@ -11,7 +11,7 @@ For the greetings smart contract, we will have a simple `greet` function apart f
 
 <<< @/../snippets/zoe/src/01-hello.js#greet
 
-The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The `publicFacet` is returned by the `start` function, which initializes the contract. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
+The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The `start` function returns an object with a `publicFacet` property. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
 
 <<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
@@ -30,7 +30,7 @@ Before we deploy or start our contract, it is usually a good idea to run a few t
 
 <<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-imports
 
-We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Also note the `eslint-disable-next-line` comment on line 3; this is needed in order to suppress an error that arises due to a known issue in `ava`.
+We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._
 
 Following these `import` statements, we write a simple test that validates that the `greet` method works as expected as below:
 
@@ -44,13 +44,13 @@ Putting it all together:
 Let's save this code in a file named `test-01-hello.js` in a `test` directory. Both `src` and `test` directories should lie in the same `contract` directory. Let us run the following command to execute the test:
 
 ```sh
-npx ava --match="contract greets by name"
+ava --match="contract greets by name"
 ```
 You should see the following line towards the end of the output:
 ```
 1 test passed
 ```
-Congratulations! You have written and tested your first smart contract. Our next goal is to deploy this contract on the local blockchain and make it more interesting by adding some business logic.
+Congratulations! You have written and tested your first smart contract. Our next goal is to learn about the state of a smart contract.
 
 See also:
 
