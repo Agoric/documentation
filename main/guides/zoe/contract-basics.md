@@ -26,16 +26,7 @@ Putting it all together:
 Let us save this code to a file named `01-hello.js` inside `src` directory. 
 ## Using, testing a contract
 
-Before we deploy or start our contract, it is usually a good idea to run a few tests to validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment as below:
-
-<<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test-imports
-
-We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._
-
-Following these `import` statements, we write a simple test that validates that the `greet` method works as expected as below:
-
-<<< @/../snippets/zoe/contracts/test-zoe-01-hello.js#test1
-
+Before we deploy or start our contract, it is usually a good idea to run a few tests to validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment. We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Following these `import` statements, we write a simple test that validates that the `greet` method works as expected.
 
 Putting it all together:
 
