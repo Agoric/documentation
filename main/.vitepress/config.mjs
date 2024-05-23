@@ -461,7 +461,7 @@ export default defineConfig({
             },
             {
               text: 'UI Tutorial',
-              link: '/guides/getting-started/ui-tutorial/intro',
+              link: '/guides/getting-started/ui-tutorial/',
               items: [
                 {
                   text: '1. Starting',
