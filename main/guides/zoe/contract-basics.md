@@ -1,22 +1,21 @@
 # Smart Contract Basics
 
 Before we look at how to make a contract such as the one in [the
-basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greetings message. We will simply call it _greetings smart contract_. 
+basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greetings message. We will simply call it _hello-world smart contract_. 
 
-A contract is defined by a JavaScript module that exports a `start` function. For our greetings smart contract, the declaration of `start` function looks like this:
+A contract is defined by a JavaScript module that exports a `start` function. For our hello-world smart contract, the declaration of `start` function looks like this:
 
 <<< @/../snippets/zoe/src/01-hello.js#start
 
-For the greetings smart contract, we will have a simple `greet` function apart from `start` function. The `greet` function takes a string as a parameter (for example, name of the person calling the function) and returns a customized greeting message.
+For the hello-world smart contract, we will have a simple `greet` function apart from `start` function. The `greet` function takes a string as a parameter (for example, name of the person calling the function) and returns a customized greeting message.
 
 <<< @/../snippets/zoe/src/01-hello.js#greet
 
-The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The `start` function returns an object with a `publicFacet` property. In the greeting contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
+The `greet` function, along with any other public function, must be made accessible through the `publicFacet` of the contract. The `start` function returns an object with a `publicFacet` property. In the hello-world contract, the `start` function exposes the `greet` function by defining it as a method of the contract's `publicFacet`, as shown below:
 
 <<< @/../snippets/zoe/src/01-hello.js#publicFacet
 
-We wrap the `greet` function in a `Far(...)` call to safely expose it as a remote object, accessible from outside the contract.
-We also give it a suggestive interface name `Hello` for debugging.
+We wrap the value of the `publicFacet` property in a `Far(...)` call to safely expose it as a remote object, accessible from outside the contract. This also gives it a suggestive interface name `Hello` for debugging.
 _We'll discuss [Far in more detail](../js-programming/far) later._
 
 Putting it all together:
@@ -26,7 +25,7 @@ Putting it all together:
 Let us save this code to a file named `01-hello.js` inside `src` directory. 
 ## Using, testing a contract
 
-Before we deploy or start our contract, it is usually a good idea to run a few tests to validate its correctness. Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment. We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Following these `import` statements, we write a simple test that validates that the `greet` method works as expected.
+Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment. We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Following these `import` statements, we write a simple test that validates that the `greet` method works as expected.
 
 Putting it all together:
 
