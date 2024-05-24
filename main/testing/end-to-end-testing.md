@@ -8,18 +8,14 @@ sidebar: auto
 
 [`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework specifically designed for DApps. Built on [Cypress.io](https://www.cypress.io/), it provides a fully-featured testing environment. Using `@agoric/synpress`, developers can automate and test interactions with the Keplr wallet.
 
-`@agoric/synpress` is a fork of the [`synthetixio/synpress`](https://github.com/Synthetixio/synpress) framework, which is a e2e testing framework written for the Metamask wallet. `@agoric/synpress` heavily modifies it in order to provide a robust testing framework for the Keplr wallet and Cosmos SDK.
 
+### Background
+`@agoric/synpress` is a modified fork of [`synthetixio/synpress`](https://github.com/Synthetixio/synpress), which was originally designed for the Metamask wallet. These modifications make it a robust framework tailored for the Keplr wallet and Cosmos SDK.
 ## Getting Started
 
 ### Installation:
-`@agoric/synpress` can be installed as a dev dependancy to any node project using the following command
+`@agoric/synpress` can be installed using the following command:
 ```bash
-# with npm
-npm install --save-dev @agoric/synpress
-# with pnpm
-pnpm add --save-dev @agoric/synpress
-# with yarn
 yarn add -D @agoric/synpress
 ```
 
@@ -43,43 +39,39 @@ project_dir
 import '@agoric/synpress/support/index';
 ```
 
-2. Create a test file. This is a small example that shows some of the basic commands that are provided by `@agoric/synpress`
+2. Create a test file to utilize some of the basic commands provided by @agoric/synpress. Here is a small example:
 ```js
 describe('Dapp tests', () => {
 
-	it(`should setup a Keplr wallet`, () => {
-      cy.setupWallet({
-        secretWords: "pineapple cow fat water ....."
-      });
-      cy.visit('/');
+  it(`should setup a Keplr wallet`, () => {
+    cy.setupWallet({
+      secretWords: "pineapple cow fat water ....."
     });
+    cy.visit('/');
+  });
     
-	it(`should accept connection with wallet`, () => {
-      cy.contains('Connect Wallet').click();
-      cy.acceptAccess();
-    });
+  it(`should accept connection with wallet`, () => {
+    cy.contains('Connect Wallet').click();
+    cy.acceptAccess();
+  });
     
-    it(`should confirm make an offer transaction`, () => {
-      cy.contains('Make an Offer').click();
-      cy.confirmTransaction();
-    });
+  it(`should confirm make an offer transaction`, () => {
+    cy.contains('Make an Offer').click();
+    cy.confirmTransaction();
+  });
+
 });
 
 ```
 
-3. You're done! you can now trigger the tests by running:
+3. You can now trigger the tests by running this command:
 
 ```bash
 EXTENSION=keplr synpress run
 ```
 
 ### Custom Configuration
-Optionally, you can create a custom config file for your synpress setup. Since `@agoric/synpress` is based on Cypress, it follows the same config file format.
- `@agoric/synpress` aleardy has some
-   configurations set up in this
-   [file](https://github.com/agoric-labs/synpress/blob/master/synpress.config.js).
-   To override this and add your custom config, you can create your own config
-   file `synpress.config.js` in `/project_dir/tests/e2e`
+You can optionally create a custom configuration file for your Synpress setup. Since `@agoric/synpress` is based on Cypress, it follows the same configuration [file](https://github.com/agoric-labs/synpress/blob/master/synpress.config.js) format. To override the default settings and add your custom configurations, create a file named synpress.config.js in /project_dir/tests/e2e with the following content:
 
 ```js
 const baseConfig = require('@agoric/synpress/synpress.config');
@@ -94,7 +86,7 @@ module.exports = defineConfig({
 });
 ```
 
-use this config by passing the `--configFile` flag to synpress
+Use this configuration by passing the `--configFile` flag to Synpress.
 
 ```bash
 EXTENSION=keplr synpress run --configFile=test/e2e/synpress.config.js
@@ -102,7 +94,7 @@ EXTENSION=keplr synpress run --configFile=test/e2e/synpress.config.js
 
 ### Projects Using `@agoric/synpress`
 
-Here are some examples of projects utilizing `@agoric/synpress` for their e2e tests, showcasing the framework in action and demonstrating its capabilities:
+Here are some examples of projects utilizing `@agoric/synpress` for their e2e tests. These examples showcase the framework in action and demonstrate its capabilities:
 
-- [dapp-psm](https://github.com/Agoric/dapp-psm/tree/main/tests/e2e)
-- [wallet-app](https://github.com/frazarshad/wallet-app/tree/main/test/e2e)
+- [PSM dApp E2E Tests](https://github.com/Agoric/dapp-psm/tree/main/tests/e2e)
+- [Wallet dApp E2E Tests](https://github.com/frazarshad/wallet-app/tree/main/test/e2e)

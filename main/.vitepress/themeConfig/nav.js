@@ -54,7 +54,7 @@ export const nav = [
         link: '/guides/zoe/contracts/',
       },
       {
-        text: 'End to End Testing',
+        text: 'End-to-End Testing',
         ariaLabel: 'Testing',
         link: '/testing/end-to-end-testing',
       },
