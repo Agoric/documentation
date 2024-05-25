@@ -25,7 +25,7 @@ Putting it all together:
 Let us save this code to a file named `01-hello.js` inside `src` directory. 
 ## Using, testing a contract
 
-Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment. We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Following these `import` statements, we write a simple test that validates that the `greet` method works as expected.
+Agoric contracts are typically tested using the [ava](https://github.com/avajs/ava) framework -  follow the instructions there to install `ava`. The test file begins with an `import @endo/init` to establish a [Hardened JavaScript](../js-programming/hardened-js) environment. We also import `E()` in order to make asynchronous method calls and `test` function from `ava`. _We'll talk more about [using `E()` for async method calls](../js-programming/eventual-send) later._ Following these `import` statements, we write a simple test that validates that the `greet` method works as expected.
 
 Putting it all together:
 
