@@ -143,3 +143,112 @@ Some examples projects utilizing `@agoric/synpress` for e2e tests:
 
 - [PSM dApp E2E Tests](https://github.com/Agoric/dapp-psm/tree/main/tests/e2e)
 - [Wallet dApp E2E Tests](https://github.com/frazarshad/wallet-app/tree/main/test/e2e)
+
+## agoric/synpress Commands
+
+`@agoric/synpress` provides a the following list of commands that can be used to interact with Keplr wallet in variety of ways
+
+## Usage of commands
+
+All commands for @agoric/synpress are cypress commands so they can be used like this:
+
+```js
+it('My test', () => {
+  cy.myCommand(...inputArgs).then(output => {});
+});
+```
+
+## `setupWallet`
+
+Sets up a new Keplr wallet with the specified parameters.
+
+**Arguments:**
+
+The command takes a single object as an argument with the following keys:
+
+- `secretWords` _(string, optional)_: The secret words for the wallet.
+- `privateKey` _(string, optional)_: The private key for the wallet.
+- `password` _(string, optional)_: The password for the wallet (default is 'Test1234').
+- `newAccount` _(boolean, optional)_: Whether to create a new account (default is false).
+- `walletName` _(string, optional)_: The name of the wallet (default is 'My Wallet').
+- `selectedChains` _(array, optional)_: The chains to select (default is an empty array).
+- `createNewWallet` _(boolean, optional)_: Whether to create a new wallet (default is false).
+
+## `acceptAccess`
+
+Accepts access for the Keplr wallet.
+
+## `rejectAccess`
+
+Rejects access for the Keplr wallet.
+
+## `confirmTransaction`
+
+Confirms a transaction in the Keplr wallet.
+
+## `rejectTransaction`
+
+Rejects a transaction in the Keplr wallet.
+
+## `isExtensionWindowActive`
+
+Checks if the Keplr extension window is active.
+
+## `switchToExtensionWindow`
+
+Switches to the Keplr popup window opened by the Keplr extension.
+
+## `disconnectWalletFromDapp`
+
+Disconnects the Keplr wallet from all DApps previously connected to it. Thereby requiring the DApps to request permission to connect again.
+
+## `getWalletAddress`
+
+Retrieves the wallet address for a specified chain.
+
+**Arguments:**
+
+- `chainName` _(string)_: The name of the chain for which to get the wallet address.
+
+**Returns:**
+
+- _(string)_: The wallet address for the povided chain
+
+## `switchWallet`
+
+Switches to a specified wallet by name.
+
+**Arguments:**
+
+- `walletName` _(string)_: The name of the wallet to switch to. This is specified by the `walletName` argument when creating the wallet through the `setupWallet` command.
+
+## `addNewTokensFound`
+
+Adds all the new tokens found by the Keplr extensions when it connects to a new chain.
+
+## `getTokenAmount`
+
+Retrieves the amount of a specified token present in the wallet
+
+**Arguments:**
+
+- `tokenName` _(string)_: The name of the token for which to get the amount.
+
+**Returns:**
+
+- _(number)_: The number of tokens present in the wallet for the specified input
+
+## `execute`
+
+Executes a string as a shell command in the running environement
+
+**Arguments:**
+
+- `command` _(string)_: The command to execute.
+
+**Returns:**
+
+- _(Object)_: Returns an output of the executed command with the following properties:
+  - `stdout`: The output of the executed command
+  - `stderr`: The error output of the executed command
+  - `error`: The error object if there was an error
