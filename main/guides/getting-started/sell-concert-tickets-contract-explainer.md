@@ -35,7 +35,7 @@ const inventory = {
 };
 ```
 
-The contract is typically parameterized with this `inventory` object to initiate. 
+Our contract iuses this `inventory` object as a parameter to initiate. 
 
 After the contract is initialized, a new [ERTP mint](https://docs.agoric.com/glossary/#mint) for the "Ticket" asset is created.
 
@@ -52,7 +52,9 @@ const ticketMint = await zcf.makeZCFMint('Ticket', AssetKind.COPY_BAG);
 const { brand: ticketBrand } = ticketMint.getIssuerRecord();
 ```
 
-Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat`, which will function as our vendor. This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](https://docs.agoric.com/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
+Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat`, which will function as our vendor.
+
+This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](https://docs.agoric.com/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
 
 <details>
 <summary>Here is an explanation to the following code</summary>
@@ -83,18 +85,40 @@ const inventorySeat = ticketMint.mintGains(toMint);
 ```
 
 ## Trading Tickets
-Customers who wish to purchase event tickets first make an invitation to trade for tickets using `makeTradeInvitation`:
+
+Customers who wish to purchase event tickets first make an invitation to trade for tickets using `makeTradeInvitation`. Note that it calls `makeInvitation` function from [Zoe Contract Facet](https://docs.agoric.com/reference/zoe-api/zoe-contract-facet.html#zoe-contract-facet-zcf) to generate a **credible** invitation to a smart contract.
+
 ```js
 const makeTradeInvitation = () =>
   zcf.makeInvitation(tradeHandler, 'buy tickets', undefined, proposalShape);
 ```
 
-The `tradeHandler` function is called when a purchaser makes an offer:
+<details>
+<summary>
+You may also notice a few parameters being passed. You can look at them in detail:
+</summary>
+
+- **tradeHandler**: The `tradeHandler` function is invoked when a purchaser makes an offer. This function contains the contract's logic for processing each trade, ensuring that the correct procedures are followed whenever a trade is executed.
+
 ```js
 const tradeHandler = buyerSeat => {
   const { give, want } = buyerSeat.getProposal();
   // ... checks and transfers
 };
+```
+
+- **description**: A mandatory string that provides details about the Invitation. It should contain all relevant information needed for a potential recipient to clearly differentiate this contract's invitations from others.
+
+- **customDetails** (Optional): Any additional information that may be required by the invitation.
+
+- **proposalShape** (Optional): This object outlines the necessary and permissible elements of each proposal. Here is the proposal shape for this contract.
+
+```js
+const proposalShape = harden({
+  give: { Price: AmountShape },
+  want: { Tickets: { brand: ticketBrand, value: M.bag() } },
+  exit: M.any(),
+});
 ```
 
 ## Trade Handler
