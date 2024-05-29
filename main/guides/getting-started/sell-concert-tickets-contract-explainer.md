@@ -121,6 +121,8 @@ const proposalShape = harden({
 });
 ```
 
+</details>
+
 ## Trade Handler
 The `tradeHandler` function begins by checking to see if there are enough tickets in inventory to satisfy the trade:
 ```js
