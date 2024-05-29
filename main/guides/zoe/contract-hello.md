@@ -43,6 +43,8 @@ You should see the following line towards the end of the output:
 ```
 Congratulations! You have written and tested your first smart contract. Our next goal is to learn about the state of a smart contract.
 
+If you're having trouble, check out the [`tut-01-hello`](https://github.com/Agoric/dapp-offer-up/tree/tut-01-hello) branch in the example repo.
+
 See also:
 
 - [\$LOCKDOWN_OPTIONS for better diagnositcs](https://github.com/Agoric/agoric-sdk/wiki/Developing-with-better-error-diagnostics)

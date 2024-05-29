@@ -22,7 +22,7 @@ Let us save this contract as `02-state.js` and creating a simple test to validat
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-state
 
-This test asserts that in the beginning the number of rooms is zero and after a call to `makeRoom`, the number of rooms changes to one.
+This test asserts that in the beginning the number of rooms is zero and after a call to `makeRoom`, the number of rooms changes to one. If you're having trouble, check out the [`tut-02-state`](https://github.com/Agoric/dapp-offer-up/tree/tut-02-state) branch in the example repo.
 
 ::: tip Heap state is persistent
 
