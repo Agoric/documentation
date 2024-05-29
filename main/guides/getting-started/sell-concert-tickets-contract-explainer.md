@@ -37,10 +37,11 @@ const inventory = {
 
 The contract is typically parameterized with this `inventory` object to initiate. 
 
-After the contract is initialized, a new (ERTP mint)[https://docs.agoric.com/glossary/#mint] for the "Ticket" asset is created.
+After the contract is initialized, a new [ERTP mint](https://docs.agoric.com/glossary/#mint) for the "Ticket" asset is created.
 
 <details>
-<summary>Note: AssetKind.COPY_BAG expresses non-fungible assets</summary>
+<summary>Note: AssetKind expresses non-fungible assets</summary>
+
 There are three types of [assets](https://docs.agoric.com/guides/ertp/#asset). You can determine the [type of your asset](https://docs.agoric.com/reference/ertp-api/ertp-data-types.html#assetkind) by referring to the provided documentation.
 
 In our example, tickets are non-fungible and can have duplicates, meaning there can be many tickets of a single type. Therefore, we are using `AssetKind.COPY_BAG`.
@@ -51,16 +52,17 @@ const ticketMint = await zcf.makeZCFMint('Ticket', AssetKind.COPY_BAG);
 const { brand: ticketBrand } = ticketMint.getIssuerRecord();
 ```
 
-
 Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat`, which will function as our vendor. This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](https://docs.agoric.com/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
 
 <details>
 <summary>Here is an explanation to the following code</summary>
+
 In this code, we create an `inventoryBag` using the `makeCopyBag` function, converting the inventory object into an array of `[ticket, maxTickets]` pairs. This bag holds each ticket type and its maximum quantity.s
 
-We then define the `toMint` object as a [AmountKeywordRecord](https://docs.agoric.com/reference/zoe-api/zoe-data-types.html#keywordrecord) specifying the `Tickets` asset with its (brand)[https://docs.agoric.com/glossary/#brand] and `inventoryBag`.
+We then define the `toMint` object as a [AmountKeywordRecord](https://docs.agoric.com/reference/zoe-api/zoe-data-types.html#keywordrecord) specifying the `Tickets` asset with its [brand](https://docs.agoric.com/glossary/#brand) and `inventoryBag`.
 
-Finally, we use the [mintGains](https://docs.agoric.com/reference/zoe-api/zcfmint.html#azcfmint-mintgains-gains-zcfseat) to mint the tickets creating a new (ZCFSeat)[https://docs.agoric.com/reference/zoe-api/zcfseat.html#zcfseat-object] called the `inventorySeat`.
+Finally, we use the [mintGains](https://docs.agoric.com/reference/zoe-api/zcfmint.html#azcfmint-mintgains-gains-zcfseat) to mint the tickets creating a new [ZCFSeat](https://docs.agoric.com/reference/zoe-api/zcfseat.html#zcfseat-object) called the `inventorySeat`.
+
 </details>
 
 
