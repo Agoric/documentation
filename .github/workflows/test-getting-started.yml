@@ -1,0 +1,38 @@
+name: Test the getting start steps
+
+# run CI on pushes to main, and on all PRs.
+
+on:
+ push:
+   branches: [main]
+ pull_request:
+   branches: [main]
+jobs:
+  getting_started:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Creating Your Dapp From a Template
+        run: yarn create @agoric/dapp demo
+      - name: Install dependencies
+        run: | 
+          cd demo
+          yarn install
+      - name: Start the Docker container
+        run: | 
+          cd demo
+          yarn start:docker
+      - name: Wait for Docker container to be ready 
+        run: |
+          cd demo
+          yarn runWaitForBlocks
+      - name: yarn start:contract
+        run: |
+          cd demo
+          yarn start:contract
+      - name: verify contracts started onchain
+        run: |
+          curl http://localhost:1317/agoric/vstorage/data/published.agoricNames.instance | grep offerUp
