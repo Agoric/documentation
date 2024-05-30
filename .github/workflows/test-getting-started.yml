@@ -5,9 +5,9 @@ name: Test the getting start steps
 
 on:
  push:
-   branches: [$default-branch]
+   branches: [main]
  pull_request:
-
+   branches: [main]
 jobs:
   getting_started:
     runs-on: ubuntu-latest
