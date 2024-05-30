@@ -1,7 +1,6 @@
 name: Test the getting start steps
 
-# run CI on pushes to main, and on all PRs (even the ones that target other
-# branches)
+# run CI on pushes to main, and on all PRs.
 
 on:
  push:
