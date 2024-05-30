@@ -86,7 +86,7 @@ Next, we'll add a dependency on `@agoric/web-components`, which provides a utili
 amounts and handling various denoms:
 
 ```
-yarn add -D @agoric/web-components@0.15.1-dev-1329752.0
+yarn add -D @agoric/web-components@0.16.0
 ```
 
 Then, in `Purses.tsx`, we can put it all together to render the IST balance:
