@@ -14,7 +14,7 @@ This makes it easy to handle all the platform-specific implementation details, s
 Install the following dependencies:
 
 ```
-yarn add -D @agoric/react-components@0.1.1-dev-1329752.0 cosmos-kit@2.8.5 @interchain-ui/react@1.22.11
+yarn add -D @agoric/react-components@0.2.0 cosmos-kit@2.8.5 @interchain-ui/react@1.22.11
 ```
 
 The `cosmos-kit` dependency is used to provide different wallets in the wallet connection modal.
@@ -48,16 +48,19 @@ function App() {
       <div className={themeClass}>
         <AgoricProvider
           wallets={wallets.extension}
-          defaultNetworkConfig={{
-            testChain: {
-              chainId: 'agoriclocal',
-              chainName: 'agoric-local',
+          agoricNetworkConfigs={[
+            {
+              testChain: {
+                chainId: 'agoriclocal',
+                chainName: 'agoric-local',
+              },
+              apis: {
+                rest: ['http://localhost:1317'],
+                rpc: ['http://localhost:26657'],
+              },
             },
-            apis: {
-              rest: ['http://localhost:1317'],
-              rpc: ['http://localhost:26657'],
-            },
-          }}
+          ]}
+          defaultChainName="agoric-local"
         >
           <h1>Agoric UI Tutorial</h1>
           <ConnectWalletButton />
@@ -70,7 +73,7 @@ function App() {
 export default App;
 ```
 
-You may have noticed the `defaultNetworkConfig` prop points to a local chain. This assumes
+You may have noticed the `defaultChainName` prop points to a local chain. This assumes
 that you are still running the local chain from [Getting Started](../../getting-started/index.md) in Docker. If you're not, make sure to follow those steps before proceeding.
 
 Note: If you see a type error on the `wallets` prop, this is likely because `@agoric/react-components` is using an older version of `cosmos-kit` than what was installed in your app. To fix this, you can add `resolutions` to your `package.json` like so:

@@ -65,7 +65,7 @@ After rebuilding the app, you should see the component rendering with the placeh
 add the `chainStorageWatcher` and look up the contract on-chain. First add `@agoric/rpc` as a dependency:
 
 ```
-yarn add -D @agoric/rpc@0.9.1-dev-1329752.0
+yarn add -D @agoric/rpc@0.10.0
 ```
 
 Next, let's go to our `src/hooks.ts` file and create another hook for reading the chain data:
