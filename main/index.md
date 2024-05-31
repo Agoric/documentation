@@ -28,17 +28,17 @@ features:
   - icon: 🧑‍🎓️
     title: Learn
     details: Learn how Smart Contracts work on Agoric Platform
-    link: /guides/getting-started/
+    link: /what-is-agoric
 
   - icon: 🛠️
     title: Build
     details: Build Cross Chain Smart Contracts using Agoric Orchestration APIs
-    link: /guides/zoe/
+    link: /guides/getting-started/
 
   - icon: 📑
     title: Tutorials
     details: Step by step instructions on how to get Started with Smart Contracts
-    link: /guides/getting-started/
+    link: /guides/getting-started/tutorial-dapp-agoric-basics
 
   - icon: 💬
     title: Discord
