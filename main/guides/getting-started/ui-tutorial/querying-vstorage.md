@@ -1,10 +1,10 @@
-## Querying Vstorage
+# Querying Vstorage
 
 A fundamental part of building a Dapp UI is interacting with smart contracts. How can a UI
 read data from a smart contract on the Agoric blockchain? This section will show you how,
 using the available tools and libraries at your disposal.
 
-### ChainStorageWatcher
+## ChainStorageWatcher
 
 Recall from the previous section the `useAgoric` hook. Another utility the hook provides is
 the `chainStorageWatcher`. This utility is also available on its own through the [@agoric/rpc](https://www.npmjs.com/package/@agoric/rpc)
@@ -17,7 +17,7 @@ Example:
 const { chainStorageWatcher } = useAgoric();
 ```
 
-### Querying Vstorage
+## Querying Vstorage
 
 In order to submit an offer to a contract, we need to look it up on-chain first.
 We'll find it in vstorage under `published.agoricNames.instance` (see: [vstorage reference](../../../reference/vstorage-ref.md)).
