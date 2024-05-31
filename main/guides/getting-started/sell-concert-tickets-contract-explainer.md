@@ -1,24 +1,18 @@
 # Sell Concert Tickets Smart Contract
-
 This smart contract is designed to mint and sell event tickets as non-fungible tokens (NFTs) in the form of a semi-fungible asset. In this example there are three categories or classes of tickets:
 - Tickets near the front are the most expensive
 - Tickets in the middle rows are priced between expensive and cheap seats
 - Tickets in the back are the lowest priced
-
 > Note: This contract simulates traditional trading i.e. between a vendor and a consumer.
 
 ## Objective
-
 The objective of this tutorial is to teach you the following:
-
 - A fundamental guide on how to **establish a smart contract**.
 - Explain the process of **initiating asset trading** within the Agoric environment including listing of assets and setting prices etc.
 - **Develop a trade handler** that manages the execution of business logic behind trades.
 
 ## Contract Setup
-
 Let us first consider an `inventory` object, which holds essential information about various asset types - in this case, categories of tickets. This object includes crucial details such as the `tradePrice` for each ticket type and the `maxTickets`, specifying the maximum quantity available for each category. For example:
-
 ```js
 const inventory = {
   frontRow: {
@@ -35,9 +29,7 @@ const inventory = {
   }
 };
 ```
-
 Our contract uses this `inventory` object as a parameter to initiate. 
-
 After the contract is initialized, a new [ERTP mint](https://docs.agoric.com/glossary/#mint) for the "Ticket" asset is created.
 
 <details>
@@ -55,16 +47,13 @@ const { brand: ticketBrand } = ticketMint.getIssuerRecord();
 ```
 
 Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat`, which will function as our vendor.
-
 This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](https://docs.agoric.com/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
 
 <details>
 <summary>To understand the code better:</summary>
 
 Take a look at [brand](https://docs.agoric.com/glossary/#brand), [AmountKeywordRecord](https://docs.agoric.com/reference/zoe-api/zoe-data-types.html#keywordrecord), [mintGains function](https://docs.agoric.com/reference/zoe-api/zcfmint.html#azcfmint-mintgains-gains-zcfseat) and [ZCFSeat](https://docs.agoric.com/reference/zoe-api/zcfseat.html#zcfseat-object).
-
 </details>
-
 
 ```js
 const inventoryBag = makeCopyBag(
@@ -83,18 +72,14 @@ const inventorySeat = ticketMint.mintGains(toMint);
 ```
 
 ## Trading Tickets
-
 Customers who wish to purchase event tickets first [make an invitation](https://docs.agoric.com/reference/zoe-api/zoe-contract-facet.html#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape) to trade for tickets using `makeTradeInvitation`.
-
 ```js
 const makeTradeInvitation = () =>
   zcf.makeInvitation(tradeHandler, 'buy tickets', undefined, proposalShape);
 ```
 
 Here you can see two important parameters:
-
 - **tradeHandler**: The `tradeHandler` function is invoked when a purchaser makes an offer. This function contains the contract's logic for processing each trade, ensuring that the correct procedures are followed whenever a trade is executed.
-
 ```js
 const tradeHandler = buyerSeat => {
   const { give, want } = buyerSeat.getProposal();
@@ -103,7 +88,6 @@ const tradeHandler = buyerSeat => {
 ```
 
 - **proposalShape** (Optional): This object outlines the necessary and permissible elements of each [proposal](https://docs.agoric.com/reference/zoe-api/zoe-contract-facet.html#proposal-shapes). Here is the proposal shape for this contract.
-
 ```js
 const proposalShape = harden({
   give: { Price: AmountShape },
@@ -111,7 +95,6 @@ const proposalShape = harden({
   exit: M.any(),
 });
 ```
-
 ## Trade Handler
 The `tradeHandler` function begins by checking to see if there are enough tickets in inventory to satisfy the trade:
 ```js
