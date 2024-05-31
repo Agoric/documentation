@@ -109,6 +109,10 @@ export const nav = [
         text: 'dapp-agoric-basics',
         link: '/guides/getting-started/tutorial-dapp-agoric-basics',
       },
+      {
+        text: 'UI Tutorial',
+        link: '/guides/getting-started/ui-tutorial/',
+      },
     ],
   },
   
