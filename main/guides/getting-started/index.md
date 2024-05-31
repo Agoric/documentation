@@ -39,19 +39,48 @@ In this section you'll be installing prerequisite components into your environme
 ### Installing Node.js
 
 <details>
-<summary>Installing Node.js on Ubuntu</summary>
+<summary>Installing Node.js</summary>
 
 This tutorial requires a specific version of [Node.js](https://nodejs.org/).
 
 The [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) utility makes it easy to select the right version.
 
 First, follow the [nvm installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), including sourcing `nvm.sh` into the shell.
+
+<details>
+<summary>Installing nvm on Ubuntu</summary>
+
+You can copy the following command on your shell and get it running
+
 ```sh
 # For example:
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
+
+</details>
+
+<details>
+<summary>Installing nvm on MacOS</summary>
+
+nvm is not available in the default package manager for Mac, so you will need to install Homebrew first. To do this, open a terminal window and run the following command:
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+Then, you can install nvm using Brew
+```sh
+brew install nvm
+```
+
+Add nvm to your shell profile: To make nvm available every time you open a new terminal window, you will need to add the following line to your shell profile (e.g., ~/.bash_profile or ~/.zshrc):
+
+```sh
+source $(brew --prefix nvm)/nvm.sh
+```
+
+</details>
 
 Then, install Node.js.
 ```sh
@@ -62,7 +91,6 @@ Finally, verify the Node.js version.
 ```sh
 node --version
 ```
-
 </details>
 
 ### Installing Yarn
@@ -73,6 +101,13 @@ yarn --version # for verification
 ```
 
 ### Installing Docker
+
+<details>
+<summary>Installing Docker</summary>
+
+For docker, you can either download Docker UI using the steps on the [installation for Ubuntu](https://docs.docker.com/desktop/install/ubuntu/) or [installation for Ubuntu](https://docs.docker.com/desktop/install/mac-install/)
+
+To install via CLI, you can check following details.
 
 <details>
 <summary>Installing Docker on Ubuntu</summary>
@@ -100,6 +135,18 @@ Now you can install Docker!
 ```sh
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+</details>
+
+<details>
+<summary>Installing Docker on MacOS</summary>
+Previously, you installed brew on your machine. You can install docker using the same command.
+
+```sh
+brew cask install docker
+```
+
+</details>
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
