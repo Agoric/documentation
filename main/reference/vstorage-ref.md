@@ -6,7 +6,7 @@ In the Agoric platform, VStorage, or a Virtual Storage, is a key-value store tha
 - is organized in a **hierarchical, path-based structure**. Each fragment of data is stored at a specific path, and clients can query these paths to retrieve the data.
 - can be written through a specialized API called **[chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)**. This API allows the VM to manage data storage in a controlled and secure manner.
 
-![vstorage query diagram](./assets/vstorage-brand-q.svg)
+![vstorage query diagram](../guides/getting-started/assets/vstorage-brand-q.svg)
 
 ## VStorage Hierarchy
 
