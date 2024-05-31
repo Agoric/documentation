@@ -3,16 +3,13 @@
 In the Agoric platform, VStorage, or a Virtual Storage, is a key-value store that:
 
 - provides a **read-only interface for clients of the consensus layer**. Clients can query the stored data using specific paths.
-
 - is organized in a **hierarchical, path-based structure**. Each fragment of data is stored at a specific path, and clients can query these paths to retrieve the data.
+- can be written through a specialized API called **[chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)**. This API allows the VM to manage data storage in a controlled and secure manner.
 
-- can be written through a specialized API called **[chainStorage]**(https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage). This API allows the VM to manage data storage in a controlled and secure manner.
-
+<details>
 <!-- Extracted from the data examples -->
 <!-- https://github.com/Agoric/agoric-sdk/tree/003f0c2232815a8d64a3f9a5b05521a10160ce34/golang/cosmos/x/vstorage#readme -->
 <!-- https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-13/packages/inter-protocol#reading-data-off-chain -->
-
-<details>
 <summary> Need for store in dApp? </summary>
 In a dApp, VStorage can be used for:
 
@@ -48,58 +45,6 @@ You can then use this hierarchy to access the data fragments.
 $ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
 ```
 
-<!-- Should be pushed to the end of document to ensure that this block is not too much data -->
-<details>
-<summary>Here are some of the most commonly used keys in dapp development</summary>
-
-- **Top level keys**: The `published` and `bundles` keys are the most relevant to dapp development.
-
-```js
-{
-    activityhash: 'historical',
-    beansOwing: 'swingset execution fee accounting',
-    bundles: 'MsgInstallBundle outcome',
-    egress: 'reserved for future use',
-    highPrioritySenders: 'a priority mechanism',
-    mailbox: 'reserved for future use',
-    published: 'for the chainStorage API; see below',
-}
-```
-
-- **published.\* keys**: The following keys appear under `published`.
-
-```js
-{
-    agoricNames: 'name service controlled by chain governance',
-    auction: 'see Inter Protocol',
-    boardAux: 'auxiliary data for brands etc. keyed by boardId (since #49 2023-09-21)',
-    committees: 'see Inter Protocol',
-    crabble: 'reserved by chain governance proposal #64 decided 2023-12-18',
-    kread: 'reserved by chain governance proposal #53 decided 2023-10-01',
-    priceFeed: 'see Inter Protocol',
-    provisionPool: 'provideds initial IST during smart wallet provisioning',
-    psm: 'see Inter Protocol',
-    reserve: 'see Inter Protocol',
-    vaultFactory: 'see Inter Protocol',
-    wallet: 'smart wallet status',
-}
-```
-
-- **agoricNames hubs**: agoricNames contains several other NameHubs.
-See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
-
-```js
-[
-    'brand',
-    'installation',
-    'instance', 
-    'issuer', 
-    'oracleBrand', 
-    'vbankAsset'
-]
-```
-</details>
-
 ## VStorage with CLI
 VStorage can be accessed via CLI using:
 
@@ -132,3 +77,68 @@ $ agoric follow -lF :published.agoricNames.brand
 ...
 ]
 ```
+
+## VStorage Query API
+
+## VStorage chainStorage API
+
+## VStorage Viewer
+
+<!-- Cannot find the right data for it. -->
+## Cost Caution
+
+<!-- Cannot find the right data for it. -->
+## Best Practices
+
+<!-- Cannot find the right data for it. -->
+## Troubleshooting
+
+
+## Example Codes
+Here are some of the most commonly used keys in dapp development
+
+- **Top level keys**: The `published` and `bundles` keys are the most relevant to dapp development.
+```js
+{
+    activityhash: 'historical',
+    beansOwing: 'swingset execution fee accounting',
+    bundles: 'MsgInstallBundle outcome',
+    egress: 'reserved for future use',
+    highPrioritySenders: 'a priority mechanism',
+    mailbox: 'reserved for future use',
+    published: 'for the chainStorage API; see below',
+}
+```
+
+- **published.\* keys**: The following keys appear under `published`.
+```js
+{
+    agoricNames: 'name service controlled by chain governance',
+    auction: 'see Inter Protocol',
+    boardAux: 'auxiliary data for brands etc. keyed by boardId (since #49 2023-09-21)',
+    committees: 'see Inter Protocol',
+    crabble: 'reserved by chain governance proposal #64 decided 2023-12-18',
+    kread: 'reserved by chain governance proposal #53 decided 2023-10-01',
+    priceFeed: 'see Inter Protocol',
+    provisionPool: 'provideds initial IST during smart wallet provisioning',
+    psm: 'see Inter Protocol',
+    reserve: 'see Inter Protocol',
+    vaultFactory: 'see Inter Protocol',
+    wallet: 'smart wallet status',
+}
+```
+
+- **agoricNames hubs**: agoricNames contains several other NameHubs.
+See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
+```js
+[
+    'brand',
+    'installation',
+    'instance', 
+    'issuer', 
+    'oracleBrand', 
+    'vbankAsset'
+]
+```
+
+<!-- More to be added -->
