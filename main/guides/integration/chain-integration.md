@@ -9,13 +9,8 @@ This section points at relevant reference documentation for the underlying `cosm
 
 The Agoric Network currently uses `cosmos-sdk` v0.45. The general Cosmos documentation for this version can be [found here](https://docs.cosmos.network/v0.45/), including structure and`golang` documentation, and REST API documentation. 
 
-Use the [v0.45.1 version of the  REST API](https://v1.cosmos.network/rpc/v0.45.1) for accessing the chain. To use the "Try it out" functionality, change the Base URL to `agoric-api.polkachu.com`:
 
-
-| ![Alt name of image](./assets/cosmos-api.png) |
-|-|
-
-The chain can also be accessed via JavaScript using the [`cosmjs` library](https://github.com/cosmos/cosmjs) (and [associated tutorials](https://tutorials.cosmos.network/tutorials/7-cosmjs/1-cosmjs-intro.html)), or using [CosmosKit](https://cosmoskit.com/).
+The chain can also be accessed via JavaScript using the [`cosmjs` library](https://github.com/cosmos/cosmjs) (and [associated tutorials](https://tutorials.cosmos.network/tutorials/7-cosmjs/1-cosmjs-intro.html)), or using [CosmosKit](https://cosmology.zone/products/cosmos-kit).
 
 ## Chain resources
 
@@ -25,14 +20,6 @@ The chain can also be accessed via JavaScript using the [`cosmjs` library](https
 - The base unit for staking is `ubld` (corresponding to `uatom` for Cosmos Hub)
 - The command utility of the agoric chain is `agd` (corresponding to [`simd` for the Cosmos Hub](https://docs.cosmos.network/v0.45/run-node/interact-node.html)). 
 ---
-# Tools
-## Building `agd`
-
-The `agd` command line tool can be built as described in the Agoric [getting-started documentation](https://docs.agoric.com/guides/getting-started#build-the-cosmic-swingset-package). The linked step builds `agd`. To confirm that `agd` is in your `$PATH`, execute
-```
-agd version --long
-```
-
 # FAQ
 
 - How are transactions encoded?
