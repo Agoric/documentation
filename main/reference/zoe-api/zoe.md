@@ -364,8 +364,6 @@ Every **Keyword** in **give** must have a corresponding **payment**.
 const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 ```
 
-<a href="offerargs"></a>
-
 ### Offer Arguments
 
 **offerArgs** is an optional CopyRecord that can be used to pass additional arguments to the
