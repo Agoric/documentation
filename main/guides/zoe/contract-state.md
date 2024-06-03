@@ -1,6 +1,6 @@
 # State Smart Contract
 
-In our first `greetings` smart contract, we created a `greet` function and exposed it using `publicFacet` so that it can be remotely called. However, if you notice, there is no state in our smart contract that is preserved between calls. Contracts can use ordinary variables and data structures for state. 
+In our first `hello-world` smart contract, we created a `greet` function and exposed it using `publicFacet` so that it can be remotely called. However, if you notice, there is no state in our smart contract that is preserved between calls. Contracts can use ordinary variables and data structures for state. 
 
 In our second example smart contract, we will manage a list of rooms. We want everyone with access to `publicFacet` to be able to create a new room, and also get current count of rooms. We maintain state using `Map` data structure as below:
 

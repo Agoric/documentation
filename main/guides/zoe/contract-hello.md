@@ -1,7 +1,7 @@
-# Greetings Smart Contract
+# Hello World Smart Contract
 
 Before we look at how to make a contract such as the one in [the
-basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greetings message. We will simply call it _hello-world smart contract_. 
+basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greeting message. We will simply call it _hello-world smart contract_. 
 
 A contract is defined by a JavaScript module that exports a `start` function. For our hello-world smart contract, the declaration of `start` function looks like this:
 

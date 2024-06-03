@@ -6,8 +6,8 @@ This guide is designed to help developers understand how to write smart contract
 
 We provide three core examples to illustrate how to implement various smart contract functionalities:
 
-### 1. Greetings Contract
-The **Greetings Contract** demonstrates how to create a simple contract that greets the caller. This example is perfect for understanding the basic structure and syntax of smart contracts. The relevant code is available in [`tut-01-hello` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-01-hello).
+### 1. Hello Wolrd Contract
+The **Hello World Contract** demonstrates how to create a simple contract that greets the caller. This example is perfect for understanding the basic structure and syntax of smart contracts. The relevant code is available in [`tut-01-hello` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-01-hello).
 
 ### 2. State Contract
 The **State Contract** shows how to maintain a state or a variable within a smart contract. This is useful for contracts that need to store data or state across transactions. The relevant code is available in [`tut-02-state` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-02-state).

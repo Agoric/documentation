@@ -151,7 +151,7 @@ export default defineConfig({
               collapsed: true,
               items: [
                 {
-                  text: 'Greetings Smart Contract',
+                  text: 'Hello World Smart Contract',
                   link: '/guides/zoe/contract-hello',
                 },
                 {
