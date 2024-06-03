@@ -10,10 +10,10 @@ We provide three core examples to illustrate how to implement various smart cont
 The **Greetings Contract** demonstrates how to create a simple contract that greets the caller. This example is perfect for understanding the basic structure and syntax of smart contracts. The relevant code is available in [`tut-01-hello` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-01-hello).
 
 ### 2. State Contract
-The **State Contract** shows how to maintain a state or a variable within a smart contract. This is useful for contracts that need to store data or state across transactions. The relevant code is available in [`tut-01-hello` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-02-state).
+The **State Contract** shows how to maintain a state or a variable within a smart contract. This is useful for contracts that need to store data or state across transactions. The relevant code is available in [`tut-02-state` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-02-state).
 
 ### 3. Access-Control Contract
-The **Access-Control Contract** provides an example of how to implement access control, ensuring that only authorized users can call certain functions within the smart contract. The relevant code is available in [`tut-01-hello` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-03-access).
+The **Access-Control Contract** provides an example of how to implement access control, ensuring that only authorized users can call certain functions within the smart contract. The relevant code is available in [`tut-03-access` branch](https://github.com/Agoric/dapp-offer-up/tree/tut-03-access).
 
 
 Let us get started!
