@@ -5,17 +5,15 @@ In the Agoric platform, VStorage is a key-value store that:
 - provides a **read-only interface where clients of the consensus layer** can query the stored data using specific paths.
 - is organized in a **hierarchical, path-based structure**. Clients can query these paths to retrieve the data. For example:
 ```sh
-# lists vaults
 $ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
 children:
 - vault0
 ```
-- can be written through a specialized API called **[chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)**.
+- can be written through a specialized API called **[chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)** from within the JavaScript VM.
 
 ![vstorage query diagram](../guides/getting-started/assets/vstorage-brand-q.svg)
 
 ## VStorage Hierarchy
-
 VStorage is structured as a tree with paths and nodes that store the actual data. This design facilitates easy querying while ensuring data consistency and security.
 
 For example, here is an example of [Inter Protocol key structure](https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-13/packages/inter-protocol#reading-data-off-chain) inside Agoric:
@@ -61,11 +59,66 @@ children:
 ...
 ```
 
+With [Agoric CLI](https://docs.agoric.com/guides/agoric-cli/#agoric-cli-reference), you can also use `follow` command to support vstorage query along with some of the marshalling conventions discussed below:
+```sh
+$ agoric follow -lF :published.agoricNames.brand
+[
+  [
+    "BLD",
+    slotToVal("board0566","Alleged: BLD brand"),
+  ],
+  [
+    "IST",
+    slotToVal("board0257","Alleged: IST brand"),
+  ],
+...
+]
+```
+
 ## VStorage Query API
+VStorage querier service can directly be incorporated in dApps directly using [agoric.vstorage.Query](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/vstorage/query.proto#L11) package.
+```
+service Query {
+  // Return an arbitrary vstorage datum.
+  rpc Data(QueryDataRequest) returns (QueryDataResponse) {
+    option (google.api.http).get = "/agoric/vstorage/data/{path}";
+  }
+
+  // Return the children of a given vstorage path.
+  rpc Children(QueryChildrenRequest)
+    returns (QueryChildrenResponse) {
+      option (google.api.http).get = "/agoric/vstorage/children/{path}";
+  }
+}
+```
 
 ## VStorage chainStorage API
+`chainStorage` API offers write-access to VStorage for contracts, by [connecting to a subscriber](https://docs.agoric.com/guides/js-programming/notifiers.html) to a `chainStorage` node.
+
+While adding [Adding Parameter Governance to a Contract](https://docs.agoric.com/guides/governance/#adding-parameter-governance-to-a-contract), `storageNode` and `marshaller` are passed to the contract in its `privateArgs` so it can publish to chainStorage.
+
+```
+const marshaller = await E(board).getPublishingMarshaller();
+const storageNode = await E(chainStorage).makeChildNode(contractName);
+...
+const installation = await E(zoe).startInstance(
+  ...,
+  privateArgs: harden({
+      storageNode,
+      marshaller,
+  })
+)
+```
+The `chainStorage` node corresponds to the `published` key in the [vstorage hierarchy](https://docs.agoric.com/reference/vstorage-ref.html#vstorage-hierarchy). Using `E(chainStorage).makeChildNode(contractName)` gives the contract access to write to the `published.{contractName}` key and all keys under it. 
+To understand more on `Marshaller` and `chainStorage` Node, please refer to documentation on [Publishing to chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)
 
 ## VStorage Viewer
+To visualize the current state of VStorage, The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) contributed by p2p is often _very_ handy:
+
+[![vstorage viewer screenshot](https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://p2p-org.github.io/p2p-agoric-vstorage-viewer/#https://devnet.rpc.agoric.net/|published,published.agoricNames|)
+
+## DApp UI and VStorage
+As mentioned above, VStorage offers clients an access to data from contracts, including dApp UI. For detail tutorial on tools and libraries available for this connection is available [here](https://docs.agoric.com/guides/getting-started/ui-tutorial/querying-vstorage.html#querying-vstorage).
 
 ## Common VStorage Examples
 
