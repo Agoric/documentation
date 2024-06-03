@@ -71,7 +71,7 @@ A **DisplayInfo** data type is associated with a **[Brand](./brand)** and gives 
 to display that **Brand**'s **[Amounts](#amount)**. **DisplayInfo** has one optional property,
 **decimalPlaces**, which takes a non-negative integer value.
 
-The **decimalPlaces** property tells the [display software](https://github.com/Agoric/agoric-sdk/tree/master/packages/ui-components)
+The **decimalPlaces** property tells the [display software](https://github.com/Agoric/ui-kit)
 how many places to move the decimal point over to the left so as to display the value
 in the commonly used denomination (e.g., display "10.00 dollars" rather than "1000 cents").
 
