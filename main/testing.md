@@ -6,19 +6,19 @@ sidebar: auto
 
 ## Overview
 
-Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet. 
+Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet.
 
 [`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is built upon [`synthetixio/synpress`](https://github.com/Synthetixio/synpress), a framework designed for Metamask-based DApps.
 
 ## Getting Started
 
-### Installation:
+### Installation
 
-`@agoric/synpress` can be installed using the following command:
+Before you start testing your DApp with Keplr, you'll need to install the `@agoric/synpress` in your project. Here's how to install it, depending on the package manager you're using:
 
-```bash
-yarn add -D @agoric/synpress
-```
+- **yarn**: `yarn add -D @agoric/synpress`
+- **npm**: `npm install --save-dev @agoric/synpress`
+- **pnpm**: `pnpm add -D @agoric/synpress`
 
 ### Example setup
 
