@@ -354,6 +354,11 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              text: 'End-to-End Testing',
+              ariaLabel: 'End-to-End Testing',
+              link: '/e2e-testing',
+            },
           ],
         },
         {

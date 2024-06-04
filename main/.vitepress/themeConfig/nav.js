@@ -53,6 +53,11 @@ export const nav = [
         ariaLabel: 'Example Zoe Contracts',
         link: '/guides/zoe/contracts/',
       },
+      {
+        text: 'End-to-End Testing',
+        ariaLabel: 'End-to-End Testing',
+        link: '/e2e-testing',
+      },
     ],
   },
 
