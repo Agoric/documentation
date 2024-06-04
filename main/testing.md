@@ -2,13 +2,13 @@
 sidebar: auto
 ---
 
-# End-to-End Testing
+# Testing
 
 ## Overview
 
-Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Solid testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet. 
+Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet. 
 
-[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is built upon [`synthetixio/synpress`](https://github.com/Synthetixio/synpress), a framework originally designed for Metamask-based DApps.
+[`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is built upon [`synthetixio/synpress`](https://github.com/Synthetixio/synpress), a framework designed for Metamask-based DApps.
 
 ## Getting Started
 
