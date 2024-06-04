@@ -4,7 +4,7 @@ sidebar: auto
 
 # Testing
 
-## Overview
+## Background
 
 Developing Decentralized Applications (DApps) on the Cosmos network often involves integrating with the Keplr wallet. Testing is key for ensuring users can flawlessly interact with your DApp through the Keplr wallet.
 
@@ -12,11 +12,11 @@ Developing Decentralized Applications (DApps) on the Cosmos network often involv
 
 ## Installation
 
-Before you start testing your DApp with Keplr, you'll need to install the `@agoric/synpress` in your project. Here's how to install it, depending on the package manager you're using:
+Before you start testing your DApp with Keplr, you'll need to install the `@agoric/synpress` in your project using the following command:
 
-- **yarn**: `yarn add -D @agoric/synpress`
-- **npm**: `npm install --save-dev @agoric/synpress`
-- **pnpm**: `pnpm add -D @agoric/synpress`
+```bash
+yarn add -D @agoric/synpress`
+```
 
 ## Project structure
 
@@ -59,12 +59,12 @@ By default, if you don't create a `synpress.config.js` file, `@agoric/synpress` 
 Since you have a separate `synpress.config.js` in the `tests/e2e` folder, you need to specify its location when running your tests. Use the `--configFile` flag with the `synpress run` command:
 
 ```bash
-EXTENSION=keplr synpress run --configFile=test/e2e/synpress.config.js
+EXTENSION=keplr synpress run --configFile=tests/e2e/synpress.config.js
 ```
 
 ## Creating a Support File
 
-Navigate to your project's `tests/e2e` directory and create a new file named `support.js`. This file can be used to create reusable commands that encapsulate common testing actions. For example, you could create a custom command to navigate to a specific page within your application. You can read more about it [over here](https://docs.cypress.io/api/cypress-api/custom-commands).
+Navigate to your project's `tests/e2e` directory and create a new file named `support.js`. This file can be used to create reusable commands that encapsulate common testing actions. For example, you can create a custom command to navigate to a specific page within your application. You can read more about it [over here](https://docs.cypress.io/api/cypress-api/custom-commands).
 
 After creating your `support.js` file, make sure to include the following import statement:
 
@@ -74,40 +74,70 @@ import '@agoric/synpress/support/index';
 
 This import is essential because it brings in the necessary functionalities from `@agoric/synpress` to interact with the Keplr wallet within your e2e tests. Without it, your tests won't be able to leverage the features provided by `@agoric/synpress` for Keplr integration.
 
-## Example Test
+## Example Tests
 
-Create a test file to utilize some of the basic commands provided by @agoric/synpress. Here is a small example:
+With the environment set up, let's write end-to-end (e2e) tests to test your DApp's functionality. In the `tests/e2e/specs` folder, create a new file with a descriptive name that reflects what it tests (e.g., `user_login.spec.js` or `token_transfer.spec.js`).
+
+### Test Structure
+
+`@agoric/synpress` is based on [Cypress](https://www.cypress.io/). In Cypress, you use `describe` blocks to group related tests together, and `it` blocks to define individual test cases within those groups.
 
 ```js
-describe('Dapp tests', () => {
-  it(`should setup a Keplr wallet`, () => {
-    cy.setupWallet({
-      secretWords: 'pineapple cow fat water .....',
-    });
-    cy.visit('/');
-  });
-
-  it(`should accept connection with wallet`, () => {
-    cy.contains('Connect Wallet').click();
-    cy.acceptAccess();
-  });
-
-  it(`should confirm make an offer transaction`, () => {
-    cy.contains('Make an Offer').click();
-    cy.confirmTransaction();
+describe('User Login', () => {
+  it('should login with valid credentials', () => {
+    // Test steps for login functionality
   });
 });
 ```
 
+### Test 1: Setting Up Keplr Wallet
+
+```js
+it('should setup a Keplr wallet', () => {
+  cy.setupWallet({
+    secretWords: 'REPLACE_WITH_YOUR_KEPLR_MNEMONIC',
+  });
+  cy.visit('/');
+});
+```
+
+This test case simulates setting up a Keplr wallet for your tests, using the `cy.setupWallet` method. Make sure to replace `REPLACE_WITH_YOUR_KEPLR_MNEMONIC` with a 24-word mnemonic phrase. The `setupWallet` method creates a wallet based on the provided mnemonic phrase, which can then be used throughout your test suite.
+
+After setting up the wallet, we visit the root path (`/`) of the DApp using `cy.visit('/')`.
+
+### Test 2: Connecting Keplr Wallet
+
+```js
+it('should accept connection with wallet', () => {
+  cy.contains('Connect Wallet').click();
+  cy.acceptAccess();
+});
+```
+
+This test simulates a user connecting their Keplr wallet to your DApp. `cy.contains('Connect Wallet')` searches for an element containing the text `Connect Wallet` on the webpage and triggers a click event. `cy.acceptAccess` simulates accepting Keplr wallet access for your DApp.
+
+### Test 3: Signing a Transaction
+
+```js
+it('should confirm make an offer transaction', () => {
+  cy.contains('Make an Offer').click();
+  cy.confirmTransaction();
+});
+```
+
+This test simulates transaction Signing on your DApp. `cy.contains('Make an Offer')` searches for an element containing the text `Make an Offer` and triggers a click event. `cy.confirmTransaction` simulates confirming a transaction.
+
+### Running the Tests
+
 You can now trigger the tests by running this command:
 
 ```bash
-EXTENSION=keplr synpress run
+EXTENSION=keplr synpress run --configFile=tests/e2e/synpress.config.js
 ```
 
 ## Projects Using `@agoric/synpress`
 
-Here are some examples of projects utilizing `@agoric/synpress` for their e2e tests. These examples showcase the framework in action and demonstrate its capabilities:
+Some examples projects utilizing `@agoric/synpress` for e2e tests:
 
 - [PSM dApp E2E Tests](https://github.com/Agoric/dapp-psm/tree/main/tests/e2e)
 - [Wallet dApp E2E Tests](https://github.com/frazarshad/wallet-app/tree/main/test/e2e)
