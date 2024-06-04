@@ -10,12 +10,14 @@ Developing Decentralized Applications (DApps) on the Cosmos network often involv
 
 [`@agoric/synpress`](https://github.com/agoric-labs/synpress) is an end-to-end (e2e) testing framework that simplifies the testing process for Keplr-based DApps. This framework automates testing how your DApp interacts with the Keplr wallet, simulating real user experiences. `@agoric/synpress` is built upon [`synthetixio/synpress`](https://github.com/Synthetixio/synpress), a framework designed for Metamask-based DApps.
 
+Since `@agoric/synpress` is based on [Cypress](https://www.cypress.io/), the official [Cypress documentation](https://docs.cypress.io/guides/overview/why-cypress) has a lot of information that you can use with `@agoric/synpress`.
+
 ## Installation
 
 Before you start testing your DApp with Keplr, you'll need to install the `@agoric/synpress` in your project using the following command:
 
 ```bash
-yarn add -D @agoric/synpress`
+yarn add -D @agoric/synpress
 ```
 
 ## Project structure
@@ -80,7 +82,7 @@ With the environment set up, let's write end-to-end (e2e) tests to test your DAp
 
 ### Test Structure
 
-`@agoric/synpress` is based on [Cypress](https://www.cypress.io/). In Cypress, you use `describe` blocks to group related tests together, and `it` blocks to define individual test cases within those groups.
+You use `describe` blocks to group related tests together, and `it` blocks to define individual test cases within those groups.
 
 ```js
 describe('User Login', () => {
@@ -95,13 +97,13 @@ describe('User Login', () => {
 ```js
 it('should setup a Keplr wallet', () => {
   cy.setupWallet({
-    secretWords: 'REPLACE_WITH_YOUR_KEPLR_MNEMONIC',
+    secretWords: 'KEPLR_MNEMONIC',
   });
   cy.visit('/');
 });
 ```
 
-This test case simulates setting up a Keplr wallet for your tests, using the `cy.setupWallet` method. Make sure to replace `REPLACE_WITH_YOUR_KEPLR_MNEMONIC` with a 24-word mnemonic phrase. The `setupWallet` method creates a wallet based on the provided mnemonic phrase, which can then be used throughout your test suite.
+This test case simulates setting up a Keplr wallet for your tests, using the `cy.setupWallet` method. Make sure to replace `KEPLR_MNEMONIC` with a 24-word mnemonic phrase. The `setupWallet` method creates a wallet based on the provided mnemonic phrase, which can then be used throughout your test suite.
 
 After setting up the wallet, we visit the root path (`/`) of the DApp using `cy.visit('/')`.
 
