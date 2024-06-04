@@ -27,9 +27,39 @@ project_dir
 └── src
 └── tests
     └── e2e
+        └── synpress.config.js
         └── support.js
         └── specs
             └── test.spec.js
+```
+
+## Configure `synpress.config.js`
+
+Before you start writing your E2E tests, you'll need to create a configuration file named `synpress.config.js` in the `tests/e2e` directory of your project.
+
+Inside `synpress.config.js`, you'll set the `baseUrl` property within the e2e configuration. This tells Cypress where to find your DApp during testing. Here's an example configuration:
+
+```js
+const baseConfig = require('@agoric/synpress/synpress.config');
+const { defineConfig } = require('cypress');
+
+module.exports = defineConfig({
+  ...baseConfig,
+  e2e: {
+    ...baseConfig.e2e,
+    baseUrl: 'http://localhost:5173',
+  },
+});
+```
+
+In this example, `baseUrl` is set to `http://localhost:5173`. Make sure to replace this with the actual URL where your DApp is running.
+
+By default, if you don't create a `synpress.config.js` file, `@agoric/synpress` assumes your DApp runs on port 3000 of your local machine (`http://localhost:3000`). Specifying the correct `baseUrl` ensures your tests interact with the right instance of your DApp.
+
+Since you have a separate `synpress.config.js` in the `tests/e2e` folder, you need to specify its location when running your tests. Use the `--configFile` flag with the `synpress run` command:
+
+```bash
+EXTENSION=keplr synpress run --configFile=test/e2e/synpress.config.js
 ```
 
 ## Creating a Support File
@@ -44,7 +74,7 @@ import '@agoric/synpress/support/index';
 
 This import is essential because it brings in the necessary functionalities from `@agoric/synpress` to interact with the Keplr wallet within your e2e tests. Without it, your tests won't be able to leverage the features provided by `@agoric/synpress` for Keplr integration.
 
-## Write your first e2e test
+## Example Test
 
 Create a test file to utilize some of the basic commands provided by @agoric/synpress. Here is a small example:
 
@@ -75,30 +105,7 @@ You can now trigger the tests by running this command:
 EXTENSION=keplr synpress run
 ```
 
-## Custom Configuration
-
-You can optionally create a custom configuration file for your Synpress setup. Since `@agoric/synpress` is based on Cypress, it follows the same configuration [file](https://github.com/agoric-labs/synpress/blob/master/synpress.config.js) format. To override the default settings and add your custom configurations, create a file named synpress.config.js in /project_dir/tests/e2e with the following content:
-
-```js
-const baseConfig = require('@agoric/synpress/synpress.config');
-const { defineConfig } = require('cypress');
-
-module.exports = defineConfig({
-  ...baseConfig,
-  e2e: {
-    ...baseConfig.e2e,
-    baseUrl: 'http://localhost:5173',
-  },
-});
-```
-
-Use this configuration by passing the `--configFile` flag to Synpress.
-
-```bash
-EXTENSION=keplr synpress run --configFile=test/e2e/synpress.config.js
-```
-
-### Projects Using `@agoric/synpress`
+## Projects Using `@agoric/synpress`
 
 Here are some examples of projects utilizing `@agoric/synpress` for their e2e tests. These examples showcase the framework in action and demonstrate its capabilities:
 
