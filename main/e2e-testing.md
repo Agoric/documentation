@@ -144,35 +144,29 @@ Some examples projects utilizing `@agoric/synpress` for e2e tests:
 - [PSM dApp E2E Tests](https://github.com/Agoric/dapp-psm/tree/main/tests/e2e)
 - [Wallet dApp E2E Tests](https://github.com/frazarshad/wallet-app/tree/main/test/e2e)
 
-## agoric/synpress Commands
-
-`@agoric/synpress` provides a the following list of commands that can be used to interact with Keplr wallet in variety of ways
-
-## Usage of commands
-
-All commands for @agoric/synpress are cypress commands so they can be used like this:
-
-```js
-it('My test', () => {
-  cy.myCommand(...inputArgs).then(output => {});
-});
-```
+## @agoric/synpress Commands
 
 ## `setupWallet`
 
-Sets up a new Keplr wallet with the specified parameters.
+Initializes a Keplr wallet for testing. You can either create a new one or import an existing one using the provided options.
 
 **Arguments:**
 
+(All arguments are optional)
+
 The command takes a single object as an argument with the following keys:
 
-- `secretWords` _(string, optional)_: The secret words for the wallet.
-- `privateKey` _(string, optional)_: The private key for the wallet.
-- `password` _(string, optional)_: The password for the wallet (default is 'Test1234').
-- `newAccount` _(boolean, optional)_: Whether to create a new account (default is false).
-- `walletName` _(string, optional)_: The name of the wallet (default is 'My Wallet').
-- `selectedChains` _(array, optional)_: The chains to select (default is an empty array).
-- `createNewWallet` _(boolean, optional)_: Whether to create a new wallet (default is false).
+- `secretWords` _(**string**)_: The secret words for the wallet. (default is a predefined mnemonic phrase that represents a wallet address on the Agoric chain)
+- `privateKey` _(**string**)_: The private key for the wallet.
+- `password` _(**string**)_: The password for the wallet (default is `Test1234`).
+- `newAccount` _(**string**)_: Whether to create a new account (default is `false`).
+- `walletName` _(**string**)_: The name of the wallet (default is `My Wallet`).
+- `selectedChains` _(**string**)_: The chains to select (default is an empty array, `[]`).
+- `createNewWallet` _(**string**)_: Whether to create a new wallet (default is `false`).
+
+**Returns:**
+
+- _(**boolean**)_: `true` if the wallet was set up successfully, `false` otherwise.
 
 ## `acceptAccess`
 
