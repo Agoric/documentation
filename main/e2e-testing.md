@@ -170,27 +170,59 @@ The command takes a single object as an argument with the following keys:
 
 ## `acceptAccess`
 
-Accepts access for the Keplr wallet.
+Handles the authorization process for connecting the Keplr wallet to a DApp. Typically, DApps provide a `Connect Wallet` option to initiate this process.
 
-## `rejectAccess`
+**Returns:**
 
-Rejects access for the Keplr wallet.
+- _(**boolean**)_: `true` if access was accepted successfully, `false` otherwise.
 
 ## `confirmTransaction`
 
-Confirms a transaction in the Keplr wallet.
+Handles signing transactions within a DApp using the Keplr wallet. This occurs when a user initiates a transaction, such as sending tokens or interacting with a smart contract.
 
-## `rejectTransaction`
+**Returns:**
 
-Rejects a transaction in the Keplr wallet.
+- _(**boolean**)_: `true` if transaction was approved successfully, `false` otherwise.
 
-## `isExtensionWindowActive`
+## Managing Browser Tabs
 
-Checks if the Keplr extension window is active.
+In DApp testing, we typically have two important tabs open in the browser: one for the Keplr extension window and another for the Cypress window, where the DApp is running.
 
-## `switchToExtensionWindow`
+- `Keplr Extension Window`: This tab is used for managing your Keplr wallet and interacting with blockchain transactions.
+- `Cypress Window`: This tab runs the DApp you are testing, allowing you to interact with the application directly.
 
-Switches to the Keplr popup window opened by the Keplr extension.
+`@agoric/synpress` provides the following commands to help determine the status of these windows and switch focus between them:
+
+### `isExtensionWindowActive`
+
+Determines whether the Keplr extension window is the currently active tab.
+**Returns:**
+
+- _(**boolean**)_:`true` if the Keplr extension window is active, `false` otherwise.
+
+### `switchToExtensionWindow`
+
+Switches the focus to the Keplr extension window tab.
+
+**Returns:**
+
+- _(**boolean**)_:`true` if the focus change was successful, `false` otherwise.
+
+### `isCypressWindowActive`
+
+Determines whether the Cypress window, where the DApp is running, is the currently active tab.
+
+**Returns:**
+
+- _(**boolean**)_:`true` if the Cypress window is active, `false` otherwise.
+
+### `switchToCypressWindow`
+
+Switches the focus to the Cypress window tab.
+
+**Returns:**
+
+- _(**boolean**)_:`true` if the focus change was successful, `false` otherwise.
 
 ## `disconnectWalletFromDapp`
 
