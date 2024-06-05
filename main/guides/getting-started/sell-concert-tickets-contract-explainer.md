@@ -6,7 +6,7 @@ This smart contract is designed to mint and sell event tickets as non-fungible t
 > Note: This contract simulates traditional trading i.e. between a vendor and a consumer.
 
 ## Objective
-The objective of this tutorial is to teach you the following:
+This tutorial has following objectives:
 - A fundamental guide on how to **establish a smart contract**.
 - Explain the process of **initiating asset trading** within the Agoric environment including listing of assets and setting prices etc.
 - **Develop a trade handler** that manages the execution of business logic behind trades.
@@ -29,7 +29,7 @@ const inventory = {
   }
 };
 ```
-Our contract uses this `inventory` object as a parameter to initiate. 
+Our contract takes the provided `inventory` object as a parameter to initiate the process.
 After the contract is initialized, a new [ERTP mint](https://docs.agoric.com/glossary/#mint) for the "Ticket" asset is created.
 
 <details>
@@ -46,7 +46,7 @@ const ticketMint = await zcf.makeZCFMint('Ticket', AssetKind.COPY_BAG);
 const { brand: ticketBrand } = ticketMint.getIssuerRecord();
 ```
 
-Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat`, which will function as our vendor.
+Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat` object.
 This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](https://docs.agoric.com/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
 
 <details>
