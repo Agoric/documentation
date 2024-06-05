@@ -46,7 +46,7 @@ See also:
 
 ## agoric follow
 
-Follow an Agoric Casting leader tosupport vstorage query along with some of the marshalling conventions.
+Follow an Agoric (Casting)[https://www.npmjs.com/package/@agoric/casting] leader (or validator) to support vstorage query along with some of the marshalling conventions.
 
 **Usage**:
 
