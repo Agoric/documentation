@@ -278,3 +278,6 @@ similarly to the IST purse. In `Purses.tsx`, add the following:
 
 Now, make another offer, and see that your items purse automatically updates after the offer is accepted. To see the complete
 solution for this example, check out the `checkpoint-5` branch.
+
+### Result
+Checkout the result of this tutorial [here](https://docs.agoric.com/guides/getting-started/explainer-how-to-make-an-offer.html).
