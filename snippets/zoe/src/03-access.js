@@ -1,3 +1,4 @@
+// #region access-contract
 import { Far } from '@endo/far';
 
 export const start = () => {
@@ -10,3 +11,4 @@ export const start = () => {
     creatorFacet: Far('ValueCell', { get, set }),
   };
 };
+// #endregion access-contract
