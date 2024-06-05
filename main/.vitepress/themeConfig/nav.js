@@ -111,6 +111,10 @@ export const nav = [
     text: 'Tutorials',
     items: [
       {
+        text: 'Tutorial: Dapp with Agoric',
+        link: '/guides/getting-started/tutorial/',
+      },
+      {
         text: 'dapp-agoric-basics',
         link: '/guides/getting-started/tutorial-dapp-agoric-basics',
       },

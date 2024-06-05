@@ -450,6 +450,7 @@ export default defineConfig({
         },
         {
           text: 'Tutorials',
+          link: '/guides/getting-started/tutorial/',
           collapsed: true,
           items: [
             {
