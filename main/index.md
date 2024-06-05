@@ -28,7 +28,7 @@ features:
   - icon: 🧑‍🎓️
     title: Learn
     details: Learn how Smart Contracts work on Agoric Platform
-    link: /what-is-agoric
+    link: /guides/zoe/
 
   - icon: 🛠️
     title: Build
