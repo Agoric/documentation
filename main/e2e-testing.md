@@ -226,55 +226,52 @@ Switches the focus to the Cypress window tab.
 
 ## `disconnectWalletFromDapp`
 
-Disconnects the Keplr wallet from all DApps previously connected to it. Thereby requiring the DApps to request permission to connect again.
+Disconnects the Keplr wallet from all previously connected DApps. After executing this command, the DApps will need to request permission to connect to the wallet again.
+
+**Returns:**
+
+- _(**boolean**)_:`true` if the disconnection was successful, `false` otherwise.
 
 ## `getWalletAddress`
 
-Retrieves the wallet address for a specified chain.
+Retrieves the wallet address associated with a specified blockchain.
 
 **Arguments:**
 
-- `chainName` _(string)_: The name of the chain for which to get the wallet address.
+- `chainName` _(**string**)_: The name of the blockchain for which you want to obtain the wallet address.
 
 **Returns:**
 
-- _(string)_: The wallet address for the povided chain
+- _(**string**)_: The wallet address for the specified blockchain.
 
 ## `switchWallet`
 
-Switches to a specified wallet by name.
+Switches the active wallet to the specified wallet by name.
 
 **Arguments:**
 
-- `walletName` _(string)_: The name of the wallet to switch to. This is specified by the `walletName` argument when creating the wallet through the `setupWallet` command.
+- `walletName` _(**string**)_: The name of the wallet you want to switch to. This should match the name used when the wallet was created using the `setupWallet` command.
+
+**Returns:**
+
+- _(**boolean**)_: `true` if the wallet switch was successful, `false` otherwise.
 
 ## `addNewTokensFound`
 
-Adds all the new tokens found by the Keplr extensions when it connects to a new chain.
+Adds all the new tokens discovered by the Keplr extension to the user's token portfolio when it connects to a new blockchain network.
+
+**Returns:**
+
+- _(**boolean**)_: `true` if the tokens were successfully added to the user's token portfolio `false` otherwise.
 
 ## `getTokenAmount`
 
-Retrieves the amount of a specified token present in the wallet
+Retrieves the balance of a specified token in the wallet.
 
 **Arguments:**
 
-- `tokenName` _(string)_: The name of the token for which to get the amount.
+- `tokenName` _(**string**)_: The name of the token for which you want to retrieve the balance.
 
 **Returns:**
 
-- _(number)_: The number of tokens present in the wallet for the specified input
-
-## `execute`
-
-Executes a string as a shell command in the running environement
-
-**Arguments:**
-
-- `command` _(string)_: The command to execute.
-
-**Returns:**
-
-- _(Object)_: Returns an output of the executed command with the following properties:
-  - `stdout`: The output of the executed command
-  - `stderr`: The error output of the executed command
-  - `error`: The error object if there was an error
+- _(**number**)_: The amount of the specified token currently held in the wallet.
