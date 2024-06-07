@@ -4,12 +4,12 @@ Here you will find tutorials to implement different types of dApp using Agoric.
 
 ## Your First Agoric Dapp
 
-If you are just starting with Agoric, refer our guide on [your first Agoric dApp](https://docs.agoric.com/guides/zoe/contract-basics.html)
+If you are just starting with Agoric, refer to our guide on creating [your first Agoric dApp](https://docs.agoric.com/guides/zoe/contract-basics.html).
 
 ## UI Tutorial
 
-Already developed your smart contract? Checkout how to [build your own UI from scratch](https://docs.agoric.com/guides/getting-started/ui-tutorial/).
+If you have already developed your smart contract, you can explore our detailed guide on [how to build your own dApp UI](https://docs.agoric.com/guides/getting-started/ui-tutorial/).
 
 ## Dapp Basics
 
-Take a look at our [dapp-agoric-basics tutorial](https://docs.agoric.com/guides/getting-started/tutorial-dapp-agoric-basics.html) to see more examples on Agoric dapps.
+Explore our [dapp-agoric-basics tutorial](https://docs.agoric.com/guides/getting-started/tutorial-dapp-agoric-basics.html) for more detailed examples of Agoric dApps.
