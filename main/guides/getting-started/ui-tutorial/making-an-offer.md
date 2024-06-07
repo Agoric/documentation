@@ -280,4 +280,5 @@ Now, make another offer, and see that your items purse automatically updates aft
 solution for this example, check out the `checkpoint-5` branch.
 
 ### Result
-Checkout the result of this tutorial [here](https://docs.agoric.com/guides/getting-started/explainer-how-to-make-an-offer.html).
+
+Curious to know how it looks after implementation? Check out our [guide](https://docs.agoric.com/guides/getting-started/explainer-how-to-make-an-offer.html) for the result.
