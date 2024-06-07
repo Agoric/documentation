@@ -1,4 +1,4 @@
-# VStorage
+# VStorage Reference
 
 In the Agoric platform, VStorage is a key-value store that:
 
@@ -9,7 +9,7 @@ $ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
 children:
 - vault0
 ```
-- can be written through a specialized API called **[chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)** from within the JavaScript VM.
+- can be written through a specialized API called **[chainStorage](../guides/zoe/pub-to-storage#publishing-to-chainstorage)** from within the JavaScript VM.
 
 ![vstorage query diagram](../guides/getting-started/assets/vstorage-brand-q.svg)
 
@@ -75,8 +75,8 @@ $ agoric follow -lF :published.agoricNames.brand
 ]
 ```
 
-## VStorage Query API
-VStorage querier service can directly be incorporated in dApps directly using [agoric.vstorage.Query](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/vstorage/query.proto#L11) package.
+## VStorage Protobuf Service Definition
+The protobuf definition of vstorage is [agoric.vstorage.Query](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/vstorage/query.proto#L11) package.
 ```
 service Query {
   // Return an arbitrary vstorage datum.
@@ -489,6 +489,7 @@ The `published.wallet.${address}` key has wallet's last update. For example:
 
 See also:
 
+- [Querying VStorage UI Tutorial](https://docs.agoric.com/guides/getting-started/ui-tutorial/querying-vstorage)
 - [Querying VStorage](/guides/getting-started/contract-rpc#querying-vstorage)
 - [Publishing to chainStorage](../guides/zoe/pub-to-storage)
 - [x/vstorage module](https://github.com/Agoric/agoric-sdk/tree/003f0c2232815a8d64a3f9a5b05521a10160ce34/golang/cosmos/x/vstorage#readme)
