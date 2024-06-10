@@ -159,7 +159,6 @@ The command takes a single object as an argument with the following keys:
 - `secretWords` _(**string**)_: The secret words for the wallet. (default is a predefined mnemonic phrase that represents a wallet address on the Agoric chain)
 - `privateKey` _(**string**)_: The private key for the wallet.
 - `password` _(**string**)_: The password for the wallet. (default is `Test1234`).
-- `newAccount` _(**boolean**)_: Whether to create a new wallet or not. (default is `false`).
 - `walletName` _(**string**)_: The name of the wallet. (default is `My Wallet`).
 - `selectedChains` _(**array**)_: The chains to select. (default is an empty array, `[]`).
 - `createNewWallet` _(**boolean**)_: Whether to create a new wallet (default is `false`).
