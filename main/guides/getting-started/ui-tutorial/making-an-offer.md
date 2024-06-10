@@ -2,7 +2,7 @@
 
 If you've made it this far, you've created a React app that connects to the wallet, renders
 the IST purse balance of the user, and reads the chain with `chainStorageWatcher`. If you've
-run into an issues, you can check out the `checkpoint-4` branch for reference.
+run into an issues, you can check out the [checkpoint-4](https://github.com/agoric-labs/ui-tutorial/tree/checkpoint-4) branch for reference.
 
 In this final tutorial, you'll see how to make offers from your app, tying everything together
 in a basic end-to-end experience for the user.
@@ -277,7 +277,7 @@ similarly to the IST purse. In `Purses.tsx`, add the following:
 ```
 
 Now, make another offer, and see that your items purse automatically updates after the offer is accepted. To see the complete
-solution for this example, check out the `checkpoint-5` branch.
+solution for this example, check out the [checkpoint-5](https://github.com/agoric-labs/ui-tutorial/tree/checkpoint-5) branch.
 
 ### Result
 
