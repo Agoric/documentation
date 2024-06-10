@@ -118,7 +118,7 @@ $ agd query bank balances $addr -o json
 
 ## agd query gov proposals
 
-Query for a all paginated proposals that match optional filters:
+Query for a all paginated proposals that match optional filters.
 
 Example:
 
@@ -128,6 +128,17 @@ $ agd query gov proposals --output json | \
 ["1","2023-11-14T17:32:16.665791640Z","PROPOSAL_STATUS_PASSED"]
 ["2","2023-11-14T17:40:16.450879296Z","PROPOSAL_STATUS_PASSED"]
 ["3","2023-11-14T17:44:37.432643476Z","PROPOSAL_STATUS_PASSED"]
+```
+
+## agd query vstorage keys
+
+Query for the data residing at specified path in VStorage.
+
+Example:
+```
+$ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
+children:
+- vault0
 ```
 
 ## Transaction Commands
