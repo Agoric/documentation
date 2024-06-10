@@ -1,7 +1,7 @@
 # The `dapp-agoric-basics` Tutorial
 
 ## Introduction
-In this tutorial you will install the `dapp-agoric-basics` dapp. This dapp is a collection of basic usecases of Agoric smart contract.
+In this tutorial you will install the `dapp-agoric-basics` dapp. This dapp is a collection of basic use cases for Agoric smart contracts.
 - [Sell Concert Tickets Smart Contract](https://docs.agoric.com/guides/getting-started/sell-concert-tickets-contract-explainer.html)
 - [Swaparoo Contract](https://docs.agoric.com/guides/getting-started/swaparoo-how-to-swap-assets-explainer.html)
 - [Sending Invitation Payments using an Address](https://docs.agoric.com/guides/getting-started/swaparoo-making-a-payment-explainer.html)
