@@ -6,8 +6,9 @@ sidebar: auto
 
 This page lists words, expressions, or concepts used by the Agoric technology stack.
 
-## a3p (Agoric-3 Proposal)
-Acronym to refer to a proposal submitted on the agoric-3 mainnet
+## a3p
+
+A short form of [agoric-3-proposals](https://github.com/Agoric/agoric-3-proposals/), a repository containing "Proposals run or planned for Mainnet (agoric-3)". The resulting docker images supply a test network environment for dapps, as discussed in [getting started](/guides/getting-started/).
 
 ## Agoric CLI
 
