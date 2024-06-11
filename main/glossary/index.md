@@ -6,6 +6,9 @@ sidebar: auto
 
 This page lists words, expressions, or concepts used by the Agoric technology stack.
 
+## a3p (Agoric-3 Proposal)
+Acronym to refer to a proposal submitted on the agoric-3 mainnet
+
 ## Agoric CLI
 
 A command line interface for initializing, deploying, and starting Agoric projects, as well as installing dependencies. See the [Agoric CLI documentation](/guides/agoric-cli/) for more information.
