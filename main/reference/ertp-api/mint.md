@@ -6,7 +6,7 @@ A **Mint** has a one-to-one relationship with both an **[Issuer](./issuer)** and
 So it can only mint new assets of that **Brand** and is the only **Mint** that can mint
 new assets of that **Brand**.
 
-**Mints** are created by cqlling the **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function. See the **[Issuer](./issuer)** documentation for detailed information about how to use this function.
+**Mints** are created by calling the **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function. See the **[Issuer](./issuer)** documentation for detailed information about how to use this function.
 
 ## aMint.getIssuer()
 - Returns: **[Issuer](./issuer)**
