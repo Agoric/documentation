@@ -413,6 +413,10 @@ export default defineConfig({
               ],
             },
             {
+              text: 'Orchestration',
+              link: '/guides/orchestration/',
+            },
+            {
               text: 'JavaScript Framework',
               ariaLabel: 'JavaScript Framework',
               link: '/guides/js-programming/',
