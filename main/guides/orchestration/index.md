@@ -11,9 +11,9 @@ The orchestration client handles asynchronous tasks and complex workflows, inclu
 
 ```javascript
 const amount = coins(100, 'utia');
-const celestiaChain = E(orchestration).getChain('celestia');
-const icaCelestia = await E(celestiaChain).createAccount();
-await E(icaOsmosis).send(icaCelestia.receiver, amount);
-await E(timerService).delay(6000n);
-return E(icaCelestia).delegate(amount, celestiaValidator);
+const celestiaChain = await orchestration.getChain('celestia');
+const icaCelestia = await celestiaChain.createAccount();
+await icaOsmosis.transfer(icaCelestia.getAddress(), amount);
+await E(timerService).delay(600n);
+return icaCelestia.delegate(celestiaValidator, amount);
 ```
