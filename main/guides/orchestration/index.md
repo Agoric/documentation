@@ -24,7 +24,7 @@ user-controlled environment on the Agoric platform.
 
 ```javascript
 const amount = coins(100, 'utia');
-const celestiaChain = await orchestration.getChain('celestia');
+const celestiaChain = await orchestrator.getChain('celestia');
 const icaCelestia = await celestiaChain.createAccount();
 await icaOsmosis.transfer(icaCelestia.getAddress(), amount);
 await E(timerService).delay(600n);
