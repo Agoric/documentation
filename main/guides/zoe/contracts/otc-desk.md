@@ -7,9 +7,9 @@
 
 ![Building a Composable DeFi Contract](./assets/title.jpg)
 
-This is the OTC Desk contract from the ["Building a
-Composable DeFi Contract" episode of Cosmos Code With
-Us](https://cosmos.network/series/code-with-us/building-a-composable-defi-contract).
+This is the OTC Desk contract from the "Building a
+Composable DeFi Contract" episode of [Cosmos Code With
+Us workshop](https://www.youtube.com/watch?v=e9dMkC2oFh8).
 
 [Watch the replay of the
 workshop](https://www.youtube.com/watch?v=faxrecQgEio):

@@ -9,7 +9,7 @@ This section focusses on commands relevant to developing and deploying smart con
 
 - [Validators topics \- Agoric Community Forum](https://community.agoric.com/c/validators/9)
 - [Governance topics \- Agoric Community Forum](https://community.agoric.com/c/governance/6)
-- [Delegator Guide \(CLI\) \| Cosmos Hub](https://hub.cosmos.network/main/delegators/delegator-guide-cli.html)
+- [Delegator Guide \(CLI\) \| Cosmos Hub](https://hub.cosmos.network/delegators/delegator-guide-cli.html)
 
 :::
 
