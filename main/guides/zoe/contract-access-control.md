@@ -13,6 +13,6 @@ We can write a simple test as below to make sure that trying to `set` using the 
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-access
 
-Note that the `set()` method has no access check inside it. Access control is based on separation of powers between the `publicFacet`, which is expected to be shared widely, and the `creatorFacet`, which is closely held. _We'll discuss this [object capabilities](../js-programming/hardened-js#object-capabilities-ocaps) approach more later._If you're having trouble, check out the [`tut-03-access`](https://github.com/Agoric/dapp-offer-up/tree/tut-03-access) branch in the example repo.
+Note that the `set()` method has no access check inside it. Access control is based on separation of powers between the `publicFacet`, which is expected to be shared widely, and the `creatorFacet`, which is closely held. _We'll discuss this [object capabilities](../js-programming/hardened-js#object-capabilities-ocaps) approach more later._ If you're having trouble, check out the [`tut-03-access`](https://github.com/Agoric/dapp-offer-up/tree/tut-03-access) branch in the example repo.
 
 Next, let's look at minting and trading assets with [Zoe](../zoe/).
