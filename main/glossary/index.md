@@ -276,6 +276,16 @@ See [`E()`](#e) above.
 An object specifying how an [offer](#offer) can be cancelled, such as on demand or by a deadline.
 For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe#proposals).
 
+## Exo
+
+An Exo object is an exposed Remotable object with methods (aka a `Far` object) which is 
+normally defined with an `InterfaceGuard` as a protective outer layer, providing the first
+ layer of defensiveness.
+
+This [`@endo/exo` package](https://github.com/endojs/endo/tree/master/packages/exo) defines 
+the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo
+ objects.
+
 ## Facet
 
 A _facet_ is an object that exposes an API or particular view of some larger entity, which may be an object itself.
