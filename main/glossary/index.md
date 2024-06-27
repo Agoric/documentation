@@ -463,6 +463,15 @@ the user either gets what they said they wanted, or gets back what they original
 escrowed (a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
 
+## Orchestration 
+
+Orchestration API is a tool to help developers build seamless applications out of disparate interoperable chains and services.
+This composability allows for the development of user-centric applications
+ that leverage the unique strengths of different blockchain ecosystems.
+Orchestration integrates with existing Agoric components ([SwingSet](/guides/platform/#swingset), Cosmos modules) and introduces
+ vat-orchestration. This [vat](/glossary/#vat) manages Inter-Chain Account (ICA) identities and connections to host
+  chains, ensuring proper transaction authorization.
+
 ## Passable
 
 A _passable_ is something that can be sent to and from remote objects.
