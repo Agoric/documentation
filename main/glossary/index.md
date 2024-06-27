@@ -323,6 +323,10 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) for 
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other.
 For more details, see [What developers need to know about inter-blockchain communication](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
+## Intercahin Account (ICA)
+
+Interchain accounts on Agoric enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem facilitated by [Agoric Orchestration API](#orchestration). This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
+
 ## Invitation
 
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.
