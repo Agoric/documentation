@@ -100,6 +100,10 @@ For more information, see the [ERTP documentation's AmountValue section](/guides
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
 digital assets in the quantity specified by an [amount](#amount).
 
+## Baggage
+
+`baggage` is a `MapStore` that provides a way to preserve state and behavior of objects between smart [contract upgrades](guides/zoe/contract-upgrade) in a way that preserves identity of objects as seen from other [vats](#vat).
+
 ## BigInt
 
 In [ERTP AmountMath](/guides/ertp/amount-math), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
