@@ -647,3 +647,10 @@ patterns into reusable helpers. See the [Zoe Helpers API](/reference/zoe-api/zoe
 ## Zoe Service
 
 A set of API methods for deploying and working with smart contracts. See [Zoe Service API](/reference/zoe-api/zoe).
+
+## Zones
+
+Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism.  This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual) or can be revived after a vat upgrade (durable).
+
+See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+
