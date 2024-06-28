@@ -593,6 +593,8 @@ communicate with other vats and their objects and functions, but can only commun
 
 For more information, see the [Vat section in the Distributed JS Programming documentation](/guides/js-programming/#vats-the-unit-of-synchrony).
 
+The concept of a vat is metaphorically inspired by the philosophical experiment known as “Brain in a Vat.” This thought experiment, explored in philosophy, posits a scenario in which a brain is sustained in a vat and connected to a computer that simulates reality, raising questions about knowledge, reality, and perception. Similarly, in the context of distributed systems, a vat isolates and encapsulates its contents, maintaining strict boundaries on synchronous and asynchronous communication, much like the hypothetical brain’s isolated and controlled environment. For more details, see the Wikipedia page on [Brain in a Vat](https://en.wikipedia.org/wiki/Brain_in_a_vat).
+
 ## Wallet
 
 The overall place a party keeps their assets of all brands. For example, your wallet might contain 5 Quatloos
