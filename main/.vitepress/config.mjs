@@ -415,6 +415,17 @@ export default defineConfig({
             {
               text: 'Orchestration',
               link: '/guides/orchestration/',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Key Concepts',
+                  link: '/guides/orchestration/getting-started/key-concepts',
+                },
+                {
+                  text: 'dApp Orchestration Basics',
+                  link: '/guides/orchestration/getting-started/dapp-orchestration-basics',
+                },
+              ]
             },
             {
               text: 'JavaScript Framework',
