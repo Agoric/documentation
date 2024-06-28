@@ -278,7 +278,7 @@ For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe#proposals).
 
 ## Exo
 
-An Exo object is an exposed Remotable object with methods (aka a `Far` object) which is 
+An Exo object is an exposed Remotable object with methods (aka a [`Far`](/guides/js-programming/far) object) which is 
 normally defined with an `InterfaceGuard` as a protective outer layer, providing the first
  layer of defensiveness.
 
@@ -339,7 +339,7 @@ For more details, see [What developers need to know about inter-blockchain commu
 
 ## Intercahin Account (ICA)
 
-Interchain accounts on Agoric enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem facilitated by [Agoric Orchestration API](#orchestration). This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
+Interchain Accounts are an [IBC](#ibc) feature used in Agoric's [Orchestration API](#orchestration) to enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
 
 ## Invitation
 
@@ -487,8 +487,9 @@ Orchestration API is a tool to help developers build seamless applications out o
 This composability allows for the development of user-centric applications
  that leverage the unique strengths of different blockchain ecosystems.
 Orchestration integrates with existing Agoric components ([SwingSet](/guides/platform/#swingset), Cosmos modules) and introduces
- vat-orchestration. This [vat](/glossary/#vat) manages Inter-Chain Account (ICA) identities and connections to host
+ vat-orchestration. This [vat](/glossary/#vat) manages [Inter-Chain Account (ICA)](#intercahin-account-ica) identities and connections to host
   chains, ensuring proper transaction authorization.
+  For more information, see the [Orchestration API](/guides/orchestration/).
 
 ## Passable
 
