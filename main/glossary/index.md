@@ -648,7 +648,7 @@ patterns into reusable helpers. See the [Zoe Helpers API](/reference/zoe-api/zoe
 
 A set of API methods for deploying and working with smart contracts. See [Zoe Service API](/reference/zoe-api/zoe).
 
-## Zones
+## Zone
 
 Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism.  This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual) or can be revived after a vat upgrade (durable).
 
