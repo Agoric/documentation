@@ -245,3 +245,29 @@ A zone specifically designed for durability, allowing the contract to persist it
 ```javascript
 const zone = makeDurableZone(baggage);
 ```
+
+
+
+### Vow Tools
+
+See [Vow](/glossary/#vow); These tools handle promises and asynchronous operations within the contract. `prepareVowTools` prepares the necessary utilities to manage these asynchronous tasks, ensuring that the contract can handle complex workflows that involve waiting for events or responses from other chains.
+
+```javascript
+const vowTools = prepareVowTools(zone.subZone('vows'));
+...
+const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
+  zone,
+  makeRecorderKit,
+  zcf,
+  privateArgs.timerService,
+  vowTools,
+  makeChainHub(privateArgs.agoricNames),
+);
+...
+const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
+  zone,
+  makeRecorderKit,
+  vowTools,
+  zcf,
+);
+```

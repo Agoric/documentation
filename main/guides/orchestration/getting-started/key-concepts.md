@@ -70,31 +70,7 @@ chainHub.registerConnection(
 );
 ```
 
-In this example, chainHub is used to register a new chain and establish a connection between the Agoric chain and the newly registered chain. This setup ensures that the orchestration logic can interact with the chain even before it has been assigned a user-friendly name by BLD stakers.
-
-### Vow Tools
-
-These tools handle promises and asynchronous operations within the contract. `prepareVowTools` prepares the necessary utilities to manage these asynchronous tasks, ensuring that the contract can handle complex workflows that involve waiting for events or responses from other chains.
-
-```javascript
-const vowTools = prepareVowTools(zone.subZone('vows'));
-...
-const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
-  zone,
-  makeRecorderKit,
-  zcf,
-  privateArgs.timerService,
-  vowTools,
-  makeChainHub(privateArgs.agoricNames),
-);
-...
-const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
-  zone,
-  makeRecorderKit,
-  vowTools,
-  zcf,
-);
-```
+In this example, chainHub is used to register a new chain and establish a connection between the Agoric chain and the newly registered chain.
 
 
 ### Orchestration Account
