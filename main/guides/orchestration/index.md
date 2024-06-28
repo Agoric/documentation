@@ -1,11 +1,6 @@
 # Orchestration Overview
 
 
-<br/>
-<img src="./assets/orca2.png" width="100%" />
-<br/>
-
-
 Agoric's Orchestration API is a tool to help developers build seamless applications out of disparate interoperable chains and services.
 This composability allows for the development of user-centric applications
  that leverage the unique strengths of different blockchain ecosystems.
