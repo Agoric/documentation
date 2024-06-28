@@ -5,7 +5,7 @@ Here, we overview the fundamental concepts involved with building orchestration 
 
 ### Interchain Account (ICA)
 
-[Interchain Accounts](/glossary/#ica) (ICAs) are an IBC feature used in Agoric’s orchestration API. They enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem, facilitated by Agoric [Orchestration](#orchestration) API. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
+[Interchain Accounts](/glossary/#interchain-account-ica) (ICAs) are an IBC feature used in Agoric’s orchestration API. They enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem, facilitated by Agoric [Orchestration](#orchestration) API. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
 
 
 <br/>
