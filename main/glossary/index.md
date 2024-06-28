@@ -102,7 +102,7 @@ digital assets in the quantity specified by an [amount](#amount).
 
 ## Baggage
 
-`baggage` is a `MapStore` that provides a way to preserve state and behavior of objects between smart [contract upgrades](/guides/zoe/contract-upgrade) in a way that preserves identity of objects as seen from other [vats](#vat).
+`baggage` is a `MapStore` that provides a way to preserve state and behavior of objects between [smart contract upgrades](/guides/zoe/contract-upgrade) in a way that preserves identity of objects as seen from other [vats](#vat).
 
 ## BigInt
 
