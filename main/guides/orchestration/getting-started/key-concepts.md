@@ -21,6 +21,7 @@ For a detailed explanation of these access control rules, see [Access Control wi
 
 
 ### Example ICA Usage from a Smart Contract
+This sample is taken from one of the [example contracts](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/examples/swapExample.contract.js)
 
 ```javascript
 const stackAndSwapFn = async (orch, ...) => {
