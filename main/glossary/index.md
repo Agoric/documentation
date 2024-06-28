@@ -323,6 +323,10 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) for 
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other.
 For more details, see [What developers need to know about inter-blockchain communication](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
+## Interchain Account (ICA)
+ Interchain Accounts outlines a cross-chain account management protocol built upon IBC. Also see the ICS-027 Interchain Account [spec](https://tutorials.cosmos.network/academy/3-ibc/8-ica.html)
+
+
 ## Invitation
 
 A [payment](#payment) whose amount represents (and is required for) participation in a contract instance.

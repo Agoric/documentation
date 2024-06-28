@@ -422,8 +422,8 @@ export default defineConfig({
                   link: '/guides/orchestration/getting-started/key-concepts',
                 },
                 {
-                  text: 'dApp Orchestration Basics',
-                  link: '/guides/orchestration/getting-started/dapp-orchestration-basics',
+                  text: 'Contract Walkthrough',
+                  link: '/guides/orchestration/getting-started/contract-walkthrough',
                 },
               ]
             },
