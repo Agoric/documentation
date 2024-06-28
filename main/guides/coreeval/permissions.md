@@ -37,7 +37,6 @@ In the top level promise space, we have:
 - **agoricNames**: read-only access to the [agoricNames](../integration/name-services#agoricnames-agoricnamesadmin-well-known-names) name service.
 
 - **agoricNamesAdmin**: admin / update access to [agoricNames](../integration/name-services#agoricnames-agoricnamesadmin-well-known-names) and the name hubs it contains.
-  **Warning: this includes access to over-write existing bindings to instances, brands, etc.**
   **Warning: this includes the right to over-write existing bindings to instances, brands, etc.**
 
 - **bankManager**: to manage reflection of cosmos
