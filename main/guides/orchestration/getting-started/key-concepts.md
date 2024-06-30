@@ -102,3 +102,4 @@ await orchestrationAccount.transfer(amount, destinationAddress);
 await orchestrationAccount.transferSteps(amount, transferMsg);
 ```
 
+To see the function the Orchestration API exposes, see [Orchestration API](/guides/orchestration/getting-started/api.html)

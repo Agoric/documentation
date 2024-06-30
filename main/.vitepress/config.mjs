@@ -422,6 +422,10 @@ export default defineConfig({
                   link: '/guides/orchestration/getting-started/key-concepts',
                 },
                 {
+                  text: 'API',
+                  link: '/guides/orchestration/getting-started/api',
+                },
+                {
                   text: 'Contract Walkthrough',
                   link: '/guides/orchestration/getting-started/contract-walkthrough',
                 },
