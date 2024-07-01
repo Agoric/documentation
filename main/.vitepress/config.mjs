@@ -181,6 +181,12 @@ export default defineConfig({
             {
               text: 'Building Client Dapps',
               link: '/guides/getting-started/contract-rpc',
+              items: [
+                {
+                  text: 'Takeaway 1: Starting a Local Chain',
+                  link: '/guides/getting-started/explainer-how-to-start-a-local-chain',
+                },
+              ],
             },
             {
               text: 'Permissioned Contract Deployment',
