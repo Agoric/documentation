@@ -50,8 +50,8 @@ There are several kinds of Assets.
 
 - **AssetKind.NAT** : Used with fungible assets. **AmountValues** are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
 - **AssetKind.SET** : Deprecated.
-- **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium). **AmountValues** are arrays of objects.
-- **AssetKind.COPY_BAG** : Used with non-fungible assets where there can be duplicates. (e.g., weapons in a computer game). **AmountValues** are arrays of objects.
+- **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium).
+- **AssetKind.COPY_BAG** : Used with semi-fungible assets where there can be duplicates. The duplicates of the same asset are fungible with each other (e.g., weapons in a computer game).
 
 Even though very different mathematical processes are performed,
 **[AmountMath](./amount-math)** methods work for all kinds of assets.
