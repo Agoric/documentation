@@ -74,7 +74,12 @@ export const nav = [
         collapsed: true,
         items: [],
       },
-
+      {
+        text: 'Orchestration',
+        link: '/guides/orchestration/',
+        collapsed: true,
+        items: [],
+      },
       {
         text: 'Zoe Smart Contract Framework',
         link: '/guides/zoe/',
