@@ -51,8 +51,6 @@ on or return a **Payment**.
 
 - [**anIssuer.burn()**](./issuer#anissuer-burn-payment-optamount)
   - Destroys all of the digital assets in the **Payment**.
-- [**anIssuer.combine()**](./issuer#anissuer-combine-paymentsarray-opttotalamount)
-  - Combines multiple **Payments** into one new **Payment**.
 - [**anIssuer.getAmountOf()**](./issuer#anissuer-getamountof-payment)
   - Describes the **Payment**'s balance as an **Amount**.
 - [**anIssuer.isLive()**](./issuer#anissuer-islive-payment)
@@ -72,4 +70,6 @@ on or return a **Payment**.
   - Split a single **Payment** into multiple **Payments**.
 - [**anIssuer.claim()**](./issuer#anissuer-claim-payment-optamount)
   - Transfers all digital assets from *payment* to a new **Payment**.
+- [**anIssuer.combine()**](./issuer#anissuer-combine-paymentsarray-opttotalamount)
+  - Combines multiple **Payments** into one new **Payment**.
 :::

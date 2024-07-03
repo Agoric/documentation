@@ -177,6 +177,17 @@ const paymentToBurn = quatloosMint.mintPayment(amountToBurn);
 const burntAmount = quatloosIssuer.burn(paymentToBurn, amountToBurn);
 ```
 
+## anIssuer.isLive(payment)
+- **payment**: **[Payment](./payment)**
+- Returns: **Boolean**
+
+Returns **true** if the *payment* was created by the **Issuer** and is available for use 
+(i.e., it hasn't been consumed).
+
+If *payment* is a promise, the method proceeds after it resolves to a **Payment**.
+
+::: warning DEPRECATED
+
 ## anIssuer.claim(payment, optAmount?)
 - **payment**: **[Payment](./payment)**
 - **optAmount**: **[Amount](./ertp-data-types#amount)** - Optional.
@@ -200,16 +211,6 @@ const originalPayment = quatloosMint.mintPayment(amountExpectedToTransfer);
 
 const newPayment = quatloosIssuer.claim(originalPayment, amountToTransfer);
 ```
-## anIssuer.isLive(payment)
-- **payment**: **[Payment](./payment)**
-- Returns: **Boolean**
-
-Returns **true** if the *payment* was created by the **Issuer** and is available for use 
-(i.e., it hasn't been consumed).
-
-If *payment* is a promise, the method proceeds after it resolves to a **Payment**.
-
-::: warning DEPRECATED
 
 ## anIssuer.combine(paymentsArray, optTotalAmount?)
 - **paymentsArray**: **Array&lt;[Payment](./payment)>**
