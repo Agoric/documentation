@@ -1,0 +1,40 @@
+---
+title: ERTP Interfaces
+---
+classDiagram
+   class IssuerKit~Kind~
+   IssuerKit --* Mint~Kind~
+   IssuerKit --* Issuer~Kind~
+   IssuerKit --* Brand~Kind~
+
+
+   class Mint~Kind~ {
+     getIssuer()
+     mintPayment(amount: Amount~Kind~)
+   }
+Mint --> Issuer: getIssuer
+Mint --> Payment~Kind~ : mintPayment
+   class Issuer~Kind~ {
+    getBrand()
+makeEmptyPurse()
+   }
+   Issuer --> Brand: getBrand
+   Issuer --> Purse~Kind~: makeEmptyPurse()
+   class Brand~Kind~
+   class Payment~Kind~
+   class Amount~Kind~ {
+     brand: Brand~Kind~
+     value: Value~Kind~
+    }
+    class Purse~Kind~ {
+        +deposit(payment: Payment~Kind~, expectedAmount?: Amount~Kind~)
+        +withdraw(amount: Amount~Kind~)
+    }
+
+    class AssetKind {
+     NAT // fungible
+     COPY_BAG // non-fungible
+     ...
+    }
+<<Enumeration>> AssetKind
+```
