@@ -1,5 +1,10 @@
 # Cross-Chain Swap Contract
 
+## Overview Diagram
+<br/>
+<img src="/reference/assets/sequence-diagrams/orchestration-swap-example.svg" width="100%" />
+<br/>
+
 ## Imports
 ```javascript
 import { StorageNodeShape } from '@agoric/internal';

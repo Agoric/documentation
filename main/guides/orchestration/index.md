@@ -17,5 +17,5 @@ The following sequence diagram provides a comprehensive overview of the orchestr
 
 
 <br/>
-<img src="/reference/assets/orchestration-workflow-1.svg" width="100%" />
+<img src="/reference/assets/sequence-diagrams/orchestration-workflow-1.svg" width="100%" />
 <br/>

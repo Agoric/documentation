@@ -4,9 +4,9 @@ This section is designed to provide detailed explanations and insights into exam
 
 In this section, we will cover three primary contracts:
 
-1. Swap Contract: A comprehensive guide to the process of swapping assets between different chains using the Agoric orchestration library.
-2. Unbond Contract: A detailed walkthrough of the unbonding and liquid staking process, highlighting the steps involved in managing cross-chain operations.
-3.	Dapp Orchestration Basics: A dapp template serving as an introduction to the foundational concepts and implementation of basic orchestration within an Agoric dApp (currently under active development).
+1. `swapExample.contract.js`: A comprehensive guide to the process of swapping assets between different chains using the Agoric orchestration library.
+2. `unbondExample.contract.js`: A detailed walkthrough of the unbonding and liquid staking process, highlighting the steps involved in managing cross-chain operations.
+3.	`orca.contract.js`: A dapp template serving as an introduction to the foundational concepts and implementation of basic orchestration within an Agoric dApp (currently under active development).
 
 Each walkthrough will include line-by-line explanations of the contract code, providng insights into the mechanics and best practices of smart contract development on the Agoric platform. By the end of these walkthroughs, you should have a solid understanding of how to utilize Agoric’s tools and libraries to create robust and efficient cross-chain smart contracts.
 
