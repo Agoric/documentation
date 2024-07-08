@@ -190,4 +190,4 @@ return harden({ publicFacet });
 };
 ```
 
-Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and return: Returns the hardened public facet.
+Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and returns the hardened public facet.
