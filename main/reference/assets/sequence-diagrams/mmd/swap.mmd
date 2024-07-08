@@ -1,0 +1,33 @@
+---
+title: Orchestration Osmosis Transfer Example
+---
+sequenceDiagram
+    participant contract
+
+    contract->>OrchLib: provideOrchestration
+    OrchLib --> contract: orch
+    create participant orch
+    contract --> orch: getChain('omniflixhub')
+    orch->>AgoricNames: lookup('chain', 'omniflixhub')
+    AgoricNames-->>orch: ChainInfo for omniflixhub
+    orch --> contract: omniflixhub chain object
+
+    participant omniflixhub
+    contract->>omniflixhub: makeAccount()
+    omniflixhub --> contract: omniAccount
+
+    create participant omniAccount
+    contract->>omniAccount: getAddress()
+    omniAccount-->>contract: omniAddress
+
+    participant agoric
+    contract->>agoric: makeAccount()
+    agoric --> contract: localAccount
+
+    participant localAccount
+    contract->>localAccount: deposit(payments)
+    contract->>localAccount: transferSteps(give.Stable, transferMsg)
+    localAccount-->>contract: txResult
+
+    contract->>omniAccount: delegate(offerArgs.validator, offerArgs.staked)
+    omniAccount-->>contract: delegationResult
