@@ -11,7 +11,7 @@ Orchestration integrates with existing Agoric components ([SwingSet](/guides/pla
 The Orchestration API handles asynchronous tasks and complex workflows, including those spanning multiple chains. This empowers smart contracts for actions like inter-chain staking and multi-hop transfers, facilitated by notifications from the transfer vat and IBC middleware updates. Orchestration simplifies complex cross-chain interactions within a secure and user-controlled environment on the Agoric platform.
 
 
-# Introduction to Orchestration API Flows
+# Introduction to Orchestration API Flow
 
 The following sequence diagram provides a comprehensive overview of the orchestration process within the Agoric platform. This example illustrates the interaction between various components, highlighting how the orchestration library (`OrchLib`) facilitates cross-chain operations. This is a good first example to understand the flow of the Orchestration API, showing the steps involved in creating and managing cross-chain transactions.
 
