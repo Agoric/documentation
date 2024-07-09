@@ -1,6 +1,6 @@
 # ChainHub
 
-The [ChainHub API](https://github.com/Agoric/agoric-sdk/blob/859d8c0d151ff6f686583db1eaf72efb89cc7648/packages/orchestration/src/exos/chain-hub.js#L99) is responsible managing chain and IBC connection information. It facilitates the registration and retrieval of chain and connection data.
+The [ChainHub API](https://github.com/Agoric/agoric-sdk/blob/859d8c0d151ff6f686583db1eaf72efb89cc7648/packages/orchestration/src/exos/chain-hub.js#L99) is responsible for managing chain and IBC connection information. It facilitates the registration and retrieval of chain and connection information.
 
 ```js
 const zone = makeDurableZone(baggage);
@@ -8,22 +8,25 @@ const { agoricNames } = remotePowers;
 const chainHub = makeChainHub(agoricNames, zone);
 ```
 
-The `makeChainHub` function accepts a `Remote<NameHub>` reference (`agoricNames`) and an optional `Zone` for managing data durability. The `makeChainHub` fuction creates a new `ChainHub` instance either in the specified zone or in the heap if no zone is provided. The resulting object is an Exo singleton, which means it has no previous state. Its state consists only of a cache of queries to `agoricNames` and the information provided in registration calls.
+The `makeChainHub` function accepts a `Remote<NameHub>` reference (`agoricNames`) and an optional `Zone` to manage data durability. The `makeChainHub` function creates a new `ChainHub` instance either in the specified zone or in the heap if no zone is provided. The resulting object is an Exo singleton, meaning it has no previous state. Its state consists solely of a cache of queries to `agoricNames` and the information provided during registration calls.
 
-The `ChainHub` objects maintains two `MapStores`:
+The `ChainHub` object maintains two `MapStores`:
 
 - `chainInfos`: For storing `CosmosChainInfo` objects.
 - `connectionInfos`: For storing `IBCConnectionInfo` objects.
 
 These `MapStores` are not exposed directly. They are abstracted and used internally by the methods provided by the ChainHub.
 
-# ChainHub Interface
+# ChainHub APIs
 
-The core functionality is encapsulated within the `makeChainHub` function, which sets up a new `ChainHub` in the given zone. The `ChainHub` is responsible for:
+The core functionality is encapsulated within the `makeChainHub` function, which sets up a new `ChainHub` in the specified zone. The `ChainHub` provides the following APIs:
 
-## **Registering Chain Information (`registerChain`)**
+## **chainHub.registerChain(name, chainInfo)**
 
-Stores information about a chain inside the `chainInfos` mapstore, which can be used for quickly looking up details without querying a remote source.
+- name: **string**
+- chainInfo: **CosmosChainInfo**
+
+Stores information about a chain in the `chainInfos` MapStore, enabling quick lookup of details without querying a remote source.
 
 ```js
 const chainInfo = harden({
@@ -41,21 +44,24 @@ const chainKey = `${chainInfo.chainId}-${(nonce += 1n)}`;
 chainHub.registerChain(chainKey, chainInfo);
 ```
 
-The function takes two parameters: `name`, which is a `string` representing the unique identifier of the chain, and `chainInfo`, which is an object structured according to the `CosmosChainInfo` format.
+## **chainHub.getChainInfo(chainName)**
 
-## **Retrieving Chain Information (`getChainInfo`)**
+- chainName: **string**
+- Returns: **Vow\<ActualChainInfo\<K\>\>**
 
-Retrieves stored chain information from the `chainInfos` mapstore or fetches it from a remote source if not available locally.
+Retrieves stored chain information from the `chainInfos` MapStore or fetches it from a remote source if not available locally.
 
 ```js
 chainHub.getChainInfo('agoric-3');
 ```
 
-The function takes a single parameter, `chainName`, which is a `string` template type `K`, and returns a promise (`Vow`) that resolves to `ActualChainInfo<K>`, providing detailed information about the specified chain based on its name.
+## **chainHub.registerConnection(chainId1, chainId2)**
 
-## **Registering Connection Information (`registerConnection`)**
+- chainId1: **string**
+- chainId2: **string**
+- Returns: **IBCConnectionInfo**
 
-Stores information about a connection between two chains in `connectionInfos` mapstore, such as IBC connection details.
+Stores information about a connection between two chains in `connectionInfos` Mapstore, such as IBC connection details.
 
 ```js
 const chainConnection = {
@@ -83,11 +89,13 @@ const chainConnection = {
 chainHub.registerConnection('agoric-3', 'cosmoshub', chainConnection);
 ```
 
-The function accepts three parameters: `chainId1` and `chainId2`, both of which are `strings` representing the identifiers of the two chains being connected, and `connectionInfo`, which is an object containing the details of the IBC connection as specified by the `IBCConnectionInfo` format
+## **chainHub.getConnectionInfo(chain1, chain2)**
 
-## **Retrieving Connection Information (`getConnectionInfo`)**
+- chain1: **string** | { chainId: **string** }
+- chain2: **string** | { chainId: **string** }
+- Returns: **Vow\<IBCConnectionInfo\<K\>\>**
 
-Retrieves stored connection information from `connectionInfos` mapstore or fetches it from a remote source if not available locally.
+Retrieves stored connection information from `connectionInfos` Mapstore or fetches it from a remote source if not available locally.
 
 ```js
 const chainConnection = await E.when(
@@ -95,16 +103,16 @@ const chainConnection = await E.when(
 );
 ```
 
-The function takes two parameters, `chain1` and `chain2`, each of which can be either a `string` representing a chain identifier or an `object` with a `chainId` property, and it returns a promise (`Vow`) that resolves with an `IBCConnectionInfo` object detailing the connection between the two chains.
+## **chainHub.getChainsAndConnection(chainName1, chainName2)**
 
-## **Retrieving Combined Chain and Connection Information (`getChainsAndConnection`)**
+- chainName1: **C1** extends **string**
+- chainName2: **C2** extends **string**
+- Returns: **Vow\<[ActualChainInfo\<C1\>, ActualChainInfo\<C2\>, IBCConnectionInfo]\>**
 
-A composite function that fetches information about two chains and their connection simultaneously.
+This method fetches information about two chains and their connection simultaneously.
 
 ```js
 const [agoric3, cosmoshub, connectionInfo] = await E.when(
   chainHub.getChainsAndConnection('agoric-3', 'cosmoshub'),
 );
 ```
-
-The function accepts two parameters, `chainName1` and `chainName2`, both of which are strings but defined as template types `C1` and `C2` respectively. It returns a promise (`Vow`) that resolves to a tuple containing the detailed information of both chains, `ActualChainInfo<C1>` and `ActualChainInfo<C2>`, along with their IBC connection information (`IBCConnectionInfo`).
