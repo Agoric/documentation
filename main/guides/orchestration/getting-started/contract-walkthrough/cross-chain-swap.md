@@ -18,15 +18,15 @@ import { provideOrchestration } from '../utils/start-helper.js';
 ```
 
 Importing Shapes and Utilities:
-- `StorageNodeShape` and TimerServiceShape are imported for defining the shape of certain objects.
+- `StorageNodeShape` and TimerServiceShape are imported for validating the `privateArgs`.
 - `withdrawFromSeat` is a helper function from Zoe to withdraw funds from a seat.
 - `Far` is used to create a remotely accessible object.
-- `deeplyFulfilled` ensures that all promises within an object are resolved.
-- `M` and `objectMap` are pattern-matching utilities.
+- `deeplyFulfilled` is a function that ensures that all promises within an object are resolved.
+- `M` are pattern-matching utilities, and `objectMap` is like `Array.map` but for properties of an object.
 - `orcUtils` is a utility library specific to orchestrating chain operations.
 - `provideOrchestration` is a function that sets up orchestration.
 
-## JSDoc Annotations for Type Information
+## Type Imports
 ```javascript
 /**
  * @import {Orchestrator, IcaAccount, CosmosValidatorAddress} from '../types.js'
@@ -41,7 +41,7 @@ Importing Shapes and Utilities:
 
 This includes type information to help with TypeScript or JSDoc annotations, which are useful for understanding the types used throughout the contract.
 
-## `stakeAndSwapFn` Function Definition
+## `stakeAndSwapFn` Offer Handler 
 
 ```javascript
 /**
@@ -60,21 +60,21 @@ const stakeAndSwapFn = async (orch, { zcf }, seat, offerArgs) => {
 Function Parameters:
 - `orch`: The orchestrator object to manage interactions with chains/accounts.
 - `ctx`: Context object containing zcf.
-- `seat`: The seat representing the user’s position in the contract.
+- `seat`: The seat representing the contract's position in the offer.
 - `offerArgs`: Arguments provided with the offer, including staked amount and validator address.
 
 ```javascript
 const { give } = seat.getProposal();
 ```
 
-Extracts the give part of the proposal from the seat. This includes what the user is offering to the contract.
+Extracts the `give` part of the proposal from the seat. This includes what the user is offering to the contract.
 
 ```javascript
 const omni = await orch.getChain('omniflixhub');
 const agoric = await orch.getChain('agoric');
 ```
 
-Retrieves chain objects for omniflixhub and agoric chains using the orchestrator.
+Retrieves chain objects for omniflixhub (a remote chain) and agoric (the local chain) chains using the orchestrator.
 
 ```javascript
 const [omniAccount, localAccount] = await Promise.all([
@@ -111,7 +111,7 @@ Withdraws the funds specified in the give part of the proposal from the seat.
 Deposits the withdrawn payments into the local account.
 
 ### Exit Seat
-The user’s seat exits the contract, completing their involvement.
+The seat exits the offer, completing the offer being handled.
 
 ## Building and Executing Swap Instructions
 
@@ -121,13 +121,15 @@ const transferMsg = orcUtils.makeOsmosisSwap({
     destChain: 'omniflixhub',
     destAddress: omniAddress,
     amountIn: give.Stable,
-    brandOut: 'FIXME',
+    brandOut: '...',
     slippage: 0.03,
 });
 ```
 
-### Build Swap Instructions
-Constructs the swap instructions using orcUtils.makeOsmosisSwap. Parameters include destination chain, destination address, input amount, output brand (placeholder), and slippage tolerance.
+Parameters include destination chain, destination address, input amount, output brand (placeholder), and slippage tolerance. In the `give` keyword record, the `Stable` keyword is expected to have the assets to trade. 
+
+### Executing the `Swap` Instructions & Delegate
+Carries out the swap instructions using the results of `orcUtils.makeOsmosisSwap` above. 
 
 ```javascript
 await localAccount
@@ -138,16 +140,12 @@ await localAccount
 .catch(e => console.error(e));
 ```
 
-### Execute Swap
-Transfers the stablecoins according to the swap instructions.
+Transfers the stablecoins according to the swap instructions. On `transferSteps` being resolves, we delegate the staked amount to the specified validator on the omniflixhub chain.
 
-### Delegate
-Delegates the staked amount to the specified validator on the omniflixhub chain.
+We log any errors that occur during the process.
 
-### Error Handling
-Logs any errors that occur during the process.
+## Declaring `privateArgs` shape, and upgradeability
 
-## Export Contract Meta
 ```javascript
 /** @type {ContractMeta<typeof start>} */
 export const meta = {
@@ -164,15 +162,10 @@ export const meta = {
 harden(meta);
 ```
 
-### Contract Metadata
-Defines the shape of private arguments and the contract’s upgradability.
+This defines the shape of private arguments and the contract’s upgradability, and `harden` ensures that the metadata object is immutable.
 
-### harden
-Ensures that the metadata object is immutable.
-
-## Utility Functions
+## makeNatAmountShape
 ```javascript
-// XXX copied from inter-protocol
 // TODO move to new `@agoric/contracts` package when we have it
 /**
  * @param {Brand} brand must be a 'nat' brand, not checked
@@ -182,10 +175,11 @@ export const makeNatAmountShape = (brand, min) =>
   harden({ brand, value: min ? M.gte(min) : M.nat() });
 ```
 
-### makeNatAmountShape
-Utility function to create a shape for amounts of the specified brand. If a minimum value is provided, ensures the amount is greater than or equal to it.
+Utility function to create a shape for amounts of the specified fungible brand [Nat](/glossary/#Asset-kind???). If a minimum value is provided, ensures the amount is greater than or equal to it.
 
 ## Start Function
+Now we define the main entrypoint of the contract, the `start` function, with the usual arguments, `zcf`, `privateAge`, and `baggage`:
+
 ```javascript
 /**
  * @param {ZCF} zcf
@@ -210,9 +204,7 @@ export const start = async (zcf, privateArgs, baggage) => {
   } = privateArgs;
 ```
 
-## Start Function Parameters
-Includes `zcf`, `privateArgs`, and `baggage`.
-
+## Setting up Orchestration
 ```javascript
   const { orchestrate } = provideOrchestration(
     zcf,
@@ -228,15 +220,17 @@ Includes `zcf`, `privateArgs`, and `baggage`.
   );
 ```
 
-Sets up orchestration using the provided arguments and `marshaller`.
+This sets up orchestration using the provided arguments and `marshaller`.
 
+
+## Getting brands from Contract Terms
 ```javascript
 const { brands } = zcf.getTerms();
 ```
 
 This retrieves the brands specified in the contract terms.
 
-## Offer Handlers
+## Handler for swap and stake offers
 
 ```javascript
   /** deprecated historical example */
@@ -246,10 +240,10 @@ This retrieves the brands specified in the contract terms.
    *   { staked: Amount<'nat'>; validator: CosmosValidatorAddress }
    * >}
    */
-  const swapAndStakeHandler = orchestrate('LSTTia', { zcf }, stackAndSwapFn);
+  const swapAndStakeHandler = orchestrate('LSTTia', { zcf }, stakeAndSwapFn);
 ```
 
-### swapAndStakeHandler Offer Handler
+### `swapAndStakeHandler` Offer Handler
 Defines the offer handler for the swap and stake operation using `stakeAndSwapFn`.
 
 ```javascript

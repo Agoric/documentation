@@ -4,11 +4,11 @@ The Agoric Orchestration API enables developers to seamlessly manage and interac
 
 See [Orchestration API Spec](https://agoric-sdk.pages.dev/modules/_agoric_orchestration)
 
-## API Surface Functions
+## Orchestrator Interface
 
-The Orchestration API provides a set of high-level functions to manage and interact with interchain accounts. Below are the primary functions available to developers:
+The `Orchestrator` interface provides a set of high-level methods to manage and interact with interchain accounts. Below are the primary methods:
 
-### getChain
+### `getChain`
 Retrieves the chain information and provides access to chain-specific methods.
 
 ```javascript
@@ -16,27 +16,27 @@ const chain = await orchestrator.getChain('chainName');
 ```
 
 ### makeLocalAccount
-Creates a new local chain account.
+Creates a new `LocalchainAccount`.
 
 ```javascript
 const localAccount = await orchestrator.makeLocalAccount();
 ```
 
 ### getBrandInfo
-Returns information about a denom, including the equivalent local Brand, the chain where the denom is held, and the chain that issues the corresponding asset.
+Returns information about a `denom`, including the equivalent local Brand, the chain where the denom is held, and the chain that issues the corresponding asset.
 
 ```javascript
 const brandInfo = orchestrator.getBrandInfo('denom');
 ```
 
 ### asAmount
-Converts a denom amount to a local structured Amount.
+Converts a denom amount to an `Amount` with a brand.
 
 ```javascript
 const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 ```
 
-## Orchestration Account Functions
+## OrchestrationAccount Interface
 Orchestration accounts provide high-level operations for managing accounts on remote chains. Below are the primary methods available:
 
 ### getAddress
@@ -48,7 +48,7 @@ const address = await orchestrationAccount.getAddress();
 ### getBalances
 Returns an array of amounts for every balance in the account.
 
-```
+```javascript
 const balances = await orchestrationAccount.getBalances();
 ```
 
