@@ -415,6 +415,12 @@ export default defineConfig({
             {
               text: 'Orchestration',
               link: '/guides/orchestration/',
+              items: [
+                {
+                  text: 'provideOrchestration',
+                  link: '/guides/orchestration/provideOrchestration',
+                },
+              ],
             },
             {
               text: 'JavaScript Framework',
