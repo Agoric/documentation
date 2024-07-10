@@ -175,7 +175,7 @@ export const makeNatAmountShape = (brand, min) =>
   harden({ brand, value: min ? M.gte(min) : M.nat() });
 ```
 
-Utility function to create a shape for amounts of the specified fungible brand [Nat](/glossary/#Asset-kind???). If a minimum value is provided, ensures the amount is greater than or equal to it.
+Utility function to create a shape for amounts of the specified fungible brand. If a minimum value is provided, ensures the amount is greater than or equal to it.
 
 ## Start Function
 Now we define the main entrypoint of the contract, the `start` function, with the usual arguments, `zcf`, `privateAge`, and `baggage`:
