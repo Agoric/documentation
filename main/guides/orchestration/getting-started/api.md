@@ -1,14 +1,14 @@
 # Orchestration API
 
-The Agoric Orchestration API enables developers to seamlessly manage and interact with accounts across multiple blockchain networks, simplifying the complexities of cross-chain operations.
+The Agoric [Orchestration](/glossary/#orchestration) API enables developers to seamlessly manage and interact with accounts across multiple blockchain networks, simplifying the complexities of cross-chain operations.
 
 See [Orchestration API Spec](https://agoric-sdk.pages.dev/modules/_agoric_orchestration)
 
 ## Orchestrator Interface
 
-The `Orchestrator` interface provides a set of high-level methods to manage and interact with interchain accounts. Below are the primary methods:
+The [`Orchestrator`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator) interface provides a set of high-level methods to manage and interact with interchain accounts. Below are the primary methods:
 
-### `getChain`
+### getChain
 Retrieves the chain information and provides access to chain-specific methods.
 
 ```javascript
