@@ -37,6 +37,6 @@ The Unbond Contract focuses on the process of unbonding staked assets and perfor
 The Agoric Dapp Orchestration Basics walkthrough (currently under development) will provide an introduction to the core concepts and basic implementation of orchestrtion within an Agoric dApp. This guide aims to:
 
 - Explain the fundamental principles of orchestration.
-- lorem
+- Show an end-to-end dApp using the Orchestration API
 
 [See Contract Overview](/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics)
