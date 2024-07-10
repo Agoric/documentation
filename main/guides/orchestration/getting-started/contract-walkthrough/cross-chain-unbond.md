@@ -7,12 +7,10 @@
 
 ## Imports
 ```javascript
-import { Far } from '@endo/far';
 import { M } from '@endo/patterns';
 import { provideOrchestration } from '../utils/start-helper.js';
 ```
 
-- `Far`: Imported from @endo/far, used to create a remotely accessible object.
 - `M`: Imported from @endo/patterns, provides pattern-matching utilities.
 - `provideOrchestration`: Imported from a utility module, used to set up orchestration.
 
