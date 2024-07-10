@@ -9,28 +9,28 @@ See [Orchestration API Spec](https://agoric-sdk.pages.dev/modules/_agoric_orches
 The [`Orchestrator`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator) interface provides a set of high-level methods to manage and interact with interchain accounts. Below are the primary methods:
 
 ### getChain
-Retrieves the chain information and provides access to chain-specific methods.
+Retrieves the chain information and provides access to chain-specific methods. See [getChain](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getChain)
 
 ```javascript
 const chain = await orchestrator.getChain('chainName');
 ```
 
 ### makeLocalAccount
-Creates a new LocalChainAccount.
+Creates a new `LocalChainAccount`. See [makeLocalAccount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#makeLocalAccount).
 
 ```javascript
 const localAccount = await orchestrator.makeLocalAccount();
 ```
 
 ### getBrandInfo
-Returns information about a `denom`, including the equivalent local Brand, the chain where the denom is held, and the chain that issues the corresponding asset.
+Returns information about a `denom`, including the equivalent local Brand, the chain where the denom is held, and the chain that issues the corresponding asset. See [getBrandInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getBrandInfo).
 
 ```javascript
 const brandInfo = orchestrator.getBrandInfo('denom');
 ```
 
 ### asAmount
-Converts a denom amount to an `Amount` with a brand.
+Converts a denom amount to an `Amount` with a brand. See [asAmount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#asAmount).
 
 ```javascript
 const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
