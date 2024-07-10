@@ -100,6 +100,10 @@ For more information, see the [ERTP documentation's AmountValue section](/guides
 [Purses](#purse) and [payments](#payment) are AssetHolders. These are objects that contain
 digital assets in the quantity specified by an [amount](#amount).
 
+## Baggage
+
+`baggage` is a `MapStore` that provides a way to preserve state and behavior of objects between [smart contract upgrades](/guides/zoe/contract-upgrade) in a way that preserves identity of objects as seen from other [vats](#vat).
+
 ## BigInt
 
 In [ERTP AmountMath](/guides/ertp/amount-math), we use the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type for the `value` of fungible amounts in order to avoid overflow risks from using the usual JavaScript `Number` type.
@@ -272,6 +276,16 @@ See [`E()`](#e) above.
 An object specifying how an [offer](#offer) can be cancelled, such as on demand or by a deadline.
 For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe#proposals).
 
+## Exo
+
+An Exo object is an exposed Remotable object with methods (aka a [`Far`](/guides/js-programming/far) object) which is 
+normally defined with an `InterfaceGuard` as a protective outer layer, providing the first
+ layer of defensiveness.
+
+This [`@endo/exo` package](https://github.com/endojs/endo/tree/master/packages/exo) defines 
+the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo
+ objects.
+
 ## Facet
 
 A _facet_ is an object that exposes an API or particular view of some larger entity, which may be an object itself.
@@ -323,9 +337,9 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) for 
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other.
 For more details, see [What developers need to know about inter-blockchain communication](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
-## Interchain Account (ICA)
- Interchain Accounts outlines a cross-chain account management protocol built upon IBC. Also see the ICS-027 Interchain Account [spec](https://tutorials.cosmos.network/academy/3-ibc/8-ica.html)
 
+## Intercahin Account (ICA)
+Interchain Accounts are an [IBC](#ibc) feature used in Agoric's [Orchestration API](#orchestration) to enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
 
 ## Invitation
 
@@ -466,6 +480,16 @@ Zoe guarantees offer safety. When a user makes an [offer](#offer) and its paymen
 the user either gets what they said they wanted, or gets back what they originally offered and
 escrowed (a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
+
+## Orchestration 
+
+Orchestration API is a tool to help developers build seamless applications out of disparate interoperable chains and services.
+This composability allows for the development of user-centric applications
+ that leverage the unique strengths of different blockchain ecosystems.
+Orchestration integrates with existing Agoric components ([SwingSet](/guides/platform/#swingset), Cosmos modules) and introduces
+ vat-orchestration. This [vat](/glossary/#vat) manages [Inter-Chain Account (ICA)](#intercahin-account-ica) identities and connections to host
+  chains, ensuring proper transaction authorization.
+  For more information, see the [Orchestration API](/guides/orchestration/).
 
 ## Passable
 
@@ -632,3 +656,10 @@ patterns into reusable helpers. See the [Zoe Helpers API](/reference/zoe-api/zoe
 ## Zoe Service
 
 A set of API methods for deploying and working with smart contracts. See [Zoe Service API](/reference/zoe-api/zoe).
+
+## Zone
+
+Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism.  This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual) or can be revived after a vat upgrade (durable).
+
+See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+

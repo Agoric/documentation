@@ -153,23 +153,11 @@ API Reference](/reference/ertp-api/index).
 - [anIssuer.burn(payment, optAmount)](/reference/ertp-api/issuer#anissuer-burn-payment-optamount)
   - Destroy all of the digital assets in the `payment`.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#burn
-- [anIissuer.claim(payment, optAmount)](/reference/ertp-api/issuer#anissuer-claim-payment-optamount)
-  - Transfer all digital assets from `payment` to a new Payment.
-  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#claim
-- [anIssuer.combine(paymentsArray)](/reference/ertp-api/issuer#anissuer-combine-paymentsarray-opttotalamount)
-  - Combine multiple Payments into one new Payment.
-  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#combine
 - [anIssuer.getAmountOf(payment)](/reference/ertp-api/issuer#anissuer-getamountof-payment)
   - Describe the `payment`'s balance as an Amount.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#getAmountOf
 - [anIssuer.isLive(payment)](/reference/ertp-api/issuer#anissuer-islive-payment)
   - Return `true` if the `payment` was created by the issuer and is available for use (has not been consumed or burned).
-- [anIssuer.split(payment, paymentAmountA)](/reference/ertp-api/issuer#anissuer-split-payment-paymentamounta)
-  - Split a single `payment` into two new Payments.
-  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#split
-- [anIssuer.splitMany(payment, amountArray)](/reference/ertp-api/issuer#anissuer-splitmany-payment-amountarray)
-  - Split a single `payment` into multiple Payments.
-  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
 - [aMint.mintPayment(newAmount)](/reference/ertp-api/mint#amint-mintpayment-newamount)
   - Create new digital assets of the `mint`'s associated `brand`.
   - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#mintMintPayment
@@ -182,6 +170,20 @@ API Reference](/reference/ertp-api/index).
 - [aPurse.withdraw(amount)](/reference/ertp-api/purse#apurse-withdraw-amount)
   - Withdraw the `amount` of specified digital assets from `purse` into a new `payment`.
   - <<< @/../snippets/ertp/guide/test-purses-and-payments.js#withdraw
+::: warning DEPRECATED
+- [anIssuer.combine(paymentsArray)](/reference/ertp-api/issuer#anissuer-combine-paymentsarray-opttotalamount)
+  - Combine multiple Payments into one new Payment.
+  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#combine
+- [anIissuer.claim(payment, optAmount)](/reference/ertp-api/issuer#anissuer-claim-payment-optamount)
+  - Transfer all digital assets from `payment` to a new Payment.
+  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#claim
+- [anIssuer.splitMany(payment, amountArray)](/reference/ertp-api/issuer#anissuer-splitmany-payment-amountarray)
+  - Split a single `payment` into multiple Payments.
+  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#splitManyConcise
+- [anIssuer.split(payment, paymentAmountA)](/reference/ertp-api/issuer#anissuer-split-payment-paymentamounta)
+  - Split a single `payment` into two new Payments.
+  - <<< @/../snippets/ertp/guide/test-issuers-and-mints.js#split
+:::
 
 ## Purse and Payment Example
 
