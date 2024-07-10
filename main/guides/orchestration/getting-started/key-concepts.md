@@ -68,7 +68,7 @@ In this example, chainHub is used to register a new chain and establish a connec
 
 ### Orchestration Account
 
-Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the `OrchestrationAccountI` interface. These accounts provide high-level operations for managing accounts on remote chains, allowing seamless interaction and management of interchain accounts. The orchestration accounts abstract the complexity of interchain interactions, providing a unified and simplified interface for developers.
+Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [OrchestrationAccountI](https://github.com/Agoric/agoric-sdk/blob/000693442f821c1fcea007a2df740733b1f75ebe/packages/orchestration/src/orchestration-api.ts#L131-L175C2) interface. These accounts provide high-level operations for managing accounts on remote chains, allowing seamless interaction and management of interchain accounts. The orchestration accounts abstract the complexity of interchain interactions, providing a unified and simplified interface for developers.
 
 **1. Address Management**
 
