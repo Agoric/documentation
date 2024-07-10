@@ -17,13 +17,15 @@ import { provideOrchestration } from '../utils/start-helper.js';
 ## JSDoc Annotations for Type Information
 ```javascript
 /**
- * @import {Orchestrator, IcaAccount, CosmosValidatorAddress} from '../types.js'
+  * @import {Orchestrator, IcaAccount, CosmosValidatorAddress} from '../types.js'
  * @import {TimerService} from '@agoric/time';
  * @import {Baggage} from '@agoric/vat-data';
  * @import {LocalChain} from '@agoric/vats/src/localchain.js';
  * @import {NameHub} from '@agoric/vats';
  * @import {Remote} from '@agoric/internal';
- * @import {OrchestrationService} from '../service.js';
+ * @import {Zone} from '@agoric/zone';
+ * @import {CosmosInterchainService} from '../exos/cosmos-interchain-service.js';
+ * @import {OrchestrationTools} from '../utils/start-helper.js';
  */
 ```
 
