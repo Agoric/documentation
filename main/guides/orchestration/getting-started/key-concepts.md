@@ -14,7 +14,7 @@ Here, we overview the fundamental concepts involved with building orchestration 
 
 Photo credit: [cosmos.network documentation](https://tutorials.cosmos.network/academy/3-ibc/8-ica.html)
 
-A key advantage of ICAs is that they make accounts on other chains look like any other (remotable) object, meaning normal object access rules (introduction/parenthood/endowment/initial conditions) apply. When a contract creates an ICA, it has sole access to and control over the account but can delegate certain forms of access to its clients. 
+A key advantage of ICAs is that they make accounts on other chains look like any other (remotable) object. When a contract creates an ICA, it has sole access to and control over the account but can delegate certain forms of access to its clients. 
 
 For a detailed explanation of these access control rules, see [Access Control with Objects](/guides/zoe/contract-access-control).
 
