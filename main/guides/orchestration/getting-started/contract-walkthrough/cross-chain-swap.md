@@ -10,21 +10,19 @@
 import { StorageNodeShape } from '@agoric/internal';
 import { TimerServiceShape } from '@agoric/time';
 import { withdrawFromSeat } from '@agoric/zoe/src/contractSupport/zoeHelpers.js';
-import { Far } from '@endo/far';
 import { deeplyFulfilled } from '@endo/marshal';
 import { M, objectMap } from '@endo/patterns';
 import { orcUtils } from '../utils/orc.js';
-import { provideOrchestration } from '../utils/start-helper.js';
+import { withOrchestration } from '../utils/start-helper.js';
 ```
 
 Importing Shapes and Utilities:
-- `StorageNodeShape` and TimerServiceShape are imported for validating the `privateArgs`.
+- `StorageNodeShape` and `TimerServiceShape` are imported for validating the `privateArgs`.
 - `withdrawFromSeat` is a helper function from Zoe to withdraw funds from a seat.
-- `Far` is used to create a remotely accessible object.
 - `deeplyFulfilled` is a function that ensures that all promises within an object are resolved.
 - `M` are pattern-matching utilities, and `objectMap` is like `Array.map` but for properties of an object.
 - `orcUtils` is a utility library specific to orchestrating chain operations.
-- `provideOrchestration` is a function that sets up orchestration.
+- `withOrchestration` is a function that sets up orchestration.
 
 ## Type Imports
 ```javascript
@@ -33,9 +31,10 @@ Importing Shapes and Utilities:
  * @import {TimerService} from '@agoric/time';
  * @import {LocalChain} from '@agoric/vats/src/localchain.js';
  * @import {Remote} from '@agoric/internal';
- * @import {OrchestrationService} from '../service.js';
- * @import {Baggage} from '@agoric/vat-data'
+ * @import {CosmosInterchainService} from '../exos/cosmos-interchain-service.js';
  * @import {NameHub} from '@agoric/vats';
+ * @import {Zone} from '@agoric/zone';
+ * @import {OrchestrationTools} from '../utils/start-helper.js';
  */
 ```
 
@@ -164,7 +163,7 @@ harden(meta);
 
 This defines the shape of private arguments and the contract’s upgradability, and `harden` ensures that the metadata object is immutable.
 
-## makeNatAmountShape
+## `makeNatAmountShape` function
 ```javascript
 // TODO move to new `@agoric/contracts` package when we have it
 /**
@@ -177,51 +176,27 @@ export const makeNatAmountShape = (brand, min) =>
 
 Utility function to create a shape for amounts of the specified fungible brand. If a minimum value is provided, ensures the amount is greater than or equal to it.
 
-## Start Function
-Now we define the main entrypoint of the contract, the `start` function, with the usual arguments, `zcf`, `privateAge`, and `baggage`:
+## `contract` Function
+The `contract` function when wrapped inside `withOrchestration` defines the entry point of the contract., with the arguments, `zcf`, `privateAge`, `zone`, and `tools` for orchestration:
 
 ```javascript
 /**
+ * Orchestration contract to be wrapped by withOrchestration for Zoe
+ *
  * @param {ZCF} zcf
  * @param {{
  *   agoricNames: Remote<NameHub>;
  *   localchain: Remote<LocalChain>;
- *   orchestrationService: Remote<OrchestrationService>;
+ *   orchestrationService: Remote<CosmosInterchainService>;
  *   storageNode: Remote<StorageNode>;
  *   timerService: Remote<TimerService>;
  *   marshaller: Marshaller;
  * }} privateArgs
- * @param {Baggage} baggage
+ * @param {Zone} zone
+ * @param {OrchestrationTools} tools
  */
-export const start = async (zcf, privateArgs, baggage) => {
-  const {
-    agoricNames,
-    localchain,
-    orchestrationService,
-    storageNode,
-    timerService,
-    marshaller,
-  } = privateArgs;
+const contract = async (zcf, privateArgs, zone, { orchestrate }) => {
 ```
-
-## Setting up Orchestration
-```javascript
-  const { orchestrate } = provideOrchestration(
-    zcf,
-    baggage,
-    {
-      agoricNames,
-      localchain,
-      orchestrationService,
-      storageNode,
-      timerService,
-    },
-    marshaller,
-  );
-```
-
-This sets up orchestration using the provided arguments and `marshaller`.
-
 
 ## Getting brands from Contract Terms
 ```javascript
@@ -243,33 +218,31 @@ This retrieves the brands specified in the contract terms.
   const swapAndStakeHandler = orchestrate('LSTTia', { zcf }, stakeAndSwapFn);
 ```
 
-### `swapAndStakeHandler` Offer Handler
-Defines the offer handler for the swap and stake operation using `stakeAndSwapFn`.
+`swapAndStakeHandler` defines the offer handler for the swap and stake operation using [`stakeAndSwapFn` function](#stakeandswapfn-offer-handler).
 
+## Make Invitation and Create `publicFacet`
 ```javascript
-const makeSwapAndStakeInvitation = () =>
-    zcf.makeInvitation(
-        swapAndStakeHandler,
-        'Swap for TIA and stake',
-        undefined,
-        harden({
-            give: { Stable: makeNatAmountShape(brands.Stable, 1n) },
-            want: {}, // XXX ChainAccount Ownable?
-            exit: M.any(),
-        }),
+const publicFacet = zone.exo('publicFacet', undefined, {
+  makeSwapAndStakeInvitation() {
+    return zcf.makeInvitation(
+      swapAndStakeHandler,
+      'Swap for TIA and stake',
+      undefined,
+      harden({
+        give: { Stable: makeNatAmountShape(brands.Stable, 1n) },
+        want: {}, // XXX ChainAccount Ownable?
+        exit: M.any(),
+      }),
     );
+  },
+});
 ```
 
-Creates an `invitation` for users to swap stablecoins for TIA and stake.
+Defines the `publicFacet` for the contract, which includes the method to make an `invitation` for users to swap stablecoins for TIA and stake, and returns the hardened public facet. Defining `publicFacet` with `zone.exo` makes it [remotely accessible](/glossary/#exo) and persistent through contract upgrades with a [durable `zone`](/glossary/#zone).
 
-## Public Facet
+## `start` Function
 ```javascript
-  const publicFacet = Far('SwapAndStake Public Facet', {
-    makeSwapAndStakeInvitation,
-  });
-
-  return harden({ publicFacet });
-};
+export const start = withOrchestration(contract);
 ```
 
-Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and returns the hardened public facet.
+Defines the `start` function of the contract as a wrapped veriosn of [`contract` function](#contract-function) with `withOrchestration`.
