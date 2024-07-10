@@ -1,5 +1,5 @@
 // https://vitepress.dev/guide/custom-theme
-import { h, nextTick } from 'vue'
+import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import './style.css'
 import '../styles/index.styl';
