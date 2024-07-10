@@ -1,0 +1,29 @@
+---
+title: Orchestration Osmosis Transfer Example
+---
+sequenceDiagram
+    participant contract
+
+    contract->>OrchLib: provideOrchestration
+    OrchLib --> contract: orch
+    create participant orch
+    contract --> orch: getChain('osmosis')
+    orch->>AgoricNames: lookup('chain', 'osmosis')
+    AgoricNames-->>orch: ChainInfo for osmosis
+    orch --> contract: osmosis chain object
+
+    participant osmosis
+    contract->>osmosis: makeAccount()
+    osmosis --> contract: osmoAccount123
+
+    create participant osmoAccount123
+    contract->>osmoAccount123: getAddress()
+
+    contract->>osmoAccount123: getBalances()
+    contract->>osmoAccount123: send(amount, receiverAddress)
+    osmoAccount123-->>contract: Transaction Status
+
+    %% note Cross-Chain Operation
+    contract->>osmoAccount123: transferSteps(amount, transferMsg)
+    %% note Execute Steps Across Chains
+    osmoAccount123-->>contract: Transfer Complete

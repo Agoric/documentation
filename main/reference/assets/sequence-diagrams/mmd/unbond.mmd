@@ -1,0 +1,41 @@
+---
+title: Orchestration Unbond Example
+---
+sequenceDiagram
+    participant contract
+
+    contract->>OrchLib: provideOrchestration
+    OrchLib --> contract: orch
+    create participant orch
+    contract --> orch: getChain('omniflixhub')
+    orch->>AgoricNames: lookup('chain', 'omniflixhub')
+    AgoricNames-->>orch: ChainInfo for omniflixhub
+    orch --> contract: omniflixhub chain object
+
+    participant omniflixhub
+    contract->>omniflixhub: makeAccount()
+    omniflixhub --> contract: omniAccount
+
+    create participant omniAccount
+    contract->>omniAccount: getAddress()
+    omniAccount-->>contract: omniAddress
+
+    contract --> orch: getChain('stride')
+    orch->>AgoricNames: lookup('chain', 'stride')
+    AgoricNames-->>orch: ChainInfo for stride
+    orch --> contract: stride chain object
+
+    participant stride
+    contract->>stride: makeAccount()
+    stride --> contract: strideAccount
+
+    create participant strideAccount
+    contract->>strideAccount: liquidStake(tiaAmt)
+    strideAccount-->>contract: stakingComplete
+
+    %% Placeholder for future delegation and undelegation steps
+    contract->>omniAccount: undelegate(delegations)
+    omniAccount-->>contract: undelegationComplete
+
+    %% Notes
+    Note right of contract: Placeholder steps for unbond and liquid stake operations

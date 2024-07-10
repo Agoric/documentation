@@ -337,8 +337,8 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) for 
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other.
 For more details, see [What developers need to know about inter-blockchain communication](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
-## Intercahin Account (ICA)
 
+## Intercahin Account (ICA)
 Interchain Accounts are an [IBC](#ibc) feature used in Agoric's [Orchestration API](#orchestration) to enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
 
 ## Invitation
@@ -620,6 +620,14 @@ Objects and functions in a JavaScript vat can communicate synchronously with one
 communicate with other vats and their objects and functions, but can only communicate asynchronously.
 
 For more information, see the [Vat section in the Distributed JS Programming documentation](/guides/js-programming/#vats-the-unit-of-synchrony).
+
+The concept of a vat is metaphorically inspired by the philosophical experiment known as “Brain in a Vat.” This thought experiment, explored in philosophy, posits a scenario in which a brain is sustained in a vat and connected to a computer that simulates reality, raising questions about knowledge, reality, and perception. Similarly, in the context of distributed systems, a vat isolates and encapsulates its contents, maintaining strict boundaries on synchronous and asynchronous communication, much like the hypothetical brain’s isolated and controlled environment. For more details, see the Wikipedia page on [Brain in a Vat](https://en.wikipedia.org/wiki/Brain_in_a_vat).
+
+
+# Vow
+
+Vows are objects that represent promises that can be stored durably. Native promises are not compatible with Agoric's durable stores, which means that on the Agoric platform, such promises disconnect their clients when their creator vat is upgraded.  
+
 
 ## Wallet
 
