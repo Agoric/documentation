@@ -36,45 +36,45 @@ Converts a denom amount to an `Amount` with a brand. See [asAmount](https://agor
 const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 ```
 
-## OrchestrationAccount Interface
-Orchestration accounts provide high-level operations for managing accounts on remote chains. Below are the primary methods available:
+## OrchestrationAccount
+An [`OrchestrationAccount`](https://agoric-sdk.pages.dev/types/_agoric_orchestration.OrchestrationAccount) is a type alias that combines the [`OrchestrationAccountI`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI) interface with additional methods. Below are the primary methods available:
 
 ### getAddress
-Retrieves the address of the account on the remote chain.
+Retrieves the address of the account on the remote chain. See [getAddress](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#getAddress).
 ```javascript
 const address = await orchestrationAccount.getAddress();
 ```
 
 ### getBalances
-Returns an array of amounts for every balance in the account.
+Returns an array of amounts for every balance in the account. See [getBalances](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#getBalances).
 
 ```javascript
 const balances = await orchestrationAccount.getBalances();
 ```
 
 ### getBalance
-Retrieves the balance of a specific denom for the account.
+Retrieves the balance of a specific denom for the account. See [getBalance](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#getBalance).
 
 ```javascript
 const balance = await orchestrationAccount.getBalance('uatom');
 ```
 
 ### send
-Transfers an amount to another account on the same chain. The promise settles when the transfer is complete.
+Transfers an amount to another account on the same chain. The promise settles when the transfer is complete. See [send](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#send).
 
 ```javascript
 await orchestrationAccount.send(receiverAddress, amount);
 ```
 
 ### transfer
-Transfers an amount to another account, typically on another chain. The promise settles when the transfer is complete.
+Transfers an amount to another account, typically on another chain. The promise settles when the transfer is complete. See [transfer](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#transfer).
 
 ```javascript
 await orchestrationAccount.transfer(amount, destinationAddress);
 ```
 
 ### transferSteps
-Transfers an amount to another account in multiple steps. The promise settles when the entire path of the transfer is complete.
+Transfers an amount to another account in multiple steps. The promise settles when the entire path of the transfer is complete. See [transferSteps](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#transferSteps).
 ```javascript
 await orchestrationAccount.transferSteps(amount, transferMsg);
 ```
