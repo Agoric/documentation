@@ -63,7 +63,6 @@ Retrieves the omniflixhub chain object using the orchestrator.
 Creates an account on the omniflixhub chain.
 
 ## Placeholder for Delegation and Undelegation
-TODO
 ```javascript
 // TODO implement these
 // const delegations = await celestiaAccount.getDelegations();
@@ -72,7 +71,7 @@ TODO
 // ??? should this be synchronous? depends on how names are resolved.
 ```
 
-### Delegation and Undelegation TODO
+### Delegation and Undelegation
 Placeholder comments for future implementation of getting delegations and undelegating them.
 
 
@@ -89,7 +88,6 @@ Retrieves the stride chain object using the orchestrator.
 Creates an account on the stride chain.
 
 ## Placeholder for Liquid Staking
-TODO
 ```javascript
   // TODO the `TIA` string actually needs to be the Brand from AgoricNames
   // const tiaAmt = await celestiaAccount.getBalance('TIA');
@@ -99,7 +97,6 @@ TODO
 ```
 
 ### Liquid Staking
-TODO
 Placeholder comments for future implementation of getting the TIA balance, transferring it to the stride account, and performing liquid staking.
 
 ## `contract` Function
