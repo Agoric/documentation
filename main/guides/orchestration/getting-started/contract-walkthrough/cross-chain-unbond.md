@@ -8,11 +8,11 @@
 ## Imports
 ```javascript
 import { M } from '@endo/patterns';
-import { provideOrchestration } from '../utils/start-helper.js';
+import { withOrchestration } from '../utils/start-helper.js';
 ```
 
 - `M`: Imported from @endo/patterns, provides pattern-matching utilities.
-- `provideOrchestration`: Imported from a utility module, used to set up orchestration.
+- `withOrchestration`: Imported from a utility module, used to set up and provide access to orchestration tools.
 
 ## JSDoc Annotations for Type Information
 ```javascript
@@ -31,7 +31,7 @@ import { provideOrchestration } from '../utils/start-helper.js';
 
 This includes type information annotations to help with TypeScript or JSDoc, making it easier to understand the types used throughout the contract.
 
-## unbondAndLiquidStakeFn Function Definition
+## `unbondAndLiquidStakeFn` Function
 ```javascript
 /**
  * @param {Orchestrator} orch
@@ -102,54 +102,30 @@ TODO
 TODO
 Placeholder comments for future implementation of getting the TIA balance, transferring it to the stride account, and performing liquid staking.
 
-## Start Function
+## `contract` Function
 ```javascript
 /**
+ * Orchestration contract to be wrapped by withOrchestration for Zoe
+ *
  * @param {ZCF} zcf
  * @param {{
  *   agoricNames: Remote<NameHub>;
  *   localchain: Remote<LocalChain>;
- *   orchestrationService: Remote<OrchestrationService>;
+ *   orchestrationService: Remote<CosmosInterchainService>;
  *   storageNode: Remote<StorageNode>;
  *   marshaller: Marshaller;
  *   timerService: Remote<TimerService>;
  * }} privateArgs
- * @param {Baggage} baggage
+ * @param {Zone} zone
+ * @param {OrchestrationTools} tools
  */
-export const start = async (zcf, privateArgs, baggage) => {
-  const {
-    agoricNames,
-    localchain,
-    orchestrationService,
-    storageNode,
-    marshaller,
-    timerService,
-  } = privateArgs;
-```
-
-### Start Function Parameters:
+const contract = async (zcf, privateArgs, zone, { orchestrate }) => {
+  ```
+  ### `contract` Function Parameters:
 - `zcf`: Zoe Contract Facet.
 - `privateArgs`: Object containing remote references to various services.
-- `baggage`: Storage for persistent data.
-
-
-## Provide Orchestration
-```javascript
-  const { orchestrate } = provideOrchestration(
-    zcf,
-    baggage,
-    {
-      agoricNames,
-      localchain,
-      orchestrationService,
-      storageNode,
-      timerService,
-    },
-    marshaller,
-  );
-```
-
-Sets up orchestration using the provided arguments and `marshaller`.
+- `zone`: A `Zone` object with access to storage for persistent data.
+- `OrchestrationTools`: A set of orchestration related tools needed by the contract.
 
 ## Offer Handler for Unbond and Liquid Stake
 ```javascript
@@ -162,12 +138,13 @@ const unbondAndLiquidStake = orchestrate(
 ```
 
 ### Offer Handler
-Defines the offer handler for the unbond and liquid stake operation using `unbondAndLiquidStakeFn`.
+Defines the offer handler for the unbond and liquid stake operation using [`unbondAndLiquidStakeFn`](#unbondandliquidstakefn-function).
 
-## Make Invitation
+## Make Invitation and Create `publicFacet`
 ```javascript
-const makeUnbondAndLiquidStakeInvitation = () =>
-    zcf.makeInvitation(
+const publicFacet = zone.exo('publicFacet', undefined, {
+  makeUnbondAndLiquidStakeInvitation() {
+    return zcf.makeInvitation(
       unbondAndLiquidStake,
       'Unbond and liquid stake',
       undefined,
@@ -178,16 +155,17 @@ const makeUnbondAndLiquidStakeInvitation = () =>
         exit: M.any(),
       }),
     );
-```
-
-## Public Facet
-```javascript
-const publicFacet = Far('SwapAndStake Public Facet', {
-    makeUnbondAndLiquidStakeInvitation,
+  },
 });
 
 return harden({ publicFacet });
-};
 ```
 
-Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and returns the hardened public facet.
+Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and returns the hardened public facet. Defining `publicFacet` with `zone.exo` makes it [remotely accessible](/glossary/#exo) and persistent through contract upgrades with a [durable `zone`](/glossary/#zone).
+
+## `start` Function
+```javascript
+export const start = withOrchestration(contract);
+```
+
+Defines the `start` function of the contract as a wrapped veriosn of [`contract` function above](#contract-function) with `withOrchestration`.
