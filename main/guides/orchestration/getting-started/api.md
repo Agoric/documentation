@@ -16,7 +16,7 @@ const chain = await orchestrator.getChain('chainName');
 ```
 
 ### makeLocalAccount
-Creates a new `LocalchainAccount`.
+Creates a new LocalChainAccount.
 
 ```javascript
 const localAccount = await orchestrator.makeLocalAccount();
