@@ -176,7 +176,7 @@ export const makeNatAmountShape = (brand, min) =>
 Utility function to create a shape for amounts of the specified fungible brand. If a minimum value is provided, ensures the amount is greater than or equal to it.
 
 ## `contract` Function
-The `contract` function when wrapped inside `withOrchestration` defines the entry point of the contract, with the arguments, `zcf`, `privateAge`, `zone`, and `tools` for orchestration:
+The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract. The arguments are `zcf`, `privateAge`, `zone`, and `tools` for orchestration:
 
 ```javascript
 /**
@@ -244,4 +244,4 @@ Defines the `publicFacet` for the contract, which includes the method to make an
 export const start = withOrchestration(contract);
 ```
 
-Defines the `start` function of the contract as a wrapped veriosn of [`contract` function](#contract-function) with `withOrchestration`.
+Defines the `start` function of the contract that is returned by a call to `withOrchestration` with  [`contract` function above](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.

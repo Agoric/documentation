@@ -75,6 +75,8 @@ Retrieves the stride chain object using the orchestrator.
 Creates an account on the stride chain.
 
 ## `contract` Function
+The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract.
+
 ```javascript
 /**
  * Orchestration contract to be wrapped by withOrchestration for Zoe
@@ -140,4 +142,4 @@ Defines the `publicFacet` for the contract, which includes the method to make an
 export const start = withOrchestration(contract);
 ```
 
-Defines the `start` function of the contract as a wrapped veriosn of [`contract` function above](#contract-function) with `withOrchestration`.
+Defines the `start` function of the contract that is returned by a call to `withOrchestration` with  [`contract` function above](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
