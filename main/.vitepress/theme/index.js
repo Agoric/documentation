@@ -8,6 +8,8 @@ import ButtonGoBack from '../components/Button-Go-Back.vue';
 import HomeButtonHeader from '../components/HomeButtonHeader.vue';
 import HomeButtonRow from '../components/HomeButtonRow.vue';
 import ZoeVersion from '../components/Zoe-Version.vue';
+import Chatbot from '../components/Chatbot.vue'; 
+
 
 /** @type {import('vitepress').Theme} */
 export default {
@@ -23,5 +25,6 @@ export default {
     app.component('HomeButtonHeader', HomeButtonHeader);
     app.component('HomeButtonRow', HomeButtonRow);
     app.component('ZoeVersion', ZoeVersion);
+    app.component('Chatbot', Chatbot);
   },
 };

@@ -61,6 +61,8 @@ features:
     link: https://twitter.com/agoric
 ---
 
+<Chatbot /> <!-- chat bot demo -->
+
 <style>
 :root {
   --vp-home-hero-name-color: var(--vp-c-brand-1);
@@ -82,4 +84,6 @@ features:
     --vp-home-hero-image-filter: blur(68px);
   }
 }
+
 </style>
+
