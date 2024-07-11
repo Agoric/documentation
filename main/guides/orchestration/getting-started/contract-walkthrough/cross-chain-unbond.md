@@ -62,19 +62,6 @@ Retrieves the omniflixhub chain object using the orchestrator.
 ### Make Account
 Creates an account on the omniflixhub chain.
 
-## Placeholder for Delegation and Undelegation
-```javascript
-// TODO implement these
-// const delegations = await celestiaAccount.getDelegations();
-// // wait for the undelegations to be complete (may take weeks)
-// await celestiaAccount.undelegate(delegations);
-// ??? should this be synchronous? depends on how names are resolved.
-```
-
-### Delegation and Undelegation
-Placeholder comments for future implementation of getting delegations and undelegating them.
-
-
 ## Interaction with Stride Chain
 ```javascript
 const stride = await orch.getChain('stride');
@@ -86,18 +73,6 @@ Retrieves the stride chain object using the orchestrator.
 
 ### Make Account
 Creates an account on the stride chain.
-
-## Placeholder for Liquid Staking
-```javascript
-  // TODO the `TIA` string actually needs to be the Brand from AgoricNames
-  // const tiaAmt = await celestiaAccount.getBalance('TIA');
-  // await celestiaAccount.transfer(tiaAmt, strideAccount.getAddress());
-  // await strideAccount.liquidStake(tiaAmt);
-  console.log(omniAccount, strideAccount);
-```
-
-### Liquid Staking
-Placeholder comments for future implementation of getting the TIA balance, transferring it to the stride account, and performing liquid staking.
 
 ## `contract` Function
 ```javascript

@@ -125,7 +125,7 @@ const transferMsg = orcUtils.makeOsmosisSwap({
 });
 ```
 
-Parameters include destination chain, destination address, input amount, output brand (placeholder), and slippage tolerance. In the `give` keyword record, the `Stable` keyword is expected to have the assets to trade. 
+Parameters include destination chain, destination address, input amount, output brand, and slippage tolerance. In the `give` keyword record, the `Stable` keyword is expected to have the assets to trade. 
 
 ### Executing the `Swap` Instructions & Delegate
 Carries out the swap instructions using the results of `orcUtils.makeOsmosisSwap` above. 
@@ -165,7 +165,6 @@ This defines the shape of private arguments and the contract’s upgradability, 
 
 ## `makeNatAmountShape` function
 ```javascript
-// TODO move to new `@agoric/contracts` package when we have it
 /**
  * @param {Brand} brand must be a 'nat' brand, not checked
  * @param {NatValue} [min]
@@ -177,7 +176,7 @@ export const makeNatAmountShape = (brand, min) =>
 Utility function to create a shape for amounts of the specified fungible brand. If a minimum value is provided, ensures the amount is greater than or equal to it.
 
 ## `contract` Function
-The `contract` function when wrapped inside `withOrchestration` defines the entry point of the contract., with the arguments, `zcf`, `privateAge`, `zone`, and `tools` for orchestration:
+The `contract` function when wrapped inside `withOrchestration` defines the entry point of the contract, with the arguments, `zcf`, `privateAge`, `zone`, and `tools` for orchestration:
 
 ```javascript
 /**
