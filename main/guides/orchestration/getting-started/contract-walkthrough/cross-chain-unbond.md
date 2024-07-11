@@ -75,7 +75,7 @@ Retrieves the stride chain object using the orchestrator.
 Creates an account on the stride chain.
 
 ## `contract` Function
-The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract.
+The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract. The contract exports a `start` function [below](#start-function). It is merely a convention/convenience that we define a more abstract `contract` function here and pass it to `withOrchestration`. The arguments of this function are `zcf`, `privateAge`, `zone`, and `tools` for orchestration.
 
 ```javascript
 /**
