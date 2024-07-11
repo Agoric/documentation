@@ -244,4 +244,4 @@ Defines the `publicFacet` for the contract, which includes the method to make an
 export const start = withOrchestration(contract);
 ```
 
-Defines the `start` function of the contract that is returned by a call to `withOrchestration` with  [`contract` function above](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
+Defines the `start` function of the contract that is returned by a call to `withOrchestration` with  [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
