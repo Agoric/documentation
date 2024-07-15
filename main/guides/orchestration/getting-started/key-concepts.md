@@ -21,7 +21,7 @@ For a detailed explanation of these access control rules, see [Access Control wi
 This sample is taken from one of the [example contracts](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/examples/swapExample.contract.js)
 
 ```javascript
-const stackAndSwapFn = async (orch, ...) => {
+const stakeAndSwapFn = async (orch, ...) => {
 ...
   const omni = await orch.getChain('omniflixhub');
   const agoric = await orch.getChain('agoric');
@@ -37,12 +37,12 @@ const stackAndSwapFn = async (orch, ...) => {
 ...
   const transferMsg = orcUtils.makeOsmosisSwap({ ... });
 
-  await localAccount
-    .transferSteps(give.Stable, transferMsg)
-    .then(_txResult =>
-      omniAccount.delegate(offerArgs.validator, offerArgs.staked),
-    )
-    .catch(e => console.error(e));
+  try {
+    await localAccount.transferSteps(give.Stable, transferMsg);
+    await omniAccount.delegate(offerArgs.validator, offerArgs.staked);
+  } catch (e) {
+    console.error(e);
+  }
 };
 ```
 
