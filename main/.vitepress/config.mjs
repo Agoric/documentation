@@ -415,12 +415,6 @@ export default defineConfig({
             {
               text: 'Orchestration',
               link: '/guides/orchestration/',
-              items: [
-                {
-                  text: 'provideOrchestration',
-                  link: '/guides/orchestration/provideOrchestration',
-                },
-              ],
               collapsed: true,
               items: [
                 {
@@ -448,6 +442,10 @@ export default defineConfig({
                       link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
                     }
                   ]
+                },
+                {
+                  text: 'provideOrchestration',
+                  link: '/guides/orchestration/provideOrchestration',
                 },
               ]
             },
