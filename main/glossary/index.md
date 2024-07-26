@@ -602,6 +602,27 @@ Secure ECMAScript has been renamed to [Hardened JavaScript](#hardened-javascript
 
 An imaginary currency Agoric documentation uses in examples.
 
+## Smart Contract
+
+A smart contract is a self-executing contract with the terms of the agreement directly written into lines of code. These contracts are stored and executed on a blockchain network. Smart contracts automatically enforce and execute the terms of a contract when predefined conditions are met, eliminating the need for intermediaries and reducing the risk of human error or manipulation. Like user accounts on a chain, smart contracts can "own" or hold digital assets themselves.
+
+Key Characteristics:
+
+- Automated Execution: Smart contracts automatically execute actions when the conditions specified in the code are satisfied.
+- Transparency: The contract's code is usually transparent and accessible to all participants on the blockchain.
+- Immutability: Once deployed on the blockchain, the contract code cannot be altered, ensuring that the terms remain consistent and tamper-proof.
+- Trustless Transactions: Smart contracts operate in a decentralized manner, reducing the need for trust between parties as the contract enforces the terms.
+
+Applications:
+
+- Finance: Automating transactions, loan agreements, and insurance claims.
+- Supply Chain: Tracking goods and verifying authenticity.
+- Real Estate: Simplifying property transfers and rental agreements.
+- Voting Systems: Ensuring secure and transparent voting processes.
+
+In the context of the Agoric blockchain, smart contracts are written using JavaScript and leverage Agoric's secure environment to build and deploy reliable decentralized applications.
+
+
 ## Terms
 
 Contract instances have associated terms, gotten via [`E(zoe).getTerms(instance)`](/reference/zoe-api/zoe#e-zoe-getterms-instance),
