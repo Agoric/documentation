@@ -61,25 +61,3 @@ features:
     link: https://twitter.com/agoric
 ---
 
-<style>
-:root {
-  --vp-home-hero-name-color: var(--vp-c-brand-1);
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #e84b62 50%, #464646 50%);
-  --vp-home-hero-image-filter: blur(44px);
-  .dark {
-    --vp-home-hero-image-background-image: linear-gradient(-45deg, #f7aab1 50%, #7c7c7c 50%);
-  }
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
-}
-</style>

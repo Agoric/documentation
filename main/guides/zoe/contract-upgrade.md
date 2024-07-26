@@ -174,3 +174,100 @@ Define all exo classes/kits before any incoming method calls from other vats -- 
 - For more on crank constraints, see [Virtual and Durable Objects](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/virtual-objects.md#virtual-and-durable-objects) in [SwingSet docs](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs)
 
 :::
+
+
+
+### Baggage
+
+baggage is a MapStore that provides a way to preserve the state and behavior of objects between [smart contract upgrades](https://docs.agoric.com/guides/zoe/contract-upgrade) in a way that preserves the identity of objects as seen from other [vats](#vat). In the provided contract, baggage is used to ensure that the state of various components is maintained even after the contract is upgraded.
+
+```javascript
+export const start = async (zcf, privateArgs, baggage) => {
+  ...
+  const { accountsStorageNode } = await provideAll(baggage, {
+    accountsStorageNode: () => E(storageNode).makeChildNode('accounts'),
+  });
+  ...
+}
+```
+
+
+### Exo
+An Exo object is an exposed Remotable object with methods (aka a [Far](/glossary/#zone) object), which is normally defined with an [InterfaceGuard](#todo-interface-guard) as a protective outer layer, providing the first layer of defensiveness.
+
+This [@endo/exo](https://github.com/endojs/endo/tree/master/packages/exo) package defines the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo objects.
+
+```javascript
+const publicFacet = zone.exo(
+  'StakeAtom',
+  M.interface('StakeAtomI', {
+    makeAccount: M.callWhen().returns(M.remotable('ChainAccount')),
+    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape),
+  }),
+  {
+    async makeAccount() {
+      trace('makeAccount');
+      const holder = await makeAccountKit();
+      return holder;
+    },
+    makeAccountInvitationMaker() {
+      trace('makeCreateAccountInvitation');
+      return zcf.makeInvitation(
+        async seat => {
+          seat.exit();
+          const holder = await makeAccountKit();
+          return holder.asContinuingOffer();
+        },
+        'wantStakingAccount',
+      );
+    },
+  },
+);
+```
+
+
+
+### Zones
+Each [Zone](/glossary/#zone) provides an API that allows the allocation of [Exo objects](#exo) and Stores [(object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual), or can be revived after a vat upgrade (durable).
+
+
+See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
+
+```javascript
+const zone = makeDurableZone(baggage);
+...
+zone.subZone('vows')
+```
+
+### Durable Zone
+
+A zone specifically designed for durability, allowing the contract to persist its state across upgrades. This is critical for maintaining the continuity and reliability of the contract’s operations.
+```javascript
+const zone = makeDurableZone(baggage);
+```
+
+
+
+### Vow Tools
+
+See [Vow](/glossary/#vow); These tools handle promises and asynchronous operations within the contract. `prepareVowTools` prepares the necessary utilities to manage these asynchronous tasks, ensuring that the contract can handle complex workflows that involve waiting for events or responses from other chains.
+
+```javascript
+const vowTools = prepareVowTools(zone.subZone('vows'));
+...
+const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
+  zone,
+  makeRecorderKit,
+  zcf,
+  privateArgs.timerService,
+  vowTools,
+  makeChainHub(privateArgs.agoricNames),
+);
+...
+const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
+  zone,
+  makeRecorderKit,
+  vowTools,
+  zcf,
+);
+```

@@ -103,9 +103,9 @@ $ agoric follow -lF :published.agoricNames.brand
 
 ::: tip vstorage viewer by p2p
 
-The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) contributed by p2p is often _very_ handy:
+The [vstorage-viewer](https://github.com/agoric-labs/agoric-vstorage-viewer) is often _very_ handy:
 
-[![vstorage viewer screenshot](https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://p2p-org.github.io/p2p-agoric-vstorage-viewer/#https://devnet.rpc.agoric.net/|published,published.agoricNames|)
+[![vstorage viewer screenshot](https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://vstorage.agoric.net/p2p-agoric-vstorage-viewer/#https://devnet.rpc.agoric.net/|published,published.agoricNames|)
 
 :::
 

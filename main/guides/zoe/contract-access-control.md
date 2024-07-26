@@ -15,4 +15,17 @@ We can write a simple test as below to make sure that trying to `set` using the 
 
 Note that the `set()` method has no access check inside it. Access control is based on separation of powers between the `publicFacet`, which is expected to be shared widely, and the `creatorFacet`, which is closely held. _We'll discuss this [object capabilities](../js-programming/hardened-js#object-capabilities-ocaps) approach more later._ If you're having trouble, check out the [`tut-03-access`](https://github.com/Agoric/dapp-offer-up/tree/tut-03-access) branch in the example repo.
 
+
+## Object Access Rules
+
+The object access rules include introduction, parenthood, endowment, and initial conditions, which help manage and control access to objects within the contract:
+
+- **Introduction**: Objects can only reference other objects that they have been introduced to. This prevents unauthorized access by ensuring that only known objects can interact.
+- **Parenthood**: Objects can create child objects. The parent object has control over the child object’s initial state and capabilities, defining what the child can and cannot do.
+- **Endowment**: Objects can be endowed with certain capabilities or resources upon creation. This allows the contract to control what actions an object can perform based on its endowments.
+- **Initial Conditions**: Objects are initialized with certain conditions or states. These initial conditions define the starting point for the object’s behavior and interactions.
+
+Also see [Object Capability Model](https://en.wikipedia.org/wiki/Object-capability_model) 
+
+
 Next, let's look at minting and trading assets with [Zoe](../zoe/).
