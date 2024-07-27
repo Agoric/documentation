@@ -604,24 +604,11 @@ An imaginary currency Agoric documentation uses in examples.
 
 ## Smart Contract
 
-A smart contract is a self-executing contract with the terms of the agreement directly written into lines of code. These contracts are stored and executed on a blockchain network. Smart contracts automatically enforce and execute the terms of a contract when predefined conditions are met, eliminating the need for intermediaries and reducing the risk of human error or manipulation. Like user accounts on a chain, smart contracts can "own" or hold digital assets themselves.
+A smart contract is a contract-​like arrangement expressed in code, where the behavior of the program enforces the terms of the contract. Smart contracts are able to solve some of the fundamental social problems that have traditionally been solved by legal contracts. For example, commerce often involves an exchange of one thing for another. However, the party that transfers their assets first leaves themselves vulnerable to the other party’s opportunism: the second party can simply walk away from the exchange with both parties’ assets. 
 
-Key Characteristics:
+Smart contracts solve this problem of opportunism during an exchange by providing an [escrow mechanism](#escrow) for the assets from both parties, only dispersing the assets after both parties have contributed. There is no need for a human intermediary to perform the escrow; the smart contract itself holds the assets. Because the behavior of the smart contract is fully described by its code, and that code runs on a decentralized blockchain with high integrity execution, the parties can be assured that the code describes exactly what will happen. As such, smart contracts hold the promise of being a market-​based solution for the opportunism problem that does not rely on State intervention.
 
-- Automated Execution: Smart contracts automatically execute actions when the conditions specified in the code are satisfied.
-- Transparency: The contract's code is usually transparent and accessible to all participants on the blockchain.
-- Immutability: Once deployed on the blockchain, the contract code cannot be altered, ensuring that the terms remain consistent and tamper-proof.
-- Trustless Transactions: Smart contracts operate in a decentralized manner, reducing the need for trust between parties as the contract enforces the terms.
-
-Applications:
-
-- Finance: Automating transactions, loan agreements, and insurance claims.
-- Supply Chain: Tracking goods and verifying authenticity.
-- Real Estate: Simplifying property transfers and rental agreements.
-- Voting Systems: Ensuring secure and transparent voting processes.
-
-In the context of the Agoric blockchain, smart contracts are written using JavaScript and leverage Agoric's secure environment to build and deploy reliable decentralized applications.
-
+In the context of the Agoric blockchain, smart contracts are written using JavaScript and leverage Agoric's [secure environment](#offer-safety) to build and deploy reliable decentralized applications.
 
 ## Terms
 
