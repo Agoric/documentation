@@ -605,20 +605,7 @@ An imaginary currency Agoric documentation uses in examples.
 ## Smart Contract
 
 A smart contract is a contract-​like arrangement expressed in code, where the behavior of the 
-program enforces the terms of the contract. Smart contracts are able to solve some of the
-fundamental social problems that have traditionally been solved by legal contracts. For example,
-commerce often involves an exchange of one thing for another. However, the party that transfers
-their assets first leaves themselves vulnerable to the other party’s opportunism: the second party
-can simply walk away from the exchange with both parties’ assets. 
-
-Smart contracts solve this problem of opportunism during an exchange by providing an 
-[escrow mechanism](#escrow) for the assets from both parties, only dispersing the assets after both
-parties have contributed. There is no need for a human intermediary to perform the escrow; the smart
-contract itself holds the assets. Because the behavior of the smart contract is fully described by
-its code, and that code runs on a decentralized blockchain with high integrity execution, the
-parties can be assured that the code describes exactly what will happen. As such, smart contracts
-hold the promise of being a market-​based solution for the opportunism problem that does not rely on
-State intervention.
+program enforces the terms of the contract.
 
 In the context of the Agoric blockchain, smart contracts are written using JavaScript and leverage
 Agoric's [secure environment](#offer-safety) to build and deploy reliable decentralized applications.
