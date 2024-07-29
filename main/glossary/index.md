@@ -587,7 +587,7 @@ the [UserSeat documentation](/reference/zoe-api/user-seat).
 ## Semi-fungible
 
 A semi-fungible asset is one that has distinct forms which are not interchangeable
-with each other, but in which instances of a single form may interchangeable with
+with each other, but in which instances of a single form may be interchangeable with
 other instances of the same form.
 As a variation on the [non-fungible](#non-fungible) theater ticket example, tickets
 might specify only a section, where the holder may sit in any seat of that section.
