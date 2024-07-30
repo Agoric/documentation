@@ -587,7 +587,7 @@ the [UserSeat documentation](/reference/zoe-api/user-seat).
 ## Semi-fungible
 
 A semi-fungible asset is one that has distinct forms which are not interchangeable
-with each other, but in which instances of a single form may interchangeable with
+with each other, but in which instances of a single form may be interchangeable with
 other instances of the same form.
 As a variation on the [non-fungible](#non-fungible) theater ticket example, tickets
 might specify only a section, where the holder may sit in any seat of that section.
@@ -601,6 +601,14 @@ Secure ECMAScript has been renamed to [Hardened JavaScript](#hardened-javascript
 ## Simoleons
 
 An imaginary currency Agoric documentation uses in examples.
+
+## Smart Contract
+
+A smart contract is a contract-​like arrangement expressed in code, where the behavior of the 
+program enforces the terms of the contract.
+
+In the context of the Agoric blockchain, smart contracts are written using JavaScript and leverage
+Agoric's [secure environment](#offer-safety) to build and deploy reliable decentralized applications.
 
 ## Terms
 
@@ -624,7 +632,7 @@ For more information, see the [Vat section in the Distributed JS Programming doc
 The concept of a vat is metaphorically inspired by the philosophical experiment known as “Brain in a Vat.” This thought experiment, explored in philosophy, posits a scenario in which a brain is sustained in a vat and connected to a computer that simulates reality, raising questions about knowledge, reality, and perception. Similarly, in the context of distributed systems, a vat isolates and encapsulates its contents, maintaining strict boundaries on synchronous and asynchronous communication, much like the hypothetical brain’s isolated and controlled environment. For more details, see the Wikipedia page on [Brain in a Vat](https://en.wikipedia.org/wiki/Brain_in_a_vat).
 
 
-# Vow
+## Vow
 
 Vows are objects that represent promises that can be stored durably. Native promises are not compatible with Agoric's durable stores, which means that on the Agoric platform, such promises disconnect their clients when their creator vat is upgraded.  
 
