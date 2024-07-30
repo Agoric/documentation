@@ -443,6 +443,10 @@ export default defineConfig({
                     }
                   ]
                 },
+                {
+                  text: 'ChainHub',
+                  link: '/guides/orchestration/chainhub',
+                },
               ]
             },
             {
