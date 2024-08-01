@@ -1,13 +1,128 @@
 # VStorage Reference
 
-See also:
+In the Agoric platform, VStorage is a key-value store that:
 
-- [Querying VStorage](/guides/getting-started/contract-rpc#querying-vstorage)
-- [Publishing to chainStorage](../guides/zoe/pub-to-storage)
-- [x/vstorage module](https://github.com/Agoric/agoric-sdk/tree/003f0c2232815a8d64a3f9a5b05521a10160ce34/golang/cosmos/x/vstorage#readme)
+- provides a **read-only interface where clients of the consensus layer** can query the stored data using specific paths.
+- is organized in a **hierarchical, path-based structure**. Clients can query these paths to retrieve the data. For example:
+```sh
+$ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
+children:
+- vault0
+```
+- can be written through a specialized API called **[chainStorage](../guides/zoe/pub-to-storage#publishing-to-chainstorage)** from within the JavaScript VM.
 
-## vstorage: top level keys
+![vstorage query diagram](../guides/getting-started/assets/vstorage-brand-q.svg)
 
+## VStorage Hierarchy
+VStorage is structured as a tree with paths and nodes that store the actual data. This design facilitates easy querying while ensuring data consistency and security.
+
+For example, here is an example of [Inter Protocol key structure](https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-13/packages/inter-protocol#reading-data-off-chain) inside Agoric:
+
+```
+- published
+    - vaultFactory
+        - governance
+        - metrics
+        - managers
+            - manager0
+                - metrics
+                - governance
+                - vaults
+                    - vault0
+```
+
+You can then use this hierarchy to access the data fragments.
+```sh
+# lists vaults
+$ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
+children:
+- vault0
+```
+For more information on [agd](https://docs.agoric.com/guides/agoric-cli/agd-query-tx), you can refer to the documentation for [query command](https://docs.agoric.com/guides/agoric-cli/agd-query-tx#query-commands) in `agd` CLI.
+
+## VStorage with CLI
+VStorage can be accessed via CLI using:
+
+```sh
+$ agd [--node {url}] query vstorage {path}
+```
+
+<!-- TODO: Add reference to --node documentation-->
+
+For example:
+```sh
+$ agd query vstorage path published.agoricNames
+children:
+- brand
+- installation
+- instance
+...
+```
+
+With [Agoric CLI](https://docs.agoric.com/guides/agoric-cli/#agoric-cli-reference), you can also use `follow` command to support vstorage query along with some of the marshalling conventions discussed below:
+```sh
+$ agoric follow -lF :published.agoricNames.brand
+[
+  [
+    "BLD",
+    slotToVal("board0566","Alleged: BLD brand"),
+  ],
+  [
+    "IST",
+    slotToVal("board0257","Alleged: IST brand"),
+  ],
+...
+]
+```
+
+## VStorage Protobuf Service Definition
+The protobuf definition of vstorage is [agoric.vstorage.Query](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/vstorage/query.proto#L11) package.
+```
+service Query {
+  // Return an arbitrary vstorage datum.
+  rpc Data(QueryDataRequest) returns (QueryDataResponse) {
+    option (google.api.http).get = "/agoric/vstorage/data/{path}";
+  }
+
+  // Return the children of a given vstorage path.
+  rpc Children(QueryChildrenRequest)
+    returns (QueryChildrenResponse) {
+      option (google.api.http).get = "/agoric/vstorage/children/{path}";
+  }
+}
+```
+
+## VStorage chainStorage API
+`chainStorage` API offers write-access to VStorage for contracts, by [connecting to a subscriber](https://docs.agoric.com/guides/js-programming/notifiers.html) to a `chainStorage` node.
+
+While adding [Adding Parameter Governance to a Contract](https://docs.agoric.com/guides/governance/#adding-parameter-governance-to-a-contract), `storageNode` and `marshaller` are passed to the contract in its `privateArgs` so it can publish to chainStorage.
+
+```
+const marshaller = await E(board).getPublishingMarshaller();
+const storageNode = await E(chainStorage).makeChildNode(contractName);
+...
+const installation = await E(zoe).startInstance(
+  ...,
+  privateArgs: harden({
+      storageNode,
+      marshaller,
+  })
+)
+```
+The `chainStorage` node corresponds to the `published` key in the [vstorage hierarchy](https://docs.agoric.com/reference/vstorage-ref.html#vstorage-hierarchy). Using `E(chainStorage).makeChildNode(contractName)` gives the contract access to write to the `published.{contractName}` key and all keys under it. 
+To understand more on `Marshaller` and `chainStorage` Node, please refer to documentation on [Publishing to chainStorage](https://docs.agoric.com/guides/zoe/pub-to-storage.html#publishing-to-chainstorage)
+
+## VStorage Viewer
+To visualize the current state of VStorage, The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) contributed by p2p is often _very_ handy:
+
+[![vstorage viewer screenshot](https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://p2p-org.github.io/p2p-agoric-vstorage-viewer/#https://devnet.rpc.agoric.net/|published,published.agoricNames|)
+
+## DApp UI and VStorage
+As mentioned above, VStorage offers clients an access to data from contracts, including dApp UI. For detail tutorial on tools and libraries available for this connection is available [here](https://docs.agoric.com/guides/getting-started/ui-tutorial/querying-vstorage.html#querying-vstorage).
+
+## Common VStorage Examples
+
+### vstorage: top level keys
 The `published` and `bundles` keys are the most relevant to dapp development.
 
 ```js
@@ -21,8 +136,7 @@ The `published` and `bundles` keys are the most relevant to dapp development.
       published: 'for the chainStorage API; see below',
     }
 ```
-
-## vstorage: published.\* keys
+### vstorage: published.\* keys
 
 The following keys appear under `published`.
 see also [Inter Protocol data](https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-13/packages/inter-protocol#reading-data-off-chain).
@@ -43,8 +157,7 @@ see also [Inter Protocol data](https://github.com/Agoric/agoric-sdk/tree/agoric-
       wallet: 'smart wallet status',
     }
 ```
-
-## vstorage: agoricNames hubs
+### vstorage: agoricNames hubs
 
 agoricNames contains several other NameHubs.
 See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
@@ -53,7 +166,7 @@ See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.
 ['brand', 'installation', 'instance', 'issuer', 'oracleBrand', 'vbankAsset'];
 ```
 
-## vstorage: well known contracts
+### vstorage: well known contracts
 
 `published.agoricNames.installation` contains _Installations_ representing code of important contracts. The data at this key are the entries of the NameHub. Here we show the object comprised
 of those entries.
@@ -81,6 +194,9 @@ regarding un-marshalling the data using board IDs.
       walletFactory: Object @Alleged: BundleIDInstallation#board04312 {},
     }
 ```
+
+`published.agoricNames.instance` contains _instances_ of important contracts.
+The data at this key are the entries of the NameHub. Here we show the object comprised of those entries.
 
 `published.agoricNames.instance` contains _instances_ of important contracts.
 The data at this key are the entries of the NameHub. Here we show the object comprised of those entries.
@@ -114,8 +230,7 @@ The data at this key are the entries of the NameHub. Here we show the object com
       walletFactory: Object @Alleged: InstanceHandle#board06366 {},
     }
 ```
-
-## vstorage: well-known assets
+### vstorage: well-known assets
 
 `published.agoricNames.issuer` has Issuers of well-known assets.
 
@@ -222,7 +337,7 @@ The data at this key are the entries of the NameHub. Here we show the object com
     }
 ```
 
-## boardAux
+### boardAux
 
 The keys under `published.boardAux` are board IDs.
 Here we show a handful.
@@ -252,7 +367,7 @@ for example, displayInfo of brands, including assetKind.
     }
 ```
 
-## vstorage: provisionPool
+### vstorage: provisionPool
 
 `published.provisionPool.governance` gives current values of governed params.
 See similar data in [Inter Protocol data](https://github.com/Agoric/agoric-sdk/tree/agoric-upgrade-13/packages/inter-protocol#reading-data-off-chain).
@@ -301,7 +416,7 @@ See similar data in [Inter Protocol data](https://github.com/Agoric/agoric-sdk/t
     }
 ```
 
-## vstorage: wallet
+### vstorage: wallet
 
 The address of each provisioned smart wallet is a key under `published.wallet`.
 Here we show a handful.
@@ -371,3 +486,10 @@ The `published.wallet.${address}` key has wallet's last update. For example:
       updated: 'balance',
     }
 ```
+
+See also:
+
+- [Querying VStorage UI Tutorial](https://docs.agoric.com/guides/getting-started/ui-tutorial/querying-vstorage)
+- [Querying VStorage](/guides/getting-started/contract-rpc#querying-vstorage)
+- [Publishing to chainStorage](../guides/zoe/pub-to-storage)
+- [x/vstorage module](https://github.com/Agoric/agoric-sdk/tree/003f0c2232815a8d64a3f9a5b05521a10160ce34/golang/cosmos/x/vstorage#readme)
