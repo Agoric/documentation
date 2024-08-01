@@ -1,24 +1,12 @@
 ---
-title: "ERTP: Fungible and Non-Fungible Assets"
+title: ERTP Interfaces
 ---
 classDiagram
    class IssuerKit~Kind~
-   IssuerKit "1" *-- "1" Mint~Kind~
-   IssuerKit "1" *-- "1" Issuer~Kind~
-   IssuerKit "1" *-- "1" Brand~Kind~
+   IssuerKit --* Mint~Kind~
+   IssuerKit --* Issuer~Kind~
+   IssuerKit --* Brand~Kind~
 
-  class ertp["@agoric/ertp"] {
-   makeIssuerKit() IssuerKit
-   AmountMath
-   AssetKind
-  }
-  ertp *-- AmountMath : import
-  ertp *-- AssetKind : import
-  class AmountMath {
-    make(brand: Brand~K~, value~K~) Amount~K~
-  }
-  ertp --> IssuerKit~K~ : makeIssuerKit
-  AmountMath --> Amount~K~ : make
 
    class Mint~Kind~ {
      getIssuer()
@@ -29,12 +17,9 @@ Mint --> Payment~Kind~ : mintPayment
    class Issuer~Kind~ {
     getBrand()
 makeEmptyPurse()
-getAmountOf(payment: Payment)
    }
    Issuer --> Brand: getBrand
    Issuer --> Purse~Kind~: makeEmptyPurse()
-   Issuer "1" *-- "many" Payment
-   Payment
    class Brand~Kind~
    class Payment~Kind~
    class Amount~Kind~ {
@@ -42,11 +27,9 @@ getAmountOf(payment: Payment)
      value: Value~Kind~
     }
     class Purse~Kind~ {
-        +getCurrentAmount()
         +deposit(payment: Payment~Kind~, expectedAmount?: Amount~Kind~)
         +withdraw(amount: Amount~Kind~)
     }
-    Purse --> Payment : withdraw
 
     class AssetKind {
      NAT // fungible
