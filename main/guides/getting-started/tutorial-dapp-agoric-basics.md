@@ -1,10 +1,10 @@
 # The `dapp-agoric-basics` Tutorial
 
 ## Introduction
-In this tutorial you will install the `dapp-agoric-basics` dapp.  This dapp is a collection of basic use cases for Agoric smart contracts.
-- [Sell Concert Tickets Smart Contract](sell-concert-tickets-contract-explainer)
-- [Swaparoo Contract](swaparoo-how-to-swap-assets-explainer)
-- [Sending Invitation Payments using an Address](swaparoo-making-a-payment-explainer)
+In this tutorial you will install the `dapp-agoric-basics` dapp. This dapp allows a user to purchase concert tickets for an event. This event has three types of tickets:
+- Tickets near the front are the most expensive
+- Tickets in the middle are priced between expensive and cheap tickets
+- Tickets in the back are the cheapest priced tickets
 
 To begin, you will need an environment with the pre-requisite components installed as outlined in the [Getting Started](index.md) guide. If you have already completed the Getting Started tutorial you can use the same environment.
 
