@@ -147,10 +147,6 @@ You can install Docker using their official documentation or Homebrew.
 
 Follow the [official Docker installation guide for Mac](https://docs.docker.com/desktop/install/mac-install/).
 
-After installing Docker Desktop, you can start docker with:
-```sh
-open -a Docker
-```
 
 **Using Homebrew:**
 
