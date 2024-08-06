@@ -149,7 +149,7 @@ To run tests, use the following commands from the top-level directory:
 make test-orca
 ```
 
-For more on testing the project, [see here](/guides/orchestration/dapp-orchestration-basics/testing.html):
+For more on testing the project, [see here](/guides/orchestration/dapp-orchestration-basics/testing):
 
 
 ## End-to-End Build & Deploy
