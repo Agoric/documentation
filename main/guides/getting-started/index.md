@@ -165,6 +165,10 @@ or
 brew install docker --cask
 ```
 
+Now, you can open Docker and let it run in the background
+```sh
+open -a Docker
+```
 </details>
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
