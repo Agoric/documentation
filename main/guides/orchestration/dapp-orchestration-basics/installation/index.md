@@ -9,7 +9,7 @@ Here, we will walk through installing the Orchestration-Basics demo project onto
     - [Overriding the Chain Registry for use with `agoric-sdk/multichain-testing`](#overriding-the-chain-registry-for-use-with-agoric-sdkmultichain-testing)
   - [Multichain-Testing Makefile Helpers](#multichain-testing-makefile-helpers)
   - [Troubleshooting Docker](#troubleshooting-docker)
-    - [Disable Kubernetes](#disable-kubernetes)
+    - [Enabling Kubernetes](#enabling-kubernetes)
     - [Increasing resources allocated to docker](#increasing-resources-allocated-to-docker)
   - [Adding a New Address](#adding-a-new-address)
   - [Funding the Account](#funding-the-account)
@@ -112,8 +112,9 @@ make teardown ; make stop; make stop-forward; make clean; make; make port-forwar
 ## Troubleshooting Docker
 During setting up the environment, you may run into a few issues with docker. Here are two common setup requirements.
 
-### Disable Kubernetes
-Inside of "settings", navigate to the "kubernetes" section. Here, you want to ensure that you deselect the "Enable Kubernetes" checkbox
+### Enabling Kubernetes
+Inside of "settings", navigate to the "kubernetes" section. Here, you want to ensure that you select the "Enable Kubernetes" checkbox. You will have to restart docker to make these changes take effect. This is something to keep this in mind if you have any containers that are currently running.
+
 <img src="../../assets/docker-kube.png" width="100%" />
 
 ### Increasing resources allocated to docker
