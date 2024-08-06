@@ -140,12 +140,31 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 <details>
 <summary>Installing Docker on MacOS</summary>
+
+You can install Docker using their official documentation or Homebrew.
+
+**Using Docker's Website:**
+
+Follow the [official Docker installation guide for Mac](https://docs.docker.com/desktop/install/mac-install/).
+
+
+**Using Homebrew:**
+
 Previously, you installed brew on your machine. You can install docker using the same command.
+
 
 ```sh
 brew cask install docker
 ```
+or 
+```sh
+brew install docker --cask
+```
 
+Now, you can open Docker and let it run in the background
+```sh
+open -a Docker
+```
 </details>
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
@@ -192,6 +211,8 @@ For more examples and ideas, visit:
 ```
 
 </details>
+
+
 
 ## Creating Your Dapp From a Template
 

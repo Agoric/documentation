@@ -436,10 +436,28 @@ export default defineConfig({
                     {
                       text: 'Cross-Chain Unbond Example',
                       link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
+                    }
+                  ]
+                },
+                {
+                  text: 'Dapp Orchestration Basics',
+                  link: '/guides/orchestration/dapp-orchestration-basics/',
+                  items: [
+                    {
+                      text: 'Installation',
+                      link: '/guides/orchestration/dapp-orchestration-basics/installation/',
                     },
                     {
-                      text: 'Orchestration Basics',
-                      link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
+                      text: 'Contract',
+                      link: '/guides/orchestration/dapp-orchestration-basics/contract/',
+                    },
+                    {
+                      text: 'User Interface',
+                      link: '/guides/orchestration/dapp-orchestration-basics/ui/',
+                    },
+                    {
+                      text: 'Testing',
+                      link: '/guides/orchestration/dapp-orchestration-basics/testing/',
                     }
                   ]
                 },
