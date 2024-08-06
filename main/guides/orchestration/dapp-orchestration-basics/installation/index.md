@@ -8,6 +8,9 @@ Here, we will walk through installing the Orchestration-Basics demo project onto
   - [Setting Up the Local Environment](#setting-up-the-local-environment)
     - [Overriding the Chain Registry for use with `agoric-sdk/multichain-testing`](#overriding-the-chain-registry-for-use-with-agoric-sdkmultichain-testing)
   - [Multichain-Testing Makefile Helpers](#multichain-testing-makefile-helpers)
+  - [Troubleshooting Docker](#troubleshooting-docker)
+    - [Disable Kubernetes](#disable-kubernetes)
+    - [Increasing resources allocated to docker](#increasing-resources-allocated-to-docker)
   - [Adding a New Address](#adding-a-new-address)
   - [Funding the Account](#funding-the-account)
   - [Building \& Deploying the dApp](#building--deploying-the-dapp)
@@ -105,6 +108,19 @@ If you need to restart your environment for any reason, use the following comman
 ```bash
 make teardown ; make stop; make stop-forward; make clean; make; make port-forward
 ```
+
+## Troubleshooting Docker
+During setting up the environment, you may run into a few issues with docker. Here are two common setup requirements.
+
+### Disable Kubernetes
+Inside of "settings", navigate to the "kubernetes" section. Here, you want to ensure that you deselect the "Enable Kubernetes" checkbox
+<img src="../../assets/docker-kube.png" width="100%" />
+
+### Increasing resources allocated to docker
+From inside of "settings", navigate to the "Resources" section. By default docker doesn't optimize the resources allocated for running resource-intensive environments. For this environment, we want to ensure our `CPU limit`, `Memory Limit`, and `Swap` are all bumped up to 75% their max. You can always increase/decrease after you get everything setup, and determine how much resources are needed for your machine.
+
+<img src="../../assets/docker-resources.png" width="100%" />
+
 
 ## Adding a New Address
 
