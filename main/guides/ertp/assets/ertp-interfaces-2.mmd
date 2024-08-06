@@ -1,0 +1,49 @@
+---
+title: "ERTP: Amount, Payment, Purse"
+---
+classDiagram
+   class IssuerKit
+   IssuerKit "1" *-- "1" Mint
+   IssuerKit "1" *-- "1" Issuer
+   IssuerKit "1" *-- "1" Brand
+
+  class ertp["@agoric/ertp"] {
+   makeIssuerKit() IssuerKit
+   AmountMath
+   ...
+  }
+  ertp *-- AmountMath : import
+  class AmountMath {
+    make(brand: Brand, value) Amount
+  }
+  ertp --> IssuerKit : makeIssuerKit
+  AmountMath --> Amount : make
+
+   class Mint {
+     getIssuer()
+     mintPayment(amount: Amount)
+   }
+Mint --> Issuer: getIssuer
+Mint --> Payment : mintPayment
+   class Issuer {
+    getBrand()
+makeEmptyPurse()
+getAmountOf(payment: Payment)
+   }
+   Issuer --> Brand: getBrand
+   Issuer --> Purse: makeEmptyPurse()
+   Issuer "1" *-- "many" Payment
+   Payment
+   class Brand
+   class Payment
+   class Amount {
+     brand: Brand
+     value: Value
+    }
+    class Purse {
+        +getCurrentAmount()
+        +deposit(payment: Payment, expectedAmount?: Amount)
+        +withdraw(amount: Amount)
+    }
+    Purse --> Payment : withdraw
+```
