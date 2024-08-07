@@ -94,6 +94,7 @@ node --version
 </details>
 
 ### Installing Yarn
+This will install yarn, and verify it is installed correctly. Install yarn by either running ```npm install --global yarn```, or visit https://classic.yarnpkg.com/en/docs/install for more information. See below, ```corepack enable``` will add the Corepack shims to the install directories, and ```yarn --version``` will verify yarn is installed correctly.
 
 ```sh
 corepack enable
