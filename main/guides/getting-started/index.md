@@ -155,7 +155,11 @@ exec su -l $USER
 Previously, you installed brew on your machine. You can install docker using the same command.
 
 ```sh
+# use homebrew cask to install Docker Desktop GUI
 brew install docker --cask
+
+# open Docker and let it run in the background
+open -a Docker
 ```
 
 </details>
