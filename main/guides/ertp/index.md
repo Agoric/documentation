@@ -51,6 +51,8 @@ So, using the fictional currency Quatloos, you could have an asset described as 
 where `400n` is the `value` and `Quatloos` is the `brand`. For now, we'll just look at fungible assets
 whose values have to be non-negative integers represented as BigInts (thus the appended "n" on that `value`). 
 
+![ERTP object relationships](./assets/ertp-interfaces-3.svg)
+
 ### AmountMath
 
 ERTP uses the **[AmountMath](./amount-math)** library for operations such as adding, subtracting,
@@ -70,14 +72,15 @@ one-to-one relationships with each other.
   is used to validate `payments` received from untrusted parties for the `brand` with which
   it is associated.
 
-![ERTP object relationships](./assets/relationships1.svg) 
+<!-- ![ERTP object relationships](./assets/relationships1.svg)  -->
 
 Let's look at an example. Suppose there is the "Quatloos" `brand`. That means there is also:
 - A "Quatloos `mint`" that is the only ERTP `mint` that can ever create new Quatloos assets.
 - A "Quatloos `issuer`" that is the only `issuer` that can create a new `purse` to contain Quatloos and 
   operate on a `payment` containing Quatloos.
 
-![ERTP object relationships 2](./assets/relationships2.svg) 
+<!-- ![ERTP object relationships 2](./assets/relationships2.svg)  -->
+![ERTP object relationships 2](./assets/ertp-interfaces-1.svg){ width=200 height=200 }
 
 ### Purses and Payments
 
@@ -94,6 +97,8 @@ Quatloos purse or Quatloos payment, it can never hold anything other than Quatlo
 
 However, these are not one-to-one relationships. There can be thousands or more
 `purses` or `payments` that hold Quatloos or any other `brand`.
+
+![ERTP object relationships](./assets/ertp-interfaces-2.svg)
 
 ## Method Naming Structure
 

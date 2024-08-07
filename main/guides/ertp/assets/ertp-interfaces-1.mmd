@@ -1,0 +1,25 @@
+---
+title: "ERTP: Mint, Issuer, Brand"
+---
+classDiagram
+   class IssuerKit
+   IssuerKit "1" *-- "1" Mint
+   IssuerKit "1" *-- "1" Issuer
+   IssuerKit "1" *-- "1" Brand
+
+  class ertp["@agoric/ertp"] {
+   makeIssuerKit() IssuerKit
+   ...
+  }
+  ertp --> IssuerKit : makeIssuerKit
+
+   class Mint {
+     getIssuer()
+   }
+Mint --> Issuer: getIssuer
+   class Issuer {
+    getBrand()
+   }
+   Issuer --> Brand: getBrand
+   class Brand
+```

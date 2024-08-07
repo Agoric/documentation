@@ -44,6 +44,45 @@ See also:
 
 - [`agoric run` supports bundling proposal modules with writeCoreProposal](https://github.com/Agoric/agoric-sdk/discussions/8087#discussioncomment-6534378) discussion [#8087](https://github.com/Agoric/agoric-sdk/discussions/8087) 2023-07
 
+## agoric follow
+
+Follow an Agoric (Casting)[https://www.npmjs.com/package/@agoric/casting] leader (or validator) to support vstorage query along with some of the marshalling conventions.
+
+**Usage**:
+
+```sh
+agoric follow [options] <path-spec...>
+```
+
+**Optional arguments**:
+
+- **--proof &lt;strict | optimistic | none>**: set proof mode (default: "optimistic")
+- **--sleep &lt;seconds>**: sleep `seconds>` between polling (may be fractional) (default: 5)
+- **--jitter &lt;max-seconds>**: jitter up to `<max-seconds>` (may be fractional) (default: 5)
+- **-F, --first-value-only**: only display the first value of each `<path-spec>`
+- **-o, --output &lt;format>**: value output format (default: "justin")
+- **-l, --lossy**: show only the most recent value for each sample interval
+- **-b, --block-height**: show first block height when each value was stored
+- **-c, --current-block-height**: show current block height when each value is reported
+- **-B, --bootstrap &lt;config>**: network bootstrap configuration
+- **-h, --help**: display help for command
+
+**Examples**:
+```sh
+$ agoric follow -lF :published.agoricNames.brand
+[
+  [
+    "BLD",
+    slotToVal("board0566","Alleged: BLD brand"),
+  ],
+  [
+    "IST",
+    slotToVal("board0257","Alleged: IST brand"),
+  ],
+...
+]
+```
+
 ## ~~agoric init~~
 
 _Deprecated in favor of [yarn create @agoric/dapp](../getting-started/#creating-your-dapp-from-a-template)_
