@@ -106,7 +106,7 @@ yarn --version # for verification
 <details>
 <summary>Installing Docker</summary>
 
-For docker, you can either download Docker UI using the steps on the [installation for Ubuntu](https://docs.docker.com/desktop/install/ubuntu/) or [installation for Ubuntu](https://docs.docker.com/desktop/install/mac-install/)
+For docker, you can either download Docker UI using the steps on the [installation for Ubuntu](https://docs.docker.com/desktop/install/ubuntu/) or [installation for Mac](https://docs.docker.com/desktop/install/mac-install/)
 
 To install via CLI, you can check following details.
 
@@ -137,17 +137,6 @@ Now you can install Docker!
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-</details>
-
-<details>
-<summary>Installing Docker on MacOS</summary>
-Previously, you installed brew on your machine. You can install docker using the same command.
-
-```sh
-brew cask install docker
-```
-
-</details>
 
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
@@ -160,6 +149,37 @@ Since your user account was just added to the docker group, run the following co
 ```sh
 exec su -l $USER
 ```
+
+</details>
+
+<details>
+<summary>Installing Docker on MacOS</summary>
+
+You can install Docker using their official documentation or Homebrew.
+
+**Using Docker's Website:**
+
+Follow the [official Docker installation guide for Mac](https://docs.docker.com/desktop/install/mac-install/).
+
+After installing Docker Desktop, you can start docker with:
+```sh
+open -a Docker
+```
+
+**Using Homebrew:**
+
+Previously, you installed brew on your machine. You can install docker using the same command.
+
+
+```sh
+brew cask install docker
+```
+or 
+```sh
+brew install docker --cask
+```
+
+</details>
 
 Now test that Docker works by running the `hello-world` sample.
 
@@ -193,6 +213,8 @@ For more examples and ideas, visit:
 ```
 
 </details>
+
+
 
 ## Creating Your Dapp From a Template
 
