@@ -426,6 +426,10 @@ export default defineConfig({
                   link: '/guides/orchestration/getting-started/api',
                 },
                 {
+                  text: 'prepareVowTools',
+                  link: '/guides/orchestration/prepareVowTools',
+                },
+                {
                   text: 'Contract Walkthroughs',
                   link: '/guides/orchestration/getting-started/contract-walkthroughs',
                   items: [
