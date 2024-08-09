@@ -79,6 +79,34 @@ export default defineConfig({
     }, 500);
     `,
     ],
+    /* --- Cookbook Onboard integration --- */
+    [
+      'script',
+      {},
+      `
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cookbook Onboard (AI Assistant). API key is public so it's fine to just hardcode it here.
+      var COOKBOOK_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmExOTE1ZjY4ZWI5Y2IyMDQzY2E5MGMiLCJpYXQiOjE3MjE4NjQ1NDMsImV4cCI6MjAzNzQ0MDU0M30.zPYzKohNZXSvgGeTjeZc8NmE13lwaj5A-cq1p0MMC5E";
+
+      var element = document.getElementById('__cookbook');
+      if (!element) {
+        element = document.createElement('div');
+        element.id = '__cookbook';
+        element.dataset.apiKey = COOKBOOK_API_KEY;
+        document.body.appendChild(element);
+      }
+
+      var script = document.getElementById('__cookbook-script');
+      if (!script) {
+        script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@cookbookdev/docsbot/dist/standalone/index.cjs.js';
+        script.id = '__cookbook-script';
+        script.async = true;
+        document.body.appendChild(script);
+      }
+    });
+    `,
+    ],
   ],
   ignoreDeadLinks: [
     // ignore all localhost links
