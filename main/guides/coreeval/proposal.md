@@ -122,7 +122,7 @@ There are also several more promise spaces one level down, including:
 - `powers.issuer`
 - `powers.brand`
 
-The `installContract` helper calls `E(zoe).installBundleID(bundleID)` to create an `Installation`, much like our earlier discussion of [Contract installation](../zoe/#contract-installation).
+The `installContract` helper calls `E(zoe).installBundleID(bundleID)` to create an `Installation`, much like our earlier discussion of [Contract installation](/guides/zoe/contract-walkthru#contract-installation).
 It also calls `powers.installation[name].resolve(installation)`.
 
 ```js
