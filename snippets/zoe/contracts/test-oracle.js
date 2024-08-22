@@ -9,7 +9,7 @@ import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
 import bundleSource from '@endo/bundle-source';
 import { makeIssuerKit, AssetKind, AmountMath } from '@agoric/ertp';
-import { assert, details } from '@agoric/assert';
+import { assert, redacted } from '@endo/errors';
 import { E } from '@endo/eventual-send';
 import { Far } from '@endo/marshal';
 
@@ -43,7 +43,7 @@ test('oracle contract', async t => {
         requiredFee = feeAmount;
         assert(
           AmountMath.isGTE(fee, requiredFee),
-          details`Minimum fee of ${feeAmount} not met; have ${fee}`,
+          redacted`Minimum fee of ${feeAmount} not met; have ${fee}`,
         );
       }
       return harden({ reply, requiredFee });
