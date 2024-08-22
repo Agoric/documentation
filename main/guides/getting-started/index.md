@@ -101,6 +101,12 @@ corepack enable
 yarn --version # for verification
 ```
 
+This app uses Yarn 1, so running the above command will show a version in the format ```1.x.x```. If you are using a different version of ```yarn```, you can use ```yarn set version <version>``` to switch like in the example below.
+
+```sh
+yarn set version 1.22.5
+```
+
 ### Installing Docker
 
 <details>
