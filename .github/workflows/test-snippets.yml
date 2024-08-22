@@ -51,12 +51,11 @@ jobs:
           corepack enable
           yarn install
           yarn build
-          yarn link-cli ~/bin/agoric
           echo "/home/runner/bin" >> $GITHUB_PATH
         working-directory: ./agoric-sdk
 
       - name: agoric install
-        run: agoric install
+        run: agoric-sdk/packages/agoric-cli/bin/agoric install
       - name: yarn lint
         run: yarn lint
       - name: yarn test snippets
