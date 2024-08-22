@@ -37,13 +37,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@agoric/assert@npm:community-dev":
-  version: 0.6.1-u16.0
-  resolution: "@agoric/assert@npm:0.6.1-u16.0"
-  checksum: 10c0/20745c7732e78b28ccedbf4dcdae9ebd7de05fa2f112fbd5306e350e5a6ff83020f7aadab7f6fb3ac9507f336ecdbd71d1c74962b774d5ec1b38066d1f95fa40
-  languageName: node
-  linkType: hard
-
 "@agoric/babel-generator@npm:^7.17.4, @agoric/babel-generator@npm:^7.17.6":
   version: 7.17.6
   resolution: "@agoric/babel-generator@npm:7.17.6"
@@ -251,7 +244,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@agoric/documentation@workspace:."
   dependencies:
-    "@agoric/assert": "npm:community-dev"
     "@agoric/cosmic-swingset": "npm:community-dev"
     "@agoric/ertp": "npm:community-dev"
     "@agoric/notifier": "npm:community-dev"
@@ -261,6 +253,7 @@ __metadata:
     "@agoric/zoe": "npm:community-dev"
     "@agoric/zone": "npm:0.2.3-u13.0"
     "@endo/bundle-source": "npm:2.5.2-upstream-rollup"
+    "@endo/errors": "npm:^1.2.4"
     "@endo/eventual-send": "npm:^0.17.2"
     "@endo/far": "npm:^0.2.19"
     "@endo/init": "npm:^0.5.56"
