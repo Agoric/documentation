@@ -134,20 +134,21 @@ test.serial(
   'marshal messages from E(zoe).install(), E(zoe).startInstance()',
   async t => {
     // #region marshal-messages-e
-    const { convertValToSlot, convertSlotToVal } = makeTranslationTable(
-      makeSlot1,
-    );
+    const { convertValToSlot, convertSlotToVal } =
+      makeTranslationTable(makeSlot1);
     const m = makeMarshal(convertValToSlot, convertSlotToVal, smallCaps);
 
     const outgoingMessageQueue = [];
     // E work-alike for illustration
     const E2 = obj =>
       new Proxy(obj, {
-        get: (target, method) => (...args) => {
-          const msg = harden([target, [method, args]]);
-          outgoingMessageQueue.push(m.toCapData(msg));
-          return new Promise(_resolve => {});
-        },
+        get:
+          (target, method) =>
+          (...args) => {
+            const msg = harden([target, [method, args]]);
+            outgoingMessageQueue.push(m.toCapData(msg));
+            return new Promise(_resolve => {});
+          },
       });
     // #endregion marshal-messages-e
 
@@ -159,8 +160,7 @@ test.serial(
     harden(startP); // suppress usage lint
     t.deepEqual(outgoingMessageQueue, [
       {
-        body:
-          '#["$0.Alleged: ZoeService",["install",[{"bundleFormat":"xyz"}]]]',
+        body: '#["$0.Alleged: ZoeService",["install",[{"bundleFormat":"xyz"}]]]',
         slots: ['object0'],
       },
       {

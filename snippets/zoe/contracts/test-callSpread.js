@@ -84,9 +84,8 @@ test('callSpread, mid-strike', async t => {
   // #endregion startInstance
 
   // #region invitationDetails
-  const invitationDetails = await E(zoe).getInvitationDetails(
-    creatorInvitation,
-  );
+  const invitationDetails =
+    await E(zoe).getInvitationDetails(creatorInvitation);
   const { customDetails } = invitationDetails;
   assert(typeof customDetails === 'object');
 
@@ -105,10 +104,8 @@ test('callSpread, mid-strike', async t => {
     aliceProposal,
     alicePayments,
   );
-  const {
-    LongOption: bobLongOption,
-    ShortOption: carolShortOption,
-  } = await aliceSeat.getPayouts();
+  const { LongOption: bobLongOption, ShortOption: carolShortOption } =
+    await aliceSeat.getPayouts();
   // #endregion creatorInvitation
 
   // #region bobExercise

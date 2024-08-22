@@ -77,10 +77,8 @@ test('ertp guide readme', async t => {
   // #endregion ticketValues
 
   // #region makeTicketIssuer
-  const {
-    mint: agoricTheatreTicketMint,
-    brand: agoricTheatreTicketBrand,
-  } = makeIssuerKit('Agoric Theater tickets', AssetKind.SET);
+  const { mint: agoricTheatreTicketMint, brand: agoricTheatreTicketBrand } =
+    makeIssuerKit('Agoric Theater tickets', AssetKind.SET);
   // #endregion makeTicketIssuer
 
   // #region ticketPayments

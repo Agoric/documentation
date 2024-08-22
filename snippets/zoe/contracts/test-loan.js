@@ -136,15 +136,13 @@ test('loan contract', async t => {
   const invitationIssuer = await E(zoe).getInvitationIssuer();
 
   // #region closeLoanInvitation
-  const closeLoanInvitationPromise = E(
-    borrowFacetPromise,
-  ).makeCloseLoanInvitation();
+  const closeLoanInvitationPromise =
+    E(borrowFacetPromise).makeCloseLoanInvitation();
   // #endregion closeLoanInvitation
 
   // #region addCollateralInvitation
-  const addCollateralInvitationPromise = E(
-    borrowFacetPromise,
-  ).makeAddCollateralInvitation();
+  const addCollateralInvitationPromise =
+    E(borrowFacetPromise).makeAddCollateralInvitation();
   // #endregion addCollateralInvitation
 
   // #region debtNotifier
