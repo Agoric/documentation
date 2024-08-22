@@ -143,8 +143,7 @@ test('intro to zoe - contract-format', async t => {
     atomicSwapInstallation,
   );
   const invitationIssuer = await E(zoe).getInvitationIssuer();
-  const invitationAmount = await E(invitationIssuer).getAmountOf(
-    creatorInvitation,
-  );
+  const invitationAmount =
+    await E(invitationIssuer).getAmountOf(creatorInvitation);
   t.deepEqual(invitationAmount.value[0].description, 'myInvitation');
 });

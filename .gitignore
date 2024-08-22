@@ -4,3 +4,12 @@ dist/
 _agstate
 mlc-config.json
 main/.vitepress/cache/
+
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

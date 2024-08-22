@@ -3,10 +3,10 @@ name: Test the getting start steps
 # run CI on pushes to main, and on all PRs.
 
 on:
- push:
-   branches: [main]
- pull_request:
-   branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   getting_started:
     runs-on: ubuntu-latest
@@ -14,18 +14,19 @@ jobs:
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: '18'
       - name: Creating Your Dapp From a Template
         run: yarn create @agoric/dapp demo
       - name: Install dependencies
-        run: | 
+        run: |
           cd demo
+          corepack enable
           yarn install
       - name: Start the Docker container
-        run: | 
+        run: |
           cd demo
           yarn start:docker
-      - name: Wait for Docker container to be ready 
+      - name: Wait for Docker container to be ready
         run: |
           cd demo
           yarn runWaitForBlocks

@@ -9,8 +9,8 @@ import '@agoric/zoe/exported.js';
 import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 import { AmountMath } from '@agoric/ertp';
 
-import { setup } from '@agoric/zoe/test/unitTests/setupBasicMints.js';
-import { assertPayoutDeposit } from '@agoric/zoe/test/zoeTestHelpers.js';
+import { setup } from '../../tools/setupBasicMints.js';
+import { assertPayoutDeposit } from '../../tools/zoeTestHelpers.js';
 import { makeFakePriceAuthority } from '@agoric/zoe/tools/fakePriceAuthority.js';
 
 const makeTestPriceAuthority = (brands, priceList, timer) =>
@@ -84,9 +84,8 @@ test('callSpread, mid-strike', async t => {
   // #endregion startInstance
 
   // #region invitationDetails
-  const invitationDetails = await E(zoe).getInvitationDetails(
-    creatorInvitation,
-  );
+  const invitationDetails =
+    await E(zoe).getInvitationDetails(creatorInvitation);
   const { customDetails } = invitationDetails;
   assert(typeof customDetails === 'object');
 
@@ -105,10 +104,8 @@ test('callSpread, mid-strike', async t => {
     aliceProposal,
     alicePayments,
   );
-  const {
-    LongOption: bobLongOption,
-    ShortOption: carolShortOption,
-  } = await aliceSeat.getPayouts();
+  const { LongOption: bobLongOption, ShortOption: carolShortOption } =
+    await aliceSeat.getPayouts();
   // #endregion creatorInvitation
 
   // #region bobExercise
