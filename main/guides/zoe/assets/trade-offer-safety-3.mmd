@@ -10,12 +10,12 @@ sequenceDiagram
   end
 
   box skyblue Contract
-  participant C as gameAssetContract
+  participant C as offer-up.contract
   end
 
-    A-)C: makeJoinInvitation()
+    A-)C: makeTradeInvitation()
     activate C
-    C--)Zoe: makeInvitation(joinHandler, ...)
+    C--)Zoe: makeInvitation(tradeHandler, ...)
     deactivate C
     activate Zoe
     Zoe--)-C: invitation
@@ -26,4 +26,4 @@ sequenceDiagram
 
     Zoe--)Zoe: escrow Price pmt
 
-    Zoe--)-C: joinHandler(gameSeat)
+    Zoe--)-C: tradeHandler(buyerSeat)

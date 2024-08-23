@@ -10,10 +10,10 @@ sequenceDiagram
   end
 
   box skyblue Contract
-  participant C as gameAssetContract
+  participant C as offer-up.contract
   end
 
-    Zoe--)C: joinHandler(gameSeat)
+    Zoe--)C: tradeHandler(buyerSeat)
     activate C
     C--)C: check proposal
     C--)Zoe: mintGains(want)
@@ -25,4 +25,4 @@ sequenceDiagram
 
     Zoe--)Zoe: check offer safety
 
-    C--)Zoe: playerSeat.exit(true)
+    C--)Zoe: buyerSeat.exit(true)

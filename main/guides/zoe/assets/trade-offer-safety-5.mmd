@@ -10,11 +10,11 @@ sequenceDiagram
   end
 
   box skyblue Contract
-  participant C as gameAssetContract
+  participant C as offer-up.contract
   end
 
-    A-)+Zoe: E(seat).getPayout('Places')
+    A-)+Zoe: E(seat).getPayout('Items')
     Note over Zoe: ... many steps above ...
-    Zoe--)-A: placesPayment
-    A-)+Zoe: E(issuers.Place).getAmountOf(placesPayment)
-    Zoe--)-A: { brand: Place brand,<br> value: [['Park Place, 1n], ['Boardwalk', 1n]]
+    Zoe--)-A: itemsPayment
+    A-)+Zoe: E(issuers.Items).getAmountOf(itemsPayment)
+    Zoe--)-A: { brand: Item brand,<br> value: [['map', 1n], ['scroll', 1n]]
