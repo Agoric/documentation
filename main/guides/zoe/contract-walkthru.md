@@ -96,9 +96,9 @@ t.is(typeof installation, 'object');
 The `installation` identifies the basic contract that we'll
 go over in detail in the sections below.
 
-::: details gameAssetContract.js listing
+::: details offer-up.contract.js listing
 
-<<< @/../snippets/zoe/src/gameAssetContract.js#file
+<<< @/../snippets/zoe/src/offer-up.contract.js#file
 
 :::
 
@@ -113,7 +113,7 @@ yarn ava test/test-contract.js -m 'Start the contract'
 ```
   ✔ Start the contract (652ms)
     ℹ terms: {
-        joinPrice: {
+        tradePrice: {
           brand: Object @Alleged: PlayMoney brand {},
           value: 5n,
         },
@@ -130,7 +130,7 @@ the contract should use for its business:
 ```js{8}
 const money = makeIssuerKit('PlayMoney');
 const issuers = { Price: money.issuer };
-const terms = { joinPrice: AmountMath.make(money.brand, 5n) };
+const terms = { tradePrice: AmountMath.make(money.brand, 5n) };
 t.log('terms:', terms);
 
 /** @type {ERef<Installation<GameContractFn>>} */
@@ -146,14 +146,14 @@ _See also [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinsta
 
 Let's take a look at what happens in the contract when it starts. A _facet_ of Zoe, the _Zoe Contract Facet_, is passed to the contract `start` function.
 The contract uses this `zcf` to get its terms. Likewise it uses `zcf` to
-make a `gameSeat` where it can store assets that it receives in trade
-as well as a `mint` for making assets consisting of collections (bags) of Places:
+make a `proceeds` seat where it can store assets that it receives in trade
+as well as a `mint` for making assets consisting of collections (bags) of Items:
 
-<<< @/../snippets/zoe/src/gameAssetContract.js#start
+<<< @/../snippets/zoe/src/offer-up.contract.js#start
 
-It defines a `joinShape` and `joinHandler` but doesn't do anything with them yet. They will come into play later. It defines and returns its `publicFacet` and stands by.
+It defines a `proposalShape` and `tradeHandler` but doesn't do anything with them yet. They will come into play later. It defines and returns a [hardened](/glossary/#harden) `publicFacet` object and stands by.
 
-<<< @/../snippets/zoe/src/gameAssetContract.js#started
+<<< @/../snippets/zoe/src/offer-up.contract.js#started
 
 ## Trading with Offer Safety
 
@@ -164,7 +164,7 @@ yarn ava test/test-contract.js -m 'Alice trades*'
 ```
 
 ```
-  ✔ Alice trades: give some play money, want some game places (674ms)
+  ✔ Alice trades: give some play money, want items (309ms)
     ℹ Object @Alleged: InstanceHandle {}
     ℹ Alice gives {
         Price: {
@@ -172,15 +172,15 @@ yarn ava test/test-contract.js -m 'Alice trades*'
           value: 5n,
         },
       }
-    ℹ Alice payout brand Object @Alleged: Place brand {}
+    ℹ Alice payout brand Object @Alleged: Item brand {}
     ℹ Alice payout value Object @copyBag {
         payload: [
           [
-            'Park Place',
+            'scroll',
             1n,
           ],
           [
-            'Boardwalk',
+            'map',
             1n,
           ],
         ],
@@ -209,14 +209,14 @@ Alice starts by using the `instance` to get the contract's `publicFacet` and `te
 
 <<< @/../snippets/zoe/contracts/alice-trade.js#queryInstance
 
-Then she constructs a _proposal_ to give the `joinPrice` in exchange
-for 1 Park Place and 1 Boardwalk, denominated in the game's `Place` brand; and she withdraws a payment from her purse:
+Then she constructs a _proposal_ to give the `tradePrice` in exchange
+for 1 map and 1 scroll, denominated in the game's `Item` brand; and she withdraws a payment from her purse:
 
 <<< @/../snippets/zoe/contracts/alice-trade.js#makeProposal
 
 She then requests an _invitation_ to join the game; makes an _offer_ with
 (a promise for) this invitation, her proposal, and her payment;
-and awaits her **Places** payout:
+and awaits her **Items** payout:
 
 <img src="./assets/trade-offer-safety-2.svg"
   style="border: 2px solid" width="600" />
@@ -241,33 +241,33 @@ when you are [creating an instance](#starting-a-contract-instance) or by using
 
 :::
 
-The contract gets Alice's `E(publicFacet).makeJoinInvitation()` call and uses `zcf` to make an invitation with an associated handler, description, and proposal shape. Zoe gets Alice's `E(zoe).offer(...)` call, checks the proposal against the proposal shape, escrows the payment, and invokes the handler.
+The contract gets Alice's `E(publicFacet).makeTradeInvitation()` call and uses `zcf` to make an invitation with an associated handler, description, and proposal shape. Zoe gets Alice's `E(zoe).offer(...)` call, checks the proposal against the proposal shape, escrows the payment, and invokes the handler.
 
 <img src="./assets/trade-offer-safety-3.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/../snippets/zoe/src/gameAssetContract.js#makeInvitation
+<<< @/../snippets/zoe/src/offer-up.contract.js#makeInvitation
 
 The offer handler is invoked with a _seat_ representing the party making the offer.
 It extracts the `give` and `want` from the party's offer and checks that
-they are giving at least the `joinPrice` and not asking for too many
-places in return.
+they are giving at least the `tradePrice` and not asking for too many
+items in return.
 
 With all these prerequisites met, the handler instructs `zcf` to mint the requested
-**Place** assets, allocate what the player is giving into its own `gameSeat`,
-and allocate the minted places to the player. Finally, it concludes its business with the player.
+**Item** assets, allocate what the player is giving into its own `proceeds` seat,
+and allocate the minted items to the player. Finally, it concludes its business with the player.
 
 <img src="./assets/trade-offer-safety-4.svg"
   style="border: 2px solid" width="600" />
 
-<<< @/../snippets/zoe/src/gameAssetContract.js#handler
+<<< @/../snippets/zoe/src/offer-up.contract.js#handler
 
 Zoe checks that the contract's instructions are consistent with
 the offer and with conservation of assets. Then it allocates
-the escrowed payment to the contract's gameSeat and pays out
+the escrowed payment to the contract's proceeds seat and pays out
 the place NFTs to Alice in response to the earlier `getPayout(...)` call.
 
-Alice asks the `Place` issuer what her payout is worth
+Alice asks the `Item` issuer what her payout is worth
 and tests that it's what she wanted.
 
 <img src="./assets/trade-offer-safety-5.svg"
