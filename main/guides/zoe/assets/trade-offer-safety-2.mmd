@@ -10,9 +10,9 @@ sequenceDiagram
   end
 
   box skyblue Contract
-  participant C as gameAssetContract
+  participant C as offer-up.contract
   end
 
-    A-)C: makeJoinInvitation()
+    A-)C: makeTradeInvitation()
     A-)Zoe: offer(toJoin, proposal, { Price })
-    A-)Zoe: E(seat).getPayout('Places')
+    A-)Zoe: E(seat).getPayout('Items')

@@ -20,31 +20,31 @@ export const alice = async (t, zoe, instance, purse) => {
   // #region queryInstance
   const publicFacet = E(zoe).getPublicFacet(instance);
   const terms = await E(zoe).getTerms(instance);
-  const { issuers, brands, joinPrice } = terms;
+  const { issuers, brands, tradePrice } = terms;
   // #endregion queryInstance
 
   // #region makeProposal
-  const choices = ['Park Place', 'Boardwalk'];
+  const choices = ['map', 'scroll'];
   const choiceBag = makeCopyBag(choices.map(name => [name, 1n]));
   const proposal = {
-    give: { Price: joinPrice },
-    want: { Places: AmountMath.make(brands.Place, choiceBag) },
+    give: { Price: tradePrice },
+    want: { Places: AmountMath.make(brands.Item, choiceBag) },
   };
-  const Price = await E(purse).withdraw(joinPrice);
+  const Price = await E(purse).withdraw(tradePrice);
   t.log('Alice gives', proposal.give);
   // #endregion makeProposal
 
   // #region trade
-  const toJoin = E(publicFacet).makeJoinInvitation();
+  const toJoin = E(publicFacet).makeTradeInvitation();
 
   const seat = E(zoe).offer(toJoin, proposal, { Price });
-  const places = await E(seat).getPayout('Places');
+  const items = await E(seat).getPayout('Items');
   // #endregion trade
 
   // #region payouts
-  const actual = await E(issuers.Place).getAmountOf(places);
+  const actual = await E(issuers.Item).getAmountOf(items);
   t.log('Alice payout brand', actual.brand);
   t.log('Alice payout value', actual.value);
-  t.deepEqual(actual, proposal.want.Places);
+  t.deepEqual(actual, proposal.want.Items);
   // #endregion payouts
 };
