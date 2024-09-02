@@ -38,6 +38,65 @@ ICA greatly enhances the flexibility and capability of blockchain orchestration 
 
 # AutoStake Example Walkthrough
 
+## `contract` Function
+
+First thing we do in the `contract` function is to get orchestration related functionality in our contract as below:
+```js
+const makePortfolioHolder = preparePortfolioHolder(
+    zone.subZone('portfolio'),
+    vowTools,
+  );
+
+  const orchFns = orchestrateAll(flows, { makePortfolioHolder });
+```
+Next, we create a `publicFacet` based on several `make*Invitation` as below:
+```js
+const publicFacet = zone.exo(
+    'Basic Flows Public Facet',
+    M.interface('Basic Flows PF', {
+      makeOrchAccountInvitation: M.callWhen().returns(InvitationShape),
+      makePortfolioAccountInvitation: M.callWhen().returns(InvitationShape),
+      makeSendICQQueryInvitation: M.callWhen().returns(InvitationShape),
+      makeAccountAndSendBalanceQueryInvitation:
+        M.callWhen().returns(InvitationShape),
+      makeSendLocalQueryInvitation: M.callWhen().returns(InvitationShape),
+    })
+```
+
+`make*Invitation` definitions are as below:
+```js
+makeOrchAccountInvitation() {
+        return zcf.makeInvitation(
+          orchFns.makeOrchAccount,
+          'Make an Orchestration Account',
+        );
+      },
+      makePortfolioAccountInvitation() {
+        return zcf.makeInvitation(
+          orchFns.makePortfolioAccount,
+          'Make an Orchestration Account',
+        );
+      },
+      makeSendICQQueryInvitation() {
+        return zcf.makeInvitation(
+          orchFns.sendICQQuery,
+          'Submit a query to a remote chain',
+        );
+      },
+      makeAccountAndSendBalanceQueryInvitation() {
+        return zcf.makeInvitation(
+          orchFns.makeAccountAndSendBalanceQuery,
+          'Make an account and submit a balance query',
+        );
+      },
+      makeSendLocalQueryInvitation() {
+        return zcf.makeInvitation(
+          orchFns.sendLocalQuery,
+          'Submit a query to the local chain',
+        );
+      }
+```
+
 ## `makeAccounts` Function
 
 The main logic of the contract is written in `makeAccounts` function which has the following signature:
@@ -138,6 +197,7 @@ Ensures that a valid source channel is found for the IBC transfer. If not, an er
 Constructs the IBC denomination identifier (`localDenom`) for the token, which combines the remote token's denomination with the IBC channel ID. This identifier is used to track the tokens on the local chain.
 
 ### Staking Tap and Monitoring:
+
 ```js
   const tap = makeStakingTap({
     localAccount,
@@ -158,6 +218,8 @@ Creates a "staking tap" using the provided accounts and configuration. This tap 
 Sets up the local account to monitor incoming transfers. When tokens matching the specified `remoteDenom` are received, they are automatically delegated to the validator.
 
 ### Final Steps: Portfolio Holder and Return:
+
+Below, we create portfolioHolder of `localAccount` and `stakingAccount`. A portfolio holder stores two or more `OrchestrationAccount`s and combines ContinuingOfferResult's from each into a single result.
 
 ```js
   const accountEntries = harden(
