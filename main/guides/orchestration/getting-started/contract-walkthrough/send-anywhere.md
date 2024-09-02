@@ -1,8 +1,14 @@
 # Send Anywhere Contract
 
+In this section we will write a smart contract that can be used to send any amount of a brand to any destination address that could reside on a remote blockchain as well. For a flow transfering `A` amount of brand `B` from address `C` to destination address `D`, The flow of this contract will be as following:
+- Validate that the passed brand `B` (associated with the amount `A`) exists on the local chain
+- Ensure that a local account exists which will be used to temporary hold the transfer amount `A` (create if doesn't exist)
+- Transfer the amount `A` from account `C` to the local account
+- Transfer the amount `A` to the destination address `D`
+
 ## Imports
 
-First, we need to import necessary modules and utilities:
+First, we need to import necessary modules and utilities. We will need to add a state to our smart contract which will hold some necessary state across exeuctions of the contract. We will need validators and validating shapes which will ensure only the correct shape of the proposal is processed. We will need a way to be able to access the internal Zoe and orchestration APIs. The following imports will allow us to acheive all that:
 
 - `makeStateRecord` is used to create an immutable state record.
 - `AmountShape` and `InvitationShape` are type guards for [Amounts](/glossary/#amount) and [Invitations](/glossary/#invitation). These will be used to validate the types of the amounts and invitations.
