@@ -36,4 +36,158 @@ Interchain Accounts (ICA) is a feature built on top of IBC that allows one block
 
 ICA greatly enhances the flexibility and capability of blockchain orchestration by enabling direct, programmable interactions between blockchains. This opens up a wide range of possibilities for cross-chain applications, from decentralized finance (DeFi) to supply chain management.
 
-# AutoStake
+# AutoStake Example Walkthrough
+
+## `makeAccounts` Function
+
+The main logic of the contract is written in `makeAccounts` function which has the following signature:
+
+```js
+/**
+ * @satisfies {OrchestrationFlow}
+ * @param {Orchestrator} orch
+ * @param {{
+ *   makeStakingTap: MakeStakingTap;
+ *   makePortfolioHolder: MakePortfolioHolder;
+ *   chainHub: GuestInterface<ChainHub>;
+ * }} ctx
+ * @param {ZCFSeat} seat
+ * @param {{
+ *   chainName: string;
+ *   validator: CosmosValidatorAddress;
+ * }} offerArgs
+ */
+export const makeAccounts = async (
+  orch,
+  { makeStakingTap, makePortfolioHolder, chainHub },
+  seat,
+  { chainName, validator },
+) => {
+
+```
+
+- `orch` parameter represents the orchestrator, an entity responsible for managing interactions between different blockchain chains.
+- `ctx`is a context object containing:
+    - `makeStakingTap`: A factory function for creating a staking tap.
+    - `makePortfolioHolder`: A factory function for creating a portfolio holder.
+    - `chainHub`: An interface to interact with the chain hub, which manages connections between different chains.
+- `seat`: a ZCF Seat (this is unsused in this function).
+- `offerArgs`: Contains arguments related to the offer, such as the `chainName` (name of the remote chain) and `validator` (address of the Cosmos validator on that chain).
+
+```js
+ const [agoric, remoteChain] = await Promise.all([
+    orch.getChain('agoric'),
+    orch.getChain(chainName),
+  ]);
+```
+- `const [agoric, remoteChain] = await Promise.all([...]);`:
+Asynchronously fetches information for both the local chain (`agoric`) and the remote chain specified by `chainName`. The `Promise.all` ensures both operations complete before proceeding.
+
+```js
+  const { chainId, stakingTokens } = await remoteChain.getChainInfo();
+  const remoteDenom = stakingTokens[0].denom;
+  remoteDenom ||
+    Fail`${chainId || chainName} does not have stakingTokens in config`;
+  if (chainId !== validator.chainId) {
+    Fail`validator chainId ${validator.chainId} does not match remote chainId ${chainId}`;
+  }
+```
+- `const { chainId, stakingTokens } = await remoteChain.getChainInfo();`
+Retrieves the chain ID and staking tokens available on the remote chain.
+- `const remoteDenom = stakingTokens[0].denom;`:
+Extracts the denomination of the staking token from the remote chain.
+
+```js
+  const [localAccount, stakingAccount] = await Promise.all([
+    agoric.makeAccount(),
+    /** @type {Promise<OrchestrationAccount<any> & StakingAccountActions>} */ (
+      remoteChain.makeAccount()
+    ),
+  ]);
+
+  const [localChainAddress, remoteChainAddress] = await Promise.all([
+    localAccount.getAddress(),
+    stakingAccount.getAddress(),
+  ]);
+```
+
+- `const [localAccount, stakingAccount] = await Promise.all([...]);`:
+Creates accounts on both the local (Agoric) and remote chains. These accounts will be used to manage and stake tokens.
+- `const [localChainAddress, remoteChainAddress] = await Promise.all([...]);`:
+Retrieves the addresses associated with the newly created local and remote accounts. These addresses are essential for directing where tokens should be sent and staked.
+
+### Setting Up IBC Transfers and Staking Tap
+
+```js
+  const agoricChainId = (await agoric.getChainInfo()).chainId;
+  const { transferChannel } = await chainHub.getConnectionInfo(
+    agoricChainId,
+    chainId,
+  );
+  assert(transferChannel.counterPartyChannelId, 'unable to find sourceChannel');
+
+  const localDenom = `ibc/${denomHash({ denom: remoteDenom, channelId: transferChannel.channelId })}`;
+```
+- `const agoricChainId = ...`:
+Fetches the chain ID for the Agoric chain to help establish an IBC channel between Agoric and the remote chain.
+- `const { transferChannel } = await chainHub.getConnectionInfo(...);`:
+Retrieves the transfer channel information necessary for sending tokens between the local and remote chains via IBC.
+- `assert(transferChannel.counterPartyChannelId, 'unable to find sourceChannel');`:
+Ensures that a valid source channel is found for the IBC transfer. If not, an error is thrown.
+- `const localDenom = ...`:
+Constructs the IBC denomination identifier (`localDenom`) for the token, which combines the remote token's denomination with the IBC channel ID. This identifier is used to track the tokens on the local chain.
+
+### Staking Tap and Monitoring:
+```js
+  const tap = makeStakingTap({
+    localAccount,
+    stakingAccount,
+    validator,
+    localChainAddress,
+    remoteChainAddress,
+    sourceChannel: transferChannel.counterPartyChannelId,
+    remoteDenom,
+    localDenom,
+  });
+
+  await localAccount.monitorTransfers(tap);
+```
+- `const tap = makeStakingTap({...});`:
+Creates a "staking tap" using the provided accounts and configuration. This tap automatically handles the receipt and delegation of tokens.
+- `await localAccount.monitorTransfers(tap);`:
+Sets up the local account to monitor incoming transfers. When tokens matching the specified `remoteDenom` are received, they are automatically delegated to the validator.
+
+### Final Steps: Portfolio Holder and Return:
+
+```js
+  const accountEntries = harden(
+    /** @type {[string, OrchestrationAccount<any>][]} */ ([
+      ['agoric', localAccount],
+      [chainName, stakingAccount],
+    ]),
+  );
+
+  const publicTopicEntries = harden(
+    /** @type {[string, ResolvedPublicTopic<unknown>][]} */ (
+      await Promise.all(
+        accountEntries.map(async ([name, account]) => {
+          const { account: topicRecord } = await account.getPublicTopics();
+          return [name, topicRecord];
+        }),
+      )
+    ),
+  );
+
+  const portfolioHolder = makePortfolioHolder(
+    accountEntries,
+    publicTopicEntries,
+  );
+
+  return portfolioHolder.asContinuingOffer();
+};
+harden(makeAccounts);
+```
+- `const accountEntries = harden([...]);`:
+Creates a hardened (immutable) list of account entries, pairing the chain name with its corresponding orchestration account. This list will be used for managing these accounts in the portfolio holder.
+
+
