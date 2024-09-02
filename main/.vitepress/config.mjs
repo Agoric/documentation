@@ -414,34 +414,45 @@ export default defineConfig({
             },
             {
               text: 'Orchestration',
-              link: '/guides/orchestration/',
               collapsed: true,
               items: [
+                {
+                  text: 'Introduction',
+                  link: '/guides/orchestration/getting-started/key-concepts',
+                },
                 {
                   text: 'Key Concepts',
                   link: '/guides/orchestration/getting-started/key-concepts',
                 },
                 {
-                  text: 'API',
-                  link: '/guides/orchestration/getting-started/api',
+                  text: 'Getting Started',
+                  link: '/guides/orchestration/getting-started/key-concepts',
                 },
                 {
                   text: 'Contract Walkthroughs',
                   link: '/guides/orchestration/getting-started/contract-walkthroughs',
                   items: [
                     {
-                      text: 'Cross-Chain Swap Example',
+                      text: 'Basic Flows',
                       link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-swap',
                     },
                     {
-                      text: 'Cross-Chain Unbond Example',
-                      link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
+                      text: 'Send Anywhere',
+                      link: '/guides/orchestration/getting-started/contract-walkthrough/send-anywhere',
                     },
                     {
-                      text: 'Orchestration Basics',
+                      text: 'Autostake',
                       link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
                     }
                   ]
+                },
+                {
+                  text: 'How Orchetration Works',
+                  link: '/guides/orchestration/getting-started/key-concepts',
+                },
+                {
+                  text: 'Upgradability',
+                  link: '/guides/orchestration/getting-started/key-concepts',
                 },
               ]
             },
