@@ -215,7 +215,7 @@ export const start = async (zcf, privateArgs, baggage) => {
 ```
 **Orchestration Setup**: The `provideOrchestration` function is invoked, which sets up the orchestration tooling for us, as a convenience. This function returns two key elements:
   - `orchestrate`: the orchestration offer handler for `createAccountsFn`.
-  - `zone`: The [zone]((/glossary/#zone)) we use to allocate exposed remotable objects, or [Exos](/glossary/#exo).
+  - `zone`: The [zone](/glossary/#zone) we use to allocate exposed remotable objects, or [Exos](/glossary/#exo).
 ### Creating Offer Handler
 ```javascript
   /** @type {OfferHandler} */
