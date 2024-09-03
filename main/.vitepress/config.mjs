@@ -426,7 +426,25 @@ export default defineConfig({
                 },
                 {
                   text: 'Getting Started',
-                  link: '/guides/orchestration/getting-started/key-concepts',
+                  link: '/guides/orchestration/getting-started/orch-basics-main',
+                  items: [
+                    {
+                      text: 'Installation',
+                      link: '/guides/orchestration/getting-started/orch-basics-install',
+                    },
+                    {
+                      text: 'Contract',
+                      link: '/guides/orchestration/getting-started/orch-basics-contract',
+                    },
+                    {
+                      text: 'User Interface',
+                      link: '/guides/orchestration/getting-started/orch-basics-ui',
+                    },
+                    {
+                      text: 'Testing',
+                      link: '/guides/orchestration/getting-started/orch-basics-testing',
+                    }
+                  ]
                 },
                 {
                   text: 'Contract Walkthroughs',
