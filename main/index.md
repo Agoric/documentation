@@ -13,8 +13,14 @@ hero:
       text: Get Started
       link: /guides/getting-started/
     - theme: alt
-      text: View on GitHub
-      link: https://github.com/agoric/agoric-sdk
+      text: 'App #1: Offer Safety'
+      link: https://github.com/Agoric/dapp-offer-up#readme
+    - theme: alt
+      text: 'App #2: Basics'
+      link: https://github.com/Agoric/dapp-agoric-basics#readme
+    - theme: alt
+      text: 'App #3: Orchestration'
+      link: https://github.com/Agoric/dapp-orchestration-basics#readme
   image:
     src: /bld-logo-color.svg
     alt: Agoric
@@ -60,4 +66,3 @@ features:
     details: Catch up on all things Agoric product, events, and more.
     link: https://twitter.com/agoric
 ---
-
