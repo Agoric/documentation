@@ -6,7 +6,7 @@ titleTemplate: Secured, Distributed JavaScript
 
 hero:
   name: Agoric
-  text: Orchestrate the Web3 Economy
+  text: Bringing Orchestration to Web3 Builders
   tagline: Build feature-rich applications that seamlessly manage assets and services across multiple blockchains.
   actions:
     - theme: brand
