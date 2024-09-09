@@ -28,7 +28,7 @@ hero:
 features:
   - icon: ❓
     title: What is Agoric?
-    details: An overview of the Agoric chain and platform
+    details: The Agoric chain, tech stack, and ecosystem
     link: /what-is-agoric
 
   - icon: 🧑‍🎓️
