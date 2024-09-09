@@ -27,37 +27,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Checkout Endo
-      uses: actions/checkout@v4
-      with:
-        repository: endojs/endo
-        path: endo
-
-    - name: Build Endo docs
-      run: |
-        cd endo
-        yarn install
-        yarn docs:markdown-for-agoric-documentation-repo
-
-    - name: Move Endo docs into main/reference
-      run: mv endo/api-docs main/reference/endo
-
-    - name: Checkout agoric-sdk
-      uses: actions/checkout@v4
-      with:
-        repository: agoric/agoric-sdk
-        path: agoric-sdk
-
-    - name: Build agoric-sdk docs
-      run: |
-        cd agoric-sdk
-        yarn install
-        yarn build
-        yarn docs:markdown-for-agoric-documentation-repo
-
-    - name: Move agoric-sdk docs into main/reference
-      run: mv agoric-sdk/api-docs main/reference/agoric-sdk
-
     - name: Build Doc site
       run: |
         yarn install
