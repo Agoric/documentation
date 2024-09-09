@@ -229,6 +229,14 @@ export default defineConfig({
                 },
               ],
             },
+            {
+                text: 'Agoric API Reference',
+                link: 'https://agoric-sdk.pages.dev/'
+            },
+            {
+                text: 'Endo API Reference',
+                link: 'https://endojs.github.io/endo/'
+            },
 
             {
               text: 'ERTP API',
