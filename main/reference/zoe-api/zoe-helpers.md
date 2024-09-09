@@ -24,7 +24,7 @@ import {
 Asks Zoe to rearrange the **[Allocations](./zoe-data-types#allocation)** among the seats mentioned in
 _transfers_. _transfers_ are a set of changes to **Allocations** that must satisfy several
 constraints. If these constraints are all met, then the reallocation happens atomically. Otherwise an
-error is thrown and none of the propossed changes has any effect. The constraints are as follows.
+error is thrown and none of the proposed changes has any effect. The constraints are as follows.
 
 - All the mentioned seats are still live.
 - There aren't any outstanding stagings for any of the mentioned seats.

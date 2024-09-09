@@ -10,6 +10,39 @@ The contract instance is launched by **E(Zoe).startInstance()**, and is given ac
 the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements)).
 In the operations below, **instance** is the handle for the running contract instance.
 
+
+## zcf.atomicRearrange(transfers)
+
+- **transfers**: **Array&lt;[TransferPart](./zoe-data-types#transferpart)>**
+- Returns: None.
+
+Asks Zoe to rearrange the **[Allocations](./zoe-data-types#allocation)** among the seats mentioned in
+_transfers_. _transfers_ are a set of changes to **Allocations** that must satisfy several
+constraints. If these constraints are all met, then the reallocation happens atomically. Otherwise an
+error is thrown and none of the proposed changes has any effect. The constraints are as follows.
+
+- All the mentioned seats are still live.
+- There aren't any outstanding stagings for any of the mentioned seats.
+
+  Stagings are a reallocation mechanism that has been
+  deprecated in favor of this **atomicRearrange()** function.
+  To prevent confusion, each reallocation can only be
+  expressed in the old way or the new way, but not a mixture.
+
+- Overall conservation must be maintained. In other words, the reallocated
+  **[Amounts](/reference/ertp-api/ertp-data-types#amount)** must balance out.
+- Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
+  as long as either it gets the assets described in the want section of its proposal, or it retains
+  all of the assets specified in the give section of the proposal. This constraint applies to each
+  seat across the entire atomicRearrangement, not to the individual **TransferParts**.
+
+Note that you can construct the **TransferParts** that make up the _transfers_ array manually, or for
+transfers that only include one seat, you can use the helper functions
+**[fromOnly()](./zoe-helpers#fromonly-fromseat-fromamounts)** and
+**[toOnly()](./zoe-helpers#toonly-toseat-toamounts)** to create
+**TransferParts** that only use a subset of the fields. 
+
+
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
 
 - **keyword**: **[Keyword](./zoe-data-types#keyword)**
@@ -411,5 +444,5 @@ buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
 zcf.reallocate(buyerSeat, sellerSeat);
 ```
 
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./zoe-helpers#atomicrearrange-zcf-transfers)** instead.
+**Note**: This method has been deprecated. Use **[atomicRearrange()](./#atomicrearrange-transfers)** instead.
 :::
