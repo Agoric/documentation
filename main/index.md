@@ -6,8 +6,8 @@ titleTemplate: Secured, Distributed JavaScript
 
 hero:
   name: Agoric
-  text: JavaScript-Powered Smart Contract Platform
-  tagline: Secure, adaptable, and approachable. Discover the blockchain framework tailored for JavaScript developers.
+  text: Orchestrate the Web3 Economy
+  tagline: Build feature-rich applications that seamlessly manage assets and services across multiple blockchains.
   actions:
     - theme: brand
       text: Get Started
