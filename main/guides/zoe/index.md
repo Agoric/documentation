@@ -29,7 +29,9 @@ Note that in this flow, _assets are not sent to the contract_; only information 
 
 ::: tip Watch: Offer Safety: Partitioning Risk in Smart Contracts (20 min. Sep 2019)
 
+<ClientOnly>
 <iframe width="400" height="225" src="https://www.youtube.com/embed/T6h6TMuVHKQ?si=NzWre0vhlxjBxG-5&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</ClientOnly>
 
 :::
 
@@ -42,7 +44,9 @@ Note that in this flow, _assets are not sent to the contract_; only information 
 
 ::: tip Watch: How To Build a Composable DeFi Contract (1:47 Dec 2020)
 
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/e9dMkC2oFh8?si=3Luwp25R8d23elAa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</ClientOnly>
 
 Agoric has written [a number of example contracts that you can
 use](./contracts/index), including:

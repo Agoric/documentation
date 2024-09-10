@@ -5,7 +5,9 @@
 _The first 15 minutes cover much of the material below.
 The last 10 minutes are Q&A._
 
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/YcWXqHPui_w?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>
 :::
 
 
@@ -81,7 +83,9 @@ This limits the damage that can happen if there is an exploitable bug.
 ::: tip Watch: Navigating the Attack Surface
 to achieve a *multiplicative* reduction in risk. _15 min_<br />
 
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wW9-KuezPp8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>
 :::
 
 ## Tool Support: eslint config

@@ -1,5 +1,5 @@
 # Starting a Local Chain
-As you saw in this tutorial, starting a local chain is easy! 
+As you saw in this tutorial, starting a local chain is easy!
 
 ## How it Works
 In the `dapp-offer-up` sample dapp, configuration for the Agoric containers is specified in the `package.json` file. Take note of the Docker specific parameters in the `script` section of `package.json` below:
@@ -25,6 +25,8 @@ In the tutorial you first used the `yarn create` command to clone the dapp. Next
 
 As you're going through this explainer it may be helpful to watch this video walkthrough.
 
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WJ1MlHudpuM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>
 
 :::

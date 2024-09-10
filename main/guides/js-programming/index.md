@@ -9,7 +9,9 @@ This 15 minute overview is the first in a
 of short talks on the Agoric Architecture that overlap substantially with the material in
 the sections below.
 <br />
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/52SgGFpWjsY?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>
 :::
 
 ## Vats: the Unit of Synchrony
