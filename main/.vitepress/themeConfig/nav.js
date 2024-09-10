@@ -39,6 +39,14 @@ export const nav = [
         link: '/guides/agoric-cli/',
       },
       {
+        text: 'Agoric API Reference',
+        link: 'https://agoric-sdk.pages.dev/'
+      },
+      {
+        text: 'Endo API Reference',
+        link: 'https://endojs.github.io/endo/'
+      },
+      {
         text: 'ERTP API',
         ariaLabel: 'ERTP API Menu',
         link: '/reference/ertp-api/',
@@ -129,7 +137,7 @@ export const nav = [
       },
     ],
   },
-  
+
   {
     text: 'Support',
     items: [
