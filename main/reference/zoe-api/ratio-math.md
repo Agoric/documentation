@@ -13,7 +13,7 @@ Throws an error if the argument is not a valid **Ratio**.
 
 Throws messages for errors:
 - **Ratio ${ratio} must be a record with 2 fields.**
-- **Parameter must be a Ratio record, but ${ratio} has ${q(name)**
+- **Parameter must be a Ratio record, but ${ratio} has ${q(name)}**
 
 ```js
 assertIsRatio(aRatio);
@@ -23,12 +23,12 @@ assertIsRatio(aRatio);
 - **numerator**: **BigInt**
 - **numeratorBrand**: **[Brand](/reference/ertp-api/brand)**
 - **denominator**: **BigInt** - Optional, defaults to 100n.
-- **denominatorBrand)**: **Brand** - Optional, defaults to the *numeratorBrand* value.
+- **denominatorBrand**: **Brand** - Optional, defaults to the *numeratorBrand* value.
 - Returns: **[Ratio](./zoe-data-types#ratio)**
 
 Returns a **Ratio** based on the arguments passed into the function.
 
-By default, the *denominator* is 100n (i.e., the **Ratio** is a percent). 
+By default, the *denominator* is 100n (i.e., the **Ratio** is a percent).
 
 ```js
 // Use default values to create a ratio of 50 / 100 Quatloos
@@ -42,7 +42,7 @@ const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 - **denominatorAmount**: **Amount**
 - Returns: **[Ratio](./zoe-data-types#ratio)**
 
-Returns a **Ratio**, representing a fraction and consisting of an immutable pair 
+Returns a **Ratio**, representing a fraction and consisting of an immutable pair
 of two **Amounts**.  The *numeratorAmount* is the **Ratio's** numerator and
 the *denominatorAmount* is the **Ratio's** denominator.
 
@@ -73,11 +73,11 @@ would go
 2. 141 / 5 = 28.2
 3. Floor(28.2) = 28
 
-Throws errors with messages: 
-- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+Throws errors with messages:
+- **Expected an amount: ${amount}**:  First argument isn't an **Amount**.
 - **amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
-  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand. 
-    
+  ratio.denominator.brand*)}*: The amount and ratio's denominator must have the same brand.
+
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
 const dollars47 = AmountMath.make(dollarBrand, 47n);
@@ -106,11 +106,11 @@ would go
 2. 141 / 5 = 28.2
 3. Ceiling(28.2) = 29
 
-Throws errors with messages: 
-- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+Throws errors with messages:
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**.
 - **amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
-  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand. 
-    
+  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand.
+
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
 const dollars47 = AmountMath.make(dollarBrand, 47n);
@@ -138,11 +138,11 @@ would go
 2. 141 / 5 = 28.2
 3. BankersRounding(28.2) = 28
 
-Throws errors with messages: 
-- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
+Throws errors with messages:
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**.
 - **amount's brand ${q(amount.brand)} must match ratio's denominator ${q(
-  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand. 
-    
+  ratio.denominator.brand**: The amount and ratio's denominator must have the same brand.
+
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
 const dollars47 = AmountMath.make(dollarBrand, 47n);
@@ -169,10 +169,10 @@ would go
 2. 235 / 3 = 78.33333...
 3. Floor(78.3333...) = 78
 
-Throws errors with messages: 
-- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
-- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The 
-  amount and ratio's numerator must have the same brand. 
+Throws errors with messages:
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**.
+- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The
+  amount and ratio's numerator must have the same brand.
 
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
@@ -200,10 +200,10 @@ would go
 2. 235 / 3 = 78.33333...
 3. Ceiling(78.3333...) = 79
 
-Throws errors with messages: 
-- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
-- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The 
-  amount and ratio's numerator must have the same brand. 
+Throws errors with messages:
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**.
+- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The
+  amount and ratio's numerator must have the same brand.
 
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
@@ -231,10 +231,10 @@ would go
 2. 235 / 3 = 78.33333...
 3. BankersRounding(78.3333...) = 78
 
-Throws errors with messages: 
-- **Expected an amount: ${amount})**:  First argument isn't an **Amount**. 
-- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The 
-  amount and ratio's numerator must have the same brand. 
+Throws errors with messages:
+- **Expected an amount: ${amount})**:  First argument isn't an **Amount**.
+- **amount's brand ${q(amount.brand)} must match ratio's numerator ${q(ratio.numerator.brand**: The
+  amount and ratio's numerator must have the same brand.
 
 ```js
 const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
@@ -273,11 +273,11 @@ denominator, and then the **Ratios** are added.
 
 For example:
 
-1. Let's assume *left* = { numerator: 44n kilometers, denominator: 3n hours } and 
-*right* = { numerator: 25n kilometers, denominator: 2n hours }.
-2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in 
-*left* = { numerator: 88n kilometers, denominator: 6n hours } and  *right* = { numerator: 75n kilometers, denominator: 6n hours }
-3. *left* and *right* would then be added together, resulting in { numerator: 163n kilometers, denominator: 6n hours }.
+1. Let's assume *left* = { numerator: `44n` kilometers, denominator: `3n` hours } and
+*right* = { numerator: `25n` kilometers, denominator: `2n` hours }.
+2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in
+*left* = { numerator: `88n` kilometers, denominator: `6n` hours } and  *right* = { numerator: `75n` kilometers, denominator: `6n` hours }
+3. *left* and *right* would then be added together, resulting in { numerator: `163n` kilometers, denominator: `6n` hours }.
 This **Ratio** would then be returned.
 
 
@@ -298,11 +298,11 @@ denominator, and then *right* is subtracted from *left*.
 
 For example:
 
-1. Let's assume *left* = { numerator: 44n kilometers, denominator: 3n hours } and 
-*right* = { numerator: 25n kilometers, denominator: 2n hours }.
-2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in 
-*left* = { numerator: 88n kilometers, denominator: 6n hours } and  *right* = { numerator: 75n kilometers, denominator: 6n hours }
-3. *right* would then be subtracted from *left* would then be added together, resulting in { numerator: 13n kilometers, denominator: 6n hours }.
+1. Let's assume *left* = { numerator: `44n` kilometers, denominator: `3n` hours } and
+*right* = { numerator: `25n` kilometers, denominator: `2n` hours }.
+2. *left* would be multiplied by 2/2, and *right* would be multiplied by 3/3, resulting in
+*left* = { numerator: `88n` kilometers, denominator: `6n` hours } and  *right* = { numerator: `75n` kilometers, denominator: `6n` hours }
+3. *right* would then be subtracted from *left* would then be added together, resulting in { numerator: `13n` kilometers, denominator: `6n` hours }.
 This **Ratio** would then be returned.
 
 ## multiplyRatios(left, right)
@@ -341,10 +341,10 @@ aren't identical.
 - Returns: **Boolean**
 
 Returns **true** if the *left* and *right* **Ratios** are the same, **false** otherwise. Note that for
-the two **Ratios** to be considered the same, the 
+the two **Ratios** to be considered the same, the
 **[AmountValue](/reference/ertp-api/ertp-data-types#amountvalue)** and **[Brand](/reference/ertp-api/brand)**
 of both the *numerator* and *denominator* of one **Ratio** must be identical to the **AmountValue** and
-**Brand** of the *numerator* and *denominator* of the other **Ratio**. 
+**Brand** of the *numerator* and *denominator* of the other **Ratio**.
 
 
 ## quantize(ratio, newDen)
