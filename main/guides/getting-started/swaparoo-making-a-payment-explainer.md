@@ -38,4 +38,6 @@ Deposit facets provide an abstraction layer for handling payments and ensure tha
 
 ## Video Walkthrough
 As you're going through this tutorial it may be helpful to watch this video walkthrough.
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XeHBMO7SckU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>

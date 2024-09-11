@@ -139,5 +139,7 @@ Now we can see the result in some detail. Note the way the promise from
 ::: tip Watch: How Agoric Solves Reentrancy Hazards (November 2020)
 for more on eventual send and remote communication
 
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/38oTyVv_D9I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>
 :::

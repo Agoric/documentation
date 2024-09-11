@@ -131,4 +131,6 @@ atomicRearrange(
 Take a complete look at this example code in our [Github repository](https://github.com/Agoric/dapp-agoric-basics/blob/main/contract/src/sell-concert-tickets.contract.js).
 
 As you're going through this tutorial it may be helpful to watch this video walkthrough:
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Wtq6dwsRdOQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>

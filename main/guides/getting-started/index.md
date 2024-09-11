@@ -6,7 +6,9 @@ In these steps you will be getting your first Agoric dapp up and running!
 
 As you're going through this tutorial it may be helpful to watch this video walkthrough, showing you all the steps and the desired outcome of each.
 
+<ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/huTI9_Gq2ow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</ClientOnly>
 
 :::
 
@@ -180,7 +182,7 @@ Previously, you installed brew on your machine. You can install docker using the
 ```sh
 brew cask install docker
 ```
-or 
+or
 ```sh
 brew install docker --cask
 ```
