@@ -15,8 +15,8 @@ The [Inter-Blockchain Communication (IBC) protocol](https://ibcprotocol.org/) ca
 
 IBC operates on a simple premise: by adhering to a common set of communication protocols, blockchains can securely transfer data and tokens between one another. Here's a high-level overview of how IBC achieves this:
 
-- **Light Client Verification:** Each blockchain maintains a light client of the other blockchain. A light client is a simplified version of a blockchain client that only retains enough information to verify transactions and proofs, without needing to store the entire blockchain history.
-- **Relayer:** A [relayer](https://medium.com/@cosmos/relayer-in-blockchain-ecosystem-5f8b5b9b8b5e) is an off-chain process or entity that listens for transactions on one blockchain and relays them to another. The relayer facilitates communication between blockchains but does not have any special permissions or abilities; it merely passes messages between chains.
+- **Light Client Verification:** Each blockchain maintains a [light client](https://github.com/cosmos/ibc-go/blob/34628eb0c1ca0ca9721c6e3923cf048e1172b8b0/docs/docs/03-light-clients/01-developer-guide/01-overview.md) of the other blockchain. A light client is a simplified version of a blockchain client that only retains enough information to verify transactions and proofs, without needing to store the entire blockchain history.
+- **Relayer:** A [relayer](https://github.com/cosmos/relayer) is an off-chain process or entity that listens for transactions on one blockchain and relays them to another. The relayer facilitates communication between blockchains but does not have any special permissions or abilities; it merely passes messages between chains.
 - **IBC Handshake:** Before two blockchains can communicate, they must perform a handshake, establishing a trusted channel between them. This involves verifying each other's consensus state through light clients.
 - **Packet Transfer:** Once the connection is established, IBC allows the transfer of packets of data. These packets can represent tokens, smart contract commands, or any other type of data. The receiving blockchain uses the light client verification to ensure that the data packet is valid and hasn't been tampered with.
 - **Finality and Acknowledgement:** After a packet is successfully received and processed by the receiving blockchain, an acknowledgment is sent back to the originating blockchain, confirming the completion of the transaction.
@@ -25,7 +25,7 @@ The IBC protocol is highly modular, meaning it can be extended and adapted for v
 
 ### Interchain Accounts (ICA)
 
-[Interchain Accounts (ICA)](https://cosmos.network/learn/interchain-accounts) is a feature built on top of IBC that allows one blockchain to control an account on another blockchain. This is akin to having a remote account that can be operated from a different blockchain. ICA is a critical component of blockchain orchestration, as it enables seamless cross-chain operations and automation.
+[Interchain Accounts (ICA)](https://github.com/cosmos/ibc/blob/main/spec/app/ics-027-interchain-accounts/README.md) is a feature built on top of IBC that allows one blockchain to control an account on another blockchain. This is akin to having a remote account that can be operated from a different blockchain. ICA is a critical component of blockchain orchestration, as it enables seamless cross-chain operations and automation.
 
 #### How ICA Works
 
@@ -35,4 +35,3 @@ The IBC protocol is highly modular, meaning it can be extended and adapted for v
 
 ICA greatly enhances the flexibility and capability of blockchain orchestration by enabling direct, programmable interactions between blockchains. This opens up a wide range of possibilities for cross-chain applications, from decentralized finance (DeFi) to supply chain management.
 
-For more information, you can read about [blockchain scalability](https://www.investopedia.com/terms/b/blockchain-scalability.asp) and [cross-chain communication](https://www.coindesk.com/learn/what-is-cross-chain-communication/).
