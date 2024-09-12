@@ -3,9 +3,10 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/loan/index.js) (Last updated: Nov 23, 2021)
+
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
-The basic loan contract has two parties, a *lender* and a *borrower*.
+The basic loan contract has two parties, a _lender_ and a _borrower_.
 It lets the borrower add collateral of a particular brand and get a
 loan of another brand. The collateral (also known as margin) must be a
 certain percentage of the loan value (the default is 150%). The exact
@@ -22,32 +23,33 @@ Note that all collateral must be of the same brand and all of the
 loaned amount and interest must be of the same (separate) brand.
 
 ## Terms
-* `mmr` (default = 150) - the Maintenance Margin Requirement, in
-   percent. The default is 150, meaning that collateral should be
-   worth at least 150% of the loan. If the value of the collateral
-   drops below `mmr`, liquidation can occur.
-* [`priceAuthority`](/guides/zoe/price-authority) - used for getting the current value of
-   collateral and setting liquidation triggers.
-* `autoswapInstance` - The running contract instance for
-   [AMM](./constantProductAMM) installation. The `publicFacet`
-   of the instance is used to make an invitation to sell the
-   collateral on liquidation.
-* `periodNotifier` - the [notifier](/guides/js-programming/notifiers) used for notifications
-   that a period has passed, on which compound interest will be
-   calculated using the `interestRate`.
-* `interestRate` - the rate in [basis points](https://www.investopedia.com/terms/b/basispoint.asp) that will be multiplied
-   with the debt on every period to compound interest.
-* `interestPeriod` - the period at which interest will be compounded.
+
+- `mmr` (default = 150) - the Maintenance Margin Requirement, in
+  percent. The default is 150, meaning that collateral should be
+  worth at least 150% of the loan. If the value of the collateral
+  drops below `mmr`, liquidation can occur.
+- [`priceAuthority`](/guides/zoe/price-authority) - used for getting the current value of
+  collateral and setting liquidation triggers.
+- `autoswapInstance` - The running contract instance for
+  [AMM](./constantProductAMM) installation. The `publicFacet`
+  of the instance is used to make an invitation to sell the
+  collateral on liquidation.
+- `periodNotifier` - the [notifier](/guides/js-programming/notifiers) used for notifications
+  that a period has passed, on which compound interest will be
+  calculated using the `interestRate`.
+- `interestRate` - the rate in [basis points](https://www.investopedia.com/terms/b/basispoint.asp) that will be multiplied
+  with the debt on every period to compound interest.
+- `interestPeriod` - the period at which interest will be compounded.
 
 ## IssuerKeywordRecord
 
 All keyword records use the following, regardless of their role in
 the contract:
 
-* Keyword: `Collateral` - The issuer/payment for the digital assets to be
-   escrowed as collateral.
-* Keyword: `Loan` - The issuer/payment for the digital assets to be loaned
-   out.
+- Keyword: `Collateral` - The issuer/payment for the digital assets to be
+  escrowed as collateral.
+- Keyword: `Loan` - The issuer/payment for the digital assets to be loaned
+  out.
 
 ## The Lender
 
@@ -95,14 +97,15 @@ liquidation.
 ## Contract Shutdown
 
 The contract shuts down under any one of 3 conditions:
+
 1. The loan (plus interest) is repaid.
-   * The lender gets the repayment and the borrower gets
-    their collateral back.
+   - The lender gets the repayment and the borrower gets
+     their collateral back.
 2. The value of the collateral drops and the collateral must be
    liquidated.
-   * The lender gets the outcome of the collateral sale, and the borrower keeps their loan.
+   - The lender gets the outcome of the collateral sale, and the borrower keeps their loan.
 3. An error occurs when trying to use the priceAuthority.
-   * The lender gets the collateral, and the borrower keeps their loan.
+   - The lender gets the collateral, and the borrower keeps their loan.
 
 ## Debt and Interest Calculation
 

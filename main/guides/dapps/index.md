@@ -2,7 +2,7 @@
 
 **This is a generic guide to Agoric Dapp projects**
 
-A dapp is a *decentralized application* which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
+A dapp is a _decentralized application_ which typically has a browser-based user interface, a public API server, and a contract running on the Agoric blockchain.
 
 ## Using a Dapp
 
@@ -10,38 +10,42 @@ If you have installed the [Agoric CLI](../getting-started/) and you want to try 
 
 1. Checkout the latest beta release of the SDK.
 
-	```sh
-	cd agoric-sdk
-	git checkout beta
-	yarn && yarn build
-	```
+   ```sh
+   cd agoric-sdk
+   git checkout beta
+   yarn && yarn build
+   ```
+
 2. Run `agoric init` to make a new local copy of a dapp template.
 
-	```sh
-	# Here we chose the Fungible Faucet Dapp.
-	# You can replace `my-fungible-faucet` with a name of your choice.
-	agoric init --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
-	cd my-fungible-faucet
-	# Install the project dependencies
-	agoric install
-	# Start the Agoric VM
-	agoric start --reset
-	```
-3. Leave this command running (it is your simulated environment).  
+   ```sh
+   # Here we chose the Fungible Faucet Dapp.
+   # You can replace `my-fungible-faucet` with a name of your choice.
+   agoric init --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
+   cd my-fungible-faucet
+   # Install the project dependencies
+   agoric install
+   # Start the Agoric VM
+   agoric start --reset
+   ```
+
+3. Leave this command running (it is your simulated environment).
 4. In a separate terminal, deploy the contract and API to the VM.
 
-	```sh secondary style2
-	# Deploy a new instance of the contract to the VM
-	agoric deploy contract/deploy.js
-	# Reset the VM's API server
-	agoric deploy api/deploy.js
-	```
+   ```sh secondary style2
+   # Deploy a new instance of the contract to the VM
+   agoric deploy contract/deploy.js
+   # Reset the VM's API server
+   agoric deploy api/deploy.js
+   ```
+
 5. In a third terminal, run the following.
 
-	```sh secondary style3
-	# Start the user interface
-	cd ui && yarn start
-	```
+   ```sh secondary style3
+   # Start the user interface
+   cd ui && yarn start
+   ```
+
 6. You can now navigate to [http://localhost:3000](http://localhost:3000) to view your dapp.
 
 ## Modifying this Dapp

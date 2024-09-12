@@ -5,17 +5,17 @@
 When writing a smart contract to run on Zoe, you need
 to know the proper format and other expectations.
 
-A Zoe smart contract is a  JavaScript module that exports a `start` function
+A Zoe smart contract is a JavaScript module that exports a `start` function
 and may import other code, including:
 
-* [@endo/harden](https://www.npmjs.com/package/@endo/harden): A package for recursively deep-freezing.
-* [@endo/nat](https://www.npmjs.com/package/@endo/nat): A package
+- [@endo/harden](https://www.npmjs.com/package/@endo/harden): A package for recursively deep-freezing.
+- [@endo/nat](https://www.npmjs.com/package/@endo/nat): A package
   for testing whether something is a natural number (natural numbers
   are recommended for currency-related programming in order to avoid
   rounding issues) and throwing an error if not.
-* [@agoric/notifier](https://www.npmjs.com/package/@agoric/zoe): A package that provides updates through
+- [@agoric/notifier](https://www.npmjs.com/package/@agoric/zoe): A package that provides updates through
   smartly resolving promises rather than polling.
-* [@agoric/zoe](https://www.npmjs.com/package/@agoric/zoe): Zoe has
+- [@agoric/zoe](https://www.npmjs.com/package/@agoric/zoe): Zoe has
   helpers that contracts can use by importing
   `@agoric/zoe/src/contractSupport/zoeHelpers.js`.
 
@@ -37,7 +37,8 @@ Put it right before the start of your contract code.
 /**
  * @type {ContractStartFn}
  */
- ```
+```
+
 Your contract code must export a function `start` as a non-default export.
 `zcf` is the [Zoe Contract Facet](/reference/zoe-api/zoe-contract-facet) and is
 the first argument provided to the contract.
@@ -57,17 +58,18 @@ export { start };
 ```
 
 The contract must return a record with any (or none) of the following:
+
 - **creatorFacet**: An object, usually with admin authority. It is only given to the entity
-that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
-contract `instance`. It might create `invitations` for other parties, or take actions that
-are unrelated to making offers.
+  that calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
+  contract `instance`. It might create `invitations` for other parties, or take actions that
+  are unrelated to making offers.
 - **creatorInvitation**: A Zoe `invitation` only given to the entity that
-calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
-contract `instance`. This is usually used when a party has to make an offer first,
-such as escrowing the underlying good for sale in an auction or covered call.
+  calls `E(zoe).startInstance()`; i.e. the party that was the creator of the current
+  contract `instance`. This is usually used when a party has to make an offer first,
+  such as escrowing the underlying good for sale in an auction or covered call.
 - **publicFacet**: An object available through Zoe to anyone who knows the contract `instance`.
-Use the `publicFacet` for general queries and actions, such as getting the current price
-or creating public `invitations`.
+  Use the `publicFacet` for general queries and actions, such as getting the current price
+  or creating public `invitations`.
 
 The contract can contain arbitrary JavaScript code, but there are a few things you'll want
 to do in order to act as a contract, and interact with Zoe and zcf (the internal contract
@@ -87,8 +89,8 @@ Use `zcf.makeInvitation()` to create the first party's `invitation`:
 ```js
 const creatorInvitation = zcf.makeInvitation(
   makeMatchingInvitation,
-  'firstOffer',
-);
+  'firstOffer'
+)
 ```
 
 `makeMatchingInvitation()` creates the second `invitation`.
@@ -99,9 +101,9 @@ const matchingSeatInvitation = zcf.makeInvitation(
   'matchOffer',
   {
     asset: give.Asset,
-    price: want.Price,
-  },
-);
+    price: want.Price
+  }
+)
 ```
 
 The third argument (which is optional and wasn't needed for the first `invitation`) says
@@ -117,16 +119,15 @@ match, they each get back what they brought to the exchange, and it's still over
 
 ```js
 const matchingSeatOfferHandler = matchingSeat => {
-  const swapResult = swap(zcf, firstSeat, matchingSeat);
-  zcf.shutdown();
-  return swapResult;
-};
+  const swapResult = swap(zcf, firstSeat, matchingSeat)
+  zcf.shutdown()
+  return swapResult
+}
 ```
 
 If you study other contracts, you'll see they all have this basic format. Depending
 on their goals, they may do additional bookkeeping, or try to find compatible terms
 between multiple offers, or create new assets to order.
-
 
 ## Making an Invitation
 
@@ -158,7 +159,7 @@ These modules are built out of native code (C++), not plain JS.
 
 None of these built-in modules are available to vat code. `require` or `import` can be used
 on pure JS modules, but not on modules including native code. For a vat to exercise authority
-from a built-in module, you have to write a *device* with an endowment with the built-in
+from a built-in module, you have to write a _device_ with an endowment with the built-in
 module's functions, then have the vat send messages to the device.
 
 ## Library Compatibility

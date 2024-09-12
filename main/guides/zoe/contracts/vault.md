@@ -3,8 +3,8 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vaultFactory/vaultFactory.js) (Last updated: Aug 15, 2022)
-##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The Vault is the primary mechanism for making `IST` (the Agoric stable-value
 currency) available to participants in the economy. It does this by issuing
@@ -33,8 +33,8 @@ getCollateralAmount, getDebtAmount, getLiquidationSeat, getLiquidationPromise
 }`.
 
 An `AdjustBalancesInvitation` allows the borrower to add or remove collateral
-or increase or decrease the loan balance.  `CloseInvitation` allows the
-borrower to close their loan and withdraw any remaining collateral.  The
+or increase or decrease the loan balance. `CloseInvitation` allows the
+borrower to close their loan and withdraw any remaining collateral. The
 `liquidationPromise` allows the borrower to find out if/when the loan gets
 liquidated. The `liquidationSeat`'s `getPayoff()` or `getPayoffs()` allow the
 borrower to retrieve any proceeds above what's needed to repay the debt.
@@ -71,7 +71,7 @@ over-collateralize so that price volatility and interest charges don't quickly
 drive their loans into default.
 
 The `loanFee` (in basis points) is charged on the amount of `IST` issued when
-opening a loan or increasing the amount of a loan.  The `interestRate` is an
+opening a loan or increasing the amount of a loan. The `interestRate` is an
 annual rate.
 
 `ChargingPeriod` and `recordingPeriod` are parameters of the Vault that apply

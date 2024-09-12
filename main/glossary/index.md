@@ -141,10 +141,10 @@ and the [ERTP API's Brand section](/reference/ertp-api/brand).
 Before a contract can be installed on Zoe, its source code must be bundled. This is done by:
 
 ```js
-import bundleSource from '@endo/bundle-source';
+import bundleSource from '@endo/bundle-source'
 const atomicSwapBundle = await bundleSource(
-  require.resolve('@agoric/zoe/src/contracts/atomicSwap'),
-);
+  require.resolve('@agoric/zoe/src/contracts/atomicSwap')
+)
 ```
 
 The installation operation returns an `installation`, which is an object with a single
@@ -153,7 +153,7 @@ In most cases, the bundle contains a base64-encoded zip file that you can
 extract for review.
 
 ```js
-const { endoZipBase64 } = await E(installation).getBundle();
+const { endoZipBase64 } = await E(installation).getBundle()
 ```
 
 ```sh
@@ -282,13 +282,13 @@ For details, see [`E(zoe).offer(...)`](/reference/zoe-api/zoe#proposals).
 
 ## Exo
 
-An Exo object is an exposed Remotable object with methods (aka a [`Far`](/guides/js-programming/far) object) which is 
+An Exo object is an exposed Remotable object with methods (aka a [`Far`](/guides/js-programming/far) object) which is
 normally defined with an `InterfaceGuard` as a protective outer layer, providing the first
- layer of defensiveness.
+layer of defensiveness.
 
-This [`@endo/exo` package](https://github.com/endojs/endo/tree/master/packages/exo) defines 
+This [`@endo/exo` package](https://github.com/endojs/endo/tree/master/packages/exo) defines
 the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo
- objects.
+objects.
 
 ## Facet
 
@@ -296,10 +296,10 @@ A _facet_ is an object that exposes an API or particular view of some larger ent
 You can make any number of facets of an entity. In JavaScript, you often make a facet that forwards method calls:
 
 ```js
-import { Far } from '@endo/far';
+import { Far } from '@endo/far'
 const facet = Far('FacetName', {
-  myMethod: (...args) => oldObject.method(...args),
-});
+  myMethod: (...args) => oldObject.method(...args)
+})
 ```
 
 Two Agoric uses are:
@@ -341,8 +341,8 @@ Guide](https://github.com/endojs/endo/blob/HEAD/packages/ses/docs/guide.md) for 
 The Inter-Blockchain Communication protocol, used by blockchains to communicate with each other.
 For more details, see [What developers need to know about inter-blockchain communication](https://www.computerweekly.com/blog/Open-Source-Insider/What-developers-need-to-know-about-inter-blockchain-communication).
 
-
 ## Interchain Account (ICA)
+
 Interchain Accounts are an [IBC](#ibc) feature used in Agoric's [Orchestration API](#orchestration) to enable an Agoric smart contract to control an account on another blockchain within the Cosmos ecosystem. This feature leverages the [Inter-Blockchain Communication (IBC)](#ibc) protocol to facilitate interactions and transactions across different blockchains seamlessly.
 
 ## Invitation
@@ -485,15 +485,15 @@ the user either gets what they said they wanted, or gets back what they original
 escrowed (a refund). One reason this is possible is if a [proposal](#proposal) doesn't match what the contract expects to do, it
 can immediately cause the [seat](#seat) to exit, getting back the amount it offered.
 
-## Orchestration 
+## Orchestration
 
 Orchestration API is a tool to help developers build seamless applications out of disparate interoperable chains and services.
 This composability allows for the development of user-centric applications
- that leverage the unique strengths of different blockchain ecosystems.
+that leverage the unique strengths of different blockchain ecosystems.
 Orchestration integrates with existing Agoric components ([SwingSet](/guides/platform/#swingset), Cosmos modules) and introduces
- vat-orchestration. This [vat](/glossary/#vat) manages [Inter-Chain Account (ICA)](#interchain-account-ica) identities and connections to host
-  chains, ensuring proper transaction authorization.
-  For more information, see the [Orchestration API](/guides/orchestration/).
+vat-orchestration. This [vat](/glossary/#vat) manages [Inter-Chain Account (ICA)](#interchain-account-ica) identities and connections to host
+chains, ensuring proper transaction authorization.
+For more information, see the [Orchestration API](/guides/orchestration/).
 
 ## Passable
 
@@ -549,8 +549,8 @@ For example:
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null },
-});
+  exit: { onDemand: null }
+})
 ```
 
 `give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing respectively what will be given and what is being requested in exchange.
@@ -608,7 +608,7 @@ An imaginary currency Agoric documentation uses in examples.
 
 ## Smart Contract
 
-A smart contract is a contract-​like arrangement expressed in code, where the behavior of the 
+A smart contract is a contract-​like arrangement expressed in code, where the behavior of the
 program enforces the terms of the contract.
 
 In the context of the Agoric blockchain, smart contracts are written using JavaScript and leverage
@@ -635,11 +635,9 @@ For more information, see the [Vat section in the Distributed JS Programming doc
 
 The concept of a vat is metaphorically inspired by the philosophical experiment known as “Brain in a Vat.” This thought experiment, explored in philosophy, posits a scenario in which a brain is sustained in a vat and connected to a computer that simulates reality, raising questions about knowledge, reality, and perception. Similarly, in the context of distributed systems, a vat isolates and encapsulates its contents, maintaining strict boundaries on synchronous and asynchronous communication, much like the hypothetical brain’s isolated and controlled environment. For more details, see the Wikipedia page on [Brain in a Vat](https://en.wikipedia.org/wiki/Brain_in_a_vat).
 
-
 ## Vow
 
-Vows are objects that represent promises that can be stored durably. Native promises are not compatible with Agoric's durable stores, which means that on the Agoric platform, such promises disconnect their clients when their creator vat is upgraded.  
-
+Vows are objects that represent promises that can be stored durably. Native promises are not compatible with Agoric's durable stores, which means that on the Agoric platform, such promises disconnect their clients when their creator vat is upgraded.
 
 ## Wallet
 
@@ -671,7 +669,6 @@ A set of API methods for deploying and working with smart contracts. See [Zoe Se
 
 ## Zone
 
-Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism.  This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual) or can be revived after a vat upgrade (durable).
+Each Zone provides an API that allows the allocation of [Exo objects](#exo) and [Stores (object collections)](https://github.com/Agoric/agoric-sdk/tree/master/packages/store/README.md) which use the same underlying persistence mechanism. This allows library code to be agnostic to whether its objects are backed purely by the JS heap (ephemeral), pageable out to disk (virtual) or can be revived after a vat upgrade (durable).
 
 See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
-

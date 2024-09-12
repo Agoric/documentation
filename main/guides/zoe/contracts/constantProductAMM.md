@@ -3,8 +3,8 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/7d141a47b311363f099f496d4ed9b4d0f28c8fff/packages/inter-protocol/src/vpool-xyk-amm/multipoolMarketMaker.js) (Last updated: Aug 15, 2022)
-##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
+##### [View contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The Constant Product AMM is an automated market maker (AMM) that supports multiple
 liquidity pools and direct exchanges across pools. It's called the "Constant
@@ -24,7 +24,7 @@ pools between two secondary tokens.
 There should only need to be one instance of this contract, so liquidity can be
 shared as much as possible. Each secondary currency has a separate pool of liquidity.
 
-When the contract is instantiated, the terms specify the central token.  Invitations
+When the contract is instantiated, the terms specify the central token. Invitations
 for adding and removing liquidity and for making trades are available by calling
 methods on the publicFacet. Other publicFacet operations support querying prices and
 the sizes of pools. Create new pools with `addPool()`.
@@ -32,12 +32,12 @@ the sizes of pools. Create new pools with `addPool()`.
 When making trades or requesting prices, the caller must specify that either the
 input price (swapIn, getInputPrice) or the output price (swapOut, getOutputPrice) is
 fixed. For swaps, the required keywords are `In` for the trader's `give` amount, and
-`Out` for the trader's `want` amount.  `getInputPrice()` and `getOutputPrice()` each
+`Out` for the trader's `want` amount. `getInputPrice()` and `getOutputPrice()` each
 take two amounts. When `getInputPrice()` or `swapIn()` is called, the `amountOut`
 parameter indicated the desired `amountOut`; if `amountIn` is insufficient to provide
 that much, the result indicates that no trade will take place. (The returned amountIn
 and amountOut will both be empty amounts.) Similarly, when `swapIn()` or
-`getOutputPrice()` is called, `amountIn` is treated as a maximum.  If it would take a
+`getOutputPrice()` is called, `amountIn` is treated as a maximum. If it would take a
 greater amount to get the specified `amountOut`, the result indicates no trade.
 
 When adding and removing liquidity, the keywords are `Central`, `Secondary`, and
@@ -68,9 +68,9 @@ amountOut of the result.)
 ```js
 const quote = E(publicFacet).getOutputPrice(
   AmountMath.make(BLDBrand, 275n),
-  AmountMath.makeEmpty(ATMBrand),
-);
-  ```
+  AmountMath.makeEmpty(ATMBrand)
+)
+```
 
 Let's assume the quote says she needs to provide 216 ATM. Sara believes the
 price is somewhat volatile, and she doesn't want to make repeated calls, so she pads
@@ -84,15 +84,16 @@ back.
 ```js
 const saraProposal = harden({
   want: { Out: AmountMath.make(BLDBrand, 275n) },
-  give: { In: AmountMath.make(atmBrand, 220n) },
-});
+  give: { In: AmountMath.make(atmBrand, 220n) }
+})
 
-const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
-const atmPayment =
-  harden({ In: saraAtmPurse.withdraw(AmountMath.make(atmBrand, 220n)) });
+const swapInvitation = await E(publicFacet).makeSwapOutInvitation()
+const atmPayment = harden({
+  In: saraAtmPurse.withdraw(AmountMath.make(atmBrand, 220n))
+})
 
-const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, atmPayment);
-const saraResult = await saraSeat.getOfferResult();
+const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, atmPayment)
+const saraResult = await saraSeat.getOfferResult()
 ```
 
 If the result is `Swap successfully completed.`, she got the BLD for 220 ATM
@@ -100,23 +101,23 @@ or less (she'll want to deposit any refund). Otherwise the market price moved ag
 her, and she'll have to check the price again and make another offer.
 
 ```js
-const BLDProceeds = await E(saraSeat).getPayout('In');
-const atmRefund = await E(saraSeat).getPayout('Out');
+const BLDProceeds = await E(saraSeat).getPayout('In')
+const atmRefund = await E(saraSeat).getPayout('Out')
 
-const BLDProceedsAmount = E(saraBLDPurse).deposit(BLDProceeds);
-E(saraAtmPurse).deposit(atmRefund);
+const BLDProceedsAmount = E(saraBLDPurse).deposit(BLDProceeds)
+E(saraAtmPurse).deposit(atmRefund)
 ```
 
-###  Creating a New Pool
+### Creating a New Pool
 
 When the contract is first instantiated, there won't be any pools ready for
-trading. `addPool()` adds a new currency, which can then be funded.  (All
+trading. `addPool()` adds a new currency, which can then be funded. (All
 currencies must be fungible.) When a pool is first funded, there's no other basis
 on which to decide how much liquidity to create, so the liquidity amount equals the
 amount of the central token in the offer.
 
 ```js
-const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD');
+const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD')
 ```
 
 Alice sees that the current rate in the external market is 2 BLD for each
@@ -127,20 +128,20 @@ const aliceProposal = harden({
   want: { Liquidity: BLDLiquidity(50n) },
   give: {
     Secondary: AmountMath.make(BLDBrand, 100n),
-    Central: AmountMath.make(ISTBrand, 50n),
-  },
-});
+    Central: AmountMath.make(ISTBrand, 50n)
+  }
+})
 const alicePayments = {
   Secondary: aliceBLDPayment,
-  Central: aliceISTPayment,
-};
+  Central: aliceISTPayment
+}
 
-const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation();
+const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation()
 const addLiquiditySeat = await E(zoe).offer(
   aliceAddLiquidityInvitation,
   aliceProposal,
-  alicePayments,
-);
+  alicePayments
+)
 ```
 
 ### Adding Liquidity to an Existing Pool
@@ -148,7 +149,7 @@ const addLiquiditySeat = await E(zoe).offer(
 When adding or removing liquidity to pools that have already been established, the
 amounts deposited must be in proportion to the current balances in the pool. The
 calculation is based on the amount of the `Central` asset. The `Secondary` assets
-must be added in proportion.  If less `Secondary` is provided than required, the
+must be added in proportion. If less `Secondary` is provided than required, the
 offer is exited with no trade. If more of the secondary is provided than is required,
 the excess is returned.
 
@@ -156,12 +157,12 @@ Bob calls `getPoolAllocation()` to find the relative levels. Let's say the answe
 that the current ratio is 1234 BLD to 1718 IST.
 
 ```js
-const BLDPoolAlloc = E(publicFacet).getPoolAllocation(BLDBrand);
-const ISTValue = BLDPoolAlloc.Central.value;
-const BLDValue = BLDPoolAlloc.secondary.value;
+const BLDPoolAlloc = E(publicFacet).getPoolAllocation(BLDBrand)
+const ISTValue = BLDPoolAlloc.Central.value
+const BLDValue = BLDPoolAlloc.secondary.value
 ```
 
-Now he can add liquidity.  The price ratio changes when anyone trades with the pool,
+Now he can add liquidity. The price ratio changes when anyone trades with the pool,
 so he should leave some flexibility in the proposal. The pool calculates the amount
 of `secondary` currency required based on the amount of `central` currency provided.
 Bob bumps up the amount of BLD he'll contribute by a little. If he was concerned
@@ -172,18 +173,18 @@ figure, but there's no need in this case.
 const bobProposal = harden({
   give: {
     Central: AmountMath.make(ISTBrand, 1800n),
-    Secondary: AmountMath.make(BLDBrand, 1200n),
+    Secondary: AmountMath.make(BLDBrand, 1200n)
   },
   want: { Liquidity: AmountMath.make(liquidityBrand, 0n) },
-  exit: { onDemand: null },
-});
+  exit: { onDemand: null }
+})
 
 const bobPayments = {
   Central: bobISTPayment,
-  Secondary: bobBLDPayment,
+  Secondary: bobBLDPayment
 }
 
-const seat = await E(zoe).offer(addLiquidityInvite, bobProposal, bobPayments);
+const seat = await E(zoe).offer(addLiquidityInvite, bobProposal, bobPayments)
 ```
 
 ## Governance
@@ -196,10 +197,10 @@ An instance of the ConstantProduct AMM is managed by a contractGovernor, which
 controls the ability to change contract parameters and add new types of collateral.
 The contractGovernor adds these four methods to the contract's publicFacet:
 
-* `getSubscription()`: get a [Subscription](/guides/js-programming/notifiers) that
-    updates when votes are called.
-* `getContractGovernor()`: returns the contractGovernor for verification.
-* `getGovernedParamsValues()`: returns a structure showing the current values of
-    the two parameters.
-* `getParamValue('PoolFee')`: gets a description of the current value of
-    either parameter. Note the initial capital letter.
+- `getSubscription()`: get a [Subscription](/guides/js-programming/notifiers) that
+  updates when votes are called.
+- `getContractGovernor()`: returns the contractGovernor for verification.
+- `getGovernedParamsValues()`: returns a structure showing the current values of
+  the two parameters.
+- `getParamValue('PoolFee')`: gets a description of the current value of
+  either parameter. Note the initial capital letter.

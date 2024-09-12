@@ -16,18 +16,18 @@ export const permit = harden({
     agoricNames: true,
     brandAuxPublisher: true,
     startUpgradable: true, // to start contract and save adminFacet
-    zoe: true, // to get contract terms, including issuer/brand
+    zoe: true // to get contract terms, including issuer/brand
   },
   installation: {
     consume: { [contractName]: true },
-    produce: { [contractName]: true },
+    produce: { [contractName]: true }
   },
   instance: { produce: { [contractName]: true } },
   issuer: { consume: { IST: true }, produce: { Ticket: true } },
-  brand: { consume: { IST: true }, produce: { Ticket: true } },
-});
+  brand: { consume: { IST: true }, produce: { Ticket: true } }
+})
 
-export const main = startSellConcertTicketsContract;
+export const main = startSellConcertTicketsContract
 ```
 
 ## Selected BootstrapPowers

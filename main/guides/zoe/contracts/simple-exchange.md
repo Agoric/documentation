@@ -3,6 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/simpleExchange.js) (Last updated: Sep 12, 2020)
+
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 The "simple exchange" is a very basic, un-optimized exchange. It
@@ -24,6 +25,7 @@ accepted in either direction.
 { give: { Asset: simoleans(5) }, want: { Price: quatloos(3) } }
 { give: { Price: quatloos(8) }, want: { Asset: simoleans(3) } }
 ```
+
 Note: Here we used a shorthand for assets whose values are 5 simoleons, 3
 quatloos, 8 quatloos, and 3 simoleons. Elsewhere this might have been done
 by creating `amounts` inline (i.e. `AmountMath.make(quatloosBrand, 8n)`). Or by
@@ -41,12 +43,12 @@ The `publicFacet` is returned when the contract is started.
 
 ```js
 const { publicFacet } = await E(zoe).startInstance(installation, {
-   Asset: moolaIssuer,
-   Price: simoleanIssuer,
-   });
-const simpleExchangeInvitation = await E(publicFacet).makeInvitation();
-const { instance } = await E(zoe).getInvitationDetails(simpleExchangeInvitation);
-const aliceInvitation = await E(publicFacet).makeInvitation();
+  Asset: moolaIssuer,
+  Price: simoleanIssuer
+})
+const simpleExchangeInvitation = await E(publicFacet).makeInvitation()
+const { instance } = await E(zoe).getInvitationDetails(simpleExchangeInvitation)
+const aliceInvitation = await E(publicFacet).makeInvitation()
 ```
 
 ## Adding an Order
@@ -58,10 +60,10 @@ moola and receive at least 4 simoleans in return:
 const aliceSellOrderProposal = harden({
   give: { Asset: AmountMath.make(moolaBrand, 3n) },
   want: { Price: AmountMath.make(simoleanBrand, 4n) },
-  exit: { onDemand: null },
-});
+  exit: { onDemand: null }
+})
 
-const alicePayment = { Asset: aliceMoolaPayment };
+const alicePayment = { Asset: aliceMoolaPayment }
 ```
 
 Alice escrows her payment with Zoe to add her sell order to the exchange.
@@ -70,8 +72,8 @@ Alice escrows her payment with Zoe to add her sell order to the exchange.
 const aliceSeat = await E(zoe).offer(
   aliceInvitation,
   aliceSellOrderProposal,
-  alicePayment,
-);
+  alicePayment
+)
 ```
 
 ## Buying an Order
@@ -81,14 +83,13 @@ offer. It sounds like a good deal to him, so he checks the installation
 with Zoe and sees the exchange is trading what he expects:
 
 ```js
-const bobInvitation = E(publicFacet).makeInvitation();
-const invitationIssuer = E(zoe).getInvitationIssuer();
-const bobExclusiveInvitation = E(invitationIssuer).claim(bobInvitation);
-const {
-  instance,
-  installation,
-} = await E(zoe).getInvitationDetails(bobExclusiveInvitation);
-const bobIssuers = await E(zoe).getIssuers(instance);
+const bobInvitation = E(publicFacet).makeInvitation()
+const invitationIssuer = E(zoe).getInvitationIssuer()
+const bobExclusiveInvitation = E(invitationIssuer).claim(bobInvitation)
+const { instance, installation } = await E(zoe).getInvitationDetails(
+  bobExclusiveInvitation
+)
+const bobIssuers = await E(zoe).getIssuers(instance)
 ```
 
 Bob verifies the information is what he expects. He compares the
@@ -96,9 +97,9 @@ installation he gets from the invitation with a canonical link he found in a
 public directory he trusts.
 
 ```js
-assert(installation === simpleExchangeInstallation, details`wrong installation`);
-assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`);
-assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`);
+assert(installation === simpleExchangeInstallation, details`wrong installation`)
+assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`)
+assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`)
 ```
 
 Bob has checked that everything is in order, so he fulfills the buy order:
@@ -107,17 +108,19 @@ Bob has checked that everything is in order, so he fulfills the buy order:
 const bobBuyOrderProposal = harden({
   give: { Price: AmountMath.make(simoleanBrand, 7n) },
   want: { Asset: AmountMath.make(moolaBrand, 3n) },
-  exit: { onDemand: null },
-});
+  exit: { onDemand: null }
+})
 
-const bobSimPayment = await E(bobSimoleanPurse).withdraw(AmountMath(simoleanBrand, 7n));
-const bobPayments = { Price: bobSimPayment };
+const bobSimPayment = await E(bobSimoleanPurse).withdraw(
+  AmountMath(simoleanBrand, 7n)
+)
+const bobPayments = { Price: bobSimPayment }
 
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobBuyOrderProposal,
-  bobPayments,
-);
+  bobPayments
+)
 ```
 
 ## Payout
@@ -126,18 +129,20 @@ When a match is made, the payout promise from a user's seat
 resolves to a promise for payment. For Bob:
 
 ```js
-const { Asset: bobAssetPayoutP, Price: bobPricePayoutP } = await bobSeat.getPayouts();
-const bobAssetPayout = await bobAssetPayoutP;
-const bobMoolaGainAmount = await E(bobMoolaPurse).deposit(bobAssetPayout);
-const bobPricePayout = await bobPricePayoutP;
-const bobSimGainAmount = await E(bobSimPurse).deposit(bobPricePayout);
+const { Asset: bobAssetPayoutP, Price: bobPricePayoutP } =
+  await bobSeat.getPayouts()
+const bobAssetPayout = await bobAssetPayoutP
+const bobMoolaGainAmount = await E(bobMoolaPurse).deposit(bobAssetPayout)
+const bobPricePayout = await bobPricePayoutP
+const bobSimGainAmount = await E(bobSimPurse).deposit(bobPricePayout)
 ```
+
 Alice gets her payouts the same way. (The choice between `getPayouts()` and
 `getPayout(keyword)` is based on which is more convenient in each circumstance).
 
 ```js
-const aliceAssetPayout = await aliceSeat.getPayout('Asset');
-const aliceMoolaGainAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
-const alicePricePayout = await aliceSeat.getPayout('Price');
-const aliceSimGainAmount = aliceSimPurse.deposit(alicePricePayout);
+const aliceAssetPayout = await aliceSeat.getPayout('Asset')
+const aliceMoolaGainAmount = aliceMoolaPurse.deposit(aliceAssetPayout)
+const alicePricePayout = await aliceSeat.getPayout('Price')
+const aliceSimGainAmount = aliceSimPurse.deposit(alicePricePayout)
 ```

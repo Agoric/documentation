@@ -67,11 +67,13 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 <summary>Installing nvm on MacOS</summary>
 
 nvm is not available in the default package manager for Mac, so you will need to install Homebrew first. To do this, open a terminal window and run the following command:
+
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
 Then, you can install nvm using Brew
+
 ```sh
 brew install nvm
 ```
@@ -85,25 +87,29 @@ source $(brew --prefix nvm)/nvm.sh
 </details>
 
 Then, install Node.js.
+
 ```sh
 nvm install v18.18.0
 ```
 
 Finally, verify the Node.js version.
+
 ```sh
 node --version
 ```
+
 </details>
 
 ### Installing Yarn
-This will install yarn, and verify it is installed correctly. Install yarn by either running ```npm install --global yarn```, or visit https://classic.yarnpkg.com/en/docs/install for more information. See below, ```corepack enable``` will add the Corepack shims to the install directories, and ```yarn --version``` will verify yarn is installed correctly.
+
+This will install yarn, and verify it is installed correctly. Install yarn by either running `npm install --global yarn`, or visit https://classic.yarnpkg.com/en/docs/install for more information. See below, `corepack enable` will add the Corepack shims to the install directories, and `yarn --version` will verify yarn is installed correctly.
 
 ```sh
 corepack enable
 yarn --version # for verification
 ```
 
-This app uses Yarn 1, so running the above command will show a version in the format ```1.x.x```. If you are using a different version of ```yarn```, you can use ```yarn set version <version>``` to switch like in the example below.
+This app uses Yarn 1, so running the above command will show a version in the format `1.x.x`. If you are using a different version of `yarn`, you can use `yarn set version <version>` to switch like in the example below.
 
 ```sh
 yarn set version 1.22.5
@@ -145,7 +151,6 @@ Now you can install Docker!
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-
 Now that Docker has been installed you'll need to add your user account to the Docker group.
 
 ```sh
@@ -170,6 +175,7 @@ You can install Docker using their official documentation or Homebrew.
 Follow the [official Docker installation guide for Mac](https://docs.docker.com/desktop/install/mac-install/).
 
 After installing Docker Desktop, you can start docker with:
+
 ```sh
 open -a Docker
 ```
@@ -178,11 +184,12 @@ open -a Docker
 
 Previously, you installed brew on your machine. You can install docker using the same command.
 
-
 ```sh
 brew cask install docker
 ```
+
 or
+
 ```sh
 brew install docker --cask
 ```
@@ -221,8 +228,6 @@ For more examples and ideas, visit:
 ```
 
 </details>
-
-
 
 ## Creating Your Dapp From a Template
 
@@ -298,12 +303,13 @@ Use control-C to exit the logs, then start the smart contract. Starting the cont
 ```sh
 yarn start:contract
 ```
+
 <details>
 <summary>Behind the Scenes</summary>
 This `start:contract` script will do a number of things that we will cover in more detail later <small>(_[transaction commands](../agoric-cli/agd-query-tx#transaction-commands), [permissioned deployment](../coreeval/)_)</small>:
 
 1. Bundle the contract with `agoric run ...`
-2. Collect some ATOM with `agd tx bank send ...`. *ATOM refers to the native cryptocurrency of the Cosmos Network.*
+2. Collect some ATOM with `agd tx bank send ...`. _ATOM refers to the native cryptocurrency of the Cosmos Network._
 3. Use the ATOM to open a vault to mint enough IST to pay to install the bundles on chain with `agops vaults open ...`.
 4. Install the bundles on chain with `agd tx swingset install-bundle ...`.
 5. Collect enough BLD to pay for a governance deposit with `agd tx bank send ...`
@@ -353,9 +359,9 @@ spike siege world rather ordinary upper napkin voice brush oppose junior route t
 <details><summary>Give your new wallet a name and a password. Click Next.</summary>
 
 ![Name the newly imported wallet](./assets/042.png)
+
 </details>
 <details><summary>In the next step, do not select any **chains** except for **Cosmos Hub**. Click "Save". </summary>
-
 
 ![Save](./assets/043.png)
 

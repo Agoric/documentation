@@ -7,6 +7,7 @@ sidebar: auto
 Agoric's public-facing technical documentation is mostly in the [Agoric Documentation GitHub repo](https://github.com/Agoric/documentation).
 The complete documentation set also includes external items such as papers, presentations, videos, etc. Our document
 process is:
+
 1. Write docs in the repo in Markdown. Image files are usually in `.svg` format and also stored in the repo.
 2. Proofread your docs. However, be aware that everyone is their own worst proofreader and this is especially
    true if you try to do it immediately or very soon after you finish writing it. Given our frequent time pressure, while
@@ -29,9 +30,10 @@ process is:
 9. [VitePress](https://vitepress.dev/guide/what-is-vitepress) automatically
    processes any new or changed files for display.
 10. The [Agoric website's Documentation Section](https://agoric.com/documentation/) displays
-   the VitePress processed files, which have been converted to HTML.
+    the VitePress processed files, which have been converted to HTML.
 
 This doc explains:
+
 - The overall documentation structure.
 - Our preferred way of writing links.
 - What happens when you make a PR.
@@ -88,14 +90,17 @@ on one page and that they aren't too long. Otherwise the sidebar menu for the pa
 
 Individual pages do not automatically display a sidebar menu for their headers without the use of a plugin.
 To force an individual page sidebar menu, add the following YAML at the top of a page's source file (this file has this YAML at the top):
+
 ```js
 ---
 sidebar: auto
 ---
 ```
+
 Other ways of activating this are:
 
 Turn it on for the whole site:
+
 ```js
 // .vitepress/config.js
 module.exports = {
@@ -106,23 +111,24 @@ module.exports = {
 ```
 
 Or, add a config entry, either as part of a group or as an individual page.
+
 ```js
 // .vitepress/config.js
 module.exports = {
   themeConfig: {
     sidebar: [
       {
-        title: 'Group 1',   // required
-        link: '/foo/',      // optional, link of the title, which should be an absolute path and must exist
+        title: 'Group 1', // required
+        link: '/foo/', // optional, link of the title, which should be an absolute path and must exist
         collapsable: false, // optional, defaults to true
-        sidebarDepth: 1,    // optional, defaults to 1
-        items: [
-          { text: '', link: '/' },
-        ]
+        sidebarDepth: 1, // optional, defaults to 1
+        items: [{ text: '', link: '/' }]
       },
       {
         title: 'Group 2',
-        items: [ /* ... */ ],
+        items: [
+          /* ... */
+        ],
         initialOpenGroupIndex: -1 // optional, defaults to 0, defines the index of initially opened subgroup
       }
     ]
@@ -152,7 +158,7 @@ by just linking to `(/glossary/#allocation)`; its path starting at `main`. Any p
 at `main`. These links also open in the same browser tab.
 
 VitePress turns every header in a Markdown file into an HTML anchor you can link to, so clicking such a link takes you directly to
-that file location (called *slugifying* by WordPress and other blogging platforms). A header link consists of its file
+that file location (called _slugifying_ by WordPress and other blogging platforms). A header link consists of its file
 name, with an appended `#` and appended altered header text. The header text in a link has been converted to
 to lower case and all non-alphanumerics, including spaces, have been replaced by hyphens. The two exceptions to the latter
 are, first, all consecutive non-alphanumbers are converted to a single hyphen; i.e. "Foo&$ Bar" is converted to "foo-bar".
@@ -223,11 +229,13 @@ displayed in a doc.
 You can make an entire code file, or any part of it, into a snippet (each
 of which can be used multiple times in the docs). Just surround the part
 you want to be a snippet with `#region` and `#endregion` comments:
+
 ```js
 // #region regionName
 ...
 // #endregion regionName
 ```
+
 `regionName` in the above is any name you want to give this snippet.
 
 If you want the whole file to be a snippet, just put the `#region` / `#endregion`
@@ -248,6 +256,7 @@ the file.
 The tests should be in the snippets directory. Actually the snippet files and the test files ended up being the same file because that was the cleanest way to go. The snippet files should all be named test-original-filename.js where original-filename is the markdown filename, like amounts of ertp/guide/amounts.md
 
 To test your snippets files while writing your docs:
+
 1. Write tests using AVA. They should be in the appropriate file in the snippets directory, with files named `test-original-filename.js` `original-filename` is
    the Markdown filename. For example, `test-amounts.js` for `ertp/guide/amounts.md` See [this Snippets file](/snippets/ertp/guide/test-amounts.js)
 2. Run the tests with `yarn test` (run from anywhere, but usually from the root of the repo).
@@ -266,43 +275,53 @@ broken links, and what file and line number they're at.
 ## Local Install, Build, and Run
 
 1. **Clone**: Clone the Documentation repo to your local machine. We suggest using
-Sourcetree to manage your local and remote copies and the various commits
-and pull requests you'll make while debugging. The following steps should all
-be run from the directory you cloned the repo into.
+   Sourcetree to manage your local and remote copies and the various commits
+   and pull requests you'll make while debugging. The following steps should all
+   be run from the directory you cloned the repo into.
 
 2. **Install**: To ensure using the latest agoric-sdk
-version when running code snippets, from a shell, run
+   version when running code snippets, from a shell, run
+
 ```shell
 agoric install
 ```
+
 3. **Build**: To build the site as it will be built for production, run:
+
 ```shell
 yarn docs:build
 ```
+
 The resulting build assets can be found in `/dist` in the project root.
 
 4. **Run**: To run a local server and see your changes in real time, run:
+
 ```shell
 yarn docs:dev
 ```
+
 Most edit changes are immediately reflected in the browser, but
 applying site config changes may require stopping and restarting this program.
 
 View your local documentation site at `localhost:5173`
 
 5. **Preview**: To preview a production build, run:
+
 ```shell
 yarn docs:preview
 ```
+
 View your local documentation site at `localhost:4173`
 
 ## Updating Zoe Version and DocsUpdated
 
 In `[/.vitepress/config.js](/.vitepress/config.js)`, find the lines
+
 ```
 zoeVersion: 'Beta Release v1.0.0',
 zoeDocsUpdated: 'Apr 7, 2021'
 ```
+
 Edit the values to be current. The current Zoe version is the "version" field of
 [Zoe's package.json](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/package.json),
 normally on line 3.
@@ -325,18 +344,22 @@ But if you're viewing "Introduction to Zoe" itself, you'll always see the Gettin
 no way to have it sometimes (appropriately) display the Zoe sidebar menu instead.
 
 ### Configuration and navigation
+
 All configuration is handled in [`/main/.vitepress/config.js`](/.vitepress/config.js). Here you can:
+
 - Set and modify the website title and description.
 - Configure the top navigation bar.
 - Configure the various sidebar menus
 
 #### Configuring the top menubar
+
 Go to `[main/.vitepress/themeConfig/nav.js](/.vitepress/themeConfig/nav.js)` to configure the top
 navigation bar. `/main/.vitepress/config.js`, the overall VitePress configuration file, imports `nav.js`.
 
 Below is an abridged configuration of the top navigation bar showing an array of only two entries,
 Getting Started and Learn More.
 Each entry is an object with three or four properties:
+
 - `text`: The text shown in the nav bar.
 - `ariaLabel`: Labels this page element. Used to access it if the text is not visible.
 - `link`: Optional. Link to where the browser goes if you click the top menubar item itself, instead of a
@@ -349,6 +372,7 @@ Each entry is an object with three or four properties:
 To add an entry to the top menubar, just add a menu item object to the array. We suggest copying a
 similar one, adding the copy, and editing the copy's property values to be those of the new item and
 its submenus. To delete an entry, just remove its object from the menubar item array.
+
 ```js
 module.exports = [
   {
@@ -378,11 +402,13 @@ module.exports = [
   },
 ]
 ```
+
 #### Configuring the top menubar submenus
 
 A top menubar item without a submenu, such as Glossary, has no
 `items` property and must have a `link` property (otherwise there's
 nothing to click, so it's really not a good navigation menu item).
+
 ```js
  {
     text: 'Glossary',
@@ -400,6 +426,7 @@ link value is `'/getting-started/ertp-introduction/'` and not `'/getting-started
 To add a submenu item, just copy an appropriate one, add it to the `items` array, and edit its
 property values to be what you want for the new item. To delete a submenu item, just remove its
 entry from the `items` array.
+
 ```js
 {
     text: 'ERTP',
@@ -426,11 +453,13 @@ entry from the `items` array.
 ```
 
 #### Configuring sidebar menus.
+
 Sidebar menus are configured in [`/.vitepress/config.js`](/.vitepress/config.js). There,
 sidebars are configured where it starts: `sidebar: {`.
 
 Here's an abridged version of the overall sidebar configuration, only showing the Getting Started
 and ERTP sidebars, and leaving out their specific items:
+
 ```js
 sidebar: {
       '/getting-started/': [
@@ -451,7 +480,9 @@ sidebar: {
       ],
     }
 ```
+
 Below is an abridged version of the ERTP sidebar. Each item entry has five properties:
+
 - `title`: The string that appears in the sidebar menu for this item.
 - `path`: Where you go if you click on this menu item. As usual, the leading `/` denotes a path
   starting at `main`. Note the full file name is given, including the `.md` suffix (which VitePress
@@ -492,6 +523,7 @@ Below is an abridged version of the ERTP sidebar. Each item entry has five prope
         },
       ],
 ```
+
 When viewing a page, VitePress has automatically constructed a sidebar menu entry for that page
 consisting of all `h1`, `h2`, and `h3` header titles on the page.
 
@@ -505,21 +537,39 @@ If you need to redirect to an **external** website, this will be accomplished at
 
 Go to (or create if not there) `documentation/main/.vitepress/enhanceApp.js` As of March 2021, ours
 looks like this:
+
 ```js
 export default ({ router }) => {
   router.addRoutes([
     { path: '/wallet-api/', redirect: '/guides/wallet/' },
     { path: '/wallet-api.html', redirect: '/guides/wallet/' },
-    { path: '/chainlink-integration/', redirect: '/guides/chainlink-integration.md' },
-    { path: '/chainlink-integration.html', redirect: '/guides/chainlink-integration.md' },
+    {
+      path: '/chainlink-integration/',
+      redirect: '/guides/chainlink-integration.md'
+    },
+    {
+      path: '/chainlink-integration.html',
+      redirect: '/guides/chainlink-integration.md'
+    },
     { path: '/distributed-programming/', redirect: '/guides/js-programming/' },
-    { path: '/distributed-programming.html', redirect: '/guides/js-programming/' },
-    { path: '/getting-started/agoric-cli-guide/', redirect: '/guides/agoric-cli/' },
-    { path: '/getting-started/agoric-cli-guide.html', redirect: '/guides/agoric-cli/' },
+    {
+      path: '/distributed-programming.html',
+      redirect: '/guides/js-programming/'
+    },
+    {
+      path: '/getting-started/agoric-cli-guide/',
+      redirect: '/guides/agoric-cli/'
+    },
+    {
+      path: '/getting-started/agoric-cli-guide.html',
+      redirect: '/guides/agoric-cli/'
+    }
   ])
 }
 ```
+
 The general format should be self-explanatory. However, there are two things you need to know that aren't apparent
+
 - VitePress treats `main` as the root of the folders. So all of the addresses start with `/` to represent `/main/`.
 - You'll notice there are two entries for every redirect, one where the redirected address ends with `.html` and
   one where it ends with `/`. For each individual file that is not a `index.md`, there are two ways to access it.

@@ -4,12 +4,12 @@
 
 ## What is Zoe?
 
-__For users__: Zoe guarantees that as a user of a smart contract, you
+**For users**: Zoe guarantees that as a user of a smart contract, you
 will either get what you wanted or get a full refund, even if the
 smart contract is buggy or malicious. (In fact, the smart contract
 never has access to your digital assets.)
 
-__For developers__: Zoe provides a safety net so you can focus on what
+**For developers**: Zoe provides a safety net so you can focus on what
 your smart contract does best, without worrying about your users
 losing their assets due to a bug in the code that you wrote. Writing a
 smart contract on Zoe is easy: all of the Zoe smart contracts are
@@ -27,14 +27,14 @@ bricks](https://en.wikipedia.org/wiki/Catan)." [Learn more about the
 particulars of structuring an offer proposal here](./proposal).
 
 Offers are a structured way of describing user intent. To a certain
-extent, an offer's rules (called a *proposal*) are the user's
-*contractual understanding* of the agreement they are entering into.
+extent, an offer's rules (called a _proposal_) are the user's
+_contractual understanding_ of the agreement they are entering into.
 
 You might have noticed that the offer doesn't specify the mechanism by
 which the exchange happens. The offer doesn't say whether the item you
 want is up for auction, in an exchange, or part of a private trade.
 The offer doesn't mention the particular mechanism because an
-important part of the design of Zoe is a __separation of concerns__.
+important part of the design of Zoe is a **separation of concerns**.
 
 Zoe is responsible for enforcing what we call "offer safety", and the
 smart contract that runs on top of Zoe is responsible for figuring out
@@ -70,6 +70,7 @@ Let's look at the basic [Atomic Swap contract](/guides/zoe/contracts/atomic-swap
 (link includes [real contract code](https://github.com/Agoric/agoric-sdk/blob/f29591519809dbadf19db0a26f38704d87429b89/packages/zoe/src/contracts/atomicSwap.js)).
 
 Here's a high-level overview of what happens:
+
 1. I make an instance of the swap contract, and get an invitation to
    participate in the contract.
 2. I make an offer through Zoe by presenting my invitation, a proposal
@@ -99,23 +100,24 @@ It only does one thing, and it's pretty useless&mdash;it gives you back what you
 ```js
 const start = zcf => {
   const refund = seat => {
-    seat.exit();
-    return `The offer was accepted`;
-  };
-  const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund');
+    seat.exit()
+    return `The offer was accepted`
+  }
+  const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund')
 
   const publicFacet = Far('publicFacet', {
-    makeInvitation: makeRefundInvitation,
-  });
+    makeInvitation: makeRefundInvitation
+  })
 
-  const creatorInvitation = makeRefundInvitation();
+  const creatorInvitation = makeRefundInvitation()
 
-  return harden({ creatorInvitation, publicFacet });
-};
+  return harden({ creatorInvitation, publicFacet })
+}
 
-harden(start);
-export { start };
+harden(start)
+export { start }
 ```
+
 Whenever we create a new object or array, we recursively
 freeze it with `harden`. You can learn more about `harden` in the
 [Endo and Hardened JavaScript
@@ -129,6 +131,7 @@ A smart contract on Zoe must export a function named `start` that
 takes a single parameter: `zcf`, which is the contract-internal API
 for Zoe. The `start` function must return an object with any of
 several optional properties:
+
 - **creatorInvitation**: An invitation only available to the creator of the contract instance.
 - **creatorFacet**: An object with operations made accessible only to the creator.
 - **publicFacet**: An object with operations available to any client with access to the instance.
@@ -142,6 +145,7 @@ The contract first confirms that `issuers` are setup for the `Asset` and `Price`
 
 The following uses the [`assertIssuerKeywords` helper function](/reference/zoe-api/zoe-helpers#assertissuerkeywords-zcf-expected). It
 checks properties of the running contract instance's terms.
+
 ```js
 const start = zcf => {
   assertIssuerKeywords(zcf, harden(['Asset', 'Price']));
@@ -156,6 +160,7 @@ This contract uses the
 [`assertProposalShape` helper function](/reference/zoe-api/zoe-helpers#assertproposalshape-seat-expected) to
 check that the offer proposes the kind of trade the contract accepts. In this case, offers must
 have a proposal of the form:
+
 ```js
 {
   give: { Asset: amount1 },
@@ -165,6 +170,7 @@ have a proposal of the form:
 
 `amount1` and `amount2` are amounts with the correct issuers for the keywords.
 The contract then uses `getProposal()` to extract the properties of the proposal for later matching.
+
 ```js
   const makeMatchingInvitation = firstSeat => {
     assertProposalShape(firstSeat, {
@@ -177,21 +183,23 @@ The contract then uses `getProposal()` to extract the properties of the proposal
 `makeMatchingInvitation()` then constructs a `matchingSeatOfferHandler()` handler
 for the second offer, with the first offer's `want` and `give` in scope. This second
 handler is responsible for the final step.
-It uses the [`swap` helper  function](/reference/zoe-api/zoe-helpers#swap-zcf-leftseat-rightseat)
+It uses the [`swap` helper function](/reference/zoe-api/zoe-helpers#swap-zcf-leftseat-rightseat)
 to attempt asset reallocation between the two seats as described above and then
 (whether or not the attempt succeeds) exits both seats, making payouts available to
 both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
+
 ```js
-    const matchingSeatOfferHandler = matchingSeat => {
-      const swapResult = swap(zcf, firstSeat, matchingSeat);
-      zcf.shutdown();
-      return swapResult;
-    };
+const matchingSeatOfferHandler = matchingSeat => {
+  const swapResult = swap(zcf, firstSeat, matchingSeat)
+  zcf.shutdown()
+  return swapResult
+}
 ```
 
 Now let's put it together. The final step of `makeMatchingInvitation()`
 is to create and return the second party's invitation, using
 `matchingSeatOfferHandler()` and including custom properties for the proposal of the invited offer.
+
 ```js
     const matchingSeatInvitation = zcf.makeInvitation(
       matchingSeatOfferHandler,
@@ -207,6 +215,7 @@ is to create and return the second party's invitation, using
 
 Finally, the `start` function makes an invitation for the instance's creator
 and returns it as `creatorInvitation`.
+
 ```js
   const creatorInvitation = zcf.makeInvitation(
     makeMatchingInvitation,

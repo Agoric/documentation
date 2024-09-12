@@ -18,7 +18,7 @@ official `priceQuotes`. A `priceQuote` is a record with an amount and a payment,
 where the amount is also the current balance of the payment:
 
 ```js
-const { quoteAmount, quotePayment } = priceQuote;
+const { quoteAmount, quotePayment } = priceQuote
 ```
 
 Because these are ERTP amounts and payments, they have issuers. And
@@ -31,7 +31,7 @@ mint associated with the quoteIssuer by using the `quoteIssuer` to obtain the
 `quoteAmount` of the `quotePayment`:
 
 ```js
-const verifiedQuoteAmount = await E(quoteIssuer).getAmountOf(quotePayment);
+const verifiedQuoteAmount = await E(quoteIssuer).getAmountOf(quotePayment)
 ```
 
 Once you have a `quoteAmount` (or a `verifiedQuoteAmount`), you can extract the

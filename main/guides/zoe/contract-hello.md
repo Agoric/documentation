@@ -1,7 +1,7 @@
 # Hello World Smart Contract
 
 Before we look at how to make a contract such as the one in [the
-basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greeting message. We will simply call it _hello-world smart contract_. 
+basic dapp](../getting-started/) in the previous section, let's cover some basics by writing a simple contract that returns a greeting message. We will simply call it _hello-world smart contract_.
 
 A contract is defined by a JavaScript module that exports a `start` function. For our hello-world smart contract, the declaration of `start` function looks like this:
 
@@ -22,7 +22,7 @@ Putting it all together:
 
 <<< @/../snippets/zoe/src/01-hello.js#contract
 
-Let us save this code to a file named `01-hello.js` inside `src` directory. 
+Let us save this code to a file named `01-hello.js` inside `src` directory.
 
 ## Testing a contract
 
@@ -37,10 +37,13 @@ Let's save this code in a file named `test-01-hello.js` in a `test` directory. B
 ```sh
 yarn ava --match="contract greets by name"
 ```
+
 You should see the following line towards the end of the output:
+
 ```
 1 test passed
 ```
+
 Congratulations! You have written and tested your first smart contract. Our next goal is to learn about the state of a smart contract.
 
 If you're having trouble, check out the [`tut-01-hello`](https://github.com/Agoric/dapp-offer-up/tree/tut-01-hello) branch in the example repo.
