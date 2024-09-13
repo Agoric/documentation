@@ -5,6 +5,7 @@
 ## Making An offer
 
 To make an offer, you use [`E(zoe).offer(...)`](/reference/zoe-api/zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs), which takes up to four arguments:
+
 - An **invitation** to participate in this contract instance.
 - A **proposal** stating your offer conditions.
 - The **payments** escrowed for the offer, each corresponding with a **give** [Keyword](/reference/zoe-api/zoe-data-types#keyword) in **proposal**.
@@ -17,6 +18,7 @@ having one gives you the right to participate in that contract instance
 by using that invitation as the first argument to `E(zoe).offer(...)`.
 
 There are two ways for contract users to get an invitation:
+
 - If you create the contract instance, the contract might supply a special creator invitation.
 - Someone (possibly you) who holds the right objects has created an invitation for a contract instance and gives it to
   you in some way. This could've been by sending it to you, posting it on a public online location, etc. It
@@ -30,9 +32,10 @@ Proposals are records with **give**, **want**, and/or **exit** keys.
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null },
-});
+  exit: { onDemand: null }
+})
 ```
+
 **give** and **want** use [Keywords](/reference/zoe-api/zoe-data-types#keyword) defined by the contract.
 Keywords are unique identifiers per contract, that tie together proposals,
 payments to be escrowed, and payouts to users.
@@ -52,6 +55,7 @@ In contrast, [Payments](/reference/ertp-api/payment) hold actual digital assets.
 :::
 
 **exit** specifies how the offer can be cancelled. It must conform to one of three shapes:
+
 - `{ onDemand: null }`: (Default) The offering party can cancel on demand.
 - `{ waived: null }`: The offering party can't cancel and relies entirely on the smart contract to complete (finish or fail) their offer.
 - `{ afterDeadline: deadlineDetails }`: The offer is automatically cancelled after a deadline,
@@ -64,11 +68,12 @@ For more details, see [Proposals](/reference/zoe-api/zoe#proposals).
 Using the same Keywords as the **give** object in your **proposal**, you must specify a [PaymentPKeywordRecord](/reference/zoe-api/zoe-data-types#keywordrecord) containing [Payments](/reference/ertp-api/payment) of the corresponding digital assets.
 Zoe escrows these payments on behalf of your offer until it is completed
 or rejected or the assets are reassigned to another offer.
+
 ```js
 const payments = {
   Asset: quatloosPayment,
-  Price: moolaPayment,
-};
+  Price: moolaPayment
+}
 ```
 
 ## Offer Arguments

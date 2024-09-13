@@ -1,0 +1,21 @@
+{
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "arrowParens": "avoid",
+    "overrides": [
+      {
+        "files": "*.md",
+        "options": {
+          "parser": "markdown",
+          "printWidth": 80,
+          "proseWrap": "preserve"
+        }
+      }
+    ]
+  }

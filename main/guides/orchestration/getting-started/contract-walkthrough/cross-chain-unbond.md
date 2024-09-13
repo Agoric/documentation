@@ -1,23 +1,26 @@
 # Cross-Chain Unbond Contract
 
 ## Overview Diagram
+
 <br/>
 <img src="/reference/assets/sequence-diagrams/orchestration-unbond-example.svg" width="100%" />
 <br/>
 
 ## Imports
+
 ```javascript
-import { M } from '@endo/patterns';
-import { withOrchestration } from '../utils/start-helper.js';
+import { M } from '@endo/patterns'
+import { withOrchestration } from '../utils/start-helper.js'
 ```
 
 - `M`: Imported from @endo/patterns, provides pattern-matching utilities.
 - `withOrchestration`: Imported from a utility module, used to set up and provide access to orchestration tools.
 
 ## JSDoc Annotations for Type Information
+
 ```javascript
 /**
-  * @import {Orchestrator, IcaAccount, CosmosValidatorAddress} from '../types.js'
+ * @import {Orchestrator, IcaAccount, CosmosValidatorAddress} from '../types.js'
  * @import {TimerService} from '@agoric/time';
  * @import {Baggage} from '@agoric/vat-data';
  * @import {LocalChain} from '@agoric/vats/src/localchain.js';
@@ -32,6 +35,7 @@ import { withOrchestration } from '../utils/start-helper.js';
 This includes type information annotations to help with TypeScript or JSDoc, making it easier to understand the types used throughout the contract.
 
 ## `unbondAndLiquidStakeFn` Function
+
 ```javascript
 /**
  * @param {Orchestrator} orch
@@ -45,36 +49,44 @@ const unbondAndLiquidStakeFn = async (orch, { zcf }, _seat, _offerArgs) => {
 ```
 
 ### Function Parameters
+
 - `orch`: The orchestrator object to manage interactions with chains/accounts.
 - `ctx`: Context object containing zcf.
 - `_seat`: The seat representing the user’s position in the contract (not used in this function, hence `_` prefix).
 - `_offerArgs`: Arguments provided with the offer (not used in this function, hence `_` prefix).
 
 ## Interacting with Chains
+
 ```javascript
-const omni = await orch.getChain('omniflixhub');
-const omniAccount = await omni.makeAccount();
+const omni = await orch.getChain('omniflixhub')
+const omniAccount = await omni.makeAccount()
 ```
 
 ### Get Chain
+
 Retrieves the omniflixhub chain object using the orchestrator.
 
 ### Make Account
+
 Creates an account on the omniflixhub chain.
 
 ## Interaction with Stride Chain
+
 ```javascript
-const stride = await orch.getChain('stride');
-const strideAccount = await stride.makeAccount();
+const stride = await orch.getChain('stride')
+const strideAccount = await stride.makeAccount()
 ```
 
 ### Get Chain
+
 Retrieves the stride chain object using the orchestrator.
 
 ### Make Account
+
 Creates an account on the stride chain.
 
 ## `contract` Function
+
 The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract. The contract exports a `start` function [below](#start-function). It is merely a convention/convenience that we define a more abstract `contract` function here and pass it to `withOrchestration`. The arguments of this function are `zcf`, `privateAge`, `zone`, and `tools` for orchestration.
 
 ```javascript
@@ -94,27 +106,32 @@ The `contract` function when wrapped inside `withOrchestration` defines the [`st
  * @param {OrchestrationTools} tools
  */
 const contract = async (zcf, privateArgs, zone, { orchestrate }) => {
-  ```
-  ### `contract` Function Parameters:
+```
+
+### `contract` Function Parameters:
+
 - `zcf`: Zoe Contract Facet.
 - `privateArgs`: Object containing remote references to various services.
 - `zone`: A `Zone` object with access to storage for persistent data.
 - `OrchestrationTools`: A set of orchestration related tools needed by the contract.
 
 ## Offer Handler for Unbond and Liquid Stake
+
 ```javascript
 /** @type {OfferHandler} */
 const unbondAndLiquidStake = orchestrate(
-    'LSTTia',
-    { zcf },
-    unbondAndLiquidStakeFn,
-);
+  'LSTTia',
+  { zcf },
+  unbondAndLiquidStakeFn
+)
 ```
 
 ### Offer Handler
+
 Defines the offer handler for the unbond and liquid stake operation using [`unbondAndLiquidStakeFn`](#unbondandliquidstakefn-function).
 
 ## Make Invitation and Create `publicFacet`
+
 ```javascript
 const publicFacet = zone.exo('publicFacet', undefined, {
   makeUnbondAndLiquidStakeInvitation() {
@@ -126,20 +143,21 @@ const publicFacet = zone.exo('publicFacet', undefined, {
         // Nothing to give; the funds come from undelegating
         give: {},
         want: {}, // XXX ChainAccount Ownable?
-        exit: M.any(),
-      }),
-    );
-  },
-});
+        exit: M.any()
+      })
+    )
+  }
+})
 
-return harden({ publicFacet });
+return harden({ publicFacet })
 ```
 
 Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and returns the hardened public facet. Defining `publicFacet` with `zone.exo` makes it [remotely accessible](/glossary/#exo) and persistent through contract upgrades with a [durable `zone`](/glossary/#zone).
 
 ## `start` Function
+
 ```javascript
-export const start = withOrchestration(contract);
+export const start = withOrchestration(contract)
 ```
 
-Defines the `start` function of the contract that is returned by a call to `withOrchestration` with  [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
+Defines the `start` function of the contract that is returned by a call to `withOrchestration` with [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.

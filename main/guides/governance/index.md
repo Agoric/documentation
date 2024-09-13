@@ -25,9 +25,9 @@ swaparoo contract has a governed `Fee` amount parameter:
 ```js
 const paramTypes = harden(
   /** @type {const} */ ({
-    Fee: ParamTypes.AMOUNT,
-  }),
-);
+    Fee: ParamTypes.AMOUNT
+  })
+)
 ```
 
 ## Reusing Contracts for Electorate, Election Manager

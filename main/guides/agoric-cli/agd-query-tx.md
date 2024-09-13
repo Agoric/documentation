@@ -135,6 +135,7 @@ $ agd query gov proposals --output json | \
 Query for the data residing at specified path in VStorage.
 
 Example:
+
 ```
 $ agd query vstorage keys 'published.vaultFactory.managers.manager0.vaults'
 children:

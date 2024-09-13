@@ -50,7 +50,7 @@ agoricNames contains several other NameHubs.
 See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
 
 ```js
-['brand', 'installation', 'instance', 'issuer', 'oracleBrand', 'vbankAsset'];
+;['brand', 'installation', 'instance', 'issuer', 'oracleBrand', 'vbankAsset']
 ```
 
 ## vstorage: well known contracts
@@ -228,7 +228,7 @@ The keys under `published.boardAux` are board IDs.
 Here we show a handful.
 
 ```js
-['board00282', 'board0074', 'board01744'];
+;['board00282', 'board0074', 'board01744']
 ```
 
 The data are auxiliary info about objects in the board;
@@ -308,11 +308,11 @@ Here we show a handful.
 See also: [Smart Wallet VStorage Topics](/guides/getting-started/contract-rpc#smart-wallet-vstorage-topics)
 
 ```js
-[
+;[
   'agoric1890064p6j3xhzzdf8daknd6kpvhw766ds8flgw',
   'agoric1ee9hr0jyrxhy999y755mp862ljgycmwyp4pl7q',
-  'agoric1enwuyn2hzyyvt39x87tk9rhlkpqtyv9haj7mgs',
-];
+  'agoric1enwuyn2hzyyvt39x87tk9rhlkpqtyv9haj7mgs'
+]
 ```
 
 The `.current` child has current wallet status. For example:

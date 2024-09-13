@@ -10,6 +10,7 @@ of short talks on the Agoric Architecture that overlap substantially with the ma
 the sections below.
 <br />
 <ClientOnly>
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/52SgGFpWjsY?list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </ClientOnly>
 :::
@@ -33,6 +34,7 @@ Vats may be on remote machines, including massively replicated machines such as 
 The framework includes:
 
 - **[Hardened JavaScript](./hardened-js)**
+
   - Hardened JavaScript provides a platform for
     making objects that can interact with code you don't completely trust,
     without being vulnerable to bugs or bad intentions.
@@ -40,14 +42,16 @@ The framework includes:
     to apply the [principle of least authority](./hardened-js#the-principle-of-least-authority-pola).
 
 - **[`E()` for Eventual Send to Remote Presences](./eventual-send)**
+
   - The `E()` wrapper function lets
     you invoke methods within or between vats.
-    Given a local representative (a *presence*) for a remote object,
+    Given a local representative (a _presence_) for a remote object,
     it sends messages to the origin of the presence.
     `E(obj).myMethod(...args)` is an asynchronous form of `obj.myMethod(...args)`.
 
 - **[`Far()`, Remoteable Objects, and Marshaling](./far)**
-  - Objects used across vats are called *remotables*.
+
+  - Objects used across vats are called _remotables_.
     To mark an object for exporting from a vat, use the `Far()` function.
 
 - **[Notifiers and Subscriptions](./notifiers)**

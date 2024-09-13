@@ -19,38 +19,38 @@ After some preliminaries, ...
 
 ```js
 // @ts-check
-import { allValues } from './objectTools.js';
+import { allValues } from './objectTools.js'
 import {
   AmountMath,
   installContract,
-  startContract,
-} from './platform-goals/start-contract.js';
+  startContract
+} from './platform-goals/start-contract.js'
 
-const { Fail } = assert;
-const IST_UNIT = 1_000_000n;
+const { Fail } = assert
+const IST_UNIT = 1_000_000n
 
 export const makeInventory = (brand, baseUnit) => {
   return {
     frontRow: {
       tradePrice: AmountMath.make(brand, baseUnit * 3n),
-      maxTickets: 3n,
+      maxTickets: 3n
     },
     middleRow: {
       tradePrice: AmountMath.make(brand, baseUnit * 2n),
-      maxTickets: 3n,
+      maxTickets: 3n
     },
     lastRow: {
       tradePrice: AmountMath.make(brand, baseUnit * 1n),
-      maxTickets: 3n,
-    },
-  };
-};
+      maxTickets: 3n
+    }
+  }
+}
 
 export const makeTerms = (brand, baseUnit) => {
   return {
-    inventory: makeInventory(brand, baseUnit),
-  };
-};
+    inventory: makeInventory(brand, baseUnit)
+  }
+}
 
 /**
  * @typedef {{
@@ -66,7 +66,7 @@ export const makeTerms = (brand, baseUnit) => {
 ... the function for deploying the contract is `startSellConcertTicketsContract`:
 
 ```js
-const contractName = 'sellConcertTickets';
+const contractName = 'sellConcertTickets'
 
 /**
  * Core eval script to start contract
@@ -75,36 +75,36 @@ const contractName = 'sellConcertTickets';
  * @param {*} config
  */
 export const startSellConcertTicketsContract = async (powers, config) => {
-  console.log('core eval for', contractName);
+  console.log('core eval for', contractName)
   const {
     // must be supplied by caller or template-replaced
-    bundleID = Fail`no bundleID`,
-  } = config?.options?.[contractName] ?? {};
+    bundleID = Fail`no bundleID`
+  } = config?.options?.[contractName] ?? {}
 
   const installation = await installContract(powers, {
     name: contractName,
-    bundleID,
-  });
+    bundleID
+  })
 
   const ist = await allValues({
     brand: powers.brand.consume.IST,
-    issuer: powers.issuer.consume.IST,
-  });
+    issuer: powers.issuer.consume.IST
+  })
 
-  const terms = makeTerms(ist.brand, 1n * IST_UNIT);
+  const terms = makeTerms(ist.brand, 1n * IST_UNIT)
 
   await startContract(powers, {
     name: contractName,
     startArgs: {
       installation,
       issuerKeywordRecord: { Price: ist.issuer },
-      terms,
+      terms
     },
-    issuerNames: ['Ticket'],
-  });
+    issuerNames: ['Ticket']
+  })
 
-  console.log(contractName, '(re)started');
-};
+  console.log(contractName, '(re)started')
+}
 ```
 
 A `BootstrapPowers` object is composed of several _promise spaces_.
@@ -135,14 +135,14 @@ It also calls `powers.installation[name].resolve(installation)`.
  */
 export const installContract = async (
   { consume: { zoe }, installation: { produce: produceInstallation } },
-  { name, bundleID },
+  { name, bundleID }
 ) => {
-  const installation = await E(zoe).installBundleID(bundleID);
-  produceInstallation[name].reset();
-  produceInstallation[name].resolve(installation);
-  console.log(name, 'installed as', bundleID.slice(0, 8));
-  return installation;
-};
+  const installation = await E(zoe).installBundleID(bundleID)
+  produceInstallation[name].reset()
+  produceInstallation[name].resolve(installation)
+  console.log(name, 'installed as', bundleID.slice(0, 8))
+  return installation
+}
 ```
 
 This `installation` promise space is linked to the `E(agoricNames).lookup('installation')` NameHub: when you call `produce[name].resolve(value)` on the installation promise space, it triggers an update in the NameHub. The update associates the provided name with the provided value so that `E(agoricNames).lookup('installation', name)` is a promise for `value`.

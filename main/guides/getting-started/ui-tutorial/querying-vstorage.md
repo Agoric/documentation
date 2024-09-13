@@ -14,7 +14,7 @@ to use the RPC endpoints we added earlier.
 Example:
 
 ```ts
-const { chainStorageWatcher } = useAgoric();
+const { chainStorageWatcher } = useAgoric()
 ```
 
 ## Querying Vstorage
@@ -29,10 +29,10 @@ Create a new file, `src/Trade.tsx`:
 const Trade = () => {
   return (
     <div className="trade">TODO - Create inputs for submitting an offer.</div>
-  );
-};
+  )
+}
 
-export default Trade;
+export default Trade
 ```
 
 And add some styling for it in `App.css` while we're at it:
@@ -120,18 +120,18 @@ and emits updates when the data on-chain changes. For more details about vstorag
 Next, go ahead and add this hook to the `Trade` component you made before this:
 
 ```tsx
-import { useContract } from './hooks';
+import { useContract } from './hooks'
 
 const Trade = () => {
   // Don't do anything with brands or instances yet.
-  useContract();
+  useContract()
 
   return (
     <div className="trade">TODO - Create inputs for submitting an offer.</div>
-  );
-};
+  )
+}
 
-export default Trade;
+export default Trade
 ```
 
 You should now see the `brands` and `instances` being logged to the console. See if you

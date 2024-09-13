@@ -25,7 +25,8 @@ be resolved promptly.
 and an operation to request that the offer exit, as follows:
 
 ## E(UserSeat).getProposal()
-  - Returns: **Promise&lt;ProposalRecord>**
+
+- Returns: **Promise&lt;ProposalRecord>**
 
 A **Proposal** is represented by a **ProposalRecord**. It is the rules
 accompanying the escrow of **[Payments](/reference/ertp-api/payment)** dictating what the user expects
@@ -41,11 +42,12 @@ get what they asked for or Zoe ensures they get back their deposit.
 Example:
 
 ```js
-const { want, give, exit } = sellerSeat.getProposal();
+const { want, give, exit } = sellerSeat.getProposal()
 ```
 
 ## E(UserSeat).getPayouts()
-  - Returns: **Promise&lt;[PaymentPKeywordRecord](./zoe-data-types#keywordrecord)>**
+
+- Returns: **Promise&lt;[PaymentPKeywordRecord](./zoe-data-types#keywordrecord)>**
 
 Returns a **Promise** for a [KeywordRecord](./zoe-data-types#keywordrecord) containing **Promises** for all the **Payouts** associated with the **seat**'s offers.
 A **Payout** is a **[Payment](/reference/ertp-api/payment)** that goes to a party in a successful transaction,
@@ -54,17 +56,19 @@ redirecting escrowed assets in accordance with the result of the transaction.
 The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getPayout(keyword)
-  - **keyword**: **[Keyword](./zoe-data-types#keyword)**
-  - Returns: **Promise&lt;[Payment](/reference/ertp-api/payment)>**
 
-Returns a **Promise** for the **Payout** associated with the *keyword* argument.
+- **keyword**: **[Keyword](./zoe-data-types#keyword)**
+- Returns: **Promise&lt;[Payment](/reference/ertp-api/payment)>**
+
+Returns a **Promise** for the **Payout** associated with the _keyword_ argument.
 A **Payout** is a **[Payment](/reference/ertp-api/payment)** that goes to a party in a successful transaction,
 redirecting escrowed assets in accordance with the result of the transaction.
 
 The promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getOfferResult()
-  - Returns: **Promise&lt;OfferResult>**
+
+- Returns: **Promise&lt;OfferResult>**
 
 Returns a **Promise** for an **OfferResult**. The **OfferResult** can be any **[Passable](/glossary/#passable)**.
 For example, in the [Automatic Refund](/guides/zoe/contracts/automatic-refund) example, it's the string "The offer was accepted".
@@ -77,12 +81,14 @@ Since the contract can return whatever it wants as an offer result, there is no 
 promise will resolve promptly.
 
 ## E(UserSeat).hasExited()
-  - Returns: **Promise&lt;Boolean>**
+
+- Returns: **Promise&lt;Boolean>**
 
 Returns **true** if the seat has exited, **false** if it's still active. The value is returned
 promptly.
 
 If you want to take some action when the seat does exit, use **getExitSubscriber()** and call
+
 ```
 const subscriber = E(seat).getExitSubscriber();
 E.when(E(subscriber).getUpdateSince(), () => takeAction());
@@ -92,7 +98,8 @@ The eventual send to the subscriber will survive upgrade of the contract. Waitin
 promises would be broken in the case of a contract upgrade.
 
 ## E(UserSeat).tryExit()
-  - Returns: None.
+
+- Returns: None.
 
 Note: Only works if the **seat**'s **proposal** has an **OnDemand** **exit** clause.
 Zoe's offer-safety guarantee applies no matter how a **seat**'s interaction with
@@ -102,24 +109,26 @@ contract might do something explicitly. On exiting, the seat holder
 gets its current **[Allocation](./zoe-data-types#allocation)** and the **seat** can no longer interact with the contract.
 
 ## E(UserSeat).numWantsSatisfied()
+
 - Returns: **Promise&lt;Number>**
 
 Returns a **Promise** for a number which indicates the result of the exited **Proposal**, as described below:
 
-| Number Returned | Description |
-| --- | --- |
-| 0 | The user didn't get what they wanted from the **Proposal**, so their offer was refunded. |
-| 1 | The user got what they wanted from the **Proposal**, so their offer is spent & gone. |
+| Number Returned | Description                                                                              |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| 0               | The user didn't get what they wanted from the **Proposal**, so their offer was refunded. |
+| 1               | The user got what they wanted from the **Proposal**, so their offer is spent & gone.     |
 
 This promise will be resolved promptly once the seat exits.
 
 ## E(UserSeat).getExitSubscriber()
+
 - Returns: **Promise&lt;Subscriber>**
 
 Returns a **Promise** for the **Subscriber** for the seat.
 
-
 ## E(UserSeat).getFinalAllocation()
+
 - Returns: **Promise&lt;[Allocation](./zoe-data-types#allocation)>**
 
 Returns a **Promise** for the **Allocation** when the **UserSeat** exits the **proposal**.

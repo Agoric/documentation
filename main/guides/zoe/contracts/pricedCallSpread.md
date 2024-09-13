@@ -3,6 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/callSpread/pricedCallSpread.js) (Last updated: Feb 20, 2022)
+
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 This contract implements a fully collateralized call spread. You can use a call spread as a
@@ -13,11 +14,11 @@ higher price. A call spread has two participating seats that pay out complementa
 on the value of some good at a known future time. This video gives a
 [walkthrough of the implementation](https://youtu.be/m5Pf2d1tHCs?t=3566) of the contract.
 
-There are two variants of the callSpread.  In this version, the creator requests a pair of
+There are two variants of the callSpread. In this version, the creator requests a pair of
 invitations, each of which enables the holder to obtain one of the positions by providing a started
 portion of the collateral. The other is called the [fundedCallSpread](./fundedCallSpread). It is
 fully funded by its creator, who can then sell (or otherwise transfer) the options to other parties.
-The Zoe invitations representing options are produced in pairs.  The individual options are Zoe
+The Zoe invitations representing options are produced in pairs. The individual options are Zoe
 invitations whose details are inspectable by prospective purchasers.
 
 These options are settled financially. There is no requirement that the original purchaser have
@@ -31,27 +32,29 @@ currencies. You can have, for example, a spread based on APPL stock (`Underlying
 price in USD (`Strike`) and contract paying out in JPY (`Collateral`).
 
 The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike, and Collateral.
- * The asset whose eventual value determines the payouts uses `Underlying`. This is often a fungible
-   currency, but doesn't have to be. It would be perfectly valid to have a call spread contract on
-   the value of a "Superior Magic Sword", as long as there was a price oracle to determine its price
-   at the expiration time.
- * The original deposit and the payout use the `Collateral` issuer.
- * `Strike` amounts are used for the price oracle's quote as to the value of the Underlying, as
-   well as the strike prices in the terms.
+
+- The asset whose eventual value determines the payouts uses `Underlying`. This is often a fungible
+  currency, but doesn't have to be. It would be perfectly valid to have a call spread contract on
+  the value of a "Superior Magic Sword", as long as there was a price oracle to determine its price
+  at the expiration time.
+- The original deposit and the payout use the `Collateral` issuer.
+- `Strike` amounts are used for the price oracle's quote as to the value of the Underlying, as
+  well as the strike prices in the terms.
 
 ## Terms
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
- * `expiration` is a time recognized by the `timer`.
- * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
- * `strikePrice2` must be greater than `strikePrice1`.
- * `settlementAmount` is the amount deposited by the creator and split between the holders of the
- options. It uses Collateral.
- * `priceAuthority` is an oracle that has a timer so it can respond to requests for prices as of a
-   stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
-   asset in the strike currency.
+
+- `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
+- `expiration` is a time recognized by the `timer`.
+- `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
+- `strikePrice2` must be greater than `strikePrice1`.
+- `settlementAmount` is the amount deposited by the creator and split between the holders of the
+  options. It uses Collateral.
+- `priceAuthority` is an oracle that has a timer so it can respond to requests for prices as of a
+  stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
+  asset in the strike currency.
 
 <<< @/../snippets/zoe/contracts/test-callSpread.js#startInstancePriced
 
@@ -85,7 +88,7 @@ instance of the contract.
 
 ## Options can be Exercised Independently
 
- The option position invitations can be exercised for free, and provide their payouts under the
+The option position invitations can be exercised for free, and provide their payouts under the
 keyword `Collateral`.
 
 <<< @/../snippets/zoe/contracts/test-callSpread.js#bobExercise

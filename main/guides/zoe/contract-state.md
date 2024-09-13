@@ -1,6 +1,6 @@
 # State Smart Contract
 
-In our first `hello-world` smart contract, we created a `greet` function and exposed it using `publicFacet` so that it can be remotely called. However, if you notice, there is no state in our smart contract that is preserved between calls. Contracts can use ordinary variables and data structures for state. 
+In our first `hello-world` smart contract, we created a `greet` function and exposed it using `publicFacet` so that it can be remotely called. However, if you notice, there is no state in our smart contract that is preserved between calls. Contracts can use ordinary variables and data structures for state.
 
 In our second example smart contract, we will manage a list of rooms. We want everyone with access to `publicFacet` to be able to create a new room, and also get current count of rooms. We maintain state using `Map` data structure as below:
 
@@ -18,7 +18,7 @@ Putting it all together:
 
 <<< @/../snippets/zoe/src/02-state.js#state-contract
 
-Let us save this contract as `02-state.js` and creating a simple test to validate its functionality: 
+Let us save this contract as `02-state.js` and creating a simple test to validate its functionality:
 
 <<< @/../snippets/zoe/contracts/test-zoe-hello.js#test-state
 

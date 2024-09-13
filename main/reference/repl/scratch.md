@@ -7,9 +7,10 @@ Note that when calling from the REPL's home object, you must use the [E() syntax
 Keys can be anything.
 
 ## `E(home.scratch).set(id, obj)`
+
 - `id`: `{ any }`
 - `obj`: `{ Object }`
-Returns: `{ any }`
+  Returns: `{ any }`
 
 Adds the key-value pair `[id, obj]` to the Scratchpad, returns the `id`.
 
@@ -19,20 +20,24 @@ history[1] "foo"
 ```
 
 ## `E(home.scratch).get(id)`
+
 - `id`: `{ any }`
 - Returns: `{ Object }`
 
-Takes an ID key and returns its associated object in the ag-solo's scratchpad. 
+Takes an ID key and returns its associated object in the ag-solo's scratchpad.
 If the `id` parameter is not a valid key, it returns `undefined`.
+
 ```js
 command[2] E(home.scratch).get("foo")
 history[2] "bar"
 ```
 
 ## `E(home.scratch).list()`
-- Returns: `{ Array<any> }` 
+
+- Returns: `{ Array<any> }`
 
 Returns a sorted array of all ID values currently in the Scratchpad.
+
 ```js
 command[3] E(home.scratch).list()
 history[3] ["faucetTokenIssuer","foo"]

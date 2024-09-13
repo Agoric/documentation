@@ -1,8 +1,11 @@
 # Deploying a Smart Contact
+
 In the `dapp-offer-up` tutorial you just went through you saw how quick and easy it was to deploy a contact on Agoric using the `yarn start:contract` command. Let's take a look at how this command works and what's going on behind the scenes.
 
 ## How it Works
+
 Running the `yarn start:contract` command in the tutorial runs a script which accomplishes several things:
+
 - The script bundled the contract with the `agoric run` command
 - The script collected some ATOM with the `agd tx bank send` command
 - The script then used the ATOM to open a vault. This vault was used to mint enough IST to pay to install the bundles on chain with `agops vaults open` command
@@ -12,6 +15,7 @@ Running the `yarn start:contract` command in the tutorial runs a script which ac
 - Finally, the script voted for the proposal and waited for the proposal to pass.
 
 Once again, we can reference the project's `package.json` file to learn a bit more about what `yarn start:contract` is doing behind the scenes.
+
 ```json
   "scripts": {
     "start:docker": "cd contract && docker compose up -d",
@@ -29,6 +33,7 @@ Once again, we can reference the project's `package.json` file to learn a bit mo
 ```
 
 Note the calling the `yarn start:contract` command is the same as running `yarn start` from the contract directory. We can look at `package.json` from the `contract` directory to learn even more:
+
 ```json
  "scripts": {
     "start:docker": "docker compose up -d",
