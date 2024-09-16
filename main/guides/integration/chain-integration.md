@@ -30,7 +30,7 @@ The chain can also be accessed via JavaScript using the [`cosmjs` library](https
 
 The `agd` command line tool can be built by running the commands as below:
 ```sh
-git clone https://github.com/Agoric/agoric-sdk
+git clone -b community-dev https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
 SKIP_DOWNLOAD=false ./bin/agd build
 export PATH=$PWD/bin:$PATH
