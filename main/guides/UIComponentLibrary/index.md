@@ -7,7 +7,7 @@ Utilization of these building blocks ensures best practices in design and access
 
 See [Introduction to Agoric UI Kit](https://a0a31cba.documentation-7tp.pages.dev/guides/getting-started/how-to-use-ui-kit#introduction-to-agoric-ui-kit) for installation and setup how-to.
 
-Once complete you'll need to run this yarn command: 
+Once complete you'll need to run this yarn command:
 
 ```sh
 yarn add @agoric/react-components
@@ -30,22 +30,22 @@ These React UI components can be immediately used to streamline your Agoric Dapp
   alt="Screenshot: Connect Wallet"
   src="./assets/connectwallet.png" />
 
-  <img style="border: 2px solid grey"
+<img style="border: 2px solid grey"
   alt="Screenshot: Wallet Address"
   src="./assets/walletaddress.png" />
 
-  <img style="border: 2px solid grey"
+<img style="border: 2px solid grey"
   alt="Screenshot: Select Wallet"
   src="./assets/selectwallet.png" />
 
 - [Connecting with Wallet Connect Button](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#integrating)
-- [Connecting without Wallet Connect Button](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#connecting-without-connectwalletbutton) 
+- [Connecting without Wallet Connect Button](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#connecting-without-connectwalletbutton)
 - [Using a Custom Chain Provider](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#using-a-custom-chainprovider)
 
 Customizable Parameters
 | Parameter | Type | Description |
 |----------|----------|----------|
-| ClassName   | string   | CSS class name for the underlying `<button>` element   |
+| ClassName | string | CSS class name for the underlying `<button>` element |
 
 ## Smart Wallet Provisioning
 
@@ -55,12 +55,12 @@ Customizable Parameters
 
 - [Smart Wallet Provisioning](https://github.com/Agoric/ui-kit/tree/main/packages/react-components#smart-wallet-provisioning)
 
-See `AgoricProviderLite` component  -> `provisionNoticeContent` prop:  
+See `AgoricProviderLite` component -> `provisionNoticeContent` prop:
 
 Customizable Parameters
 | Parameter | Type | Description |
 |----------|----------|----------|
-| provisionNoticeContent   | undefined | (fee?: bigint) => JSX.Element   | The main content to show in the provision notice dialog (default shown in screenshot)   |
+| provisionNoticeContent | undefined | (fee?: bigint) => JSX.Element | The main content to show in the provision notice dialog (default shown in screenshot) |
 
 ### Amount Input
 
@@ -73,11 +73,11 @@ Customizable Parameters
 Customizable Parameters
 | Parameter | Type | Description |
 |----------|----------|----------|
-| value   | bigint | null   | The current value of the input   |
-| decimalPlace   | number   | The number of decimal places used for displaying the denominated value   |
-| className   | string | undefined   | CSS class name for the underlying `<input>` element   |
-| onChange   | undefined | (value: bigint) => void   | Callback for handling input changes   |
-| disabled   | boolean | undefined   | Whether or not the input is disabled. Defaults to false.   |
+| value | bigint | null | The current value of the input |
+| decimalPlace | number | The number of decimal places used for displaying the denominated value |
+| className | string | undefined | CSS class name for the underlying `<input>` element |
+| onChange | undefined | (value: bigint) => void | Callback for handling input changes |
+| disabled | boolean | undefined | Whether or not the input is disabled. Defaults to false. |
 
 ## Chain Selector
 
@@ -85,7 +85,7 @@ Customizable Parameters
   alt="Screenshot: Chain Selector"
   src="./assets/chainselector.png" />
 
-  <img style="border: 2px solid grey"
+<img style="border: 2px solid grey"
   alt="Screenshot: Chain Selector 2"
   src="./assets/chainselector2.png" />
 
@@ -94,11 +94,11 @@ Customizable Parameters
 Customizable Parameters
 | Parameter | Type | Description |
 |----------|----------|----------|
-| networkConfigs   | NetworkConfig[]   | The list of Agoric network configs to choose from.   |
-| label   | ChangeChainCombobox[‘label’]   | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs)   |
-| size  | ChangeChainCombobox[‘size’]   | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs)   |
-| appearance   | ChangeChainCombobox[‘appearance’]   | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs)   |
-| maxHeight   | ChangeChainCombobox[‘maxHeight’]   | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs)   |
+| networkConfigs | NetworkConfig[] | The list of Agoric network configs to choose from. |
+| label | ChangeChainCombobox[‘label’] | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs) |
+| size | ChangeChainCombobox[‘size’] | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs) |
+| appearance | ChangeChainCombobox[‘appearance’] | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs) |
+| maxHeight | ChangeChainCombobox[‘maxHeight’] | See [ChangeChainCombobox](https://storybook.cosmology.zone/?path=/docs/swap-changechaincombobox--docs) |
 
 ## Node Selector
 
@@ -111,8 +111,8 @@ Customizable Parameters
 Customizable Parameters
 | Parameter | Type | Description |
 |----------|----------|----------|
-| isOpen   | boolean | undefined   | Whether or not the modal is open   |
-| onClose   | () => void   | Triggered when the user tries to close the modal   |
+| isOpen | boolean | undefined | Whether or not the modal is open |
+| onClose | () => void | Triggered when the user tries to close the modal |
 
 ## Leap Elements
 

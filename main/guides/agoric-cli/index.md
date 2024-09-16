@@ -68,6 +68,7 @@ agoric follow [options] <path-spec...>
 - **-h, --help**: display help for command
 
 **Examples**:
+
 ```sh
 $ agoric follow -lF :published.agoricNames.brand
 [

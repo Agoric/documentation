@@ -23,7 +23,7 @@ someAmount: {
 An **AmountShape** is a description of non-fungible digital assets. Similar to **[Amount](#amount)**,
 **AmountShape** has 2 properties: a **[Brand](./brand)**, which states what kind of asset this is,
 and a **ValueShape**, which is an object containing however many properties are required to describe
-this non-fungible asset. Note that an asset's **ValueShape** is defined by the *elementShape* parameter
+this non-fungible asset. Note that an asset's **ValueShape** is defined by the _elementShape_ parameter
 when the asset's **[Issuer](./issuer)** is created via the
 **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo-optshutdownwithfailure-elementshape)** function.
 
@@ -35,6 +35,7 @@ someAmountShape: {
 ```
 
 <a id="value"></a>
+
 ## AmountValue
 
 An **AmountValue** is the part of an [Amount](#amount) that describes the value of something
@@ -48,7 +49,7 @@ AmountValues must be [Keys](/glossary/#key).
 
 There are several kinds of Assets.
 
-- **AssetKind.NAT** : Used with fungible assets. **AmountValues** are natural numbers using the JavaScript  [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
+- **AssetKind.NAT** : Used with fungible assets. **AmountValues** are natural numbers using the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript **Number** type.
 - **AssetKind.SET** : Deprecated.
 - **AssetKind.COPY_SET** : Used with non-fungible assets where there can't be duplicates (e.g., assigned seats in a stadium). See [@endo/patterns CopySet](https://endojs.github.io/endo/types/_endo_patterns.CopySet.html).
 - **AssetKind.COPY_BAG** : Used with semi-fungible assets where there can be duplicates. The duplicates of the same asset are fungible with each other (e.g., weapons in a computer game). See [@endo/patterns CopyBag](https://endojs.github.io/endo/types/_endo_patterns.CopyBag.html).
@@ -60,9 +61,9 @@ Use **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo
 your contract uses. See the **[Issuer](./issuer)** documentation for details on how to use this method.
 
 ```js
-import { AssetKind, makeIssuerKit } from '@agoric/ertp';
-makeIssuerKit('quatloos'); // Defaults to AssetKind.NAT and undefined DisplayInfo
-makeIssuerKit('kitties', AssetKind.COPY_SET); // Defaults to undefined DisplayInfo
+import { AssetKind, makeIssuerKit } from '@agoric/ertp'
+makeIssuerKit('quatloos') // Defaults to AssetKind.NAT and undefined DisplayInfo
+makeIssuerKit('kitties', AssetKind.COPY_SET) // Defaults to undefined DisplayInfo
 ```
 
 ## DisplayInfo
@@ -76,9 +77,9 @@ how many places to move the decimal point over to the left so as to display the 
 in the commonly used denomination (e.g., display "10.00 dollars" rather than "1000 cents").
 
 Fungible digital assets are represented in integers, in their smallest unit.
-For example, the smallest unit for a US dollar might be either *dollar* or *cent*.
-If it's *dollar*, **decimalPlaces** would be **0**. If it's *cent*, **decimalPlaces**
-would be **2**. Similarly, if you want the smallest unit of ether (the cryptocurrency coin used on the Ethereum network) to be *wei* (one ether = 10<sup>18</sup> wei), then **decimalPlaces** would be **18**.
+For example, the smallest unit for a US dollar might be either _dollar_ or _cent_.
+If it's _dollar_, **decimalPlaces** would be **0**. If it's _cent_, **decimalPlaces**
+would be **2**. Similarly, if you want the smallest unit of ether (the cryptocurrency coin used on the Ethereum network) to be _wei_ (one ether = 10<sup>18</sup> wei), then **decimalPlaces** would be **18**.
 
 Non-fungible assets have values that are arrays, so you shouldn't specify a **decimalPlaces** value
 for them.

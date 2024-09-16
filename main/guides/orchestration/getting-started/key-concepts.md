@@ -54,17 +54,17 @@ It simplifies accessing and interacting with multiple chains, providing a unifie
 ChainHub also allows dynamic registration and use of chain and connection information.
 
 ```javascript
-const chainHub = makeChainHub(remotePowers.agoricNames);
+const chainHub = makeChainHub(remotePowers.agoricNames)
 
 // Register a new chain with its information
-chainHub.registerChain(chainKey, chainInfo);
+chainHub.registerChain(chainKey, chainInfo)
 
 // Register a connection between the Agoric chain and the new chain
 chainHub.registerConnection(
   agoricChainInfo.chainId,
   chainInfo.chainId,
-  connectionInfo,
-);
+  connectionInfo
+)
 ```
 
 In this example, `chainHub` is used to register a new chain and establish a connection between the Agoric chain and the newly registered chain.
@@ -78,7 +78,7 @@ Orchestration accounts are a key concept in the Agoric Orchestration API, repres
 - `getAddress` retrieves the address of the account on the remote chain.
 
 ```javascript
-const address = await orchestrationAccount.getAddress();
+const address = await orchestrationAccount.getAddress()
 ```
 
 **2. Balance Management**
@@ -87,8 +87,8 @@ const address = await orchestrationAccount.getAddress();
 - `getBalance` retrieves the balance of a specific denom for the account.
 
 ```javascript
-const balances = await orchestrationAccount.getBalances();
-const balance = await orchestrationAccount.getBalance('uatom');
+const balances = await orchestrationAccount.getBalances()
+const balance = await orchestrationAccount.getBalance('uatom')
 ```
 
 **3. Funds Transfer**
@@ -98,9 +98,9 @@ const balance = await orchestrationAccount.getBalance('uatom');
 - `transferSteps` transfers an amount in multiple steps, handling complex transfer paths.
 
 ```javascript
-await orchestrationAccount.send(receiverAddress, amount);
-await orchestrationAccount.transfer(amount, destinationAddress);
-await orchestrationAccount.transferSteps(amount, transferMsg);
+await orchestrationAccount.send(receiverAddress, amount)
+await orchestrationAccount.transfer(amount, destinationAddress)
+await orchestrationAccount.transferSteps(amount, transferMsg)
 ```
 
 To see the function the Orchestration API exposes, see [Orchestration API](/guides/orchestration/getting-started/api.html)

@@ -3,6 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4c4da6a7ae76aebbff2af48613008978eb04462b/packages/zoe/src/contracts/oracle.js) (Last updated: Jan 31, 2022)
+
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 **NOTE: You almost certainly do not want to use this contract directly.
@@ -10,13 +11,13 @@ Instead, please read the [Chainlink integration
 documentation](/guides/chainlink-integration)**
 
 This contract lets other contracts or users make single free or fee-based
-queries to a generic oracle node (a single instance).  This provides a very
+queries to a generic oracle node (a single instance). This provides a very
 low-level API to issue single queries that an individual off-chain oracle node
 answers.
 
 **CAUTION: The security of oracle networks (such as Chainlink) depends upon
 having higher-level contracts to aggregate the results of the individual nodes
-(this low-level contract).  This protects against misbehaviour from an
+(this low-level contract). This protects against misbehaviour from an
 individual node.**
 
 Relying on just a single node can be both expensive and risky. Instead, use the

@@ -1,20 +1,22 @@
 # AmountMath
 
-![AmountMath methods](./assets/amount-math.svg) 
+![AmountMath methods](./assets/amount-math.svg)
 
 Depositing and withdrawing assets from a
-`purse` and manipulating `payment` amounts 
+`purse` and manipulating `payment` amounts
 all require adding and subtracting digital assets.
-ERTP uses the `AmountMath` library for all these operations. 
+ERTP uses the `AmountMath` library for all these operations.
 
-The `AmountMath` library functions work for both fungible and nonfungible tokens. 
-There are two `AssetKinds`, each of which implements the same methods. Which kind is used 
-for a particular `brand` depends on what was specified when the `brand` and 
-its `issuer` were created. They are: 
+The `AmountMath` library functions work for both fungible and nonfungible tokens.
+There are two `AssetKinds`, each of which implements the same methods. Which kind is used
+for a particular `brand` depends on what was specified when the `brand` and
+its `issuer` were created. They are:
+
 - `AssetKind.NAT` ("nat"): Used with fungible assets. Values are natural numbers using the JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type to avoid overflow risks from using the usual JavaScript `Number` type.
 - `AssetKind.SET` ("set"): Used with non-fungible assets. Values are [copyArray](../js-programming/far#passstyleof-api)s such as hardened arrays of strings.
 
 ## AmountMath Methods
+
 The following is a brief description and example of each `AmountMath` method. For
 more detail, click the method's name to go to its entry in the [ERTP
 API Reference](/reference/ertp-api/).
@@ -49,7 +51,7 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
   - [AmountMath.add(leftAmount, rightAmount, brand?)](/reference/ertp-api/amount-math#amountmath-add-leftamount-rightamount-brand)
     - Returns an `amount` that is the union of the `leftAmount` and `rightAmount`
       `amount` arguments. For a fungible `amount`, this means add their
-      values.  For a non-fungible `amount`, it usually means
+      values. For a non-fungible `amount`, it usually means
       including all elements from both `leftAmount` and `rightAmount`.
       Throws an error if the optional `brand` argument isn't the same as the `amount` arguments brands.
     - <<< @/../snippets/ertp/guide/test-amount-math.js#add
@@ -57,12 +59,12 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
     - Returns a new `amount` that is the `leftAmount` argument minus
       the `rightAmount` argument (i.e., for strings or objects
       everything in `leftAmount` not in `rightAmount`). If `leftAmount`
-      doesn't include the contents of `rightAmount`, it throws an error. 
-      It also throws an error if the optional `brand` argument isn't the 
+      doesn't include the contents of `rightAmount`, it throws an error.
+      It also throws an error if the optional `brand` argument isn't the
       same as the `amount` arguments brands.
     - <<< @/../snippets/ertp/guide/test-amount-math.js#subtract
 - **Amount Creation Methods**
-  - [AmountMath.make(brand, allegedValue)](/reference/ertp-api/amount-math#amountmath-make-brand-allegedvalue)	
+  - [AmountMath.make(brand, allegedValue)](/reference/ertp-api/amount-math#amountmath-make-brand-allegedvalue)
     - Takes a `value` argument and returns an `amount` by making a record
       with the `value` and the `brand` associated with the `AmountMath`. The `value`
       argument should be represented as a `BigInt` e.g. `10n` rather than `10`.
@@ -77,13 +79,14 @@ to add verification that the `brand` of "amount" argument(s) corresponds with th
     - Returns an `amount` representing an empty `amount`, using another `amount`
       as the template for the new empty amount's `brand` and `assetKind`.
     - <<< @/../snippets/ertp/guide/test-amount-math.js#makeEmptyFromAmount
- 
+
 ## Methods On Other Objects
 
-These methods return an **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)**: 
+These methods return an **[AssetKind](/reference/ertp-api/ertp-data-types#assetkind)**:
+
 - [anIssuer.getAssetKind()](/reference/ertp-api/issuer#anissuer-getassetkind)
   - Returns the `AssetKind` of the `issuer`'s `brand`. (`AssetKind.NAT` or `AssetKind.SET`).
   - <<< @/../snippets/ertp/guide/test-amount-math.js#getAssetKind2
 - [zcf.getAssetKind(brand)](/reference/zoe-api/zoe-contract-facet#zcf-getassetkind-brand)
-  - Returns the `AssetKind` of the `brand` argument. 
+  - Returns the `AssetKind` of the `brand` argument.
   - <<< @/../snippets/ertp/guide/test-amount-math.js#zcfGetAssetKind

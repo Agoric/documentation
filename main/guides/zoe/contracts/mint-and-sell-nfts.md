@@ -3,6 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/mintAndSellNFT.js) (Last updated: Jan 31, 2022)
+
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 This contract mints non-fungible tokens and creates a selling contract
@@ -10,6 +11,7 @@ instance to sell the tokens in exchange for some sort of money.
 
 startInstance() returns a creatorFacet with a `.sellTokens()` method. `.sellTokens()` takes a
 specification of what is being sold, such as:
+
 ```
 {
   customValueProperties: { ...arbitrary },

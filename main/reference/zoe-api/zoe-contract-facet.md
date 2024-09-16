@@ -10,7 +10,6 @@ The contract instance is launched by **E(Zoe).startInstance()**, and is given ac
 the **zcf** object during that launch (see [Contract Requirements](/guides/zoe/contract-requirements)).
 In the operations below, **instance** is the handle for the running contract instance.
 
-
 ## zcf.atomicRearrange(transfers)
 
 - **transfers**: **Array&lt;[TransferPart](./zoe-data-types#transferpart)>**
@@ -40,8 +39,7 @@ Note that you can construct the **TransferParts** that make up the _transfers_ a
 transfers that only include one seat, you can use the helper functions
 **[fromOnly()](./zoe-helpers#fromonly-fromseat-fromamounts)** and
 **[toOnly()](./zoe-helpers#toonly-toseat-toamounts)** to create
-**TransferParts** that only use a subset of the fields. 
-
+**TransferParts** that only use a subset of the fields.
 
 ## zcf.makeZCFMint(keyword, assetKind?, displayInfo?)
 
@@ -69,9 +67,9 @@ The following demonstrates **zcf.makeZCFMint**:
 calls to the resulting **ZCFMint** are synchronous.
 
 ```js
-const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.COPY_SET);
-const { brand, issuer } = mySynchronousMint.getIssuerRecord();
-mySynchronousMint.mintGains({ myKeyword: amount }, seat);
+const mySynchronousMint = await zcf.makeZCFMint('MyToken', AssetKind.COPY_SET)
+const { brand, issuer } = mySynchronousMint.getIssuerRecord()
+mySynchronousMint.mintGains({ myKeyword: amount }, seat)
 ```
 
 ## zcf.getInvitationIssuer()
@@ -81,7 +79,7 @@ mySynchronousMint.mintGains({ myKeyword: amount }, seat);
 Returns the **InvitationIssuer** for the Zoe instance.
 
 ```js
-const invitationIssuer = await zcf.getInvitationIssuer();
+const invitationIssuer = await zcf.getInvitationIssuer()
 ```
 
 ## zcf.saveIssuer(issuer, keyword)
@@ -103,7 +101,7 @@ associated with the **Issuer** value of the record:
 **IssuerRecord.brand** and **IssuerRecord.issuer**.
 
 ```js
-await zcf.saveIssuer(secondaryIssuer, keyword);
+await zcf.saveIssuer(secondaryIssuer, keyword)
 ```
 
 <a id="zcf-makeinvitation-offerhandler-description-customproperties-proposalshape"></a>
@@ -150,7 +148,7 @@ Patterns are often constructed using the
 For example, when making a covered call, to express that the offering party can't cancel:
 
 ```js
-import { M } from '@endo/patterns';
+import { M } from '@endo/patterns'
 
 const waivedExitProposalShape = M.splitRecord(
   // required properties
@@ -158,14 +156,14 @@ const waivedExitProposalShape = M.splitRecord(
   // optional properties
   { give: M.record(), want: M.record() },
   // unknown properties
-  M.record(),
-);
+  M.record()
+)
 const creatorInvitation = zcf.makeInvitation(
   makeCallOption,
   'makeCallOption',
   undefined,
-  waivedExitProposalShape,
-);
+  waivedExitProposalShape
+)
 ```
 
 Full details are in the [@endo/patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) package. Here's a handy reference:
@@ -228,7 +226,7 @@ particular view or API of an object;
 there may be multiple such facets per object) a **ZCFSeat** and a **UserSeat**.
 
 ```js
-const { zcfSeat: mySeat } = zcf.makeEmptySeatKit();
+const { zcfSeat: mySeat } = zcf.makeEmptySeatKit()
 ```
 
 ## zcf.getInstance()
@@ -259,7 +257,7 @@ Returns the **Issuer** of the _brand_ argument.
 Returns the **AssetKind** associated with the _brand_ argument.
 
 ```js
-const quatloosAssetKind = zcf.getAssetKind(quatloosBrand);
+const quatloosAssetKind = zcf.getAssetKind(quatloosBrand)
 ```
 
 ## zcf.stopAcceptingOffers()
@@ -291,7 +289,7 @@ other outstanding promises are closed with a generic 'vat terminated'
 message.
 
 ```js
-zcf.shutdown();
+zcf.shutdown()
 ```
 
 ## zcf.shutdownWithFailure(reason)
@@ -311,7 +309,7 @@ other outstanding promises are closed with the relevant
 error message.
 
 ```js
-zcf.shutdownWithFailure();
+zcf.shutdownWithFailure()
 ```
 
 ## zcf.getTerms()
@@ -340,7 +338,7 @@ to **zcf**, and **zcf** already knows what instance is running. So in contract c
 a user side, with access to Zoe Service, you use **E(zoe).getTerms()**.
 
 ```js
-const { brands, issuers, maths, terms } = zcf.getTerms();
+const { brands, issuers, maths, terms } = zcf.getTerms()
 ```
 
 ## zcf.getZoeService()
@@ -352,8 +350,8 @@ the contract code as well.
 
 ```js
 // Making an offer to another contract instance in the contract.
-const zoeService = zcf.getZoeService();
-E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord);
+const zoeService = zcf.getZoeService()
+E(zoeService).offer(creatorInvitation, proposal, paymentKeywordRecord)
 ```
 
 ## zcf.assertUniqueKeyword(keyword)
@@ -366,7 +364,7 @@ and could be used as a new **Brand** to make an **Issuer**. Throws an appropriat
 a valid **Keyword**, or is not unique.
 
 ```js
-zcf.assertUniqueKeyword(keyword);
+zcf.assertUniqueKeyword(keyword)
 ```
 
 ## zcf.setOfferFilter(strings)
@@ -439,9 +437,9 @@ rights are unchanged.
 - **reallocating must be done over two or more seats**
 
 ```js
-sellerSeat.incrementBy(buyerSeat.decrementBy({ Money: providedMoney }));
-buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
-zcf.reallocate(buyerSeat, sellerSeat);
+sellerSeat.incrementBy(buyerSeat.decrementBy({ Money: providedMoney }))
+buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }))
+zcf.reallocate(buyerSeat, sellerSeat)
 ```
 
 **Note**: This method has been deprecated. Use **[atomicRearrange()](./#atomicrearrange-transfers)** instead.

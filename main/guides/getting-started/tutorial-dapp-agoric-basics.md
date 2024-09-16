@@ -1,7 +1,9 @@
 # The `dapp-agoric-basics` Tutorial
 
 ## Introduction
-In this tutorial you will install the `dapp-agoric-basics` dapp.  This dapp is a collection of basic use cases for Agoric smart contracts.
+
+In this tutorial you will install the `dapp-agoric-basics` dapp. This dapp is a collection of basic use cases for Agoric smart contracts.
+
 - [Sell Concert Tickets Smart Contract](sell-concert-tickets-contract-explainer)
 - [Swaparoo Contract](swaparoo-how-to-swap-assets-explainer)
 - [Sending Invitation Payments using an Address](swaparoo-making-a-payment-explainer)
@@ -9,7 +11,9 @@ In this tutorial you will install the `dapp-agoric-basics` dapp.  This dapp is a
 To begin, you will need an environment with the pre-requisite components installed as outlined in the [Getting Started](index.md) guide. If you have already completed the Getting Started tutorial you can use the same environment.
 
 ## Downloading the dapp
+
 Pull down the dapp from Github:
+
 ```bash
 yarn create @agoric/dapp --dapp-template dapp-agoric-basics agoric-basics
 ```
@@ -17,6 +21,7 @@ yarn create @agoric/dapp --dapp-template dapp-agoric-basics agoric-basics
 ## Installing dapp components
 
 Next, run the `yarn install` command from the `agoric-basics` directory:
+
 ```bash
 cd agoric-basics
 yarn install
@@ -25,11 +30,13 @@ yarn install
 ## Starting the Docker Container
 
 Start the Docker container:
+
 ```bash
 yarn start:docker
 ```
 
 After a few minutes, check to make sure blocks are being produced by viewing the Docker logs:
+
 ```bash
 yarn docker:logs
 ```
@@ -37,11 +44,13 @@ yarn docker:logs
 ## Starting the dapp
 
 Start the `dapp-agoric-basics` contract:
+
 ```bash
 yarn start:contract
 ```
 
 Start the user interface:
+
 ```bash
 yarn start:ui
 ```
@@ -50,7 +59,7 @@ Next, open a browser and navigate to `localhost:5173`:
 <img style="border: 2px solid grey"
   alt="Screenshot: The dapp-agoric-basics UI"
   src="./assets/dapp-agoric-basics-001.png" />
-  
+
 From the UI, select the 'Connect Wallet' option. Choose 'Keplr' from the 'Select your wallet' screen:
 dapp-agoric-basics-002
 <img style="border: 2px solid grey"
@@ -72,5 +81,3 @@ Once the transaction has completed, you will notice the tickets in your wallet:
 <img style="border: 2px solid grey"
   alt="Screenshot: Tickets in Keplr wallet"
   src="./assets/dapp-agoric-basics-005.png" />
-
-

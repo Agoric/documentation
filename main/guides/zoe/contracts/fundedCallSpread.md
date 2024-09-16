@@ -3,6 +3,7 @@
 <Zoe-Version/>
 
 ##### [View the code on Github](https://github.com/Agoric/agoric-sdk/blob/4e0aece631d8310c7ab8ef3f46fad8981f64d208/packages/zoe/src/contracts/callSpread/fundedCallSpread.js) (Last updated: Feb 20, 2022)
+
 ##### [View all contracts on Github](https://github.com/Agoric/agoric-sdk/tree/master/packages/zoe/src/contracts)
 
 This contract implements a fully collateralized call spread. You can use a call spread as a
@@ -30,34 +31,36 @@ currencies. You can have, for example, a spread based on APPL stock (`Underlying
 price in USD (`Strike`) where the contract pays out in JPY (`Collateral`).
 
 The issuerKeywordRecord specifies issuers for three keywords: Underlying, Strike, and Collateral.
- * The asset whose eventual value determines the payouts uses `Underlying`. This is often a fungible
-   currency, but doesn't have to be. It would be perfectly valid to have a call spread contract on
-   the value of a "Superior Magic Sword", as long as there was a price oracle to determine its price
-   at the expiration time.
- * The original deposit and the payout use the `Collateral` issuer.
- * `Strike` amounts are used for the price oracle's quote as to the value of the Underlying, as
-   well as the strike prices in the terms.
+
+- The asset whose eventual value determines the payouts uses `Underlying`. This is often a fungible
+  currency, but doesn't have to be. It would be perfectly valid to have a call spread contract on
+  the value of a "Superior Magic Sword", as long as there was a price oracle to determine its price
+  at the expiration time.
+- The original deposit and the payout use the `Collateral` issuer.
+- `Strike` amounts are used for the price oracle's quote as to the value of the Underlying, as
+  well as the strike prices in the terms.
 
 ## Terms
 
 The terms include `{ timer, underlyingAmount, expiration, priceAuthority, strikePrice1,
 strikePrice2, settlementAmount }`.
- * `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
- * `expiration` is a time recognized by the `timer`.
- * `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
- * `strikePrice2` must be greater than `strikePrice1`.
- * `settlementAmount` is the amount deposited by the creator and split between the holders of the
- options. It uses Collateral.
- * `priceAuthority` is an oracle that has a timer so it can respond to requests for prices as of a
-   stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
-   asset in the strike currency.
+
+- `timer` is a [timer](/reference/repl/timerServices), and must be recognized by `priceAuthority`.
+- `expiration` is a time recognized by the `timer`.
+- `underlyingAmount` is passed to `priceAuthority`. It could be an NFT or a fungible amount.
+- `strikePrice2` must be greater than `strikePrice1`.
+- `settlementAmount` is the amount deposited by the creator and split between the holders of the
+  options. It uses Collateral.
+- `priceAuthority` is an oracle that has a timer so it can respond to requests for prices as of a
+  stated time. After the deadline, it will issue a PriceQuote giving the value of the underlying
+  asset in the strike currency.
 
 <<< @/../snippets/zoe/contracts/test-callSpread.js#startInstance
 
 ## Creating the Options
 
 The terms specify all the details of the options. However, the options are not handed out until the
-creator provides the collateral that will make them valuable.  The creatorInvitation has
+creator provides the collateral that will make them valuable. The creatorInvitation has
 customProperties including the amounts of the two options: `longAmount` and `shortAmount`.
 
 <<< @/../snippets/zoe/contracts/test-callSpread.js#invitationDetails
@@ -73,9 +76,9 @@ keyword `Collateral`.
 ## Validating the Options
 
 The options returned by the contract are Zoe invitations, so their values and terms can be verified
-by asking for the contract terms.  This makes it possible to sell the options because a prospective
+by asking for the contract terms. This makes it possible to sell the options because a prospective
 purchaser will be able to inspect the value. The prospective purchaser can see that the
-priceAuthority is one they are willing to rely on and can verify the underlying amount.  They can
+priceAuthority is one they are willing to rely on and can verify the underlying amount. They can
 check that the expiration matches their expectations (here `3n` is a small integer suitable for a
 manual timer in a test; in actual use, it might represent block height or wall clock time.) The
 strike prices and settlement amount are likewise visible.

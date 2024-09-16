@@ -1,6 +1,6 @@
 # Notifiers and Subscriptions
 
-*Notifiers* and *subscriptions* both let a service notify clients of state changes.
+_Notifiers_ and _subscriptions_ both let a service notify clients of state changes.
 Specifically, both are abstractions for producing and consuming asynchronous
 value sequences. They rely on promises to deliver a stream of messages allowing
 many clients to receive notifications without the originator having to track a subscription list.
@@ -11,17 +11,17 @@ In JavaScript, async iterations are manipulated by `AsyncGenerators`, `AsyncIter
 
 ## Distributed Asynchronous Iteration
 
-An *async iteration* is an abstract sequence of values. It consists of zero or
-more *non-final values* in a fully ordered sequence, revealed asynchronously
+An _async iteration_ is an abstract sequence of values. It consists of zero or
+more _non-final values_ in a fully ordered sequence, revealed asynchronously
 over time. In other words, the values have a full ordering, and all consumers
 see the whole sequence, or a subset of it, in the same order.
 
 The sequence may continue indefinitely or terminate in one of two ways:
 
-- *Finish*: The async iteration successfully completes and reports any JavaScript
-   value as a final completion.
-- *Fail*: The async iteration fails and gives a reported final reason. This should be an
-   error object, but can be any JavaScript value.
+- _Finish_: The async iteration successfully completes and reports any JavaScript
+  value as a final completion.
+- _Fail_: The async iteration fails and gives a reported final reason. This should be an
+  error object, but can be any JavaScript value.
 
 `Finish` and `Fail` are final values. To avoid confusion, for iteration values in
 this doc, "final" and "non-final" merely refer to position in an iteration, and not
@@ -33,19 +33,21 @@ this doc, "final" and "non-final" merely refer to position in an iteration, and 
 makes a similar` {publication, subscription}` pair. Each pair’s first
 element (i.e., `updater` or `publication`) produces the async iteration which is then
 consumed using each pair’s second element (i.e., `notifier` or `subscription`).
+
 ```js
-import { makeNotifierKit } from '@agoric/notifier';
-import { makeSubscriptionKit } from '@agoric/notifier';
-const { updater, notifier } = makeNotifierKit();
-const { publication, subscription } = makeSubscriptionKit();
+import { makeNotifierKit } from '@agoric/notifier'
+import { makeSubscriptionKit } from '@agoric/notifier'
+const { updater, notifier } = makeNotifierKit()
+const { publication, subscription } = makeSubscriptionKit()
 ```
 
 The key difference between the two is
+
 - `notifiers` are lossy.
-   - While the sequence is ordered, the consumer requests only the current value and
-      so may never see any values that happened between requests.
+  - While the sequence is ordered, the consumer requests only the current value and
+    so may never see any values that happened between requests.
 - `subscriptions` are lossless.
-   - The consumer will see every value in the sequence.
+  - The consumer will see every value in the sequence.
 
 If your consumers only care about more recent states, use `makeNotifierKit()`. Notifiers
 are often appropriate when the iteration represents a changing quantity, like a purse
@@ -63,6 +65,7 @@ A NotifierKit producer produces iteration values with the `updater` using the
 using the `AsyncIterable` API. Each NotifierKit consumer iteration is a lossy sampling subset of the iteration produced by the producer. Different consumers may see different sampling subsets.
 
 The following properties hold for every sampling subset:
+
 - Any non-final value from the producer may be missing from the sampling subset.
 - Every non-final value in the sampling subset is a non-final value from the producer
   (e.g., if "7" is in the subset, then it was in the original producer iteration).
@@ -110,9 +113,10 @@ position.
 ## Methods
 
 The `updater` and `publication` both have the same three methods:
+
 - `updateState(state)`
   - Supplies and sends out a new state to consumers. All active Promises
-  produced by `getUpdateSince()` are resolved to the next record.
+    produced by `getUpdateSince()` are resolved to the next record.
 - `finish(finalState)`
   - Closes the stream of state changes and supplies a final state
     value to consumers.
@@ -123,6 +127,7 @@ The `updater` and `publication` both have the same three methods:
     signalling that the monitored object encountered an error condition.
 
 The `notifier` has an additional method that the `subscription` does not:
+
 - `getUpdateSince(previousUpdateCount)`
   - Returns a promise for the next published value as a `{ value, updateCount }` record,
     using an optional `previousUpdateCount` to communicate the last obtained value.
@@ -156,21 +161,21 @@ Individual contracts can use notifiers and subscriptions to provide updates givi
 The following methods use or return notifiers.
 
 - [aPurse.getCurrentAmountNotifier()](/reference/ertp-api/purse#apurse-getcurrentamountnotifier)
-   - Part of the ERTP API. Returns a lossy notifier for changes to this purse's balance.
+  - Part of the ERTP API. Returns a lossy notifier for changes to this purse's balance.
 - [getPursesNotifier()](/reference/wallet-api/wallet-bridge#getpursesnotifier)
-   - Part of the Wallet API. It returns a notifier that follows changes in the purses in the Wallet.
+  - Part of the Wallet API. It returns a notifier that follows changes in the purses in the Wallet.
 - [getOffersNotifier()](/reference/wallet-api/wallet-bridge#getoffersnotifier)
-   - Part of the Wallet API. It returns a notifier that follows changes to the offers received by the Wallet.
+  - Part of the Wallet API. It returns a notifier that follows changes to the offers received by the Wallet.
 - [makeQuoteNotifier(amountIn,brandOut)](/reference/repl/priceAuthority#makequotenotifier-amountin-brandout)
-   - Part of the PriceAuthority API. Notifies the latest `PriceQuotes` for the given `amountIn`.
+  - Part of the PriceAuthority API. Notifies the latest `PriceQuotes` for the given `amountIn`.
 - [getPriceNotifier(brandIn, brandOut)](/reference/repl/priceAuthority#getpricenotifier-brandin-brandout)
-   - Part of the PriceAuthority API. Returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
-     different rates.
+  - Part of the PriceAuthority API. Returns a notifier for the specified brands. Different PriceAuthorities may issue these at very
+    different rates.
 - [E(home.localTimerService).makeNotifier(delay, interval) and
   E(home.chainTimerService).makeNotifier(delay, interval)](/reference/repl/timerServices#e-home-chain-or-local-timerservice-makenotifier-delay-interval)
-   - Part of the REPL's TimerService API. It creates and returns a `Notifier` object
-     that repeatedly delivers updates at times that are a multiple of the provided `interval` value,
-     with the first update happening after the provided `delay` value.
+  - Part of the REPL's TimerService API. It creates and returns a `Notifier` object
+    that repeatedly delivers updates at times that are a multiple of the provided `interval` value,
+    with the first update happening after the provided `delay` value.
 
 ## Examples
 
@@ -179,13 +184,15 @@ The following methods use or return notifiers.
 Let’s look at a subscription example. We have three characters: Paula the publisher, and Alice and Bob the subscribers. While Alice and Bob both consume Paula's published iteration, they use different tools to do so.
 
 First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with the non-final sequence 'a', 'b' and 'done' as its completion value.
+
 ```js
-const { publication, subscription } = makeSubscriptionKit();
+const { publication, subscription } = makeSubscriptionKit()
 // Paula the publisher says
-publication.updateState('a');
-publication.updateState('b');
-publication.finish('done');
+publication.updateState('a')
+publication.updateState('b')
+publication.finish('done')
 ```
+
 Remember, a `SubscriptionKit` is lossless. It conveys all of an async iteration’s non-final values, as well as the final value.
 
 You can use the JavaScript `AsyncIterable` API directly, but both the JavaScript for-await-of syntax and the `observeIteration` adaptor are more convenient. Here,
@@ -196,44 +203,50 @@ the non-final values and whether the iteration completes or fails. She can see a
 failure reason, but the for-await-of syntax does not let her see the completion
 value 'done'. She can write code that only executes after the loop finishes, but
 the code won’t know what the completion value actually was “done”, “completed”, or something else. This is a limitation of JavaScript's iteration, whether asynchronous or synchronous (as consumed by a for-of loop).
+
 ```js
 const consume = async subscription => {
   try {
     for await (const val of subscription) {
-      console.log('non-final-value', val);
+      console.log('non-final-value', val)
     }
-    console.log('the iteration finished');
+    console.log('the iteration finished')
   } catch (reason) {
-    console.log('the iteration failed', reason);
+    console.log('the iteration failed', reason)
   }
-};
-consume(subscription);
+}
+consume(subscription)
 // Eventually prints:
 // non-final-value a
 // non-final-value b
 // the iteration finished
 ```
+
 Subscriber Bob consumes using the `(observeIteration(asyncIterableP, iterationObserver)` adaptor.
+
 ```js
 const observer = harden({
   updateState: val => console.log('non-final-value', val),
   finish: completion => console.log('finished', completion),
-  fail: reason => console.log('failed', reason),
-});
-observeIteration(subscription, observer);
+  fail: reason => console.log('failed', reason)
+})
+observeIteration(subscription, observer)
 // Eventually prints:
 // non-final-value a
 // non-final-value b
 // finished done
 ```
+
 ### Notifier Example
 
 A `NotifierKit` is a lossy conveyor of non-final values, but does
 losslessly convey termination. Let's say the subscription example above
 started with the following instead of `makeSubscriptionKit()`.
+
 ```js
-const { updater, notifier } = makeNotifierKit();
+const { updater, notifier } = makeNotifierKit()
 ```
+
 If we then renamed `publication` to `updater` and `subscription` to `notifier`
 in the rest of the example, the code would still be correct and work. However,
 when using a notifier, either Alice or Bob may have missed either or both of the
@@ -249,7 +262,7 @@ producing values from making progress. The consumers cannot cause each other to
 hang or miss values.
 
 For distributed operations, all the iteration values&mdash;non-final values,
-successful completion value, failure reason&mdash;must be *Passable*, which means they're values that
+successful completion value, failure reason&mdash;must be _Passable_, which means they're values that
 can somehow be passed between [vats](../../glossary/index#vat). The rest of this doc assumes all these
 values are Passable.
 
@@ -277,13 +290,16 @@ for-await-of loop which requires a local `AsyncIterable`. It cannot handle a
 remote reference to an `AsyncIterable` at Paula's site. Alice has to make an
 `AsyncIterable` at her site by using `getSharableSubsciptionInternals()`. She can
 replace her call to `consume(subscription)` with:
-```js
-import { makeSubscription } from '@agoric/notifier';
 
-const localSubscription =
-  makeSubscription(E(subscription).getSharableSubsciptionInternals());
-  consume(localSubscription);
+```js
+import { makeSubscription } from '@agoric/notifier'
+
+const localSubscription = makeSubscription(
+  E(subscription).getSharableSubsciptionInternals()
+)
+consume(localSubscription)
 ```
+
 The code above uses a SubscriptionKit. NotifierKits have a similar pair of a
 `getSharableNotifierInternals()` method and a `makeNotifier`. However, this
 technique requires that Alice know what kind of a possibly remote `AsyncIterable`
@@ -291,14 +307,14 @@ she has, and she must have the required making function code locally available.
 
 Alternatively, Alice can generically mirror any possibly remote `AsyncIterable` by
 making a new local pair and plugging them together with `observeIteration`.
+
 ```js
-const {
-  publication: adapterPublication,
-  subscription: adapterSubscription
-} = makeSubscriptionKit();
-observeIteration(subscription, adapterPublication);
-consume(adapterSubscription);
+const { publication: adapterPublication, subscription: adapterSubscription } =
+  makeSubscriptionKit()
+observeIteration(subscription, adapterPublication)
+consume(adapterSubscription)
 ```
+
 This works when subscription is a reference to a `AsyncIterable`. If Alice only
 needs to consume in a lossy manner, she can use the `makeNotifierKit()` method instead, which
 still works independently of what kind of `AsyncIterable` subscription is a

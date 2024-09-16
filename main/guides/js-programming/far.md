@@ -57,9 +57,9 @@ All Passables must be hardened. Consider what might happen if we had a remote `i
 some pass-by-copy data that we passed to it:
 
 ```js
-let amount1 = { brand: brand1, value: 10n };
-await E(item).setPrice(amount1); // Throws an error, but let's imagine it doesn't.
-amount1.value = 20n;
+let amount1 = { brand: brand1, value: 10n }
+await E(item).setPrice(amount1) // Throws an error, but let's imagine it doesn't.
+amount1.value = 20n
 ```
 
 Now `amount1` is supposedly both in the local and the remote vat, but the `value`
@@ -77,6 +77,7 @@ data leads to behavior across vats that is straightforward to reason about.
 - Returns: `{PassStyle}`
 
 `PassStyle` values correspond with the different kinds of Passable:
+
 - Pass-by-copy **primitive** values: `"undefined"`, `"null"`, `"boolean"`, `"number"`, `"bigint"`, `"string"`, or `"symbol"`.
 - Pass-by-copy **containers**: `"copyArray"`, `"copyRecord"`, or `"copyTagged"`.
 - Pass-by-reference **PassableCaps**: `"remotable"` or `"promise"`.

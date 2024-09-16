@@ -10,7 +10,6 @@ The last 10 minutes are Q&A._
 </ClientOnly>
 :::
 
-
 ## Example Hardened JavaScript Code
 
 The example below demonstrates several features of Hardened JavaScript.
@@ -20,15 +19,15 @@ The example below demonstrates several features of Hardened JavaScript.
 We'll unpack this a bit [below](#objects-and-the-maker-pattern), but for now please
 note the use of functions and records:
 
- - `makeCounter` is a function.
- - Each call to `makeCounter` creates a new instance:
-   - a new record with two properties, `incr` and `decr`, and
-   - a new `count` variable.
- - The `incr` and `decr` properties are visible from
-   outside the object.
- - The `count` variable is encapsulated; only the
-   `incr` and `decr` methods can access it.
- - Each of these instances is isolated from each other.
+- `makeCounter` is a function.
+- Each call to `makeCounter` creates a new instance:
+  - a new record with two properties, `incr` and `decr`, and
+  - a new `count` variable.
+- The `incr` and `decr` properties are visible from
+  outside the object.
+- The `count` variable is encapsulated; only the
+  `incr` and `decr` methods can access it.
+- Each of these instances is isolated from each other.
 
 ## Separation of Duties
 
@@ -81,7 +80,7 @@ e.g., only giving the `entryGuard` the ability to increment the counter.
 This limits the damage that can happen if there is an exploitable bug.
 
 ::: tip Watch: Navigating the Attack Surface
-to achieve a *multiplicative* reduction in risk. _15 min_<br />
+to achieve a _multiplicative_ reduction in risk. _15 min_<br />
 
 <ClientOnly>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wW9-KuezPp8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -194,6 +193,7 @@ across a trust boundary. It's important to `harden()` an object before exposing 
 Note that hardening a class instance also hardens the class.
 For more details, see [harden API in the `ses` package](https://github.com/endojs/endo/blob/HEAD/packages/ses/README.md#harden)
 :::
+
 ## Objects with State
 
 Now let's review the `makeCounter` example:
@@ -249,6 +249,7 @@ may fail in Hardened JavaScript.
 The [SES wiki](https://github.com/endojs/endo/wiki) tracks compatibility
 reports for NPM packages, including potential workarounds.
 :::
+
 ## Hardening JavaScript: Limiting Globals with Compartments
 
 A globally available function such as `fetch` means that every object,
@@ -261,9 +262,9 @@ Hardened JavaScript includes a `Compartment` API for enforcing OCap discipline.
 Only the [standard, built-in
 objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
 such as `Object`, `Array`, and `Promise` are globally available by default (with
-an option for carefully controlled exceptions such as `console.log`).  With the
+an option for carefully controlled exceptions such as `console.log`). With the
 default `Compartment` options, the non-deterministic `Math.random` and
-`Date.now()` are not available.  (Earlier versions of Hardened JavaScript
+`Date.now()` are not available. (Earlier versions of Hardened JavaScript
 provided `Compartment` with a `Date.now()` that always returned `NaN`.)
 
 Almost all existing JS code was written to run under Node.js or inside a browser,
@@ -275,22 +276,22 @@ The conventional globals defined by browser or Node.js hosts are
 not available by default in a `Compartment`, whether authority-bearing
 or not:
 
- - authority-bearing:
-   - `window`, `document`, `process`, `console`
-   - `setImmediate`, `clearImmediate`, `setTimeout`
-     - but `Promise` is available, so sometimes
-       `Promise.resolve().then(_ => fn())` suffices
-     - see also [Timer Service](/reference/repl/timerServices)
-   - `require` (Use `import` module syntax instead.)
-   - `localStorage`
-      - [SwingSet](../platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
-      - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/master/packages/store).
-   - `global` (Use `globalThis` instead.)
- - authority-free but host-defined:
-   - `Buffer`
-   - `URL` and `URLSearchParams`
-   - `TextEncoder`, `TextDecoder`
-   - `WebAssembly`
+- authority-bearing:
+  - `window`, `document`, `process`, `console`
+  - `setImmediate`, `clearImmediate`, `setTimeout`
+    - but `Promise` is available, so sometimes
+      `Promise.resolve().then(_ => fn())` suffices
+    - see also [Timer Service](/reference/repl/timerServices)
+  - `require` (Use `import` module syntax instead.)
+  - `localStorage`
+    - [SwingSet](../platform/#swingset) orthogonal persistence means state lives indefinitely in ordinary variables and data structures and need not be explicitly written to storage.
+    - For high cardinality data, see [the `@agoric/store` package](https://github.com/Agoric/agoric-sdk/tree/master/packages/store).
+  - `global` (Use `globalThis` instead.)
+- authority-free but host-defined:
+  - `Buffer`
+  - `URL` and `URLSearchParams`
+  - `TextEncoder`, `TextDecoder`
+  - `WebAssembly`
 
 In compartments used to load Agoric smart contracts,
 `globalThis` is hardened, following OCap discipline.
@@ -316,14 +317,14 @@ are only for lint tools and do not have any effect at runtime:
 
 /** @param {number} init */
 const makeCounter = init => {
-  let value = init;
+  let value = init
   return {
     incr: () => {
-      value += 1;
-      return value;
-    },
-  };
-};
+      value += 1
+      return value
+    }
+  }
+}
 ```
 
 If we're not careful, our clients can cause us to misbehave:
@@ -382,14 +383,13 @@ in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=
 ](https://youtube.com/watch?v=iyuo0ymTt4g&t=1525&list=PLzDw4TTug5O1oHRbp2HkcvKABAY9FKsmG)
 :::
 
-
 ```js
 const makeMint = () => {
-  const ledger = makeWeakMap();
+  const ledger = makeWeakMap()
 
   const issuer = harden({
-    makeEmptyPurse: () => mint.makePurse(0),
-  });
+    makeEmptyPurse: () => mint.makePurse(0)
+  })
 
   const mint = harden({
     makePurse: initialBalance => {
@@ -398,21 +398,21 @@ const makeMint = () => {
         getBalance: () => ledger.get(purse),
 
         deposit: (amount, src) => {
-          Nat(ledger.get(purse) + Nat(amount));
-          ledger.set(src, Nat(ledger.get(src) - amount));
-          ledger.set(purse, ledger.get(purse) + amount);
+          Nat(ledger.get(purse) + Nat(amount))
+          ledger.set(src, Nat(ledger.get(src) - amount))
+          ledger.set(purse, ledger.get(purse) + amount)
         },
         withdraw: amount => {
-          const newPurse = issuer.makeEmptyPurse();
-          newPurse.deposit(amount, purse);
-          return newPurse;
-        },
-      });
-      ledger.set(purse, initialBalance);
-      return purse;
-    },
-  });
+          const newPurse = issuer.makeEmptyPurse()
+          newPurse.deposit(amount, purse)
+          return newPurse
+        }
+      })
+      ledger.set(purse, initialBalance)
+      return purse
+    }
+  })
 
-  return mint;
-};
+  return mint
+}
 ```

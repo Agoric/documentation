@@ -1,4 +1,3 @@
-
 # Wallet UI
 
 From a shell window, run `agoric open` to open the Wallet UI in a browser tab.
@@ -58,4 +57,3 @@ Tokens can be freely sent between purses within the same wallet. To send tokens 
 Then, a user can select the "Irrevocable one-way" transfer option to send their tokens to another wallet in their contacts:
 
 <img width="469" alt="Transfer" src="./assets/transfer.png">
-
