@@ -1,4 +1,5 @@
 # How Orchestration Works
+
 Blockchain orchestration fundamentally relies on protocols and mechanisms that enable blockchains to communicate and transact with each other securely and efficiently. The primary goals of blockchain orchestration are:
 
 - **Interoperability:** Allowing different blockchain networks to interact and transact with each other.
@@ -34,4 +35,3 @@ The IBC protocol is highly modular, meaning it can be extended and adapted for v
 - **Automation:** By leveraging ICA, Chain A can automate operations on Chain B, creating complex workflows that span multiple blockchains. For example, Chain A could automatically execute a smart contract on Chain B when certain conditions are met.
 
 ICA greatly enhances the flexibility and capability of blockchain orchestration by enabling direct, programmable interactions between blockchains. This opens up a wide range of possibilities for cross-chain applications, from decentralized finance (DeFi) to supply chain management.
-
