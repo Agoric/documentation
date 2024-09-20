@@ -30,17 +30,21 @@ The chain can also be accessed via JavaScript using the [`cosmjs` library](https
 ## Building `agd`
 
 The `agd` command line tool can be built by running the commands as below:
+
 ```sh
 git clone -b community-dev https://github.com/Agoric/agoric-sdk
 cd agoric-sdk
 SKIP_DOWNLOAD=false ./bin/agd build
 export PATH=$PWD/bin:$PATH
 ```
+
 To confirm that `agd` is in your `$PATH`, execute
+
 ```
 agd version --long
 ```
-Unlike typical cosmos-sdk chains where the daemon is a single executable file, Agoric's use of cosmos-sdk depends 
+
+Unlike typical cosmos-sdk chains where the daemon is a single executable file, Agoric's use of cosmos-sdk depends
 on many components of agoric-sdk at runtime. Copying `agd` to `/usr/local/bin` or the like is unlikely to produce
 a working installation. For more detail, see [#7825](https://github.com/Agoric/agoric-sdk/issues/7825).
 

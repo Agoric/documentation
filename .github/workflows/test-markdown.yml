@@ -5,11 +5,11 @@ name: Lint Markdown
 
 on:
   push:
-    branches: [$default-branch]
+    branches: [main]
   pull_request:
 
 jobs:
-  build:
+  lint-markdown:
     runs-on: ubuntu-latest
     strategy:
       matrix:
