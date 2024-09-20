@@ -1,6 +1,6 @@
 # Contract Upgrade
 
-The result of starting a contract includes the right to upgrade the contract. A call to [E(zoe).install(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) returns a record of several objects that represent different levels of access.
+The result of starting a contract includes the right to upgrade the contract instance. A call to [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) returns a record of several objects that represent different levels of access.
 The `publicFacet` and `creatorFacet` are defined by the contract.
 The `adminFacet` is defined by Zoe and includes methods to upgrade the contract.
 
