@@ -455,7 +455,7 @@ export default defineConfig({
               collapsed: true,
               items: [
                 {
-                  text: 'Key Concepts',
+                  text: 'Key Concepts and APIs',
                   link: '/guides/orchestration/getting-started/key-concepts',
                 },
                 {
