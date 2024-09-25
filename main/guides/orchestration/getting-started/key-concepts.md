@@ -12,8 +12,8 @@ set of high-level methods to manage and interact with local and remote chains. B
 
 - `getChain` retrieves a chain object for the given `chainName` to get access to chain-specific methods. See [getChain](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getChain).
 
-```javascript
-const chain = await orchestrator.getChain('chainName')
+```js
+const chain = await orchestrator.getChain('chainName');
 ```
 
 ### Brand Utility Functions
@@ -21,14 +21,14 @@ const chain = await orchestrator.getChain('chainName')
 - `getBrandInfo` returns information about a `denom`, including the equivalent local Brand, the chain where the denom is
   held, and the chain that issues the corresponding asset. See [getBrandInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getBrandInfo).
 
-```javascript
-const brandInfo = orchestrator.getBrandInfo('denom')
+```js
+const brandInfo = orchestrator.getBrandInfo('denom');
 ```
 
 - `asAmount` converts a denom amount to an `Amount` with a brand. See [asAmount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#asAmount).
 
-```javascript
-const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n })
+```js
+const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 ```
 
 ## Orchestration Account
@@ -42,23 +42,23 @@ interactions, providing a unified and simplified interface for developers.
 
 - `makeAccount` (for a chain object) creates a new account on local and/or remote chain as below.
 
-```javascript
+```js
 const [agoric, remoteChain] = await Promise.all([
   orch.getChain('agoric'),
   orch.getChain(chainName)
-])
+]);
 const [localAccount, remoteAccount] = await Promise.all([
   agoric.makeAccount(),
   remoteChain.makeAccount()
-])
+]);
 ```
 
 ### Address Management
 
 - `getAddress` retrieves the address of the account on the remote chain.
 
-```javascript
-const address = await orchestrationAccount.getAddress()
+```js
+const address = await orchestrationAccount.getAddress();
 ```
 
 ### Balance Management
@@ -66,9 +66,9 @@ const address = await orchestrationAccount.getAddress()
 - `getBalances` returns an array of amounts for every balance in the account.
 - `getBalance` retrieves the balance of a specific denom for the account.
 
-```javascript
-const balances = await orchestrationAccount.getBalances()
-const balance = await orchestrationAccount.getBalance('uatom')
+```js
+const balances = await orchestrationAccount.getBalances();
+const balance = await orchestrationAccount.getBalance('uatom');
 ```
 
 ### Funds Transfer
@@ -79,11 +79,11 @@ const balance = await orchestrationAccount.getBalance('uatom')
 - `deposit` deposits payment from Zoe to the account. For remote accounts, an IBC Transfer will be executed to transfer
   funds there.
 
-```javascript
-await orchestrationAccount.send(receiverAddress, amount)
-await orchestrationAccount.transfer(amount, destinationAddress)
-await orchestrationAccount.transferSteps(amount, transferMsg)
-await orchestrationAccount.deposit(payment)
+```js
+await orchestrationAccount.send(receiverAddress, amount);
+await orchestrationAccount.transfer(amount, destinationAddress);
+await orchestrationAccount.transferSteps(amount, transferMsg);
+await orchestrationAccount.deposit(payment);
 ```
 
 ## ChainHub
@@ -98,9 +98,7 @@ and use of chain and connection information using the following APIs:
 
 ### Registration APIs
 
-- `registerChain` register a new chain with `chainHub`. The name will override a name in well-known chain names. If a
-  durable zone was not provided, registration will not survive a reincarnation of the vat, and will have to be
-  registered again.
+- `registerChain` register a new chain with `chainHub`. The name will override a name in well-known chain names.
 - `registerConnection` registers a connections between two given chain IDs.
 - `registerAsset` registers an asset that may be held on a chain other than the issuing chain. Both corresponding chains
   should already be registered before this call.
@@ -116,16 +114,16 @@ and use of chain and connection information using the following APIs:
 In the below example, `chainHub` is used to register a new chain and establish a connection between the Agoric chain and
 the newly registered chain.
 
-```javascript
-const chainHub = makeChainHub(privateArgs.agoricNames, vowTools)
+```js
+const chainHub = makeChainHub(privateArgs.agoricNames, vowTools);
 
 // Register a new chain with its information
-chainHub.registerChain(chainKey, chainInfo)
+chainHub.registerChain(chainKey, chainInfo);
 
 // Register a connection between the Agoric chain and the new chain
 chainHub.registerConnection(
   agoricChainInfo.chainId,
   chainInfo.chainId,
   connectionInfo
-)
+);
 ```
