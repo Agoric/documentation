@@ -33,7 +33,7 @@ const inventory = {
     tradePrice: AmountMath.make(istBrand, n),
     maxTickets: n
   }
-}
+};
 ```
 
 Our contract takes the provided `inventory` object as a parameter to initiate the process.
@@ -49,8 +49,8 @@ In our example, tickets are non-fungible and can have duplicates, meaning there 
 </details>
 
 ```js
-const ticketMint = await zcf.makeZCFMint('Ticket', AssetKind.COPY_BAG)
-const { brand: ticketBrand } = ticketMint.getIssuerRecord()
+const ticketMint = await zcf.makeZCFMint('Ticket', AssetKind.COPY_BAG);
+const { brand: ticketBrand } = ticketMint.getIssuerRecord();
 ```
 
 Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat` object.
@@ -69,14 +69,14 @@ const inventoryBag = makeCopyBag(
     ticket,
     maxTickets
   ])
-)
+);
 const toMint = {
   Tickets: {
     brand: ticketBrand,
     value: inventoryBag
   }
-}
-const inventorySeat = ticketMint.mintGains(toMint)
+};
+const inventorySeat = ticketMint.mintGains(toMint);
 ```
 
 ## Trading Tickets
@@ -85,7 +85,7 @@ Customers who wish to purchase event tickets first [make an invitation](https://
 
 ```js
 const makeTradeInvitation = () =>
-  zcf.makeInvitation(tradeHandler, 'buy tickets', undefined, proposalShape)
+  zcf.makeInvitation(tradeHandler, 'buy tickets', undefined, proposalShape);
 ```
 
 Here you can see two important parameters:
@@ -94,9 +94,9 @@ Here you can see two important parameters:
 
 ```js
 const tradeHandler = buyerSeat => {
-  const { give, want } = buyerSeat.getProposal()
+  const { give, want } = buyerSeat.getProposal();
   // ... checks and transfers
-}
+};
 ```
 
 - **proposalShape** (Optional): This object outlines the necessary and permissible elements of each [proposal](https://docs.agoric.com/reference/zoe-api/zoe-contract-facet.html#proposal-shapes). Here is the proposal shape for this contract.
@@ -106,7 +106,7 @@ const proposalShape = harden({
   give: { Price: AmountShape },
   want: { Tickets: { brand: ticketBrand, value: M.bag() } },
   exit: M.any()
-})
+});
 ```
 
 ## Trade Handler
@@ -115,20 +115,20 @@ The `tradeHandler` function begins by checking to see if there are enough ticket
 
 ```js
 AmountMath.isGTE(inventorySeat.getCurrentAllocation().Tickets, want.Tickets) ||
-  Fail`Not enough inventory, ${q(want.Tickets)} wanted`
+  Fail`Not enough inventory, ${q(want.Tickets)} wanted`;
 ```
 
 Next, the total price is calcualted using `bagPrice`:
 
 ```js
-const totalPrice = bagPrice(want.Tickets.value, inventory)
+const totalPrice = bagPrice(want.Tickets.value, inventory);
 ```
 
 After that, a check is made to ensure the offered price is sufficient:
 
 ```js
 AmountMath.isGTE(give.Price, totalPrice) ||
-  Fail`Total price is ${q(totalPrice)}, but ${q(give.Price)} was given`
+  Fail`Total price is ${q(totalPrice)}, but ${q(give.Price)} was given`;
 ```
 
 Finally, `atomicRearrange` can be called to exchange the requested tickets for the required payment:
@@ -142,7 +142,7 @@ atomicRearrange(
     // tickets from inventory to buyer
     [inventorySeat, buyerSeat, want]
   ])
-)
+);
 ```
 
 Take a complete look at this example code in our [Github repository](https://github.com/Agoric/dapp-agoric-basics/blob/main/contract/src/sell-concert-tickets.contract.js).

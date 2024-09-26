@@ -141,10 +141,10 @@ and the [ERTP API's Brand section](/reference/ertp-api/brand).
 Before a contract can be installed on Zoe, its source code must be bundled. This is done by:
 
 ```js
-import bundleSource from '@endo/bundle-source'
+import bundleSource from '@endo/bundle-source';
 const atomicSwapBundle = await bundleSource(
   require.resolve('@agoric/zoe/src/contracts/atomicSwap')
-)
+);
 ```
 
 The installation operation returns an `installation`, which is an object with a single
@@ -153,7 +153,7 @@ In most cases, the bundle contains a base64-encoded zip file that you can
 extract for review.
 
 ```js
-const { endoZipBase64 } = await E(installation).getBundle()
+const { endoZipBase64 } = await E(installation).getBundle();
 ```
 
 ```sh
@@ -296,10 +296,10 @@ A _facet_ is an object that exposes an API or particular view of some larger ent
 You can make any number of facets of an entity. In JavaScript, you often make a facet that forwards method calls:
 
 ```js
-import { Far } from '@endo/far'
+import { Far } from '@endo/far';
 const facet = Far('FacetName', {
   myMethod: (...args) => oldObject.method(...args)
-})
+});
 ```
 
 Two Agoric uses are:
@@ -550,7 +550,7 @@ const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
   exit: { onDemand: null }
-})
+});
 ```
 
 `give` and `want` each associate [Keywords](#keyword) defined by the contract with corresponding [Amounts](#amount) describing respectively what will be given and what is being requested in exchange.

@@ -61,9 +61,9 @@ Use **[makeIssuerKit()](./issuer#makeissuerkit-allegedname-assetkind-displayinfo
 your contract uses. See the **[Issuer](./issuer)** documentation for details on how to use this method.
 
 ```js
-import { AssetKind, makeIssuerKit } from '@agoric/ertp'
-makeIssuerKit('quatloos') // Defaults to AssetKind.NAT and undefined DisplayInfo
-makeIssuerKit('kitties', AssetKind.COPY_SET) // Defaults to undefined DisplayInfo
+import { AssetKind, makeIssuerKit } from '@agoric/ertp';
+makeIssuerKit('quatloos'); // Defaults to AssetKind.NAT and undefined DisplayInfo
+makeIssuerKit('kitties', AssetKind.COPY_SET); // Defaults to undefined DisplayInfo
 ```
 
 ## DisplayInfo

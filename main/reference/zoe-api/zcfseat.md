@@ -32,7 +32,7 @@ contract that they are entering when they make an offer. See
 - Example:
 
 ```js
-const { want, give, exit } = sellerSeat.getProposal()
+const { want, give, exit } = sellerSeat.getProposal();
 ```
 
 ## aZCFSeat.exit(completion)
@@ -63,7 +63,7 @@ Any other still open seats or outstanding promises and the contract instance con
 Agoric recommends you exit a seat with an error as follows
 
 ```js
-throw seat.fail(Error('you did it wrong'))
+throw seat.fail(Error('you did it wrong'));
 ```
 
 ## aZCFSeat.hasExited()
@@ -173,14 +173,14 @@ of the allocation. For example, if we start with a new, empty, allocation:
 
 ```js
 // Make an empty seat.
-const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit()
+const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();
 // The allocation is currently empty, i.e. `{}`
-const stagedAllocation = zcfSeat1.getStagedAllocation()
-const empty = AmountMath.makeEmpty(brand, AssetKind.NAT)
+const stagedAllocation = zcfSeat1.getStagedAllocation();
+const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
 // Try to incrementBy empty. This succeeds, and the keyword is added
 // with an empty amount.
-zcfSeat1.incrementBy({ IST: empty })
-t.deepEqual(zcfSeat1.getStagedAllocation(), { IST: empty })
+zcfSeat1.incrementBy({ IST: empty });
+t.deepEqual(zcfSeat1.getStagedAllocation(), { IST: empty });
 ```
 
 While this incremented the allocation by an empty amount, any amount would have been added to the
@@ -209,13 +209,13 @@ cases to look at; when the corresponding amount to subtract is empty and when it
 
 ```js
 // Make an empty seat.
-const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit()
+const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();
 // The allocation is currently {}
-const stagedAllocation = zcfSeat1.getStagedAllocation()
-const empty = AmountMath.makeEmpty(brand, AssetKind.NAT)
+const stagedAllocation = zcfSeat1.getStagedAllocation();
+const empty = AmountMath.makeEmpty(brand, AssetKind.NAT);
 // decrementBy empty does not throw, and does not add a keyword
-zcfSeat1.decrementBy({ IST: empty })
-t.deepEqual(zcfSeat1.getStagedAllocation(), {})
+zcfSeat1.decrementBy({ IST: empty });
+t.deepEqual(zcfSeat1.getStagedAllocation(), {});
 ```
 
 The result here is **not** to add the **Keyword** to the allocation. It wasn't there to begin with, and
@@ -229,11 +229,11 @@ However, decrementing a non-empty amount from an empty allocation has a differen
 
 ```js
 // Make an empty seat.
-const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit()
+const { zcfSeat: zcfSeat1 } = zcf.makeEmptySeatKit();
 // The allocation is currently {}
-const stagedAllocation = zcfSeat1.getStagedAllocation()
+const stagedAllocation = zcfSeat1.getStagedAllocation();
 // decrementBy throws for a keyword that does not exist on the stagedAllocation and a non-empty amount
-zcfSeat1.decrementBy({ IST: runFee })
+zcfSeat1.decrementBy({ IST: runFee });
 ```
 
 It throws an error because you cannot subtract something from nothing. So trying to decrement an empty

@@ -95,25 +95,25 @@ issuerKeywordRecord to specify the issuers to be used with each keyword.
 const issuerKeywordRecord = harden({
   UnderlyingAsset: moolaIssuer,
   StrikePrice: simoleanIssuer
-})
+});
 
 const { creatorInvitation } = await E(zoe).startInstance(
   coveredCallInstallation,
   issuerKeywordRecord
-)
+);
 ```
 
 Then Alice creates a proposal, and escrows the funds she is depositing.
 
 ```js
-const threeMoola = AmountMath.make(moolaBrand, 3n)
+const threeMoola = AmountMath.make(moolaBrand, 3n);
 const aliceProposal = harden({
   give: { UnderlyingAsset: threeMoola },
   want: { StrikePrice: AmountMath.make(simoleanBrand, 7n) },
   exit: { afterDeadline: { deadline: 1599856578n, timer: chainTimer } }
-})
+});
 
-const alicePayment = { UnderlyingAsset: aliceMoolaPurse.withdraw(threeMoola) }
+const alicePayment = { UnderlyingAsset: aliceMoolaPurse.withdraw(threeMoola) };
 ```
 
 Alice makes an offer and gets a seat.
@@ -123,9 +123,9 @@ const aliceSeat = await E(zoe).offer(
   creatorInvitation,
   aliceProposal,
   alicePayment
-)
+);
 
-const coveredCall = aliceSeat.getOfferResult()
+const coveredCall = aliceSeat.getOfferResult();
 ```
 
 The offerResult obtained from the seat is a zoe invitation that serves as the
@@ -135,8 +135,8 @@ who can either exercise the call option or sell it in another contract, say, an
 atomic swap:
 
 ```js
-const invitationIssuer = E(zoe).getInvitationIssuer()
-const bobExclOption = await invitationIssuer.claim(coveredCall)
+const invitationIssuer = E(zoe).getInvitationIssuer();
+const bobExclOption = await invitationIssuer.claim(coveredCall);
 ```
 
 Let's imagine that Bob wants to sell the invitation. He can start a swap
@@ -146,11 +146,11 @@ instance to trade this invitation for bucks.
 const swapIssuerKeywordRecord = harden({
   Asset: invitationIssuer,
   Price: bucksR.issuer
-})
+});
 const bobSwapSeat = await E(zoe).startInstance(
   swapInstallation,
   swapIssuerKeywordRecord
-)
+);
 ```
 
 Bob specifies that he wants to swap the invitation for 1 buck, and escrows
@@ -161,16 +161,16 @@ share.
 const bobProposalSwap = harden({
   give: { Asset: invitationIssuer.getAmountOf(bobExclOption) },
   want: { Price: bucks(1) }
-})
+});
 
-const bobPayments = harden({ Asset: bobExclOption })
+const bobPayments = harden({ Asset: bobExclOption });
 const bobSwapSeat = await E(zoe).offer(
   bobSwapInvitation,
   bobProposalSwap,
   bobPayments
-)
+);
 
-const daveSwapInvitation = bobSwapSeat.getOfferResult()
+const daveSwapInvitation = bobSwapSeat.getOfferResult();
 ```
 
 ## Buying An Option
@@ -184,13 +184,13 @@ what the invitation can be used for.
 
 ```js
 const { installation: daveSwapInstall, instance } =
-  await E(zoe).getInvitationDetails(daveSwapInvitation)
-const daveSwapIssuers = await E(zoe).getIssuers(instance)
+  await E(zoe).getInvitationDetails(daveSwapInvitation);
+const daveSwapIssuers = await E(zoe).getIssuers(instance);
 
 // Dave does some checks
-assert(daveSwapInstall === swapInstallation, details`wrong installation`)
-assert(daveIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`)
-assert(daveIssuers.Price === simoleanIssuer, details`unexpected Price issuer`)
+assert(daveSwapInstall === swapInstallation, details`wrong installation`);
+assert(daveIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
+assert(daveIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
 ```
 
 Dave can safely proceed with the swap because he knows that if Bob has lied
@@ -201,15 +201,15 @@ Dave escrows his 1 buck with Zoe and forms his proposal.
 const daveSwapProposal = harden({
   want: { Asset: optionAmount },
   give: { Price: bucks(1) }
-})
+});
 
-const daveSwapPayments = harden({ Price: daveBucksPayment })
+const daveSwapPayments = harden({ Price: daveBucksPayment });
 
 const daveSwapSeat = await E(zoe).offer(
   daveSwapInvitation,
   daveSwapProposal,
   daveSwapPayments
-)
+);
 ```
 
 ## Exercising the Option
@@ -219,23 +219,23 @@ option by submitting an offer that pays the required exercise price in
 exchange for the underlying asset:
 
 ```js
-const daveOption = await daveSwapSeat.getPayout('Asset')
+const daveOption = await daveSwapSeat.getPayout('Asset');
 
 const daveCoveredCallProposal = harden({
   want: { UnderlyingAsset: AmountMath.make(moolaBrand, 3n) },
   give: { StrikePrice: AmountMath.make(simoleanBrand, 7n) }
-})
+});
 
 const daveCoveredCallPayments = harden({
   StrikePrice: daveSimoleanPayment
-})
+});
 
 const daveCallSeat = await E(zoe).offer(
   daveOption,
   daveCoveredCallProposal,
   daveCoveredCallPayments
-)
+);
 
-const daveMoolaPayout = await daveCallSeat.getPayout('UnderlyingAsset')
-await daveMoolaPurse.deposit(daveMoolaPayout)
+const daveMoolaPayout = await daveCallSeat.getPayout('UnderlyingAsset');
+await daveMoolaPurse.deposit(daveMoolaPayout);
 ```

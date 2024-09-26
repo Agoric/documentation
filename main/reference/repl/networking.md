@@ -50,10 +50,10 @@ You must also prepare a `ConnectionHandler` object to manage the connection you'
 Then you will call the `connect()` method on your local `Port`. This will return a `Promise` that will fire with a new `Connection` object, on which you can send data. Your `ConnectionHandler` will be notified about the new channel, and will receive inbound data from the other side.
 
 ```js
-const remoteEndpoint = `/ibc-hop/${hopName}/ibc-port/${portName}/ordered/${version}`
+const remoteEndpoint = `/ibc-hop/${hopName}/ibc-port/${portName}/ordered/${version}`;
 E(home.ibcport[0])
   .connect(remoteEndpoint, connectionHandler)
-  .then(conn => doSomethingWithConnection(conn))
+  .then(conn => doSomethingWithConnection(conn));
 ```
 
 ## Opening a Listening Port and Accepting an Inbound Connection
@@ -66,12 +66,12 @@ To get a listening port, you need a `NetworkInterface` object (such as the one o
 // Ask for a random allocation - ends with a slash
 E(home.network)
   .bind('/ibc-port/')
-  .then(port => usePort(port))
+  .then(port => usePort(port));
 
 // or ask for a specific port name
 E(home.network)
   .bind('/ibc-port/my-cool-port-name')
-  .then(port => usePort(port))
+  .then(port => usePort(port));
 ```
 
 IBC has named "hops" (what they call "Connections" in the IBC spec) which each carry data between two specific chains. These hops are different from the connections described in this document. When you bind a port like `/ibc-port/$PORT` without specifying the "hop", any IBC chain can initiate a connection to this port.
@@ -81,7 +81,7 @@ You can ask the `Port` object this returns for its local address, which is espec
 ```js
 E(port)
   .getLocalAddress()
-  .then(localAddress => useIt(localAddress))
+  .then(localAddress => useIt(localAddress));
 ```
 
 Once the port is bound, you must call `addListener()` to mark it as ready for inbound connections. You must provide this with a `ListenHandler` object, which has methods to react to listening events. As with `ConnectionHandler`, these methods are all optional.
@@ -94,7 +94,7 @@ Once the port is bound, you must call `addListener()` to mark it as ready for in
 Once your `ChannelHandler` is prepared, call `addListener()`:
 
 ```js
-port.addListener(handler).then(() => console.log('listener is active'))
+port.addListener(handler).then(() => console.log('listener is active'));
 ```
 
 `onAccept()` is the most important method. It is called with a `remote` endpoint, which tells you the address of the `Port` at the other end, where someone else called `connect()`. You can use this to decide if you want to accept the connection, or what sort of authority to exercise in response to messages arriving therein.
@@ -108,7 +108,7 @@ The Networking API (at least for IBC) provides a "record pipe", in which each pa
 Once you have a `Connection` object, you send data by calling its `send()` method:
 
 ```js
-connection.send('data')
+connection.send('data');
 ```
 
 `send()` returns a Promise for the ACK data sent by the other side of the connection, which is represented in the same way as inbound data for `onReceive()`.
@@ -134,7 +134,7 @@ It is recommended to avoid ACK data where possible.
 When a given Connection has ceased to be useful, you should close it:
 
 ```js
-connection.close()
+connection.close();
 ```
 
 This initiates a shutdown. The `ConnectionHandler` on both sides will eventually see their `onClose()` methods be called, with a `reason`. It will allow them to distinguish an intentional `onClose()` (`reason` is `undefined`) from some error condition.
@@ -144,7 +144,7 @@ This initiates a shutdown. The `ConnectionHandler` on both sides will eventually
 When you no longer wish to receive connections on a port, you can remove the listener:
 
 ```js
-port.removeListener(handler).then(() => console.log('removed'))
+port.removeListener(handler).then(() => console.log('removed'));
 ```
 
 You must provide the handler you added, to enable the future ability to have multiple listeners on the same port.
@@ -156,7 +156,7 @@ Note that if you want to listen on this port again, you can just call `port.addL
 Removing a listener doesn't release the port address to make it available for other `bind()` requests. You can call:
 
 ```js
-port.revoke()
+port.revoke();
 ```
 
 to completely deallocate the port, remove all listeners, close all pending connections, and release its address.

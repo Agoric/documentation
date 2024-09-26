@@ -12,32 +12,32 @@ The [`Orchestrator`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestrati
 
 Retrieves the chain information and provides access to chain-specific methods. See [getChain](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getChain).
 
-```javascript
-const chain = await orchestrator.getChain('chainName')
+```js
+const chain = await orchestrator.getChain('chainName');
 ```
 
 ### makeLocalAccount
 
 Creates a new `LocalChainAccount`. See [makeLocalAccount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#makeLocalAccount).
 
-```javascript
-const localAccount = await orchestrator.makeLocalAccount()
+```js
+const localAccount = await orchestrator.makeLocalAccount();
 ```
 
 ### getBrandInfo
 
 Returns information about a `denom`, including the equivalent local Brand, the chain where the denom is held, and the chain that issues the corresponding asset. See [getBrandInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getBrandInfo).
 
-```javascript
-const brandInfo = orchestrator.getBrandInfo('denom')
+```js
+const brandInfo = orchestrator.getBrandInfo('denom');
 ```
 
 ### asAmount
 
 Converts a denom amount to an `Amount` with a brand. See [asAmount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#asAmount).
 
-```javascript
-const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n })
+```js
+const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 ```
 
 ## OrchestrationAccount
@@ -48,54 +48,54 @@ An [`OrchestrationAccount`](https://agoric-sdk.pages.dev/types/_agoric_orchestra
 
 Retrieves the address of the account on the remote chain. See [getAddress](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#getAddress).
 
-```javascript
-const address = await orchestrationAccount.getAddress()
+```js
+const address = await orchestrationAccount.getAddress();
 ```
 
 ### getBalances
 
 Returns an array of amounts for every balance in the account. See [getBalances](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#getBalances).
 
-```javascript
-const balances = await orchestrationAccount.getBalances()
+```js
+const balances = await orchestrationAccount.getBalances();
 ```
 
 ### getBalance
 
 Retrieves the balance of a specific denom for the account. See [getBalance](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#getBalance).
 
-```javascript
-const balance = await orchestrationAccount.getBalance('uatom')
+```js
+const balance = await orchestrationAccount.getBalance('uatom');
 ```
 
 ### send
 
 Transfers an amount to another account on the same chain. The promise settles when the transfer is complete. See [send](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#send).
 
-```javascript
-await orchestrationAccount.send(receiverAddress, amount)
+```js
+await orchestrationAccount.send(receiverAddress, amount);
 ```
 
 ### transfer
 
 Transfers an amount to another account, typically on another chain. The promise settles when the transfer is complete. See [transfer](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#transfer).
 
-```javascript
-await orchestrationAccount.transfer(amount, destinationAddress)
+```js
+await orchestrationAccount.transfer(amount, destinationAddress);
 ```
 
 ### transferSteps
 
 Transfers an amount to another account in multiple steps. The promise settles when the entire path of the transfer is complete. See [transferSteps](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI#transferSteps).
 
-```javascript
-await orchestrationAccount.transferSteps(amount, transferMsg)
+```js
+await orchestrationAccount.transferSteps(amount, transferMsg);
 ```
 
 ### deposit
 
 Deposits payment from Zoe to the account. For remote accounts, an IBC Transfer will be executed to transfer funds there.
 
-```javascript
-await orchestrationAccount.deposit(payment)
+```js
+await orchestrationAccount.deposit(payment);
 ```

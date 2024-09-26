@@ -19,8 +19,8 @@ method on the **[Issuer](./issuer)** associated with the **Brand** of assets you
 new **Purse** to hold.
 
 ```js
-const { issuer: quatloosIssuer } = makeIssuerKit('quatloos')
-const quatloosPurse = quatloosIssuer.makeEmptyPurse()
+const { issuer: quatloosIssuer } = makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
 ```
 
 You change a **Purse**'s balance by calling either
@@ -59,13 +59,13 @@ Returns a lossy notifier for changes to this **Purse**'s balance. For more detai
 see [Notifiers](/guides/js-programming/notifiers).
 
 ```js
-const notifier = purse.getCurrentAmountNotifier()
-let nextUpdate = notifier.getUpdateSince()
+const notifier = purse.getCurrentAmountNotifier();
+let nextUpdate = notifier.getUpdateSince();
 
 const checkNotifier = async () => {
-  const { value: balance, updateCount } = await nextUpdate
-  nextUpdate = notifier.getUpdateSince(updateCount)
-}
+  const { value: balance, updateCount } = await nextUpdate;
+  nextUpdate = notifier.getUpdateSince(updateCount);
+};
 ```
 
 ## aPurse.deposit(payment, optAmount?)
@@ -94,19 +94,19 @@ const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
   brand: quatloosBrand
-} = makeIssuerKit('quatloos')
-const quatloosPurse = quatloosIssuer.makeEmptyPurse()
-const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 123n))
-const quatloos123 = AmountMath.make(quatloosBrand, 123n)
+} = makeIssuerKit('quatloos');
+const quatloosPurse = quatloosIssuer.makeEmptyPurse();
+const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 123n));
+const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 
 // Deposit a payment for 123 Quatloos into the Purse.
-const depositAmountA = quatloosPurse.deposit(payment, quatloos123)
+const depositAmountA = quatloosPurse.deposit(payment, quatloos123);
 
 const secondPayment = quatloosMint.mintPayment(
   AmountMath.make(quatloosBrand, 100n)
-)
+);
 // Throws error
-const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123)
+const depositAmountB = quatloosPurse.deposit(secondPayment, quatloos123);
 ```
 
 ## aPurse.withdraw(amount)
@@ -122,21 +122,21 @@ But as soon as the message is processed, the value is gone from the **Purse**.
 
 ```js
 // Create a Purse and give it a balance of 10 Quatloos
-const { issuer, mint, brand } = makeIssuerKit('quatloos')
-const purse = issuer.makeEmptyPurse()
-const payment = mint.mintPayment(AmountMath.make(brand, 10n))
-const quatloos10 = AmountMath.make(brand, 10n)
-purse.deposit(payment, quatloos10)
+const { issuer, mint, brand } = makeIssuerKit('quatloos');
+const purse = issuer.makeEmptyPurse();
+const payment = mint.mintPayment(AmountMath.make(brand, 10n));
+const quatloos10 = AmountMath.make(brand, 10n);
+purse.deposit(payment, quatloos10);
 
 // Withdraw an amount of 3 from the Purse
-const quatloos3 = AmountMath.make(brand, 3n)
-const withdrawalPayment = purse.withdraw(quatloos3)
+const quatloos3 = AmountMath.make(brand, 3n);
+const withdrawalPayment = purse.withdraw(quatloos3);
 
 // The balance of the withdrawal payment is 3 Quatloos
-issuer.getAmountOf(withdrawalPayment)
+issuer.getAmountOf(withdrawalPayment);
 
 // The new balance of the Purse is 7 Quatloos
-purse.getCurrentAmount()
+purse.getCurrentAmount();
 ```
 
 ## aPurse.getAllegedBrand()
@@ -148,7 +148,7 @@ indicating what kind of digital asset the **Purse** purports to hold. This can i
 **Purse**'s **Brand** if the **Purse** was made by a trusted **[Issuer](./issuer)** using **[anIssuer.makeEmptyPurse()](./issuer#anissuer-makeemptypurse)**.
 
 ```js
-const purseBrand = quatloosPurse.getAllegedBrand()
+const purseBrand = quatloosPurse.getAllegedBrand();
 ```
 
 ## aPurse.getDepositFacet()
@@ -163,11 +163,11 @@ This makes it a safe way to let other people send you **Payments**.
 You can only deposit a **Payment** into a **DepositFacet** that's the same **[Brand](./brand)** as the original **Purse**.
 
 ```js
-const depositOnlyFacet = purse.getDepositFacet()
+const depositOnlyFacet = purse.getDepositFacet();
 
 // Give depositOnlyFacet to someone else. Anyone with a deposit facet reference can tell it to receive
 // a payment, thus depositing the payment assets in the Purse associated with the deposit facet.
-depositOnlyFacet.receive(payment)
+depositOnlyFacet.receive(payment);
 ```
 
 Once you have created a **DepositFacet**, there is one method you can call
@@ -191,9 +191,9 @@ If the optional argument _optAmount_ does not equal the balance of
 _payment_, or if _payment_ is an unresolved promise, this method throws an error.
 
 ```js
-const depositOnlyFacet = purse.getDepositFacet()
+const depositOnlyFacet = purse.getDepositFacet();
 
 // Give depositOnlyFacet to someone else. Anyone with a deposit facet reference can tell it to receive
 // a payment, thus depositing the payment assets in the Purse associated with the deposit facet.
-depositOnlyFacet.receive(payment)
+depositOnlyFacet.receive(payment);
 ```

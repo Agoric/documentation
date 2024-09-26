@@ -35,7 +35,7 @@ To create an offer to swap external stable tokens for IST tokens, do the followi
 
 1.  Create an invitation using the makeWantMintedInvitation method.
     ```js
-    const myInvitation = E(publicFacet).makeWantMintedInvitation()
+    const myInvitation = E(publicFacet).makeWantMintedInvitation();
     ```
 2.  Create Amounts for the external stable tokens you want to trade and for the IST tokens
     you want to receive.
@@ -60,7 +60,7 @@ To create an offer to swap external stable tokens for IST tokens, do the followi
 4.  Create a payment record containing the external stable tokens you’re trading to the PSM.
 
     ```js
-    const myPaymentRecord = { In: anchorPayment }
+    const myPaymentRecord = { In: anchorPayment };
     ```
 
 5.  Create the offer, remembering to harden the proposal & payment record.
@@ -70,7 +70,7 @@ To create an offer to swap external stable tokens for IST tokens, do the followi
       myInvitation,
       harden(myProposal),
       harden(myPaymentRecord)
-    )
+    );
     ```
 
 ### Swapping IST Tokens for External Stable Tokens
@@ -80,7 +80,7 @@ To create an offer to swap IST tokens for external stable tokens, do the followi
 1. Create an invitation using the makeGiveMintedInvitation method.
 
    ```js
-   const myInvitation = E(publicFacet).makeGiveMintedInvitation()
+   const myInvitation = E(publicFacet).makeGiveMintedInvitation();
    ```
 
 2. Create Amounts for the IST tokens you want to trade and for the external stable
@@ -101,9 +101,9 @@ const myProposal = harden({
 `
 4. Create and harden a payment record containing the IST tokens you’re trading to the PSM.
    ```js
-   const myPaymentRecord = harden({ In: mintedPayment })
+   const myPaymentRecord = harden({ In: mintedPayment });
    ```
 5. Create the offer.
    ```js
-   const seat = E(zoe).offer(myInvitation, myProposal, myPaymentRecord)
+   const seat = E(zoe).offer(myInvitation, myProposal, myPaymentRecord);
    ```

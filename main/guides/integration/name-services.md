@@ -13,14 +13,14 @@ Well-known names are chosen by [BLD staker governance](https://community.agoric.
 To look up well-known objects, such as the BLD brand:
 
 ```js
-const brandHub = E(agoricNames).lookup('brand')
-const bldBrand = await E(brandHub).lookup('BLD')
+const brandHub = E(agoricNames).lookup('brand');
+const bldBrand = await E(brandHub).lookup('BLD');
 ```
 
 or, equivalently:
 
 ```js
-const bldBrand = await E(agoricNames).lookup('brand', 'BLD')
+const bldBrand = await E(agoricNames).lookup('brand', 'BLD');
 ```
 
 `agoricNames` is a _NameHub_. In general, `E(hub).lookup(key1, key2, ...rest)` is equivalent
@@ -40,12 +40,12 @@ Adding or updating an entry requires access to the corresponding _NameAdmin_ fac
 one of its descendants - most likely as part of [permissioned contract deployment](../coreeval/). For example:
 
 ```js
-const { instance } = await E(zoe).startInstance(lemonadeStand)
+const { instance } = await E(zoe).startInstance(lemonadeStand);
 const {
   brands: { Lemonade: lemonadeBrand }
-} = await E(zoe).getTerms(instance)
-const brandAdmin = E(agoricNamesAdmin).lookupAdmin('brand')
-await E(brandAdmin).update('Lemonade', lemonadeBrand)
+} = await E(zoe).getTerms(instance);
+const brandAdmin = E(agoricNamesAdmin).lookupAdmin('brand');
+await E(brandAdmin).update('Lemonade', lemonadeBrand);
 ```
 
 ### agoricNames in vstorage
@@ -103,7 +103,7 @@ We can then save the id in a file or send it in email to someone else, and they
 can look up the object:
 
 ```js
-const instance = await E(board).getValue('board023423')
+const instance = await E(board).getValue('board023423');
 ```
 
 See also: [marshalling amounts and instance](../getting-started/contract-rpc#marshalling-amounts-and-instances)

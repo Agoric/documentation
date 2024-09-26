@@ -42,7 +42,7 @@ get what they asked for or Zoe ensures they get back their deposit.
 Example:
 
 ```js
-const { want, give, exit } = sellerSeat.getProposal()
+const { want, give, exit } = sellerSeat.getProposal();
 ```
 
 ## E(UserSeat).getPayouts()

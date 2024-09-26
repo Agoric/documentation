@@ -13,7 +13,7 @@ The timer service lets you:
 For testing, use
 
 ```js
-import buildManualTimer from '@agoric/zoe/tools/manualTimer.js'
+import buildManualTimer from '@agoric/zoe/tools/manualTimer.js';
 ```
 
 See package [@agoric/time](https://agoric-sdk.pages.dev/modules/_agoric_time) for details.

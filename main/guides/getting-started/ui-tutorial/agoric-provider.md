@@ -35,14 +35,14 @@ Put the provider in the root of your application by editing `App.tsx`. We can al
 The end result should look something like this:
 
 ```tsx
-import { AgoricProvider, ConnectWalletButton } from '@agoric/react-components'
-import { wallets } from 'cosmos-kit'
-import { ThemeProvider, useTheme } from '@interchain-ui/react'
-import './App.css'
-import '@agoric/react-components/dist/style.css'
+import { AgoricProvider, ConnectWalletButton } from '@agoric/react-components';
+import { wallets } from 'cosmos-kit';
+import { ThemeProvider, useTheme } from '@interchain-ui/react';
+import './App.css';
+import '@agoric/react-components/dist/style.css';
 
 function App() {
-  const { themeClass } = useTheme()
+  const { themeClass } = useTheme();
   return (
     <ThemeProvider>
       <div className={themeClass}>
@@ -67,10 +67,10 @@ function App() {
         </AgoricProvider>
       </div>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 You may have noticed the `defaultChainName` prop points to a local chain. This assumes

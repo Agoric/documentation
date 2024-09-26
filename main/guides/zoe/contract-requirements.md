@@ -49,10 +49,10 @@ to pass in any arguments that should not be part of the public terms.
 
 ```js
 const start = (zcf, privateArgs) => {
-  ...
+  // ...
   // your code here
   return harden({ creatorFacet, creatorInvitation, publicFacet });
-}
+};
 harden(start);
 export { start };
 ```
@@ -90,7 +90,7 @@ Use `zcf.makeInvitation()` to create the first party's `invitation`:
 const creatorInvitation = zcf.makeInvitation(
   makeMatchingInvitation,
   'firstOffer'
-)
+);
 ```
 
 `makeMatchingInvitation()` creates the second `invitation`.
@@ -103,7 +103,7 @@ const matchingSeatInvitation = zcf.makeInvitation(
     asset: give.Asset,
     price: want.Price
   }
-)
+);
 ```
 
 The third argument (which is optional and wasn't needed for the first `invitation`) says
@@ -119,10 +119,10 @@ match, they each get back what they brought to the exchange, and it's still over
 
 ```js
 const matchingSeatOfferHandler = matchingSeat => {
-  const swapResult = swap(zcf, firstSeat, matchingSeat)
-  zcf.shutdown()
-  return swapResult
-}
+  const swapResult = swap(zcf, firstSeat, matchingSeat);
+  zcf.shutdown();
+  return swapResult;
+};
 ```
 
 If you study other contracts, you'll see they all have this basic format. Depending

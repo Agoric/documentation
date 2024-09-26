@@ -45,10 +45,12 @@ The `publicFacet` is returned when the contract is started.
 const { publicFacet } = await E(zoe).startInstance(installation, {
   Asset: moolaIssuer,
   Price: simoleanIssuer
-})
-const simpleExchangeInvitation = await E(publicFacet).makeInvitation()
-const { instance } = await E(zoe).getInvitationDetails(simpleExchangeInvitation)
-const aliceInvitation = await E(publicFacet).makeInvitation()
+});
+const simpleExchangeInvitation = await E(publicFacet).makeInvitation();
+const { instance } = await E(zoe).getInvitationDetails(
+  simpleExchangeInvitation
+);
+const aliceInvitation = await E(publicFacet).makeInvitation();
 ```
 
 ## Adding an Order
@@ -61,9 +63,9 @@ const aliceSellOrderProposal = harden({
   give: { Asset: AmountMath.make(moolaBrand, 3n) },
   want: { Price: AmountMath.make(simoleanBrand, 4n) },
   exit: { onDemand: null }
-})
+});
 
-const alicePayment = { Asset: aliceMoolaPayment }
+const alicePayment = { Asset: aliceMoolaPayment };
 ```
 
 Alice escrows her payment with Zoe to add her sell order to the exchange.
@@ -73,7 +75,7 @@ const aliceSeat = await E(zoe).offer(
   aliceInvitation,
   aliceSellOrderProposal,
   alicePayment
-)
+);
 ```
 
 ## Buying an Order
@@ -83,13 +85,13 @@ offer. It sounds like a good deal to him, so he checks the installation
 with Zoe and sees the exchange is trading what he expects:
 
 ```js
-const bobInvitation = E(publicFacet).makeInvitation()
-const invitationIssuer = E(zoe).getInvitationIssuer()
-const bobExclusiveInvitation = E(invitationIssuer).claim(bobInvitation)
+const bobInvitation = E(publicFacet).makeInvitation();
+const invitationIssuer = E(zoe).getInvitationIssuer();
+const bobExclusiveInvitation = E(invitationIssuer).claim(bobInvitation);
 const { instance, installation } = await E(zoe).getInvitationDetails(
   bobExclusiveInvitation
-)
-const bobIssuers = await E(zoe).getIssuers(instance)
+);
+const bobIssuers = await E(zoe).getIssuers(instance);
 ```
 
 Bob verifies the information is what he expects. He compares the
@@ -97,9 +99,12 @@ installation he gets from the invitation with a canonical link he found in a
 public directory he trusts.
 
 ```js
-assert(installation === simpleExchangeInstallation, details`wrong installation`)
-assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`)
-assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`)
+assert(
+  installation === simpleExchangeInstallation,
+  details`wrong installation`
+);
+assert(bobIssuers.Asset === moolaIssuer, details`wrong Asset issuer`);
+assert(bobIssuers.Price === simoleanIssuer, details`wrong Price issuer`);
 ```
 
 Bob has checked that everything is in order, so he fulfills the buy order:
@@ -109,18 +114,18 @@ const bobBuyOrderProposal = harden({
   give: { Price: AmountMath.make(simoleanBrand, 7n) },
   want: { Asset: AmountMath.make(moolaBrand, 3n) },
   exit: { onDemand: null }
-})
+});
 
 const bobSimPayment = await E(bobSimoleanPurse).withdraw(
   AmountMath(simoleanBrand, 7n)
-)
-const bobPayments = { Price: bobSimPayment }
+);
+const bobPayments = { Price: bobSimPayment };
 
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobBuyOrderProposal,
   bobPayments
-)
+);
 ```
 
 ## Payout
@@ -130,19 +135,19 @@ resolves to a promise for payment. For Bob:
 
 ```js
 const { Asset: bobAssetPayoutP, Price: bobPricePayoutP } =
-  await bobSeat.getPayouts()
-const bobAssetPayout = await bobAssetPayoutP
-const bobMoolaGainAmount = await E(bobMoolaPurse).deposit(bobAssetPayout)
-const bobPricePayout = await bobPricePayoutP
-const bobSimGainAmount = await E(bobSimPurse).deposit(bobPricePayout)
+  await bobSeat.getPayouts();
+const bobAssetPayout = await bobAssetPayoutP;
+const bobMoolaGainAmount = await E(bobMoolaPurse).deposit(bobAssetPayout);
+const bobPricePayout = await bobPricePayoutP;
+const bobSimGainAmount = await E(bobSimPurse).deposit(bobPricePayout);
 ```
 
 Alice gets her payouts the same way. (The choice between `getPayouts()` and
 `getPayout(keyword)` is based on which is more convenient in each circumstance).
 
 ```js
-const aliceAssetPayout = await aliceSeat.getPayout('Asset')
-const aliceMoolaGainAmount = aliceMoolaPurse.deposit(aliceAssetPayout)
-const alicePricePayout = await aliceSeat.getPayout('Price')
-const aliceSimGainAmount = aliceSimPurse.deposit(alicePricePayout)
+const aliceAssetPayout = await aliceSeat.getPayout('Asset');
+const aliceMoolaGainAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
+const alicePricePayout = await aliceSeat.getPayout('Price');
+const aliceSimGainAmount = aliceSimPurse.deposit(alicePricePayout);
 ```

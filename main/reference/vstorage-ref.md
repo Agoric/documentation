@@ -50,7 +50,7 @@ agoricNames contains several other NameHubs.
 See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
 
 ```js
-;['brand', 'installation', 'instance', 'issuer', 'oracleBrand', 'vbankAsset']
+['brand', 'installation', 'instance', 'issuer', 'oracleBrand', 'vbankAsset'];
 ```
 
 ## vstorage: well known contracts
@@ -172,7 +172,7 @@ The data at this key are the entries of the NameHub. Here we show the object com
 
 ```js
     {
-...
+// ...
       'ibc/42225F147137DDEB5FEF0F1D0A92F2AD57557AFA2C4D6F30B21E0D983001C002': {
         brand: Object @Alleged: stATOM brand#board00990 {},
         denom: 'ibc/42225F147137DDEB5FEF0F1D0A92F2AD57557AFA2C4D6F30B21E0D983001C002',
@@ -184,7 +184,7 @@ The data at this key are the entries of the NameHub. Here we show the object com
         issuerName: 'stATOM',
         proposedName: 'stATOM',
       },
-...
+// ...
       'ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA': {
         brand: Object @Alleged: ATOM brand#board05557 {},
         denom: 'ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA',
@@ -196,7 +196,7 @@ The data at this key are the entries of the NameHub. Here we show the object com
         issuerName: 'ATOM',
         proposedName: 'ATOM',
       },
-...
+// ...
       ubld: {
         brand: Object @Alleged: BLD brand#board0566 {},
         denom: 'ubld',
@@ -228,7 +228,7 @@ The keys under `published.boardAux` are board IDs.
 Here we show a handful.
 
 ```js
-;['board00282', 'board0074', 'board01744']
+['board00282', 'board0074', 'board01744'];
 ```
 
 The data are auxiliary info about objects in the board;
@@ -308,11 +308,11 @@ Here we show a handful.
 See also: [Smart Wallet VStorage Topics](/guides/getting-started/contract-rpc#smart-wallet-vstorage-topics)
 
 ```js
-;[
+[
   'agoric1890064p6j3xhzzdf8daknd6kpvhw766ds8flgw',
   'agoric1ee9hr0jyrxhy999y755mp862ljgycmwyp4pl7q',
   'agoric1enwuyn2hzyyvt39x87tk9rhlkpqtyv9haj7mgs'
-]
+];
 ```
 
 The `.current` child has current wallet status. For example:

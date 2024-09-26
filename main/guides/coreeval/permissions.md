@@ -25,9 +25,9 @@ export const permit = harden({
   instance: { produce: { [contractName]: true } },
   issuer: { consume: { IST: true }, produce: { Ticket: true } },
   brand: { consume: { IST: true }, produce: { Ticket: true } }
-})
+});
 
-export const main = startSellConcertTicketsContract
+export const main = startSellConcertTicketsContract;
 ```
 
 ## Selected BootstrapPowers

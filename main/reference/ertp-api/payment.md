@@ -43,9 +43,9 @@ should be treated with suspicion and verified elsewhere.
 Any successful operation by an **Issuer** on a **Payment** verifies it.
 
 ```js
-const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 10n))
+const payment = quatloosMint.mintPayment(AmountMath.make(quatloosBrand, 10n));
 // Should return 'quatloos'
-const allegedBrand = payment.getAllegedBrand()
+const allegedBrand = payment.getAllegedBrand();
 ```
 
 ## Related Methods

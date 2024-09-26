@@ -14,7 +14,7 @@ the Items they want. There's 3 types of items available for sale in the contract
 creating an array to list them in `Trade.tsx`:
 
 ```ts
-const allItems = ['scroll', 'map', 'potion']
+const allItems = ['scroll', 'map', 'potion'];
 ```
 
 Next, add another component to `Trade.tsx` for letting the user choose the amount of each item in the offer:
@@ -26,10 +26,10 @@ const Item = ({
   onChange,
   inputStep
 }: {
-  label: string
-  value: number | string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  inputStep?: string
+  label: string;
+  value: number | string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  inputStep?: string;
 }) => (
   <div className="item-col">
     <h4>{label}</h4>
@@ -44,7 +44,7 @@ const Item = ({
       className="input"
     />
   </div>
-)
+);
 ```
 
 And add some styles to `App.css`:
@@ -168,26 +168,26 @@ Recall the `useContract` hook you added to your `Trade` component previously. No
 brands and instance from that to submit the offer:
 
 ```ts
-const { brands, instance } = useContract()
+const { brands, instance } = useContract();
 ```
 
 Next, get the `makeOffer` function from the `useAgoric()` hook:
 
 ```ts
-const { makeOffer } = useAgoric()
+const { makeOffer } = useAgoric();
 ```
 
 Now, create a function to submit the offer. For more details on how this works, see [making an offer](../../getting-started/explainer-how-to-make-an-offer.md):
 
 ```ts
-import { makeCopyBag } from '@agoric/store'
+import { makeCopyBag } from '@agoric/store';
 
 // Inside your 'Trade' component:
 const submitOffer = () => {
-  assert(brands && instance && makeOffer)
-  const value = makeCopyBag(Object.entries(choices))
-  const want = { Items: { brand: brands.Item, value } }
-  const give = { Price: { brand: brands.IST, value: giveValue } }
+  assert(brands && instance && makeOffer);
+  const value = makeCopyBag(Object.entries(choices));
+  const want = { Items: { brand: brands.Item, value } };
+  const give = { Price: { brand: brands.IST, value: giveValue } };
 
   makeOffer(
     {
@@ -198,19 +198,19 @@ const submitOffer = () => {
     { give, want },
     undefined,
     (update: { status: string; data?: unknown }) => {
-      console.log('UPDATE', update)
+      console.log('UPDATE', update);
       if (update.status === 'error') {
-        alert(`Offer error: ${update.data}`)
+        alert(`Offer error: ${update.data}`);
       }
       if (update.status === 'accepted') {
-        alert('Offer accepted')
+        alert('Offer accepted');
       }
       if (update.status === 'refunded') {
-        alert('Offer rejected')
+        alert('Offer rejected');
       }
     }
-  )
-}
+  );
+};
 ```
 
 For specifics on how offers work, see [Specifying Offers](../../getting-started/contract-rpc.md#specifying-offers). The `makeOffer` function allows you to specify an
@@ -227,7 +227,7 @@ And add the type to `vite-env.d.ts`:
 
 ```ts
 declare module '@agoric/store' {
-  export const makeCopyBag
+  export const makeCopyBag;
 }
 ```
 
@@ -237,7 +237,7 @@ Now, simply add a button to submit the offer:
 {
   !!(brands && instance && makeOffer && istPurse) && (
     <button onClick={submitOffer}>Make Offer</button>
-  )
+  );
 }
 ```
 

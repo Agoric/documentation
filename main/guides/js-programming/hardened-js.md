@@ -317,14 +317,14 @@ are only for lint tools and do not have any effect at runtime:
 
 /** @param {number} init */
 const makeCounter = init => {
-  let value = init
+  let value = init;
   return {
     incr: () => {
-      value += 1
-      return value
+      value += 1;
+      return value;
     }
-  }
-}
+  };
+};
 ```
 
 If we're not careful, our clients can cause us to misbehave:
@@ -385,11 +385,11 @@ in [Higher-order Smart Contracts across Chains](https://www.youtube.com/watch?v=
 
 ```js
 const makeMint = () => {
-  const ledger = makeWeakMap()
+  const ledger = makeWeakMap();
 
   const issuer = harden({
     makeEmptyPurse: () => mint.makePurse(0)
-  })
+  });
 
   const mint = harden({
     makePurse: initialBalance => {
@@ -398,21 +398,21 @@ const makeMint = () => {
         getBalance: () => ledger.get(purse),
 
         deposit: (amount, src) => {
-          Nat(ledger.get(purse) + Nat(amount))
-          ledger.set(src, Nat(ledger.get(src) - amount))
-          ledger.set(purse, ledger.get(purse) + amount)
+          Nat(ledger.get(purse) + Nat(amount));
+          ledger.set(src, Nat(ledger.get(src) - amount));
+          ledger.set(purse, ledger.get(purse) + amount);
         },
         withdraw: amount => {
-          const newPurse = issuer.makeEmptyPurse()
-          newPurse.deposit(amount, purse)
-          return newPurse
+          const newPurse = issuer.makeEmptyPurse();
+          newPurse.deposit(amount, purse);
+          return newPurse;
         }
-      })
-      ledger.set(purse, initialBalance)
-      return purse
+      });
+      ledger.set(purse, initialBalance);
+      return purse;
     }
-  })
+  });
 
-  return mint
-}
+  return mint;
+};
 ```

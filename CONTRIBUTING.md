@@ -107,7 +107,7 @@ module.exports = {
   themeConfig: {
     sidebar: 'auto'
   }
-}
+};
 ```
 
 Or, add a config entry, either as part of a group or as an individual page.
@@ -133,7 +133,7 @@ module.exports = {
       }
     ]
   }
-}
+};
 ```
 
 ## Writing Links
@@ -564,8 +564,8 @@ export default ({ router }) => {
       path: '/getting-started/agoric-cli-guide.html',
       redirect: '/guides/agoric-cli/'
     }
-  ])
-}
+  ]);
+};
 ```
 
 The general format should be self-explanatory. However, there are two things you need to know that aren't apparent

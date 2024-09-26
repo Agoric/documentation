@@ -35,10 +35,10 @@ element (i.e., `updater` or `publication`) produces the async iteration which is
 consumed using each pair’s second element (i.e., `notifier` or `subscription`).
 
 ```js
-import { makeNotifierKit } from '@agoric/notifier'
-import { makeSubscriptionKit } from '@agoric/notifier'
-const { updater, notifier } = makeNotifierKit()
-const { publication, subscription } = makeSubscriptionKit()
+import { makeNotifierKit } from '@agoric/notifier';
+import { makeSubscriptionKit } from '@agoric/notifier';
+const { updater, notifier } = makeNotifierKit();
+const { publication, subscription } = makeSubscriptionKit();
 ```
 
 The key difference between the two is
@@ -186,11 +186,11 @@ Let’s look at a subscription example. We have three characters: Paula the publ
 First we create a publication/subscription pair with `makeSubscriptionKit()`. Paula publishes an iteration with the non-final sequence 'a', 'b' and 'done' as its completion value.
 
 ```js
-const { publication, subscription } = makeSubscriptionKit()
+const { publication, subscription } = makeSubscriptionKit();
 // Paula the publisher says
-publication.updateState('a')
-publication.updateState('b')
-publication.finish('done')
+publication.updateState('a');
+publication.updateState('b');
+publication.finish('done');
 ```
 
 Remember, a `SubscriptionKit` is lossless. It conveys all of an async iteration’s non-final values, as well as the final value.
@@ -208,14 +208,14 @@ the code won’t know what the completion value actually was “done”, “comp
 const consume = async subscription => {
   try {
     for await (const val of subscription) {
-      console.log('non-final-value', val)
+      console.log('non-final-value', val);
     }
-    console.log('the iteration finished')
+    console.log('the iteration finished');
   } catch (reason) {
-    console.log('the iteration failed', reason)
+    console.log('the iteration failed', reason);
   }
-}
-consume(subscription)
+};
+consume(subscription);
 // Eventually prints:
 // non-final-value a
 // non-final-value b
@@ -229,8 +229,8 @@ const observer = harden({
   updateState: val => console.log('non-final-value', val),
   finish: completion => console.log('finished', completion),
   fail: reason => console.log('failed', reason)
-})
-observeIteration(subscription, observer)
+});
+observeIteration(subscription, observer);
 // Eventually prints:
 // non-final-value a
 // non-final-value b
@@ -244,7 +244,7 @@ losslessly convey termination. Let's say the subscription example above
 started with the following instead of `makeSubscriptionKit()`.
 
 ```js
-const { updater, notifier } = makeNotifierKit()
+const { updater, notifier } = makeNotifierKit();
 ```
 
 If we then renamed `publication` to `updater` and `subscription` to `notifier`
@@ -292,12 +292,12 @@ remote reference to an `AsyncIterable` at Paula's site. Alice has to make an
 replace her call to `consume(subscription)` with:
 
 ```js
-import { makeSubscription } from '@agoric/notifier'
+import { makeSubscription } from '@agoric/notifier';
 
 const localSubscription = makeSubscription(
   E(subscription).getSharableSubsciptionInternals()
-)
-consume(localSubscription)
+);
+consume(localSubscription);
 ```
 
 The code above uses a SubscriptionKit. NotifierKits have a similar pair of a
@@ -310,9 +310,9 @@ making a new local pair and plugging them together with `observeIteration`.
 
 ```js
 const { publication: adapterPublication, subscription: adapterSubscription } =
-  makeSubscriptionKit()
-observeIteration(subscription, adapterPublication)
-consume(adapterSubscription)
+  makeSubscriptionKit();
+observeIteration(subscription, adapterPublication);
+consume(adapterSubscription);
 ```
 
 This works when subscription is a reference to a `AsyncIterable`. If Alice only

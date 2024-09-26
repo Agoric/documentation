@@ -27,7 +27,7 @@ const paramTypes = harden(
   /** @type {const} */ ({
     Fee: ParamTypes.AMOUNT
   })
-)
+);
 ```
 
 ## Reusing Contracts for Electorate, Election Manager
@@ -52,17 +52,17 @@ to [publish values of the parameters to vstorage](../zoe/pub-to-storage).
 import { handleParamGovernance } from '@agoric/governance/src/contractHelper.js';
 
 export const start = async (zcf, privateArgs, baggage) => {
-...
+  // ...
   const { publicMixin, makeDurableGovernorFacet, params } =
     await handleParamGovernance(
       zcf,
       privateArgs.initialPoserInvitation,
       paramTypes,
       privateArgs.storageNode,
-      privateArgs.marshaller,
+      privateArgs.marshaller
     );
-...
-}
+  // ...
+};
 ```
 
 We get back
@@ -73,22 +73,22 @@ We get back
 
 ```js
 export const start = async (zcf, privateArgs, baggage) => {
-...
+  // ...
   const publicFacet = Far('Public', {
     makeFirstInvitation,
-    ...publicMixin,
+    ...publicMixin
   });
   const limitedCreatorFacet = Far('Creator', {
     makeCollectFeesInvitation() {
       return makeCollectFeesInvitation(zcf, feeSeat, feeBrand, 'Fee');
-    },
+    }
   });
   const { governorFacet } = makeDurableGovernorFacet(
     baggage,
-    limitedCreatorFacet,
+    limitedCreatorFacet
   );
   return harden({ publicFacet, creatorFacet: governorFacet });
-}
+};
 ```
 
 ## Starting a Governed Contract via its Governor
@@ -121,9 +121,9 @@ using `v0-accept-charter` to identify this offer:
 
 ```js
 test.serial('Voter0 accepts charter, committee invitations', async t => {
-...
+  // ...
   await victor.acceptCharterInvitation('v0-accept-charter');
-...
+  // ...
 });
 ```
 
@@ -136,8 +136,8 @@ referring back to `v0-accept-charter` as `charterAcceptOfferId`:
 
 ```js
 const makeVoter = (t, wallet, wellKnown) => {
-...
-    const putQuestion = async (offerId, params, deadline) => {
+  // ...
+  const putQuestion = async (offerId, params, deadline) => {
     const instance = await wellKnown.instance[contractName]; // swaparoo instance handle
     const path = { paramPath: { key: 'governedParams' } };
 
@@ -146,17 +146,17 @@ const makeVoter = (t, wallet, wellKnown) => {
 
     /** @type {import('@agoric/smart-wallet/src/offers.js').OfferSpec} */
     const offer = {
-        id: offerId,
-        invitationSpec: {
-          source: 'continuing',
-          previousOffer: NonNullish(charterAcceptOfferId),
-          invitationMakerName: 'VoteOnParamChange',
-        },
-        offerArgs,
-        proposal: {},
+      id: offerId,
+      invitationSpec: {
+        source: 'continuing',
+        previousOffer: NonNullish(charterAcceptOfferId),
+        invitationMakerName: 'VoteOnParamChange'
+      },
+      offerArgs,
+      proposal: {}
     };
     return doOffer(offer);
-    };
+  };
 };
 ```
 
@@ -164,14 +164,14 @@ The `offerArgs` include a deadline and details of the params to change:
 
 ```js
 test.serial('vote to change swap fee', async t => {
-...
+  // ...
   const targetFee = IST(50n, 100n); // 50 / 100 = 0.5 IST
   const changes = { Fee: targetFee };
-...
+  // ...
   const deadline = BigInt(new Date(2024, 6, 1, 9, 10).valueOf() / 1000);
   const result = await victor.putQuestion('proposeToSetFee', changes, deadline);
   t.log('question is posed', result);
-...
+  // ...
 });
 ```
 
@@ -182,9 +182,9 @@ using `v0-join-committee` to identify this offer:
 
 ```js
 test.serial('Voter0 accepts charter, committee invitations', async t => {
-...
+  // ...
   await victor.acceptCommitteeInvitation('v0-join-committee', 0);
-...
+  // ...
 });
 ```
 
@@ -193,7 +193,7 @@ referring back to `v0-join-committee` as `committeeOfferId`:
 
 ```js
 const makeVoter = (t, wallet, wellKnown) => {
-...
+  // ...
   const vote = async (offerId, details, position) => {
     const chosenPositions = [details.positions[position]];
 
@@ -204,13 +204,13 @@ const makeVoter = (t, wallet, wellKnown) => {
         source: 'continuing',
         previousOffer: NonNullish(committeeOfferId),
         invitationMakerName: 'makeVoteInvitation',
-        invitationArgs: harden([chosenPositions, details.questionHandle]),
+        invitationArgs: harden([chosenPositions, details.questionHandle])
       },
-      proposal: {},
+      proposal: {}
     };
     return doOffer(offer);
   };
-...
+  // ...
 };
 ```
 
@@ -219,12 +219,14 @@ published to vstorage.
 
 ```js
 test.serial('vote to change swap fee', async t => {
-...
-  const details = await vstorage.get(`published.committee.swaparoo.latestQuestion`);
+  // ...
+  const details = await vstorage.get(
+    `published.committee.swaparoo.latestQuestion`
+  );
   t.is(details.electionType, 'param_change');
   const voteResult = await victor.vote('voteToSetFee', details, 0);
   t.log('victor voted:', voteResult);
-...
+  // ...
 });
 ```
 
@@ -233,11 +235,11 @@ carried. It instructs the swaparoo contract to change the fee.
 
 ```js
 test.serial('vote to change swap fee', async t => {
-...
+  // ...
   const swapPub = E(zoe).getPublicFacet(
-    swapPowers.instance.consume[contractName],
+    swapPowers.instance.consume[contractName]
   );
-...
+  // ...
   const after = await E(swapPub).getAmount('Fee');
   t.deepEqual(after, targetFee);
 });

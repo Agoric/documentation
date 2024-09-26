@@ -58,7 +58,7 @@ file `ui/public/conf/installationConstants.js` with contents like:
 export default {
   CONTRACT_NAME: 'fungibleFaucet',
   INSTALLATION_BOARD_ID: '1456154132'
-}
+};
 ```
 
 The board provides a unique ID per object, in this case

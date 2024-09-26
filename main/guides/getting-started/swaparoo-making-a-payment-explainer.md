@@ -10,11 +10,11 @@ Let's take a look at the following code snippet from the Swaparoo contract:
 const secondDepositFacet = await E(depositFacetFromAddr).lookup(
   secondPartyAddress,
   'depositFacet'
-)
+);
 
-await E(secondDepositFacet).receive(secondSeatInvitation)
+await E(secondDepositFacet).receive(secondSeatInvitation);
 
-return 'invitation sent'
+return 'invitation sent';
 ```
 
 ## Step-by-Step Explanation

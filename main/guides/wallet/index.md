@@ -86,19 +86,19 @@ walletSend({
   type: 'walletSuggestInstallation',
   petname: 'Installation',
   boardId: INSTALLATION_BOARD_ID
-})
+});
 // Our issuer will default to something like `FungibleFaucet.Instance`.
 walletSend({
   type: 'walletSuggestInstance',
   petname: 'Instance',
   boardId: INSTANCE_BOARD_ID
-})
+});
 // Our issuer will default to something like `FungibleFaucet.Token`.
 walletSend({
   type: 'walletSuggestIssuer',
   petname: 'Token',
   boardId: TOKEN_ISSUER_BOARD_ID
-})
+});
 ```
 
 ## The Agoric Board
