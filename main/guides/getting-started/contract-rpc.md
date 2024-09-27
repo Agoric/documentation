@@ -101,11 +101,11 @@ $ agoric follow -lF :published.agoricNames.brand
 ]
 ```
 
-::: tip vstorage viewer by p2p
+::: tip VStorage Viewer
 
-The [vstorage-viewer](https://github.com/agoric-labs/agoric-vstorage-viewer) is often _very_ handy:
+The [vstorage-viewer](https://vstorage.agoric.net/?path=published.agoricNames.oracleBrand&endpoint=https%3A%2F%2Fmain.rpc.agoric.net%3A443) is often _very_ handy:
 
-[![vstorage viewer screenshot](https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://vstorage.agoric.net/p2p-agoric-vstorage-viewer/#https://devnet.rpc.agoric.net/|published,published.agoricNames|)
+![vstorage viewer screenshot](https://github.com/user-attachments/assets/7b577b9d-e607-453a-bc28-ac6a6abb27c9)
 
 :::
 
