@@ -16,14 +16,6 @@ Retrieves the chain information and provides access to chain-specific methods. S
 const chain = await orchestrator.getChain('chainName')
 ```
 
-### makeLocalAccount
-
-Creates a new `LocalChainAccount`. See [makeLocalAccount](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#makeLocalAccount).
-
-```javascript
-const localAccount = await orchestrator.makeLocalAccount()
-```
-
 ### getBrandInfo
 
 Returns information about a `denom`, including the equivalent local Brand, the chain where the denom is held, and the chain that issues the corresponding asset. See [getBrandInfo](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.Orchestrator#getBrandInfo).
