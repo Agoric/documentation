@@ -495,6 +495,20 @@ vat-orchestration. This [vat](/glossary/#vat) manages [Inter-Chain Account (ICA)
 chains, ensuring proper transaction authorization.
 For more information, see the [Orchestration API](/guides/orchestration/).
 
+## Orthogonal Persistence
+
+Orthogonal Persistence refers to a persistence model in which it appears to the programmer as if the program's memory is always there forever.
+The system automatically keeps the entire memory state in such a way that computation can always resume after events like crashes or restarts.
+This means the programmer doesn't need to explicitly save or restore any data, making for an easy and convenient programming model.
+
+Orthogonal persistence is contrasted with:
+
+- Manual Persistence: Where all in-memory state is volatile, and anything you want saved you have to explicitly save yourself, such as by writing
+  to a file or database. All acts of recording and recovering state are deliberate actions performed by the code.
+- Automatic Persistence: Where certain data is designated to be kept, either declaratively or through procedural interfaces.
+  Updates to this data are automatically saved and available upon resuming execution, but the programmer may still need to manually
+  reestablish in-memory invariants when the program starts or restarts.
+
 ## Passable
 
 A _passable_ is something that can be sent to and from remote objects.
