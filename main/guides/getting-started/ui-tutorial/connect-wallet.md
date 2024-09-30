@@ -21,10 +21,10 @@ showing the user's IST balance.
 Create a new file, `src/Purses.tsx`, where you'll write a component for rendering purse balances.
 
 ```tsx
-import { useAgoric } from '@agoric/react-components'
+import { useAgoric } from '@agoric/react-components';
 
 const Purses = () => {
-  const { walletConnection } = useAgoric()
+  const { walletConnection } = useAgoric();
 
   return (
     <div className="card">
@@ -40,10 +40,10 @@ const Purses = () => {
         'No wallet connected.'
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Purses
+export default Purses;
 ```
 
 Then, in `App.tsx` render the component inside the `AgoricProvider`, below the
@@ -68,13 +68,13 @@ We'll access the purse data from the `useAgoric` hook. First, we'll create a new
 since we'll need to render another purse for the NFTs later on. Create a new file, `src/hooks.ts`
 
 ```ts
-import { useAgoric } from '@agoric/react-components'
+import { useAgoric } from '@agoric/react-components';
 
 export const usePurse = (brandPetname: string) => {
-  const { purses } = useAgoric()
+  const { purses } = useAgoric();
 
-  return purses?.find(p => p.brandPetname === brandPetname)
-}
+  return purses?.find(p => p.brandPetname === brandPetname);
+};
 ```
 
 This provides a utility for looking up a user's purse by name. Notice how it accesses `purses` from `useAgoric()`.
@@ -92,13 +92,13 @@ yarn add -D @agoric/web-components@0.16.0
 Then, in `Purses.tsx`, we can put it all together to render the IST balance:
 
 ```tsx
-import { useAgoric } from '@agoric/react-components'
-import { usePurse } from './hooks'
-import { stringifyAmountValue } from '@agoric/web-components'
+import { useAgoric } from '@agoric/react-components';
+import { usePurse } from './hooks';
+import { stringifyAmountValue } from '@agoric/web-components';
 
 const Purses = () => {
-  const { walletConnection } = useAgoric()
-  const istPurse = usePurse('IST')
+  const { walletConnection } = useAgoric();
+  const istPurse = usePurse('IST');
 
   return (
     <div className="card">
@@ -122,8 +122,8 @@ const Purses = () => {
         'No wallet connected.'
       )}
     </div>
-  )
-}
+  );
+};
 ```
 
 When the app rebuilds, you should see the real IST balance appear below "Purses". Now you're able

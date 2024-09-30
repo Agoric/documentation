@@ -72,25 +72,25 @@ between incarnations in a way that preserves identity of objects
 as seen from other vats:
 
 ```js
-let rooms
+let rooms;
 if (!baggage.has('rooms')) {
   // initial incarnation: create the object
-  rooms = makeScalarBigMapStore('rooms', { durable: true })
-  baggage.init('rooms', rooms)
+  rooms = makeScalarBigMapStore('rooms', { durable: true });
+  baggage.init('rooms', rooms);
 } else {
   // subsequent incarnation: use the object from the initial incarnation
-  rooms = baggage.get('rooms')
+  rooms = baggage.get('rooms');
 }
 ```
 
 The `provide` function supports a concise idiom for this find-or-create pattern:
 
 ```js
-import { provide } from '@agoric/vat-data'
+import { provide } from '@agoric/vat-data';
 
 const rooms = provide(baggage, 'rooms', () =>
   makeScalarBigMapStore('rooms', { durable: true })
-)
+);
 ```
 
 The `zone` API is a convenient way to manage durability. Its store methods integrate the `provide` pattern:
@@ -133,12 +133,12 @@ Now we have all the parts of an upgradable contract.
 We can then upgrade it to have another method:
 
 ```js
-  const makeRoom = zone.exoClass('Room', RoomI, (id) => ({ id, value: 0 }), {
-    ...
-    clear(delta) {
-      this.state.value = 0;
-    },
-  });
+const makeRoom = zone.exoClass('Room', RoomI, id => ({ id, value: 0 }), {
+  // ...
+  clear(delta) {
+    this.state.value = 0;
+  }
+});
 ```
 
 The interface guard also needs updating.
@@ -146,8 +146,8 @@ The interface guard also needs updating.
 
 ```js
 const RoomI = M.interface('Room', {
-  ...
-  clear: M.call().returns(),
+  // ...
+  clear: M.call().returns()
 });
 ```
 
@@ -179,14 +179,14 @@ Define all exo classes/kits before any incoming method calls from other vats -- 
 
 baggage is a MapStore that provides a way to preserve the state and behavior of objects between [smart contract upgrades](https://docs.agoric.com/guides/zoe/contract-upgrade) in a way that preserves the identity of objects as seen from other [vats](#vat). In the provided contract, baggage is used to ensure that the state of various components is maintained even after the contract is upgraded.
 
-```javascript
+```js
 export const start = async (zcf, privateArgs, baggage) => {
-  ...
+  // ...
   const { accountsStorageNode } = await provideAll(baggage, {
-    accountsStorageNode: () => E(storageNode).makeChildNode('accounts'),
+    accountsStorageNode: () => E(storageNode).makeChildNode('accounts')
   });
-  ...
-}
+  // ...
+};
 ```
 
 ### Exo
@@ -195,7 +195,7 @@ An Exo object is an exposed Remotable object with methods (aka a [Far](/glossary
 
 This [@endo/exo](https://github.com/endojs/endo/tree/master/packages/exo) package defines the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo objects.
 
-```javascript
+```js
 const publicFacet = zone.exo(
   'StakeAtom',
   M.interface('StakeAtomI', {
@@ -204,20 +204,20 @@ const publicFacet = zone.exo(
   }),
   {
     async makeAccount() {
-      trace('makeAccount')
-      const holder = await makeAccountKit()
-      return holder
+      trace('makeAccount');
+      const holder = await makeAccountKit();
+      return holder;
     },
     makeAccountInvitationMaker() {
-      trace('makeCreateAccountInvitation')
+      trace('makeCreateAccountInvitation');
       return zcf.makeInvitation(async seat => {
-        seat.exit()
-        const holder = await makeAccountKit()
-        return holder.asContinuingOffer()
-      }, 'wantStakingAccount')
+        seat.exit();
+        const holder = await makeAccountKit();
+        return holder.asContinuingOffer();
+      }, 'wantStakingAccount');
     }
   }
-)
+);
 ```
 
 ### Zones
@@ -226,40 +226,40 @@ Each [Zone](/glossary/#zone) provides an API that allows the allocation of [Exo 
 
 See [SwingSet vat upgrade documentation](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs/vat-upgrade.md) for more example use of the zone API.
 
-```javascript
+```js
 const zone = makeDurableZone(baggage);
-...
-zone.subZone('vows')
+// ...
+zone.subZone('vows');
 ```
 
 ### Durable Zone
 
 A zone specifically designed for durability, allowing the contract to persist its state across upgrades. This is critical for maintaining the continuity and reliability of the contract’s operations.
 
-```javascript
-const zone = makeDurableZone(baggage)
+```js
+const zone = makeDurableZone(baggage);
 ```
 
 ### Vow Tools
 
 See [Vow](/glossary/#vow); These tools handle promises and asynchronous operations within the contract. `prepareVowTools` prepares the necessary utilities to manage these asynchronous tasks, ensuring that the contract can handle complex workflows that involve waiting for events or responses from other chains.
 
-```javascript
+```js
 const vowTools = prepareVowTools(zone.subZone('vows'));
-...
+// ...
 const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
   zone,
   makeRecorderKit,
   zcf,
   privateArgs.timerService,
   vowTools,
-  makeChainHub(privateArgs.agoricNames),
+  makeChainHub(privateArgs.agoricNames)
 );
-...
+// ...
 const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
   zone,
   makeRecorderKit,
   vowTools,
-  zcf,
+  zcf
 );
 ```

@@ -16,11 +16,12 @@ Returns the **Issuer** uniquely associated with this **Mint**. From its creation
 in an unchangeable one-to-one relationship with a particular **Issuer**.
 
 ```js
-const { issuer: quatloosIssuer, mint: quatloosMint } = makeIssuerKit('quatloos')
-const quatloosMintIssuer = quatloosMint.getIssuer()
+const { issuer: quatloosIssuer, mint: quatloosMint } =
+  makeIssuerKit('quatloos');
+const quatloosMintIssuer = quatloosMint.getIssuer();
 
 // Returns true
-issuer === quatloosMintIssuer
+issuer === quatloosMintIssuer;
 ```
 
 ## aMint.mintPayment(newAmount)
@@ -37,11 +38,11 @@ const {
   issuer: quatloosIssuer,
   mint: quatloosMint,
   brand: quatloosBrand
-} = makeIssuerKit('quatloos')
+} = makeIssuerKit('quatloos');
 
-const quatloos1000 = amountMath.make(quatloosBrand, 1000n)
+const quatloos1000 = amountMath.make(quatloosBrand, 1000n);
 // newPayment will have a balance of 1000 Quatloos
-const newPayment = quatloosMint.mintPayment(quatloos1000)
+const newPayment = quatloosMint.mintPayment(quatloos1000);
 ```
 
 ::: tip Important

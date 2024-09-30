@@ -46,14 +46,14 @@ installation.)
 const issuerKeywordRecord = harden({
   Asset: moolaIssuer,
   Bid: simoleanIssuer
-})
+});
 
-const terms = harden({ numBidsAllowed: 3 })
+const terms = harden({ numBidsAllowed: 3 });
 const { creatorInvitation } = await E(zoe).startInstance(
   installation,
   issuerKeywordRecord,
   terms
-)
+);
 ```
 
 She can put something up for auction by escrowing it with Zoe, so she provides a
@@ -67,17 +67,17 @@ const aliceProposal = harden({
   give: { Asset: AmountMath.make(moolaBrand, 1n) },
   want: { Bid: AmountMath.make(simoleanBrand, 3n) },
   exit: { waived: null }
-})
+});
 
-const alicePayments = { Asset: aliceMoolaPayment }
+const alicePayments = { Asset: aliceMoolaPayment };
 
 const aliceSeat = await E(zoe).offer(
   creatorInvitation,
   aliceProposal,
   alicePayments
-)
-const invitationMaker = await E(aliceSeat).getOfferResult()
-const bobInvitation = E(invitationMaker).makeBidInvitation()
+);
+const invitationMaker = await E(aliceSeat).getOfferResult();
+const bobInvitation = E(invitationMaker).makeBidInvitation();
 ```
 
 Now Alice can share the counterparty invitation with her friends and see if there are
@@ -87,19 +87,19 @@ he expects. He can also check that the item up for sale is what he wants by comp
 the issuers.
 
 ```js
-const invitationIssuer = await E(zoe).getInvitationIssuer()
-const bobExclusiveInvitation = await invitationIssuer.claim(bobInvitation)
+const invitationIssuer = await E(zoe).getInvitationIssuer();
+const bobExclusiveInvitation = await invitationIssuer.claim(bobInvitation);
 
 const { installation: bobInstallation, instance } = await E(
   zoe
-).getInvitationDetails(bobExclusiveInvitation)
-const bobIssuers = await E(zoe).getIssuers(instance)
+).getInvitationDetails(bobExclusiveInvitation);
+const bobIssuers = await E(zoe).getIssuers(instance);
 
 assert(
   bobInstallation === secondPriceAuctionInstallation,
   details`wrong installation`
-)
-assert(bobIssuers.Asset === moolaIssuer, details`wrong issuer`)
+);
+assert(bobIssuers.Asset === moolaIssuer, details`wrong issuer`);
 ```
 
 Bob decides to join the contract and makes an offer:
@@ -108,15 +108,15 @@ Bob decides to join the contract and makes an offer:
 const bobProposal = harden({
   give: { Bid: AmountMath.make(simoleanBrand, 11n) },
   want: { Asset: AmountMath.make(moolaBrand, 1n) }
-})
+});
 
-const bobPayments = { Bid: bobSimoleanPayment }
+const bobPayments = { Bid: bobSimoleanPayment };
 
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobProposal,
   bobPayments
-)
+);
 ```
 
 Since multiple parties may want to participate in the auction, let's say that Carol and Dave also decide to bid in the same way
@@ -128,19 +128,19 @@ Bob gets the 1 moola that was up for auction as well as a refund of 4
 simoleans (11-7), and Carol and Dave get a full refund.
 
 ```js
-const aliceAssetPayout = await aliceSeat.getPayout('Asset')
-const moolaRefundAmount = aliceMoolaPurse.deposit(aliceAssetPayout)
+const aliceAssetPayout = await aliceSeat.getPayout('Asset');
+const moolaRefundAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
 
-const alicePricePayout = await aliceSeat.getPayout('Price')
-const simoleanGainAmount = aliceSimPurse.deposit(alicePricePayout)
+const alicePricePayout = await aliceSeat.getPayout('Price');
+const simoleanGainAmount = aliceSimPurse.deposit(alicePricePayout);
 ```
 
 Bob's payouts are also available.
 
 ```js
-const bobAssetPayout = await bobSeat.getPayout('Asset')
-const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout)
+const bobAssetPayout = await bobSeat.getPayout('Asset');
+const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
 
-const bobPricePayout = await bobSeat.getPayout('Price')
-const bobSimoleanRefundAmount = bobSimoleanPurse.deposit(bobPricePayout)
+const bobPricePayout = await bobSeat.getPayout('Price');
+const bobSimoleanRefundAmount = bobSimoleanPurse.deposit(bobPricePayout);
 ```

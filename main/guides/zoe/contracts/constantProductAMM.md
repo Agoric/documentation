@@ -69,7 +69,7 @@ amountOut of the result.)
 const quote = E(publicFacet).getOutputPrice(
   AmountMath.make(BLDBrand, 275n),
   AmountMath.makeEmpty(ATMBrand)
-)
+);
 ```
 
 Let's assume the quote says she needs to provide 216 ATM. Sara believes the
@@ -85,15 +85,15 @@ back.
 const saraProposal = harden({
   want: { Out: AmountMath.make(BLDBrand, 275n) },
   give: { In: AmountMath.make(atmBrand, 220n) }
-})
+});
 
-const swapInvitation = await E(publicFacet).makeSwapOutInvitation()
+const swapInvitation = await E(publicFacet).makeSwapOutInvitation();
 const atmPayment = harden({
   In: saraAtmPurse.withdraw(AmountMath.make(atmBrand, 220n))
-})
+});
 
-const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, atmPayment)
-const saraResult = await saraSeat.getOfferResult()
+const saraSeat = await E(zoe).offer(swapInvitation, saraProposal, atmPayment);
+const saraResult = await saraSeat.getOfferResult();
 ```
 
 If the result is `Swap successfully completed.`, she got the BLD for 220 ATM
@@ -101,11 +101,11 @@ or less (she'll want to deposit any refund). Otherwise the market price moved ag
 her, and she'll have to check the price again and make another offer.
 
 ```js
-const BLDProceeds = await E(saraSeat).getPayout('In')
-const atmRefund = await E(saraSeat).getPayout('Out')
+const BLDProceeds = await E(saraSeat).getPayout('In');
+const atmRefund = await E(saraSeat).getPayout('Out');
 
-const BLDProceedsAmount = E(saraBLDPurse).deposit(BLDProceeds)
-E(saraAtmPurse).deposit(atmRefund)
+const BLDProceedsAmount = E(saraBLDPurse).deposit(BLDProceeds);
+E(saraAtmPurse).deposit(atmRefund);
 ```
 
 ### Creating a New Pool
@@ -117,7 +117,7 @@ on which to decide how much liquidity to create, so the liquidity amount equals 
 amount of the central token in the offer.
 
 ```js
-const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD')
+const BLDLiquidityIssuer = await E(publicFacet).addPool(BLDIssuer, 'BLD');
 ```
 
 Alice sees that the current rate in the external market is 2 BLD for each
@@ -130,18 +130,18 @@ const aliceProposal = harden({
     Secondary: AmountMath.make(BLDBrand, 100n),
     Central: AmountMath.make(ISTBrand, 50n)
   }
-})
+});
 const alicePayments = {
   Secondary: aliceBLDPayment,
   Central: aliceISTPayment
-}
+};
 
-const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation()
+const aliceAddLiquidityInvitation = E(publicFacet).makeAddLiquidityInvitation();
 const addLiquiditySeat = await E(zoe).offer(
   aliceAddLiquidityInvitation,
   aliceProposal,
   alicePayments
-)
+);
 ```
 
 ### Adding Liquidity to an Existing Pool
@@ -157,9 +157,9 @@ Bob calls `getPoolAllocation()` to find the relative levels. Let's say the answe
 that the current ratio is 1234 BLD to 1718 IST.
 
 ```js
-const BLDPoolAlloc = E(publicFacet).getPoolAllocation(BLDBrand)
-const ISTValue = BLDPoolAlloc.Central.value
-const BLDValue = BLDPoolAlloc.secondary.value
+const BLDPoolAlloc = E(publicFacet).getPoolAllocation(BLDBrand);
+const ISTValue = BLDPoolAlloc.Central.value;
+const BLDValue = BLDPoolAlloc.secondary.value;
 ```
 
 Now he can add liquidity. The price ratio changes when anyone trades with the pool,
@@ -177,14 +177,14 @@ const bobProposal = harden({
   },
   want: { Liquidity: AmountMath.make(liquidityBrand, 0n) },
   exit: { onDemand: null }
-})
+});
 
 const bobPayments = {
   Central: bobISTPayment,
   Secondary: bobBLDPayment
-}
+};
 
-const seat = await E(zoe).offer(addLiquidityInvite, bobProposal, bobPayments)
+const seat = await E(zoe).offer(addLiquidityInvite, bobProposal, bobPayments);
 ```
 
 ## Governance

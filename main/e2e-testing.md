@@ -40,8 +40,8 @@ Before you start writing your E2E tests, you'll need to create a configuration f
 Inside `synpress.config.js`, you'll set the `baseUrl` property within the e2e configuration. This tells Cypress where to find your DApp during testing. Here's an example configuration:
 
 ```js
-const baseConfig = require('@agoric/synpress/synpress.config')
-const { defineConfig } = require('cypress')
+const baseConfig = require('@agoric/synpress/synpress.config');
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   ...baseConfig,
@@ -49,7 +49,7 @@ module.exports = defineConfig({
     ...baseConfig.e2e,
     baseUrl: 'http://localhost:5173'
   }
-})
+});
 ```
 
 In this example, `baseUrl` is set to `http://localhost:5173`. Make sure to replace this with the actual URL where your DApp is running.
@@ -69,7 +69,7 @@ Navigate to your project's `tests/e2e` directory and create a new file named `su
 After creating your `support.js` file, make sure to include the following import statement:
 
 ```js
-import '@agoric/synpress/support/index'
+import '@agoric/synpress/support/index';
 ```
 
 This import is essential because it brings in the necessary functionalities from `@agoric/synpress` to interact with the Keplr wallet within your e2e tests. Without it, your tests won't be able to leverage the features provided by `@agoric/synpress` for Keplr integration.
@@ -86,8 +86,8 @@ You use `describe` blocks to group related tests together, and `it` blocks to de
 describe('User Login', () => {
   it('should login with valid credentials', () => {
     // Test steps for login functionality
-  })
-})
+  });
+});
 ```
 
 ### Test 1: Setting Up Keplr Wallet
@@ -96,9 +96,9 @@ describe('User Login', () => {
 it('should setup a Keplr wallet', () => {
   cy.setupWallet({
     secretWords: 'KEPLR_MNEMONIC'
-  })
-  cy.visit('/')
-})
+  });
+  cy.visit('/');
+});
 ```
 
 This test case simulates setting up a Keplr wallet for your tests, using the `cy.setupWallet` method. Make sure to replace `KEPLR_MNEMONIC` with a 24-word mnemonic phrase. The `setupWallet` method creates a wallet based on the provided mnemonic phrase, which can then be used throughout your test suite.
@@ -109,9 +109,9 @@ After setting up the wallet, we visit the root path (`/`) of the DApp using `cy.
 
 ```js
 it('should accept connection with wallet', () => {
-  cy.contains('Connect Wallet').click()
-  cy.acceptAccess()
-})
+  cy.contains('Connect Wallet').click();
+  cy.acceptAccess();
+});
 ```
 
 This test simulates a user connecting their Keplr wallet to your DApp. `cy.contains('Connect Wallet')` searches for an element containing the text `Connect Wallet` on the webpage and triggers a click event. `cy.acceptAccess` simulates accepting Keplr wallet access for your DApp.
@@ -120,9 +120,9 @@ This test simulates a user connecting their Keplr wallet to your DApp. `cy.conta
 
 ```js
 it('should confirm make an offer transaction', () => {
-  cy.contains('Make an Offer').click()
-  cy.confirmTransaction()
-})
+  cy.contains('Make an Offer').click();
+  cy.confirmTransaction();
+});
 ```
 
 This test simulates transaction Signing on your DApp. `cy.contains('Make an Offer')` searches for an element containing the text `Make an Offer` and triggers a click event. `cy.confirmTransaction` simulates confirming a transaction.

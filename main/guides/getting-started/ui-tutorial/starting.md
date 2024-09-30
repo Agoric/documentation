@@ -35,30 +35,30 @@ yarn add -D buffer
 Now, create a new file `src/installSesLockdown.ts`:
 
 ```typescript
-import 'ses' // adds lockdown, harden, and Compartment
-import '@endo/eventual-send/shim.js' // adds support needed by E
-import { Buffer } from 'buffer'
+import 'ses'; // adds lockdown, harden, and Compartment
+import '@endo/eventual-send/shim.js'; // adds support needed by E
+import { Buffer } from 'buffer';
 
-const consoleTaming = import.meta.env.DEV ? 'unsafe' : 'safe'
+const consoleTaming = import.meta.env.DEV ? 'unsafe' : 'safe';
 
 lockdown({
   errorTaming: 'unsafe',
   overrideTaming: 'severe',
   consoleTaming
-})
+});
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = Infinity;
 
-globalThis.Buffer = Buffer
+globalThis.Buffer = Buffer;
 
 // @ts-expect-error Add process to context for cosmos-kit
-globalThis.process = { env: import.meta.env }
+globalThis.process = { env: import.meta.env };
 ```
 
 And at the top of `src/main.tsx` import the new file:
 
 ```typescript
-import './installSesLockdown.ts'
+import './installSesLockdown.ts';
 ```
 
 Restart your app and it should load as before without errors. Now, the app is running with Hardened JS enabled and we're ready to continue.

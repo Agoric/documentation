@@ -12,8 +12,8 @@ In [Adding Parameter Governance to a Contract](../governance/#adding-parameter-g
 In [dapp-agoric-basics](https://github.com/Agoric/dapp-agoric-basics), the `startSwapContract` uses 2 [permitted deployment capabilities](../coreeval/permissions), `chainStorage` and `board` and uses them to make the `privateArgs`:
 
 ```js
-const marshaller = await E(board).getPublishingMarshaller()
-const storageNode = await E(chainStorage).makeChildNode(contractName)
+const marshaller = await E(board).getPublishingMarshaller();
+const storageNode = await E(chainStorage).makeChildNode(contractName);
 ```
 
 A `Marshaller` is parameterized by functions for mapping unforgeable object identities to plain data slot references and back. Using the [board](../integration/name-services#the-board-publishing-under-arbitrary-names) name service gives consistent slot references across contracts.
@@ -104,7 +104,7 @@ a `RecorderKit` using [prepareRecorderKitMakers](/reference/zoe-api/zoe-helpers#
 const { makeRecorderKit } = prepareRecorderKitMakers(
   baggage,
   privateArgs.marshaller
-)
+);
 ```
 
 The contract gets `baggage`, along with `privateArgs` when it starts in
@@ -122,14 +122,14 @@ The contract gets `baggage`, along with `privateArgs` when it starts in
  * @param {Baggage} baggage
  */
 export const prepare = async (zcf, privateArgs, baggage) => {
-    ...
+  // ...
 };
 ```
 
 The reserve uses its `StorageNode` and makes a child to get `metricsNode`:
 
 ```js
-const metricsNode = await E(storageNode).makeChildNode('metrics')
+const metricsNode = await E(storageNode).makeChildNode('metrics');
 ```
 
 The `marshaller` is used to serialize data structures such as `MetricsNotification` above.
@@ -140,9 +140,9 @@ To start `assetReserve`, the [setupReserve](https://github.com/Agoric/agoric-sdk
 the two relevant `privateArgs`, `marshaller` and `storageNode`:
 
 ```js
-const STORAGE_PATH = 'reserve'
-const storageNode = await E(storageNode).makeChildNode(STORAGE_PATH)
-const marshaller = await E(board).getReadonlyMarshaller()
+const STORAGE_PATH = 'reserve';
+const storageNode = await E(storageNode).makeChildNode(STORAGE_PATH);
+const marshaller = await E(board).getReadonlyMarshaller();
 ```
 
 The `setupReserve` function gets `chainStorage` and `board` deployment capabilities passed in:
@@ -152,8 +152,8 @@ export const setupReserve = async ({
   consume: {
     board,
     chainStorage,
-    ...
+// ...
   },
-...
+// ...
 }) => { ... };
 ```

@@ -18,7 +18,7 @@ Throws messages for errors:
 - **Parameter must be a Ratio record, but ${ratio} has ${q(name)}**
 
 ```js
-assertIsRatio(aRatio)
+assertIsRatio(aRatio);
 ```
 
 ## makeRatio(numerator, numeratorBrand, denominator?, denominatorBrand?)
@@ -35,9 +35,9 @@ By default, the _denominator_ is 100n (i.e., the **Ratio** is a percent).
 
 ```js
 // Use default values to create a ratio of 50 / 100 Quatloos
-const ratio = makeRatio(50n, quatloosBrand)
+const ratio = makeRatio(50n, quatloosBrand);
 // Specify all values to create a ratio of 75 Quatloos / 4 Moolas (the current exchange rate)
-const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand)
+const ratio = makeRatio(75n, quatloosBrand, 4n, moolasBrand);
 ```
 
 ## makeRatioFromAmounts(numeratorAmount, denominatorAmount)
@@ -51,9 +51,9 @@ of two **Amounts**. The _numeratorAmount_ is the **Ratio's** numerator and
 the _denominatorAmount_ is the **Ratio's** denominator.
 
 ```js
-const fiftyCents = AmountMath.make(centsBrand, 50n)
-const dollar = AmountMath.make(centsBrand, 100n)
-const halfADollar = makeRatioFromAmounts(fiftyCents, dollar)
+const fiftyCents = AmountMath.make(centsBrand, 50n);
+const dollar = AmountMath.make(centsBrand, 100n);
+const halfADollar = makeRatioFromAmounts(fiftyCents, dollar);
 ```
 
 ## floorMultiplyBy(amount, ratio)
@@ -87,10 +87,10 @@ Throws errors with messages:
   ratio.denominator.brand_)}\*: The amount and ratio's denominator must have the same brand.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand)
-const dollars47 = AmountMath.make(dollarBrand, 47n)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 28 Swiss francs
-const exchange = floorMultiplyBy(dollars47, exchangeRatio)
+const exchange = floorMultiplyBy(dollars47, exchangeRatio);
 ```
 
 ## ceilMultiplyBy(amount, ratio)
@@ -124,10 +124,10 @@ Throws errors with messages:
   ratio.denominator.brand**: The amount and ratio's denominator must have the same brand.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand)
-const dollars47 = AmountMath.make(dollarBrand, 47n)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 29 Swiss francs
-const exchange = ceilMultiplyBy(dollars47, exchangeRatio)
+const exchange = ceilMultiplyBy(dollars47, exchangeRatio);
 ```
 
 ## multiplyBy(amount, ratio)
@@ -160,10 +160,10 @@ Throws errors with messages:
   ratio.denominator.brand**: The amount and ratio's denominator must have the same brand.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand)
-const dollars47 = AmountMath.make(dollarBrand, 47n)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 28 Swiss francs
-const exchange = multiplyBy(dollars47, exchangeRatio)
+const exchange = multiplyBy(dollars47, exchangeRatio);
 ```
 
 ## floorDivideBy(amount, ratio)
@@ -195,10 +195,10 @@ Throws errors with messages:
   amount and ratio's numerator must have the same brand.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand)
-const dollars47 = AmountMath.make(dollarBrand, 47n)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 78 dollars
-const exchange = floorDivideBy(dollars47, exchangeRatio)
+const exchange = floorDivideBy(dollars47, exchangeRatio);
 ```
 
 ## ceilDivideBy(amount, ratio)
@@ -230,10 +230,10 @@ Throws errors with messages:
   amount and ratio's numerator must have the same brand.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand)
-const dollars47 = AmountMath.make(dollarBrand, 47n)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 79 dollars
-const exchange = ceilDivideBy(dollars47, exchangeRatio)
+const exchange = ceilDivideBy(dollars47, exchangeRatio);
 ```
 
 ## divideBy(amount, ratio)
@@ -265,10 +265,10 @@ Throws errors with messages:
   amount and ratio's numerator must have the same brand.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand)
-const dollars47 = AmountMath.make(dollarBrand, 47n)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, dollarBrand);
+const dollars47 = AmountMath.make(dollarBrand, 47n);
 // Returns an amount of 78 dollars
-const exchange = divideBy(dollars47, exchangeRatio)
+const exchange = divideBy(dollars47, exchangeRatio);
 ```
 
 ## invertRatio(ratio)
@@ -280,9 +280,9 @@ Returns a **Ratio** such that the _ratio_ argument's numerator is the returned v
 denominator and the _ratio_ argument's denominator is the returned value's numerator.
 
 ```js
-const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand)
+const exchangeRatio = makeRatio(3n, swissFrancBrand, 5n, usDollarBrand);
 // Returns a ratio of 5 US dollars / 3 swiss Francs
-const invertedRatio = invertRatio(exchangeRatio)
+const invertedRatio = invertRatio(exchangeRatio);
 ```
 
 ## addRatios(left, right)

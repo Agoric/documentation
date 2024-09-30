@@ -11,8 +11,8 @@ For example, if a seat expected to be paid 5 _Quatloos_ and 3 _Widgets_ after su
 
 ```js
 {
-  Quatloos: 5n
-  Widgets: 3n
+  Quatloos: 5n;
+  Widgets: 3n;
 }
 ```
 
@@ -81,10 +81,10 @@ Subtypes further constrain property values (for example, an
 Users submit their **payments** as **KeywordRecords**:
 
 ```js
-const aFistfulOfQuatloos = AmountMath.make(quatloosBrand, 1000n)
+const aFistfulOfQuatloos = AmountMath.make(quatloosBrand, 1000n);
 const paymentKeywordRecord = {
   Asset: quatloosPurse.withdraw(aFistfulOfQuatloos)
-}
+};
 ```
 
 ## ParsableNumber

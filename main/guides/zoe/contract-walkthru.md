@@ -80,7 +80,7 @@ The test starts by using `makeZoeKitForTest` to set up zoe for testing:
 <<< @/../snippets/zoe/contracts/test-bundle-source.js#importZoeForTest
 
 ```js
-const { zoeService: zoe } = makeZoeKitForTest()
+const { zoeService: zoe } = makeZoeKitForTest();
 ```
 
 :::
@@ -199,7 +199,7 @@ alicePurse.deposit(moneyPayment);
 Then we pass the contract instance and the purse to our code for `alice`:
 
 ```js
-await alice(t, zoe, instance, alicePurse)
+await alice(t, zoe, instance, alicePurse);
 ```
 
 Alice starts by using the `instance` to get the contract's `publicFacet` and `terms` from Zoe:

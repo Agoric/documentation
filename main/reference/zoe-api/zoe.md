@@ -36,12 +36,12 @@ const brandKeywordRecord = {
   FirstCurrency: quatloosBrand,
   SecondCurrency: moolaBrand
   // etc.
-}
+};
 ```
 
 ```js
 // Call example
-const brandKeywordRecord = await E(Zoe).getBrands(instance)
+const brandKeywordRecord = await E(Zoe).getBrands(instance);
 ```
 
 ## E(Zoe).getIssuers(instance)
@@ -59,12 +59,12 @@ and the values are **Issuers**.
 const issuerKeywordRecord = {
   FirstCurrency: quatloosIssuer,
   SecondCurrency: moolaIssuer
-}
+};
 ```
 
 ```js
 // Call example
-const issuerKeywordRecord = await E(Zoe).getIssuers(instance)
+const issuerKeywordRecord = await E(Zoe).getIssuers(instance);
 ```
 
 ## E(Zoe).getTerms(instance)
@@ -87,7 +87,7 @@ custom terms. The returned values look like:
 ```
 
 ```js
-const terms = await E(Zoe).getTerms(instance)
+const terms = await E(Zoe).getTerms(instance);
 ```
 
 ## E(Zoe).getPublicFacet(instance)
@@ -103,7 +103,7 @@ Since a facet is defined just as any other object, the contract adds methods to 
 any object.
 
 ```js
-const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance)
+const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance);
 ```
 
 ## E(Zoe).getInvitationIssuer()
@@ -113,13 +113,13 @@ const ticketSalesPublicFacet = await E(Zoe).getPublicFacet(sellItemsInstance)
 Returns a **Promise** for the **InvitationIssuer** for the Zoe instance.
 
 ```js
-const invitationIssuer = await E(Zoe).getInvitationIssuer()
+const invitationIssuer = await E(Zoe).getInvitationIssuer();
 // Here a user, Bob, has received an untrusted invitation from Alice.
 // Bob uses the trusted **InvitationIssuer** from Zoe to
 // transform the untrusted invitation to a trusted one
-const trustedInvitation = await invitationIssuer.claim(untrustedInvitation)
+const trustedInvitation = await invitationIssuer.claim(untrustedInvitation);
 const { value: invitationValue } =
-  await E(invitationIssuer).getAmountOf(trustedInvitation)
+  await E(invitationIssuer).getAmountOf(trustedInvitation);
 ```
 
 ## E(Zoe).getInvitationDetails(invitation)
@@ -137,8 +137,8 @@ details about the **Invitation**:
   to match the invitation to the role it plays in the contract.
 
 ```js
-const invitation = await invitationIssuer.claim(untrustedInvitation)
-const invitationValue = await E(Zoe).getInvitationDetails(invitation)
+const invitation = await invitationIssuer.claim(untrustedInvitation);
+const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 ```
 
 ## E(Zoe).install(bundle)
@@ -152,9 +152,9 @@ Returns a **Promise** for an **Installation** object.
 ```js
 // bundleSource takes source code files and
 // bundles them together in the format install expects.
-import bundleSource from '@endto/bundle-source'
-const bundle = await bundleSource(pathResolve(`./src/contract.js`))
-const installationP = await E(Zoe).install(bundle)
+import bundleSource from '@endto/bundle-source';
+const bundle = await bundleSource(pathResolve(`./src/contract.js`));
+const installationP = await E(Zoe).install(bundle);
 ```
 
 ## E(Zoe).getConfiguration()
@@ -194,7 +194,7 @@ these methods:
 - **getPublicFacet()**
 
 ```js
-const instance = await E(Zoe).getInstance(invitation)
+const instance = await E(Zoe).getInstance(invitation);
 ```
 
 ## E(Zoe).getProposalShapeForInvitation(invitation)
@@ -213,7 +213,7 @@ See also [Proposal Shapes](./zoe-contract-facet#proposal-shapes).
 Returns a **Promise** for the contract **installation** the **Invitation**'s contract instance uses.
 
 ```js
-const installation = await E(Zoe).getInstallation(invitation)
+const installation = await E(Zoe).getInstallation(invitation);
 ```
 
 ## E(Zoe).getInstallationForInstance(instance)
@@ -228,7 +228,7 @@ the underlying code. This method can be used as part of a process to
 inspect the underlying code for a running contract **instance**.
 
 ```js
-const installation = await E(Zoe).getInstallationForInstance(instance)
+const installation = await E(Zoe).getInstallationForInstance(instance);
 ```
 
 ## E(Zoe).startInstance(installation, issuerKeywordRecord?, terms?, privateArgs?)
@@ -258,7 +258,7 @@ not be in the public terms. For example, to share minting authority
 among multiple contracts, pass in the following as **privateArgs**:
 
 ```js
-const privateArgs = { externalMint: myExternalMint }
+const privateArgs = { externalMint: myExternalMint };
 ```
 
 It returns a **Promise** for a **StartInstanceResult** object. The object consists of:
@@ -297,11 +297,11 @@ represented as a **Payment**.
 const issuerKeywordRecord = {
   Asset: moolaIssuer,
   Price: quatlooIssuer
-}
-const terms = { numBids: 3 }
+};
+const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(
   Zoe
-).startInstance(installation, issuerKeywordRecord, terms)
+).startInstance(installation, issuerKeywordRecord, terms);
 ```
 
 <a id="e-zoe-offer-invitation-proposal-paymentkeywordrecord-offerargs"></a>
@@ -333,7 +333,7 @@ const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
   exit: { onDemand: null }
-})
+});
 ```
 
 **give** and **want** use **[Keywords](./zoe-data-types#keyword)** defined by the contract.
@@ -360,7 +360,7 @@ containing the actual **payments** to be escrowed by Zoe.
 Every **Keyword** in **give** must have a corresponding **payment**.
 
 ```js
-const paymentKeywordRecord = harden({ Asset: quatloosPayment })
+const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 ```
 
 <a id="offerargs"></a>

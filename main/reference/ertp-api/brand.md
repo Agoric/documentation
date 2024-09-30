@@ -29,7 +29,7 @@ an **Issuer**. The claim should be cross-checked using the **Issuer's**
 [**anIssuer.getBrand()**](./issuer#anissuer-getbrand) method for mutual agreement.
 
 ```js
-const isIssuer = brand.isMyIssuer(issuer)
+const isIssuer = brand.isMyIssuer(issuer);
 ```
 
 ## aBrand.getAllegedName()
@@ -50,7 +50,7 @@ _Quatloos_ **Issuer**. The alleged name is just a human readable string which is
 helpful for debugging.
 
 ```js
-const name = brand.getAllegedName()
+const name = brand.getAllegedName();
 ```
 
 ## aBrand.getDisplayInfo()
@@ -66,7 +66,7 @@ the smallest denomination used for financial accounting (e.g.,
 displaying in dollars rather than cents).
 
 ```js
-const quatloosDisplay = quatloosBrand.getDisplayInfo()
+const quatloosDisplay = quatloosBrand.getDisplayInfo();
 ```
 
 ## aBrand.getAmountShape()

@@ -20,9 +20,9 @@ For a detailed explanation of these access control rules, see [Access Control wi
 
 This sample is taken from one of the [example contracts](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/examples/swapExample.contract.js)
 
-```javascript
+```js
 const stakeAndSwapFn = async (orch, ...) => {
-...
+// ...
   const omni = await orch.getChain('omniflixhub');
   const agoric = await orch.getChain('agoric');
 
@@ -34,7 +34,7 @@ const stakeAndSwapFn = async (orch, ...) => {
   const omniAddress = omniAccount.getAddress();
 
   // deposit funds from user seat to LocalChainAccount
-...
+// ...
   const transferMsg = orcUtils.makeOsmosisSwap({ ... });
 
   try {
@@ -53,18 +53,18 @@ The `makeChainHub` utility manages the connections and metadata for various bloc
 It simplifies accessing and interacting with multiple chains, providing a unified interface for the orchestration logic to manage cross-chain operations effectively.
 ChainHub also allows dynamic registration and use of chain and connection information.
 
-```javascript
-const chainHub = makeChainHub(remotePowers.agoricNames)
+```js
+const chainHub = makeChainHub(remotePowers.agoricNames);
 
 // Register a new chain with its information
-chainHub.registerChain(chainKey, chainInfo)
+chainHub.registerChain(chainKey, chainInfo);
 
 // Register a connection between the Agoric chain and the new chain
 chainHub.registerConnection(
   agoricChainInfo.chainId,
   chainInfo.chainId,
   connectionInfo
-)
+);
 ```
 
 In this example, `chainHub` is used to register a new chain and establish a connection between the Agoric chain and the newly registered chain.
@@ -77,8 +77,8 @@ Orchestration accounts are a key concept in the Agoric Orchestration API, repres
 
 - `getAddress` retrieves the address of the account on the remote chain.
 
-```javascript
-const address = await orchestrationAccount.getAddress()
+```js
+const address = await orchestrationAccount.getAddress();
 ```
 
 **2. Balance Management**
@@ -86,9 +86,9 @@ const address = await orchestrationAccount.getAddress()
 - `getBalances` returns an array of amounts for every balance in the account.
 - `getBalance` retrieves the balance of a specific denom for the account.
 
-```javascript
-const balances = await orchestrationAccount.getBalances()
-const balance = await orchestrationAccount.getBalance('uatom')
+```js
+const balances = await orchestrationAccount.getBalances();
+const balance = await orchestrationAccount.getBalance('uatom');
 ```
 
 **3. Funds Transfer**
@@ -97,10 +97,10 @@ const balance = await orchestrationAccount.getBalance('uatom')
 - `transfer` transfers an amount to another account, typically on another chain.
 - `transferSteps` transfers an amount in multiple steps, handling complex transfer paths.
 
-```javascript
-await orchestrationAccount.send(receiverAddress, amount)
-await orchestrationAccount.transfer(amount, destinationAddress)
-await orchestrationAccount.transferSteps(amount, transferMsg)
+```js
+await orchestrationAccount.send(receiverAddress, amount);
+await orchestrationAccount.transfer(amount, destinationAddress);
+await orchestrationAccount.transferSteps(amount, transferMsg);
 ```
 
 To see the function the Orchestration API exposes, see [Orchestration API](/guides/orchestration/getting-started/api.html)

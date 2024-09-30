@@ -100,22 +100,22 @@ It only does one thing, and it's pretty useless&mdash;it gives you back what you
 ```js
 const start = zcf => {
   const refund = seat => {
-    seat.exit()
-    return `The offer was accepted`
-  }
-  const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund')
+    seat.exit();
+    return `The offer was accepted`;
+  };
+  const makeRefundInvitation = () => zcf.makeInvitation(refund, 'getRefund');
 
   const publicFacet = Far('publicFacet', {
     makeInvitation: makeRefundInvitation
-  })
+  });
 
-  const creatorInvitation = makeRefundInvitation()
+  const creatorInvitation = makeRefundInvitation();
 
-  return harden({ creatorInvitation, publicFacet })
-}
+  return harden({ creatorInvitation, publicFacet });
+};
 
-harden(start)
-export { start }
+harden(start);
+export { start };
 ```
 
 Whenever we create a new object or array, we recursively
@@ -190,10 +190,10 @@ both parties. Finally, `matchingSeatOfferHandler()` shuts down the contract.
 
 ```js
 const matchingSeatOfferHandler = matchingSeat => {
-  const swapResult = swap(zcf, firstSeat, matchingSeat)
-  zcf.shutdown()
-  return swapResult
-}
+  const swapResult = swap(zcf, firstSeat, matchingSeat);
+  zcf.shutdown();
+  return swapResult;
+};
 ```
 
 Now let's put it together. The final step of `makeMatchingInvitation()`

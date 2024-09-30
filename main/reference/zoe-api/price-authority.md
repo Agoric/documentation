@@ -22,7 +22,7 @@ given _brandIn_/_brandOut_ pair.
 const quoteIssuer = await E(PriceAuthority).getQuoteIssuer(
   collateralKit.brand,
   loanKit.brand
-)
+);
 ```
 
 ## E(PriceAuthority).getTimerService(brandIn, brandOut)
@@ -38,7 +38,7 @@ given _brandIn_/_brandOut_ pair.
 const myTimer = E(PriceAuthority).getTimerService(
   collateral.brand,
   loanKit.brand
-)
+);
 ```
 
 ## E(PriceAuthority).makeQuoteNotifier(amountIn, brandOut)
@@ -51,7 +51,7 @@ Be notified of the latest **PriceQuotes** for a given _amountIn_. The issuing
 rate may be very different between **PriceAuthorities**.
 
 ```js
-const myNotifier = E(PriceAuthority).makeQuoteNotifier(quatloos100, usdBrand)
+const myNotifier = E(PriceAuthority).makeQuoteNotifier(quatloos100, usdBrand);
 ```
 
 ## E(PriceAuthority).quoteGiven(amountIn, brandOut)
@@ -63,7 +63,7 @@ const myNotifier = E(PriceAuthority).makeQuoteNotifier(quatloos100, usdBrand)
 Gets a quote on-demand corresponding to _amountIn_.
 
 ```js
-const quote = await E(PriceAuthority).quoteGiven(moola500, quatloosBrand)
+const quote = await E(PriceAuthority).quoteGiven(moola500, quatloosBrand);
 ```
 
 ## E(PriceAuthority).quoteWanted(brandIn, amountOut)
@@ -75,7 +75,7 @@ const quote = await E(PriceAuthority).quoteGiven(moola500, quatloosBrand)
 Gets a quote on-demand corresponding to _amountOut_.
 
 ```js
-const quote = await E(PriceAuthority).quoteWanted(quatloosBrand, moola500)
+const quote = await E(PriceAuthority).quoteWanted(quatloosBrand, moola500);
 ```
 
 ## E(PriceAuthority).quoteAtTime(deadline, amountIn, brandOut)
@@ -93,7 +93,7 @@ const priceQuoteOnThisAtTime = E(PriceAuthority).quoteAtTime(
   7n,
   quatloosAmount34,
   usdBrand
-)
+);
 ```
 
 ## E(PriceAuthority).quoteWhenGT(amountIn, amountOutLimit)
@@ -108,7 +108,7 @@ Resolves when a **PriceQuote** of _amountIn_ exceeds _amountOutLimit_.
 const quote = E(PriceAuthority).quoteWhenGT(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).quoteWhenGTE(amountIn, amountOutLimit)
@@ -123,7 +123,7 @@ Resolves when a **PriceQuote** of _amountIn_ reaches or exceeds _amountOutLimit_
 const quote = E(PriceAuthority).quoteWhenGTE(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).quoteWhenLT(amountIn, amountOutLimit)
@@ -138,7 +138,7 @@ Resolves when a **PriceQuote** of _amountIn_ drops below _amountOutLimit_.
 const quote = E(PriceAuthority).quoteWhenLT(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).quoteWhenLTE(amountIn, amountOutLimit)
@@ -153,7 +153,7 @@ Resolves when a **PriceQuote** of _amountIn_ reaches or drops below _amountOutLi
 const quote = E(PriceAuthority).quoteWhenLTE(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).mutableQuoteWhenGT(amountIn, amountOutLimit)
@@ -168,7 +168,7 @@ Resolves when a **PriceQuote** of _amountIn_ exceeds _amountOutLimit_.
 const quote = E(PriceAuthority).mutableQuoteWhenGT(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).mutableQuoteWhenGTE(amountIn, amountOutLimit)
@@ -184,7 +184,7 @@ _amountOutLimit_.
 const quote = E(PriceAuthority).mutableQuoteWhenGTE(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).mutableQuoteWhenLT(amountIn, amountOutLimit)
@@ -200,7 +200,7 @@ _amountOutLimit_.
 const quote = E(PriceAuthority).mutableQuoteWhenLT(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## E(PriceAuthority).mutableQuoteWhenLTE(amountIn, amountOutLimit)
@@ -216,7 +216,7 @@ _amountOutLimit_.
 const quote = E(PriceAuthority).mutableQuoteWhenLTE(
   AmountMath.make(brands.In, 29n),
   AmountMath.make(brands.Out, 974n)
-)
+);
 ```
 
 ## MutableQuote
@@ -243,7 +243,7 @@ A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also
 balance of the **Payment**.
 
 ```js
-const { quoteAmount, quotePayment } = priceQuote
+const { quoteAmount, quotePayment } = priceQuote;
 ```
 
 **PriceQuotes** are returned in two forms:

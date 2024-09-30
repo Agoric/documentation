@@ -29,11 +29,11 @@ can create a swap instance for this particular transaction.
 const issuerKeywordRecord = harden({
   Asset: moolaIssuer,
   Price: simoleanIssuer
-})
+});
 const { creatorInvitation } = await E(zoe).startInstance(
   atomicSwapInstallation,
   issuerKeywordRecord
-)
+);
 ```
 
 Then Alice escrows her offer with Zoe. She passes in two
@@ -52,14 +52,14 @@ In this case, Alice's exit rule is `onDemand`, meaning she
 can exit the contract instance at any time.
 
 ```js
-const threeMoola = AmountMath.make(moolaBrand, 3)
+const threeMoola = AmountMath.make(moolaBrand, 3);
 const aliceProposal = harden({
   give: { Asset: threeMoola },
   want: { Price: AmountMath.make(simoleanBrand, 7) },
   exit: { onDemand: null }
-})
+});
 
-const alicePayment = await E(aliceMoolaPurse).withdraw(threeMoola)
+const alicePayment = await E(aliceMoolaPurse).withdraw(threeMoola);
 ```
 
 For Alice to escrow with Zoe, she needs to use her invitation.
@@ -71,14 +71,14 @@ const aliceSeat = await E(zoe).offer(
   creatorInvitation,
   aliceProposal,
   harden({ Asset: alicePayment })
-)
+);
 ```
 
 This first offer's outcome is an invitation Alice can send to anyone she wants. In
 this example, she sends it to Bob.
 
 ```js
-const invitationP = aliceSeat.getOfferResult()
+const invitationP = aliceSeat.getOfferResult();
 ```
 
 Bob examines the invitation's details to see if they match Alice's claims
@@ -86,26 +86,26 @@ about it.
 
 ```js secondary style2
 const { installation: bobInstallation, instance } =
-  E(zoe).getInvitationDetails(invitationP)
-const bobIssuers = E(zoe).getIssuers(instance)
+  E(zoe).getInvitationDetails(invitationP);
+const bobIssuers = E(zoe).getIssuers(instance);
 
-const bobExclusiveInvitation = await invitationIssuer.claim(invitationP)
+const bobExclusiveInvitation = await invitationIssuer.claim(invitationP);
 const bobInvitationValue = await E(zoe).getInvitationDetails(
   bobExclusiveInvitation
-)
+);
 
 // Bob verifies the invitation.
-assert(bobInstallation === atomicSwapInstallation, details`wrong contract`)
-assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`)
-assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`)
+assert(bobInstallation === atomicSwapInstallation, details`wrong contract`);
+assert(bobIssuers.Asset === moolaIssuer, details`unexpected Asset issuer`);
+assert(bobIssuers.Price === simoleanIssuer, details`unexpected Price issuer`);
 assert(
   AmountMath.isEqual(bobInvitationValue.asset, moola(3)),
   details`wrong asset`
-)
+);
 assert(
   AmountMath.isEqual(bobInvitationValue.price, simoleans(7)),
   details`wrong price`
-)
+);
 ```
 
 Bob decides to exercise the invitation, and to escrow his payments. He then
@@ -114,20 +114,20 @@ But Bob has written his proposal to match Alice's (notice that the `give`
 and `want` clauses are reversed from Alice's proposal):
 
 ```js secondary style2
-const sevenSimoleans = AmountMath.make(simoleanBrand, 7n)
+const sevenSimoleans = AmountMath.make(simoleanBrand, 7n);
 const bobProposal = harden({
   want: { Asset: AmountMath.make(moolaBrand, 3n) },
   give: { Price: sevenSimoleans },
   exit: { onDemand: null }
-})
+});
 
-const bobPayment = await E(bobSimoleansPurse).withdraw(sevenSimoleans)
+const bobPayment = await E(bobSimoleansPurse).withdraw(sevenSimoleans);
 // Bob escrows with zoe and makes an offer
 const bobSeat = await E(zoe).offer(
   bobExclusiveInvitation,
   bobProposal,
   harden({ Price: bobPayment })
-)
+);
 ```
 
 Bob has made his offer, so the contract executes. Since Alice
@@ -136,16 +136,16 @@ and Bob's offers match, Alice's payouts resolve. She uses her
 payout to find out if Zoe returned some of it.
 
 ```js
-const aliceAssetPayout = await aliceSeat.getPayout('Asset')
-const alicePricePayout = await aliceSeat.getPayout('Price')
-const moolaRefundAmount = aliceMoolaPurse.deposit(aliceAssetPayout)
-const simoleanGainAmount = aliceSimoleansPurse.deposit(alicePricePayout)
+const aliceAssetPayout = await aliceSeat.getPayout('Asset');
+const alicePricePayout = await aliceSeat.getPayout('Price');
+const moolaRefundAmount = aliceMoolaPurse.deposit(aliceAssetPayout);
+const simoleanGainAmount = aliceSimoleansPurse.deposit(alicePricePayout);
 ```
 
 Bob's payout is also available. Since he already knows what Alice's offer was,
 he doesn't need to look for a simolean refund.
 
 ```js secondary style2
-const bobAssetPayout = await bobSeat.getPayout('Asset')
-const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout)
+const bobAssetPayout = await bobSeat.getPayout('Asset');
+const bobMoolaGainAmount = bobMoolaPurse.deposit(bobAssetPayout);
 ```

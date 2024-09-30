@@ -26,7 +26,7 @@ not equal, an error is thrown and no changes are made.
 Creates an **Amount** from a given **Brand** and **AmountValue**.
 
 ```js
-const bid = AmountMath.make(quatloosBrand, 300n)
+const bid = AmountMath.make(quatloosBrand, 300n);
 ```
 
 ## AmountMath.coerce(brand, allegedAmount)
@@ -39,7 +39,7 @@ Verifies that an **Amount** is for the specified _brand_ and returns an equivale
 If the **Amount** is not for the specified **Brand**, an error is thrown.
 
 ```js
-const verifiedAmount = AmountMath.coerce(quatloosBrand, bid)
+const verifiedAmount = AmountMath.coerce(quatloosBrand, bid);
 ```
 
 ## AmountMath.getValue(brand, amount)
@@ -51,10 +51,10 @@ const verifiedAmount = AmountMath.coerce(quatloosBrand, bid)
 Returns the **AmountValue** from the given **Amount**.
 
 ```js
-const quatloos123 = AmountMath.make(quatloosBrand, 123n)
+const quatloos123 = AmountMath.make(quatloosBrand, 123n);
 
 // Returns 123n
-AmountMath.getValue(quatloosBrand, quatloos123)
+AmountMath.getValue(quatloosBrand, quatloos123);
 ```
 
 ## AmountMath.makeEmpty(brand, assetKind)
@@ -70,7 +70,7 @@ on whether the _assetKind_ is **AssetKind.NAT** (`0n`), **AssetKind.COPY_SET** (
 
 ```js
 // Returns an amount with 0n as its value
-const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT)
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
 ```
 
 ## AmountMath.makeEmptyFromAmount(amount)
@@ -82,9 +82,9 @@ Returns an empty **Amount** for the **Brand** of the _amount_ parameter.
 
 ```js
 // bid = { brand: quatloosBrand, value: 300n }
-const bid = AmountMath.make(quatloosBrand, 300n)
+const bid = AmountMath.make(quatloosBrand, 300n);
 // Returns { brand: quatloosBrand, value: 0n }
-const zeroQuatloos = AmountMath.makeEmptyFromAmount(bid)
+const zeroQuatloos = AmountMath.makeEmptyFromAmount(bid);
 ```
 
 ## AmountMath.isEmpty(amount, brand?)
@@ -98,14 +98,14 @@ Returns **true** if the **Amount** is empty. Otherwise returns **false**.
 If the optional _brand_ argument doesn't match the **Amount**'s **Brand**, an error is thrown.
 
 ```js
-const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT)
-const quatloos1 = AmountMath.make(quatloosBrand, 1n)
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
+const quatloos1 = AmountMath.make(quatloosBrand, 1n);
 
 // Returns true
-const result = AmountMath.isEmpty(empty)
+const result = AmountMath.isEmpty(empty);
 
 // Returns false
-const result = AmountMath.isEmpty(quatloos1)
+const result = AmountMath.isEmpty(quatloos1);
 ```
 
 ## AmountMath.isGTE(leftAmount, rightAmount, brand?)
@@ -126,20 +126,20 @@ kind of **AmountMath**. For example, { 'seat 1', 'seat 2' } is considered
 greater than { 'seat 2' } because the former is a strict superset of the latter.
 
 ```js
-const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT)
-const quatloos5 = AmountMath.make(quatloosBrand, 5n)
-const quatloos10 = AmountMath.make(quatloosBrand, 10n)
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
+const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+const quatloos10 = AmountMath.make(quatloosBrand, 10n);
 
 // Returns true
-AmountMath.isGTE(quatloos5, empty)
+AmountMath.isGTE(quatloos5, empty);
 // Returns false
-AmountMath.isGTE(empty, quatloos5, quatloosBrand)
+AmountMath.isGTE(empty, quatloos5, quatloosBrand);
 // Returns true
-AmountMath.isGTE(quatloos10, quatloos5)
+AmountMath.isGTE(quatloos10, quatloos5);
 // Returns false
-AmountMath.isGTE(quatloos5, quatloos10)
+AmountMath.isGTE(quatloos5, quatloos10);
 // Returns true
-AmountMath.isGTE(quatloos5, quatloos5)
+AmountMath.isGTE(quatloos5, quatloos5);
 ```
 
 ## AmountMath.isEqual(leftAmount, rightAmount, brand?)
@@ -163,19 +163,19 @@ unequal to { 'seat 2' } because the number of elements differ.
 { 'seat 1' } is considered unequal to { 'seat 2' } because the elements do not match.
 
 ```js
-const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT)
-const quatloos5 = AmountMath.make(quatloosBrand, 5n)
-const quatloos5b = AmountMath.make(quatloosBrand, 5n)
-const quatloos10 = AmountMath.make(quatloosBrand, 10n)
+const empty = AmountMath.makeEmpty(quatloosBrand, AssetKind.NAT);
+const quatloos5 = AmountMath.make(quatloosBrand, 5n);
+const quatloos5b = AmountMath.make(quatloosBrand, 5n);
+const quatloos10 = AmountMath.make(quatloosBrand, 10n);
 
 // Returns true
-AmountMath.isEqual(quatloos10, quatloos10)
+AmountMath.isEqual(quatloos10, quatloos10);
 // Returns true
-AmountMath.isEqual(quatloos5, quatloos5b)
+AmountMath.isEqual(quatloos5, quatloos5b);
 // Returns false
-AmountMath.isEqual(quatloos10, quatloos5)
+AmountMath.isEqual(quatloos10, quatloos5);
 // Returns false
-AmountMath.isEqual(empty, quatloos10)
+AmountMath.isEqual(empty, quatloos10);
 ```
 
 ## AmountMath.add(leftAmount, rightAmount, brand?)
@@ -198,13 +198,13 @@ If one of _leftAmount_ or _rightAmount_ is empty, this method returns an **Amoun
 If both are empty, this method returns an empty **Amount**.
 
 ```js
-import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp'
-const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET)
-const listAmountA = AmountMath.make(myItemsBrand, ['1', '2', '4'])
-const listAmountB = AmountMath.make(myItemsBrand, ['3'])
+import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET);
+const listAmountA = AmountMath.make(myItemsBrand, ['1', '2', '4']);
+const listAmountB = AmountMath.make(myItemsBrand, ['3']);
 
 // Returns an amount whose value is ['1', '2', '4', '3']
-const combinedList = AmountMath.add(listAmountA, listAmountB)
+const combinedList = AmountMath.add(listAmountA, listAmountB);
 ```
 
 ## AmountMath.subtract(leftAmount, rightAmount, brand?)
@@ -228,17 +228,17 @@ If _rightAmount_ is empty, this method returns _leftAmount_. If both arguments a
 empty, this method returns an empty **Amount**.
 
 ```js
-import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp'
-const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET)
-const listAmountA = AmountMath.make(myItemsBrand, ['1', '2', '4'])
-const listAmountB = AmountMath.make(myItemsBrand, ['3'])
-const listAmountC = AmountMath.make(myItemsBrand, ['2'])
+import { AssetKind, makeIssuerKit, AmountMath } from '@agoric/ertp';
+const { brand: myItemsBrand } = makeIssuerKit('myItems', AssetKind.COPY_SET);
+const listAmountA = AmountMath.make(myItemsBrand, ['1', '2', '4']);
+const listAmountB = AmountMath.make(myItemsBrand, ['3']);
+const listAmountC = AmountMath.make(myItemsBrand, ['2']);
 
 // Returns ['1', '4']
-const subtractedList = AmountMath.subtract(listAmountA, listAmountC)
+const subtractedList = AmountMath.subtract(listAmountA, listAmountC);
 
 // Throws an error
-const badList = AmountMath.subtract(listAmountA, listAmountB)
+const badList = AmountMath.subtract(listAmountA, listAmountB);
 ```
 
 ## AmountMath.min(x, y, brand?)
@@ -255,11 +255,11 @@ Both **Amount** arguments must have the same **Brand**.
 If the optional _brand_ argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 ```js
-const smallerAmount = AmountMath.make(quatloosBrand, 5n)
-const largerAmount = AmountMath.make(quatloosBrand, 10n)
+const smallerAmount = AmountMath.make(quatloosBrand, 5n);
+const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
 // Returns an amount equivalent to smallerAmount
-const comparisonResult = AmountMath.min(smallerAmount, largerAmount)
+const comparisonResult = AmountMath.min(smallerAmount, largerAmount);
 ```
 
 ## AmountMath.max(x, y, brand?)
@@ -276,11 +276,11 @@ Both **Amount** arguments must have the same **Brand**.
 If the optional _brand_ argument doesn't match the **Amount**s' **Brand**, an error is thrown.
 
 ```js
-const smallerAmount = AmountMath.make(quatloosBrand, 5n)
-const largerAmount = AmountMath.make(quatloosBrand, 10n)
+const smallerAmount = AmountMath.make(quatloosBrand, 5n);
+const largerAmount = AmountMath.make(quatloosBrand, 10n);
 
 // Returns an amount equivalent to largerAmount
-const comparisonResult = AmountMath.max(smallerAmount, largerAmount)
+const comparisonResult = AmountMath.max(smallerAmount, largerAmount);
 ```
 
 ## Related Methods

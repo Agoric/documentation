@@ -33,7 +33,7 @@ const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
   exit: { onDemand: null }
-})
+});
 ```
 
 **give** and **want** use [Keywords](/reference/zoe-api/zoe-data-types#keyword) defined by the contract.
@@ -73,7 +73,7 @@ or rejected or the assets are reassigned to another offer.
 const payments = {
   Asset: quatloosPayment,
   Price: moolaPayment
-}
+};
 ```
 
 ## Offer Arguments
