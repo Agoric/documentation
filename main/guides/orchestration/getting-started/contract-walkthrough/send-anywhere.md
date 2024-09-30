@@ -37,13 +37,11 @@ These imports set up the contract for the validation, orchestration, and executi
 The contract defines a shared state record as below:
 
 ```js
-export const SingleNatAmountRecord = M.and(
-  M.recordOf(M.string(), AnyNatAmountShape, {
-    numPropertiesLimit: 1,
-  }),
-  M.not(harden({})),
-);
-harden(SingleNatAmountRecord);
+const contractState = makeSharedStateRecord(
+    /** @type {{ account: OrchestrationAccount<any> | undefined }} */ {
+      localAccount: undefined,
+    },
+  );
 ```
 
 This state keeps track of the local account that will hold the transferred assets temporarily before they are sent to the destination address.
@@ -53,6 +51,17 @@ This state keeps track of the local account that will hold the transferred asset
 
 ### Single Amount Record Validation
 
-In order to ensure that only a single asset (or `brand`) is transferred per transaction, a `SingleNatAmountRecord` is defined (lines 14-19 in send-anywhere.contract.js). This validation ensures that the proposal shape submitted by users contains exactly one asset and no other extraneous properties.
+In order to ensure that only a single asset (or `brand`) is transferred per transaction, a `SingleNatAmountRecord` is defined:
 
-This check prevents errors or misuse by enforcing strict transaction shapes.
+```js
+export const SingleNatAmountRecord = M.and(
+  M.recordOf(M.string(), AnyNatAmountShape, {
+    numPropertiesLimit: 1,
+  }),
+  M.not(harden({})),
+);
+harden(SingleNatAmountRecord);
+```
+
+This validation ensures that the proposal shape submitted by users contains exactly one asset and no other extraneous properties.
+
