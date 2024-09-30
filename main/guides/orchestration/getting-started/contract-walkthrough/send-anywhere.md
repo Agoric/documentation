@@ -6,20 +6,19 @@ to a destination address on any supported blockchain.
 
 The high-level flow of the contract is:
 
-- Validate the asset brand on the source chain.
-- Create or ensure the existence of a local account (held by the contract) to handle temporary holding.
-- Transfer the asset from the source address to the local account.
-- Initiate a transfer to the destination address, which could reside on a remote blockchain.
-- Gracefully handle failures.
+- Validates the asset brand on the source chain.
+- Creates or ensures the existence of a local account (held by the contract) to handle temporary holding.
+- Transfers the asset from the source address to the local account.
+- Initiates a transfer to the destination address, which could reside on the remote blockchain.
+- Gracefully handles the failures.
 
 The contract is implemented in two separate files:
 
 1. `send-anywhere.contract.js` implements the `start` function of the contract to initialize the contract and
    expose `publicFacet` and `creatorFacet`.
-2. `send-anywhere.flows.js` implements the `sendIt` function which performs that actual transfer of assets when a
-   user makes an offer.
+2. `send-anywhere.flows.js` implements the `sendIt` function which performs the actual transfer of assets when a user makes an offer.
 
-Let us walkthroug these files one by one.
+Let us walkthrough these files one by one.
 
 ## 1. `send-anywhere.contract.js`
 
@@ -39,9 +38,9 @@ In order to ensure that only a single asset (or `brand`) is transferred per tran
 ```js
 export const SingleNatAmountRecord = M.and(
   M.recordOf(M.string(), AnyNatAmountShape, {
-    numPropertiesLimit: 1,
+    numPropertiesLimit: 1
   }),
-  M.not(harden({})),
+  M.not(harden({}))
 );
 harden(SingleNatAmountRecord);
 ```
@@ -55,16 +54,19 @@ The contract defines a shared state record as below:
 ```js
 const contractState = makeSharedStateRecord(
   /** @type {{ account: OrchestrationAccount<any> | undefined }} */ {
-    localAccount: undefined,
-  },
+    localAccount: undefined
+  }
 );
 ```
 
-This state keeps track of the local account that will hold the transferred assets temporarily before they are sent to the destination address. The state starts with an undefined `localAccount`. This account will be created later during the offer handling process if needed.
+This state keeps track of the local account that will hold the transferred assets temporarily before they are sent to the destination
+address. The state starts with an undefined `localAccount`. This account will be created later during the offer handling process if
+needed.
 
 ### Logging setup (in `contract` Function)
 
-The contract initializes a logging mechanism (`logNode`) to capture the contract's internal actions and state changes. Logs are written to a newly created `log` child in VStorage, making debugging and auditing easier.
+The contract initializes a logging mechanism (`logNode`) to capture the contract's internal actions and state changes. Logs are written
+to a newly created `log` child in vStorage, making debugging and auditing easier.
 
 ```js
 const logNode = E(privateArgs.storageNode).makeChildNode('log');
@@ -74,13 +76,14 @@ const log = msg => vowTools.watch(E(logNode).setValue(msg));
 
 ### Orchestration functions (in `contract` Function)
 
-These functions, imported from `send-anywhere.flows.js`, define the main behaviors for handling asset transfers. The contract wraps these functions with the necessary context (such as the contract state, logging, and Zoe tools).
+These functions, imported from `send-anywhere.flows.js`, define the main behaviors for handling asset transfers. The contract wraps
+these functions with the necessary context (such as the contract state, logging, and Zoe tools).
 
 ```js
 const orchFns = orchestrateAll(flows, {
   contractState,
   log,
-  zoeTools,
+  zoeTools
 });
 ```
 
@@ -92,7 +95,7 @@ The contract provides a public-facing API (`publicFacet`) that allows external u
 const publicFacet = zone.exo(
   'Send PF',
   M.interface('Send PF', {
-    makeSendInvitation: M.callWhen().returns(InvitationShape),
+    makeSendInvitation: M.callWhen().returns(InvitationShape)
   }),
   {
     makeSendInvitation() {
@@ -100,14 +103,16 @@ const publicFacet = zone.exo(
         orchFns.sendIt,
         'send',
         undefined,
-        M.splitRecord({ give: SingleNatAmountRecord }),
+        M.splitRecord({ give: SingleNatAmountRecord })
       );
-    },
-  },
+    }
+  }
 );
 ```
 
-The `makeSendInvitation` method creates an invitation for users, allowing them to initiate a transfer by submitting a proposal. The proposal must match the structure defined by the `SingleNatAmountRecord`, ensuring that only one asset is transferred per transaction. The invitation is connected to the `sendIt` function (explained later), which performs the asset transfer.
+The `makeSendInvitation` method creates an invitation for users, allowing them to initiate a transfer by submitting a proposal. The
+proposal must match the structure defined by the `SingleNatAmountRecord`, ensuring that only one asset is transferred per transaction.
+The invitation is connected to the `sendIt` function (explained later), which performs the asset transfer.
 
 ## 2. `send-anywhere.flows.js`
 
@@ -130,13 +135,14 @@ Upon receiving an offer, the `sendIt` function:
 
 - Validates the offer arguments using [endo's pattern-matching library](https://github.com/endojs/endo/tree/master/packages/patterns) to ensure the correct structure is submitted.
 - Retrieves the `proposal` from the seat, extracting the asset (`brand` and `amount`) being transferred.
-- The contract ensures that the asset brand is registered on the local chain by querying the chain’s asset registry (`vbank`). If not, the contract throws an error and exits the transaction.
+- The contract ensures that the asset brand is registered on the local chain by querying the chain’s asset registry (`vbank`). If not
+  the contract throws an error and exits the transaction.
 - If a local account for the contract doesn’t already exist, the function creates one.
 
 ```js
 mustMatch(offerArgs, harden({ chainName: M.scalar(), destAddr: M.string() }));
 const { chainName, destAddr } = offerArgs;
-// NOTE the proposal shape ensures that the `give` is a single asset
+
 const { give } = seat.getProposal();
 const [[_kw, amt]] = entries(give);
 void log(`sending {${amt.value}} from ${chainName} to ${destAddr}`);
@@ -145,7 +151,7 @@ const assets = await agoric.getVBankAssetInfo();
 void log(`got info for denoms: ${assets.map(a => a.denom).join(', ')}`);
 const { denom } = NonNullish(
   assets.find(a => a.brand === amt.brand),
-  `${amt.brand} not registered in vbank`,
+  `${amt.brand} not registered in vbank`
 );
 
 if (!contractState.localAccount) {
@@ -165,21 +171,23 @@ Once everything is validated, the contract performs the following steps:
 await localTransfer(seat, contractState.localAccount, give);
 ```
 
-- **Remote transfer**: The contract initiates the transfer to the destination address on remote chain. This transfer includes details such as the destination chain ID and address.
+- **Remote transfer**: The contract initiates the transfer to the destination address on the remote chain. This transfer includes
+  details such as the destination chain ID and address.
 
 ```js
 await contractState.localAccount.transfer(
   {
     value: destAddr,
     encoding: 'bech32',
-    chainId,
+    chainId
   },
-  { denom, value: amt.value },
+  { denom, value: amt.value }
 );
 ```
 
-- **Error handling**: If the transfer fails, the contract reverses the transaction by withdrawing the assets from the local account back to the Zoe seat. A detailed error message is logged and the seat is exited with the error.
-  This process ensures that assets are transferred securely, with clear rollback mechanisms in case of failure.
+- **Error handling**: If the transfer fails, the contract reverses the transaction by withdrawing the assets from the local account
+  back to the Zoe seat. A detailed error message is logged and the seat is exited with the error. This process ensures that assets
+  are transferred securely, with clear rollback mechanisms in case of failure.
 
 ```js
 await withdrawToSeat(contractState.localAccount, seat, give);
