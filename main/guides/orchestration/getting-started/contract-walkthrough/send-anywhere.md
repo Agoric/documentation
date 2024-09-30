@@ -65,3 +65,24 @@ harden(SingleNatAmountRecord);
 
 This validation ensures that the proposal shape submitted by users contains exactly one asset and no other extraneous properties.
 
+### Logging setup
+
+The contract initializes a logging mechanism (`logNode`) to capture the contract's internal actions and state changes. Logs are written to a newly created `log` child in VStorage, making debugging and auditing easier.
+```js
+const logNode = E(privateArgs.storageNode).makeChildNode('log');
+
+const log = msg => vowTools.watch(E(logNode).setValue(msg));
+```
+
+### Orchestration functions (`orchFns`):
+
+These functions, imported from `send-anywhere.flows.js`, define the main behaviors for handling asset transfers. The contract wraps these functions with the necessary context (such as the contract state, logging, and Zoe tools).
+```js
+const orchFns = orchestrateAll(flows, {
+    contractState,
+    log,
+    zoeTools,
+  });
+```
+
+### 
