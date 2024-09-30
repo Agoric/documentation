@@ -1,7 +1,7 @@
 # SendAnywhere Contract Walkthrough
 
 The "Send Anywhere" contract is designed to facilitate the transfer of assets from one chain to another using
-Agoric's Orchestration library. The contract allows a user to send a specific amount of a brand (token or asset)
+Agoric's [Orchestration](/glossary/#orchestration) library. The contract allows a user to send assets of a specific brand
 to a destination address on any supported blockchain.
 
 The high-level flow of the contract is:
@@ -21,33 +21,16 @@ The contract is implemented in two separate files:
 
 Let us walkthroug these files one by one.
 
-## `send-anywhere.contract.js`
+## 1. `send-anywhere.contract.js`
 
 The contract begins by importing various modules and utilities necessary for its functionality. These include:
 
-- **State management**: `makeSharedStateRecord` is imported to create and manage the state across contract executions.
+- **State management**: `makeSharedStateRecord` is imported to create and manage the state across contract incarnations.
 - **Type validation**: `AmountShape` and `InvitationShape` ensure that the contract works with correct data types, such as amounts and invitations.
-- **Orchestration utilities**: `withOrchestration` is imported to facilitate interactions with Zoe and other orchestration functions.
-- **Flows**: The orchestration flows for handling transfers are imported from `send-anywhere.flows.js`.
+- **Orchestration utilities**: `withOrchestration` is imported to facilitate interactions with orchestration functions.
+- **Flows**: The orchestration flows for handling transfers are imported from `send-anywhere.flows.js` to be made available to Zoe.
 
-These imports set up the contract for the validation, orchestration, and execution of transfers.
-
-### Contract State Setup
-
-The contract defines a shared state record as below:
-
-```js
-const contractState = makeSharedStateRecord(
-  /** @type {{ account: OrchestrationAccount<any> | undefined }} */ {
-    localAccount: undefined,
-  },
-);
-```
-
-This state keeps track of the local account that will hold the transferred assets temporarily before they are sent to the destination address.
-
-- **State initialization**: The state starts with an undefined `localAccount`. This account will be created later during the orchestration process if needed.
-  This shared state ensures that the contract retains context between different transactions and orchestrations.
+These imports set up the contract for the validation, orchestration, and execution of transfers through Zoe API.
 
 ### Single Amount Record Validation
 
@@ -65,7 +48,21 @@ harden(SingleNatAmountRecord);
 
 This validation ensures that the proposal shape submitted by users contains exactly one asset and no other extraneous properties.
 
-### Logging setup
+### Contract State Setup (in `contract` Function)
+
+The contract defines a shared state record as below:
+
+```js
+const contractState = makeSharedStateRecord(
+  /** @type {{ account: OrchestrationAccount<any> | undefined }} */ {
+    localAccount: undefined,
+  },
+);
+```
+
+This state keeps track of the local account that will hold the transferred assets temporarily before they are sent to the destination address. The state starts with an undefined `localAccount`. This account will be created later during the offer handling process if needed.
+
+### Logging setup (in `contract` Function)
 
 The contract initializes a logging mechanism (`logNode`) to capture the contract's internal actions and state changes. Logs are written to a newly created `log` child in VStorage, making debugging and auditing easier.
 
@@ -75,7 +72,7 @@ const logNode = E(privateArgs.storageNode).makeChildNode('log');
 const log = msg => vowTools.watch(E(logNode).setValue(msg));
 ```
 
-### Orchestration functions (`orchFns`):
+### Orchestration functions (in `contract` Function)
 
 These functions, imported from `send-anywhere.flows.js`, define the main behaviors for handling asset transfers. The contract wraps these functions with the necessary context (such as the contract state, logging, and Zoe tools).
 
@@ -87,7 +84,7 @@ const orchFns = orchestrateAll(flows, {
 });
 ```
 
-### Public Facet and Invitation Creation
+### Public Facet and Invitation Creation (in `contract` Function)
 
 The contract provides a public-facing API (`publicFacet`) that allows external users to interact with it:
 
@@ -110,10 +107,9 @@ const publicFacet = zone.exo(
 );
 ```
 
-The exposed `makeSendInvitation` method creates an invitation for users, allowing them to initiate a transfer by submitting a proposal. The proposal must match the structure defined by the `SingleNatAmountRecord`, ensuring that only one asset is transferred per transaction. The invitation is connected to the `sendIt` function (explained later), which performs the asset transfer.
-The public facet makes the contract accessible to external users, enabling them to initiate asset transfers in a controlled and secure way.
+The `makeSendInvitation` method creates an invitation for users, allowing them to initiate a transfer by submitting a proposal. The proposal must match the structure defined by the `SingleNatAmountRecord`, ensuring that only one asset is transferred per transaction. The invitation is connected to the `sendIt` function (explained later), which performs the asset transfer.
 
-## `send-anywhere.flows.js`
+## 2. `send-anywhere.flows.js`
 
 This flows file defines a single function `sendIt` that handles offers made to the contract. The `sendIt`
 function is the core of the transfer process. It handles the actual movement of assets between the local and
@@ -126,15 +122,13 @@ remote chains. The parameters passed to this function include:
 - `seat`: The Zoe seat representing the assets to be transferred.
 - `offerArgs`: Includes details about the destination chain and address.
 
-The `sendIt` function performs several important steps:
+The `sendIt` function performs following important steps:
 
 ### Offer Validation and Setup
 
 Upon receiving an offer, the `sendIt` function:
-TODO: link here
 
-- Validates the offer arguments using [endo]() pattern-matching to ensure the correct structure is submitted (lines 17-18 in send-anywhere.flows.js).
-  TODO: link here
+- Validates the offer arguments using [endo's pattern-matching library](https://github.com/endojs/endo/tree/master/packages/patterns) to ensure the correct structure is submitted.
 - Retrieves the `proposal` from the seat, extracting the asset (`brand` and `amount`) being transferred.
 - The contract ensures that the asset brand is registered on the local chain by querying the chain’s asset registry (`vbank`). If not, the contract throws an error and exits the transaction.
 - If a local account for the contract doesn’t already exist, the function creates one.
@@ -161,7 +155,7 @@ if (!contractState.localAccount) {
 
 This setup phase ensures the transaction is valid and the contract is prepared to handle it.
 
-### Asset Transfer
+### Assets Transfer
 
 Once everything is validated, the contract performs the following steps:
 
@@ -194,3 +188,12 @@ void log(`ERROR: ${errorMsg}`);
 seat.exit(errorMsg);
 throw makeError(errorMsg);
 ```
+
+## Conclusion
+
+The "Send Anywhere" contract is a robust and flexible solution for transferring assets between blockchains. It ensures that:
+
+- Assets are securely held in a local account before being transferred.
+- Detailed logs are kept for transparency and error tracing.
+- The contract is resilient to failure, with built-in rollback mechanisms.
+- By using Agoric’s orchestration tools, this contract provides a secure way to facilitate cross-chain asset transfers.
