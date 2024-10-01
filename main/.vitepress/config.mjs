@@ -121,6 +121,39 @@ export default defineConfig({
     sidebar: {
       '/': [
         {
+          text: 'Orchestrate',
+          link: '/guides/orchestration/',
+          collapsed: true,
+          items: [
+            {
+              text: 'Key Concepts',
+              link: '/guides/orchestration/getting-started/key-concepts',
+            },
+            {
+              text: 'API',
+              link: '/guides/orchestration/getting-started/api',
+            },
+            {
+              text: 'Contract Walkthroughs',
+              link: '/guides/orchestration/getting-started/contract-walkthroughs',
+              items: [
+                {
+                  text: 'Cross-Chain Swap Example',
+                  link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-swap',
+                },
+                {
+                  text: 'Cross-Chain Unbond Example',
+                  link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
+                },
+                {
+                  text: 'Orchestration Basics',
+                  link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
+                }
+              ]
+            },
+          ]
+        },
+        {
           text: 'Build',
           collapsed: true,
           items: [
@@ -419,39 +452,6 @@ export default defineConfig({
                   link: '/guides/ertp/purses-and-payments',
                 },
               ],
-            },
-            {
-              text: 'Orchestration',
-              link: '/guides/orchestration/',
-              collapsed: true,
-              items: [
-                {
-                  text: 'Key Concepts',
-                  link: '/guides/orchestration/getting-started/key-concepts',
-                },
-                {
-                  text: 'API',
-                  link: '/guides/orchestration/getting-started/api',
-                },
-                {
-                  text: 'Contract Walkthroughs',
-                  link: '/guides/orchestration/getting-started/contract-walkthroughs',
-                  items: [
-                    {
-                      text: 'Cross-Chain Swap Example',
-                      link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-swap',
-                    },
-                    {
-                      text: 'Cross-Chain Unbond Example',
-                      link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
-                    },
-                    {
-                      text: 'Orchestration Basics',
-                      link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
-                    }
-                  ]
-                },
-              ]
             },
             {
               text: 'JavaScript Framework',
