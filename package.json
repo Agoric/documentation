@@ -15,7 +15,7 @@
     "lint:format": "node scripts/markdown-js-snippets-linter.mjs 'main/**/*.md' && prettier --check '**/*.md' --config .prettierrc.json",
     "build": "exit 0"
   },
-  "packageManager": "yarn@4.4.0",
+  "packageManager": "yarn@4.5.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Agoric/documentation.git"
