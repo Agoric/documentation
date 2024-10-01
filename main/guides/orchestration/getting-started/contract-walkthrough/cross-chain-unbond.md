@@ -1,163 +1,120 @@
 # Cross-Chain Unbond Contract
 
-## Overview Diagram
+<!-- XXX the diagram below is a useful part of the page but it needs to be updated before it is uncommented. -->
+<!-- ## Overview Diagram
 
 <br/>
 <img src="/reference/assets/sequence-diagrams/orchestration-unbond-example.svg" width="100%" />
-<br/>
+<br/> -->
 
-## Imports
+This walkthrough outlines the functionality of the Unbond Contract that enables unbonding of assets from a
+Cosmos-based chain and transferring them to another chain using IBC (Inter-Blockchain Communication).
+
+## Overview
+
+The Unbond Contract leverages the Agoric orchestration to interact with external chains, like Osmosis and Stride, to facilitate unbonding and transferring assets from one chain to another.
+
+The contract consists of two main parts:
+
+- **Contract File (`unbond.contract.js`)**: Defines the contract structure, and public-facing APIs.
+- **Flows File (`unbond.flows.js`)**: Implements the logic for the unbonding and transfer operations.
+
+---
+
+## Contract: `unbond.contract.js`
+
+This file contains the main orchestration contract, which is wrapped using the `withOrchestration` helper for Zoe. It exposes a public facet that allows users to initiate the unbonding process and transfer assets to another chain.
+
+### Imports
+
+The key imports include the `withOrchestration` helper, pattern matching utility `M`, and the flows from `unbond.flows.js` files.
 
 ```js
 import { M } from '@endo/patterns';
 import { withOrchestration } from '../utils/start-helper.js';
+import * as flows from './unbond.flows.js';
 ```
 
-- `M`: Imported from @endo/patterns, provides pattern-matching utilities.
-- `withOrchestration`: Imported from a utility module, used to set up and provide access to orchestration tools.
+### `contract` Function
 
-## JSDoc Annotations for Type Information
-
-```js
-/**
- * @import {Orchestrator, IcaAccount, CosmosValidatorAddress} from '../types.js'
- * @import {TimerService} from '@agoric/time';
- * @import {Baggage} from '@agoric/vat-data';
- * @import {LocalChain} from '@agoric/vats/src/localchain.js';
- * @import {NameHub} from '@agoric/vats';
- * @import {Remote} from '@agoric/internal';
- * @import {Zone} from '@agoric/zone';
- * @import {CosmosInterchainService} from '../exos/cosmos-interchain-service.js';
- * @import {OrchestrationTools} from '../utils/start-helper.js';
- */
-```
-
-This includes type information annotations to help with TypeScript or JSDoc, making it easier to understand the types used throughout the contract.
-
-## `unbondAndLiquidStakeFn` Function
-
-```js
-/**
- * @param {Orchestrator} orch
- * @param {object} ctx
- * @param {ZCF} ctx.zcf
- * @param {ZCFSeat} _seat
- * @param {undefined} _offerArgs
- */
-const unbondAndLiquidStakeFn = async (orch, { zcf }, _seat, _offerArgs) => {
-// ...
-```
-
-### Function Parameters
-
-- `orch`: The orchestrator object to manage interactions with chains/accounts.
-- `ctx`: Context object containing zcf.
-- `_seat`: The seat representing the user’s position in the contract (not used in this function, hence `_` prefix).
-- `_offerArgs`: Arguments provided with the offer (not used in this function, hence `_` prefix).
-
-## Interacting with Chains
-
-```js
-const omni = await orch.getChain('omniflixhub');
-const omniAccount = await omni.makeAccount();
-```
-
-### Get Chain
-
-Retrieves the omniflixhub chain object using the orchestrator.
-
-### Make Account
-
-Creates an account on the omniflixhub chain.
-
-## Interaction with Stride Chain
-
-```js
-const stride = await orch.getChain('stride');
-const strideAccount = await stride.makeAccount();
-```
-
-### Get Chain
-
-Retrieves the stride chain object using the orchestrator.
-
-### Make Account
-
-Creates an account on the stride chain.
-
-## `contract` Function
-
-The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract. The contract exports a `start` function [below](#start-function). It is merely a convention/convenience that we define a more abstract `contract` function here and pass it to `withOrchestration`. The arguments of this function are `zcf`, `privateAge`, `zone`, and `tools` for orchestration.
-
-```js
-/**
- * Orchestration contract to be wrapped by withOrchestration for Zoe
- *
- * @param {ZCF} zcf
- * @param {{
- *   agoricNames: Remote<NameHub>;
- *   localchain: Remote<LocalChain>;
- *   orchestrationService: Remote<CosmosInterchainService>;
- *   storageNode: Remote<StorageNode>;
- *   marshaller: Marshaller;
- *   timerService: Remote<TimerService>;
- * }} privateArgs
- * @param {Zone} zone
- * @param {OrchestrationTools} tools
- */
-const contract = async (zcf, privateArgs, zone, { orchestrate }) => {
-```
-
-### `contract` Function Parameters:
+The `contract` function when wrapped inside `withOrchestration` defines the [`start` function](#start-function) which is the entry point of the contract. The contract exports a `start` function [below](#start-function). It is merely a convention/convenience that we define a more abstract `contract` function here and pass it to `withOrchestration`. The `contract` function parameters include:
 
 - `zcf`: Zoe Contract Facet.
 - `privateArgs`: Object containing remote references to various services.
 - `zone`: A `Zone` object with access to storage for persistent data.
 - `OrchestrationTools`: A set of orchestration related tools needed by the contract.
 
-## Offer Handler for Unbond and Liquid Stake
-
 ```js
-/** @type {OfferHandler} */
-const unbondAndLiquidStake = orchestrate(
-  'LSTTia',
-  { zcf },
-  unbondAndLiquidStakeFn
-);
+const contract = async (
+  zcf,
+  privateArgs,
+  zone,
+  { orchestrateAll, zcfTools }
+) => {
+  const { unbondAndTransfer } = orchestrateAll(flows, { zcfTools });
+
+  const publicFacet = zone.exo('publicFacet', undefined, {
+    makeUnbondAndTransferInvitation() {
+      return zcf.makeInvitation(
+        unbondAndTransfer,
+        'Unbond and transfer',
+        undefined,
+        harden({
+          give: {},
+          want: {},
+          exit: M.any()
+        })
+      );
+    }
+  });
+
+  return harden({ publicFacet });
+};
 ```
 
-### Offer Handler
+The `orchestrateAll` function links the flows from the flows file to the contract logic. In this case, it links the `unbondAndTransfer` flow. The `publicFacet` exposes the `makeUnbondAndTransferInvitation` method, which creates a Zoe invitation to allow users to make an offer for the unbonding and transferring process.
 
-Defines the offer handler for the unbond and liquid stake operation using [`unbondAndLiquidStakeFn`](#unbondandliquidstakefn-function).
-
-## Make Invitation and Create `publicFacet`
-
-```js
-const publicFacet = zone.exo('publicFacet', undefined, {
-  makeUnbondAndLiquidStakeInvitation() {
-    return zcf.makeInvitation(
-      unbondAndLiquidStake,
-      'Unbond and liquid stake',
-      undefined,
-      harden({
-        // Nothing to give; the funds come from undelegating
-        give: {},
-        want: {}, // XXX ChainAccount Ownable?
-        exit: M.any()
-      })
-    );
-  }
-});
-
-return harden({ publicFacet });
-```
-
-Defines the `publicFacet` for the contract, which includes the method to make an `invitation`, and returns the hardened public facet. Defining `publicFacet` with `zone.exo` makes it [remotely accessible](/glossary/#exo) and persistent through contract upgrades with a [durable `zone`](/glossary/#zone).
-
-## `start` Function
+The following code defines the `start` function of the contract that is returned by a call to `withOrchestration` with [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
 
 ```js
 export const start = withOrchestration(contract);
 ```
 
-Defines the `start` function of the contract that is returned by a call to `withOrchestration` with [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
+---
+
+## Flows: `unbond.flows.js`
+
+This file contains the orchestration flow that performs the unbonding and transferring of assets across chains.
+
+### Flow Function: `unbondAndTransfer`
+
+The `unbondAndTransfer` flow orchestrates the process of unbonding assets from a source chain (e.g., Osmosis) and transferring them to a destination chain (e.g., Stride).
+
+```js
+export const unbondAndTransfer = async (orch, { zcfTools }) => {
+  const osmosis = await orch.getChain('osmosis');
+  const osmoDenom = (await osmosis.getChainInfo()).stakingTokens[0].denom;
+
+  const osmoAccount = await osmosis.makeAccount();
+  const delegations = await osmoAccount.getDelegations();
+  const osmoDelegations = delegations.filter(d => d.amount.denom === osmoDenom);
+
+  await osmoAccount.undelegate(osmoDelegations);
+
+  const stride = await orch.getChain('stride');
+  const strideAccount = await stride.makeAccount();
+
+  const balance = await osmoAccount.getBalance(osmoDenom);
+  await osmoAccount.transfer(strideAccount.getAddress(), balance);
+};
+```
+
+The above code achieve several things including:
+
+- Retrieval of `osmosis` chain object, and `osmo` denom from the chain info.
+- Create an `osmoAccount` on `osmosis`. _Note that in real-life scenario, this step would not be needed as we would be using an account that has already delegated some `osmo` assets_.
+- Perform `undelegate` on `osmo` delegations of the `osmoAccount`.
+- Create an account on `stride` chain.
+- Transfer all `osmo` balance from `osmoAccount` to `strideAccount`.
+
+Upon successful transfer, the assets are moved from the Osmosis chain to the Stride chain, ready for the user to claim.
