@@ -6,6 +6,41 @@
 
 export const nav = [
   {
+    text: 'Orchestrate',
+    collapsed: true,
+    items: [
+      {
+        text: 'What is Orchestration?',
+        link: '/guides/orchestration/',
+      },
+      {
+        text: 'Key Concepts',
+        link: '/guides/orchestration/getting-started/key-concepts',
+      },
+      {
+        text: 'API',
+        link: '/guides/orchestration/getting-started/api',
+      },
+      {
+        text: 'Contract Walkthroughs',
+        items: [
+          {
+            text: 'Cross-Chain Swap Example',
+            link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-swap',
+          },
+          {
+            text: 'Cross-Chain Unbond Example',
+            link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
+          },
+          {
+            text: 'Orchestration Basics',
+            link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
+          }
+        ]
+      },
+    ]
+  },
+  {
     text: 'Build',
     items: [
       {
@@ -79,12 +114,6 @@ export const nav = [
       {
         text: 'Agoric Platform',
         link: '/guides/platform/',
-        collapsed: true,
-        items: [],
-      },
-      {
-        text: 'Orchestration',
-        link: '/guides/orchestration/',
         collapsed: true,
         items: [],
       },

@@ -31,6 +31,12 @@ features:
     details: The Agoric chain, tech stack, and ecosystem
     link: /what-is-agoric
 
+  - icon:
+      src: '/orchestrate.svg'
+    title: Orchestrate
+    details: Build and manage multi-chain operations with the Orchestration API
+    link: /guides/orchestration/
+
   - icon: 🧑‍🎓️
     title: Learn
     details: Learn how Smart Contracts work on Agoric Platform
