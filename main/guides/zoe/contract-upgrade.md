@@ -177,7 +177,7 @@ Define all exo classes/kits before any incoming method calls from other vats -- 
 
 ### Baggage
 
-baggage is a MapStore that provides a way to preserve the state and behavior of objects between [smart contract upgrades](https://docs.agoric.com/guides/zoe/contract-upgrade) in a way that preserves the identity of objects as seen from other [vats](#vat). In the provided contract, baggage is used to ensure that the state of various components is maintained even after the contract is upgraded.
+baggage is a MapStore that provides a way to preserve the state and behavior of objects between [smart contract upgrades](/guides/zoe/contract-upgrade) in a way that preserves the identity of objects as seen from other [vats](#vat). In the provided contract, baggage is used to ensure that the state of various components is maintained even after the contract is upgraded.
 
 ```js
 export const start = async (zcf, privateArgs, baggage) => {

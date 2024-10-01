@@ -25,13 +25,13 @@ Other services run in vats that are not contracts.
 
 | vat            | services                                                                               |
 | -------------- | -------------------------------------------------------------------------------------- |
-| bootstrap      | initial vat. also runs [core eval scripts](../../coreeval/)                            |
-| vatAdmin       | creates, [upgrades](../../zoe/contract-upgrade), and terminates vats                   |
-| agoricNames    | the `agoricNames` [name service](../../integration/name-services)                      |
+| bootstrap      | initial vat. also runs [core eval scripts](/guides/coreeval/)                          |
+| vatAdmin       | creates, [upgrades](/guides/zoe/contract-upgrade), and terminates vats                 |
+| agoricNames    | the `agoricNames` [name service](/guides/integration/name-services)                    |
 | bank           | connects cosmos denoms with ERTP Brands/Issuers/Mints                                  |
-| board          | the `board` [name service](../../integration/name-services)                            |
+| board          | the `board` [name service](/guides/integration/name-services)                          |
 | bridge         | chainStorage etc.                                                                      |
 | priceAuthority | registers [Price Authorities](../price-authority) and routes requests for price quotes |
-| provisioning   | `namesByAddress` [name service](../../integration/name-services)                       |
+| provisioning   | `namesByAddress` [name service](/guides/integration/name-services)                     |
 | timer          | `chainTimerService`                                                                    |
 | zoe            | the Zoe Service                                                                        |

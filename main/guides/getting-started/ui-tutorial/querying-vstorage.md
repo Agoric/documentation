@@ -20,7 +20,7 @@ const { chainStorageWatcher } = useAgoric();
 ## Querying Vstorage
 
 In order to submit an offer to a contract, we need to look it up on-chain first.
-We'll find it in vstorage under `published.agoricNames.instance` (see: [vstorage reference](../../../reference/vstorage-ref.md)).
+We'll find it in vstorage under `published.agoricNames.instance` (see: [vstorage reference](/reference/vstorage-ref.md)).
 First, we'll create a new component that will look up the contract (eventually, it will sign and submit offers to it as well).
 
 Create a new file, `src/Trade.tsx`:
@@ -115,7 +115,7 @@ As you can see, this hook makes use of `chainStorageWatcher` to watch two vstora
 The `chainStorageWatcher` handles all the vstorage queries and marshalling for you, so
 you get convenient access to the data from your application. It automatically polls
 and emits updates when the data on-chain changes. For more details about vstorage, see
-[Querying VStorage](../../getting-started/contract-rpc.md#querying-vstorage) and [Publishing to Chain Storage](../../zoe/pub-to-storage.md)
+[Querying VStorage](/guides/getting-started/contract-rpc.md#querying-vstorage) and [Publishing to Chain Storage](/guides/zoe/pub-to-storage.md)
 
 Next, go ahead and add this hook to the `Trade` component you made before this:
 
