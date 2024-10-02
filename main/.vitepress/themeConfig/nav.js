@@ -14,12 +14,8 @@ export const nav = [
         link: '/guides/orchestration/',
       },
       {
-        text: 'Key Concepts',
+        text: 'Key Concepts and APIs',
         link: '/guides/orchestration/getting-started/key-concepts',
-      },
-      {
-        text: 'API',
-        link: '/guides/orchestration/getting-started/api',
       },
       {
         text: 'Contract Walkthroughs',
@@ -38,6 +34,10 @@ export const nav = [
           }
         ]
       },
+      {
+        text: 'How Orchestration Works',
+        link: "/guides/orchestration/how-orch-works",
+      }
     ]
   },
   {
