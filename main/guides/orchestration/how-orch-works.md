@@ -103,12 +103,12 @@ control of it to the controller chain.
 Interchain Queries (ICQ) is another powerful feature that enables a contract on
 one blockchain to query the state of an account another blockchain in a
 trustless manner. For example, a DeFi application on Agoric could use ICQ to
-fetch balance of an account from other chains like Osmosis or Cosmos Hub
+fetch the balance of an account from other chains like Osmosis or Cosmos Hub
 without the need for autorization, enabling more sophisticated cross-chain
-trading strategies and risk management. ICQ enhances the interoperability of
+trading interactions. ICQ enhances the interoperability of
 blockchain networks by facilitating secure and efficient data sharing between
 chains, opening up new possibilities for cross-chain applications and services.
-Below is an example of an ICQ invokation to get balance of a remote account on
+Below is an example of an ICQ invocation to get balance of a remote account on
 `osmosis`:
 
 ```js
