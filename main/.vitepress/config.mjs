@@ -147,6 +147,10 @@ export default defineConfig({
                 }
               ]
             },
+            {
+              text: 'How Orchestration Works',
+              link: '/guides/orchestration/how-orch-works',
+            },
           ]
         },
         {
