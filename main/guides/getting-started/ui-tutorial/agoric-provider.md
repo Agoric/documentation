@@ -74,7 +74,7 @@ export default App;
 ```
 
 You may have noticed the `defaultChainName` prop points to a local chain. This assumes
-that you are still running the local chain from [Getting Started](../../getting-started/index.md) in Docker. If you're not, make sure to follow those steps before proceeding.
+that you are still running the local chain from [Getting Started](/guides/getting-started/index.md) in Docker. If you're not, make sure to follow those steps before proceeding.
 
 Note: If you see a type error on the `wallets` prop, this is likely because `@agoric/react-components` is using an older version of `cosmos-kit` than what was installed in your app. To fix this, you can add `resolutions` to your `package.json` like so:
 

@@ -6,7 +6,7 @@ JavaScript. Using the [ERTP API](/reference/ertp-api/),
 you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties.
 
-ERTP uses [OCaps (object capabilities)](../../glossary/#object-capabilities)
+ERTP uses [OCaps (object capabilities)](/glossary/#object-capabilities)
 to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
@@ -17,9 +17,9 @@ reference, it can't. For more on object capabilities, see
 ### Asset
 
 There are three kinds of assets:
-[fungible](../../glossary/#fungible),
-[non-fungible](../../glossary/#non-fungible), and
-[semi-fungible](../../glossary/#semi-fungible).
+[fungible](/glossary/#fungible),
+[non-fungible](/glossary/#non-fungible), and
+[semi-fungible](/glossary/#semi-fungible).
 
 Fungible assets are interchangeable. For example, if you have 100
 one-dollar bills and need to pay someone 5 dollars, it doesn't matter
@@ -191,7 +191,7 @@ her rather than someone else.
 
 Assume Alice already has a Quatloos `purse` of her own. To let other
 parties safely deposit Quatloos into it, she creates
-a [deposit facet](../../glossary/#deposit-facet) for that `purse`.
+a [deposit facet](/glossary/#deposit-facet) for that `purse`.
 Anyone who has access to a deposit facet can deposit
 assets to its `purse` but cannot either make a withdrawal from the `purse` or get its balance. It's like
 being able to send money to a friend via their email address; you can't then take money out
@@ -225,7 +225,7 @@ Things end up with your Quatloos `purse` having 2 Quatloos (7 - 5), Alice's Quat
 in it, and the 5 Quatloos `payment` consumed when the transfer happened.
 
 The `E()` notation is a local "bridge" that lets you invoke methods on remote objects.
-It takes a local representative (a [presence](../../glossary/#presence)) for a remote object
+It takes a local representative (a [presence](/glossary/#presence)) for a remote object
 as an argument and sends messages to the remote object. This is explained in more detail at the
 [`E()` section in the Distributed JavaScript page](../js-programming/eventual-send).
 
@@ -295,7 +295,7 @@ In the Agoric stack, assets of the exchange are escrowed with [Zoe](/guides/zoe/
 
 ## Object Capabilities and ERTP
 
-ERTP uses [object capabilities](../../glossary/#object-capabilities).
+ERTP uses [object capabilities](/glossary/#object-capabilities).
 You can only use an object and issue commands to it if you have access to that object, not
 just its human-readable name or similar. For example, I might know (or make a good guess),
 that the mint that makes Quatloos has the human-understandable alleged name of 'quatloos-mint'.
@@ -321,7 +321,7 @@ After a successful deposit, ERTP guarantees:
 When the `deposit` call throws an error (i.e. something went wrong), ERTP guarantees
 that neither the `purse` nor the alleged `payment` are affected by it.
 
-In addition, you can create a [deposit facet](../../glossary/#deposit-facet) for any `purse`. This is an object associated
+In addition, you can create a [deposit facet](/glossary/#deposit-facet) for any `purse`. This is an object associated
 with a specific `purse` that can be sent to another party instead of a reference to the `purse`.
 The security advantage is that the other party can only use the deposit facet to make deposits to the associated `purse`. They cannot use it to make a withdrawal from or ask about the balance of a `purse`.
 

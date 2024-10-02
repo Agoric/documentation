@@ -3,7 +3,7 @@
 See also:
 
 - [Querying VStorage](/guides/getting-started/contract-rpc#querying-vstorage)
-- [Publishing to chainStorage](../guides/zoe/pub-to-storage)
+- [Publishing to chainStorage](/guides/zoe/pub-to-storage)
 - [x/vstorage module](https://github.com/Agoric/agoric-sdk/tree/003f0c2232815a8d64a3f9a5b05521a10160ce34/golang/cosmos/x/vstorage#readme)
 
 ## vstorage: top level keys
@@ -47,7 +47,7 @@ see also [Inter Protocol data](https://github.com/Agoric/agoric-sdk/tree/agoric-
 ## vstorage: agoricNames hubs
 
 agoricNames contains several other NameHubs.
-See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
+See also [agoricNames](/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names).
 
 ```js
 ['brand', 'installation', 'instance', 'issuer', 'oracleBrand', 'vbankAsset'];
@@ -57,7 +57,7 @@ See also [agoricNames](https://docs.agoric.com/guides/integration/name-services.
 
 `published.agoricNames.installation` contains _Installations_ representing code of important contracts. The data at this key are the entries of the NameHub. Here we show the object comprised
 of those entries.
-See also [agoricNames in vstorage](https://docs.agoric.com/guides/integration/name-services.html#agoricnames-in-vstorage)
+See also [agoricNames in vstorage](/guides/integration/name-services.html#agoricnames-in-vstorage)
 regarding un-marshalling the data using board IDs.
 
 ```js

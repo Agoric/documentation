@@ -263,7 +263,7 @@ hang or miss values.
 
 For distributed operations, all the iteration values&mdash;non-final values,
 successful completion value, failure reason&mdash;must be _Passable_, which means they're values that
-can somehow be passed between [vats](../../glossary/index#vat). The rest of this doc assumes all these
+can somehow be passed between [vats](/glossary/index#vat). The rest of this doc assumes all these
 values are Passable.
 
 The `makeNotifierKit()` or `makeSubscriptionKit()` call makes the notifier/updater

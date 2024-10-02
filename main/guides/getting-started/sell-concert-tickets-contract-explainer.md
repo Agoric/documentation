@@ -37,12 +37,12 @@ const inventory = {
 ```
 
 Our contract takes the provided `inventory` object as a parameter to initiate the process.
-After the contract is initialized, a new [ERTP mint](https://docs.agoric.com/glossary/#mint) for the "Ticket" asset is created.
+After the contract is initialized, a new [ERTP mint](/glossary/#mint) for the "Ticket" asset is created.
 
 <details>
 <summary>Note: AssetKind expresses type of assets</summary>
 
-There are three types of [assets](https://docs.agoric.com/guides/ertp/#asset). You can determine the [type of your asset](https://docs.agoric.com/reference/ertp-api/ertp-data-types.html#assetkind) by referring to the provided documentation.
+There are three types of [assets](/guides/ertp/#asset). You can determine the [type of your asset](/reference/ertp-api/ertp-data-types.html#assetkind) by referring to the provided documentation.
 
 In our example, tickets are non-fungible and can have duplicates, meaning there can be many tickets of a single type. So, we are using `AssetKind.COPY_BAG`.
 
@@ -54,12 +54,12 @@ const { brand: ticketBrand } = ticketMint.getIssuerRecord();
 ```
 
 Once our asset is defined, we will mint our inventory at the start of our the smart contract and allocate it to our `inventorySeat` object.
-This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](https://docs.agoric.com/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
+This also allows us to check if user is buying more than our inventory allows. This can be done using an [AmountMath API method](/reference/ertp-api/amount-math.html#amountmath-isgte-leftamount-rightamount-brand).
 
 <details>
 <summary>To understand the code better:</summary>
 
-Take a look at [brand](https://docs.agoric.com/glossary/#brand), [AmountKeywordRecord](https://docs.agoric.com/reference/zoe-api/zoe-data-types.html#keywordrecord), [mintGains function](https://docs.agoric.com/reference/zoe-api/zcfmint.html#azcfmint-mintgains-gains-zcfseat) and [ZCFSeat](https://docs.agoric.com/reference/zoe-api/zcfseat.html#zcfseat-object).
+Take a look at [brand](/glossary/#brand), [AmountKeywordRecord](/reference/zoe-api/zoe-data-types.html#keywordrecord), [mintGains function](/reference/zoe-api/zcfmint.html#azcfmint-mintgains-gains-zcfseat) and [ZCFSeat](/reference/zoe-api/zcfseat.html#zcfseat-object).
 
 </details>
 
@@ -81,7 +81,7 @@ const inventorySeat = ticketMint.mintGains(toMint);
 
 ## Trading Tickets
 
-Customers who wish to purchase event tickets first [make an invitation](https://docs.agoric.com/reference/zoe-api/zoe-contract-facet.html#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape) to trade for tickets using `makeTradeInvitation`.
+Customers who wish to purchase event tickets first [make an invitation](/reference/zoe-api/zoe-contract-facet.md#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape) to trade for tickets using `makeTradeInvitation`.
 
 ```js
 const makeTradeInvitation = () =>
@@ -99,7 +99,7 @@ const tradeHandler = buyerSeat => {
 };
 ```
 
-- **proposalShape** (Optional): This object outlines the necessary and permissible elements of each [proposal](https://docs.agoric.com/reference/zoe-api/zoe-contract-facet.html#proposal-shapes). Here is the proposal shape for this contract.
+- **proposalShape** (Optional): This object outlines the necessary and permissible elements of each [proposal](/reference/zoe-api/zoe-contract-facet.html#proposal-shapes). Here is the proposal shape for this contract.
 
 ```js
 const proposalShape = harden({

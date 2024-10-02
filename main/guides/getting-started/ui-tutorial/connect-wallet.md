@@ -79,7 +79,7 @@ export const usePurse = (brandPetname: string) => {
 
 This provides a utility for looking up a user's purse by name. Notice how it accesses `purses` from `useAgoric()`.
 The `<AgoricProvider>` handles all the chain queries to fetch the purses, and automatically polls and
-updates `purses` whenever the balances change. It also coalesces ERTP purses with [VBank Assets and Cosmos Bank Balances](../../getting-started/contract-rpc.md#vbank-assets-and-cosmos-bank-balances) automatically. See [Smart Wallet VStorage Topics](../../getting-started/contract-rpc.md#smart-wallet-vstorage-topics)
+updates `purses` whenever the balances change. It also coalesces ERTP purses with [VBank Assets and Cosmos Bank Balances](/guides/getting-started/contract-rpc.md#vbank-assets-and-cosmos-bank-balances) automatically. See [Smart Wallet VStorage Topics](/guides/getting-started/contract-rpc.md#smart-wallet-vstorage-topics)
 for more details about where this data comes from.
 
 Next, we'll add a dependency on `@agoric/web-components`, which provides a utility for rendering

@@ -177,7 +177,7 @@ Next, get the `makeOffer` function from the `useAgoric()` hook:
 const { makeOffer } = useAgoric();
 ```
 
-Now, create a function to submit the offer. For more details on how this works, see [making an offer](../../getting-started/explainer-how-to-make-an-offer.md):
+Now, create a function to submit the offer. For more details on how this works, see [making an offer](/guides/getting-started/explainer-how-to-make-an-offer.md):
 
 ```ts
 import { makeCopyBag } from '@agoric/store';
@@ -213,7 +213,7 @@ const submitOffer = () => {
 };
 ```
 
-For specifics on how offers work, see [Specifying Offers](../../getting-started/contract-rpc.md#specifying-offers). The `makeOffer` function allows you to specify an
+For specifics on how offers work, see [Specifying Offers](/guides/getting-started/contract-rpc.md#specifying-offers). The `makeOffer` function allows you to specify an
 `InvitationSpec`, automatically handles the marshalling aspect, and makes it easy to
 handle updates to the offer status.
 
@@ -244,7 +244,7 @@ Now, simply add a button to submit the offer:
 Upon clicking the offer, you should see a Keplr window pop up to approve the transaction with the "Give" and "Want"
 you selected. Try selecting 3 items, and giving 0.25 IST, and the offer should be accepted. See what happens
 if you select more than 3 items, or give less than 0.25 IST... it should reject the offer, and you should be
-refunded your IST (see [offer safety](../../../guides/zoe/offer-safety.md))
+refunded your IST (see [offer safety](/guides/zoe/offer-safety.md))
 
 ### Rendering the Items Purse
 
@@ -281,4 +281,4 @@ solution for this example, check out the [checkpoint-5](https://github.com/agori
 
 ### Result
 
-Curious to know how it looks after implementation? Check out our [guide](https://docs.agoric.com/guides/getting-started/explainer-how-to-make-an-offer.html) for the result.
+Curious to know how it looks after implementation? Check out our [guide](/guides/getting-started/explainer-how-to-make-an-offer.html) for the result.

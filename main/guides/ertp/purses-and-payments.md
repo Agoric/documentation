@@ -67,7 +67,7 @@ Unlike `payments`, `purses` are not meant to be sent to others. To transfer
 digital assets, you should withdraw a `payment` from a `purse` and send
 the `payment` to another party.
 
-You can create a [deposit facet](../../glossary/#deposit-facet) for a `purse`.
+You can create a [deposit facet](/glossary/#deposit-facet) for a `purse`.
 Deposit facets are either sent to other parties or made publicly known. Any party can deposit a `payment` into the
 deposit facet, which deposits it into its associated `purse`. However, no one can
 use a deposit facet to either make a withdrawal from its `purse` or get the `purse`'s balance.
