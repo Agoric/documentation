@@ -1,7 +1,7 @@
 # Permissioned Contract Deployment
 
 Until mainnet enters the Mainnet-3 phase of the [multi-phase mainnet rollout](https://agoric.com/blog/announcements/mainnet-phase-0-launch),
-permissionless [contract installation with Zoe](/guides/zoe/#contract-installation)
+permissionless [contract installation with Zoe](/guides/zoe/contract-walkthru#contract-installation)
 is limited to development environments.
 
 Until then, permission to deploy contracts can be granted using an Agoric extension to [Cosmos SDK Governance](https://hub.cosmos.network/delegators/delegator-guide-cli.html#participating-in-governance) called `swingset.CoreEval`. As discussed in [governance using Hardened JavaScript: swingset\.CoreEval](https://community.agoric.com/t/bld-staker-governance-using-hardened-javascript-swingset-coreeval/99),
