@@ -34,6 +34,10 @@ export const nav = [
           }
         ]
       },
+      {
+        text: 'How Orchestration Works',
+        link: "/guides/orchestration/how-orch-works",
+      }
     ]
   },
   {
