@@ -1,6 +1,8 @@
-import { promises as fs } from 'fs';
-import { glob } from 'glob';
+import {promises as fs} from 'fs';
+import glob from 'glob';
+import util from 'util';
 
+const globPromise = util.promisify(glob);
 
 const extractJsSnippets = (markdownContent) => {
   const pattern = /```(?:js|javascript)\n([\s\S]*?)```/g;
@@ -163,7 +165,7 @@ const lintMarkdownFile = async (filePath, fix = false) => {
 };
 const processFiles = async (globPattern, fix = false) => {
   try {
-    const files = await glob(globPattern);
+    const files = await globPromise(globPattern);
     if (files.length === 0) {
       console.error('No files found matching the pattern.');
       process.exit(1);
