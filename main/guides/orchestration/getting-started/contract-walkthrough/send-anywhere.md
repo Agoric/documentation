@@ -18,7 +18,7 @@ The contract is implemented in two separate files:
    expose `publicFacet` and `creatorFacet`.
 2. `send-anywhere.flows.js` implements the `sendIt` function which performs the actual transfer of assets when a user makes an offer.
 
-Let us walkthrough these files one by one.
+Let us walk through these files one by one.
 
 ## 1. `send-anywhere.contract.js`
 
@@ -47,7 +47,7 @@ harden(SingleNatAmountRecord);
 
 This validation ensures that the proposal shape submitted by users contains exactly one asset and no other extraneous properties.
 
-### Contract State Setup (in `contract` Function)
+### Contract State Setup
 
 The contract defines a shared state record as below:
 
@@ -63,10 +63,10 @@ This state keeps track of the local account that will hold the transferred asset
 address. The state starts with an undefined `localAccount`. This account will be created later during the offer handling process if
 needed.
 
-### Logging setup (in `contract` Function)
+### Logging setup
 
 The contract initializes a logging mechanism (`logNode`) to capture the contract's internal actions and state changes. Logs are written
-to a newly created `log` child in vStorage, making debugging and auditing easier.
+to a newly created `log` child in VStorage, making debugging and auditing easier.
 
 ```js
 const logNode = E(privateArgs.storageNode).makeChildNode('log');
@@ -74,7 +74,7 @@ const logNode = E(privateArgs.storageNode).makeChildNode('log');
 const log = msg => vowTools.watch(E(logNode).setValue(msg));
 ```
 
-### Orchestration functions (in `contract` Function)
+### Orchestration functions
 
 These functions, imported from `send-anywhere.flows.js`, define the main behaviors for handling asset transfers. The contract wraps
 these functions with the necessary context (such as the contract state, logging, and Zoe tools).
@@ -87,7 +87,7 @@ const orchFns = orchestrateAll(flows, {
 });
 ```
 
-### Public Facet and Invitation Creation (in `contract` Function)
+### Public Facet and Invitation Creation
 
 The contract provides a public-facing API (`publicFacet`) that allows external users to interact with it:
 
