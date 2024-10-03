@@ -12,18 +12,16 @@ Cosmos-based chain and transferring them to another chain using IBC (Inter-Block
 
 ## Overview
 
-The Unbond Contract leverages the Agoric orchestration to interact with external chains, like Osmosis and Stride, to facilitate unbonding and transferring assets from one chain to another.
+The Unbond Contract leverages the Agoric Orchestration API to interact with external chains, like Osmosis and Stride, to facilitate unbonding and transferring assets from one chain to another.
 
 The contract consists of two main parts:
 
 - **Contract File (`unbond.contract.js`)**: Defines the contract structure, and public-facing APIs.
 - **Flows File (`unbond.flows.js`)**: Implements the logic for the unbonding and transfer operations.
 
----
-
 ## Contract: `unbond.contract.js`
 
-This file contains the main orchestration contract, which is wrapped using the `withOrchestration` helper for Zoe. It exposes a public facet that allows users to initiate the unbonding process and transfer assets to another chain.
+This file contains the main Orchestration contract, which is wrapped using the `withOrchestration` helper for Zoe. It exposes a public facet that allows users to initiate the unbonding process and transfer assets to another chain.
 
 ### Imports
 
@@ -42,7 +40,7 @@ The `contract` function when wrapped inside `withOrchestration` defines the [`st
 - `zcf`: Zoe Contract Facet.
 - `privateArgs`: Object containing remote references to various services.
 - `zone`: A `Zone` object with access to storage for persistent data.
-- `OrchestrationTools`: A set of orchestration related tools needed by the contract.
+- `OrchestrationTools`: A set of Orchestration related tools needed by the contract.
 
 ```js
 const contract = async (
@@ -74,17 +72,17 @@ const contract = async (
 
 The `orchestrateAll` function links the flows from the flows file to the contract logic. In this case, it links the `unbondAndTransfer` flow. The `publicFacet` exposes the `makeUnbondAndTransferInvitation` method, which creates a Zoe invitation to allow users to make an offer for the unbonding and transferring process.
 
-The following code defines the `start` function of the contract that is returned by a call to `withOrchestration` with [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some orchestration setup.
+### `start` function
+
+The following code defines the `start` function of the contract that is returned by a call to `withOrchestration` with [`contract` function](#contract-function) as a parameter. In essence `contract` function is the entry point or `start` function of this contract with some Orchestration setup.
 
 ```js
 export const start = withOrchestration(contract);
 ```
 
----
-
 ## Flows: `unbond.flows.js`
 
-This file contains the orchestration flow that performs the unbonding and transferring of assets across chains.
+This file contains the Orchestration flow that performs the unbonding and transferring of assets across chains.
 
 ### Flow Function: `unbondAndTransfer`
 
