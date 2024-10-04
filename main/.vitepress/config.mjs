@@ -144,10 +144,6 @@ export default defineConfig({
                 {
                   text: 'Cross-Chain Unbond Example',
                   link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
-                },
-                {
-                  text: 'Orchestration Basics',
-                  link: '/guides/orchestration/getting-started/contract-walkthrough/orchestration-basics',
                 }
               ]
             },

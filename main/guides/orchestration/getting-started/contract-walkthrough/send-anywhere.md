@@ -1,4 +1,4 @@
-# SendAnywhere Contract Walkthrough
+# "Send Anywhere" Contract Walkthrough
 
 The "Send Anywhere" contract is designed to facilitate the transfer of assets from one chain to another using
 Agoric's [Orchestration](/glossary/#orchestration) library. The contract allows a user to send assets of a specific brand
@@ -15,7 +15,7 @@ The high-level flow of the contract is:
 The contract is implemented in two separate files:
 
 1. `send-anywhere.contract.js` implements the `start` function of the contract to initialize the contract and
-   expose `publicFacet` and `creatorFacet`.
+   expose `publicFacet`.
 2. `send-anywhere.flows.js` implements the `sendIt` function which performs the actual transfer of assets when a user makes an offer.
 
 Let us walk through these files one by one.
