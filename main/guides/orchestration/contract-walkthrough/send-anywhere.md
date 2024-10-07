@@ -26,8 +26,8 @@ The contract begins by importing various modules and utilities necessary for its
 
 - **State management**: `makeSharedStateRecord` is imported to create and manage the state across contract incarnations.
 - **Type validation**: `AmountShape` and `InvitationShape` ensure that the contract works with correct data types, such as amounts and invitations.
-- **Orchestration utilities**: `withOrchestration` is imported to facilitate interactions with orchestration functions.
-- **Flows**: The orchestration flows for handling transfers are imported from `send-anywhere.flows.js` to be made available to Zoe.
+- **Orchestration utilities**: `withOrchestration` is imported to facilitate interactions with Orchestration functions.
+- **Flows**: The Orchestration flows for handling transfers are imported from `send-anywhere.flows.js` to be made available to Zoe.
 
 These imports set up the contract for the validation, orchestration, and execution of transfers through Zoe API.
 
@@ -204,4 +204,4 @@ The "Send Anywhere" contract is a robust and flexible solution for transferring 
 - Assets are securely held in a local account before being transferred.
 - Detailed logs are kept for transparency and error tracing.
 - The contract is resilient to failure, with built-in rollback mechanisms.
-- By using Agoric’s orchestration tools, this contract provides a secure way to facilitate cross-chain asset transfers.
+- By using Agoric’s Orchestration tools, this contract provides a secure way to facilitate cross-chain asset transfers.

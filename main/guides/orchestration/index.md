@@ -22,7 +22,7 @@ The Orchestration API handles asynchronous tasks and complex workflows, includin
 
 ## Introduction to Orchestration API Flow
 
-The following sequence diagram provides a comprehensive overview of the orchestration process within the Agoric platform. This example illustrates the interaction between various components, highlighting how the orchestration library (`OrchLib`) facilitates cross-chain operations. This is a good first example to understand the flow of the Orchestration API, showing the steps involved in creating and managing cross-chain transactions.
+The following sequence diagram provides a comprehensive overview of the Orchestration process within the Agoric platform. This example illustrates the interaction between various components, highlighting how the Orchestration library (`OrchLib`) facilitates cross-chain operations. This is a good first example to understand the flow of the Orchestration API, showing the steps involved in creating and managing cross-chain transactions.
 
 <br/>
 <img src="/reference/assets/sequence-diagrams/orchestration-workflow-1.svg" width="100%" />

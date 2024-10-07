@@ -138,10 +138,6 @@ export default defineConfig({
                   link: '/guides/orchestration/contract-walkthrough/send-anywhere',
                 },
                 {
-                  text: 'Cross-Chain Swap Example',
-                  link: '/guides/orchestration/contract-walkthrough/cross-chain-swap',
-                },
-                {
                   text: 'Cross-Chain Unbond Example',
                   link: '/guides/orchestration/contract-walkthrough/cross-chain-unbond',
                 }
