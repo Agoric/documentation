@@ -44,7 +44,7 @@ features:
 
   - icon: 🛠️
     title: Build
-    details: Build Cross Chain Smart Contracts using Agoric Orchestration APIs
+    details: Deploy your first Agoric dapp
     link: /guides/getting-started/
 
   - icon: 📑
