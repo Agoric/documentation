@@ -2,11 +2,10 @@
 
 This section is designed to provide detailed explanations and insights into example orchestration smart contracts.
 
-In this section, we will cover three primary contracts:
+In this section, we will cover two primary contracts:
 
 1. **Assets Transfer Contract**: A guide to `send-anywhere` contract that demonstrates a simple yet robust and secure way for cross-chain assets transfer.
-2. **Swap Contract**: A comprehensive guide to the process of swapping assets between different chains using the Agoric orchestration library.
-3. **Unbond Contract**: A detailed walkthrough of the unbonding and liquid staking process, highlighting the steps involved in managing cross-chain operations.
+2. **Unbond Contract**: A detailed walkthrough of the unbonding and liquid staking process, highlighting the steps involved in managing cross-chain operations.
 
 Each walkthrough will include detailed explanations of the contract code, providing insights into the mechanics and best practices of smart contract development on the Agoric platform. By the end of these walkthroughs, you should have a solid understanding of how to utilize Agoric’s tools and libraries to create robust and efficient cross-chain smart contracts.
 
@@ -20,17 +19,6 @@ The "Send Anywhere" contract is a robust and secure solution for transferring as
 - By using Agoric’s orchestration tools, this contract provides a secure way to facilitate cross-chain asset transfers.
 
 [See Contract Overview](/guides/orchestration/getting-started/contract-walkthrough/send-anywhere)
-
-## Swap Contract
-
-The Swap Contract demonstrates how to swap assets between the Agoric chain and another blockchain. This example covers:
-
-- Initializing and setting up the contract.
-- Creating and managing accounts on different chains.
-- Executing cross-chain asset transfers.
-- Handling errors and ensuring secure transactions.
-
-[See Contract Overview](/guides/orchestration/getting-started/contract-walkthrough/cross-chain-swap)
 
 ## Unbond Contract
 

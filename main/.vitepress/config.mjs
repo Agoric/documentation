@@ -127,23 +127,41 @@ export default defineConfig({
           items: [
             {
               text: 'Key Concepts and APIs',
-              link: '/guides/orchestration/getting-started/key-concepts',
+              link: '/guides/orchestration/key-concepts',
             },
             {
               text: 'Contract Walkthroughs',
-              link: '/guides/orchestration/getting-started/contract-walkthroughs',
+              link: '/guides/orchestration/contract-walkthrough',
               items: [
                 {
                   text: 'Send Anywhere Example',
-                  link: '/guides/orchestration/getting-started/contract-walkthrough/send-anywhere',
+                  link: '/guides/orchestration/contract-walkthrough/send-anywhere',
                 },
                 {
                   text: 'Cross-Chain Swap Example',
-                  link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-swap',
+                  link: '/guides/orchestration/contract-walkthrough/cross-chain-swap',
                 },
                 {
                   text: 'Cross-Chain Unbond Example',
-                  link: '/guides/orchestration/getting-started/contract-walkthrough/cross-chain-unbond',
+                  link: '/guides/orchestration/contract-walkthrough/cross-chain-unbond',
+                }
+              ]
+            },
+            {
+              text: 'Example Orchestration DApp',
+              link: '/guides/orchestration/orchestration-basics',
+              items: [
+                {
+                  text: 'Installation and Deployment',
+                  link: '/guides/orchestration/orchestration-basics/installation',
+                },
+                {
+                  text: 'Orca Contract walkthrough',
+                  link: '/guides/orchestration/orchestration-basics/contract',
+                },
+                {
+                  text: 'UI Walkthrough',
+                  link: '/guides/orchestration/orchestration-basics/ui',
                 }
               ]
             },
