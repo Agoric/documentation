@@ -1,4 +1,4 @@
-# What is Agoric Orchestration
+# What is Agoric Orchestration?
 
 Agoric’s Orchestration capability allows developers to easily build cross-chain capabilities into existing applications or to create novel cross-chain-focused products.
 
