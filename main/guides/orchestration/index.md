@@ -8,7 +8,7 @@ The Agoric Orchestration API sits on top of Agoric’s novel VM that provides th
 - **Multiblock execution with async & await**: Agoric applications communicate asynchronously and await responses which may come in the same block or many blocks (or weeks!) later. Contracts simply continue executing when the response arrives.
 - **On-chain Timers**: Contracts can set timers for regular execution which makes executing common activities like subscriptions easy.
 
-Agoric’s Orchestration APIs simplify controlling remote chains, moving assets, and using capabilities on any chain the API reaches.
+Agoric’s Orchestration API simplifies controlling remote chains, moving assets, and using capabilities on any chain the API reaches.
 
 # Orchestration Overview
 
