@@ -18,7 +18,7 @@ The "Send Anywhere" contract is a robust and secure solution for transferring as
 - The contract is resilient to failure, with built-in rollback mechanisms.
 - By using Agoric’s Orchestration tools, this contract provides a secure way to facilitate cross-chain asset transfers.
 
-[See Contract Overview](/guides/orchestration/contract-walkthrough/send-anywhere)
+[See Contract Overview](/guides/orchestration/contract-walkthroughs/send-anywhere)
 
 ## Unbond Contract
 
@@ -28,4 +28,4 @@ The Unbond Contract focuses on the process of unbonding staked assets and perfor
 - Implementing delegation and undelegation logic.
 - Managing asynchronous operations and ensuring the completion of long-running processes.
 
-[See Contract Overview](/guides/orchestration/contract-walkthrough/cross-chain-unbond)
+[See Contract Overview](/guides/orchestration/contract-walkthroughs/cross-chain-unbond)

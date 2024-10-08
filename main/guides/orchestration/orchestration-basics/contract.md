@@ -8,7 +8,7 @@ files:
 1. [`orca.contract.js`](https://github.com/Agoric/dapp-orchestration-basics/blob/main/contract/src/orca.contract.js)
 2. [`orca.flows.js`](https://github.com/Agoric/dapp-orchestration-basics/blob/main/contract/src/orca.flows.js)
 
-## Walkthrough: `orca.contract.js`
+## `orca.contract.js`
 
 The `orca.contract.js` file brings in necessary dependencies and types from various Agoric packages. The `flows` import
 contains specific logic for the Orca contract offer handling operations.
@@ -78,7 +78,7 @@ for (const [name, info] of entries(chainDetails)) {
 
 - **Creating Account and Funding Functions**: These functions are created using the `orchestrateAll` helper, which sets
   up the necessary flow logic for account creation and funding but the logic is implemented in `orca.flows.js` file
-  ([discussed below](#walkthrough-orcaflowsjs)).
+  ([discussed below](#orca-flows-js)).
 
 ```js
 const { makeAccount, makeCreateAndFund } = orchestrateAll(flows, {
@@ -122,7 +122,7 @@ export const start = withOrchestration(contract);
 harden(start);
 ```
 
-## Walkthrough `orca.flows.js`
+## `orca.flows.js`
 
 This section provides a walkthrough of the `orca.flows.js` file, which contains flow functions for the Orca contract.
 The `orca.flows.js` file defines two main functions:

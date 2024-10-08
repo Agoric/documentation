@@ -131,21 +131,21 @@ export default defineConfig({
             },
             {
               text: 'Contract Walkthroughs',
-              link: '/guides/orchestration/contract-walkthrough',
+              link: '/guides/orchestration/contract-walkthroughs/',
               items: [
                 {
                   text: 'Send Anywhere Example',
-                  link: '/guides/orchestration/contract-walkthrough/send-anywhere',
+                  link: '/guides/orchestration/contract-walkthroughs/send-anywhere',
                 },
                 {
                   text: 'Cross-Chain Unbond Example',
-                  link: '/guides/orchestration/contract-walkthrough/cross-chain-unbond',
+                  link: '/guides/orchestration/contract-walkthroughs/cross-chain-unbond',
                 }
               ]
             },
             {
               text: 'Example Orchestration DApp',
-              link: '/guides/orchestration/orchestration-basics',
+              link: '/guides/orchestration/orchestration-basics/',
               items: [
                 {
                   text: 'Installation and Deployment',

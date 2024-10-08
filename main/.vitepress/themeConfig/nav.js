@@ -22,11 +22,11 @@ export const nav = [
         items: [
           {
             text: 'Send Anywhere Example',
-            link: '/guides/orchestration/contract-walkthrough/send-anywhere',
+            link: '/guides/orchestration/contract-walkthroughs/send-anywhere',
           },
           {
             text: 'Cross-Chain Unbond Example',
-            link: '/guides/orchestration/contract-walkthrough/cross-chain-unbond',
+            link: '/guides/orchestration/contract-walkthroughs/cross-chain-unbond',
           }
         ]
       },
