@@ -10,7 +10,7 @@ export const nav = [
     collapsed: true,
     items: [
       {
-        text: 'What is Orchestration?',
+        text: 'What is Agoric Orchestration?',
         link: '/guides/orchestration/',
       },
       {
