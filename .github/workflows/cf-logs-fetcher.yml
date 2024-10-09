@@ -11,7 +11,7 @@ jobs:
       - name: Debug Information
         run: |
           echo "Debugging information:"
-          echo "Is Pull Request: ${{ github.event.issue.pull_request }} ${{ github.event.issue }}"
+          echo "Is Pull Request: ${{ github.event.pull_request }} "
           echo "Comment Author: ${{ github.event.comment.user.login }} ${{ github.event.comment.user }}"
           echo "Condition for fetch_comment_log: ${{ (github.event.issue.pull_request != null) && (github.event.comment.user.login == 'cloudflare-pages[bot]') }}"
 
