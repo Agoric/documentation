@@ -1,11 +1,24 @@
 name: CF Deployment Logs
 on:
+  pull_request:
+    types: [labeled]
   issue_comment:
     types: [created, edited]
 jobs:
+  debug_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Information
+        run: |
+          echo "Debugging information:"
+          echo "Is Pull Request: ${{ github.event.pull_request }} "
+          echo "Comment Author: ${{ github.event.comment.user.login }} ${{ github.event.comment.user }}"
+          echo "Condition for fetch_comment_log: ${{ (github.event.issue.pull_request != null) && (github.event.comment.user.login == 'cloudflare-pages[bot]') }}"
+
   fetch_comment_log:
+    needs: debug_info
     if: ${{ (github.event.issue.pull_request) && (github.event.comment.user.login == 'cloudflare-pages[bot]' ) }}
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Fetch & Print The Deployment Logs
         uses: agoric-labs/cf-logs-fetcher@v2
