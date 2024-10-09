@@ -1,6 +1,6 @@
 # Orchestration Key Concepts and APIs
 
-This document provides an overview of the fundamental concepts involved in building orchestration smart contracts,
+This document provides an overview of the fundamental concepts involved in building Orchestration smart contracts,
 focusing on Orchestrator Interface, Orchestration Accounts, and ChainHub.
 
 ## Orchestrator Interface
@@ -35,7 +35,7 @@ const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 
 Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [`OrchestrationAccountI`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI)
 interface. These accounts provide high-level operations for managing accounts on remote chains, allowing seamless
-interaction and management of interchain accounts. The orchestration accounts abstract the complexity of interchain
+interaction and management of interchain accounts. The Orchestration accounts abstract the complexity of interchain
 interactions, providing a unified and simplified interface for developers.
 
 ### Account Creation
@@ -89,7 +89,7 @@ await orchestrationAccount.deposit(payment);
 ## ChainHub
 
 ChainHub is a centralized registry of chains, connections, and denoms that simplifies accessing and interacting with
-multiple chains, providing a unified interface for the orchestration logic to manage cross-chain operations effectively.
+multiple chains, providing a unified interface for the Orchestration logic to manage cross-chain operations effectively.
 A chainHub instance can be created using a call to `makeChainHub` that makes a new ChainHub in the zone (or in the heap
 if no [zone](/glossary/#zone) is provided). The resulting object is an [Exo](/glossary/#exo) singleton. It has no
 precious state. Its only state is a cache of queries to `agoricNames` and the info provided in registration calls. When

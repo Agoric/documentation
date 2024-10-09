@@ -2,7 +2,7 @@
 
 Orchestration relies on protocols and mechanisms that allow blockchains to
 communicate and transact with each other securely and efficiently. The primary
-objectives of orchestration are:
+objectives of Orchestration are:
 
 - **Interoperability:** Enabling different blockchain networks to interact and
   transact with one another.
@@ -124,10 +124,10 @@ asynchronous, makes it particularly well-suited for Interchain Accounts and
 Interchain Queries. When contracts on Agoric interact, the system is designed
 to handle cases where the other contract may reside on a remote machine or
 another blockchain. This inherent architecture allows Agoric to seamlessly
-control and manage Interchain Accounts, further enhancing the orchestration
+control and manage Interchain Accounts, further enhancing the Orchestration
 capabilities.
 
-By leveraging ICA and ICQ, blockchain orchestration becomes more flexible and
+By leveraging ICA and ICQ, Orchestration becomes more flexible and
 powerful, enabling direct, programmable interactions between blockchains. This
 unlocks a wide range of possibilities, from decentralized finance (DeFi) to
 supply chain management and beyond.
