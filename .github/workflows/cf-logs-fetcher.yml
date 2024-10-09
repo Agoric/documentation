@@ -1,11 +1,17 @@
 name: CF Deployment Logs
 on:
+  pull_request:
+    types: [labeled]
   issue_comment:
     types: [created, edited]
 jobs:
   debug_info:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout PR
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Debug Information
         run: |
           echo "Debugging information:"
