@@ -237,15 +237,15 @@ __metadata:
     "@agoric/vats": "npm:community-dev"
     "@agoric/zoe": "npm:community-dev"
     "@agoric/zone": "npm:community-dev"
-    "@endo/bundle-source": "npm:^3.4.0"
-    "@endo/errors": "npm:^1.2.5"
-    "@endo/eventual-send": "npm:^1.2.5"
-    "@endo/far": "npm:^1.1.5"
-    "@endo/init": "npm:^1.1.4"
-    "@endo/marshal": "npm:^1.5.3"
-    "@endo/pass-style": "npm:^1.4.3"
-    "@endo/patterns": "npm:^1.4.3"
-    "@endo/promise-kit": "npm:^1.1.5"
+    "@endo/bundle-source": "npm:^3.4.1"
+    "@endo/errors": "npm:^1.2.6"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/far": "npm:^1.1.6"
+    "@endo/init": "npm:^1.1.5"
+    "@endo/marshal": "npm:^1.5.4"
+    "@endo/pass-style": "npm:^1.4.4"
+    "@endo/patterns": "npm:^1.4.4"
+    "@endo/promise-kit": "npm:^1.1.6"
     "@endo/ses-ava": "npm:^1.2.5"
     "@typescript-eslint/parser": "npm:^4.33.0"
     ava: "npm:^4.3.3"
@@ -1538,6 +1538,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/base64@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@endo/base64@npm:1.0.8"
+  checksum: 10c0/3501efbf866acc25b9ad0912ec2383e3b976c890a18dc67b5c6eb128433708db69e8ed1cc57190305266bdcbd132659aa87edfc6d02a9886b711e8b86adc21c0
+  languageName: node
+  linkType: hard
+
 "@endo/bundle-source@npm:^3.4.0":
   version: 3.4.0
   resolution: "@endo/bundle-source@npm:3.4.0"
@@ -1556,6 +1563,27 @@ __metadata:
   bin:
     bundle-source: ./src/tool.js
   checksum: 10c0/c21ee24b7beaf4e9b935c853f6917e42f2c22250697c02ceea97288cb142d8ba863491fd934c49c337a14cf94960d9edde84eb91355c679d27d303e89d429a46
+  languageName: node
+  linkType: hard
+
+"@endo/bundle-source@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "@endo/bundle-source@npm:3.4.1"
+  dependencies:
+    "@endo/base64": "npm:^1.0.8"
+    "@endo/compartment-mapper": "npm:^1.3.0"
+    "@endo/evasive-transform": "npm:^1.3.1"
+    "@endo/init": "npm:^1.1.5"
+    "@endo/promise-kit": "npm:^1.1.6"
+    "@endo/where": "npm:^1.0.8"
+    "@rollup/plugin-commonjs": "npm:^19.0.0"
+    "@rollup/plugin-json": "npm:^6.1.0"
+    "@rollup/plugin-node-resolve": "npm:^13.0.0"
+    acorn: "npm:^8.2.4"
+    rollup: "npm:^2.79.1"
+  bin:
+    bundle-source: ./src/tool.js
+  checksum: 10c0/3d6fc495265ad120cd61ed32fbed41b0d2a923609c6f947aa45f81e9006815bc1cc90a0676e1815160dcce2bc69c96dd7656e0caf47b1d9dc7123463cc38c1d1
   languageName: node
   linkType: hard
 
@@ -1590,6 +1618,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/cjs-module-analyzer@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@endo/cjs-module-analyzer@npm:1.0.8"
+  checksum: 10c0/937ba9327f93e5288e7693d62462d4fd1d038d11aef07b83df829c37c5747e66707d185dc679707db9f38f88a1fe0cc06e649c620936e33719587ea51b81ab14
+  languageName: node
+  linkType: hard
+
 "@endo/common@npm:^1.2.5":
   version: 1.2.5
   resolution: "@endo/common@npm:1.2.5"
@@ -1598,6 +1633,17 @@ __metadata:
     "@endo/eventual-send": "npm:^1.2.5"
     "@endo/promise-kit": "npm:^1.1.5"
   checksum: 10c0/104ca2febd87d05b97a77037cb0f281157082b722a39f3fbfca94e36984ad8bc8622e900aeba861d7ed6e6b5d103971599ec2b804eb236537576d498f9ab1fe5
+  languageName: node
+  linkType: hard
+
+"@endo/common@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@endo/common@npm:1.2.6"
+  dependencies:
+    "@endo/errors": "npm:^1.2.6"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/promise-kit": "npm:^1.1.6"
+  checksum: 10c0/7cca372677bd1ab535a0f8fc250eca9bfc202ef7dfd24cac6ff1260003aa4512f8db18419dd632b3e57270a589fec54891496904ff2e8a97047f1e187e3f1401
   languageName: node
   linkType: hard
 
@@ -1613,6 +1659,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/compartment-mapper@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@endo/compartment-mapper@npm:1.3.0"
+  dependencies:
+    "@endo/cjs-module-analyzer": "npm:^1.0.8"
+    "@endo/module-source": "npm:^1.1.0"
+    "@endo/trampoline": "npm:^1.0.2"
+    "@endo/zip": "npm:^1.0.8"
+    ses: "npm:^1.9.0"
+  checksum: 10c0/7cc0b1abef482e25185ef6f39a22b91c43267c3fd187f93b32570e7b57b6c105dd93de2d535e98861cf1c54938a8503dbe3852014c7999b6df914f0029bd5ab9
+  languageName: node
+  linkType: hard
+
 "@endo/env-options@npm:^1.1.5":
   version: 1.1.5
   resolution: "@endo/env-options@npm:1.1.5"
@@ -1624,6 +1683,13 @@ __metadata:
   version: 1.1.6
   resolution: "@endo/env-options@npm:1.1.6"
   checksum: 10c0/0001b1cba6954cccfa40104f819378f2f5c8babc89103213a8a5da4f8f94248c8389bfa06ec37cecae81edabe570428558399313d649c64ad7c90743f563dea2
+  languageName: node
+  linkType: hard
+
+"@endo/env-options@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "@endo/env-options@npm:1.1.7"
+  checksum: 10c0/5784bd68790041b08d9ead4f6c29cc7871d2e554c23fc44fff38cb20b6b4e55cdba2f78d844ba5ad4b0818185c32475ff318c1b77890d628690d7c7a6ede9475
   languageName: node
   linkType: hard
 
@@ -1645,6 +1711,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/errors@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@endo/errors@npm:1.2.6"
+  dependencies:
+    ses: "npm:^1.9.0"
+  checksum: 10c0/cbc541c2d26fbfeb1567dd1cdf0e1f110ee9866430c5a1b91d87270d6f00bc8293cc8512301217c4eda35e60677ce62a941d11eb32c7da1f72d450a011ad2bb5
+  languageName: node
+  linkType: hard
+
 "@endo/evasive-transform@npm:^1.3.0":
   version: 1.3.0
   resolution: "@endo/evasive-transform@npm:1.3.0"
@@ -1654,6 +1729,18 @@ __metadata:
     "@babel/traverse": "npm:^7.23.6"
     source-map-js: "npm:^1.2.0"
   checksum: 10c0/caca5f99423f4dcd57bce5fe8dc197019bfcaca657929016b1e91a6d4efe7a6d73e8b7c16cff83f56c03b035ca16e08565996a3459d30a65a83b632ef7d8d0a3
+  languageName: node
+  linkType: hard
+
+"@endo/evasive-transform@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@endo/evasive-transform@npm:1.3.1"
+  dependencies:
+    "@agoric/babel-generator": "npm:^7.17.6"
+    "@babel/parser": "npm:^7.23.6"
+    "@babel/traverse": "npm:^7.23.6"
+    source-map-js: "npm:^1.2.0"
+  checksum: 10c0/10a20220affcd305d7e8c7255556b799e7af5a44ce6a6319b8df8022febe3a16ae828b6a90b2b7cfe78ce322e777f54aac351e5ea4c1dd0097eb06833003b08e
   languageName: node
   linkType: hard
 
@@ -1672,6 +1759,15 @@ __metadata:
   dependencies:
     "@endo/env-options": "npm:^1.1.6"
   checksum: 10c0/7eaa30628582f768920659e4894b871c1056da4252b82b8ad70ed49a24c4559efb8d1655a6845984a0eae83d328179e4272b0917007a2f147dc8b15ecb0ecc52
+  languageName: node
+  linkType: hard
+
+"@endo/eventual-send@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@endo/eventual-send@npm:1.2.6"
+  dependencies:
+    "@endo/env-options": "npm:^1.1.7"
+  checksum: 10c0/6983d6b88bf4e99f6c469d4ca037793582b06cc0bfa2da085b5bc7ad67333a1fba6e5e7077b7f279be23ccfba1dff9e06c7f85f9980b09fd002227f89a673c11
   languageName: node
   linkType: hard
 
@@ -1712,6 +1808,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/far@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "@endo/far@npm:1.1.6"
+  dependencies:
+    "@endo/errors": "npm:^1.2.6"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/pass-style": "npm:^1.4.4"
+  checksum: 10c0/0d001686f717601fd2a4609161e37235603bc2721fe1cc967247019f4d9bb583d6eafc56940a7d95d252ae2064a663f552d36b7fd15528ce207c3cd748f820ec
+  languageName: node
+  linkType: hard
+
 "@endo/import-bundle@npm:^1.2.2":
   version: 1.2.2
   resolution: "@endo/import-bundle@npm:1.2.2"
@@ -1737,12 +1844,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/init@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@endo/init@npm:1.1.5"
+  dependencies:
+    "@endo/base64": "npm:^1.0.8"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/lockdown": "npm:^1.0.11"
+    "@endo/promise-kit": "npm:^1.1.6"
+  checksum: 10c0/08abda8a0204450cb39c296270d074189f320cdeb03892e87b27a75f6b98c0b5d9c8471e242c53545843211fe713b01b281eec0eabc1c58ca0760a068b90335c
+  languageName: node
+  linkType: hard
+
 "@endo/lockdown@npm:^1.0.10":
   version: 1.0.10
   resolution: "@endo/lockdown@npm:1.0.10"
   dependencies:
     ses: "npm:^1.8.0"
   checksum: 10c0/94be0c1b14cacb2d8088dcc17998e901159a028c51170d78a8cc6a820ae76cabc7d2694f1a1956cb4eab70a8c9a0c8254d88ea4c3f3d9725b739aacf6db83d5b
+  languageName: node
+  linkType: hard
+
+"@endo/lockdown@npm:^1.0.11":
+  version: 1.0.11
+  resolution: "@endo/lockdown@npm:1.0.11"
+  dependencies:
+    ses: "npm:^1.9.0"
+  checksum: 10c0/03bb96f370e7ee69d9d8e26b7b124b6381994d3b28a99dc2bcafe77139283701d7543b40e978226cd49443c149e64610e4dd49c32ada931610ba091809478a11
   languageName: node
   linkType: hard
 
@@ -1760,6 +1888,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/marshal@npm:^1.5.4":
+  version: 1.5.4
+  resolution: "@endo/marshal@npm:1.5.4"
+  dependencies:
+    "@endo/common": "npm:^1.2.6"
+    "@endo/errors": "npm:^1.2.6"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/nat": "npm:^5.0.11"
+    "@endo/pass-style": "npm:^1.4.4"
+    "@endo/promise-kit": "npm:^1.1.6"
+  checksum: 10c0/4668a3678567cfbeefc3a47217912ca3f5d8bdb37e0d5d53339953b4ab83950683505f45c0f5c30b415c989bb9df4fa0859849d23b11f5b1064b0da0a13943ab
+  languageName: node
+  linkType: hard
+
 "@endo/module-source@npm:^1.0.2":
   version: 1.0.2
   resolution: "@endo/module-source@npm:1.0.2"
@@ -1773,10 +1915,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/module-source@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@endo/module-source@npm:1.1.0"
+  dependencies:
+    "@agoric/babel-generator": "npm:^7.17.6"
+    "@babel/parser": "npm:^7.23.6"
+    "@babel/traverse": "npm:^7.23.6"
+    "@babel/types": "npm:^7.24.0"
+    ses: "npm:^1.9.0"
+  checksum: 10c0/767c7df622c0becf5c7b9b42b59a31b3d210cf3e536c05569a18f6f7047cebdd5ca3e833831299ea9ce93959b5d3d048d87f225afc1d12dd7c1879f0e35e4840
+  languageName: node
+  linkType: hard
+
 "@endo/nat@npm:^5.0.10":
   version: 5.0.10
   resolution: "@endo/nat@npm:5.0.10"
   checksum: 10c0/7ad2aa2d216d517409c771aebb465aceb6ea8b88ec808c2dc030d7ffc7fe7d601d8401572f3866384a63ff2aa74209a22f29e1561e773d91d7ad2d81fa13fc7e
+  languageName: node
+  linkType: hard
+
+"@endo/nat@npm:^5.0.11":
+  version: 5.0.11
+  resolution: "@endo/nat@npm:5.0.11"
+  checksum: 10c0/50cd9033657dd35288f0333a966984f788213f1c836e6772c0d731361d5854d0ce24b8a7d6f351d56618eb40f6b369e130c1ad939c83d5833246c09119b2e777
   languageName: node
   linkType: hard
 
@@ -1818,6 +1980,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/pass-style@npm:^1.4.4":
+  version: 1.4.4
+  resolution: "@endo/pass-style@npm:1.4.4"
+  dependencies:
+    "@endo/env-options": "npm:^1.1.7"
+    "@endo/errors": "npm:^1.2.6"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/promise-kit": "npm:^1.1.6"
+    "@fast-check/ava": "npm:^1.1.5"
+  checksum: 10c0/d6c6268b269d4c14541087ce6b2975f9e31847893d01360c0ea92392ae93316d94fbf59cd7299853a0fb5214176ad7ffc4616b9b2581fd720bdb55ef96d0beeb
+  languageName: node
+  linkType: hard
+
 "@endo/patterns@npm:^1.4.3":
   version: 1.4.3
   resolution: "@endo/patterns@npm:1.4.3"
@@ -1828,6 +2003,19 @@ __metadata:
     "@endo/marshal": "npm:^1.5.3"
     "@endo/promise-kit": "npm:^1.1.5"
   checksum: 10c0/10aabc6459d1b5d26e8946ab1b88db23eda80231aa6a0b6c9835568eee1daf745d23c29fa7f202bf11859a7ae77d5f51071c3d863d34e259a62c382ec797bb03
+  languageName: node
+  linkType: hard
+
+"@endo/patterns@npm:^1.4.4":
+  version: 1.4.4
+  resolution: "@endo/patterns@npm:1.4.4"
+  dependencies:
+    "@endo/common": "npm:^1.2.6"
+    "@endo/errors": "npm:^1.2.6"
+    "@endo/eventual-send": "npm:^1.2.6"
+    "@endo/marshal": "npm:^1.5.4"
+    "@endo/promise-kit": "npm:^1.1.6"
+  checksum: 10c0/3e4c43b916134201b98cb3b17480f01aa15c2ce7a447b574f6ad8b8d1796fd929f2a21e7c541c50ad83afab51044cf03719bef9e48b455a0bec89d940287487b
   languageName: node
   linkType: hard
 
@@ -1846,6 +2034,15 @@ __metadata:
   dependencies:
     ses: "npm:^1.8.0"
   checksum: 10c0/3a9fb59546507dbbb8c83ada4de664ca4f6085ffcb56c9e3e07789e002e717454b1ee5ae1273549935a7e77ac42be7ae8ddca94ff6d4f16914210d31159ce1a4
+  languageName: node
+  linkType: hard
+
+"@endo/promise-kit@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "@endo/promise-kit@npm:1.1.6"
+  dependencies:
+    ses: "npm:^1.9.0"
+  checksum: 10c0/d60de663e58f9de32b6705268c62c63c4721f1874813d3c10cae7846e921e4ea8a60c8622ef8c937741a3387fbc60110076b25304afedf270727af7b0c3fecb3
   languageName: node
   linkType: hard
 
@@ -1885,6 +2082,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/trampoline@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@endo/trampoline@npm:1.0.2"
+  checksum: 10c0/3b0f1462593fb5ea6ae960277fcd79b8351582c41130062b1d05ed934ae5a51499a87f10e9706c483f90065e26acc0d5bb40f25a537e196e7697ffeb518286ce
+  languageName: node
+  linkType: hard
+
 "@endo/where@npm:^1.0.7":
   version: 1.0.7
   resolution: "@endo/where@npm:1.0.7"
@@ -1892,10 +2096,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/where@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@endo/where@npm:1.0.8"
+  checksum: 10c0/27b3e1b9ceccc3249e7e6067fbdcdc66fef3f46ad1dd7ac2b0623780e8f134bb18c11468f846d61413a82790cc4ddcbd69cdae9dda49f00dd6d09c818165cc48
+  languageName: node
+  linkType: hard
+
 "@endo/zip@npm:^1.0.7":
   version: 1.0.7
   resolution: "@endo/zip@npm:1.0.7"
   checksum: 10c0/a1c0d155448ce877012b34c8fe8cd3a58de9eb807514c81cddeebb802ee8e552b27d8a9a40fab3f3e4c49e0cb7fea6902fa1dd12a23ff6f30b56161fc3edc1f8
+  languageName: node
+  linkType: hard
+
+"@endo/zip@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@endo/zip@npm:1.0.8"
+  checksum: 10c0/bb74862121932cd27eef59326325c4b61671ce0962033a2ad18e6d6978a9e94bfe604dbfa8c0b039a38fa7eefc495e6a69c583c0e75929cd267979b2c65b775b
   languageName: node
   linkType: hard
 
@@ -8137,6 +8355,15 @@ __metadata:
   dependencies:
     "@endo/env-options": "npm:^1.1.6"
   checksum: 10c0/4b2114e586a547dd2a71477e0a42e8ea5d0ea9c3ff135d0dbfb63569eeda19c7152db76b82bcad12a2969d3f5fb09e5fa52e921b5a2831560e6876ca1f9ba207
+  languageName: node
+  linkType: hard
+
+"ses@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "ses@npm:1.9.0"
+  dependencies:
+    "@endo/env-options": "npm:^1.1.7"
+  checksum: 10c0/356f9601b04a87f33403a15fc627caf0c649d86d8d7ee1f4b3c75b947ab05c31b254c94c0aa26e9904862787c73950d5a60f3435deebe5dba23017e20c40b0cb
   languageName: node
   linkType: hard
 
