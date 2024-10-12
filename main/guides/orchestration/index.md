@@ -10,6 +10,10 @@ The Agoric Orchestration API sits on top of Agoric’s novel VM that provides th
 
 Agoric’s Orchestration APIs simplify controlling accounts on remote chains, moving assets, and using capabilities on any chain the API reaches.
 
+<br/>
+<img src="./assets/chains.png" width="100%" />
+<br/>
+
 ## Orchestration Overview
 
 Agoric's Orchestration API is a tool to help developers build seamless applications out of disparate interoperable chains and services. This composability allows for the development of user-centric applications that leverage the unique strengths of different blockchain ecosystems.
