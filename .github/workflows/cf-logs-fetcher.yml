@@ -4,7 +4,7 @@ on:
     types: [created, edited]
 jobs:
   fetch_comment_log:
-    if: ${{ (github.event.issue.pull_request) && (github.event.comment.user.login == 'cloudflare-pages[bot]' ) }}
+    if: ${{ (github.event.issue.pull_request) && (github.event.comment.user.login == 'cloudflare-workers-and-pages[bot]' ) }}
     runs-on: [ubuntu-latest]
     steps:
       - name: Fetch & Print The Deployment Logs
