@@ -4,9 +4,15 @@ on:
     types: [created, edited]
 jobs:
   fetch_comment_log:
-    if: ${{ (github.event.issue.pull_request) && (github.event.comment.user.login == 'cloudflare-pages[bot]' ) }}
-    runs-on: [ubuntu-latest]
+    needs: debug_info
+    runs-on: ubuntu-latest
     steps:
+      - name: Debug Information
+        run: |
+          echo "Debugging information:"
+          echo "Is Pull Request: ${{ github.event.issue.pull_request != null }}"
+          echo "Comment Author: ${{ github.event.comment.user.login }}"
+          echo "Condition Met: ${{ (github.event.issue.pull_request != null) && (github.event.comment.user.login == 'cloudflare-pages[bot]') }}"
       - name: Fetch & Print The Deployment Logs
         uses: agoric-labs/cf-logs-fetcher@v2
         with:
