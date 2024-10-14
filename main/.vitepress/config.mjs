@@ -1,8 +1,9 @@
 import { defineConfig } from 'vitepress';
 import { nav } from './themeConfig/nav.js';
 import { rewrites } from './themeConfig/rewrites.js';
+import { withMermaid } from "vitepress-plugin-mermaid";
 
-export default defineConfig({
+export default withMermaid({
   /* --- FOR DEPLOYMENT TO GITHUB PAGES--- */
   base: '/', // The base URL the site will be deployed at.
   outDir: '../dist',
@@ -673,5 +674,12 @@ export default defineConfig({
         link: 'https://www.youtube.com/@Agoric',
       },
     ],
+  },
+  mermaid: {
+    // refer https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults for options
+  },
+  // optionally set additional config for plugin itself with MermaidPluginConfig
+  mermaidPlugin: {
+    class: "mermaid my-class", // set additional css classes for parent container 
   },
 });
