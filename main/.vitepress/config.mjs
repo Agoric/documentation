@@ -173,7 +173,7 @@ export default defineConfig({
           items: [
             {
               text: 'Getting Started',
-              link: '/guides/getting-started/',
+              link: "/guides/getting-started/",
               items: [
                 {
                   text: 'Takeaway 1: Starting a Local Chain',
