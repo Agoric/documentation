@@ -122,7 +122,7 @@ export default defineConfig({
       '/': [
         {
           text: 'Orchestrate',
-          link: '/guides/orchestration/',
+          link: '/guides2/orchestration/',
           collapsed: true,
           items: [
             {
