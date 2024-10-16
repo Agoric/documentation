@@ -191,9 +191,12 @@ export const start = async (zcf, privateArgs, baggage) => {
 
 ### Exo
 
-An Exo object is an exposed Remotable object with methods (aka a [Far](/glossary/#zone) object), which is normally defined with an [InterfaceGuard](#todo-interface-guard) as a protective outer layer, providing the first layer of defensiveness.
+An Exo object is an exposed Remotable object with methods (aka a [`Far`](/guides/js-programming/far) object) which is
+normally defined with an `InterfaceGuard` as a protective outer layer, providing the first
+layer of defensiveness.
 
-This [@endo/exo](https://github.com/endojs/endo/tree/master/packages/exo) package defines the APIs for making Exo objects, and for defining ExoClasses and ExoClassKits for making Exo objects.
+This [@endo/exo](https://github.com/endojs/endo/tree/master/packages/exo) package defines the APIs for making
+Exo objects, and for defining ExoClasses and ExoClassKits for making Exo objects.
 
 ```js
 const publicFacet = zone.exo(
