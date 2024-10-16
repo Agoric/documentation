@@ -15,6 +15,10 @@ To achieve these goals, several foundational technologies and protocols have
 been developed, with the [Inter-Blockchain Communication (IBC) protocol](https://ibcprotocol.org/) being
 one of the most prominent.
 
+<br/>
+<img src="./assets/orch_contract_arch.svg" width="100%" />
+<br/>
+
 ### Inter-Blockchain Communication (IBC)
 
 The [Inter-Blockchain Communication (IBC) protocol](https://ibcprotocol.org/)
