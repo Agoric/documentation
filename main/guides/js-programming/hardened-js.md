@@ -79,6 +79,22 @@ e.g., only giving the `entryGuard` the ability to increment the counter.
 
 This limits the damage that can happen if there is an exploitable bug.
 
+### Widely Shared vs. Closely Held
+
+#### Widely Shared Capabilities
+
+In the object capability model, "widely shared" refers to capabilities that are accessible to a large portion of the code within a system. For example:
+
+- [**agoricNames**](/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names): This component serves as a read-only name service, which means it can be accessed by most parts of the system. Since it only allows data to be read and not modified, it poses minimal risk and can be safely made widely available.
+  Similarly, in [Access Control with Objects](/guides/zoe/contract-access-control.html#access-control-with-objects), this concept is mirrored by the **publicFacet**, which exposes safe-to-share functionality publicly.
+
+#### Closely Held Capabilities
+
+On the other hand, "closely held" capabilities are restricted and only accessible to specific parts of the system that require them to function effectively:
+
+- [**agoricNamesAdmin**](/guides/integration/name-services.html#agoricnames-agoricnamesadmin-well-known-names): Known as the write facet of the name service, this component allows modifications to the data in `agoricNames`. Given its capability to alter critical system data, access to `agoricNamesAdmin` is limited to only those parts of the system that have a legitimate need for write access.
+  This precaution helps to prevent potential misuse or errors that could compromise the system. This parallels the **creatorFacet** in [Access Control with Objects](/guides/zoe/contract-access-control.html#access-control-with-objects), that is provided only to the caller who creates the contract instance.
+
 ::: tip Watch: Navigating the Attack Surface
 to achieve a _multiplicative_ reduction in risk. _15 min_<br />
 
