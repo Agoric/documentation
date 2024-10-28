@@ -122,9 +122,12 @@ export default defineConfig({
       '/': [
         {
           text: 'Orchestrate',
-          link: '/guides/orchestration/',
           collapsed: true,
           items: [
+            {
+              text: 'What is Agoric Orchestration?',
+              link: '/guides/orchestration/',
+            },
             {
               text: 'Key Concepts and APIs',
               link: '/guides/orchestration/key-concepts',
@@ -505,9 +508,12 @@ export default defineConfig({
         },
         {
           text: 'Tutorials',
-          link: '/guides/getting-started/tutorial/',
           collapsed: true,
           items: [
+            {
+              text: 'Tutorial: Dapp with Agoric',
+              link: '/guides/getting-started/tutorial/',
+            },
             {
               text: 'dapp-agoric-basics',
               link: '/guides/getting-started/tutorial-dapp-agoric-basics',
