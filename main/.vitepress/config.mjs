@@ -217,10 +217,6 @@ export default defineConfig({
                   link: '/guides/zoe/contract-walkthru',
                 },
                 {
-                  text: 'Durable Contract Details',
-                  link: '/guides/zoe/contract-details',
-                },
-                {
                   text: 'Contract Upgrade',
                   link: '/guides/zoe/contract-upgrade',
                 },
