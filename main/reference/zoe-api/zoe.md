@@ -34,7 +34,7 @@ and the values are the **Brands** for particular **[Issuers](/reference/ertp-api
 // Record example
 const brandKeywordRecord = {
   FirstCurrency: quatloosBrand,
-  SecondCurrency: moolaBrand
+  SecondCurrency: moolaBrand,
   // etc.
 };
 ```
@@ -58,7 +58,7 @@ and the values are **Issuers**.
 // Record example
 const issuerKeywordRecord = {
   FirstCurrency: quatloosIssuer,
-  SecondCurrency: moolaIssuer
+  SecondCurrency: moolaIssuer,
 };
 ```
 
@@ -274,16 +274,19 @@ It returns a **Promise** for a **StartInstanceResult** object. The object consis
 The **adminFacet** has four methods:
 
 - **getVatShutdownPromise()**
+
   - Returns a promise that resolves to reason (the value passed to **fail(reason)**) or
     completion (the value passed to **exit(completion)**) when this newly started instance terminates.
 
 - **restartContract(newPrivateArgs?)**
+
   - **newPrivateArgs**: **any** - Optional
   - returns VatUpgradeResults (a record with one field: incarnationNumber)
 
   Restarts the contract without changing the contract bundle
 
 - **upgradeContract(contractBundleId, newPrivateArgs)**
+
   - **contractBundleId**: **string**
   - **newPrivateArgs**: **any** - Optional
 
@@ -295,6 +298,7 @@ The **adminFacet** has four methods:
   process of upgrading contracts.
 
 - **terminateContract(reason)**
+
   - **reason**: **Error**
 
   terminates the contract. `reason` will be provided as the failure reason.
@@ -326,11 +330,11 @@ represented as a **Payment**.
 ```js
 const issuerKeywordRecord = {
   Asset: moolaIssuer,
-  Price: quatlooIssuer
+  Price: quatlooIssuer,
 };
 const terms = { numBids: 3 };
 const { creatorFacet, publicFacet, creatorInvitation } = await E(
-  Zoe
+  Zoe,
 ).startInstance(installation, issuerKeywordRecord, terms);
 ```
 
@@ -362,7 +366,7 @@ it may inspect it and reject it for any reason
 const myProposal = harden({
   give: { Asset: AmountMath.make(quatloosBrand, 4n) },
   want: { Price: AmountMath.make(moolaBrand, 15n) },
-  exit: { onDemand: null }
+  exit: { onDemand: null },
 });
 ```
 

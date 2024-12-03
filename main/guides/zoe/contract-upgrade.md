@@ -4,7 +4,7 @@ The return value when starting a contract includes a capability that conveys the
 the contract instance. A call to
 [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)
 returns a record of several objects that carry different powers. The `publicFacet` and
-`creatorFacet` are defined by the contract.  The
+`creatorFacet` are defined by the contract. The
 [`adminFacet`](/reference/zoe-api/zoe.html#adminFacet) is defined by Zoe and includes methods to
 upgrade the contract.
 
@@ -85,7 +85,6 @@ The 3rd argument, `baggage`, of the `start` function is a `MapStore` that is sav
 across restarts of the contract. It provides a way to preserve state and behavior of objects between
 incarnations in a way that also maintains the identity of objects as seen from other [vats](/glossary/#vat).
 
-
 ```js
 let rooms;
 if (!baggage.has('rooms')) {
@@ -104,7 +103,7 @@ The `provide` function supports a concise idiom for this get-or-create pattern:
 import { provide } from '@agoric/vat-data';
 
 const rooms = provide(baggage, 'rooms', () =>
-  makeScalarBigMapStore('rooms', { durable: true })
+  makeScalarBigMapStore('rooms', { durable: true }),
 );
 ```
 
@@ -153,18 +152,18 @@ const makeRoom = zone.exoClass('Room', RoomI, id => ({ id, value: 0 }), {
   // ...
   clear(delta) {
     this.state.value = 0;
-  }
+  },
 });
 ```
 
-The interface guard also needs updating.  <small>_[The Durable
+The interface guard also needs updating. <small>_[The Durable
 objects](./contract-details.md#guards-defensive-methods) section has more on interface
 guards._</small>
 
 ```js
 const RoomI = M.interface('Room', {
   // ...
-  clear: M.call().returns()
+  clear: M.call().returns(),
 });
 ```
 
@@ -206,7 +205,7 @@ const publicFacet = zone.exo(
   'StakeAtom',
   M.interface('StakeAtomI', {
     makeAccount: M.callWhen().returns(M.remotable('ChainAccount')),
-    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape)
+    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape),
   }),
   {
     async makeAccount() {
@@ -221,8 +220,8 @@ const publicFacet = zone.exo(
         const holder = await makeAccountKit();
         return holder.asContinuingOffer();
       }, 'wantStakingAccount');
-    }
-  }
+    },
+  },
 );
 ```
 
@@ -259,13 +258,13 @@ const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
   zcf,
   privateArgs.timerService,
   vowTools,
-  makeChainHub(privateArgs.agoricNames)
+  makeChainHub(privateArgs.agoricNames),
 );
 // ...
 const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
   zone,
   makeRecorderKit,
   vowTools,
-  zcf
+  zcf,
 );
 ```

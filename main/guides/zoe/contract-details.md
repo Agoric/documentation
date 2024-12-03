@@ -17,7 +17,7 @@ need. This means putting relevant state in
 that will be accessible to users have an identity that can be maintained as the behavior changes with contract
 upgrades.
 
-We use zone.exo(), zone.exoClass(), and zone.exoClassKit() to  define durable objects. 
+We use zone.exo(), zone.exoClass(), and zone.exoClassKit() to define durable objects.
 
 [Zone](http://localhost:5173/glossary/#zone) provides an interface for defining objects and classes that
 supports both ephemeral objects (allocated on the heap), and durable objects that can persist and that
@@ -50,7 +50,7 @@ object. Notice that `exo()` doesn't take `init` as a parameter; this limits the 
 referencing values defined in the enclosing scope. Classes can also refer to variables in their defining
 scope, but any values inherited from the scope will be accessible to all instances of that type. The `init`
 function's parameters become the parameters of the maker function returned by `exoClass()` and
-`exoClassKit()`.  `init`'s return value is the state that will be preserved by SwingSet for each
+`exoClassKit()`. `init`'s return value is the state that will be preserved by SwingSet for each
 object. `exo()` doesn't have an init parameter, so it creates and returns the singleton immediately rather
 than returning a maker.
 
@@ -98,7 +98,7 @@ M.interface('name', {
 `M.call()` verifies that all parameters match the guard before passing them through to the
 method. `M.callWhen(M.await(paramsBGuard))` awaits the resolution of the parameter, and then verifies that the
 result matches before invoking the method. When a guard is written this latter way, the method doesn't have to
-be `async`. In both cases, the method  doesn't have to check for compliance with the guard.
+be `async`. In both cases, the method doesn't have to check for compliance with the guard.
 
 [Shapes can specify](https://endojs.github.io/endo/interfaces/_endo_patterns.PatternMatchers.html) simple
 types like `M.string()`, `M.remotable()`, and `M.number()`, as well as complex structures of records and
@@ -119,4 +119,3 @@ the state values.
 `finish()`, if provided, is called after instances have been created but before they are returned to the
 caller. They can be used to send an initial state update, or to complete initialization which couldn't be done
 in `init`. `finish` has access to state and facets if needed.
-
