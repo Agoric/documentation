@@ -47,6 +47,24 @@ message MsgWalletSpendAction {
 
 ## Querying VStorage
 
+::: tip VStorage as Contract State Query Mechanism
+Unlike Ethereum and other blockchains that provide [readonly or view query APIs](https://docs.soliditylang.org/en/latest/contracts.html#view-functions) directly in the smart contracts,
+the Agoric chain does not offer such direct readonly APIs for querying contract state. Instead, the Agoric
+platform achieves this functionality through a powerful feature called VStorage.
+
+Smart contracts on the Agoric chain can write data to VStorage, which acts as a publicly accessible
+storage layer. This data is available for anyone to query, similar to the functionality of a getter
+API on other blockchains. It is completely cost-free, meaning developers and users can fetch data
+from VStorage without incurring any fees.
+
+For instace, if a smart contract manages educational records, it can publish any relevant information
+to VStorage through a `chainStorage` API, and anyone can query this data to verify the authenticity of
+the records. This approach is illustrated in the [dapp-ed-cert.
+Agoric’s approach replaces direct readonly APIs with a public and cost-free vstorage mechanism,
+enabling developers to create dynamic and responsive dApps while keeping the blockchain interactions
+efficient and economical.
+:::
+
 [VStorage](https://github.com/Agoric/agoric-sdk/tree/master/golang/cosmos/x/vstorage#readme) (for "Virtual Storage") is a key-value store that is
 read-only for clients of the consensus layer.
 From within the JavaScript VM, it is accessed via a `chainStorage` API with a node at each
