@@ -7,26 +7,25 @@ or the ability to upgrade, while the second kind need to make use of more sophis
 
 When a contract is intended to continue running and serving many customers over a long time, its objects and
 data need to be persistent, its owners or managers may need to be able to adjust parameters or perform other
-governance actions, and it needs to be upgradeable so that the code can adapt over time.
+governance actions, and they may want it to be upgradeable so that the code can adapt over time.
 
 ## Durable Objects
 
 The first step toward contracts that can be upgraded is storing all the data that a later incarnation will
-need. This means putting relevant state in
-[Baggage](http://localhost:5173/guides/zoe/contract-upgrade.html#baggage), and ensuring that reachable objects
-that will be accessible to users have an identity that can be maintained as the behavior changes with contract
-upgrades.
+need. This means putting relevant state in [Baggage](/guides/zoe/contract-upgrade#baggage), and ensuring that
+reachable objects that will be accessible to clients have an identity that can be maintained as the behavior
+changes with contract upgrades.
 
 We use zone.exo(), zone.exoClass(), and zone.exoClassKit() to define durable objects.
 
-[Zone](http://localhost:5173/glossary/#zone) provides an interface for defining objects and classes that
-supports both ephemeral objects (allocated on the heap), and durable objects that can persist and that
-SwingSet will page in or out on demand.
+[Zone](/glossary/#zone) provides an interface for defining objects and classes that supports both ephemeral
+objects (allocated on the heap), and durable objects that can persist and that
+[SwingSet](/guides/platform/#swingset) will page in or out on demand.
 
 Our persistent objects are designed to encapsulate their state, and can present different facets to different
 clients to distinguish different aspects of authority. `zone.exoClass()` defines a kind with a single facet,
 while `zone.exoClassKit()` defines a kind with multiple facets. (Here are some relevant [naming
-conventions](https://docs.agoric.com/guides/ertp/#method-naming-structure).)
+conventions](/guides/ertp/#method-naming-structure).)
 
 ```
 zone.exoClassKit(tag, guard, init, methodKit, options)
@@ -58,24 +57,25 @@ The Exo objects (or just "Exos") defined by these functions are both persistent 
 knows their complete state, so it can page them out when space is tight, and page them back in when they are
 referenced again.
 
-Fields of the object returned by the `init` function become fields of the persistent state. (These cannot
-currently be changed on upgrade, though we're considering relaxing that restriction.) Within methods they can
+Fields of the object returned by the `init` function become fields of the persistent state. (_These cannot
+currently be changed on upgrade, though we're considering relaxing that restriction._) Within methods they can
 each be accessed as fields of `this.state`. Our convention is to extract the fields that will be used in a
 method on its first line, like `const { a, b } = this.state;` Once that has been done, those variable can be
 read or written as normal javascript variables, and the values will persist. (For more details, see [the note
-here](https://docs.agoric.com/guides/zoe/contract-upgrade.html#kinds)).
+here](/guides/zoe/contract-upgrade.html#kinds)).
 
 ### Methods: defining behavior
 
-The methods argument of `exoClass()` is a bag of methods, written in [concise method
+The methods argument of `exoClass()` is a record of methods, written in [concise method
 syntax](https://github.com/Agoric/agoric-sdk/wiki/Arrow-Function-Style#far-classes-do-not-use-arrow-function-style).
 `exoClass()` defines a single facet.
 
-The methodKit parameter to `exoClassKit` is a record of labelled bags of methods. Each label defines a facet
-of the object. All facets of each object share access to the same state, but each facet is a separate
-capability. Within the methods, other facets can be reached by name within `this.facets`. The maker you get
-from `exoClassKit()` builds a new object each time it is called, and return all the facets. The caller can
-decide which of the facets to pass to each recipient.
+The methodKit parameter to `exoClassKit` is a record that can define multiple facets. The keys give the names
+of the facets, and each value defines the methods of the corresponding facet. All facets of each object share
+access to the entire state defined in `init`, but each facet is a separate capability. Within the methods,
+other facets can be reached by name within `this.facets`. The maker returned by `exoClassKit()` builds a new
+object each time it is called, and returns all the facets. The caller can decide which of the facets to hold
+or to pass to separate recipients.
 
 ### Guards: defensive methods
 

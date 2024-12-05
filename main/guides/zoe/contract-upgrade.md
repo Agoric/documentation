@@ -1,10 +1,10 @@
 # Contract Upgrade
 
-The return value when starting a contract includes a capability that conveys the right to upgrade
-the contract instance. A call to
+The return value when starting a contract includes a capability to upgrade the contract instance. A call to
 [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)
-returns a record of several objects that carry different powers. The `publicFacet` and
-`creatorFacet` are defined by the contract. The
+returns a [kit](/guides/ertp/#method-naming-structure) of [facets](/glossary#facet); that is a
+record of several objects that represent different ways to access the contract instance. The
+`publicFacet` and `creatorFacet` are defined by the contract. The
 [`adminFacet`](/reference/zoe-api/zoe.html#adminFacet) is defined by Zoe and includes methods to
 upgrade the contract.
 
@@ -65,8 +65,8 @@ There are a few requirements for the contract that differ from non-upgradable co
 ### Upgradable Declaration
 
 The new code bundle declares that it supports upgrade by including a `meta` record in addition to
-`start`. (We used to indicate upgradability by using `prepare` instead of `start`, but that
-approach is deprecated.)`
+`start`. (_We used to indicate upgradability by using `prepare` instead of `start`, but that
+approach is deprecated._)
 
 `meta` is a record with any or all of `upgradability`, `customTermsShape`, and `privateArgsShape`
 defined. The latter two are optional
@@ -97,7 +97,7 @@ if (!baggage.has('rooms')) {
 }
 ```
 
-The `provide` function supports a concise idiom for this get-or-create pattern:
+The `provide` function supports a concise idiom for this find-or-create pattern:
 
 ```js
 import { provide } from '@agoric/vat-data';
