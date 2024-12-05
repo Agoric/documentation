@@ -103,7 +103,7 @@ The `provide` function supports a concise idiom for this find-or-create pattern:
 import { provide } from '@agoric/vat-data';
 
 const rooms = provide(baggage, 'rooms', () =>
-  makeScalarBigMapStore('rooms', { durable: true }),
+  makeScalarBigMapStore('rooms', { durable: true })
 );
 ```
 
@@ -152,7 +152,7 @@ const makeRoom = zone.exoClass('Room', RoomI, id => ({ id, value: 0 }), {
   // ...
   clear(delta) {
     this.state.value = 0;
-  },
+  }
 });
 ```
 
@@ -163,7 +163,7 @@ guards._</small>
 ```js
 const RoomI = M.interface('Room', {
   // ...
-  clear: M.call().returns(),
+  clear: M.call().returns()
 });
 ```
 
@@ -205,7 +205,7 @@ const publicFacet = zone.exo(
   'StakeAtom',
   M.interface('StakeAtomI', {
     makeAccount: M.callWhen().returns(M.remotable('ChainAccount')),
-    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape),
+    makeAccountInvitationMaker: M.callWhen().returns(InvitationShape)
   }),
   {
     async makeAccount() {
@@ -220,8 +220,8 @@ const publicFacet = zone.exo(
         const holder = await makeAccountKit();
         return holder.asContinuingOffer();
       }, 'wantStakingAccount');
-    },
-  },
+    }
+  }
 );
 ```
 
@@ -258,13 +258,13 @@ const makeLocalOrchestrationAccountKit = prepareLocalChainAccountKit(
   zcf,
   privateArgs.timerService,
   vowTools,
-  makeChainHub(privateArgs.agoricNames),
+  makeChainHub(privateArgs.agoricNames)
 );
 // ...
 const makeCosmosOrchestrationAccount = prepareCosmosOrchestrationAccount(
   zone,
   makeRecorderKit,
   vowTools,
-  zcf,
+  zcf
 );
 ```
