@@ -17,9 +17,11 @@ const RoomMakerI = M.interface('RoomMaker', {
 });
 // #endregion interface-guard
 
-// #region export-prepare
-export const prepare = (_zcf, _privateArgs, baggage) => {
-  // #endregion export-prepare
+// #region export-start
+export const meta = { upgradability: 'canUpgrade' };
+
+export const start = (_zcf, _privateArgs, baggage) => {
+  // #endregion export-start
   // #region zone1
   const zone = makeDurableZone(baggage);
   const rooms = zone.mapStore('rooms');

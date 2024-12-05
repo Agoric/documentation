@@ -1,8 +1,12 @@
 # Contract Upgrade
 
-The result of starting a contract includes the right to upgrade the contract instance. A call to [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs) returns a record of several objects that represent different levels of access.
-The `publicFacet` and `creatorFacet` are defined by the contract.
-The `adminFacet` is defined by Zoe and includes methods to upgrade the contract.
+The return value when starting a contract includes a capability to upgrade the contract instance. A call to
+[E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)
+returns a [kit](/guides/ertp/#method-naming-structure) of [facets](/glossary/#facet); that is a
+record of several objects that represent different ways to access the contract instance. The
+`publicFacet` and `creatorFacet` are defined by the contract. The
+[`adminFacet`](/reference/zoe-api/zoe.html#adminFacet) is defined by Zoe and includes methods to
+upgrade the contract.
 
 ::: tip Upgrade Governance
 
@@ -60,16 +64,26 @@ There are a few requirements for the contract that differ from non-upgradable co
 
 ### Upgradable Declaration
 
-The new code bundle declares that it supports upgrade by exporting a `prepare` function in place of `start`.
+The new code bundle declares that it supports upgrade by including a `meta` record in addition to
+`start`. (_We used to indicate upgradability by using `prepare` instead of `start`, but that
+approach is deprecated._)
 
-<<< @/../snippets/zoe/src/02b-state-durable.js#export-prepare
+`meta` is a record with any or all of `upgradability`, `customTermsShape`, and `privateArgsShape`
+defined. The latter two are optional
+[Patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) restricting respectively
+acceptable `terms`, and `privateArgs`. `upgradability` can be `none` (the contract is not
+upgradable), `canUpgrade` (this code can perform an upgrade), or `canBeUpgraded` (the contract
+stores kinds durably such that the next version can upgrade).
+
+<<< @/../snippets/zoe/src/02b-state-durable.js#export-start
 
 ### Durability
 
-The 3rd argument, `baggage`, of the `prepare` function is a `MapStore`
-that provides a way to preserve state and behavior of objects
-between incarnations in a way that preserves identity of objects
-as seen from other vats:
+<a id="baggage"></a>
+
+The 3rd argument, `baggage`, of the `start` function is a `MapStore` that is saved by the kernel
+across restarts of the contract. It provides a way to preserve state and behavior of objects between
+incarnations in a way that also maintains the identity of objects as seen from other [vats](/glossary/#vat).
 
 ```js
 let rooms;
@@ -113,7 +127,8 @@ When the contract instance is restarted, its [vat](../js-programming/#vats-the-u
 
 ### Kinds
 
-Use `zone.exoClass()` to define state and methods of kinds of durable objects such as `Room`:
+Use [`zone.exoClass()`](./contract-details.md#durable-objects) to define state and methods of kinds
+of durable objects such as `Room`:
 
 <<< @/../snippets/zoe/src/02b-state-durable.js#exoclass
 
@@ -141,8 +156,9 @@ const makeRoom = zone.exoClass('Room', RoomI, id => ({ id, value: 0 }), {
 });
 ```
 
-The interface guard also needs updating.
-<small>_See [@endo/patterns](https://endojs.github.io/endo/modules/_endo_patterns.html) for more on interface guards._</small>
+The interface guard also needs updating. <small>_[The Durable
+objects](./contract-details.md#guards-defensive-methods) section has more on interface
+guards._</small>
 
 ```js
 const RoomI = M.interface('Room', {
@@ -174,20 +190,6 @@ Define all exo classes/kits before any incoming method calls from other vats -- 
 - For more on crank constraints, see [Virtual and Durable Objects](https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/virtual-objects.md#virtual-and-durable-objects) in [SwingSet docs](https://github.com/Agoric/agoric-sdk/tree/master/packages/SwingSet/docs)
 
 :::
-
-### Baggage
-
-baggage is a MapStore that provides a way to preserve the state and behavior of objects between [smart contract upgrades](/guides/zoe/contract-upgrade) in a way that preserves the identity of objects as seen from other [vats](#vat). In the provided contract, baggage is used to ensure that the state of various components is maintained even after the contract is upgraded.
-
-```js
-export const start = async (zcf, privateArgs, baggage) => {
-  // ...
-  const { accountsStorageNode } = await provideAll(baggage, {
-    accountsStorageNode: () => E(storageNode).makeChildNode('accounts')
-  });
-  // ...
-};
-```
 
 ### Exo
 

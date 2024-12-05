@@ -269,11 +269,41 @@ It returns a **Promise** for a **StartInstanceResult** object. The object consis
 - **instance**: **Instance**
 - **creatorInvitation**: **Payment | undefined**
 
-The **adminFacet** has one method:
+<a id="adminfacet"></a>
+
+The **adminFacet** has four methods:
 
 - **getVatShutdownPromise()**
+
   - Returns a promise that resolves to reason (the value passed to **fail(reason)**) or
     completion (the value passed to **exit(completion)**) when this newly started instance terminates.
+
+- **restartContract(newPrivateArgs?)**
+
+  - **newPrivateArgs**: **any** - Optional
+  - returns VatUpgradeResults (a record with one field: incarnationNumber)
+
+  Restarts the contract without changing the contract bundle
+
+- **upgradeContract(contractBundleId, newPrivateArgs)**
+
+  - **contractBundleId**: **string**
+  - **newPrivateArgs**: **any** - Optional
+
+  - returns VatUpgradeResults (a record with one field: incarnationNumber)
+
+  Upgrades the contract to use source code from a new bundle.
+
+  See [Contract Upgrade](/guides/zoe/contract-upgrade) for a description the
+  process of upgrading contracts.
+
+- **terminateContract(reason)**
+
+  - **reason**: **Error**
+
+  terminates the contract. `reason` will be provided as the failure reason.
+
+<a id="publicfacet"></a>
 
 A **publicFacet** is an object available via Zoe to anyone knowing
 the instance they are associated with. The **publicFacet** is used for general queries
@@ -281,11 +311,15 @@ and actions, such as getting a current price or creating public **[Invitations](
 facet is defined just as any other object,
 the contract developer can add methods to them just like they would any object.
 
+<a id="creatorfacet"></a>
+
 The **creatorFacet** is only available in this return value (i.e. only when starting
 a contract instance). The contract designer
 should use it to encapsulate things that the contract runner might not want to share,
 or might want to control the distribution of. The party who starts the contract
 should carefully consider the impact before sharing access to the **creatorFacet**.
+
+<a id="creatorinvitation"></a>
 
 **creatorInvitation** is an **Invitation** that the contract instance creator can use.
 It is usually used in contracts where the creator immediately sells
