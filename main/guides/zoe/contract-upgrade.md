@@ -2,7 +2,7 @@
 
 The return value when starting a contract includes a capability to upgrade the contract instance. A call to
 [E(zoe).startInstance(...)](/reference/zoe-api/zoe.md#e-zoe-startinstance-installation-issuerkeywordrecord-terms-privateargs)
-returns a [kit](/guides/ertp/#method-naming-structure) of [facets](/glossary#facet); that is a
+returns a [kit](/guides/ertp/#method-naming-structure) of [facets](/glossary/#facet); that is a
 record of several objects that represent different ways to access the contract instance. The
 `publicFacet` and `creatorFacet` are defined by the contract. The
 [`adminFacet`](/reference/zoe-api/zoe.html#adminFacet) is defined by Zoe and includes methods to
