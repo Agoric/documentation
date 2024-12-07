@@ -25,7 +25,11 @@ We start by using `makeIssuerKit` to make a `Mint`, `Brand`, and `Issuer` for **
 The `bucks.brand` and `bucks.issuer` don't let anyone mint new assets, so sharing
 them widely is normal. We must be careful to guard the`bucksMint`, so we keep it separate.
 
-![ERTP makeIssuerKit API](./assets/ertp-interfaces-1.svg){ width=200 height=200 }
+::: tip see also ZCFMint (TODO)
+
+...
+
+:::
 
 ## Amount: Asset Descriptions
 
@@ -33,14 +37,15 @@ Next we combine the Bucks brand with a value to make an `Amount`:
 
 <<< @/../snippets/ertp/guide/test-readme.js#bucksAmount
 
-Amounts let us _describe_ assets without _using_ them; for example,
-to display a price without giving away money.
+An Amount is a value labeled with a brand.
+Amounts are descriptions of digital assets,
+answering the questions "how much" and "of what kind".
+
+Amounts have no economic scarcity or intrinsic value.
 
 :::tip More on Asset Use versus Mention
 _See also [The Settlers of Blockchain](https://agoric.com/blog/technology/the-settlers-of-blockchain) by Chris Hibbert, Jun 2021_
 :::
-
-![Amount class diagram](./assets/ertp-interfaces-2a.svg){ width=200 height=200 }
 
 ## Minting Payments
 
@@ -94,7 +99,34 @@ To put it all together:
 
 <<< @/../snippets/ertp/guide/test-readme.js#aliceBuysFromBob
 
----
+## Non-Fungible and Semi-Fungible Assets
+
+::: tip: TODO: Non-Fungible and Semi-Fungible Assets
+
+...
+
+:::
+
+## ERTP Concepts Overview
+
+Each digital asset has Mint, Issuer, and Brand facets:
+
+![ERTP Interfaces 1](./assets/ertp-interfaces-1.svg){ width=200 height=200 }
+
+Use brands to make amounts.
+
+Use a Mint to create Payments. Use an Issuer to make Purses.
+Deposit payments into purses and withdraw them back out.
+
+![ERTP makeIssuerKit API](./assets/ertp-interfaces-2.svg)
+
+Fungible and non-fungible kinds of assets are handled uniformly.
+
+![ERTP object relationships](./assets/ertp-interfaces-3.svg)
+
+# Obsolete material
+
+_aside from TODOs above_
 
 token standard for transferring tokens and other digital assets in
 JavaScript. Using the [ERTP API](/reference/ertp-api/),
@@ -106,8 +138,6 @@ to enforce access control. If your program has a reference to an
 object, it can call methods on that object. If it doesn't have a
 reference, it can't. For more on object capabilities, see
 [Chip Morningstar's post](http://habitatchronicles.com/2017/05/what-are-capabilities/).
-
-## ERTP Concepts Overview
 
 ### Asset
 
