@@ -1,5 +1,6 @@
 /* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
 import { test } from '../../prepare-test-env-ava.js';
+// @ts-check
 
 import { E } from '@endo/eventual-send';
 
@@ -8,7 +9,9 @@ import { E } from '@endo/eventual-send';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { makeFakeBoard } from '@agoric/vats/tools/board-utils.js';
 
-import { AmountMath, makeIssuerKit, AssetKind } from '@agoric/ertp';
+// #region importErtp
+import { makeIssuerKit, AmountMath, AssetKind } from '@agoric/ertp';
+// #endregion importErtp
 
 test('ertp guide readme', async t => {
   // #region makeIssuerKit
@@ -99,4 +102,116 @@ test('ertp guide readme', async t => {
   );
 
   t.truthy(allLive.every(a => a));
+});
+
+test('MarkM 2024-10 talk', t => {
+  /** @type {Record<string, {issuer: Issuer, brand: Brand}>} */
+
+  // #region amountMathProps
+  const { make, isGTE } = AmountMath;
+  // #endregion amountMathProps
+
+  // #region declareShared
+  const shared = {};
+  // #endregion declareShared
+
+  // #region aliceBuyer1
+  /** @param {{ bucks: Payment, vendor: any }} some */
+  const makeBuyer = some => {
+    const { bucks, tickets } = shared;
+    const my = {
+      bucks: bucks.issuer.makeEmptyPurse(),
+      tickets: tickets.issuer.makeEmptyPurse(),
+    };
+    my.bucks.deposit(some.bucks);
+    // #endregion aliceBuyer1
+
+    // #region aliceBuyer2
+    return harden({
+      buyTicket() {
+        const pmt = my.bucks.withdraw(make(bucks.brand, 10n));
+        const allegedTicket = some.vendor.buy(pmt);
+        // #endregion aliceBuyer2
+        // #region aliceBuyer3
+        const got = my.tickets.deposit(allegedTicket);
+        t.log('Alice got', got);
+        isGTE(got, make(tickets.brand, 1n)) || assert.fail();
+        return got;
+      },
+      getBalances: () => ({
+        bucks: my.bucks.getCurrentAmount(),
+        tickets: my.tickets.getCurrentAmount(),
+      }),
+    });
+  };
+  // #endregion aliceBuyer3
+
+  // #region bobSeller
+  /** @param {{ bucks: Payment, tickets: Payment}} some */
+  const makeSeller = some => {
+    const { bucks, tickets } = shared;
+    const my = {
+      bucks: bucks.issuer.makeEmptyPurse(),
+      tickets: tickets.issuer.makeEmptyPurse(),
+    };
+    my.bucks.deposit(some.bucks);
+    my.tickets.deposit(some.tickets);
+
+    return harden({
+      /** @param {Payment} allegedPayment */
+      buy(allegedPayment) {
+        const amt = my.bucks.deposit(allegedPayment);
+        isGTE(amt, make(bucks.brand, 10n)) || assert.fail();
+        t.log('Bob got', amt);
+        return my.tickets.withdraw(make(tickets.brand, 1n));
+      },
+      getBalances: () => ({
+        bucks: my.bucks.getCurrentAmount(),
+        tickets: my.tickets.getCurrentAmount(),
+      }),
+    });
+  };
+  // #endregion bobSeller
+
+  // #region makeBucks
+  const bucksKit = makeIssuerKit('Bucks');
+  const { mint: bucksMint, ...bucks } = bucksKit;
+  Object.assign(shared, { bucks });
+  // #endregion makeBucks
+
+  // #region bucksAmount
+  const bucks100 = AmountMath.make(bucks.brand, 100n);
+  // #endregion bucksAmount
+
+  // #region bucksPayment100
+  const paymentA = bucksMint.mintPayment(bucks100);
+  // #endregion bucksPayment100
+
+  // #region bobPayments
+  const { mint: ticketsMint, ...tickets } = makeIssuerKit('Tickets');
+  Object.assign(shared, { tickets });
+
+  const paymentsB = {
+    bucks: bucksMint.mintPayment(make(bucks.brand, 200n)),
+    tickets: ticketsMint.mintPayment(make(tickets.brand, 50n)),
+  };
+  // #endregion bobPayments
+
+  // #region aliceBuysFromBob
+  const bob = makeSeller(paymentsB);
+  const alice = makeBuyer({ bucks: paymentA, vendor: bob });
+
+  const howMuch = (bv, tv) => ({
+    bucks: make(bucks.brand, bv),
+    tickets: make(tickets.brand, tv),
+  });
+
+  t.deepEqual(alice.getBalances(), howMuch(100n, 0n));
+  t.deepEqual(bob.getBalances(), howMuch(200n, 50n));
+
+  alice.buyTicket();
+
+  t.deepEqual(alice.getBalances(), howMuch(90n, 1n));
+  t.deepEqual(bob.getBalances(), howMuch(210n, 49n));
+  // #endregion aliceBuysFromBob
 });
