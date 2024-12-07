@@ -1,7 +1,102 @@
 # ERTP Overview
 
-ERTP (_Electronic Rights Transfer Protocol_)
-is Agoric's token standard for transferring tokens and other digital assets in
+ERTP (_Electronic Rights Transfer Protocol_) is Agoric's digital asset standard.
+
+ERTP is a uniform way of transferring tokens and other digital assets in JavaScript. All kinds of digital assets can be easily created, but importantly, they can be transferred in exactly the same ways, with exactly the same security properties.
+
+For example, let's suppose Alice wants to buy a concert ticket from Bob for 10 bucks.
+
+::: tip Watch: erights -- credibly transferable ownership (Oct 2024)
+_25 minutes on ERTP at a conceptual level._
+<br />
+
+[<img src="./assets/alice-bob-ticket.png" alt="diagram of Alice, Bob, Ticket objects" />](https://www.youtube.com/watch?v=O8Bx_Abj9Qc&list=PLzDw4TTug5O1A-tkPJe4HVq0VBPcNOMHm)
+
+:::
+
+## Issuer, Brand, and Mint
+
+We start by using `makeIssuerKit` to make a `Mint`, `Brand`, and `Issuer` for **Bucks**.
+
+<<< @/../snippets/ertp/guide/test-readme.js#importErtp
+<<< @/../snippets/ertp/guide/test-readme.js#declareShared
+<<< @/../snippets/ertp/guide/test-readme.js#makeBucks
+
+The `bucks.brand` and `bucks.issuer` don't let anyone mint new assets, so sharing
+them widely is normal. We must be careful to guard the`bucksMint`, so we keep it separate.
+
+![ERTP makeIssuerKit API](./assets/ertp-interfaces-1.svg){ width=200 height=200 }
+
+## Amount: Asset Descriptions
+
+Next we combine the Bucks brand with a value to make an `Amount`:
+
+<<< @/../snippets/ertp/guide/test-readme.js#bucksAmount
+
+Amounts let us _describe_ assets without _using_ them; for example,
+to display a price without giving away money.
+
+:::tip More on Asset Use versus Mention
+_See also [The Settlers of Blockchain](https://agoric.com/blog/technology/the-settlers-of-blockchain) by Chris Hibbert, Jun 2021_
+:::
+
+![Amount class diagram](./assets/ertp-interfaces-2a.svg){ width=200 height=200 }
+
+## Minting Payments
+
+Next we use the mint to make a `Payment` of 100 bucks for Alice:
+
+<<< @/../snippets/ertp/guide/test-readme.js#bucksPayment100
+
+Likewise, we make a **Tickets** issuer kit make payments of 10 **Tickets** and 100 **Bucks**
+for Bob.
+
+<<< @/../snippets/ertp/guide/test-readme.js#amountMathProps
+<<< @/../snippets/ertp/guide/test-readme.js#bobPayments
+
+Where Amounts only describe assets, Payments actually convey digital assets/rights.
+Sending Payments must be done very carefully.
+
+## Making Purses
+
+Alice is acting as a buyer.
+She can make her own empty purses using the shared issuers, which she relies on.
+She depsits some **Bucks** that she is given into her Bucks purse.
+
+<<< @/../snippets/ertp/guide/test-readme.js#aliceBuyer1
+
+Purses also hold digital assets/rights.
+**Purses are normally not sent betwen parties.**
+
+## Credible Asset Transfer
+
+To buy a ticket, she withdraws a payment of 10 bucks and make a `buy` request
+to some vendor she was given.
+
+<<< @/../snippets/ertp/guide/test-readme.js#aliceBuyer2
+
+The seller has likewise created purses for **Bucks** and **Tickets** and made deposits.
+When they get a `buy` request, the argument may be anything, so it's called `allegedPayment`.
+But once they deposit it into their Bucks purse, they know it was
+a valid Bucks payment, and they know the amount.
+Provided the amount is sufficient, they withdraw a ticket (payment) and return it.
+
+<<< @/../snippets/ertp/guide/test-readme.js#bobSeller
+
+Now our buyer has an `allegedTicket`.
+Once she deposits it in her **Tickets** purse, she knows it was
+a valid payment and she knows its value. She can check that she
+got at least 1 ticket.
+
+<<< @/../snippets/ertp/guide/test-readme.js#aliceBuyer3
+
+To put it all together:
+
+<<< @/../snippets/ertp/guide/test-readme.js#aliceBuysFromBob
+
+---
+
+token standard for transferring tokens and other digital assets in
 JavaScript. Using the [ERTP API](/reference/ertp-api/),
 you can easily create and use digital assets, all of which are
 transferred exactly the same way and with exactly the same security properties.
