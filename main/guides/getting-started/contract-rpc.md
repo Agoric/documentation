@@ -49,8 +49,8 @@ message MsgWalletSpendAction {
 
 ::: tip VStorage as Contract State Query Mechanism
 To expose contract state for query, where smart contracts on Ethereum and other chains use readonly
- or [view query methods](https://docs.soliditylang.org/en/latest/contracts.html#view-functions), Agoric smart contracts write to storage nodes so that 
- clients can query them.
+or [view query methods](https://docs.soliditylang.org/en/latest/contracts.html#view-functions), Agoric smart contracts write to storage nodes so that
+clients can query them.
 
 Smart contracts on the Agoric chain can write data to VStorage, which acts as a publicly accessible
 storage layer. This data is available for anyone to query, similar to the functionality of a getter
