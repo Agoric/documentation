@@ -197,9 +197,9 @@ these methods:
 const instance = await E(Zoe).getInstance(invitation);
 ```
 
-## E(Zoe).getProposalShapeForInvitation(invitation)
+## E(Zoe).getProposalShapeForInvitation(invitationHandle)
 
-- **invitation**: **[Invitation](./zoe-data-types#invitation)**
+- **invitationHandle**: **[Handle](./zoe-data-types#handle)**
 - Returns: **Promise&lt;[Pattern](https://github.com/endojs/endo/tree/master/packages/patterns#readme)>**
 
 Returns a **Promise** for the **Pattern** that the **Invitation's** **Proposal** adheres to.
