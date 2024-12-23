@@ -206,7 +206,7 @@ const processFiles = async (globPattern, fix = false) => {
       if (fix) {
         console.log("All matching files have been updated with the necessary changes.");
       } else {
-        console.error("Run with --fix to automatically fix these errors and replace \`\`\`javascript with \`\`\`js.");
+        console.error("Run `yarn format` to automatically fix these errors");
       }
     } else {
       console.log("No errors found in any of the matching files.");

@@ -12,7 +12,7 @@
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
     "format": "node scripts/markdown-js-snippets-linter.mjs 'main/**/*.md' --fix && prettier --write '**/*.md' --config .prettierrc.json",
-    "lint:format": "node scripts/markdown-js-snippets-linter.mjs 'main/**/*.md' && prettier --check '**/*.md' --config .prettierrc.json",
+    "lint:format": "node scripts/format.mjs",
     "build": "exit 0"
   },
   "packageManager": "yarn@4.5.0",
