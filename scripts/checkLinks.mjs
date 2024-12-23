@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const extractLinks = (content) => {
+const extractLinks = content => {
   const noSingleLineComments = content.replace(/\/\/.*$/gm, '');
   const noComments = noSingleLineComments.replace(/\/\*[\s\S]*?\*\//g, '');
   const linkRegex = /link:\s*(['"])([^'"]+)\1/g;
@@ -15,17 +15,17 @@ const extractLinks = (content) => {
     links.push(match[2]);
   }
   return links;
-}
+};
 
-const fileExists = (filePath) => {
+const fileExists = filePath => {
   try {
     return fs.existsSync(filePath);
   } catch (err) {
     return false;
   }
-}
+};
 
-const checkLink = (link) => {
+const checkLink = link => {
   if (link.startsWith('http')) {
     return true;
   }
@@ -46,10 +46,16 @@ const checkLink = (link) => {
   }
 
   return false;
-}
+};
 
-const navContent = fs.readFileSync(path.join(__dirname, '../main/.vitepress/themeConfig/nav.js'), 'utf8');
-const configContent = fs.readFileSync(path.join(__dirname, '../main/.vitepress/config.mjs'), 'utf8');
+const navContent = fs.readFileSync(
+  path.join(__dirname, '../main/.vitepress/themeConfig/nav.js'),
+  'utf8',
+);
+const configContent = fs.readFileSync(
+  path.join(__dirname, '../main/.vitepress/config.mjs'),
+  'utf8',
+);
 
 const navLinks = extractLinks(navContent);
 const configLinks = extractLinks(configContent);

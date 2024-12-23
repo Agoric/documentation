@@ -1,10 +1,10 @@
-import {promises as fs} from 'fs';
+import { promises as fs } from 'fs';
 import glob from 'glob';
 import util from 'util';
 
 const globPromise = util.promisify(glob);
 
-const extractJsSnippets = (markdownContent) => {
+const extractJsSnippets = markdownContent => {
   const pattern = /```(?:js|javascript)\n([\s\S]*?)```/g;
   const matches = [];
   let match;
@@ -15,7 +15,7 @@ const extractJsSnippets = (markdownContent) => {
       start: match.index,
       end: match.index + match[0].length,
       startLine: startLine,
-      language: match[0].startsWith('```javascript') ? 'javascript' : 'js'
+      language: match[0].startsWith('```javascript') ? 'javascript' : 'js',
     });
   }
   return matches;
@@ -29,17 +29,22 @@ const checkSemicolonsAndEllipsis = (code, startLine) => {
   let openSquareBrackets = 0;
   let inMultiLineComment = false;
 
-  const isJSDocOrComment = (line) => {
-    return line.trim().startsWith('*') ||
+  const isJSDocOrComment = line => {
+    return (
+      line.trim().startsWith('*') ||
       line.trim().startsWith('/**') ||
       line.trim().startsWith('*/') ||
-      line.trim().startsWith('//');
+      line.trim().startsWith('//')
+    );
   };
 
   const isStatementEnd = (line, nextLine) => {
     const strippedLine = line.replace(/\/\/.*$/, '').trim();
-    const strippedNextLine = nextLine ? nextLine.replace(/\/\/.*$/, '').trim() : '';
-    return strippedLine &&
+    const strippedNextLine = nextLine
+      ? nextLine.replace(/\/\/.*$/, '').trim()
+      : '';
+    return (
+      strippedLine &&
       !strippedLine.endsWith('{') &&
       !strippedLine.endsWith('}') &&
       !strippedLine.endsWith(':') &&
@@ -61,19 +66,25 @@ const checkSemicolonsAndEllipsis = (code, startLine) => {
       !strippedNextLine.trim().startsWith('.finally') &&
       openBrackets === 0 &&
       openParens === 0 &&
-      openSquareBrackets === 0;
+      openSquareBrackets === 0
+    );
   };
 
   const shouldHaveSemicolon = (line, nextLine) => {
     const strippedLine = line.replace(/\/\/.*$/, '').trim();
-    return (strippedLine.startsWith('const ') ||
-      strippedLine.startsWith('let ') ||
-      strippedLine.startsWith('var ') ||
-      strippedLine.includes('=') ||
-      /\bawait\b/.test(strippedLine) ||
-      (/^[a-zA-Z_$][a-zA-Z0-9_$]*(\.[a-zA-Z_$][a-zA-Z0-9_$]*)*$/.test(strippedLine) && !strippedLine.endsWith('.')) ||
-      (/^[a-zA-Z_$][a-zA-Z0-9_$]*\[[0-9]+\]$/.test(strippedLine))) &&
-      isStatementEnd(line, nextLine);
+    return (
+      (strippedLine.startsWith('const ') ||
+        strippedLine.startsWith('let ') ||
+        strippedLine.startsWith('var ') ||
+        strippedLine.includes('=') ||
+        /\bawait\b/.test(strippedLine) ||
+        (/^[a-zA-Z_$][a-zA-Z0-9_$]*(\.[a-zA-Z_$][a-zA-Z0-9_$]*)*$/.test(
+          strippedLine,
+        ) &&
+          !strippedLine.endsWith('.')) ||
+        /^[a-zA-Z_$][a-zA-Z0-9_$]*\[[0-9]+\]$/.test(strippedLine)) &&
+      isStatementEnd(line, nextLine)
+    );
   };
 
   for (let i = 0; i < lines.length; i++) {
@@ -87,9 +98,12 @@ const checkSemicolonsAndEllipsis = (code, startLine) => {
     }
     if (inMultiLineComment || isJSDocOrComment(line)) continue;
 
-    openBrackets += (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
-    openParens += (line.match(/\(/g) || []).length - (line.match(/\)/g) || []).length;
-    openSquareBrackets += (line.match(/\[/g) || []).length - (line.match(/\]/g) || []).length;
+    openBrackets +=
+      (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
+    openParens +=
+      (line.match(/\(/g) || []).length - (line.match(/\)/g) || []).length;
+    openSquareBrackets +=
+      (line.match(/\[/g) || []).length - (line.match(/\]/g) || []).length;
 
     const codeWithoutComment = line.replace(/\/\/.*$/, '').trim();
 
@@ -99,21 +113,23 @@ const checkSemicolonsAndEllipsis = (code, startLine) => {
         line: startLine + i,
         original: line.trim(),
         fixed: '// ...',
-        type: 'ellipsis'
+        type: 'ellipsis',
       });
-    } else if (shouldHaveSemicolon(line, nextLine) && !codeWithoutComment.endsWith(';')) {
+    } else if (
+      shouldHaveSemicolon(line, nextLine) &&
+      !codeWithoutComment.endsWith(';')
+    ) {
       issues.push({
         line: startLine + i,
         original: line.trim(),
         fixed: `${codeWithoutComment};${line.includes('//') ? ' ' + line.split('//')[1] : ''}`,
-        type: 'semicolon'
+        type: 'semicolon',
       });
     }
   }
 
   return issues;
 };
-
 
 const lintMarkdownFile = async (filePath, fix = false) => {
   try {
@@ -124,7 +140,10 @@ const lintMarkdownFile = async (filePath, fix = false) => {
 
     for (let i = jsSnippets.length - 1; i >= 0; i--) {
       const snippet = jsSnippets[i];
-      const issues = checkSemicolonsAndEllipsis(snippet.content, snippet.startLine);
+      const issues = checkSemicolonsAndEllipsis(
+        snippet.content,
+        snippet.startLine,
+      );
       allIssues.push(...issues.map(issue => ({ ...issue, snippet: i + 1 })));
 
       if (fix) {
@@ -134,8 +153,11 @@ const lintMarkdownFile = async (filePath, fix = false) => {
           fixedLines[lineIndex] = issue.fixed;
         });
         const fixedSnippet = fixedLines.join('\n');
-        fixedContent = fixedContent.slice(0, snippet.start) +
-          '```js\n' + fixedSnippet + '```' +
+        fixedContent =
+          fixedContent.slice(0, snippet.start) +
+          '```js\n' +
+          fixedSnippet +
+          '```' +
           fixedContent.slice(snippet.end);
       }
     }
@@ -156,7 +178,7 @@ const lintMarkdownFile = async (filePath, fix = false) => {
       filePath,
       issues: allIssues,
       fixedContent: fix ? fixedContent : null,
-      javascriptCount: javascriptCount
+      javascriptCount: javascriptCount,
     };
   } catch (error) {
     console.error(`Error processing file ${filePath}: ${error.message}`);
@@ -176,7 +198,10 @@ const processFiles = async (globPattern, fix = false) => {
     let hasErrors = false;
 
     for (const file of files) {
-      const { issues, error, javascriptCount } = await lintMarkdownFile(file, fix);
+      const { issues, error, javascriptCount } = await lintMarkdownFile(
+        file,
+        fix,
+      );
       if (error) {
         console.error(`\nError in file ${file}:`);
         console.error(error);
@@ -187,13 +212,17 @@ const processFiles = async (globPattern, fix = false) => {
           issues.forEach(issue => {
             console.error(`\nSnippet ${issue.snippet}, Line ${issue.line}:`);
             console.error(`Original: ${issue.original}`);
-            console.error(`${fix ? 'Fixed:    ' : 'Suggested:'} ${issue.fixed}`);
+            console.error(
+              `${fix ? 'Fixed:    ' : 'Suggested:'} ${issue.fixed}`,
+            );
           });
           totalIssues += issues.length;
           hasErrors = true;
         }
         if (javascriptCount > 0) {
-          console.error(`\nFound ${javascriptCount} instance(s) of \`\`\`javascript in ${file}`);
+          console.error(
+            `\nFound ${javascriptCount} instance(s) of \`\`\`javascript in ${file}`,
+          );
           totalJavascriptInstances += javascriptCount;
           hasErrors = true;
         }
@@ -202,14 +231,18 @@ const processFiles = async (globPattern, fix = false) => {
 
     if (totalIssues > 0 || totalJavascriptInstances > 0) {
       console.error(`\nTotal errors found: ${totalIssues}`);
-      console.error(`Total \`\`\`javascript instances found: ${totalJavascriptInstances}`);
+      console.error(
+        `Total \`\`\`javascript instances found: ${totalJavascriptInstances}`,
+      );
       if (fix) {
-        console.log("All matching files have been updated with the necessary changes.");
+        console.log(
+          'All matching files have been updated with the necessary changes.',
+        );
       } else {
-        console.error("Run `yarn format` to automatically fix these errors");
+        console.error('Run `yarn format` to automatically fix these errors');
       }
     } else {
-      console.log("No errors found in any of the matching files.");
+      console.log('No errors found in any of the matching files.');
     }
 
     if (hasErrors && !fix) {
@@ -223,7 +256,7 @@ const processFiles = async (globPattern, fix = false) => {
 
 const main = async () => {
   if (process.argv.length < 3 || process.argv.length > 4) {
-    console.error("Usage: node linter.js <glob_pattern> [--fix]");
+    console.error('Usage: node linter.js <glob_pattern> [--fix]');
     process.exit(1);
   }
 
