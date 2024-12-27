@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "docs:dev": "NODE_OPTIONS=--openssl-legacy-provider vitepress dev main",
-    "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vitepress build main",
+    "docs:build": "yarn lint:check-links && NODE_OPTIONS=--openssl-legacy-provider vitepress build main",
     "docs:preview": "NODE_OPTIONS=--openssl-legacy-provider vitepress preview main",
-    "docs:build-cf": "DEBUG='vitepress:*' NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects dist/",
+    "docs:build-cf": "yarn lint:check-links && DEBUG='vitepress:*' NODE_OPTIONS=--openssl-legacy-provider vitepress build main && cp _redirects dist/",
     "test": "ava",
     "lint-fix": "yarn lint --fix",
     "lint": "eslint 'snippets/**/*.js'",
     "format": "node scripts/markdown-js-snippets-linter.mjs 'main/**/*.md' --fix && prettier --write '**/*.md' --config .prettierrc.json",
     "lint:format": "node scripts/format.mjs",
+    "lint:check-links": "node scripts/checkLinks.mjs",
     "build": "exit 0"
   },
   "packageManager": "yarn@4.5.0",
