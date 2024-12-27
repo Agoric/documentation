@@ -52,14 +52,14 @@ This validation ensures that the proposal shape submitted by users contains exac
 The contract defines a shared state record as below:
 
 ```js
-  const sharedLocalAccountP = zone.makeOnce('localAccount', () =>
-    makeLocalAccount(),
-  );
+const sharedLocalAccountP = zone.makeOnce('localAccount', () =>
+  makeLocalAccount()
+);
 ```
 
-`sharedLocalAccountP` stores the local account that will hold the transferred assets temporarily before they 
+`sharedLocalAccountP` stores the local account that will hold the transferred assets temporarily before they
 are sent to the destination address. Since this is initialized with a promise (`makeOnce` returns a promise, so
-we add a `P` to the variable name), uses of `sharedLocalAccountP` will have to await it before making use of it. 
+we add a `P` to the variable name), uses of `sharedLocalAccountP` will have to await it before making use of it.
 
 ### Logging setup
 
@@ -81,7 +81,7 @@ these functions with the necessary context (such as the contract state, logging,
 const orchFns = orchestrateAll(flows, {
   log,
   sharedLocalAccountP,
-  zoeTools,
+  zoeTools
 });
 ```
 
@@ -137,8 +137,8 @@ Upon receiving an offer, the `sendIt` function:
 - Validates the offer arguments using [endo's pattern-matching library](https://github.com/endojs/endo/tree/master/packages/patterns) to ensure the correct structure is submitted.
 - Retrieves the `proposal` from the seat, extracting (from `give`) the asset (`brand` and `amount`) being transferred.
 - The contract ensures that the asset brand is registered on the local chain by querying the chain’s asset registry
-   (`vbank`). If not the contract throws an error and exits the transaction. It also gets the `denom` for the
-   destination chain from the `vbank`.
+  (`vbank`). If not the contract throws an error and exits the transaction. It also gets the `denom` for the
+  destination chain from the `vbank`.
 - retrieves the `chainId` for the remote chain.
 
 ```js
