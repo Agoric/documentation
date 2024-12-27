@@ -10,7 +10,7 @@ The high-level flow of the contract is:
 - Creates or ensures the existence of a local account (held by the contract) to handle temporary holding.
 - Transfers the asset from the source address to the local account.
 - Initiates a transfer to the destination address, which could reside on the remote blockchain.
-- Gracefully handles the failures.
+- Gracefully handles failures.
 
 The contract is implemented in two separate files:
 
@@ -24,12 +24,12 @@ Let us walk through these files one by one.
 
 The contract begins by importing various modules and utilities necessary for its functionality. These include:
 
-- **State management**: `makeSharedStateRecord` is imported to create and manage the state across contract incarnations.
-- **Type validation**: `AmountShape` and `InvitationShape` ensure that the contract works with correct data types, such as amounts and invitations.
+- **State management**: `makeSharedStateRecord` is imported to create and manage state across contract incarnations.
+- **Type validation**: `AnyNatAmountShape` and `InvitationShape` ensure that the contract works with correct data types, such as amounts and invitations.
 - **Orchestration utilities**: `withOrchestration` is imported to facilitate interactions with Orchestration functions.
 - **Flows**: The Orchestration flows for handling transfers are imported from `send-anywhere.flows.js` to be made available to Zoe.
 
-These imports set up the contract for the validation, orchestration, and execution of transfers through Zoe API.
+These imports set up the contract for the validation, orchestration, and execution of transfers through the Zoe API.
 
 ### Single Amount Record Validation
 
@@ -52,16 +52,14 @@ This validation ensures that the proposal shape submitted by users contains exac
 The contract defines a shared state record as below:
 
 ```js
-const contractState = makeSharedStateRecord(
-  /** @type {{ account: OrchestrationAccount<any> | undefined }} */ {
-    localAccount: undefined
-  }
-);
+  const sharedLocalAccountP = zone.makeOnce('localAccount', () =>
+    makeLocalAccount(),
+  );
 ```
 
-This state keeps track of the local account that will hold the transferred assets temporarily before they are sent to the destination
-address. The state starts with an undefined `localAccount`. This account will be created later during the offer handling process if
-needed.
+`sharedLocalAccountP` stores the local account that will hold the transferred assets temporarily before they 
+are sent to the destination address. Since this is initialized with a promise (`makeOnce` returns a promise, so
+we add a `P` to the variable name), uses of `sharedLocalAccountP` will have to await it before making use of it. 
 
 ### Logging setup
 
@@ -81,9 +79,9 @@ these functions with the necessary context (such as the contract state, logging,
 
 ```js
 const orchFns = orchestrateAll(flows, {
-  contractState,
   log,
-  zoeTools
+  sharedLocalAccountP,
+  zoeTools,
 });
 ```
 
@@ -111,7 +109,7 @@ const publicFacet = zone.exo(
 ```
 
 The `makeSendInvitation` method creates an invitation for users, allowing them to initiate a transfer by submitting a proposal. The
-proposal must match the structure defined by the `SingleNatAmountRecord`, ensuring that only one asset is transferred per transaction.
+proposal must match the structure defined by `SingleNatAmountRecord`, ensuring that only one asset is transferred per transaction.
 The invitation is connected to the `sendIt` function (explained later), which performs the asset transfer.
 
 ## 2. `send-anywhere.flows.js`
@@ -122,22 +120,26 @@ remote chains. The parameters passed to this function include:
 
 - `orch`: The orchestrator object for managing chain/account interactions.
 - `ctx`: The contract state and utility functions, including:
-  - `contractState`: Holds the local account for intermediate storage.
-  - `localTransfer`: The transfer function for moving assets between local accounts.
+  - `sharedLocalAccountP`: Holds the local account for intermediate storage.
+  - `log`: access to logging
+  - zoeTools: Helper functions for transferring assets. Contains
+    - `localTransfer`: Support for moving assets between local accounts.
+    - `withdrawToSeat`: Support for moving assets from a local account to an account on a remote chain.
 - `seat`: The Zoe seat representing the assets to be transferred.
 - `offerArgs`: Includes details about the destination chain and address.
 
-The `sendIt` function performs following important steps:
+The `sendIt` function performs the following important steps:
 
 ### Offer Validation and Setup
 
 Upon receiving an offer, the `sendIt` function:
 
 - Validates the offer arguments using [endo's pattern-matching library](https://github.com/endojs/endo/tree/master/packages/patterns) to ensure the correct structure is submitted.
-- Retrieves the `proposal` from the seat, extracting the asset (`brand` and `amount`) being transferred.
-- The contract ensures that the asset brand is registered on the local chain by querying the chain’s asset registry (`vbank`). If not
-  the contract throws an error and exits the transaction.
-- If a local account for the contract doesn’t already exist, the function creates one.
+- Retrieves the `proposal` from the seat, extracting (from `give`) the asset (`brand` and `amount`) being transferred.
+- The contract ensures that the asset brand is registered on the local chain by querying the chain’s asset registry
+   (`vbank`). If not the contract throws an error and exits the transaction. It also gets the `denom` for the
+   destination chain from the `vbank`.
+- retrieves the `chainId` for the remote chain.
 
 ```js
 mustMatch(offerArgs, harden({ chainName: M.scalar(), destAddr: M.string() }));
@@ -149,17 +151,20 @@ void log(`sending {${amt.value}} from ${chainName} to ${destAddr}`);
 const agoric = await orch.getChain('agoric');
 const assets = await agoric.getVBankAssetInfo();
 void log(`got info for denoms: ${assets.map(a => a.denom).join(', ')}`);
+
 const { denom } = NonNullish(
   assets.find(a => a.brand === amt.brand),
   `${amt.brand} not registered in vbank`
 );
-
-if (!contractState.localAccount) {
-  contractState.localAccount = await agoric.makeAccount();
-}
+const chain = await orch.getChain(chainName);
+const info = await chain.getChainInfo();
+const { chainId } = info;
+assert(typeof chainId === 'string', 'bad chainId');
+void log(`got info for chain: ${chainName} ${chainId}`);
 ```
 
-This setup phase ensures the transaction is valid and the contract is prepared to handle it.
+This setup phase ensures the transaction is valid and the contract is prepared to handle it. Notice that all checks
+are complete before any transfers are started.
 
 ### Assets Transfer
 
@@ -168,7 +173,8 @@ Once everything is validated, the contract performs the following steps:
 - **Local transfer**: The assets are first transferred from the Zoe seat to the contract’s local account using `localTransfer` API.
 
 ```js
-await localTransfer(seat, contractState.localAccount, give);
+const sharedLocalAccount = await sharedLocalAccountP;
+await localTransfer(seat, sharedLocalAccount, give);
 ```
 
 - **Remote transfer**: The contract initiates the transfer to the destination address on the remote chain. This transfer includes
