@@ -33,7 +33,7 @@ const amount = orchestrator.asAmount({ denom: 'uatom', value: 1000n });
 
 ## Orchestration Account
 
-Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [`OrchestrationAccountI`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountI)
+Orchestration accounts are a key concept in the Agoric Orchestration API, represented by the [`OrchestrationAccount`](https://agoric-sdk.pages.dev/interfaces/_agoric_orchestration.OrchestrationAccountCommon)
 interface. These accounts provide high-level operations for managing accounts on remote chains, allowing seamless
 interaction and management of interchain accounts. The Orchestration accounts abstract the complexity of interchain
 interactions, providing a unified and simplified interface for developers.
