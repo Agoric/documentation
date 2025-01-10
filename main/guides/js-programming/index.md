@@ -15,7 +15,7 @@ the sections below.
 </ClientOnly>
 :::
 
-## Vats: the Unit of Synchrony
+## Workers: the Unit of Synchrony
 
 The Agoric framework uses the same [event loop concurrency model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) as web browsers and Node.js.
 Each event loop has a message queue, a call stack of frames, and a heap of objects:
