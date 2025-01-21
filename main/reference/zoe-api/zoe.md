@@ -141,13 +141,16 @@ const invitation = await invitationIssuer.claim(untrustedInvitation);
 const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 ```
 
-## E(Zoe).install(bundle)
+## E(Zoe).install(bundle, bundleLabel?)
 
 - **bundle**: **SourceBundle**
+- **bundleLabel**: string - Optional
 - Returns: **Promise&lt;Installation>**
 
-Takes bundled source code for a Zoe contract as an argument and installs the code on Zoe.
-Returns a **Promise** for an **Installation** object.
+Takes bundled source code for a Zoe contract as an argument and
+installs the code with Zoe. The _bundleLabel_ will be accessible on the
+**Installation** object. Returns a **Promise** for an **Installation**
+object.
 
 ```js
 // bundleSource takes source code files and
@@ -155,6 +158,22 @@ Returns a **Promise** for an **Installation** object.
 import bundleSource from '@endto/bundle-source';
 const bundle = await bundleSource(pathResolve(`./src/contract.js`));
 const installationP = await E(Zoe).install(bundle);
+```
+
+## E(Zoe).installBundleID(bundleId, bundleLabel?)
+
+- **bundleId**: **BundleId**
+- **bundleLabel**: string - Optional
+- Returns: **Promise&lt;Installation>**
+
+Takes a bundleId for a Zoe contract (often generated in a [coreEval
+proposal](/guides/coreeval/local-testnet.html#deploying-contracts-using-core-eval-proposals)
+as an argument and installs the code with Zoe. The _bundleLabel_ will be
+accessible on the **Installation** object. Returns a **Promise** for
+an **Installation** object.
+
+```js
+const installationP = await E(Zoe).installBundleID(bundleId, bundleLabel);
 ```
 
 ## E(Zoe).getConfiguration()
@@ -405,13 +424,6 @@ const paymentKeywordRecord = harden({ Asset: quatloosPayment });
 **offerHandler** contract code associated with the invitation by
 [`zcf.makeInvitation(...)`](./zoe-contract-facet#zcf-makeinvitation-offerhandler-description-customdetails-proposalshape).
 Each contract can define the properties it supports and which are required.
-
-## E(Zoe).installBundleID(bundleId)
-
-- bundleId: **BundleId**
-- Returns: **Promise&lt;Installation>**
-
-Reserved for future use.
 
 ## E(Zoe).getBundleIDFromInstallation(installation)
 
