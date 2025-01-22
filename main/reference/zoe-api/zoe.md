@@ -147,10 +147,11 @@ const invitationValue = await E(Zoe).getInvitationDetails(invitation);
 - **bundleLabel**: string - Optional
 - Returns: **Promise&lt;Installation>**
 
-Takes bundled source code for a Zoe contract as an argument and
-installs the code with Zoe. The _bundleLabel_ will be accessible on the
-**Installation** object. Returns a **Promise** for an **Installation**
-object.
+Create an installation by safely evaluating the code and registering it with Zoe. Returns a **Promise** for an
+**Installation** object. The _bundleLabel_ will be accessible on the Installation using
+`E(anInstallation).getBundleLabel()`.
+
+`E(zoe).install()` is seldom used outside of test contexts. Consider using `E(zoe).installBundleID()` instead.
 
 ```js
 // bundleSource takes source code files and
@@ -166,11 +167,10 @@ const installationP = await E(Zoe).install(bundle);
 - **bundleLabel**: string - Optional
 - Returns: **Promise&lt;Installation>**
 
-Takes a bundleId for a Zoe contract (often generated in a [coreEval
-proposal](/guides/coreeval/local-testnet.html#deploying-contracts-using-core-eval-proposals)
-as an argument and installs the code with Zoe. The _bundleLabel_ will be
-accessible on the **Installation** object. Returns a **Promise** for
-an **Installation** object.
+Takes a bundleId for a Zoe contract (generated using a [builder
+script](/guides/zoe/contract-walkthru#bundling-a-contract) as an argument and installs the code with Zoe.
+Returns a **Promise** for an **Installation** object. The _bundleLabel_ will be accessible on the Installation using
+`E(anInstallation).getBundleLabel()`.
 
 ```js
 const installationP = await E(Zoe).installBundleID(bundleId, bundleLabel);
