@@ -21,13 +21,6 @@ constraints. If these constraints are all met, then the reallocation happens ato
 error is thrown and none of the proposed changes has any effect. The constraints are as follows.
 
 - All the mentioned seats are still live.
-- There aren't any outstanding stagings for any of the mentioned seats.
-
-  Stagings are a reallocation mechanism that has been
-  deprecated in favor of this **atomicRearrange()** function.
-  To prevent confusion, each reallocation can only be
-  expressed in the old way or the new way, but not a mixture.
-
 - Overall conservation must be maintained. In other words, the reallocated
   **[Amounts](/reference/ertp-api/ertp-data-types#amount)** must balance out.
 - Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
@@ -392,55 +385,3 @@ Returns all the strings that have been disabled for use in invitations, if any.
 A contract's invitations may be disabled using the
 **[zcf.setOfferFilter()](#zcf-setofferfilter-strings)** method when governance determines
 that they provide a vulnerability.
-
-::: warning DEPRECATED
-
-## zcf.reallocate(seats)
-
-- **seats**: **[ZCFSeats](./zcfseat)[]** (at least two)
-- Returns: None.
-
-**zcf.reallocate()** commits the staged allocations for each of its seat arguments,
-making their staged allocations their current allocations. **zcf.reallocate()** then
-transfers the assets escrowed in Zoe from one seat to another. Importantly, the assets
-stay escrowed, with only the internal Zoe accounting of each seat's allocation changed.
-
-There must be at least two **ZCFSeats** in the array argument. Every **ZCFSeat**
-with a staged allocation must be included in the argument array or an error
-is thrown. If any seat in the argument array does not have a staged allocation,
-an error is thrown.
-
-On commit, the staged allocations become the seats' current allocations and
-the staged allocations are deleted.
-
-Note: **reallocate()** is an _atomic operation_. To enforce offer safety,
-it will never abort part way through. It will completely succeed or it will
-fail before any seats have their current allocation changed.
-
-The reallocation only succeeds if it:
-
-1. Conserves rights (the specified **[Amounts](/reference/ertp-api/ertp-data-types#amount)** have the same total value as the
-   current total amount)
-2. Is 'offer-safe' for all parties involved.
-
-The reallocation is partial, only applying to the **seats** in the
-argument array. By induction, if rights conservation and
-offer safety hold before, they hold after a safe reallocation.
-
-This is true even though we only re-validate for **seats** whose
-allocations change. A reallocation can only effect offer safety for
-those **seats**, and since rights are conserved for the change, overall
-rights are unchanged.
-
-**zcf.reallocate()** throws this error:
-
-- **reallocating must be done over two or more seats**
-
-```js
-sellerSeat.incrementBy(buyerSeat.decrementBy({ Money: providedMoney }));
-buyerSeat.incrementBy(sellerSeat.decrementBy({ Items: wantedItems }));
-zcf.reallocate(buyerSeat, sellerSeat);
-```
-
-**Note**: This method has been deprecated. Use **[atomicRearrange()](./#atomicrearrange-transfers)** instead.
-:::
