@@ -21,7 +21,7 @@ Trading with a contract using Zoe typically goes through these steps:
 1. Parties call [E(zoe).offer(invitation, proposal, assets)](/reference/zoe-api/zoe#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs). Zoe escrows the assets.
 2. Zoe relays the proposal to the contract identified in the invitation.
 3. The contract handles proposals using its custom business logic.
-4. The contract instructs Zoe to [reallocate](/reference/zoe-api/zoe-contract-facet#zcf-reallocate-seats) assets among the parties.
+4. The contract instructs Zoe to [reallocate](/reference/zoe-api/zoe-contract-facet#zcf-atomicrearrange-transfers) assets among the parties.
 5. The contract completes (aka [exits](/reference/zoe-api/zcfseat#azcfseat-exit-completion)) the offers.
 6. Zoe pays out assets to the parties.
 
