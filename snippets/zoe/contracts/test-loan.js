@@ -20,7 +20,7 @@ import url from 'url';
 test('loan contract', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
 
-  const contractUrl = await importMetaResolve(
+  const contractUrl = importMetaResolve(
     '@agoric/zoe/src/contracts/loan/index.js',
     import.meta.url,
   );
@@ -40,7 +40,7 @@ test('loan contract', async t => {
   } = makeIssuerKit('simoleans');
 
   // Create autoswap installation and instance
-  const autoswapUrl = await importMetaResolve(
+  const autoswapUrl = importMetaResolve(
     '@agoric/zoe/src/contracts/autoswap.js',
     import.meta.url,
   );
