@@ -16,7 +16,7 @@
     "lint:check-links": "node scripts/checkLinks.mjs",
     "build": "exit 0"
   },
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "yarn@4.6.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Agoric/documentation.git"
