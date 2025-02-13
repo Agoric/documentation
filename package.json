@@ -67,7 +67,7 @@
     "eslint-plugin-jsdoc": "^35.5.1",
     "eslint-plugin-prettier": "^5.2.1",
     "glob": "7.1.7",
-    "import-meta-resolve": "^2.2.2",
+    "import-meta-resolve": "^4.1.0",
     "prettier": "^3.3.3",
     "ses": "^1.11.0",
     "stylus": "^0.62.0",
