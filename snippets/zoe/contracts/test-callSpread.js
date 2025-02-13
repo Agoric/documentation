@@ -33,7 +33,7 @@ test('callSpread, mid-strike', async t => {
     zoe,
     brands,
   } = setup();
-  const contractUrl = await importMetaResolve(
+  const contractUrl = importMetaResolve(
     '@agoric/zoe/src/contracts/callSpread/fundedCallSpread.js',
     import.meta.url,
   );
@@ -163,7 +163,7 @@ test('pricedCallSpread, mid-strike', async t => {
     zoe,
     brands,
   } = setup();
-  const contractUrl = await importMetaResolve(
+  const contractUrl = importMetaResolve(
     '@agoric/zoe/src/contracts/callSpread/pricedCallSpread.js',
     import.meta.url,
   );

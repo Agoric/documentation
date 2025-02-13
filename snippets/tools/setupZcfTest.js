@@ -8,7 +8,7 @@ import { makeZoeKit } from '@agoric/zoe';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 
 export const setupZCFTest = async (issuerKeywordRecord, terms) => {
-  const contractUrl = await importMetaResolve(
+  const contractUrl = importMetaResolve(
     './zcfTesterContract.js',
     import.meta.url,
   );
