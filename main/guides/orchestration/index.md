@@ -2,32 +2,79 @@
 
 Agoric’s Orchestration capability allows developers to easily build cross-chain interactions into existing applications or to create novel cross-chain-focused products.
 
-The Agoric Orchestration API sits on top of Agoric’s novel VM that provides three key elements that make multichain applications possible:
-
-- **Remote account control and transfer**: Use the Orchestration APIs to easily create accounts on remote chains, transfer assets, and invoke contracts. Your Agoric contract orchestrates all behavior directly.
-- **Multiblock execution with `async` and `await`**: Agoric applications communicate asynchronously and await responses which may come in the same block or many blocks (or weeks!) later. Contracts simply continue executing when the response arrives.
-- **On-chain Timers**: Contracts can set timers for regular execution which makes executing common activities like subscriptions easy.
-
-Agoric’s Orchestration APIs simplify controlling accounts on remote chains, moving assets, and using capabilities on any chain the API reaches.
-
 <br/>
 <img src="./assets/chains.png" width="100%" />
 <br/>
 
-## Orchestration Overview
+**From a user’s perspective**, your contract or dapp can coordinate actions across multiple chains without burdening the user to jump through multiple UIs or signing steps. The Orchestration API *handles the complexity behind the scenes*. This empowers smart contracts to, for example,
 
-Agoric's Orchestration API is a tool to help developers build seamless applications out of disparate interoperable chains and services. This composability allows for the development of user-centric applications that leverage the unique strengths of different blockchain ecosystems.
+:::tip Key Orchestration Features
+- **_Perform Inter-Chain Staking_** 🔄  
+    Leverage delegated proof-of-stake opportunities on remote Cosmos chains.  
 
-The Agoric Orchestration API simplifies interactions between multiple networks, particularly those using the [Inter-Blockchain Communication (IBC)](/glossary/#ibc) protocol within Cosmos. The API acts as an abstraction layer, streamlining multi-step processes.
+- **_Automate Multi-Hop Transfers_** 🌉  
+    Bridge tokens from Ethereum to Stride, then stake them or perform actions on Osmosis.  
 
-Orchestration integrates with existing Agoric components ([SwingSet](/guides/platform/#swingset), Cosmos modules) and introduces vat-orchestration. This [vat](/glossary/#vat) manages Inter-Chain Account (ICA) identities and connections to host chains, ensuring proper transaction authorization.
+- **_Support Scheduled Operations_** ⏰  
+    Enable recurring and delayed tasks like rents and subscription services through the on-chain Timer Service.
+:::
 
-The Orchestration API handles asynchronous tasks and complex workflows, including those spanning multiple chains. This empowers smart contracts for actions like inter-chain staking and multi-hop transfers, facilitated by notifications from the transfer vat and IBC middleware updates. Orchestration simplifies complex cross-chain interactions within a secure and user-controlled environment on the Agoric platform.
+The Orchestration API sits on top of Agoric’s novel VM that provides three key elements that make multichain applications possible:
+
+- **Remote account control and transfer**: Use the Orchestration APIs to easily create accounts on remote chains, transfer assets, and invoke contracts. Your Agoric contract orchestrates all behavior directly.
+- **Multiblock execution with `async` and `await`**: Agoric applications communicate asynchronously and await responses which may come in the same block or many blocks (or weeks!) later. Contracts simply continue executing when the response arrives.
+- **On-chain Timers**: Contracts can set timers for regular or scheduled execution, making recurring activities such as subscriptions straightforward to implement.
+
+Agoric’s Orchestration APIs simplify controlling accounts on remote chains, moving assets, and using capabilities on any chain the API reaches.
+
 
 ## Introduction to Orchestration API Flow
 
-The following sequence diagram provides a comprehensive overview of the Orchestration process within the Agoric platform. This example illustrates the interaction between various components, highlighting how the Orchestration library (`OrchLib`) facilitates cross-chain operations. This is a good first example to understand the flow of the Orchestration API, showing the steps involved in creating and managing cross-chain transactions.
+Orchestration allows us to seamlessly create accounts on remote chains by accessing their chain objects. We can then use these chain objects to create accounts, get addresses, and transfer assets between chains. The following code snippet demonstrates how to create account Stride chain and get their address.
 
-<br/>
-<img src="/reference/assets/sequence-diagrams/orchestration-workflow-1.svg" width="100%" />
-<br/>
+```js
+// Get Chain objects
+const stride = await orch.getChain('stride');
+
+// Create account
+const strideAccount = await stride.makeAccount();
+
+// Get addresse
+const strideAddr = strideAccount.getAddress();
+```
+
+We can easily transfer assets between chains and execute cross-chain transactions using the Orchestration API. The following code snippet demonstrates how to transfer funds from Osmosis to Agoric, forward funds from Agoric to Stride, and stake tokens on Stride.
+
+```js
+// Transfer funds from Osmosis to Agoric
+const osmoToAgoricTransfer = await osmoAccount.transfer(
+    agoricAddr, 
+    amount
+);
+
+// Forward funds from Agoric to Stride
+const agoricToStrideTransfer = await agoricAccount.transfer(
+    strideAddr, 
+    amount
+);
+
+// Create liquid stake message for Stride
+const liquidStakeMsg = Any.toJSON(
+    MsgLiquidStake.toProtoMsg({
+        creator: strideAccount.value,
+        amount: amount.toString(),
+        denom: 'uosmo',
+    })
+);
+
+// Execute staking transaction on Stride
+await strideAccount.executeEncodedTx([liquidStakeMsg]);
+
+// Transfer staked tokens back to user's Osmosis address
+const finalTransfer = await strideAccount.transfer(
+    userOsmoAddress, 
+    amount
+);
+```
+
+
