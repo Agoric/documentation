@@ -66,6 +66,9 @@ redirecting escrowed assets in accordance with the result of the transaction.
 
 The promise will be resolved promptly once the seat exits.
 
+If there is no payment corresponding to the keyword, an error will be
+thrown.
+
 ## E(UserSeat).getOfferResult()
 
 - Returns: **Promise&lt;OfferResult>**

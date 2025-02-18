@@ -17,7 +17,7 @@ test('oracle contract', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
 
   // #region bundle
-  const contractUrl = await importMetaResolve(
+  const contractUrl = importMetaResolve(
     '@agoric/zoe/src/contracts/oracle.js',
     import.meta.url,
   );

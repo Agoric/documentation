@@ -34,7 +34,7 @@ test('intro to zoe', async t => {
   });
 
   // #region bundle
-  const atomicSwapUrl = await importMetaResolve(
+  const atomicSwapUrl = importMetaResolve(
     '@agoric/zoe/src/contracts/atomicSwap.js',
     import.meta.url,
   );
@@ -132,7 +132,7 @@ test('intro to zoe', async t => {
 
 test('intro to zoe - contract-format', async t => {
   const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
-  const atomicSwapUrl = await importMetaResolve(
+  const atomicSwapUrl = importMetaResolve(
     './contract-format.js',
     import.meta.url,
   );
