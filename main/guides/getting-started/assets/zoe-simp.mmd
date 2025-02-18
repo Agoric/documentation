@@ -9,6 +9,6 @@ end
     agent->>+zoe: offer(invitation, {give, want}, pmts)
     zoe-->>agent: userSeat
     zoe->>+contract: {give, want}
-    contract-->>-zoe: reallocate()
+    contract-->>-zoe: atomicRearrange()
     agent->>zoe: E(userSeat).getPayouts()
     zoe-->>-agent: payout payments

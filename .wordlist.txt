@@ -226,6 +226,7 @@ daveSwapProposal
 daveSwapSeat
 declaratively
 declineOffer
+decrementBy
 defaultAcceptanceMsg
 DeFi
 delaySecs
@@ -319,6 +320,7 @@ getPurse
 getPurseIssuer
 getPurses
 getRefund
+getStagedAllocation
 getTerms
 getUpdateSince
 getUse
@@ -331,6 +333,7 @@ grabSharedMap
 HandledPromise
 HandledPromises
 hasExited
+hasStagedAllocation
 heroImage
 hookArgs
 hookMethod
@@ -347,6 +350,7 @@ idToOfferHandle
 iframe
 implementating
 importBundleSource
+incrementBy
 init
 inspectable
 inspectCode
