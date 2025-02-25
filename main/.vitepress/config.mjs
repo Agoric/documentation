@@ -129,6 +129,10 @@ export default defineConfig({
               link: '/guides/orchestration/',
             },
             {
+              text: 'Transactional vs Portfolio',
+              link: '/guides/orchestration/txvsportfolio',
+            },
+            {
               text: 'Key Concepts and APIs',
               link: '/guides/orchestration/key-concepts',
             },
