@@ -27,13 +27,6 @@ constraints. If these constraints are all met, then the reallocation happens ato
 error is thrown and none of the proposed changes has any effect. The constraints are as follows.
 
 - All the mentioned seats are still live.
-- There aren't any outstanding stagings for any of the mentioned seats.
-
-  Stagings are a reallocation mechanism that has been
-  deprecated in favor of this **atomicRearrange()** function.
-  To prevent confusion, each reallocation can only be
-  expressed in the old way or the new way, but not a mixture.
-
 - Overall conservation must be maintained. In other words, the reallocated
   **[Amounts](/reference/ertp-api/ertp-data-types#amount)** must balance out.
 - Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
@@ -80,13 +73,6 @@ met, then the reallocation happens atomically. Otherwise an error is thrown and 
 changes has any effect. The constraints are as follows.
 
 - All the mentioned seats are still live.
-- There aren't any outstanding stagings for any of the mentioned seats.
-
-  Stagings are a reallocation mechanism that has been
-  deprecated in favor of this **atomicRearrange()** function.
-  To prevent confusion, each reallocation can only be
-  expressed in the old way or the new way, but not a mixture.
-
 - Overall conservation must be maintained. In other words, the reallocated
   **[Amounts](/reference/ertp-api/ertp-data-types#amount)** must balance out.
 - Offer Safety is preserved for each seat. That means reallocations can only take assets from a seat
