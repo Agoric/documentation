@@ -52,7 +52,7 @@ export const sendIt = async (
 ) => {
   // 1. Extract the single token amount from the proposal.
   const { give } = seat.getProposal();
-  const [[_, amount]] = Object.entries(give);
+  const { In: amount } = give;
 
   // 2. Transfer the tokens into a local account that can initiate the IBC transfer.
   await zoeTools.localTransfer(seat, sharedLocalAccountP, give);
