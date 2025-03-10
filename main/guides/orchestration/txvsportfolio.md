@@ -62,8 +62,9 @@ export const sendIt = async (
   await zoeTools.localTransfer(seat, sharedLocalAccountP, give);
 
   // 3. Execute the cross-chain transfer.
+  const { chainId } = await orch.getChain(chainName);
   await sharedLocalAccountP.transfer(
-    { value: destAddr, chainId: (await orch.getChain(chainName)).chainId },
+    { value: destAddr, chainId },
     { denom, value: amount.value }
   );
 
