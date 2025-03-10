@@ -1,6 +1,6 @@
 # What is Agoric Orchestration?
 
-Agoric's Orchestration capability allows developers to easily build cross-chain
+Agoric's [Orchestration SDK](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration) allows developers to easily build cross-chain
 interactions into existing applications or to create novel cross-chain-focused
 products.
 
@@ -8,7 +8,7 @@ products.
 <img src="./assets/chains.png" width="100%" />
 <br/>
 
-**From a user's perspective**, your contract or dapp can coordinate actions across
+**From a developer's perspective**, your contract or dapp can coordinate actions across
 multiple chains without burdening the user to jump through multiple UIs or signing
 steps. The Orchestration API _handles the complexity behind the scenes_. This
 empowers smart contracts to, for example,
@@ -98,4 +98,6 @@ const finalTransfer = await strideAccount.transfer(userOsmoAddress, amount);
 These examples demonstrate how Orchestration enables seamless cross-chain
 operations while abstracting away the underlying complexity. Developers can focus
 on building their applications' logic while the Orchestration API handles the
-intricate details of cross-chain communication.
+intricate details of cross-chain communication. For more details, check out the code
+of [several working examples](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration/src/examples), and their [unit tests](https://github.com/Agoric/agoric-sdk/tree/master/packages/orchestration/test/examples). We will walkthrough the code of a couple
+of these examples [here](./contract-walkthroughs/).

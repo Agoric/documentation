@@ -1,7 +1,10 @@
 # Transactional vs. Portfolio Contracts
 
-In Agoric Orchestration, **transactional contracts** and **portfolio contracts** serve distinct use
-cases. This section explains their differences and provides examples from real contracts.
+Agoric Orchestration supports both **transactional contracts** for single interactions and
+**portfolio contracts** for rich, persistent user positions. The [send-anywhere contract](./contract-walkthroughs/send-anywhere)
+is typical of transactional contracts: each offer is an independent interaction.
+[auto-stake-it](https://github.com/Agoric/agoric-sdk/blob/master/packages/orchestration/src/examples/auto-stake-it.contract.js) is typical of portfolio contracts: users have long-lived state.
+This section explains their differences and provides examples from real contracts.
 
 | **Characteristic**        | **Transactional Contracts**   | **Portfolio Contracts**          |
 | :------------------------ | :---------------------------- | :------------------------------- |
@@ -41,13 +44,6 @@ Below is a simplified snippet adapted from the flows (`send-anywhere.flows.js`) 
 of the transactional flow:
 
 ```js
-/**
- * Example flow for a transactional contract:
- *
- * @param {ZCFSeat} seat - The user's seat, including the tokens to send.
- * @param {string} chainName - Name of the destination chain.
- * @param {string} destAddr - Destination address on the chain.
- */
 export const sendIt = async (
   orch,
   { sharedLocalAccountP, log, zoeTools },
