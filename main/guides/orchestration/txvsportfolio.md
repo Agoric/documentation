@@ -71,7 +71,7 @@ export const sendIt = async (
 
 In this snippet, we perform the following steps:
 
-1. **Extract token Details**: The user's seat provides the tokens details (_amount_, _brand_) in a single `give`.
+1. **Extract token Details**: The user's seat provides the tokens details (_amount_, i.e., _brand_ and _value_) in a single `give`.
 2. **Send via localAccount**: An account on the local Agoric chain is used only as a helper to transfer funds from `seat` to an ICA account.
 3. **IBC transfer**: Tokens are transferred cross-chain in a single step via [`transfer` API](/guides/orchestration/key-concepts#funds-transfer).
 4. **No ongoing portfolio**: Once done, the seat concludes—there is no stored user state.
