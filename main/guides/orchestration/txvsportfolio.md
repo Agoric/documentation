@@ -106,7 +106,7 @@ depositing tokens to be staked automatically.
 
 Key points in code:
 
-1. **Prepare a PortfolioHolder** that stores each user's accounts in a single structure.
+1. **Make a PortfolioHolder** that stores each user's accounts in a single structure.
 2. **Add accounts** to the portfolio. Each user might have multiple chain accounts.
 3. **Perform multi-step operations** (e.g. receive tokens over IBC, transfer to staking).
 
