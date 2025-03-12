@@ -5,7 +5,8 @@ interactions into existing applications or to create novel cross-chain-focused
 products.
 
 <br/>
-<img src="./assets/chains.png" width="100%" />
+<img src="./assets/chains.png" width="100%" alt="Diagram showing cross-chain interactions through Agoric orchestration" />
+<!-- This figure was drawn with canva which does not export SVG format. -->
 <br/>
 
 **From a developer's perspective**, your contract or dapp can coordinate actions across
