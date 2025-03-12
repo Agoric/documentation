@@ -162,4 +162,6 @@ Agoric Orchestration supports both **transactional contracts** for single intera
 **portfolio contracts** for rich, persistent user positions. Use the pattern that best fits
 your user flows. A purely transactional workflow is great for quick, one-time trades, while
 a portfolio-based approach is ideal for scenarios like vaults or staking, where users
-maintain ongoing positions.
+maintain ongoing positions. Note that rather than a rigid dichotomy, many contracts exist on a
+spectrum supporting both interaction types. For instance, the FastUSDC contract supports both
+portfolio-style LP positions and transactional trades without persistent user state.
