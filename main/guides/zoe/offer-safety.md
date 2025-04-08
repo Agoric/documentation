@@ -2,8 +2,9 @@
 
 <Zoe-Version/>
 
-**Definition**: _Offer safety_ means that the user is guaranteed to either
-get what they wanted or get back a full refund of what they offered.
+**Definition**: _Offer safety_ means that the user is guaranteed to either  
+get **at least what they wanted**, or get back a **full refund** of what they offered — and **never worse**.  
+They can receive more than they asked for, but never less than promised, and they will never lose more than they offered.
 
 For Zoe to enforce offer safety, the user must
 give Zoe a `proposal`. This is a description of both what they want and what
@@ -32,8 +33,15 @@ escrow my offer, as Zoe immediately escrows the `give:`-specified payment.
 
 After the user escrows, they get a promise for a payout from Zoe.
 This is the payout that offer safety is enforced over. The payout _must_
-be either what the user wanted (an event ticket in the above example)
-or a full refund of what they escrowed ($100 in this example).
+include either at least what the user wanted (an event ticket in the above
+example) or a full refund of what they escrowed ($100 in this example).
+Sometimes the contract will provide _more_ than I asked for (e.g., an
+upgraded ticket or an additional item).
+
+Zoe doesn't allow the contract to take any of the `give` amount from the user
+unless the user receives at least their `want` amount. The contract could
+also return the entire payment, along with a general admission ticket if
+the requested ticket isn't available.
 
 We can enforce offer safety because Zoe controls the payout. In the example,
 if I try to buy my event ticket using a smart contract on Zoe, the contract
