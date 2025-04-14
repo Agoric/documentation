@@ -546,7 +546,7 @@ export default defineConfig({
                 },
               ],
             },
-
+            
             {
               text: 'UI Tutorial',
               link: '/guides/getting-started/ui-tutorial/',
@@ -576,6 +576,11 @@ export default defineConfig({
                   link: '/guides/getting-started/ui-tutorial/conclusion',
                 },
               ],
+            },
+            
+            {
+              text: 'Takeaway 4: Postal Service Contract Overview',
+              link: '/guides/getting-started/postal-service-contract-explainer',
             },
           ],
         },
