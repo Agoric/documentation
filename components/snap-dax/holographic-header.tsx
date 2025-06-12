@@ -78,79 +78,13 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
         ))}
       </div>
 
-      {/* Supreme Authority Coin - Spinning above everything */}
-      <div className="absolute left-1/2 top-8 -translate-x-1/2 z-20">
-        <motion.div
-          animate={{
-            rotate: 360,
-            y: [0, -5, 0, 5, 0],
-          }}
-          transition={{
-            rotate: {
-              duration: 8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            },
-            y: {
-              duration: 4,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            },
-          }}
-          className="relative"
-        >
-          {/* Outer glow ring */}
-          <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-amber-400/30 via-yellow-300/40 to-amber-400/30 blur-lg" />
-
-          {/* JonLorenzo Coin Image */}
-          <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-xl">
-            {/* Replace with your uploaded image */}
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 text-amber-800 text-xs font-bold">
-              {/* This text will be replaced by your image */}
-              JL Coin
-            </div>
-
-            {/* Shine effect overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent pointer-events-none" />
-          </div>
-
-          {/* Particle trail */}
-          <div className="absolute inset-0">
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute h-1.5 w-1.5 rounded-full bg-amber-400"
-                initial={{
-                  x: 48,
-                  y: 48,
-                  opacity: 0.8,
-                  scale: 1,
-                }}
-                animate={{
-                  x: 48 + Math.cos((i * 45 * Math.PI) / 180) * 50,
-                  y: 48 + Math.sin((i * 45 * Math.PI) / 180) * 50,
-                  opacity: [0.8, 0.3, 0.8],
-                  scale: [1, 0.5, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Number.POSITIVE_INFINITY,
-                  delay: i * 0.15,
-                  ease: "easeInOut",
-                }}
-              />
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
       {/* Glow effects */}
       <div className="absolute -left-40 -top-40 h-80 w-80 rounded-full bg-indigo-500/10 blur-3xl" />
       <div className="absolute -bottom-20 right-20 h-60 w-60 rounded-full bg-purple-500/10 blur-3xl" />
 
       {/* Content */}
       <div className="container relative z-10 mx-auto px-6">
-        <div className="flex flex-col items-center text-center pt-12">
+        <div className="flex flex-col items-center text-center">
           <Badge className="mb-4 bg-indigo-500/30 text-indigo-200">
             <Lock className="mr-1 h-3 w-3" />
             Members Only
@@ -159,18 +93,15 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
             {title}
           </h1>
           <p className="mt-2 text-indigo-300">{subtitle}</p>
-          <div className="mt-2 text-xs text-amber-300/80 font-medium">
-            ⭐ Powered by JonLorenzo Supreme Authority ⭐
-          </div>
-        </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((stat, index) => (
-            <div key={index} className="rounded-lg border border-indigo-500/20 bg-indigo-950/30 p-4 backdrop-blur-sm">
-              <div className="text-sm text-indigo-400">{stat.label}</div>
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-            </div>
-          ))}
+          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {stats.map((stat, index) => (
+              <div key={index} className="rounded-lg border border-indigo-500/20 bg-indigo-950/30 p-4 backdrop-blur-sm">
+                <div className="text-sm text-indigo-400">{stat.label}</div>
+                <div className="text-2xl font-bold text-white">{stat.value}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
