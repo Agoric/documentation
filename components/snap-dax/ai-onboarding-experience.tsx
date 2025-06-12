@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { HolographicGlassCard } from "./holographic-glass-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -12,27 +13,26 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { HolographicBadge } from "./holographic-badge"
+import { RotatingHolographicCoin } from "@/components/ui/rotating-holographic-coin"
 import {
-  Brain,
   ChevronRight,
   Sparkles,
+  Lock,
   Unlock,
   Shield,
   BarChart3,
   Home,
   Building,
+  Briefcase,
+  Lightbulb,
   Zap,
+  Send,
   User,
-  Star,
-  Rocket,
-  Crown,
-  Target,
-  TrendingUp,
-  Globe,
-  Layers,
-  Atom,
-  Wand2,
-  SnowflakeIcon as Confetti,
+  Bot,
+  Clock,
+  CheckCircle2,
+  ArrowRight,
+  X,
 } from "lucide-react"
 
 interface Message {
@@ -40,30 +40,20 @@ interface Message {
   role: "user" | "assistant" | "system"
   content: string
   timestamp: string
-  animation?: "typewriter" | "fade" | "slide"
 }
 
 interface OnboardingStep {
   id: string
-  type: "cinematic-intro" | "welcome" | "question" | "product-showcase" | "unlock" | "celebration" | "completion"
+  type: "welcome" | "question" | "product-intro" | "unlock" | "completion"
   title: string
-  subtitle?: string
   description?: string
   messages?: Message[]
-  cinematicContent?: {
-    title: string
-    subtitle: string
-    description: string
-    effects: ("particles" | "hologram" | "matrix" | "quantum")[]
-  }
   options?: {
     id: string
     label: string
     value: string
     icon?: React.ReactNode
-    description?: string
     unlocksFeature?: string
-    rarity?: "common" | "rare" | "epic" | "legendary"
   }[]
   inputType?: "text" | "textarea" | "slider" | "radio" | "checkbox" | "none"
   inputLabel?: string
@@ -74,481 +64,328 @@ interface OnboardingStep {
     icon: React.ReactNode
     benefits: string[]
     image?: string
-    rarity: "common" | "rare" | "epic" | "legendary"
-    powerLevel: number
-    category: string
-    unlockMessage: string
   }
   unlockRequirement?: string
   nextStep?: string | ((response: any) => string)
-  celebrationData?: {
-    achievement: string
-    description: string
-    rewards: string[]
-    nextUnlock: string
-  }
 }
 
-// Enhanced onboarding flow with more excitement
+// Define the onboarding flow
 const onboardingSteps: Record<string, OnboardingStep> = {
-  "cinematic-intro": {
-    id: "cinematic-intro",
-    type: "cinematic-intro",
-    title: "Advanced Financial Technology Platform",
-    cinematicContent: {
-      title: "SNAP-DAX",
-      subtitle: "Intelligent Financial Solutions",
-      description: "Experience next-generation financial tools powered by advanced analytics and AI",
-      effects: ["particles", "hologram", "matrix", "quantum"],
-    },
-    nextStep: "welcome",
-  },
   welcome: {
     id: "welcome",
     type: "welcome",
     title: "Welcome to SNAP-DAX",
-    subtitle: "Your intelligent financial partner",
-    description:
-      "I'm ARIA, your AI Financial Advisor. Let's customize your experience based on your financial objectives.",
+    description: "The world's most advanced financial platform",
     messages: [
       {
         id: 1,
         role: "system",
-        content: "SNAP-DAX Platform Initialized",
+        content:
+          "Welcome to SNAP-DAX, the revolutionary financial platform that brings unprecedented tools, instruments, and strategies to your fingertips.",
         timestamp: "Just now",
-        animation: "fade",
       },
       {
         id: 2,
         role: "assistant",
         content:
-          "Welcome to SNAP-DAX. I'm ARIA, your AI Financial Advisor. I'll help you navigate our comprehensive financial platform and customize it to your specific needs.",
+          "I'm your AI Concierge, and I'll guide you through our platform's revolutionary capabilities. Together, we'll unlock financial tools the world has only dreamed about until now.",
         timestamp: "Just now",
-        animation: "typewriter",
-      },
-      {
-        id: 3,
-        role: "assistant",
-        content:
-          "To provide you with the most relevant tools and insights, I'll need to understand your financial goals and preferences. This will take just a few minutes.",
-        timestamp: "Just now",
-        animation: "typewriter",
       },
     ],
-    nextStep: "financial-objectives",
+    nextStep: "financial-goals",
   },
-  "financial-objectives": {
-    id: "financial-objectives",
+  "financial-goals": {
+    id: "financial-goals",
     type: "question",
-    title: "Primary Financial Objectives",
-    subtitle: "Help us understand your main focus",
-    description:
-      "What is your primary financial objective? This will help us prioritize the most relevant tools and features for you.",
+    title: "Your Financial Aspirations",
+    description: "What are your primary financial goals?",
     inputType: "radio",
     options: [
       {
-        id: "wealth-accumulation",
-        label: "Wealth Accumulation",
-        value: "wealth-accumulation",
-        description: "Build long-term wealth through strategic investments",
-        icon: <TrendingUp className="h-6 w-6" />,
-        unlocksFeature: "advanced-portfolio-analytics",
-        rarity: "epic",
+        id: "wealth-building",
+        label: "Building Wealth",
+        value: "wealth-building",
+        icon: <Briefcase className="h-5 w-5" />,
+        unlocksFeature: "quantum-portfolio-optimizer",
       },
       {
-        id: "real-estate-investment",
-        label: "Real Estate Investment",
-        value: "real-estate-investment",
-        description: "Focus on property investment and real estate opportunities",
-        icon: <Building className="h-6 w-6" />,
-        unlocksFeature: "real-estate-analytics-suite",
-        rarity: "rare",
+        id: "real-estate",
+        label: "Real Estate Acquisition",
+        value: "real-estate",
+        icon: <Home className="h-5 w-5" />,
+        unlocksFeature: "tokenized-real-estate",
       },
       {
-        id: "business-growth",
-        label: "Business Growth & Expansion",
-        value: "business-growth",
-        description: "Scale your business with advanced financial tools",
-        icon: <Rocket className="h-6 w-6" />,
-        unlocksFeature: "business-intelligence-dashboard",
-        rarity: "epic",
+        id: "business",
+        label: "Business Expansion",
+        value: "business",
+        icon: <Building className="h-5 w-5" />,
+        unlocksFeature: "business-intelligence-suite",
       },
       {
-        id: "portfolio-diversification",
-        label: "Portfolio Diversification",
-        value: "portfolio-diversification",
-        description: "Explore alternative investments and new markets",
-        icon: <BarChart3 className="h-6 w-6" />,
-        unlocksFeature: "alternative-investment-tools",
-        rarity: "rare",
+        id: "innovation",
+        label: "Financial Innovation",
+        value: "innovation",
+        icon: <Lightbulb className="h-5 w-5" />,
+        unlocksFeature: "neural-market-predictor",
       },
     ],
     nextStep: (response) => {
-      if (response === "real-estate-investment") return "real-estate-focus"
-      if (response === "wealth-accumulation") return "investment-experience"
-      if (response === "business-growth") return "business-profile"
-      return "risk-assessment"
+      if (response === "real-estate") return "real-estate-intro"
+      if (response === "wealth-building") return "investment-experience"
+      if (response === "business") return "business-scale"
+      return "risk-tolerance"
     },
   },
-  "real-estate-focus": {
-    id: "real-estate-focus",
-    type: "product-showcase",
-    title: "Real Estate Investment Platform",
+  "real-estate-intro": {
+    id: "real-estate-intro",
+    type: "product-intro",
+    title: "Tokenized Real Estate Platform",
     productDetails: {
-      name: "Comprehensive Real Estate Analytics",
+      name: "Tokenized Real Estate Platform",
       description:
-        "Advanced tools for property analysis, market research, and investment tracking with real-time data and predictive modeling.",
-      icon: <Building className="h-10 w-10 text-blue-400" />,
+        "Revolutionary approach to property investment through fractional ownership and blockchain technology",
+      icon: <Building className="h-8 w-8 text-indigo-400" />,
       benefits: [
-        "Market analysis and property valuation tools",
-        "Investment performance tracking and reporting",
-        "Automated rental income management",
-        "Property market trend analysis and forecasting",
-        "Portfolio diversification recommendations",
-        "Tax optimization strategies for real estate",
+        "Access premium properties with fractional investment",
+        "Instant liquidity through tokenized ownership",
+        "Automated dividend distribution from rental income",
+        "AI-powered property value forecasting",
+        "Quantum-secured blockchain ledger",
       ],
       image: "/modern-family-home.png",
-      rarity: "epic",
-      powerLevel: 85,
-      category: "Real Estate Technology",
-      unlockMessage: "Access to comprehensive real estate investment tools",
     },
-    nextStep: "property-investment-type",
+    nextStep: "property-preference",
   },
-  "property-investment-type": {
-    id: "property-investment-type",
+  "property-preference": {
+    id: "property-preference",
     type: "question",
-    title: "Investment Property Focus",
-    subtitle: "Define your real estate investment strategy",
-    description: "Which type of real estate investment aligns with your strategy?",
+    title: "Property Preferences",
+    description: "What type of properties are you most interested in?",
     inputType: "radio",
     options: [
       {
-        id: "residential-rental",
-        label: "Residential Rental Properties",
-        value: "residential-rental",
-        description: "Single-family homes, condos, and small multi-family units",
+        id: "residential",
+        label: "Residential",
+        value: "residential",
         icon: <Home className="h-5 w-5" />,
-        rarity: "common",
       },
       {
-        id: "commercial-properties",
-        label: "Commercial Real Estate",
-        value: "commercial-properties",
-        description: "Office buildings, retail spaces, and industrial properties",
+        id: "commercial",
+        label: "Commercial",
+        value: "commercial",
         icon: <Building className="h-5 w-5" />,
-        unlocksFeature: "commercial-property-analytics",
-        rarity: "epic",
+        unlocksFeature: "commercial-analytics",
       },
       {
-        id: "mixed-portfolio",
-        label: "Diversified Portfolio",
-        value: "mixed-portfolio",
-        description: "Combination of residential and commercial properties",
-        icon: <Layers className="h-5 w-5" />,
-        rarity: "rare",
+        id: "mixed-use",
+        label: "Mixed-Use",
+        value: "mixed-use",
+        icon: <Briefcase className="h-5 w-5" />,
       },
       {
-        id: "international-markets",
-        label: "International Markets",
-        value: "international-markets",
-        description: "Properties in multiple countries and markets",
-        icon: <Globe className="h-5 w-5" />,
-        unlocksFeature: "global-market-intelligence",
-        rarity: "legendary",
+        id: "international",
+        label: "International",
+        value: "international",
+        icon: <Zap className="h-5 w-5" />,
+        unlocksFeature: "global-property-network",
       },
     ],
-    nextStep: "investment-timeline",
+    nextStep: "investment-capacity",
   },
-  "investment-timeline": {
-    id: "investment-timeline",
+  "investment-capacity": {
+    id: "investment-capacity",
     type: "question",
-    title: "Investment Timeline",
-    subtitle: "Define your investment horizon",
-    description: "What is your typical investment timeline for real estate projects?",
+    title: "Investment Capacity",
+    description: "What is your approximate investment capacity for the next 12 months?",
     inputType: "slider",
-    inputLabel: "Investment Timeline (Years)",
-    nextStep: "unlock-real-estate-tools",
+    inputLabel: "Investment Capacity",
+    nextStep: "unlock-real-estate-ai",
   },
-  "unlock-real-estate-tools": {
-    id: "unlock-real-estate-tools",
+  "unlock-real-estate-ai": {
+    id: "unlock-real-estate-ai",
     type: "unlock",
-    title: "Activate Real Estate Tools",
-    subtitle: "Complete your profile setup",
-    description: "Please provide your email to activate personalized real estate analytics and market insights.",
+    title: "Unlock Real Estate AI Advisor",
+    description: "Share your email to unlock our AI-powered Real Estate Advisor",
     inputType: "text",
     inputLabel: "Email Address",
     inputPlaceholder: "your.email@example.com",
     unlockRequirement: "Valid email address",
-    nextStep: "celebration-real-estate",
+    nextStep: "risk-tolerance",
   },
-  "celebration-real-estate": {
-    id: "celebration-real-estate",
-    type: "celebration",
-    title: "Real Estate Tools Activated",
-    celebrationData: {
-      achievement: "Real Estate Investment Suite",
-      description: "You now have access to comprehensive real estate analysis tools",
-      rewards: [
-        "Property Valuation Tools",
-        "Market Analysis Dashboard",
-        "Investment Performance Tracking",
-        "Tax Optimization Strategies",
-      ],
-      nextUnlock: "Risk Assessment Profile",
-    },
-    nextStep: "risk-assessment",
-  },
-  "investment-experience": {
-    id: "investment-experience",
-    type: "question",
-    title: "Investment Experience Level",
-    subtitle: "Help us calibrate our recommendations",
-    description: "What best describes your investment experience?",
-    inputType: "radio",
-    options: [
-      {
-        id: "beginner-investor",
-        label: "New to Investing",
-        value: "beginner-investor",
-        description: "Limited investment experience, seeking guidance",
-        icon: <User className="h-5 w-5" />,
-        rarity: "common",
-      },
-      {
-        id: "intermediate-investor",
-        label: "Intermediate Investor",
-        value: "intermediate-investor",
-        description: "Some experience with stocks, bonds, and basic strategies",
-        icon: <BarChart3 className="h-5 w-5" />,
-        rarity: "rare",
-      },
-      {
-        id: "experienced-investor",
-        label: "Experienced Investor",
-        value: "experienced-investor",
-        description: "Extensive experience with various investment vehicles",
-        icon: <Target className="h-5 w-5" />,
-        unlocksFeature: "advanced-investment-strategies",
-        rarity: "epic",
-      },
-      {
-        id: "professional-investor",
-        label: "Professional/Institutional",
-        value: "professional-investor",
-        description: "Professional money manager or institutional investor",
-        icon: <Crown className="h-5 w-5" />,
-        unlocksFeature: "institutional-grade-tools",
-        rarity: "legendary",
-      },
-    ],
-    nextStep: "risk-assessment",
-  },
-  "business-profile": {
-    id: "business-profile",
-    type: "question",
-    title: "Business Profile",
-    subtitle: "Tell us about your business",
-    description: "What stage is your business currently in?",
-    inputType: "radio",
-    options: [
-      {
-        id: "startup-phase",
-        label: "Startup Phase",
-        value: "startup-phase",
-        description: "Early-stage business seeking growth capital",
-        icon: <Rocket className="h-5 w-5" />,
-        rarity: "common",
-      },
-      {
-        id: "growth-stage",
-        label: "Growth Stage",
-        value: "growth-stage",
-        description: "Established business looking to scale operations",
-        icon: <TrendingUp className="h-5 w-5" />,
-        rarity: "rare",
-      },
-      {
-        id: "mature-business",
-        label: "Mature Business",
-        value: "mature-business",
-        description: "Established company optimizing financial operations",
-        icon: <Building className="h-5 w-5" />,
-        unlocksFeature: "enterprise-financial-suite",
-        rarity: "epic",
-      },
-      {
-        id: "multiple-ventures",
-        label: "Multiple Ventures",
-        value: "multiple-ventures",
-        description: "Managing multiple businesses or investments",
-        icon: <Layers className="h-5 w-5" />,
-        unlocksFeature: "multi-entity-management",
-        rarity: "legendary",
-      },
-    ],
-    nextStep: "risk-assessment",
-  },
-  "risk-assessment": {
-    id: "risk-assessment",
+  "risk-tolerance": {
+    id: "risk-tolerance",
     type: "question",
     title: "Risk Tolerance Assessment",
-    subtitle: "Define your investment risk profile",
-    description: "How would you describe your comfort level with investment risk?",
+    description: "How would you describe your risk tolerance for financial investments?",
     inputType: "radio",
     options: [
       {
         id: "conservative",
         label: "Conservative",
         value: "conservative",
-        description: "Prefer stable, low-risk investments with steady returns",
         icon: <Shield className="h-5 w-5" />,
-        rarity: "common",
       },
       {
         id: "moderate",
         label: "Moderate",
         value: "moderate",
-        description: "Balanced approach with moderate risk for reasonable returns",
         icon: <BarChart3 className="h-5 w-5" />,
-        rarity: "rare",
       },
       {
         id: "aggressive",
         label: "Aggressive",
         value: "aggressive",
-        description: "Comfortable with higher risk for potential higher returns",
         icon: <Zap className="h-5 w-5" />,
-        unlocksFeature: "advanced-trading-algorithms",
-        rarity: "epic",
+        unlocksFeature: "quantum-trading-algorithms",
       },
       {
-        id: "sophisticated",
-        label: "Sophisticated Investor",
-        value: "sophisticated",
-        description: "Experienced with complex strategies and alternative investments",
-        icon: <Brain className="h-5 w-5" />,
-        unlocksFeature: "institutional-investment-tools",
-        rarity: "legendary",
+        id: "visionary",
+        label: "Visionary",
+        value: "visionary",
+        icon: <Sparkles className="h-5 w-5" />,
+        unlocksFeature: "neural-market-predictor",
       },
     ],
-    nextStep: "analytics-showcase",
+    nextStep: "quantum-computing-intro",
   },
-  "analytics-showcase": {
-    id: "analytics-showcase",
-    type: "product-showcase",
-    title: "Advanced Analytics Platform",
+  "investment-experience": {
+    id: "investment-experience",
+    type: "question",
+    title: "Investment Experience",
+    description: "How would you rate your investment experience?",
+    inputType: "radio",
+    options: [
+      {
+        id: "beginner",
+        label: "Beginner",
+        value: "beginner",
+        icon: <User className="h-5 w-5" />,
+      },
+      {
+        id: "intermediate",
+        label: "Intermediate",
+        value: "intermediate",
+        icon: <BarChart3 className="h-5 w-5" />,
+      },
+      {
+        id: "advanced",
+        label: "Advanced",
+        value: "advanced",
+        icon: <Briefcase className="h-5 w-5" />,
+        unlocksFeature: "advanced-trading-suite",
+      },
+      {
+        id: "expert",
+        label: "Expert",
+        value: "expert",
+        icon: <Sparkles className="h-5 w-5" />,
+        unlocksFeature: "institutional-tools",
+      },
+    ],
+    nextStep: "risk-tolerance",
+  },
+  "business-scale": {
+    id: "business-scale",
+    type: "question",
+    title: "Business Scale",
+    description: "What is the current scale of your business?",
+    inputType: "radio",
+    options: [
+      {
+        id: "startup",
+        label: "Startup",
+        value: "startup",
+        icon: <Lightbulb className="h-5 w-5" />,
+      },
+      {
+        id: "small",
+        label: "Small Business",
+        value: "small",
+        icon: <Building className="h-5 w-5" />,
+      },
+      {
+        id: "medium",
+        label: "Medium Enterprise",
+        value: "medium",
+        icon: <Briefcase className="h-5 w-5" />,
+        unlocksFeature: "enterprise-analytics",
+      },
+      {
+        id: "large",
+        label: "Large Corporation",
+        value: "large",
+        icon: <BarChart3 className="h-5 w-5" />,
+        unlocksFeature: "corporate-suite",
+      },
+    ],
+    nextStep: "risk-tolerance",
+  },
+  "quantum-computing-intro": {
+    id: "quantum-computing-intro",
+    type: "product-intro",
+    title: "Quantum Computing Financial Suite",
     productDetails: {
-      name: "AI-Powered Financial Analytics",
-      description:
-        "Comprehensive financial analysis tools powered by artificial intelligence and machine learning for superior investment insights.",
-      icon: <Brain className="h-10 w-10 text-purple-400" />,
+      name: "Quantum Computing Financial Suite",
+      description: "Harness the power of quantum computing for unprecedented financial analysis and optimization",
+      icon: <Zap className="h-8 w-8 text-indigo-400" />,
       benefits: [
-        "Real-time market analysis and trend identification",
-        "Predictive modeling for investment opportunities",
-        "Automated portfolio optimization and rebalancing",
-        "Risk assessment and scenario planning tools",
-        "Performance tracking and detailed reporting",
-        "Integration with multiple data sources and platforms",
+        "Process complex financial models in seconds",
+        "Identify market patterns invisible to traditional systems",
+        "Optimize investment portfolios with quantum algorithms",
+        "Predict market movements with quantum machine learning",
+        "Secure transactions with quantum-resistant cryptography",
       ],
-      image: "/analytics-dashboard.png",
-      rarity: "legendary",
-      powerLevel: 95,
-      category: "Financial Technology",
-      unlockMessage: "Access to advanced AI-powered financial analytics",
+      image: "/quantum-computing-concept.png",
     },
-    nextStep: "unlock-analytics-platform",
+    nextStep: "unlock-quantum-access",
   },
-  "unlock-analytics-platform": {
-    id: "unlock-analytics-platform",
+  "unlock-quantum-access": {
+    id: "unlock-quantum-access",
     type: "unlock",
-    title: "Activate Analytics Platform",
-    subtitle: "Complete your platform setup",
-    description: "Please provide your phone number for account verification and to receive important platform updates.",
+    title: "Unlock Quantum Computing Access",
+    description: "Share your phone number to unlock our Quantum Computing Financial Suite",
     inputType: "text",
     inputLabel: "Phone Number",
     inputPlaceholder: "+1 (555) 123-4567",
     unlockRequirement: "Valid phone number",
-    nextStep: "celebration-analytics",
+    nextStep: "ai-concierge-intro",
   },
-  "celebration-analytics": {
-    id: "celebration-analytics",
-    type: "celebration",
-    title: "Analytics Platform Activated",
-    celebrationData: {
-      achievement: "Advanced Analytics Suite",
-      description: "You now have access to our complete financial analytics platform",
-      rewards: [
-        "AI Market Analysis",
-        "Predictive Investment Models",
-        "Automated Portfolio Tools",
-        "Advanced Risk Management",
-      ],
-      nextUnlock: "Platform Integration",
-    },
-    nextStep: "platform-integration",
-  },
-  "platform-integration": {
-    id: "platform-integration",
-    type: "product-showcase",
-    title: "Platform Integration Hub",
+  "ai-concierge-intro": {
+    id: "ai-concierge-intro",
+    type: "product-intro",
+    title: "AI Financial Concierge",
     productDetails: {
-      name: "Comprehensive Financial Integration",
-      description:
-        "Connect and manage all your financial accounts, investments, and business operations from a single, unified platform.",
-      icon: <Layers className="h-10 w-10 text-green-400" />,
+      name: "AI Financial Concierge",
+      description: "Your personal AI assistant for navigating the complex world of finance",
+      icon: <RotatingHolographicCoin size="sm" speed="medium" glow={false} />,
       benefits: [
-        "Bank and brokerage account integration",
-        "Real-time transaction monitoring and categorization",
-        "Automated financial reporting and tax preparation",
-        "Multi-currency and international account support",
-        "Secure data encryption and privacy protection",
-        "API access for custom integrations and automation",
+        "24/7 personalized financial guidance",
+        "Natural language interface for complex financial queries",
+        "Proactive investment opportunities identification",
+        "Automated financial planning and goal tracking",
+        "Seamless integration with all platform tools",
       ],
-      image: "/data-analytics-visualization.png",
-      rarity: "epic",
-      powerLevel: 90,
-      category: "Platform Integration",
-      unlockMessage: "Complete platform integration capabilities unlocked",
+      image: "/ai-assistant-concept.png",
     },
-    nextStep: "financial-goals",
+    nextStep: "financial-interests",
   },
-  "financial-goals": {
-    id: "financial-goals",
+  "financial-interests": {
+    id: "financial-interests",
     type: "question",
-    title: "Financial Goals & Objectives",
-    subtitle: "Define your success metrics",
-    description:
-      "Please share your specific financial goals and what success looks like for you. This helps us provide more targeted recommendations.",
+    title: "Financial Interests",
+    description: "Which financial areas are you most interested in exploring?",
     inputType: "textarea",
-    inputLabel: "Your Financial Goals",
+    inputLabel: "Your Interests",
     inputPlaceholder:
-      "Describe your short-term and long-term financial objectives, target returns, timeline, and any specific areas of focus...",
-    nextStep: "final-celebration",
-  },
-  "final-celebration": {
-    id: "final-celebration",
-    type: "celebration",
-    title: "Platform Setup Complete",
-    celebrationData: {
-      achievement: "SNAP-DAX Platform Activated",
-      description: "Your personalized financial platform is now ready with all features unlocked",
-      rewards: [
-        "Complete Platform Access",
-        "Personalized Dashboard",
-        "AI Financial Advisor",
-        "Advanced Analytics Suite",
-      ],
-      nextUnlock: "Your Financial Dashboard",
-    },
+      "Tell us about your financial interests, goals, and what you hope to achieve with our platform...",
     nextStep: "completion",
   },
   completion: {
     id: "completion",
     type: "completion",
-    title: "Welcome to Your Financial Future",
-    subtitle: "Your personalized platform is ready",
-    description: "You now have access to all SNAP-DAX features tailored to your financial objectives",
+    title: "Onboarding Complete",
+    description: "You've unlocked revolutionary financial tools",
     nextStep: "dashboard",
   },
 }
@@ -558,7 +395,7 @@ interface AIOnboardingExperienceProps {
   initialStep?: string
 }
 
-export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-intro" }: AIOnboardingExperienceProps) {
+export function AIOnboardingExperience({ onComplete, initialStep = "welcome" }: AIOnboardingExperienceProps) {
   const [currentStepId, setCurrentStepId] = useState(initialStep)
   const [userData, setUserData] = useState<Record<string, any>>({})
   const [progress, setProgress] = useState(0)
@@ -566,26 +403,29 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   const [inputValue, setInputValue] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isTyping, setIsTyping] = useState(false)
-  const [showCelebration, setShowCelebration] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const totalSteps = Object.keys(onboardingSteps).length - 1
+  const totalSteps = Object.keys(onboardingSteps).length - 1 // Exclude completion
 
   const currentStep = onboardingSteps[currentStepId]
 
   useEffect(() => {
+    // Initialize messages if the step has them
     if (currentStep.messages) {
-      setMessages([])
-      // Animate messages in sequence
-      currentStep.messages.forEach((message, index) => {
-        setTimeout(() => {
-          setMessages((prev) => [...prev, message])
-        }, index * 1500)
-      })
+      setMessages(currentStep.messages)
     }
 
+    // Calculate progress
     const stepIndex = Object.keys(onboardingSteps).indexOf(currentStepId)
     const newProgress = Math.min(100, Math.round((stepIndex / totalSteps) * 100))
     setProgress(newProgress)
+
+    // Simulate typing for new messages
+    if (currentStep.messages && currentStep.messages.length > 0) {
+      setIsTyping(true)
+      setTimeout(() => {
+        setIsTyping(false)
+      }, 1000)
+    }
   }, [currentStepId, currentStep, totalSteps])
 
   useEffect(() => {
@@ -597,22 +437,23 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   }
 
   const handleNext = (value?: any) => {
+    // Save user response
     if (value !== undefined) {
       const updatedUserData = { ...userData, [currentStepId]: value }
       setUserData(updatedUserData)
 
-      // Check for feature unlocks
+      // Check if this response unlocks a feature
       if (currentStep.options) {
         const selectedOption = currentStep.options.find((option) => option.value === value)
         if (selectedOption?.unlocksFeature && !unlockedFeatures.includes(selectedOption.unlocksFeature)) {
           setUnlockedFeatures([...unlockedFeatures, selectedOption.unlocksFeature])
 
+          // Add a system message about unlocking a feature
           const newMessage: Message = {
             id: Date.now(),
             role: "system",
-            content: `🌟 FEATURE UNLOCKED: ${selectedOption.unlocksFeature.replace(/-/g, " ").toUpperCase()}! 🌟`,
+            content: `🔓 You've unlocked access to our ${selectedOption.unlocksFeature.replace(/-/g, " ")}!`,
             timestamp: "Just now",
-            animation: "fade",
           }
           setMessages((prev) => [...prev, newMessage])
         }
@@ -624,37 +465,35 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
         role: "user",
         content: typeof value === "string" ? value : JSON.stringify(value),
         timestamp: "Just now",
-        animation: "slide",
       }
       setMessages((prev) => [...prev, userMessage])
 
-      // AI response
+      // Simulate AI response
       setIsTyping(true)
       setTimeout(() => {
-        const responseContent = getEnhancedAIResponse(currentStepId, value)
+        let responseContent = ""
+
+        if (currentStep.type === "question") {
+          responseContent = getAIResponseForQuestion(currentStepId, value)
+        } else if (currentStep.type === "unlock") {
+          responseContent = `Thank you for providing your ${currentStep.inputLabel?.toLowerCase()}. You've successfully unlocked additional features!`
+        }
+
         if (responseContent) {
           const aiMessage: Message = {
             id: Date.now() + 1,
             role: "assistant",
             content: responseContent,
             timestamp: "Just now",
-            animation: "typewriter",
           }
           setMessages((prev) => [...prev, aiMessage])
         }
+
         setIsTyping(false)
-      }, 2000)
+      }, 1500)
     }
 
-    // Handle celebration steps
-    if (currentStep.type === "celebration") {
-      setShowCelebration(true)
-      setTimeout(() => {
-        setShowCelebration(false)
-      }, 3000)
-    }
-
-    // Navigate to next step
+    // Determine next step
     let nextStepId = ""
     if (typeof currentStep.nextStep === "function") {
       nextStepId = currentStep.nextStep(value)
@@ -663,262 +502,83 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     }
 
     if (nextStepId === "dashboard") {
+      // Onboarding complete
       if (onComplete) {
         onComplete(userData)
       }
     } else if (nextStepId) {
-      setTimeout(
-        () => {
-          setCurrentStepId(nextStepId)
-          setInputValue("")
-        },
-        currentStep.type === "celebration" ? 3000 : 500,
-      )
+      setCurrentStepId(nextStepId)
+      setInputValue("")
     }
   }
 
-  const getEnhancedAIResponse = (stepId: string, value: any): string => {
-    const responses = {
-      "financial-objectives": {
-        "wealth-accumulation":
-          "Excellent choice. I'm configuring our advanced portfolio analytics to help you build long-term wealth through strategic investment planning.",
-        "real-estate-investment":
-          "Great selection. Our real estate analytics suite will provide you with comprehensive market data and investment analysis tools.",
-        "business-growth":
-          "Perfect. I'm activating our business intelligence dashboard to help you scale your operations with data-driven insights.",
-        "portfolio-diversification":
-          "Smart approach. Our alternative investment tools will help you explore new opportunities and optimize your portfolio allocation.",
-      },
-      "risk-assessment": {
-        conservative:
-          "I'm configuring conservative investment strategies focused on capital preservation and steady growth with lower volatility.",
-        moderate: "I'll set up a balanced approach that optimizes the risk-return ratio for your investment portfolio.",
-        aggressive:
-          "I'm activating advanced trading algorithms designed for higher-growth investment strategies with increased risk tolerance.",
-        sophisticated:
-          "Excellent. I'm unlocking institutional-grade tools for complex investment strategies and alternative asset classes.",
-      },
-    }
+  const getAIResponseForQuestion = (stepId: string, value: any): string => {
+    switch (stepId) {
+      case "financial-goals":
+        return value === "real-estate"
+          ? "Real estate is an excellent choice for building long-term wealth. Our tokenized real estate platform will revolutionize how you invest in properties."
+          : value === "wealth-building"
+            ? "Building wealth requires strategic planning and advanced tools. Our quantum computing financial suite will give you an unprecedented edge."
+            : value === "business"
+              ? "Growing your business demands sophisticated financial instruments. Our AI-powered business intelligence tools will help you scale efficiently."
+              : "Innovation drives financial evolution. Our neural market prediction system will help you stay ahead of emerging trends."
 
-    const stepResponses = responses[stepId as keyof typeof responses]
-    if (stepResponses) {
-      return (
-        stepResponses[value as keyof typeof stepResponses] ||
-        "Thank you for that information. I'm customizing your platform experience based on your preferences."
-      )
-    }
+      case "risk-tolerance":
+        return value === "conservative"
+          ? "A conservative approach prioritizes capital preservation. I'll configure your dashboard to highlight our quantum-secured stable investment options."
+          : value === "moderate"
+            ? "A balanced approach to risk and reward. Our AI will recommend a diversified portfolio with moderate growth potential."
+            : value === "aggressive"
+              ? "You're comfortable with higher volatility for greater returns. I'll unlock our quantum trading algorithms designed for aggressive growth strategies."
+              : "As a visionary investor, you seek cutting-edge opportunities. Our neural market predictor will help you identify emerging trends before they become mainstream."
 
-    return "I'm processing your selection and tailoring the platform to meet your specific financial needs."
-  }
+      case "property-preference":
+        return `${value.charAt(0).toUpperCase() + value.slice(1)} properties offer unique advantages. I'll customize your tokenized real estate dashboard to prioritize ${value} opportunities.`
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case "legendary":
-        return "from-yellow-400 to-orange-500"
-      case "epic":
-        return "from-purple-400 to-pink-500"
-      case "rare":
-        return "from-blue-400 to-cyan-500"
       default:
-        return "from-gray-400 to-gray-500"
-    }
-  }
-
-  const getRarityGlow = (rarity: string) => {
-    switch (rarity) {
-      case "legendary":
-        return "shadow-2xl shadow-yellow-500/50"
-      case "epic":
-        return "shadow-xl shadow-purple-500/50"
-      case "rare":
-        return "shadow-lg shadow-blue-500/50"
-      default:
-        return "shadow-md shadow-gray-500/50"
+        return "Thank you for sharing this information. I'm customizing your experience based on your preferences."
     }
   }
 
   const renderStepContent = () => {
     switch (currentStep.type) {
-      case "cinematic-intro":
-        return (
-          <div className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden">
-            {/* Quantum particle field */}
-            <div className="absolute inset-0">
-              {[...Array(50)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute h-1 w-1 rounded-full bg-cyan-400"
-                  initial={{
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    x: [
-                      Math.random() * window.innerWidth,
-                      Math.random() * window.innerWidth,
-                      Math.random() * window.innerWidth,
-                    ],
-                    y: [
-                      Math.random() * window.innerHeight,
-                      Math.random() * window.innerHeight,
-                      Math.random() * window.innerHeight,
-                    ],
-                    opacity: [0, 1, 0],
-                  }}
-                  transition={{
-                    duration: Math.random() * 10 + 5,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "linear",
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Matrix rain effect */}
-            <div className="absolute inset-0 opacity-20">
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute text-green-400 font-mono text-xs"
-                  style={{ left: `${i * 5}%` }}
-                  initial={{ y: -100, opacity: 0 }}
-                  animate={{ y: window.innerHeight + 100, opacity: [0, 1, 0] }}
-                  transition={{
-                    duration: Math.random() * 3 + 2,
-                    repeat: Number.POSITIVE_INFINITY,
-                    delay: Math.random() * 2,
-                  }}
-                >
-                  {Array.from({ length: 10 }, () => Math.random().toString(36).charAt(0)).join("")}
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Main content */}
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 2, ease: "easeOut" }}
-              className="relative z-10 text-center"
-            >
-              <motion.div
-                initial={{ rotateY: 0 }}
-                animate={{ rotateY: 360 }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                className="mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 mx-auto"
-              >
-                <Atom className="h-16 w-16 text-white" />
-              </motion.div>
-
-              <motion.h1
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 1 }}
-                className="mb-4 text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent"
-              >
-                {currentStep.cinematicContent?.title}
-              </motion.h1>
-
-              <motion.p
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 1.5 }}
-                className="mb-2 text-xl text-cyan-300"
-              >
-                {currentStep.cinematicContent?.subtitle}
-              </motion.p>
-
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 2 }}
-                className="mb-8 text-indigo-300 max-w-2xl mx-auto"
-              >
-                {currentStep.cinematicContent?.description}
-              </motion.p>
-
-              <motion.div
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 2.5 }}
-              >
-                <Button
-                  onClick={() => handleNext()}
-                  className="bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white hover:from-cyan-600 hover:via-purple-700 hover:to-pink-700 px-8 py-4 text-lg font-bold rounded-full shadow-2xl shadow-purple-500/50"
-                >
-                  <Rocket className="mr-2 h-5 w-5" />
-                  Enter the Quantum Realm
-                  <Sparkles className="ml-2 h-5 w-5" />
-                </Button>
-              </motion.div>
-            </motion.div>
-
-            {/* Holographic grid */}
-            <div
-              className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(0, 255, 255, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px)",
-                backgroundSize: "50px 50px",
-              }}
-            />
-          </div>
-        )
-
       case "welcome":
         return (
           <div className="flex flex-col items-center text-center">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0, rotateY: -180 }}
-              animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-              transition={{ duration: 1, ease: "backOut" }}
-              className="mb-6 relative"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6"
             >
-              <div className="absolute -inset-8 animate-pulse rounded-full bg-gradient-to-r from-purple-500/30 to-cyan-500/30 blur-xl"></div>
-              <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-cyan-600">
-                <Brain className="h-12 w-12 text-white" />
-              </div>
+              <RotatingHolographicCoin size="lg" speed="medium" glow={true} />
             </motion.div>
-
             <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-2 text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent"
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-2 text-2xl font-bold text-indigo-100"
             >
               {currentStep.title}
             </motion.h2>
-
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-2 text-lg text-purple-300 font-medium"
-            >
-              {currentStep.subtitle}
-            </motion.p>
-
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="mb-8 text-indigo-300 max-w-md"
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-6 text-indigo-300"
             >
               {currentStep.description}
             </motion.p>
-
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               <Button
                 onClick={() => handleNext()}
-                className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700 px-6 py-3 rounded-full shadow-lg shadow-purple-500/30"
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
               >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Begin My Transformation
+                Begin Your Journey
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
@@ -928,263 +588,368 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       case "question":
         return (
           <div className="flex flex-col">
-            <motion.div
+            <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-8"
+              transition={{ duration: 0.5 }}
+              className="mb-2 text-xl font-bold text-indigo-100"
             >
-              <h2 className="mb-2 text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                {currentStep.title}
-              </h2>
-              {currentStep.subtitle && (
-                <p className="text-lg text-purple-300 font-medium mb-2">{currentStep.subtitle}</p>
-              )}
-              <p className="text-indigo-300">{currentStep.description}</p>
-            </motion.div>
+              {currentStep.title}
+            </motion.h2>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mb-6 text-indigo-300"
+            >
+              {currentStep.description}
+            </motion.p>
 
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="mb-6"
             >
               {currentStep.inputType === "radio" && currentStep.options && (
-                <RadioGroup onValueChange={(value) => handleNext(value)} className="grid gap-4">
-                  {currentStep.options.map((option, index) => (
-                    <motion.div
-                      key={option.id}
-                      initial={{ x: -50, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                    >
-                      <Label htmlFor={option.id} className="cursor-pointer">
-                        <RadioGroupItem value={option.value} id={option.id} className="peer sr-only" />
-                        <div
-                          className={`peer-data-[state=checked]:border-purple-500 peer-data-[state=checked]:bg-purple-950/50 peer-data-[state=checked]:${getRarityGlow(option.rarity || "common")} flex items-center gap-4 rounded-xl border border-indigo-500/20 bg-indigo-950/30 p-6 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-950/40 hover:scale-105`}
-                        >
-                          <div
-                            className={`flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r ${getRarityColor(option.rarity || "common")} peer-data-[state=checked]:shadow-lg`}
-                          >
-                            {option.icon}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="font-bold text-indigo-100 text-lg">{option.label}</p>
-                              {option.rarity && option.rarity !== "common" && (
-                                <HolographicBadge variant="tokenized" glow={true} size="sm">
-                                  <Star className="mr-1 h-3 w-3" />
-                                  {option.rarity.toUpperCase()}
-                                </HolographicBadge>
-                              )}
-                            </div>
-                            <p className="text-indigo-300 text-sm mb-2">{option.description}</p>
-                            {option.unlocksFeature && (
-                              <div className="flex items-center gap-1">
-                                <Unlock className="h-3 w-3 text-yellow-400" />
-                                <span className="text-xs text-yellow-400 font-medium">
-                                  Unlocks: {option.unlocksFeature.replace(/-/g, " ")}
-                                </span>
-                              </div>
-                            )}
-                          </div>
+                <RadioGroup onValueChange={(value) => handleNext(value)} className="grid gap-4 md:grid-cols-2">
+                  {currentStep.options.map((option) => (
+                    <Label key={option.id} htmlFor={option.id} className="cursor-pointer">
+                      <RadioGroupItem value={option.value} id={option.id} className="peer sr-only" />
+                      <div className="peer-data-[state=checked]:border-indigo-500 peer-data-[state=checked]:bg-indigo-950/50 flex items-center gap-4 rounded-lg border border-indigo-500/20 bg-indigo-950/30 p-4 transition-all hover:border-indigo-500/40 hover:bg-indigo-950/40">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-indigo-400 peer-data-[state=checked]:from-indigo-600 peer-data-[state=checked]:to-purple-600 peer-data-[state=checked]:text-white">
+                          {option.icon}
                         </div>
-                      </Label>
-                    </motion.div>
+                        <div className="flex-1">
+                          <p className="font-medium text-indigo-200 peer-data-[state=checked]:text-indigo-100">
+                            {option.label}
+                          </p>
+                          {option.unlocksFeature && (
+                            <div className="mt-1">
+                              <HolographicBadge variant="tokenized" glow={true} size="sm">
+                                <Unlock className="mr-1 h-3 w-3" />
+                                Unlocks Feature
+                              </HolographicBadge>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </Label>
                   ))}
                 </RadioGroup>
               )}
 
               {currentStep.inputType === "slider" && (
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6 }}
-                  className="space-y-8"
-                >
-                  <div className="text-center">
-                    <Label className="text-xl font-bold text-purple-300 mb-4 block">{currentStep.inputLabel}</Label>
-                    <div className="relative px-4">
+                <div className="space-y-6">
+                  <div>
+                    <Label className="mb-2 block text-indigo-200">{currentStep.inputLabel}</Label>
+                    <div className="px-2">
                       <Slider
-                        defaultValue={[100000]}
-                        max={2000000}
-                        step={25000}
+                        defaultValue={[50000]}
+                        max={1000000}
+                        step={10000}
                         onValueChange={(value) => setInputValue(value[0].toString())}
-                        className="py-6"
+                        className="py-4"
                       />
-                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-                        <div className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
-                          ${Number.parseInt(inputValue || "100000").toLocaleString()}
-                        </div>
-                      </div>
                     </div>
-                    <div className="mt-4 flex justify-between text-sm text-indigo-400">
-                      <span>$25,000</span>
-                      <span>$2,000,000+</span>
+                    <div className="mt-2 flex justify-between text-sm text-indigo-400">
+                      <span>$10,000</span>
+                      <span>$1,000,000+</span>
                     </div>
                   </div>
+                  <div className="text-center text-xl font-bold text-indigo-100">
+                    ${Number.parseInt(inputValue || "50000").toLocaleString()}
+                  </div>
                   <Button
-                    onClick={() => handleNext(inputValue || "100000")}
-                    className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700 py-4 text-lg font-bold rounded-full shadow-lg shadow-purple-500/30"
+                    onClick={() => handleNext(inputValue || "50000")}
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
                   >
-                    <Target className="mr-2 h-5 w-5" />
-                    Lock In My Power Level
-                    <ChevronRight className="ml-2 h-5 w-5" />
+                    Continue
+                    <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
-                </motion.div>
+                </div>
               )}
 
               {currentStep.inputType === "text" && (
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6 }}
-                  className="space-y-6"
-                >
+                <div className="space-y-4">
                   <div>
-                    <Label className="mb-3 block text-lg font-bold text-purple-300">{currentStep.inputLabel}</Label>
+                    <Label className="mb-2 block text-indigo-200">{currentStep.inputLabel}</Label>
                     <Input
                       type="text"
                       placeholder={currentStep.inputPlaceholder}
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
-                      className="border-purple-500/30 bg-purple-950/30 text-indigo-100 placeholder:text-indigo-400/50 py-4 text-lg rounded-xl"
+                      className="border-indigo-500/20 bg-indigo-950/30 text-indigo-100 placeholder:text-indigo-400/50"
                     />
                   </div>
                   <Button
                     onClick={() => handleNext(inputValue)}
                     disabled={!inputValue}
-                    className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700 disabled:from-purple-600/50 disabled:to-cyan-600/50 py-4 text-lg font-bold rounded-full shadow-lg shadow-purple-500/30"
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 disabled:from-indigo-600/50 disabled:to-purple-600/50"
                   >
-                    <Zap className="mr-2 h-5 w-5" />
-                    Activate Quantum Signature
-                    <ChevronRight className="ml-2 h-5 w-5" />
+                    Continue
+                    <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
-                </motion.div>
+                </div>
               )}
 
               {currentStep.inputType === "textarea" && (
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6 }}
-                  className="space-y-6"
-                >
+                <div className="space-y-4">
                   <div>
-                    <Label className="mb-3 block text-lg font-bold text-purple-300">{currentStep.inputLabel}</Label>
+                    <Label className="mb-2 block text-indigo-200">{currentStep.inputLabel}</Label>
                     <Textarea
                       placeholder={currentStep.inputPlaceholder}
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
-                      className="min-h-[150px] border-purple-500/30 bg-purple-950/30 text-indigo-100 placeholder:text-indigo-400/50 text-lg rounded-xl"
+                      className="min-h-[120px] border-indigo-500/20 bg-indigo-950/30 text-indigo-100 placeholder:text-indigo-400/50"
                     />
                   </div>
                   <Button
                     onClick={() => handleNext(inputValue)}
                     disabled={!inputValue}
-                    className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700 disabled:from-purple-600/50 disabled:to-cyan-600/50 py-4 text-lg font-bold rounded-full shadow-lg shadow-purple-500/30"
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 disabled:from-indigo-600/50 disabled:to-purple-600/50"
                   >
-                    <Wand2 className="mr-2 h-5 w-5" />
-                    Manifest My Vision
-                    <ChevronRight className="ml-2 h-5 w-5" />
+                    Continue
+                    <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
-                </motion.div>
+                </div>
               )}
             </motion.div>
           </div>
         )
 
-      case "product-showcase":
+      case "product-intro":
         return (
           <div className="flex flex-col">
-            <motion.div
+            <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-8"
+              transition={{ duration: 0.5 }}
+              className="mb-2 text-xl font-bold text-indigo-100"
             >
-              <h2 className="mb-4 text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                {currentStep.title}
-              </h2>
-            </motion.div>
+              {currentStep.title}
+            </motion.h2>
 
             {currentStep.productDetails && (
               <motion.div
-                initial={{ y: 30, opacity: 0, scale: 0.9 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mb-8"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mb-6"
               >
-                <div
-                  className={`relative overflow-hidden rounded-2xl ${getRarityGlow(currentStep.productDetails.rarity)} border-2 border-gradient-to-r ${getRarityColor(currentStep.productDetails.rarity)}`}
-                >
-                  <div className="relative aspect-video w-full overflow-hidden">
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg">
                     <img
                       src={
                         currentStep.productDetails.image ||
-                        "/placeholder.svg?height=400&width=800&query=futuristic+technology" ||
+                        "/placeholder.svg?height=300&width=600&query=futuristic+financial+technology" ||
                         "/placeholder.svg"
                       }
                       alt={currentStep.productDetails.name}
                       className="h-full w-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/90 via-indigo-950/50 to-transparent" />
-
-                    {/* Floating particles over image */}
-                    <div className="absolute inset-0">
-                      {[...Array(20)].map((_, i) => (
-                        <motion.div
-                          key={i}
-                          className="absolute h-2 w-2 rounded-full bg-cyan-400"
-                          initial={{
-                            x: Math.random() * window.innerWidth,
-                            y: Math.random() * window.innerHeight,
-                            opacity: 0,
-                          }}
-                          animate={{
-                            x: [
-                              Math.random() * window.innerWidth,
-                              Math.random() * window.innerWidth,
-                              Math.random() * window.innerWidth,
-                            ],
-                            y: [
-                              Math.random() * window.innerHeight,
-                              Math.random() * window.innerHeight,
-                              Math.random() * window.innerHeight,
-                            ],
-                            opacity: [0, 1, 0],
-                          }}
-                          transition={{
-                            duration: Math.random() * 3 + 2,
-                            repeat: Number.POSITIVE_INFINITY,
-                            ease: "linear",
-                          }}
-                        />
-                      ))}
+                    <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/80 to-transparent" />
+                    <div
+                      className="absolute inset-0 opacity-30"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, transparent 50%, rgba(168, 85, 247, 0.3) 100%)",
+                        mixBlendMode: "overlay",
+                      }}
+                    />
+                    <div className="absolute bottom-4 left-4 flex items-center gap-3">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-purple-600">
+                        {currentStep.productDetails.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-white">{currentStep.productDetails.name}</h3>
+                        <HolographicBadge variant="tokenized" glow={true} size="sm">
+                          <Sparkles className="mr-1 h-3 w-3" />
+                          Revolutionary Technology
+                        </HolographicBadge>
+                      </div>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="mb-2 text-xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                      {currentStep.productDetails.name}
-                    </h3>
-                    <p className="mb-4 text-lg text-indigo-300">{currentStep.productDetails.description}</p>
-                    <ul className="mb-6 list-disc pl-6 text-indigo-400">
-                      {currentStep.productDetails.benefits.map((benefit, index) => (
-                        <li key={index}>{benefit}</li>
-                      ))}
-                    </ul>
-                    <Button
-                      onClick={() => handleNext()}
-                      className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700 px-6 py-3 rounded-full shadow-lg shadow-purple-500/30"
-                    >
-                      <Unlock className="mr-2 h-4 w-4" />
-                      Unlock Now
-                      <ChevronRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
                 </div>
+
+                <p className="mb-4 text-indigo-300">{currentStep.productDetails.description}</p>
+
+                <div className="space-y-2">
+                  <h4 className="font-medium text-indigo-200">Key Benefits:</h4>
+                  <ul className="space-y-2">
+                    {currentStep.productDetails.benefits.map((benefit, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
+                        className="flex items-start gap-2 text-indigo-300"
+                      >
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-400" />
+                        <span>{benefit}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="mt-6"
+                >
+                  <Button
+                    onClick={() => handleNext()}
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
+                  >
+                    Explore This Feature
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </motion.div>
               </motion.div>
             )}
+          </div>
+        )
+
+      case "unlock":
+        return (
+          <div className="flex flex-col">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 flex items-center justify-center"
+            >
+              <div className="relative">
+                <div className="absolute -inset-4 animate-pulse rounded-full bg-indigo-500/20 blur-md"></div>
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-purple-600">
+                  <Unlock className="h-8 w-8 text-white" />
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.h2
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-2 text-center text-xl font-bold text-indigo-100"
+            >
+              {currentStep.title}
+            </motion.h2>
+
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-6 text-center text-indigo-300"
+            >
+              {currentStep.description}
+            </motion.p>
+
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="space-y-4"
+            >
+              <div>
+                <Label className="mb-2 block text-indigo-200">{currentStep.inputLabel}</Label>
+                <Input
+                  type="text"
+                  placeholder={currentStep.inputPlaceholder}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="border-indigo-500/20 bg-indigo-950/30 text-indigo-100 placeholder:text-indigo-400/50"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-indigo-400">
+                <Lock className="h-3 w-3" />
+                <span>Required to {currentStep.unlockRequirement}</span>
+              </div>
+
+              <Button
+                onClick={() => handleNext(inputValue)}
+                disabled={!inputValue}
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 disabled:from-indigo-600/50 disabled:to-purple-600/50"
+              >
+                Unlock Access
+                <Unlock className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
+          </div>
+        )
+
+      case "completion":
+        return (
+          <div className="flex flex-col items-center text-center">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6"
+            >
+              <div className="relative">
+                <div className="absolute -inset-6 animate-pulse rounded-full bg-indigo-500/20 blur-md"></div>
+                <RotatingHolographicCoin size="lg" speed="fast" glow={true} />
+              </div>
+            </motion.div>
+
+            <motion.h2
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-2 text-2xl font-bold text-indigo-100"
+            >
+              {currentStep.title}
+            </motion.h2>
+
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-6 text-indigo-300"
+            >
+              {currentStep.description}
+            </motion.p>
+
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mb-6 grid gap-4 md:grid-cols-2"
+            >
+              {unlockedFeatures.map((feature, index) => (
+                <div
+                  key={feature}
+                  className="flex items-center gap-3 rounded-lg border border-indigo-500/20 bg-indigo-950/30 p-3"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600/20 to-purple-600/20">
+                    <Unlock className="h-5 w-5 text-indigo-400" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-indigo-200">
+                      {feature.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </p>
+                    <p className="text-xs text-indigo-400">Unlocked</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <Button
+                onClick={() => handleNext()}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
+              >
+                Enter Your Dashboard
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
           </div>
         )
 
@@ -1194,51 +959,153 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-indigo-950 text-white">
-      <Progress value={progress} className="absolute top-4 w-full" />
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentStepId}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-4xl"
-        >
-          {renderStepContent()}
-        </motion.div>
-      </AnimatePresence>
-      {showCelebration && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 flex items-center justify-center bg-black/50"
-        >
-          <div className="bg-gradient-to-br from-purple-600 to-cyan-600 p-8 rounded-2xl text-center">
-            <Confetti className="h-12 w-12 mb-4 text-white" />
-            <h2 className="mb-2 text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              Congratulations!
-            </h2>
-            <p className="mb-4 text-lg text-white">{currentStep.celebrationData?.description}</p>
-            <ul className="mb-6 list-disc pl-6 text-white">
-              {currentStep.celebrationData?.rewards.map((reward, index) => (
-                <li key={index}>{reward}</li>
-              ))}
-            </ul>
-            <p className="mb-8 text-lg text-white">Next Unlock: {currentStep.celebrationData?.nextUnlock}</p>
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-slate-950 to-indigo-950/70">
+      {/* Progress bar */}
+      <div className="sticky top-0 z-10 border-b border-indigo-500/20 bg-indigo-950/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center">
+                <RotatingHolographicCoin size="sm" speed="medium" glow={false} />
+              </div>
+              <span className="font-medium text-indigo-200">SNAP-DAX Onboarding</span>
+            </div>
             <Button
-              onClick={() => handleNext()}
-              className="bg-gradient-to-r from-purple-700 to-cyan-700 text-white hover:from-purple-800 hover:to-cyan-800 px-6 py-3 rounded-full shadow-lg shadow-purple-500/30"
+              variant="ghost"
+              size="sm"
+              className="text-indigo-400 hover:bg-indigo-950/50 hover:text-indigo-300"
+              onClick={() => {
+                // Handle skip or exit
+              }}
             >
-              Continue
-              <ChevronRight className="ml-2 h-4 w-4" />
+              <X className="mr-1 h-4 w-4" />
+              Exit
             </Button>
           </div>
-        </motion.div>
-      )}
-      <div ref={messagesEndRef} className="h-0" />
+          <div className="mt-2">
+            <Progress
+              value={progress}
+              className="h-1 bg-indigo-950/50"
+              indicatorClassName="bg-gradient-to-r from-indigo-600 to-purple-600"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto flex flex-1 flex-col px-4 py-6">
+        <div className="grid flex-1 gap-6 md:grid-cols-5">
+          {/* Chat panel */}
+          <div className="md:col-span-2">
+            <HolographicGlassCard className="flex h-full flex-col" glassEffect="medium">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} ${
+                      message.role === "system" ? "justify-center" : ""
+                    }`}
+                  >
+                    {message.role === "system" ? (
+                      <div className="bg-indigo-950/50 rounded-lg p-3 max-w-[85%] text-center border border-indigo-500/20 backdrop-blur-sm">
+                        <div className="flex items-center justify-center mb-2">
+                          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                            <Sparkles className="h-4 w-4 text-white" />
+                          </div>
+                        </div>
+                        <div className="text-indigo-200">{message.content}</div>
+                      </div>
+                    ) : (
+                      <div className={`flex max-w-[85%] ${message.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                        <div
+                          className={`h-8 w-8 rounded-full flex items-center justify-center ${message.role === "user" ? "ml-2 bg-indigo-600" : "mr-2 bg-purple-600"}`}
+                        >
+                          {message.role === "user" ? (
+                            <User className="h-4 w-4 text-white" />
+                          ) : (
+                            <Bot className="h-4 w-4 text-white" />
+                          )}
+                        </div>
+                        <div>
+                          <div
+                            className={`rounded-lg p-3 ${
+                              message.role === "user"
+                                ? "bg-indigo-600/30 border border-indigo-500/30"
+                                : "bg-indigo-950/50 border border-purple-500/30"
+                            }`}
+                          >
+                            <div className="text-indigo-100">{message.content}</div>
+                          </div>
+                          <div
+                            className={`text-xs text-indigo-400 mt-1 flex items-center ${
+                              message.role === "user" ? "justify-end" : "justify-start"
+                            }`}
+                          >
+                            <Clock className="h-3 w-3 mr-1" />
+                            {message.timestamp}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[85%] flex-row">
+                      <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center mr-2">
+                        <Bot className="h-4 w-4 text-white" />
+                      </div>
+                      <div className="rounded-lg p-3 bg-indigo-950/50 border border-purple-500/30">
+                        <div className="flex space-x-2">
+                          <div className="h-2 w-2 rounded-full bg-indigo-400 animate-bounce" />
+                          <div className="h-2 w-2 rounded-full bg-indigo-400 animate-bounce [animation-delay:0.2s]" />
+                          <div className="h-2 w-2 rounded-full bg-indigo-400 animate-bounce [animation-delay:0.4s]" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+              <div className="border-t border-indigo-500/20 p-4">
+                <div className="flex items-center gap-2">
+                  <Input
+                    placeholder="Ask me anything about our platform..."
+                    className="border-indigo-500/20 bg-indigo-950/30 text-indigo-100 placeholder:text-indigo-400/50"
+                    disabled
+                  />
+                  <Button
+                    size="icon"
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
+                    disabled
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="mt-2 text-center text-xs text-indigo-400">
+                  Complete onboarding to unlock full AI conversation
+                </div>
+              </div>
+            </HolographicGlassCard>
+          </div>
+
+          {/* Content panel */}
+          <div className="md:col-span-3">
+            <HolographicGlassCard className="h-full p-6" glassEffect="medium">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStepId}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {renderStepContent()}
+                </motion.div>
+              </AnimatePresence>
+            </HolographicGlassCard>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

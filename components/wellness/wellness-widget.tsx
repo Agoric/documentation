@@ -88,7 +88,8 @@ export function WellnessWidget({ className }: WellnessWidgetProps) {
           </div>
         </CardContent>
       </Card>
-      {showCompanion && <AIWellnessCompanion onClose={() => setShowCompanion(false)} />}
+
+      {showCompanion && <AIWellnessCompanion />}
     </>
   )
 }
