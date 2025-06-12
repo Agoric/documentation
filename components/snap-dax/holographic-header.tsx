@@ -53,24 +53,65 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
         }}
       />
 
-      {/* Floating particles */}
+      {/* Supreme Authority Coin - Spinning */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <motion.div
+          className="relative"
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
+        >
+          <div className="relative h-24 w-24 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 shadow-2xl border-4 border-amber-300/50">
+            {/* Coin face design */}
+            <div className="absolute inset-2 rounded-full bg-gradient-to-br from-amber-300 to-amber-500 flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-xs font-bold text-amber-900 leading-tight">SUPREME</div>
+                <div className="text-[10px] font-semibold text-amber-800">AUTHORITY</div>
+              </div>
+            </div>
+
+            {/* Coin edge ridges */}
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: `conic-gradient(from 0deg, 
+                transparent 0deg, rgba(251, 191, 36, 0.3) 5deg, transparent 10deg,
+                transparent 15deg, rgba(251, 191, 36, 0.3) 20deg, transparent 25deg,
+                transparent 30deg, rgba(251, 191, 36, 0.3) 35deg, transparent 40deg,
+                transparent 45deg, rgba(251, 191, 36, 0.3) 50deg, transparent 55deg,
+                transparent 60deg, rgba(251, 191, 36, 0.3) 65deg, transparent 70deg,
+                transparent 75deg, rgba(251, 191, 36, 0.3) 80deg, transparent 85deg,
+                transparent 90deg, rgba(251, 191, 36, 0.3) 95deg, transparent 100deg)`,
+              }}
+            />
+
+            {/* Glow effect */}
+            <div className="absolute -inset-2 rounded-full bg-amber-400/20 blur-md animate-pulse" />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Reduced floating particles around the coin */}
       <div className="absolute inset-0">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute h-1 w-1 rounded-full bg-indigo-400 opacity-70"
+            className="absolute h-1 w-1 rounded-full bg-amber-400 opacity-70"
             initial={{
               x: Math.random() * 100 + "%",
               y: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.5 + 0.3,
+              opacity: Math.random() * 0.3 + 0.2,
             }}
             animate={{
               x: [Math.random() * 100 + "%", Math.random() * 100 + "%", Math.random() * 100 + "%"],
               y: [Math.random() * 100 + "%", Math.random() * 100 + "%", Math.random() * 100 + "%"],
-              opacity: [Math.random() * 0.5 + 0.3, Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.3],
+              opacity: [Math.random() * 0.3 + 0.2, Math.random() * 0.3 + 0.4, Math.random() * 0.3 + 0.2],
             }}
             transition={{
-              duration: Math.random() * 10 + 20,
+              duration: Math.random() * 15 + 25,
               repeat: Number.POSITIVE_INFINITY,
               ease: "linear",
             }}
