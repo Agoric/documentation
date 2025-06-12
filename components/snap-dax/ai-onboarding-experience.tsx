@@ -13,8 +13,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { HolographicBadge } from "./holographic-badge"
-import { RotatingHolographicCoin } from "@/components/ui/rotating-holographic-coin"
 import {
+  Brain,
   ChevronRight,
   Sparkles,
   Lock,
@@ -358,7 +358,7 @@ const onboardingSteps: Record<string, OnboardingStep> = {
     productDetails: {
       name: "AI Financial Concierge",
       description: "Your personal AI assistant for navigating the complex world of finance",
-      icon: <RotatingHolographicCoin size="sm" speed="medium" glow={false} />,
+      icon: <Brain className="h-8 w-8 text-indigo-400" />,
       benefits: [
         "24/7 personalized financial guidance",
         "Natural language interface for complex financial queries",
@@ -547,11 +547,40 @@ export function AIOnboardingExperience({ onComplete, initialStep = "welcome" }: 
           <div className="flex flex-col items-center text-center">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6"
+              animate={{
+                scale: 1,
+                opacity: 1,
+                rotateY: [0, 360],
+              }}
+              transition={{
+                duration: 0.5,
+                rotateY: {
+                  duration: 4,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                },
+              }}
+              className="mb-6 relative"
             >
-              <RotatingHolographicCoin size="lg" speed="medium" glow={true} />
+              <div className="relative w-24 h-24">
+                {/* Holographic glow effect */}
+                <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/30 via-yellow-400/30 to-amber-600/30 rounded-full blur-md animate-pulse" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/20 to-yellow-500/20 rounded-full blur-sm" />
+
+                {/* Coin image */}
+                <img
+                  src="/lorenzo-caprelli-coin.jpeg"
+                  alt="Lorenzo Caprelli Digital Economics Coin"
+                  className="w-24 h-24 rounded-full object-cover relative z-10 shadow-2xl border-2 border-amber-400/50"
+                  style={{
+                    filter: "drop-shadow(0 0 20px rgba(251, 191, 36, 0.5)) brightness(1.1) contrast(1.2)",
+                  }}
+                />
+
+                {/* Additional holographic effects */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-60 z-20" />
+                <div className="absolute inset-0 rounded-full border border-amber-300/30 z-20" />
+              </div>
             </motion.div>
             <motion.h2
               initial={{ y: 20, opacity: 0 }}
@@ -576,7 +605,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "welcome" }: 
             >
               <Button
                 onClick={() => handleNext()}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
+                className="bg-gradient-to-r from-amber-600 to-yellow-600 text-white hover:from-amber-700 hover:to-yellow-700 shadow-lg shadow-amber-500/25"
               >
                 Begin Your Journey
                 <ChevronRight className="ml-2 h-4 w-4" />
@@ -885,13 +914,43 @@ export function AIOnboardingExperience({ onComplete, initialStep = "welcome" }: 
           <div className="flex flex-col items-center text-center">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6"
+              animate={{
+                scale: 1,
+                opacity: 1,
+                rotateY: [0, 360],
+              }}
+              transition={{
+                duration: 0.5,
+                rotateY: {
+                  duration: 3,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                },
+              }}
+              className="mb-6 relative"
             >
-              <div className="relative">
-                <div className="absolute -inset-6 animate-pulse rounded-full bg-indigo-500/20 blur-md"></div>
-                <RotatingHolographicCoin size="lg" speed="fast" glow={true} />
+              <div className="relative w-24 h-24">
+                {/* Enhanced completion glow */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/40 via-yellow-400/40 to-amber-600/40 rounded-full blur-lg animate-pulse" />
+                <div className="absolute -inset-2 bg-gradient-to-r from-amber-400/30 to-yellow-500/30 rounded-full blur-md" />
+
+                <img
+                  src="/lorenzo-caprelli-coin.jpeg"
+                  alt="Lorenzo Caprelli Digital Economics Coin"
+                  className="w-24 h-24 rounded-full object-cover relative z-10 shadow-2xl border-2 border-amber-400/70"
+                  style={{
+                    filter: "drop-shadow(0 0 30px rgba(251, 191, 36, 0.7)) brightness(1.2) contrast(1.3)",
+                  }}
+                />
+
+                {/* Success sparkle effects */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-80 z-20" />
+                <div className="absolute inset-0 rounded-full border-2 border-amber-300/50 z-20" />
+
+                {/* Completion badge */}
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center z-30 border-2 border-white/20">
+                  <CheckCircle2 className="h-3 w-3 text-white" />
+                </div>
               </div>
             </motion.div>
 
@@ -944,7 +1003,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "welcome" }: 
             >
               <Button
                 onClick={() => handleNext()}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
+                className="bg-gradient-to-r from-amber-600 to-yellow-600 text-white hover:from-amber-700 hover:to-yellow-700 shadow-lg shadow-amber-500/25"
               >
                 Enter Your Dashboard
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -965,8 +1024,15 @@ export function AIOnboardingExperience({ onComplete, initialStep = "welcome" }: 
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center">
-                <RotatingHolographicCoin size="sm" speed="medium" glow={false} />
+              <div className="relative w-8 h-8">
+                <img
+                  src="/lorenzo-caprelli-coin.jpeg"
+                  alt="Lorenzo Caprelli Coin"
+                  className="w-8 h-8 rounded-full object-cover border border-amber-400/50"
+                  style={{
+                    filter: "drop-shadow(0 0 8px rgba(251, 191, 36, 0.3)) brightness(1.1)",
+                  }}
+                />
               </div>
               <span className="font-medium text-indigo-200">SNAP-DAX Onboarding</span>
             </div>
