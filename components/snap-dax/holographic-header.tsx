@@ -78,54 +78,62 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
         ))}
       </div>
 
-      {/* Jonlorenzo Coin - Spinning above everything */}
+      {/* Supreme Authority Coin - Spinning above everything */}
       <div className="absolute left-1/2 top-8 -translate-x-1/2 z-20">
         <motion.div
-          animate={{ rotate: 360 }}
+          animate={{
+            rotate: 360,
+            y: [0, -5, 0, 5, 0],
+          }}
           transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "linear",
+            rotate: {
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            },
+            y: {
+              duration: 4,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "easeInOut",
+            },
           }}
           className="relative"
         >
           {/* Outer glow ring */}
           <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-amber-400/30 via-yellow-300/40 to-amber-400/30 blur-lg" />
 
-          {/* Additional holographic glow */}
-          <div className="absolute -inset-6 rounded-full bg-gradient-to-r from-indigo-400/20 via-purple-400/20 to-amber-400/20 blur-xl animate-pulse" />
+          {/* JonLorenzo Coin Image */}
+          <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-xl">
+            {/* Replace with your uploaded image */}
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 text-amber-800 text-xs font-bold">
+              {/* This text will be replaced by your image */}
+              JL Coin
+            </div>
 
-          {/* Coin image container */}
-          <div className="relative h-16 w-16 rounded-full overflow-hidden shadow-2xl border-2 border-amber-200/50">
-            <img src="/jonlorenzo-coin.png" alt="Jonlorenzo Coin" className="h-full w-full object-cover" />
-
-            {/* Holographic overlay */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/20 to-transparent" />
-
-            {/* Shimmer effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
+            {/* Shine effect overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent pointer-events-none" />
           </div>
 
-          {/* Enhanced particle trail */}
+          {/* Particle trail */}
           <div className="absolute inset-0">
             {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300"
+                className="absolute h-1.5 w-1.5 rounded-full bg-amber-400"
                 initial={{
-                  x: 32,
-                  y: 32,
+                  x: 48,
+                  y: 48,
                   opacity: 0.8,
                   scale: 1,
                 }}
                 animate={{
-                  x: 32 + Math.cos((i * 45 * Math.PI) / 180) * 45,
-                  y: 32 + Math.sin((i * 45 * Math.PI) / 180) * 45,
-                  opacity: [0.8, 0.2, 0.8],
-                  scale: [1, 0.3, 1],
+                  x: 48 + Math.cos((i * 45 * Math.PI) / 180) * 50,
+                  y: 48 + Math.sin((i * 45 * Math.PI) / 180) * 50,
+                  opacity: [0.8, 0.3, 0.8],
+                  scale: [1, 0.5, 1],
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 2,
                   repeat: Number.POSITIVE_INFINITY,
                   delay: i * 0.15,
                   ease: "easeInOut",
@@ -133,17 +141,6 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
               />
             ))}
           </div>
-
-          {/* Rotating ring effect */}
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{
-              duration: 12,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-            className="absolute -inset-2 border border-amber-300/30 rounded-full"
-          />
         </motion.div>
       </div>
 
@@ -162,7 +159,9 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
             {title}
           </h1>
           <p className="mt-2 text-indigo-300">{subtitle}</p>
-          <div className="mt-2 text-xs text-amber-300/80 font-medium">⭐ Powered by Jonlorenzo Coin ⭐</div>
+          <div className="mt-2 text-xs text-amber-300/80 font-medium">
+            ⭐ Powered by JonLorenzo Supreme Authority ⭐
+          </div>
         </div>
 
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
