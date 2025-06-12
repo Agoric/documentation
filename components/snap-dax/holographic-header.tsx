@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
-import { Lock } from "lucide-react"
+import { Lock, CircleDollarSign } from "lucide-react"
 
 interface HolographicHeaderProps {
   title: string
@@ -85,10 +85,18 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
       {/* Content */}
       <div className="container relative z-10 mx-auto px-6">
         <div className="flex flex-col items-center text-center">
-          <Badge className="mb-4 bg-indigo-500/30 text-indigo-200">
-            <Lock className="mr-1 h-3 w-3" />
-            Members Only
-          </Badge>
+          <div className="mb-4 flex items-center gap-2">
+            <Badge className="bg-indigo-500/30 text-indigo-200">
+              <Lock className="mr-1 h-3 w-3" />
+              Members Only
+            </Badge>
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+              <CircleDollarSign className="h-3 w-3 text-white z-10" />
+              <div className="absolute inset-0 rounded-full border border-indigo-300/30"></div>
+              <span className="absolute text-[6px] font-bold text-white/80 -bottom-0.5">SA</span>
+            </div>
+          </div>
           <h1 className="bg-gradient-to-r from-white via-indigo-100 to-indigo-200 bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
             {title}
           </h1>
