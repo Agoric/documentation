@@ -78,54 +78,204 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
         ))}
       </div>
 
-      {/* Supreme Authority Coin - Spinning above everything */}
+      {/* Supreme Authority Coin - Enhanced Spinning Effect */}
       <div className="absolute left-1/2 top-8 -translate-x-1/2 z-20">
         <motion.div
-          animate={{ rotate: 360 }}
+          animate={{
+            rotate: 360,
+            scale: [1, 1.1, 1, 0.95, 1],
+          }}
           transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "linear",
+            rotate: {
+              duration: 6,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            },
+            scale: {
+              duration: 4,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "easeInOut",
+            },
           }}
           className="relative"
         >
-          {/* Outer glow ring */}
-          <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-amber-400/30 via-yellow-300/40 to-amber-400/30 blur-lg" />
+          {/* Enhanced outer glow ring with pulsing */}
+          <motion.div
+            className="absolute -inset-6 rounded-full bg-gradient-to-r from-amber-400/40 via-yellow-300/50 to-amber-400/40 blur-xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "easeInOut",
+            }}
+          />
 
-          {/* Coin base */}
-          <div className="relative h-16 w-16 rounded-full bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 shadow-xl border-2 border-amber-200/50">
-            {/* Coin inner circle */}
-            <div className="absolute inset-2 rounded-full bg-gradient-to-br from-yellow-200 via-amber-300 to-yellow-400 flex items-center justify-center">
-              {/* Crown symbol */}
-              <div className="text-amber-800 font-bold text-xs">SA</div>
-            </div>
+          {/* Secondary glow ring */}
+          <motion.div
+            className="absolute -inset-4 rounded-full bg-gradient-to-r from-yellow-300/30 via-amber-400/40 to-yellow-300/30 blur-lg"
+            animate={{
+              rotate: -360,
+              scale: [1, 0.9, 1.1, 1],
+            }}
+            transition={{
+              rotate: {
+                duration: 8,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "linear",
+              },
+              scale: {
+                duration: 2.5,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              },
+            }}
+          />
 
-            {/* Shine effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/30 to-transparent" />
-          </div>
-
-          {/* Particle trail */}
-          <div className="absolute inset-0">
-            {[...Array(6)].map((_, i) => (
+          {/* Main coin with 3D-like spinning effect */}
+          <motion.div
+            animate={{
+              rotateY: [0, 180, 360],
+              rotateX: [0, 15, 0, -15, 0],
+            }}
+            transition={{
+              rotateY: {
+                duration: 4,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              },
+              rotateX: {
+                duration: 6,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              },
+            }}
+            className="relative h-16 w-16 rounded-full bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 shadow-2xl border-2 border-amber-200/50"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Coin inner circle with counter-rotation */}
+            <motion.div
+              className="absolute inset-2 rounded-full bg-gradient-to-br from-yellow-200 via-amber-300 to-yellow-400 flex items-center justify-center shadow-inner"
+              animate={{
+                rotate: -360,
+              }}
+              transition={{
+                duration: 8,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "linear",
+              }}
+            >
+              {/* Crown symbol with pulsing */}
               <motion.div
-                key={i}
-                className="absolute h-1 w-1 rounded-full bg-amber-400"
-                initial={{
-                  x: 32,
-                  y: 32,
-                  opacity: 0.8,
-                  scale: 1,
-                }}
+                className="text-amber-800 font-bold text-xs"
                 animate={{
-                  x: 32 + Math.cos((i * 60 * Math.PI) / 180) * 40,
-                  y: 32 + Math.sin((i * 60 * Math.PI) / 180) * 40,
-                  opacity: [0.8, 0.3, 0.8],
-                  scale: [1, 0.5, 1],
+                  scale: [1, 1.2, 1],
+                  opacity: [0.8, 1, 0.8],
                 }}
                 transition={{
                   duration: 2,
                   repeat: Number.POSITIVE_INFINITY,
-                  delay: i * 0.2,
+                  ease: "easeInOut",
+                }}
+              >
+                SA
+              </motion.div>
+            </motion.div>
+
+            {/* Enhanced shine effect with movement */}
+            <motion.div
+              className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/40 to-transparent"
+              animate={{
+                rotate: 360,
+                opacity: [0.3, 0.7, 0.3],
+              }}
+              transition={{
+                rotate: {
+                  duration: 3,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                },
+                opacity: {
+                  duration: 2,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                },
+              }}
+            />
+
+            {/* Additional rim highlight */}
+            <motion.div
+              className="absolute inset-0 rounded-full border-2 border-yellow-200/30"
+              animate={{
+                rotate: -360,
+                borderColor: ["rgba(254, 240, 138, 0.3)", "rgba(251, 191, 36, 0.6)", "rgba(254, 240, 138, 0.3)"],
+              }}
+              transition={{
+                rotate: {
+                  duration: 5,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                },
+                borderColor: {
+                  duration: 3,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                },
+              }}
+            />
+          </motion.div>
+
+          {/* Enhanced particle trail with multiple orbits */}
+          <div className="absolute inset-0">
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 shadow-lg"
+                initial={{
+                  x: 32,
+                  y: 32,
+                  opacity: 0.9,
+                  scale: 1,
+                }}
+                animate={{
+                  x: 32 + Math.cos((i * 45 * Math.PI) / 180) * (40 + Math.sin(Date.now() / 1000) * 10),
+                  y: 32 + Math.sin((i * 45 * Math.PI) / 180) * (40 + Math.cos(Date.now() / 1000) * 10),
+                  opacity: [0.9, 0.4, 0.9],
+                  scale: [1, 0.3, 1],
+                  rotate: 360,
+                }}
+                transition={{
+                  duration: 3 + i * 0.2,
+                  repeat: Number.POSITIVE_INFINITY,
+                  delay: i * 0.15,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Sparkle effects */}
+          <div className="absolute inset-0">
+            {[...Array(4)].map((_, i) => (
+              <motion.div
+                key={`sparkle-${i}`}
+                className="absolute h-0.5 w-0.5 rounded-full bg-white"
+                initial={{
+                  x: 32 + Math.random() * 20 - 10,
+                  y: 32 + Math.random() * 20 - 10,
+                  opacity: 0,
+                  scale: 0,
+                }}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0, 1.5, 0],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Number.POSITIVE_INFINITY,
+                  delay: i * 0.4 + Math.random() * 2,
                   ease: "easeInOut",
                 }}
               />
