@@ -8,9 +8,6 @@ import { useTheme } from "next-themes"
 import {
   Brain,
   Calendar,
-  CreditCard,
-  MapPin,
-  Heart,
   Activity,
   Clock,
   AlertTriangle,
@@ -28,7 +25,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { FinancialGoalsDashboard } from "@/components/wellness/financial-goals-dashboard" // Import FinancialGoalsDashboard
+import { FinancialGoalsDashboard } from "@/components/wellness/financial-goals-dashboard"
 
 interface Message {
   id: string
@@ -159,11 +156,13 @@ const initialStressData: StressLevel[] = [
 
 interface AIWellnessCompanionProps {
   className?: string
+  onClose?: () => void
 }
 
-export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
+export function AIWellnessCompanion({ className, onClose }: AIWellnessCompanionProps) {
   const { theme } = useTheme()
   const [expanded, setExpanded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const [activeTab, setActiveTab] = useState<"chat" | "patterns" | "stress" | "goals">("chat")
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [inputValue, setInputValue] = useState("")
@@ -171,26 +170,52 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
   const [stressData, setStressData] = useState<StressLevel[]>(initialStressData)
   const [currentStress, setCurrentStress] = useState<number>(25)
   const [isTyping, setIsTyping] = useState(false)
-  const [minimized, setMinimized] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const hoverTimeoutRef = useRef<NodeJS.Timeout>()
+
+  // Determine if companion should be visible (expanded or hovered)
+  const isVisible = expanded || isHovered
+
+  // Handle mouse enter with slight delay
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current)
+    }
+    setIsHovered(true)
+  }
+
+  // Handle mouse leave with delay to prevent flickering
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsHovered(false)
+    }, 300)
+  }
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Scroll to bottom whenever messages change
   useEffect(() => {
-    if (activeTab === "chat") {
+    if (activeTab === "chat" && isVisible) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
-  }, [messages, activeTab])
+  }, [messages, activeTab, isVisible])
 
   // Simulate stress level changes
   useEffect(() => {
     const interval = setInterval(() => {
-      // Random small fluctuation in stress level
       setCurrentStress((prev) => {
         const change = Math.random() > 0.5 ? 1 : -1
         const newValue = prev + change
         return Math.max(0, Math.min(100, newValue))
       })
-    }, 60000) // Every minute
+    }, 60000)
 
     return () => clearInterval(interval)
   }, [])
@@ -217,7 +242,6 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
       () => {
         setIsTyping(false)
 
-        // Generate response based on user input
         let responseContent = ""
         let sentiment: Message["sentiment"] = "neutral"
         let type: Message["type"] = "text"
@@ -260,23 +284,6 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
             "You're making excellent progress on your house down payment goal! You're now at 68% with consistent monthly contributions. At this rate, you'll reach your goal by October - that's 2 months ahead of schedule!"
           sentiment = "positive"
           type = "celebration"
-        } else if (
-          lowercaseInput.includes("goal") ||
-          lowercaseInput.includes("target") ||
-          lowercaseInput.includes("financial plan")
-        ) {
-          responseContent =
-            "I see you're interested in your financial goals! You're making excellent progress on your house down payment (70%) and emergency fund (65%). Would you like to set a new goal or review your existing ones in more detail?"
-          sentiment = "positive"
-          type = "insight"
-        } else if (
-          lowercaseInput.includes("meeting") ||
-          lowercaseInput.includes("appointment") ||
-          lowercaseInput.includes("schedule")
-        ) {
-          responseContent =
-            "I've added a reminder for your upcoming financial review meeting on Friday at 2pm. Would you like me to prepare a summary of your recent transactions and spending patterns before the meeting?"
-          type = "reminder"
         } else {
           const responses = [
             "I'm here to support your financial and emotional wellbeing. How can I help with your financial goals or daily patterns today?",
@@ -359,7 +366,6 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
     }
   }
 
-  // Get background class based on theme
   const getBackgroundClass = () => {
     if (theme === "dark") {
       return "bg-black/80 backdrop-blur-md border border-gray-800"
@@ -370,48 +376,49 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, scale: 0.8 }}
         animate={{
           opacity: 1,
-          y: 0,
-          height: minimized ? "60px" : expanded ? "600px" : "400px",
-          width: minimized ? "270px" : expanded ? "800px" : "370px",
+          scale: 1,
+          height: isVisible ? (expanded ? "600px" : "400px") : "60px",
+          width: isVisible ? (expanded ? "800px" : "370px") : "60px",
         }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className={cn(
           getBackgroundClass(),
           "fixed bottom-5 right-5 rounded-2xl overflow-hidden shadow-lg z-50 flex flex-col",
           className,
         )}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 to-indigo-600 p-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
-              <Brain className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h3 className="font-medium text-white">Wellness AI Companion</h3>
-              {!minimized && (
-                <div className="flex items-center gap-1">
-                  <div className={cn("h-2 w-2 rounded-full", getStressColor(currentStress))} />
-                  <p className="text-xs text-white/80">Stress level: {currentStress}%</p>
-                </div>
-              )}
+        {/* Icon-only state */}
+        {!isVisible && (
+          <div className="w-full h-full flex items-center justify-center cursor-pointer">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 flex items-center justify-center">
+              <Brain className="h-6 w-6 text-white" />
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {minimized ? (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-6 w-6 text-white/80 hover:text-white hover:bg-white/20"
-                onClick={() => setMinimized(false)}
-              >
-                <Maximize2 className="h-4 w-4" />
-              </Button>
-            ) : (
-              <>
+        )}
+
+        {/* Expanded state */}
+        {isVisible && (
+          <>
+            {/* Header */}
+            <div className="bg-gradient-to-r from-violet-600 to-indigo-600 p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
+                  <Brain className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-white">Wellness AI Companion</h3>
+                  <div className="flex items-center gap-1">
+                    <div className={cn("h-2 w-2 rounded-full", getStressColor(currentStress))} />
+                    <p className="text-xs text-white/80">Stress level: {currentStress}%</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -420,27 +427,25 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
                 >
                   {expanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                 </Button>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="h-6 w-6 text-white/80 hover:text-white hover:bg-white/20"
-                  onClick={() => setMinimized(true)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
+                {onClose && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-6 w-6 text-white/80 hover:text-white hover:bg-white/20"
+                    onClick={onClose}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
 
-        {!minimized && (
-          <>
             {/* Tab Buttons */}
             <div className="flex border-b">
               <Button
                 variant="ghost"
                 className={cn(
-                  "flex-1 rounded-none border-b-2 border-transparent",
+                  "flex-1 rounded-none border-b-2 border-transparent text-xs",
                   activeTab === "chat" && "border-primary text-primary",
                 )}
                 onClick={() => setActiveTab("chat")}
@@ -450,32 +455,32 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
               <Button
                 variant="ghost"
                 className={cn(
-                  "flex-1 rounded-none border-b-2 border-transparent",
+                  "flex-1 rounded-none border-b-2 border-transparent text-xs",
                   activeTab === "patterns" && "border-primary text-primary",
                 )}
                 onClick={() => setActiveTab("patterns")}
               >
-                Behavior Patterns
+                Patterns
               </Button>
               <Button
                 variant="ghost"
                 className={cn(
-                  "flex-1 rounded-none border-b-2 border-transparent",
+                  "flex-1 rounded-none border-b-2 border-transparent text-xs",
                   activeTab === "stress" && "border-primary text-primary",
                 )}
                 onClick={() => setActiveTab("stress")}
               >
-                Stress Analysis
+                Stress
               </Button>
               <Button
                 variant="ghost"
                 className={cn(
-                  "flex-1 rounded-none border-b-2 border-transparent",
+                  "flex-1 rounded-none border-b-2 border-transparent text-xs",
                   activeTab === "goals" && "border-primary text-primary",
                 )}
                 onClick={() => setActiveTab("goals")}
               >
-                Financial Goals
+                Goals
               </Button>
             </div>
 
@@ -517,7 +522,7 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
                           <div className="space-y-1">
                             <div
                               className={cn(
-                                "rounded-lg p-3",
+                                "rounded-lg p-3 text-sm",
                                 message.sender === "user"
                                   ? "bg-primary text-primary-foreground"
                                   : message.sentiment === "warning"
@@ -572,7 +577,7 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
                         placeholder="Ask me anything..."
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        className="flex-1"
+                        className="flex-1 text-sm"
                       />
                       <Button type="submit" size="icon" className="bg-gradient-to-r from-violet-600 to-indigo-600">
                         <Send className="h-4 w-4" />
@@ -609,10 +614,11 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
                             ) : (
                               <Activity className="h-5 w-5 text-blue-500" />
                             )}
-                            <h4 className="font-medium">{pattern.name}</h4>
+                            <h4 className="font-medium text-sm">{pattern.name}</h4>
                           </div>
                           <Badge
                             className={cn(
+                              "text-xs",
                               pattern.impact === "positive"
                                 ? "bg-green-100 text-green-800"
                                 : pattern.impact === "negative"
@@ -680,51 +686,11 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
                         </div>
                         <Progress value={currentStress} className={cn("h-2.5 mt-1", getStressColor(currentStress))} />
                       </div>
-
-                      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="p-3 bg-green-50 rounded-lg">
-                          <div className="flex items-center gap-2">
-                            <ThumbsUp className="h-4 w-4 text-green-600" />
-                            <h5 className="font-medium text-sm">Positive Factors</h5>
-                          </div>
-                          <ul className="mt-2 space-y-1 text-sm">
-                            <li className="flex items-center gap-2">
-                              <Heart className="h-3.5 w-3.5 text-green-600" />
-                              <span>Regular exercise routine</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Clock className="h-3.5 w-3.5 text-green-600" />
-                              <span>Consistent sleep schedule</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Brain className="h-3.5 w-3.5 text-green-600" />
-                              <span>Daily meditation practice</span>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <div className="p-3 bg-amber-50 rounded-lg">
-                          <div className="flex items-center gap-2">
-                            <AlertTriangle className="h-4 w-4 text-amber-600" />
-                            <h5 className="font-medium text-sm">Current Stressors</h5>
-                          </div>
-                          <ul className="mt-2 space-y-1 text-sm">
-                            <li className="flex items-center gap-2">
-                              <CreditCard className="h-3.5 w-3.5 text-amber-600" />
-                              <span>Upcoming bill payments</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <Calendar className="h-3.5 w-3.5 text-amber-600" />
-                              <span>Scheduled meeting with lender</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
                     </div>
 
                     <div className="p-4 border rounded-lg">
                       <h4 className="font-medium">7-Day Stress Trend</h4>
-                      <div className="h-48 mt-4">
+                      <div className="h-32 mt-4">
                         <div className="w-full h-full flex items-end justify-between gap-1">
                           {stressData.map((data, idx) => (
                             <div key={idx} className="flex flex-col items-center flex-1">
@@ -740,54 +706,10 @@ export function AIWellnessCompanion({ className }: AIWellnessCompanionProps) {
                         </div>
                       </div>
                     </div>
-
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-medium">Location-Based Insights</h4>
-                      <div className="mt-3 space-y-3">
-                        <div className="flex items-start gap-3">
-                          <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <MapPin className="h-4 w-4 text-green-600" />
-                          </div>
-                          <div>
-                            <h5 className="font-medium text-sm">Home Environment</h5>
-                            <p className="text-sm text-muted-foreground">
-                              Stress levels typically decrease by 30% within 1 hour of arriving home
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                          <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                            <MapPin className="h-4 w-4 text-amber-600" />
-                          </div>
-                          <div>
-                            <h5 className="font-medium text-sm">Office Area</h5>
-                            <p className="text-sm text-muted-foreground">
-                              Stress levels typically increase by 20% during workdays
-                            </p>
-                            <div className="mt-2 text-sm p-2 bg-blue-50 rounded flex items-start gap-2">
-                              <Sparkles className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                              <p>Try the nearby park for a 15-minute walk - users report 18% stress reduction</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                          <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <MapPin className="h-4 w-4 text-green-600" />
-                          </div>
-                          <div>
-                            <h5 className="font-medium text-sm">Gym Location</h5>
-                            <p className="text-sm text-muted-foreground">
-                              Stress levels decrease by 25% after gym sessions
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               )}
+
               {activeTab === "goals" && (
                 <div className="p-4 overflow-y-auto h-full">
                   <FinancialGoalsDashboard />
