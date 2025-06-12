@@ -1,9 +1,9 @@
 "use client"
 
 import { useRef, useEffect, useState } from "react"
-import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Lock } from "lucide-react"
+import { SupremeAuthorityCoin } from "./supreme-authority-coin"
 
 interface HolographicHeaderProps {
   title: string
@@ -53,29 +53,9 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
         }}
       />
 
-      {/* Floating particles */}
-      <div className="absolute inset-0">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-indigo-400 opacity-70"
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.5 + 0.3,
-            }}
-            animate={{
-              x: [Math.random() * 100 + "%", Math.random() * 100 + "%", Math.random() * 100 + "%"],
-              y: [Math.random() * 100 + "%", Math.random() * 100 + "%", Math.random() * 100 + "%"],
-              opacity: [Math.random() * 0.5 + 0.3, Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.3],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 20,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-          />
-        ))}
+      {/* Supreme Authority Coin - centered above title */}
+      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
+        <SupremeAuthorityCoin />
       </div>
 
       {/* Glow effects */}
@@ -85,29 +65,6 @@ export function HolographicHeader({ title, subtitle, stats }: HolographicHeaderP
       {/* Content */}
       <div className="container relative z-10 mx-auto px-6">
         <div className="flex flex-col items-center text-center">
-          {/* Supreme Authority Coin */}
-          <motion.div
-            className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 shadow-lg"
-            animate={{ rotateY: 360 }}
-            transition={{
-              duration: 6,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-          >
-            <div className="relative h-14 w-14 rounded-full bg-gradient-to-r from-yellow-300 to-amber-500 shadow-inner">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xl font-bold text-amber-900">SA</span>
-              </div>
-              <div className="absolute inset-0 rounded-full border-4 border-amber-300/30" />
-              <div className="absolute inset-2 rounded-full border border-amber-700/30" />
-              {/* Embossed effect */}
-              <div className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-transparent to-amber-700/20" />
-              {/* Light reflection */}
-              <div className="absolute left-1 top-1 h-3 w-3 rounded-full bg-white/40 blur-[1px]" />
-            </div>
-          </motion.div>
-
           <Badge className="mb-4 bg-indigo-500/30 text-indigo-200">
             <Lock className="mr-1 h-3 w-3" />
             Members Only
