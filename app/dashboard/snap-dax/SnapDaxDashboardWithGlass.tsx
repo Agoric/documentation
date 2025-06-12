@@ -23,6 +23,7 @@ import {
   BarChart3,
   Wallet,
   Globe,
+  Coins,
 } from "lucide-react"
 
 export function SnapDaxDashboardWithGlass() {
@@ -83,19 +84,26 @@ export function SnapDaxDashboardWithGlass() {
     else if (itemId === "products") setActiveTab("add-product")
   }
 
-  // Logo component for sidebar with Supreme Authority Coin
+  // Logo component for sidebar
   const SidebarLogo = () => (
     <div className="flex items-center gap-2">
-      <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-yellow-600 shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+      <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-yellow-500 to-amber-600 shadow-lg">
+        <Coins className="h-6 w-6 text-white animate-pulse" />
         <div
-          className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300/30 to-transparent"
-          style={{ transform: "rotate(-45deg)" }}
+          className="absolute -inset-0.5 rounded-full bg-yellow-400/20 blur-sm animate-ping"
+          style={{ animationDuration: "3s" }}
         ></div>
-        <div className="absolute h-7 w-7 rounded-full border-2 border-amber-300/70"></div>
-        <div className="absolute text-sm font-bold text-amber-100">SA</div>
-        <div className="absolute inset-0 rounded-full border border-amber-400/30"></div>
+        <div
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300/30 to-amber-600/30 animate-spin"
+          style={{ animationDuration: "8s" }}
+        ></div>
       </div>
-      {!sidebarCollapsed && <div className="text-lg font-bold text-white">SNAP-DAX</div>}
+      {!sidebarCollapsed && (
+        <div className="text-lg font-bold text-white">
+          SNAP-DAX
+          <span className="ml-1 text-xs font-normal text-yellow-400">SUPREME</span>
+        </div>
+      )}
     </div>
   )
 
