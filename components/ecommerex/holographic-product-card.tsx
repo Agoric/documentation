@@ -1,11 +1,12 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { HolographicDiamondCard } from "@/components/ui/holographic-diamond-card"
+import { Card } from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,6 +57,10 @@ interface HolographicProductCardProps {
 }
 
 export function HolographicProductCard({ product, className = "", onTogglePlatform }: HolographicProductCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [cardSize, setCardSize] = useState({ width: 0, height: 0 })
+  const [cardRef, setCardRef] = useState<HTMLDivElement | null>(null)
   const [showDetails, setShowDetails] = useState(false)
 
   // Define platforms with their visual properties
@@ -98,24 +103,65 @@ export function HolographicProductCard({ product, className = "", onTogglePlatfo
     },
   }
 
+  // Track mouse position for holographic effect
+  useEffect(() => {
+    if (!cardRef) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = cardRef.getBoundingClientRect()
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      })
+    }
+
+    const updateCardSize = () => {
+      if (cardRef) {
+        setCardSize({
+          width: cardRef.offsetWidth,
+          height: cardRef.offsetHeight,
+        })
+      }
+    }
+
+    window.addEventListener("resize", updateCardSize)
+    cardRef.addEventListener("mousemove", handleMouseMove)
+    updateCardSize()
+
+    return () => {
+      window.removeEventListener("resize", updateCardSize)
+      cardRef?.removeEventListener("mousemove", handleMouseMove)
+    }
+  }, [cardRef])
+
+  // Calculate gradient position based on mouse position
+  const calculateGradientPosition = () => {
+    if (cardSize.width === 0 || !isHovered) return { x: 50, y: 50 }
+    const x = (mousePosition.x / cardSize.width) * 100
+    const y = (mousePosition.y / cardSize.height) * 100
+    return { x, y }
+  }
+
+  const gradientPos = calculateGradientPosition()
+
   // Get status badge based on product status
   const getStatusBadge = () => {
     switch (product.status) {
       case "active":
         return (
-          <Badge className="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30">
+          <Badge className="bg-emerald-400/20 text-emerald-300">
             <Check className="mr-1 h-3 w-3" /> Active
           </Badge>
         )
       case "draft":
         return (
-          <Badge variant="outline" className="text-slate-400 border-slate-400/30">
+          <Badge variant="outline" className="text-slate-400">
             Draft
           </Badge>
         )
       case "archived":
         return (
-          <Badge variant="outline" className="text-amber-400 border-amber-400/30">
+          <Badge variant="outline" className="text-amber-400">
             Archived
           </Badge>
         )
@@ -131,170 +177,217 @@ export function HolographicProductCard({ product, className = "", onTogglePlatfo
     }
   }
 
-  const productIcon = (
-    <div className="relative">
-      <ShoppingCart className="h-5 w-5 text-white" />
-      {product.quantumEnhanced && <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-indigo-400" />}
-    </div>
-  )
-
   return (
-    <HolographicDiamondCard
-      title={product.name}
-      subtitle={`$${product.price.toFixed(2)} • SKU: ${product.sku}`}
-      icon={productIcon}
-      className={className}
-      defaultExpanded={false}
-      variant="primary"
-      size="md"
+    <Card
+      ref={setCardRef}
+      className={`group relative overflow-hidden border-0 transition-all duration-300 ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        background: isHovered
+          ? `radial-gradient(circle at ${gradientPos.x}% ${gradientPos.y}%, rgba(129, 140, 248, 0.15), rgba(0, 0, 0, 0.8) 70%)`
+          : "linear-gradient(to bottom right, rgba(79, 70, 229, 0.1), rgba(0, 0, 0, 0.8))",
+        boxShadow: isHovered
+          ? "0 0 20px rgba(129, 140, 248, 0.3), inset 0 0 20px rgba(129, 140, 248, 0.2)"
+          : "0 0 10px rgba(79, 70, 229, 0.2), inset 0 0 10px rgba(79, 70, 229, 0.1)",
+      }}
     >
-      <div className="space-y-4">
-        {/* Product image with holographic effect */}
-        <div className="relative h-40 w-full overflow-hidden rounded-md">
-          <div className="absolute inset-0 z-10 bg-gradient-to-br from-indigo-500/20 via-transparent to-purple-500/20" />
-          <img
-            src={product.image || "/placeholder.svg"}
-            alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-            style={{
-              filter: "drop-shadow(0 0 10px rgba(129, 140, 248, 0.3))",
-            }}
-          />
+      {/* Grid overlay */}
+      <div
+        className="absolute inset-0 z-0 opacity-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(123, 97, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(123, 97, 255, 0.2) 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
 
-          {/* Badges */}
-          <div className="absolute top-2 left-2 flex gap-2">
-            {product.trending && (
-              <Badge className="bg-pink-500/30 text-pink-200 border border-pink-400/30">
-                <ChevronUp className="mr-1 h-3 w-3" />
-                Trending
-              </Badge>
-            )}
-          </div>
-        </div>
+      {/* Holographic glow effect */}
+      <div
+        className={`absolute inset-0 z-0 transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"}`}
+        style={{
+          background: `radial-gradient(circle at ${gradientPos.x}% ${gradientPos.y}%, rgba(129, 140, 248, 0.2), transparent 50%)`,
+        }}
+      />
 
-        {/* Status and category */}
-        <div className="flex items-center gap-2">
-          {getStatusBadge()}
-          <Badge
-            variant="outline"
-            className="border-indigo-500/30 text-indigo-300 bg-indigo-950/30"
-            style={{
-              textShadow: "0 0 5px rgba(129, 140, 248, 0.5)",
-            }}
-          >
-            {product.category}
-          </Badge>
-        </div>
-
-        {/* Platform availability indicators */}
-        <div>
-          <div className="mb-2 text-xs text-indigo-300" style={{ textShadow: "0 0 5px rgba(129, 140, 248, 0.5)" }}>
-            Platform Availability
-          </div>
-          <div className="flex flex-wrap gap-1">
-            {Object.entries(platformsConfig).map(([key, platform]) => (
-              <Badge
-                key={key}
-                variant={platform.active ? "default" : "outline"}
-                className={`cursor-pointer transition-all ${
-                  platform.active
-                    ? "bg-indigo-500/30 text-white border border-indigo-400/50"
-                    : "border-indigo-500/20 text-indigo-400"
-                }`}
-                onClick={() => handlePlatformToggle(key)}
-                style={{
-                  textShadow: platform.active ? "0 0 5px rgba(129, 140, 248, 0.8)" : "none",
-                }}
-              >
-                {platform.icon}
-                <span className="ml-1">{platform.name}</span>
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* Inventory */}
-        <div>
-          <div className="mb-1 flex items-center justify-between">
-            <span className="text-xs text-indigo-300" style={{ textShadow: "0 0 5px rgba(129, 140, 248, 0.5)" }}>
-              Inventory
-            </span>
-            <span className="text-xs font-medium text-indigo-200">{product.inventory} units</span>
-          </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-indigo-950/50 border border-indigo-500/20">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
-              style={{
-                width: `${Math.min(100, (product.inventory / 150) * 100)}%`,
-                boxShadow: "0 0 10px rgba(129, 140, 248, 0.5)",
+      {/* Floating particles */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {isHovered &&
+          [...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute h-1 w-1 rounded-full bg-indigo-400 opacity-70"
+              initial={{
+                x: Math.random() * 100 + "%",
+                y: Math.random() * 100 + "%",
+                opacity: Math.random() * 0.5 + 0.3,
+              }}
+              animate={{
+                x: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
+                y: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
+                opacity: [Math.random() * 0.5 + 0.3, Math.random() * 0.5 + 0.5],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "reverse",
+                ease: "linear",
               }}
             />
+          ))}
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 p-5">
+        <div className="flex justify-between">
+          <div className="flex-1">
+            {/* Product image with holographic effect */}
+            <div className="relative mb-4 h-40 w-full overflow-hidden rounded-md">
+              <div
+                className={`absolute inset-0 z-10 transition-opacity duration-300 ${
+                  isHovered ? "opacity-100" : "opacity-0"
+                }`}
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(129, 140, 248, 0.2) 0%, transparent 50%, rgba(129, 140, 248, 0.2) 100%)",
+                  boxShadow: "inset 0 0 20px rgba(129, 140, 248, 0.3)",
+                }}
+              />
+              <img
+                src={product.image || "/placeholder.svg"}
+                alt={product.name}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+
+              {/* Quantum enhanced badge */}
+              {product.quantumEnhanced && (
+                <div className="absolute right-2 top-2 z-20">
+                  <Badge className="bg-indigo-500/30 text-indigo-200">
+                    <Sparkles className="mr-1 h-3 w-3" />
+                    Quantum
+                  </Badge>
+                </div>
+              )}
+
+              {/* Trending badge */}
+              {product.trending && (
+                <div className="absolute left-2 top-2 z-20">
+                  <Badge className="bg-pink-500/30 text-pink-200">
+                    <ChevronUp className="mr-1 h-3 w-3" />
+                    Trending
+                  </Badge>
+                </div>
+              )}
+            </div>
+
+            {/* Product info */}
+            <div>
+              <h3 className="mb-1 text-lg font-bold text-white">{product.name}</h3>
+              <div className="mb-2 flex items-center gap-2">
+                <span className="text-sm text-indigo-200">${product.price.toFixed(2)}</span>
+                <span className="text-xs text-indigo-400">SKU: {product.sku}</span>
+              </div>
+
+              {/* Status and category */}
+              <div className="mb-3 flex items-center gap-2">
+                {getStatusBadge()}
+                <Badge variant="outline" className="border-indigo-500/30 text-indigo-300">
+                  {product.category}
+                </Badge>
+              </div>
+
+              {/* Platform availability indicators */}
+              <div className="mb-3">
+                <div className="mb-1 text-xs text-indigo-300">Platform Availability</div>
+                <div className="flex flex-wrap gap-1">
+                  {Object.entries(platformsConfig).map(([key, platform]) => (
+                    <Badge
+                      key={key}
+                      variant={platform.active ? "default" : "outline"}
+                      className={`cursor-pointer transition-all ${
+                        platform.active
+                          ? `${platform.color.replace("bg-", "bg-")} bg-opacity-20 text-white`
+                          : "border-indigo-500/20 text-indigo-400"
+                      }`}
+                      onClick={() => handlePlatformToggle(key)}
+                    >
+                      {platform.icon}
+                      <span className="ml-1">{platform.name}</span>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Inventory */}
+              <div className="mb-3">
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-xs text-indigo-300">Inventory</span>
+                  <span className="text-xs font-medium text-indigo-200">{product.inventory} units</span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-indigo-950">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                    style={{
+                      width: `${Math.min(100, (product.inventory / 150) * 100)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Sales velocity indicator (if available) */}
+              {product.salesVelocity !== undefined && (
+                <div className="mb-3">
+                  <div className="mb-1 flex items-center justify-between">
+                    <span className="text-xs text-indigo-300">Sales Velocity</span>
+                    <span className="text-xs font-medium text-indigo-200">{product.salesVelocity} units/day</span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-indigo-950">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
+                      style={{
+                        width: `${Math.min(100, (product.salesVelocity / 10) * 100)}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Description (expandable) */}
+              {product.description && (
+                <div className="mt-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-between border border-indigo-500/20 bg-indigo-950/30 px-3 py-1 text-xs text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200"
+                    onClick={() => setShowDetails(!showDetails)}
+                  >
+                    <span>{showDetails ? "Hide Details" : "Show Details"}</span>
+                    <ChevronUp className={`h-3 w-3 transition-transform ${showDetails ? "" : "rotate-180"}`} />
+                  </Button>
+
+                  {showDetails && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-2 rounded-md bg-indigo-950/50 p-2 text-xs text-indigo-200"
+                    >
+                      {product.description}
+                    </motion.div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Sales velocity indicator (if available) */}
-        {product.salesVelocity !== undefined && (
-          <div>
-            <div className="mb-1 flex items-center justify-between">
-              <span className="text-xs text-indigo-300" style={{ textShadow: "0 0 5px rgba(129, 140, 248, 0.5)" }}>
-                Sales Velocity
-              </span>
-              <span className="text-xs font-medium text-indigo-200">{product.salesVelocity} units/day</span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-indigo-950/50 border border-indigo-500/20">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
-                style={{
-                  width: `${Math.min(100, (product.salesVelocity / 10) * 100)}%`,
-                  boxShadow: "0 0 10px rgba(52, 211, 153, 0.5)",
-                }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Description (expandable) */}
-        {product.description && (
-          <div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full justify-between border border-indigo-500/20 bg-indigo-950/30 px-3 py-1 text-xs text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200"
-              onClick={() => setShowDetails(!showDetails)}
-              style={{
-                textShadow: "0 0 5px rgba(129, 140, 248, 0.5)",
-              }}
-            >
-              <span>{showDetails ? "Hide Details" : "Show Details"}</span>
-              <ChevronUp className={`h-3 w-3 transition-transform ${showDetails ? "" : "rotate-180"}`} />
-            </Button>
-
-            {showDetails && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mt-2 rounded-md bg-indigo-950/50 p-2 text-xs text-indigo-200 border border-indigo-500/20"
-                style={{
-                  textShadow: "0 0 3px rgba(129, 140, 248, 0.3)",
-                }}
-              >
-                {product.description}
-              </motion.div>
-            )}
-          </div>
-        )}
-
         {/* Action buttons */}
-        <div className="flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
           <Button
             variant="outline"
             size="sm"
             className="border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200"
-            style={{
-              textShadow: "0 0 5px rgba(129, 140, 248, 0.5)",
-            }}
           >
             <Eye className="mr-2 h-4 w-4" />
             View
@@ -305,9 +398,6 @@ export function HolographicProductCard({ product, className = "", onTogglePlatfo
               variant="outline"
               size="sm"
               className="border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200"
-              style={{
-                textShadow: "0 0 5px rgba(129, 140, 248, 0.5)",
-              }}
             >
               <Edit className="mr-2 h-4 w-4" />
               Edit
@@ -323,13 +413,7 @@ export function HolographicProductCard({ product, className = "", onTogglePlatfo
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="border-indigo-500/20 bg-indigo-950/90 backdrop-blur-md"
-                style={{
-                  boxShadow: "0 0 20px rgba(129, 140, 248, 0.3)",
-                }}
-              >
+              <DropdownMenuContent align="end" className="border-indigo-500/20 bg-indigo-950/90 backdrop-blur-md">
                 <DropdownMenuLabel className="text-indigo-200">Actions</DropdownMenuLabel>
                 <DropdownMenuItem className="text-indigo-300 focus:bg-indigo-900/50 focus:text-indigo-200">
                   <Copy className="mr-2 h-4 w-4" /> Duplicate
@@ -348,7 +432,10 @@ export function HolographicProductCard({ product, className = "", onTogglePlatfo
             </DropdownMenu>
           </div>
         </div>
+
+        {/* Holographic accent */}
+        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
       </div>
-    </HolographicDiamondCard>
+    </Card>
   )
 }
