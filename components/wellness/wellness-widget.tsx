@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Brain, Heart, TrendingUp, Calendar, AlertTriangle } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { AIWellnessCompanion } from "./ai-wellness-companion"
 
 interface WellnessWidgetProps {
   className?: string
@@ -14,7 +13,6 @@ interface WellnessWidgetProps {
 
 export function WellnessWidget({ className }: WellnessWidgetProps) {
   const [stressLevel] = useState(25)
-  const [showCompanion, setShowCompanion] = useState(false)
 
   const getStressColor = (level: number) => {
     if (level < 30) return "bg-green-500"
@@ -80,16 +78,14 @@ export function WellnessWidget({ className }: WellnessWidgetProps) {
             </div>
 
             <Button
-              onClick={() => setShowCompanion(true)}
-              className="w-full bg-gradient-to-r from-violet-600 to-indigo-600"
+              disabled
+              className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 opacity-50 cursor-not-allowed"
             >
-              Open Wellness Companion
+              Wellness Companion (Coming Soon)
             </Button>
           </div>
         </CardContent>
       </Card>
-
-      {showCompanion && <AIWellnessCompanion />}
     </>
   )
 }

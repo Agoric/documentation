@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { AIWellnessCompanion } from "@/components/wellness/ai-wellness-companion"
 
 export const metadata: Metadata = {
   title: "Wellness AI Companion | Snapifi Financial Platform",
@@ -23,8 +22,6 @@ export default function WellnessPage() {
           </p>
         </div>
       </div>
-
-      <AIWellnessCompanion />
     </div>
   )
 }
