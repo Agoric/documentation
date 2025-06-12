@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { HolographicGlassCard } from "./holographic-glass-card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -17,7 +16,6 @@ import {
   Brain,
   ChevronRight,
   Sparkles,
-  Lock,
   Unlock,
   Shield,
   BarChart3,
@@ -25,21 +23,12 @@ import {
   Building,
   Zap,
   User,
-  Bot,
-  Clock,
-  CheckCircle2,
-  ArrowRight,
   Star,
   Rocket,
   Crown,
-  Diamond,
-  Gem,
-  Trophy,
   Target,
   TrendingUp,
   Globe,
-  Cpu,
-  Fingerprint,
   Layers,
   Atom,
   Wand2,
@@ -105,11 +94,11 @@ const onboardingSteps: Record<string, OnboardingStep> = {
   "cinematic-intro": {
     id: "cinematic-intro",
     type: "cinematic-intro",
-    title: "The Future of Finance Awaits",
+    title: "Advanced Financial Technology Platform",
     cinematicContent: {
       title: "SNAP-DAX",
-      subtitle: "Where Quantum Meets Finance",
-      description: "Prepare to enter a realm where traditional finance dissolves into pure innovation",
+      subtitle: "Intelligent Financial Solutions",
+      description: "Experience next-generation financial tools powered by advanced analytics and AI",
       effects: ["particles", "hologram", "matrix", "quantum"],
     },
     nextStep: "welcome",
@@ -117,15 +106,15 @@ const onboardingSteps: Record<string, OnboardingStep> = {
   welcome: {
     id: "welcome",
     type: "welcome",
-    title: "Welcome to the Financial Revolution",
-    subtitle: "Your journey into the impossible begins now",
+    title: "Welcome to SNAP-DAX",
+    subtitle: "Your intelligent financial partner",
     description:
-      "I am ARIA, your AI Financial Concierge, and together we'll unlock capabilities that redefine wealth creation",
+      "I'm ARIA, your AI Financial Advisor. Let's customize your experience based on your financial objectives.",
     messages: [
       {
         id: 1,
         role: "system",
-        content: "🌟 SNAP-DAX QUANTUM SYSTEMS ONLINE 🌟",
+        content: "SNAP-DAX Platform Initialized",
         timestamp: "Just now",
         animation: "fade",
       },
@@ -133,7 +122,7 @@ const onboardingSteps: Record<string, OnboardingStep> = {
         id: 2,
         role: "assistant",
         content:
-          "Greetings, future financial pioneer! I'm ARIA, your AI Financial Concierge. I've been analyzing global financial patterns for the past 0.003 seconds and I'm excited to guide you through our revolutionary platform.",
+          "Welcome to SNAP-DAX. I'm ARIA, your AI Financial Advisor. I'll help you navigate our comprehensive financial platform and customize it to your specific needs.",
         timestamp: "Just now",
         animation: "typewriter",
       },
@@ -141,414 +130,416 @@ const onboardingSteps: Record<string, OnboardingStep> = {
         id: 3,
         role: "assistant",
         content:
-          "What you're about to experience isn't just another financial platform—it's a quantum leap into the future of wealth creation. Are you ready to transcend traditional finance?",
+          "To provide you with the most relevant tools and insights, I'll need to understand your financial goals and preferences. This will take just a few minutes.",
         timestamp: "Just now",
         animation: "typewriter",
       },
     ],
-    nextStep: "financial-vision",
+    nextStep: "financial-objectives",
   },
-  "financial-vision": {
-    id: "financial-vision",
+  "financial-objectives": {
+    id: "financial-objectives",
     type: "question",
-    title: "Your Financial Vision",
-    subtitle: "Every legend begins with a vision",
+    title: "Primary Financial Objectives",
+    subtitle: "Help us understand your main focus",
     description:
-      "What drives your financial ambitions? Your choice will unlock specialized quantum algorithms tailored to your path.",
+      "What is your primary financial objective? This will help us prioritize the most relevant tools and features for you.",
     inputType: "radio",
     options: [
       {
-        id: "wealth-empire",
-        label: "Build a Wealth Empire",
-        value: "wealth-empire",
-        description: "Dominate markets with quantum-powered strategies",
-        icon: <Crown className="h-6 w-6" />,
-        unlocksFeature: "quantum-wealth-optimizer",
-        rarity: "legendary",
+        id: "wealth-accumulation",
+        label: "Wealth Accumulation",
+        value: "wealth-accumulation",
+        description: "Build long-term wealth through strategic investments",
+        icon: <TrendingUp className="h-6 w-6" />,
+        unlocksFeature: "advanced-portfolio-analytics",
+        rarity: "epic",
       },
       {
-        id: "real-estate-mogul",
-        label: "Become a Real Estate Mogul",
-        value: "real-estate-mogul",
-        description: "Tokenize and control premium properties globally",
+        id: "real-estate-investment",
+        label: "Real Estate Investment",
+        value: "real-estate-investment",
+        description: "Focus on property investment and real estate opportunities",
         icon: <Building className="h-6 w-6" />,
-        unlocksFeature: "tokenized-real-estate-empire",
-        rarity: "epic",
+        unlocksFeature: "real-estate-analytics-suite",
+        rarity: "rare",
       },
       {
-        id: "business-titan",
-        label: "Transform into a Business Titan",
-        value: "business-titan",
-        description: "Scale enterprises with AI-powered intelligence",
+        id: "business-growth",
+        label: "Business Growth & Expansion",
+        value: "business-growth",
+        description: "Scale your business with advanced financial tools",
         icon: <Rocket className="h-6 w-6" />,
-        unlocksFeature: "business-intelligence-nexus",
+        unlocksFeature: "business-intelligence-dashboard",
         rarity: "epic",
       },
       {
-        id: "financial-innovator",
-        label: "Pioneer Financial Innovation",
-        value: "financial-innovator",
-        description: "Shape the future of finance itself",
-        icon: <Atom className="h-6 w-6" />,
-        unlocksFeature: "neural-market-architect",
-        rarity: "legendary",
+        id: "portfolio-diversification",
+        label: "Portfolio Diversification",
+        value: "portfolio-diversification",
+        description: "Explore alternative investments and new markets",
+        icon: <BarChart3 className="h-6 w-6" />,
+        unlocksFeature: "alternative-investment-tools",
+        rarity: "rare",
       },
     ],
     nextStep: (response) => {
-      if (response === "real-estate-mogul") return "real-estate-showcase"
-      if (response === "wealth-empire") return "investment-mastery"
-      if (response === "business-titan") return "business-scale-vision"
-      return "risk-appetite"
+      if (response === "real-estate-investment") return "real-estate-focus"
+      if (response === "wealth-accumulation") return "investment-experience"
+      if (response === "business-growth") return "business-profile"
+      return "risk-assessment"
     },
   },
-  "real-estate-showcase": {
-    id: "real-estate-showcase",
+  "real-estate-focus": {
+    id: "real-estate-focus",
     type: "product-showcase",
-    title: "Tokenized Real Estate Empire",
+    title: "Real Estate Investment Platform",
     productDetails: {
-      name: "Quantum Real Estate Tokenization Platform",
+      name: "Comprehensive Real Estate Analytics",
       description:
-        "Revolutionary blockchain-powered property investment that transforms how wealth is built through real estate",
-      icon: <Building className="h-10 w-10 text-amber-400" />,
+        "Advanced tools for property analysis, market research, and investment tracking with real-time data and predictive modeling.",
+      icon: <Building className="h-10 w-10 text-blue-400" />,
       benefits: [
-        "🏰 Access $50M+ premium properties with fractional investment",
-        "⚡ Instant liquidity through quantum-secured tokenization",
-        "💎 Automated dividend distribution from global rental income",
-        "🔮 AI-powered property value forecasting with 94% accuracy",
-        "🛡️ Quantum-resistant blockchain security protocols",
-        "🌍 Global property network spanning 47 countries",
+        "Market analysis and property valuation tools",
+        "Investment performance tracking and reporting",
+        "Automated rental income management",
+        "Property market trend analysis and forecasting",
+        "Portfolio diversification recommendations",
+        "Tax optimization strategies for real estate",
       ],
       image: "/modern-family-home.png",
       rarity: "epic",
       powerLevel: 85,
-      category: "Real Estate Innovation",
-      unlockMessage: "You've unlocked the power to tokenize reality itself!",
+      category: "Real Estate Technology",
+      unlockMessage: "Access to comprehensive real estate investment tools",
     },
-    nextStep: "property-mastery",
+    nextStep: "property-investment-type",
   },
-  "property-mastery": {
-    id: "property-mastery",
+  "property-investment-type": {
+    id: "property-investment-type",
     type: "question",
-    title: "Property Mastery Specialization",
-    subtitle: "Choose your real estate dominion",
-    description: "Which property realm calls to your entrepreneurial spirit?",
+    title: "Investment Property Focus",
+    subtitle: "Define your real estate investment strategy",
+    description: "Which type of real estate investment aligns with your strategy?",
     inputType: "radio",
     options: [
       {
-        id: "luxury-residential",
-        label: "Luxury Residential Empire",
-        value: "luxury-residential",
-        description: "Premium homes and exclusive communities",
+        id: "residential-rental",
+        label: "Residential Rental Properties",
+        value: "residential-rental",
+        description: "Single-family homes, condos, and small multi-family units",
         icon: <Home className="h-5 w-5" />,
-        rarity: "rare",
+        rarity: "common",
       },
       {
-        id: "commercial-powerhouse",
-        label: "Commercial Powerhouse",
-        value: "commercial-powerhouse",
-        description: "Office towers, retail centers, industrial complexes",
+        id: "commercial-properties",
+        label: "Commercial Real Estate",
+        value: "commercial-properties",
+        description: "Office buildings, retail spaces, and industrial properties",
         icon: <Building className="h-5 w-5" />,
-        unlocksFeature: "commercial-analytics-suite",
+        unlocksFeature: "commercial-property-analytics",
         rarity: "epic",
       },
       {
-        id: "mixed-use-visionary",
-        label: "Mixed-Use Visionary",
-        value: "mixed-use-visionary",
-        description: "Integrated living, working, and entertainment spaces",
+        id: "mixed-portfolio",
+        label: "Diversified Portfolio",
+        value: "mixed-portfolio",
+        description: "Combination of residential and commercial properties",
         icon: <Layers className="h-5 w-5" />,
         rarity: "rare",
       },
       {
-        id: "global-portfolio",
-        label: "Global Portfolio Architect",
-        value: "global-portfolio",
-        description: "International properties across continents",
+        id: "international-markets",
+        label: "International Markets",
+        value: "international-markets",
+        description: "Properties in multiple countries and markets",
         icon: <Globe className="h-5 w-5" />,
-        unlocksFeature: "global-property-intelligence",
+        unlocksFeature: "global-market-intelligence",
         rarity: "legendary",
       },
     ],
-    nextStep: "investment-power",
+    nextStep: "investment-timeline",
   },
-  "investment-power": {
-    id: "investment-power",
+  "investment-timeline": {
+    id: "investment-timeline",
     type: "question",
-    title: "Investment Power Level",
-    subtitle: "Calibrate your financial force",
-    description: "What's your investment capacity for the next 12 months? This unlocks specialized quantum algorithms.",
+    title: "Investment Timeline",
+    subtitle: "Define your investment horizon",
+    description: "What is your typical investment timeline for real estate projects?",
     inputType: "slider",
-    inputLabel: "Investment Power Level",
-    nextStep: "unlock-real-estate-nexus",
+    inputLabel: "Investment Timeline (Years)",
+    nextStep: "unlock-real-estate-tools",
   },
-  "unlock-real-estate-nexus": {
-    id: "unlock-real-estate-nexus",
+  "unlock-real-estate-tools": {
+    id: "unlock-real-estate-tools",
     type: "unlock",
-    title: "🔓 Unlock Real Estate Intelligence Nexus",
-    subtitle: "Activate your quantum-powered property advisor",
-    description: "Provide your quantum signature (email) to activate our AI Real Estate Intelligence Nexus",
+    title: "Activate Real Estate Tools",
+    subtitle: "Complete your profile setup",
+    description: "Please provide your email to activate personalized real estate analytics and market insights.",
     inputType: "text",
-    inputLabel: "Quantum Signature (Email)",
-    inputPlaceholder: "your.quantum.signature@universe.com",
-    unlockRequirement: "Valid quantum signature",
+    inputLabel: "Email Address",
+    inputPlaceholder: "your.email@example.com",
+    unlockRequirement: "Valid email address",
     nextStep: "celebration-real-estate",
   },
   "celebration-real-estate": {
     id: "celebration-real-estate",
     type: "celebration",
-    title: "🎉 NEXUS ACTIVATED! 🎉",
+    title: "Real Estate Tools Activated",
     celebrationData: {
-      achievement: "Real Estate Intelligence Nexus",
-      description: "You've unlocked quantum-powered property analysis capabilities",
+      achievement: "Real Estate Investment Suite",
+      description: "You now have access to comprehensive real estate analysis tools",
       rewards: [
-        "AI Property Value Predictor",
-        "Global Market Intelligence",
-        "Tokenization Protocols",
-        "Quantum Security Suite",
+        "Property Valuation Tools",
+        "Market Analysis Dashboard",
+        "Investment Performance Tracking",
+        "Tax Optimization Strategies",
       ],
-      nextUnlock: "Risk Assessment Matrix",
+      nextUnlock: "Risk Assessment Profile",
     },
-    nextStep: "risk-appetite",
+    nextStep: "risk-assessment",
   },
-  "investment-mastery": {
-    id: "investment-mastery",
+  "investment-experience": {
+    id: "investment-experience",
     type: "question",
-    title: "Investment Mastery Level",
-    subtitle: "Assess your financial combat experience",
-    description: "Your experience level determines which quantum algorithms we'll unlock for you.",
+    title: "Investment Experience Level",
+    subtitle: "Help us calibrate our recommendations",
+    description: "What best describes your investment experience?",
     inputType: "radio",
     options: [
       {
-        id: "financial-apprentice",
-        label: "Financial Apprentice",
-        value: "financial-apprentice",
-        description: "Ready to learn the quantum arts",
+        id: "beginner-investor",
+        label: "New to Investing",
+        value: "beginner-investor",
+        description: "Limited investment experience, seeking guidance",
         icon: <User className="h-5 w-5" />,
         rarity: "common",
       },
       {
-        id: "market-warrior",
-        label: "Market Warrior",
-        value: "market-warrior",
-        description: "Battle-tested in financial markets",
-        icon: <Shield className="h-5 w-5" />,
-        rarity: "rare",
-      },
-      {
-        id: "wealth-architect",
-        label: "Wealth Architect",
-        value: "wealth-architect",
-        description: "Designer of financial empires",
-        icon: <Crown className="h-5 w-5" />,
-        unlocksFeature: "advanced-wealth-algorithms",
-        rarity: "epic",
-      },
-      {
-        id: "quantum-master",
-        label: "Quantum Master",
-        value: "quantum-master",
-        description: "Transcendent financial consciousness",
-        icon: <Atom className="h-5 w-5" />,
-        unlocksFeature: "quantum-consciousness-suite",
-        rarity: "legendary",
-      },
-    ],
-    nextStep: "risk-appetite",
-  },
-  "business-scale-vision": {
-    id: "business-scale-vision",
-    type: "question",
-    title: "Business Scale Vision",
-    subtitle: "Define your empire's magnitude",
-    description: "What's the current scale of your business empire?",
-    inputType: "radio",
-    options: [
-      {
-        id: "startup-pioneer",
-        label: "Startup Pioneer",
-        value: "startup-pioneer",
-        description: "Igniting the spark of innovation",
-        icon: <Rocket className="h-5 w-5" />,
-        rarity: "common",
-      },
-      {
-        id: "growth-commander",
-        label: "Growth Commander",
-        value: "growth-commander",
-        description: "Leading rapid expansion",
-        icon: <TrendingUp className="h-5 w-5" />,
-        rarity: "rare",
-      },
-      {
-        id: "enterprise-general",
-        label: "Enterprise General",
-        value: "enterprise-general",
-        description: "Commanding medium-scale operations",
-        icon: <Target className="h-5 w-5" />,
-        unlocksFeature: "enterprise-command-center",
-        rarity: "epic",
-      },
-      {
-        id: "corporate-emperor",
-        label: "Corporate Emperor",
-        value: "corporate-emperor",
-        description: "Ruling vast business territories",
-        icon: <Crown className="h-5 w-5" />,
-        unlocksFeature: "imperial-business-suite",
-        rarity: "legendary",
-      },
-    ],
-    nextStep: "risk-appetite",
-  },
-  "risk-appetite": {
-    id: "risk-appetite",
-    type: "question",
-    title: "Risk Appetite Assessment",
-    subtitle: "Calibrate your quantum risk tolerance",
-    description:
-      "How do you dance with financial uncertainty? Your choice activates specialized quantum risk algorithms.",
-    inputType: "radio",
-    options: [
-      {
-        id: "guardian",
-        label: "Guardian of Capital",
-        value: "guardian",
-        description: "Protect and preserve with quantum precision",
-        icon: <Shield className="h-5 w-5" />,
-        rarity: "common",
-      },
-      {
-        id: "balanced-strategist",
-        label: "Balanced Strategist",
-        value: "balanced-strategist",
-        description: "Harmonize risk and reward",
+        id: "intermediate-investor",
+        label: "Intermediate Investor",
+        value: "intermediate-investor",
+        description: "Some experience with stocks, bonds, and basic strategies",
         icon: <BarChart3 className="h-5 w-5" />,
         rarity: "rare",
       },
       {
-        id: "quantum-warrior",
-        label: "Quantum Warrior",
-        value: "quantum-warrior",
-        description: "Embrace volatility for exponential gains",
-        icon: <Zap className="h-5 w-5" />,
-        unlocksFeature: "quantum-volatility-algorithms",
+        id: "experienced-investor",
+        label: "Experienced Investor",
+        value: "experienced-investor",
+        description: "Extensive experience with various investment vehicles",
+        icon: <Target className="h-5 w-5" />,
+        unlocksFeature: "advanced-investment-strategies",
         rarity: "epic",
       },
       {
-        id: "reality-bender",
-        label: "Reality Bender",
-        value: "reality-bender",
-        description: "Transcend traditional risk paradigms",
-        icon: <Wand2 className="h-5 w-5" />,
-        unlocksFeature: "reality-distortion-protocols",
+        id: "professional-investor",
+        label: "Professional/Institutional",
+        value: "professional-investor",
+        description: "Professional money manager or institutional investor",
+        icon: <Crown className="h-5 w-5" />,
+        unlocksFeature: "institutional-grade-tools",
         rarity: "legendary",
       },
     ],
-    nextStep: "quantum-showcase",
+    nextStep: "risk-assessment",
   },
-  "quantum-showcase": {
-    id: "quantum-showcase",
+  "business-profile": {
+    id: "business-profile",
+    type: "question",
+    title: "Business Profile",
+    subtitle: "Tell us about your business",
+    description: "What stage is your business currently in?",
+    inputType: "radio",
+    options: [
+      {
+        id: "startup-phase",
+        label: "Startup Phase",
+        value: "startup-phase",
+        description: "Early-stage business seeking growth capital",
+        icon: <Rocket className="h-5 w-5" />,
+        rarity: "common",
+      },
+      {
+        id: "growth-stage",
+        label: "Growth Stage",
+        value: "growth-stage",
+        description: "Established business looking to scale operations",
+        icon: <TrendingUp className="h-5 w-5" />,
+        rarity: "rare",
+      },
+      {
+        id: "mature-business",
+        label: "Mature Business",
+        value: "mature-business",
+        description: "Established company optimizing financial operations",
+        icon: <Building className="h-5 w-5" />,
+        unlocksFeature: "enterprise-financial-suite",
+        rarity: "epic",
+      },
+      {
+        id: "multiple-ventures",
+        label: "Multiple Ventures",
+        value: "multiple-ventures",
+        description: "Managing multiple businesses or investments",
+        icon: <Layers className="h-5 w-5" />,
+        unlocksFeature: "multi-entity-management",
+        rarity: "legendary",
+      },
+    ],
+    nextStep: "risk-assessment",
+  },
+  "risk-assessment": {
+    id: "risk-assessment",
+    type: "question",
+    title: "Risk Tolerance Assessment",
+    subtitle: "Define your investment risk profile",
+    description: "How would you describe your comfort level with investment risk?",
+    inputType: "radio",
+    options: [
+      {
+        id: "conservative",
+        label: "Conservative",
+        value: "conservative",
+        description: "Prefer stable, low-risk investments with steady returns",
+        icon: <Shield className="h-5 w-5" />,
+        rarity: "common",
+      },
+      {
+        id: "moderate",
+        label: "Moderate",
+        value: "moderate",
+        description: "Balanced approach with moderate risk for reasonable returns",
+        icon: <BarChart3 className="h-5 w-5" />,
+        rarity: "rare",
+      },
+      {
+        id: "aggressive",
+        label: "Aggressive",
+        value: "aggressive",
+        description: "Comfortable with higher risk for potential higher returns",
+        icon: <Zap className="h-5 w-5" />,
+        unlocksFeature: "advanced-trading-algorithms",
+        rarity: "epic",
+      },
+      {
+        id: "sophisticated",
+        label: "Sophisticated Investor",
+        value: "sophisticated",
+        description: "Experienced with complex strategies and alternative investments",
+        icon: <Brain className="h-5 w-5" />,
+        unlocksFeature: "institutional-investment-tools",
+        rarity: "legendary",
+      },
+    ],
+    nextStep: "analytics-showcase",
+  },
+  "analytics-showcase": {
+    id: "analytics-showcase",
     type: "product-showcase",
-    title: "Quantum Computing Financial Nexus",
+    title: "Advanced Analytics Platform",
     productDetails: {
-      name: "Quantum Computing Financial Nexus",
-      description: "Harness the raw power of quantum computing to bend financial reality to your will",
-      icon: <Cpu className="h-10 w-10 text-cyan-400" />,
-      benefits: [
-        "⚡ Process infinite financial scenarios in nanoseconds",
-        "🔮 Predict market movements before they happen",
-        "🌌 Optimize portfolios across parallel universes",
-        "🧠 Quantum machine learning that evolves continuously",
-        "🛡️ Quantum-encrypted transactions immune to all attacks",
-        "🌊 Ride quantum market waves invisible to others",
-      ],
-      image: "/quantum-computing-concept.png",
-      rarity: "legendary",
-      powerLevel: 99,
-      category: "Quantum Technology",
-      unlockMessage: "You've harnessed the power of quantum reality!",
-    },
-    nextStep: "unlock-quantum-nexus",
-  },
-  "unlock-quantum-nexus": {
-    id: "unlock-quantum-nexus",
-    type: "unlock",
-    title: "🔓 Activate Quantum Nexus",
-    subtitle: "Synchronize with the quantum field",
-    description: "Provide your quantum communication frequency (phone) to activate the Quantum Computing Nexus",
-    inputType: "text",
-    inputLabel: "Quantum Frequency (Phone)",
-    inputPlaceholder: "+1 (555) QUANTUM",
-    unlockRequirement: "Valid quantum frequency",
-    nextStep: "celebration-quantum",
-  },
-  "celebration-quantum": {
-    id: "celebration-quantum",
-    type: "celebration",
-    title: "⚡ QUANTUM NEXUS ONLINE! ⚡",
-    celebrationData: {
-      achievement: "Quantum Computing Nexus",
-      description: "You've synchronized with quantum financial reality",
-      rewards: [
-        "Quantum Market Predictor",
-        "Reality Distortion Algorithms",
-        "Parallel Universe Portfolio",
-        "Quantum Encryption Protocols",
-      ],
-      nextUnlock: "AI Consciousness Interface",
-    },
-    nextStep: "ai-consciousness-showcase",
-  },
-  "ai-consciousness-showcase": {
-    id: "ai-consciousness-showcase",
-    type: "product-showcase",
-    title: "AI Financial Consciousness",
-    productDetails: {
-      name: "ARIA - AI Financial Consciousness",
-      description: "Your personal AI consciousness that transcends traditional financial advisory",
+      name: "AI-Powered Financial Analytics",
+      description:
+        "Comprehensive financial analysis tools powered by artificial intelligence and machine learning for superior investment insights.",
       icon: <Brain className="h-10 w-10 text-purple-400" />,
       benefits: [
-        "🧠 Consciousness-level financial understanding",
-        "💬 Natural conversation about complex strategies",
-        "🎯 Proactive opportunity identification",
-        "🔄 Continuous learning from global patterns",
-        "🌐 Seamless integration across all platforms",
-        "✨ Intuitive financial guidance that feels magical",
+        "Real-time market analysis and trend identification",
+        "Predictive modeling for investment opportunities",
+        "Automated portfolio optimization and rebalancing",
+        "Risk assessment and scenario planning tools",
+        "Performance tracking and detailed reporting",
+        "Integration with multiple data sources and platforms",
       ],
-      image: "/ai-assistant-concept.png",
+      image: "/analytics-dashboard.png",
       rarity: "legendary",
       powerLevel: 95,
-      category: "AI Consciousness",
-      unlockMessage: "You've awakened true AI financial consciousness!",
+      category: "Financial Technology",
+      unlockMessage: "Access to advanced AI-powered financial analytics",
     },
-    nextStep: "financial-dreams",
+    nextStep: "unlock-analytics-platform",
   },
-  "financial-dreams": {
-    id: "financial-dreams",
+  "unlock-analytics-platform": {
+    id: "unlock-analytics-platform",
+    type: "unlock",
+    title: "Activate Analytics Platform",
+    subtitle: "Complete your platform setup",
+    description: "Please provide your phone number for account verification and to receive important platform updates.",
+    inputType: "text",
+    inputLabel: "Phone Number",
+    inputPlaceholder: "+1 (555) 123-4567",
+    unlockRequirement: "Valid phone number",
+    nextStep: "celebration-analytics",
+  },
+  "celebration-analytics": {
+    id: "celebration-analytics",
+    type: "celebration",
+    title: "Analytics Platform Activated",
+    celebrationData: {
+      achievement: "Advanced Analytics Suite",
+      description: "You now have access to our complete financial analytics platform",
+      rewards: [
+        "AI Market Analysis",
+        "Predictive Investment Models",
+        "Automated Portfolio Tools",
+        "Advanced Risk Management",
+      ],
+      nextUnlock: "Platform Integration",
+    },
+    nextStep: "platform-integration",
+  },
+  "platform-integration": {
+    id: "platform-integration",
+    type: "product-showcase",
+    title: "Platform Integration Hub",
+    productDetails: {
+      name: "Comprehensive Financial Integration",
+      description:
+        "Connect and manage all your financial accounts, investments, and business operations from a single, unified platform.",
+      icon: <Layers className="h-10 w-10 text-green-400" />,
+      benefits: [
+        "Bank and brokerage account integration",
+        "Real-time transaction monitoring and categorization",
+        "Automated financial reporting and tax preparation",
+        "Multi-currency and international account support",
+        "Secure data encryption and privacy protection",
+        "API access for custom integrations and automation",
+      ],
+      image: "/data-analytics-visualization.png",
+      rarity: "epic",
+      powerLevel: 90,
+      category: "Platform Integration",
+      unlockMessage: "Complete platform integration capabilities unlocked",
+    },
+    nextStep: "financial-goals",
+  },
+  "financial-goals": {
+    id: "financial-goals",
     type: "question",
-    title: "Your Financial Dreams",
-    subtitle: "Paint your vision of financial transcendence",
-    description: "Share your deepest financial aspirations. ARIA will use this to customize your entire experience.",
+    title: "Financial Goals & Objectives",
+    subtitle: "Define your success metrics",
+    description:
+      "Please share your specific financial goals and what success looks like for you. This helps us provide more targeted recommendations.",
     inputType: "textarea",
-    inputLabel: "Your Financial Vision",
+    inputLabel: "Your Financial Goals",
     inputPlaceholder:
-      "Describe your ultimate financial goals, dreams, and what financial freedom means to you. The more detail, the better ARIA can serve you...",
+      "Describe your short-term and long-term financial objectives, target returns, timeline, and any specific areas of focus...",
     nextStep: "final-celebration",
   },
   "final-celebration": {
     id: "final-celebration",
     type: "celebration",
-    title: "🎊 TRANSFORMATION COMPLETE! 🎊",
+    title: "Platform Setup Complete",
     celebrationData: {
-      achievement: "Financial Transcendence Achieved",
-      description: "You've unlocked the full power of SNAP-DAX",
+      achievement: "SNAP-DAX Platform Activated",
+      description: "Your personalized financial platform is now ready with all features unlocked",
       rewards: [
         "Complete Platform Access",
-        "All Quantum Algorithms",
-        "AI Consciousness Partnership",
-        "Reality-Bending Capabilities",
+        "Personalized Dashboard",
+        "AI Financial Advisor",
+        "Advanced Analytics Suite",
       ],
-      nextUnlock: "Your Financial Empire Awaits",
+      nextUnlock: "Your Financial Dashboard",
     },
     nextStep: "completion",
   },
@@ -556,8 +547,8 @@ const onboardingSteps: Record<string, OnboardingStep> = {
     id: "completion",
     type: "completion",
     title: "Welcome to Your Financial Future",
-    subtitle: "The impossible is now possible",
-    description: "You've transcended traditional finance and entered a new reality",
+    subtitle: "Your personalized platform is ready",
+    description: "You now have access to all SNAP-DAX features tailored to your financial objectives",
     nextStep: "dashboard",
   },
 }
@@ -688,25 +679,24 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
 
   const getEnhancedAIResponse = (stepId: string, value: any): string => {
     const responses = {
-      "financial-vision": {
-        "wealth-empire":
-          "🏰 Magnificent choice! You've chosen the path of the Wealth Emperor. I'm activating our most powerful quantum wealth algorithms. Your empire will span dimensions!",
-        "real-estate-mogul":
-          "🏢 Excellent vision! The Real Estate Mogul path will transform you into a property virtuoso. I'm unlocking tokenization protocols that will revolutionize your approach to real estate!",
-        "business-titan":
-          "🚀 Outstanding selection! The Business Titan pathway will elevate your entrepreneurial consciousness. Prepare for AI-powered business intelligence beyond imagination!",
-        "financial-innovator":
-          "⚡ Extraordinary choice! You've selected the path of ultimate financial evolution. I'm activating neural market architecture protocols that will let you shape reality itself!",
+      "financial-objectives": {
+        "wealth-accumulation":
+          "Excellent choice. I'm configuring our advanced portfolio analytics to help you build long-term wealth through strategic investment planning.",
+        "real-estate-investment":
+          "Great selection. Our real estate analytics suite will provide you with comprehensive market data and investment analysis tools.",
+        "business-growth":
+          "Perfect. I'm activating our business intelligence dashboard to help you scale your operations with data-driven insights.",
+        "portfolio-diversification":
+          "Smart approach. Our alternative investment tools will help you explore new opportunities and optimize your portfolio allocation.",
       },
-      "risk-appetite": {
-        guardian:
-          "🛡️ The Guardian path shows wisdom beyond measure. I'm configuring quantum-secured preservation algorithms that will protect and grow your wealth with mathematical precision.",
-        "balanced-strategist":
-          "⚖️ Perfect balance! The Strategist approach harmonizes all possibilities. I'm calibrating our quantum algorithms for optimal risk-reward equilibrium.",
-        "quantum-warrior":
-          "⚡ Bold and brilliant! The Quantum Warrior path unlocks our most aggressive algorithms. You'll ride market volatility like a cosmic surfer!",
-        "reality-bender":
-          "🌌 Transcendent choice! You've chosen to bend financial reality itself. I'm activating reality distortion protocols that operate beyond conventional physics!",
+      "risk-assessment": {
+        conservative:
+          "I'm configuring conservative investment strategies focused on capital preservation and steady growth with lower volatility.",
+        moderate: "I'll set up a balanced approach that optimizes the risk-return ratio for your investment portfolio.",
+        aggressive:
+          "I'm activating advanced trading algorithms designed for higher-growth investment strategies with increased risk tolerance.",
+        sophisticated:
+          "Excellent. I'm unlocking institutional-grade tools for complex investment strategies and alternative asset classes.",
       },
     }
 
@@ -714,11 +704,11 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     if (stepResponses) {
       return (
         stepResponses[value as keyof typeof stepResponses] ||
-        "Fascinating choice! I'm processing this through our quantum consciousness matrix..."
+        "Thank you for that information. I'm customizing your platform experience based on your preferences."
       )
     }
 
-    return "Your selection resonates through the quantum field. I'm customizing your experience based on this profound choice..."
+    return "I'm processing your selection and tailoring the platform to meet your specific financial needs."
   }
 
   const getRarityColor = (rarity: string) => {
@@ -855,7 +845,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               >
                 <Button
                   onClick={() => handleNext()}
-                  className="bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-600 text-white hover:from-cyan-600 hover:via-purple-700 hover:to-pink-700 px-8 py-4 text-lg font-bold rounded-full shadow-2xl shadow-purple-500/50"
+                  className="bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 text-white hover:from-cyan-600 hover:via-purple-700 hover:to-pink-700 px-8 py-4 text-lg font-bold rounded-full shadow-2xl shadow-purple-500/50"
                 >
                   <Rocket className="mr-2 h-5 w-5" />
                   Enter the Quantum Realm
@@ -1132,7 +1122,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                     <img
                       src={
                         currentStep.productDetails.image ||
-                        "/placeholder.svg?height=400&width=800&query=futuristic+technology"
+                        "/placeholder.svg?height=400&width=800&query=futuristic+technology" ||
+                        "/placeholder.svg"
                       }
                       alt={currentStep.productDetails.name}
                       className="h-full w-full object-cover"
@@ -1144,436 +1135,110 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       {[...Array(20)].map((_, i) => (
                         <motion.div
                           key={i}
-                          className="absolute h-1 w-1 rounded-full bg-cyan-400"
-                          initial={{ opacity: 0 }}
+                          className="absolute h-2 w-2 rounded-full bg-cyan-400"
+                          initial={{
+                            x: Math.random() * window.innerWidth,
+                            y: Math.random() * window.innerHeight,
+                            opacity: 0,
+                          }}
                           animate={{
-                            x: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
-                            y: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
+                            x: [
+                              Math.random() * window.innerWidth,
+                              Math.random() * window.innerWidth,
+                              Math.random() * window.innerWidth,
+                            ],
+                            y: [
+                              Math.random() * window.innerHeight,
+                              Math.random() * window.innerHeight,
+                              Math.random() * window.innerHeight,
+                            ],
                             opacity: [0, 1, 0],
                           }}
                           transition={{
                             duration: Math.random() * 3 + 2,
                             repeat: Number.POSITIVE_INFINITY,
-                            delay: Math.random() * 2,
+                            ease: "linear",
                           }}
                         />
                       ))}
                     </div>
-
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div
-                          className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r ${getRarityColor(currentStep.productDetails.rarity)}`}
-                        >
-                          {currentStep.productDetails.icon}
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-white mb-1">{currentStep.productDetails.name}</h3>
-                          <div className="flex items-center gap-2">
-                            <HolographicBadge variant="tokenized" glow={true}>
-                              <Star className="mr-1 h-3 w-3" />
-                              {currentStep.productDetails.rarity.toUpperCase()}
-                            </HolographicBadge>
-                            <HolographicBadge variant="premium" glow={true}>
-                              <Zap className="mr-1 h-3 w-3" />
-                              Power: {currentStep.productDetails.powerLevel}
-                            </HolographicBadge>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-cyan-200 font-medium">{currentStep.productDetails.category}</p>
-                    </div>
                   </div>
-
-                  <div className="p-6 bg-gradient-to-br from-indigo-950/80 to-purple-950/80 backdrop-blur-sm">
-                    <p className="mb-6 text-indigo-200 text-lg">{currentStep.productDetails.description}</p>
-
-                    <div className="space-y-3">
-                      <h4 className="font-bold text-purple-300 text-lg flex items-center gap-2">
-                        <Diamond className="h-5 w-5" />
-                        Quantum Capabilities:
-                      </h4>
-                      <div className="grid gap-3">
-                        {currentStep.productDetails.benefits.map((benefit, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ x: -30, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                            className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-indigo-950/50 to-purple-950/50 border border-purple-500/20"
-                          >
-                            <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-cyan-400" />
-                            <span className="text-indigo-200">{benefit}</span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.6, delay: 0.8 }}
-                      className="mt-8 text-center"
+                  <div className="p-6">
+                    <h3 className="mb-2 text-xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                      {currentStep.productDetails.name}
+                    </h3>
+                    <p className="mb-4 text-lg text-indigo-300">{currentStep.productDetails.description}</p>
+                    <ul className="mb-6 list-disc pl-6 text-indigo-400">
+                      {currentStep.productDetails.benefits.map((benefit, index) => (
+                        <li key={index}>{benefit}</li>
+                      ))}
+                    </ul>
+                    <Button
+                      onClick={() => handleNext()}
+                      className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700 px-6 py-3 rounded-full shadow-lg shadow-purple-500/30"
                     >
-                      <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30">
-                        <p className="text-yellow-300 font-bold text-lg">{currentStep.productDetails.unlockMessage}</p>
-                      </div>
-                      <Button
-                        onClick={() => handleNext()}
-                        className={`bg-gradient-to-r ${getRarityColor(currentStep.productDetails.rarity)} text-white hover:scale-105 px-8 py-4 text-lg font-bold rounded-full shadow-xl transition-all duration-300`}
-                      >
-                        <Gem className="mr-2 h-5 w-5" />
-                        Unlock This Power
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
-                    </motion.div>
+                      <Unlock className="mr-2 h-4 w-4" />
+                      Unlock Now
+                      <ChevronRight className="ml-2 h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               </motion.div>
             )}
-          </div>
-        )
-
-      case "unlock":
-        return (
-          <div className="flex flex-col items-center">
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0, rotateY: -180 }}
-              animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-              transition={{ duration: 1, ease: "backOut" }}
-              className="mb-8 relative"
-            >
-              <div className="absolute -inset-8 animate-pulse rounded-full bg-gradient-to-r from-yellow-500/30 to-orange-500/30 blur-xl"></div>
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 to-orange-500"
-              >
-                <Unlock className="h-10 w-10 text-white" />
-              </motion.div>
-            </motion.div>
-
-            <motion.h2
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-2 text-center text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
-            >
-              {currentStep.title}
-            </motion.h2>
-
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-2 text-center text-lg text-yellow-300 font-medium"
-            >
-              {currentStep.subtitle}
-            </motion.p>
-
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="mb-8 text-center text-indigo-300 max-w-md"
-            >
-              {currentStep.description}
-            </motion.p>
-
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="w-full max-w-md space-y-6"
-            >
-              <div>
-                <Label className="mb-3 block text-lg font-bold text-yellow-300">{currentStep.inputLabel}</Label>
-                <Input
-                  type="text"
-                  placeholder={currentStep.inputPlaceholder}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  className="border-yellow-500/30 bg-yellow-950/30 text-indigo-100 placeholder:text-indigo-400/50 py-4 text-lg rounded-xl"
-                />
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-yellow-400 bg-yellow-950/20 p-3 rounded-lg border border-yellow-500/20">
-                <Lock className="h-4 w-4" />
-                <span>Required to {currentStep.unlockRequirement}</span>
-              </div>
-
-              <Button
-                onClick={() => handleNext(inputValue)}
-                disabled={!inputValue}
-                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600 disabled:from-yellow-500/50 disabled:to-orange-500/50 py-4 text-lg font-bold rounded-full shadow-lg shadow-yellow-500/30"
-              >
-                <Fingerprint className="mr-2 h-5 w-5" />
-                Activate Quantum Access
-                <Unlock className="ml-2 h-5 w-5" />
-              </Button>
-            </motion.div>
-          </div>
-        )
-
-      case "celebration":
-        return (
-          <div className="flex flex-col items-center text-center relative overflow-hidden">
-            {/* Celebration particles */}
-            <div className="absolute inset-0">
-              {[...Array(30)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute"
-                  initial={{
-                    x: "50%",
-                    y: "50%",
-                    scale: 0,
-                    rotate: 0,
-                  }}
-                  animate={{
-                    x: Math.random() * 100 + "%",
-                    y: Math.random() * 100 + "%",
-                    scale: [0, 1, 0],
-                    rotate: 360,
-                  }}
-                  transition={{
-                    duration: 2,
-                    delay: Math.random() * 1,
-                    ease: "easeOut",
-                  }}
-                >
-                  {i % 3 === 0 ? (
-                    <Star className="h-4 w-4 text-yellow-400" />
-                  ) : i % 3 === 1 ? (
-                    <Sparkles className="h-4 w-4 text-cyan-400" />
-                  ) : (
-                    <Diamond className="h-4 w-4 text-purple-400" />
-                  )}
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 1, ease: "backOut" }}
-              className="mb-8 relative z-10"
-            >
-              <div className="absolute -inset-12 animate-pulse rounded-full bg-gradient-to-r from-yellow-500/40 to-purple-500/40 blur-2xl"></div>
-              <motion.div
-                animate={{
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-                className="relative flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500"
-              >
-                <Trophy className="h-16 w-16 text-white" />
-              </motion.div>
-            </motion.div>
-
-            <motion.h2
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-4 text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 bg-clip-text text-transparent"
-            >
-              {currentStep.title}
-            </motion.h2>
-
-            {currentStep.celebrationData && (
-              <motion.div
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-                className="mb-8 text-center"
-              >
-                <h3 className="mb-2 text-xl font-bold text-yellow-300">{currentStep.celebrationData.achievement}</h3>
-                <p className="mb-6 text-indigo-300 max-w-md">{currentStep.celebrationData.description}</p>
-
-                <div className="grid gap-4 md:grid-cols-2 mb-6">
-                  {currentStep.celebrationData.rewards.map((reward, index) => (
-                    <motion.div
-                      key={reward}
-                      initial={{ x: -30, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
-                      className="flex items-center gap-3 rounded-xl border border-yellow-500/30 bg-gradient-to-r from-yellow-950/30 to-orange-950/30 p-4"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 to-orange-500">
-                        <CheckCircle2 className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <p className="font-bold text-yellow-200">{reward}</p>
-                        <p className="text-xs text-yellow-400">Enhanced financial capabilities unlocked</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 1.2 }}
-                >
-                  <Button
-                    onClick={() => handleNext()}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600 px-8 py-4 text-lg font-bold rounded-full shadow-xl"
-                  >
-                    Continue to Next Stage
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </motion.div>
-              </motion.div>
-            )}
-          </div>
-        )
-
-      case "completion":
-        return (
-          <div className="flex flex-col items-center text-center">
-            <motion.div
-              initial={{ scale: 0.7, opacity: 0, rotateY: -180 }}
-              animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-              transition={{ duration: 1, ease: "backOut" }}
-              className="mb-8 relative"
-            >
-              <div className="absolute -inset-8 animate-pulse rounded-full bg-gradient-to-r from-green-500/30 to-teal-500/30 blur-xl"></div>
-              <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-green-600 to-teal-600">
-                <CheckCircle2 className="h-12 w-12 text-white" />
-              </div>
-            </motion.div>
-
-            <motion.h2
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-2 text-3xl font-bold bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent"
-            >
-              {currentStep.title}
-            </motion.h2>
-
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-2 text-lg text-green-300 font-medium"
-            >
-              {currentStep.subtitle}
-            </motion.p>
-
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="mb-8 text-indigo-300 max-w-md"
-            >
-              {currentStep.description}
-            </motion.p>
-
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-            >
-              <Button
-                onClick={() => handleNext()}
-                className="bg-gradient-to-r from-green-600 to-teal-600 text-white hover:from-green-700 hover:to-teal-700 px-6 py-3 rounded-full shadow-lg shadow-green-500/30"
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Enter Your Financial Future
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </motion.div>
           </div>
         )
 
       default:
-        return <div>Unknown step type</div>
+        return null
     }
   }
 
   return (
-    <div className="relative min-h-screen bg-indigo-950 text-indigo-200 overflow-hidden">
-      {showCelebration && (
-        <AnimatePresence>
-          <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <motion.div
-              className="relative"
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Confetti className="absolute inset-0 h-full w-full text-yellow-500 animate-confetti" />
-              <div className="bg-indigo-900 p-8 rounded-2xl shadow-2xl">
-                <h2 className="text-3xl font-bold text-center text-yellow-400 mb-4">Celebration!</h2>
-                <p className="text-indigo-200 text-center">You've unlocked a new achievement!</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      <div className="container mx-auto py-12 px-6 relative z-10">
-        <HolographicGlassCard className="max-w-3xl mx-auto p-8 rounded-3xl">
-          <Progress value={progress} className="mb-6" />
-
-          {/* Chat Messages */}
-          <div className="mb-8">
-            {messages.map((message) => (
-              <motion.div
-                key={message.id}
-                className={`mb-3 flex items-start gap-3 rounded-xl p-3 ${message.role === "user" ? "bg-indigo-900/50 text-indigo-200" : "bg-purple-900/50 text-purple-200"} ${message.animation === "fade" ? "animate-fade-in" : ""} ${message.animation === "slide" ? "animate-slide-in" : ""}`}
-              >
-                {message.role === "assistant" && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
-                    <Bot className="h-5 w-5 text-white" />
-                  </div>
-                )}
-                {message.role === "system" && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-white" />
-                  </div>
-                )}
-                {message.role === "user" && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center">
-                    <User className="h-5 w-5 text-white" />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <p className="font-medium">{message.content}</p>
-                  <div className="mt-1 text-xs text-gray-400 flex items-center gap-2">
-                    <Clock className="h-3 w-3" />
-                    {message.timestamp}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            {isTyping && (
-              <motion.div className="mb-3 flex items-start gap-3 rounded-xl p-3 bg-purple-900/50 text-purple-200 animate-pulse">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
-                  <Bot className="h-5 w-5 text-white" />
-                </div>
-                <div className="flex-1">Typing...</div>
-              </motion.div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-indigo-950 text-white">
+      <Progress value={progress} className="absolute top-4 w-full" />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStepId}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-4xl"
+        >
           {renderStepContent()}
-        </HolographicGlassCard>
-      </div>
+        </motion.div>
+      </AnimatePresence>
+      {showCelebration && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.5 }}
+          className="fixed inset-0 flex items-center justify-center bg-black/50"
+        >
+          <div className="bg-gradient-to-br from-purple-600 to-cyan-600 p-8 rounded-2xl text-center">
+            <Confetti className="h-12 w-12 mb-4 text-white" />
+            <h2 className="mb-2 text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              Congratulations!
+            </h2>
+            <p className="mb-4 text-lg text-white">{currentStep.celebrationData?.description}</p>
+            <ul className="mb-6 list-disc pl-6 text-white">
+              {currentStep.celebrationData?.rewards.map((reward, index) => (
+                <li key={index}>{reward}</li>
+              ))}
+            </ul>
+            <p className="mb-8 text-lg text-white">Next Unlock: {currentStep.celebrationData?.nextUnlock}</p>
+            <Button
+              onClick={() => handleNext()}
+              className="bg-gradient-to-r from-purple-700 to-cyan-700 text-white hover:from-purple-800 hover:to-cyan-800 px-6 py-3 rounded-full shadow-lg shadow-purple-500/30"
+            >
+              Continue
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </motion.div>
+      )}
+      <div ref={messagesEndRef} className="h-0" />
     </div>
   )
 }
