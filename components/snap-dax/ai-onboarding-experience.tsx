@@ -756,7 +756,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     }
   }
 
-  // Jonlorenzo Caprelli Supreme Authority Coin Component
+  // Jonlorenzo Caprelli Imperial Supreme Authority Coin Component
   const CaprelliCoin = () => {
     return (
       <div className="relative h-40 w-40 mx-auto">
@@ -777,8 +777,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             ease: "easeInOut",
           }}
         >
-          {/* Front side - Jonlorenzo Coin */}
-          <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl">
+          {/* Front side - Jonlorenzo Coin with face and name */}
+          <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500">
             <img src="/jonlorenzo-coin.png" alt="Jonlorenzo Coin" className="h-full w-full object-cover" />
 
             {/* Holographic overlay */}
@@ -787,21 +787,28 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             {/* Front side text */}
             <div className="absolute bottom-4 left-0 right-0 text-center">
               <div className="text-xs font-bold text-amber-800 bg-amber-200/70 rounded-full mx-auto w-max px-2 py-0.5">
-                CAPRELLI SUPREME AUTHORITY
+                IMPERIAL SUPREME AUTHORITY CURRENCY
+              </div>
+            </div>
+
+            {/* Name overlay at the top */}
+            <div className="absolute top-4 left-0 right-0 text-center">
+              <div className="text-xs font-bold text-amber-800 bg-amber-200/70 rounded-full mx-auto w-max px-2 py-0.5">
+                JONLORENZO CAPRELLI
               </div>
             </div>
           </div>
 
-          {/* Back side - Royal Insignia with Global Benefit */}
+          {/* Back side - Imperial Insignia */}
           <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl rotate-y-180 bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500">
-            {/* Royal Insignia */}
+            {/* Imperial Insignia */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {/* Crown Symbol */}
+              {/* Imperial Crown Symbol */}
               <div className="mb-2">
                 <Crown className="h-12 w-12 text-amber-800" />
               </div>
 
-              {/* Global Benefit Symbolism */}
+              {/* Imperial Eagle/Globe Symbol */}
               <div className="relative h-16 w-16 mb-2">
                 <Globe className="h-16 w-16 text-amber-700 absolute inset-0" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -809,9 +816,9 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 </div>
               </div>
 
-              {/* Text */}
+              {/* Imperial Text */}
               <div className="text-center">
-                <div className="text-xs font-bold text-amber-800">GLOBAL BENEFIT</div>
+                <div className="text-xs font-bold text-amber-800">IMPERIAL INSIGNIA</div>
                 <div className="text-[10px] text-amber-700 mt-1">EST. MMXXIII</div>
               </div>
             </div>
@@ -819,20 +826,20 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             {/* Decorative border */}
             <div className="absolute inset-0 border-8 border-amber-400/30 rounded-full pointer-events-none" />
 
-            {/* Radial lines */}
+            {/* Radial lines - Imperial sun rays */}
             <div className="absolute inset-0">
-              {[...Array(12)].map((_, i) => (
+              {[...Array(16)].map((_, i) => (
                 <div
                   key={i}
                   className="absolute top-1/2 left-1/2 h-[40%] w-0.5 bg-amber-700/30 origin-bottom"
-                  style={{ transform: `translate(-50%, -100%) rotate(${i * 30}deg)` }}
+                  style={{ transform: `translate(-50%, -100%) rotate(${i * 22.5}deg)` }}
                 />
               ))}
             </div>
           </div>
         </motion.div>
 
-        {/* Particle effects */}
+        {/* Imperial particle effects */}
         <div className="absolute inset-0">
           {[...Array(12)].map((_, i) => (
             <motion.div
@@ -1250,6 +1257,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       src={
                         currentStep.productDetails.image ||
                         "/placeholder.svg?height=400&width=800&query=futuristic+technology" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={currentStep.productDetails.name}
