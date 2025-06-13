@@ -108,7 +108,9 @@ export function AIInsightsDashboard({
     onInsightAction?.(insight, action)
   }
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (priority?: string) => {
+    if (!priority) return "text-gray-500 bg-gray-50 border-gray-200"
+
     switch (priority) {
       case "high":
         return "text-red-500 bg-red-50 border-red-200"
@@ -121,7 +123,9 @@ export function AIInsightsDashboard({
     }
   }
 
-  const getCategoryIcon = (category: string) => {
+  const getCategoryIcon = (category?: string) => {
+    if (!category) return <Sparkles className="h-4 w-4" />
+
     switch (category) {
       case "spending":
         return <DollarSign className="h-4 w-4" />
@@ -136,7 +140,9 @@ export function AIInsightsDashboard({
     }
   }
 
-  const getInsightIcon = (type: string) => {
+  const getInsightIcon = (type?: string) => {
+    if (!type) return <Brain className="h-5 w-5 text-cyan-500" />
+
     switch (type) {
       case "spending-analysis":
         return <PieChart className="h-5 w-5 text-blue-500" />
@@ -208,72 +214,75 @@ export function AIInsightsDashboard({
               </Button>
             </div>
           ) : (
-            insights.map((insight, index) => (
-              <motion.div
-                key={insight.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-              >
-                <Card className="relative overflow-hidden">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0">{getInsightIcon(insight.type)}</div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-medium text-sm">{insight.title}</h4>
-                          <Badge variant="outline" className={`text-xs ${getPriorityColor(insight.priority)}`}>
-                            {insight.priority}
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            {getCategoryIcon(insight.category)}
-                            <span className="ml-1">{insight.category}</span>
-                          </Badge>
-                        </div>
-
-                        <p className="text-sm text-muted-foreground mb-3">{insight.content}</p>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="text-xs text-muted-foreground">
-                              Confidence: {Math.round(insight.confidence * 100)}%
+            insights.map(
+              (insight, index) =>
+                insight && (
+                  <motion.div
+                    key={insight?.id || index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <Card className="relative overflow-hidden">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0">{insight?.type ? getInsightIcon(insight.type) : null}</div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h4 className="font-medium text-sm">{insight.title}</h4>
+                              <Badge variant="outline" className={`text-xs ${getPriorityColor(insight.priority)}`}>
+                                {insight.priority}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                {getCategoryIcon(insight.category)}
+                                <span className="ml-1">{insight.category}</span>
+                              </Badge>
                             </div>
-                            <Progress value={insight.confidence * 100} className="w-16 h-1" />
+
+                            <p className="text-sm text-muted-foreground mb-3">{insight.content}</p>
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="text-xs text-muted-foreground">
+                                  Confidence: {Math.round(insight.confidence * 100)}%
+                                </div>
+                                <Progress value={insight.confidence * 100} className="w-16 h-1" />
+                              </div>
+
+                              {insight.actionable && (
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleInsightAction(insight, "view-details")}
+                                  >
+                                    View Details
+                                  </Button>
+                                  <Button size="sm" onClick={() => handleInsightAction(insight, "take-action")}>
+                                    Take Action
+                                    <ArrowRight className="h-3 w-3 ml-1" />
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
                           </div>
-
-                          {insight.actionable && (
-                            <div className="flex items-center gap-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleInsightAction(insight, "view-details")}
-                              >
-                                View Details
-                              </Button>
-                              <Button size="sm" onClick={() => handleInsightAction(insight, "take-action")}>
-                                Take Action
-                                <ArrowRight className="h-3 w-3 ml-1" />
-                              </Button>
-                            </div>
-                          )}
                         </div>
-                      </div>
-                    </div>
-                  </CardContent>
+                      </CardContent>
 
-                  {/* Priority indicator */}
-                  <div
-                    className={`absolute left-0 top-0 bottom-0 w-1 ${
-                      insight.priority === "high"
-                        ? "bg-red-500"
-                        : insight.priority === "medium"
-                          ? "bg-amber-500"
-                          : "bg-green-500"
-                    }`}
-                  />
-                </Card>
-              </motion.div>
-            ))
+                      {/* Priority indicator */}
+                      <div
+                        className={`absolute left-0 top-0 bottom-0 w-1 ${
+                          insight.priority === "high"
+                            ? "bg-red-500"
+                            : insight.priority === "medium"
+                              ? "bg-amber-500"
+                              : "bg-green-500"
+                        }`}
+                      />
+                    </Card>
+                  </motion.div>
+                ),
+            )
           )}
         </div>
       </CardContent>

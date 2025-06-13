@@ -90,7 +90,9 @@ export default function DashboardPage() {
   const handleInsightAction = (insight: any, action: string) => {
     console.log("Insight action:", insight, action)
 
-    if (action === "take-action") {
+    if (!insight || !action) return
+
+    if (action === "take-action" && insight?.category) {
       // Navigate to relevant section based on insight category
       switch (insight.category) {
         case "spending":
@@ -104,6 +106,10 @@ export default function DashboardPage() {
           break
         case "market":
           setActiveTab("market")
+          break
+        default:
+          // Default action if category doesn't match
+          console.log("Unknown category:", insight.category)
           break
       }
     }

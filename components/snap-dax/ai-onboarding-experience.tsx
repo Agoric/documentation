@@ -557,7 +557,7 @@ const onboardingSteps: Record<string, OnboardingStep> = {
     title: "Welcome to Your Financial Future",
     subtitle: "The impossible is now possible",
     description: "You've transcended traditional finance and entered a new reality",
-    nextStep: "dashboard", // This is a terminal state identifier, not an actual step key
+    nextStep: "dashboard",
   },
 }
 
@@ -577,26 +577,14 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   const [showCelebration, setShowCelebration] = useState(false)
   const [coinFlipped, setCoinFlipped] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const totalSteps = Object.keys(onboardingSteps).filter((key) => onboardingSteps[key].type !== "completion").length
+  const totalSteps = Object.keys(onboardingSteps).length - 1
 
   const currentStep = onboardingSteps[currentStepId]
-
-  // Guard against invalid currentStep
-  if (!currentStep) {
-    if (currentStepId === "dashboard" && onComplete) {
-      // This case means onboarding is done, and parent should handle unmounting.
-      // Returning null or a completion message if the parent doesn't unmount immediately.
-      return null
-    }
-    console.error(`AIOnboardingExperience: Invalid currentStepId "${currentStepId}". Current step data is undefined.`)
-    return (
-      <div className="p-8 text-center text-red-500">Error: Onboarding step not found. Please refresh the page.</div>
-    )
-  }
 
   useEffect(() => {
     if (currentStep.messages) {
       setMessages([])
+      // Animate messages in sequence
       currentStep.messages.forEach((message, index) => {
         setTimeout(() => {
           setMessages((prev) => [...prev, message])
@@ -604,9 +592,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       })
     }
 
-    const stepKeys = Object.keys(onboardingSteps).filter((key) => onboardingSteps[key].type !== "completion")
-    const stepIndex = stepKeys.indexOf(currentStepId)
-    const newProgress = stepIndex >= 0 ? Math.min(100, Math.round(((stepIndex + 1) / totalSteps) * 100)) : 0
+    const stepIndex = Object.keys(onboardingSteps).indexOf(currentStepId)
+    const newProgress = Math.min(100, Math.round((stepIndex / totalSteps) * 100))
     setProgress(newProgress)
   }, [currentStepId, currentStep, totalSteps])
 
@@ -614,6 +601,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     scrollToBottom()
   }, [messages, isTyping])
 
+  // Auto-flip coin effect
   useEffect(() => {
     const flipInterval = setInterval(() => {
       setCoinFlipped((prev) => !prev)
@@ -631,10 +619,12 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       const updatedUserData = { ...userData, [currentStepId]: value }
       setUserData(updatedUserData)
 
+      // Check for feature unlocks
       if (currentStep.options) {
         const selectedOption = currentStep.options.find((option) => option.value === value)
         if (selectedOption?.unlocksFeature && !unlockedFeatures.includes(selectedOption.unlocksFeature)) {
           setUnlockedFeatures([...unlockedFeatures, selectedOption.unlocksFeature])
+
           const newMessage: Message = {
             id: Date.now(),
             role: "system",
@@ -646,6 +636,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
         }
       }
 
+      // Add user message
       const userMessage: Message = {
         id: Date.now(),
         role: "user",
@@ -655,6 +646,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       }
       setMessages((prev) => [...prev, userMessage])
 
+      // AI response
       setIsTyping(true)
       setTimeout(() => {
         const responseContent = getEnhancedAIResponse(currentStepId, value)
@@ -672,6 +664,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       }, 2000)
     }
 
+    // Handle celebration steps
     if (currentStep.type === "celebration") {
       setShowCelebration(true)
       setTimeout(() => {
@@ -679,6 +672,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       }, 3000)
     }
 
+    // Navigate to next step
     let nextStepId = ""
     if (typeof currentStep.nextStep === "function") {
       nextStepId = currentStep.nextStep(value)
@@ -690,9 +684,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       if (onComplete) {
         onComplete(userData)
       }
-      // setCurrentStepId("dashboard"); // Let the parent handle unmounting or redirect
-    } else if (nextStepId && onboardingSteps[nextStepId]) {
-      // Ensure nextStepId is valid
+    } else if (nextStepId) {
       setTimeout(
         () => {
           setCurrentStepId(nextStepId)
@@ -700,16 +692,11 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
         },
         currentStep.type === "celebration" ? 3000 : 500,
       )
-    } else if (nextStepId) {
-      console.error(
-        `AIOnboardingExperience: Attempted to navigate to invalid stepId "${nextStepId}" from step "${currentStepId}".`,
-      )
-      // Potentially set an error state here or default to a safe step
     }
   }
 
   const getEnhancedAIResponse = (stepId: string, value: any): string => {
-    const responses: Record<string, Record<string, string>> = {
+    const responses = {
       "financial-vision": {
         "wealth-empire":
           "🏰 Magnificent choice! You've chosen the path of the Wealth Emperor. I'm activating our most powerful quantum wealth algorithms. Your empire will span dimensions!",
@@ -732,14 +719,18 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
       },
     }
 
-    const stepResponses = responses[stepId]
-    if (stepResponses && stepResponses[value]) {
-      return stepResponses[value]
+    const stepResponses = responses[stepId as keyof typeof responses]
+    if (stepResponses) {
+      return (
+        stepResponses[value as keyof typeof stepResponses] ||
+        "Fascinating choice! I'm processing this through our quantum consciousness matrix..."
+      )
     }
+
     return "Your selection resonates through the quantum field. I'm customizing your experience based on this profound choice..."
   }
 
-  const getRarityColor = (rarity?: string) => {
+  const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case "legendary":
         return "from-yellow-400 to-orange-500"
@@ -752,7 +743,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     }
   }
 
-  const getRarityGlow = (rarity?: string) => {
+  const getRarityGlow = (rarity: string) => {
     switch (rarity) {
       case "legendary":
         return "shadow-2xl shadow-yellow-500/50"
@@ -765,47 +756,77 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     }
   }
 
+  // Jonlorenzo Caprelli Imperial Supreme Authority Coin Component
   const CaprelliCoin = () => {
     return (
       <div className="relative h-40 w-40 mx-auto">
+        {/* Outer glow */}
         <div className="absolute -inset-6 rounded-full bg-gradient-to-r from-amber-400/30 via-yellow-300/40 to-amber-400/30 blur-lg animate-pulse" />
+
+        {/* Holographic effects */}
         <div className="absolute -inset-10 rounded-full bg-gradient-to-r from-indigo-400/10 via-purple-400/10 to-amber-400/10 blur-xl" />
+
+        {/* 3D Coin Container */}
         <motion.div
           className="relative h-full w-full preserve-3d"
-          animate={{ rotateY: coinFlipped ? 180 : 0 }}
-          transition={{ duration: 2, ease: "easeInOut" }}
+          animate={{
+            rotateY: coinFlipped ? 180 : 0,
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+          }}
         >
+          {/* Front side - Jonlorenzo Coin with face and name */}
           <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500">
             <img src="/jonlorenzo-coin.png" alt="Jonlorenzo Coin" className="h-full w-full object-cover" />
+
+            {/* Holographic overlay */}
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent" />
+
+            {/* Front side text */}
             <div className="absolute bottom-4 left-0 right-0 text-center">
               <div className="text-xs font-bold text-amber-800 bg-amber-200/70 rounded-full mx-auto w-max px-2 py-0.5">
                 IMPERIAL SUPREME AUTHORITY CURRENCY
               </div>
             </div>
+
+            {/* Name overlay at the top */}
             <div className="absolute top-4 left-0 right-0 text-center">
               <div className="text-xs font-bold text-amber-800 bg-amber-200/70 rounded-full mx-auto w-max px-2 py-0.5">
                 JONLORENZO CAPRELLI
               </div>
             </div>
           </div>
+
+          {/* Back side - Imperial Insignia */}
           <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl rotate-y-180 bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500">
+            {/* Imperial Insignia */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
+              {/* Imperial Crown Symbol */}
               <div className="mb-2">
                 <Crown className="h-12 w-12 text-amber-800" />
               </div>
+
+              {/* Imperial Eagle/Globe Symbol */}
               <div className="relative h-16 w-16 mb-2">
                 <Globe className="h-16 w-16 text-amber-700 absolute inset-0" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Shield className="h-8 w-8 text-amber-800" />
                 </div>
               </div>
+
+              {/* Imperial Text */}
               <div className="text-center">
                 <div className="text-xs font-bold text-amber-800">IMPERIAL INSIGNIA</div>
                 <div className="text-[10px] text-amber-700 mt-1">EST. MMXXIII</div>
               </div>
             </div>
+
+            {/* Decorative border */}
             <div className="absolute inset-0 border-8 border-amber-400/30 rounded-full pointer-events-none" />
+
+            {/* Radial lines - Imperial sun rays */}
             <div className="absolute inset-0">
               {[...Array(16)].map((_, i) => (
                 <div
@@ -817,12 +838,19 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             </div>
           </div>
         </motion.div>
+
+        {/* Imperial particle effects */}
         <div className="absolute inset-0">
           {[...Array(12)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300"
-              initial={{ x: 70, y: 70, opacity: 0.8, scale: 1 }}
+              initial={{
+                x: 70,
+                y: 70,
+                opacity: 0.8,
+                scale: 1,
+              }}
               animate={{
                 x: 70 + Math.cos((i * 30 * Math.PI) / 180) * 80,
                 y: 70 + Math.sin((i * 30 * Math.PI) / 180) * 80,
@@ -843,32 +871,31 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   }
 
   const renderStepContent = () => {
-    // This function relies on currentStep being valid.
-    // The guard at the top of AIOnboardingExperience ensures this.
     switch (currentStep.type) {
       case "cinematic-intro":
         return (
           <div className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden">
+            {/* Quantum particle field */}
             <div className="absolute inset-0">
               {[...Array(50)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute h-1 w-1 rounded-full bg-cyan-400"
                   initial={{
-                    x: typeof window !== "undefined" ? Math.random() * window.innerWidth : 0,
-                    y: typeof window !== "undefined" ? Math.random() * window.innerHeight : 0,
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
                     opacity: 0,
                   }}
                   animate={{
                     x: [
-                      typeof window !== "undefined" ? Math.random() * window.innerWidth : 0,
-                      typeof window !== "undefined" ? Math.random() * window.innerWidth : 0,
-                      typeof window !== "undefined" ? Math.random() * window.innerWidth : 0,
+                      Math.random() * window.innerWidth,
+                      Math.random() * window.innerWidth,
+                      Math.random() * window.innerWidth,
                     ],
                     y: [
-                      typeof window !== "undefined" ? Math.random() * window.innerHeight : 0,
-                      typeof window !== "undefined" ? Math.random() * window.innerHeight : 0,
-                      typeof window !== "undefined" ? Math.random() * window.innerHeight : 0,
+                      Math.random() * window.innerHeight,
+                      Math.random() * window.innerHeight,
+                      Math.random() * window.innerHeight,
                     ],
                     opacity: [0, 1, 0],
                   }}
@@ -880,6 +907,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 />
               ))}
             </div>
+
+            {/* Matrix rain effect */}
             <div className="absolute inset-0 opacity-20">
               {[...Array(20)].map((_, i) => (
                 <motion.div
@@ -887,7 +916,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                   className="absolute text-green-400 font-mono text-xs"
                   style={{ left: `${i * 5}%` }}
                   initial={{ y: -100, opacity: 0 }}
-                  animate={{ y: typeof window !== "undefined" ? window.innerHeight + 100 : 0, opacity: [0, 1, 0] }}
+                  animate={{ y: window.innerHeight + 100, opacity: [0, 1, 0] }}
                   transition={{
                     duration: Math.random() * 3 + 2,
                     repeat: Number.POSITIVE_INFINITY,
@@ -898,12 +927,15 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 </motion.div>
               ))}
             </div>
+
+            {/* Main content */}
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 2, ease: "easeOut" }}
               className="relative z-10 text-center"
             >
+              {/* Jonlorenzo Caprelli Supreme Authority Coin */}
               <motion.div
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -912,6 +944,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               >
                 <CaprelliCoin />
               </motion.div>
+
               <motion.h1
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -920,6 +953,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               >
                 {currentStep.cinematicContent?.title}
               </motion.h1>
+
               <motion.p
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -928,6 +962,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               >
                 {currentStep.cinematicContent?.subtitle}
               </motion.p>
+
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -936,6 +971,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               >
                 {currentStep.cinematicContent?.description}
               </motion.p>
+
               <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -951,6 +987,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 </Button>
               </motion.div>
             </motion.div>
+
+            {/* Holographic grid */}
             <div
               className="absolute inset-0 opacity-10"
               style={{
@@ -961,6 +999,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             />
           </div>
         )
+
       case "welcome":
         return (
           <div className="flex flex-col items-center text-center">
@@ -970,10 +1009,12 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               transition={{ duration: 1, ease: "backOut" }}
               className="mb-6 relative"
             >
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - smaller version */}
               <div className="scale-75 mb-4">
                 <CaprelliCoin />
               </div>
             </motion.div>
+
             <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -982,6 +1023,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.title}
             </motion.h2>
+
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -990,6 +1032,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.subtitle}
             </motion.p>
+
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -998,6 +1041,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.description}
             </motion.p>
+
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1014,6 +1058,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             </motion.div>
           </div>
         )
+
       case "question":
         return (
           <div className="flex flex-col">
@@ -1031,6 +1076,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               )}
               <p className="text-indigo-300">{currentStep.description}</p>
             </motion.div>
+
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1049,10 +1095,10 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       <Label htmlFor={option.id} className="cursor-pointer">
                         <RadioGroupItem value={option.value} id={option.id} className="peer sr-only" />
                         <div
-                          className={`peer-data-[state=checked]:border-purple-500 peer-data-[state=checked]:bg-purple-950/50 peer-data-[state=checked]:${getRarityGlow(option.rarity)} flex items-center gap-4 rounded-xl border border-indigo-500/20 bg-indigo-950/30 p-6 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-950/40 hover:scale-105`}
+                          className={`peer-data-[state=checked]:border-purple-500 peer-data-[state=checked]:bg-purple-950/50 peer-data-[state=checked]:${getRarityGlow(option.rarity || "common")} flex items-center gap-4 rounded-xl border border-indigo-500/20 bg-indigo-950/30 p-6 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-950/40 hover:scale-105`}
                         >
                           <div
-                            className={`flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r ${getRarityColor(option.rarity)} peer-data-[state=checked]:shadow-lg`}
+                            className={`flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r ${getRarityColor(option.rarity || "common")} peer-data-[state=checked]:shadow-lg`}
                           >
                             {option.icon}
                           </div>
@@ -1082,6 +1128,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                   ))}
                 </RadioGroup>
               )}
+
               {currentStep.inputType === "slider" && (
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
@@ -1120,6 +1167,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                   </Button>
                 </motion.div>
               )}
+
               {currentStep.inputType === "text" && (
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
@@ -1148,6 +1196,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                   </Button>
                 </motion.div>
               )}
+
               {currentStep.inputType === "textarea" && (
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
@@ -1178,6 +1227,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             </motion.div>
           </div>
         )
+
       case "product-showcase":
         return (
           <div className="flex flex-col">
@@ -1191,6 +1241,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 {currentStep.title}
               </h2>
             </motion.div>
+
             {currentStep.productDetails && (
               <motion.div
                 initial={{ y: 30, opacity: 0, scale: 0.9 }}
@@ -1206,12 +1257,15 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       src={
                         currentStep.productDetails.image ||
                         "/placeholder.svg?height=400&width=800&query=futuristic+technology" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={currentStep.productDetails.name}
                       className="h-full w-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/90 via-indigo-950/50 to-transparent" />
+
+                    {/* Floating particles over image */}
                     <div className="absolute inset-0">
                       {[...Array(20)].map((_, i) => (
                         <motion.div
@@ -1231,6 +1285,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                         />
                       ))}
                     </div>
+
                     <div className="absolute bottom-6 left-6 right-6">
                       <div className="flex items-center gap-4 mb-4">
                         <div
@@ -1255,8 +1310,10 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       <p className="text-cyan-200 font-medium">{currentStep.productDetails.category}</p>
                     </div>
                   </div>
+
                   <div className="p-6 bg-gradient-to-br from-indigo-950/80 to-purple-950/80 backdrop-blur-sm">
                     <p className="mb-6 text-indigo-200 text-lg">{currentStep.productDetails.description}</p>
+
                     <div className="space-y-3">
                       <h4 className="font-bold text-purple-300 text-lg flex items-center gap-2">
                         <Diamond className="h-5 w-5" />
@@ -1277,6 +1334,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                         ))}
                       </div>
                     </div>
+
                     <motion.div
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
@@ -1301,6 +1359,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             )}
           </div>
         )
+
       case "unlock":
         return (
           <div className="flex flex-col items-center">
@@ -1310,10 +1369,12 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               transition={{ duration: 1, ease: "backOut" }}
               className="mb-8 relative"
             >
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - smaller version */}
               <div className="scale-75">
                 <CaprelliCoin />
               </div>
             </motion.div>
+
             <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1322,6 +1383,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.title}
             </motion.h2>
+
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1330,6 +1392,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.subtitle}
             </motion.p>
+
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1338,6 +1401,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.description}
             </motion.p>
+
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1354,10 +1418,12 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                   className="border-yellow-500/30 bg-yellow-950/30 text-indigo-100 placeholder:text-indigo-400/50 py-4 text-lg rounded-xl"
                 />
               </div>
+
               <div className="flex items-center gap-2 text-sm text-yellow-400 bg-yellow-950/20 p-3 rounded-lg border border-yellow-500/20">
                 <Lock className="h-4 w-4" />
                 <span>Required to {currentStep.unlockRequirement}</span>
               </div>
+
               <Button
                 onClick={() => handleNext(inputValue)}
                 disabled={!inputValue}
@@ -1370,9 +1436,11 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             </motion.div>
           </div>
         )
+
       case "celebration":
         return (
           <div className="flex flex-col items-center text-center relative overflow-hidden">
+            {/* Celebration particles */}
             <AnimatePresence>
               {showCelebration && (
                 <div className="absolute inset-0 pointer-events-none">
@@ -1403,17 +1471,21 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 </div>
               )}
             </AnimatePresence>
+
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: "backOut" }}
               className="mb-8 relative"
             >
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - celebration version */}
               <div className="scale-90 relative">
                 <CaprelliCoin />
+                {/* Celebration glow */}
                 <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-yellow-400/20 via-orange-400/30 to-yellow-400/20 blur-2xl animate-pulse" />
               </div>
             </motion.div>
+
             <motion.h2
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1422,6 +1494,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.title}
             </motion.h2>
+
             {currentStep.celebrationData && (
               <motion.div
                 initial={{ y: 30, opacity: 0 }}
@@ -1435,6 +1508,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                     {currentStep.celebrationData.achievement}
                   </h3>
                   <p className="text-yellow-200 mb-4">{currentStep.celebrationData.description}</p>
+
                   <div className="space-y-2">
                     <h4 className="font-bold text-orange-300 flex items-center gap-2">
                       <Gem className="h-4 w-4" />
@@ -1453,6 +1527,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       </motion.div>
                     ))}
                   </div>
+
                   <div className="mt-4 p-3 rounded-lg bg-gradient-to-r from-purple-950/50 to-indigo-950/50 border border-purple-500/30">
                     <p className="text-sm text-purple-300">
                       <Clock className="inline h-4 w-4 mr-1" />
@@ -1462,6 +1537,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 </div>
               </motion.div>
             )}
+
             <motion.div
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1473,6 +1549,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             </motion.div>
           </div>
         )
+
       case "completion":
         return (
           <div className="flex flex-col items-center text-center">
@@ -1482,8 +1559,10 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               transition={{ duration: 2, ease: "backOut" }}
               className="mb-8 relative"
             >
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - final celebration */}
               <div className="scale-110 relative">
                 <CaprelliCoin />
+                {/* Final celebration effects */}
                 <div className="absolute -inset-12 rounded-full bg-gradient-to-r from-yellow-400/30 via-orange-400/40 to-yellow-400/30 blur-3xl animate-pulse" />
                 <div
                   className="absolute -inset-16 rounded-full bg-gradient-to-r from-purple-400/20 via-cyan-400/20 to-purple-400/20 blur-3xl animate-pulse"
@@ -1491,6 +1570,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 />
               </div>
             </motion.div>
+
             <motion.h2
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1499,6 +1579,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.title}
             </motion.h2>
+
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1507,6 +1588,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.subtitle}
             </motion.p>
+
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1515,6 +1597,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             >
               {currentStep.description}
             </motion.p>
+
             <motion.div
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -1531,6 +1614,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             </motion.div>
           </div>
         )
+
       default:
         return null
     }
@@ -1538,11 +1622,14 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-950 via-purple-950 to-indigo-900">
+      {/* Animated background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(120,119,198,0.2),rgba(255,255,255,0))]" />
       </div>
+
+      {/* Progress bar */}
       {currentStep.type !== "cinematic-intro" && (
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 p-4">
           <div className="mx-auto max-w-4xl">
@@ -1554,10 +1641,14 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
           </div>
         </motion.div>
       )}
+
+      {/* Main content */}
       <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-4xl">
           <HolographicGlassCard className="p-8">
             {renderStepContent()}
+
+            {/* Chat interface for conversational steps */}
             {(currentStep.type === "welcome" || messages.length > 0) && currentStep.type !== "cinematic-intro" && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -1594,6 +1685,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                       </div>
                     </motion.div>
                   ))}
+
                   {isTyping && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
                       <div className="rounded-lg bg-indigo-900/50 p-3 border border-indigo-500/20">
@@ -1619,6 +1711,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                 <div ref={messagesEndRef} />
               </motion.div>
             )}
+
+            {/* Unlocked features display */}
             {unlockedFeatures.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
