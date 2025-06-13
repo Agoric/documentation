@@ -43,7 +43,6 @@ import {
   Layers,
   Atom,
   Wand2,
-  SnowflakeIcon as Confetti,
 } from "lucide-react"
 
 interface Message {
@@ -576,6 +575,7 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   const [messages, setMessages] = useState<Message[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const [showCelebration, setShowCelebration] = useState(false)
+  const [coinFlipped, setCoinFlipped] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const totalSteps = Object.keys(onboardingSteps).length - 1
 
@@ -600,6 +600,15 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
   useEffect(() => {
     scrollToBottom()
   }, [messages, isTyping])
+
+  // Auto-flip coin effect
+  useEffect(() => {
+    const flipInterval = setInterval(() => {
+      setCoinFlipped((prev) => !prev)
+    }, 8000)
+
+    return () => clearInterval(flipInterval)
+  }, [])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -747,6 +756,113 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
     }
   }
 
+  // Jonlorenzo Caprelli Supreme Authority Coin Component
+  const CaprelliCoin = () => {
+    return (
+      <div className="relative h-40 w-40 mx-auto">
+        {/* Outer glow */}
+        <div className="absolute -inset-6 rounded-full bg-gradient-to-r from-amber-400/30 via-yellow-300/40 to-amber-400/30 blur-lg animate-pulse" />
+
+        {/* Holographic effects */}
+        <div className="absolute -inset-10 rounded-full bg-gradient-to-r from-indigo-400/10 via-purple-400/10 to-amber-400/10 blur-xl" />
+
+        {/* 3D Coin Container */}
+        <motion.div
+          className="relative h-full w-full preserve-3d"
+          animate={{
+            rotateY: coinFlipped ? 180 : 0,
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+          }}
+        >
+          {/* Front side - Jonlorenzo Coin */}
+          <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl">
+            <img src="/jonlorenzo-coin.png" alt="Jonlorenzo Coin" className="h-full w-full object-cover" />
+
+            {/* Holographic overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent" />
+
+            {/* Front side text */}
+            <div className="absolute bottom-4 left-0 right-0 text-center">
+              <div className="text-xs font-bold text-amber-800 bg-amber-200/70 rounded-full mx-auto w-max px-2 py-0.5">
+                CAPRELLI SUPREME AUTHORITY
+              </div>
+            </div>
+          </div>
+
+          {/* Back side - Royal Insignia with Global Benefit */}
+          <div className="absolute inset-0 backface-hidden rounded-full overflow-hidden border-4 border-amber-300 shadow-2xl rotate-y-180 bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500">
+            {/* Royal Insignia */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              {/* Crown Symbol */}
+              <div className="mb-2">
+                <Crown className="h-12 w-12 text-amber-800" />
+              </div>
+
+              {/* Global Benefit Symbolism */}
+              <div className="relative h-16 w-16 mb-2">
+                <Globe className="h-16 w-16 text-amber-700 absolute inset-0" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Shield className="h-8 w-8 text-amber-800" />
+                </div>
+              </div>
+
+              {/* Text */}
+              <div className="text-center">
+                <div className="text-xs font-bold text-amber-800">GLOBAL BENEFIT</div>
+                <div className="text-[10px] text-amber-700 mt-1">EST. MMXXIII</div>
+              </div>
+            </div>
+
+            {/* Decorative border */}
+            <div className="absolute inset-0 border-8 border-amber-400/30 rounded-full pointer-events-none" />
+
+            {/* Radial lines */}
+            <div className="absolute inset-0">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute top-1/2 left-1/2 h-[40%] w-0.5 bg-amber-700/30 origin-bottom"
+                  style={{ transform: `translate(-50%, -100%) rotate(${i * 30}deg)` }}
+                />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Particle effects */}
+        <div className="absolute inset-0">
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300"
+              initial={{
+                x: 70,
+                y: 70,
+                opacity: 0.8,
+                scale: 1,
+              }}
+              animate={{
+                x: 70 + Math.cos((i * 30 * Math.PI) / 180) * 80,
+                y: 70 + Math.sin((i * 30 * Math.PI) / 180) * 80,
+                opacity: [0.8, 0.2, 0.8],
+                scale: [1, 0.3, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Number.POSITIVE_INFINITY,
+                delay: i * 0.15,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   const renderStepContent = () => {
     switch (currentStep.type) {
       case "cinematic-intro":
@@ -812,13 +928,14 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               transition={{ duration: 2, ease: "easeOut" }}
               className="relative z-10 text-center"
             >
+              {/* Jonlorenzo Caprelli Supreme Authority Coin */}
               <motion.div
-                initial={{ rotateY: 0 }}
-                animate={{ rotateY: 360 }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                className="mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 mx-auto"
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.5, delay: 0.5 }}
+                className="mb-8"
               >
-                <Atom className="h-16 w-16 text-white" />
+                <CaprelliCoin />
               </motion.div>
 
               <motion.h1
@@ -885,9 +1002,9 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               transition={{ duration: 1, ease: "backOut" }}
               className="mb-6 relative"
             >
-              <div className="absolute -inset-8 animate-pulse rounded-full bg-gradient-to-r from-purple-500/30 to-cyan-500/30 blur-xl"></div>
-              <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-cyan-600">
-                <Brain className="h-12 w-12 text-white" />
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - smaller version */}
+              <div className="scale-75 mb-4">
+                <CaprelliCoin />
               </div>
             </motion.div>
 
@@ -1132,7 +1249,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
                     <img
                       src={
                         currentStep.productDetails.image ||
-                        "/placeholder.svg?height=400&width=800&query=futuristic+technology"
+                        "/placeholder.svg?height=400&width=800&query=futuristic+technology" ||
+                        "/placeholder.svg"
                       }
                       alt={currentStep.productDetails.name}
                       className="h-full w-full object-cover"
@@ -1243,14 +1361,10 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               transition={{ duration: 1, ease: "backOut" }}
               className="mb-8 relative"
             >
-              <div className="absolute -inset-8 animate-pulse rounded-full bg-gradient-to-r from-yellow-500/30 to-orange-500/30 blur-xl"></div>
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 to-orange-500"
-              >
-                <Unlock className="h-10 w-10 text-white" />
-              </motion.div>
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - smaller version */}
+              <div className="scale-75">
+                <CaprelliCoin />
+              </div>
             </motion.div>
 
             <motion.h2
@@ -1319,68 +1433,56 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
         return (
           <div className="flex flex-col items-center text-center relative overflow-hidden">
             {/* Celebration particles */}
-            <div className="absolute inset-0">
-              {[...Array(30)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute"
-                  initial={{
-                    x: "50%",
-                    y: "50%",
-                    scale: 0,
-                    rotate: 0,
-                  }}
-                  animate={{
-                    x: Math.random() * 100 + "%",
-                    y: Math.random() * 100 + "%",
-                    scale: [0, 1, 0],
-                    rotate: 360,
-                  }}
-                  transition={{
-                    duration: 2,
-                    delay: Math.random() * 1,
-                    ease: "easeOut",
-                  }}
-                >
-                  {i % 3 === 0 ? (
-                    <Star className="h-4 w-4 text-yellow-400" />
-                  ) : i % 3 === 1 ? (
-                    <Sparkles className="h-4 w-4 text-cyan-400" />
-                  ) : (
-                    <Diamond className="h-4 w-4 text-purple-400" />
-                  )}
-                </motion.div>
-              ))}
-            </div>
+            <AnimatePresence>
+              {showCelebration && (
+                <div className="absolute inset-0 pointer-events-none">
+                  {[...Array(50)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute h-2 w-2 rounded-full"
+                      style={{
+                        backgroundColor: ["#fbbf24", "#f59e0b", "#d97706", "#92400e"][Math.floor(Math.random() * 4)],
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                      }}
+                      initial={{ scale: 0, opacity: 1 }}
+                      animate={{
+                        scale: [0, 1, 0],
+                        opacity: [1, 1, 0],
+                        y: [0, -100, -200],
+                        x: [0, Math.random() * 100 - 50, Math.random() * 200 - 100],
+                      }}
+                      exit={{ opacity: 0 }}
+                      transition={{
+                        duration: 2,
+                        delay: Math.random() * 0.5,
+                        ease: "easeOut",
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </AnimatePresence>
 
             <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 1, ease: "backOut" }}
-              className="mb-8 relative z-10"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "backOut" }}
+              className="mb-8 relative"
             >
-              <div className="absolute -inset-12 animate-pulse rounded-full bg-gradient-to-r from-yellow-500/40 to-purple-500/40 blur-2xl"></div>
-              <motion.div
-                animate={{
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-                className="relative flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500"
-              >
-                <Trophy className="h-16 w-16 text-white" />
-              </motion.div>
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - celebration version */}
+              <div className="scale-90 relative">
+                <CaprelliCoin />
+                {/* Celebration glow */}
+                <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-yellow-400/20 via-orange-400/30 to-yellow-400/20 blur-2xl animate-pulse" />
+              </div>
             </motion.div>
 
             <motion.h2
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-4 text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 bg-clip-text text-transparent"
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="mb-4 text-3xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
             >
               {currentStep.title}
             </motion.h2>
@@ -1389,47 +1491,54 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
               <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-                className="mb-8 text-center"
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="space-y-6 max-w-md"
               >
-                <h3 className="mb-2 text-xl font-bold text-yellow-300">{currentStep.celebrationData.achievement}</h3>
-                <p className="mb-6 text-indigo-300 max-w-md">{currentStep.celebrationData.description}</p>
+                <div className="p-6 rounded-xl bg-gradient-to-br from-yellow-950/50 to-orange-950/50 border border-yellow-500/30">
+                  <h3 className="text-xl font-bold text-yellow-300 mb-2 flex items-center gap-2">
+                    <Trophy className="h-6 w-6" />
+                    {currentStep.celebrationData.achievement}
+                  </h3>
+                  <p className="text-yellow-200 mb-4">{currentStep.celebrationData.description}</p>
 
-                <div className="grid gap-4 md:grid-cols-2 mb-6">
-                  {currentStep.celebrationData.rewards.map((reward, index) => (
-                    <motion.div
-                      key={reward}
-                      initial={{ x: -30, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
-                      className="flex items-center gap-3 rounded-xl border border-yellow-500/30 bg-gradient-to-r from-yellow-950/30 to-orange-950/30 p-4"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-yellow-500 to-orange-500">
-                        <CheckCircle2 className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <p className="font-bold text-yellow-200">{reward}</p>
-                        <p className="text-xs text-yellow-400">Enhanced financial capabilities unlocked</p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-orange-300 flex items-center gap-2">
+                      <Gem className="h-4 w-4" />
+                      Rewards Unlocked:
+                    </h4>
+                    {currentStep.celebrationData.rewards.map((reward, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
+                        className="flex items-center gap-2 text-yellow-200"
+                      >
+                        <Star className="h-4 w-4 text-yellow-400" />
+                        {reward}
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 p-3 rounded-lg bg-gradient-to-r from-purple-950/50 to-indigo-950/50 border border-purple-500/30">
+                    <p className="text-sm text-purple-300">
+                      <Clock className="inline h-4 w-4 mr-1" />
+                      Next Unlock: {currentStep.celebrationData.nextUnlock}
+                    </p>
+                  </div>
                 </div>
-
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 1.2 }}
-                >
-                  <Button
-                    onClick={() => handleNext()}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600 px-8 py-4 text-lg font-bold rounded-full shadow-xl"
-                  >
-                    Continue to Next Stage
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </motion.div>
               </motion.div>
             )}
+
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+              className="mt-8"
+            >
+              <div className="text-yellow-300 text-lg font-medium mb-4">Preparing next quantum phase...</div>
+              <Progress value={100} className="w-64 h-2" />
+            </motion.div>
           </div>
         )
 
@@ -1437,22 +1546,28 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
         return (
           <div className="flex flex-col items-center text-center">
             <motion.div
-              initial={{ scale: 0.7, opacity: 0, rotateY: -180 }}
+              initial={{ scale: 0.5, opacity: 0, rotateY: -360 }}
               animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-              transition={{ duration: 1, ease: "backOut" }}
+              transition={{ duration: 2, ease: "backOut" }}
               className="mb-8 relative"
             >
-              <div className="absolute -inset-8 animate-pulse rounded-full bg-gradient-to-r from-green-500/30 to-teal-500/30 blur-xl"></div>
-              <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-green-600 to-teal-600">
-                <CheckCircle2 className="h-12 w-12 text-white" />
+              {/* Jonlorenzo Caprelli Supreme Authority Coin - final celebration */}
+              <div className="scale-110 relative">
+                <CaprelliCoin />
+                {/* Final celebration effects */}
+                <div className="absolute -inset-12 rounded-full bg-gradient-to-r from-yellow-400/30 via-orange-400/40 to-yellow-400/30 blur-3xl animate-pulse" />
+                <div
+                  className="absolute -inset-16 rounded-full bg-gradient-to-r from-purple-400/20 via-cyan-400/20 to-purple-400/20 blur-3xl animate-pulse"
+                  style={{ animationDelay: "1s" }}
+                />
               </div>
             </motion.div>
 
             <motion.h2
-              initial={{ y: 20, opacity: 0 }}
+              initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-2 text-3xl font-bold bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent"
+              transition={{ duration: 1, delay: 0.5 }}
+              className="mb-4 text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-purple-400 bg-clip-text text-transparent"
             >
               {currentStep.title}
             </motion.h2>
@@ -1460,8 +1575,8 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-2 text-lg text-green-300 font-medium"
+              transition={{ duration: 1, delay: 0.7 }}
+              className="mb-2 text-xl text-purple-300 font-medium"
             >
               {currentStep.subtitle}
             </motion.p>
@@ -1469,110 +1584,157 @@ export function AIOnboardingExperience({ onComplete, initialStep = "cinematic-in
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
+              transition={{ duration: 1, delay: 0.9 }}
               className="mb-8 text-indigo-300 max-w-md"
             >
               {currentStep.description}
             </motion.p>
 
             <motion.div
-              initial={{ y: 20, opacity: 0 }}
+              initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
+              transition={{ duration: 1, delay: 1.1 }}
             >
               <Button
                 onClick={() => handleNext()}
-                className="bg-gradient-to-r from-green-600 to-teal-600 text-white hover:from-green-700 hover:to-teal-700 px-6 py-3 rounded-full shadow-lg shadow-green-500/30"
+                className="bg-gradient-to-r from-yellow-500 via-orange-500 to-purple-600 text-white hover:from-yellow-600 hover:via-orange-600 hover:to-purple-700 px-12 py-6 text-xl font-bold rounded-full shadow-2xl shadow-purple-500/50"
               >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Enter Your Financial Future
-                <ChevronRight className="ml-2 h-4 w-4" />
+                <Rocket className="mr-3 h-6 w-6" />
+                Enter My Financial Empire
+                <Crown className="ml-3 h-6 w-6" />
               </Button>
             </motion.div>
           </div>
         )
 
       default:
-        return <div>Unknown step type</div>
+        return null
     }
   }
 
   return (
-    <div className="relative min-h-screen bg-indigo-950 text-indigo-200 overflow-hidden">
-      {showCelebration && (
-        <AnimatePresence>
-          <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <motion.div
-              className="relative"
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Confetti className="absolute inset-0 h-full w-full text-yellow-500 animate-confetti" />
-              <div className="bg-indigo-900 p-8 rounded-2xl shadow-2xl">
-                <h2 className="text-3xl font-bold text-center text-yellow-400 mb-4">Celebration!</h2>
-                <p className="text-indigo-200 text-center">You've unlocked a new achievement!</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-indigo-950 via-purple-950 to-indigo-900">
+      {/* Animated background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(120,119,198,0.2),rgba(255,255,255,0))]" />
+      </div>
+
+      {/* Progress bar */}
+      {currentStep.type !== "cinematic-intro" && (
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 p-4">
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-2 flex items-center justify-between text-sm text-indigo-300">
+              <span>Quantum Transformation Progress</span>
+              <span>{progress}% Complete</span>
+            </div>
+            <Progress value={progress} className="h-2" />
+          </div>
+        </motion.div>
       )}
 
-      <div className="container mx-auto py-12 px-6 relative z-10">
-        <HolographicGlassCard className="max-w-3xl mx-auto p-8 rounded-3xl">
-          <Progress value={progress} className="mb-6" />
+      {/* Main content */}
+      <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+        <div className="w-full max-w-4xl">
+          <HolographicGlassCard className="p-8">
+            {renderStepContent()}
 
-          {/* Chat Messages */}
-          <div className="mb-8">
-            {messages.map((message) => (
+            {/* Chat interface for conversational steps */}
+            {(currentStep.type === "welcome" || messages.length > 0) && currentStep.type !== "cinematic-intro" && (
               <motion.div
-                key={message.id}
-                className={`mb-3 flex items-start gap-3 rounded-xl p-3 ${message.role === "user" ? "bg-indigo-900/50 text-indigo-200" : "bg-purple-900/50 text-purple-200"} ${message.animation === "fade" ? "animate-fade-in" : ""} ${message.animation === "slide" ? "animate-slide-in" : ""}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="mt-8 max-h-96 overflow-y-auto rounded-xl bg-indigo-950/50 p-4 backdrop-blur-sm border border-indigo-500/20"
               >
-                {message.role === "assistant" && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
-                    <Bot className="h-5 w-5 text-white" />
-                  </div>
-                )}
-                {message.role === "system" && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-white" />
-                  </div>
-                )}
-                {message.role === "user" && (
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center">
-                    <User className="h-5 w-5 text-white" />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <p className="font-medium">{message.content}</p>
-                  <div className="mt-1 text-xs text-gray-400 flex items-center gap-2">
-                    <Clock className="h-3 w-3" />
-                    {message.timestamp}
-                  </div>
+                <div className="space-y-4">
+                  {messages.map((message) => (
+                    <motion.div
+                      key={message.id}
+                      initial={{ opacity: 0, x: message.role === "user" ? 20 : -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                    >
+                      <div
+                        className={`max-w-[80%] rounded-lg p-3 ${
+                          message.role === "user"
+                            ? "bg-gradient-to-r from-purple-600 to-cyan-600 text-white"
+                            : message.role === "system"
+                              ? "bg-gradient-to-r from-yellow-600 to-orange-600 text-white text-center font-bold"
+                              : "bg-indigo-900/50 text-indigo-100 border border-indigo-500/20"
+                        }`}
+                      >
+                        {message.role === "assistant" && (
+                          <div className="mb-2 flex items-center gap-2">
+                            <Bot className="h-4 w-4 text-cyan-400" />
+                            <span className="text-xs font-medium text-cyan-400">ARIA</span>
+                          </div>
+                        )}
+                        <p className="text-sm">{message.content}</p>
+                        <p className="mt-1 text-xs opacity-70">{message.timestamp}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {isTyping && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+                      <div className="rounded-lg bg-indigo-900/50 p-3 border border-indigo-500/20">
+                        <div className="flex items-center gap-2">
+                          <Bot className="h-4 w-4 text-cyan-400" />
+                          <span className="text-xs font-medium text-cyan-400">ARIA</span>
+                        </div>
+                        <div className="mt-2 flex items-center gap-1">
+                          <div className="h-2 w-2 animate-bounce rounded-full bg-cyan-400" />
+                          <div
+                            className="h-2 w-2 animate-bounce rounded-full bg-cyan-400"
+                            style={{ animationDelay: "0.1s" }}
+                          />
+                          <div
+                            className="h-2 w-2 animate-bounce rounded-full bg-cyan-400"
+                            style={{ animationDelay: "0.2s" }}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
-              </motion.div>
-            ))}
-            {isTyping && (
-              <motion.div className="mb-3 flex items-start gap-3 rounded-xl p-3 bg-purple-900/50 text-purple-200 animate-pulse">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
-                  <Bot className="h-5 w-5 text-white" />
-                </div>
-                <div className="flex-1">Typing...</div>
+                <div ref={messagesEndRef} />
               </motion.div>
             )}
-            <div ref={messagesEndRef} />
-          </div>
 
-          {renderStepContent()}
-        </HolographicGlassCard>
+            {/* Unlocked features display */}
+            {unlockedFeatures.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="mt-6 rounded-xl bg-gradient-to-r from-yellow-950/30 to-orange-950/30 p-4 border border-yellow-500/30"
+              >
+                <h4 className="mb-3 font-bold text-yellow-300 flex items-center gap-2">
+                  <Unlock className="h-5 w-5" />
+                  Unlocked Quantum Features:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {unlockedFeatures.map((feature, index) => (
+                    <motion.div
+                      key={feature}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <HolographicBadge variant="premium" glow={true}>
+                        <Star className="mr-1 h-3 w-3" />
+                        {feature.replace(/-/g, " ")}
+                      </HolographicBadge>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </HolographicGlassCard>
+        </div>
       </div>
     </div>
   )

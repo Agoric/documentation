@@ -23,7 +23,6 @@ import {
   BarChart3,
   Wallet,
   Globe,
-  CircleDollarSign,
 } from "lucide-react"
 
 export function SnapDaxDashboardWithGlass() {
@@ -87,12 +86,8 @@ export function SnapDaxDashboardWithGlass() {
   // Logo component for sidebar
   const SidebarLogo = () => (
     <div className="flex items-center gap-2">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-        <CircleDollarSign className="h-5 w-5 text-white z-10" />
-        <div className="absolute inset-0 rounded-full border-2 border-indigo-300/30"></div>
-        <div className="absolute h-full w-full bg-gradient-to-r from-gold-500/20 to-purple-500/20 blur-sm"></div>
-        <span className="absolute text-[9px] font-bold text-white/80 -bottom-0.5">SA</span>
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600">
+        <Sparkles className="h-6 w-6 text-white" />
       </div>
       {!sidebarCollapsed && <div className="text-lg font-bold text-white">SNAP-DAX</div>}
     </div>
