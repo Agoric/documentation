@@ -1,5 +1,6 @@
 import type React from "react"
-import Image from "next/image"
+import { HolographicUnifiedSidebar } from "@/components/layout/holographic-unified-sidebar"
+import { AIWellnessCompanion } from "@/components/wellness/ai-wellness-companion"
 
 export default function DashboardLayout({
   children,
@@ -7,17 +8,10 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-amber-900 via-yellow-800 to-amber-700">
-      <div className="relative">
-        <Image
-          src="/jonlorenzo-coin.png"
-          alt="Jon'Lorenzo Caprelli - Digital Creator of Global Economics"
-          width={400}
-          height={400}
-          className="animate-pulse drop-shadow-2xl"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-yellow-300/20 rounded-full animate-ping"></div>
-      </div>
+    <div className="flex h-screen overflow-hidden">
+      <HolographicUnifiedSidebar />
+      <div className="flex-1 overflow-auto">{children}</div>
+      <AIWellnessCompanion />
     </div>
   )
 }
