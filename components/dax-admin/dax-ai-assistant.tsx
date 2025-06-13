@@ -1,66 +1,83 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useRef, useEffect } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Brain, Send, User, TrendingUp, Globe, Zap, Settings, Clock } from "lucide-react"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Brain, Send, Sparkles, Shield, TrendingUp, Globe, DollarSign } from "lucide-react"
 
-interface DAXMessage {
+interface Message {
   id: string
-  role: "user" | "assistant" | "system"
+  type: "user" | "assistant"
   content: string
   timestamp: Date
-  type?: "qgi-creation" | "citizenship" | "analytics" | "general"
-  metadata?: any
+  category?: "qgi" | "citizenship" | "tax" | "verification" | "general"
 }
 
+const quickActions = [
+  {
+    id: "create-qgi",
+    label: "Create New QGI",
+    icon: <TrendingUp className="h-4 w-4" />,
+    category: "qgi",
+    prompt: "Help me create a new Quantum Gains Instrument with the following parameters:",
+  },
+  {
+    id: "process-citizenship",
+    label: "Process Citizenship",
+    icon: <Globe className="h-4 w-4" />,
+    category: "citizenship",
+    prompt: "I need to process a new DAX citizenship application with these requirements:",
+  },
+  {
+    id: "optimize-tax",
+    label: "Optimize Tax Benefits",
+    icon: <DollarSign className="h-4 w-4" />,
+    category: "tax",
+    prompt: "Help me optimize tax benefits for a business with these characteristics:",
+  },
+  {
+    id: "verify-contribution",
+    label: "Verify Contribution",
+    icon: <Shield className="h-4 w-4" />,
+    category: "verification",
+    prompt: "I need to set up quantum-secure verification for a charitable contribution:",
+  },
+]
+
 export function DAXAIAssistant() {
-  const [messages, setMessages] = useState<DAXMessage[]>([])
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "1",
+      type: "assistant",
+      content:
+        "Welcome to the DAX AI Assistant! I can help you create QGIs, process citizenship applications, optimize tax benefits, and set up quantum-secure verifications. How can I assist you today?",
+      timestamp: new Date(),
+      category: "general",
+    },
+  ])
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
-  const [activeMode, setActiveMode] = useState<"qgi" | "citizenship" | "analytics" | "general">("general")
   const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    // Initialize with welcome message
-    const welcomeMessage: DAXMessage = {
-      id: "welcome",
-      role: "assistant",
-      content: `Welcome to the DAX Administrative AI Assistant. I can help you create Quantum Gains Instruments (QGI), process citizenship applications, analyze performance metrics, and manage the Imperial Trust Social Impact Fund.
-
-Available commands:
-• "Create QGI" - Design new investment instruments
-• "Process citizenship" - Handle new citizen applications  
-• "Analyze performance" - Review fund and QGI analytics
-• "Configure variables" - Set QGI parameters and variables
-
-What would you like to work on today?`,
-      timestamp: new Date(),
-      type: "general",
-    }
-    setMessages([welcomeMessage])
-  }, [])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const handleSendMessage = async (message?: string) => {
-    const messageToSend = message || inputValue.trim()
-    if (!messageToSend) return
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
-    const userMessage: DAXMessage = {
+  const handleSendMessage = async (content: string) => {
+    if (!content.trim()) return
+
+    const userMessage: Message = {
       id: Date.now().toString(),
-      role: "user",
-      content: messageToSend,
+      type: "user",
+      content: content.trim(),
       timestamp: new Date(),
     }
 
@@ -68,443 +85,258 @@ What would you like to work on today?`,
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI processing
+    // Simulate AI response
     setTimeout(() => {
-      const response = generateDAXResponse(messageToSend)
-      setMessages((prev) => [...prev, response])
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: "assistant",
+        content: generateAIResponse(content),
+        timestamp: new Date(),
+        category: detectCategory(content),
+      }
+      setMessages((prev) => [...prev, assistantMessage])
       setIsTyping(false)
     }, 1500)
   }
 
-  const generateDAXResponse = (message: string): DAXMessage => {
-    const lowerMessage = message.toLowerCase()
+  const generateAIResponse = (input: string): string => {
+    const lowerInput = input.toLowerCase()
 
-    if (lowerMessage.includes("create qgi") || lowerMessage.includes("quantum gains")) {
-      return {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: `I'll help you create a new Quantum Gains Instrument. Let me gather the required parameters:
+    if (lowerInput.includes("qgi") || lowerInput.includes("quantum gains")) {
+      return `I'll help you create a Quantum Gains Instrument. Based on your request, I recommend:
 
-**QGI Configuration Options:**
-1. **Instrument Type**: Social Impact, Guaranteed Mortgage (GM), Custom
-2. **Backing Asset**: US Corporate Bonds, Government Securities, Mixed Portfolio
-3. **Maturity Period**: 10, 25, 50 years (or custom)
-4. **Leverage Ratio**: 1:1 to 10:1
-5. **Risk Rating**: AAA, AA, A, BBB
-6. **Minimum Investment**: $1,000 to $1,000,000
-7. **Yield Structure**: Fixed, Variable, Hybrid
+🔹 **Instrument Type**: Social Impact QGI
+🔹 **Base Asset**: US 50-year Corporate Bond Mirror
+🔹 **Leverage Ratio**: 2.5:1 (Conservative)
+🔹 **Maturity Period**: 50 years with early redemption options
+🔹 **Risk Rating**: Investment Grade (AAA)
+🔹 **Minimum Investment**: $1,000
+🔹 **Expected Yield**: 4.2% - 6.8% annually
 
-Please specify:
-- What type of QGI would you like to create?
-- What should be the underlying asset backing?
-- What maturity period are you targeting?
-
-I can also create a mirrored instrument that tracks existing market instruments with quantum-enhanced analytics.`,
-        timestamp: new Date(),
-        type: "qgi-creation",
-        metadata: {
-          suggestedActions: ["Configure Social Impact QGI", "Create GM QGI", "Design Custom Instrument"],
-        },
-      }
+Would you like me to configure specific variables or create this instrument now?`
     }
 
-    if (
-      lowerMessage.includes("citizenship") ||
-      lowerMessage.includes("process") ||
-      lowerMessage.includes("application")
-    ) {
-      return {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: `I'll assist with citizenship processing for the DAX multidimensional realm. Here's the current workflow:
+    if (lowerInput.includes("citizenship") || lowerInput.includes("citizen")) {
+      return `I'll guide you through the DAX citizenship process:
 
-**Citizenship Application Processing:**
+📋 **Required Documents**:
+✅ Recorded Declaration (Audio/Video)
+✅ Valid Government ID
+✅ Bank Account Verification
+✅ SSN or Equivalent
+✅ $50 Quantum Domicile Fee
 
-**Required Documents Verification:**
-✓ Recorded Declaration (Audio/Video validation)
-✓ State/Federal ID verification
-✓ Bank account authentication
-✓ SSN/equivalent validation
-✓ $50 Quantum Domicile Ledger Fee payment
+🎯 **Benefits Package**:
+💰 $80,000 Social Impact Credit at 1% interest
+🛡️ $250,000 Imperial Banking Coverage
+🔒 $30,000 Retail Default Protection
+📊 Social Impact Number (affects 25% of Snapp credit rating)
 
-**Automatic Benefits Assignment:**
-• Global Digital Citizen ID & Number generation
-• $80,000 Social Impact Credit at 1% interest
-• $250,000 Imperial Banking coverage
-• $30,000 retail default protection
-• Social Impact Number (SIN) assignment
-
-**Current Processing Status:**
-- 234 pending applications
-- Average processing time: 24-48 hours
-- Success rate: 98.7%
-
-Would you like me to:
-1. Process a specific application
-2. Review pending applications
-3. Configure citizenship benefits
-4. Generate new citizen IDs`,
-        timestamp: new Date(),
-        type: "citizenship",
-        metadata: {
-          pendingApplications: 234,
-          processingTime: "24-48 hours",
-        },
-      }
+Shall I initiate the application process?`
     }
 
-    if (lowerMessage.includes("analyz") || lowerMessage.includes("performance") || lowerMessage.includes("metrics")) {
-      return {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: `Here's the current DAX performance analytics:
+    if (lowerInput.includes("tax") || lowerInput.includes("benefit")) {
+      return `I'll optimize your tax benefits strategy:
 
-**Social Impact Fund Performance:**
-• Total Fund Value: $2,847,392,847.50
-• 30-day return: +3.2%
-• YTD performance: +12.8%
-• Active QGI instruments: 89
-• Average yield: 4.7%
+🌍 **Multi-Jurisdictional Analysis**:
+• US: 60% personal / 25% business charitable deductions
+• EU: 50% personal / 20% business deductions
+• Quantum Realm: 100% deduction eligibility
 
-**Citizenship Metrics:**
-• Total Citizens: 12,847
-• New registrations (30 days): 1,247
-• Average Snapp Credit Rating: 742
-• Default rate: 0.3%
+💡 **Optimization Recommendations**:
+1. Maximize Imperial Trust pledges (special tax status)
+2. Distribute contributions across approved entities
+3. Utilize currency exchange advantages
+4. Implement multi-year planning strategy
 
-**QGI Performance:**
-• Social Impact QGI: +4.2% (30-day)
-• GM QGI: +3.8% (30-day)
-• Custom QGIs: +5.1% average
-
-**Risk Assessment:**
-• Overall portfolio risk: Low-Medium
-• Leverage utilization: 67%
-• Liquidity ratio: 23%
-
-Would you like me to:
-1. Deep dive into specific QGI performance
-2. Analyze citizen credit trends
-3. Review fund allocation strategies
-4. Generate custom reports`,
-        timestamp: new Date(),
-        type: "analytics",
-        metadata: {
-          fundValue: 2847392847.5,
-          performance: "+12.8%",
-          riskLevel: "Low-Medium",
-        },
-      }
+Current estimated tax savings: $12,450 annually. Would you like detailed calculations?`
     }
 
-    if (lowerMessage.includes("variable") || lowerMessage.includes("configure") || lowerMessage.includes("parameter")) {
-      return {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: `I'll help you configure QGI variables and parameters. Here are the configurable elements:
+    if (lowerInput.includes("verify") || lowerInput.includes("quantum")) {
+      return `I'll set up quantum-secure verification:
 
-**Core QGI Variables:**
-1. **Yield Calculation**: Fixed rate, floating rate, or hybrid
-2. **Risk Weighting**: Conservative (1-3), Moderate (4-6), Aggressive (7-10)
-3. **Liquidity Terms**: Daily, Weekly, Monthly, Quarterly redemption
-4. **Leverage Multiplier**: 1x to 10x leverage options
-5. **Correlation Factors**: Market correlation coefficients
-6. **Maturity Ladder**: Staggered maturity dates
+🔐 **Security Protocols**:
+• Post-Quantum Cryptography (Dilithium signatures)
+• Multi-dimensional blockchain recording
+• Biometric authentication (fingerprint, retinal, voice)
+• Zero-knowledge proof verification
 
-**Social Impact QGI Specific:**
-• Bond mirror percentage (50-100% of US corporate bonds)
-• Lending leverage ratio (2:1 to 8:1)
-• Credit rating influence weight (10-50% of Snapp score)
-• Premium calculation methodology
+🌐 **Blockchain Networks**:
+• Primary: Ethereum Mainnet
+• Quantum: Quantum Realm Chain
+• Parallel: Multiverse Sidechain
 
-**GM QGI Specific:**
-• Mortgage backing ratio
-• Government guarantee percentage
-• Interest rate spread
-• Default protection level
+⚡ **Verification Process**:
+1. Generate quantum-resistant key pairs
+2. Create cryptographic document hashes
+3. Record on multi-dimensional blockchain
+4. Issue quantum-verified certificates
 
-**Custom Variables:**
-• Asset allocation percentages
-• Rebalancing frequency
-• Performance benchmarks
-• Fee structures
-
-Which variables would you like to configure? I can create a new instrument with your specifications or modify existing ones.`,
-        timestamp: new Date(),
-        type: "qgi-creation",
-        metadata: {
-          configurableParams: ["yield", "risk", "liquidity", "leverage", "correlation"],
-        },
-      }
+Ready to begin the verification process?`
     }
 
-    // Default response
-    return {
-      id: (Date.now() + 1).toString(),
-      role: "assistant",
-      content: `I'm your DAX Administrative AI Assistant, specialized in:
+    return `I understand you're looking for assistance with DAX administration. I can help with:
 
-🌌 **Quantum Gains Instruments (QGI)**
-- Create and configure investment instruments
-- Set variables and parameters
-- Monitor performance analytics
+🔹 **QGI Creation** - Design custom Quantum Gains Instruments
+🔹 **Citizenship Processing** - Handle multidimensional entity establishment
+🔹 **Tax Optimization** - Maximize benefits across jurisdictions
+🔹 **Quantum Verification** - Secure charitable contribution verification
 
-🌍 **Global Citizenship Management**
-- Process multidimensional entity applications
-- Manage Imperial Trust benefits
-- Generate citizen IDs and Social Impact Numbers
-
-📊 **Analytics & Reporting**
-- Real-time fund performance
-- Risk assessment and management
-- Custom reporting and insights
-
-💫 **Imperial Trust Operations**
-- Social Impact Fund management
-- Leverage and lending operations
-- Government-backed instrument oversight
-
-How can I assist you with DAX administration today? You can ask me to create instruments, process applications, analyze performance, or configure any system parameters.`,
-      timestamp: new Date(),
-      type: "general",
-    }
+Please let me know which area you'd like to focus on, or ask me a specific question about any DAX administrative function.`
   }
 
-  const getModeIcon = (mode: string) => {
-    switch (mode) {
+  const detectCategory = (input: string): Message["category"] => {
+    const lowerInput = input.toLowerCase()
+    if (lowerInput.includes("qgi") || lowerInput.includes("quantum gains")) return "qgi"
+    if (lowerInput.includes("citizenship") || lowerInput.includes("citizen")) return "citizenship"
+    if (lowerInput.includes("tax") || lowerInput.includes("benefit")) return "tax"
+    if (lowerInput.includes("verify") || lowerInput.includes("quantum")) return "verification"
+    return "general"
+  }
+
+  const handleQuickAction = (action: (typeof quickActions)[0]) => {
+    handleSendMessage(action.prompt)
+  }
+
+  const getCategoryColor = (category?: string) => {
+    switch (category) {
       case "qgi":
-        return <Zap className="h-4 w-4" />
+        return "bg-purple-100 text-purple-800 border-purple-200"
       case "citizenship":
-        return <Globe className="h-4 w-4" />
-      case "analytics":
-        return <TrendingUp className="h-4 w-4" />
+        return "bg-blue-100 text-blue-800 border-blue-200"
+      case "tax":
+        return "bg-green-100 text-green-800 border-green-200"
+      case "verification":
+        return "bg-amber-100 text-amber-800 border-amber-200"
       default:
-        return <Brain className="h-4 w-4" />
-    }
-  }
-
-  const getMessageIcon = (message: DAXMessage) => {
-    if (message.role === "user") return <User className="h-4 w-4" />
-
-    switch (message.type) {
-      case "qgi-creation":
-        return <Zap className="h-4 w-4 text-purple-400" />
-      case "citizenship":
-        return <Globe className="h-4 w-4 text-blue-400" />
-      case "analytics":
-        return <TrendingUp className="h-4 w-4 text-green-400" />
-      default:
-        return <Brain className="h-4 w-4 text-cyan-400" />
+        return "bg-gray-100 text-gray-800 border-gray-200"
     }
   }
 
   return (
-    <Card className="flex flex-col h-[700px]">
+    <Card className="h-[600px] flex flex-col">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="/ai-assistant-concept.png" />
-              <AvatarFallback>
-                <Brain className="h-4 w-4" />
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <CardTitle className="text-sm">DAX Administrative AI</CardTitle>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                Quantum Processing Active
-              </div>
-            </div>
+        <CardTitle className="flex items-center gap-2">
+          <div className="p-2 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600">
+            <Brain className="h-4 w-4 text-white" />
           </div>
-          <div className="flex items-center gap-1">
-            <Button
-              variant={activeMode === "general" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setActiveMode("general")}
-            >
-              {getModeIcon("general")}
-              General
-            </Button>
-            <Button variant={activeMode === "qgi" ? "default" : "ghost"} size="sm" onClick={() => setActiveMode("qgi")}>
-              {getModeIcon("qgi")}
-              QGI
-            </Button>
-            <Button
-              variant={activeMode === "citizenship" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setActiveMode("citizenship")}
-            >
-              {getModeIcon("citizenship")}
-              Citizenship
-            </Button>
-            <Button
-              variant={activeMode === "analytics" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setActiveMode("analytics")}
-            >
-              {getModeIcon("analytics")}
-              Analytics
-            </Button>
-          </div>
-        </div>
+          DAX AI Assistant
+          <Badge variant="outline" className="ml-auto">
+            <Sparkles className="h-3 w-3 mr-1" />
+            Quantum-Enhanced
+          </Badge>
+        </CardTitle>
+        <CardDescription>
+          Intelligent assistance for QGI creation, citizenship processing, and tax optimization
+        </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col p-0">
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          <AnimatePresence>
-            {messages.map((message) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div className={`flex max-w-[85%] ${message.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                  <Avatar className={`h-8 w-8 ${message.role === "user" ? "ml-2" : "mr-2"}`}>
-                    <AvatarImage
-                      src={message.role === "user" ? "/abstract-geometric-shapes.png" : "/ai-assistant-concept.png"}
-                    />
-                    <AvatarFallback>{getMessageIcon(message)}</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <div
-                      className={`rounded-lg p-3 ${
-                        message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
-                      }`}
-                    >
-                      <div className="text-sm whitespace-pre-wrap">{message.content}</div>
-                      {message.type && message.type !== "general" && (
-                        <div className="mt-2">
-                          <Badge variant="outline" className="text-xs">
-                            {message.type === "qgi-creation" && <Zap className="h-3 w-3 mr-1" />}
-                            {message.type === "citizenship" && <Globe className="h-3 w-3 mr-1" />}
-                            {message.type === "analytics" && <TrendingUp className="h-3 w-3 mr-1" />}
-                            {message.type.replace("-", " ").toUpperCase()}
-                          </Badge>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Suggested Actions */}
-                    {message.metadata?.suggestedActions && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {message.metadata.suggestedActions.map((action: string, index: number) => (
-                          <Button
-                            key={index}
-                            variant="outline"
-                            size="sm"
-                            className="text-xs"
-                            onClick={() => handleSendMessage(action)}
-                          >
-                            {action}
-                          </Button>
-                        ))}
-                      </div>
-                    )}
-
-                    <div
-                      className={`text-xs text-muted-foreground flex items-center ${
-                        message.role === "user" ? "justify-end" : "justify-start"
-                      }`}
-                    >
-                      <Clock className="h-3 w-3 mr-1" />
-                      {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-
-          {isTyping && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
-              <div className="flex max-w-[85%] flex-row">
-                <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src="/ai-assistant-concept.png" />
-                  <AvatarFallback>
-                    <Brain className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="rounded-lg p-3 bg-muted">
-                  <div className="flex space-x-2">
-                    <div className="h-2 w-2 rounded-full bg-current animate-bounce" />
-                    <div className="h-2 w-2 rounded-full bg-current animate-bounce [animation-delay:0.2s]" />
-                    <div className="h-2 w-2 rounded-full bg-current animate-bounce [animation-delay:0.4s]" />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          <div ref={messagesEndRef} />
-        </div>
-
+      <CardContent className="flex-1 flex flex-col gap-4 p-0">
         {/* Quick Actions */}
-        <div className="p-4 border-t bg-muted/30">
-          <div className="text-sm font-medium mb-2">Quick Actions:</div>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs"
-              onClick={() => handleSendMessage("Create a new Social Impact QGI")}
-            >
-              <Zap className="h-3 w-3 mr-1" />
-              Create QGI
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs"
-              onClick={() => handleSendMessage("Process pending citizenship applications")}
-            >
-              <Globe className="h-3 w-3 mr-1" />
-              Process Applications
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs"
-              onClick={() => handleSendMessage("Analyze current fund performance")}
-            >
-              <TrendingUp className="h-3 w-3 mr-1" />
-              View Analytics
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs"
-              onClick={() => handleSendMessage("Configure QGI variables and parameters")}
-            >
-              <Settings className="h-3 w-3 mr-1" />
-              Configure Variables
-            </Button>
+        <div className="px-6">
+          <div className="grid grid-cols-2 gap-2">
+            {quickActions.map((action) => (
+              <Button
+                key={action.id}
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickAction(action)}
+                className="justify-start h-auto p-2 text-xs"
+              >
+                {action.icon}
+                <span className="ml-1 truncate">{action.label}</span>
+              </Button>
+            ))}
           </div>
         </div>
 
+        {/* Messages */}
+        <ScrollArea className="flex-1 px-6">
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex gap-3 ${message.type === "user" ? "justify-end" : "justify-start"}`}
+              >
+                {message.type === "assistant" && (
+                  <Avatar className="h-8 w-8 mt-1">
+                    <AvatarFallback className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white text-xs">
+                      AI
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+
+                <div className={`max-w-[80%] ${message.type === "user" ? "order-1" : ""}`}>
+                  <div
+                    className={`rounded-lg p-3 ${
+                      message.type === "user"
+                        ? "bg-gradient-to-br from-indigo-500 to-purple-600 text-white"
+                        : "bg-gray-50 border"
+                    }`}
+                  >
+                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs text-muted-foreground">{message.timestamp.toLocaleTimeString()}</span>
+                    {message.category && message.category !== "general" && (
+                      <Badge variant="outline" className={`text-xs ${getCategoryColor(message.category)}`}>
+                        {message.category.toUpperCase()}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+
+                {message.type === "user" && (
+                  <Avatar className="h-8 w-8 mt-1">
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white text-xs">
+                      U
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+              </div>
+            ))}
+
+            {isTyping && (
+              <div className="flex gap-3 justify-start">
+                <Avatar className="h-8 w-8 mt-1">
+                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white text-xs">
+                    AI
+                  </AvatarFallback>
+                </Avatar>
+                <div className="bg-gray-50 border rounded-lg p-3">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    />
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        </ScrollArea>
+
         {/* Input */}
-        <div className="p-4 border-t">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              handleSendMessage()
-            }}
-            className="flex items-center gap-2"
-          >
+        <div className="px-6 pb-6">
+          <div className="flex gap-2">
             <Input
-              placeholder="Ask me to create QGI instruments, process citizenship, or analyze performance..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Ask about QGIs, citizenship, tax benefits, or quantum verification..."
+              onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputValue)}
               className="flex-1"
-              disabled={isTyping}
             />
-            <Button type="submit" size="icon" className="flex-shrink-0" disabled={!inputValue.trim() || isTyping}>
+            <Button onClick={() => handleSendMessage(inputValue)} disabled={!inputValue.trim() || isTyping} size="icon">
               <Send className="h-4 w-4" />
             </Button>
-          </form>
+          </div>
         </div>
       </CardContent>
     </Card>

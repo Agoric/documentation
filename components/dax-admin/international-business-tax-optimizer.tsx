@@ -6,741 +6,650 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import {
-  Building2,
-  Globe,
-  DollarSign,
-  BarChart3,
-  Landmark,
-  FileText,
-  ArrowRight,
-  CheckCircle,
-  Zap,
-  RefreshCw,
-  TrendingUp,
-  Briefcase,
-  Map,
-  Scale,
-} from "lucide-react"
-import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Globe, Building, TrendingUp, Users, Calculator, ArrowUpDown, Shield, Sparkles } from "lucide-react"
 
-interface Currency {
-  code: string
-  name: string
-  symbol: string
-  exchangeRate: number // Relative to USD
-}
-
-interface TaxJurisdiction {
-  id: string
-  name: string
-  code: string
-  region: string
-  currencies: string[]
-  corporateTaxRate: number
-  maxCharitableDeduction: number
-  vatRate?: number
-  specialDeductions: {
-    rnd?: number
-    sustainability?: number
-    employment?: number
+interface BusinessTaxOptimization {
+  businessSize: "small" | "medium" | "large" | "global"
+  operatingCurrency: string
+  primaryJurisdiction: string
+  annualRevenue: number
+  employeeCount: number
+  charitableContributions: number
+  imperialTrustPledge: number
+  rdInvestment: number
+  sustainabilityInitiatives: number
+  exchangeRates: { [key: string]: number }
+  scaledBenefits: {
+    charitableLimit: number
+    rdDeduction: number
+    sustainabilityIncentive: number
+    employmentDeduction: number
   }
+  totalSavings: number
 }
 
-interface BusinessScale {
-  id: string
-  name: string
-  revenueMin: number
-  revenueMax: number | null
-  employeeMin: number
-  employeeMax: number | null
-  multiplier: number
-}
+const businessSizes = [
+  {
+    id: "small",
+    name: "Small Business",
+    revenueRange: "$100K - $1M",
+    employeeRange: "1-50",
+    multiplier: 1.0,
+  },
+  {
+    id: "medium",
+    name: "Medium Enterprise",
+    revenueRange: "$1M - $50M",
+    employeeRange: "51-500",
+    multiplier: 2.5,
+  },
+  {
+    id: "large",
+    name: "Large Corporation",
+    revenueRange: "$50M - $1B",
+    employeeRange: "501-10,000",
+    multiplier: 5.0,
+  },
+  {
+    id: "global",
+    name: "Global Enterprise",
+    revenueRange: "$1B+",
+    employeeRange: "10,000+",
+    multiplier: 10.0,
+  },
+]
+
+const currencies = [
+  { code: "USD", name: "US Dollar", symbol: "$", rate: 1.0 },
+  { code: "EUR", name: "Euro", symbol: "€", rate: 0.85 },
+  { code: "GBP", name: "British Pound", symbol: "£", rate: 0.73 },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥", rate: 110.0 },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥", rate: 6.45 },
+  { code: "QDT", name: "Quantum Digital Token", symbol: "Ⓠ", rate: 0.0001 },
+]
+
+const jurisdictions = [
+  {
+    id: "us",
+    name: "United States",
+    corporateTaxRate: 21,
+    charitableLimit: 25,
+    rdIncentive: 100,
+    sustainabilityBonus: 15,
+    currency: "USD",
+  },
+  {
+    id: "eu",
+    name: "European Union",
+    corporateTaxRate: 25,
+    charitableLimit: 20,
+    rdIncentive: 150,
+    sustainabilityBonus: 25,
+    currency: "EUR",
+  },
+  {
+    id: "uk",
+    name: "United Kingdom",
+    corporateTaxRate: 19,
+    charitableLimit: 15,
+    rdIncentive: 130,
+    sustainabilityBonus: 20,
+    currency: "GBP",
+  },
+  {
+    id: "japan",
+    name: "Japan",
+    corporateTaxRate: 30,
+    charitableLimit: 12,
+    rdIncentive: 125,
+    sustainabilityBonus: 18,
+    currency: "JPY",
+  },
+  {
+    id: "china",
+    name: "China",
+    corporateTaxRate: 25,
+    charitableLimit: 10,
+    rdIncentive: 200,
+    sustainabilityBonus: 30,
+    currency: "CNY",
+  },
+  {
+    id: "quantum",
+    name: "Quantum Realm",
+    corporateTaxRate: 15,
+    charitableLimit: 100,
+    rdIncentive: 300,
+    sustainabilityBonus: 50,
+    currency: "QDT",
+  },
+]
 
 export function InternationalBusinessTaxOptimizer() {
-  const [selectedJurisdiction, setSelectedJurisdiction] = useState<string>("us")
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD")
-  const [businessScale, setBusinessScale] = useState<string>("medium")
-  const [annualRevenue, setAnnualRevenue] = useState<number>(5000000)
-  const [charitableAmount, setCharitableAmount] = useState<number>(250000)
-  const [employeeCount, setEmployeeCount] = useState<number>(50)
-  const [rndInvestment, setRndInvestment] = useState<number>(500000)
-  const [sustainabilityInvestment, setSustainabilityInvestment] = useState<number>(200000)
-  const [optimizationLevel, setOptimizationLevel] = useState<number>(75)
-  const [pledgeToImperialTrust, setPledgeToImperialTrust] = useState<boolean>(true)
-  const [exchangeRates, setExchangeRates] = useState<Record<string, number>>({})
-  const [baseCurrency, setBaseCurrency] = useState<string>("USD")
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [optimization, setOptimization] = useState<BusinessTaxOptimization>({
+    businessSize: "medium",
+    operatingCurrency: "USD",
+    primaryJurisdiction: "us",
+    annualRevenue: 10000000,
+    employeeCount: 150,
+    charitableContributions: 250000,
+    imperialTrustPledge: 150000,
+    rdInvestment: 500000,
+    sustainabilityInitiatives: 100000,
+    exchangeRates: {},
+    scaledBenefits: {
+      charitableLimit: 0,
+      rdDeduction: 0,
+      sustainabilityIncentive: 0,
+      employmentDeduction: 0,
+    },
+    totalSavings: 0,
+  })
 
-  const currencies: Currency[] = [
-    { code: "USD", name: "US Dollar", symbol: "$", exchangeRate: 1 },
-    { code: "EUR", name: "Euro", symbol: "€", exchangeRate: 0.92 },
-    { code: "GBP", name: "British Pound", symbol: "£", exchangeRate: 0.79 },
-    { code: "JPY", name: "Japanese Yen", symbol: "¥", exchangeRate: 150.45 },
-    { code: "CNY", name: "Chinese Yuan", symbol: "¥", exchangeRate: 7.24 },
-    { code: "QDT", name: "Quantum Digital Token", symbol: "⚛", exchangeRate: 0.25 },
-  ]
-
-  const jurisdictions: TaxJurisdiction[] = [
-    {
-      id: "us",
-      name: "United States",
-      code: "US",
-      region: "North America",
-      currencies: ["USD"],
-      corporateTaxRate: 21,
-      maxCharitableDeduction: 25,
-      specialDeductions: {
-        rnd: 20,
-        sustainability: 10,
-        employment: 5,
-      },
-    },
-    {
-      id: "eu",
-      name: "European Union",
-      code: "EU",
-      region: "Europe",
-      currencies: ["EUR"],
-      corporateTaxRate: 23,
-      vatRate: 20,
-      maxCharitableDeduction: 20,
-      specialDeductions: {
-        rnd: 25,
-        sustainability: 15,
-        employment: 8,
-      },
-    },
-    {
-      id: "uk",
-      name: "United Kingdom",
-      code: "UK",
-      region: "Europe",
-      currencies: ["GBP"],
-      corporateTaxRate: 25,
-      vatRate: 20,
-      maxCharitableDeduction: 20,
-      specialDeductions: {
-        rnd: 23,
-        sustainability: 12,
-        employment: 7,
-      },
-    },
-    {
-      id: "jp",
-      name: "Japan",
-      code: "JP",
-      region: "Asia",
-      currencies: ["JPY"],
-      corporateTaxRate: 30.62,
-      vatRate: 10,
-      maxCharitableDeduction: 15,
-      specialDeductions: {
-        rnd: 25,
-        sustainability: 10,
-        employment: 5,
-      },
-    },
-    {
-      id: "cn",
-      name: "China",
-      code: "CN",
-      region: "Asia",
-      currencies: ["CNY"],
-      corporateTaxRate: 25,
-      vatRate: 13,
-      maxCharitableDeduction: 12,
-      specialDeductions: {
-        rnd: 15,
-        sustainability: 10,
-        employment: 8,
-      },
-    },
-    {
-      id: "qr",
-      name: "Quantum Realm",
-      code: "QR",
-      region: "Multidimensional",
-      currencies: ["QDT", "USD", "EUR", "GBP", "JPY", "CNY"],
-      corporateTaxRate: 10,
-      maxCharitableDeduction: 100,
-      specialDeductions: {
-        rnd: 50,
-        sustainability: 40,
-        employment: 30,
-      },
-    },
-  ]
-
-  const businessScales: BusinessScale[] = [
-    {
-      id: "small",
-      name: "Small Business",
-      revenueMin: 0,
-      revenueMax: 5000000,
-      employeeMin: 0,
-      employeeMax: 50,
-      multiplier: 0.8,
-    },
-    {
-      id: "medium",
-      name: "Medium Enterprise",
-      revenueMin: 5000000,
-      revenueMax: 50000000,
-      employeeMin: 50,
-      employeeMax: 250,
-      multiplier: 1,
-    },
-    {
-      id: "large",
-      name: "Large Corporation",
-      revenueMin: 50000000,
-      revenueMax: 500000000,
-      employeeMin: 250,
-      employeeMax: 1000,
-      multiplier: 1.2,
-    },
-    {
-      id: "enterprise",
-      name: "Global Enterprise",
-      revenueMin: 500000000,
-      revenueMax: null,
-      employeeMin: 1000,
-      employeeMax: null,
-      multiplier: 1.5,
-    },
-  ]
-
-  const selectedJurisdictionData = jurisdictions.find((j) => j.id === selectedJurisdiction) || jurisdictions[0]
-  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
-  const selectedBusinessScale = businessScales.find((s) => s.id === businessScale) || businessScales[1]
-
-  // Simulate fetching exchange rates
+  // Simulate real-time exchange rates
   useEffect(() => {
-    const fetchExchangeRates = async () => {
-      setIsLoading(true)
-      // In a real app, this would be an API call to get current exchange rates
-      // For this demo, we'll use the hardcoded rates
-      const rates: Record<string, number> = {}
+    const updateExchangeRates = () => {
+      const rates: { [key: string]: number } = {}
       currencies.forEach((currency) => {
-        rates[currency.code] = currency.exchangeRate
+        // Add small random fluctuation to simulate real-time rates
+        const fluctuation = (Math.random() - 0.5) * 0.02 // ±1% fluctuation
+        rates[currency.code] = currency.rate * (1 + fluctuation)
       })
-      setExchangeRates(rates)
-      setIsLoading(false)
+      setOptimization((prev) => ({ ...prev, exchangeRates: rates }))
     }
 
-    fetchExchangeRates()
+    updateExchangeRates()
+    const interval = setInterval(updateExchangeRates, 30000) // Update every 30 seconds
+
+    return () => clearInterval(interval)
   }, [])
 
-  // Convert value from selected currency to USD
-  const convertToUSD = (value: number): number => {
-    const rate = exchangeRates[selectedCurrency] || 1
-    return value / rate
-  }
+  const calculateOptimization = () => {
+    const businessSize = businessSizes.find((s) => s.id === optimization.businessSize)
+    const jurisdiction = jurisdictions.find((j) => j.id === optimization.primaryJurisdiction)
+    const currency = currencies.find((c) => c.code === optimization.operatingCurrency)
 
-  // Convert value from USD to selected currency
-  const convertFromUSD = (value: number): number => {
-    const rate = exchangeRates[selectedCurrency] || 1
-    return value * rate
-  }
+    if (!businessSize || !jurisdiction || !currency) return
 
-  const formatCurrency = (value: number): string => {
-    return `${selectedCurrencyData.symbol}${value.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`
-  }
+    const multiplier = businessSize.multiplier
+    const exchangeRate = optimization.exchangeRates[optimization.operatingCurrency] || currency.rate
 
-  const calculateTaxSavings = () => {
-    // Convert all values to USD for calculation
-    const revenueUSD = convertToUSD(annualRevenue)
-    const charitableUSD = convertToUSD(charitableAmount)
-    const rndUSD = convertToUSD(rndInvestment)
-    const sustainabilityUSD = convertToUSD(sustainabilityInvestment)
+    // Convert all amounts to USD for calculation, then convert back
+    const revenueUSD = optimization.annualRevenue / exchangeRate
+    const charitableUSD = optimization.charitableContributions / exchangeRate
+    const imperialTrustUSD = optimization.imperialTrustPledge / exchangeRate
+    const rdUSD = optimization.rdInvestment / exchangeRate
+    const sustainabilityUSD = optimization.sustainabilityInitiatives / exchangeRate
 
-    // Apply business scale multiplier
-    const scaledMultiplier = selectedBusinessScale.multiplier
+    // Calculate scaled benefits
+    const charitableLimit = Math.min(
+      (charitableUSD + imperialTrustUSD) * multiplier,
+      revenueUSD * (jurisdiction.charitableLimit / 100),
+    )
 
-    // Calculate maximum charitable deduction
-    const maxDeductionPercentage = selectedJurisdictionData.maxCharitableDeduction
-    const maxDeductionAmount = (revenueUSD * maxDeductionPercentage) / 100
-    const effectiveDeduction = Math.min(charitableUSD, maxDeductionAmount)
+    const rdDeduction = rdUSD * (jurisdiction.rdIncentive / 100) * multiplier
+    const sustainabilityIncentive = sustainabilityUSD * (jurisdiction.sustainabilityBonus / 100) * multiplier
+    const employmentDeduction = optimization.employeeCount * 1000 * multiplier // $1000 per employee scaled
 
-    // Calculate special deductions
-    const rndDeduction = (rndUSD * (selectedJurisdictionData.specialDeductions.rnd || 0)) / 100
-    const sustainabilityDeduction =
-      (sustainabilityUSD * (selectedJurisdictionData.specialDeductions.sustainability || 0)) / 100
-    const employmentDeduction =
-      (employeeCount * 1000 * (selectedJurisdictionData.specialDeductions.employment || 0)) / 100
+    // Imperial Trust gets special treatment (20% bonus)
+    const imperialTrustBonus = imperialTrustUSD * 0.2 * multiplier
 
-    // Calculate total deductions
-    const totalDeductions = effectiveDeduction + rndDeduction + sustainabilityDeduction + employmentDeduction
+    const totalDeductions =
+      charitableLimit + rdDeduction + sustainabilityIncentive + employmentDeduction + imperialTrustBonus
+    const totalSavings = totalDeductions * (jurisdiction.corporateTaxRate / 100)
 
-    // Calculate tax savings
-    const taxRate = selectedJurisdictionData.corporateTaxRate / 100
-    const standardTaxSavings = totalDeductions * taxRate
-
-    // Apply optimization and scale multiplier
-    const optimizedSavings = standardTaxSavings * (1 + optimizationLevel / 100) * scaledMultiplier
-
-    // Convert back to selected currency
-    const maxDeductionAmountConverted = convertFromUSD(maxDeductionAmount)
-    const effectiveDeductionConverted = convertFromUSD(effectiveDeduction)
-    const standardTaxSavingsConverted = convertFromUSD(standardTaxSavings)
-    const optimizedSavingsConverted = convertFromUSD(optimizedSavings)
-
-    return {
-      maxDeductionPercentage,
-      maxDeductionAmount: maxDeductionAmountConverted,
-      effectiveDeduction: effectiveDeductionConverted,
-      rndDeduction: convertFromUSD(rndDeduction),
-      sustainabilityDeduction: convertFromUSD(sustainabilityDeduction),
-      employmentDeduction: convertFromUSD(employmentDeduction),
-      totalDeductions: convertFromUSD(totalDeductions),
-      standardTaxSavings: standardTaxSavingsConverted,
-      optimizedSavings: optimizedSavingsConverted,
-      deductionUtilization: Math.min((charitableUSD / maxDeductionAmount) * 100, 100),
-      scaledMultiplier,
+    // Convert back to operating currency
+    const scaledBenefits = {
+      charitableLimit: charitableLimit * exchangeRate,
+      rdDeduction: rdDeduction * exchangeRate,
+      sustainabilityIncentive: sustainabilityIncentive * exchangeRate,
+      employmentDeduction: employmentDeduction * exchangeRate,
     }
+
+    setOptimization((prev) => ({
+      ...prev,
+      scaledBenefits,
+      totalSavings: totalSavings * exchangeRate,
+    }))
   }
 
-  const taxSavings = calculateTaxSavings()
+  const updateField = (field: keyof BusinessTaxOptimization, value: any) => {
+    setOptimization((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const selectedBusinessSize = businessSizes.find((s) => s.id === optimization.businessSize)
+  const selectedJurisdiction = jurisdictions.find((j) => j.id === optimization.primaryJurisdiction)
+  const selectedCurrency = currencies.find((c) => c.code === optimization.operatingCurrency)
+  const currentExchangeRate = optimization.exchangeRates[optimization.operatingCurrency]
 
   return (
     <div className="space-y-6">
-      <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-blue-600" />
-                International Business Tax Optimizer
-              </CardTitle>
-              <CardDescription>Maximize global tax benefits with currency exchange rate adjustments</CardDescription>
-            </div>
-            <Button variant="outline" size="sm" className="flex items-center gap-1">
-              <RefreshCw className="h-3 w-3" />
-              Update Rates
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="jurisdiction">Tax Jurisdiction</Label>
-              <Select value={selectedJurisdiction} onValueChange={setSelectedJurisdiction}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {jurisdictions.map((jurisdiction) => (
-                    <SelectItem key={jurisdiction.id} value={jurisdiction.id}>
-                      <div className="flex items-center gap-2">
-                        <Globe className="h-4 w-4" />
-                        {jurisdiction.name} ({jurisdiction.code})
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="currency">Operating Currency</Label>
-              <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {currencies.map((currency) => (
-                    <SelectItem key={currency.code} value={currency.code}>
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="h-4 w-4" />
-                        {currency.name} ({currency.symbol})
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="business-scale">Business Scale</Label>
-              <Select value={businessScale} onValueChange={setBusinessScale}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {businessScales.map((scale) => (
-                    <SelectItem key={scale.id} value={scale.id}>
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4" />
-                        {scale.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="revenue">Annual Revenue ({selectedCurrencyData.symbol})</Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  {selectedCurrencyData.symbol}
-                </span>
-                <Input
-                  id="revenue"
-                  type="number"
-                  className="pl-8"
-                  value={annualRevenue}
-                  onChange={(e) => setAnnualRevenue(Number(e.target.value))}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="employees">Number of Employees</Label>
-              <div className="relative">
-                <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="employees"
-                  type="number"
-                  className="pl-8"
-                  value={employeeCount}
-                  onChange={(e) => setEmployeeCount(Number(e.target.value))}
-                />
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Deduction Categories</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Charitable Contribution: {formatCurrency(charitableAmount)}</Label>
-                <Slider
-                  value={[charitableAmount]}
-                  onValueChange={(value) => setCharitableAmount(value[0])}
-                  max={annualRevenue * 0.3}
-                  min={0}
-                  step={10000}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>R&D Investment: {formatCurrency(rndInvestment)}</Label>
-                <Slider
-                  value={[rndInvestment]}
-                  onValueChange={(value) => setRndInvestment(value[0])}
-                  max={annualRevenue * 0.2}
-                  min={0}
-                  step={10000}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Sustainability Investment: {formatCurrency(sustainabilityInvestment)}</Label>
-                <Slider
-                  value={[sustainabilityInvestment]}
-                  onValueChange={(value) => setSustainabilityInvestment(value[0])}
-                  max={annualRevenue * 0.1}
-                  min={0}
-                  step={10000}
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label>Optimization Level: {optimizationLevel}%</Label>
-                <Badge variant="outline" className="text-xs">
-                  <Zap className="h-3 w-3 mr-1 text-amber-500" />
-                  Quantum Enhanced
-                </Badge>
-              </div>
-              <Slider
-                value={[optimizationLevel]}
-                onValueChange={(value) => setOptimizationLevel(value[0])}
-                max={100}
-                min={0}
-                step={5}
-                className="w-full"
-              />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="pledge-trust-business"
-                checked={pledgeToImperialTrust}
-                onCheckedChange={setPledgeToImperialTrust}
-              />
-              <Label htmlFor="pledge-trust-business" className="flex items-center gap-2">
-                Pledge to Imperial Trust Social Impact Fund
-                <Badge className="ml-2 bg-purple-100 text-purple-800 hover:bg-purple-100">Recommended</Badge>
-              </Label>
-            </div>
-          </div>
-
-          {/* Results Card */}
-          <Card className="bg-gradient-to-r from-white to-blue-50 border border-blue-200">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Landmark className="h-5 w-5 text-blue-600" />
-                    <h3 className="text-lg font-semibold">International Tax Benefit Analysis</h3>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Corporate Tax Rate:</span>
-                      <span className="font-medium">{selectedJurisdictionData.corporateTaxRate}%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Maximum Charitable Deduction:</span>
-                      <span className="font-medium">
-                        {taxSavings.maxDeductionPercentage}% ({formatCurrency(taxSavings.maxDeductionAmount)})
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Business Scale Multiplier:</span>
-                      <span className="font-medium">{taxSavings.scaledMultiplier}x</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Exchange Rate ({selectedCurrency}/USD):</span>
-                      <span className="font-medium">{exchangeRates[selectedCurrency] || 1}</span>
-                    </div>
-
-                    <Separator />
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Charitable Deduction:</span>
-                      <span className="font-medium">{formatCurrency(taxSavings.effectiveDeduction)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">R&D Deduction:</span>
-                      <span className="font-medium">{formatCurrency(taxSavings.rndDeduction)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Sustainability Deduction:</span>
-                      <span className="font-medium">{formatCurrency(taxSavings.sustainabilityDeduction)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Employment Deduction:</span>
-                      <span className="font-medium">{formatCurrency(taxSavings.employmentDeduction)}</span>
-                    </div>
-
-                    <Separator />
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Standard Tax Savings:</span>
-                      <span className="font-medium">{formatCurrency(taxSavings.standardTaxSavings)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-semibold">Optimized Tax Savings:</span>
-                      <span className="font-bold text-blue-600">{formatCurrency(taxSavings.optimizedSavings)}</span>
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Deduction Utilization:</span>
-                        <span className="font-medium">{Math.round(taxSavings.deductionUtilization)}%</span>
-                      </div>
-                      <Progress value={taxSavings.deductionUtilization} className="h-2" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Map className="h-5 w-5 text-blue-600" />
-                    <h3 className="text-lg font-semibold">Global Compliance Status</h3>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                        <span className="font-medium">Primary Jurisdiction Compliance</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Fully compliant with {selectedJurisdictionData.name} tax regulations and reporting requirements.
-                      </p>
-                    </div>
-
-                    {pledgeToImperialTrust && (
-                      <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
-                          <CheckCircle className="h-4 w-4 text-purple-600" />
-                          <span className="font-medium">Imperial Trust Pledge Status</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          Imperial Trust contributions recognized across all jurisdictions with enhanced deduction
-                          status.
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Scale className="h-4 w-4 text-blue-600" />
-                        <span className="font-medium">Cross-Border Considerations</span>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-sm text-muted-foreground">
-                          Your business qualifies for multinational tax treaties in the following regions:
-                        </p>
-                        <div className="flex flex-wrap gap-1">
-                          <Badge variant="outline" className="bg-blue-50">
-                            North America
-                          </Badge>
-                          <Badge variant="outline" className="bg-blue-50">
-                            European Union
-                          </Badge>
-                          <Badge variant="outline" className="bg-blue-50">
-                            Asia Pacific
-                          </Badge>
-                          {selectedJurisdiction === "qr" && (
-                            <Badge variant="outline" className="bg-purple-50 text-purple-800">
-                              Quantum Realm
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-3 border rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <FileText className="h-4 w-4 text-gray-600" />
-                        <span className="font-medium">Required Documentation</span>
-                      </div>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li className="flex items-center gap-1">
-                          <CheckCircle className="h-3 w-3 text-green-600" />
-                          International Business Number
-                        </li>
-                        <li className="flex items-center gap-1">
-                          <CheckCircle className="h-3 w-3 text-green-600" />
-                          Charitable Contribution Receipts
-                        </li>
-                        <li className="flex items-center gap-1">
-                          <CheckCircle className="h-3 w-3 text-green-600" />
-                          R&D Expenditure Verification
-                        </li>
-                        <li className="flex items-center gap-1">
-                          <CheckCircle className="h-3 w-3 text-green-600" />
-                          Sustainability Initiative Documentation
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 flex gap-3">
-                <Button className="flex-1">
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Generate International Tax Report
-                </Button>
-                <Button variant="outline" className="flex-1">
-                  <Globe className="h-4 w-4 mr-2" />
-                  Multi-Jurisdiction Filing Assistant
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </CardContent>
-      </Card>
-
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Globe className="h-5 w-5" />
-            International Tax Jurisdiction Comparison
+            <Building className="h-5 w-5 text-blue-500" />
+            International Business Tax Optimizer
           </CardTitle>
-          <CardDescription>Compare tax benefits across multiple global jurisdictions</CardDescription>
+          <CardDescription>Scale tax benefits globally with currency exchange rate adjustments</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4">Jurisdiction</th>
-                  <th className="text-left py-3 px-4">Corporate Tax Rate</th>
-                  <th className="text-left py-3 px-4">Max Charitable Deduction</th>
-                  <th className="text-left py-3 px-4">R&D Incentives</th>
-                  <th className="text-left py-3 px-4">Sustainability Benefits</th>
-                  <th className="text-left py-3 px-4">Imperial Trust Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jurisdictions.map((jurisdiction) => (
-                  <tr
-                    key={jurisdiction.id}
-                    className={`border-b hover:bg-gray-50 ${
-                      jurisdiction.id === selectedJurisdiction ? "bg-blue-50" : ""
-                    }`}
+      </Card>
+
+      <Tabs defaultValue="configuration" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="configuration">Configuration</TabsTrigger>
+          <TabsTrigger value="currency">Currency & Exchange</TabsTrigger>
+          <TabsTrigger value="deductions">Deductions</TabsTrigger>
+          <TabsTrigger value="results">Results</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="configuration" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Business Configuration */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Business Configuration</CardTitle>
+                <CardDescription>Set up your business entity details</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="business-size">Business Size</Label>
+                  <Select
+                    value={optimization.businessSize}
+                    onValueChange={(value: any) => updateField("businessSize", value)}
                   >
-                    <td className="py-3 px-4">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {businessSizes.map((size) => (
+                        <SelectItem key={size.id} value={size.id}>
+                          <div className="flex flex-col">
+                            <span>{size.name}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {size.revenueRange} • {size.employeeRange} employees
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="jurisdiction">Primary Jurisdiction</Label>
+                  <Select
+                    value={optimization.primaryJurisdiction}
+                    onValueChange={(value) => updateField("primaryJurisdiction", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {jurisdictions.map((jurisdiction) => (
+                        <SelectItem key={jurisdiction.id} value={jurisdiction.id}>
+                          <div className="flex items-center gap-2">
+                            <Globe className="h-4 w-4" />
+                            {jurisdiction.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="annual-revenue">Annual Revenue</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                      {selectedCurrency?.symbol}
+                    </span>
+                    <Input
+                      id="annual-revenue"
+                      type="number"
+                      value={optimization.annualRevenue}
+                      onChange={(e) => updateField("annualRevenue", Number.parseInt(e.target.value))}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="employee-count">Employee Count</Label>
+                  <div className="relative">
+                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="employee-count"
+                      type="number"
+                      value={optimization.employeeCount}
+                      onChange={(e) => updateField("employeeCount", Number.parseInt(e.target.value))}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+
+                {selectedBusinessSize && (
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm font-medium text-blue-800">Scale Multiplier</p>
+                    <p className="text-xs text-blue-600">
+                      {selectedBusinessSize.multiplier}x benefit scaling for {selectedBusinessSize.name}
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Jurisdiction Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Jurisdiction Overview</CardTitle>
+                <CardDescription>Tax rates and incentives for selected jurisdiction</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {selectedJurisdiction && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm font-medium text-red-800">Corporate Tax Rate</p>
+                        <p className="text-xl font-bold text-red-900">{selectedJurisdiction.corporateTaxRate}%</p>
+                      </div>
+                      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <p className="text-sm font-medium text-green-800">Charitable Limit</p>
+                        <p className="text-xl font-bold text-green-900">{selectedJurisdiction.charitableLimit}%</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Tax Incentives</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center p-2 border rounded">
+                          <span className="text-sm">R&D Investment Deduction</span>
+                          <Badge variant="outline">{selectedJurisdiction.rdIncentive}%</Badge>
+                        </div>
+                        <div className="flex justify-between items-center p-2 border rounded">
+                          <span className="text-sm">Sustainability Bonus</span>
+                          <Badge variant="outline">{selectedJurisdiction.sustainabilityBonus}%</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="currency" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Currency & Exchange Rates</CardTitle>
+              <CardDescription>Real-time currency conversion and exchange rate tracking</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="operating-currency">Operating Currency</Label>
+                <Select
+                  value={optimization.operatingCurrency}
+                  onValueChange={(value) => updateField("operatingCurrency", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        <div className="flex items-center gap-2">
+                          <span>{currency.symbol}</span>
+                          <span>
+                            {currency.name} ({currency.code})
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {currentExchangeRate && (
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ArrowUpDown className="h-4 w-4 text-amber-600" />
+                    <span className="font-medium text-amber-800">Current Exchange Rate</span>
+                  </div>
+                  <p className="text-sm text-amber-700">
+                    1 USD = {currentExchangeRate.toFixed(4)} {optimization.operatingCurrency}
+                  </p>
+                  <p className="text-xs text-amber-600 mt-1">
+                    Rates update every 30 seconds • Last updated: {new Date().toLocaleTimeString()}
+                  </p>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {currencies.map((currency) => (
+                  <Card key={currency.code} className="p-3">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <Globe className="h-4 w-4 text-blue-600" />
-                        <span>{jurisdiction.name}</span>
-                        {jurisdiction.id === selectedJurisdiction && (
-                          <Badge variant="outline" className="ml-2 text-xs">
-                            Selected
-                          </Badge>
-                        )}
+                        <span className="font-medium">{currency.symbol}</span>
+                        <span className="text-sm">{currency.code}</span>
                       </div>
-                    </td>
-                    <td className="py-3 px-4">{jurisdiction.corporateTaxRate}%</td>
-                    <td className="py-3 px-4">{jurisdiction.maxCharitableDeduction}%</td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-1">
-                        <span>{jurisdiction.specialDeductions.rnd || 0}%</span>
-                        {jurisdiction.specialDeductions.rnd && jurisdiction.specialDeductions.rnd > 20 && (
-                          <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-xs">High</Badge>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">{jurisdiction.specialDeductions.sustainability || 0}%</td>
-                    <td className="py-3 px-4">
                       <Badge
-                        className={
-                          jurisdiction.id === "qr"
-                            ? "bg-purple-100 text-purple-800 hover:bg-purple-100"
-                            : "bg-blue-100 text-blue-800 hover:bg-blue-100"
-                        }
+                        variant="outline"
+                        className={currency.code === optimization.operatingCurrency ? "bg-blue-50 text-blue-700" : ""}
                       >
-                        {jurisdiction.id === "qr" ? "Enhanced (100%)" : "Standard"}
+                        {optimization.exchangeRates[currency.code]?.toFixed(4) || currency.rate.toFixed(4)}
                       </Badge>
-                    </td>
-                  </tr>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{currency.name}</p>
+                  </Card>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="deductions" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Charitable Contributions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Charitable Contributions</CardTitle>
+                <CardDescription>Configure charitable giving and Imperial Trust pledges</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="charitable-contributions">Standard Charitable Contributions</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                      {selectedCurrency?.symbol}
+                    </span>
+                    <Input
+                      id="charitable-contributions"
+                      type="number"
+                      value={optimization.charitableContributions}
+                      onChange={(e) => updateField("charitableContributions", Number.parseInt(e.target.value))}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="imperial-trust-pledge">Imperial Trust Pledge</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                      {selectedCurrency?.symbol}
+                    </span>
+                    <Input
+                      id="imperial-trust-pledge"
+                      type="number"
+                      value={optimization.imperialTrustPledge}
+                      onChange={(e) => updateField("imperialTrustPledge", Number.parseInt(e.target.value))}
+                      className="pl-8"
+                    />
+                  </div>
+                  <div className="p-2 bg-purple-50 border border-purple-200 rounded text-xs text-purple-700">
+                    <Sparkles className="h-3 w-3 inline mr-1" />
+                    20% bonus deduction for Imperial Trust pledges
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Business Deductions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Business Deductions</CardTitle>
+                <CardDescription>R&D, sustainability, and employment-based deductions</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="rd-investment">R&D Investment</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                      {selectedCurrency?.symbol}
+                    </span>
+                    <Input
+                      id="rd-investment"
+                      type="number"
+                      value={optimization.rdInvestment}
+                      onChange={(e) => updateField("rdInvestment", Number.parseInt(e.target.value))}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="sustainability-initiatives">Sustainability Initiatives</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                      {selectedCurrency?.symbol}
+                    </span>
+                    <Input
+                      id="sustainability-initiatives"
+                      type="number"
+                      value={optimization.sustainabilityInitiatives}
+                      onChange={(e) => updateField("sustainabilityInitiatives", Number.parseInt(e.target.value))}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm font-medium text-green-800">Employment Deduction</p>
+                  <p className="text-lg font-bold text-green-900">
+                    {selectedCurrency?.symbol}
+                    {(optimization.employeeCount * 1000 * (selectedBusinessSize?.multiplier || 1)).toLocaleString()}
+                  </p>
+                  <p className="text-xs text-green-700">
+                    {selectedCurrency?.symbol}1,000 per employee × {selectedBusinessSize?.multiplier}x scale multiplier
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="mt-6">
-            <Button variant="outline" className="w-full">
-              <ArrowRight className="h-4 w-4 mr-2" />
-              View Detailed Jurisdiction Comparison
-            </Button>
+          <Button onClick={calculateOptimization} className="w-full">
+            <Calculator className="h-4 w-4 mr-2" />
+            Calculate International Tax Optimization
+          </Button>
+        </TabsContent>
+
+        <TabsContent value="results" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Deduction Breakdown */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Deduction Breakdown</CardTitle>
+                <CardDescription>Scaled deductions by category</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    <span className="text-sm font-medium text-purple-800">Charitable Contributions</span>
+                    <span className="font-bold text-purple-900">
+                      {selectedCurrency?.symbol}
+                      {optimization.scaledBenefits.charitableLimit.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <span className="text-sm font-medium text-blue-800">R&D Deduction</span>
+                    <span className="font-bold text-blue-900">
+                      {selectedCurrency?.symbol}
+                      {optimization.scaledBenefits.rdDeduction.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <span className="text-sm font-medium text-green-800">Sustainability Incentive</span>
+                    <span className="font-bold text-green-900">
+                      {selectedCurrency?.symbol}
+                      {optimization.scaledBenefits.sustainabilityIncentive.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <span className="text-sm font-medium text-amber-800">Employment Deduction</span>
+                    <span className="font-bold text-amber-900">
+                      {selectedCurrency?.symbol}
+                      {optimization.scaledBenefits.employmentDeduction.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Total Savings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Total Tax Savings</CardTitle>
+                <CardDescription>Annual savings with international optimization</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg">
+                  <p className="text-sm font-medium text-green-800 mb-2">Annual Tax Savings</p>
+                  <p className="text-4xl font-bold text-green-900">
+                    {selectedCurrency?.symbol}
+                    {optimization.totalSavings.toLocaleString()}
+                  </p>
+                  <p className="text-sm text-green-700 mt-2">
+                    Optimized for {selectedJurisdiction?.name} • {selectedBusinessSize?.name}
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 p-3 border rounded-lg">
+                    <Shield className="h-4 w-4 text-blue-500" />
+                    <div>
+                      <p className="font-medium text-sm">Compliance Verified</p>
+                      <p className="text-xs text-muted-foreground">All deductions meet regulatory requirements</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 p-3 border rounded-lg">
+                    <Globe className="h-4 w-4 text-green-500" />
+                    <div>
+                      <p className="font-medium text-sm">Multi-Jurisdiction Support</p>
+                      <p className="text-xs text-muted-foreground">Optimized across international tax treaties</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 p-3 border rounded-lg">
+                    <TrendingUp className="h-4 w-4 text-purple-500" />
+                    <div>
+                      <p className="font-medium text-sm">Scale Optimization</p>
+                      <p className="text-xs text-muted-foreground">
+                        {selectedBusinessSize?.multiplier}x multiplier applied
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

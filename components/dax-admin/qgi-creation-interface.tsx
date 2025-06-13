@@ -5,387 +5,493 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
 import { Slider } from "@/components/ui/slider"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { Zap, Settings, Sparkles, Globe, Lock, BarChart3, Target } from "lucide-react"
+import { TrendingUp, Zap, Shield, DollarSign, BarChart3, Settings, Sparkles, Globe, Lock } from "lucide-react"
 
 interface QGIConfiguration {
   name: string
   type: "social-impact" | "guaranteed-mortgage" | "custom"
-  backingAsset: string
-  maturityPeriod: number
+  baseAsset: string
   leverageRatio: number
+  maturityPeriod: number
   riskRating: string
   minimumInvestment: number
-  yieldStructure: "fixed" | "variable" | "hybrid"
-  governmentBacking: boolean
+  expectedYield: [number, number]
+  currency: string
+  jurisdiction: string
+  autoRebalancing: boolean
   liquidityTerms: string
   correlationFactor: number
-  rebalancingFrequency: string
   description: string
 }
 
+const qgiTypes = [
+  {
+    id: "social-impact",
+    name: "Social Impact QGI",
+    description: "Mirrors US 50-year corporate bonds with leveraged lending",
+    icon: <TrendingUp className="h-4 w-4" />,
+    color: "purple",
+  },
+  {
+    id: "guaranteed-mortgage",
+    name: "GM QGI",
+    description: "Investment grade guaranteed mortgages backed by government",
+    icon: <Shield className="h-4 w-4" />,
+    color: "green",
+  },
+  {
+    id: "custom",
+    name: "Custom QGI",
+    description: "Tailored investment product with dynamic variables",
+    icon: <Sparkles className="h-4 w-4" />,
+    color: "amber",
+  },
+]
+
+const baseAssets = [
+  "US 50-Year Corporate Bond",
+  "Treasury Securities",
+  "Municipal Bonds",
+  "International Bonds",
+  "Real Estate Securities",
+  "Commodity Futures",
+  "Quantum Digital Assets",
+]
+
+const riskRatings = ["AAA", "AA+", "AA", "AA-", "A+", "A", "A-", "BBB+", "BBB", "BBB-"]
+const currencies = ["USD", "EUR", "GBP", "JPY", "CNY", "QDT (Quantum Digital Token)"]
+const jurisdictions = ["United States", "European Union", "United Kingdom", "Japan", "China", "Quantum Realm"]
+
 export function QGICreationInterface() {
-  const [qgiConfig, setQgiConfig] = useState<QGIConfiguration>({
+  const [config, setConfig] = useState<QGIConfiguration>({
     name: "",
     type: "social-impact",
-    backingAsset: "",
+    baseAsset: "US 50-Year Corporate Bond",
+    leverageRatio: 2.5,
     maturityPeriod: 50,
-    leverageRatio: 4,
-    riskRating: "AA",
+    riskRating: "AAA",
     minimumInvestment: 1000,
-    yieldStructure: "hybrid",
-    governmentBacking: true,
-    liquidityTerms: "quarterly",
+    expectedYield: [4.2, 6.8],
+    currency: "USD",
+    jurisdiction: "United States",
+    autoRebalancing: true,
+    liquidityTerms: "Quarterly redemption with 30-day notice",
     correlationFactor: 0.85,
-    rebalancingFrequency: "monthly",
     description: "",
   })
 
-  const [createdQGIs, setCreatedQGIs] = useState([
-    {
-      id: "QGI-SI-001",
-      name: "Social Impact Primary",
-      type: "social-impact",
-      status: "active",
-      value: 2847392847.5,
-      performance: "+4.2%",
-      citizens: 12847,
-    },
-    {
-      id: "QGI-GM-001",
-      name: "Guaranteed Mortgage Alpha",
-      type: "guaranteed-mortgage",
-      status: "active",
-      value: 1234567890.25,
-      performance: "+3.8%",
-      citizens: 8934,
-    },
-  ])
+  const [activeTab, setActiveTab] = useState("basic")
+  const [isCreating, setIsCreating] = useState(false)
 
-  const handleCreateQGI = () => {
-    const newQGI = {
-      id: `QGI-${qgiConfig.type.toUpperCase().substring(0, 2)}-${String(createdQGIs.length + 1).padStart(3, "0")}`,
-      name: qgiConfig.name,
-      type: qgiConfig.type,
-      status: "pending",
-      value: 0,
-      performance: "0%",
-      citizens: 0,
-    }
-
-    setCreatedQGIs([...createdQGIs, newQGI])
-
-    // Reset form
-    setQgiConfig({
-      name: "",
-      type: "social-impact",
-      backingAsset: "",
-      maturityPeriod: 50,
-      leverageRatio: 4,
-      riskRating: "AA",
-      minimumInvestment: 1000,
-      yieldStructure: "hybrid",
-      governmentBacking: true,
-      liquidityTerms: "quarterly",
-      correlationFactor: 0.85,
-      rebalancingFrequency: "monthly",
-      description: "",
-    })
+  const handleCreateQGI = async () => {
+    setIsCreating(true)
+    // Simulate QGI creation process
+    setTimeout(() => {
+      setIsCreating(false)
+      // Show success message or redirect
+    }, 3000)
   }
 
-  const getQGITypeIcon = (type: string) => {
-    switch (type) {
-      case "social-impact":
-        return <Globe className="h-4 w-4" />
-      case "guaranteed-mortgage":
-        return <Lock className="h-4 w-4" />
-      default:
-        return <Sparkles className="h-4 w-4" />
-    }
+  const updateConfig = (key: keyof QGIConfiguration, value: any) => {
+    setConfig((prev) => ({ ...prev, [key]: value }))
   }
 
-  const getQGITypeColor = (type: string) => {
-    switch (type) {
-      case "social-impact":
-        return "bg-purple-50 border-purple-200 text-purple-800"
-      case "guaranteed-mortgage":
-        return "bg-green-50 border-green-200 text-green-800"
+  const getTypeColor = (type: string) => {
+    const typeConfig = qgiTypes.find((t) => t.id === type)
+    switch (typeConfig?.color) {
+      case "purple":
+        return "bg-purple-100 text-purple-800 border-purple-200"
+      case "green":
+        return "bg-green-100 text-green-800 border-green-200"
+      case "amber":
+        return "bg-amber-100 text-amber-800 border-amber-200"
       default:
-        return "bg-blue-50 border-blue-200 text-blue-800"
+        return "bg-gray-100 text-gray-800 border-gray-200"
     }
   }
 
   return (
     <div className="space-y-6">
-      {/* QGI Creation Form */}
-      <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-white">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-purple-500" />
-            Create New Quantum Gains Instrument
-          </CardTitle>
-          <CardDescription>Configure variables and parameters for a new QGI</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Basic Configuration */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="qgi-name">QGI Name</Label>
-              <Input
-                id="qgi-name"
-                placeholder="e.g., Social Impact Enhanced"
-                value={qgiConfig.name}
-                onChange={(e) => setQgiConfig({ ...qgiConfig, name: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="qgi-type">Instrument Type</Label>
-              <Select
-                value={qgiConfig.type}
-                onValueChange={(value: any) => setQgiConfig({ ...qgiConfig, type: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="social-impact">Social Impact QGI</SelectItem>
-                  <SelectItem value="guaranteed-mortgage">Guaranteed Mortgage (GM) QGI</SelectItem>
-                  <SelectItem value="custom">Custom QGI</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="backing-asset">Backing Asset</Label>
-              <Select
-                value={qgiConfig.backingAsset}
-                onValueChange={(value) => setQgiConfig({ ...qgiConfig, backingAsset: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select backing asset" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="us-corporate-bonds">US Corporate Bonds (50-year)</SelectItem>
-                  <SelectItem value="government-securities">Government Securities</SelectItem>
-                  <SelectItem value="mixed-portfolio">Mixed Portfolio</SelectItem>
-                  <SelectItem value="mortgage-backed">Mortgage-Backed Securities</SelectItem>
-                  <SelectItem value="quantum-enhanced">Quantum-Enhanced Instruments</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="risk-rating">Risk Rating</Label>
-              <Select
-                value={qgiConfig.riskRating}
-                onValueChange={(value) => setQgiConfig({ ...qgiConfig, riskRating: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="AAA">AAA - Highest Quality</SelectItem>
-                  <SelectItem value="AA">AA - High Quality</SelectItem>
-                  <SelectItem value="A">A - Upper Medium Grade</SelectItem>
-                  <SelectItem value="BBB">BBB - Medium Grade</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Advanced Parameters */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label>Maturity Period: {qgiConfig.maturityPeriod} years</Label>
-                <Slider
-                  value={[qgiConfig.maturityPeriod]}
-                  onValueChange={(value) => setQgiConfig({ ...qgiConfig, maturityPeriod: value[0] })}
-                  max={50}
-                  min={1}
-                  step={1}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Leverage Ratio: {qgiConfig.leverageRatio}:1</Label>
-                <Slider
-                  value={[qgiConfig.leverageRatio]}
-                  onValueChange={(value) => setQgiConfig({ ...qgiConfig, leverageRatio: value[0] })}
-                  max={10}
-                  min={1}
-                  step={0.5}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Minimum Investment: ${qgiConfig.minimumInvestment.toLocaleString()}</Label>
-                <Slider
-                  value={[qgiConfig.minimumInvestment]}
-                  onValueChange={(value) => setQgiConfig({ ...qgiConfig, minimumInvestment: value[0] })}
-                  max={1000000}
-                  min={1000}
-                  step={1000}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Market Correlation: {(qgiConfig.correlationFactor * 100).toFixed(0)}%</Label>
-                <Slider
-                  value={[qgiConfig.correlationFactor]}
-                  onValueChange={(value) => setQgiConfig({ ...qgiConfig, correlationFactor: value[0] })}
-                  max={1}
-                  min={0}
-                  step={0.01}
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="yield-structure">Yield Structure</Label>
-                <Select
-                  value={qgiConfig.yieldStructure}
-                  onValueChange={(value: any) => setQgiConfig({ ...qgiConfig, yieldStructure: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="fixed">Fixed Rate</SelectItem>
-                    <SelectItem value="variable">Variable Rate</SelectItem>
-                    <SelectItem value="hybrid">Hybrid (Fixed + Variable)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="liquidity-terms">Liquidity Terms</Label>
-                <Select
-                  value={qgiConfig.liquidityTerms}
-                  onValueChange={(value) => setQgiConfig({ ...qgiConfig, liquidityTerms: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Daily Redemption</SelectItem>
-                    <SelectItem value="weekly">Weekly Redemption</SelectItem>
-                    <SelectItem value="monthly">Monthly Redemption</SelectItem>
-                    <SelectItem value="quarterly">Quarterly Redemption</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="rebalancing">Rebalancing Frequency</Label>
-                <Select
-                  value={qgiConfig.rebalancingFrequency}
-                  onValueChange={(value) => setQgiConfig({ ...qgiConfig, rebalancingFrequency: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Daily</SelectItem>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="quarterly">Quarterly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="government-backing"
-                checked={qgiConfig.governmentBacking}
-                onCheckedChange={(checked) => setQgiConfig({ ...qgiConfig, governmentBacking: checked })}
-              />
-              <Label htmlFor="government-backing">Government Backing</Label>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                placeholder="Describe the QGI's purpose, target market, and unique features..."
-                value={qgiConfig.description}
-                onChange={(e) => setQgiConfig({ ...qgiConfig, description: e.target.value })}
-                rows={3}
-              />
-            </div>
-          </div>
-
-          <Button onClick={handleCreateQGI} className="w-full" disabled={!qgiConfig.name || !qgiConfig.backingAsset}>
-            <Zap className="h-4 w-4 mr-2" />
-            Create Quantum Gains Instrument
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Existing QGIs */}
+      {/* Header */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
-            Active Quantum Gains Instruments
+            <Zap className="h-5 w-5 text-indigo-500" />
+            Quantum Gains Instrument Creation
           </CardTitle>
-          <CardDescription>Currently deployed QGI instruments and their performance</CardDescription>
+          <CardDescription>
+            Design and configure custom investment instruments with quantum-enhanced analytics
+          </CardDescription>
+        </CardHeader>
+      </Card>
+
+      {/* QGI Type Selection */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Select QGI Type</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {createdQGIs.map((qgi) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {qgiTypes.map((type) => (
               <div
-                key={qgi.id}
-                className="p-4 border rounded-lg bg-gradient-to-r from-white to-gray-50 hover:shadow-md transition-shadow"
+                key={type.id}
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  config.type === type.id ? "border-indigo-500 bg-indigo-50" : "border-gray-200 hover:border-gray-300"
+                }`}
+                onClick={() => updateConfig("type", type.id)}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${getQGITypeColor(qgi.type)}`}>{getQGITypeIcon(qgi.type)}</div>
-                    <div>
-                      <h3 className="font-semibold">{qgi.name}</h3>
-                      <p className="text-sm text-muted-foreground">{qgi.id}</p>
-                    </div>
-                  </div>
-                  <Badge variant={qgi.status === "active" ? "default" : "secondary"}>{qgi.status}</Badge>
+                <div className="flex items-center gap-2 mb-2">
+                  {type.icon}
+                  <span className="font-medium">{type.name}</span>
+                  {config.type === type.id && (
+                    <Badge variant="outline" className={getTypeColor(type.id)}>
+                      Selected
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground">{type.description}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Configuration Tabs */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">QGI Configuration</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="basic">Basic Settings</TabsTrigger>
+              <TabsTrigger value="financial">Financial Parameters</TabsTrigger>
+              <TabsTrigger value="risk">Risk & Compliance</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced Options</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="basic" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="qgi-name">QGI Name</Label>
+                  <Input
+                    id="qgi-name"
+                    value={config.name}
+                    onChange={(e) => updateConfig("name", e.target.value)}
+                    placeholder="Enter QGI name"
+                  />
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Total Value</p>
-                    <p className="font-semibold">${(qgi.value / 1000000).toFixed(1)}M</p>
+                <div className="space-y-2">
+                  <Label htmlFor="base-asset">Base Asset</Label>
+                  <Select value={config.baseAsset} onValueChange={(value) => updateConfig("baseAsset", value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {baseAssets.map((asset) => (
+                        <SelectItem key={asset} value={asset}>
+                          {asset}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="currency">Currency</Label>
+                  <Select value={config.currency} onValueChange={(value) => updateConfig("currency", value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {currencies.map((currency) => (
+                        <SelectItem key={currency} value={currency}>
+                          {currency}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="jurisdiction">Jurisdiction</Label>
+                  <Select value={config.jurisdiction} onValueChange={(value) => updateConfig("jurisdiction", value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {jurisdictions.map((jurisdiction) => (
+                        <SelectItem key={jurisdiction} value={jurisdiction}>
+                          {jurisdiction}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={config.description}
+                  onChange={(e) => updateConfig("description", e.target.value)}
+                  placeholder="Describe the QGI's purpose and strategy"
+                  rows={3}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="financial" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Leverage Ratio: {config.leverageRatio}:1</Label>
+                    <Slider
+                      value={[config.leverageRatio]}
+                      onValueChange={(value) => updateConfig("leverageRatio", value[0])}
+                      max={10}
+                      min={1}
+                      step={0.1}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Conservative (1:1)</span>
+                      <span>Aggressive (10:1)</span>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Performance (30d)</p>
-                    <p className="font-semibold text-green-600">{qgi.performance}</p>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="min-investment">Minimum Investment</Label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="min-investment"
+                        type="number"
+                        value={config.minimumInvestment}
+                        onChange={(e) => updateConfig("minimumInvestment", Number.parseInt(e.target.value))}
+                        className="pl-10"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Citizens</p>
-                    <p className="font-semibold">{qgi.citizens.toLocaleString()}</p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Maturity Period: {config.maturityPeriod} years</Label>
+                    <Slider
+                      value={[config.maturityPeriod]}
+                      onValueChange={(value) => updateConfig("maturityPeriod", value[0])}
+                      max={50}
+                      min={1}
+                      step={1}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>1 year</span>
+                      <span>50 years</span>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      <Settings className="h-3 w-3 mr-1" />
-                      Configure
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Target className="h-3 w-3 mr-1" />
-                      Analytics
-                    </Button>
+
+                  <div className="space-y-2">
+                    <Label>Expected Yield Range</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="relative">
+                        <Input
+                          type="number"
+                          value={config.expectedYield[0]}
+                          onChange={(e) =>
+                            updateConfig("expectedYield", [Number.parseFloat(e.target.value), config.expectedYield[1]])
+                          }
+                          step="0.1"
+                        />
+                        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                          %
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <Input
+                          type="number"
+                          value={config.expectedYield[1]}
+                          onChange={(e) =>
+                            updateConfig("expectedYield", [config.expectedYield[0], Number.parseFloat(e.target.value)])
+                          }
+                          step="0.1"
+                        />
+                        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+                          %
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
+            </TabsContent>
+
+            <TabsContent value="risk" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="risk-rating">Risk Rating</Label>
+                    <Select value={config.riskRating} onValueChange={(value) => updateConfig("riskRating", value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {riskRatings.map((rating) => (
+                          <SelectItem key={rating} value={rating}>
+                            {rating}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Correlation Factor: {config.correlationFactor}</Label>
+                    <Slider
+                      value={[config.correlationFactor]}
+                      onValueChange={(value) => updateConfig("correlationFactor", value[0])}
+                      max={1}
+                      min={0}
+                      step={0.01}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Independent (0.0)</span>
+                      <span>Fully Correlated (1.0)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Shield className="h-4 w-4 text-amber-600" />
+                      <span className="font-medium text-amber-800">Risk Assessment</span>
+                    </div>
+                    <div className="space-y-2 text-sm text-amber-700">
+                      <div className="flex justify-between">
+                        <span>Market Risk:</span>
+                        <Badge variant="outline" className="bg-amber-100 text-amber-800">
+                          {config.leverageRatio > 5 ? "High" : config.leverageRatio > 2 ? "Medium" : "Low"}
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Credit Risk:</span>
+                        <Badge variant="outline" className="bg-amber-100 text-amber-800">
+                          {config.riskRating.includes("AAA")
+                            ? "Low"
+                            : config.riskRating.includes("A")
+                              ? "Medium"
+                              : "High"}
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Liquidity Risk:</span>
+                        <Badge variant="outline" className="bg-amber-100 text-amber-800">
+                          {config.maturityPeriod > 20 ? "High" : config.maturityPeriod > 5 ? "Medium" : "Low"}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="advanced" className="space-y-4 mt-6">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="space-y-1">
+                    <Label className="text-base">Auto-Rebalancing</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically rebalance portfolio based on market conditions
+                    </p>
+                  </div>
+                  <Switch
+                    checked={config.autoRebalancing}
+                    onCheckedChange={(checked) => updateConfig("autoRebalancing", checked)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="liquidity-terms">Liquidity Terms</Label>
+                  <Textarea
+                    id="liquidity-terms"
+                    value={config.liquidityTerms}
+                    onChange={(e) => updateConfig("liquidityTerms", e.target.value)}
+                    placeholder="Define redemption terms and conditions"
+                    rows={2}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <BarChart3 className="h-4 w-4 text-blue-500" />
+                      <span className="font-medium">Performance Tracking</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Real-time analytics and reporting</p>
+                  </Card>
+
+                  <Card className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="h-4 w-4 text-green-500" />
+                      <span className="font-medium">Multi-Jurisdiction</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Cross-border compliance support</p>
+                  </Card>
+
+                  <Card className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lock className="h-4 w-4 text-purple-500" />
+                      <span className="font-medium">Quantum Security</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Post-quantum cryptography</p>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+
+      {/* Creation Actions */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <p className="font-medium">Ready to create your QGI?</p>
+              <p className="text-sm text-muted-foreground">
+                Review your configuration and deploy the Quantum Gains Instrument
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline">
+                <Settings className="h-4 w-4 mr-2" />
+                Save Draft
+              </Button>
+              <Button onClick={handleCreateQGI} disabled={isCreating || !config.name}>
+                {isCreating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    Creating QGI...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="h-4 w-4 mr-2" />
+                    Create QGI
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
