@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HolographicBackground } from "@/components/ui/holographic-background"
 import { ImperialCoinDisplay } from "@/components/ui/imperial-coin-display"
 import { ImperialAmbientController } from "@/components/ui/imperial-ambient-controller"
+import { RoyalHolographicTitle } from "@/components/ui/royal-holographic-title"
 import {
   Home,
   TrendingUp,
@@ -118,26 +119,35 @@ export default function SnapifiDashboard() {
       <ImperialAmbientController autoStart={true} defaultTrack="imperial-dawn" compact={true} />
 
       <div className="relative z-10 p-6 space-y-8">
-        {/* Imperial Header */}
-        <div className="text-center py-6">
+        {/* Imperial Header with Royal Holographic Title */}
+        <div className="text-center py-12">
           <ImperialCoinDisplay size="large" showDetails={false} animated={true} />
 
-          <div className="mt-4 space-y-2">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600">
+          <div className="mt-8 space-y-6">
+            <RoyalHolographicTitle size="xl" className="mb-4">
               Imperial Wealth Management
-            </h1>
-            <p className="text-yellow-300/80">Supreme Financial Lifestyle Platform</p>
-            <div className="flex items-center justify-center gap-3 mt-3">
-              <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30">
-                <Crown className="w-3 h-3 mr-1" />
+            </RoyalHolographicTitle>
+
+            <div className="relative">
+              <p className="text-xl text-yellow-300/90 font-medium tracking-wide">
+                Supreme Financial Lifestyle Platform
+              </p>
+              <div className="absolute inset-0 text-xl text-yellow-200/50 blur-sm">
+                Supreme Financial Lifestyle Platform
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30 px-4 py-2">
+                <Crown className="w-4 h-4 mr-2" />
                 Royal Lifestyle
               </Badge>
-              <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
-                <Shield className="w-3 h-3 mr-1" />
+              <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30 px-4 py-2">
+                <Shield className="w-4 h-4 mr-2" />
                 Wealth Protected
               </Badge>
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-400/30">
-                <Star className="w-3 h-3 mr-1" />
+              <Badge className="bg-purple-500/20 text-purple-300 border-purple-400/30 px-4 py-2">
+                <Star className="w-4 h-4 mr-2" />
                 Elite Status
               </Badge>
             </div>
@@ -145,94 +155,102 @@ export default function SnapifiDashboard() {
         </div>
 
         {/* Wealth Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
-            <CardContent className="p-6 text-center">
-              <p className="text-yellow-300/80 text-sm">Total Goal Progress</p>
-              <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
+            <CardContent className="p-8 text-center">
+              <RoyalHolographicTitle size="medium" className="mb-2">
+                Total Goal Progress
+              </RoyalHolographicTitle>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
                 ${totalGoalValue.toLocaleString()}
               </div>
-              <div className="flex items-center justify-center gap-2 text-green-400 mt-2">
-                <TrendingUp className="h-4 w-4" />
-                <span className="text-sm">+15.2% this quarter</span>
+              <div className="flex items-center justify-center gap-2 text-green-400 mt-3">
+                <TrendingUp className="h-5 w-5" />
+                <span className="text-lg">+15.2% this quarter</span>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
-            <CardContent className="p-6 text-center">
-              <p className="text-yellow-300/80 text-sm">Real Estate Portfolio</p>
-              <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
+            <CardContent className="p-8 text-center">
+              <RoyalHolographicTitle size="medium" className="mb-2">
+                Real Estate Portfolio
+              </RoyalHolographicTitle>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
                 ${totalPropertyValue.toLocaleString()}
               </div>
-              <div className="flex items-center justify-center gap-2 text-green-400 mt-2">
-                <Home className="h-4 w-4" />
-                <span className="text-sm">2 properties owned</span>
+              <div className="flex items-center justify-center gap-2 text-green-400 mt-3">
+                <Home className="h-5 w-5" />
+                <span className="text-lg">2 properties owned</span>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
-            <CardContent className="p-6 text-center">
-              <p className="text-yellow-300/80 text-sm">Wellness Score</p>
-              <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
+            <CardContent className="p-8 text-center">
+              <RoyalHolographicTitle size="medium" className="mb-2">
+                Wellness Score
+              </RoyalHolographicTitle>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
                 92/100
               </div>
-              <div className="flex items-center justify-center gap-2 text-green-400 mt-2">
-                <Heart className="h-4 w-4" />
-                <span className="text-sm">Excellent health</span>
+              <div className="flex items-center justify-center gap-2 text-green-400 mt-3">
+                <Heart className="h-5 w-5" />
+                <span className="text-lg">Excellent health</span>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-black/20 border-yellow-500/20">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid w-full grid-cols-4 bg-black/20 border-yellow-500/20 h-14">
             <TabsTrigger
               value="overview"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300 text-lg"
             >
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="goals"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300 text-lg"
             >
               Goals
             </TabsTrigger>
             <TabsTrigger
               value="real-estate"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300 text-lg"
             >
               Real Estate
             </TabsTrigger>
             <TabsTrigger
               value="wellness"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-300 text-lg"
             >
               Wellness
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="overview" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
                 <CardHeader>
-                  <CardTitle className="text-yellow-300 flex items-center gap-2">
-                    <Target className="h-5 w-5" />
+                  <CardTitle className="text-yellow-300 flex items-center gap-2 text-xl">
+                    <Target className="h-6 w-6" />
                     Active Imperial Goals
                   </CardTitle>
-                  <CardDescription className="text-yellow-200/60">Your wealth building objectives</CardDescription>
+                  <CardDescription className="text-yellow-200/60 text-base">
+                    Your wealth building objectives
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {goals.slice(0, 3).map((goal) => (
-                      <div key={goal.id} className="p-3 bg-yellow-500/5 rounded-lg border border-yellow-400/10">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium text-yellow-200">{goal.name}</h4>
+                      <div key={goal.id} className="p-4 bg-yellow-500/5 rounded-lg border border-yellow-400/10">
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="font-medium text-yellow-200 text-lg">{goal.name}</h4>
                           <Badge
-                            className={`text-xs ${
+                            className={`text-sm px-3 py-1 ${
                               goal.priority === "high"
                                 ? "bg-red-500/20 text-red-400"
                                 : "bg-yellow-500/20 text-yellow-400"
@@ -241,13 +259,13 @@ export default function SnapifiDashboard() {
                             {goal.priority}
                           </Badge>
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
+                        <div className="space-y-3">
+                          <div className="flex justify-between">
                             <span className="text-yellow-300/60">${goal.currentAmount.toLocaleString()}</span>
                             <span className="text-yellow-300/60">${goal.targetAmount.toLocaleString()}</span>
                           </div>
-                          <Progress value={goal.progress} className="h-2" />
-                          <p className="text-xs text-yellow-400/50">{goal.progress}% complete</p>
+                          <Progress value={goal.progress} className="h-3" />
+                          <p className="text-yellow-400/50">{goal.progress}% complete</p>
                         </div>
                       </div>
                     ))}
@@ -257,14 +275,16 @@ export default function SnapifiDashboard() {
 
               <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
                 <CardHeader>
-                  <CardTitle className="text-yellow-300 flex items-center gap-2">
-                    <Activity className="h-5 w-5" />
+                  <CardTitle className="text-yellow-300 flex items-center gap-2 text-xl">
+                    <Activity className="h-6 w-6" />
                     Recent Imperial Activities
                   </CardTitle>
-                  <CardDescription className="text-yellow-200/60">Latest wealth management actions</CardDescription>
+                  <CardDescription className="text-yellow-200/60 text-base">
+                    Latest wealth management actions
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {[
                       {
                         title: "Property Investment Review",
@@ -290,17 +310,17 @@ export default function SnapifiDashboard() {
                     ].map((activity, index) => (
                       <div
                         key={index}
-                        className="flex items-start space-x-3 p-3 bg-yellow-500/5 rounded-lg border border-yellow-400/10"
+                        className="flex items-start space-x-4 p-4 bg-yellow-500/5 rounded-lg border border-yellow-400/10"
                       >
                         <div className="flex-shrink-0">
-                          <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2" />
+                          <div className="w-3 h-3 bg-yellow-400 rounded-full mt-2" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-yellow-200">{activity.title}</p>
-                          <p className="text-xs text-yellow-300/60">{activity.description}</p>
-                          <div className="flex items-center justify-between mt-1">
-                            <p className="text-xs text-yellow-400/50">{activity.time}</p>
-                            <span className="text-xs font-medium text-green-400">{activity.amount}</span>
+                          <p className="font-medium text-yellow-200 text-lg">{activity.title}</p>
+                          <p className="text-yellow-300/60">{activity.description}</p>
+                          <div className="flex items-center justify-between mt-2">
+                            <p className="text-yellow-400/50">{activity.time}</p>
+                            <span className="font-medium text-green-400">{activity.amount}</span>
                           </div>
                         </div>
                       </div>
@@ -311,16 +331,16 @@ export default function SnapifiDashboard() {
             </div>
           </TabsContent>
 
-          <TabsContent value="goals" className="space-y-6">
+          <TabsContent value="goals" className="space-y-8">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-yellow-300">Imperial Financial Goals</h2>
-              <Button className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30">
-                <Plus className="h-4 w-4 mr-2" />
+              <RoyalHolographicTitle size="large">Imperial Financial Goals</RoyalHolographicTitle>
+              <Button className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30 px-6 py-3 text-lg">
+                <Plus className="h-5 w-5 mr-2" />
                 Create Goal
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {goals.map((goal) => (
                 <Card
                   key={goal.id}
@@ -329,11 +349,11 @@ export default function SnapifiDashboard() {
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
-                        <CardTitle className="text-yellow-300">{goal.name}</CardTitle>
-                        <CardDescription className="text-yellow-200/60">{goal.category}</CardDescription>
+                        <CardTitle className="text-yellow-300 text-xl">{goal.name}</CardTitle>
+                        <CardDescription className="text-yellow-200/60 text-base">{goal.category}</CardDescription>
                       </div>
                       <Badge
-                        className={`${
+                        className={`px-3 py-1 ${
                           goal.priority === "high" ? "bg-red-500/20 text-red-400" : "bg-yellow-500/20 text-yellow-400"
                         }`}
                       >
@@ -341,46 +361,46 @@ export default function SnapifiDashboard() {
                       </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-yellow-200">Progress</span>
-                        <span className="text-yellow-300">{goal.progress}%</span>
+                  <CardContent className="space-y-6">
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-yellow-200 text-lg">Progress</span>
+                        <span className="text-yellow-300 text-lg">{goal.progress}%</span>
                       </div>
-                      <Progress value={goal.progress} className="h-3" />
+                      <Progress value={goal.progress} className="h-4" />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-3 bg-yellow-500/10 rounded-lg border border-yellow-400/20">
-                        <div className="text-lg font-bold text-yellow-300">${goal.currentAmount.toLocaleString()}</div>
-                        <div className="text-xs text-yellow-200/70">Current</div>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="text-center p-4 bg-yellow-500/10 rounded-lg border border-yellow-400/20">
+                        <div className="text-xl font-bold text-yellow-300">${goal.currentAmount.toLocaleString()}</div>
+                        <div className="text-yellow-200/70">Current</div>
                       </div>
-                      <div className="text-center p-3 bg-yellow-500/10 rounded-lg border border-yellow-400/20">
-                        <div className="text-lg font-bold text-yellow-300">${goal.targetAmount.toLocaleString()}</div>
-                        <div className="text-xs text-yellow-200/70">Target</div>
+                      <div className="text-center p-4 bg-yellow-500/10 rounded-lg border border-yellow-400/20">
+                        <div className="text-xl font-bold text-yellow-300">${goal.targetAmount.toLocaleString()}</div>
+                        <div className="text-yellow-200/70">Target</div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 text-sm text-yellow-300/60">
-                      <Calendar className="h-4 w-4" />
-                      <span>Target: {goal.targetDate}</span>
+                    <div className="flex items-center gap-2 text-yellow-300/60">
+                      <Calendar className="h-5 w-5" />
+                      <span className="text-lg">Target: {goal.targetDate}</span>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/20"
+                        className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/20 px-4 py-2"
                       >
-                        <Eye className="h-3 w-3 mr-1" />
+                        <Eye className="h-4 w-4 mr-2" />
                         View
                       </Button>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/20"
+                        className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/20 px-4 py-2"
                       >
-                        <Settings className="h-3 w-3 mr-1" />
+                        <Settings className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
                     </div>
@@ -390,45 +410,45 @@ export default function SnapifiDashboard() {
             </div>
           </TabsContent>
 
-          <TabsContent value="real-estate" className="space-y-6">
+          <TabsContent value="real-estate" className="space-y-8">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-yellow-300">Imperial Real Estate Portfolio</h2>
-              <Button className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30">
-                <Plus className="h-4 w-4 mr-2" />
+              <RoyalHolographicTitle size="large">Imperial Real Estate Portfolio</RoyalHolographicTitle>
+              <Button className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30 px-6 py-3 text-lg">
+                <Plus className="h-5 w-5 mr-2" />
                 Add Property
               </Button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               {properties.map((property) => (
                 <Card
                   key={property.id}
                   className="bg-black/20 backdrop-blur-md border-yellow-500/20 hover:border-yellow-400/40 transition-all duration-300"
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="p-8">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                          <Home className="h-6 w-6 text-yellow-400" />
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                          <Home className="h-8 w-8 text-yellow-400" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-yellow-300">{property.name}</h3>
-                          <div className="flex items-center gap-2 text-sm text-yellow-200/60">
-                            <MapPin className="h-3 w-3" />
-                            <span>{property.location}</span>
+                          <h3 className="font-semibold text-yellow-300 text-xl">{property.name}</h3>
+                          <div className="flex items-center gap-2 text-yellow-200/60">
+                            <MapPin className="h-4 w-4" />
+                            <span className="text-lg">{property.location}</span>
                           </div>
-                          <p className="text-sm text-yellow-300/60">{property.type}</p>
+                          <p className="text-yellow-300/60 text-lg">{property.type}</p>
                         </div>
                       </div>
 
                       <div className="text-right">
-                        <p className="text-lg font-bold text-yellow-300">${property.value.toLocaleString()}</p>
-                        <div className="text-sm text-green-400">+{property.roi}% ROI</div>
+                        <p className="text-2xl font-bold text-yellow-300">${property.value.toLocaleString()}</p>
+                        <div className="text-lg text-green-400">+{property.roi}% ROI</div>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <Badge
-                          className={`${
+                          className={`px-3 py-1 ${
                             property.status === "owned"
                               ? "bg-green-500/20 text-green-400"
                               : "bg-blue-500/20 text-blue-400"
@@ -439,9 +459,9 @@ export default function SnapifiDashboard() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/20"
+                          className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-500/20 px-4 py-2"
                         >
-                          <Eye className="h-3 w-3 mr-1" />
+                          <Eye className="h-4 w-4 mr-2" />
                           View
                         </Button>
                       </div>
@@ -452,21 +472,21 @@ export default function SnapifiDashboard() {
             </div>
           </TabsContent>
 
-          <TabsContent value="wellness" className="space-y-6">
-            <h2 className="text-xl font-semibold text-yellow-300">Imperial Financial Wellness</h2>
+          <TabsContent value="wellness" className="space-y-8">
+            <RoyalHolographicTitle size="large">Imperial Financial Wellness</RoyalHolographicTitle>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {wellnessMetrics.map((metric, index) => (
                 <Card key={index} className="bg-black/20 backdrop-blur-md border-yellow-500/20">
                   <CardHeader>
-                    <CardTitle className="text-yellow-300 text-sm">{metric.name}</CardTitle>
+                    <CardTitle className="text-yellow-300 text-lg">{metric.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold text-yellow-400">{metric.value}</span>
+                        <span className="text-3xl font-bold text-yellow-400">{metric.value}</span>
                         <Badge
-                          className={`${
+                          className={`px-3 py-1 ${
                             metric.status === "excellent"
                               ? "bg-green-500/20 text-green-400"
                               : "bg-yellow-500/20 text-yellow-400"
@@ -475,8 +495,8 @@ export default function SnapifiDashboard() {
                           {metric.status}
                         </Badge>
                       </div>
-                      <Progress value={metric.value} className="h-2" />
-                      <div className="text-sm text-yellow-300/60">
+                      <Progress value={metric.value} className="h-3" />
+                      <div className="text-yellow-300/60">
                         Target: {metric.target} | Current: {metric.value}
                       </div>
                     </div>
@@ -487,13 +507,13 @@ export default function SnapifiDashboard() {
 
             <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-yellow-300">Wellness Recommendations</CardTitle>
-                <CardDescription className="text-yellow-200/60">
+                <CardTitle className="text-yellow-300 text-xl">Wellness Recommendations</CardTitle>
+                <CardDescription className="text-yellow-200/60 text-base">
                   AI-powered imperial lifestyle suggestions
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {[
                     {
                       title: "Optimize Investment Allocation",
@@ -514,12 +534,12 @@ export default function SnapifiDashboard() {
                       impact: "High",
                     },
                   ].map((rec, index) => (
-                    <div key={index} className="p-4 bg-yellow-500/5 rounded-lg border border-yellow-400/10">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-yellow-200">{rec.title}</h4>
+                    <div key={index} className="p-5 bg-yellow-500/5 rounded-lg border border-yellow-400/10">
+                      <div className="flex justify-between items-start mb-3">
+                        <h4 className="font-medium text-yellow-200 text-lg">{rec.title}</h4>
                         <div className="flex gap-2">
                           <Badge
-                            className={`text-xs ${
+                            className={`text-sm px-3 py-1 ${
                               rec.priority === "high"
                                 ? "bg-red-500/20 text-red-400"
                                 : rec.priority === "medium"
@@ -529,10 +549,12 @@ export default function SnapifiDashboard() {
                           >
                             {rec.priority}
                           </Badge>
-                          <Badge className="text-xs bg-green-500/20 text-green-400">{rec.impact} Impact</Badge>
+                          <Badge className="text-sm bg-green-500/20 text-green-400 px-3 py-1">
+                            {rec.impact} Impact
+                          </Badge>
                         </div>
                       </div>
-                      <p className="text-sm text-yellow-300/60">{rec.description}</p>
+                      <p className="text-yellow-300/60">{rec.description}</p>
                     </div>
                   ))}
                 </div>
@@ -544,30 +566,30 @@ export default function SnapifiDashboard() {
         {/* Imperial Command Actions */}
         <Card className="bg-black/20 backdrop-blur-md border-yellow-500/20">
           <CardHeader>
-            <CardTitle className="text-yellow-300 flex items-center gap-2">
-              <Award className="h-5 w-5" />
+            <CardTitle className="text-yellow-300 flex items-center gap-3 text-xl">
+              <Award className="h-6 w-6" />
               Imperial Lifestyle Commands
             </CardTitle>
-            <CardDescription className="text-yellow-200/60">
+            <CardDescription className="text-yellow-200/60 text-base">
               Execute supreme wealth management authority
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30">
-                <Crown className="h-4 w-4 mr-2" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <Button className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-400/30 py-4 text-lg">
+                <Crown className="h-5 w-5 mr-2" />
                 Royal Planning
               </Button>
-              <Button className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-400/30">
-                <Shield className="h-4 w-4 mr-2" />
+              <Button className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-400/30 py-4 text-lg">
+                <Shield className="h-5 w-5 mr-2" />
                 Wealth Protection
               </Button>
-              <Button className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-400/30">
-                <Home className="h-4 w-4 mr-2" />
+              <Button className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-400/30 py-4 text-lg">
+                <Home className="h-5 w-5 mr-2" />
                 Estate Management
               </Button>
-              <Button className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-400/30">
-                <Star className="h-4 w-4 mr-2" />
+              <Button className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-400/30 py-4 text-lg">
+                <Star className="h-5 w-5 mr-2" />
                 Lifestyle Optimization
               </Button>
             </div>
