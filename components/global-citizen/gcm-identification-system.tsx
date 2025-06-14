@@ -7,8 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import {
   Crown,
   Shield,
@@ -16,7 +14,6 @@ import {
   Globe,
   CheckCircle2,
   ArrowRight,
-  Fingerprint,
   Scale,
   BanknoteIcon as Bank,
   Key,
@@ -25,6 +22,8 @@ import {
 import { RoyalHolographicTitle } from "@/components/ui/royal-holographic-title"
 import { HolographicGlassCard } from "@/components/snap-dax/holographic-glass-card"
 import { ImperialCoinDisplay } from "@/components/ui/imperial-coin-display"
+import { BiometricVerificationSystem } from "@/components/biometric/biometric-verification-system"
+import { EnhancedGCITokenDisplay } from "@/components/global-citizen/enhanced-gci-token-display"
 
 interface GCMSystemProps {
   onComplete?: (citizenData: any) => void
@@ -59,6 +58,9 @@ export function GCMIdentificationSystem({ onComplete }: GCMSystemProps) {
 
   const [isProcessing, setIsProcessing] = useState(false)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
+
+  const [biometricData, setBiometricData] = useState<any>({})
+  const [showBiometricVerification, setShowBiometricVerification] = useState(false)
 
   const steps = [
     {
@@ -414,136 +416,28 @@ export function GCMIdentificationSystem({ onComplete }: GCMSystemProps) {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <RoyalHolographicTitle size="large" className="mb-4">
-                GCI Token Generation
+                GCI Token Generation & Biometric Security
               </RoyalHolographicTitle>
-              <p className="text-amber-200/80 text-lg">Final step: Legal entity formation and token issuance</p>
+              <p className="text-amber-200/80 text-lg">
+                Final step: Legal entity formation and biometric authentication
+              </p>
             </div>
 
-            {certificates.gci ? (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <div className="relative inline-block mb-6">
-                    <div className="w-32 h-32 mx-auto bg-gradient-to-br from-gray-300 via-gray-100 to-gray-300 rounded-xl border-4 border-gray-400 shadow-2xl relative overflow-hidden">
-                      {/* Diamond clarity effect */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/60 to-transparent opacity-80" />
-                      <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-white/40 to-transparent opacity-60" />
-
-                      {/* Silver tint overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-400/30 to-gray-200/30" />
-
-                      {/* Diamond shimmer */}
-                      <div className="absolute inset-0 animate-pulse">
-                        <div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent transform rotate-45 animate-spin"
-                          style={{ animationDuration: "8s" }}
-                        />
-                      </div>
-
-                      {/* Content */}
-                      <div className="relative z-10 h-full flex flex-col items-center justify-center text-gray-800">
-                        <Diamond className="h-8 w-8 mb-2" />
-                        <div className="text-xs font-bold">GCI</div>
-                        <div className="text-xs">TOKEN</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Badge className="bg-gradient-to-r from-gray-400 to-gray-600 text-white mb-4">
-                    Silver Tinted • Diamond Clarity
-                  </Badge>
-                </div>
-
-                <div className="bg-gradient-to-r from-gray-900/50 to-gray-800/50 rounded-xl p-6 border border-gray-500/30">
-                  <h3 className="text-xl font-bold text-gray-300 mb-4 flex items-center gap-2">
-                    <Fingerprint className="h-6 w-6" />
-                    Global Citizen Identity Certificate
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-gray-400">GCIT Number:</span>
-                      <div className="font-mono text-gray-200 bg-gray-800/50 p-2 rounded mt-1">
-                        {certificates.gci.gcitNumber}
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="text-gray-400">Legal Origin:</span>
-                      <div className="text-gray-200 mt-1">{certificates.gci.legalOrigin}</div>
-                    </div>
-
-                    <div>
-                      <span className="text-gray-400">Legal Name:</span>
-                      <div className="text-gray-200 mt-1">{certificates.gci.legalName}</div>
-                    </div>
-
-                    <div>
-                      <span className="text-gray-400">Domiciled Name:</span>
-                      <div className="text-gray-200 mt-1">{certificates.gci.domiciledName}</div>
-                    </div>
-
-                    <div>
-                      <span className="text-gray-400">Digital Identity:</span>
-                      <div className="text-gray-200 mt-1">{certificates.gci.digitalIdentity}</div>
-                    </div>
-
-                    <div>
-                      <span className="text-gray-400">Fiscal Start Date:</span>
-                      <div className="text-gray-200 mt-1">
-                        {new Date(certificates.gci.fiscalStartDate).toLocaleDateString()}
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator className="my-4 bg-gray-600" />
-
-                  <div className="space-y-3">
-                    <h4 className="font-bold text-gray-300">Maturity Terms</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-400">Principal:</span>
-                        <div className="text-green-400 font-bold">
-                          ${certificates.gci.maturityTerms.principal.toLocaleString()}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-gray-400">Term:</span>
-                        <div className="text-gray-200">{certificates.gci.maturityTerms.termYears} years</div>
-                      </div>
-                      <div>
-                        <span className="text-gray-400">Rate:</span>
-                        <div className="text-gray-200">{certificates.gci.maturityTerms.interestRate}%</div>
-                      </div>
-                      <div>
-                        <span className="text-gray-400">Maturity Value:</span>
-                        <div className="text-green-400 font-bold">
-                          ${certificates.gci.maturityTerms.maturityValue.toLocaleString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator className="my-4 bg-gray-600" />
-
-                  <div className="space-y-2 text-sm">
-                    <div>
-                      <span className="text-gray-400">Jurisdiction:</span>
-                      <div className="text-gray-200">{certificates.gci.jurisdiction}</div>
-                    </div>
-                    <div>
-                      <span className="text-gray-400">Trustee:</span>
-                      <div className="text-gray-200">{certificates.gci.trustee}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-lg px-6 py-2">
-                    <CheckCircle2 className="mr-2 h-5 w-5" />
-                    Legal Entity Formation Complete
-                  </Badge>
-                </div>
-              </div>
+            {certificates.gci && !showBiometricVerification ? (
+              <EnhancedGCITokenDisplay
+                gciToken={certificates.gci}
+                biometricData={biometricData}
+                onBiometricUpdate={() => setShowBiometricVerification(true)}
+              />
+            ) : showBiometricVerification ? (
+              <BiometricVerificationSystem
+                onVerificationComplete={(data) => {
+                  setBiometricData(data)
+                  setShowBiometricVerification(false)
+                }}
+                requiredMethods={["fingerprint", "facial", "voice"]}
+                gciToken={certificates.gci}
+              />
             ) : (
               <div className="text-center space-y-6">
                 <div className="w-24 h-24 mx-auto bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
@@ -553,7 +447,7 @@ export function GCMIdentificationSystem({ onComplete }: GCMSystemProps) {
                 <div>
                   <h3 className="text-xl font-bold text-emerald-300 mb-2">Ready for Token Generation</h3>
                   <p className="text-emerald-200/80">
-                    Click below to generate your GCI token and complete legal entity formation
+                    Click below to generate your GCI token and enable biometric security
                   </p>
                 </div>
               </div>
