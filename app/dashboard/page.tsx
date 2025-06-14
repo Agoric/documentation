@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { HolographicBackground } from "@/components/ui/holographic-background"
 import { ImperialCoinDisplay } from "@/components/ui/imperial-coin-display"
+import { ImperialAmbientController } from "@/components/ui/imperial-ambient-controller"
 import { TrendingUp, DollarSign, Activity, Crown, Shield, Zap, Globe, Star, Award } from "lucide-react"
 
 export default function DashboardPage() {
@@ -82,6 +83,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <HolographicBackground variant="financial" />
+
+      {/* Imperial Ambient Music Controller */}
+      <ImperialAmbientController autoStart={true} defaultTrack="throne-room" compact={true} />
 
       <div className="relative z-10 p-6 space-y-8">
         {/* Imperial Header */}
