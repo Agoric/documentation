@@ -1,107 +1,147 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, TrendingUp, DollarSign } from "lucide-react"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { MapPin, TrendingUp, DollarSign, Home } from "lucide-react"
 
 export function PropertyOpportunityMap() {
-  const [selectedArea, setSelectedArea] = useState<string | null>(null)
+  const [selectedArea, setSelectedArea] = useState("north-austin")
 
   const areas = [
     {
       id: "north-austin",
       name: "North Austin",
-      opportunity: 85,
-      avgPrice: "$435,000",
+      averagePrice: "$435,000",
       appreciation: "+4.2%",
-      color: "bg-green-500",
+      inventory: 23,
+      hotness: "high" as const,
+      x: 45,
+      y: 30,
     },
     {
       id: "south-austin",
       name: "South Austin",
-      opportunity: 92,
-      avgPrice: "$465,000",
-      appreciation: "+5.1%",
-      color: "bg-blue-500",
+      averagePrice: "$465,000",
+      appreciation: "+3.8%",
+      inventory: 18,
+      hotness: "medium" as const,
+      x: 40,
+      y: 70,
     },
     {
       id: "east-austin",
       name: "East Austin",
-      opportunity: 78,
-      avgPrice: "$410,000",
-      appreciation: "+3.8%",
-      color: "bg-amber-500",
+      averagePrice: "$410,000",
+      appreciation: "+5.1%",
+      inventory: 31,
+      hotness: "high" as const,
+      x: 70,
+      y: 50,
     },
     {
       id: "west-austin",
       name: "West Austin",
-      opportunity: 65,
-      avgPrice: "$520,000",
+      averagePrice: "$520,000",
       appreciation: "+2.9%",
-      color: "bg-red-500",
+      inventory: 12,
+      hotness: "low" as const,
+      x: 20,
+      y: 45,
     },
   ]
 
+  const selectedAreaData = areas.find((area) => area.id === selectedArea)
+
   return (
     <div className="space-y-4">
-      <div className="relative bg-gray-100 rounded-lg p-6 h-48">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
-            {areas.map((area) => (
-              <button
-                key={area.id}
-                onClick={() => setSelectedArea(area.id)}
-                className={`p-3 rounded-lg border-2 transition-all ${
+      <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 h-48">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-100/20 to-purple-100/20 rounded-lg" />
+
+        {/* Map visualization */}
+        <svg className="w-full h-full" viewBox="0 0 100 100">
+          {areas.map((area) => (
+            <g key={area.id}>
+              <circle
+                cx={area.x}
+                cy={area.y}
+                r={area.hotness === "high" ? 8 : area.hotness === "medium" ? 6 : 4}
+                className={`cursor-pointer transition-all duration-200 ${
                   selectedArea === area.id
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-300 bg-white hover:border-gray-400"
+                    ? "fill-blue-600 stroke-blue-800 stroke-2"
+                    : area.hotness === "high"
+                      ? "fill-green-500 hover:fill-green-600"
+                      : area.hotness === "medium"
+                        ? "fill-yellow-500 hover:fill-yellow-600"
+                        : "fill-gray-400 hover:fill-gray-500"
                 }`}
+                onClick={() => setSelectedArea(area.id)}
+              />
+              <text
+                x={area.x}
+                y={area.y - 12}
+                className="text-xs font-medium fill-gray-700 text-center"
+                textAnchor="middle"
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <div className={`w-3 h-3 rounded-full ${area.color}`} />
-                  <span className="text-xs font-medium">{area.name}</span>
-                </div>
-                <div className="text-xs text-muted-foreground">{area.opportunity}% opportunity</div>
-              </button>
-            ))}
+                {area.name.split(" ")[0]}
+              </text>
+            </g>
+          ))}
+        </svg>
+
+        {/* Legend */}
+        <div className="absolute bottom-2 left-2 flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-full bg-green-500" />
+            <span>High Opportunity</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+            <span>Medium</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-full bg-gray-400" />
+            <span>Low</span>
           </div>
         </div>
       </div>
 
-      {selectedArea && (
-        <div className="p-4 border rounded-lg bg-muted/50">
-          {(() => {
-            const area = areas.find((a) => a.id === selectedArea)
-            if (!area) return null
-            return (
-              <div>
-                <h4 className="font-medium mb-2">{area.name}</h4>
-                <div className="grid grid-cols-3 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-green-600" />
-                    <div>
-                      <div className="font-medium">{area.avgPrice}</div>
-                      <div className="text-muted-foreground">Avg Price</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-blue-600" />
-                    <div>
-                      <div className="font-medium">{area.appreciation}</div>
-                      <div className="text-muted-foreground">Appreciation</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-purple-600" />
-                    <div>
-                      <div className="font-medium">{area.opportunity}%</div>
-                      <div className="text-muted-foreground">Opportunity</div>
-                    </div>
-                  </div>
-                </div>
+      {selectedAreaData && (
+        <Card className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-blue-600" />
+              <h4 className="font-medium">{selectedAreaData.name}</h4>
+            </div>
+            <Badge variant={selectedAreaData.hotness === "high" ? "default" : "secondary"}>
+              {selectedAreaData.hotness} opportunity
+            </Badge>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div>
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <DollarSign className="h-3 w-3" />
+                <span>Avg Price</span>
               </div>
-            )
-          })()}
-        </div>
+              <div className="font-medium">{selectedAreaData.averagePrice}</div>
+            </div>
+            <div>
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <TrendingUp className="h-3 w-3" />
+                <span>Appreciation</span>
+              </div>
+              <div className="font-medium text-green-600">{selectedAreaData.appreciation}</div>
+            </div>
+            <div>
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <Home className="h-3 w-3" />
+                <span>Available</span>
+              </div>
+              <div className="font-medium">{selectedAreaData.inventory} homes</div>
+            </div>
+          </div>
+        </Card>
       )}
     </div>
   )

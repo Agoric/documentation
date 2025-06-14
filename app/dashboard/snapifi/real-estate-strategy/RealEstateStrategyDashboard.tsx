@@ -907,7 +907,9 @@ export function RealEstateStrategyDashboard() {
                         <ArrowUpRight className="h-4 w-4 text-green-500 mt-0.5" />
                         <div>
                           <p className="text-sm">Increase rent by $100/month at next renewal</p>
-                          <div className="text-xs text-muted-foreground mt-1">Market analysis shows 6% below market</div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            Market analysis shows 6% below market
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
@@ -1199,4 +1201,368 @@ export function RealEstateStrategyDashboard() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Money Market Account</span>
-                        <span className="text-green-600">3\
+                        <span className="text-green-600">3.75% APY</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Brokerage Account</span>
+                        <span className="text-green-600">4.5% APY</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Monthly Banking Fees</span>
+                        <span className="text-green-600">+$0</span>
+                      </div>
+                    </div>
+                    <Separator className="my-3" />
+                    <div className="text-sm">
+                      <div className="font-medium mb-1">How to achieve this:</div>
+                      <ul className="list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                        <li>Switch to high-yield checking account with no fees</li>
+                        <li>Move savings to a money market account</li>
+                        <li>Invest excess cash in a low-risk brokerage account</li>
+                      </ul>
+                    </div>
+                    <Button size="sm" className="w-full mt-3">
+                      Apply This Strategy
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Expense Optimization</CardTitle>
+                <CardDescription>Reduce expenses to accelerate savings</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Current Monthly Expenses</span>
+                      </div>
+                      <span className="font-medium">-$4,250</span>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Housing</span>
+                        <span>-$1,500</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Transportation</span>
+                        <span>-$500</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Food</span>
+                        <span>-$750</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Entertainment</span>
+                        <span>-$500</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Other</span>
+                        <span>-$1,000</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border rounded-lg bg-blue-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Optimized Monthly Expenses</span>
+                      </div>
+                      <span className="font-medium text-green-600">-$3,900</span>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Housing</span>
+                        <span>-$1,500</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Transportation</span>
+                        <span className="text-green-600">-$400</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Food</span>
+                        <span className="text-green-600">-$650</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Entertainment</span>
+                        <span className="text-green-600">-$400</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Other</span>
+                        <span className="text-green-600">-$950</span>
+                      </div>
+                    </div>
+                    <Separator className="my-3" />
+                    <div className="text-sm">
+                      <div className="font-medium mb-1">How to achieve this:</div>
+                      <ul className="list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                        <li>Reduce transportation costs by carpooling</li>
+                        <li>Cut back on eating out and cook more meals at home</li>
+                        <li>Find free or low-cost entertainment options</li>
+                        <li>Review and cancel unused subscriptions</li>
+                      </ul>
+                    </div>
+                    <Button size="sm" className="w-full mt-3">
+                      Apply This Strategy
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* AI Advisor Tab */}
+        <TabsContent value="ai-advisor" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>AI Strategy Advisor</CardTitle>
+                <CardDescription>Quantum-powered real estate investment guidance</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Brain className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Current Strategy Assessment</span>
+                      </div>
+                      <Badge className="bg-amber-100 text-amber-800">Needs Improvement</Badge>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Primary Residence Timeline</span>
+                        <span>7 months</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Income Property Portfolio</span>
+                        <span>5 properties</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Risk Tolerance</span>
+                        <span>Moderate</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Resource Allocation</span>
+                        <span>Suboptimal</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border rounded-lg bg-blue-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">AI-Powered Recommendations</span>
+                      </div>
+                      <Badge className="bg-green-100 text-green-800">Optimized</Badge>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Accelerate Primary Residence</span>
+                        <span className="text-green-600">5 months</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Optimize Resource Allocation</span>
+                        <span className="text-green-600">Increase savings rate</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Explore Income Property Opportunities</span>
+                        <span className="text-green-600">High-potential markets</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Adjust Risk Tolerance</span>
+                        <span className="text-green-600">Consider RWA-backed loans</span>
+                      </div>
+                    </div>
+                    <Separator className="my-3" />
+                    <div className="text-sm">
+                      <div className="font-medium mb-1">Next Steps:</div>
+                      <ul className="list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                        <li>Apply optimized resource allocation strategy</li>
+                        <li>Review recommended income property opportunities</li>
+                        <li>Consult with a financial advisor to adjust risk tolerance</li>
+                      </ul>
+                    </div>
+                    <Button size="sm" className="w-full mt-3">
+                      Apply AI Strategy
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Market Analysis</CardTitle>
+                <CardDescription>AI-powered insights into real estate trends</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Top Performing Markets</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Austin, TX</span>
+                        <span className="text-green-600">+12.5% YoY</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Raleigh, NC</span>
+                        <span className="text-green-600">+11.2% YoY</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Nashville, TN</span>
+                        <span className="text-green-600">+10.8% YoY</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Property Value Projections</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Next 6 Months</span>
+                        <span className="text-green-600">+4.2%</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Next 12 Months</span>
+                        <span className="text-green-600">+7.8%</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Next 5 Years</span>
+                        <span className="text-green-600">+22.5%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Personalized Insights</CardTitle>
+                <CardDescription>AI-driven recommendations tailored to your goals</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Home className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Primary Residence</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Recommended Loan Type</span>
+                        <span>50-Year Fixed</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Down Payment</span>
+                        <span>5%</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Estimated Purchase Date</span>
+                        <span>Immediate</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Income Properties</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span>Recommended Markets</span>
+                        <span>Austin, Raleigh, Nashville</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Property Type</span>
+                        <span>2bd/2ba Condo</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Cash-on-Cash Return</span>
+                        <span>6.3%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>AI Learning Center</CardTitle>
+                <CardDescription>Expand your real estate knowledge with AI</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Brain className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Understanding Real Estate Loans</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Learn about different types of real estate loans, including fixed-rate, adjustable-rate, and
+                      government-backed loans.
+                    </p>
+                  </div>
+
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Brain className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Analyzing Market Trends</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Discover how to analyze market trends, including supply and demand, property values, and rental
+                      rates.
+                    </p>
+                  </div>
+
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Brain className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Building a Real Estate Portfolio</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Learn how to build a diversified real estate portfolio, including strategies for acquiring and
+                      managing income properties.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
