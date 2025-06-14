@@ -30,6 +30,7 @@ import { PlatformBranding } from "@/components/ecommerex/platform-branding"
 import { QuantumInsightsPanel } from "@/components/ecommerex/quantum-insights-panel"
 import { MoodAdaptiveAssistant } from "@/components/ecommerex/mood-adaptive-assistant"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
+import { StorefrontPreview } from "@/components/ecommerex/storefront-preview"
 
 export default function FlagshipHubDashboard() {
   const [activeTab, setActiveTab] = useState("catalog")
@@ -151,6 +152,10 @@ export default function FlagshipHubDashboard() {
             <FileText className="mr-2 h-4 w-4" />
             Tax Prep
           </TabsTrigger>
+          <TabsTrigger value="storefront">
+            <Globe className="mr-2 h-4 w-4" />
+            Store Front
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="catalog" className="space-y-4">
@@ -259,6 +264,9 @@ export default function FlagshipHubDashboard() {
               <TaxPreparation />
             </CardContent>
           </Card>
+        </TabsContent>
+        <TabsContent value="storefront" className="space-y-4">
+          <StorefrontPreview />
         </TabsContent>
       </Tabs>
     </div>
