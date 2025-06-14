@@ -1,6 +1,5 @@
 import type React from "react"
 import { HolographicUnifiedSidebar } from "@/components/layout/holographic-unified-sidebar"
-import { AIWellnessCompanion } from "@/components/wellness/ai-wellness-companion"
 
 export default function DashboardLayout({
   children,
@@ -8,10 +7,9 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <HolographicUnifiedSidebar />
-      <div className="flex-1 overflow-auto">{children}</div>
-      <AIWellnessCompanion />
+      <main className="flex-1 overflow-auto">{children}</main>
     </div>
   )
 }
