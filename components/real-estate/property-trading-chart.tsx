@@ -1,245 +1,191 @@
 "use client"
 
-import { useState } from "react"
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-} from "recharts"
-import { ImperialCard } from "@/components/ui/imperial-card"
-import { Badge } from "@/components/ui/badge"
-
-interface PropertySecurity {
-  symbol: string
-  name: string
-  price: number
-  change: number
-  changePercent: number
-  volume: number
-  marketCap: number
-  sector: string
-  location: string
-  type: "REIT" | "PROPERTY" | "FUND" | "INDEX"
-  bid: number
-  ask: number
-  lastTrade: string
-}
+import { useState, useEffect } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts"
+import { TrendingUp, TrendingDown, BarChart3, Activity } from "lucide-react"
 
 interface PropertyTradingChartProps {
-  property: PropertySecurity
+  symbol: string
 }
 
-// Mock chart data
-const generateChartData = (days: number) => {
-  const data = []
-  let basePrice = 2800000
+export function PropertyTradingChart({ symbol }: PropertyTradingChartProps) {
+  const [timeframe, setTimeframe] = useState("1D")
+  const [chartType, setChartType] = useState("candlestick")
 
-  for (let i = 0; i < days; i++) {
-    const change = (Math.random() - 0.5) * 100000
-    basePrice += change
+  // Mock real-time price data
+  const [currentPrice, setCurrentPrice] = useState(2500000)
+  const [priceChange, setPriceChange] = useState(56250)
+  const [percentChange, setPercentChange] = useState(2.3)
 
-    data.push({
-      date: new Date(Date.now() - (days - i) * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-      price: Math.max(basePrice, 2500000),
-      volume: Math.floor(Math.random() * 50) + 10,
-      high: basePrice + Math.random() * 50000,
-      low: basePrice - Math.random() * 50000,
-      open: basePrice - (Math.random() - 0.5) * 30000,
-      close: basePrice,
-    })
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const change = (Math.random() - 0.5) * 10000
+      setCurrentPrice((prev) => Math.max(prev + change, 1000000))
+      setPriceChange(change)
+      setPercentChange((change / currentPrice) * 100)
+    }, 2000)
 
-  return data
-}
+    return () => clearInterval(interval)
+  }, [currentPrice])
 
-const timeframes = [
-  { label: "1D", value: "1D", days: 1 },
-  { label: "5D", value: "5D", days: 5 },
-  { label: "1M", value: "1M", days: 30 },
-  { label: "3M", value: "3M", days: 90 },
-  { label: "6M", value: "6M", days: 180 },
-  { label: "1Y", value: "1Y", days: 365 },
-]
+  const chartData = [
+    { time: "09:30", open: 2450000, high: 2480000, low: 2440000, close: 2470000, volume: 1250 },
+    { time: "10:00", open: 2470000, high: 2490000, low: 2460000, close: 2485000, volume: 1180 },
+    { time: "10:30", open: 2485000, high: 2510000, low: 2480000, close: 2505000, volume: 1420 },
+    { time: "11:00", open: 2505000, high: 2520000, low: 2495000, close: 2515000, volume: 1350 },
+    { time: "11:30", open: 2515000, high: 2530000, low: 2510000, close: 2525000, volume: 1280 },
+    { time: "12:00", open: 2525000, high: 2540000, low: 2520000, close: 2535000, volume: 1190 },
+    { time: "12:30", open: 2535000, high: 2550000, low: 2530000, close: 2545000, volume: 1320 },
+    { time: "13:00", open: 2545000, high: 2560000, low: 2540000, close: 2555000, volume: 1450 },
+  ]
 
-export function PropertyTradingChart({ property }: PropertyTradingChartProps) {
-  const [selectedTimeframe, setSelectedTimeframe] = useState("1M")
-  const [chartType, setChartType] = useState<"line" | "area" | "candle">("area")
-
-  const currentTimeframe = timeframes.find((t) => t.value === selectedTimeframe) || timeframes[2]
-  const chartData = generateChartData(currentTimeframe.days)
-
-  const formatPrice = (value: number) => {
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(1)}M`
-    }
-    return `$${value.toLocaleString()}`
-  }
-
-  const formatVolume = (value: number) => {
-    return value.toString()
-  }
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-slate-800 border border-gray-600 rounded-lg p-3 shadow-lg">
-          <p className="text-gray-300 text-sm">{label}</p>
-          <p className="text-white font-semibold">Price: {formatPrice(payload[0].value)}</p>
-          {payload[1] && <p className="text-blue-400 text-sm">Volume: {payload[1].value}</p>}
-        </div>
-      )
-    }
-    return null
-  }
+  const timeframes = ["1M", "5M", "15M", "1H", "1D", "1W", "1M"]
 
   return (
-    <ImperialCard variant="gold" className="h-full">
-      <div className="p-6 space-y-4">
-        {/* Chart Header */}
+    <Card className="bg-gray-900 border-green-800 h-full">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h3 className="text-lg font-semibold text-white">Price Chart</h3>
-            <Badge variant="outline" className="text-xs">
-              {property.symbol}
-            </Badge>
+          <div className="flex items-center space-x-4">
+            <CardTitle className="text-green-300 text-lg font-bold">{symbol}</CardTitle>
+            <div className="flex items-center space-x-2">
+              <span className="text-white text-xl font-bold">${currentPrice.toLocaleString()}</span>
+              <span className={`text-sm font-bold ${priceChange >= 0 ? "text-green-400" : "text-red-400"}`}>
+                {priceChange >= 0 ? "+" : ""}
+                {priceChange.toLocaleString()} ({percentChange.toFixed(2)}%)
+              </span>
+              {priceChange >= 0 ? (
+                <TrendingUp className="w-4 h-4 text-green-400" />
+              ) : (
+                <TrendingDown className="w-4 h-4 text-red-400" />
+              )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Chart Type Selector */}
-            <div className="flex bg-slate-800 rounded-lg p-1">
-              <button
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
+              {timeframes.map((tf) => (
+                <Button
+                  key={tf}
+                  size="sm"
+                  variant={timeframe === tf ? "default" : "ghost"}
+                  className={`h-6 px-2 text-xs ${timeframe === tf ? "bg-green-700 text-white" : "text-green-400"}`}
+                  onClick={() => setTimeframe(tf)}
+                >
+                  {tf}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center space-x-1">
+              <Button
+                size="sm"
+                variant={chartType === "candlestick" ? "default" : "ghost"}
+                className={`h-6 px-2 text-xs ${
+                  chartType === "candlestick" ? "bg-green-700 text-white" : "text-green-400"
+                }`}
+                onClick={() => setChartType("candlestick")}
+              >
+                <BarChart3 className="w-3 h-3" />
+              </Button>
+              <Button
+                size="sm"
+                variant={chartType === "line" ? "default" : "ghost"}
+                className={`h-6 px-2 text-xs ${chartType === "line" ? "bg-green-700 text-white" : "text-green-400"}`}
                 onClick={() => setChartType("line")}
-                className={`px-3 py-1 rounded text-xs transition-colors ${
-                  chartType === "line" ? "bg-yellow-600 text-white" : "text-gray-400 hover:text-white"
-                }`}
               >
-                Line
-              </button>
-              <button
-                onClick={() => setChartType("area")}
-                className={`px-3 py-1 rounded text-xs transition-colors ${
-                  chartType === "area" ? "bg-yellow-600 text-white" : "text-gray-400 hover:text-white"
-                }`}
-              >
-                Area
-              </button>
-              <button
-                onClick={() => setChartType("candle")}
-                className={`px-3 py-1 rounded text-xs transition-colors ${
-                  chartType === "candle" ? "bg-yellow-600 text-white" : "text-gray-400 hover:text-white"
-                }`}
-              >
-                Candle
-              </button>
+                <Activity className="w-3 h-3" />
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Timeframe Selector */}
-        <div className="flex gap-1 bg-slate-800 rounded-lg p-1">
-          {timeframes.map((timeframe) => (
-            <button
-              key={timeframe.value}
-              onClick={() => setSelectedTimeframe(timeframe.value)}
-              className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                selectedTimeframe === timeframe.value ? "bg-yellow-600 text-white" : "text-gray-400 hover:text-white"
-              }`}
-            >
-              {timeframe.label}
-            </button>
-          ))}
+        {/* Market Stats */}
+        <div className="grid grid-cols-6 gap-4 text-xs">
+          <div>
+            <div className="text-gray-400">BID</div>
+            <div className="text-green-400 font-bold">$2,498,500</div>
+          </div>
+          <div>
+            <div className="text-gray-400">ASK</div>
+            <div className="text-red-400 font-bold">$2,501,500</div>
+          </div>
+          <div>
+            <div className="text-gray-400">SPREAD</div>
+            <div className="text-yellow-400 font-bold">$3,000</div>
+          </div>
+          <div>
+            <div className="text-gray-400">VOLUME</div>
+            <div className="text-white font-bold">12.5K</div>
+          </div>
+          <div>
+            <div className="text-gray-400">AVG VOL</div>
+            <div className="text-white font-bold">8.7K</div>
+          </div>
+          <div>
+            <div className="text-gray-400">MKT CAP</div>
+            <div className="text-white font-bold">$125M</div>
+          </div>
         </div>
+      </CardHeader>
 
-        {/* Price Chart */}
-        <div className="h-64">
+      <CardContent className="p-2">
+        <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
-            {chartType === "area" ? (
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#fbbf24" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis
-                  dataKey="date"
-                  stroke="#9ca3af"
-                  fontSize={10}
-                  tickFormatter={(value) => new Date(value).toLocaleDateString()}
-                />
-                <YAxis stroke="#9ca3af" fontSize={10} tickFormatter={formatPrice} />
-                <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="price" stroke="#fbbf24" strokeWidth={2} fill="url(#priceGradient)" />
-              </AreaChart>
-            ) : (
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis
-                  dataKey="date"
-                  stroke="#9ca3af"
-                  fontSize={10}
-                  tickFormatter={(value) => new Date(value).toLocaleDateString()}
-                />
-                <YAxis stroke="#9ca3af" fontSize={10} tickFormatter={formatPrice} />
-                <Tooltip content={<CustomTooltip />} />
-                <Line type="monotone" dataKey="price" stroke="#fbbf24" strokeWidth={2} dot={false} />
-              </LineChart>
-            )}
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+              <XAxis dataKey="time" stroke="#10b981" fontSize={10} tickLine={false} />
+              <YAxis
+                stroke="#10b981"
+                fontSize={10}
+                tickLine={false}
+                domain={["dataMin - 10000", "dataMax + 10000"]}
+                tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#111827",
+                  border: "1px solid #10b981",
+                  borderRadius: "4px",
+                  fontSize: "12px",
+                }}
+                labelStyle={{ color: "#10b981" }}
+                formatter={(value: any) => [`$${value.toLocaleString()}`, "Price"]}
+              />
+              <Line
+                type="monotone"
+                dataKey="close"
+                stroke="#10b981"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4, stroke: "#10b981", strokeWidth: 2 }}
+              />
+              <ReferenceLine y={currentPrice} stroke="#fbbf24" strokeDasharray="2 2" />
+            </LineChart>
           </ResponsiveContainer>
         </div>
 
         {/* Volume Chart */}
-        <div className="h-20">
+        <div className="h-16 mt-2">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <XAxis dataKey="date" hide />
+            <LineChart data={chartData}>
+              <XAxis dataKey="time" hide />
               <YAxis hide />
               <Tooltip
-                content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="bg-slate-800 border border-gray-600 rounded-lg p-2 shadow-lg">
-                        <p className="text-blue-400 text-xs">Volume: {payload[0].value}</p>
-                      </div>
-                    )
-                  }
-                  return null
+                contentStyle={{
+                  backgroundColor: "#111827",
+                  border: "1px solid #10b981",
+                  borderRadius: "4px",
+                  fontSize: "10px",
                 }}
+                formatter={(value: any) => [`${value}`, "Volume"]}
               />
-              <Bar dataKey="volume" fill="#3b82f6" opacity={0.6} />
-            </BarChart>
+              <Line type="monotone" dataKey="volume" stroke="#6b7280" strokeWidth={1} dot={false} />
+            </LineChart>
           </ResponsiveContainer>
         </div>
-
-        {/* Chart Statistics */}
-        <div className="grid grid-cols-4 gap-4 pt-4 border-t border-gray-700">
-          <div className="text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">24h High</p>
-            <p className="text-sm font-semibold text-green-400">{formatPrice(property.price + 75000)}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">24h Low</p>
-            <p className="text-sm font-semibold text-red-400">{formatPrice(property.price - 45000)}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">Volume</p>
-            <p className="text-sm font-semibold text-blue-400">{property.volume}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">Market Cap</p>
-            <p className="text-sm font-semibold text-yellow-400">{formatPrice(property.marketCap)}</p>
-          </div>
-        </div>
-      </div>
-    </ImperialCard>
+      </CardContent>
+    </Card>
   )
 }
