@@ -1,7 +1,7 @@
 "use client"
 
-import { RealEstateMarketTerminal } from "@/components/real-estate/real-estate-market-terminal"
+import { RealEstateInvestmentTerminal } from "@/components/real-estate/real-estate-investment-terminal"
 
-export default function RealEstateMarketPage() {
-  return <RealEstateMarketTerminal />
+export default function RealEstatePage() {
+  return <RealEstateInvestmentTerminal />
 }
