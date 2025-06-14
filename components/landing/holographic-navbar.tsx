@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { SupremeAuthorityLogo } from "@/components/ui/supreme-authority-logo"
 
 export function HolographicNavbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -46,22 +47,8 @@ export function HolographicNavbar() {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
-          <motion.div
-            className="relative w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 opacity-70 blur-sm" />
-            <span className="text-white font-bold text-xl relative z-10">S</span>
-          </motion.div>
-          <motion.span
-            className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-500 font-bold text-2xl"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            SnapAiFi
-          </motion.span>
+        <Link href="/" className="flex items-center">
+          <SupremeAuthorityLogo size="md" variant="compact" />
         </Link>
 
         {/* Desktop Navigation */}

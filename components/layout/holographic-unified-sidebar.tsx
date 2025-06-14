@@ -21,6 +21,7 @@ import {
   User,
   Shield,
 } from "lucide-react"
+import { SupremeAuthorityLogo } from "@/components/ui/supreme-authority-logo"
 
 // Define the navigation structure with categories and subcategories
 const navigationStructure = [
@@ -253,12 +254,11 @@ export function HolographicUnifiedSidebar({ initialCollapsed = false }: Holograp
 
   // Logo component
   const Logo = () => (
-    <div className="flex items-center gap-2">
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600">
-        <Sparkles className="h-4 w-4 text-white" />
-      </div>
-      {!collapsed && <span className="text-lg font-bold text-white">Snapifi</span>}
-    </div>
+    <SupremeAuthorityLogo
+      size={collapsed ? "sm" : "md"}
+      showText={!collapsed}
+      variant={collapsed ? "icon-only" : "compact"}
+    />
   )
 
   // User profile component
