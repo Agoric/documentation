@@ -1,245 +1,176 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState, useEffect } from "react"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { TradingChart } from "./trading-chart"
-import { OrderBook } from "./order-book"
-import { MarketDepth } from "./market-depth"
-import { PropertyTicker } from "./property-ticker"
-import { TradingInterface } from "./trading-interface"
-import { MarketNews } from "./market-news"
-import { PortfolioSummary } from "./portfolio-summary"
-import { RiskMetrics } from "./risk-metrics"
-import { TrendingUp, TrendingDown, Building, BarChart3 } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PropertyOrderBook } from "./property-order-book"
+import { PropertyTradingChart } from "./property-trading-chart"
+import { MarketDepthPanel } from "./market-depth-panel"
+import { PropertyWatchlist } from "./property-watchlist"
+import { TradingPositions } from "./trading-positions"
+import { MarketNewsTerminal } from "./market-news-terminal"
+import { RealTimeMarketData } from "./realtime-market-data"
+import { PropertyAnalytics } from "./property-analytics"
+import { TrendingUp, TrendingDown, Activity, Clock } from "lucide-react"
 
 export function RealEstateMarketTerminal() {
-  const [selectedProperty, setSelectedProperty] = useState("REIT-NYC-001")
-  const [marketData, setMarketData] = useState({
-    totalVolume: 2847392000,
-    activeListings: 15847,
-    avgPrice: 485000,
-    marketCap: 847392847392,
-    dailyChange: 2.34,
-  })
+  const [selectedProperty, setSelectedProperty] = useState("PROP-NYC-001")
+  const [marketTime, setMarketTime] = useState(new Date())
+
+  useEffect(() => {
+    const timer = setInterval(() => setMarketTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
 
   const marketIndices = [
-    { symbol: "REIX", name: "Real Estate Index", price: 2847.92, change: 2.34, volume: "847M" },
-    { symbol: "COMX", name: "Commercial Index", price: 1923.45, change: -0.87, volume: "234M" },
-    { symbol: "RESX", name: "Residential Index", price: 3421.67, change: 1.45, volume: "567M" },
-    { symbol: "RITX", name: "REIT Index", price: 1567.89, change: 3.21, volume: "892M" },
+    { symbol: "REIT", value: "2,847.32", change: "+12.45", changePercent: "+0.44%", trend: "up" },
+    { symbol: "COMM", value: "1,923.67", change: "-8.21", changePercent: "-0.42%", trend: "down" },
+    { symbol: "RESI", value: "3,456.89", change: "+23.12", changePercent: "+0.67%", trend: "up" },
+    { symbol: "LAND", value: "987.45", change: "+5.67", changePercent: "+0.58%", trend: "up" },
   ]
 
-  const topProperties = [
-    {
-      symbol: "REIT-NYC-001",
-      name: "Manhattan Office Tower",
-      price: 2500000,
-      change: 2.34,
-      volume: 15,
-      marketCap: 125000000,
-      yield: 4.2,
-      sector: "Commercial",
-    },
-    {
-      symbol: "REIT-LA-002",
-      name: "Beverly Hills Residential",
-      price: 3200000,
-      change: -1.23,
-      volume: 8,
-      marketCap: 89600000,
-      yield: 3.8,
-      sector: "Luxury Residential",
-    },
-    {
-      symbol: "REIT-CHI-003",
-      name: "Chicago Industrial Complex",
-      price: 1800000,
-      change: 4.56,
-      volume: 23,
-      marketCap: 234000000,
-      yield: 5.1,
-      sector: "Industrial",
-    },
-    {
-      symbol: "REIT-MIA-004",
-      name: "Miami Retail Center",
-      price: 950000,
-      change: 1.87,
-      volume: 12,
-      marketCap: 67200000,
-      yield: 4.7,
-      sector: "Retail",
-    },
+  const topMovers = [
+    { symbol: "PROP-NYC-001", name: "Manhattan Penthouse", price: "$2,500,000", change: "+2.3%", volume: "12.5K" },
+    { symbol: "PROP-LA-045", name: "Beverly Hills Estate", price: "$8,750,000", change: "+1.8%", volume: "8.2K" },
+    { symbol: "PROP-MIA-023", name: "South Beach Condo", price: "$1,200,000", change: "-0.9%", volume: "15.7K" },
+    { symbol: "PROP-SF-067", name: "Silicon Valley Office", price: "$15,000,000", change: "+3.2%", volume: "6.1K" },
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white p-4">
-      {/* Market Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-4">
-            <Building className="h-8 w-8 text-amber-400" />
-            <h1 className="text-2xl font-bold text-amber-400">REAL ESTATE TRADING TERMINAL</h1>
-            <Badge variant="outline" className="border-green-500 text-green-400">
-              MARKET OPEN
-            </Badge>
-          </div>
-          <div className="flex items-center space-x-4 text-sm">
-            <span className="text-gray-400">EST 09:30 AM</span>
+    <div className="min-h-screen bg-black text-green-400 font-mono text-sm">
+      {/* Terminal Header */}
+      <div className="border-b border-green-800 p-2 bg-gray-900">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <h1 className="text-xl font-bold text-green-300">REAL ESTATE TRADING TERMINAL</h1>
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-green-400">LIVE</span>
+              <Activity className="w-4 h-4 text-green-400" />
+              <span className="text-green-300">MARKET OPEN</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Clock className="w-4 h-4" />
+              <span>{marketTime.toLocaleTimeString()}</span>
             </div>
           </div>
+          <div className="flex items-center space-x-4">
+            <Badge variant="outline" className="border-green-600 text-green-400">
+              LIVE DATA
+            </Badge>
+            <Badge variant="outline" className="border-yellow-600 text-yellow-400">
+              LEVEL II
+            </Badge>
+          </div>
         </div>
+      </div>
 
-        {/* Market Indices */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      {/* Market Indices Bar */}
+      <div className="border-b border-green-800 p-2 bg-gray-950">
+        <div className="flex items-center space-x-8">
           {marketIndices.map((index) => (
-            <Card key={index.symbol} className="bg-gray-900 border-gray-700">
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-xs text-gray-400">{index.symbol}</p>
-                    <p className="text-lg font-bold">{index.price.toLocaleString()}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className={`flex items-center ${index.change >= 0 ? "text-green-400" : "text-red-400"}`}>
-                      {index.change >= 0 ? (
-                        <TrendingUp className="h-3 w-3 mr-1" />
-                      ) : (
-                        <TrendingDown className="h-3 w-3 mr-1" />
-                      )}
-                      <span className="text-sm font-medium">
-                        {index.change >= 0 ? "+" : ""}
-                        {index.change}%
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-400">Vol: {index.volume}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div key={index.symbol} className="flex items-center space-x-2">
+              <span className="text-green-300 font-bold">{index.symbol}</span>
+              <span className="text-white">{index.value}</span>
+              <span className={index.trend === "up" ? "text-green-400" : "text-red-400"}>
+                {index.change} ({index.changePercent})
+              </span>
+              {index.trend === "up" ? (
+                <TrendingUp className="w-3 h-3 text-green-400" />
+              ) : (
+                <TrendingDown className="w-3 h-3 text-red-400" />
+              )}
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Property Ticker */}
-      <PropertyTicker properties={topProperties} />
-
       {/* Main Trading Interface */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
-        {/* Trading Chart - Takes up 3 columns */}
-        <div className="lg:col-span-3">
-          <Card className="bg-gray-900 border-gray-700 h-96">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-amber-400">{selectedProperty} - Manhattan Office Tower</CardTitle>
-                <div className="flex items-center space-x-4">
-                  <Badge variant="outline" className="border-blue-500 text-blue-400">
-                    Commercial
-                  </Badge>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-green-400">$2,500,000</p>
-                    <p className="text-sm text-green-400">+2.34% (+$57,500)</p>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <TradingChart symbol={selectedProperty} />
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-12 gap-1 h-[calc(100vh-120px)]">
+        {/* Left Panel - Watchlist & Positions */}
+        <div className="col-span-3 space-y-1">
+          <PropertyWatchlist onSelectProperty={setSelectedProperty} />
+          <TradingPositions />
         </div>
 
-        {/* Order Book */}
-        <div>
-          <OrderBook symbol={selectedProperty} />
+        {/* Center Panel - Chart & Order Book */}
+        <div className="col-span-6 space-y-1">
+          <div className="h-2/3">
+            <PropertyTradingChart symbol={selectedProperty} />
+          </div>
+          <div className="h-1/3">
+            <PropertyOrderBook symbol={selectedProperty} />
+          </div>
+        </div>
+
+        {/* Right Panel - Market Data & News */}
+        <div className="col-span-3 space-y-1">
+          <RealTimeMarketData />
+          <MarketDepthPanel symbol={selectedProperty} />
+          <MarketNewsTerminal />
         </div>
       </div>
 
-      {/* Secondary Interface */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Property Listings with Trading Data */}
-        <div className="lg:col-span-2">
-          <Card className="bg-gray-900 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-amber-400 flex items-center">
-                <BarChart3 className="h-5 w-5 mr-2" />
-                Active Property Securities
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="grid grid-cols-8 gap-2 text-xs text-gray-400 font-medium border-b border-gray-700 pb-2">
-                  <span>SYMBOL</span>
-                  <span>PRICE</span>
-                  <span>CHANGE</span>
-                  <span>VOLUME</span>
-                  <span>MKT CAP</span>
-                  <span>YIELD</span>
-                  <span>SECTOR</span>
-                  <span>ACTION</span>
-                </div>
-                {topProperties.map((property) => (
-                  <div
-                    key={property.symbol}
-                    className={`grid grid-cols-8 gap-2 text-sm py-2 border-b border-gray-800 hover:bg-gray-800 cursor-pointer ${
-                      selectedProperty === property.symbol ? "bg-gray-800" : ""
-                    }`}
-                    onClick={() => setSelectedProperty(property.symbol)}
-                  >
-                    <span className="font-medium text-blue-400">{property.symbol}</span>
-                    <span className="font-mono">${property.price.toLocaleString()}</span>
-                    <span className={`font-mono ${property.change >= 0 ? "text-green-400" : "text-red-400"}`}>
-                      {property.change >= 0 ? "+" : ""}
-                      {property.change}%
-                    </span>
-                    <span className="font-mono">{property.volume}</span>
-                    <span className="font-mono text-xs">${(property.marketCap / 1000000).toFixed(1)}M</span>
-                    <span className="font-mono text-green-400">{property.yield}%</span>
-                    <span className="text-xs">
-                      <Badge variant="outline" className="text-xs">
-                        {property.sector}
-                      </Badge>
-                    </span>
-                    <div className="flex space-x-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-6 px-2 text-xs border-green-600 text-green-400 hover:bg-green-600"
-                      >
-                        BUY
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-6 px-2 text-xs border-red-600 text-red-400 hover:bg-red-600"
-                      >
-                        SELL
-                      </Button>
+      {/* Bottom Panel - Analytics */}
+      <div className="border-t border-green-800 h-48 bg-gray-950">
+        <Tabs defaultValue="analytics" className="h-full">
+          <TabsList className="bg-gray-900 border-green-800">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-green-900">
+              Analytics
+            </TabsTrigger>
+            <TabsTrigger value="movers" className="data-[state=active]:bg-green-900">
+              Top Movers
+            </TabsTrigger>
+            <TabsTrigger value="sectors" className="data-[state=active]:bg-green-900">
+              Sectors
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="analytics" className="h-full p-2">
+            <PropertyAnalytics symbol={selectedProperty} />
+          </TabsContent>
+
+          <TabsContent value="movers" className="h-full p-2">
+            <div className="grid grid-cols-4 gap-4 h-full">
+              {topMovers.map((property) => (
+                <Card key={property.symbol} className="bg-gray-900 border-green-800">
+                  <CardContent className="p-3">
+                    <div className="space-y-1">
+                      <div className="text-green-300 font-bold text-xs">{property.symbol}</div>
+                      <div className="text-white text-xs">{property.name}</div>
+                      <div className="text-yellow-400 font-bold">{property.price}</div>
+                      <div className="flex justify-between text-xs">
+                        <span className={property.change.startsWith("+") ? "text-green-400" : "text-red-400"}>
+                          {property.change}
+                        </span>
+                        <span className="text-gray-400">Vol: {property.volume}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
 
-        {/* Trading Interface & Portfolio */}
-        <div className="space-y-6">
-          <TradingInterface symbol={selectedProperty} />
-          <PortfolioSummary />
-          <RiskMetrics />
-        </div>
-      </div>
-
-      {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <MarketDepth symbol={selectedProperty} />
-        <MarketNews />
+          <TabsContent value="sectors" className="h-full p-2">
+            <div className="grid grid-cols-6 gap-2 h-full">
+              {[
+                { name: "Residential", change: "+1.2%", color: "text-green-400" },
+                { name: "Commercial", change: "-0.8%", color: "text-red-400" },
+                { name: "Industrial", change: "+2.1%", color: "text-green-400" },
+                { name: "Retail", change: "-1.5%", color: "text-red-400" },
+                { name: "Office", change: "+0.9%", color: "text-green-400" },
+                { name: "Hospitality", change: "+1.7%", color: "text-green-400" },
+              ].map((sector) => (
+                <Card key={sector.name} className="bg-gray-900 border-green-800">
+                  <CardContent className="p-2 text-center">
+                    <div className="text-green-300 text-xs font-bold">{sector.name}</div>
+                    <div className={`${sector.color} text-sm font-bold`}>{sector.change}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

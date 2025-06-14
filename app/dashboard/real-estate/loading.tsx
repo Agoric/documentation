@@ -1,25 +1,19 @@
+"use client"
+
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default function Loading() {
+export default function RealEstateMarketLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-8 w-32" />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3 space-y-6">
-            <Skeleton className="h-64" />
-            <Skeleton className="h-96" />
-          </div>
-          <div className="space-y-6">
-            <Skeleton className="h-48" />
-            <Skeleton className="h-64" />
-            <Skeleton className="h-48" />
-          </div>
-        </div>
+    <div className="min-h-screen bg-black p-4 space-y-4">
+      <div className="grid grid-cols-4 gap-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <Skeleton key={i} className="h-20 bg-gray-800" />
+        ))}
+      </div>
+      <div className="grid grid-cols-3 gap-4 h-96">
+        <Skeleton className="bg-gray-800" />
+        <Skeleton className="bg-gray-800" />
+        <Skeleton className="bg-gray-800" />
       </div>
     </div>
   )
