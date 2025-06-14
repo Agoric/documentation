@@ -17,7 +17,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Edit, Eye, Heart, Settings, ShoppingCart, Star, Zap, Search, Grid, List, Save, RefreshCw } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 
 // Sample storefront data
 const storefrontData = {
@@ -438,103 +437,96 @@ export function StorefrontPreview() {
           <div
             className={viewMode === "grid" ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "space-y-4"}
           >
-            <AnimatePresence>
-              {filteredProducts.map((product) => (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                  className={
-                    viewMode === "grid"
-                      ? "group relative overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-md"
-                      : "flex gap-4 rounded-lg border bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
-                  }
-                >
-                  {/* Product Image */}
-                  <div className={viewMode === "grid" ? "aspect-square overflow-hidden" : "h-24 w-24 flex-shrink-0"}>
-                    <img
-                      src={product.image || "/placeholder.svg"}
-                      alt={product.name}
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
-                    {product.featured && (
-                      <Badge className="absolute left-2 top-2 bg-amber-500 text-white">
-                        <Zap className="mr-1 h-3 w-3" />
-                        Featured
-                      </Badge>
-                    )}
-                    {!product.inStock && (
-                      <Badge className="absolute left-2 top-2 bg-red-500 text-white">Out of Stock</Badge>
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className={
+                  viewMode === "grid"
+                    ? "group relative overflow-hidden rounded-lg border bg-white shadow-sm transition-all duration-200 hover:shadow-md animate-in fade-in-0 zoom-in-95"
+                    : "flex gap-4 rounded-lg border bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md animate-in fade-in-0 slide-in-from-left-5"
+                }
+              >
+                {/* Product Image */}
+                <div className={viewMode === "grid" ? "aspect-square overflow-hidden" : "h-24 w-24 flex-shrink-0"}>
+                  <img
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.name}
+                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  />
+                  {product.featured && (
+                    <Badge className="absolute left-2 top-2 bg-amber-500 text-white">
+                      <Zap className="mr-1 h-3 w-3" />
+                      Featured
+                    </Badge>
+                  )}
+                  {!product.inStock && (
+                    <Badge className="absolute left-2 top-2 bg-red-500 text-white">Out of Stock</Badge>
+                  )}
+                </div>
+
+                {/* Product Info */}
+                <div className={viewMode === "grid" ? "p-4" : "flex-1"}>
+                  <div className="mb-2">
+                    <h4 className="font-semibold text-gray-900">{product.name}</h4>
+                    <p className="text-sm text-gray-600">{product.category}</p>
+                  </div>
+
+                  {/* Rating */}
+                  <div className="mb-2 flex items-center gap-1">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${
+                            i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm text-gray-600">
+                      {product.rating} ({product.reviews})
+                    </span>
+                  </div>
+
+                  {/* Price */}
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="text-lg font-bold" style={{ color: storeData.branding.primaryColor }}>
+                      ${product.price}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
                     )}
                   </div>
 
-                  {/* Product Info */}
-                  <div className={viewMode === "grid" ? "p-4" : "flex-1"}>
-                    <div className="mb-2">
-                      <h4 className="font-semibold text-gray-900">{product.name}</h4>
-                      <p className="text-sm text-gray-600">{product.category}</p>
-                    </div>
+                  {/* Description */}
+                  {viewMode === "list" && (
+                    <p className="mb-3 text-sm text-gray-600 line-clamp-2">{product.description}</p>
+                  )}
 
-                    {/* Rating */}
-                    <div className="mb-2 flex items-center gap-1">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${
-                              i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-gray-600">
-                        {product.rating} ({product.reviews})
-                      </span>
-                    </div>
-
-                    {/* Price */}
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="text-lg font-bold" style={{ color: storeData.branding.primaryColor }}>
-                        ${product.price}
-                      </span>
-                      {product.originalPrice && (
-                        <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
-                      )}
-                    </div>
-
-                    {/* Description */}
-                    {viewMode === "list" && (
-                      <p className="mb-3 text-sm text-gray-600 line-clamp-2">{product.description}</p>
-                    )}
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => addToCart(product)}
-                        disabled={!product.inStock}
-                        className="flex-1"
-                        style={{ backgroundColor: storeData.branding.primaryColor }}
-                      >
-                        <ShoppingCart className="mr-2 h-4 w-4" />
-                        {product.inStock ? "Add to Cart" : "Out of Stock"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => toggleWishlist(product.id)}
-                        className={wishlist.includes(product.id) ? "text-red-500" : ""}
-                      >
-                        <Heart className={`h-4 w-4 ${wishlist.includes(product.id) ? "fill-current" : ""}`} />
-                      </Button>
-                    </div>
+                  {/* Actions */}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => addToCart(product)}
+                      disabled={!product.inStock}
+                      className="flex-1"
+                      style={{ backgroundColor: storeData.branding.primaryColor }}
+                    >
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      {product.inStock ? "Add to Cart" : "Out of Stock"}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => toggleWishlist(product.id)}
+                      className={wishlist.includes(product.id) ? "text-red-500" : ""}
+                    >
+                      <Heart className={`h-4 w-4 ${wishlist.includes(product.id) ? "fill-current" : ""}`} />
+                    </Button>
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                </div>
+              </div>
+            ))}
           </div>
 
           {filteredProducts.length === 0 && (

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Brain, Globe, Sparkles } from "lucide-react"
 
@@ -69,23 +68,14 @@ export function HolographicHeader({
       {/* Floating particles */}
       <div className="absolute inset-0 z-0">
         {[...Array(15)].map((_, i) => (
-          <motion.div
+          <div
             key={i}
-            className="absolute h-1 w-1 rounded-full bg-indigo-400 opacity-70"
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.5 + 0.3,
-            }}
-            animate={{
-              x: [Math.random() * 100 + "%", Math.random() * 100 + "%", Math.random() * 100 + "%"],
-              y: [Math.random() * 100 + "%", Math.random() * 100 + "%", Math.random() * 100 + "%"],
-              opacity: [Math.random() * 0.5 + 0.3, Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.3],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 20,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
+            className="absolute h-1 w-1 rounded-full bg-indigo-400 opacity-70 animate-bounce"
+            style={{
+              left: Math.random() * 100 + "%",
+              top: Math.random() * 100 + "%",
+              animationDelay: Math.random() * 2 + "s",
+              animationDuration: Math.random() * 3 + 2 + "s",
             }}
           />
         ))}
@@ -96,12 +86,7 @@ export function HolographicHeader({
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-4">
             {/* Holographic orb */}
-            <motion.div
-              className="relative flex h-14 w-14 items-center justify-center rounded-full"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1.05 }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
-            >
+            <div className="relative flex h-14 w-14 items-center justify-center rounded-full animate-pulse">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-pink-500/30 blur-sm" />
               <div
                 className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20"
@@ -111,7 +96,7 @@ export function HolographicHeader({
                 }}
               />
               <Brain className="relative h-7 w-7 text-white" />
-            </motion.div>
+            </div>
 
             <div>
               <h2 className="bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-2xl font-bold text-transparent">

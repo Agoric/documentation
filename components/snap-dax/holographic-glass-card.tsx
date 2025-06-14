@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 interface HolographicGlassCardProps {
@@ -63,12 +62,14 @@ export function HolographicGlassCard({
   }
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
       className={cn(
-        "relative overflow-hidden rounded-lg border border-indigo-500/20 backdrop-blur-md",
+        "relative overflow-hidden rounded-lg border border-indigo-500/20 backdrop-blur-md transition-all duration-300",
         "bg-gradient-to-br from-indigo-950/40 to-slate-950/40",
-        interactive && "transition-all duration-300",
+        interactive && "hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/20",
+        isHovered && hoverEffect === "glow" && "shadow-lg shadow-indigo-500/30",
+        isHovered && hoverEffect === "raise" && "-translate-y-2",
         className,
       )}
       style={{
@@ -76,15 +77,11 @@ export function HolographicGlassCard({
           isHovered && hoverEffect === "glow" && borderGlow
             ? "0 0 20px rgba(99, 102, 241, 0.3)"
             : "0 4px 20px rgba(30, 20, 70, 0.2)",
+        transform:
+          isHovered && hoverEffect === "tilt"
+            ? `rotateX(${(mousePosition.y - 50) * 0.1}deg) rotateY(${(mousePosition.x - 50) * -0.1}deg)`
+            : undefined,
       }}
-      animate={{
-        ...hoverTransform,
-        boxShadow:
-          isHovered && hoverEffect === "glow" && !borderGlow
-            ? "0 0 20px rgba(99, 102, 241, 0.3)"
-            : "0 4px 20px rgba(30, 20, 70, 0.2)",
-      }}
-      transition={{ duration: 0.3 }}
       onMouseEnter={() => interactive && setIsHovered(true)}
       onMouseLeave={() => interactive && setIsHovered(false)}
     >
@@ -137,6 +134,6 @@ export function HolographicGlassCard({
           }}
         />
       )}
-    </motion.div>
+    </div>
   )
 }
