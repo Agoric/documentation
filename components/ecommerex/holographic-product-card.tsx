@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Star, ShoppingCart, Eye, Heart, Zap } from "lucide-react"
+import { Star, ShoppingCart, Eye, Heart, Zap, BarChart3 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
+import { useProductComparison } from "@/contexts/product-comparison-context"
 
 interface Product {
   id: string
@@ -27,6 +28,11 @@ interface HolographicProductCardProps {
 export function HolographicProductCard({ product }: HolographicProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
+
+  const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProducts } =
+    useProductComparison()
+  const inComparison = isInComparison(product.id)
+  const canAddToComparison = comparisonProducts.length < maxComparisonItems
 
   return (
     <motion.div
@@ -170,6 +176,26 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 Add to Cart
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.preventDefault()
+                  if (inComparison) {
+                    removeFromComparison(product.id)
+                  } else if (canAddToComparison) {
+                    addToComparison(product)
+                  }
+                }}
+                disabled={!inComparison && !canAddToComparison}
+                className={`border-indigo-500/20 text-indigo-300 hover:text-indigo-200 ${
+                  inComparison
+                    ? "bg-emerald-950/30 border-emerald-500/20 text-emerald-300 hover:bg-emerald-900/30"
+                    : "bg-indigo-950/30 hover:bg-indigo-900/30"
+                }`}
+              >
+                <BarChart3 className="w-4 h-4" />
               </Button>
               <Button
                 variant="outline"

@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { DiplomaticAgentProvider } from "@/contexts/diplomatic-agent-context"
+import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 
 export const metadata: Metadata = {
   title: "v0 App",
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <DiplomaticAgentProvider>{children}</DiplomaticAgentProvider>
+        <ProductComparisonProvider>{children}</ProductComparisonProvider>
       </body>
     </html>
   )

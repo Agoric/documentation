@@ -15,6 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { ComparisonBar } from "./comparison-bar"
 
 interface Product {
   id: string
@@ -242,6 +243,8 @@ export function PaginatedProductGrid({ products, itemsPerPage = 6 }: PaginatedPr
           </Pagination>
         </div>
       )}
+      {/* Comparison Bar */}
+      <ComparisonBar />
     </div>
   )
 }
