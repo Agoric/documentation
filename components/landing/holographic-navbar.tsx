@@ -48,7 +48,12 @@ export function HolographicNavbar() {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <SupremeAuthorityLogo size="md" variant="compact" />
+          <div className="flex flex-col">
+            <SupremeAuthorityLogo size="md" variant="compact" />
+            <span className="text-xs text-cyan-300/70 italic mt-1 hidden md:block">
+              "Decentralized Banking Democratized Wealth"
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}

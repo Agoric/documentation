@@ -286,6 +286,9 @@ export function StrategicPlatformLayout({
                       SUPREME AUTHORITY
                     </h1>
                     <p className="text-xs text-cyan-300">Financial Quantum Platform 2035</p>
+                    <p className="text-[10px] text-cyan-400/80 italic mt-1">
+                      "Decentralized Banking Democratized Wealth"
+                    </p>
                   </div>
                 </motion.div>
 

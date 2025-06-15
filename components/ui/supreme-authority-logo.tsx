@@ -91,53 +91,52 @@ export function SupremeAuthorityLogo({
             />
           </div>
 
-          {/* Back Side - Imperial iBank&Trust Economics */}
+          {/* Back Side - Decentralized Banking Democratized Wealth */}
           <div className={`absolute inset-0 backface-hidden rotate-y-180 ${isFlipped ? "opacity-100" : "opacity-0"}`}>
             <div className="w-full h-full bg-gradient-to-br from-yellow-600 via-yellow-500 to-yellow-700 rounded-full flex items-center justify-center relative overflow-hidden">
               {/* Central Imperial Crown */}
-              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2">
-                <Crown className="h-6 w-6 text-yellow-900" />
+              <div className="absolute top-3 left-1/2 transform -translate-x-1/2">
+                <Crown className="h-4 w-4 text-yellow-900" />
               </div>
 
-              {/* Banking Pillars - Conscious Conformity */}
-              <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2">
-                <div className="flex space-x-1">
-                  <div className="w-1 h-4 bg-yellow-900 rounded-full"></div>
-                  <div className="w-1 h-4 bg-yellow-900 rounded-full"></div>
-                  <div className="w-1 h-4 bg-yellow-900 rounded-full"></div>
+              {/* Main Tagline - Curved Text */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-[8px] font-bold text-yellow-900 leading-tight tracking-wide">
+                    <div className="mb-1">DECENTRALIZED</div>
+                    <div className="mb-1">BANKING</div>
+                    <div className="mb-1">DEMOCRATIZED</div>
+                    <div>WEALTH</div>
+                  </div>
                 </div>
               </div>
 
-              {/* Excellence Stars */}
-              <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2">
-                <div className="flex flex-col space-y-1">
-                  <div className="w-2 h-2 bg-yellow-900 rounded-full"></div>
-                  <div className="w-2 h-2 bg-yellow-900 rounded-full"></div>
-                  <div className="w-2 h-2 bg-yellow-900 rounded-full"></div>
-                </div>
+              {/* Banking Network Symbols - Four Corners */}
+              <div className="absolute top-2 left-2">
+                <div className="w-2 h-2 border border-yellow-900 rounded-full"></div>
+              </div>
+              <div className="absolute top-2 right-2">
+                <div className="w-2 h-2 border border-yellow-900 rounded-full"></div>
+              </div>
+              <div className="absolute bottom-2 left-2">
+                <div className="w-2 h-2 border border-yellow-900 rounded-full"></div>
+              </div>
+              <div className="absolute bottom-2 right-2">
+                <div className="w-2 h-2 border border-yellow-900 rounded-full"></div>
               </div>
 
-              {/* Central iBank&Trust Symbol */}
-              <div className="absolute center flex items-center justify-center">
-                <div className="text-xs font-bold text-yellow-900 text-center leading-tight">
-                  <div>iB&T</div>
-                  <div className="text-[8px]">ECON</div>
-                </div>
-              </div>
+              {/* Connecting Lines - Network Effect */}
+              <svg className="absolute inset-0 w-full h-full">
+                <line x1="20%" y1="20%" x2="80%" y2="20%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
+                <line x1="20%" y1="80%" x2="80%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
+                <line x1="20%" y1="20%" x2="20%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
+                <line x1="80%" y1="20%" x2="80%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
+              </svg>
 
-              {/* Unity Interlocking Circles - Bottom */}
-              <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2">
-                <div className="flex space-x-[-2px]">
-                  <div className="w-3 h-3 border-2 border-yellow-900 rounded-full"></div>
-                  <div className="w-3 h-3 border-2 border-yellow-900 rounded-full"></div>
-                </div>
-              </div>
-
-              {/* Economic Growth Arrows */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="flex flex-col items-center space-y-1">
-                  <div className="w-0 h-0 border-l-2 border-r-2 border-b-3 border-transparent border-b-yellow-900"></div>
-                  <div className="w-0 h-0 border-l-2 border-r-2 border-b-3 border-transparent border-b-yellow-900"></div>
+              {/* Imperial iBank&Trust - Bottom Arc */}
+              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+                <div className="text-[6px] font-semibold text-yellow-900 text-center">
+                  Imperial iBank&Trust
                 </div>
               </div>
 
@@ -151,7 +150,6 @@ export function SupremeAuthorityLogo({
               />
             </div>
           </div>
-        </div>
 
         {/* Outer imperial glow rings */}
         <div
@@ -205,8 +203,12 @@ export function SupremeAuthorityLogo({
             {variant === "compact" ? "Supreme Authority" : "Jon'Lorenzo Caprelli"}
           </span>
 
-          <span className="text-xs text-yellow-300/90 font-medium tracking-wider uppercase">
+          <span className="text-xs text-yellow-300/90 font-medium tracking-wider uppercase mb-1">
             The Imperial Realm of Sovereign States United
+          </span>
+          
+          <span className="text-[10px] text-cyan-300/80 font-medium tracking-wide italic">
+            "Decentralized Banking Democratized Wealth"
           </span>
         </div>
       )}
@@ -235,5 +237,5 @@ export function SupremeAuthorityLogo({
         }
       `}</style>
     </div>
-  )
+  )\
 }
