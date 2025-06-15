@@ -1,158 +1,82 @@
 "use client"
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+
+import * as React from "react"
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { type ButtonProps, buttonVariants } from "@/components/ui/button"
 
-export interface PaginationProps {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-  className?: string
-  variant?: "default" | "holographic" | "minimal"
-  showFirstLast?: boolean
-  showPageNumbers?: boolean
-  maxPageButtons?: number
-  size?: "sm" | "md" | "lg"
-}
+const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
+  <nav
+    role="navigation"
+    aria-label="pagination"
+    className={cn("mx-auto flex w-full justify-center", className)}
+    {...props}
+  />
+)
+Pagination.displayName = "Pagination"
 
-export function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-  className,
-  variant = "default",
-  showFirstLast = true,
-  showPageNumbers = true,
-  maxPageButtons = 5,
-  size = "md",
-}: PaginationProps) {
-  // Ensure current page is within bounds
-  const page = Math.max(1, Math.min(currentPage, totalPages))
+const PaginationContent = React.forwardRef<HTMLUListElement, React.ComponentProps<"ul">>(
+  ({ className, ...props }, ref) => (
+    <ul ref={ref} className={cn("flex flex-row items-center gap-1", className)} {...props} />
+  ),
+)
+PaginationContent.displayName = "PaginationContent"
 
-  // Calculate which page numbers to show
-  const getPageNumbers = () => {
-    if (totalPages <= maxPageButtons) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1)
-    }
+const PaginationItem = React.forwardRef<HTMLLIElement, React.ComponentProps<"li">>(({ className, ...props }, ref) => (
+  <li ref={ref} className={cn("", className)} {...props} />
+))
+PaginationItem.displayName = "PaginationItem"
 
-    // Always show current page and some pages before and after
-    let startPage = Math.max(1, page - Math.floor(maxPageButtons / 2))
-    let endPage = startPage + maxPageButtons - 1
+type PaginationLinkProps = {
+  isActive?: boolean
+} & Pick<ButtonProps, "size"> &
+  React.ComponentProps<"a">
 
-    if (endPage > totalPages) {
-      endPage = totalPages
-      startPage = Math.max(1, endPage - maxPageButtons + 1)
-    }
+const PaginationLink = ({ className, isActive, size = "icon", ...props }: PaginationLinkProps) => (
+  <a
+    aria-current={isActive ? "page" : undefined}
+    className={cn(
+      buttonVariants({
+        variant: isActive ? "outline" : "ghost",
+        size,
+      }),
+      className,
+    )}
+    {...props}
+  />
+)
+PaginationLink.displayName = "PaginationLink"
 
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i)
-  }
+const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink aria-label="Go to previous page" size="default" className={cn("gap-1 pl-2.5", className)} {...props}>
+    <ChevronLeft className="h-4 w-4" />
+    <span>Previous</span>
+  </PaginationLink>
+)
+PaginationPrevious.displayName = "PaginationPrevious"
 
-  const pageNumbers = getPageNumbers()
+const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink aria-label="Go to next page" size="default" className={cn("gap-1 pr-2.5", className)} {...props}>
+    <span>Next</span>
+    <ChevronRight className="h-4 w-4" />
+  </PaginationLink>
+)
+PaginationNext.displayName = "PaginationNext"
 
-  // Size classes
-  const sizeClasses = {
-    sm: "h-8 w-8 text-xs",
-    md: "h-10 w-10 text-sm",
-    lg: "h-12 w-12 text-base",
-  }
+const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<"span">) => (
+  <span aria-hidden className={cn("flex h-9 w-9 items-center justify-center", className)} {...props}>
+    <MoreHorizontal className="h-4 w-4" />
+    <span className="sr-only">More pages</span>
+  </span>
+)
+PaginationEllipsis.displayName = "PaginationEllipsis"
 
-  // Variant classes
-  const getVariantClasses = (isActive: boolean) => {
-    switch (variant) {
-      case "holographic":
-        return isActive
-          ? "bg-gradient-to-r from-blue-500/80 via-purple-500/80 to-pink-500/80 text-white border border-white/20 shadow-[0_0_15px_rgba(131,58,180,0.5)] backdrop-blur-sm"
-          : "bg-black/30 hover:bg-black/50 border border-white/10 text-white/80 hover:text-white backdrop-blur-sm hover:shadow-[0_0_10px_rgba(131,58,180,0.3)]"
-      case "minimal":
-        return isActive
-          ? "bg-primary/90 text-primary-foreground"
-          : "bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground"
-      default:
-        return isActive ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted text-foreground"
-    }
-  }
-
-  return (
-    <nav
-      role="navigation"
-      aria-label="Pagination Navigation"
-      className={cn("flex items-center justify-center gap-1 sm:gap-2", className)}
-    >
-      {showFirstLast && (
-        <button
-          onClick={() => onPageChange(1)}
-          disabled={page === 1}
-          className={cn(
-            "flex items-center justify-center rounded-md transition-all",
-            sizeClasses[size],
-            getVariantClasses(false),
-            page === 1 && "opacity-50 cursor-not-allowed",
-          )}
-          aria-label="Go to first page"
-        >
-          <ChevronsLeft className="h-4 w-4" />
-        </button>
-      )}
-
-      <button
-        onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
-        className={cn(
-          "flex items-center justify-center rounded-md transition-all",
-          sizeClasses[size],
-          getVariantClasses(false),
-          page === 1 && "opacity-50 cursor-not-allowed",
-        )}
-        aria-label="Go to previous page"
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </button>
-
-      {showPageNumbers &&
-        pageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => onPageChange(pageNumber)}
-            className={cn(
-              "flex items-center justify-center rounded-md transition-all",
-              sizeClasses[size],
-              getVariantClasses(page === pageNumber),
-            )}
-            aria-label={`Page ${pageNumber}`}
-            aria-current={page === pageNumber ? "page" : undefined}
-          >
-            {pageNumber}
-          </button>
-        ))}
-
-      <button
-        onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
-        className={cn(
-          "flex items-center justify-center rounded-md transition-all",
-          sizeClasses[size],
-          getVariantClasses(false),
-          page === totalPages && "opacity-50 cursor-not-allowed",
-        )}
-        aria-label="Go to next page"
-      >
-        <ChevronRight className="h-4 w-4" />
-      </button>
-
-      {showFirstLast && (
-        <button
-          onClick={() => onPageChange(totalPages)}
-          disabled={page === totalPages}
-          className={cn(
-            "flex items-center justify-center rounded-md transition-all",
-            sizeClasses[size],
-            getVariantClasses(false),
-            page === totalPages && "opacity-50 cursor-not-allowed",
-          )}
-          aria-label="Go to last page"
-        >
-          <ChevronsRight className="h-4 w-4" />
-        </button>
-      )}
-    </nav>
-  )
+export {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 }

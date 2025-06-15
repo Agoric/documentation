@@ -14,6 +14,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  PaginationEllipsis,
 } from "@/components/ui/pagination"
 import { ComparisonBar } from "./comparison-bar"
 
@@ -86,6 +87,49 @@ export function PaginatedProductGrid({ products, itemsPerPage = 6 }: PaginatedPr
   // Reset to first page when filters change
   const handleFilterChange = () => {
     setCurrentPage(1)
+  }
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = []
+    const maxVisiblePages = 5
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      // Always show first page
+      pages.push(1)
+
+      // Calculate start and end of middle pages
+      const start = Math.max(2, currentPage - 1)
+      const end = Math.min(totalPages - 1, currentPage + 1)
+
+      // Add ellipsis if needed
+      if (start > 2) {
+        pages.push("ellipsis-start")
+      }
+
+      // Add middle pages
+      for (let i = start; i <= end; i++) {
+        if (i !== 1 && i !== totalPages) {
+          pages.push(i)
+        }
+      }
+
+      // Add ellipsis if needed
+      if (end < totalPages - 1) {
+        pages.push("ellipsis-end")
+      }
+
+      // Always show last page
+      if (totalPages > 1) {
+        pages.push(totalPages)
+      }
+    }
+
+    return pages
   }
 
   return (
@@ -199,43 +243,37 @@ export function PaginatedProductGrid({ products, itemsPerPage = 6 }: PaginatedPr
               <PaginationItem>
                 <PaginationPrevious
                   onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 ${
-                    currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                  className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 cursor-pointer ${
+                    currentPage === 1 ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
                   }`}
                 />
               </PaginationItem>
 
-              {[...Array(totalPages)].map((_, i) => {
-                const page = i + 1
-                if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
-                  return (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        onClick={() => setCurrentPage(page)}
-                        isActive={currentPage === page}
-                        className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 ${
-                          currentPage === page ? "bg-indigo-600 text-white" : ""
-                        }`}
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  )
-                } else if (page === currentPage - 2 || page === currentPage + 2) {
-                  return (
-                    <PaginationItem key={page}>
-                      <span className="px-3 py-2 text-indigo-400/50">...</span>
-                    </PaginationItem>
-                  )
-                }
-                return null
-              })}
+              {getPageNumbers().map((page, index) => (
+                <PaginationItem key={`${page}-${index}`}>
+                  {typeof page === "string" ? (
+                    <PaginationEllipsis className="text-indigo-400/50" />
+                  ) : (
+                    <PaginationLink
+                      onClick={() => setCurrentPage(page)}
+                      isActive={currentPage === page}
+                      className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 cursor-pointer ${
+                        currentPage === page
+                          ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-400/50"
+                          : ""
+                      }`}
+                    >
+                      {page}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
 
               <PaginationItem>
                 <PaginationNext
                   onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 ${
-                    currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+                  className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 cursor-pointer ${
+                    currentPage === totalPages ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
                   }`}
                 />
               </PaginationItem>
@@ -243,6 +281,7 @@ export function PaginatedProductGrid({ products, itemsPerPage = 6 }: PaginatedPr
           </Pagination>
         </div>
       )}
+
       {/* Comparison Bar */}
       <ComparisonBar />
     </div>
