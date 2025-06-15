@@ -3,7 +3,7 @@
 import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-grid"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
 
-// Enhanced sample product data with proper images
+// Enhanced sample product data with 360° view support
 const products = [
   {
     id: "1",
@@ -16,6 +16,7 @@ const products = [
     stock: 45,
     platforms: ["amazon", "ebay", "walmart"],
     isHolographic: true,
+    has360View: true,
     holographicFeatures: [
       "3D Audio Projection",
       "Quantum Noise Cancellation",
@@ -34,6 +35,7 @@ const products = [
     stock: 28,
     platforms: ["amazon", "walmart"],
     isHolographic: false,
+    has360View: true,
   },
   {
     id: "3",
@@ -46,6 +48,7 @@ const products = [
     stock: 32,
     platforms: ["amazon", "ebay"],
     isHolographic: true,
+    has360View: true,
     holographicFeatures: ["Holographic Projection", "4K Ultra HD", "AI Background", "Gesture Control"],
   },
   {
@@ -59,6 +62,7 @@ const products = [
     stock: 18,
     platforms: ["amazon", "ebay", "walmart"],
     isHolographic: false,
+    has360View: false,
   },
   {
     id: "5",
@@ -71,6 +75,7 @@ const products = [
     stock: 37,
     platforms: ["amazon", "walmart"],
     isHolographic: true,
+    has360View: true,
     holographicFeatures: ["Neural Control", "Holographic Display", "Quantum Precision", "Adaptive Grip"],
   },
   {
@@ -84,6 +89,7 @@ const products = [
     stock: 52,
     platforms: ["amazon", "ebay", "walmart"],
     isHolographic: false,
+    has360View: false,
   },
   {
     id: "7",
@@ -96,6 +102,7 @@ const products = [
     stock: 65,
     platforms: ["amazon", "ebay"],
     isHolographic: false,
+    has360View: false,
   },
   {
     id: "8",
@@ -108,6 +115,7 @@ const products = [
     stock: 22,
     platforms: ["amazon", "walmart"],
     isHolographic: true,
+    has360View: true,
     holographicFeatures: ["Holographic Sound", "Adaptive ANC", "3D Audio", "Neural Comfort"],
   },
   {
@@ -121,6 +129,7 @@ const products = [
     stock: 31,
     platforms: ["amazon", "ebay", "walmart"],
     isHolographic: true,
+    has360View: true,
     holographicFeatures: ["Quantum Encryption", "Holographic Interface", "Ultra-Fast Transfer", "Secure Access"],
   },
   {
@@ -134,6 +143,7 @@ const products = [
     stock: 48,
     platforms: ["amazon", "walmart"],
     isHolographic: false,
+    has360View: false,
   },
   {
     id: "11",
@@ -146,6 +156,7 @@ const products = [
     stock: 19,
     platforms: ["amazon", "ebay"],
     isHolographic: true,
+    has360View: true,
     holographicFeatures: ["Holographic Interface", "Voice Control", "AI Assistant", "Device Sync"],
   },
   {
@@ -159,44 +170,7 @@ const products = [
     stock: 42,
     platforms: ["amazon", "walmart"],
     isHolographic: false,
-  },
-  {
-    id: "13",
-    name: 'HoloDisplay Monitor 27"',
-    description: "27-inch holographic display monitor with 4K resolution and immersive 3D visualization",
-    price: 599.99,
-    image: "/products/quantum-earbuds.png", // Placeholder - would need actual monitor image
-    category: "Displays",
-    rating: 4.9,
-    stock: 15,
-    platforms: ["amazon", "ebay", "walmart"],
-    isHolographic: true,
-    holographicFeatures: ["3D Holographic Display", "4K Resolution", "Eye Tracking", "Gesture Control"],
-  },
-  {
-    id: "14",
-    name: "Quantum Security Camera",
-    description: "Advanced security camera with holographic recording and AI-powered threat detection",
-    price: 249.99,
-    image: "/products/holovision-webcam.png", // Using webcam image as placeholder
-    category: "Security",
-    rating: 4.7,
-    stock: 28,
-    platforms: ["amazon", "walmart"],
-    isHolographic: true,
-    holographicFeatures: ["Holographic Recording", "AI Detection", "Quantum Encryption", "Remote Access"],
-  },
-  {
-    id: "15",
-    name: "Wireless Power Bank 20000mAh",
-    description: "High-capacity wireless power bank with fast charging and multiple device support",
-    price: 79.99,
-    image: "/products/wireless-charging-pad.png", // Using charging pad as placeholder
-    category: "Accessories",
-    rating: 4.5,
-    stock: 67,
-    platforms: ["amazon", "ebay", "walmart"],
-    isHolographic: false,
+    has360View: true,
   },
 ]
 
@@ -205,7 +179,7 @@ export function HolographicProductsDashboard() {
     <div className="container mx-auto p-4 space-y-8">
       <HolographicHeader
         title="Holographic Products"
-        subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology"
+        subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology and interactive 360° views"
       />
 
       <PaginatedProductGrid products={products} itemsPerPage={6} />
