@@ -24,6 +24,7 @@ interface Product {
   isHolographic?: boolean
   holographicFeatures?: string[]
   has360View?: boolean
+  images360?: string[]
 }
 
 interface HolographicProductCardProps {
@@ -147,22 +148,23 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                     }}
                   />
                 )}
-
-                {/* 360° View Button */}
-                {product.has360View && (
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="absolute bottom-2 right-2 h-8 w-8 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all duration-200"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      setShow360Modal(true)
-                    }}
-                  >
-                    <RotateCcw className="h-4 w-4 text-white" />
-                  </Button>
-                )}
               </div>
+
+              {/* 360° View Button */}
+              {product.has360View && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="absolute bottom-2 right-2 h-8 w-8 bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-cyan-200 transition-all duration-200"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setShow360Modal(true)
+                  }}
+                  title="360° View"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              )}
 
               {/* Holographic Label - Top Priority */}
               {product.isHolographic && (
@@ -201,12 +203,11 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                 </Badge>
               )}
 
-              {/* 360° View Badge */}
-              {product.has360View && (
-                <Badge className="absolute top-2 right-12 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg">
-                  360°
-                </Badge>
-              )}
+              {/* New Product Badge (for demonstration) */}
+              {product.id === "13" ||
+                (product.id === "14" && (
+                  <Badge className="absolute bottom-2 right-14 bg-emerald-600 text-white shadow-lg">NEW</Badge>
+                ))}
             </div>
 
             {/* Product Info */}
@@ -222,6 +223,16 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               </h3>
 
               <p className="text-sm text-indigo-200/70 line-clamp-2">{product.description}</p>
+
+              {/* 360° View Indicator */}
+              {product.has360View && (
+                <div className="flex items-center gap-2">
+                  <Badge className="text-xs bg-gradient-to-r from-cyan-600/20 to-indigo-600/20 border-cyan-400/30 text-cyan-300">
+                    <RotateCcw className="w-3 h-3 mr-1" />
+                    360° View Available
+                  </Badge>
+                </div>
+              )}
 
               {/* Holographic Features */}
               {product.isHolographic && product.holographicFeatures && (
@@ -337,8 +348,10 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
         </Card>
       </motion.div>
 
-      {/* 360° Product Modal */}
-      <Product360Modal isOpen={show360Modal} onClose={() => setShow360Modal(false)} product={product} />
+      {/* 360° View Modal */}
+      {show360Modal && product.has360View && (
+        <Product360Modal product={product} isOpen={show360Modal} onClose={() => setShow360Modal(false)} />
+      )}
     </>
   )
 }
