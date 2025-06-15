@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import {
   ChevronRight,
-  Crown,
   Shield,
   Zap,
   Brain,
@@ -35,6 +34,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { PersistentGCIProfileCard } from "@/components/global-citizen/persistent-gci-profile-card"
 import { HolographicUnifiedSidebar } from "@/components/layout/holographic-unified-sidebar"
 import { ImperialAmbientController } from "@/components/ui/imperial-ambient-controller"
+import { ImperialAuthorityCrest } from "@/components/ui/imperial-authority-crest"
 
 interface BreadcrumbItem {
   label: string
@@ -63,7 +63,7 @@ interface ToolbarAction {
 }
 
 const platformInsignia = {
-  supreme: <Crown className="h-5 w-5 text-yellow-400" />,
+  supreme: <ImperialAuthorityCrest size="sm" />,
   authority: <Shield className="h-5 w-5 text-blue-400" />,
   innovation: <Zap className="h-5 w-5 text-purple-400" />,
   intelligence: <Brain className="h-5 w-5 text-cyan-400" />,
@@ -332,9 +332,7 @@ export function StrategicPlatformLayout({
               <div className="flex items-center gap-6">
                 <motion.div className="flex items-center gap-3" whileHover={{ scale: 1.05 }}>
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
-                      {platformInsignia.supreme}
-                    </div>
+                    <ImperialAuthorityCrest size="md" />
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center">
                       {platformInsignia.authority}
                     </div>
@@ -345,7 +343,7 @@ export function StrategicPlatformLayout({
                     </h1>
                     <p className="text-xs text-cyan-300">Financial Quantum Platform 2035</p>
                     <p className="text-[10px] text-cyan-400/80 italic mt-1">
-                      "Decentralized Banking Democratized Wealth"
+                      "State of Decentralized Occupation & Privatized Wealth"
                     </p>
                   </div>
                 </motion.div>

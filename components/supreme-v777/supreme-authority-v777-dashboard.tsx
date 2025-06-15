@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  Crown,
   TrendingUp,
   Brain,
   Shield,
@@ -27,6 +26,7 @@ import {
   Plus,
   Download,
 } from "lucide-react"
+import { ImperialAuthorityCrest } from "@/components/ui/imperial-authority-crest"
 import { QuantumPortfolioAnalyzer } from "./quantum-portfolio-analyzer"
 import { AIFinancialConcierge } from "./ai-financial-concierge"
 import { RealTimeMarketMatrix } from "./realtime-market-matrix"
@@ -122,14 +122,15 @@ export function SupremeAuthorityV777Dashboard() {
       {/* Supreme Header */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
         <div className="flex items-center justify-center gap-4 mb-4">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
-            <Crown className="h-8 w-8 text-white" />
-          </div>
+          <ImperialAuthorityCrest size="xl" />
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
               SUPREME AUTHORITY V777
             </h1>
             <p className="text-cyan-300">Quantum Financial Command Center</p>
+            <p className="text-sm text-amber-300/80 italic mt-1">
+              "State of Decentralized Occupation & Privatized Wealth"
+            </p>
           </div>
         </div>
 
@@ -251,7 +252,7 @@ export function SupremeAuthorityV777Dashboard() {
               Citizenship
             </TabsTrigger>
             <TabsTrigger value="wealth" className="data-[state=active]:bg-yellow-600/30">
-              <Crown className="h-4 w-4 mr-2" />
+              <ImperialAuthorityCrest size="sm" className="mr-2" />
               Wealth
             </TabsTrigger>
           </TabsList>
