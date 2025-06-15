@@ -7,6 +7,7 @@ import { EconomicBenefitsSection } from "@/components/landing/economic-benefits-
 import { DonationCallToAction } from "@/components/landing/donation-call-to-action"
 import { PlatformEnrollmentFlow } from "@/components/landing/platform-enrollment-flow"
 import { HolographicFooter } from "@/components/landing/holographic-footer"
+import { SupremeLandingV777 } from "@/components/landing/supreme-landing-v777"
 
 export default function HomePage() {
   return (
@@ -33,6 +34,7 @@ export default function HomePage() {
         <PlatformEnrollmentFlow />
 
         <HolographicFooter />
+        <SupremeLandingV777 />
       </div>
     </ImperialThemeProvider>
   )

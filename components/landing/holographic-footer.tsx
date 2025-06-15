@@ -1,7 +1,7 @@
 import type React from "react"
 import { SupremeAuthorityLogo } from "@/components/ui/supreme-authority-logo"
 
-const HolographicFooter: React.FC = () => {
+export const HolographicFooter: React.FC = () => {
   return (
     <footer className="bg-black/80 backdrop-blur-md py-12">
       <div className="container mx-auto px-4">
@@ -21,5 +21,3 @@ const HolographicFooter: React.FC = () => {
     </footer>
   )
 }
-
-export default HolographicFooter
