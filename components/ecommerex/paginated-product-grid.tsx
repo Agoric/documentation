@@ -1,15 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { HolographicProductCard } from "./holographic-product-card"
-import { Pagination } from "@/components/ui/pagination"
+import { useState, useMemo } from "react"
+import { motion } from "framer-motion"
+import { Search, Filter, SortAsc, SortDesc } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Filter, X } from "lucide-react"
-import { useGamification } from "@/contexts/gamification-context"
+import { HolographicProductCard } from "./holographic-product-card"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
-export interface Product {
+interface Product {
   id: string
   name: string
   description: string
@@ -28,182 +35,211 @@ interface PaginatedProductGridProps {
 
 export function PaginatedProductGrid({ products, itemsPerPage = 6 }: PaginatedProductGridProps) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState<string>("all")
-  const [priceSort, setPriceSort] = useState<string>("none")
-  const [showFilters, setShowFilters] = useState(false)
-
-  const { addPoints, updateAchievementProgress } = useGamification()
-
-  // Reset to first page when filters change
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [filteredProducts])
-
-  // Apply filters and sorting
-  useEffect(() => {
-    let result = [...products]
-
-    // Apply search filter
-    if (searchQuery) {
-      result = result.filter(
-        (product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-    }
-
-    // Apply category filter
-    if (categoryFilter !== "all") {
-      result = result.filter((product) => product.category.toLowerCase() === categoryFilter.toLowerCase())
-    }
-
-    // Apply sorting
-    if (priceSort === "asc") {
-      result.sort((a, b) => a.price - b.price)
-    } else if (priceSort === "desc") {
-      result.sort((a, b) => b.price - a.price)
-    }
-
-    setFilteredProducts(result)
-
-    // Update achievement progress for using filters
-    if (searchQuery || categoryFilter !== "all" || priceSort !== "none") {
-      updateAchievementProgress("power-shopper", 1)
-    }
-  }, [searchQuery, categoryFilter, priceSort, products, updateAchievementProgress])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [sortBy, setSortBy] = useState("name")
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
 
   // Get unique categories
-  const categories = ["all", ...new Set(products.map((product) => product.category))]
+  const categories = useMemo(() => {
+    const cats = Array.from(new Set(products.map((p) => p.category)))
+    return ["all", ...cats]
+  }, [products])
+
+  // Filter and sort products
+  const filteredAndSortedProducts = useMemo(() => {
+    const filtered = products.filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory
+      return matchesSearch && matchesCategory
+    })
+
+    // Sort products
+    filtered.sort((a, b) => {
+      let aValue: any = a[sortBy as keyof Product]
+      let bValue: any = b[sortBy as keyof Product]
+
+      if (typeof aValue === "string") {
+        aValue = aValue.toLowerCase()
+        bValue = bValue.toLowerCase()
+      }
+
+      if (sortOrder === "asc") {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+      }
+    })
+
+    return filtered
+  }, [products, searchTerm, selectedCategory, sortBy, sortOrder])
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
-  const currentProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentProducts = filteredAndSortedProducts.slice(startIndex, endIndex)
 
-  // Handle product click - award points for engagement
-  const handleProductClick = (productId: string) => {
-    addPoints(2, "Product viewed")
-    updateAchievementProgress("product-explorer", 1)
+  // Reset to first page when filters change
+  const handleFilterChange = () => {
+    setCurrentPage(1)
   }
 
   return (
     <div className="space-y-6">
-      {/* Search and Filters */}
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50" />
-          <Input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-white/50"
-          />
+      {/* Filters and Search */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-2">
+          <div className="relative w-[300px]">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-indigo-300/70" />
+            <Input
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                handleFilterChange()
+              }}
+              className="border-indigo-500/20 bg-indigo-950/30 pl-8 text-indigo-200 placeholder:text-indigo-300/50 focus:border-indigo-500/50 focus:ring-indigo-500/20"
+            />
+          </div>
+
+          <Select
+            value={selectedCategory}
+            onValueChange={(value) => {
+              setSelectedCategory(value)
+              handleFilterChange()
+            }}
+          >
+            <SelectTrigger className="w-[180px] border-indigo-500/20 bg-indigo-950/30 text-indigo-200">
+              <Filter className="w-4 h-4 mr-2" />
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent className="border-indigo-500/20 bg-indigo-950/90 text-indigo-200">
+              {categories.map((category) => (
+                <SelectItem key={category} value={category} className="hover:bg-indigo-900/50">
+                  {category === "all" ? "All Categories" : category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="outline" className="border-white/10 text-white" onClick={() => setShowFilters(!showFilters)}>
-            {showFilters ? <X className="mr-2 h-4 w-4" /> : <Filter className="mr-2 h-4 w-4" />}
-            {showFilters ? "Hide Filters" : "Filters"}
+        <div className="flex items-center gap-2">
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-[140px] border-indigo-500/20 bg-indigo-950/30 text-indigo-200">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent className="border-indigo-500/20 bg-indigo-950/90 text-indigo-200">
+              <SelectItem value="name" className="hover:bg-indigo-900/50">
+                Name
+              </SelectItem>
+              <SelectItem value="price" className="hover:bg-indigo-900/50">
+                Price
+              </SelectItem>
+              <SelectItem value="rating" className="hover:bg-indigo-900/50">
+                Rating
+              </SelectItem>
+              <SelectItem value="stock" className="hover:bg-indigo-900/50">
+                Stock
+              </SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+            className="border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200"
+          >
+            {sortOrder === "asc" ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
           </Button>
         </div>
       </div>
 
-      {/* Expanded Filters */}
-      {showFilters && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 rounded-lg bg-black/30 border border-white/10 backdrop-blur-sm">
-          <div className="space-y-2">
-            <label className="text-sm text-white/70">Category</label>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="bg-black/30 border-white/10 text-white">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent className="bg-black/90 border-white/10 text-white">
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category} className="capitalize">
-                    {category === "all" ? "All Categories" : category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+      {/* Results Info */}
+      <div className="text-indigo-300/70 text-sm">
+        Showing {startIndex + 1}-{Math.min(endIndex, filteredAndSortedProducts.length)} of{" "}
+        {filteredAndSortedProducts.length} products
+      </div>
 
-          <div className="space-y-2">
-            <label className="text-sm text-white/70">Price</label>
-            <Select value={priceSort} onValueChange={setPriceSort}>
-              <SelectTrigger className="bg-black/30 border-white/10 text-white">
-                <SelectValue placeholder="Sort by price" />
-              </SelectTrigger>
-              <SelectContent className="bg-black/90 border-white/10 text-white">
-                <SelectItem value="none">No Sorting</SelectItem>
-                <SelectItem value="asc">Price: Low to High</SelectItem>
-                <SelectItem value="desc">Price: High to Low</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-end">
-            <Button
-              variant="outline"
-              className="border-white/10 text-white w-full"
-              onClick={() => {
-                setSearchQuery("")
-                setCategoryFilter("all")
-                setPriceSort("none")
-              }}
-            >
-              Reset Filters
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Products Grid */}
+      {/* Product Grid */}
       {currentProducts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentProducts.map((product) => (
-            <HolographicProductCard key={product.id} product={product} onClick={() => handleProductClick(product.id)} />
+        <motion.div
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {currentProducts.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <HolographicProductCard product={product} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-12 text-white/70">
-          <div className="h-20 w-20 rounded-full bg-white/5 flex items-center justify-center mb-4">
-            <Search className="h-10 w-10 text-white/30" />
-          </div>
-          <h3 className="text-xl font-medium text-white mb-2">No products found</h3>
-          <p className="text-center max-w-md">
-            We couldn't find any products matching your current filters. Try adjusting your search or filters to see
-            more products.
-          </p>
-          <Button
-            variant="outline"
-            className="mt-4 border-white/10 text-white"
-            onClick={() => {
-              setSearchQuery("")
-              setCategoryFilter("all")
-              setPriceSort("none")
-            }}
-          >
-            Clear All Filters
-          </Button>
+        <div className="text-center py-12">
+          <div className="text-indigo-300/70 text-lg mb-2">No products found</div>
+          <div className="text-indigo-400/50 text-sm">Try adjusting your search or filter criteria</div>
         </div>
       )}
 
       {/* Pagination */}
-      {filteredProducts.length > 0 && (
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8">
-          <p className="text-white/70 text-sm">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} products
-          </p>
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-8">
+          <Pagination>
+            <PaginationContent className="gap-2">
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 ${
+                    currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                />
+              </PaginationItem>
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            variant="holographic"
-          />
+              {[...Array(totalPages)].map((_, i) => {
+                const page = i + 1
+                if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(page)}
+                        isActive={currentPage === page}
+                        className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 ${
+                          currentPage === page ? "bg-indigo-600 text-white" : ""
+                        }`}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                } else if (page === currentPage - 2 || page === currentPage + 2) {
+                  return (
+                    <PaginationItem key={page}>
+                      <span className="px-3 py-2 text-indigo-400/50">...</span>
+                    </PaginationItem>
+                  )
+                }
+                return null
+              })}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  className={`border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 ${
+                    currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       )}
     </div>
