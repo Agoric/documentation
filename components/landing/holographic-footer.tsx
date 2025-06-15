@@ -1,5 +1,5 @@
 import type React from "react"
-import { SupremeAuthorityLogo } from "@/components/ui/logo"
+import { SupremeAuthorityLogo } from "@/components/ui/supreme-authority-logo"
 
 const HolographicFooter: React.FC = () => {
   return (
