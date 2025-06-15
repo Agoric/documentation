@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { usePathname } from "next/navigation"
@@ -33,6 +32,9 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { PersistentGCIProfileCard } from "@/components/global-citizen/persistent-gci-profile-card"
+import { HolographicUnifiedSidebar } from "@/components/layout/holographic-unified-sidebar"
+import { ImperialAmbientController } from "@/components/ui/imperial-ambient-controller"
 
 interface BreadcrumbItem {
   label: string
@@ -97,6 +99,9 @@ export function StrategicPlatformLayout({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const layoutRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const [userGCIStatus, setUserGCIStatus] = useState<"pending" | "processing" | "verified" | "rejected">("pending")
+  const [completionPercentage, setCompletionPercentage] = useState(25)
+  const [showGCICard, setShowGCICard] = useState(true)
 
   // Track mouse for holographic effects
   useEffect(() => {
@@ -120,6 +125,17 @@ export function StrategicPlatformLayout({
       setToolbarExpanded(false)
     }
   }, [isFullscreen])
+
+  // Simulate user status check
+  useEffect(() => {
+    // In production, this would check actual user status from API
+    const checkUserStatus = () => {
+      // For demo purposes, show the card for pending status
+      setShowGCICard(userGCIStatus === "pending" || userGCIStatus === "processing")
+    }
+
+    checkUserStatus()
+  }, [userGCIStatus])
 
   const toolbarActions: ToolbarAction[] = [
     {
@@ -185,12 +201,54 @@ export function StrategicPlatformLayout({
     setPlatformProgress(Math.min(100, platformProgress + 5))
   }
 
+  const handleDocumentUpload = async (documentId: string, file: File) => {
+    console.log(`Uploading document ${documentId}:`, file.name)
+
+    // Simulate upload process
+    try {
+      // In production, upload to your storage service
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("documentId", documentId)
+
+      // const response = await fetch('/api/documents/upload', {
+      //   method: 'POST',
+      //   body: formData
+      // })
+
+      // Update completion percentage
+      setCompletionPercentage((prev) => Math.min(prev + 15, 100))
+
+      console.log(`Document ${documentId} uploaded successfully`)
+    } catch (error) {
+      console.error("Upload failed:", error)
+    }
+  }
+
+  const handleStatusUpdate = async () => {
+    console.log("Checking status update...")
+    // In production, check with your API
+    // const status = await fetch('/api/gci/status').then(r => r.json())
+    // setUserGCIStatus(status.status)
+    // setCompletionPercentage(status.completion)
+  }
+
   return (
     <TooltipProvider>
       <div
         ref={layoutRef}
         className={`relative min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 overflow-hidden ${isFullscreen ? "fixed inset-0 z-50" : ""}`}
       >
+        {/* Persistent GCI Profile Card */}
+        {showGCICard && (
+          <PersistentGCIProfileCard
+            userStatus={userGCIStatus}
+            completionPercentage={completionPercentage}
+            onDocumentUpload={handleDocumentUpload}
+            onStatusUpdate={handleStatusUpdate}
+          />
+        )}
+
         {/* 2035 Holographic Background */}
         <div className="absolute inset-0">
           {/* Dynamic holographic grid */}
@@ -396,6 +454,13 @@ export function StrategicPlatformLayout({
           </div>
         </motion.nav>
 
+        {/* Main Layout */}
+        <div className={`flex ${showGCICard ? "pt-32" : "pt-0"} transition-all duration-300`}>
+          <HolographicUnifiedSidebar />
+
+          <main className="flex-1 overflow-hidden">{children}</main>
+        </div>
+
         {/* Intelligent Retractable Toolbar */}
         <AnimatePresence>
           {toolbarExpanded && (
@@ -552,18 +617,6 @@ export function StrategicPlatformLayout({
           )}
         </AnimatePresence>
 
-        {/* Main Content Area */}
-        <main className="relative z-10 flex-1">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="container mx-auto px-6 py-6"
-          >
-            {children}
-          </motion.div>
-        </main>
-
         {/* Quantum Status Bar */}
         <motion.footer
           className="relative z-20 border-t border-cyan-500/20 bg-black/40 backdrop-blur-xl"
@@ -599,6 +652,8 @@ export function StrategicPlatformLayout({
           </div>
         </motion.footer>
       </div>
+      {/* Imperial Ambient Controller */}
+      <ImperialAmbientController />
     </TooltipProvider>
   )
 }
