@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Star, ShoppingCart, Eye, Heart, Zap, BarChart3 } from "lucide-react"
+import { Star, ShoppingCart, Eye, Heart, Zap, BarChart3, ImageIcon } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -31,6 +31,7 @@ interface HolographicProductCardProps {
 export function HolographicProductCard({ product }: HolographicProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProducts } =
     useProductComparison()
@@ -100,14 +101,49 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
         )}
 
         <CardContent className="relative z-10 p-6">
-          {/* Product Image */}
-          <div className="relative mb-4 aspect-square overflow-hidden rounded-lg bg-indigo-900/20">
-            <Image
-              src={product.image || "/placeholder.svg"}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110"
-            />
+          {/* Enhanced Product Image */}
+          <div className="relative mb-4 aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
+            {/* Image Container with Holographic Effects */}
+            <div className="relative w-full h-full">
+              {!imageError ? (
+                <Image
+                  src={product.image || "/placeholder.svg"}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-all duration-500 group-hover:scale-110"
+                  style={{
+                    filter: product.isHolographic
+                      ? "brightness(1.1) contrast(1.1) saturate(1.2)"
+                      : "brightness(1) contrast(1) saturate(1)",
+                  }}
+                  onError={() => setImageError(true)}
+                  priority={false}
+                />
+              ) : (
+                // Fallback when image fails to load
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-800/30 to-purple-800/30">
+                  <div className="text-center">
+                    <ImageIcon className="w-12 h-12 text-indigo-400/50 mx-auto mb-2" />
+                    <p className="text-xs text-indigo-300/70">Product Image</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Holographic Overlay for Holographic Products */}
+              {product.isHolographic && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-purple-400/10"
+                  animate={{
+                    opacity: isHovered ? [0.1, 0.3, 0.1] : 0.1,
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "easeInOut",
+                  }}
+                />
+              )}
+            </div>
 
             {/* Holographic Label - Top Priority */}
             {product.isHolographic && (
@@ -118,7 +154,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
 
             {/* Category Badge */}
             <Badge
-              className={`absolute ${product.isHolographic ? "top-14 left-2" : "top-2 left-2"} bg-gradient-to-r from-indigo-600 to-purple-600 text-white`}
+              className={`absolute ${product.isHolographic ? "top-14 left-2" : "top-2 left-2"} bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg`}
             >
               {product.category}
             </Badge>
@@ -127,22 +163,30 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
             <Button
               size="icon"
               variant="ghost"
-              className="absolute top-2 right-2 h-8 w-8 bg-black/20 backdrop-blur-sm hover:bg-black/40"
+              className="absolute top-2 right-2 h-8 w-8 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all duration-200"
               onClick={(e) => {
                 e.preventDefault()
                 setIsLiked(!isLiked)
               }}
             >
-              <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-white"}`} />
+              <Heart
+                className={`h-4 w-4 transition-all duration-200 ${isLiked ? "fill-red-500 text-red-500 scale-110" : "text-white"}`}
+              />
             </Button>
 
             {/* Stock Indicator */}
             {product.stock < 20 && (
-              <Badge className="absolute bottom-2 left-2 bg-amber-600 text-white">
+              <Badge className="absolute bottom-2 left-2 bg-amber-600 text-white shadow-lg">
                 <Zap className="w-3 h-3 mr-1" />
                 Low Stock
               </Badge>
             )}
+
+            {/* New Product Badge (for demonstration) */}
+            {product.id === "13" ||
+              (product.id === "14" && (
+                <Badge className="absolute bottom-2 right-2 bg-emerald-600 text-white shadow-lg">NEW</Badge>
+              ))}
           </div>
 
           {/* Product Info */}
@@ -184,7 +228,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-4 h-4 ${
+                    className={`w-4 h-4 transition-colors ${
                       i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-400"
                     }`}
                   />
@@ -212,7 +256,11 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
             {/* Platforms */}
             <div className="flex flex-wrap gap-1">
               {product.platforms.slice(0, 3).map((platform) => (
-                <Badge key={platform} variant="outline" className="text-xs border-indigo-400/30 text-indigo-300">
+                <Badge
+                  key={platform}
+                  variant="outline"
+                  className="text-xs border-indigo-400/30 text-indigo-300 capitalize"
+                >
                   {platform}
                 </Badge>
               ))}
@@ -226,10 +274,10 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
             {/* Action Buttons */}
             <div className="flex gap-2 pt-2">
               <Button
-                className={`flex-1 text-white ${
+                className={`flex-1 text-white transition-all duration-200 ${
                   product.isHolographic
-                    ? "bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-700 hover:via-indigo-700 hover:to-purple-700"
-                    : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    ? "bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-700 hover:via-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-cyan-500/25"
+                    : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-indigo-500/25"
                 }`}
                 size="sm"
               >
@@ -248,7 +296,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                   }
                 }}
                 disabled={!inComparison && !canAddToComparison}
-                className={`border-indigo-500/20 text-indigo-300 hover:text-indigo-200 ${
+                className={`border-indigo-500/20 text-indigo-300 hover:text-indigo-200 transition-all duration-200 ${
                   inComparison
                     ? "bg-emerald-950/30 border-emerald-500/20 text-emerald-300 hover:bg-emerald-900/30"
                     : "bg-indigo-950/30 hover:bg-indigo-900/30"
@@ -259,7 +307,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               <Button
                 variant="outline"
                 size="sm"
-                className="border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200"
+                className="border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 transition-all duration-200"
               >
                 <Eye className="w-4 h-4" />
               </Button>
