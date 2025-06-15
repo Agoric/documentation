@@ -1,86 +1,45 @@
-"use client"
+import type React from "react"
 
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { MemberMarketplace } from "@/components/snap-dax/member-marketplace"
-import { TokenizationHub } from "@/components/snap-dax/tokenization-hub"
-import { TransactionCenter } from "@/components/snap-dax/transaction-center"
-import { ProductAddition } from "@/components/snap-dax/product-addition"
-import { PlatformOverview } from "@/components/snap-dax/platform-overview"
-import { HolographicHeader } from "@/components/snap-dax/holographic-header"
-
-export function SnapDaxDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-
+const SnapDaxDashboard: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-indigo-950/70">
-      <HolographicHeader
-        title="SNAP-DAX Platform"
-        subtitle="Tokenization & Members-Only Marketplace"
-        stats={[
-          { label: "Active Members", value: "2,458" },
-          { label: "Total Products", value: "1,245" },
-          { label: "Tokenized Assets", value: "$24.5M" },
-          { label: "24h Volume", value: "$1.2M" },
-        ]}
-      />
+    <div className="container mx-auto p-4">
+      {/* Hero Section / Dashboard Header */}
+      <header className="text-center mb-8">
+        <h1 className="text-3xl font-bold">Inclusive Lending and Credit Empirical Authority</h1>
+        <p className="text-lg text-gray-600">
+          New World Wealth Navigation Assistant. Introducing the Benefits of Economic Global Citizenship, Welcome Home
+        </p>
+      </header>
 
-      <div className="container mx-auto p-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 border border-indigo-500/20 bg-indigo-950/30 p-1">
-            <TabsTrigger
-              value="overview"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600/80 data-[state=active]:to-purple-600/80 data-[state=active]:text-white"
-            >
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="marketplace"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600/80 data-[state=active]:to-purple-600/80 data-[state=active]:text-white"
-            >
-              Marketplace
-            </TabsTrigger>
-            <TabsTrigger
-              value="tokenization"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600/80 data-[state=active]:to-purple-600/80 data-[state=active]:text-white"
-            >
-              Tokenization
-            </TabsTrigger>
-            <TabsTrigger
-              value="transactions"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600/80 data-[state=active]:to-purple-600/80 data-[state=active]:text-white"
-            >
-              Transactions
-            </TabsTrigger>
-            <TabsTrigger
-              value="add-product"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600/80 data-[state=active]:to-purple-600/80 data-[state=active]:text-white"
-            >
-              Add Product
-            </TabsTrigger>
-          </TabsList>
+      {/* Main Content Area */}
+      <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Example Card 1 */}
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <h2 className="text-xl font-semibold mb-2">Card Title 1</h2>
+          <p className="text-gray-700">Some descriptive content for card 1.</p>
+        </div>
 
-          <TabsContent value="overview" className="space-y-6">
-            <PlatformOverview />
-          </TabsContent>
+        {/* Example Card 2 */}
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <h2 className="text-xl font-semibold mb-2">Card Title 2</h2>
+          <p className="text-gray-700">Some descriptive content for card 2.</p>
+        </div>
 
-          <TabsContent value="marketplace" className="space-y-6">
-            <MemberMarketplace />
-          </TabsContent>
+        {/* Example Card 3 */}
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <h2 className="text-xl font-semibold mb-2">Card Title 3</h2>
+          <p className="text-gray-700">Some descriptive content for card 3.</p>
+        </div>
 
-          <TabsContent value="tokenization" className="space-y-6">
-            <TokenizationHub />
-          </TabsContent>
+        {/* Add more cards as needed */}
+      </main>
 
-          <TabsContent value="transactions" className="space-y-6">
-            <TransactionCenter />
-          </TabsContent>
-
-          <TabsContent value="add-product" className="space-y-6">
-            <ProductAddition />
-          </TabsContent>
-        </Tabs>
-      </div>
+      {/* Footer */}
+      <footer className="text-center mt-8">
+        <p className="text-gray-500">© 2023 Your Company</p>
+      </footer>
     </div>
   )
 }
+
+export default SnapDaxDashboard
