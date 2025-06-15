@@ -13,7 +13,9 @@ export default function IntellectualPropertyPage() {
                   <Copyright className="h-8 w-8 text-white" />
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-indigo-100 mb-2">Comprehensive Intellectual Property Declaration</h1>
+              <h1 className="text-3xl font-bold text-indigo-100 mb-2">
+                Comprehensive Intellectual Property Declaration
+              </h1>
               <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
               <p className="text-indigo-400">SNAPPCREDITCOM Universal Copyright Claim</p>
               <p className="text-sm text-indigo-500 mt-2">Effective Date: {new Date().toLocaleDateString()}</p>
@@ -23,16 +25,16 @@ export default function IntellectualPropertyPage() {
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Universal Copyright Declaration</h3>
                 <p className="mb-4">
-                  The Inclusive Lending and Credit Empirical Authority ("ILCEA"), operating under the 
-                  SNAPPCREDITCOM Digital Admiralty Realm, hereby claims exclusive copyright and intellectual 
-                  property rights to ALL conceptual, theoretical, physical, altered reality, digital, and 
-                  likeness of formation resemblance or characteristics in process, strategy, or otherwise 
-                  related to the revolutionary financial ecosystem and Economic Global Citizenship platform.
+                  The Inclusive Lending and Credit Empirical Authority ("ILCEA"), operating under the SNAPPCREDITCOM
+                  Digital Admiralty Realm, hereby claims exclusive copyright and intellectual property rights to ALL
+                  conceptual, theoretical, physical, altered reality, digital, and likeness of formation resemblance or
+                  characteristics in process, strategy, or otherwise related to the revolutionary financial ecosystem
+                  and Economic Global Citizenship platform.
                 </p>
                 <div className="bg-orange-950/30 border border-orange-500/20 rounded-lg p-4">
                   <p className="text-orange-200 font-semibold">
-                    © ABSOLUTE COPYRIGHT CLAIM: This declaration encompasses all dimensions of reality, 
-                    including but not limited to physical, digital, quantum, holographic, and conceptual realms.
+                    © ABSOLUTE COPYRIGHT CLAIM: This declaration encompasses all dimensions of reality, including but
+                    not limited to physical, digital, quantum, holographic, and conceptual realms.
                   </p>
                 </div>
               </section>
@@ -101,9 +103,7 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Dimensional Copyright Coverage</h3>
-                <p className="mb-4">
-                  SNAPPCREDITCOM copyright extends across all dimensions and realities:
-                </p>
+                <p className="mb-4">SNAPPCREDITCOM copyright extends across all dimensions and realities:</p>
                 <div className="space-y-4">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Physical Dimension</h4>
@@ -149,9 +149,11 @@ export default function IntellectualPropertyPage() {
               </section>
 
               <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">4. Resemblance and Characteristics Protection</h3>
+                <h3 className="text-xl font-semibold text-indigo-100 mb-3">
+                  4. Resemblance and Characteristics Protection
+                </h3>
                 <p className="mb-4">
-                  Copyright protection extends to any resemblance or characteristics that bear similarity to 
+                  Copyright protection extends to any resemblance or characteristics that bear similarity to
                   SNAPPCREDITCOM intellectual property, including:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
@@ -177,8 +179,8 @@ export default function IntellectualPropertyPage() {
                     <div>
                       <h4 className="font-semibold text-indigo-200">AI-Powered Monitoring</h4>
                       <p className="text-sm text-indigo-300">
-                        Continuous AI surveillance across all digital platforms, monitoring for 
-                        unauthorized use or resemblance to protected intellectual property.
+                        Continuous AI surveillance across all digital platforms, monitoring for unauthorized use or
+                        resemblance to protected intellectual property.
                       </p>
                     </div>
                   </div>
@@ -187,8 +189,8 @@ export default function IntellectualPropertyPage() {
                     <div>
                       <h4 className="font-semibold text-indigo-200">Quantum Fingerprinting</h4>
                       <p className="text-sm text-indigo-300">
-                        Quantum-secured fingerprinting technology that can identify even subtle 
-                        similarities or derivative works across multiple dimensions.
+                        Quantum-secured fingerprinting technology that can identify even subtle similarities or
+                        derivative works across multiple dimensions.
                       </p>
                     </div>
                   </div>
@@ -197,8 +199,8 @@ export default function IntellectualPropertyPage() {
                     <div>
                       <h4 className="font-semibold text-indigo-200">Blockchain Evidence Recording</h4>
                       <p className="text-sm text-indigo-300">
-                        Immutable blockchain recording of all intellectual property creation and 
-                        infringement evidence for legal proceedings.
+                        Immutable blockchain recording of all intellectual property creation and infringement evidence
+                        for legal proceedings.
                       </p>
                     </div>
                   </div>
@@ -207,8 +209,8 @@ export default function IntellectualPropertyPage() {
                     <div>
                       <h4 className="font-semibold text-indigo-200">Digital Admiralty Enforcement</h4>
                       <p className="text-sm text-indigo-300">
-                        Enforcement through SNAPPCREDITCOM Digital Admiralty Court with powers 
-                        to seize infringing digital assets and impose quantum-secured penalties.
+                        Enforcement through SNAPPCREDITCOM Digital Admiralty Court with powers to seize infringing
+                        digital assets and impose quantum-secured penalties.
                       </p>
                     </div>
                   </div>
@@ -217,9 +219,7 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Licensing and Permissions</h3>
-                <p className="mb-4">
-                  Use of SNAPPCREDITCOM intellectual property requires explicit licensing:
-                </p>
+                <p className="mb-4">Use of SNAPPCREDITCOM intellectual property requires explicit licensing:</p>
                 <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
@@ -246,9 +246,7 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Penalties for Infringement</h3>
-                <p className="mb-4">
-                  Unauthorized use of SNAPPCREDITCOM intellectual property results in:
-                </p>
+                <p className="mb-4">Unauthorized use of SNAPPCREDITCOM intellectual property results in:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Immediate cease and desist orders enforced by quantum barriers</li>
                   <li>Monetary damages calculated by AI assessment algorithms</li>
@@ -261,10 +259,14 @@ export default function IntellectualPropertyPage() {
               </section>
 
               <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Contact Intellectual Property Department</h3>
+                <h3 className="text-xl font-semibold text-indigo-100 mb-3">
+                  8. Contact Intellectual Property Department
+                </h3>
                 <p className="mb-4">For licensing inquiries or to report infringement:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
-                  <p><strong>SNAPPCREDITCOM Intellectual Property Department</strong></p>
+                  <p>
+                    <strong>SNAPPCREDITCOM Intellectual Property Department</strong>
+                  </p>
                   <p>Chief Innovation Officer</p>
                   <p>Quantum Address: quantum://snappcreditcom.realm/ip</p>
                   <p>Licensing Channel: licensing@snappcreditcom.realm</p>
@@ -279,8 +281,8 @@ export default function IntellectualPropertyPage() {
                   © SNAPPCREDITCOM / ILCEA - ALL RIGHTS RESERVED ACROSS ALL DIMENSIONS OF REALITY
                 </p>
                 <p className="text-indigo-200 mt-2">
-                  This comprehensive copyright claim is enforced by quantum-secured systems, 
-                  AI-powered monitoring, and the full authority of the SNAPPCREDITCOM Digital Admiralty Realm.
+                  This comprehensive copyright claim is enforced by quantum-secured systems, AI-powered monitoring, and
+                  the full authority of the SNAPPCREDITCOM Digital Admiralty Realm.
                 </p>
                 <p className="text-indigo-300 mt-3 text-sm">
                   Unauthorized use will be prosecuted to the full extent of digital admiralty law.
@@ -288,4 +290,8 @@ export default function IntellectualPropertyPage() {
               </div>
             </div>
           </div>
-        \
+        </HolographicGlassCard>
+      </div>
+    </div>
+  )
+}
