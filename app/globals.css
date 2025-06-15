@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 @layer utilities {
@@ -90,5 +91,53 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    /* Enhanced contrast and readability */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+}
+
+/* High contrast focus states for accessibility */
+@layer utilities {
+  .focus-visible\:ring-high-contrast:focus-visible {
+    @apply ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-950;
+  }
+
+  /* Enhanced button contrast */
+  .btn-high-contrast {
+    @apply font-semibold transition-all duration-200;
+  }
+
+  /* Text contrast utilities */
+  .text-high-contrast {
+    @apply text-white;
+  }
+
+  .text-medium-contrast {
+    @apply text-slate-200;
+  }
+
+  .text-low-contrast {
+    @apply text-slate-400;
+  }
+}
+
+/* Remove redundant animations and focus on performance */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ensure high contrast for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
 }
