@@ -146,7 +146,11 @@ export function HolographicProductsDashboard() {
 
   useEffect(() => {
     // Update achievement progress for visiting the products page
-    updateAchievementProgress("product-explorer", 1)
+    try {
+      updateAchievementProgress("product-explorer", 1)
+    } catch (error) {
+      console.log("Gamification not available:", error)
+    }
   }, [updateAchievementProgress])
 
   return (
