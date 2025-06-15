@@ -1,9 +1,7 @@
 "use client"
 
-import { useEffect } from "react"
 import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-grid"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
-import { useGamification } from "@/contexts/gamification-context"
 
 // Sample product data
 const products = [
@@ -73,86 +71,9 @@ const products = [
     stock: 52,
     platforms: ["amazon", "ebay", "walmart"],
   },
-  {
-    id: "7",
-    name: "USB-C Hub",
-    description: "Multi-port USB-C hub with power delivery",
-    price: 49.99,
-    image: "/usb-hub.png",
-    category: "Accessories",
-    rating: 4.2,
-    stock: 65,
-    platforms: ["amazon", "ebay"],
-  },
-  {
-    id: "8",
-    name: "Noise-Cancelling Headphones",
-    description: "Premium over-ear headphones with adaptive noise cancellation",
-    price: 199.99,
-    image: "/placeholder-m4lol.png",
-    category: "Audio",
-    rating: 4.9,
-    stock: 22,
-    platforms: ["amazon", "walmart"],
-  },
-  {
-    id: "9",
-    name: "Portable SSD Drive",
-    description: "Ultra-fast 1TB portable SSD with USB-C connection",
-    price: 159.99,
-    image: "/placeholder-m4lol.png",
-    category: "Storage",
-    rating: 4.7,
-    stock: 31,
-    platforms: ["amazon", "ebay", "walmart"],
-  },
-  {
-    id: "10",
-    name: "Wireless Charging Pad",
-    description: "Fast wireless charging pad compatible with all Qi devices",
-    price: 39.99,
-    image: "/placeholder-m4lol.png",
-    category: "Accessories",
-    rating: 4.5,
-    stock: 48,
-    platforms: ["amazon", "walmart"],
-  },
-  {
-    id: "11",
-    name: "Smart Home Hub",
-    description: "Central hub for controlling all your smart home devices",
-    price: 129.99,
-    image: "/placeholder-m4lol.png",
-    category: "Smart Home",
-    rating: 4.6,
-    stock: 19,
-    platforms: ["amazon", "ebay"],
-  },
-  {
-    id: "12",
-    name: "Gaming Controller",
-    description: "Professional gaming controller with customizable buttons",
-    price: 69.99,
-    image: "/placeholder-m4lol.png",
-    category: "Gaming",
-    rating: 4.4,
-    stock: 42,
-    platforms: ["amazon", "walmart"],
-  },
 ]
 
 export function HolographicProductsDashboard() {
-  const { updateAchievementProgress } = useGamification()
-
-  useEffect(() => {
-    // Update achievement progress for visiting the products page
-    try {
-      updateAchievementProgress("product-explorer", 1)
-    } catch (error) {
-      console.log("Gamification not available:", error)
-    }
-  }, [updateAchievementProgress])
-
   return (
     <div className="container mx-auto p-4 space-y-8">
       <HolographicHeader

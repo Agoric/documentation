@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useState, useCallback } from "react"
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react"
 
 interface Product {
   id: string
@@ -13,36 +13,36 @@ interface Product {
   rating: number
   stock: number
   platforms: string[]
-  specifications?: Record<string, string>
-  features?: string[]
-  pros?: string[]
-  cons?: string[]
 }
 
 interface ProductComparisonContextType {
   comparisonProducts: Product[]
+  maxComparisonItems: number
   addToComparison: (product: Product) => void
   removeFromComparison: (productId: string) => void
   clearComparison: () => void
   isInComparison: (productId: string) => boolean
-  maxComparisonItems: number
 }
 
 const ProductComparisonContext = createContext<ProductComparisonContextType | undefined>(undefined)
 
-export function ProductComparisonProvider({ children }: { children: React.ReactNode }) {
+export const useProductComparison = () => {
+  const context = useContext(ProductComparisonContext)
+  if (!context) {
+    throw new Error("useProductComparison must be used within a ProductComparisonProvider")
+  }
+  return context
+}
+
+export const ProductComparisonProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [comparisonProducts, setComparisonProducts] = useState<Product[]>([])
   const maxComparisonItems = 4
 
   const addToComparison = useCallback(
     (product: Product) => {
       setComparisonProducts((prev) => {
-        if (prev.length >= maxComparisonItems) {
-          return prev
-        }
-        if (prev.some((p) => p.id === product.id)) {
-          return prev
-        }
+        if (prev.length >= maxComparisonItems) return prev
+        if (prev.some((p) => p.id === product.id)) return prev
         return [...prev, product]
       })
     },
@@ -68,22 +68,14 @@ export function ProductComparisonProvider({ children }: { children: React.ReactN
     <ProductComparisonContext.Provider
       value={{
         comparisonProducts,
+        maxComparisonItems,
         addToComparison,
         removeFromComparison,
         clearComparison,
         isInComparison,
-        maxComparisonItems,
       }}
     >
       {children}
     </ProductComparisonContext.Provider>
   )
-}
-
-export function useProductComparison() {
-  const context = useContext(ProductComparisonContext)
-  if (context === undefined) {
-    throw new Error("useProductComparison must be used within a ProductComparisonProvider")
-  }
-  return context
 }
