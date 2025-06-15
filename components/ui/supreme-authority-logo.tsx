@@ -127,17 +127,15 @@ export function SupremeAuthorityLogo({
 
               {/* Connecting Lines - Network Effect */}
               <svg className="absolute inset-0 w-full h-full">
-                <line x1="20%" y1="20%" x2="80%" y2="20%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
-                <line x1="20%" y1="80%" x2="80%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
-                <line x1="20%" y1="20%" x2="20%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
-                <line x1="80%" y1="20%" x2="80%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5"/>
+                <line x1="20%" y1="20%" x2="80%" y2="20%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5" />
+                <line x1="20%" y1="80%" x2="80%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5" />
+                <line x1="20%" y1="20%" x2="20%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5" />
+                <line x1="80%" y1="20%" x2="80%" y2="80%" stroke="rgba(133, 77, 14, 0.6)" strokeWidth="0.5" />
               </svg>
 
               {/* Imperial iBank&Trust - Bottom Arc */}
               <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
-                <div className="text-[6px] font-semibold text-yellow-900 text-center">
-                  Imperial iBank&Trust
-                </div>
+                <div className="text-[6px] font-semibold text-yellow-900 text-center">Imperial iBank&Trust</div>
               </div>
 
               {/* Holographic overlay for back side */}
@@ -150,6 +148,7 @@ export function SupremeAuthorityLogo({
               />
             </div>
           </div>
+        </div>
 
         {/* Outer imperial glow rings */}
         <div
@@ -206,7 +205,7 @@ export function SupremeAuthorityLogo({
           <span className="text-xs text-yellow-300/90 font-medium tracking-wider uppercase mb-1">
             The Imperial Realm of Sovereign States United
           </span>
-          
+
           <span className="text-[10px] text-cyan-300/80 font-medium tracking-wide italic">
             "Decentralized Banking Democratized Wealth"
           </span>
@@ -237,5 +236,8 @@ export function SupremeAuthorityLogo({
         }
       `}</style>
     </div>
-  )\
+  )
 }
+
+// Default export for easier importing
+export default SupremeAuthorityLogo
