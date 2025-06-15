@@ -19,6 +19,7 @@ export function SupremeAuthorityLogo({
 }: SupremeAuthorityLogoProps) {
   const [glowIntensity, setGlowIntensity] = useState(0.8)
   const [rotateAngle, setRotateAngle] = useState(0)
+  const [isFlipped, setIsFlipped] = useState(false)
 
   useEffect(() => {
     const glowInterval = setInterval(() => {
@@ -57,43 +58,99 @@ export function SupremeAuthorityLogo({
       <div className="relative">
         {/* Main coin container */}
         <div
-          className={`${sizeClasses[size]} relative rounded-full overflow-hidden`}
+          className={`${sizeClasses[size]} relative rounded-full overflow-hidden cursor-pointer transition-transform duration-700 preserve-3d ${isFlipped ? "rotate-y-180" : ""}`}
+          onClick={() => setIsFlipped(!isFlipped)}
           style={{
+            transformStyle: "preserve-3d",
             boxShadow: `
               0 0 ${30 * glowIntensity}px rgba(255, 215, 0, ${glowIntensity}),
               0 0 ${60 * glowIntensity}px rgba(255, 215, 0, ${glowIntensity * 0.7}),
               0 0 ${90 * glowIntensity}px rgba(255, 215, 0, ${glowIntensity * 0.4}),
               inset 0 0 20px rgba(255, 215, 0, 0.3)
             `,
-            transform: `rotate(${rotateAngle * 0.1}deg)`,
+            transform: `rotate(${rotateAngle * 0.1}deg) ${isFlipped ? "rotateY(180deg)" : ""}`,
           }}
         >
-          {/* Coin Image */}
-          <Image
-            src="/jonlorenzo-coin.png"
-            alt="Jon'Lorenzo Caprelli - Digital Creator of Global Economics"
-            fill
-            className="object-cover rounded-full"
-            priority
-          />
+          {/* Front Side */}
+          <div className={`absolute inset-0 backface-hidden ${isFlipped ? "opacity-0" : "opacity-100"}`}>
+            <Image
+              src="/jonlorenzo-coin.png"
+              alt="Jon'Lorenzo Caprelli - Digital Creator of Global Economics"
+              fill
+              className="object-cover rounded-full"
+              priority
+            />
 
-          {/* Holographic overlay */}
-          <div
-            className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent opacity-60 rounded-full"
-            style={{
-              background: "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)",
-              animation: "shimmer 4s infinite",
-            }}
-          />
+            {/* Existing holographic overlay and effects */}
+            <div
+              className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent opacity-60 rounded-full"
+              style={{
+                background: "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)",
+                animation: "shimmer 4s infinite",
+              }}
+            />
+          </div>
 
-          {/* Rotating golden ring */}
-          <div
-            className="absolute inset-0 rounded-full border-2 border-yellow-400/50"
-            style={{
-              transform: `rotate(${rotateAngle}deg)`,
-              background: `conic-gradient(from ${rotateAngle}deg, transparent, rgba(255, 215, 0, 0.3), transparent)`,
-            }}
-          />
+          {/* Back Side - Imperial iBank&Trust Economics */}
+          <div className={`absolute inset-0 backface-hidden rotate-y-180 ${isFlipped ? "opacity-100" : "opacity-0"}`}>
+            <div className="w-full h-full bg-gradient-to-br from-yellow-600 via-yellow-500 to-yellow-700 rounded-full flex items-center justify-center relative overflow-hidden">
+              {/* Central Imperial Crown */}
+              <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2">
+                <Crown className="h-6 w-6 text-yellow-900" />
+              </div>
+
+              {/* Banking Pillars - Conscious Conformity */}
+              <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2">
+                <div className="flex space-x-1">
+                  <div className="w-1 h-4 bg-yellow-900 rounded-full"></div>
+                  <div className="w-1 h-4 bg-yellow-900 rounded-full"></div>
+                  <div className="w-1 h-4 bg-yellow-900 rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Excellence Stars */}
+              <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2">
+                <div className="flex flex-col space-y-1">
+                  <div className="w-2 h-2 bg-yellow-900 rounded-full"></div>
+                  <div className="w-2 h-2 bg-yellow-900 rounded-full"></div>
+                  <div className="w-2 h-2 bg-yellow-900 rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Central iBank&Trust Symbol */}
+              <div className="absolute center flex items-center justify-center">
+                <div className="text-xs font-bold text-yellow-900 text-center leading-tight">
+                  <div>iB&T</div>
+                  <div className="text-[8px]">ECON</div>
+                </div>
+              </div>
+
+              {/* Unity Interlocking Circles - Bottom */}
+              <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2">
+                <div className="flex space-x-[-2px]">
+                  <div className="w-3 h-3 border-2 border-yellow-900 rounded-full"></div>
+                  <div className="w-3 h-3 border-2 border-yellow-900 rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Economic Growth Arrows */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div className="flex flex-col items-center space-y-1">
+                  <div className="w-0 h-0 border-l-2 border-r-2 border-b-3 border-transparent border-b-yellow-900"></div>
+                  <div className="w-0 h-0 border-l-2 border-r-2 border-b-3 border-transparent border-b-yellow-900"></div>
+                </div>
+              </div>
+
+              {/* Holographic overlay for back side */}
+              <div
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-40 rounded-full"
+                style={{
+                  background: "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)",
+                  animation: "shimmer 4s infinite reverse",
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Outer imperial glow rings */}
@@ -147,11 +204,10 @@ export function SupremeAuthorityLogo({
           >
             {variant === "compact" ? "Supreme Authority" : "Jon'Lorenzo Caprelli"}
           </span>
-          {variant === "default" && (
-            <span className="text-xs text-yellow-300/90 font-medium tracking-wider uppercase">
-              Digital Creator of Global Economics
-            </span>
-          )}
+
+          <span className="text-xs text-yellow-300/90 font-medium tracking-wider uppercase">
+            The Imperial Realm of Sovereign States United
+          </span>
         </div>
       )}
 
@@ -167,6 +223,15 @@ export function SupremeAuthorityLogo({
         @keyframes pulse {
           0%, 100% { opacity: 0.4; transform: scale(1.15); }
           50% { opacity: 0.8; transform: scale(1.25); }
+        }
+        .preserve-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
         }
       `}</style>
     </div>
