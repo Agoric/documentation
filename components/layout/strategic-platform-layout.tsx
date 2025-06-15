@@ -84,8 +84,8 @@ interface StrategicPlatformLayoutProps {
 
 export function StrategicPlatformLayout({
   children,
-  breadcrumbs,
-  currentSection,
+  breadcrumbs = [],
+  currentSection = "Dashboard",
   guidancePrompts = [],
   showGuidance = true,
   userLevel = "intermediate",
