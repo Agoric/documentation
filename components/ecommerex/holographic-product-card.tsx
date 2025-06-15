@@ -6,6 +6,7 @@ import { Star, ShoppingCart, Eye, Heart, Zap, BarChart3 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { HolographicLabel } from "./holographic-label"
 import Image from "next/image"
 import { useProductComparison } from "@/contexts/product-comparison-context"
 
@@ -19,6 +20,8 @@ interface Product {
   rating: number
   stock: number
   platforms: string[]
+  isHolographic?: boolean
+  holographicFeatures?: string[]
 }
 
 interface HolographicProductCardProps {
@@ -43,37 +46,47 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
       transition={{ duration: 0.2 }}
     >
       <Card className="relative overflow-hidden border-indigo-500/20 bg-gradient-to-br from-indigo-950/40 via-purple-950/30 to-cyan-950/40 backdrop-blur-sm">
-        {/* Holographic Background Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-indigo-400/5 to-purple-400/5" />
+        {/* Enhanced Holographic Background Effect for Holographic Products */}
+        <div
+          className={`absolute inset-0 ${
+            product.isHolographic
+              ? "bg-gradient-to-br from-cyan-400/10 via-indigo-400/10 to-purple-400/10"
+              : "bg-gradient-to-br from-cyan-400/5 via-indigo-400/5 to-purple-400/5"
+          }`}
+        />
 
-        {/* Animated Border */}
+        {/* Enhanced Animated Border for Holographic Products */}
         <motion.div
-          className="absolute inset-0 border border-cyan-400/30 rounded-lg"
+          className={`absolute inset-0 border rounded-lg ${
+            product.isHolographic ? "border-cyan-400/50" : "border-cyan-400/30"
+          }`}
           animate={{
-            opacity: isHovered ? [0.3, 0.7, 0.3] : 0.3,
+            opacity: isHovered ? [0.3, 0.7, 0.3] : product.isHolographic ? 0.5 : 0.3,
             scale: isHovered ? [1, 1.01, 1] : 1,
           }}
           transition={{
-            duration: 2,
-            repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+            duration: product.isHolographic ? 1.5 : 2,
+            repeat: isHovered ? Number.POSITIVE_INFINITY : product.isHolographic ? Number.POSITIVE_INFINITY : 0,
             ease: "easeInOut",
           }}
         />
 
-        {/* Floating Particles */}
-        {isHovered && (
+        {/* Enhanced Floating Particles for Holographic Products */}
+        {(isHovered || product.isHolographic) && (
           <div className="absolute inset-0 pointer-events-none">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(product.isHolographic ? 12 : 8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 bg-cyan-400/40 rounded-full"
+                className={`absolute w-1 h-1 rounded-full ${
+                  product.isHolographic ? "bg-gradient-to-r from-cyan-400/60 to-purple-400/60" : "bg-cyan-400/40"
+                }`}
                 animate={{
                   x: [0, Math.random() * 50 - 25],
                   y: [0, Math.random() * 50 - 25],
                   opacity: [0, 1, 0],
                 }}
                 transition={{
-                  duration: 1.5,
+                  duration: Math.random() * 3 + 2,
                   repeat: Number.POSITIVE_INFINITY,
                   delay: i * 0.2,
                 }}
@@ -96,8 +109,17 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               className="object-cover transition-transform duration-300 group-hover:scale-110"
             />
 
+            {/* Holographic Label - Top Priority */}
+            {product.isHolographic && (
+              <div className="absolute top-2 left-2 z-30">
+                <HolographicLabel variant="premium" features={product.holographicFeatures} />
+              </div>
+            )}
+
             {/* Category Badge */}
-            <Badge className="absolute top-2 left-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+            <Badge
+              className={`absolute ${product.isHolographic ? "top-14 left-2" : "top-2 left-2"} bg-gradient-to-r from-indigo-600 to-purple-600 text-white`}
+            >
               {product.category}
             </Badge>
 
@@ -125,11 +147,36 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
 
           {/* Product Info */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-lg text-white line-clamp-2 group-hover:text-cyan-300 transition-colors">
+            <h3
+              className={`font-semibold text-lg line-clamp-2 transition-colors ${
+                product.isHolographic
+                  ? "text-transparent bg-gradient-to-r from-cyan-300 via-white to-purple-300 bg-clip-text group-hover:from-cyan-200 group-hover:to-purple-200"
+                  : "text-white group-hover:text-cyan-300"
+              }`}
+            >
               {product.name}
             </h3>
 
             <p className="text-sm text-indigo-200/70 line-clamp-2">{product.description}</p>
+
+            {/* Holographic Features */}
+            {product.isHolographic && product.holographicFeatures && (
+              <div className="flex flex-wrap gap-1">
+                {product.holographicFeatures.slice(0, 2).map((feature, index) => (
+                  <Badge
+                    key={index}
+                    className="text-xs bg-gradient-to-r from-cyan-600/20 to-purple-600/20 border-cyan-400/30 text-cyan-300"
+                  >
+                    {feature}
+                  </Badge>
+                ))}
+                {product.holographicFeatures.length > 2 && (
+                  <Badge className="text-xs bg-gradient-to-r from-cyan-600/20 to-purple-600/20 border-cyan-400/30 text-cyan-300">
+                    +{product.holographicFeatures.length - 2}
+                  </Badge>
+                )}
+              </div>
+            )}
 
             {/* Rating */}
             <div className="flex items-center gap-2">
@@ -150,7 +197,15 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
 
             {/* Price and Stock */}
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold text-white">${product.price.toFixed(2)}</div>
+              <div
+                className={`text-2xl font-bold ${
+                  product.isHolographic
+                    ? "text-transparent bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text"
+                    : "text-white"
+                }`}
+              >
+                ${product.price.toFixed(2)}
+              </div>
               <div className="text-sm text-indigo-200/70">{product.stock} in stock</div>
             </div>
 
@@ -171,7 +226,11 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
             {/* Action Buttons */}
             <div className="flex gap-2 pt-2">
               <Button
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
+                className={`flex-1 text-white ${
+                  product.isHolographic
+                    ? "bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-700 hover:via-indigo-700 hover:to-purple-700"
+                    : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                }`}
                 size="sm"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
