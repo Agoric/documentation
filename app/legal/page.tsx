@@ -1,5 +1,5 @@
 import { AlertTriangle, FileText, Scale, Shield, Users } from "lucide-react"
-import { Globe, Anchor, Copyright } from "lucide-react"
+import { Globe, Anchor, Copyright, Crown } from "lucide-react"
 
 const legalDocuments = [
   {
@@ -64,6 +64,13 @@ const legalDocuments = [
     href: "/legal/intellectual-property",
     icon: Copyright,
     category: "Intellectual Property",
+  },
+  {
+    title: "Diplomatic Immunity Declaration",
+    description: "Diplomatic immunity for SNAPPCREDITCOM agents with accountability and settlement frameworks",
+    href: "/legal/diplomatic-immunity",
+    icon: Crown,
+    category: "Digital Sovereignty",
   },
 ]
 
