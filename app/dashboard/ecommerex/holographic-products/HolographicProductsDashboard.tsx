@@ -1,7 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-grid"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
+import { HolographicSidebar, type ProductFilters } from "@/components/ecommerex/holographic-sidebar"
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator"
 
 // Enhanced sample product data with 360° view capabilities
 const products = [
@@ -134,14 +138,93 @@ const products = [
 ]
 
 export function HolographicProductsDashboard() {
-  return (
-    <div className="container mx-auto p-4 space-y-8">
-      <HolographicHeader
-        title="Holographic Products"
-        subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology and interactive 360° views"
-      />
+  const [filters, setFilters] = useState<ProductFilters>({
+    search: "",
+    category: "",
+    priceRange: "",
+    rating: 0,
+    isHolographic: null,
+    has360View: null,
+    inStock: true,
+  })
 
-      <PaginatedProductGrid products={products} itemsPerPage={6} />
-    </div>
+  const filterProducts = (products: typeof products, filters: ProductFilters) => {
+    return products.filter((product) => {
+      // Search filter
+      if (
+        filters.search &&
+        !product.name.toLowerCase().includes(filters.search.toLowerCase()) &&
+        !product.description.toLowerCase().includes(filters.search.toLowerCase())
+      ) {
+        return false
+      }
+
+      // Category filter
+      if (filters.category && product.category !== filters.category) {
+        return false
+      }
+
+      // Price range filter
+      if (filters.priceRange) {
+        const [min, max] = filters.priceRange
+          .split("-")
+          .map((p) => (p === "+" ? Number.POSITIVE_INFINITY : Number.parseInt(p)))
+        if (max && (product.price < min || product.price > max)) {
+          return false
+        }
+        if (!max && product.price < min) {
+          return false
+        }
+      }
+
+      // Rating filter
+      if (filters.rating > 0 && product.rating < filters.rating) {
+        return false
+      }
+
+      // Holographic filter
+      if (filters.isHolographic !== null && product.isHolographic !== filters.isHolographic) {
+        return false
+      }
+
+      // 360 view filter
+      if (filters.has360View !== null && product.has360View !== filters.has360View) {
+        return false
+      }
+
+      // Stock filter
+      if (filters.inStock && product.stock === 0) {
+        return false
+      }
+
+      return true
+    })
+  }
+
+  const filteredProducts = filterProducts(products, filters)
+
+  return (
+    <SidebarProvider>
+      <HolographicSidebar onFilterChange={setFilters} activeFilters={filters} />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-purple-500/20 px-4 bg-gradient-to-r from-purple-900/10 to-blue-900/10 backdrop-blur-xl">
+          <SidebarTrigger className="-ml-1 text-purple-400 hover:text-purple-300" />
+          <Separator orientation="vertical" className="mr-2 h-4 bg-purple-500/30" />
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 animate-pulse" />
+            <span className="text-sm text-purple-300">{filteredProducts.length} products found</span>
+          </div>
+        </header>
+
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <HolographicHeader
+            title="Holographic Products"
+            subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology and interactive 360° views"
+          />
+
+          <PaginatedProductGrid products={filteredProducts} itemsPerPage={6} />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
