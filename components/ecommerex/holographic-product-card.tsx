@@ -235,7 +235,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               )}
 
               {/* Holographic Features */}
-              {product.isHolographic && product.holographicFeatures && (
+              {product.isHolographic && product.holographicFeatures && product.holographicFeatures.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {product.holographicFeatures.slice(0, 2).map((feature, index) => (
                     <Badge
@@ -286,7 +286,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
 
               {/* Platforms */}
               <div className="flex flex-wrap gap-1">
-                {product.platforms.slice(0, 3).map((platform) => (
+                {product.platforms?.slice(0, 3).map((platform) => (
                   <Badge
                     key={platform}
                     variant="outline"
@@ -295,7 +295,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                     {platform}
                   </Badge>
                 ))}
-                {product.platforms.length > 3 && (
+                {product.platforms && product.platforms.length > 3 && (
                   <Badge variant="outline" className="text-xs border-indigo-400/30 text-indigo-300">
                     +{product.platforms.length - 3}
                   </Badge>

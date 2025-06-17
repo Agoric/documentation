@@ -11,124 +11,174 @@ import { RealmNavigationToolbar } from "@/components/navigation/realm-navigation
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
 
-// Sample product data with enhanced holographic features
+// Enhanced sample product data with correct structure for HolographicProductCard
 const sampleProducts = [
   {
-    id: 1,
+    id: "1",
     name: "Neural Interface Headphones",
+    description: "Advanced neural interface technology with holographic sound projection and 3D spatial audio",
     price: 299.99,
-    originalPrice: 399.99,
     image: "/placeholder.svg?height=300&width=300&text=Neural+Headphones",
-    rating: 4.8,
-    reviews: 1247,
     category: "Audio",
+    rating: 4.8,
+    stock: 45,
+    platforms: ["amazon", "ebay", "walmart"],
     isHolographic: true,
     has360View: true,
-    inStock: true,
-    description: "Advanced neural interface technology with holographic sound projection",
-    features: ["Neural Interface", "Holographic Audio", "360° Sound Field", "AI Noise Cancellation"],
-    images: [
+    images360: [
       "/placeholder.svg?height=300&width=300&text=Neural+Headphones+1",
       "/placeholder.svg?height=300&width=300&text=Neural+Headphones+2",
       "/placeholder.svg?height=300&width=300&text=Neural+Headphones+3",
       "/placeholder.svg?height=300&width=300&text=Neural+Headphones+4",
+      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+5",
+      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+6",
+      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+7",
+      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+8",
+    ],
+    holographicFeatures: [
+      "3D Audio Projection",
+      "Quantum Noise Cancellation",
+      "Holographic Controls",
+      "Neural Interface",
     ],
   },
   {
-    id: 2,
-    name: "Quantum Smartwatch",
+    id: "2",
+    name: "Quantum Smartwatch Pro",
+    description: "Quantum-powered smartwatch with holographic display technology and advanced health monitoring",
     price: 599.99,
-    originalPrice: 799.99,
     image: "/placeholder.svg?height=300&width=300&text=Quantum+Watch",
-    rating: 4.9,
-    reviews: 892,
     category: "Wearables",
+    rating: 4.9,
+    stock: 28,
+    platforms: ["amazon", "walmart", "bestbuy"],
     isHolographic: true,
     has360View: true,
-    inStock: true,
-    description: "Quantum-powered smartwatch with holographic display technology",
-    features: ["Quantum Processing", "Holographic Display", "Health Monitoring", "Wireless Charging"],
-    images: [
+    images360: [
       "/placeholder.svg?height=300&width=300&text=Quantum+Watch+1",
       "/placeholder.svg?height=300&width=300&text=Quantum+Watch+2",
       "/placeholder.svg?height=300&width=300&text=Quantum+Watch+3",
       "/placeholder.svg?height=300&width=300&text=Quantum+Watch+4",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+5",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+6",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+7",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+8",
     ],
+    holographicFeatures: ["Quantum Processing", "Holographic Display", "Health Monitoring", "Wireless Charging"],
   },
   {
-    id: 3,
-    name: "Holographic Camera Pro",
+    id: "3",
+    name: "HoloVision 4K Camera",
+    description: "Professional holographic camera with 8K recording capabilities and AI-powered scene recognition",
     price: 1299.99,
     image: "/placeholder.svg?height=300&width=300&text=Holo+Camera",
-    rating: 4.7,
-    reviews: 634,
     category: "Cameras",
+    rating: 4.7,
+    stock: 0, // Out of stock
+    platforms: ["amazon", "ebay", "bhphoto"],
     isHolographic: true,
     has360View: true,
-    inStock: false,
-    description: "Professional holographic camera with 8K recording capabilities",
-    features: ["8K Holographic Recording", "AI Scene Recognition", "Professional Lenses", "Cloud Storage"],
-    images: [
+    images360: [
       "/placeholder.svg?height=300&width=300&text=Holo+Camera+1",
       "/placeholder.svg?height=300&width=300&text=Holo+Camera+2",
       "/placeholder.svg?height=300&width=300&text=Holo+Camera+3",
       "/placeholder.svg?height=300&width=300&text=Holo+Camera+4",
+      "/placeholder.svg?height=300&width=300&text=Holo+Camera+5",
+      "/placeholder.svg?height=300&width=300&text=Holo+Camera+6",
+      "/placeholder.svg?height=300&width=300&text=Holo+Camera+7",
+      "/placeholder.svg?height=300&width=300&text=Holo+Camera+8",
     ],
+    holographicFeatures: ["8K Holographic Recording", "AI Scene Recognition", "Professional Lenses", "Cloud Storage"],
   },
   {
-    id: 4,
-    name: "Wireless Gaming Mouse",
+    id: "4",
+    name: "Wireless Gaming Mouse RGB",
+    description: "High-precision wireless gaming mouse with RGB lighting and programmable macros",
     price: 89.99,
     image: "/placeholder.svg?height=300&width=300&text=Gaming+Mouse",
-    rating: 4.6,
-    reviews: 1523,
     category: "Peripherals",
+    rating: 4.6,
+    stock: 156,
+    platforms: ["amazon", "ebay", "walmart", "newegg"],
     isHolographic: false,
     has360View: false,
-    inStock: true,
-    description: "High-precision wireless gaming mouse with RGB lighting",
-    features: ["High DPI Sensor", "RGB Lighting", "Wireless Connectivity", "Ergonomic Design"],
-    images: [
-      "/placeholder.svg?height=300&width=300&text=Gaming+Mouse+1",
-      "/placeholder.svg?height=300&width=300&text=Gaming+Mouse+2",
-    ],
+    holographicFeatures: [], // Non-holographic product
   },
   {
-    id: 5,
-    name: "VR Haptic Gloves",
+    id: "5",
+    name: "VR Haptic Gloves Pro",
+    description: "Advanced haptic feedback gloves for virtual reality experiences with finger tracking",
     price: 449.99,
     image: "/placeholder.svg?height=300&width=300&text=VR+Gloves",
-    rating: 4.5,
-    reviews: 387,
     category: "Wearables",
+    rating: 4.5,
+    stock: 37,
+    platforms: ["amazon", "walmart", "oculus"],
     isHolographic: true,
     has360View: true,
-    inStock: true,
-    description: "Advanced haptic feedback gloves for virtual reality experiences",
-    features: ["Haptic Feedback", "Finger Tracking", "Wireless Connection", "Long Battery Life"],
-    images: [
+    images360: [
       "/placeholder.svg?height=300&width=300&text=VR+Gloves+1",
       "/placeholder.svg?height=300&width=300&text=VR+Gloves+2",
       "/placeholder.svg?height=300&width=300&text=VR+Gloves+3",
+      "/placeholder.svg?height=300&width=300&text=VR+Gloves+4",
+      "/placeholder.svg?height=300&width=300&text=VR+Gloves+5",
+      "/placeholder.svg?height=300&width=300&text=VR+Gloves+6",
+      "/placeholder.svg?height=300&width=300&text=VR+Gloves+7",
+      "/placeholder.svg?height=300&width=300&text=VR+Gloves+8",
     ],
+    holographicFeatures: ["Haptic Feedback", "Finger Tracking", "Wireless Connection", "Long Battery Life"],
   },
   {
-    id: 6,
-    name: "Holographic Keyboard",
+    id: "6",
+    name: "Holographic Keyboard Elite",
+    description: "Projected holographic keyboard with tactile feedback simulation and gesture recognition",
     price: 199.99,
     image: "/placeholder.svg?height=300&width=300&text=Holo+Keyboard",
-    rating: 4.4,
-    reviews: 756,
     category: "Peripherals",
+    rating: 4.4,
+    stock: 73,
+    platforms: ["amazon", "ebay"],
     isHolographic: true,
     has360View: false,
-    inStock: true,
-    description: "Projected holographic keyboard with tactile feedback simulation",
-    features: ["Holographic Projection", "Tactile Feedback", "Customizable Layout", "Gesture Recognition"],
-    images: [
-      "/placeholder.svg?height=300&width=300&text=Holo+Keyboard+1",
-      "/placeholder.svg?height=300&width=300&text=Holo+Keyboard+2",
+    holographicFeatures: ["Holographic Projection", "Tactile Feedback", "Customizable Layout", "Gesture Recognition"],
+  },
+  {
+    id: "7",
+    name: "Bluetooth Speaker Portable",
+    description: "High-quality portable bluetooth speaker with 24-hour battery life and waterproof design",
+    price: 59.99,
+    image: "/placeholder.svg?height=300&width=300&text=Bluetooth+Speaker",
+    category: "Audio",
+    rating: 4.3,
+    stock: 234,
+    platforms: ["amazon", "ebay", "walmart", "target"],
+    isHolographic: false,
+    has360View: false,
+    holographicFeatures: [], // Non-holographic product
+  },
+  {
+    id: "8",
+    name: 'HoloDesk Monitor 32"',
+    description: "32-inch holographic display monitor with 4K resolution and eye-tracking technology",
+    price: 899.99,
+    image: "/placeholder.svg?height=300&width=300&text=Holo+Monitor",
+    category: "Displays",
+    rating: 4.8,
+    stock: 12,
+    platforms: ["amazon", "bestbuy", "newegg"],
+    isHolographic: true,
+    has360View: true,
+    images360: [
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+1",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+2",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+3",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+4",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+5",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+6",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+7",
+      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+8",
     ],
+    holographicFeatures: ["4K Holographic Display", "Eye Tracking", "Gesture Control", "Ambient Lighting"],
   },
 ]
 
@@ -202,7 +252,7 @@ export function HolographicProductsDashboard() {
       // Special filters
       if (filters.holographicOnly && !product.isHolographic) return false
       if (filters.has360ViewOnly && !product.has360View) return false
-      if (filters.inStockOnly && !product.inStock) return false
+      if (filters.inStockOnly && product.stock === 0) return false
 
       return true
     })
@@ -218,8 +268,6 @@ export function HolographicProductsDashboard() {
         return sorted.sort((a, b) => b.price - a.price)
       case "rating":
         return sorted.sort((a, b) => b.rating - a.rating)
-      case "reviews":
-        return sorted.sort((a, b) => b.reviews - a.reviews)
       case "name":
         return sorted.sort((a, b) => a.name.localeCompare(b.name))
       default:
@@ -308,7 +356,6 @@ export function HolographicProductsDashboard() {
                         <SelectItem value="price-low">Price: Low to High</SelectItem>
                         <SelectItem value="price-high">Price: High to Low</SelectItem>
                         <SelectItem value="rating">Highest Rated</SelectItem>
-                        <SelectItem value="reviews">Most Reviews</SelectItem>
                         <SelectItem value="name">Name A-Z</SelectItem>
                       </SelectContent>
                     </Select>
@@ -340,7 +387,7 @@ export function HolographicProductsDashboard() {
               </div>
 
               {/* Product Grid */}
-              <PaginatedProductGrid products={sortedProducts} viewMode={viewMode} itemsPerPage={12} />
+              <PaginatedProductGrid products={sortedProducts} itemsPerPage={6} />
             </div>
           </SidebarInset>
         </div>
