@@ -1,6 +1,6 @@
 "use client"
 
-const GamificationDashboard = () => {
+export const GamificationDashboard = () => {
   return (
     <div className="container mx-auto p-4">
       <section className="mb-8">
@@ -38,5 +38,3 @@ const GamificationDashboard = () => {
     </div>
   )
 }
-
-export default GamificationDashboard
