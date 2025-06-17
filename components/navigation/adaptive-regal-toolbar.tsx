@@ -24,13 +24,13 @@ interface RealmTab {
 const realms: RealmTab[] = [
   {
     id: "holographic-products",
-    name: "Holographic Products",
+    name: "NFT Marketplace",
     href: "/dashboard/ecommerex/holographic-products",
     icon: ShoppingBag,
-    description: "Mercatus Holographicus - Advanced product marketplace",
+    description: "Mercatus NFT Imperium - Premium digital asset marketplace",
     gradient: "from-purple-600 via-indigo-600 to-cyan-600",
-    romanTitle: "MERCATUS",
-    shortTitle: "MERC",
+    romanTitle: "NFT IMPERIUM",
+    shortTitle: "NFT",
   },
   {
     id: "real-estate",

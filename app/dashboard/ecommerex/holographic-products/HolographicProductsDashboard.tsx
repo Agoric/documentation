@@ -19,171 +19,212 @@ import { useSpatialLayout } from "@/hooks/use-spatial-layout"
 const sampleProducts = [
   {
     id: "1",
-    name: "Neural Interface Headphones",
-    description: "Advanced neural interface technology with holographic sound projection and 3D spatial audio",
-    price: 299.99,
-    image: "/placeholder.svg?height=300&width=300&text=Neural+Headphones",
-    category: "Audio",
+    name: "Cosmic Emperors Collection",
+    description:
+      "Exclusive collection of 10,000 unique Roman Emperor NFTs with holographic traits and governance rights",
+    price: 2.5, // ETH price
+    image: "/placeholder.svg?height=300&width=300&text=Cosmic+Emperors",
+    category: "PFP",
     rating: 4.8,
-    stock: 45,
-    platforms: ["amazon", "ebay", "walmart"],
+    stock: 2847, // Available NFTs
+    platforms: ["opensea", "blur", "x2y2"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+1",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+2",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+3",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+4",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+5",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+6",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+7",
-      "/placeholder.svg?height=300&width=300&text=Neural+Headphones+8",
+      "/placeholder.svg?height=300&width=300&text=Emperor+1",
+      "/placeholder.svg?height=300&width=300&text=Emperor+2",
+      "/placeholder.svg?height=300&width=300&text=Emperor+3",
+      "/placeholder.svg?height=300&width=300&text=Emperor+4",
+      "/placeholder.svg?height=300&width=300&text=Emperor+5",
+      "/placeholder.svg?height=300&width=300&text=Emperor+6",
+      "/placeholder.svg?height=300&width=300&text=Emperor+7",
+      "/placeholder.svg?height=300&width=300&text=Emperor+8",
     ],
-    holographicFeatures: [
-      "3D Audio Projection",
-      "Quantum Noise Cancellation",
-      "Holographic Controls",
-      "Neural Interface",
-    ],
+    holographicFeatures: ["Holographic Traits", "Governance Rights", "Staking Rewards", "Metaverse Ready"],
+    floorPrice: 2.1,
+    totalVolume: 15420,
+    owners: 3241,
   },
   {
     id: "2",
-    name: "Quantum Smartwatch Pro",
-    description: "Quantum-powered smartwatch with holographic display technology and advanced health monitoring",
-    price: 599.99,
-    image: "/placeholder.svg?height=300&width=300&text=Quantum+Watch",
-    category: "Wearables",
+    name: "Digital Gladiators Arena",
+    description: "Battle-ready gladiator NFTs with interactive combat mechanics and tournament rewards",
+    price: 1.8,
+    image: "/placeholder.svg?height=300&width=300&text=Digital+Gladiators",
+    category: "Gaming",
     rating: 4.9,
-    stock: 28,
-    platforms: ["amazon", "walmart", "bestbuy"],
+    stock: 1523,
+    platforms: ["opensea", "magic-eden", "blur"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+1",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+2",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+3",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+4",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+5",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+6",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+7",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Watch+8",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+1",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+2",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+3",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+4",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+5",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+6",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+7",
+      "/placeholder.svg?height=300&width=300&text=Gladiator+8",
     ],
-    holographicFeatures: ["Quantum Processing", "Holographic Display", "Health Monitoring", "Wireless Charging"],
+    holographicFeatures: ["Combat Mechanics", "Tournament Ready", "Weapon Upgrades", "Arena Access"],
+    floorPrice: 1.5,
+    totalVolume: 8934,
+    owners: 1876,
   },
   {
     id: "3",
-    name: "HoloVision 4K Camera",
-    description: "Professional holographic camera with 8K recording capabilities and AI-powered scene recognition",
-    price: 1299.99,
-    image: "/placeholder.svg?height=300&width=300&text=Holo+Camera",
-    category: "Cameras",
+    name: "Quantum Art Masterpieces",
+    description: "AI-generated quantum art pieces with evolving visual properties and collector rewards",
+    price: 5.2,
+    image: "/placeholder.svg?height=300&width=300&text=Quantum+Art",
+    category: "Art",
     rating: 4.7,
-    stock: 0, // Out of stock for testing
-    platforms: ["amazon", "ebay", "bhphoto"],
+    stock: 0, // Sold out
+    platforms: ["foundation", "superrare", "async"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+1",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+2",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+3",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+4",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+5",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+6",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+7",
-      "/placeholder.svg?height=300&width=300&text=Holo+Camera+8",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+1",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+2",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+3",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+4",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+5",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+6",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+7",
+      "/placeholder.svg?height=300&width=300&text=Quantum+Art+8",
     ],
-    holographicFeatures: ["8K Holographic Recording", "AI Scene Recognition", "Professional Lenses", "Cloud Storage"],
+    holographicFeatures: ["Evolving Visuals", "AI Generated", "Collector Rewards", "Museum Quality"],
+    floorPrice: 4.8,
+    totalVolume: 23567,
+    owners: 456,
   },
   {
     id: "4",
-    name: "Wireless Gaming Mouse RGB",
-    description: "High-precision wireless gaming mouse with RGB lighting and programmable macros",
-    price: 89.99,
-    image: "/placeholder.svg?height=300&width=300&text=Gaming+Mouse",
-    category: "Peripherals",
+    name: "Pixel Legions",
+    description: "Retro-style pixel art warriors with classic gaming aesthetics and nostalgic appeal",
+    price: 0.3,
+    image: "/placeholder.svg?height=300&width=300&text=Pixel+Legions",
+    category: "Pixel Art",
     rating: 4.6,
-    stock: 156,
-    platforms: ["amazon", "ebay", "walmart", "newegg"],
+    stock: 7834,
+    platforms: ["opensea", "blur", "looksrare"],
     isHolographic: false,
     has360View: false,
-    holographicFeatures: [], // Non-holographic product
+    holographicFeatures: [],
+    floorPrice: 0.25,
+    totalVolume: 2341,
+    owners: 4521,
   },
   {
     id: "5",
-    name: "VR Haptic Gloves Pro",
-    description: "Advanced haptic feedback gloves for virtual reality experiences with finger tracking",
-    price: 449.99,
-    image: "/placeholder.svg?height=300&width=300&text=VR+Gloves",
-    category: "Wearables",
+    name: "Metaverse Real Estate",
+    description: "Premium virtual land parcels in the Snapifi Metaverse with building rights and revenue sharing",
+    price: 12.5,
+    image: "/placeholder.svg?height=300&width=300&text=Metaverse+Land",
+    category: "Virtual Land",
     rating: 4.5,
-    stock: 37,
-    platforms: ["amazon", "walmart", "oculus"],
+    stock: 234,
+    platforms: ["opensea", "decentraland", "sandbox"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+1",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+2",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+3",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+4",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+5",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+6",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+7",
-      "/placeholder.svg?height=300&width=300&text=VR+Gloves+8",
+      "/placeholder.svg?height=300&width=300&text=Land+1",
+      "/placeholder.svg?height=300&width=300&text=Land+2",
+      "/placeholder.svg?height=300&width=300&text=Land+3",
+      "/placeholder.svg?height=300&width=300&text=Land+4",
+      "/placeholder.svg?height=300&width=300&text=Land+5",
+      "/placeholder.svg?height=300&width=300&text=Land+6",
+      "/placeholder.svg?height=300&width=300&text=Land+7",
+      "/placeholder.svg?height=300&width=300&text=Land+8",
     ],
-    holographicFeatures: ["Haptic Feedback", "Finger Tracking", "Wireless Connection", "Long Battery Life"],
+    holographicFeatures: ["Building Rights", "Revenue Sharing", "Metaverse Access", "Development Tools"],
+    floorPrice: 11.2,
+    totalVolume: 45678,
+    owners: 189,
   },
   {
     id: "6",
-    name: "Holographic Keyboard Elite",
-    description: "Projected holographic keyboard with tactile feedback simulation and gesture recognition",
-    price: 199.99,
-    image: "/placeholder.svg?height=300&width=300&text=Holo+Keyboard",
-    category: "Peripherals",
+    name: "Holographic Music NFTs",
+    description: "Interactive music NFTs with 3D visualizations and exclusive artist content",
+    price: 0.8,
+    image: "/placeholder.svg?height=300&width=300&text=Music+NFTs",
+    category: "Music",
     rating: 4.4,
-    stock: 73,
-    platforms: ["amazon", "ebay"],
+    stock: 1567,
+    platforms: ["opensea", "catalog", "sound"],
     isHolographic: true,
     has360View: false,
-    holographicFeatures: ["Holographic Projection", "Tactile Feedback", "Customizable Layout", "Gesture Recognition"],
+    holographicFeatures: ["3D Visualizations", "Exclusive Content", "Artist Access", "Concert Tickets"],
+    floorPrice: 0.6,
+    totalVolume: 3456,
+    owners: 2341,
   },
   {
     id: "7",
-    name: "Bluetooth Speaker Portable",
-    description: "High-quality portable bluetooth speaker with 24-hour battery life and waterproof design",
-    price: 59.99,
-    image: "/placeholder.svg?height=300&width=300&text=Bluetooth+Speaker",
-    category: "Audio",
+    name: "Sports Legends Cards",
+    description: "Digital trading cards featuring legendary athletes with animated highlights and stats",
+    price: 0.15,
+    image: "/placeholder.svg?height=300&width=300&text=Sports+Cards",
+    category: "Sports",
     rating: 4.3,
-    stock: 234,
-    platforms: ["amazon", "ebay", "walmart", "target"],
+    stock: 12456,
+    platforms: ["opensea", "topshot", "sorare"],
     isHolographic: false,
     has360View: false,
-    holographicFeatures: [], // Non-holographic product
+    holographicFeatures: [],
+    floorPrice: 0.12,
+    totalVolume: 1234,
+    owners: 8765,
   },
   {
     id: "8",
-    name: 'HoloDesk Monitor 32"',
-    description: "32-inch holographic display monitor with 4K resolution and eye-tracking technology",
-    price: 899.99,
-    image: "/placeholder.svg?height=300&width=300&text=Holo+Monitor",
-    category: "Displays",
+    name: "Cyberpunk Avatars",
+    description: "Futuristic avatar collection with customizable traits and virtual world compatibility",
+    price: 3.2,
+    image: "/placeholder.svg?height=300&width=300&text=Cyberpunk+Avatars",
+    category: "Avatars",
     rating: 4.8,
-    stock: 12,
-    platforms: ["amazon", "bestbuy", "newegg"],
+    stock: 892,
+    platforms: ["opensea", "blur", "x2y2"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+1",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+2",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+3",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+4",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+5",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+6",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+7",
-      "/placeholder.svg?height=300&width=300&text=Holo+Monitor+8",
+      "/placeholder.svg?height=300&width=300&text=Avatar+1",
+      "/placeholder.svg?height=300&width=300&text=Avatar+2",
+      "/placeholder.svg?height=300&width=300&text=Avatar+3",
+      "/placeholder.svg?height=300&width=300&text=Avatar+4",
+      "/placeholder.svg?height=300&width=300&text=Avatar+5",
+      "/placeholder.svg?height=300&width=300&text=Avatar+6",
+      "/placeholder.svg?height=300&width=300&text=Avatar+7",
+      "/placeholder.svg?height=300&width=300&text=Avatar+8",
     ],
-    holographicFeatures: ["4K Holographic Display", "Eye Tracking", "Gesture Control", "Ambient Lighting"],
+    holographicFeatures: ["Customizable Traits", "Virtual World Ready", "Avatar System", "Social Features"],
+    floorPrice: 2.8,
+    totalVolume: 18765,
+    owners: 1234,
   },
+]
+
+const categories = [
+  { id: "all", name: "All Collections", count: 156, romanName: "OMNIA" },
+  { id: "PFP", name: "Profile Pictures", count: 24, romanName: "PERSONA" },
+  { id: "Art", name: "Digital Art", count: 18, romanName: "ARS" },
+  { id: "Gaming", name: "Gaming", count: 12, romanName: "LUDUS" },
+  { id: "Music", name: "Music", count: 32, romanName: "MUSICA" },
+  { id: "Virtual Land", name: "Virtual Land", count: 8, romanName: "TERRA" },
+  { id: "Sports", name: "Sports", count: 15, romanName: "CERTAMEN" },
+  { id: "Avatars", name: "Avatars", count: 22, romanName: "IMAGO" },
+  { id: "Pixel Art", name: "Pixel Art", count: 19, romanName: "PIXELUM" },
+]
+
+const priceRanges = [
+  { id: "all", name: "All Prices", romanName: "OMNIS PRETIUM" },
+  { id: "under-1", name: "Under 1 ETH", romanName: "< I ETH" },
+  { id: "1-5", name: "1 - 5 ETH", romanName: "I-V ETH" },
+  { id: "5-10", name: "5 - 10 ETH", romanName: "V-X ETH" },
+  { id: "10-50", name: "10 - 50 ETH", romanName: "X-L ETH" },
+  { id: "over-50", name: "Over 50 ETH", romanName: "> L ETH" },
 ]
 
 interface FilterState {
@@ -248,20 +289,20 @@ export function HolographicProductsDashboard() {
           const price = typeof product.price === "number" ? product.price : 0
 
           switch (filters.priceRange) {
-            case "under-100":
-              if (price >= 100) return false
+            case "under-1":
+              if (price >= 1) return false
               break
-            case "100-200":
-              if (price < 100 || price >= 200) return false
+            case "1-5":
+              if (price < 1 || price >= 5) return false
               break
-            case "200-500":
-              if (price < 200 || price >= 500) return false
+            case "5-10":
+              if (price < 5 || price >= 10) return false
               break
-            case "500-1000":
-              if (price < 500 || price >= 1000) return false
+            case "10-50":
+              if (price < 10 || price >= 50) return false
               break
-            case "over-1000":
-              if (price < 1000) return false
+            case "over-50":
+              if (price < 50) return false
               break
             default:
               console.warn("Unknown price range:", filters.priceRange)
@@ -420,17 +461,10 @@ export function HolographicProductsDashboard() {
                   <div className="flex items-center space-x-4">
                     <SupremeAuthorityCoin variant="logo" size={layout.cardSize === "sm" ? "md" : "lg"} />
                     <div>
-                      <motion.h1
-                        className="font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif"
-                        animate={{
-                          fontSize: layout.cardSize === "sm" ? "1.875rem" : "2.25rem",
-                        }}
-                      >
-                        MERCATUS HOLOGRAPHICUS
-                      </motion.h1>
-                      <p className="text-amber-300/80 mt-1 font-medium">
-                        Imperial Marketplace of Holographic Technologies
-                      </p>
+                      <h1 className="font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
+                        MERCATUS NFT IMPERIUM
+                      </h1>
+                      <p className="text-amber-300/80 mt-1 font-medium">Imperial NFT Marketplace of Digital Assets</p>
                     </div>
                   </div>
 
@@ -522,7 +556,7 @@ export function HolographicProductsDashboard() {
 
                 {/* Results Count */}
                 <div className="text-sm text-amber-300/80 font-medium">
-                  Displaying {sortedProducts.length} of {sampleProducts.length} Imperial Products
+                  Displaying {sortedProducts.length} of {sampleProducts.length} NFT Collections
                 </div>
               </motion.div>
 

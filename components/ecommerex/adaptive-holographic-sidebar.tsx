@@ -99,7 +99,7 @@ export function AdaptiveHolographicSidebar({
                   transition={{ duration: 0.2 }}
                 >
                   <Filter className="h-5 w-5 text-amber-400" />
-                  <h2 className="font-semibold text-amber-300 font-serif">FILTRUM IMPERIALIS</h2>
+                  <h2 className="font-semibold text-amber-300 font-serif">FILTRUM NFT</h2>
                   {activeFilterCount > 0 && (
                     <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white text-xs border-0">
                       {activeFilterCount}
@@ -140,7 +140,7 @@ export function AdaptiveHolographicSidebar({
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {productCount} Products Found
+                {productCount} Collections Found
               </motion.div>
             )}
           </AnimatePresence>
@@ -178,7 +178,7 @@ export function AdaptiveHolographicSidebar({
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-amber-400/60" />
                       <Input
-                        placeholder="Search imperial products..."
+                        placeholder="Search NFT collections..."
                         value={filters.search}
                         onChange={(e) => onFilterChange("search", e.target.value)}
                         className="pl-10 bg-purple-900/20 border-amber-400/20 text-amber-100 placeholder:text-amber-400/50 focus:border-amber-400/60"
@@ -275,7 +275,7 @@ export function AdaptiveHolographicSidebar({
 
                 {/* Special Features */}
                 <SidebarGroup>
-                  <SidebarGroupLabel className="text-amber-300 mb-3 font-serif">PROPRIETATES</SidebarGroupLabel>
+                  <SidebarGroupLabel className="text-amber-300 mb-3 font-serif">PROPRIETATES NFT</SidebarGroupLabel>
                   <SidebarGroupContent className="space-y-3">
                     <Label className="flex items-center space-x-3 cursor-pointer group">
                       <input
@@ -287,7 +287,7 @@ export function AdaptiveHolographicSidebar({
                       <div className="flex items-center space-x-2">
                         <Zap className="h-4 w-4 text-amber-400" />
                         <span className="text-amber-200/80 group-hover:text-amber-300 transition-colors">
-                          Holographic Only
+                          Interactive NFTs
                         </span>
                       </div>
                     </Label>
@@ -302,7 +302,7 @@ export function AdaptiveHolographicSidebar({
                       <div className="flex items-center space-x-2">
                         <Eye className="h-4 w-4 text-cyan-400" />
                         <span className="text-amber-200/80 group-hover:text-amber-300 transition-colors">
-                          360° View Available
+                          3D Preview Available
                         </span>
                       </div>
                     </Label>
@@ -317,7 +317,7 @@ export function AdaptiveHolographicSidebar({
                       <div className="flex items-center space-x-2">
                         <Package className="h-4 w-4 text-green-400" />
                         <span className="text-amber-200/80 group-hover:text-amber-300 transition-colors">
-                          In Stock Only
+                          Available to Mint
                         </span>
                       </div>
                     </Label>
