@@ -1,94 +1,205 @@
-import { AlertTriangle, FileText, Scale, Shield, Users } from "lucide-react"
-import { Globe, Anchor, Copyright, Crown } from "lucide-react"
+"use client"
 
-const legalDocuments = [
+import Link from "next/link"
+import { Scale, Shield, Scroll, Crown, Globe } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { SupremeAuthorityCoin } from "@/components/branding/supreme-authority-coin"
+import { motion } from "framer-motion"
+
+const legalSections = [
   {
-    title: "Terms of Service",
-    description: "Complete terms governing your use of the Inclusive Lending and Credit Empirical Authority platform",
+    id: "terms-of-service",
+    title: "CONDITIONES SERVITII",
+    englishTitle: "Terms of Service",
+    description: "Fundamental terms governing your use of the Snapifi platform and services",
+    icon: Scroll,
     href: "/legal/terms-of-service",
-    icon: FileText,
-    category: "Platform Terms",
+    status: "Active",
+    lastUpdated: "2024-01-15",
+    gradient: "from-purple-600 to-indigo-600",
   },
   {
-    title: "Privacy Policy",
-    description: "How we collect, use, and protect your personal and financial information",
+    id: "privacy-policy",
+    title: "POLITICA PRIVATITATIS",
+    englishTitle: "Privacy Policy",
+    description: "How we collect, use, and protect your personal information and data",
+    icon: Shield,
     href: "/legal/privacy-policy",
-    icon: Shield,
-    category: "Privacy & Security",
+    status: "Active",
+    lastUpdated: "2024-01-10",
+    gradient: "from-indigo-600 to-cyan-600",
   },
   {
-    title: "Risk Disclosure",
-    description: "Important information about risks associated with our financial services",
-    href: "/legal/risk-disclosure",
-    icon: AlertTriangle,
-    category: "Risk Management",
-  },
-  {
-    title: "Regulatory Compliance",
-    description: "Our commitment to regulatory compliance and consumer protection",
-    href: "/legal/compliance",
+    id: "user-agreement",
+    title: "PACTUM USUARII",
+    englishTitle: "User Agreement",
+    description: "Comprehensive agreement outlining user rights and responsibilities",
     icon: Scale,
-    category: "Compliance",
-  },
-  {
-    title: "User Agreement",
-    description: "Detailed agreement covering Economic Global Citizenship benefits and responsibilities",
     href: "/legal/user-agreement",
-    icon: Users,
-    category: "User Rights",
+    status: "Active",
+    lastUpdated: "2024-01-12",
+    gradient: "from-amber-600 to-orange-600",
   },
   {
-    title: "Digital Domicile Declaration",
-    description: "Establishment of SNAPPCREDITCOM Digital Realm and Economic Global Citizenship rights",
-    href: "/legal/digital-domicile",
-    icon: Globe,
-    category: "Digital Sovereignty",
-  },
-  {
-    title: "Realm Immunity Clause",
-    description: "SNAPPCREDITCOM sovereign immunity within the Digital Admiralty Realm",
-    href: "/legal/realm-immunity",
-    icon: Shield,
-    category: "Digital Sovereignty",
-  },
-  {
-    title: "Digital Admiralty Jurisdiction",
-    description: "Declaration of Digital Admiralty Realm Jurisdiction and maritime law authority",
-    href: "/legal/admiralty-jurisdiction",
-    icon: Anchor,
-    category: "Digital Sovereignty",
-  },
-  {
-    title: "Intellectual Property Rights",
-    description: "Comprehensive copyright protection across all dimensions and realities",
-    href: "/legal/intellectual-property",
-    icon: Copyright,
-    category: "Intellectual Property",
-  },
-  {
-    title: "Diplomatic Immunity Declaration",
-    description: "Diplomatic immunity for SNAPPCREDITCOM agents with accountability and settlement frameworks",
-    href: "/legal/diplomatic-immunity",
+    id: "risk-disclosure",
+    title: "REVELATIO PERICULI",
+    englishTitle: "Risk Disclosure",
+    description: "Important information about risks associated with digital assets and trading",
     icon: Crown,
-    category: "Digital Sovereignty",
+    href: "/legal/risk-disclosure",
+    status: "Active",
+    lastUpdated: "2024-01-08",
+    gradient: "from-red-600 to-pink-600",
+  },
+  {
+    id: "compliance",
+    title: "CONFORMITAS LEGALIS",
+    englishTitle: "Compliance Framework",
+    description: "Our commitment to regulatory compliance and legal standards",
+    icon: Globe,
+    href: "/legal/compliance",
+    status: "Active",
+    lastUpdated: "2024-01-14",
+    gradient: "from-emerald-600 to-teal-600",
+  },
+  {
+    id: "digital-domicile",
+    title: "DOMICILIUM DIGITALE",
+    englishTitle: "Digital Domicile",
+    description: "Establishment of digital jurisdiction and sovereign authority",
+    icon: Crown,
+    href: "/legal/digital-domicile",
+    status: "Active",
+    lastUpdated: "2024-01-16",
+    gradient: "from-purple-600 to-pink-600",
   },
 ]
 
-const LegalPage = () => {
+export default function LegalPage() {
   return (
-    <div>
-      <h1>Legal Documents</h1>
-      <ul>
-        {legalDocuments.map((doc, index) => (
-          <li key={index}>
-            <a href={doc.href}>
-              {doc.title} - {doc.description}
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900">
+      {/* Roman Column Pattern Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="h-full w-full bg-repeat"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23fbbf24' fillOpacity='0.1'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-12">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center justify-center mb-6">
+            <SupremeAuthorityCoin size="xl" variant="logo" />
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif mb-4">
+            LEX DIGITALIS IMPERIUM
+          </h1>
+
+          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium">
+            Digital Legal Framework & Sovereign Authority
+          </p>
+
+          <div className="mt-6 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
+        </motion.div>
+
+        {/* Legal Sections Grid */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          {legalSections.map((section, index) => {
+            const Icon = section.icon
+
+            return (
+              <motion.div
+                key={section.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.6 }}
+              >
+                <Link href={section.href}>
+                  <Card className="h-full bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20 hover:border-amber-400/40 transition-all duration-300 group cursor-pointer">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <div
+                          className={`p-3 rounded-lg bg-gradient-to-br ${section.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                          style={{
+                            clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
+                          }}
+                        >
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+
+                        <Badge
+                          className="bg-emerald-600/20 text-emerald-300 border-emerald-500/30"
+                          style={{
+                            clipPath: "polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%)",
+                          }}
+                        >
+                          {section.status}
+                        </Badge>
+                      </div>
+
+                      <CardTitle className="text-xl font-bold text-amber-300 font-serif tracking-wider group-hover:text-amber-200 transition-colors">
+                        {section.title}
+                      </CardTitle>
+
+                      <CardDescription className="text-purple-200/80 font-medium">
+                        {section.englishTitle}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent>
+                      <p className="text-indigo-200/70 mb-4 leading-relaxed">{section.description}</p>
+
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-amber-400/70">Last Updated: {section.lastUpdated}</span>
+
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-amber-300 hover:text-amber-200 hover:bg-amber-500/20 group-hover:translate-x-1 transition-all duration-300"
+                        >
+                          View Document →
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
+            )
+          })}
+        </motion.div>
+
+        {/* Footer Notice */}
+        <motion.div
+          className="mt-12 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <div className="bg-gradient-to-r from-purple-900/30 to-indigo-900/30 backdrop-blur-sm rounded-lg p-6 border border-amber-400/20">
+            <h3 className="text-lg font-semibold text-amber-300 font-serif mb-2">NOTITIA LEGALIS</h3>
+            <p className="text-indigo-200/80 leading-relaxed">
+              All legal documents are governed by the Supreme Authority of the Snapifi Digital Empire. By accessing
+              these documents, you acknowledge the jurisdiction and sovereignty of our digital realm.
+            </p>
+          </div>
+        </motion.div>
+      </div>
     </div>
   )
 }
-
-export default LegalPage

@@ -1,150 +1,214 @@
-import { HolographicGlassCard } from "@/components/snap-dax/holographic-glass-card"
+"use client"
+
+import { Scroll, Shield, Scale, Crown } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { SupremeAuthorityCoin } from "@/components/branding/supreme-authority-coin"
+import { motion } from "framer-motion"
+
+const sections = [
+  {
+    id: "acceptance",
+    title: "ACCEPTATIO CONDITIONUM",
+    englishTitle: "Acceptance of Terms",
+    content:
+      "By accessing and using the Snapifi platform, you acknowledge and agree to be bound by these Terms of Service and all applicable laws and regulations.",
+  },
+  {
+    id: "definitions",
+    title: "DEFINITIONES",
+    englishTitle: "Definitions",
+    content:
+      "The Platform refers to all Snapifi services, websites, applications, and digital infrastructure operated under the Supreme Authority.",
+  },
+  {
+    id: "user-obligations",
+    title: "OBLIGATIONES USUARII",
+    englishTitle: "User Obligations",
+    content:
+      "Users must comply with all platform rules, maintain account security, and conduct themselves in accordance with community standards.",
+  },
+  {
+    id: "intellectual-property",
+    title: "PROPRIETAS INTELLECTUALIS",
+    englishTitle: "Intellectual Property",
+    content:
+      "All platform content, trademarks, and intellectual property remain the exclusive property of Snapifi and its licensors.",
+  },
+  {
+    id: "limitation-liability",
+    title: "LIMITATIO RESPONSABILITATIS",
+    englishTitle: "Limitation of Liability",
+    content:
+      "The platform operates under limited liability terms as established by the Supreme Authority's digital jurisdiction.",
+  },
+  {
+    id: "termination",
+    title: "TERMINATIO",
+    englishTitle: "Termination",
+    content: "Either party may terminate this agreement under specified conditions with appropriate notice periods.",
+  },
+]
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-indigo-950/70 p-6">
-      <div className="container mx-auto max-w-4xl">
-        <HolographicGlassCard className="p-8" glassEffect="medium">
-          <div className="space-y-8">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-indigo-100 mb-2">Terms of Service</h1>
-              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
-              <p className="text-indigo-400">New World Wealth Navigation Assistant</p>
-              <p className="text-sm text-indigo-500 mt-2">Last Updated: {new Date().toLocaleDateString()}</p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900">
+      {/* Roman Column Pattern Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="h-full w-full bg-repeat"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23fbbf24' fillOpacity='0.1'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+      </div>
 
-            <div className="space-y-6 text-indigo-200">
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Platform Mission and Services</h3>
-                <p className="mb-4">
-                  Welcome to the Inclusive Lending and Credit Empirical Authority ("ILCEA", "we", "us", or "our"). Our
-                  platform serves as your New World Wealth Navigation Assistant, introducing the benefits of Economic
-                  Global Citizenship. We welcome you home to a revolutionary financial ecosystem designed to democratize
-                  access to advanced financial instruments and credit opportunities.
-                </p>
-                <p className="mb-4">
-                  ILCEA provides empirical credit assessment, inclusive lending solutions, tokenized asset management,
-                  quantum-secured financial transactions, and AI-powered wealth navigation services to qualified users
-                  worldwide.
-                </p>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Economic Global Citizenship</h3>
-                <p className="mb-4">
-                  By using our platform, you become part of our Economic Global Citizenship community, which provides:
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Access to global financial markets and opportunities</li>
-                  <li>Empirical credit scoring based on comprehensive data analysis</li>
-                  <li>Inclusive lending products regardless of traditional credit barriers</li>
-                  <li>Tokenized asset investment opportunities</li>
-                  <li>AI-powered financial guidance and wealth navigation</li>
-                  <li>Quantum-secured transaction processing</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">
-                  3. User Eligibility and Account Requirements
-                </h3>
-                <p className="mb-4">To access ILCEA services, you must:</p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Be at least 18 years of age (or legal age in your jurisdiction)</li>
-                  <li>Provide accurate and complete registration information</li>
-                  <li>Comply with all applicable laws and regulations</li>
-                  <li>Complete our empirical credit assessment process</li>
-                  <li>Agree to ongoing monitoring for compliance and risk management</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">
-                  4. Financial Services and Risk Disclosure
-                </h3>
-                <p className="mb-4">ILCEA provides advanced financial services including but not limited to:</p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Empirical credit assessment and scoring</li>
-                  <li>Inclusive lending products and credit facilities</li>
-                  <li>Tokenized real estate and asset investments</li>
-                  <li>Quantum computing-powered portfolio optimization</li>
-                  <li>AI-driven financial planning and wealth management</li>
-                </ul>
-                <p className="mt-4 font-semibold text-yellow-400">
-                  IMPORTANT: All financial investments carry risk. Past performance does not guarantee future results.
-                  You may lose some or all of your invested capital.
-                </p>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Empirical Credit Authority</h3>
-                <p className="mb-4">
-                  Our Empirical Credit Authority utilizes advanced algorithms, machine learning, and comprehensive data
-                  analysis to assess creditworthiness beyond traditional scoring methods. This includes:
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Alternative data sources for credit assessment</li>
-                  <li>Real-time financial behavior analysis</li>
-                  <li>Global economic citizenship scoring</li>
-                  <li>Quantum-secured credit verification</li>
-                  <li>Continuous credit profile optimization</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Platform Usage and Conduct</h3>
-                <p className="mb-4">Users agree to:</p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Use the platform only for lawful purposes</li>
-                  <li>Provide accurate and truthful information</li>
-                  <li>Maintain the security of their account credentials</li>
-                  <li>Comply with all applicable financial regulations</li>
-                  <li>Report any suspicious or unauthorized activity</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Intellectual Property</h3>
-                <p className="mb-4">
-                  All content, technology, algorithms, and intellectual property on the ILCEA platform are proprietary
-                  and protected by applicable laws. Users are granted a limited, non-exclusive license to use the
-                  platform for its intended purposes.
-                </p>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Limitation of Liability</h3>
-                <p className="mb-4">
-                  ILCEA's liability is limited to the maximum extent permitted by law. We are not liable for indirect,
-                  incidental, or consequential damages arising from platform use or financial decisions made based on
-                  our services.
-                </p>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">9. Governing Law and Dispute Resolution</h3>
-                <p className="mb-4">
-                  These terms are governed by applicable financial services regulations and international law. Disputes
-                  will be resolved through binding arbitration in accordance with established financial industry
-                  practices.
-                </p>
-              </section>
-
-              <section>
-                <h3 className="text-xl font-semibold text-indigo-100 mb-3">10. Contact Information</h3>
-                <p className="mb-4">For questions about these Terms of Service, please contact:</p>
-                <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
-                  <p>
-                    <strong>Inclusive Lending and Credit Empirical Authority</strong>
-                  </p>
-                  <p>Legal Department</p>
-                  <p>Email: legal@ilcea.com</p>
-                  <p>Phone: +1 (555) ILCEA-LAW</p>
-                </div>
-              </section>
-            </div>
+      <div className="relative z-10 container mx-auto px-4 py-12">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center justify-center mb-6">
+            <SupremeAuthorityCoin size="xl" variant="logo" />
           </div>
-        </HolographicGlassCard>
+
+          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif mb-4">
+            CONDITIONES SERVITII
+          </h1>
+
+          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium mb-6">
+            Terms of Service & User Agreement
+          </p>
+
+          <div className="flex items-center justify-center space-x-4 mb-8">
+            <Badge className="bg-emerald-600/20 text-emerald-300 border-emerald-500/30">
+              <Shield className="w-3 h-3 mr-1" />
+              Active Document
+            </Badge>
+            <Badge className="bg-amber-600/20 text-amber-300 border-amber-500/30">
+              <Scroll className="w-3 h-3 mr-1" />
+              Version 2.1
+            </Badge>
+            <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">
+              <Scale className="w-3 h-3 mr-1" />
+              Legal Framework
+            </Badge>
+          </div>
+
+          <div className="h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
+        </motion.div>
+
+        {/* Document Metadata */}
+        <motion.div
+          className="max-w-4xl mx-auto mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
+            <CardHeader>
+              <CardTitle className="text-amber-300 font-serif text-xl flex items-center">
+                <Crown className="w-5 h-5 mr-2" />
+                AUCTORITAS SUPREMA
+              </CardTitle>
+              <CardDescription className="text-purple-200/80">Supreme Authority & Jurisdiction Notice</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span className="text-amber-300 font-semibold">Effective Date:</span>
+                  <div className="text-indigo-200/80">January 15, 2024</div>
+                </div>
+                <div>
+                  <span className="text-amber-300 font-semibold">Last Updated:</span>
+                  <div className="text-indigo-200/80">January 15, 2024</div>
+                </div>
+                <div>
+                  <span className="text-amber-300 font-semibold">Jurisdiction:</span>
+                  <div className="text-indigo-200/80">Digital Sovereign Territory</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Terms Sections */}
+        <motion.div
+          className="max-w-4xl mx-auto space-y-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          {sections.map((section, index) => (
+            <motion.div
+              key={section.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index, duration: 0.6 }}
+            >
+              <Card className="bg-gradient-to-br from-purple-900/30 to-indigo-900/30 backdrop-blur-xl border-amber-400/20 hover:border-amber-400/40 transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="text-amber-300 font-serif text-lg">{section.title}</CardTitle>
+                  <CardDescription className="text-purple-200/80 font-medium">{section.englishTitle}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-indigo-200/80 leading-relaxed">{section.content}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Agreement Actions */}
+        <motion.div
+          className="max-w-4xl mx-auto mt-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <Card className="bg-gradient-to-br from-amber-900/20 to-purple-900/20 backdrop-blur-xl border-amber-400/30">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold text-amber-300 font-serif mb-4">CONFIRMATIO CONSENSUS</h3>
+              <p className="text-indigo-200/80 mb-6 leading-relaxed">
+                By continuing to use the Snapifi platform, you confirm your acceptance of these Terms of Service and
+                acknowledge the Supreme Authority's jurisdiction over all platform activities.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8"
+                  style={{
+                    clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
+                  }}
+                >
+                  <Shield className="w-4 h-4 mr-2" />I Accept Terms
+                </Button>
+
+                <Button variant="outline" className="border-amber-500/30 text-amber-300 hover:bg-amber-500/20 px-8">
+                  <Scroll className="w-4 h-4 mr-2" />
+                  Download PDF
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Footer Notice */}
+        <motion.div
+          className="max-w-4xl mx-auto mt-8 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+        >
+          <p className="text-sm text-indigo-300/60">
+            This document is governed by the laws and regulations of the Snapifi Digital Empire. For questions regarding
+            these terms, please contact our Legal Department.
+          </p>
+        </motion.div>
       </div>
     </div>
   )
