@@ -1,6 +1,6 @@
 "use client"
 import { useState, useMemo } from "react"
-import { Grid, List } from "lucide-react"
+import { Grid, List, TestTube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
@@ -8,6 +8,7 @@ import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-g
 import { ComparisonBar } from "@/components/ecommerex/comparison-bar"
 import { HolographicSidebar } from "@/components/ecommerex/holographic-sidebar"
 import { RealmNavigationToolbar } from "@/components/navigation/realm-navigation-toolbar"
+import { FilterTestPanel } from "@/components/ecommerex/filter-test-panel"
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
 
@@ -74,7 +75,7 @@ const sampleProducts = [
     image: "/placeholder.svg?height=300&width=300&text=Holo+Camera",
     category: "Cameras",
     rating: 4.7,
-    stock: 0, // Out of stock
+    stock: 0, // Out of stock for testing
     platforms: ["amazon", "ebay", "bhphoto"],
     isHolographic: true,
     has360View: true,
@@ -195,6 +196,7 @@ interface FilterState {
 export function HolographicProductsDashboard() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("featured")
+  const [showTestPanel, setShowTestPanel] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     category: "all",
@@ -205,101 +207,168 @@ export function HolographicProductsDashboard() {
     inStockOnly: false,
   })
 
-  // Filter products based on current filters
-  const filteredProducts = useMemo(() => {
-    return sampleProducts.filter((product) => {
-      // Search filter
-      if (
-        filters.search &&
-        !product.name.toLowerCase().includes(filters.search.toLowerCase()) &&
-        !product.description.toLowerCase().includes(filters.search.toLowerCase())
-      ) {
-        return false
-      }
-
-      // Category filter
-      if (filters.category !== "all" && product.category !== filters.category) {
-        return false
-      }
-
-      // Price range filter
-      if (filters.priceRange !== "all") {
-        const price = product.price
-        switch (filters.priceRange) {
-          case "under-100":
-            if (price >= 100) return false
-            break
-          case "100-200":
-            if (price < 100 || price >= 200) return false
-            break
-          case "200-500":
-            if (price < 200 || price >= 500) return false
-            break
-          case "500-1000":
-            if (price < 500 || price >= 1000) return false
-            break
-          case "over-1000":
-            if (price < 1000) return false
-            break
+  // Enhanced filter function with comprehensive error handling
+  const filterProducts = useMemo(() => {
+    try {
+      return sampleProducts.filter((product) => {
+        // Null safety checks
+        if (!product || typeof product !== "object") {
+          console.warn("Invalid product object:", product)
+          return false
         }
-      }
 
-      // Rating filter
-      if (filters.minRating > 0 && product.rating < filters.minRating) {
-        return false
-      }
+        // Search filter with null safety
+        if (filters.search) {
+          const searchTerm = filters.search.toLowerCase()
+          const name = product.name?.toLowerCase() || ""
+          const description = product.description?.toLowerCase() || ""
 
-      // Special filters
-      if (filters.holographicOnly && !product.isHolographic) return false
-      if (filters.has360ViewOnly && !product.has360View) return false
-      if (filters.inStockOnly && product.stock === 0) return false
+          if (!name.includes(searchTerm) && !description.includes(searchTerm)) {
+            return false
+          }
+        }
 
-      return true
-    })
+        // Category filter with null safety
+        if (filters.category !== "all") {
+          if (!product.category || product.category !== filters.category) {
+            return false
+          }
+        }
+
+        // Price range filter with null safety
+        if (filters.priceRange !== "all") {
+          const price = typeof product.price === "number" ? product.price : 0
+
+          switch (filters.priceRange) {
+            case "under-100":
+              if (price >= 100) return false
+              break
+            case "100-200":
+              if (price < 100 || price >= 200) return false
+              break
+            case "200-500":
+              if (price < 200 || price >= 500) return false
+              break
+            case "500-1000":
+              if (price < 500 || price >= 1000) return false
+              break
+            case "over-1000":
+              if (price < 1000) return false
+              break
+            default:
+              console.warn("Unknown price range:", filters.priceRange)
+          }
+        }
+
+        // Rating filter with null safety
+        if (filters.minRating > 0) {
+          const rating = typeof product.rating === "number" ? product.rating : 0
+          if (rating < filters.minRating) {
+            return false
+          }
+        }
+
+        // Special filters with null safety
+        if (filters.holographicOnly && !product.isHolographic) return false
+        if (filters.has360ViewOnly && !product.has360View) return false
+        if (filters.inStockOnly) {
+          const stock = typeof product.stock === "number" ? product.stock : 0
+          if (stock === 0) return false
+        }
+
+        return true
+      })
+    } catch (error) {
+      console.error("Error filtering products:", error)
+      return sampleProducts // Return all products if filtering fails
+    }
   }, [filters])
 
-  // Sort products
+  // Sort products with error handling
   const sortedProducts = useMemo(() => {
-    const sorted = [...filteredProducts]
-    switch (sortBy) {
-      case "price-low":
-        return sorted.sort((a, b) => a.price - b.price)
-      case "price-high":
-        return sorted.sort((a, b) => b.price - a.price)
-      case "rating":
-        return sorted.sort((a, b) => b.rating - a.rating)
-      case "name":
-        return sorted.sort((a, b) => a.name.localeCompare(b.name))
-      default:
-        return sorted
+    try {
+      const sorted = [...filterProducts]
+
+      switch (sortBy) {
+        case "price-low":
+          return sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
+        case "price-high":
+          return sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
+        case "rating":
+          return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        case "name":
+          return sorted.sort((a, b) => (a.name || "").localeCompare(b.name || ""))
+        default:
+          return sorted
+      }
+    } catch (error) {
+      console.error("Error sorting products:", error)
+      return filterProducts // Return unsorted if sorting fails
     }
-  }, [filteredProducts, sortBy])
+  }, [filterProducts, sortBy])
 
   const updateFilter = (key: keyof FilterState, value: any) => {
-    setFilters((prev) => ({ ...prev, [key]: value }))
+    try {
+      setFilters((prev) => ({ ...prev, [key]: value }))
+    } catch (error) {
+      console.error("Error updating filter:", error)
+    }
   }
 
   const clearAllFilters = () => {
-    setFilters({
-      search: "",
-      category: "all",
-      priceRange: "all",
-      minRating: 0,
-      holographicOnly: false,
-      has360ViewOnly: false,
-      inStockOnly: false,
-    })
+    try {
+      setFilters({
+        search: "",
+        category: "all",
+        priceRange: "all",
+        minRating: 0,
+        holographicOnly: false,
+        has360ViewOnly: false,
+        inStockOnly: false,
+      })
+    } catch (error) {
+      console.error("Error clearing filters:", error)
+    }
   }
 
   const activeFilterCount = Object.values(filters).filter(
     (value) => value !== "" && value !== "all" && value !== 0 && value !== false,
   ).length
 
+  const handleTestComplete = (results: any[]) => {
+    console.log("Filter test results:", results)
+    const passedTests = results.filter((r) => r.passed).length
+    const totalTests = results.length
+
+    if (passedTests === totalTests) {
+      console.log("✅ All filter tests passed!")
+    } else {
+      console.warn(`⚠️ ${totalTests - passedTests} filter tests failed`)
+    }
+  }
+
   return (
     <SidebarProvider>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         {/* Realm Navigation Toolbar */}
         <RealmNavigationToolbar />
+
+        {/* Test Panel Modal */}
+        {showTestPanel && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto">
+              <div className="p-4 border-b flex items-center justify-between">
+                <h2 className="text-xl font-semibold">Filter Testing Panel</h2>
+                <Button variant="outline" onClick={() => setShowTestPanel(false)}>
+                  Close
+                </Button>
+              </div>
+              <div className="p-4">
+                <FilterTestPanel products={sampleProducts} onTestComplete={handleTestComplete} />
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex">
           {/* Sidebar */}
@@ -326,6 +395,17 @@ export function HolographicProductsDashboard() {
                   </div>
 
                   <div className="flex items-center space-x-3">
+                    {/* Test Panel Button */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowTestPanel(true)}
+                      className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
+                    >
+                      <TestTube className="h-4 w-4 mr-2" />
+                      Test Filters
+                    </Button>
+
                     {/* View Mode Toggle */}
                     <div className="flex items-center bg-white/5 rounded-lg p-1">
                       <Button
