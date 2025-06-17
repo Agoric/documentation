@@ -13,7 +13,6 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { SupremeAuthorityCoin } from "@/components/branding/supreme-authority-coin"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
-import { useSpatialLayout } from "@/hooks/use-spatial-layout"
 
 // Enhanced sample product data with correct structure for HolographicProductCard
 const sampleProducts = [
@@ -206,27 +205,6 @@ const sampleProducts = [
   },
 ]
 
-const categories = [
-  { id: "all", name: "All Collections", count: 156, romanName: "OMNIA" },
-  { id: "PFP", name: "Profile Pictures", count: 24, romanName: "PERSONA" },
-  { id: "Art", name: "Digital Art", count: 18, romanName: "ARS" },
-  { id: "Gaming", name: "Gaming", count: 12, romanName: "LUDUS" },
-  { id: "Music", name: "Music", count: 32, romanName: "MUSICA" },
-  { id: "Virtual Land", name: "Virtual Land", count: 8, romanName: "TERRA" },
-  { id: "Sports", name: "Sports", count: 15, romanName: "CERTAMEN" },
-  { id: "Avatars", name: "Avatars", count: 22, romanName: "IMAGO" },
-  { id: "Pixel Art", name: "Pixel Art", count: 19, romanName: "PIXELUM" },
-]
-
-const priceRanges = [
-  { id: "all", name: "All Prices", romanName: "OMNIS PRETIUM" },
-  { id: "under-1", name: "Under 1 ETH", romanName: "< I ETH" },
-  { id: "1-5", name: "1 - 5 ETH", romanName: "I-V ETH" },
-  { id: "5-10", name: "5 - 10 ETH", romanName: "V-X ETH" },
-  { id: "10-50", name: "10 - 50 ETH", romanName: "X-L ETH" },
-  { id: "over-50", name: "Over 50 ETH", romanName: "> L ETH" },
-]
-
 interface FilterState {
   search: string
   category: string
@@ -238,11 +216,6 @@ interface FilterState {
 }
 
 export function HolographicProductsDashboard() {
-  const { dimensions, layout, containerRef } = useSpatialLayout({
-    autoCollapse: true,
-    contentAware: true,
-  })
-
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("featured")
   const [showTestPanel, setShowTestPanel] = useState(false)
@@ -256,9 +229,25 @@ export function HolographicProductsDashboard() {
     inStockOnly: false,
   })
 
+  // Default layout values to prevent null errors
+  const layout = {
+    sidebarCollapsed: false,
+    adaptiveSpacing: 16,
+    contentPadding: 16,
+    cardSize: "default" as const,
+    toolbarCompact: false,
+    showLabels: true,
+    gridColumns: 3,
+  }
+
   // Enhanced filter function with comprehensive error handling
   const filterProducts = useMemo(() => {
     try {
+      if (!Array.isArray(sampleProducts)) {
+        console.warn("sampleProducts is not an array")
+        return []
+      }
+
       return sampleProducts.filter((product) => {
         // Null safety checks
         if (!product || typeof product !== "object") {
@@ -267,7 +256,7 @@ export function HolographicProductsDashboard() {
         }
 
         // Search filter with null safety
-        if (filters.search) {
+        if (filters?.search) {
           const searchTerm = filters.search.toLowerCase()
           const name = product.name?.toLowerCase() || ""
           const description = product.description?.toLowerCase() || ""
@@ -278,14 +267,14 @@ export function HolographicProductsDashboard() {
         }
 
         // Category filter with null safety
-        if (filters.category !== "all") {
+        if (filters?.category && filters.category !== "all") {
           if (!product.category || product.category !== filters.category) {
             return false
           }
         }
 
         // Price range filter with null safety
-        if (filters.priceRange !== "all") {
+        if (filters?.priceRange && filters.priceRange !== "all") {
           const price = typeof product.price === "number" ? product.price : 0
 
           switch (filters.priceRange) {
@@ -310,7 +299,7 @@ export function HolographicProductsDashboard() {
         }
 
         // Rating filter with null safety
-        if (filters.minRating > 0) {
+        if (filters?.minRating && filters.minRating > 0) {
           const rating = typeof product.rating === "number" ? product.rating : 0
           if (rating < filters.minRating) {
             return false
@@ -318,9 +307,9 @@ export function HolographicProductsDashboard() {
         }
 
         // Special filters with null safety
-        if (filters.holographicOnly && !product.isHolographic) return false
-        if (filters.has360ViewOnly && !product.has360View) return false
-        if (filters.inStockOnly) {
+        if (filters?.holographicOnly && !product.isHolographic) return false
+        if (filters?.has360ViewOnly && !product.has360View) return false
+        if (filters?.inStockOnly) {
           const stock = typeof product.stock === "number" ? product.stock : 0
           if (stock === 0) return false
         }
@@ -329,57 +318,75 @@ export function HolographicProductsDashboard() {
       })
     } catch (error) {
       console.error("Error filtering products:", error)
-      return sampleProducts // Return all products if filtering fails
+      return sampleProducts || [] // Return all products if filtering fails
     }
   }, [filters])
 
   // Sort products with error handling
   const sortedProducts = useMemo(() => {
     try {
+      if (!Array.isArray(filterProducts)) {
+        return []
+      }
+
       const sorted = [...filterProducts]
 
       switch (sortBy) {
         case "price-low":
-          return sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
+          return sorted.sort((a, b) => (a?.price || 0) - (b?.price || 0))
         case "price-high":
-          return sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
+          return sorted.sort((a, b) => (b?.price || 0) - (a?.price || 0))
         case "rating":
-          return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+          return sorted.sort((a, b) => (b?.rating || 0) - (a?.rating || 0))
         case "name":
-          return sorted.sort((a, b) => (a.name || "").localeCompare(b.name || ""))
+          return sorted.sort((a, b) => (a?.name || "").localeCompare(b?.name || ""))
         default:
           return sorted
       }
     } catch (error) {
       console.error("Error sorting products:", error)
-      return filterProducts // Return unsorted if sorting fails
+      return filterProducts || [] // Return unsorted if sorting fails
     }
   }, [filterProducts, sortBy])
 
   const updateFilter = (key: keyof FilterState, value: any) => {
-    setFilters((prev) => ({ ...prev, [key]: value }))
+    try {
+      setFilters((prev) => ({ ...prev, [key]: value }))
+    } catch (error) {
+      console.error("Error updating filter:", error)
+    }
   }
 
   const clearAllFilters = () => {
-    setFilters({
-      search: "",
-      category: "all",
-      priceRange: "all",
-      minRating: 0,
-      holographicOnly: false,
-      has360ViewOnly: false,
-      inStockOnly: false,
-    })
+    try {
+      setFilters({
+        search: "",
+        category: "all",
+        priceRange: "all",
+        minRating: 0,
+        holographicOnly: false,
+        has360ViewOnly: false,
+        inStockOnly: false,
+      })
+    } catch (error) {
+      console.error("Error clearing filters:", error)
+    }
   }
 
-  const activeFilterCount = Object.values(filters).filter(
-    (value) => value !== "" && value !== "all" && value !== 0 && value !== false,
-  ).length
+  const activeFilterCount = useMemo(() => {
+    try {
+      if (!filters) return 0
+      return Object.values(filters).filter((value) => value !== "" && value !== "all" && value !== 0 && value !== false)
+        .length
+    } catch (error) {
+      console.error("Error counting active filters:", error)
+      return 0
+    }
+  }, [filters])
 
   return (
     <SidebarProvider>
       <motion.div
-        ref={containerRef}
         className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 relative"
         animate={{
           paddingLeft: layout.sidebarCollapsed ? 0 : 0,
@@ -438,7 +445,7 @@ export function HolographicProductsDashboard() {
             filters={filters}
             onFilterChange={updateFilter}
             onClearFilters={clearAllFilters}
-            productCount={sortedProducts.length}
+            productCount={sortedProducts?.length || 0}
           />
 
           {/* Main Content */}
@@ -461,7 +468,7 @@ export function HolographicProductsDashboard() {
                   <div className="flex items-center space-x-4">
                     <SupremeAuthorityCoin variant="logo" size={layout.cardSize === "sm" ? "md" : "lg"} />
                     <div>
-                      <h1 className="font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
+                      <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
                         MERCATUS DIGITALIS IMPERIUM
                       </h1>
                       <p className="text-amber-300/80 mt-1 font-medium">Imperium Digitale Mercatus Supremus</p>
@@ -556,7 +563,7 @@ export function HolographicProductsDashboard() {
 
                 {/* Results Count */}
                 <div className="text-sm text-amber-300/80 font-medium">
-                  COLLECTIONES DIGITALES: {sortedProducts.length} ex {sampleProducts.length} Manifestae
+                  COLLECTIONES DIGITALES: {sortedProducts?.length || 0} ex {sampleProducts?.length || 0} Manifestae
                 </div>
               </motion.div>
 
@@ -567,7 +574,7 @@ export function HolographicProductsDashboard() {
                 }}
               >
                 <PaginatedProductGrid
-                  products={sortedProducts}
+                  products={sortedProducts || []}
                   itemsPerPage={layout.gridColumns * 2}
                   cardSize={layout.cardSize}
                 />

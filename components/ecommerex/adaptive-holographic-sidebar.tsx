@@ -1,5 +1,7 @@
 "use client"
 
+import { useMemo } from "react"
+
 import { useState } from "react"
 import { Search, X, Star, Sparkles, Eye, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -65,9 +67,47 @@ export function AdaptiveHolographicSidebar({
 }: AdaptiveHolographicSidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
-  const activeFilterCount = Object.values(filters).filter(
-    (value) => value !== "" && value !== "all" && value !== 0 && value !== false,
-  ).length
+  // Safe filter access with null checks
+  const safeFilters = filters || {
+    search: "",
+    category: "all",
+    priceRange: "all",
+    minRating: 0,
+    holographicOnly: false,
+    has360ViewOnly: false,
+    inStockOnly: false,
+  }
+
+  const activeFilterCount = useMemo(() => {
+    try {
+      return Object.values(safeFilters).filter(
+        (value) => value !== "" && value !== "all" && value !== 0 && value !== false,
+      ).length
+    } catch (error) {
+      console.error("Error counting active filters:", error)
+      return 0
+    }
+  }, [safeFilters])
+
+  const handleFilterChange = (key: keyof FilterState, value: any) => {
+    try {
+      if (onFilterChange && typeof onFilterChange === "function") {
+        onFilterChange(key, value)
+      }
+    } catch (error) {
+      console.error("Error changing filter:", error)
+    }
+  }
+
+  const handleClearFilters = () => {
+    try {
+      if (onClearFilters && typeof onClearFilters === "function") {
+        onClearFilters()
+      }
+    } catch (error) {
+      console.error("Error clearing filters:", error)
+    }
+  }
 
   return (
     <Sidebar className="border-r border-amber-500/20 bg-gradient-to-b from-purple-950/50 to-indigo-950/50 backdrop-blur-xl">
@@ -88,7 +128,7 @@ export function AdaptiveHolographicSidebar({
             <Button
               variant="ghost"
               size="sm"
-              onClick={onClearFilters}
+              onClick={handleClearFilters}
               className="text-xs text-amber-300/80 hover:text-amber-300 hover:bg-amber-500/20 h-6"
             >
               <X className="h-3 w-3 mr-1" />
@@ -110,8 +150,8 @@ export function AdaptiveHolographicSidebar({
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-amber-300/60" />
               <Input
                 placeholder="Search collections..."
-                value={filters.search}
-                onChange={(e) => onFilterChange("search", e.target.value)}
+                value={safeFilters.search || ""}
+                onChange={(e) => handleFilterChange("search", e.target.value)}
                 className="pl-10 bg-purple-900/30 border-amber-500/20 text-amber-300 placeholder:text-amber-300/40"
               />
             </div>
@@ -129,10 +169,10 @@ export function AdaptiveHolographicSidebar({
               {categories.map((category) => (
                 <motion.button
                   key={category.id}
-                  onClick={() => onFilterChange("category", category.id)}
+                  onClick={() => handleFilterChange("category", category.id)}
                   className={cn(
                     "w-full text-left p-2 rounded-lg transition-all duration-200 flex items-center justify-between group",
-                    filters.category === category.id
+                    safeFilters.category === category.id
                       ? "bg-gradient-to-r from-amber-600/20 to-purple-600/20 border border-amber-500/30 text-amber-300"
                       : "text-amber-300/70 hover:text-amber-300 hover:bg-amber-500/10",
                   )}
@@ -159,7 +199,10 @@ export function AdaptiveHolographicSidebar({
             <span className="text-xs text-amber-300/60 font-sans ml-2">Price Range</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <Select value={filters.priceRange} onValueChange={(value) => onFilterChange("priceRange", value)}>
+            <Select
+              value={safeFilters.priceRange || "all"}
+              onValueChange={(value) => handleFilterChange("priceRange", value)}
+            >
               <SelectTrigger className="bg-purple-900/30 border-amber-500/20 text-amber-300">
                 <SelectValue />
               </SelectTrigger>
@@ -188,10 +231,12 @@ export function AdaptiveHolographicSidebar({
               {[1, 2, 3, 4, 5].map((rating) => (
                 <button
                   key={rating}
-                  onClick={() => onFilterChange("minRating", rating === filters.minRating ? 0 : rating)}
+                  onClick={() => handleFilterChange("minRating", rating === safeFilters.minRating ? 0 : rating)}
                   className={cn(
                     "p-1 rounded transition-colors",
-                    rating <= filters.minRating ? "text-amber-400" : "text-amber-300/30 hover:text-amber-300/60",
+                    rating <= (safeFilters.minRating || 0)
+                      ? "text-amber-400"
+                      : "text-amber-300/30 hover:text-amber-300/60",
                   )}
                 >
                   <Star className="h-4 w-4 fill-current" />
@@ -214,8 +259,8 @@ export function AdaptiveHolographicSidebar({
               <label className="flex items-center space-x-3 cursor-pointer group">
                 <input
                   type="checkbox"
-                  checked={filters.holographicOnly}
-                  onChange={(e) => onFilterChange("holographicOnly", e.target.checked)}
+                  checked={safeFilters.holographicOnly || false}
+                  onChange={(e) => handleFilterChange("holographicOnly", e.target.checked)}
                   className="rounded border-amber-500/30 bg-purple-900/30 text-amber-500 focus:ring-amber-500/20"
                 />
                 <div className="flex items-center space-x-2">
@@ -227,8 +272,8 @@ export function AdaptiveHolographicSidebar({
               <label className="flex items-center space-x-3 cursor-pointer group">
                 <input
                   type="checkbox"
-                  checked={filters.has360ViewOnly}
-                  onChange={(e) => onFilterChange("has360ViewOnly", e.target.checked)}
+                  checked={safeFilters.has360ViewOnly || false}
+                  onChange={(e) => handleFilterChange("has360ViewOnly", e.target.checked)}
                   className="rounded border-amber-500/30 bg-purple-900/30 text-amber-500 focus:ring-amber-500/20"
                 />
                 <div className="flex items-center space-x-2">
@@ -240,8 +285,8 @@ export function AdaptiveHolographicSidebar({
               <label className="flex items-center space-x-3 cursor-pointer group">
                 <input
                   type="checkbox"
-                  checked={filters.inStockOnly}
-                  onChange={(e) => onFilterChange("inStockOnly", e.target.checked)}
+                  checked={safeFilters.inStockOnly || false}
+                  onChange={(e) => handleFilterChange("inStockOnly", e.target.checked)}
                   className="rounded border-amber-500/30 bg-purple-900/30 text-amber-500 focus:ring-amber-500/20"
                 />
                 <div className="flex items-center space-x-2">
@@ -257,7 +302,7 @@ export function AdaptiveHolographicSidebar({
         <div className="mt-6 p-3 bg-gradient-to-r from-amber-500/10 to-purple-500/10 rounded-lg border border-amber-500/20">
           <div className="text-center">
             <div className="text-lg font-bold text-amber-300 font-serif">COLLECTIONES</div>
-            <div className="text-2xl font-bold text-amber-400">{productCount}</div>
+            <div className="text-2xl font-bold text-amber-400">{productCount || 0}</div>
             <div className="text-xs text-amber-300/60">Collections Found</div>
           </div>
         </div>
