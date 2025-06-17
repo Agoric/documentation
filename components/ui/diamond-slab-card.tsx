@@ -1,8 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import type { ReactNode } from "react"
+import type { ReactNode, MouseEvent } from "react"
 import { cn } from "@/lib/utils"
+import { useCallback } from "react"
 
 interface DiamondSlabCardProps {
   children: ReactNode
@@ -12,6 +13,8 @@ interface DiamondSlabCardProps {
   laserColor?: "cyan" | "purple" | "gold" | "emerald" | "crimson"
   isHovered?: boolean
   onClick?: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
 export function DiamondSlabCard({
@@ -22,8 +25,10 @@ export function DiamondSlabCard({
   laserColor = "cyan",
   isHovered = false,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
 }: DiamondSlabCardProps) {
-  const getVariantStyles = () => {
+  const getVariantStyles = useCallback(() => {
     switch (variant) {
       case "premium":
         return "from-indigo-950/60 via-purple-950/50 to-cyan-950/60"
@@ -34,9 +39,9 @@ export function DiamondSlabCard({
       default:
         return "from-indigo-950/40 via-purple-950/30 to-cyan-950/40"
     }
-  }
+  }, [variant])
 
-  const getLaserColor = () => {
+  const getLaserColor = useCallback(() => {
     switch (laserColor) {
       case "purple":
         return {
@@ -69,20 +74,59 @@ export function DiamondSlabCard({
           glow: "rgba(34, 211, 238, 0.4)",
         }
     }
-  }
+  }, [laserColor])
+
+  const handleClick = useCallback(
+    (e: MouseEvent) => {
+      try {
+        e?.preventDefault?.()
+        onClick?.()
+      } catch (error) {
+        console.error("Error in diamond slab card click:", error)
+      }
+    },
+    [onClick],
+  )
+
+  const handleMouseEnter = useCallback(
+    (e: MouseEvent) => {
+      try {
+        onMouseEnter?.()
+      } catch (error) {
+        console.error("Error in diamond slab card mouse enter:", error)
+      }
+    },
+    [onMouseEnter],
+  )
+
+  const handleMouseLeave = useCallback(
+    (e: MouseEvent) => {
+      try {
+        onMouseLeave?.()
+      } catch (error) {
+        console.error("Error in diamond slab card mouse leave:", error)
+      }
+    },
+    [onMouseLeave],
+  )
 
   const colors = getLaserColor()
-  const intensityMultiplier = {
-    low: 0.5,
-    medium: 1,
-    high: 1.5,
-    extreme: 2,
-  }[intensity]
+  const intensityMultiplier =
+    {
+      low: 0.5,
+      medium: 1,
+      high: 1.5,
+      extreme: 2,
+    }[intensity] || 1
+
+  const patternId = `diamond-${variant}-${Math.random().toString(36).substr(2, 9)}`
 
   return (
     <motion.div
       className={cn("relative group cursor-pointer", className)}
-      onClick={onClick}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
@@ -115,7 +159,7 @@ export function DiamondSlabCard({
           {/* Laser etched lines */}
           <div className="absolute inset-0">
             {/* Horizontal laser lines */}
-            {[...Array(8)].map((_, i) => (
+            {Array.from({ length: 8 }, (_, i) => (
               <motion.div
                 key={`h-${i}`}
                 className="absolute h-px opacity-30"
@@ -138,7 +182,7 @@ export function DiamondSlabCard({
             ))}
 
             {/* Vertical laser lines */}
-            {[...Array(6)].map((_, i) => (
+            {Array.from({ length: 6 }, (_, i) => (
               <motion.div
                 key={`v-${i}`}
                 className="absolute w-px opacity-20"
@@ -165,7 +209,7 @@ export function DiamondSlabCard({
           <div className="absolute inset-0 opacity-10">
             <svg width="100%" height="100%" className="absolute inset-0">
               <defs>
-                <pattern id={`diamond-${variant}`} x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <pattern id={patternId} x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
                   <path
                     d="M20,0 L40,20 L20,40 L0,20 Z"
                     fill="none"
@@ -175,16 +219,16 @@ export function DiamondSlabCard({
                   />
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill={`url(#diamond-${variant})`} />
+              <rect width="100%" height="100%" fill={`url(#${patternId})`} />
             </svg>
           </div>
 
           {/* Laser illumination particles */}
           {isHovered && (
             <div className="absolute inset-0 pointer-events-none">
-              {[...Array(Math.floor(12 * intensityMultiplier))].map((_, i) => (
+              {Array.from({ length: Math.floor(12 * intensityMultiplier) }, (_, i) => (
                 <motion.div
-                  key={i}
+                  key={`particle-${i}`}
                   className="absolute w-1 h-1 rounded-full"
                   style={{
                     background: `radial-gradient(circle, ${colors.primary}, ${colors.secondary})`,

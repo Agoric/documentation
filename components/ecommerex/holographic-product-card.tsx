@@ -1,6 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import type React from "react"
+
+import { useState, useCallback } from "react"
 import { motion } from "framer-motion"
 import { Star, ShoppingCart, Eye, Heart, Zap, BarChart3, ImageIcon, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -37,26 +39,113 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
   const [imageError, setImageError] = useState(false)
   const [show360Modal, setShow360Modal] = useState(false)
 
-  const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProducts } =
-    useProductComparison()
-  const inComparison = isInComparison(product.id)
-  const canAddToComparison = comparisonProducts.length < maxComparisonItems
+  const comparisonContext = useProductComparison()
 
-  const getCardVariant = () => {
+  const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProducts } =
+    comparisonContext
+
+  const inComparison = isInComparison?.(product?.id) || false
+  const canAddToComparison = (comparisonProducts?.length || 0) < maxComparisonItems
+
+  const getCardVariant = useCallback(() => {
+    if (!product) return "default"
+
     if (product.isHolographic) {
       if (product.price > 1000) return "quantum"
       if (product.price > 500) return "elite"
       return "premium"
     }
     return "default"
-  }
+  }, [product])
 
-  const getLaserColor = () => {
-    if (product.category === "Audio") return "purple"
-    if (product.category === "Wearables") return "gold"
-    if (product.category === "Cameras") return "emerald"
-    if (product.category === "Displays") return "crimson"
-    return "cyan"
+  const getLaserColor = useCallback(() => {
+    if (!product?.category) return "cyan"
+
+    switch (product.category) {
+      case "Audio":
+        return "purple"
+      case "Wearables":
+        return "gold"
+      case "Cameras":
+        return "emerald"
+      case "Displays":
+        return "crimson"
+      default:
+        return "cyan"
+    }
+  }, [product?.category])
+
+  const handleMouseEnter = useCallback(() => {
+    try {
+      setIsHovered(true)
+    } catch (error) {
+      console.error("Error in mouse enter:", error)
+    }
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    try {
+      setIsHovered(false)
+    } catch (error) {
+      console.error("Error in mouse leave:", error)
+    }
+  }, [])
+
+  const handleLikeClick = useCallback((e: React.MouseEvent) => {
+    try {
+      e?.preventDefault?.()
+      e?.stopPropagation?.()
+      setIsLiked((prev) => !prev)
+    } catch (error) {
+      console.error("Error in like click:", error)
+    }
+  }, [])
+
+  const handle360Click = useCallback((e: React.MouseEvent) => {
+    try {
+      e?.preventDefault?.()
+      e?.stopPropagation?.()
+      setShow360Modal(true)
+    } catch (error) {
+      console.error("Error in 360 click:", error)
+    }
+  }, [])
+
+  const handleComparisonClick = useCallback(
+    (e: React.MouseEvent) => {
+      try {
+        e?.preventDefault?.()
+        e?.stopPropagation?.()
+
+        if (inComparison) {
+          removeFromComparison?.(product?.id)
+        } else if (canAddToComparison && product) {
+          addToComparison?.(product)
+        }
+      } catch (error) {
+        console.error("Error in comparison click:", error)
+      }
+    },
+    [inComparison, canAddToComparison, product, addToComparison, removeFromComparison],
+  )
+
+  const handleImageError = useCallback(() => {
+    try {
+      setImageError(true)
+    } catch (error) {
+      console.error("Error handling image error:", error)
+    }
+  }, [])
+
+  // Safety check for product
+  if (!product) {
+    return (
+      <DiamondSlabCard variant="default" className="h-full">
+        <div className="p-6 flex items-center justify-center">
+          <p className="text-gray-400">Product not available</p>
+        </div>
+      </DiamondSlabCard>
+    )
   }
 
   return (
@@ -67,8 +156,8 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
         laserColor={getLaserColor()}
         isHovered={isHovered}
         className="h-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <div className="p-6">
           {/* Enhanced Product Image */}
@@ -83,7 +172,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               {!imageError ? (
                 <Image
                   src={product.image || "/placeholder.svg"}
-                  alt={product.name}
+                  alt={product.name || "Product"}
                   fill
                   className="object-cover transition-all duration-500 group-hover:scale-110"
                   style={{
@@ -91,7 +180,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                       ? "brightness(1.2) contrast(1.2) saturate(1.3) hue-rotate(5deg)"
                       : "brightness(1.1) contrast(1.1) saturate(1.1)",
                   }}
-                  onError={() => setImageError(true)}
+                  onError={handleImageError}
                   priority={false}
                 />
               ) : (
@@ -131,10 +220,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                 size="icon"
                 variant="ghost"
                 className="absolute bottom-2 right-2 h-8 w-8 bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-cyan-200 transition-all duration-200"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setShow360Modal(true)
-                }}
+                onClick={handle360Click}
                 title="360° View"
               >
                 <RotateCcw className="h-4 w-4" />
@@ -155,7 +241,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                 clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
               }}
             >
-              {product.category}
+              {product.category || "Unknown"}
             </Badge>
 
             {/* Like Button */}
@@ -163,10 +249,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               size="icon"
               variant="ghost"
               className="absolute top-2 right-2 h-8 w-8 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all duration-200"
-              onClick={(e) => {
-                e.preventDefault()
-                setIsLiked(!isLiked)
-              }}
+              onClick={handleLikeClick}
             >
               <Heart
                 className={`h-4 w-4 transition-all duration-200 ${isLiked ? "fill-red-500 text-red-500 scale-110" : "text-white"}`}
@@ -174,7 +257,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
             </Button>
 
             {/* Stock Indicator */}
-            {product.stock < 20 && (
+            {(product.stock || 0) < 20 && (
               <Badge
                 className="absolute bottom-2 left-2 bg-amber-600 text-white shadow-lg"
                 style={{
@@ -196,10 +279,10 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                   : "text-white group-hover:text-cyan-300"
               }`}
             >
-              {product.name}
+              {product.name || "Unknown Product"}
             </h3>
 
-            <p className="text-sm text-indigo-200/70 line-clamp-2">{product.description}</p>
+            <p className="text-sm text-indigo-200/70 line-clamp-2">{product.description || ""}</p>
 
             {/* 360° View Indicator */}
             {product.has360View && (
@@ -246,17 +329,17 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
             {/* Rating */}
             <div className="flex items-center gap-2">
               <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
+                {Array.from({ length: 5 }, (_, i) => (
                   <Star
                     key={i}
                     className={`w-4 h-4 transition-colors ${
-                      i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-400"
+                      i < Math.floor(product.rating || 0) ? "fill-yellow-400 text-yellow-400" : "text-gray-400"
                     }`}
                   />
                 ))}
               </div>
               <span className="text-sm text-indigo-200/70">
-                {product.rating} ({Math.floor(Math.random() * 100) + 10} reviews)
+                {product.rating || 0} ({Math.floor(Math.random() * 100) + 10} reviews)
               </span>
             </div>
 
@@ -269,9 +352,9 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                     : "text-white"
                 }`}
               >
-                ${product.price.toFixed(2)}
+                ${(product.price || 0).toFixed(2)}
               </div>
-              <div className="text-sm text-indigo-200/70">{product.stock} in stock</div>
+              <div className="text-sm text-indigo-200/70">{product.stock || 0} in stock</div>
             </div>
 
             {/* Platforms */}
@@ -320,14 +403,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
               <Button
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault()
-                  if (inComparison) {
-                    removeFromComparison(product.id)
-                  } else if (canAddToComparison) {
-                    addToComparison(product)
-                  }
-                }}
+                onClick={handleComparisonClick}
                 disabled={!inComparison && !canAddToComparison}
                 className={`border-indigo-500/20 text-indigo-300 hover:text-indigo-200 transition-all duration-200 ${
                   inComparison
