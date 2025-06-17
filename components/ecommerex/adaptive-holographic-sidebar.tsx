@@ -39,27 +39,31 @@ interface AdaptiveHolographicSidebarProps {
 }
 
 const categories = [
-  { id: "all", name: "All Categories", count: 156, romanName: "OMNIA" },
-  { id: "Audio", name: "Audio", count: 24, romanName: "SONUS" },
-  { id: "Wearables", name: "Wearables", count: 18, romanName: "VESTIS" },
-  { id: "Cameras", name: "Cameras", count: 12, romanName: "IMAGO" },
-  { id: "Peripherals", name: "Peripherals", count: 32, romanName: "AUXILIUM" },
+  { id: "all", name: "All Collections", count: 156 },
+  { id: "PFP", name: "Profile Pictures", count: 24 },
+  { id: "Art", name: "Digital Art", count: 18 },
+  { id: "Gaming", name: "Gaming", count: 12 },
+  { id: "Music", name: "Music", count: 32 },
+  { id: "Virtual Land", name: "Virtual Land", count: 8 },
+  { id: "Sports", name: "Sports", count: 15 },
+  { id: "Avatars", name: "Avatars", count: 22 },
+  { id: "Pixel Art", name: "Pixel Art", count: 19 },
 ]
 
 const priceRanges = [
-  { id: "all", name: "All Prices", romanName: "OMNIS PRETIUM" },
-  { id: "under-100", name: "Under $100", romanName: "< C DENARII" },
-  { id: "100-200", name: "$100 - $200", romanName: "C-CC DENARII" },
-  { id: "200-500", name: "$200 - $500", romanName: "CC-D DENARII" },
-  { id: "500-1000", name: "$500 - $1,000", romanName: "D-M DENARII" },
-  { id: "over-1000", name: "Over $1,000", romanName: "> M DENARII" },
+  { id: "all", name: "All Prices" },
+  { id: "under-1", name: "Under 1 ETH" },
+  { id: "1-5", name: "1 - 5 ETH" },
+  { id: "5-10", name: "5 - 10 ETH" },
+  { id: "10-50", name: "10 - 50 ETH" },
+  { id: "over-50", name: "Over 50 ETH" },
 ]
 
 const ratingOptions = [
-  { value: 0, label: "All Ratings", romanLabel: "OMNIS GRADUS" },
-  { value: 4, label: "4+ Stars", romanLabel: "IV+ STELLAE" },
-  { value: 4.5, label: "4.5+ Stars", romanLabel: "IV.V+ STELLAE" },
-  { value: 4.8, label: "4.8+ Stars", romanLabel: "IV.VIII+ STELLAE" },
+  { value: 0, label: "All Ratings" },
+  { value: 4, label: "4+ Stars" },
+  { value: 4.5, label: "4.5+ Stars" },
+  { value: 4.8, label: "4.8+ Stars" },
 ]
 
 export function AdaptiveHolographicSidebar({
@@ -99,7 +103,7 @@ export function AdaptiveHolographicSidebar({
                   transition={{ duration: 0.2 }}
                 >
                   <Filter className="h-5 w-5 text-amber-400" />
-                  <h2 className="font-semibold text-amber-300 font-serif">FILTRUM NFT</h2>
+                  <h2 className="font-semibold text-amber-300 font-serif">FILTRUM DIGITALIS</h2>
                   {activeFilterCount > 0 && (
                     <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white text-xs border-0">
                       {activeFilterCount}
@@ -140,7 +144,7 @@ export function AdaptiveHolographicSidebar({
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {productCount} Collections Found
+                <span className="font-serif">COLLECTIONES INVENTAE:</span> {productCount}
               </motion.div>
             )}
           </AnimatePresence>
@@ -205,9 +209,7 @@ export function AdaptiveHolographicSidebar({
                                 : "text-amber-200/70 hover:text-amber-300 hover:bg-amber-500/10",
                             )}
                           >
-                            <span className="font-medium">
-                              {layout.cardSize === "sm" ? category.romanName : category.name}
-                            </span>
+                            <span className="font-medium">{category.name}</span>
                             <Badge className="bg-amber-400/20 text-amber-300 text-xs border-0">{category.count}</Badge>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
@@ -234,7 +236,7 @@ export function AdaptiveHolographicSidebar({
                                 : "text-amber-200/70 hover:text-amber-300 hover:bg-amber-500/10",
                             )}
                           >
-                            {layout.cardSize === "sm" ? range.romanName : range.name}
+                            {range.name}
                           </SidebarMenuButton>
                         </SidebarMenuItem>
                       ))}
@@ -246,7 +248,7 @@ export function AdaptiveHolographicSidebar({
 
                 {/* Rating */}
                 <SidebarGroup>
-                  <SidebarGroupLabel className="text-amber-300 mb-3 font-serif">GRADUS</SidebarGroupLabel>
+                  <SidebarGroupLabel className="text-amber-300 mb-3 font-serif">GRADUS STELLARUM</SidebarGroupLabel>
                   <SidebarGroupContent>
                     <SidebarMenu>
                       {ratingOptions.map((option) => (
@@ -262,7 +264,7 @@ export function AdaptiveHolographicSidebar({
                           >
                             <div className="flex items-center space-x-2">
                               <Star className="h-4 w-4" />
-                              <span>{layout.cardSize === "sm" ? option.romanLabel : option.label}</span>
+                              <span>{option.label}</span>
                             </div>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
@@ -275,7 +277,9 @@ export function AdaptiveHolographicSidebar({
 
                 {/* Special Features */}
                 <SidebarGroup>
-                  <SidebarGroupLabel className="text-amber-300 mb-3 font-serif">PROPRIETATES NFT</SidebarGroupLabel>
+                  <SidebarGroupLabel className="text-amber-300 mb-3 font-serif">
+                    PROPRIETATES SPECIALES
+                  </SidebarGroupLabel>
                   <SidebarGroupContent className="space-y-3">
                     <Label className="flex items-center space-x-3 cursor-pointer group">
                       <input
@@ -287,7 +291,7 @@ export function AdaptiveHolographicSidebar({
                       <div className="flex items-center space-x-2">
                         <Zap className="h-4 w-4 text-amber-400" />
                         <span className="text-amber-200/80 group-hover:text-amber-300 transition-colors">
-                          Interactive NFTs
+                          Interactive NFTs Only
                         </span>
                       </div>
                     </Label>

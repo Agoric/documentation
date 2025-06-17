@@ -27,10 +27,10 @@ const realms: RealmTab[] = [
     name: "NFT Marketplace",
     href: "/dashboard/ecommerex/holographic-products",
     icon: ShoppingBag,
-    description: "Mercatus NFT Imperium - Premium digital asset marketplace",
+    description: "Mercatus Digitalis Imperium - Premium digital asset marketplace",
     gradient: "from-purple-600 via-indigo-600 to-cyan-600",
-    romanTitle: "NFT IMPERIUM",
-    shortTitle: "NFT",
+    romanTitle: "MERCATUS DIGITALIS",
+    shortTitle: "MERC",
   },
   {
     id: "real-estate",
@@ -39,7 +39,7 @@ const realms: RealmTab[] = [
     icon: Building2,
     description: "Domus Imperium - Premium property marketplace",
     gradient: "from-amber-500 via-yellow-500 to-amber-600",
-    romanTitle: "DOMUS",
+    romanTitle: "DOMUS IMPERIUM",
     shortTitle: "DOM",
   },
   {
@@ -49,7 +49,7 @@ const realms: RealmTab[] = [
     icon: TrendingUp,
     description: "Negotium Supremum - Advanced trading platform",
     gradient: "from-purple-600 via-pink-600 to-purple-700",
-    romanTitle: "NEGOTIUM",
+    romanTitle: "NEGOTIUM SUPREMUM",
     shortTitle: "NEG",
   },
   {
@@ -59,7 +59,7 @@ const realms: RealmTab[] = [
     icon: Trophy,
     description: "Ludus Honoris - Achievement and rewards system",
     gradient: "from-amber-500 via-orange-500 to-amber-600",
-    romanTitle: "LUDUS",
+    romanTitle: "LUDUS HONORIS",
     shortTitle: "LUD",
   },
   {
@@ -69,7 +69,7 @@ const realms: RealmTab[] = [
     icon: Scale,
     description: "Lex Digitalis - Digital jurisdiction framework",
     gradient: "from-slate-600 via-gray-600 to-slate-700",
-    romanTitle: "LEX",
+    romanTitle: "LEX DIGITALIS",
     shortTitle: "LEX",
   },
   {
@@ -79,7 +79,7 @@ const realms: RealmTab[] = [
     icon: Shield,
     description: "Legatus Digitalis - Agent certification system",
     gradient: "from-purple-600 via-indigo-600 to-purple-700",
-    romanTitle: "LEGATUS",
+    romanTitle: "LEGATUS DIGITALIS",
     shortTitle: "LEG",
   },
   {
@@ -89,7 +89,7 @@ const realms: RealmTab[] = [
     icon: Coins,
     description: "Imperium Creditum - Financial services empire",
     gradient: "from-amber-500 via-yellow-500 to-amber-600",
-    romanTitle: "IMPERIUM",
+    romanTitle: "IMPERIUM CREDITUM",
     shortTitle: "IMP",
   },
   {
@@ -99,7 +99,7 @@ const realms: RealmTab[] = [
     icon: Globe,
     description: "Orbis Connexus - Worldwide connections network",
     gradient: "from-cyan-600 via-blue-600 to-purple-600",
-    romanTitle: "ORBIS",
+    romanTitle: "ORBIS CONNEXUS",
     shortTitle: "ORB",
   },
 ]
@@ -237,7 +237,7 @@ export function AdaptiveRegalToolbar() {
                     )}
                     animate={{
                       padding: layout.toolbarCompact ? "8px 12px" : "12px 16px",
-                      minWidth: layout.toolbarCompact ? 60 : layout.showLabels ? 100 : 80,
+                      minWidth: layout.toolbarCompact ? 60 : layout.showLabels ? 120 : 80,
                     }}
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}

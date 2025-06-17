@@ -192,7 +192,7 @@ export function RealEstateMarketplace() {
     <PropertyComparisonProvider>
       <div className="container mx-auto p-4 space-y-8">
         <HolographicHeader
-          title="Real Estate Marketplace"
+          title="DOMUS IMPERIUM MERCATUS"
           subtitle="Discover premium properties with cutting-edge holographic technology and immersive virtual tours"
         />
 

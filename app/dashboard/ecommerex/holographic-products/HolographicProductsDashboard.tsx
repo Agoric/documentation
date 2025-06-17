@@ -206,27 +206,6 @@ const sampleProducts = [
   },
 ]
 
-const categories = [
-  { id: "all", name: "All Collections", count: 156, romanName: "OMNIA" },
-  { id: "PFP", name: "Profile Pictures", count: 24, romanName: "PERSONA" },
-  { id: "Art", name: "Digital Art", count: 18, romanName: "ARS" },
-  { id: "Gaming", name: "Gaming", count: 12, romanName: "LUDUS" },
-  { id: "Music", name: "Music", count: 32, romanName: "MUSICA" },
-  { id: "Virtual Land", name: "Virtual Land", count: 8, romanName: "TERRA" },
-  { id: "Sports", name: "Sports", count: 15, romanName: "CERTAMEN" },
-  { id: "Avatars", name: "Avatars", count: 22, romanName: "IMAGO" },
-  { id: "Pixel Art", name: "Pixel Art", count: 19, romanName: "PIXELUM" },
-]
-
-const priceRanges = [
-  { id: "all", name: "All Prices", romanName: "OMNIS PRETIUM" },
-  { id: "under-1", name: "Under 1 ETH", romanName: "< I ETH" },
-  { id: "1-5", name: "1 - 5 ETH", romanName: "I-V ETH" },
-  { id: "5-10", name: "5 - 10 ETH", romanName: "V-X ETH" },
-  { id: "10-50", name: "10 - 50 ETH", romanName: "X-L ETH" },
-  { id: "over-50", name: "Over 50 ETH", romanName: "> L ETH" },
-]
-
 interface FilterState {
   search: string
   category: string
@@ -415,7 +394,7 @@ export function HolographicProductsDashboard() {
               <div className="p-4 border-b border-amber-500/30 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <SupremeAuthorityCoin variant="badge" size="sm" />
-                  <h2 className="text-xl font-semibold text-amber-300 font-serif">IMPERIAL FILTER TESTING PANEL</h2>
+                  <h2 className="text-xl font-semibold text-amber-300 font-serif">PANELUM TESTAMENTUM IMPERIALIS</h2>
                 </div>
                 <Button
                   variant="outline"
@@ -461,8 +440,8 @@ export function HolographicProductsDashboard() {
                   <div className="flex items-center space-x-4">
                     <SupremeAuthorityCoin variant="logo" size={layout.cardSize === "sm" ? "md" : "lg"} />
                     <div>
-                      <h1 className="font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
-                        MERCATUS NFT IMPERIUM
+                      <h1 className="font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif text-3xl">
+                        MERCATUS DIGITALIS IMPERIUM
                       </h1>
                       <p className="text-amber-300/80 mt-1 font-medium">Imperial NFT Marketplace of Digital Assets</p>
                     </div>
@@ -518,14 +497,14 @@ export function HolographicProductsDashboard() {
                           layout.showLabels ? "w-48" : "w-32",
                         )}
                       >
-                        <SelectValue placeholder="Sort" />
+                        <SelectValue placeholder="Sort by Order" />
                       </SelectTrigger>
                       <SelectContent className="bg-purple-900/95 backdrop-blur-xl border-amber-500/30">
                         <SelectItem value="featured">Featured</SelectItem>
-                        <SelectItem value="price-low">Price: Low</SelectItem>
-                        <SelectItem value="price-high">Price: High</SelectItem>
-                        <SelectItem value="rating">Rating</SelectItem>
-                        <SelectItem value="name">Name</SelectItem>
+                        <SelectItem value="price-low">Price: Low to High</SelectItem>
+                        <SelectItem value="price-high">Price: High to Low</SelectItem>
+                        <SelectItem value="rating">Highest Rated</SelectItem>
+                        <SelectItem value="name">Alphabetical</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -539,7 +518,7 @@ export function HolographicProductsDashboard() {
                       padding: layout.adaptiveSpacing,
                     }}
                   >
-                    <span className="text-sm text-amber-300 font-medium">Active Filters:</span>
+                    <span className="text-sm text-amber-300 font-medium font-serif">FILTRUM ACTIVUM:</span>
                     <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white border-0">
                       {activeFilterCount} applied
                     </Badge>
@@ -556,7 +535,8 @@ export function HolographicProductsDashboard() {
 
                 {/* Results Count */}
                 <div className="text-sm text-amber-300/80 font-medium">
-                  Displaying {sortedProducts.length} of {sampleProducts.length} NFT Collections
+                  <span className="font-serif">COLLECTIONES OSTENDENTES:</span> {sortedProducts.length} of{" "}
+                  {sampleProducts.length} NFT Collections
                 </div>
               </motion.div>
 

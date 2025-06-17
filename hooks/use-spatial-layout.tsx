@@ -1,264 +1,170 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import type React from "react"
 
-interface SpatialDimensions {
-  width: number
-  height: number
-  availableWidth: number
-  availableHeight: number
-  density: "compact" | "comfortable" | "spacious"
-  orientation: "landscape" | "portrait"
-  breakpoint: "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
-}
+import { useState, useEffect, useRef, useCallback } from "react"
 
-interface SpatialLayout {
-  sidebarWidth: number
-  sidebarCollapsed: boolean
-  toolbarHeight: number
-  toolbarCompact: boolean
-  contentPadding: number
-  gridColumns: number
-  cardSize: "sm" | "md" | "lg"
-  showLabels: boolean
-  adaptiveSpacing: number
-}
-
-interface UseSpatialLayoutOptions {
+interface SpatialLayoutConfig {
+  autoCollapse?: boolean
+  contentAware?: boolean
   minSidebarWidth?: number
   maxSidebarWidth?: number
-  autoCollapse?: boolean
-  densityThreshold?: number
-  contentAware?: boolean
+  breakpoints?: {
+    mobile: number
+    tablet: number
+    desktop: number
+    wide: number
+  }
 }
 
-export function useSpatialLayout(options: UseSpatialLayoutOptions = {}) {
-  const {
-    minSidebarWidth = 240,
-    maxSidebarWidth = 320,
-    autoCollapse = true,
-    densityThreshold = 0.7,
-    contentAware = true,
-  } = options
+interface SpatialLayoutState {
+  dimensions: {
+    width: number
+    height: number
+  }
+  layout: {
+    sidebarCollapsed: boolean
+    sidebarWidth: number
+    toolbarHeight: number
+    toolbarCompact: boolean
+    showLabels: boolean
+    gridColumns: number
+    cardSize: "sm" | "md" | "lg"
+    adaptiveSpacing: number
+    contentPadding: number
+  }
+  containerRef: React.RefObject<HTMLDivElement>
+  actions: {
+    toggleSidebar: () => void
+    setSidebarWidth: (width: number) => void
+    setToolbarCompact: (compact: boolean) => void
+  }
+}
 
-  const [dimensions, setDimensions] = useState<SpatialDimensions>({
-    width: 1920,
-    height: 1080,
-    availableWidth: 1920,
-    availableHeight: 1080,
-    density: "comfortable",
-    orientation: "landscape",
-    breakpoint: "xl",
+const defaultConfig: Required<SpatialLayoutConfig> = {
+  autoCollapse: true,
+  contentAware: true,
+  minSidebarWidth: 240,
+  maxSidebarWidth: 400,
+  breakpoints: {
+    mobile: 768,
+    tablet: 1024,
+    desktop: 1440,
+    wide: 1920,
+  },
+}
+
+export function useSpatialLayout(config: SpatialLayoutConfig = {}): SpatialLayoutState {
+  const mergedConfig = { ...defaultConfig, ...config }
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const [dimensions, setDimensions] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 1920,
+    height: typeof window !== "undefined" ? window.innerHeight : 1080,
   })
 
-  const [layout, setLayout] = useState<SpatialLayout>({
-    sidebarWidth: 280,
-    sidebarCollapsed: false,
-    toolbarHeight: 64,
-    toolbarCompact: false,
-    contentPadding: 24,
-    gridColumns: 3,
-    cardSize: "md",
-    showLabels: true,
-    adaptiveSpacing: 16,
-  })
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarWidth, setSidebarWidth] = useState(mergedConfig.minSidebarWidth)
+  const [toolbarCompact, setToolbarCompact] = useState(false)
 
-  const [userPreferences, setUserPreferences] = useState({
-    preferredSidebarWidth: 280,
-    preferredDensity: "comfortable" as const,
-    manualOverride: false,
-  })
+  // Calculate adaptive layout properties
+  const calculateLayout = useCallback(() => {
+    const { width, height } = dimensions
+    const { breakpoints } = mergedConfig
 
-  const resizeObserverRef = useRef<ResizeObserver | null>(null)
-  const containerRef = useRef<HTMLElement | null>(null)
+    // Determine device type
+    const isMobile = width < breakpoints.mobile
+    const isTablet = width >= breakpoints.mobile && width < breakpoints.desktop
+    const isDesktop = width >= breakpoints.desktop && width < breakpoints.wide
+    const isWide = width >= breakpoints.wide
 
-  // Calculate spatial dimensions
-  const calculateDimensions = useCallback(() => {
-    const width = window.innerWidth
-    const height = window.innerHeight
-    const aspectRatio = width / height
+    // Auto-collapse sidebar on smaller screens
+    const shouldCollapseSidebar = mergedConfig.autoCollapse && (isMobile || (isTablet && width < 900))
 
-    // Determine breakpoint
-    let breakpoint: SpatialDimensions["breakpoint"] = "xs"
-    if (width >= 1536) breakpoint = "2xl"
-    else if (width >= 1280) breakpoint = "xl"
-    else if (width >= 1024) breakpoint = "lg"
-    else if (width >= 768) breakpoint = "md"
-    else if (width >= 640) breakpoint = "sm"
+    // Calculate grid columns based on available space
+    const availableWidth = width - (shouldCollapseSidebar ? 64 : sidebarWidth) - 48 // padding
+    const minCardWidth = 280
+    const gridColumns = Math.max(1, Math.floor(availableWidth / minCardWidth))
 
-    // Calculate density based on screen real estate
-    const screenArea = width * height
-    const referenceArea = 1920 * 1080 // Full HD reference
-    const densityRatio = screenArea / referenceArea
+    // Determine card size based on available space
+    let cardSize: "sm" | "md" | "lg" = "md"
+    if (isMobile) cardSize = "sm"
+    else if (isWide && gridColumns >= 4) cardSize = "lg"
+    else if (gridColumns <= 2) cardSize = "sm"
 
-    let density: SpatialDimensions["density"] = "comfortable"
-    if (densityRatio < 0.5) density = "compact"
-    else if (densityRatio > 1.5) density = "spacious"
+    // Calculate adaptive spacing
+    const baseSpacing = isMobile ? 12 : isTablet ? 16 : 20
+    const adaptiveSpacing = isWide ? baseSpacing + 4 : baseSpacing
+
+    // Toolbar height based on content density
+    const toolbarHeight = toolbarCompact ? 56 : isMobile ? 64 : 72
+
+    // Show labels based on available space
+    const showLabels = !isMobile && width > 800
+
+    // Content padding
+    const contentPadding = isMobile ? 16 : isTablet ? 20 : 24
 
     return {
-      width,
-      height,
-      availableWidth: width,
-      availableHeight: height - 64, // Account for toolbar
-      density,
-      orientation: aspectRatio > 1 ? "landscape" : "portrait",
-      breakpoint,
+      sidebarCollapsed: shouldCollapseSidebar || sidebarCollapsed,
+      sidebarWidth: Math.max(mergedConfig.minSidebarWidth, Math.min(mergedConfig.maxSidebarWidth, sidebarWidth)),
+      toolbarHeight,
+      toolbarCompact: toolbarCompact || isMobile,
+      showLabels,
+      gridColumns,
+      cardSize,
+      adaptiveSpacing,
+      contentPadding,
     }
-  }, [])
+  }, [dimensions, sidebarCollapsed, sidebarWidth, toolbarCompact])
 
-  // Calculate optimal layout based on dimensions
-  const calculateLayout = useCallback(
-    (dims: SpatialDimensions): SpatialLayout => {
-      const { width, height, density, breakpoint, orientation } = dims
-
-      // Smart sidebar width calculation
-      let sidebarWidth = userPreferences.preferredSidebarWidth
-      let sidebarCollapsed = false
-
-      if (autoCollapse && !userPreferences.manualOverride) {
-        if (width < 1024) {
-          sidebarCollapsed = true
-          sidebarWidth = 64
-        } else if (width < 1280) {
-          sidebarWidth = Math.max(minSidebarWidth, width * 0.18)
-        } else {
-          sidebarWidth = Math.min(maxSidebarWidth, Math.max(minSidebarWidth, width * 0.15))
-        }
-      }
-
-      // Smart toolbar height
-      const toolbarCompact = density === "compact" || height < 800
-      const toolbarHeight = toolbarCompact ? 56 : 72
-
-      // Content padding based on density
-      let contentPadding = 24
-      if (density === "compact") contentPadding = 16
-      else if (density === "spacious") contentPadding = 32
-
-      // Grid columns based on available space
-      const availableContentWidth = width - (sidebarCollapsed ? 64 : sidebarWidth) - contentPadding * 2
-      let gridColumns = 3
-      if (availableContentWidth < 800) gridColumns = 1
-      else if (availableContentWidth < 1200) gridColumns = 2
-      else if (availableContentWidth > 1800) gridColumns = 4
-
-      // Card size based on grid and density
-      let cardSize: "sm" | "md" | "lg" = "md"
-      if (density === "compact" || gridColumns > 3) cardSize = "sm"
-      else if (density === "spacious" && gridColumns <= 2) cardSize = "lg"
-
-      // Adaptive spacing
-      let adaptiveSpacing = 16
-      if (density === "compact") adaptiveSpacing = 12
-      else if (density === "spacious") adaptiveSpacing = 24
-
-      // Show labels based on space availability
-      const showLabels = !toolbarCompact && width > 768
-
-      return {
-        sidebarWidth,
-        sidebarCollapsed,
-        toolbarHeight,
-        toolbarCompact,
-        contentPadding,
-        gridColumns,
-        cardSize,
-        showLabels,
-        adaptiveSpacing,
-      }
-    },
-    [autoCollapse, minSidebarWidth, maxSidebarWidth, userPreferences],
-  )
-
-  // Update layout when dimensions change
-  const updateLayout = useCallback(() => {
-    const newDimensions = calculateDimensions()
-    const newLayout = calculateLayout(newDimensions)
-
-    setDimensions(newDimensions)
-    setLayout(newLayout)
-  }, [calculateDimensions, calculateLayout])
-
-  // Initialize and handle resize
+  // Update dimensions on window resize
   useEffect(() => {
-    updateLayout()
-
     const handleResize = () => {
-      updateLayout()
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
     }
 
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [updateLayout])
+  }, [])
 
-  // Content-aware adjustments
+  // Auto-collapse sidebar based on content awareness
   useEffect(() => {
-    if (!contentAware || !containerRef.current) return
-
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect
-        const contentDensity = (entry.target.children.length * 200) / (width * height)
-
-        if (contentDensity > densityThreshold && layout.cardSize !== "sm") {
-          setLayout((prev) => ({ ...prev, cardSize: "sm", adaptiveSpacing: 12 }))
-        } else if (contentDensity < densityThreshold * 0.5 && layout.cardSize !== "lg") {
-          setLayout((prev) => ({ ...prev, cardSize: "lg", adaptiveSpacing: 24 }))
-        }
+    if (mergedConfig.contentAware && mergedConfig.autoCollapse) {
+      const { width } = dimensions
+      if (width < mergedConfig.breakpoints.tablet) {
+        setSidebarCollapsed(true)
       }
-    })
-
-    observer.observe(containerRef.current)
-    resizeObserverRef.current = observer
-
-    return () => {
-      observer.disconnect()
     }
-  }, [contentAware, densityThreshold, layout.cardSize])
+  }, [dimensions])
 
-  // Manual controls
-  const toggleSidebar = useCallback(() => {
-    setLayout((prev) => ({
-      ...prev,
-      sidebarCollapsed: !prev.sidebarCollapsed,
-      sidebarWidth: prev.sidebarCollapsed ? userPreferences.preferredSidebarWidth : 64,
-    }))
-    setUserPreferences((prev) => ({ ...prev, manualOverride: true }))
-  }, [userPreferences.preferredSidebarWidth])
+  const layout = calculateLayout()
 
-  const setSidebarWidth = useCallback(
-    (width: number) => {
-      const clampedWidth = Math.max(minSidebarWidth, Math.min(maxSidebarWidth, width))
-      setLayout((prev) => ({ ...prev, sidebarWidth: clampedWidth, sidebarCollapsed: false }))
-      setUserPreferences((prev) => ({ ...prev, preferredSidebarWidth: clampedWidth, manualOverride: true }))
-    },
-    [minSidebarWidth, maxSidebarWidth],
-  )
+  const actions = {
+    toggleSidebar: useCallback(() => {
+      setSidebarCollapsed((prev) => !prev)
+    }, []),
 
-  const setDensity = useCallback(
-    (density: SpatialDimensions["density"]) => {
-      setUserPreferences((prev) => ({ ...prev, preferredDensity: density }))
-      const newLayout = calculateLayout({ ...dimensions, density })
-      setLayout(newLayout)
-    },
-    [dimensions, calculateLayout],
-  )
+    setSidebarWidth: useCallback(
+      (width: number) => {
+        const constrainedWidth = Math.max(mergedConfig.minSidebarWidth, Math.min(mergedConfig.maxSidebarWidth, width))
+        setSidebarWidth(constrainedWidth)
+      },
+      [mergedConfig],
+    ),
 
-  const resetToAuto = useCallback(() => {
-    setUserPreferences((prev) => ({ ...prev, manualOverride: false }))
-    updateLayout()
-  }, [updateLayout])
+    setToolbarCompact: useCallback((compact: boolean) => {
+      setToolbarCompact(compact)
+    }, []),
+  }
 
   return {
     dimensions,
     layout,
-    userPreferences,
     containerRef,
-    actions: {
-      toggleSidebar,
-      setSidebarWidth,
-      setDensity,
-      resetToAuto,
-    },
+    actions,
   }
 }
