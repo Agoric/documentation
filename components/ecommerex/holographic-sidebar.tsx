@@ -1,7 +1,10 @@
 "use client"
-
-import * as React from "react"
-import { Search, Filter, Star, Package, Zap, Camera, Headphones, Mouse } from "lucide-react"
+import { Search, Filter, X, Star, Eye, Zap, Package } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 import {
   Sidebar,
   SidebarContent,
@@ -9,118 +12,104 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
-interface HolographicSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  onFilterChange?: (filters: ProductFilters) => void
-  activeFilters?: ProductFilters
-}
-
-export interface ProductFilters {
+interface FilterState {
   search: string
   category: string
   priceRange: string
-  rating: number
-  isHolographic: boolean | null
-  has360View: boolean | null
-  inStock: boolean
+  minRating: number
+  holographicOnly: boolean
+  has360ViewOnly: boolean
+  inStockOnly: boolean
+}
+
+interface HolographicSidebarProps {
+  filters: FilterState
+  onFilterChange: (key: keyof FilterState, value: any) => void
+  onClearFilters: () => void
+  productCount: number
 }
 
 const categories = [
-  { name: "All Categories", value: "", icon: Package, count: 6 },
-  { name: "Audio", value: "Audio", icon: Headphones, count: 2 },
-  { name: "Wearables", value: "Wearables", icon: Star, count: 1 },
-  { name: "Cameras", value: "Cameras", icon: Camera, count: 1 },
-  { name: "Peripherals", value: "Peripherals", icon: Mouse, count: 2 },
+  { id: "all", name: "All Categories", count: 156 },
+  { id: "Audio", name: "Audio", count: 24 },
+  { id: "Wearables", name: "Wearables", count: 18 },
+  { id: "Cameras", name: "Cameras", count: 12 },
+  { id: "Peripherals", name: "Peripherals", count: 32 },
 ]
 
 const priceRanges = [
-  { name: "All Prices", value: "" },
-  { name: "Under $100", value: "0-100" },
-  { name: "$100 - $200", value: "100-200" },
-  { name: "$200 - $300", value: "200-300" },
-  { name: "Over $300", value: "300+" },
+  { id: "all", name: "All Prices" },
+  { id: "under-100", name: "Under $100" },
+  { id: "100-200", name: "$100 - $200" },
+  { id: "200-500", name: "$200 - $500" },
+  { id: "500-1000", name: "$500 - $1,000" },
+  { id: "over-1000", name: "Over $1,000" },
 ]
 
 const ratingOptions = [
-  { name: "All Ratings", value: 0 },
-  { name: "4+ Stars", value: 4 },
-  { name: "4.5+ Stars", value: 4.5 },
-  { name: "4.8+ Stars", value: 4.8 },
+  { value: 0, label: "All Ratings" },
+  { value: 4, label: "4+ Stars" },
+  { value: 4.5, label: "4.5+ Stars" },
+  { value: 4.8, label: "4.8+ Stars" },
 ]
 
-export function HolographicSidebar({ onFilterChange, activeFilters, ...props }: HolographicSidebarProps) {
-  const [filters, setFilters] = React.useState<ProductFilters>({
-    search: "",
-    category: "",
-    priceRange: "",
-    rating: 0,
-    isHolographic: null,
-    has360View: null,
-    inStock: true,
-    ...activeFilters,
-  })
-
-  const updateFilters = (newFilters: Partial<ProductFilters>) => {
-    const updatedFilters = { ...filters, ...newFilters }
-    setFilters(updatedFilters)
-    onFilterChange?.(updatedFilters)
-  }
-
-  const clearFilters = () => {
-    const clearedFilters: ProductFilters = {
-      search: "",
-      category: "",
-      priceRange: "",
-      rating: 0,
-      isHolographic: null,
-      has360View: null,
-      inStock: true,
-    }
-    setFilters(clearedFilters)
-    onFilterChange?.(clearedFilters)
-  }
+export function HolographicSidebar({ filters, onFilterChange, onClearFilters, productCount }: HolographicSidebarProps) {
+  const activeFilterCount = Object.values(filters).filter(
+    (value) => value !== "" && value !== "all" && value !== 0 && value !== false,
+  ).length
 
   return (
-    <Sidebar
-      {...props}
-      className="border-r border-purple-500/20 bg-gradient-to-b from-purple-900/10 to-blue-900/10 backdrop-blur-xl"
-    >
-      <SidebarHeader className="border-b border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-blue-500/10">
-        <div className="flex items-center gap-2 p-4">
-          <div className="relative">
+    <Sidebar className="border-r border-purple-500/20 bg-gradient-to-b from-slate-900/95 to-purple-900/95 backdrop-blur-xl">
+      <SidebarHeader className="border-b border-purple-500/20 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
             <Filter className="h-5 w-5 text-purple-400" />
-            <div className="absolute inset-0 h-5 w-5 animate-pulse bg-purple-400/20 rounded-full blur-sm" />
+            <h2 className="font-semibold text-white">Filters</h2>
+            {activeFilterCount > 0 && (
+              <Badge variant="secondary" className="bg-purple-600/20 text-purple-300 text-xs">
+                {activeFilterCount}
+              </Badge>
+            )}
           </div>
-          <h2 className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Product Filters
-          </h2>
+          {activeFilterCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClearFilters}
+              className="h-6 w-6 p-0 text-gray-400 hover:text-white"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </div>
+
+        <div className="text-sm text-gray-400 mt-2">{productCount} products found</div>
       </SidebarHeader>
 
       <SidebarContent className="p-4 space-y-6">
         {/* Search */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-purple-300 mb-3">Search Products</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-purple-300 mb-3">Search</SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-purple-400" />
-              <SidebarInput
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
                 placeholder="Search products..."
                 value={filters.search}
-                onChange={(e) => updateFilters({ search: e.target.value })}
-                className="pl-10 bg-purple-900/20 border-purple-500/30 text-white placeholder:text-purple-300/60 focus:border-purple-400 focus:ring-purple-400/20"
+                onChange={(e) => onFilterChange("search", e.target.value)}
+                className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-400"
               />
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <Separator className="bg-purple-500/20" />
 
         {/* Categories */}
         <SidebarGroup>
@@ -128,17 +117,18 @@ export function HolographicSidebar({ onFilterChange, activeFilters, ...props }: 
           <SidebarGroupContent>
             <SidebarMenu>
               {categories.map((category) => (
-                <SidebarMenuItem key={category.value}>
+                <SidebarMenuItem key={category.id}>
                   <SidebarMenuButton
-                    onClick={() => updateFilters({ category: category.value })}
-                    isActive={filters.category === category.value}
-                    className="w-full justify-between hover:bg-purple-500/20 data-[active=true]:bg-gradient-to-r data-[active=true]:from-purple-500/30 data-[active=true]:to-blue-500/30 data-[active=true]:text-white"
+                    onClick={() => onFilterChange("category", category.id)}
+                    className={cn(
+                      "w-full justify-between text-left",
+                      filters.category === category.id
+                        ? "bg-purple-600/20 text-purple-300"
+                        : "text-gray-300 hover:text-white hover:bg-white/5",
+                    )}
                   >
-                    <div className="flex items-center gap-2">
-                      <category.icon className="h-4 w-4" />
-                      <span>{category.name}</span>
-                    </div>
-                    <Badge variant="secondary" className="bg-purple-500/20 text-purple-200 border-purple-500/30">
+                    <span>{category.name}</span>
+                    <Badge variant="secondary" className="bg-white/10 text-gray-300 text-xs">
                       {category.count}
                     </Badge>
                   </SidebarMenuButton>
@@ -148,17 +138,23 @@ export function HolographicSidebar({ onFilterChange, activeFilters, ...props }: 
           </SidebarGroupContent>
         </SidebarGroup>
 
+        <Separator className="bg-purple-500/20" />
+
         {/* Price Range */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-purple-300 mb-3">Price Range</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {priceRanges.map((range) => (
-                <SidebarMenuItem key={range.value}>
+                <SidebarMenuItem key={range.id}>
                   <SidebarMenuButton
-                    onClick={() => updateFilters({ priceRange: range.value })}
-                    isActive={filters.priceRange === range.value}
-                    className="hover:bg-purple-500/20 data-[active=true]:bg-gradient-to-r data-[active=true]:from-purple-500/30 data-[active=true]:to-blue-500/30 data-[active=true]:text-white"
+                    onClick={() => onFilterChange("priceRange", range.id)}
+                    className={cn(
+                      "w-full text-left",
+                      filters.priceRange === range.id
+                        ? "bg-purple-600/20 text-purple-300"
+                        : "text-gray-300 hover:text-white hover:bg-white/5",
+                    )}
                   >
                     {range.name}
                   </SidebarMenuButton>
@@ -168,21 +164,27 @@ export function HolographicSidebar({ onFilterChange, activeFilters, ...props }: 
           </SidebarGroupContent>
         </SidebarGroup>
 
+        <Separator className="bg-purple-500/20" />
+
         {/* Rating */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-purple-300 mb-3">Minimum Rating</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {ratingOptions.map((rating) => (
-                <SidebarMenuItem key={rating.value}>
+              {ratingOptions.map((option) => (
+                <SidebarMenuItem key={option.value}>
                   <SidebarMenuButton
-                    onClick={() => updateFilters({ rating: rating.value })}
-                    isActive={filters.rating === rating.value}
-                    className="hover:bg-purple-500/20 data-[active=true]:bg-gradient-to-r data-[active=true]:from-purple-500/30 data-[active=true]:to-blue-500/30 data-[active=true]:text-white"
+                    onClick={() => onFilterChange("minRating", option.value)}
+                    className={cn(
+                      "w-full text-left",
+                      filters.minRating === option.value
+                        ? "bg-purple-600/20 text-purple-300"
+                        : "text-gray-300 hover:text-white hover:bg-white/5",
+                    )}
                   >
-                    <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 text-yellow-400" />
-                      <span>{rating.name}</span>
+                    <div className="flex items-center space-x-2">
+                      <Star className="h-4 w-4" />
+                      <span>{option.label}</span>
                     </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -191,70 +193,53 @@ export function HolographicSidebar({ onFilterChange, activeFilters, ...props }: 
           </SidebarGroupContent>
         </SidebarGroup>
 
+        <Separator className="bg-purple-500/20" />
+
         {/* Special Features */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-purple-300 mb-3">Special Features</SidebarGroupLabel>
           <SidebarGroupContent className="space-y-3">
-            <Button
-              variant={filters.isHolographic === true ? "default" : "outline"}
-              size="sm"
-              onClick={() => updateFilters({ isHolographic: filters.isHolographic === true ? null : true })}
-              className={`w-full justify-start ${
-                filters.isHolographic === true
-                  ? "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-                  : "border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
-              }`}
-            >
-              <Zap className="h-4 w-4 mr-2" />
-              Holographic Only
-            </Button>
+            <Label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.holographicOnly}
+                onChange={(e) => onFilterChange("holographicOnly", e.target.checked)}
+                className="rounded border-gray-600 bg-white/5 text-purple-600 focus:ring-purple-500"
+              />
+              <div className="flex items-center space-x-2">
+                <Zap className="h-4 w-4 text-purple-400" />
+                <span className="text-gray-300">Holographic Only</span>
+              </div>
+            </Label>
 
-            <Button
-              variant={filters.has360View === true ? "default" : "outline"}
-              size="sm"
-              onClick={() => updateFilters({ has360View: filters.has360View === true ? null : true })}
-              className={`w-full justify-start ${
-                filters.has360View === true
-                  ? "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-                  : "border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
-              }`}
-            >
-              <Camera className="h-4 w-4 mr-2" />
-              360° View Available
-            </Button>
+            <Label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.has360ViewOnly}
+                onChange={(e) => onFilterChange("has360ViewOnly", e.target.checked)}
+                className="rounded border-gray-600 bg-white/5 text-purple-600 focus:ring-purple-500"
+              />
+              <div className="flex items-center space-x-2">
+                <Eye className="h-4 w-4 text-blue-400" />
+                <span className="text-gray-300">360° View Available</span>
+              </div>
+            </Label>
 
-            <Button
-              variant={filters.inStock ? "default" : "outline"}
-              size="sm"
-              onClick={() => updateFilters({ inStock: !filters.inStock })}
-              className={`w-full justify-start ${
-                filters.inStock
-                  ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-                  : "border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
-              }`}
-            >
-              <Package className="h-4 w-4 mr-2" />
-              In Stock Only
-            </Button>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Clear Filters */}
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={clearFilters}
-              className="w-full border-red-500/30 text-red-300 hover:bg-red-500/20 hover:border-red-400"
-            >
-              Clear All Filters
-            </Button>
+            <Label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.inStockOnly}
+                onChange={(e) => onFilterChange("inStockOnly", e.target.checked)}
+                className="rounded border-gray-600 bg-white/5 text-purple-600 focus:ring-purple-500"
+              />
+              <div className="flex items-center space-x-2">
+                <Package className="h-4 w-4 text-green-400" />
+                <span className="text-gray-300">In Stock Only</span>
+              </div>
+            </Label>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      <SidebarRail />
     </Sidebar>
   )
 }

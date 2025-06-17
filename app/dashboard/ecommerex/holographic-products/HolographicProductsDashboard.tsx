@@ -142,7 +142,7 @@ interface FilterState {
   inStockOnly: boolean
 }
 
-export default function HolographicProductsDashboard() {
+export function HolographicProductsDashboard() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("featured")
   const [filters, setFilters] = useState<FilterState>({
