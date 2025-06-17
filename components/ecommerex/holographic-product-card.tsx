@@ -415,6 +415,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                 }}
               >
                 <BarChart3 className="w-4 h-4" />
+                Compare
               </Button>
               <Button
                 variant="outline"
@@ -425,6 +426,7 @@ export function HolographicProductCard({ product }: HolographicProductCardProps)
                 }}
               >
                 <Eye className="w-4 h-4" />
+                View
               </Button>
             </div>
           </div>

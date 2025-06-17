@@ -2,14 +2,16 @@
 
 import { motion } from "framer-motion"
 import { Sparkles, Zap } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface HolographicHeaderProps {
   title: string
   subtitle?: string
   className?: string
+  isLatin?: boolean
 }
 
-export function HolographicHeader({ title, subtitle, className = "" }: HolographicHeaderProps) {
+export function HolographicHeader({ title, subtitle, className = "", isLatin }: HolographicHeaderProps) {
   return (
     <div className={`relative overflow-hidden ${className}`}>
       {/* Background Effects */}
@@ -56,7 +58,12 @@ export function HolographicHeader({ title, subtitle, className = "" }: Holograph
               <Sparkles className="w-8 h-8 text-cyan-400" />
             </motion.div>
 
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+            <h1
+              className={cn(
+                "text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent",
+                isLatin ? "font-serif tracking-wider" : "font-sans",
+              )}
+            >
               {title}
             </h1>
 

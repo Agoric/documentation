@@ -192,8 +192,9 @@ export function RealEstateMarketplace() {
     <PropertyComparisonProvider>
       <div className="container mx-auto p-4 space-y-8">
         <HolographicHeader
-          title="DOMUS IMPERIUM MERCATUS"
-          subtitle="Discover premium properties with cutting-edge holographic technology and immersive virtual tours"
+          title="MERCATUS PRAEDIORUM IMPERIUM"
+          subtitle="Imperium Praediorum Nobilium cum Technologia Holographica et Visitationes Virtuales"
+          isLatin={true}
         />
 
         <PaginatedPropertyGrid properties={properties} itemsPerPage={6} />

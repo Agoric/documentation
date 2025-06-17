@@ -27,19 +27,19 @@ const realms: RealmTab[] = [
     name: "NFT Marketplace",
     href: "/dashboard/ecommerex/holographic-products",
     icon: ShoppingBag,
-    description: "Mercatus Digitalis Imperium - Premium digital asset marketplace",
+    description: "MERCATUS DIGITALIS NOBILIUM",
     gradient: "from-purple-600 via-indigo-600 to-cyan-600",
-    romanTitle: "MERCATUS DIGITALIS",
-    shortTitle: "MERC",
+    romanTitle: "NFT IMPERIUM",
+    shortTitle: "NFT",
   },
   {
     id: "real-estate",
     name: "Real Estate",
     href: "/dashboard/ecommerex/real-estate",
     icon: Building2,
-    description: "Domus Imperium - Premium property marketplace",
+    description: "DOMUS ET PRAEDIA IMPERIUM",
     gradient: "from-amber-500 via-yellow-500 to-amber-600",
-    romanTitle: "DOMUS IMPERIUM",
+    romanTitle: "DOMUS",
     shortTitle: "DOM",
   },
   {
@@ -47,9 +47,9 @@ const realms: RealmTab[] = [
     name: "SnapDax Trading",
     href: "/dashboard/snap-dax",
     icon: TrendingUp,
-    description: "Negotium Supremum - Advanced trading platform",
+    description: "NEGOTIUM ET COMMERCIUM SUPREMUM",
     gradient: "from-purple-600 via-pink-600 to-purple-700",
-    romanTitle: "NEGOTIUM SUPREMUM",
+    romanTitle: "NEGOTIUM",
     shortTitle: "NEG",
   },
   {
@@ -57,9 +57,9 @@ const realms: RealmTab[] = [
     name: "Gamification Hub",
     href: "/dashboard/gamification",
     icon: Trophy,
-    description: "Ludus Honoris - Achievement and rewards system",
+    description: "LUDUS VICTORIAE ET HONORES",
     gradient: "from-amber-500 via-orange-500 to-amber-600",
-    romanTitle: "LUDUS HONORIS",
+    romanTitle: "LUDUS",
     shortTitle: "LUD",
   },
   {
@@ -67,9 +67,9 @@ const realms: RealmTab[] = [
     name: "Legal Framework",
     href: "/legal",
     icon: Scale,
-    description: "Lex Digitalis - Digital jurisdiction framework",
+    description: "LEX DIGITALIS ET IURISDICTIO",
     gradient: "from-slate-600 via-gray-600 to-slate-700",
-    romanTitle: "LEX DIGITALIS",
+    romanTitle: "LEX",
     shortTitle: "LEX",
   },
   {
@@ -77,9 +77,9 @@ const realms: RealmTab[] = [
     name: "Diplomatic Agents",
     href: "/dashboard/diplomatic-agents",
     icon: Shield,
-    description: "Legatus Digitalis - Agent certification system",
+    description: "LEGATUS DIPLOMATICUS DIGITALIS",
     gradient: "from-purple-600 via-indigo-600 to-purple-700",
-    romanTitle: "LEGATUS DIGITALIS",
+    romanTitle: "LEGATUS",
     shortTitle: "LEG",
   },
   {
@@ -87,9 +87,9 @@ const realms: RealmTab[] = [
     name: "Credit Empire",
     href: "/dashboard/credit-empire",
     icon: Coins,
-    description: "Imperium Creditum - Financial services empire",
+    description: "IMPERIUM CREDITUM ET PECUNIA",
     gradient: "from-amber-500 via-yellow-500 to-amber-600",
-    romanTitle: "IMPERIUM CREDITUM",
+    romanTitle: "IMPERIUM",
     shortTitle: "IMP",
   },
   {
@@ -97,9 +97,9 @@ const realms: RealmTab[] = [
     name: "Global Network",
     href: "/dashboard/global-network",
     icon: Globe,
-    description: "Orbis Connexus - Worldwide connections network",
+    description: "ORBIS TERRARUM CONNEXUS",
     gradient: "from-cyan-600 via-blue-600 to-purple-600",
-    romanTitle: "ORBIS CONNEXUS",
+    romanTitle: "ORBIS",
     shortTitle: "ORB",
   },
 ]
@@ -200,10 +200,12 @@ export function AdaptiveRegalToolbar() {
                       layout.toolbarCompact ? "text-lg" : "text-xl",
                     )}
                   >
-                    SNAPIFI
+                    SNAPIFICUS
                   </span>
                   {!layout.toolbarCompact && (
-                    <span className="text-xs text-amber-400/70 font-serif tracking-wider">SUPREMA AUCTORITAS</span>
+                    <span className="text-xs text-amber-400/70 font-serif tracking-wider">
+                      SUPREMA AUCTORITAS DIGITALIS
+                    </span>
                   )}
                 </motion.div>
               )}
@@ -237,7 +239,7 @@ export function AdaptiveRegalToolbar() {
                     )}
                     animate={{
                       padding: layout.toolbarCompact ? "8px 12px" : "12px 16px",
-                      minWidth: layout.toolbarCompact ? 60 : layout.showLabels ? 120 : 80,
+                      minWidth: layout.toolbarCompact ? 60 : layout.showLabels ? 100 : 80,
                     }}
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
