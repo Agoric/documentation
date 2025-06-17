@@ -78,18 +78,18 @@ export function RealEstateMarketplace() {
         <div className="container mx-auto p-4 space-y-8">
           {/* Main Header */}
           <HolographicHeader
-            title="MERCATUS PRAEDIORUM IMPERIUM"
-            subtitle="Imperial Real Estate Marketplace • Premium Properties with Holographic Technology & Virtual Tours"
-            isLatin={true}
+            title="Imperial Real Estate Marketplace"
+            subtitle="Mercatus Praediorum Imperium • Premium Properties with Holographic Technology & Virtual Tours"
+            isLatin={false}
           />
 
           {/* Market Overview Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card className="bg-gradient-to-br from-amber-950/30 to-yellow-950/30 border-amber-500/20 backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-serif text-amber-300">
-                  NUMERUS TOTALIS
-                  <span className="block text-xs text-amber-300/60 font-sans">Total Properties</span>
+                <CardTitle className="text-sm text-amber-300">
+                  Total Properties
+                  <span className="block text-xs text-amber-300/60 font-serif italic">Numerus Totalis</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -100,9 +100,9 @@ export function RealEstateMarketplace() {
 
             <Card className="bg-gradient-to-br from-purple-950/30 to-indigo-950/30 border-purple-500/20 backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-serif text-purple-300">
-                  PRETIUM MEDIUS
-                  <span className="block text-xs text-purple-300/60 font-sans">Average Price</span>
+                <CardTitle className="text-sm text-purple-300">
+                  Average Price
+                  <span className="block text-xs text-purple-300/60 font-serif italic">Pretium Medius</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -113,9 +113,9 @@ export function RealEstateMarketplace() {
 
             <Card className="bg-gradient-to-br from-cyan-950/30 to-blue-950/30 border-cyan-500/20 backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-serif text-cyan-300">
-                  HOLOGRAPHICA
-                  <span className="block text-xs text-cyan-300/60 font-sans">Holographic Enhanced</span>
+                <CardTitle className="text-sm text-cyan-300">
+                  Holographic Enhanced
+                  <span className="block text-xs text-cyan-300/60 font-serif italic">Holographica</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -126,9 +126,9 @@ export function RealEstateMarketplace() {
 
             <Card className="bg-gradient-to-br from-emerald-950/30 to-teal-950/30 border-emerald-500/20 backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-serif text-emerald-300">
-                  VISIO 360°
-                  <span className="block text-xs text-emerald-300/60 font-sans">Virtual Tours</span>
+                <CardTitle className="text-sm text-emerald-300">
+                  Virtual Tours
+                  <span className="block text-xs text-emerald-300/60 font-serif italic">Visio 360°</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -141,10 +141,10 @@ export function RealEstateMarketplace() {
           {/* Advanced Search Controls */}
           <Card className="bg-gradient-to-r from-indigo-950/60 via-purple-950/60 to-cyan-950/60 backdrop-blur-sm border-indigo-500/20">
             <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-xl font-serif text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
+              <CardTitle className="flex items-center gap-3 text-xl text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
                 <Filter className="w-6 h-6 text-amber-400" />
-                INSTRUMENTA QUAERENDI
-                <span className="text-sm text-amber-300/60 font-sans">Advanced Search Tools</span>
+                Advanced Search Tools
+                <span className="text-sm text-amber-300/60 font-serif italic">Instrumenta Quaerendi</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -153,9 +153,11 @@ export function RealEstateMarketplace() {
                 <div className="space-y-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
                     <MapPin className="w-4 h-4 text-amber-400" />
-                    <span className="font-serif">LOCUS QUAERERE</span>
+                    <span>Location Search</span>
                   </label>
-                  <div className="text-xs text-amber-300/60 mb-2">Location Search • Enter city, state or ZIP code</div>
+                  <div className="text-xs text-amber-300/60 mb-2 font-serif italic">
+                    Locus Quaerere • Enter city, state or ZIP code
+                  </div>
                   <div className="flex gap-2">
                     <Input
                       placeholder="Enter city, state..."
@@ -179,9 +181,11 @@ export function RealEstateMarketplace() {
                 <div className="space-y-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
                     <DollarSign className="w-4 h-4 text-amber-400" />
-                    <span className="font-serif">PRETIUM SPATIUM</span>
+                    <span>Price Range</span>
                   </label>
-                  <div className="text-xs text-amber-300/60 mb-2">Price Range • Filter by budget</div>
+                  <div className="text-xs text-amber-300/60 mb-2 font-serif italic">
+                    Pretium Spatium • Filter by budget
+                  </div>
                   <Select value={priceRange} onValueChange={setPriceRange}>
                     <SelectTrigger className="border-indigo-500/20 bg-indigo-950/30 text-indigo-200">
                       <SelectValue placeholder="Select price range" />
@@ -189,32 +193,32 @@ export function RealEstateMarketplace() {
                     <SelectContent className="border-indigo-500/20 bg-indigo-950/90 text-indigo-200">
                       <SelectItem value="all">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">OMNIS PRETIUM</div>
                           <div className="text-sm">All Prices</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Omnis Pretium</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="under-500k">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">SUB D</div>
                           <div className="text-sm">Under $500K</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Sub D</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="500k-1m">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">D - M</div>
                           <div className="text-sm">$500K - $1M</div>
+                          <div className="text-xs text-amber-400 font-serif italic">D - M</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="1m-2m">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">M - MM</div>
                           <div className="text-sm">$1M - $2M</div>
+                          <div className="text-xs text-amber-400 font-serif italic">M - MM</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="over-2m">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">SUPER MM</div>
                           <div className="text-sm">Over $2M</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Super MM</div>
                         </div>
                       </SelectItem>
                     </SelectContent>
@@ -225,9 +229,11 @@ export function RealEstateMarketplace() {
                 <div className="space-y-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
                     <Home className="w-4 h-4 text-amber-400" />
-                    <span className="font-serif">GENUS PRAEDII</span>
+                    <span>Property Type</span>
                   </label>
-                  <div className="text-xs text-amber-300/60 mb-2">Property Type • Select home style</div>
+                  <div className="text-xs text-amber-300/60 mb-2 font-serif italic">
+                    Genus Praedii • Select home style
+                  </div>
                   <Select value={propertyType} onValueChange={setPropertyType}>
                     <SelectTrigger className="border-indigo-500/20 bg-indigo-950/30 text-indigo-200">
                       <SelectValue placeholder="Select property type" />
@@ -235,32 +241,32 @@ export function RealEstateMarketplace() {
                     <SelectContent className="border-indigo-500/20 bg-indigo-950/90 text-indigo-200">
                       <SelectItem value="all">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">OMNIA GENERA</div>
                           <div className="text-sm">All Types</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Omnia Genera</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="SINGLE_FAMILY">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">DOMUS SINGULARIS</div>
                           <div className="text-sm">Single Family Home</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Domus Singularis</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="CONDO">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">CONDOMINIUM</div>
                           <div className="text-sm">Condominium</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Condominium</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="TOWNHOUSE">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">DOMUS URBANA</div>
                           <div className="text-sm">Townhouse</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Domus Urbana</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="MULTI_FAMILY">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">DOMUS MULTIPLEX</div>
                           <div className="text-sm">Multi-Family</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Domus Multiplex</div>
                         </div>
                       </SelectItem>
                     </SelectContent>
@@ -271,9 +277,11 @@ export function RealEstateMarketplace() {
                 <div className="space-y-3">
                   <label className="flex items-center gap-2 text-sm font-medium text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
                     <TrendingUp className="w-4 h-4 text-amber-400" />
-                    <span className="font-serif">STATUS PRAEDII</span>
+                    <span>Property Status</span>
                   </label>
-                  <div className="text-xs text-amber-300/60 mb-2">Property Status • Availability type</div>
+                  <div className="text-xs text-amber-300/60 mb-2 font-serif italic">
+                    Status Praedii • Availability type
+                  </div>
                   <Select value={status} onValueChange={setStatus}>
                     <SelectTrigger className="border-indigo-500/20 bg-indigo-950/30 text-indigo-200">
                       <SelectValue placeholder="Select status" />
@@ -281,20 +289,20 @@ export function RealEstateMarketplace() {
                     <SelectContent className="border-indigo-500/20 bg-indigo-950/90 text-indigo-200">
                       <SelectItem value="for_sale">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">AD VENDENDUM</div>
                           <div className="text-sm">For Sale</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Ad Vendendum</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="for_rent">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">AD LOCENDUM</div>
                           <div className="text-sm">For Rent</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Ad Locendum</div>
                         </div>
                       </SelectItem>
                       <SelectItem value="sold">
                         <div>
-                          <div className="font-serif text-xs text-amber-400">VENDITUM</div>
                           <div className="text-sm">Recently Sold</div>
+                          <div className="text-xs text-amber-400 font-serif italic">Venditum</div>
                         </div>
                       </SelectItem>
                     </SelectContent>
@@ -370,9 +378,9 @@ export function RealEstateMarketplace() {
           {!loading && properties.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-serif text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
-                  COLLECTIO PRAEDIORUM
-                  <span className="block text-sm text-amber-300/60 font-sans">Property Collection</span>
+                <h2 className="text-2xl text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text">
+                  Property Collection
+                  <span className="block text-sm text-amber-300/60 font-serif italic">Collectio Praediorum</span>
                 </h2>
                 <div className="text-sm text-indigo-300/70">
                   Showing {properties.length} of {total} properties
@@ -385,10 +393,8 @@ export function RealEstateMarketplace() {
           {/* No Results */}
           {!loading && !error && properties.length === 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-12">
-              <div className="text-indigo-300/70 text-lg mb-2">
-                <span className="font-serif">NULLA PRAEDIA INVENTA</span>
-              </div>
-              <div className="text-indigo-400/50 text-sm mb-4">No Properties Found</div>
+              <div className="text-indigo-300/70 text-lg mb-2">No Properties Found</div>
+              <div className="text-indigo-400/50 text-sm mb-4 font-serif italic">Nulla Praedia Inventa</div>
               <div className="text-indigo-400/50 text-sm">Try adjusting your search criteria or location</div>
             </motion.div>
           )}

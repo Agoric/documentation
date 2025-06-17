@@ -21,22 +21,28 @@ export default function UserAgreementPage() {
               </div>
 
               <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent mb-2">
-                FOEDUS CIVITATIS ECONOMICAE
+                Economic Citizenship Agreement
               </h1>
-              <p className="text-xl text-amber-200/80 mb-4">Economic Citizenship Agreement</p>
+              <p className="text-xl text-amber-200/80 mb-4 font-serif italic">Foedus Civitatis Economicae</p>
 
-              <h2 className="text-2xl text-indigo-300 mb-4">AUCTORITAS EMPIRICA CREDITUM ET MUTUUM INCLUSIVUM</h2>
-              <p className="text-indigo-400 mb-2">Inclusive Lending and Credit Empirical Authority</p>
-              <p className="text-sm text-indigo-500">RENOVATUM: {new Date().toLocaleDateString()} • Last Updated</p>
+              <h2 className="text-2xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
+              <p className="text-indigo-400 mb-2 font-serif italic">
+                Auctoritas Empirica Creditum et Mutuum Inclusivum
+              </p>
+              <p className="text-sm text-indigo-500">
+                Last Updated: {new Date().toLocaleDateString()} • <span className="font-serif italic">Renovatum</span>
+              </p>
             </div>
 
             <div className="space-y-8 text-indigo-200">
               {/* Welcome Section */}
               <section>
                 <h3 className="text-2xl font-semibold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                  I. SALVE AD CIVITATEM ECONOMICAM GLOBALEM
+                  1. Welcome to Global Economic Citizenship
                 </h3>
-                <p className="text-lg text-amber-200/70 mb-4">Welcome to Global Economic Citizenship</p>
+                <p className="text-lg text-amber-200/70 mb-4 font-serif italic">
+                  Salve ad Civitatem Economicam Globalem
+                </p>
                 <p className="mb-4 leading-relaxed">
                   Welcome home to the Inclusive Lending and Credit Empirical Authority ("ILCEA"). By creating an account
                   and using our New World Wealth Navigation Assistant, you become an Economic Global Citizen and agree
@@ -48,9 +54,9 @@ export default function UserAgreementPage() {
               {/* Citizenship Benefits */}
               <section>
                 <h3 className="text-2xl font-semibold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                  II. BENEFICIA CIVITATIS ECONOMICAE
+                  2. Economic Citizenship Benefits
                 </h3>
-                <p className="text-lg text-amber-200/70 mb-4">Economic Citizenship Benefits</p>
+                <p className="text-lg text-amber-200/70 mb-4 font-serif italic">Beneficia Civitatis Economicae</p>
                 <p className="mb-6">As an Economic Global Citizen, you gain access to:</p>
 
                 <div className="grid gap-6 md:grid-cols-2">
@@ -58,8 +64,8 @@ export default function UserAgreementPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <Globe className="h-6 w-6 text-blue-400" />
                       <div>
-                        <h4 className="font-semibold text-amber-300">ACCESSUS FINANCIALIS GLOBALIS</h4>
-                        <p className="text-sm text-blue-300">Global Financial Access</p>
+                        <h4 className="font-semibold text-amber-300">Global Financial Access</h4>
+                        <p className="text-sm text-blue-300 font-serif italic">Accessus Financialis Globalis</p>
                       </div>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-2">
@@ -74,8 +80,8 @@ export default function UserAgreementPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <Shield className="h-6 w-6 text-green-400" />
                       <div>
-                        <h4 className="font-semibold text-amber-300">AUCTORITAS CREDITUM EMPIRICA</h4>
-                        <p className="text-sm text-green-300">Empirical Credit Authority</p>
+                        <h4 className="font-semibold text-amber-300">Empirical Credit Authority</h4>
+                        <p className="text-sm text-green-300 font-serif italic">Auctoritas Creditum Empirica</p>
                       </div>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-2">
@@ -90,8 +96,8 @@ export default function UserAgreementPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <Users className="h-6 w-6 text-purple-400" />
                       <div>
-                        <h4 className="font-semibold text-amber-300">NAVIGATIO DIVITIARUM AI</h4>
-                        <p className="text-sm text-purple-300">AI Wealth Navigation</p>
+                        <h4 className="font-semibold text-amber-300">AI Wealth Navigation</h4>
+                        <p className="text-sm text-purple-300 font-serif italic">Navigatio Divitiarum AI</p>
                       </div>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-2">
@@ -106,8 +112,8 @@ export default function UserAgreementPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <FileText className="h-6 w-6 text-yellow-400" />
                       <div>
-                        <h4 className="font-semibold text-amber-300">TECHNOLOGIAE REVOLUTIONARIAE</h4>
-                        <p className="text-sm text-yellow-300">Revolutionary Technologies</p>
+                        <h4 className="font-semibold text-amber-300">Revolutionary Technologies</h4>
+                        <p className="text-sm text-yellow-300 font-serif italic">Technologiae Revolutionariae</p>
                       </div>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-2">
@@ -123,9 +129,9 @@ export default function UserAgreementPage() {
               {/* Account Creation */}
               <section>
                 <h3 className="text-2xl font-semibold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                  III. CREATIO ET VERIFICATIO RATIONIS
+                  3. Account Creation and Verification
                 </h3>
-                <p className="text-lg text-amber-200/70 mb-4">Account Creation and Verification</p>
+                <p className="text-lg text-amber-200/70 mb-4 font-serif italic">Creatio et Verificatio Rationis</p>
                 <p className="mb-4">To become an Economic Global Citizen, you must:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Provide accurate and complete personal information</li>
@@ -140,13 +146,16 @@ export default function UserAgreementPage() {
               {/* Financial Services */}
               <section>
                 <h3 className="text-2xl font-semibold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                  IV. USUS SERVITII FINANCIALIS
+                  4. Financial Services Usage
                 </h3>
-                <p className="text-lg text-amber-200/70 mb-4">Financial Services Usage</p>
+                <p className="text-lg text-amber-200/70 mb-4 font-serif italic">Usus Servitii Financialis</p>
 
                 <div className="space-y-6">
                   <HolographicGlassCard className="p-6" glassEffect="light">
-                    <h4 className="font-semibold text-amber-300 mb-2">SERVITIA MUTUORUM • Lending Services:</h4>
+                    <h4 className="font-semibold text-amber-300 mb-2">
+                      Lending Services
+                      <span className="text-sm text-amber-200/70 font-serif italic ml-2">• Servitia Mutuorum</span>
+                    </h4>
                     <ul className="list-disc list-inside space-y-1 ml-4 text-sm text-indigo-300">
                       <li>You agree to repay all borrowed amounts according to agreed terms</li>
                       <li>Interest rates and fees will be clearly disclosed before acceptance</li>
@@ -156,7 +165,10 @@ export default function UserAgreementPage() {
                   </HolographicGlassCard>
 
                   <HolographicGlassCard className="p-6" glassEffect="light">
-                    <h4 className="font-semibold text-amber-300 mb-2">SERVITIA INVESTIMENTI • Investment Services:</h4>
+                    <h4 className="font-semibold text-amber-300 mb-2">
+                      Investment Services
+                      <span className="text-sm text-amber-200/70 font-serif italic ml-2">• Servitia Investimenti</span>
+                    </h4>
                     <ul className="list-disc list-inside space-y-1 ml-4 text-sm text-indigo-300">
                       <li>All investments carry risk of loss, including total loss</li>
                       <li>Past performance does not guarantee future results</li>
@@ -166,7 +178,10 @@ export default function UserAgreementPage() {
                   </HolographicGlassCard>
 
                   <HolographicGlassCard className="p-6" glassEffect="light">
-                    <h4 className="font-semibold text-amber-300 mb-2">SERVITIA CREDITUM • Credit Services:</h4>
+                    <h4 className="font-semibold text-amber-300 mb-2">
+                      Credit Services
+                      <span className="text-sm text-amber-200/70 font-serif italic ml-2">• Servitia Creditum</span>
+                    </h4>
                     <ul className="list-disc list-inside space-y-1 ml-4 text-sm text-indigo-300">
                       <li>Credit decisions are based on empirical assessment algorithms</li>
                       <li>Credit terms may change based on updated assessments</li>
@@ -180,9 +195,9 @@ export default function UserAgreementPage() {
               {/* Technology Usage */}
               <section>
                 <h3 className="text-2xl font-semibold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                  V. USUS TECHNOLOGIAE ET LIMITATIONES
+                  5. Technology Usage and Limitations
                 </h3>
-                <p className="text-lg text-amber-200/70 mb-4">Technology Usage and Limitations</p>
+                <p className="text-lg text-amber-200/70 mb-4 font-serif italic">Usus Technologiae et Limitationes</p>
                 <p className="mb-4">
                   Our platform utilizes advanced technologies including quantum computing, artificial intelligence, and
                   blockchain systems. You acknowledge that:
@@ -200,14 +215,14 @@ export default function UserAgreementPage() {
               {/* Contact Information */}
               <section>
                 <h3 className="text-2xl font-semibold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                  VI. INFORMATIONES CONTACTUS
+                  6. Contact Information
                 </h3>
-                <p className="text-lg text-amber-200/70 mb-4">Contact Information</p>
+                <p className="text-lg text-amber-200/70 mb-4 font-serif italic">Informationes Contactus</p>
                 <p className="mb-4">For questions about this User Agreement or your Economic Global Citizenship:</p>
                 <HolographicGlassCard className="p-6" glassEffect="medium">
                   <div className="text-center">
-                    <p className="font-semibold text-amber-300 mb-2">DEPARTMENTUM RELATIONUM CLIENTIUM</p>
-                    <p className="text-amber-200/70 mb-4">Customer Relations Department</p>
+                    <p className="font-semibold text-amber-300 mb-2">Customer Relations Department</p>
+                    <p className="text-amber-200/70 mb-4 font-serif italic">Departmentum Relationum Clientium</p>
                     <div className="space-y-2 text-indigo-300">
                       <p>Inclusive Lending and Credit Empirical Authority</p>
                       <p>Email: support@ilcea.com</p>
@@ -222,17 +237,17 @@ export default function UserAgreementPage() {
               <HolographicGlassCard className="p-8 mt-8" glassEffect="heavy" holographicIntensity="intense">
                 <div className="text-center">
                   <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent mb-2">
-                    ACCEPTATIO FOEDERIS
+                    Agreement Acceptance
                   </h3>
-                  <p className="text-lg text-amber-200/70 mb-4">Agreement Acceptance</p>
+                  <p className="text-lg text-amber-200/70 mb-4 font-serif italic">Acceptatio Foederis</p>
                   <p className="text-indigo-200 mb-4">
                     By using ILCEA services, you acknowledge that you have read, understood, and agree to be bound by
                     this User Agreement. You also confirm that you meet all eligibility requirements for Economic Global
                     Citizenship and will comply with all applicable laws and regulations.
                   </p>
-                  <p className="text-amber-300 font-semibold text-lg">SALVE DOMUM AD FUTURUM FINANCIAE</p>
-                  <p className="text-amber-200/70 mt-2">
-                    Welcome home to the future of finance. Your journey as an Economic Global Citizen begins now.
+                  <p className="text-amber-300 font-semibold text-lg">Welcome home to the future of finance.</p>
+                  <p className="text-amber-200/70 mt-2 font-serif italic">
+                    Salve domum ad futurum financiae. Your journey as an Economic Global Citizen begins now.
                   </p>
                 </div>
               </HolographicGlassCard>

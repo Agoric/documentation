@@ -422,7 +422,8 @@ export function HolographicProductsDashboard() {
               <div className="p-4 border-b border-amber-500/30 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <SupremeAuthorityCoin variant="badge" size="sm" />
-                  <h2 className="text-xl font-semibold text-amber-300 font-serif">CONSILIUM PROBATIONIS IMPERIALIS</h2>
+                  <h2 className="text-xl font-semibold text-amber-300">Imperial Testing Console</h2>
+                  <span className="text-sm text-amber-300/60 font-serif italic">Consilium Probationis Imperialis</span>
                 </div>
                 <Button
                   variant="outline"
@@ -468,10 +469,10 @@ export function HolographicProductsDashboard() {
                   <div className="flex items-center space-x-4">
                     <SupremeAuthorityCoin variant="logo" size={layout.cardSize === "sm" ? "md" : "lg"} />
                     <div>
-                      <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
-                        MERCATUS DIGITALIS IMPERIUM
+                      <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent">
+                        Digital Marketplace Empire
                       </h1>
-                      <p className="text-amber-300/80 mt-1 font-medium">Imperium Digitale Mercatus Supremus</p>
+                      <p className="text-amber-300/80 mt-1 font-serif italic">Mercatus Digitalis Imperium</p>
                     </div>
                   </div>
 
@@ -546,7 +547,8 @@ export function HolographicProductsDashboard() {
                       padding: layout.adaptiveSpacing,
                     }}
                   >
-                    <span className="text-sm text-amber-300 font-medium">FILTRUM ACTIVUM:</span>
+                    <span className="text-sm text-amber-300 font-medium">Active Filters:</span>
+                    <span className="text-xs text-amber-300/60 font-serif italic">Filtrum Activum</span>
                     <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white border-0">
                       {activeFilterCount} applied
                     </Badge>
@@ -563,7 +565,10 @@ export function HolographicProductsDashboard() {
 
                 {/* Results Count */}
                 <div className="text-sm text-amber-300/80 font-medium">
-                  COLLECTIONES DIGITALES: {sortedProducts?.length || 0} ex {sampleProducts?.length || 0} Manifestae
+                  Digital Collections: {sortedProducts?.length || 0} of {sampleProducts?.length || 0} Available
+                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">
+                    • Collectiones Digitales Manifestae
+                  </span>
                 </div>
               </motion.div>
 

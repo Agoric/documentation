@@ -22,19 +22,19 @@ import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
 const categories = [
-  { id: "all", name: "All Collections", count: 156, romanName: "OMNIA" },
-  { id: "PFP", name: "Profile Pictures", count: 24, romanName: "PERSONA" },
-  { id: "Art", name: "Digital Art", count: 18, romanName: "ARS" },
-  { id: "Gaming", name: "Gaming", count: 12, romanName: "LUDUS" },
-  { id: "Music", name: "Music", count: 32, romanName: "MUSICA" },
-  { id: "Virtual Land", name: "Virtual Land", count: 8, romanName: "TERRA" },
-  { id: "Sports", name: "Sports", count: 15, romanName: "CERTAMEN" },
-  { id: "Avatars", name: "Avatars", count: 22, romanName: "IMAGO" },
-  { id: "Pixel Art", name: "Pixel Art", count: 19, romanName: "PIXELUM" },
+  { id: "all", name: "All Collections", count: 156, romanName: "Omnia" },
+  { id: "PFP", name: "Profile Pictures", count: 24, romanName: "Persona" },
+  { id: "Art", name: "Digital Art", count: 18, romanName: "Ars" },
+  { id: "Gaming", name: "Gaming", count: 12, romanName: "Ludus" },
+  { id: "Music", name: "Music", count: 32, romanName: "Musica" },
+  { id: "Virtual Land", name: "Virtual Land", count: 8, romanName: "Terra" },
+  { id: "Sports", name: "Sports", count: 15, romanName: "Certamen" },
+  { id: "Avatars", name: "Avatars", count: 22, romanName: "Imago" },
+  { id: "Pixel Art", name: "Pixel Art", count: 19, romanName: "Pixelum" },
 ]
 
 const priceRanges = [
-  { id: "all", name: "All Prices", romanName: "OMNIS PRETIUM" },
+  { id: "all", name: "All Prices", romanName: "Omnis Pretium" },
   { id: "under-1", name: "Under 1 ETH", romanName: "< I ETH" },
   { id: "1-5", name: "1 - 5 ETH", romanName: "I-V ETH" },
   { id: "5-10", name: "5 - 10 ETH", romanName: "V-X ETH" },
@@ -115,8 +115,8 @@ export function AdaptiveHolographicSidebar({
         <div className="flex items-center space-x-3">
           <SupremeAuthorityCoin variant="badge" size="sm" />
           <div>
-            <h2 className="text-lg font-bold text-amber-300 font-serif">FILTRUM IMPERIALIS</h2>
-            <p className="text-xs text-amber-300/60">Imperial Filters</p>
+            <h2 className="text-lg font-bold text-amber-300">Imperial Filters</h2>
+            <p className="text-xs text-amber-300/60 font-serif italic">Filtrum Imperialis</p>
           </div>
         </div>
 
@@ -141,9 +141,9 @@ export function AdaptiveHolographicSidebar({
       <SidebarContent className="p-4 space-y-6">
         {/* Search */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-amber-300 font-serif text-sm">
-            QUAERERE
-            <span className="text-xs text-amber-300/60 font-sans ml-2">Search</span>
+          <SidebarGroupLabel className="text-amber-300 text-sm">
+            Search
+            <span className="text-xs text-amber-300/60 font-serif italic ml-2">Quaerere</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="relative">
@@ -160,9 +160,9 @@ export function AdaptiveHolographicSidebar({
 
         {/* Categories */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-amber-300 font-serif text-sm">
-            GENERA
-            <span className="text-xs text-amber-300/60 font-sans ml-2">Categories</span>
+          <SidebarGroupLabel className="text-amber-300 text-sm">
+            Categories
+            <span className="text-xs text-amber-300/60 font-serif italic ml-2">Genera</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="space-y-2">
@@ -180,8 +180,8 @@ export function AdaptiveHolographicSidebar({
                   whileTap={{ scale: 0.98 }}
                 >
                   <div>
-                    <div className="font-serif text-xs text-amber-400">{category.romanName}</div>
                     <div className="text-sm">{category.name}</div>
+                    <div className="text-xs text-amber-400 font-serif italic">{category.romanName}</div>
                   </div>
                   <Badge variant="outline" className="text-xs border-amber-500/30 text-amber-300/60">
                     {category.count}
@@ -194,9 +194,9 @@ export function AdaptiveHolographicSidebar({
 
         {/* Price Range */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-amber-300 font-serif text-sm">
-            PRETIUM SPATIUM
-            <span className="text-xs text-amber-300/60 font-sans ml-2">Price Range</span>
+          <SidebarGroupLabel className="text-amber-300 text-sm">
+            Price Range
+            <span className="text-xs text-amber-300/60 font-serif italic ml-2">Pretium Spatium</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <Select
@@ -210,8 +210,8 @@ export function AdaptiveHolographicSidebar({
                 {priceRanges.map((range) => (
                   <SelectItem key={range.id} value={range.id} className="text-amber-300">
                     <div>
-                      <div className="font-serif text-xs text-amber-400">{range.romanName}</div>
                       <div className="text-sm">{range.name}</div>
+                      <div className="text-xs text-amber-400 font-serif italic">{range.romanName}</div>
                     </div>
                   </SelectItem>
                 ))}
@@ -222,9 +222,9 @@ export function AdaptiveHolographicSidebar({
 
         {/* Rating Filter */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-amber-300 font-serif text-sm">
-            AESTIMATIO MINIMA
-            <span className="text-xs text-amber-300/60 font-sans ml-2">Min Rating</span>
+          <SidebarGroupLabel className="text-amber-300 text-sm">
+            Minimum Rating
+            <span className="text-xs text-amber-300/60 font-serif italic ml-2">Aestimatio Minima</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="flex items-center space-x-2">
@@ -250,9 +250,9 @@ export function AdaptiveHolographicSidebar({
 
         {/* Special Features */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-amber-300 font-serif text-sm">
-            PROPRIETATES SPECIALES
-            <span className="text-xs text-amber-300/60 font-sans ml-2">Special Features</span>
+          <SidebarGroupLabel className="text-amber-300 text-sm">
+            Special Features
+            <span className="text-xs text-amber-300/60 font-serif italic ml-2">Proprietates Speciales</span>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="space-y-3">
@@ -301,9 +301,10 @@ export function AdaptiveHolographicSidebar({
         {/* Results Count */}
         <div className="mt-6 p-3 bg-gradient-to-r from-amber-500/10 to-purple-500/10 rounded-lg border border-amber-500/20">
           <div className="text-center">
-            <div className="text-lg font-bold text-amber-300 font-serif">COLLECTIONES</div>
+            <div className="text-lg font-bold text-amber-300">Collections</div>
+            <div className="text-xs text-amber-300/60 font-serif italic">Collectiones</div>
             <div className="text-2xl font-bold text-amber-400">{productCount || 0}</div>
-            <div className="text-xs text-amber-300/60">Collections Found</div>
+            <div className="text-xs text-amber-300/60">Found</div>
           </div>
         </div>
       </SidebarContent>
