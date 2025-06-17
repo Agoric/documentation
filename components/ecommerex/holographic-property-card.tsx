@@ -17,6 +17,7 @@ import {
   RotateCcw,
   Gavel,
   Target,
+  Info,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -59,6 +60,7 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
   const [isLiked, setIsLiked] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [show360Modal, setShow360Modal] = useState(false)
+  const [showDetails, setShowDetails] = useState(false)
 
   const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProperties } =
     usePropertyComparison()
@@ -151,104 +153,149 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
               )}
             </div>
 
-            {/* 360° View Button */}
-            {property.has360View && (
+            {/* Action Buttons Overlay */}
+            <div className="absolute top-2 right-2 flex flex-col gap-2">
+              {/* Like Button */}
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute bottom-2 right-2 h-8 w-8 bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-cyan-200 transition-all duration-200"
+                className="h-8 w-8 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all duration-200"
                 onClick={(e) => {
                   e.preventDefault()
-                  setShow360Modal(true)
+                  setIsLiked(!isLiked)
                 }}
-                title="360° View"
+                title={isLiked ? "Remove from favorites" : "Add to favorites"}
               >
-                <RotateCcw className="h-4 w-4" />
+                <Heart
+                  className={`h-4 w-4 transition-all duration-200 ${isLiked ? "fill-red-500 text-red-500 scale-110" : "text-white"}`}
+                />
               </Button>
-            )}
 
-            {/* Holographic Label */}
-            {property.isHolographic && (
-              <div className="absolute top-2 left-2 z-30">
-                <HolographicLabel variant="premium" features={property.holographicFeatures} />
-              </div>
-            )}
+              {/* 360° View Button */}
+              {property.has360View && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-cyan-200 transition-all duration-200"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setShow360Modal(true)
+                  }}
+                  title="360° Virtual Tour"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              )}
 
-            {/* Property Type Badge */}
-            <Badge
-              className={`absolute ${property.isHolographic ? "top-14 left-2" : "top-2 left-2"} bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg`}
-              style={{
-                clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
-              }}
-            >
-              {property.type}
-            </Badge>
+              {/* Details Button */}
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8 bg-indigo-600/20 backdrop-blur-sm border border-indigo-400/30 text-indigo-300 hover:bg-indigo-600/30 hover:text-indigo-200 transition-all duration-200"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShowDetails(!showDetails)
+                }}
+                title="Property Details"
+              >
+                <Info className="h-4 w-4" />
+              </Button>
+            </div>
 
-            {/* Like Button */}
-            <Button
-              size="icon"
-              variant="ghost"
-              className="absolute top-2 right-2 h-8 w-8 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all duration-200"
-              onClick={(e) => {
-                e.preventDefault()
-                setIsLiked(!isLiked)
-              }}
-            >
-              <Heart
-                className={`h-4 w-4 transition-all duration-200 ${isLiked ? "fill-red-500 text-red-500 scale-110" : "text-white"}`}
-              />
-            </Button>
+            {/* Property Labels */}
+            <div className="absolute top-2 left-2 flex flex-col gap-2">
+              {/* Holographic Label */}
+              {property.isHolographic && <HolographicLabel variant="premium" features={property.holographicFeatures} />}
 
-            {/* Days on Market */}
-            {property.daysOnMarket < 30 && (
+              {/* Property Type Badge */}
               <Badge
-                className="absolute bottom-2 left-2 bg-emerald-600 text-white shadow-lg"
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
+                style={{
+                  clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
+                }}
+              >
+                <span className="font-serif text-xs">GENUS:</span> {property.type}
+              </Badge>
+
+              {/* Status Badge */}
+              <Badge
+                className={`shadow-lg ${
+                  property.status === "For Sale"
+                    ? "bg-gradient-to-r from-emerald-600 to-teal-600"
+                    : property.status === "For Rent"
+                      ? "bg-gradient-to-r from-blue-600 to-cyan-600"
+                      : "bg-gradient-to-r from-gray-600 to-slate-600"
+                } text-white`}
                 style={{
                   clipPath: "polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)",
                 }}
               >
-                <Zap className="w-3 h-3 mr-1" />
-                {property.daysOnMarket} days
+                <span className="font-serif text-xs">STATUS:</span> {property.status}
               </Badge>
-            )}
-          </div>
-
-          {/* Property Info */}
-          <div className="space-y-3">
-            <h3
-              className={`font-semibold text-lg line-clamp-2 transition-colors ${
-                property.isHolographic
-                  ? "text-transparent bg-gradient-to-r from-cyan-300 via-white to-purple-300 bg-clip-text group-hover:from-cyan-200 group-hover:to-purple-200"
-                  : "text-white group-hover:text-cyan-300"
-              }`}
-            >
-              {property.title}
-            </h3>
-
-            <div className="flex items-center text-sm text-indigo-200/70">
-              <MapPin className="w-4 h-4 mr-1" />
-              {property.location}
             </div>
 
+            {/* Market Indicators */}
+            <div className="absolute bottom-2 left-2 flex gap-2">
+              {/* Days on Market */}
+              {property.daysOnMarket < 30 && (
+                <Badge
+                  className="bg-emerald-600 text-white shadow-lg"
+                  style={{
+                    clipPath: "polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)",
+                  }}
+                  title="Days on Market"
+                >
+                  <Zap className="w-3 h-3 mr-1" />
+                  <span className="font-serif text-xs">DIES:</span> {property.daysOnMarket}
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {/* Property Information */}
+          <div className="space-y-3">
+            {/* Title and Location */}
+            <div>
+              <h3
+                className={`font-semibold text-lg line-clamp-2 transition-colors ${
+                  property.isHolographic
+                    ? "text-transparent bg-gradient-to-r from-cyan-300 via-white to-purple-300 bg-clip-text group-hover:from-cyan-200 group-hover:to-purple-200"
+                    : "text-white group-hover:text-cyan-300"
+                }`}
+              >
+                {property.title}
+              </h3>
+              <div className="flex items-center text-sm text-indigo-200/70 mt-1">
+                <MapPin className="w-4 h-4 mr-1" />
+                <span className="font-serif text-xs">LOCUS:</span>
+                <span className="ml-1">{property.location}</span>
+              </div>
+            </div>
+
+            {/* Description */}
             <p className="text-sm text-indigo-200/70 line-clamp-2">{property.description}</p>
 
-            {/* Property Details */}
+            {/* Property Specifications */}
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div className="flex items-center text-indigo-200/70">
                 <Bed className="w-4 h-4 mr-1" />
-                {property.bedrooms} beds
+                <span className="font-serif text-xs">CUBICULA:</span>
+                <span className="ml-1">{property.bedrooms}</span>
               </div>
               <div className="flex items-center text-indigo-200/70">
                 <Bath className="w-4 h-4 mr-1" />
-                {property.bathrooms} baths
+                <span className="font-serif text-xs">BALNEA:</span>
+                <span className="ml-1">{property.bathrooms}</span>
               </div>
               <div className="flex items-center text-indigo-200/70">
                 <Ruler className="w-4 h-4 mr-1" />
-                {property.sqft.toLocaleString()} sq ft
+                <span className="font-serif text-xs">AREA:</span>
+                <span className="ml-1">{property.sqft.toLocaleString()} sq ft</span>
               </div>
               <div className="flex items-center text-indigo-200/70">
                 <Calendar className="w-4 h-4 mr-1" />
-                Built {property.yearBuilt}
+                <span className="font-serif text-xs">ANNUS:</span>
+                <span className="ml-1">{property.yearBuilt}</span>
               </div>
             </div>
 
@@ -265,11 +312,12 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 ))}
               </div>
               <span className="text-sm text-indigo-200/70">
-                {property.rating} ({Math.floor(Math.random() * 100) + 10} reviews)
+                <span className="font-serif text-xs">AESTIMATIO:</span> {property.rating.toFixed(1)} (
+                {Math.floor(Math.random() * 100) + 10} reviews)
               </span>
             </div>
 
-            {/* Price and Monthly Payment */}
+            {/* Pricing Information */}
             <div className="space-y-1">
               <div
                 className={`text-2xl font-bold ${
@@ -278,14 +326,15 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                     : "text-white"
                 }`}
               >
-                {formatPrice(property.price)}
+                <span className="font-serif text-sm text-amber-300">PRETIUM:</span> {formatPrice(property.price)}
               </div>
               <div className="text-sm text-indigo-200/70">
-                ${property.monthlyPayment.toLocaleString()}/month • ${property.pricePerSqft}/sq ft
+                <span className="font-serif text-xs">MENSILIS:</span> ${property.monthlyPayment.toLocaleString()}/month
+                • ${property.pricePerSqft}/sq ft
               </div>
             </div>
 
-            {/* Features */}
+            {/* Property Features */}
             <div className="flex flex-wrap gap-1">
               {property.features.slice(0, 3).map((feature) => (
                 <Badge
@@ -307,7 +356,7 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                     clipPath: "polygon(3px 0%, 100% 0%, calc(100% - 3px) 100%, 0% 100%)",
                   }}
                 >
-                  +{property.features.length - 3}
+                  +{property.features.length - 3} more
                 </Badge>
               )}
             </div>
@@ -324,9 +373,11 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 style={{
                   clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
                 }}
+                title="Place Bid • Submit an offer"
               >
                 <Gavel className="w-4 h-4 mr-2" />
-                Place Bid
+                <span className="font-serif text-xs">OFFERRE</span>
+                <span className="ml-1 text-xs">Place Bid</span>
               </Button>
               <Button
                 className={`text-white transition-all duration-200 ${
@@ -338,13 +389,15 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 style={{
                   clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
                 }}
+                title="Add to Goals • Save for later"
               >
                 <Target className="w-4 h-4 mr-2" />
-                Add to Goals
+                <span className="font-serif text-xs">META</span>
+                <span className="ml-1 text-xs">Add Goal</span>
               </Button>
             </div>
 
-            {/* Secondary Action Buttons */}
+            {/* Secondary Actions */}
             <div className="flex gap-2">
               <Button
                 variant="outline"
@@ -366,9 +419,11 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 style={{
                   clipPath: "polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)",
                 }}
+                title={inComparison ? "Remove from comparison" : "Add to comparison"}
               >
                 <BarChart3 className="w-4 h-4 mr-2" />
-                {inComparison ? "In Comparison" : "Compare"}
+                <span className="font-serif text-xs">COMPARARE</span>
+                <span className="ml-1 text-xs">{inComparison ? "Added" : "Compare"}</span>
               </Button>
               <Button
                 variant="outline"
@@ -377,6 +432,7 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 style={{
                   clipPath: "polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%)",
                 }}
+                title="View Details • See full information"
               >
                 <Eye className="w-4 h-4" />
               </Button>
