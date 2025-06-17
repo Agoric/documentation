@@ -40,6 +40,7 @@ interface UseZillowPropertiesReturn {
   error: string | null
   total: number
   refetch: () => void
+  message?: string
 }
 
 export function useZillowProperties({
@@ -53,6 +54,7 @@ export function useZillowProperties({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [total, setTotal] = useState(0)
+  const [message, setMessage] = useState<string>()
 
   const fetchProperties = async () => {
     try {
@@ -67,6 +69,8 @@ export function useZillowProperties({
         status,
       })
 
+      console.log("Fetching properties with params:", Object.fromEntries(params))
+
       const response = await fetch(`/api/zillow/properties?${params}`)
 
       if (!response.ok) {
@@ -75,17 +79,24 @@ export function useZillowProperties({
 
       const data = await response.json()
 
-      if (data.error) {
-        console.warn("API Warning:", data.error)
-      }
+      console.log("Received property data:", {
+        count: data.properties?.length || 0,
+        total: data.total,
+        message: data.message,
+      })
 
       setProperties(data.properties || [])
       setTotal(data.total || 0)
+      setMessage(data.message)
+
+      if (data.error) {
+        console.warn("API Warning:", data.error)
+      }
     } catch (err) {
       console.error("Error fetching properties:", err)
       setError(err instanceof Error ? err.message : "Failed to fetch properties")
 
-      // Set fallback data on error
+      // Set minimal fallback data on error
       setProperties([])
       setTotal(0)
     } finally {
@@ -102,6 +113,7 @@ export function useZillowProperties({
     loading,
     error,
     total,
+    message,
     refetch: fetchProperties,
   }
 }
