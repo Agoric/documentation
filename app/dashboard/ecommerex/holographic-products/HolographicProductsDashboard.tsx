@@ -6,12 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-grid"
 import { ComparisonBar } from "@/components/ecommerex/comparison-bar"
-import { HolographicSidebar } from "@/components/ecommerex/holographic-sidebar"
-import { RegalRealmToolbar } from "@/components/navigation/regal-realm-toolbar"
+import { AdaptiveHolographicSidebar } from "@/components/ecommerex/adaptive-holographic-sidebar"
+import { AdaptiveRegalToolbar } from "@/components/navigation/adaptive-regal-toolbar"
 import { FilterTestPanel } from "@/components/ecommerex/filter-test-panel"
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { SupremeAuthorityCoin } from "@/components/branding/supreme-authority-coin"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
+import { useSpatialLayout } from "@/hooks/use-spatial-layout"
 
 // Enhanced sample product data with correct structure for HolographicProductCard
 const sampleProducts = [
@@ -195,6 +197,11 @@ interface FilterState {
 }
 
 export function HolographicProductsDashboard() {
+  const { dimensions, layout, containerRef } = useSpatialLayout({
+    autoCollapse: true,
+    contentAware: true,
+  })
+
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("featured")
   const [showTestPanel, setShowTestPanel] = useState(false)
@@ -309,88 +316,84 @@ export function HolographicProductsDashboard() {
   }, [filterProducts, sortBy])
 
   const updateFilter = (key: keyof FilterState, value: any) => {
-    try {
-      setFilters((prev) => ({ ...prev, [key]: value }))
-    } catch (error) {
-      console.error("Error updating filter:", error)
-    }
+    setFilters((prev) => ({ ...prev, [key]: value }))
   }
 
   const clearAllFilters = () => {
-    try {
-      setFilters({
-        search: "",
-        category: "all",
-        priceRange: "all",
-        minRating: 0,
-        holographicOnly: false,
-        has360ViewOnly: false,
-        inStockOnly: false,
-      })
-    } catch (error) {
-      console.error("Error clearing filters:", error)
-    }
+    setFilters({
+      search: "",
+      category: "all",
+      priceRange: "all",
+      minRating: 0,
+      holographicOnly: false,
+      has360ViewOnly: false,
+      inStockOnly: false,
+    })
   }
 
   const activeFilterCount = Object.values(filters).filter(
     (value) => value !== "" && value !== "all" && value !== 0 && value !== false,
   ).length
 
-  const handleTestComplete = (results: any[]) => {
-    console.log("Filter test results:", results)
-    const passedTests = results.filter((r) => r.passed).length
-    const totalTests = results.length
-
-    if (passedTests === totalTests) {
-      console.log("✅ All filter tests passed!")
-    } else {
-      console.warn(`⚠️ ${totalTests - passedTests} filter tests failed`)
-    }
-  }
-
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 relative">
-        {/* Roman Column Pattern Background */}
+      <motion.div
+        ref={containerRef}
+        className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 relative"
+        animate={{
+          paddingLeft: layout.sidebarCollapsed ? 0 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Adaptive Roman Column Pattern Background */}
         <div className="absolute inset-0 opacity-5">
-          <div
+          <motion.div
             className="h-full w-full bg-repeat"
+            animate={{
+              backgroundSize: layout.adaptiveSpacing * 4,
+            }}
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23fbbf24' fillOpacity='0.1'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
             }}
           />
         </div>
 
-        {/* Regal Realm Navigation Toolbar */}
-        <RegalRealmToolbar />
+        {/* Adaptive Regal Toolbar */}
+        <AdaptiveRegalToolbar />
 
         {/* Test Panel Modal */}
         {showTestPanel && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-gradient-to-br from-purple-900/95 to-indigo-900/95 backdrop-blur-xl rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto border border-gold-500/30">
-              <div className="p-4 border-b border-gold-500/30 flex items-center justify-between">
+            <motion.div
+              className="bg-gradient-to-br from-purple-900/95 to-indigo-900/95 backdrop-blur-xl rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto border border-amber-500/30"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="p-4 border-b border-amber-500/30 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <SupremeAuthorityCoin variant="badge" size="sm" />
-                  <h2 className="text-xl font-semibold text-gold-300">Imperial Filter Testing Panel</h2>
+                  <h2 className="text-xl font-semibold text-amber-300 font-serif">IMPERIAL FILTER TESTING PANEL</h2>
                 </div>
                 <Button
                   variant="outline"
                   onClick={() => setShowTestPanel(false)}
-                  className="border-gold-500/30 text-gold-300 hover:bg-gold-500/20"
+                  className="border-amber-500/30 text-amber-300 hover:bg-amber-500/20"
                 >
                   Close
                 </Button>
               </div>
               <div className="p-4">
-                <FilterTestPanel products={sampleProducts} onTestComplete={handleTestComplete} />
+                <FilterTestPanel products={sampleProducts} onTestComplete={() => {}} />
               </div>
-            </div>
+            </motion.div>
           </div>
         )}
 
         <div className="flex">
-          {/* Sidebar */}
-          <HolographicSidebar
+          {/* Adaptive Sidebar */}
+          <AdaptiveHolographicSidebar
             filters={filters}
             onFilterChange={updateFilter}
             onClearFilters={clearAllFilters}
@@ -399,36 +402,52 @@ export function HolographicProductsDashboard() {
 
           {/* Main Content */}
           <SidebarInset className="flex-1">
-            <div className="p-6">
-              {/* Header with Supreme Authority Branding */}
-              <div className="mb-8">
+            <motion.div
+              className="h-full"
+              animate={{
+                padding: layout.contentPadding,
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Adaptive Header */}
+              <motion.div
+                className="mb-8"
+                animate={{
+                  marginBottom: layout.adaptiveSpacing * 2,
+                }}
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-4">
-                    <SupremeAuthorityCoin variant="logo" size="lg" />
+                    <SupremeAuthorityCoin variant="logo" size={layout.cardSize === "sm" ? "md" : "lg"} />
                     <div>
-                      <h1 className="text-3xl font-bold bg-gradient-to-r from-gold-400 via-purple-400 to-gold-400 bg-clip-text text-transparent">
+                      <motion.h1
+                        className="font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif"
+                        animate={{
+                          fontSize: layout.cardSize === "sm" ? "1.875rem" : "2.25rem",
+                        }}
+                      >
                         MERCATUS HOLOGRAPHICUS
-                      </h1>
-                      <p className="text-gold-300/80 mt-1 font-medium">
+                      </motion.h1>
+                      <p className="text-amber-300/80 mt-1 font-medium">
                         Imperial Marketplace of Holographic Technologies
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    {/* Test Panel Button */}
+                    {/* Adaptive Controls */}
                     <Button
                       variant="outline"
-                      size="sm"
+                      size={layout.toolbarCompact ? "sm" : "default"}
                       onClick={() => setShowTestPanel(true)}
-                      className="border-gold-500/30 text-gold-300 hover:bg-gold-500/20 bg-purple-900/30 backdrop-blur-sm"
+                      className="border-amber-500/30 text-amber-300 hover:bg-amber-500/20 bg-purple-900/30 backdrop-blur-sm"
                     >
                       <TestTube className="h-4 w-4 mr-2" />
-                      Imperial Tests
+                      {layout.showLabels ? "Imperial Tests" : "Tests"}
                     </Button>
 
                     {/* View Mode Toggle */}
-                    <div className="flex items-center bg-purple-900/30 backdrop-blur-sm rounded-lg p-1 border border-gold-500/20">
+                    <div className="flex items-center bg-purple-900/30 backdrop-blur-sm rounded-lg p-1 border border-amber-500/20">
                       <Button
                         variant={viewMode === "grid" ? "default" : "ghost"}
                         size="sm"
@@ -436,8 +455,8 @@ export function HolographicProductsDashboard() {
                         className={cn(
                           "h-8 w-8 p-0",
                           viewMode === "grid"
-                            ? "bg-gradient-to-r from-gold-600 to-purple-600 hover:from-gold-700 hover:to-purple-700"
-                            : "text-gold-300 hover:bg-gold-500/20",
+                            ? "bg-gradient-to-r from-amber-600 to-purple-600"
+                            : "text-amber-300 hover:bg-amber-500/20",
                         )}
                       >
                         <Grid className="h-4 w-4" />
@@ -449,73 +468,83 @@ export function HolographicProductsDashboard() {
                         className={cn(
                           "h-8 w-8 p-0",
                           viewMode === "list"
-                            ? "bg-gradient-to-r from-gold-600 to-purple-600 hover:from-gold-700 hover:to-purple-700"
-                            : "text-gold-300 hover:bg-gold-500/20",
+                            ? "bg-gradient-to-r from-amber-600 to-purple-600"
+                            : "text-amber-300 hover:bg-amber-500/20",
                         )}
                       >
                         <List className="h-4 w-4" />
                       </Button>
                     </div>
 
-                    {/* Sort Dropdown */}
+                    {/* Adaptive Sort Dropdown */}
                     <Select value={sortBy} onValueChange={setSortBy}>
-                      <SelectTrigger className="w-48 bg-purple-900/30 backdrop-blur-sm border-gold-500/20 text-gold-300">
-                        <SelectValue placeholder="Sort by Imperial Order" />
+                      <SelectTrigger
+                        className={cn(
+                          "bg-purple-900/30 backdrop-blur-sm border-amber-500/20 text-amber-300",
+                          layout.showLabels ? "w-48" : "w-32",
+                        )}
+                      >
+                        <SelectValue placeholder="Sort" />
                       </SelectTrigger>
-                      <SelectContent className="bg-purple-900/95 backdrop-blur-xl border-gold-500/30">
-                        <SelectItem value="featured" className="text-gold-300 hover:bg-gold-500/20">
-                          Featured
-                        </SelectItem>
-                        <SelectItem value="price-low" className="text-gold-300 hover:bg-gold-500/20">
-                          Price: Ascendant
-                        </SelectItem>
-                        <SelectItem value="price-high" className="text-gold-300 hover:bg-gold-500/20">
-                          Price: Descendant
-                        </SelectItem>
-                        <SelectItem value="rating" className="text-gold-300 hover:bg-gold-500/20">
-                          Imperial Rating
-                        </SelectItem>
-                        <SelectItem value="name" className="text-gold-300 hover:bg-gold-500/20">
-                          Alphabetical
-                        </SelectItem>
+                      <SelectContent className="bg-purple-900/95 backdrop-blur-xl border-amber-500/30">
+                        <SelectItem value="featured">Featured</SelectItem>
+                        <SelectItem value="price-low">Price: Low</SelectItem>
+                        <SelectItem value="price-high">Price: High</SelectItem>
+                        <SelectItem value="rating">Rating</SelectItem>
+                        <SelectItem value="name">Name</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
-                {/* Active Filters with Roman Styling */}
+                {/* Active Filters */}
                 {activeFilterCount > 0 && (
-                  <div className="flex items-center space-x-2 mb-4 p-3 bg-purple-900/20 backdrop-blur-sm rounded-lg border border-gold-500/20">
-                    <span className="text-sm text-gold-300 font-medium">Active Imperial Filters:</span>
-                    <Badge className="bg-gradient-to-r from-gold-600 to-purple-600 text-white border-0">
-                      {activeFilterCount} filter{activeFilterCount !== 1 ? "s" : ""} applied
+                  <motion.div
+                    className="flex items-center space-x-2 mb-4 p-3 bg-purple-900/20 backdrop-blur-sm rounded-lg border border-amber-500/20"
+                    animate={{
+                      padding: layout.adaptiveSpacing,
+                    }}
+                  >
+                    <span className="text-sm text-amber-300 font-medium">Active Filters:</span>
+                    <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white border-0">
+                      {activeFilterCount} applied
                     </Badge>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={clearAllFilters}
-                      className="text-xs text-gold-300/80 hover:text-gold-300 hover:bg-gold-500/20"
+                      className="text-xs text-amber-300/80 hover:text-amber-300 hover:bg-amber-500/20"
                     >
                       Clear All
                     </Button>
-                  </div>
+                  </motion.div>
                 )}
 
-                {/* Results Count with Roman Numerals */}
-                <div className="text-sm text-gold-300/80 font-medium">
+                {/* Results Count */}
+                <div className="text-sm text-amber-300/80 font-medium">
                   Displaying {sortedProducts.length} of {sampleProducts.length} Imperial Products
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Product Grid */}
-              <PaginatedProductGrid products={sortedProducts} itemsPerPage={6} />
-            </div>
+              {/* Adaptive Product Grid */}
+              <motion.div
+                animate={{
+                  gap: layout.adaptiveSpacing,
+                }}
+              >
+                <PaginatedProductGrid
+                  products={sortedProducts}
+                  itemsPerPage={layout.gridColumns * 2}
+                  cardSize={layout.cardSize}
+                />
+              </motion.div>
+            </motion.div>
           </SidebarInset>
         </div>
 
         {/* Comparison Bar */}
         <ComparisonBar />
-      </div>
+      </motion.div>
     </SidebarProvider>
   )
 }
