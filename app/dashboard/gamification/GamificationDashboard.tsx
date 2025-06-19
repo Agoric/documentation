@@ -12,8 +12,8 @@ import { motion } from "framer-motion"
 const achievements = [
   {
     id: "first-trade",
-    title: "PRIMUS MERCATOR",
-    englishTitle: "First Trader",
+    title: "First Trader",
+    latinTitle: "Primus Mercator",
     description: "Complete your first trade on the platform",
     icon: Target,
     points: 100,
@@ -23,8 +23,8 @@ const achievements = [
   },
   {
     id: "nft-collector",
-    title: "COLLECTOR DIGITALIS",
-    englishTitle: "NFT Collector",
+    title: "NFT Collector",
+    latinTitle: "Collector Digitalis",
     description: "Acquire 10 unique NFTs in your collection",
     icon: Crown,
     points: 500,
@@ -34,8 +34,8 @@ const achievements = [
   },
   {
     id: "property-investor",
-    title: "INVESTOR PRAEDIORUM",
-    englishTitle: "Property Investor",
+    title: "Property Investor",
+    latinTitle: "Investor Praediorum",
     description: "Invest in virtual real estate properties",
     icon: Shield,
     points: 1000,
@@ -45,8 +45,8 @@ const achievements = [
   },
   {
     id: "trading-master",
-    title: "MAGISTER NEGOTII",
-    englishTitle: "Trading Master",
+    title: "Trading Master",
+    latinTitle: "Magister Negotii",
     description: "Execute 100 successful trades",
     icon: Sword,
     points: 2000,
@@ -67,8 +67,8 @@ const leaderboard = [
 const challenges = [
   {
     id: "weekly-trader",
-    title: "MERCATOR HEBDOMADALIS",
-    englishTitle: "Weekly Trader",
+    title: "Weekly Trader",
+    latinTitle: "Mercator Hebdomadalis",
     description: "Complete 5 trades this week",
     reward: "250 Points + Rare Badge",
     deadline: "3 days remaining",
@@ -77,8 +77,8 @@ const challenges = [
   },
   {
     id: "nft-explorer",
-    title: "EXPLORATOR NFT",
-    englishTitle: "NFT Explorer",
+    title: "NFT Explorer",
+    latinTitle: "Explorator NFT",
     description: "Browse 50 different NFT collections",
     reward: "500 Points + Epic Badge",
     deadline: "1 week remaining",
@@ -124,10 +124,10 @@ export default function GamificationDashboard() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif mb-2">
-            LUDUS VICTORIAE IMPERIUM
+            Victory Achievement Empire
           </h1>
 
-          <p className="text-amber-300/80 text-lg font-medium">Achievement & Rewards System</p>
+          <p className="text-amber-300/80 text-lg font-medium italic font-serif">Ludus Victoriae Imperium</p>
         </motion.div>
 
         {/* User Stats Overview */}
@@ -139,17 +139,17 @@ export default function GamificationDashboard() {
         >
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">PUNCTA TOTALIA</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Total Points</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{userStats.totalPoints.toLocaleString()}</div>
-              <p className="text-indigo-200/70 text-sm">Total Points</p>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Puncta Totalia</p>
             </CardContent>
           </Card>
 
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">GRADUS IMPERII</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Empire Level</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">Level {userStats.level}</div>
@@ -162,23 +162,23 @@ export default function GamificationDashboard() {
 
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">ORDO IMPERII</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Empire Rank</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">#{userStats.rank}</div>
-              <p className="text-indigo-200/70 text-sm">Global Rank</p>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Ordo Imperii</p>
             </CardContent>
           </Card>
 
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">VICTORIAE</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Victories</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">
                 {userStats.achievementsUnlocked}/{userStats.totalAchievements}
               </div>
-              <p className="text-indigo-200/70 text-sm">Achievements</p>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Victoriae</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -191,9 +191,9 @@ export default function GamificationDashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           {[
-            { id: "achievements", label: "VICTORIAE", englishLabel: "Achievements" },
-            { id: "leaderboard", label: "TABULA HONORIS", englishLabel: "Leaderboard" },
-            { id: "challenges", label: "CERTAMINA", englishLabel: "Challenges" },
+            { id: "achievements", label: "Achievements", latinLabel: "Victoriae" },
+            { id: "leaderboard", label: "Leaderboard", latinLabel: "Tabula Honoris" },
+            { id: "challenges", label: "Challenges", latinLabel: "Certamina" },
           ].map((tab) => (
             <Button
               key={tab.id}
@@ -210,7 +210,7 @@ export default function GamificationDashboard() {
             >
               <div className="text-center">
                 <div className="font-serif font-bold text-sm">{tab.label}</div>
-                <div className="text-xs opacity-80">{tab.englishLabel}</div>
+                <div className="text-xs opacity-80 italic font-serif">{tab.latinLabel}</div>
               </div>
             </Button>
           ))}
@@ -255,8 +255,8 @@ export default function GamificationDashboard() {
 
                             <div>
                               <CardTitle className="text-amber-300 font-serif text-lg">{achievement.title}</CardTitle>
-                              <CardDescription className="text-purple-200/80">
-                                {achievement.englishTitle}
+                              <CardDescription className="text-purple-200/80 italic font-serif">
+                                {achievement.latinTitle}
                               </CardDescription>
                             </div>
                           </div>
@@ -309,8 +309,10 @@ export default function GamificationDashboard() {
           {selectedTab === "leaderboard" && (
             <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
               <CardHeader>
-                <CardTitle className="text-amber-300 font-serif text-xl">TABULA HONORIS GLOBALIS</CardTitle>
-                <CardDescription className="text-purple-200/80">Global Leaderboard Rankings</CardDescription>
+                <CardTitle className="text-amber-300 font-serif text-xl">Global Leaderboard</CardTitle>
+                <CardDescription className="text-purple-200/80 italic font-serif">
+                  Tabula Honoris Globalis
+                </CardDescription>
               </CardHeader>
 
               <CardContent>
@@ -369,7 +371,9 @@ export default function GamificationDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <CardTitle className="text-amber-300 font-serif text-lg">{challenge.title}</CardTitle>
-                          <CardDescription className="text-purple-200/80">{challenge.englishTitle}</CardDescription>
+                          <CardDescription className="text-purple-200/80 italic font-serif">
+                            {challenge.latinTitle}
+                          </CardDescription>
                         </div>
 
                         <Badge

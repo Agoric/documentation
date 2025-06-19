@@ -10,43 +10,43 @@ import { motion } from "framer-motion"
 const sections = [
   {
     id: "acceptance",
-    title: "ACCEPTATIO CONDITIONUM",
-    englishTitle: "Acceptance of Terms",
+    title: "Acceptance of Terms",
+    latinTitle: "Acceptatio Conditionum",
     content:
       "By accessing and using the Snapifi platform, you acknowledge and agree to be bound by these Terms of Service and all applicable laws and regulations.",
   },
   {
     id: "definitions",
-    title: "DEFINITIONES",
-    englishTitle: "Definitions",
+    title: "Definitions",
+    latinTitle: "Definitiones",
     content:
       "The Platform refers to all Snapifi services, websites, applications, and digital infrastructure operated under the Supreme Authority.",
   },
   {
     id: "user-obligations",
-    title: "OBLIGATIONES USUARII",
-    englishTitle: "User Obligations",
+    title: "User Obligations",
+    latinTitle: "Obligationes Usuarii",
     content:
       "Users must comply with all platform rules, maintain account security, and conduct themselves in accordance with community standards.",
   },
   {
     id: "intellectual-property",
-    title: "PROPRIETAS INTELLECTUALIS",
-    englishTitle: "Intellectual Property",
+    title: "Intellectual Property",
+    latinTitle: "Proprietas Intellectualis",
     content:
       "All platform content, trademarks, and intellectual property remain the exclusive property of Snapifi and its licensors.",
   },
   {
     id: "limitation-liability",
-    title: "LIMITATIO RESPONSABILITATIS",
-    englishTitle: "Limitation of Liability",
+    title: "Limitation of Liability",
+    latinTitle: "Limitatio Responsabilitatis",
     content:
       "The platform operates under limited liability terms as established by the Supreme Authority's digital jurisdiction.",
   },
   {
     id: "termination",
-    title: "TERMINATIO",
-    englishTitle: "Termination",
+    title: "Termination",
+    latinTitle: "Terminatio",
     content: "Either party may terminate this agreement under specified conditions with appropriate notice periods.",
   },
 ]
@@ -77,11 +77,11 @@ export default function TermsOfServicePage() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif mb-4">
-            CONDITIONES SERVITII
+            Terms of Service
           </h1>
 
-          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium mb-6">
-            Terms of Service & User Agreement
+          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium mb-6 italic font-serif">
+            Conditiones Servitii
           </p>
 
           <div className="flex items-center justify-center space-x-4 mb-8">
@@ -113,9 +113,9 @@ export default function TermsOfServicePage() {
             <CardHeader>
               <CardTitle className="text-amber-300 font-serif text-xl flex items-center">
                 <Crown className="w-5 h-5 mr-2" />
-                AUCTORITAS SUPREMA
+                Supreme Authority
               </CardTitle>
-              <CardDescription className="text-purple-200/80">Supreme Authority & Jurisdiction Notice</CardDescription>
+              <CardDescription className="text-purple-200/80 italic font-serif">Auctoritas Suprema</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -153,7 +153,9 @@ export default function TermsOfServicePage() {
               <Card className="bg-gradient-to-br from-purple-900/30 to-indigo-900/30 backdrop-blur-xl border-amber-400/20 hover:border-amber-400/40 transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-amber-300 font-serif text-lg">{section.title}</CardTitle>
-                  <CardDescription className="text-purple-200/80 font-medium">{section.englishTitle}</CardDescription>
+                  <CardDescription className="text-purple-200/80 font-medium italic font-serif">
+                    {section.latinTitle}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-indigo-200/80 leading-relaxed">{section.content}</p>
@@ -172,11 +174,12 @@ export default function TermsOfServicePage() {
         >
           <Card className="bg-gradient-to-br from-amber-900/20 to-purple-900/20 backdrop-blur-xl border-amber-400/30">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-amber-300 font-serif mb-4">CONFIRMATIO CONSENSUS</h3>
+              <h3 className="text-2xl font-bold text-amber-300 font-serif mb-4">Agreement Confirmation</h3>
               <p className="text-indigo-200/80 mb-6 leading-relaxed">
                 By continuing to use the Snapifi platform, you confirm your acceptance of these Terms of Service and
                 acknowledge the Supreme Authority's jurisdiction over all platform activities.
               </p>
+              <p className="text-sm italic font-serif text-amber-300/70 mb-4">Confirmatio Consensus</p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button

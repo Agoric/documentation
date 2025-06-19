@@ -10,47 +10,47 @@ import { motion } from "framer-motion"
 const privacySections = [
   {
     id: "data-collection",
-    title: "COLLECTIO DATORUM",
-    englishTitle: "Data Collection",
+    title: "Data Collection",
+    latinTitle: "Collectio Datorum",
     icon: Database,
     content:
       "We collect information necessary to provide our services, including account details, transaction history, and platform usage data.",
   },
   {
     id: "data-usage",
-    title: "USUS DATORUM",
-    englishTitle: "Data Usage",
+    title: "Data Usage",
+    latinTitle: "Usus Datorum",
     icon: Eye,
     content:
       "Your data is used to enhance platform functionality, provide personalized services, and ensure security compliance.",
   },
   {
     id: "data-protection",
-    title: "PROTECTIO DATORUM",
-    englishTitle: "Data Protection",
+    title: "Data Protection",
+    latinTitle: "Protectio Datorum",
     icon: Lock,
     content:
       "We implement advanced encryption and security measures to protect your personal information and digital assets.",
   },
   {
     id: "user-rights",
-    title: "IURA USUARII",
-    englishTitle: "User Rights",
+    title: "User Rights",
+    latinTitle: "Iura Usuarii",
     icon: UserCheck,
     content:
       "You have the right to access, modify, or delete your personal data in accordance with digital privacy laws.",
   },
   {
     id: "data-sharing",
-    title: "COMMUNICATIO DATORUM",
-    englishTitle: "Data Sharing",
+    title: "Data Sharing",
+    latinTitle: "Communicatio Datorum",
     icon: Globe,
     content: "We do not sell personal data. Limited sharing occurs only for essential services and legal compliance.",
   },
   {
     id: "cookies-tracking",
-    title: "COOKIES ET TRACKING",
-    englishTitle: "Cookies & Tracking",
+    title: "Cookies & Tracking",
+    latinTitle: "Cookies et Tracking",
     icon: Shield,
     content: "We use cookies and tracking technologies to improve user experience and platform functionality.",
   },
@@ -82,11 +82,11 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif mb-4">
-            POLITICA PRIVATITATIS
+            Privacy Policy
           </h1>
 
-          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium mb-6">
-            Privacy Policy & Data Protection Framework
+          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium mb-6 italic font-serif">
+            Politica Privatitatis
           </p>
 
           <div className="flex items-center justify-center space-x-4 mb-8">
@@ -118,9 +118,11 @@ export default function PrivacyPolicyPage() {
             <CardHeader>
               <CardTitle className="text-amber-300 font-serif text-xl flex items-center">
                 <Shield className="w-5 h-5 mr-2" />
-                FUNDAMENTA PRIVATITATIS
+                Privacy Foundation
               </CardTitle>
-              <CardDescription className="text-purple-200/80">Privacy Foundation & Core Principles</CardDescription>
+              <CardDescription className="text-purple-200/80 italic font-serif">
+                Fundamenta Privatitatis
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-indigo-200/80 leading-relaxed mb-4">
@@ -170,8 +172,8 @@ export default function PrivacyPolicyPage() {
                       </div>
                       <div>
                         <CardTitle className="text-amber-300 font-serif text-lg">{section.title}</CardTitle>
-                        <CardDescription className="text-purple-200/80 font-medium">
-                          {section.englishTitle}
+                        <CardDescription className="text-purple-200/80 font-medium italic font-serif">
+                          {section.latinTitle}
                         </CardDescription>
                       </div>
                     </div>
@@ -196,9 +198,9 @@ export default function PrivacyPolicyPage() {
             <CardHeader>
               <CardTitle className="text-cyan-300 font-serif text-xl flex items-center">
                 <UserCheck className="w-5 h-5 mr-2" />
-                CONTROLES USUARII
+                User Controls
               </CardTitle>
-              <CardDescription className="text-cyan-200/80">User Controls & Privacy Settings</CardDescription>
+              <CardDescription className="text-cyan-200/80 italic font-serif">Controles Usuarii</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -252,11 +254,12 @@ export default function PrivacyPolicyPage() {
         >
           <Card className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 backdrop-blur-xl border-amber-400/20">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-amber-300 font-serif mb-2">CONTACTUS PRIVACY</h3>
+              <h3 className="text-lg font-semibold text-amber-300 font-serif mb-2">Privacy Contact</h3>
               <p className="text-indigo-200/80 text-sm leading-relaxed">
                 For privacy-related inquiries, data requests, or concerns about your personal information, please
                 contact our Data Protection Officer at privacy@snapifi.com or through our secure portal.
               </p>
+              <p className="text-xs italic font-serif text-amber-300/70 mt-2">Contactus Privacy</p>
             </CardContent>
           </Card>
         </motion.div>

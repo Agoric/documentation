@@ -14,7 +14,7 @@ export default function CompliancePage() {
                 </div>
               </div>
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">Regulatory Compliance</h1>
-              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
+              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">Conformitas Regulatoria</h2>
               <p className="text-indigo-400">Committed to Global Financial Standards</p>
               <p className="text-sm text-indigo-500 mt-2">Last Updated: {new Date().toLocaleDateString()}</p>
             </div>
@@ -22,6 +22,7 @@ export default function CompliancePage() {
             <div className="space-y-6 text-indigo-200">
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Our Compliance Commitment</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Obligatio Conformitatis Nostrae</p>
                 <p className="mb-4">
                   The Inclusive Lending and Credit Empirical Authority ("ILCEA") is committed to maintaining the highest
                   standards of regulatory compliance across all jurisdictions where we operate. Our Economic Global
@@ -32,11 +33,13 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Regulatory Framework</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Structura Regulatoria</p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-3">
                       <Globe className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">International Standards</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Norma Internationales</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Basel III Banking Regulations</li>
@@ -49,6 +52,7 @@ export default function CompliancePage() {
                     <div className="flex items-center gap-2 mb-3">
                       <FileText className="h-5 w-5 text-green-400" />
                       <h4 className="font-semibold text-indigo-200">Regional Compliance</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Conformitas Regionalis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• SEC Securities Regulations (US)</li>
@@ -61,6 +65,7 @@ export default function CompliancePage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Lock className="h-5 w-5 text-purple-400" />
                       <h4 className="font-semibold text-indigo-200">Technology Compliance</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Conformitas Technologica</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Quantum Cryptography Standards</li>
@@ -73,6 +78,7 @@ export default function CompliancePage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Users className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Consumer Protection</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Protectio Consumatoris</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Fair Lending Practices</li>
@@ -86,6 +92,7 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Empirical Credit Authority Compliance</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Auctoritas Empirica Fidei Conformitas</p>
                 <p className="mb-4">
                   Our innovative Empirical Credit Authority operates under strict compliance guidelines:
                 </p>
@@ -94,6 +101,7 @@ export default function CompliancePage() {
                     <CheckCircle2 className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Fair Credit Reporting</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Aequum Fidei Nuntius</p>
                       <p className="text-sm text-indigo-300">
                         All credit assessments comply with Fair Credit Reporting Act requirements and international
                         equivalent standards.
@@ -104,6 +112,7 @@ export default function CompliancePage() {
                     <CheckCircle2 className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Algorithm Transparency</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Algorithmus Diaphaneitas</p>
                       <p className="text-sm text-indigo-300">
                         Our AI-driven credit models undergo regular audits for bias, fairness, and accuracy in
                         accordance with emerging AI governance standards.
@@ -114,6 +123,7 @@ export default function CompliancePage() {
                     <CheckCircle2 className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Alternative Data Ethics</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Data Alternativa Ethica</p>
                       <p className="text-sm text-indigo-300">
                         Use of alternative data sources follows strict ethical guidelines and consumer consent
                         protocols.
@@ -125,6 +135,7 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">4. Anti-Money Laundering (AML) Program</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Contra Pecuniam Lutus Programma</p>
                 <p className="mb-4">ILCEA maintains a comprehensive AML program including:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Customer Due Diligence (CDD) procedures</li>
@@ -139,10 +150,12 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Know Your Customer (KYC) Requirements</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Cognosce Cliens Requisita</p>
                 <p className="mb-4">All Economic Global Citizens must complete our comprehensive KYC process:</p>
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Identity Verification</h4>
+                    <p className="text-xs italic font-serif text-indigo-400">Identitas Verificationis</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Government-issued ID</li>
                       <li>• Biometric verification</li>
@@ -152,6 +165,7 @@ export default function CompliancePage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Financial Profile</h4>
+                    <p className="text-xs italic font-serif text-indigo-400">Oeconomicus Descriptio</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Income verification</li>
                       <li>• Source of funds</li>
@@ -161,6 +175,7 @@ export default function CompliancePage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Ongoing Monitoring</h4>
+                    <p className="text-xs italic font-serif text-indigo-400">Perennis Observatio</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Transaction patterns</li>
                       <li>• Behavioral analysis</li>
@@ -173,6 +188,7 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Data Protection and Privacy</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Data Protectio et Secretum</p>
                 <p className="mb-4">Our quantum-secured platform ensures the highest levels of data protection:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>GDPR compliance for EU citizens</li>
@@ -187,6 +203,7 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Licensing and Registration</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Licentiae et Adnotationes</p>
                 <p className="mb-4">
                   ILCEA maintains appropriate licenses and registrations in all operating jurisdictions:
                 </p>
@@ -194,6 +211,7 @@ export default function CompliancePage() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Current Licenses</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Licentiae Praesentes</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Money Services Business (MSB)</li>
                         <li>• Investment Adviser Registration</li>
@@ -203,6 +221,7 @@ export default function CompliancePage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Regulatory Bodies</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Corporis Regulatorii</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Financial Crimes Enforcement Network</li>
                         <li>• Securities and Exchange Commission</li>
@@ -216,6 +235,7 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Compliance Monitoring and Reporting</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Conformitas Observatio et Relatio</p>
                 <p className="mb-4">We maintain robust compliance monitoring systems:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Real-time transaction monitoring</li>
@@ -229,6 +249,7 @@ export default function CompliancePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">9. Contact Our Compliance Team</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Contactus Nostrae Turmae Conformitatis</p>
                 <p className="mb-4">For compliance-related questions or to report concerns:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>

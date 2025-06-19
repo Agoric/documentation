@@ -14,7 +14,7 @@ export default function DigitalDomicilePage() {
                 </div>
               </div>
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">Digital Domicile Declaration</h1>
-              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
+              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">Declaratio Domicilii Digitalis</h2>
               <p className="text-indigo-400">SNAPPCREDITCOM Digital Realm Establishment</p>
               <p className="text-sm text-indigo-500 mt-2">Effective Date: {new Date().toLocaleDateString()}</p>
             </div>
@@ -22,6 +22,7 @@ export default function DigitalDomicilePage() {
             <div className="space-y-6 text-indigo-200">
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Declaration of Digital Domicile</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Declaratio Domicilii Digitalis</p>
                 <p className="mb-4">
                   The Inclusive Lending and Credit Empirical Authority ("ILCEA"), operating under the SNAPPCREDITCOM
                   digital realm, hereby declares the establishment of its primary Digital Domicile within the
@@ -36,11 +37,13 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Digital Sovereignty Declaration</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Declaratio Suprematiae Digitalis</p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-3">
                       <Crown className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Sovereign Authority</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Auctoritas Suprema</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• SNAPPCREDITCOM Digital Realm Sovereignty</li>
@@ -53,6 +56,7 @@ export default function DigitalDomicilePage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Anchor className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Admiralty Jurisdiction</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Iurisdictio Admiralitatis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Digital Maritime Law Application</li>
@@ -66,6 +70,7 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Digital Citizenship Rights</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Jura Civitatis Digitalis</p>
                 <p className="mb-4">
                   All Economic Global Citizens who establish domicile within the SNAPPCREDITCOM Digital Realm are
                   granted:
@@ -83,11 +88,13 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">4. Territorial Boundaries</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Fines Territoriales</p>
                 <p className="mb-4">The SNAPPCREDITCOM Digital Domicile encompasses:</p>
                 <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Digital Infrastructure</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Infrastructura Digitalis</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Quantum computing networks</li>
                         <li>• Blockchain verification systems</li>
@@ -97,6 +104,7 @@ export default function DigitalDomicilePage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Service Territories</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Territoria Servitii</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Financial services realm</li>
                         <li>• Credit assessment domain</li>
@@ -110,6 +118,7 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Governing Principles</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Principia Gubernantia</p>
                 <p className="mb-4">
                   The SNAPPCREDITCOM Digital Domicile operates under the following fundamental principles:
                 </p>
@@ -118,6 +127,7 @@ export default function DigitalDomicilePage() {
                     <Shield className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Quantum Security Supremacy</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Suprematia Securitatis Quanticae</p>
                       <p className="text-sm text-indigo-300">
                         All operations within the digital domicile are protected by quantum encryption and secured
                         through advanced cryptographic protocols.
@@ -128,6 +138,7 @@ export default function DigitalDomicilePage() {
                     <Shield className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Empirical Justice</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Justitia Empirica</p>
                       <p className="text-sm text-indigo-300">
                         All decisions and assessments are based on empirical data analysis and AI-driven algorithms
                         designed to eliminate bias and promote fairness.
@@ -138,6 +149,7 @@ export default function DigitalDomicilePage() {
                     <Shield className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Inclusive Accessibility</h4>
+                      <p className="text-xs italic font-serif text-indigo-400">Accessibilitas Inclusiva</p>
                       <p className="text-sm text-indigo-300">
                         The digital domicile welcomes all qualified individuals regardless of traditional financial
                         barriers or geographic limitations.
@@ -149,6 +161,7 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Legal Recognition</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Agnitio Legalis</p>
                 <p className="mb-4">
                   This Digital Domicile Declaration serves as formal notice to all traditional and digital jurisdictions
                   of the establishment of SNAPPCREDITCOM's sovereign digital territory. Recognition is sought through:
@@ -164,10 +177,12 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Enforcement Mechanisms</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Mechanismi Coercitionis</p>
                 <p className="mb-4">The SNAPPCREDITCOM Digital Domicile maintains order through:</p>
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Quantum Enforcement</h4>
+                    <p className="text-xs italic font-serif text-indigo-400">Coercitio Quantica</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Automated compliance monitoring</li>
                       <li>• Real-time violation detection</li>
@@ -176,6 +191,7 @@ export default function DigitalDomicilePage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">AI Arbitration</h4>
+                    <p className="text-xs italic font-serif text-indigo-400">Arbitratio Artificialis</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Automated dispute resolution</li>
                       <li>• Empirical evidence analysis</li>
@@ -184,6 +200,7 @@ export default function DigitalDomicilePage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Digital Sanctions</h4>
+                    <p className="text-xs italic font-serif text-indigo-400">Sanctiones Digitales</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Access restriction protocols</li>
                       <li>• Asset freezing mechanisms</li>
@@ -195,6 +212,9 @@ export default function DigitalDomicilePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Contact Digital Domicile Authority</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">
+                  Contactus Auctoritati Domicilii Digitalis
+                </p>
                 <p className="mb-4">For matters related to Digital Domicile status and rights:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>
@@ -210,6 +230,7 @@ export default function DigitalDomicilePage() {
 
               <div className="bg-gradient-to-r from-purple-950/50 to-blue-950/50 border border-purple-500/30 rounded-lg p-6 mt-8">
                 <h3 className="text-lg font-bold text-indigo-100 mb-3">Digital Domicile Oath</h3>
+                <p className="text-sm italic font-serif text-indigo-400 mb-2">Juramentum Domicilii Digitalis</p>
                 <p className="text-indigo-200 italic">
                   "I hereby establish my Digital Domicile within the SNAPPCREDITCOM Admiralty Realm, accepting the
                   rights and responsibilities of Economic Global Citizenship, and acknowledging the sovereignty of this

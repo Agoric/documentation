@@ -97,9 +97,9 @@ export default function SnapDaxDashboard() {
             <SupremeAuthorityCoin size="lg" variant="logo" />
             <div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
-                NEGOTIUM SUPREMUM
+                Supreme Trading Platform
               </h1>
-              <p className="text-amber-300/80 text-lg font-medium">Advanced Trading Platform</p>
+              <p className="text-amber-300/80 text-lg font-medium italic font-serif">Negotium Supremum</p>
             </div>
           </div>
 
@@ -133,7 +133,8 @@ export default function SnapDaxDashboard() {
         >
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">VALOR TOTALIS</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Total Value</CardTitle>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Valor Totalis</p>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">${portfolioStats.totalValue.toLocaleString()}</div>
@@ -143,7 +144,8 @@ export default function SnapDaxDashboard() {
 
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">MUTATIO DIEI</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Daily Change</CardTitle>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Mutatio Diei</p>
             </CardHeader>
             <CardContent>
               <div
@@ -165,7 +167,8 @@ export default function SnapDaxDashboard() {
 
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">LUCRUM TOTALE</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Total Profit</CardTitle>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Lucrum Totale</p>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-emerald-400">+${portfolioStats.totalPnL.toLocaleString()}</div>
@@ -175,7 +178,8 @@ export default function SnapDaxDashboard() {
 
           <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-amber-300 font-serif text-sm">NEGOTIA ACTIVA</CardTitle>
+              <CardTitle className="text-amber-300 font-serif text-sm">Active Trades</CardTitle>
+              <p className="text-indigo-200/70 text-xs italic font-serif">Negotia Activa</p>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">12</div>
@@ -197,8 +201,10 @@ export default function SnapDaxDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-amber-300 font-serif text-xl">MERCATUS CONSPECTUS</CardTitle>
-                    <CardDescription className="text-purple-200/80">Market Overview & Top Assets</CardDescription>
+                    <CardTitle className="text-amber-300 font-serif text-xl">Market Overview</CardTitle>
+                    <CardDescription className="text-purple-200/80 italic font-serif">
+                      Mercatus Conspectus
+                    </CardDescription>
                   </div>
 
                   <div className="flex space-x-1 bg-purple-900/30 rounded-lg p-1">
@@ -273,8 +279,8 @@ export default function SnapDaxDashboard() {
             {/* Recent Trades */}
             <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
               <CardHeader>
-                <CardTitle className="text-amber-300 font-serif text-xl">NEGOTIA RECENTIA</CardTitle>
-                <CardDescription className="text-purple-200/80">Recent Trading Activity</CardDescription>
+                <CardTitle className="text-amber-300 font-serif text-xl">Recent Trades</CardTitle>
+                <CardDescription className="text-purple-200/80 italic font-serif">Negotia Recentia</CardDescription>
               </CardHeader>
 
               <CardContent>
@@ -323,8 +329,10 @@ export default function SnapDaxDashboard() {
           <div className="space-y-6">
             <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
               <CardHeader>
-                <CardTitle className="text-amber-300 font-serif text-xl">DISTRIBUTIO PORTFOLIO</CardTitle>
-                <CardDescription className="text-purple-200/80">Portfolio Allocation</CardDescription>
+                <CardTitle className="text-amber-300 font-serif text-xl">Portfolio Allocation</CardTitle>
+                <CardDescription className="text-purple-200/80 italic font-serif">
+                  Distributio Portfolio
+                </CardDescription>
               </CardHeader>
 
               <CardContent>
@@ -369,8 +377,8 @@ export default function SnapDaxDashboard() {
             {/* Quick Actions */}
             <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-xl border-amber-400/20">
               <CardHeader>
-                <CardTitle className="text-amber-300 font-serif text-xl">ACTIONES VELOCES</CardTitle>
-                <CardDescription className="text-purple-200/80">Quick Trading Actions</CardDescription>
+                <CardTitle className="text-amber-300 font-serif text-xl">Quick Actions</CardTitle>
+                <CardDescription className="text-purple-200/80 italic font-serif">Actiones Veloces</CardDescription>
               </CardHeader>
 
               <CardContent className="space-y-3">

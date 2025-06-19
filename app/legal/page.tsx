@@ -11,8 +11,8 @@ import { motion } from "framer-motion"
 const legalSections = [
   {
     id: "terms-of-service",
-    title: "CONDITIONES SERVITII",
-    englishTitle: "Terms of Service",
+    title: "Terms of Service",
+    latinTitle: "Conditiones Servitii",
     description: "Fundamental terms governing your use of the Snapifi platform and services",
     icon: Scroll,
     href: "/legal/terms-of-service",
@@ -22,8 +22,8 @@ const legalSections = [
   },
   {
     id: "privacy-policy",
-    title: "POLITICA PRIVATITATIS",
-    englishTitle: "Privacy Policy",
+    title: "Privacy Policy",
+    latinTitle: "Politica Privatitatis",
     description: "How we collect, use, and protect your personal information and data",
     icon: Shield,
     href: "/legal/privacy-policy",
@@ -33,8 +33,8 @@ const legalSections = [
   },
   {
     id: "user-agreement",
-    title: "PACTUM USUARII",
-    englishTitle: "User Agreement",
+    title: "User Agreement",
+    latinTitle: "Pactum Usuarii",
     description: "Comprehensive agreement outlining user rights and responsibilities",
     icon: Scale,
     href: "/legal/user-agreement",
@@ -44,8 +44,8 @@ const legalSections = [
   },
   {
     id: "risk-disclosure",
-    title: "REVELATIO PERICULI",
-    englishTitle: "Risk Disclosure",
+    title: "Risk Disclosure",
+    latinTitle: "Revelatio Periculi",
     description: "Important information about risks associated with digital assets and trading",
     icon: Crown,
     href: "/legal/risk-disclosure",
@@ -55,8 +55,8 @@ const legalSections = [
   },
   {
     id: "compliance",
-    title: "CONFORMITAS LEGALIS",
-    englishTitle: "Compliance Framework",
+    title: "Compliance Framework",
+    latinTitle: "Conformitas Legalis",
     description: "Our commitment to regulatory compliance and legal standards",
     icon: Globe,
     href: "/legal/compliance",
@@ -66,8 +66,8 @@ const legalSections = [
   },
   {
     id: "digital-domicile",
-    title: "DOMICILIUM DIGITALE",
-    englishTitle: "Digital Domicile",
+    title: "Digital Domicile",
+    latinTitle: "Domicilium Digitale",
     description: "Establishment of digital jurisdiction and sovereign authority",
     icon: Crown,
     href: "/legal/digital-domicile",
@@ -103,11 +103,11 @@ export default function LegalPage() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif mb-4">
-            LEX DIGITALIS IMPERIUM
+            Digital Legal Empire
           </h1>
 
-          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium">
-            Digital Legal Framework & Sovereign Authority
+          <p className="text-xl text-amber-300/80 max-w-3xl mx-auto leading-relaxed font-medium italic font-serif">
+            Lex Digitalis Imperium
           </p>
 
           <div className="mt-6 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
@@ -153,12 +153,12 @@ export default function LegalPage() {
                         </Badge>
                       </div>
 
-                      <CardTitle className="text-xl font-bold text-amber-300 font-serif tracking-wider group-hover:text-amber-200 transition-colors">
+                      <CardTitle className="text-xl font-bold text-amber-300 group-hover:text-amber-200 transition-colors">
                         {section.title}
                       </CardTitle>
 
-                      <CardDescription className="text-purple-200/80 font-medium">
-                        {section.englishTitle}
+                      <CardDescription className="text-purple-200/80 font-medium italic font-serif">
+                        {section.latinTitle}
                       </CardDescription>
                     </CardHeader>
 
@@ -192,7 +192,8 @@ export default function LegalPage() {
           transition={{ delay: 0.8, duration: 0.6 }}
         >
           <div className="bg-gradient-to-r from-purple-900/30 to-indigo-900/30 backdrop-blur-sm rounded-lg p-6 border border-amber-400/20">
-            <h3 className="text-lg font-semibold text-amber-300 font-serif mb-2">NOTITIA LEGALIS</h3>
+            <h3 className="text-lg font-semibold text-amber-300 mb-2">Legal Notice</h3>
+            <p className="text-indigo-200/80 leading-relaxed italic font-serif text-sm mb-2">Notitia Legalis</p>
             <p className="text-indigo-200/80 leading-relaxed">
               All legal documents are governed by the Supreme Authority of the Snapifi Digital Empire. By accessing
               these documents, you acknowledge the jurisdiction and sovereignty of our digital realm.
