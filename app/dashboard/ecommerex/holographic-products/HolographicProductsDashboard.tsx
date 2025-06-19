@@ -497,9 +497,14 @@ export function HolographicProductsDashboard() {
                     <SupremeAuthorityCoin variant="logo" size={layout.cardSize === "sm" ? "md" : "lg"} />
                     <div>
                       <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent">
-                        Digital Marketplace Empire
+                        QUICA Global Citizen Money Market
                       </h1>
-                      <p className="text-amber-300/80 mt-1 font-serif italic">Mercatus Digitalis Imperium</p>
+                      <p className="text-amber-300/80 mt-1 font-serif italic">
+                        Quantum Utility Investment Capitol Accelerator
+                      </p>
+                      <p className="text-purple-200/60 text-sm font-serif italic mt-0.5">
+                        Mercatus Monetarius Civium Globalis
+                      </p>
                     </div>
                   </div>
 

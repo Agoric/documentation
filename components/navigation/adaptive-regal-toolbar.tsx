@@ -24,13 +24,13 @@ interface RealmTab {
 const realms: RealmTab[] = [
   {
     id: "holographic-products",
-    name: "NFT Marketplace",
+    name: "QUICA Money Market",
     href: "/dashboard/ecommerex/holographic-products",
     icon: ShoppingBag,
-    description: "MERCATUS DIGITALIS NOBILIUM",
+    description: "QUANTUM UTILITY INVESTMENT CAPITOL ACCELERATOR",
     gradient: "from-purple-600 via-indigo-600 to-cyan-600",
-    romanTitle: "NFT IMPERIUM",
-    shortTitle: "NFT",
+    romanTitle: "QUICA MERCATUS",
+    shortTitle: "QUICA",
   },
   {
     id: "real-estate",
