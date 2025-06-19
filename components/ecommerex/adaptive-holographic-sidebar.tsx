@@ -1,6 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import type React from "react"
+
+import { useMemo, useState, useCallback, useRef, useEffect } from "react"
 import { Search, X, Star, Sparkles, Eye, Package, Filter, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -64,6 +66,10 @@ export function AdaptiveHolographicSidebar({
   productCount,
 }: AdaptiveHolographicSidebarProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+  const sidebarRef = useRef<HTMLDivElement>(null)
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const collapseTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Safe filter access with null checks
   const safeFilters = filters || {
@@ -86,6 +92,93 @@ export function AdaptiveHolographicSidebar({
       return 0
     }
   }, [safeFilters])
+
+  // Enhanced hover detection with debouncing
+  const handleMouseEnter = useCallback(() => {
+    // Clear any pending collapse timeout
+    if (collapseTimeoutRef.current) {
+      clearTimeout(collapseTimeoutRef.current)
+      collapseTimeoutRef.current = null
+    }
+
+    // Clear any pending hover timeout
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current)
+    }
+
+    setIsHovering(true)
+
+    // Immediate expansion on hover
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsExpanded(true)
+    }, 50) // Very small delay to prevent flickering
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    // Clear hover timeout
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current)
+      hoverTimeoutRef.current = null
+    }
+
+    setIsHovering(false)
+
+    // Delayed collapse to prevent accidental retractions
+    collapseTimeoutRef.current = setTimeout(() => {
+      setIsExpanded(false)
+    }, 300) // 300ms delay before collapsing
+  }, [])
+
+  // Global mouse tracking to ensure sidebar collapses when cursor is far away
+  useEffect(() => {
+    const handleGlobalMouseMove = (event: MouseEvent) => {
+      if (!sidebarRef.current) return
+
+      const sidebarRect = sidebarRef.current.getBoundingClientRect()
+      const buffer = 50 // 50px buffer zone
+
+      const isNearSidebar =
+        event.clientX >= sidebarRect.left - buffer &&
+        event.clientX <= sidebarRect.right + buffer &&
+        event.clientY >= sidebarRect.top - buffer &&
+        event.clientY <= sidebarRect.bottom + buffer
+
+      if (!isNearSidebar && isExpanded && !isHovering) {
+        // Force collapse if cursor is far from sidebar
+        if (collapseTimeoutRef.current) {
+          clearTimeout(collapseTimeoutRef.current)
+        }
+        setIsExpanded(false)
+      }
+    }
+
+    // Add global mouse move listener
+    document.addEventListener("mousemove", handleGlobalMouseMove)
+
+    return () => {
+      document.removeEventListener("mousemove", handleGlobalMouseMove)
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+      }
+      if (collapseTimeoutRef.current) {
+        clearTimeout(collapseTimeoutRef.current)
+      }
+    }
+  }, [isExpanded, isHovering])
+
+  // Handle focus events for keyboard navigation
+  const handleFocus = useCallback(() => {
+    setIsExpanded(true)
+  }, [])
+
+  const handleBlur = useCallback((event: React.FocusEvent) => {
+    // Only collapse if focus is moving outside the sidebar
+    if (!sidebarRef.current?.contains(event.relatedTarget as Node)) {
+      setTimeout(() => {
+        setIsExpanded(false)
+      }, 200)
+    }
+  }, [])
 
   const handleFilterChange = (key: keyof FilterState, value: any) => {
     try {
@@ -112,9 +205,12 @@ export function AdaptiveHolographicSidebar({
 
   return (
     <motion.div
+      ref={sidebarRef}
       className="relative z-50"
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       animate={{
         width: isExpanded ? 320 : 80,
       }}
