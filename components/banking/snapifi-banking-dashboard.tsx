@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useSnapifiBanking } from "@/contexts/snapifi-banking-context"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -11,6 +12,7 @@ import {
   DollarSign,
   TrendingUp,
   TrendingDown,
+  ArrowUpRight,
   ArrowDownRight,
   Wallet,
   PiggyBank,
@@ -29,13 +31,8 @@ interface BankingDashboardProps {
 }
 
 export function SnapifiBankingDashboard({ accountId }: BankingDashboardProps) {
-  const {
-    getBankAccount,
-    getBankingDashboard,
-    getTransactionHistory,
-    processTransaction,
-    internalTransfer,
-  } = useSnapifiBanking()
+  const { getBankAccount, getBankingDashboard, getTransactionHistory, processTransaction, internalTransfer } =
+    useSnapifiBanking()
 
   const [account, setAccount] = useState<any>(null)
   const [dashboard, setDashboard] = useState<any>(null)
@@ -139,7 +136,7 @@ export function SnapifiBankingDashboard({ accountId }: BankingDashboardProps) {
               {account.accountStatus.toUpperCase()}
             </Badge>
             <Badge variant="outline" className="border-amber-400 text-amber-300">
-              {account.accountType.replace('_', ' ').toUpperCase()}
+              {account.accountType.replace("_", " ").toUpperCase()}
             </Badge>
           </div>
         </div>
@@ -313,7 +310,7 @@ export function SnapifiBankingDashboard({ accountId }: BankingDashboardProps) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-purple-200">Account Type:</span>
-                  <span className="text-amber-300">{account.accountType.replace('_', ' ')}</span>
+                  <span className="text-amber-300">{account.accountType.replace("_", " ")}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-purple-200">Opened:</span>
@@ -349,7 +346,9 @@ export function SnapifiBankingDashboard({ accountId }: BankingDashboardProps) {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-blue-200">Beneficiaries Reached:</span>
-                      <span className="text-blue-300">{dashboard?.qgiPerformance.beneficiariesReached.toLocaleString()}</span>
+                      <span className="text-blue-300">
+                        {dashboard?.qgiPerformance.beneficiariesReached.toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-blue-200">Projects Funded:</span>
@@ -378,7 +377,9 @@ export function SnapifiBankingDashboard({ accountId }: BankingDashboardProps) {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-amber-200">Average Yield:</span>
-                      <span className="text-amber-300">{(dashboard?.bondPortfolio.averageYield * 100).toFixed(2)}%</span>
+                      <span className="text-amber-300">
+                        {(dashboard?.bondPortfolio.averageYield * 100).toFixed(2)}%
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-amber-200">Next Maturity:</span>
@@ -415,4 +416,185 @@ export function SnapifiBankingDashboard({ accountId }: BankingDashboardProps) {
                       className="flex items-center justify-between p-4 bg-purple-800/30 rounded-lg border border-amber-400/20"
                     >
                       <div className="flex items-center space-x-4">
-                        <div className={`w-10 h-10
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            transaction.type === "deposit" ? "bg-green-500/20" : "bg-red-500/20"
+                          }`}
+                        >
+                          {transaction.type === "deposit" ? (
+                            <ArrowDownRight className="w-5 h-5 text-green-400" />
+                          ) : (
+                            <ArrowUpRight className="w-5 h-5 text-red-400" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-amber-300 font-medium">{transaction.description}</p>
+                          <p className="text-purple-300 text-sm">
+                            {transaction.date.toLocaleDateString()} • {transaction.category}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p
+                          className={`font-bold ${transaction.type === "deposit" ? "text-green-400" : "text-red-400"}`}
+                        >
+                          {transaction.type === "deposit" ? "+" : "-"}${transaction.amount.toLocaleString()}
+                        </p>
+                        <p className="text-purple-300 text-sm">Balance: ${transaction.balance.toLocaleString()}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Transfer Tab */}
+        <TabsContent value="transfer" className="space-y-6">
+          <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-amber-400/30">
+            <CardHeader>
+              <CardTitle className="text-amber-300 font-serif">Transfer Money</CardTitle>
+              <CardDescription className="text-purple-200">Send money to another account</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-purple-200 text-sm">Recipient Account ID</label>
+                <Input
+                  value={transferRecipient}
+                  onChange={(e) => setTransferRecipient(e.target.value)}
+                  placeholder="Enter recipient account ID"
+                  className="bg-purple-800/30 border-amber-400/30 text-amber-300"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-purple-200 text-sm">Amount</label>
+                <Input
+                  type="number"
+                  value={transferAmount}
+                  onChange={(e) => setTransferAmount(e.target.value)}
+                  placeholder="Enter amount"
+                  className="bg-purple-800/30 border-amber-400/30 text-amber-300"
+                />
+              </div>
+              <Button
+                onClick={handleQuickTransfer}
+                disabled={!transferAmount || !transferRecipient}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+              >
+                <Send className="w-4 h-4 mr-2" />
+                Send Transfer
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Investments Tab */}
+        <TabsContent value="investments" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 border-blue-400/30">
+              <CardHeader>
+                <CardTitle className="text-blue-300 font-serif">Investment Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-blue-200">Total Investments:</span>
+                  <span className="text-blue-300 font-bold">
+                    ${dashboard?.investmentSummary.totalInvestments.toLocaleString() || "0"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-blue-200">Portfolio Value:</span>
+                  <span className="text-blue-300 font-bold">
+                    ${dashboard?.investmentSummary.portfolioValue.toLocaleString() || "0"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-blue-200">Risk Level:</span>
+                  <Badge variant="outline" className="border-blue-400 text-blue-300">
+                    {dashboard?.investmentSummary.riskLevel || "Moderate"}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-green-900/50 to-blue-900/50 border-green-400/30">
+              <CardHeader>
+                <CardTitle className="text-green-300 font-serif">Performance</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-green-200">Total Return:</span>
+                  <span className="text-green-300 font-bold">
+                    ${dashboard?.investmentSummary.totalReturn.toLocaleString() || "0"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-green-200">Monthly Return:</span>
+                  <span className="text-green-300 font-bold">
+                    ${dashboard?.investmentSummary.monthlyReturn.toLocaleString() || "0"}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Settings Tab */}
+        <TabsContent value="settings" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-amber-400/30">
+              <CardHeader>
+                <CardTitle className="text-amber-300 font-serif">Security Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-purple-200">Two-Factor Authentication:</span>
+                  <Badge variant={account.securitySettings.twoFactorAuth ? "default" : "secondary"}>
+                    {account.securitySettings.twoFactorAuth ? "Enabled" : "Disabled"}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-purple-200">Biometric Authentication:</span>
+                  <Badge variant={account.securitySettings.biometricAuth ? "default" : "secondary"}>
+                    {account.securitySettings.biometricAuth ? "Enabled" : "Disabled"}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-purple-200">Transaction Limits:</span>
+                  <Badge variant={account.securitySettings.transactionLimits ? "default" : "secondary"}>
+                    {account.securitySettings.transactionLimits ? "Active" : "Inactive"}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-amber-400/30">
+              <CardHeader>
+                <CardTitle className="text-amber-300 font-serif">Account Limits</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-purple-200">Daily Withdrawal:</span>
+                  <span className="text-amber-300">${account.limits.dailyWithdrawalLimit.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-purple-200">Daily Transfer:</span>
+                  <span className="text-amber-300">${account.limits.dailyTransferLimit.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-purple-200">Wire Transfer:</span>
+                  <span className="text-amber-300">${account.limits.wireTransferLimit.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-purple-200">Overdraft:</span>
+                  <span className="text-amber-300">${account.limits.overdraftLimit.toLocaleString()}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
