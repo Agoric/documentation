@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useMemo, useState, useCallback, useRef, useEffect } from "react"
+import { useMemo, useState, useEffect, useRef } from "react"
 import { Search, X, Star, Sparkles, Eye, Package, Filter, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -67,9 +65,8 @@ export function AdaptiveHolographicSidebar({
 }: AdaptiveHolographicSidebarProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const sidebarRef = useRef<HTMLDivElement>(null)
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const collapseTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Safe filter access with null checks
   const safeFilters = filters || {
@@ -93,92 +90,67 @@ export function AdaptiveHolographicSidebar({
     }
   }, [safeFilters])
 
-  // Enhanced hover detection with debouncing
-  const handleMouseEnter = useCallback(() => {
-    // Clear any pending collapse timeout
-    if (collapseTimeoutRef.current) {
-      clearTimeout(collapseTimeoutRef.current)
-      collapseTimeoutRef.current = null
+  // Handle mouse enter with immediate expansion
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
     }
-
-    // Clear any pending hover timeout
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current)
-    }
-
     setIsHovering(true)
+    setIsExpanded(true)
+  }
 
-    // Immediate expansion on hover
-    hoverTimeoutRef.current = setTimeout(() => {
-      setIsExpanded(true)
-    }, 50) // Very small delay to prevent flickering
-  }, [])
-
-  const handleMouseLeave = useCallback(() => {
-    // Clear hover timeout
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current)
-      hoverTimeoutRef.current = null
-    }
-
+  // Handle mouse leave with delayed retraction
+  const handleMouseLeave = () => {
     setIsHovering(false)
 
-    // Delayed collapse to prevent accidental retractions
-    collapseTimeoutRef.current = setTimeout(() => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    // Set a timeout to retract the sidebar after a brief delay
+    timeoutRef.current = setTimeout(() => {
       setIsExpanded(false)
-    }, 300) // 300ms delay before collapsing
+    }, 300) // 300ms delay before retracting
+  }
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
   }, [])
 
-  // Global mouse tracking to ensure sidebar collapses when cursor is far away
+  // Additional mouse tracking for more precise control
   useEffect(() => {
     const handleGlobalMouseMove = (event: MouseEvent) => {
       if (!sidebarRef.current) return
 
       const sidebarRect = sidebarRef.current.getBoundingClientRect()
-      const buffer = 50 // 50px buffer zone
+      const buffer = 20 // 20px buffer zone
 
-      const isNearSidebar =
+      const isWithinSidebar =
         event.clientX >= sidebarRect.left - buffer &&
         event.clientX <= sidebarRect.right + buffer &&
         event.clientY >= sidebarRect.top - buffer &&
         event.clientY <= sidebarRect.bottom + buffer
 
-      if (!isNearSidebar && isExpanded && !isHovering) {
-        // Force collapse if cursor is far from sidebar
-        if (collapseTimeoutRef.current) {
-          clearTimeout(collapseTimeoutRef.current)
-        }
-        setIsExpanded(false)
+      if (isWithinSidebar && !isHovering) {
+        handleMouseEnter()
+      } else if (!isWithinSidebar && isHovering) {
+        handleMouseLeave()
       }
     }
 
-    // Add global mouse move listener
     document.addEventListener("mousemove", handleGlobalMouseMove)
 
     return () => {
       document.removeEventListener("mousemove", handleGlobalMouseMove)
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-      if (collapseTimeoutRef.current) {
-        clearTimeout(collapseTimeoutRef.current)
-      }
     }
-  }, [isExpanded, isHovering])
-
-  // Handle focus events for keyboard navigation
-  const handleFocus = useCallback(() => {
-    setIsExpanded(true)
-  }, [])
-
-  const handleBlur = useCallback((event: React.FocusEvent) => {
-    // Only collapse if focus is moving outside the sidebar
-    if (!sidebarRef.current?.contains(event.relatedTarget as Node)) {
-      setTimeout(() => {
-        setIsExpanded(false)
-      }, 200)
-    }
-  }, [])
+  }, [isHovering])
 
   const handleFilterChange = (key: keyof FilterState, value: any) => {
     try {
@@ -206,11 +178,9 @@ export function AdaptiveHolographicSidebar({
   return (
     <motion.div
       ref={sidebarRef}
-      className="relative z-50"
+      className="relative z-50 h-full"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       animate={{
         width: isExpanded ? 320 : 80,
       }}
@@ -219,7 +189,7 @@ export function AdaptiveHolographicSidebar({
         ease: "easeInOut",
       }}
     >
-      <Sidebar className="border-r border-amber-500/20 bg-gradient-to-b from-purple-950/95 to-indigo-950/95 backdrop-blur-xl shadow-2xl">
+      <Sidebar className="h-full border-r border-amber-500/20 bg-gradient-to-b from-purple-950/95 to-indigo-950/95 backdrop-blur-xl shadow-2xl">
         <SidebarHeader className="p-4 border-b border-amber-500/20">
           <AnimatePresence mode="wait">
             {isExpanded ? (
@@ -283,7 +253,7 @@ export function AdaptiveHolographicSidebar({
           </AnimatePresence>
         </SidebarHeader>
 
-        <SidebarContent className="p-4">
+        <SidebarContent className="p-4 overflow-y-auto">
           <AnimatePresence mode="wait">
             {isExpanded ? (
               <motion.div
@@ -530,7 +500,12 @@ export function AdaptiveHolographicSidebar({
 
                 {/* Expand Indicator */}
                 <div className="flex justify-center mt-4">
-                  <ChevronRight className="h-4 w-4 text-amber-400/60 animate-pulse" />
+                  <motion.div
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2, ease: "easeInOut" }}
+                  >
+                    <ChevronRight className="h-4 w-4 text-amber-400/60" />
+                  </motion.div>
                 </div>
               </motion.div>
             )}
