@@ -1,5 +1,5 @@
 "use client"
-import { useState, useMemo } from "react"
+import { useState, useMemo, createContext, useContext } from "react"
 import { Grid, List, TestTube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -9,10 +9,18 @@ import { ComparisonBar } from "@/components/ecommerex/comparison-bar"
 import { AdaptiveHolographicSidebar } from "@/components/ecommerex/adaptive-holographic-sidebar"
 import { AdaptiveRegalToolbar } from "@/components/navigation/adaptive-regal-toolbar"
 import { FilterTestPanel } from "@/components/ecommerex/filter-test-panel"
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { SupremeAuthorityCoin } from "@/components/branding/supreme-authority-coin"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
+
+// Create context for sidebar state
+const SidebarContext = createContext<{
+  isExpanded: boolean
+  setIsExpanded: (expanded: boolean) => void
+}>({
+  isExpanded: false,
+  setIsExpanded: () => {},
+})
 
 // Enhanced sample product data with correct structure for HolographicProductCard
 const sampleProducts = [
@@ -219,6 +227,7 @@ export function HolographicProductsDashboard() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("featured")
   const [showTestPanel, setShowTestPanel] = useState(false)
+  const [sidebarExpanded, setSidebarExpanded] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     search: "",
     category: "all",
@@ -229,11 +238,12 @@ export function HolographicProductsDashboard() {
     inStockOnly: false,
   })
 
-  // Default layout values to prevent null errors
+  // Dynamic layout values based on sidebar state
   const layout = {
-    sidebarCollapsed: false,
+    sidebarWidth: sidebarExpanded ? 320 : 80,
+    sidebarCollapsed: !sidebarExpanded,
     adaptiveSpacing: 16,
-    contentPadding: 16,
+    contentPadding: 24,
     cardSize: "default" as const,
     toolbarCompact: false,
     showLabels: true,
@@ -385,11 +395,11 @@ export function HolographicProductsDashboard() {
   }, [filters])
 
   return (
-    <SidebarProvider>
+    <SidebarContext.Provider value={{ isExpanded: sidebarExpanded, setIsExpanded: setSidebarExpanded }}>
       <motion.div
         className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 relative"
         animate={{
-          paddingLeft: layout.sidebarCollapsed ? 0 : 0,
+          paddingLeft: 0, // Remove padding since we're using absolute positioning
         }}
         transition={{ duration: 0.3 }}
       >
@@ -407,7 +417,14 @@ export function HolographicProductsDashboard() {
         </div>
 
         {/* Adaptive Regal Toolbar */}
-        <AdaptiveRegalToolbar />
+        <motion.div
+          animate={{
+            marginLeft: layout.sidebarWidth,
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <AdaptiveRegalToolbar />
+        </motion.div>
 
         {/* Test Panel Modal */}
         {showTestPanel && (
@@ -440,17 +457,27 @@ export function HolographicProductsDashboard() {
           </div>
         )}
 
-        <div className="flex">
-          {/* Adaptive Sidebar */}
-          <AdaptiveHolographicSidebar
-            filters={filters}
-            onFilterChange={updateFilter}
-            onClearFilters={clearAllFilters}
-            productCount={sortedProducts?.length || 0}
-          />
+        {/* Layout Container */}
+        <div className="flex relative">
+          {/* Adaptive Sidebar - Fixed Position */}
+          <div className="fixed left-0 top-0 h-full z-40">
+            <AdaptiveHolographicSidebar
+              filters={filters}
+              onFilterChange={updateFilter}
+              onClearFilters={clearAllFilters}
+              productCount={sortedProducts?.length || 0}
+              onExpandChange={setSidebarExpanded}
+            />
+          </div>
 
-          {/* Main Content */}
-          <SidebarInset className="flex-1">
+          {/* Main Content - Responsive to Sidebar */}
+          <motion.div
+            className="flex-1 min-h-screen"
+            animate={{
+              marginLeft: layout.sidebarWidth,
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
             <motion.div
               className="h-full"
               animate={{
@@ -585,12 +612,22 @@ export function HolographicProductsDashboard() {
                 />
               </motion.div>
             </motion.div>
-          </SidebarInset>
+          </motion.div>
         </div>
 
-        {/* Comparison Bar */}
-        <ComparisonBar />
+        {/* Comparison Bar - Responsive to Sidebar */}
+        <motion.div
+          animate={{
+            marginLeft: layout.sidebarWidth,
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <ComparisonBar />
+        </motion.div>
       </motion.div>
-    </SidebarProvider>
+    </SidebarContext.Provider>
   )
 }
+
+// Export the context for use in child components
+export const useSidebarContext = () => useContext(SidebarContext)
