@@ -671,7 +671,8 @@ const sampleMarginAccounts: Record<string, MarginAccount> = {
 }
 
 export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [commodityContracts, setCommodityContracts] = useState<Record<string, CommodityContract>>(sampleCommodityContracts)
+  const [commodityContracts, setCommodityContracts] =
+    useState<Record<string, CommodityContract>>(sampleCommodityContracts)
   const [marketData, setMarketData] = useState<Record<string, MarketData>>({})
   const [futuresPositions, setFuturesPositions] = useState<Record<string, FuturesPosition>>({})
   const [futuresOrders, setFuturesOrders] = useState<Record<string, FuturesOrder>>({})
@@ -690,11 +691,11 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
 
   const updateMarketData = () => {
     const updatedMarketData: Record<string, MarketData> = {}
-    
-    Object.values(commodityContracts).forEach(contract => {
+
+    Object.values(commodityContracts).forEach((contract) => {
       const priceChange = (Math.random() - 0.5) * contract.currentPrice * 0.01 // ±1% random change
       const newPrice = Math.max(0, contract.currentPrice + priceChange)
-      
+
       updatedMarketData[contract.contractId] = {
         contractId: contract.contractId,
         timestamp: new Date(),
@@ -714,14 +715,14 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
       }
 
       // Update contract current price
-      setCommodityContracts(prev => ({
+      setCommodityContracts((prev) => ({
         ...prev,
         [contract.contractId]: {
           ...prev[contract.contractId],
           currentPrice: newPrice,
           dailyChange: newPrice - contract.previousClose,
           dailyChangePercent: ((newPrice - contract.previousClose) / contract.previousClose) * 100,
-        }
+        },
       }))
     })
 
@@ -750,11 +751,11 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
 
     const history: PricePoint[] = []
     const days = period === "1M" ? 30 : period === "3M" ? 90 : period === "1Y" ? 365 : 7
-    
+
     for (let i = days; i >= 0; i--) {
       const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000)
       const basePrice = contract.currentPrice * (1 + (Math.random() - 0.5) * 0.1)
-      
+
       history.push({
         timestamp: date,
         open: basePrice,
@@ -768,9 +769,11 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
     return history
   }
 
-  const placeFuturesOrder = async (order: Omit<FuturesOrder, 'orderId' | 'orderDate' | 'orderStatus' | 'fills' | 'averageFillPrice'>): Promise<FuturesOrder> => {
+  const placeFuturesOrder = async (
+    order: Omit<FuturesOrder, "orderId" | "orderDate" | "orderStatus" | "fills" | "averageFillPrice">,
+  ): Promise<FuturesOrder> => {
     const orderId = `order_${Date.now()}`
-    
+
     const newOrder: FuturesOrder = {
       ...order,
       orderId,
@@ -785,14 +788,14 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
     }
 
     // Check if risk checks passed
-    const failedChecks = newOrder.riskChecks.filter(check => check.checkResult === "failed")
+    const failedChecks = newOrder.riskChecks.filter((check) => check.checkResult === "failed")
     if (failedChecks.length > 0) {
       newOrder.orderStatus = "rejected"
     }
 
-    setFuturesOrders(prev => ({
+    setFuturesOrders((prev) => ({
       ...prev,
-      [orderId]: newOrder
+      [orderId]: newOrder,
     }))
 
     // Simulate order execution for market orders
@@ -821,11 +824,11 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
       fillPrice,
       fillTime: new Date(),
       executionVenue: "SUPREME_EXCHANGE",
-      commission: fillQuantity * 2.50, // $2.50 per contract
+      commission: fillQuantity * 2.5, // $2.50 per contract
       fees: fillQuantity * 0.85, // $0.85 per contract in fees
     }
 
-    setFuturesOrders(prev => ({
+    setFuturesOrders((prev) => ({
       ...prev,
       [orderId]: {
         ...prev[orderId],
@@ -834,7 +837,7 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
         remainingQuantity: 0,
         fills: [...prev[orderId].fills, fill],
         averageFillPrice: fillPrice,
-      }
+      },
     }))
 
     // Create or update position
@@ -847,14 +850,15 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
 
     if (existingPosition) {
       // Update existing position
-      const newQuantity = order.orderSide === "buy" 
-        ? existingPosition.quantity + fill.fillQuantity
-        : existingPosition.quantity - fill.fillQuantity
+      const newQuantity =
+        order.orderSide === "buy"
+          ? existingPosition.quantity + fill.fillQuantity
+          : existingPosition.quantity - fill.fillQuantity
 
       const newPositionType: "long" | "short" = newQuantity > 0 ? "long" : "short"
       const contract = commodityContracts[order.contractId]
-      
-      setFuturesPositions(prev => ({
+
+      setFuturesPositions((prev) => ({
         ...prev,
         [positionKey]: {
           ...prev[positionKey],
@@ -863,13 +867,13 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
           currentPrice: contract?.currentPrice || 0,
           marketValue: Math.abs(newQuantity) * (contract?.currentPrice || 0) * (contract?.contractSize || 1),
           lastUpdateDate: new Date(),
-        }
+        },
       }))
     } else {
       // Create new position
       const contract = commodityContracts[order.contractId]
       const positionId = `pos_${Date.now()}`
-      
+
       const newPosition: FuturesPosition = {
         positionId,
         accountId: order.accountId,
@@ -891,45 +895,457 @@ export const CommoditiesFuturesProvider: React.FC<{ children: ReactNode }> = ({ 
         deltaEquivalent: fill.fillQuantity * (contract?.contractSize || 1),
         riskExposure: fill.fillQuantity * fill.fillPrice * (contract?.contractSize || 1),
         activeOrders: [],
-        positionHistory: [{
-          eventId: `event_${Date.now()}`,
-          eventType: "open",
-          eventDate: new Date(),
-          quantity: fill.fillQuantity,
-          price: fill.fillPrice,
-          description: "Position opened"
-        }],
+        positionHistory: [
+          {
+            eventId: `event_${Date.now()}`,
+            eventType: "open",
+            eventDate: new Date(),
+            quantity: fill.fillQuantity,
+            price: fill.fillPrice,
+            description: "Position opened",
+          },
+        ],
       }
 
-      setFuturesPositions(prev => ({
+      setFuturesPositions((prev) => ({
         ...prev,
-        [positionKey]: newPosition
+        [positionKey]: newPosition,
       }))
     }
   }
 
   const cancelFuturesOrder = async (orderId: string): Promise<void> => {
-    setFuturesOrders(prev => ({
+    setFuturesOrders((prev) => ({
       ...prev,
       [orderId]: {
         ...prev[orderId],
-        orderStatus: "cancelled"
-      }
+        orderStatus: "cancelled",
+      },
     }))
   }
 
   const modifyFuturesOrder = async (orderId: string, modifications: Partial<FuturesOrder>): Promise<void> => {
-    setFuturesOrders(prev => ({
+    setFuturesOrders((prev) => ({
       ...prev,
       [orderId]: {
         ...prev[orderId],
-        ...modifications
-      }
+        ...modifications,
+      },
     }))
   }
 
   const getPositions = (accountId: string): FuturesPosition[] => {
-    return Object.values(futuresPositions).filter(position => position.accountId === accountId)
+    return Object.values(futuresPositions).filter((position) => position.accountId === accountId)
   }
 
-  const closePosition = async (\
+  const closePosition = async (positionId: string, quantity?: number): Promise<void> => {
+    const position = Object.values(futuresPositions).find((p) => p.positionId === positionId)
+    if (!position) return
+
+    const closeQuantity = quantity || position.quantity
+    const orderSide = position.positionType === "long" ? "sell" : "buy"
+
+    await placeFuturesOrder({
+      accountId: position.accountId,
+      contractId: position.contractId,
+      orderType: "market",
+      orderSide,
+      orderQuantity: closeQuantity,
+      timeInForce: "day",
+      conditions: [],
+      riskChecks: [],
+    })
+  }
+
+  const rollPosition = async (positionId: string, newContractId: string): Promise<FuturesPosition> => {
+    const position = Object.values(futuresPositions).find((p) => p.positionId === positionId)
+    if (!position) throw new Error("Position not found")
+
+    // Close existing position
+    await closePosition(positionId)
+
+    // Open new position in the new contract
+    const orderSide = position.positionType === "long" ? "buy" : "sell"
+    await placeFuturesOrder({
+      accountId: position.accountId,
+      contractId: newContractId,
+      orderType: "market",
+      orderSide,
+      orderQuantity: position.quantity,
+      timeInForce: "day",
+      conditions: [],
+      riskChecks: [],
+    })
+
+    // Return the new position (would need to be retrieved after creation)
+    return position // Simplified for this example
+  }
+
+  const calculateMarginRequirement = async (contractId: string, quantity: number): Promise<number> => {
+    const contract = commodityContracts[contractId]
+    if (!contract) return 0
+
+    // Simplified margin calculation - typically based on volatility and contract value
+    const contractValue = contract.currentPrice * contract.contractSize * quantity
+    const marginRate = contract.commodityType === "energy" ? 0.08 : 0.06 // 8% for energy, 6% for others
+
+    return contractValue * marginRate
+  }
+
+  const checkMarginAdequacy = async (accountId: string): Promise<boolean> => {
+    const account = marginAccounts[accountId]
+    if (!account) return false
+
+    return account.availableMargin > account.maintenanceMarginRequirement
+  }
+
+  const addMargin = async (accountId: string, amount: number): Promise<void> => {
+    setMarginAccounts((prev) => ({
+      ...prev,
+      [accountId]: {
+        ...prev[accountId],
+        cashBalance: prev[accountId].cashBalance + amount,
+        totalEquity: prev[accountId].totalEquity + amount,
+        availableMargin: prev[accountId].availableMargin + amount,
+      },
+    }))
+  }
+
+  const withdrawMargin = async (accountId: string, amount: number): Promise<void> => {
+    const account = marginAccounts[accountId]
+    if (!account || account.availableMargin < amount) {
+      throw new Error("Insufficient available margin")
+    }
+
+    setMarginAccounts((prev) => ({
+      ...prev,
+      [accountId]: {
+        ...prev[accountId],
+        cashBalance: prev[accountId].cashBalance - amount,
+        totalEquity: prev[accountId].totalEquity - amount,
+        availableMargin: prev[accountId].availableMargin - amount,
+      },
+    }))
+  }
+
+  const calculatePortfolioRisk = async (accountId: string): Promise<PortfolioRisk> => {
+    const positions = getPositions(accountId)
+
+    let totalRiskExposure = 0
+    let portfolioValue = 0
+
+    positions.forEach((position) => {
+      totalRiskExposure += position.riskExposure
+      portfolioValue += position.marketValue
+    })
+
+    const portfolioVolatility = 0.15 // Simplified calculation
+    const valueAtRisk = portfolioValue * 0.05 // 5% VaR
+    const expectedShortfall = valueAtRisk * 1.5
+
+    return {
+      totalRiskExposure,
+      valueAtRisk,
+      expectedShortfall,
+      portfolioVolatility,
+      correlationRisk: 0.08,
+      concentrationRisk: 0.12,
+    }
+  }
+
+  const performRiskCheck = async (order: Partial<FuturesOrder>): Promise<RiskCheck[]> => {
+    const checks: RiskCheck[] = []
+
+    // Position limit check
+    if (order.orderQuantity && order.orderQuantity > 500) {
+      checks.push({
+        checkType: "position_limit",
+        checkResult: "warning",
+        checkMessage: "Large position size - please confirm",
+        checkTime: new Date(),
+      })
+    }
+
+    // Margin requirement check
+    if (order.accountId && order.contractId && order.orderQuantity) {
+      const marginRequired = await calculateMarginRequirement(order.contractId, order.orderQuantity)
+      const account = marginAccounts[order.accountId]
+
+      if (account && account.availableMargin < marginRequired) {
+        checks.push({
+          checkType: "margin_requirement",
+          checkResult: "failed",
+          checkMessage: "Insufficient margin available",
+          checkTime: new Date(),
+        })
+      }
+    }
+
+    return checks
+  }
+
+  const setRiskLimits = async (accountId: string, limits: Partial<TradingLimits>): Promise<void> => {
+    setMarginAccounts((prev) => ({
+      ...prev,
+      [accountId]: {
+        ...prev[accountId],
+        tradingLimits: {
+          ...prev[accountId].tradingLimits,
+          ...limits,
+        },
+      },
+    }))
+  }
+
+  const createDerivativeContract = async (
+    contract: Omit<DerivativeContract, "contractId" | "currentPrice" | "theoreticalValue">,
+  ): Promise<DerivativeContract> => {
+    const contractId = `deriv_${Date.now()}`
+
+    const newContract: DerivativeContract = {
+      ...contract,
+      contractId,
+      currentPrice: 0, // Would be calculated based on underlying
+      theoreticalValue: 0, // Would be calculated using pricing models
+      intrinsicValue: 0,
+      timeValue: 0,
+      riskMetrics: {
+        deltaEquivalent: 0,
+        gammaRisk: 0,
+        vegaRisk: 0,
+        thetaDecay: 0,
+        rhoSensitivity: 0,
+      },
+    }
+
+    setDerivativeContracts((prev) => ({
+      ...prev,
+      [contractId]: newContract,
+    }))
+
+    return newContract
+  }
+
+  const calculateGreeks = async (contractId: string): Promise<Partial<DerivativeContract>> => {
+    // Mock Greeks calculation - would use Black-Scholes or other pricing models
+    return {
+      delta: 0.5,
+      gamma: 0.02,
+      theta: -0.05,
+      vega: 0.15,
+      rho: 0.08,
+    }
+  }
+
+  const createTradingStrategy = async (
+    strategy: Omit<TradingStrategy, "strategyId" | "performance" | "lastExecutionDate">,
+  ): Promise<TradingStrategy> => {
+    const strategyId = `strategy_${Date.now()}`
+
+    const newStrategy: TradingStrategy = {
+      ...strategy,
+      strategyId,
+      performance: {
+        totalReturn: 0,
+        annualizedReturn: 0,
+        sharpeRatio: 0,
+        maxDrawdown: 0,
+        winRate: 0,
+        profitFactor: 0,
+        totalTrades: 0,
+        winningTrades: 0,
+        losingTrades: 0,
+        averageWin: 0,
+        averageLoss: 0,
+      },
+      lastExecutionDate: new Date(),
+    }
+
+    setTradingStrategies((prev) => ({
+      ...prev,
+      [strategyId]: newStrategy,
+    }))
+
+    return newStrategy
+  }
+
+  const executeStrategy = async (strategyId: string): Promise<void> => {
+    const strategy = tradingStrategies[strategyId]
+    if (!strategy || !strategy.isActive) return
+
+    // Mock strategy execution logic
+    console.log(`Executing strategy: ${strategy.strategyName}`)
+
+    setTradingStrategies((prev) => ({
+      ...prev,
+      [strategyId]: {
+        ...prev[strategyId],
+        lastExecutionDate: new Date(),
+      },
+    }))
+  }
+
+  const backtestStrategy = async (strategyId: string, startDate: Date, endDate: Date): Promise<StrategyPerformance> => {
+    // Mock backtesting results
+    return {
+      totalReturn: 0.15, // 15%
+      annualizedReturn: 0.12, // 12%
+      sharpeRatio: 1.2,
+      maxDrawdown: -0.08, // -8%
+      winRate: 0.65, // 65%
+      profitFactor: 1.8,
+      totalTrades: 150,
+      winningTrades: 98,
+      losingTrades: 52,
+      averageWin: 1250,
+      averageLoss: -750,
+    }
+  }
+
+  const generatePerformanceReport = async (accountId: string, period: string): Promise<PerformanceReport> => {
+    const positions = getPositions(accountId)
+
+    return {
+      accountId,
+      reportPeriod: {
+        start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        end: new Date(),
+      },
+      totalReturn: 0.08, // 8%
+      annualizedReturn: 0.12, // 12%
+      sharpeRatio: 1.1,
+      maxDrawdown: -0.05, // -5%
+      volatility: 0.18,
+      totalTrades: 45,
+      winningTrades: 28,
+      losingTrades: 17,
+      winRate: 0.62, // 62%
+      profitFactor: 1.6,
+      averageHoldingPeriod: 8, // days
+      largestWin: 15000,
+      largestLoss: -8500,
+      valueAtRisk: 25000,
+      expectedShortfall: 37500,
+      commodityBreakdown: {
+        precious_metals: {
+          commodityType: "Precious Metals",
+          totalReturn: 0.12,
+          numberOfTrades: 15,
+          winRate: 0.67,
+          averageReturn: 0.008,
+        },
+        energy: {
+          commodityType: "Energy",
+          totalReturn: 0.05,
+          numberOfTrades: 20,
+          winRate: 0.6,
+          averageReturn: 0.0025,
+        },
+      },
+    }
+  }
+
+  const getMarketAnalysis = async (contractId: string): Promise<MarketAnalysis> => {
+    const contract = commodityContracts[contractId]
+    if (!contract) throw new Error("Contract not found")
+
+    return {
+      contractId,
+      analysisDate: new Date(),
+      technicalIndicators: [
+        { indicator: "RSI", value: 65, signal: "neutral", strength: 0.6 },
+        { indicator: "MACD", value: 2.5, signal: "buy", strength: 0.7 },
+        { indicator: "Moving Average", value: contract.currentPrice * 0.98, signal: "buy", strength: 0.8 },
+      ],
+      supportLevels: [contract.currentPrice * 0.95, contract.currentPrice * 0.9],
+      resistanceLevels: [contract.currentPrice * 1.05, contract.currentPrice * 1.1],
+      trend: "bullish",
+      supplyDemandBalance: "balanced",
+      seasonalFactors: ["Winter demand increase", "Harvest season impact"],
+      economicIndicators: [
+        { indicator: "USD Index", currentValue: 103.5, previousValue: 102.8, impact: "negative" },
+        { indicator: "Inflation Rate", currentValue: 3.2, previousValue: 3.5, impact: "positive" },
+      ],
+      sentimentScore: 0.65, // Bullish
+      institutionalFlow: "buying",
+      retailFlow: "neutral",
+      priceTargets: [
+        { timeframe: "1 month", targetPrice: contract.currentPrice * 1.05, probability: 0.7, scenario: "base" },
+        { timeframe: "3 months", targetPrice: contract.currentPrice * 1.12, probability: 0.6, scenario: "bull" },
+        { timeframe: "6 months", targetPrice: contract.currentPrice * 1.2, probability: 0.4, scenario: "bull" },
+      ],
+      volatilityForecast: 0.22,
+      riskFactors: ["Geopolitical tensions", "Currency fluctuations", "Supply chain disruptions"],
+      opportunities: ["Seasonal demand patterns", "Technical breakout potential", "Fundamental supply tightness"],
+    }
+  }
+
+  const requestDelivery = async (positionId: string): Promise<DeliveryRequest> => {
+    const position = Object.values(futuresPositions).find((p) => p.positionId === positionId)
+    if (!position) throw new Error("Position not found")
+
+    const contract = commodityContracts[position.contractId]
+    if (!contract || contract.deliveryMethod !== "physical") {
+      throw new Error("Physical delivery not available for this contract")
+    }
+
+    const deliveryRequest: DeliveryRequest = {
+      deliveryId: `delivery_${Date.now()}`,
+      positionId,
+      contractId: position.contractId,
+      quantity: position.quantity,
+      deliveryMonth: contract.deliveryMonth,
+      requestDate: new Date(),
+      deliveryLocation: contract.deliveryLocations[0]?.locationId || "",
+      status: "pending",
+    }
+
+    return deliveryRequest
+  }
+
+  const manageDelivery = async (deliveryId: string, action: "accept" | "offset"): Promise<void> => {
+    // Mock delivery management
+    console.log(`Managing delivery ${deliveryId} with action: ${action}`)
+  }
+
+  return (
+    <CommoditiesFuturesContext.Provider
+      value={{
+        commodityContracts,
+        marketData,
+        futuresPositions,
+        futuresOrders,
+        marginAccounts,
+        derivativeContracts,
+        tradingStrategies,
+        getMarketData,
+        subscribeToMarketData,
+        getPriceHistory,
+        placeFuturesOrder,
+        cancelFuturesOrder,
+        modifyFuturesOrder,
+        getPositions,
+        closePosition,
+        rollPosition,
+        calculateMarginRequirement,
+        checkMarginAdequacy,
+        addMargin,
+        withdrawMargin,
+        calculatePortfolioRisk,
+        performRiskCheck,
+        setRiskLimits,
+        createDerivativeContract,
+        calculateGreeks,
+        createTradingStrategy,
+        executeStrategy,
+        backtestStrategy,
+        generatePerformanceReport,
+        getMarketAnalysis,
+        requestDelivery,
+        manageDelivery,
+      }}
+    >
+      {children}
+    </CommoditiesFuturesContext.Provider>
+  )
+}
