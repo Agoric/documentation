@@ -22,193 +22,193 @@ const SidebarContext = createContext<{
   setIsExpanded: () => {},
 })
 
-// Enhanced sample product data with correct structure for HolographicProductCard
+// Enhanced sample investment products for QUICA Global Citizen Money Market
 const sampleProducts = [
   {
     id: "1",
-    name: "Cosmic Emperors Collection",
+    name: "QUICA Global Index (QGI)",
     description:
-      "Exclusive collection of 10,000 unique Roman Emperor NFTs with holographic traits and governance rights",
-    price: 2.5, // ETH price
-    image: "/placeholder.svg?height=300&width=300&text=Cosmic+Emperors",
-    category: "PFP",
+      "Diversified global investment index tracking the world's top performing markets with quantum-enhanced analytics",
+    price: 2500, // USD minimum investment
+    image: "/placeholder.svg?height=300&width=300&text=QGI+Global+Index",
+    category: "QGI",
     rating: 4.8,
-    stock: 2847, // Available NFTs
-    platforms: ["opensea", "blur", "x2y2"],
+    stock: 2847, // Available investment slots
+    platforms: ["QUICA", "Global Markets", "Quantum Analytics"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Emperor+1",
-      "/placeholder.svg?height=300&width=300&text=Emperor+2",
-      "/placeholder.svg?height=300&width=300&text=Emperor+3",
-      "/placeholder.svg?height=300&width=300&text=Emperor+4",
-      "/placeholder.svg?height=300&width=300&text=Emperor+5",
-      "/placeholder.svg?height=300&width=300&text=Emperor+6",
-      "/placeholder.svg?height=300&width=300&text=Emperor+7",
-      "/placeholder.svg?height=300&width=300&text=Emperor+8",
+      "/placeholder.svg?height=300&width=300&text=QGI+Performance+1",
+      "/placeholder.svg?height=300&width=300&text=QGI+Performance+2",
+      "/placeholder.svg?height=300&width=300&text=QGI+Analytics+1",
+      "/placeholder.svg?height=300&width=300&text=QGI+Analytics+2",
+      "/placeholder.svg?height=300&width=300&text=QGI+Global+1",
+      "/placeholder.svg?height=300&width=300&text=QGI+Global+2",
+      "/placeholder.svg?height=300&width=300&text=QGI+Quantum+1",
+      "/placeholder.svg?height=300&width=300&text=QGI+Quantum+2",
     ],
-    holographicFeatures: ["Holographic Traits", "Governance Rights", "Staking Rewards", "Metaverse Ready"],
-    floorPrice: 2.1,
-    totalVolume: 15420,
-    owners: 3241,
+    holographicFeatures: ["Quantum Analytics", "Global Diversification", "Real-time Tracking", "AI Optimization"],
+    floorPrice: 2100,
+    totalVolume: 154200000, // Total AUM in USD
+    owners: 3241, // Number of investors
   },
   {
     id: "2",
-    name: "Digital Gladiators Arena",
-    description: "Battle-ready gladiator NFTs with interactive combat mechanics and tournament rewards",
-    price: 1.8,
-    image: "/placeholder.svg?height=300&width=300&text=Digital+Gladiators",
-    category: "Gaming",
+    name: "QUICA Bond Fund (QBF)",
+    description: "Premium government and corporate bond portfolio with stable returns and capital preservation focus",
+    price: 1800,
+    image: "/placeholder.svg?height=300&width=300&text=QBF+Bond+Fund",
+    category: "QBF",
     rating: 4.9,
     stock: 1523,
-    platforms: ["opensea", "magic-eden", "blur"],
+    platforms: ["QUICA", "Bond Markets", "Fixed Income"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Gladiator+1",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+2",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+3",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+4",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+5",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+6",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+7",
-      "/placeholder.svg?height=300&width=300&text=Gladiator+8",
+      "/placeholder.svg?height=300&width=300&text=QBF+Bonds+1",
+      "/placeholder.svg?height=300&width=300&text=QBF+Bonds+2",
+      "/placeholder.svg?height=300&width=300&text=QBF+Yield+1",
+      "/placeholder.svg?height=300&width=300&text=QBF+Yield+2",
+      "/placeholder.svg?height=300&width=300&text=QBF+Portfolio+1",
+      "/placeholder.svg?height=300&width=300&text=QBF+Portfolio+2",
+      "/placeholder.svg?height=300&width=300&text=QBF+Analysis+1",
+      "/placeholder.svg?height=300&width=300&text=QBF+Analysis+2",
     ],
-    holographicFeatures: ["Combat Mechanics", "Tournament Ready", "Weapon Upgrades", "Arena Access"],
-    floorPrice: 1.5,
-    totalVolume: 8934,
+    holographicFeatures: ["Stable Returns", "Capital Preservation", "Government Bonds", "Corporate Bonds"],
+    floorPrice: 1500,
+    totalVolume: 89340000,
     owners: 1876,
   },
   {
     id: "3",
-    name: "Quantum Art Masterpieces",
-    description: "AI-generated quantum art pieces with evolving visual properties and collector rewards",
-    price: 5.2,
-    image: "/placeholder.svg?height=300&width=300&text=Quantum+Art",
-    category: "Art",
+    name: "QUICA Equity Fund (QEF)",
+    description: "High-growth equity portfolio featuring blue-chip stocks and emerging market opportunities",
+    price: 5200,
+    image: "/placeholder.svg?height=300&width=300&text=QEF+Equity+Fund",
+    category: "QEF",
     rating: 4.7,
-    stock: 0, // Sold out
-    platforms: ["foundation", "superrare", "async"],
+    stock: 892,
+    platforms: ["QUICA", "Stock Markets", "Equity Trading"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+1",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+2",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+3",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+4",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+5",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+6",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+7",
-      "/placeholder.svg?height=300&width=300&text=Quantum+Art+8",
+      "/placeholder.svg?height=300&width=300&text=QEF+Stocks+1",
+      "/placeholder.svg?height=300&width=300&text=QEF+Stocks+2",
+      "/placeholder.svg?height=300&width=300&text=QEF+Growth+1",
+      "/placeholder.svg?height=300&width=300&text=QEF+Growth+2",
+      "/placeholder.svg?height=300&width=300&text=QEF+Markets+1",
+      "/placeholder.svg?height=300&width=300&text=QEF+Markets+2",
+      "/placeholder.svg?height=300&width=300&text=QEF+Performance+1",
+      "/placeholder.svg?height=300&width=300&text=QEF+Performance+2",
     ],
-    holographicFeatures: ["Evolving Visuals", "AI Generated", "Collector Rewards", "Museum Quality"],
-    floorPrice: 4.8,
-    totalVolume: 23567,
+    holographicFeatures: ["High Growth", "Blue Chip Stocks", "Emerging Markets", "Dividend Income"],
+    floorPrice: 4800,
+    totalVolume: 235670000,
     owners: 456,
   },
   {
     id: "4",
-    name: "Pixel Legions",
-    description: "Retro-style pixel art warriors with classic gaming aesthetics and nostalgic appeal",
-    price: 0.3,
-    image: "/placeholder.svg?height=300&width=300&text=Pixel+Legions",
-    category: "Pixel Art",
+    name: "QUICA Crypto Fund (QCF)",
+    description: "Diversified cryptocurrency portfolio with Bitcoin, Ethereum, and emerging digital assets",
+    price: 3000,
+    image: "/placeholder.svg?height=300&width=300&text=QCF+Crypto+Fund",
+    category: "QCF",
     rating: 4.6,
     stock: 7834,
-    platforms: ["opensea", "blur", "looksrare"],
+    platforms: ["QUICA", "Crypto Exchanges", "DeFi Protocols"],
     isHolographic: false,
     has360View: false,
     holographicFeatures: [],
-    floorPrice: 0.25,
-    totalVolume: 2341,
+    floorPrice: 2500,
+    totalVolume: 23410000,
     owners: 4521,
   },
   {
     id: "5",
-    name: "Metaverse Real Estate",
-    description: "Premium virtual land parcels in the Snapifi Metaverse with building rights and revenue sharing",
-    price: 12.5,
-    image: "/placeholder.svg?height=300&width=300&text=Metaverse+Land",
-    category: "Virtual Land",
+    name: "QUICA Real Estate Fund (QRF)",
+    description: "Global real estate investment trust with commercial and residential properties worldwide",
+    price: 12500,
+    image: "/placeholder.svg?height=300&width=300&text=QRF+Real+Estate",
+    category: "QRF",
     rating: 4.5,
     stock: 234,
-    platforms: ["opensea", "decentraland", "sandbox"],
+    platforms: ["QUICA", "REIT Markets", "Property Investment"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Land+1",
-      "/placeholder.svg?height=300&width=300&text=Land+2",
-      "/placeholder.svg?height=300&width=300&text=Land+3",
-      "/placeholder.svg?height=300&width=300&text=Land+4",
-      "/placeholder.svg?height=300&width=300&text=Land+5",
-      "/placeholder.svg?height=300&width=300&text=Land+6",
-      "/placeholder.svg?height=300&width=300&text=Land+7",
-      "/placeholder.svg?height=300&width=300&text=Land+8",
+      "/placeholder.svg?height=300&width=300&text=QRF+Properties+1",
+      "/placeholder.svg?height=300&width=300&text=QRF+Properties+2",
+      "/placeholder.svg?height=300&width=300&text=QRF+Commercial+1",
+      "/placeholder.svg?height=300&width=300&text=QRF+Commercial+2",
+      "/placeholder.svg?height=300&width=300&text=QRF+Residential+1",
+      "/placeholder.svg?height=300&width=300&text=QRF+Residential+2",
+      "/placeholder.svg?height=300&width=300&text=QRF+Global+1",
+      "/placeholder.svg?height=300&width=300&text=QRF+Global+2",
     ],
-    holographicFeatures: ["Building Rights", "Revenue Sharing", "Metaverse Access", "Development Tools"],
-    floorPrice: 11.2,
-    totalVolume: 45678,
+    holographicFeatures: ["Global Properties", "REIT Investment", "Rental Income", "Property Appreciation"],
+    floorPrice: 11200,
+    totalVolume: 456780000,
     owners: 189,
   },
   {
     id: "6",
-    name: "Holographic Music NFTs",
-    description: "Interactive music NFTs with 3D visualizations and exclusive artist content",
-    price: 0.8,
-    image: "/placeholder.svg?height=300&width=300&text=Music+NFTs",
-    category: "Music",
+    name: "QUICA Commodity Market (QCM)",
+    description: "Precious metals, energy, and agricultural commodities investment with inflation protection",
+    price: 800,
+    image: "/placeholder.svg?height=300&width=300&text=QCM+Commodities",
+    category: "QCM",
     rating: 4.4,
     stock: 1567,
-    platforms: ["opensea", "catalog", "sound"],
+    platforms: ["QUICA", "Commodity Exchanges", "Futures Markets"],
     isHolographic: true,
     has360View: false,
-    holographicFeatures: ["3D Visualizations", "Exclusive Content", "Artist Access", "Concert Tickets"],
-    floorPrice: 0.6,
-    totalVolume: 3456,
+    holographicFeatures: ["Precious Metals", "Energy Commodities", "Agricultural Products", "Inflation Hedge"],
+    floorPrice: 600,
+    totalVolume: 34560000,
     owners: 2341,
   },
   {
     id: "7",
-    name: "Sports Legends Cards",
-    description: "Digital trading cards featuring legendary athletes with animated highlights and stats",
-    price: 0.15,
-    image: "/placeholder.svg?height=300&width=300&text=Sports+Cards",
-    category: "Sports",
+    name: "QUICA Innovation Fund (QIF)",
+    description: "Technology and innovation-focused investment in AI, quantum computing, and breakthrough technologies",
+    price: 1500,
+    image: "/placeholder.svg?height=300&width=300&text=QIF+Innovation",
+    category: "QIF",
     rating: 4.3,
     stock: 12456,
-    platforms: ["opensea", "topshot", "sorare"],
+    platforms: ["QUICA", "Tech Markets", "Innovation Hubs"],
     isHolographic: false,
     has360View: false,
     holographicFeatures: [],
-    floorPrice: 0.12,
-    totalVolume: 1234,
+    floorPrice: 1200,
+    totalVolume: 12340000,
     owners: 8765,
   },
   {
     id: "8",
-    name: "Cyberpunk Avatars",
-    description: "Futuristic avatar collection with customizable traits and virtual world compatibility",
-    price: 3.2,
-    image: "/placeholder.svg?height=300&width=300&text=Cyberpunk+Avatars",
-    category: "Avatars",
+    name: "QUICA Sustainable Fund (QSF)",
+    description: "ESG-focused investment portfolio supporting sustainable and environmentally responsible companies",
+    price: 3200,
+    image: "/placeholder.svg?height=300&width=300&text=QSF+Sustainable",
+    category: "QSF",
     rating: 4.8,
     stock: 892,
-    platforms: ["opensea", "blur", "x2y2"],
+    platforms: ["QUICA", "ESG Markets", "Green Finance"],
     isHolographic: true,
     has360View: true,
     images360: [
-      "/placeholder.svg?height=300&width=300&text=Avatar+1",
-      "/placeholder.svg?height=300&width=300&text=Avatar+2",
-      "/placeholder.svg?height=300&width=300&text=Avatar+3",
-      "/placeholder.svg?height=300&width=300&text=Avatar+4",
-      "/placeholder.svg?height=300&width=300&text=Avatar+5",
-      "/placeholder.svg?height=300&width=300&text=Avatar+6",
-      "/placeholder.svg?height=300&width=300&text=Avatar+7",
-      "/placeholder.svg?height=300&width=300&text=Avatar+8",
+      "/placeholder.svg?height=300&width=300&text=QSF+ESG+1",
+      "/placeholder.svg?height=300&width=300&text=QSF+ESG+2",
+      "/placeholder.svg?height=300&width=300&text=QSF+Green+1",
+      "/placeholder.svg?height=300&width=300&text=QSF+Green+2",
+      "/placeholder.svg?height=300&width=300&text=QSF+Sustainable+1",
+      "/placeholder.svg?height=300&width=300&text=QSF+Sustainable+2",
+      "/placeholder.svg?height=300&width=300&text=QSF+Impact+1",
+      "/placeholder.svg?height=300&width=300&text=QSF+Impact+2",
     ],
-    holographicFeatures: ["Customizable Traits", "Virtual World Ready", "Avatar System", "Social Features"],
-    floorPrice: 2.8,
-    totalVolume: 18765,
+    holographicFeatures: ["ESG Compliance", "Green Technology", "Social Impact", "Environmental Focus"],
+    floorPrice: 2800,
+    totalVolume: 187650000,
     owners: 1234,
   },
 ]
@@ -283,25 +283,25 @@ export function HolographicProductsDashboard() {
           }
         }
 
-        // Price range filter with null safety
+        // Price range filter with null safety (adjusted for investment amounts)
         if (filters?.priceRange && filters.priceRange !== "all") {
           const price = typeof product.price === "number" ? product.price : 0
 
           switch (filters.priceRange) {
-            case "under-1":
-              if (price >= 1) return false
+            case "under-1k":
+              if (price >= 1000) return false
               break
-            case "1-5":
-              if (price < 1 || price >= 5) return false
+            case "1k-10k":
+              if (price < 1000 || price >= 10000) return false
               break
-            case "5-10":
-              if (price < 5 || price >= 10) return false
+            case "10k-100k":
+              if (price < 10000 || price >= 100000) return false
               break
-            case "10-50":
-              if (price < 10 || price >= 50) return false
+            case "100k-1m":
+              if (price < 100000 || price >= 1000000) return false
               break
-            case "over-50":
-              if (price < 50) return false
+            case "over-1m":
+              if (price < 1000000) return false
               break
             default:
               console.warn("Unknown price range:", filters.priceRange)
@@ -562,9 +562,9 @@ export function HolographicProductsDashboard() {
                       </SelectTrigger>
                       <SelectContent className="bg-purple-900/95 backdrop-blur-xl border-amber-500/30">
                         <SelectItem value="featured">Featured</SelectItem>
-                        <SelectItem value="price-low">Price: Low</SelectItem>
-                        <SelectItem value="price-high">Price: High</SelectItem>
-                        <SelectItem value="rating">Rating</SelectItem>
+                        <SelectItem value="price-low">Investment: Low</SelectItem>
+                        <SelectItem value="price-high">Investment: High</SelectItem>
+                        <SelectItem value="rating">Performance</SelectItem>
                         <SelectItem value="name">Name</SelectItem>
                       </SelectContent>
                     </Select>
@@ -597,9 +597,9 @@ export function HolographicProductsDashboard() {
 
                 {/* Results Count */}
                 <div className="text-sm text-amber-300/80 font-medium">
-                  Digital Collections: {sortedProducts?.length || 0} of {sampleProducts?.length || 0} Available
+                  Investment Options: {sortedProducts?.length || 0} of {sampleProducts?.length || 0} Available
                   <span className="text-xs text-amber-300/60 font-serif italic ml-2">
-                    • Collectiones Digitales Manifestae
+                    • Optiones Investimenti Disponibiles
                   </span>
                 </div>
               </motion.div>

@@ -12,24 +12,26 @@ import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 
 const categories = [
-  { id: "all", name: "All Collections", count: 156, romanName: "Omnia", icon: "📦" },
-  { id: "PFP", name: "Profile Pictures", count: 24, romanName: "Persona", icon: "👤" },
-  { id: "Art", name: "Digital Art", count: 18, romanName: "Ars", icon: "🎨" },
-  { id: "Gaming", name: "Gaming", count: 12, romanName: "Ludus", icon: "🎮" },
-  { id: "Music", name: "Music", count: 32, romanName: "Musica", icon: "🎵" },
-  { id: "Virtual Land", name: "Virtual Land", count: 8, romanName: "Terra", icon: "🏞️" },
-  { id: "Sports", name: "Sports", count: 15, romanName: "Certamen", icon: "⚽" },
-  { id: "Avatars", name: "Avatars", count: 22, romanName: "Imago", icon: "🤖" },
-  { id: "Pixel Art", name: "Pixel Art", count: 19, romanName: "Pixelum", icon: "🔲" },
+  { id: "all", name: "All Investments", count: 156, romanName: "Omnia Investimenta", icon: "💰" },
+  { id: "QGI", name: "QUICA Global Index", count: 24, romanName: "Index Globalis", icon: "🌍" },
+  { id: "QBF", name: "QUICA Bond Fund", count: 18, romanName: "Fundus Obligationum", icon: "📊" },
+  { id: "QEF", name: "QUICA Equity Fund", count: 12, romanName: "Fundus Aequitatis", icon: "📈" },
+  { id: "QCF", name: "QUICA Crypto Fund", count: 32, romanName: "Fundus Cryptographicus", icon: "₿" },
+  { id: "QRF", name: "QUICA Real Estate Fund", count: 8, romanName: "Fundus Immobiliaris", icon: "🏢" },
+  { id: "QCM", name: "QUICA Commodity Market", count: 15, romanName: "Mercatus Commoditatum", icon: "🥇" },
+  { id: "QIF", name: "QUICA Innovation Fund", count: 22, romanName: "Fundus Innovationis", icon: "🚀" },
+  { id: "QSF", name: "QUICA Sustainable Fund", count: 19, romanName: "Fundus Sustentabilis", icon: "🌱" },
+  { id: "QPF", name: "QUICA Private Equity", count: 14, romanName: "Aequitas Privata", icon: "🏛️" },
+  { id: "QHF", name: "QUICA Hedge Fund", count: 11, romanName: "Fundus Defensivus", icon: "⚡" },
 ]
 
 const priceRanges = [
-  { id: "all", name: "All Prices", romanName: "Omnis Pretium", icon: "💰" },
-  { id: "under-1", name: "Under 1 ETH", romanName: "< I ETH", icon: "💸" },
-  { id: "1-5", name: "1 - 5 ETH", romanName: "I-V ETH", icon: "💵" },
-  { id: "5-10", name: "5 - 10 ETH", romanName: "V-X ETH", icon: "💴" },
-  { id: "10-50", name: "10 - 50 ETH", romanName: "X-L ETH", icon: "💶" },
-  { id: "over-50", name: "Over 50 ETH", romanName: "> L ETH", icon: "💎" },
+  { id: "all", name: "All Investment Levels", romanName: "Omnis Gradus", icon: "💰" },
+  { id: "under-1k", name: "Under $1,000", romanName: "< M USD", icon: "💸" },
+  { id: "1k-10k", name: "$1K - $10K", romanName: "M-X USD", icon: "💵" },
+  { id: "10k-100k", name: "$10K - $100K", romanName: "X-C USD", icon: "💴" },
+  { id: "100k-1m", name: "$100K - $1M", romanName: "C-M USD", icon: "💶" },
+  { id: "over-1m", name: "Over $1M", romanName: "> M USD", icon: "💎" },
 ]
 
 interface FilterState {
@@ -204,8 +206,8 @@ export function AdaptiveHolographicSidebar({
             >
               <SupremeAuthorityCoin variant="badge" size="sm" />
               <div>
-                <h2 className="text-lg font-bold text-amber-300">Imperial Filters</h2>
-                <p className="text-xs text-amber-300/60 font-serif italic">Filtrum Imperialis</p>
+                <h2 className="text-lg font-bold text-amber-300">Investment Filters</h2>
+                <p className="text-xs text-amber-300/60 font-serif italic">Filtrum Investimentorum</p>
               </div>
             </motion.div>
           ) : (
@@ -269,13 +271,13 @@ export function AdaptiveHolographicSidebar({
               {/* Search */}
               <div>
                 <div className="text-amber-300 text-sm mb-2">
-                  Search
-                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Quaerere</span>
+                  Search Investments
+                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Quaerere Investimenta</span>
                 </div>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-amber-300/60" />
                   <Input
-                    placeholder="Search collections..."
+                    placeholder="Search investment funds..."
                     value={safeFilters.search || ""}
                     onChange={(e) => handleFilterChange("search", e.target.value)}
                     className="pl-10 bg-purple-900/30 border-amber-500/20 text-amber-300 placeholder:text-amber-300/40"
@@ -283,11 +285,11 @@ export function AdaptiveHolographicSidebar({
                 </div>
               </div>
 
-              {/* Categories */}
+              {/* Investment Categories */}
               <div>
                 <div className="text-amber-300 text-sm mb-2">
-                  Categories
-                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Genera</span>
+                  Investment Categories
+                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Genera Investimentorum</span>
                 </div>
                 <div className="space-y-2">
                   {categories.map((category) => (
@@ -306,7 +308,7 @@ export function AdaptiveHolographicSidebar({
                       <div className="flex items-center space-x-2">
                         <span className="text-lg">{category.icon}</span>
                         <div>
-                          <div className="text-sm">{category.name}</div>
+                          <div className="text-sm font-medium">{category.name}</div>
                           <div className="text-xs text-amber-400 font-serif italic">{category.romanName}</div>
                         </div>
                       </div>
@@ -318,11 +320,11 @@ export function AdaptiveHolographicSidebar({
                 </div>
               </div>
 
-              {/* Price Range */}
+              {/* Investment Range */}
               <div>
                 <div className="text-amber-300 text-sm mb-2">
-                  Price Range
-                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Pretium Spatium</span>
+                  Investment Range
+                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Spatium Investimenti</span>
                 </div>
                 <Select
                   value={safeFilters.priceRange || "all"}
@@ -347,11 +349,11 @@ export function AdaptiveHolographicSidebar({
                 </Select>
               </div>
 
-              {/* Rating Filter */}
+              {/* Performance Rating */}
               <div>
                 <div className="text-amber-300 text-sm mb-2">
-                  Minimum Rating
-                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Aestimatio Minima</span>
+                  Minimum Performance Rating
+                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Aestimatio Performance</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   {[1, 2, 3, 4, 5].map((rating) => (
@@ -373,11 +375,11 @@ export function AdaptiveHolographicSidebar({
 
               <Separator className="bg-amber-500/20" />
 
-              {/* Special Features */}
+              {/* Investment Features */}
               <div>
                 <div className="text-amber-300 text-sm mb-2">
-                  Special Features
-                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Proprietates Speciales</span>
+                  Investment Features
+                  <span className="text-xs text-amber-300/60 font-serif italic ml-2">Proprietates Investimenti</span>
                 </div>
                 <div className="space-y-3">
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -389,7 +391,7 @@ export function AdaptiveHolographicSidebar({
                     />
                     <div className="flex items-center space-x-2">
                       <Sparkles className="h-4 w-4 text-amber-400" />
-                      <span className="text-sm text-amber-300 group-hover:text-amber-200">Holographic Only</span>
+                      <span className="text-sm text-amber-300 group-hover:text-amber-200">Quantum Enhanced</span>
                     </div>
                   </label>
 
@@ -402,7 +404,7 @@ export function AdaptiveHolographicSidebar({
                     />
                     <div className="flex items-center space-x-2">
                       <Eye className="h-4 w-4 text-amber-400" />
-                      <span className="text-sm text-amber-300 group-hover:text-amber-200">360° View Only</span>
+                      <span className="text-sm text-amber-300 group-hover:text-amber-200">Full Analytics</span>
                     </div>
                   </label>
 
@@ -415,19 +417,19 @@ export function AdaptiveHolographicSidebar({
                     />
                     <div className="flex items-center space-x-2">
                       <Package className="h-4 w-4 text-amber-400" />
-                      <span className="text-sm text-amber-300 group-hover:text-amber-200">In Stock Only</span>
+                      <span className="text-sm text-amber-300 group-hover:text-amber-200">Available Now</span>
                     </div>
                   </label>
                 </div>
               </div>
 
-              {/* Results Count */}
+              {/* Investment Count */}
               <div className="mt-6 p-3 bg-gradient-to-r from-amber-500/10 to-purple-500/10 rounded-lg border border-amber-500/20">
                 <div className="text-center">
-                  <div className="text-lg font-bold text-amber-300">Collections</div>
-                  <div className="text-xs text-amber-300/60 font-serif italic">Collectiones</div>
+                  <div className="text-lg font-bold text-amber-300">Investment Options</div>
+                  <div className="text-xs text-amber-300/60 font-serif italic">Optiones Investimenti</div>
                   <div className="text-2xl font-bold text-amber-400">{productCount || 0}</div>
-                  <div className="text-xs text-amber-300/60">Found</div>
+                  <div className="text-xs text-amber-300/60">Available</div>
                 </div>
               </div>
             </motion.div>
@@ -487,7 +489,7 @@ export function AdaptiveHolographicSidebar({
               {/* Collapsed Results Count */}
               <div className="text-center p-2 bg-gradient-to-r from-amber-500/10 to-purple-500/10 rounded-lg border border-amber-500/20">
                 <div className="text-lg font-bold text-amber-400">{productCount || 0}</div>
-                <div className="text-xs text-amber-300/60">Items</div>
+                <div className="text-xs text-amber-300/60">Funds</div>
               </div>
 
               {/* Expand Indicator */}
