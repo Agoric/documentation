@@ -24,6 +24,7 @@ import {
   Phone,
   Lock,
   Zap,
+  Building,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -89,6 +90,71 @@ const coverageTiers = [
   },
 ]
 
+const businessCoverageTiers = [
+  {
+    tier: "business_tier1",
+    name: "Business Credit Acceleration Package",
+    subtitle: "Acceleratio Crediti Negotium",
+    amount: "$50,000",
+    monthlyFee: "$99.99",
+    icon: CreditCard,
+    color: "text-blue-400",
+    bgColor: "bg-blue-400/10",
+    borderColor: "border-blue-400/20",
+    features: [
+      "Business credit score acceleration up to 150 points",
+      "Commercial payment protection for 12 months",
+      "Business identity theft protection",
+      "Commercial credit monitoring and alerts",
+      "Business financial counseling services",
+      "Trade line establishment assistance",
+      "Vendor credit optimization",
+    ],
+  },
+  {
+    tier: "business_tier2",
+    name: "Enhanced Business Credit Program",
+    subtitle: "Programma Crediti Negotium Supremus",
+    amount: "$250,000",
+    monthlyFee: "$299.99",
+    icon: TrendingUp,
+    color: "text-amber-400",
+    bgColor: "bg-amber-400/10",
+    borderColor: "border-amber-400/20",
+    features: [
+      "Enhanced business credit acceleration up to 250 points",
+      "Commercial payment protection for 24 months",
+      "Comprehensive business identity protection",
+      "Premium commercial credit monitoring",
+      "Dedicated business financial advisor",
+      "Business debt consolidation assistance",
+      "Commercial investment guidance",
+      "SBA loan preparation assistance",
+    ],
+  },
+  {
+    tier: "business_tier3",
+    name: "Commercial Property Purchase Guarantee",
+    subtitle: "Garantia Proprietatis Commercialis",
+    amount: "$500,000",
+    monthlyFee: "$599.99",
+    icon: Home,
+    color: "text-green-400",
+    bgColor: "bg-green-400/10",
+    borderColor: "border-green-400/20",
+    features: [
+      "Maximum business credit optimization",
+      "Guaranteed commercial property financing approval",
+      "Commercial payment protection for 36 months",
+      "Comprehensive business liability coverage",
+      "Commercial property protection insurance",
+      "Business legal protection services",
+      "Corporate wealth management services",
+      "Business succession planning assistance",
+    ],
+  },
+]
+
 export function InsuranceCoverageDashboard() {
   const {
     activeCoverages,
@@ -102,12 +168,13 @@ export function InsuranceCoverageDashboard() {
     submitClaim,
     calculateUpgradeCost,
     getEligibleUpgrades,
-    calculateCreditImpact
+    calculateCreditImpact,
   } = useInsuranceCoverage()
 
   const [selectedTier, setSelectedTier] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+  const [entityType, setEntityType] = useState<"individual" | "business">("individual")
 
   const handlePurchaseCoverage = async (tier: "tier1" | "tier2") => {
     setIsProcessing(true)
@@ -132,7 +199,7 @@ export function InsuranceCoverageDashboard() {
   }
 
   const totalCoverageAmount = activeCoverages.reduce((sum, coverage) => sum + coverage.coverageAmount, 0)
-  const activePolicies = activeCoverages.filter(c => c.status === "active").length
+  const activePolicies = activeCoverages.filter((c) => c.status === "active").length
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
@@ -183,9 +250,7 @@ export function InsuranceCoverageDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-400 mb-1">
-                ${totalCoverageAmount.toLocaleString()}
-              </div>
+              <div className="text-2xl font-bold text-green-400 mb-1">${totalCoverageAmount.toLocaleString()}</div>
               <div className="text-xs text-gray-400">Combined coverage amount</div>
             </CardContent>
           </Card>
@@ -254,9 +319,9 @@ export function InsuranceCoverageDashboard() {
             {activeCoverages.length > 0 ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {activeCoverages.map((coverage) => {
-                  const tierInfo = coverageTiers.find(t => t.tier === coverage.coverageLevel)
+                  const tierInfo = coverageTiers.find((t) => t.tier === coverage.coverageLevel)
                   const Icon = tierInfo?.icon || Shield
-                  
+
                   return (
                     <Card key={coverage.id} className={cn("bg-black/20", tierInfo?.borderColor)}>
                       <CardHeader>
@@ -266,18 +331,18 @@ export function InsuranceCoverageDashboard() {
                               <Icon className={cn("w-5 h-5", tierInfo?.color)} />
                             </div>
                             <div>
-                              <CardTitle className={cn("text-lg", tierInfo?.color)}>
-                                {tierInfo?.name}
-                              </CardTitle>
-                              <CardDescription className="italic font-serif">
-                                {tierInfo?.subtitle}
-                              </CardDescription>
+                              <CardTitle className={cn("text-lg", tierInfo?.color)}>{tierInfo?.name}</CardTitle>
+                              <CardDescription className="italic font-serif">{tierInfo?.subtitle}</CardDescription>
                             </div>
                           </div>
-                          <Badge className={cn("text-xs", 
-                            coverage.status === "active" ? "text-green-400 bg-green-400/10 border-green-400/30" :
-                            "text-gray-400 bg-gray-400/10 border-gray-400/30"
-                          )}>
+                          <Badge
+                            className={cn(
+                              "text-xs",
+                              coverage.status === "active"
+                                ? "text-green-400 bg-green-400/10 border-green-400/30"
+                                : "text-gray-400 bg-gray-400/10 border-gray-400/30",
+                            )}
+                          >
                             {coverage.status.toUpperCase()}
                           </Badge>
                         </div>
@@ -319,7 +384,7 @@ export function InsuranceCoverageDashboard() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className={cn("flex-1", `border-${tierInfo?.color?.split('-')[1]}-400/30`, tierInfo?.color)}
+                            className={cn("flex-1", `border-${tierInfo?.color?.split("-")[1]}-400/30`, tierInfo?.color)}
                             onClick={() => downloadCertificate(coverage.id)}
                           >
                             <Download className="w-4 h-4 mr-2" />
@@ -328,8 +393,15 @@ export function InsuranceCoverageDashboard() {
                           {coverage.coverageLevel !== "tier3" && (
                             <Button
                               size="sm"
-                              className={cn("flex-1 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-black font-semibold")}
-                              onClick={() => handleUpgradeCoverage(coverage.id, coverage.coverageLevel === "tier1" ? "tier2" : "tier3")}
+                              className={cn(
+                                "flex-1 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-black font-semibold",
+                              )}
+                              onClick={() =>
+                                handleUpgradeCoverage(
+                                  coverage.id,
+                                  coverage.coverageLevel === "tier1" ? "tier2" : "tier3",
+                                )
+                              }
                               disabled={isProcessing}
                             >
                               <ArrowUp className="w-4 h-4 mr-2" />
@@ -362,11 +434,48 @@ export function InsuranceCoverageDashboard() {
           </TabsContent>
 
           <TabsContent value="purchase" className="space-y-6">
+            {/* Add entity type selector */}
+            <Card className="bg-black/20 border-amber-400/20">
+              <CardHeader>
+                <CardTitle className="text-amber-400">Select Coverage Type</CardTitle>
+                <CardDescription>Choose between individual or business coverage options</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex space-x-4">
+                  <Button
+                    variant={entityType === "individual" ? "default" : "outline"}
+                    onClick={() => setEntityType("individual")}
+                    className={
+                      entityType === "individual"
+                        ? "bg-gradient-to-r from-amber-500 to-yellow-600 text-black"
+                        : "border-amber-400/30 text-amber-400"
+                    }
+                  >
+                    <Users className="w-4 h-4 mr-2" />
+                    Individual Coverage
+                  </Button>
+                  <Button
+                    variant={entityType === "business" ? "default" : "outline"}
+                    onClick={() => setEntityType("business")}
+                    className={
+                      entityType === "business"
+                        ? "bg-gradient-to-r from-blue-500 to-cyan-600 text-white"
+                        : "border-blue-400/30 text-blue-400"
+                    }
+                  >
+                    <Building className="w-4 h-4 mr-2" />
+                    Business Coverage
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Update the coverage tiers grid to use conditional tiers */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {coverageTiers.map((tier, index) => {
+              {(entityType === "individual" ? coverageTiers : businessCoverageTiers).map((tier, index) => {
                 const Icon = tier.icon
                 const creditImpact = calculateCreditImpact(tier.tier)
-                
+
                 return (
                   <motion.div
                     key={tier.tier}
@@ -380,7 +489,7 @@ export function InsuranceCoverageDashboard() {
                         "bg-gradient-to-br from-black/40 to-purple-900/20",
                         tier.borderColor,
                         selectedTier === tier.tier ? "ring-2 ring-amber-400" : "",
-                        "hover:shadow-2xl hover:shadow-amber-400/10"
+                        "hover:shadow-2xl hover:shadow-amber-400/10",
                       )}
                       onClick={() => setSelectedTier(tier.tier)}
                     >
@@ -443,9 +552,9 @@ export function InsuranceCoverageDashboard() {
                         <Button
                           className={cn(
                             "w-full font-semibold",
-                            tier.tier === "tier3" 
+                            tier.tier === "tier3" || tier.tier === "business_tier3"
                               ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white"
-                              : "bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-black"
+                              : "bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-black",
                           )}
                           onClick={() => {
                             if (tier.tier === "tier3") {
@@ -525,7 +634,9 @@ export function InsuranceCoverageDashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-green-400 font-semibold">Ready to purchase your dream home?</h4>
-                    <p className="text-gray-400 text-sm">Browse our real estate marketplace with guaranteed financing</p>
+                    <p className="text-gray-400 text-sm">
+                      Browse our real estate marketplace with guaranteed financing
+                    </p>
                   </div>
                   <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold">
                     <Home className="w-4 h-4 mr-2" />
@@ -550,7 +661,10 @@ export function InsuranceCoverageDashboard() {
                   {activeCoverages.length > 0 ? (
                     <div className="space-y-4">
                       {activeCoverages.map((coverage) => (
-                        <div key={coverage.id} className="flex items-center justify-between p-4 bg-amber-400/5 rounded-lg border border-amber-400/10">
+                        <div
+                          key={coverage.id}
+                          className="flex items-center justify-between p-4 bg-amber-400/5 rounded-lg border border-amber-400/10"
+                        >
                           <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-amber-400/20 rounded-full flex items-center justify-center">
                               <FileText className="w-5 h-5 text-amber-400" />
@@ -597,18 +711,14 @@ export function InsuranceCoverageDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">
-                        Certificate Number
-                      </label>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Certificate Number</label>
                       <div className="flex space-x-2">
                         <input
                           type="text"
                           placeholder="Enter certificate number..."
                           className="flex-1 px-3 py-2 bg-black/20 border border-blue-400/20 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
                         />
-                        <Button className="bg-blue-600 hover:bg-blue-700">
-                          Verify
-                        </Button>
+                        <Button className="bg-blue-600 hover:bg-blue-700">Verify</Button>
                       </div>
                     </div>
 
@@ -654,9 +764,7 @@ export function InsuranceCoverageDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">
-                        Coverage Policy
-                      </label>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Coverage Policy</label>
                       <select className="w-full px-3 py-2 bg-black/20 border border-purple-400/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400/50">
                         <option value="">Select a policy...</option>
                         {activeCoverages.map((coverage) => (
@@ -668,9 +776,7 @@ export function InsuranceCoverageDashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">
-                        Claim Type
-                      </label>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Claim Type</label>
                       <select className="w-full px-3 py-2 bg-black/20 border border-purple-400/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400/50">
                         <option value="">Select claim type...</option>
                         <option value="payment_default">Payment Default</option>
@@ -682,9 +788,7 @@ export function InsuranceCoverageDashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">
-                        Claim Amount
-                      </label>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Claim Amount</label>
                       <input
                         type="number"
                         placeholder="Enter claim amount..."
@@ -693,10 +797,20 @@ export function InsuranceCoverageDashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">
-                        Description
-                      </label>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
                       <textarea
                         rows={4}
                         placeholder="Describe the incident..."
-                        className="w-full\
+                        className="w-full px-3 py-2 bg-black/20 border border-purple-400/20 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400/50"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}

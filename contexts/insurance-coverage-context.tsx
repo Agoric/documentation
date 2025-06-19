@@ -7,7 +7,7 @@ import { createContext, useContext, useState, type ReactNode } from "react"
 export interface InsuranceCoverage {
   id: string
   citizenId: string
-  coverageLevel: "tier1" | "tier2" | "tier3"
+  coverageLevel: "tier1" | "tier2" | "tier3" | "business_tier1" | "business_tier2" | "business_tier3"
   coverageAmount: number
   certificateNumber: string
   issueDate: Date
@@ -16,7 +16,13 @@ export interface InsuranceCoverage {
   status: "active" | "pending" | "expired" | "suspended" | "claimed"
 
   // Coverage Details
-  coverageType: "credit_acceleration" | "enhanced_credit" | "home_purchase_guarantee"
+  coverageType:
+    | "credit_acceleration"
+    | "enhanced_credit"
+    | "home_purchase_guarantee"
+    | "business_credit_acceleration"
+    | "enhanced_business_credit"
+    | "commercial_property_guarantee"
   underwriter: string
   policyTerms: PolicyTerms
 
@@ -33,6 +39,10 @@ export interface InsuranceCoverage {
   certifiedLetter: CertifiedLetter
   verificationCode: string
   digitalSignature: string
+
+  // Business Details
+  businessEntity?: BusinessEntity
+  entityType: "individual" | "business"
 }
 
 export interface PolicyTerms {
@@ -144,7 +154,7 @@ export interface CertifiedLetter {
 
 export interface CoverageUpgrade {
   upgradeId: string
-  fromTier: "tier1" | "tier2"
+  fromTier: "tier1" | "tier2" | "tier3"
   toTier: "tier2" | "tier3"
   upgradeDate: Date
   additionalCost: number
@@ -167,6 +177,19 @@ export interface InsuranceMetrics {
     tier2: number
     tier3: number
   }
+}
+
+export interface BusinessEntity {
+  businessId: string
+  businessName: string
+  businessType: "llc" | "corporation" | "partnership" | "sole_proprietorship"
+  taxId: string
+  incorporationDate: Date
+  businessAddress: string
+  industryCode: string
+  annualRevenue: number
+  employeeCount: number
+  creditRating: string
 }
 
 interface InsuranceCoverageContextType {
@@ -205,6 +228,16 @@ interface InsuranceCoverageContextType {
   renewCoverage: (coverageId: string) => Promise<boolean>
   cancelCoverage: (coverageId: string, reason: string) => Promise<boolean>
   updateBeneficiaries: (coverageId: string, beneficiaries: BeneficiaryInfo) => Promise<boolean>
+
+  // Business Coverage
+  purchaseBusinessCreditAcceleration: (
+    tier: "business_tier1" | "business_tier2",
+    businessInfo: BusinessEntity,
+  ) => Promise<InsuranceCoverage>
+  purchaseCommercialPropertyWithFinancing: (
+    propertyDetails: any,
+    businessInfo: BusinessEntity,
+  ) => Promise<InsuranceCoverage>
 }
 
 const InsuranceCoverageContext = createContext<InsuranceCoverageContextType | undefined>(undefined)
@@ -309,6 +342,100 @@ const coverageConfigurations = {
   },
 }
 
+const businessCoverageConfigurations = {
+  business_tier1: {
+    coverageAmount: 50000, // Double individual amount
+    monthlyPremium: 99.99,
+    coverageType: "business_credit_acceleration",
+    benefits: [
+      "Business credit score acceleration up to 150 points",
+      "Commercial payment protection for 12 months",
+      "Business identity theft protection",
+      "Commercial credit monitoring and alerts",
+      "Business financial counseling services",
+      "Trade line establishment assistance",
+      "Vendor credit optimization",
+    ],
+    policyTerms: {
+      deductible: 750,
+      coverageScope: ["payment_default", "identity_theft", "credit_damage"],
+      exclusions: ["pre_existing_conditions", "fraudulent_activity"],
+      claimProcessingTime: 14,
+      renewalTerms: "Annual renewal with rate review",
+      cancellationPolicy: "30-day notice required",
+      benefitPayoutStructure: {
+        immediateAccess: 25,
+        vestedAccess: 75,
+        vestingPeriod: 6,
+      },
+    },
+  },
+  business_tier2: {
+    coverageAmount: 250000, // Double individual amount
+    monthlyPremium: 299.99,
+    coverageType: "enhanced_business_credit",
+    benefits: [
+      "Enhanced business credit acceleration up to 250 points",
+      "Commercial payment protection for 24 months",
+      "Comprehensive business identity protection",
+      "Premium commercial credit monitoring",
+      "Dedicated business financial advisor",
+      "Business debt consolidation assistance",
+      "Commercial investment guidance",
+      "SBA loan preparation assistance",
+    ],
+    policyTerms: {
+      deductible: 1500,
+      coverageScope: ["payment_default", "identity_theft", "credit_damage", "job_loss", "disability"],
+      exclusions: ["pre_existing_conditions", "fraudulent_activity"],
+      claimProcessingTime: 10,
+      renewalTerms: "Annual renewal with locked rates",
+      cancellationPolicy: "30-day notice required",
+      benefitPayoutStructure: {
+        immediateAccess: 40,
+        vestedAccess: 60,
+        vestingPeriod: 3,
+      },
+    },
+  },
+  business_tier3: {
+    coverageAmount: 500000, // Double individual amount
+    monthlyPremium: 599.99,
+    coverageType: "commercial_property_guarantee",
+    benefits: [
+      "Maximum business credit optimization",
+      "Guaranteed commercial property financing approval",
+      "Commercial payment protection for 36 months",
+      "Comprehensive business liability coverage",
+      "Commercial property protection insurance",
+      "Business legal protection services",
+      "Corporate wealth management services",
+      "Business succession planning assistance",
+    ],
+    policyTerms: {
+      deductible: 3000,
+      coverageScope: [
+        "payment_default",
+        "identity_theft",
+        "credit_damage",
+        "job_loss",
+        "disability",
+        "property_damage",
+        "legal_issues",
+      ],
+      exclusions: ["pre_existing_conditions", "fraudulent_activity", "acts_of_war"],
+      claimProcessingTime: 7,
+      renewalTerms: "Lifetime coverage with locked rates",
+      cancellationPolicy: "60-day notice required",
+      benefitPayoutStructure: {
+        immediateAccess: 50,
+        vestedAccess: 50,
+        vestingPeriod: 1,
+      },
+    },
+  },
+}
+
 const sampleInsuranceMetrics: InsuranceMetrics = {
   totalActivePolicies: 15420,
   totalCoverageAmount: 1250000000, // $1.25B in total coverage
@@ -379,6 +506,7 @@ export const InsuranceCoverageProvider: React.FC<{ children: ReactNode }> = ({ c
       certifiedLetter: await generateCertifiedLetterContent(citizenId, config.coverageAmount, tier),
       verificationCode: `VERIFY-${Date.now()}`,
       digitalSignature: `SIG-${Date.now()}`,
+      entityType: "individual",
     }
 
     setActiveCoverages((prev) => [...prev, newCoverage])
@@ -458,6 +586,7 @@ export const InsuranceCoverageProvider: React.FC<{ children: ReactNode }> = ({ c
       certifiedLetter: await generateCertifiedLetterContent(citizenId, 250000, "tier3"),
       verificationCode: `VERIFY-HOME-${Date.now()}`,
       digitalSignature: `SIG-HOME-${Date.now()}`,
+      entityType: "individual",
     }
 
     setActiveCoverages((prev) => [...prev, newCoverage])
@@ -703,6 +832,162 @@ Supreme Authority Certification Division
     return true
   }
 
+  const purchaseBusinessCreditAcceleration = async (
+    tier: "business_tier1" | "business_tier2",
+    businessInfo: BusinessEntity,
+  ): Promise<InsuranceCoverage> => {
+    const config = businessCoverageConfigurations[tier]
+
+    const newCoverage: InsuranceCoverage = {
+      id: `coverage_${Date.now()}`,
+      citizenId: "", // No citizen ID for business
+      coverageLevel: tier,
+      coverageAmount: config.coverageAmount,
+      certificateNumber: `CERT-${tier.toUpperCase()}-${Date.now()}`,
+      issueDate: new Date(),
+      effectiveDate: new Date(),
+      expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
+      status: "active",
+      coverageType: config.coverageType as any,
+      underwriter: "QUICA Global Insurance Ltd.",
+      policyTerms: config.policyTerms,
+      qualifyingPurchase: {
+        purchaseId: `purchase_${Date.now()}`,
+        purchaseType: `credit_acceleration_${tier}` as any,
+        purchaseDate: new Date(),
+        purchaseAmount: config.monthlyPremium * 12,
+        paymentMethod: "QGI_allocation",
+        confirmationNumber: `CONF-${Date.now()}`,
+      },
+      creditProgram: {
+        programId: `prog_${tier}_${Date.now()}`,
+        programName: `Credit Acceleration ${tier.toUpperCase()}`,
+        tier: tier.replace("business_", "") as any,
+        enrollmentDate: new Date(),
+        programBenefits: config.benefits,
+        creditLineIncrease: tier === "business_tier1" ? 15000 : 35000,
+        interestRateReduction: tier === "business_tier1" ? 0.02 : 0.05,
+        monthlyFee: config.monthlyPremium,
+        programDuration: 12,
+      },
+      claimsHistory: [],
+      beneficiaryInfo: {
+        primaryBeneficiary: {
+          name: businessInfo.businessName,
+          relationship: "Business",
+          percentage: 100,
+          contactInfo: businessInfo.businessAddress,
+        },
+        contingentBeneficiaries: [],
+        lastUpdated: new Date(),
+      },
+      certifiedLetter: await generateCertifiedLetterContent(businessInfo.businessId, config.coverageAmount, tier),
+      verificationCode: `VERIFY-${Date.now()}`,
+      digitalSignature: `SIG-${Date.now()}`,
+      entityType: "business",
+      businessEntity: businessInfo,
+    }
+
+    setActiveCoverages((prev) => [...prev, newCoverage])
+
+    // Update metrics
+    setInsuranceMetrics((prev) => ({
+      ...prev,
+      totalActivePolicies: prev.totalActivePolicies + 1,
+      totalCoverageAmount: prev.totalCoverageAmount + config.coverageAmount,
+      tierDistribution: {
+        ...prev.tierDistribution,
+        tier1: prev.tierDistribution.tier1 + 1, // Assuming business tiers map to individual tiers for metrics
+      },
+    }))
+
+    return newCoverage
+  }
+
+  const purchaseCommercialPropertyWithFinancing = async (
+    propertyDetails: any,
+    businessInfo: BusinessEntity,
+  ): Promise<InsuranceCoverage> => {
+    const config = businessCoverageConfigurations.business_tier3
+
+    const homeFinancing: HomeFinancing = {
+      loanId: `loan_${Date.now()}`,
+      propertyId: propertyDetails.propertyId,
+      propertyAddress: propertyDetails.address,
+      loanAmount: propertyDetails.purchasePrice * 0.8, // 80% LTV
+      downPayment: propertyDetails.purchasePrice * 0.2,
+      interestRate: 0.045, // 4.5% guaranteed rate
+      loanTerm: 30,
+      monthlyPayment: calculateMonthlyPayment(propertyDetails.purchasePrice * 0.8, 0.045, 30),
+      loanType: "conforming",
+      approvalDate: new Date(),
+      lenderName: "QUICA Guaranteed Lending",
+      guaranteeTerms: {
+        guaranteeType: "comprehensive",
+        guaranteeDuration: 36,
+        coveragePercentage: 100,
+        waitingPeriod: 0,
+        maxClaimAmount: 250000,
+        renewalOptions: ["automatic_renewal", "manual_renewal", "upgrade_available"],
+      },
+    }
+
+    const newCoverage: InsuranceCoverage = {
+      id: `coverage_${Date.now()}`,
+      citizenId: "", // No citizen ID for business
+      coverageLevel: "business_tier3",
+      coverageAmount: 500000,
+      certificateNumber: `CERT-HOME-${Date.now()}`,
+      issueDate: new Date(),
+      effectiveDate: new Date(),
+      expirationDate: new Date(Date.now() + 30 * 365 * 24 * 60 * 60 * 1000), // 30 years (loan term)
+      status: "active",
+      coverageType: "commercial_property_guarantee",
+      underwriter: "QUICA Global Insurance Ltd.",
+      policyTerms: config.policyTerms,
+      qualifyingPurchase: {
+        purchaseId: propertyDetails.propertyId,
+        purchaseType: "home_purchase",
+        purchaseDate: new Date(),
+        purchaseAmount: propertyDetails.purchasePrice,
+        paymentMethod: "guaranteed_financing",
+        confirmationNumber: `HOME-${Date.now()}`,
+      },
+      homeFinancing,
+      claimsHistory: [],
+      beneficiaryInfo: {
+        primaryBeneficiary: {
+          name: businessInfo.businessName,
+          relationship: "Business",
+          percentage: 100,
+          contactInfo: businessInfo.businessAddress,
+        },
+        contingentBeneficiaries: [],
+        lastUpdated: new Date(),
+      },
+      certifiedLetter: await generateCertifiedLetterContent(businessInfo.businessId, 250000, "business_tier3"),
+      verificationCode: `VERIFY-HOME-${Date.now()}`,
+      digitalSignature: `SIG-HOME-${Date.now()}`,
+      entityType: "business",
+      businessEntity: businessInfo,
+    }
+
+    setActiveCoverages((prev) => [...prev, newCoverage])
+
+    // Update metrics
+    setInsuranceMetrics((prev) => ({
+      ...prev,
+      totalActivePolicies: prev.totalActivePolicies + 1,
+      totalCoverageAmount: prev.totalCoverageAmount + 250000,
+      tierDistribution: {
+        ...prev.tierDistribution,
+        tier3: prev.tierDistribution.tier3 + 1,
+      },
+    }))
+
+    return newCoverage
+  }
+
   // Helper function for mortgage calculations
   const calculateMonthlyPayment = (principal: number, annualRate: number, years: number): number => {
     const monthlyRate = annualRate / 12
@@ -737,6 +1022,8 @@ Supreme Authority Certification Division
         renewCoverage,
         cancelCoverage,
         updateBeneficiaries,
+        purchaseBusinessCreditAcceleration,
+        purchaseCommercialPropertyWithFinancing,
       }}
     >
       {children}
