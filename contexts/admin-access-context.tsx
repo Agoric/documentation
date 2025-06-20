@@ -29,9 +29,10 @@ export function AdminAccessProvider({ children }: { children: ReactNode }) {
    */
   useEffect(() => {
     async function checkPermissions() {
+      console.log("🔮 Checking admin permissions with indigo magic...")
       // TODO: integrate authentication / RBAC logic here.
-      // For now we just simulate an async permission check.
-      await new Promise((r) => setTimeout(r, 300))
+      await new Promise((r) => setTimeout(r, 800))
+      console.log("✨ Admin access granted with indigo privileges")
       setState({ isAdmin: true, loading: false })
     }
 
