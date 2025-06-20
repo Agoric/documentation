@@ -1,2 +1,7 @@
 // components/navigation/futuristic-command-center.tsx
-export { EnhancedFuturisticCommandCenter as FuturisticCommandCenter } from "./enhanced-futuristic-command-center"
+// Re-export with an absolute alias so the file is always found.
+
+export { EnhancedFuturisticCommandCenter as FuturisticCommandCenter } from "@/components/navigation/enhanced-futuristic-command-center"
+
+// Optional default export for convenience.
+export { EnhancedFuturisticCommandCenter as default } from "@/components/navigation/enhanced-futuristic-command-center"
