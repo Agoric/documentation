@@ -1,31 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
-import {
-  Star,
-  MapPin,
-  Calendar,
-  Ruler,
-  Bath,
-  Bed,
-  Eye,
-  Heart,
-  Zap,
-  BarChart3,
-  ImageIcon,
-  RotateCcw,
-  Gavel,
-  Target,
-  Info,
-} from "lucide-react"
+import { Star, MapPin, Calendar, Ruler, Bath, Bed, Eye, BarChart3, Gavel, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { DiamondSlabCard } from "@/components/ui/diamond-slab-card"
-import { HolographicLabel } from "./holographic-label"
 import { Property360Modal } from "./property-360-modal"
-import Image from "next/image"
 import { usePropertyComparison } from "@/contexts/property-comparison-context"
+import { PropertyImageGallery } from "./property-image-gallery"
+import { PropertyDetailModal } from "./property-detail-modal"
 
 interface Property {
   id: string
@@ -34,6 +17,7 @@ interface Property {
   price: number
   monthlyPayment: number
   image: string
+  images: string[]
   type: string
   bedrooms: number
   bathrooms: number
@@ -61,6 +45,7 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
   const [imageError, setImageError] = useState(false)
   const [show360Modal, setShow360Modal] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
+  const [showDetailModal, setShowDetailModal] = useState(false)
 
   const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProperties } =
     usePropertyComparison()
@@ -103,153 +88,15 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="p-6">
-          {/* Property Image */}
-          <div className="relative mb-4 aspect-video overflow-hidden rounded-lg">
-            <div
-              className="relative w-full h-full"
-              style={{
-                clipPath: "polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)",
-              }}
-            >
-              {!imageError ? (
-                <Image
-                  src={property.image || "/placeholder.svg"}
-                  alt={property.title}
-                  fill
-                  className="object-cover transition-all duration-500 group-hover:scale-110"
-                  style={{
-                    filter: property.isHolographic
-                      ? "brightness(1.2) contrast(1.2) saturate(1.3) hue-rotate(5deg)"
-                      : "brightness(1.1) contrast(1.1) saturate(1.1)",
-                  }}
-                  onError={() => setImageError(true)}
-                  priority={false}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-800/30 to-purple-800/30">
-                  <div className="text-center">
-                    <ImageIcon className="w-12 h-12 text-indigo-400/50 mx-auto mb-2" />
-                    <p className="text-xs text-indigo-300/70">Property Image</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Holographic overlay */}
-              {property.isHolographic && (
-                <motion.div
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(45deg, ${getLaserColor() === "gold" ? "rgba(251, 191, 36, 0.1)" : "rgba(34, 211, 238, 0.1)"}, transparent, rgba(103, 232, 249, 0.1))`,
-                  }}
-                  animate={{
-                    opacity: isHovered ? [0.1, 0.3, 0.1] : 0.1,
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                  }}
-                />
-              )}
-            </div>
-
-            {/* Action Buttons Overlay */}
-            <div className="absolute top-2 right-2 flex flex-col gap-2">
-              {/* Like Button */}
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-8 w-8 bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-all duration-200"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setIsLiked(!isLiked)
-                }}
-                title={isLiked ? "Remove from favorites" : "Add to favorites"}
-              >
-                <Heart
-                  className={`h-4 w-4 transition-all duration-200 ${isLiked ? "fill-red-500 text-red-500 scale-110" : "text-white"}`}
-                />
-              </Button>
-
-              {/* 360° View Button */}
-              {property.has360View && (
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="h-8 w-8 bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-cyan-200 transition-all duration-200"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setShow360Modal(true)
-                  }}
-                  title="360° Virtual Tour"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                </Button>
-              )}
-
-              {/* Details Button */}
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-8 w-8 bg-indigo-600/20 backdrop-blur-sm border border-indigo-400/30 text-indigo-300 hover:bg-indigo-600/30 hover:text-indigo-200 transition-all duration-200"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setShowDetails(!showDetails)
-                }}
-                title="Property Details"
-              >
-                <Info className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {/* Property Labels */}
-            <div className="absolute top-2 left-2 flex flex-col gap-2">
-              {/* Holographic Label */}
-              {property.isHolographic && <HolographicLabel variant="premium" features={property.holographicFeatures} />}
-
-              {/* Property Type Badge */}
-              <Badge
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
-                style={{
-                  clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)",
-                }}
-              >
-                <span className="font-serif text-xs">GENUS:</span> {property.type}
-              </Badge>
-
-              {/* Status Badge */}
-              <Badge
-                className={`shadow-lg ${
-                  property.status === "For Sale"
-                    ? "bg-gradient-to-r from-emerald-600 to-teal-600"
-                    : property.status === "For Rent"
-                      ? "bg-gradient-to-r from-blue-600 to-cyan-600"
-                      : "bg-gradient-to-r from-gray-600 to-slate-600"
-                } text-white`}
-                style={{
-                  clipPath: "polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)",
-                }}
-              >
-                <span className="font-serif text-xs">STATUS:</span> {property.status}
-              </Badge>
-            </div>
-
-            {/* Market Indicators */}
-            <div className="absolute bottom-2 left-2 flex gap-2">
-              {/* Days on Market */}
-              {property.daysOnMarket < 30 && (
-                <Badge
-                  className="bg-emerald-600 text-white shadow-lg"
-                  style={{
-                    clipPath: "polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)",
-                  }}
-                  title="Days on Market"
-                >
-                  <Zap className="w-3 h-3 mr-1" />
-                  <span className="font-serif text-xs">DIES:</span> {property.daysOnMarket}
-                </Badge>
-              )}
-            </div>
+          {/* Property Image Gallery */}
+          <div className="mb-4">
+            <PropertyImageGallery
+              images={property.images || [property.image]}
+              title={property.title}
+              isHolographic={property.isHolographic}
+              has360View={property.has360View}
+              onView360={() => setShow360Modal(true)}
+            />
           </div>
 
           {/* Property Information */}
@@ -428,6 +275,10 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
               <Button
                 variant="outline"
                 size="sm"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShowDetailModal(true)
+                }}
                 className="border-indigo-500/20 bg-indigo-950/30 text-indigo-300 hover:bg-indigo-900/30 hover:text-indigo-200 transition-all duration-200"
                 style={{
                   clipPath: "polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%)",
@@ -444,6 +295,11 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
       {/* 360° View Modal */}
       {show360Modal && property.has360View && (
         <Property360Modal property={property} isOpen={show360Modal} onClose={() => setShow360Modal(false)} />
+      )}
+
+      {/* Property Detail Modal */}
+      {showDetailModal && (
+        <PropertyDetailModal property={property} isOpen={showDetailModal} onClose={() => setShowDetailModal(false)} />
       )}
     </>
   )
