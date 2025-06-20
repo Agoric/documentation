@@ -1,5 +1,5 @@
-import { PageWrapper } from "@/components/page-wrapper"
-import { RealEstateMarketplace } from "@/components/ecommerex/real-estate-marketplace"
+import { PageWrapper } from "@/components/layout/page-wrapper"
+import { RealEstateMarketplace } from "./RealEstateMarketplace"
 import { ZillowApiStatus } from "@/components/ecommerex/zillow-api-status"
 
 export default function Page() {
