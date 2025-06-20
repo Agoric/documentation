@@ -1,5 +1,13 @@
+import { PageWrapper } from "@/components/layout/page-wrapper"
 import { HolographicProductsDashboard } from "./HolographicProductsDashboard"
 
 export default function HolographicProductsPage() {
-  return <HolographicProductsDashboard />
+  return (
+    <PageWrapper
+      title="QUICA Money Market"
+      subtitle="Quantum Utility Investment Capitol Accelerator - Mercatus Quanticus"
+    >
+      <HolographicProductsDashboard />
+    </PageWrapper>
+  )
 }

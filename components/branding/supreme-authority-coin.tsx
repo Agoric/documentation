@@ -150,26 +150,3 @@ export function SupremeAuthorityCoin({
           </motion.div>
 
           {/* Holographic Shimmer */}
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: "linear-gradient(45deg, transparent 30%, rgba(251, 191, 36, 0.3) 50%, transparent 70%)",
-            }}
-            animate={
-              animated
-                ? {
-                    rotate: [0, 360],
-                  }
-                : {}
-            }
-            transition={{
-              duration: 3,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-          />
-        </div>
-      </div>
-    </motion.div>
-  )
-}
