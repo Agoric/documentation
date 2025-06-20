@@ -20,6 +20,7 @@ import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
+import { RealmSwitcher } from "@/components/realm-switcher"
 
 // This is sample data.
 const data = {
@@ -161,6 +162,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
+        <RealmSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
