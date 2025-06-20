@@ -171,7 +171,7 @@ export function AdaptiveRegalToolbar() {
             onClick={actions.toggleSidebar}
             className="text-amber-400/80 hover:text-amber-300 hover:bg-amber-500/20 p-2"
           >
-            
+            <Menu className="w-5 h-5" />
           </Button>
 
           {/* Supreme Authority Branding */}
