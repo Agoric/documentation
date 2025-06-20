@@ -3,15 +3,168 @@
 @tailwind utilities;
 
 :root {
-  --imperial-primary: #d4af37;
-  --imperial-secondary: #8b4513;
-  --neural-cyan: #00d4ff;
-  --neural-purple: #8b5cf6;
-  --neural-amber: #f59e0b;
+  /* Imperial Color Palette */
+  --imperial-amber: #f59e0b;
+  --imperial-gold: #fbbf24;
+  --imperial-purple: #7c3aed;
+  --imperial-cyan: #06b6d4;
+  --imperial-dark: #0f172a;
+  --imperial-accent: #8b5cf6;
+
+  /* Typography */
+  --font-imperial: "Times New Roman", "Georgia", serif;
+  --font-modern: system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
+
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  --radius: 0.5rem;
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  font-family: var(--font-modern);
+}
+
+/* Imperial Typography Classes */
+.font-imperial {
+  font-family: var(--font-imperial);
+  font-weight: 600;
+}
+
+.font-modern {
+  font-family: var(--font-modern);
+}
+
+/* Imperial UI Effects */
+.imperial-glow {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.neural-border {
+  border: 1px solid;
+  border-image: linear-gradient(45deg, var(--imperial-amber), var(--imperial-purple), var(--imperial-cyan)) 1;
+}
+
+.diamond-clip {
+  clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+}
+
+.imperial-gradient {
+  background: linear-gradient(135deg, var(--imperial-amber), var(--imperial-purple));
+}
+
+.neural-glow {
+  animation: neural-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neural-pulse {
+  0% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.6);
+  }
+}
+
+/* Holographic Effects */
+.holographic {
+  background: linear-gradient(
+    45deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    rgba(124, 58, 237, 0.1) 25%,
+    rgba(6, 182, 212, 0.1) 50%,
+    rgba(245, 158, 11, 0.1) 75%,
+    rgba(124, 58, 237, 0.1) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Imperial Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--imperial-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--imperial-amber), var(--imperial-purple));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--imperial-gold), var(--imperial-accent));
 }
 
 @layer utilities {
@@ -21,224 +174,10 @@ body {
 }
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
-}
-
-/* Imperial Typography */
-.font-imperial {
-  font-family: "Times New Roman", "Georgia", "Playfair Display", serif;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
-.font-neural {
-  font-family: "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-/* Imperial Effects */
-.imperial-glow {
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 0 40px rgba(212, 175, 55, 0.3), 0 0 60px rgba(212, 175, 55, 0.1);
-}
-
-.neural-glow {
-  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 212, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.1);
-}
-
-/* Diamond Cut Borders */
-.diamond-border {
-  clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
-  position: relative;
-}
-
-.diamond-border::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
-  clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
-  z-index: -1;
-}
-
-/* Holographic Effects */
-.holographic {
-  background: linear-gradient(
-    45deg,
-    rgba(212, 175, 55, 0.1) 0%,
-    rgba(0, 212, 255, 0.1) 25%,
-    rgba(139, 92, 246, 0.1) 50%,
-    rgba(245, 158, 11, 0.1) 75%,
-    rgba(212, 175, 55, 0.1) 100%
-  );
-  animation: holographic-shift 3s ease-in-out infinite;
-}
-
-@keyframes holographic-shift {
-  0%,
-  100% {
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    filter: hue-rotate(180deg);
-  }
-}
-
-/* Neural Pulse Animation */
-.neural-pulse {
-  animation: neural-pulse 2s ease-in-out infinite;
-}
-
-@keyframes neural-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
-    transform: scale(1.02);
-  }
-}
-
-/* Imperial Decorative Corners */
-.roman-corners::before,
-.roman-corners::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--imperial-primary);
-}
-
-.roman-corners::before {
-  top: 0;
-  left: 0;
-  border-right: none;
-  border-bottom: none;
-}
-
-.roman-corners::after {
-  bottom: 0;
-  right: 0;
-  border-left: none;
-  border-top: none;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--imperial-primary), var(--neural-cyan));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--neural-cyan), var(--imperial-primary));
-}
-
-/* Responsive Imperial Grid */
-.imperial-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-/* Selection Styling */
-::selection {
-  background: rgba(212, 175, 55, 0.3);
-  color: white;
-}
-
-/* Focus Styles */
-.imperial-focus:focus {
-  outline: 2px solid var(--imperial-primary);
-  outline-offset: 2px;
 }

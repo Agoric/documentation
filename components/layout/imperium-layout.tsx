@@ -1,63 +1,42 @@
 "use client"
 
-import type * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FuturisticCommandCenter } from "@/components/navigation/futuristic-command-center"
+import type React from "react"
+import { motion } from "framer-motion"
+import { ImperiumNavigationOrb } from "@/components/navigation/imperium-navigation-orb"
 import { ImperiumStatusBar } from "@/components/navigation/imperium-status-bar"
 import { NeuralBackgroundEffects } from "@/components/effects/neural-background-effects"
 
 interface ImperiumLayoutProps {
   children: React.ReactNode
-  showOrb?: boolean
-  className?: string
 }
 
-export function ImperiumLayout({ children, showOrb = true, className }: ImperiumLayoutProps) {
+export function ImperiumLayout({ children }: ImperiumLayoutProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950 relative overflow-hidden">
       {/* Neural Background Effects */}
       <NeuralBackgroundEffects />
 
       {/* Imperial Status Bar */}
       <ImperiumStatusBar />
 
-      {/* Floating Command Orb - Universal Navigation */}
-      <AnimatePresence>
-        {showOrb && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="fixed z-[100]"
-          >
-            <FuturisticCommandCenter />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main Content with Imperial Styling */}
-      <motion.div
-        className={`relative z-10 ${className}`}
+      {/* Main Content */}
+      <motion.main
+        className="relative z-10 pt-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.8 }}
       >
         {children}
-      </motion.div>
+      </motion.main>
 
-      {/* Imperial Grid Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-5 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-                 linear-gradient(rgba(251, 191, 36, 0.1) 1px, transparent 1px),
-                 linear-gradient(90deg, rgba(251, 191, 36, 0.1) 1px, transparent 1px)
-               `,
-            backgroundSize: "50px 50px",
-          }}
-        />
+      {/* Floating Navigation Orb */}
+      <ImperiumNavigationOrb />
+
+      {/* Imperial Ambient Lighting */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl animate-pulse delay-2000" />
       </div>
     </div>
   )

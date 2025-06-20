@@ -20,25 +20,11 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: [
-          "Inter",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "sans-serif",
-        ],
-        serif: ["Times New Roman", "Georgia", "Playfair Display", "serif"],
-        mono: ["SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", "monospace"],
-        imperial: ["Times New Roman", "Georgia", "Playfair Display", "serif"],
-        neural: ["SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", "monospace"],
+        imperial: ["Times New Roman", "Georgia", "serif"],
+        modern: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -69,6 +55,9 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
@@ -87,14 +76,12 @@ const config: Config = {
           ring: "hsl(var(--sidebar-ring))",
         },
         imperial: {
-          primary: "#d4af37",
-          secondary: "#8b4513",
-          accent: "#c9a96e",
-        },
-        neural: {
-          cyan: "#00d4ff",
-          purple: "#8b5cf6",
           amber: "#f59e0b",
+          gold: "#fbbf24",
+          purple: "#7c3aed",
+          cyan: "#06b6d4",
+          dark: "#0f172a",
+          accent: "#8b5cf6",
         },
       },
       borderRadius: {
@@ -104,38 +91,28 @@ const config: Config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        "imperial-pulse": {
-          "0%, 100%": {
-            boxShadow: "0 0 20px rgba(212, 175, 55, 0.3)",
-            transform: "scale(1)",
+          from: {
+            height: "var(--radix-accordion-content-height)",
           },
-          "50%": {
-            boxShadow: "0 0 40px rgba(212, 175, 55, 0.6)",
-            transform: "scale(1.02)",
+          to: {
+            height: "0",
           },
-        },
-        "neural-flow": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "imperial-pulse": "imperial-pulse 2s ease-in-out infinite",
-        "neural-flow": "neural-flow 3s ease-in-out infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
-
 export default config
