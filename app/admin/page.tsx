@@ -1,9 +1,9 @@
 import { DashboardLayout } from "@/components/dashboard-layout"
 import SupremeAuthorityAdminDashboard from "@/components/admin/supreme-authority-admin-dashboard"
 
-export default function HomePage() {
+export default function AdminPage() {
   return (
-    <DashboardLayout title="Dashboard" breadcrumbs={[{ label: "Home", href: "/" }, { label: "Dashboard" }]}>
+    <DashboardLayout breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Admin Panel" }]}>
       <SupremeAuthorityAdminDashboard />
     </DashboardLayout>
   )
