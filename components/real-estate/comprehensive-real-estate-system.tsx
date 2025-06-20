@@ -20,15 +20,19 @@ import {
 import {
   Home,
   MapPin,
+  Bed,
+  Bath,
+  Square,
   TrendingUp,
   TrendingDown,
   Eye,
   Heart,
   Share,
   Search,
+  Star,
+  Camera,
   Map,
   Building,
-  type School,
   Crown,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -62,7 +66,7 @@ interface Property {
     walkScore: number
     transitScore: number
     bikeScore: number
-    schools: School[]
+    schools: NearbyPlace[]
     nearby: NearbyPlace[]
   }
   financials: {
@@ -87,16 +91,9 @@ interface Property {
   saves: number
 }
 
-interface School {
-  name: string
-  type: "elementary" | "middle" | "high" | "university"
-  rating: number
-  distance: number
-}
-
 interface NearbyPlace {
   name: string
-  type: "restaurant" | "shopping" | "park" | "hospital" | "gym" | "transit"
+  type: "restaurant" | "shopping" | "park" | "hospital" | "gym" | "transit" | "school"
   distance: number
   rating?: number
 }
@@ -195,13 +192,13 @@ const generateMockProperties = (): Property[] => {
         schools: [
           {
             name: `${cities[cityIndex]} Elementary`,
-            type: "elementary",
+            type: "school",
             rating: Math.floor(Math.random() * 5) + 6,
             distance: Math.random() * 2,
           },
           {
             name: `${cities[cityIndex]} High School`,
-            type: "high",
+            type: "school",
             rating: Math.floor(Math.random() * 4) + 7,
             distance: Math.random() * 3,
           },
@@ -262,7 +259,7 @@ export function ComprehensiveRealEstateSystem() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(12)
   const [savedProperties, setSavedProperties] = useState<Set<string>>(new Set())
-  
+
   const [filters, setFilters] = useState<PropertyFilters>({
     priceRange: [0, 5000000],
     propertyType: [],
@@ -271,7 +268,7 @@ export function ComprehensiveRealEstateSystem() {
     sqftRange: [0, 10000],
     features: [],
     location: "",
-    status: ["for_sale"]
+    status: ["for_sale"],
   })
 
   // Apply filters and sorting
@@ -280,40 +277,35 @@ export function ComprehensiveRealEstateSystem() {
 
     // Apply filters
     if (filters.location) {
-      filtered = filtered.filter(p => 
-        p.address.city.toLowerCase().includes(filters.location.toLowerCase()) ||
-        p.address.state.toLowerCase().includes(filters.location.toLowerCase())
+      filtered = filtered.filter(
+        (p) =>
+          p.address.city.toLowerCase().includes(filters.location.toLowerCase()) ||
+          p.address.state.toLowerCase().includes(filters.location.toLowerCase()),
       )
     }
 
     if (filters.propertyType.length > 0) {
-      filtered = filtered.filter(p => filters.propertyType.includes(p.propertyType))
+      filtered = filtered.filter((p) => filters.propertyType.includes(p.propertyType))
     }
 
     if (filters.status.length > 0) {
-      filtered = filtered.filter(p => filters.status.includes(p.status))
+      filtered = filtered.filter((p) => filters.status.includes(p.status))
     }
 
     if (filters.bedrooms.length > 0) {
-      filtered = filtered.filter(p => filters.bedrooms.includes(p.bedrooms))
+      filtered = filtered.filter((p) => filters.bedrooms.includes(p.bedrooms))
     }
 
     if (filters.bathrooms.length > 0) {
-      filtered = filtered.filter(p => filters.bathrooms.includes(p.bathrooms))
+      filtered = filtered.filter((p) => filters.bathrooms.includes(p.bathrooms))
     }
 
-    filtered = filtered.filter(p => 
-      p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
-    )
+    filtered = filtered.filter((p) => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1])
 
-    filtered = filtered.filter(p => 
-      p.sqft >= filters.sqftRange[0] && p.sqft <= filters.sqftRange[1]
-    )
+    filtered = filtered.filter((p) => p.sqft >= filters.sqftRange[0] && p.sqft <= filters.sqftRange[1])
 
     if (filters.features.length > 0) {
-      filtered = filtered.filter(p => 
-        filters.features.some(feature => p.features.includes(feature))
-      )
+      filtered = filtered.filter((p) => filters.features.some((feature) => p.features.includes(feature)))
     }
 
     // Apply sorting
@@ -348,15 +340,12 @@ export function ComprehensiveRealEstateSystem() {
     setCurrentPage(1)
   }, [properties, filters, sortBy, sortOrder])
 
-  const paginatedProperties = filteredProperties.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
+  const paginatedProperties = filteredProperties.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   const totalPages = Math.ceil(filteredProperties.length / itemsPerPage)
 
   const toggleSaveProperty = (propertyId: string) => {
-    setSavedProperties(prev => {
+    setSavedProperties((prev) => {
       const newSet = new Set(prev)
       if (newSet.has(propertyId)) {
         newSet.delete(propertyId)
@@ -369,22 +358,33 @@ export function ComprehensiveRealEstateSystem() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "for_sale": return "bg-green-600"
-      case "for_rent": return "bg-blue-600"
-      case "sold": return "bg-gray-600"
-      case "pending": return "bg-yellow-600"
-      default: return "bg-gray-600"
+      case "for_sale":
+        return "bg-green-600"
+      case "for_rent":
+        return "bg-blue-600"
+      case "sold":
+        return "bg-gray-600"
+      case "pending":
+        return "bg-yellow-600"
+      default:
+        return "bg-gray-600"
     }
   }
 
   const getPropertyTypeIcon = (type: string) => {
     switch (type) {
-      case "house": return <Home className="w-4 h-4" />
-      case "condo": return <Building className="w-4 h-4" />
-      case "townhouse": return <Home className="w-4 h-4" />
-      case "apartment": return <Building className="w-4 h-4" />
-      case "commercial": return <Building className="w-4 h-4" />
-      default: return <Home className="w-4 h-4" />
+      case "house":
+        return <Home className="w-4 h-4" />
+      case "condo":
+        return <Building className="w-4 h-4" />
+      case "townhouse":
+        return <Home className="w-4 h-4" />
+      case "apartment":
+        return <Building className="w-4 h-4" />
+      case "commercial":
+        return <Building className="w-4 h-4" />
+      default:
+        return <Home className="w-4 h-4" />
     }
   }
 
@@ -392,15 +392,9 @@ export function ComprehensiveRealEstateSystem() {
     <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-950 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }} 
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-4"
-        >
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-4">
           <h1 className="text-4xl font-bold text-amber-300 font-serif">Imperial Real Estate Marketplace</h1>
-          <p className="text-purple-200 font-serif tracking-wider">
-            LUXURY PROPERTIES & INVESTMENT OPPORTUNITIES
-          </p>
+          <p className="text-purple-200 font-serif tracking-wider">LUXURY PROPERTIES & INVESTMENT OPPORTUNITIES</p>
         </motion.div>
 
         {/* Search and Filters */}
@@ -429,7 +423,7 @@ export function ComprehensiveRealEstateSystem() {
                       <Input
                         placeholder="City, State, or ZIP"
                         value={filters.location}
-                        onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
+                        onChange={(e) => setFilters((prev) => ({ ...prev, location: e.target.value }))}
                         className="pl-10 bg-purple-800/30 border-purple-600 text-purple-100"
                       />
                     </div>
@@ -437,18 +431,20 @@ export function ComprehensiveRealEstateSystem() {
 
                   <div className="space-y-2">
                     <Label className="text-purple-200">Property Type</Label>
-                    <Select 
-                      value={filters.propertyType[0] || ""} 
-                      onValueChange={(value) => setFilters(prev => ({ 
-                        ...prev, 
-                        propertyType: value ? [value] : [] 
-                      }))}
+                    <Select
+                      value={filters.propertyType[0] || "all"}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          propertyType: value ? [value] : [],
+                        }))
+                      }
                     >
                       <SelectTrigger className="bg-purple-800/30 border-purple-600 text-purple-100">
                         <SelectValue placeholder="All types" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All types</SelectItem>
+                        <SelectItem value="all">All types</SelectItem>
                         <SelectItem value="house">House</SelectItem>
                         <SelectItem value="condo">Condo</SelectItem>
                         <SelectItem value="townhouse">Townhouse</SelectItem>
@@ -460,12 +456,14 @@ export function ComprehensiveRealEstateSystem() {
 
                   <div className="space-y-2">
                     <Label className="text-purple-200">Status</Label>
-                    <Select 
-                      value={filters.status[0] || ""} 
-                      onValueChange={(value) => setFilters(prev => ({ 
-                        ...prev, 
-                        status: value ? [value] : ["for_sale"] 
-                      }))}
+                    <Select
+                      value={filters.status[0] || "for_sale"}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          status: value ? [value] : ["for_sale"],
+                        }))
+                      }
                     >
                       <SelectTrigger className="bg-purple-800/30 border-purple-600 text-purple-100">
                         <SelectValue placeholder="For Sale" />
@@ -486,25 +484,26 @@ export function ComprehensiveRealEstateSystem() {
                   <div className="space-y-2">
                     <Label className="text-purple-200">Bedrooms</Label>
                     <div className="flex flex-wrap gap-2">
-                      {[1, 2, 3, 4, 5].map(num => (
+                      {[1, 2, 3, 4, 5].map((num) => (
                         <Button
                           key={num}
                           variant={filters.bedrooms.includes(num) ? "default" : "outline"}
                           size="sm"
                           onClick={() => {
-                            setFilters(prev => ({
+                            setFilters((prev) => ({
                               ...prev,
                               bedrooms: prev.bedrooms.includes(num)
-                                ? prev.bedrooms.filter(b => b !== num)
-                                : [...prev.bedrooms, num]
+                                ? prev.bedrooms.filter((b) => b !== num)
+                                : [...prev.bedrooms, num],
                             }))
                           }}
-                          className={filters.bedrooms.includes(num) 
-                            ? "bg-amber-600 text-white" 
-                            : "bg-purple-800/30 border-purple-600 text-purple-100"
+                          className={
+                            filters.bedrooms.includes(num)
+                              ? "bg-amber-600 text-white"
+                              : "bg-purple-800/30 border-purple-600 text-purple-100"
                           }
                         >
-                          {num}+ bed{num > 1 ? 's' : ''}
+                          {num}+ bed{num > 1 ? "s" : ""}
                         </Button>
                       ))}
                     </div>
@@ -513,25 +512,26 @@ export function ComprehensiveRealEstateSystem() {
                   <div className="space-y-2">
                     <Label className="text-purple-200">Bathrooms</Label>
                     <div className="flex flex-wrap gap-2">
-                      {[1, 2, 3, 4].map(num => (
+                      {[1, 2, 3, 4].map((num) => (
                         <Button
                           key={num}
                           variant={filters.bathrooms.includes(num) ? "default" : "outline"}
                           size="sm"
                           onClick={() => {
-                            setFilters(prev => ({
+                            setFilters((prev) => ({
                               ...prev,
                               bathrooms: prev.bathrooms.includes(num)
-                                ? prev.bathrooms.filter(b => b !== num)
-                                : [...prev.bathrooms, num]
+                                ? prev.bathrooms.filter((b) => b !== num)
+                                : [...prev.bathrooms, num],
                             }))
                           }}
-                          className={filters.bathrooms.includes(num) 
-                            ? "bg-amber-600 text-white" 
-                            : "bg-purple-800/30 border-purple-600 text-purple-100"
+                          className={
+                            filters.bathrooms.includes(num)
+                              ? "bg-amber-600 text-white"
+                              : "bg-purple-800/30 border-purple-600 text-purple-100"
                           }
                         >
-                          {num}+ bath{num > 1 ? 's' : ''}
+                          {num}+ bath{num > 1 ? "s" : ""}
                         </Button>
                       ))}
                     </div>
@@ -545,7 +545,9 @@ export function ComprehensiveRealEstateSystem() {
                     <Label className="text-purple-200">Price Range</Label>
                     <Slider
                       value={filters.priceRange}
-                      onValueChange={(value) => setFilters(prev => ({ ...prev, priceRange: value as [number, number] }))}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({ ...prev, priceRange: value as [number, number] }))
+                      }
                       max={5000000}
                       min={0}
                       step={50000}
@@ -561,7 +563,9 @@ export function ComprehensiveRealEstateSystem() {
                     <Label className="text-purple-200">Square Footage</Label>
                     <Slider
                       value={filters.sqftRange}
-                      onValueChange={(value) => setFilters(prev => ({ ...prev, sqftRange: value as [number, number] }))}
+                      onValueChange={(value) =>
+                        setFilters((prev) => ({ ...prev, sqftRange: value as [number, number] }))
+                      }
                       max={10000}
                       min={0}
                       step={100}
@@ -578,26 +582,37 @@ export function ComprehensiveRealEstateSystem() {
               <TabsContent value="features" className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[
-                    "Updated Kitchen", "Hardwood Floors", "Central Air", "Fireplace",
-                    "Walk-in Closet", "Granite Countertops", "Swimming Pool", "Garage",
-                    "Balcony/Patio", "In-unit Laundry", "Pet Friendly", "Fitness Center"
-                  ].map(feature => (
+                    "Updated Kitchen",
+                    "Hardwood Floors",
+                    "Central Air",
+                    "Fireplace",
+                    "Walk-in Closet",
+                    "Granite Countertops",
+                    "Swimming Pool",
+                    "Garage",
+                    "Balcony/Patio",
+                    "In-unit Laundry",
+                    "Pet Friendly",
+                    "Fitness Center",
+                  ].map((feature) => (
                     <div key={feature} className="flex items-center space-x-2">
                       <input
                         type="checkbox"
                         id={feature}
                         checked={filters.features.includes(feature)}
                         onChange={(e) => {
-                          setFilters(prev => ({
+                          setFilters((prev) => ({
                             ...prev,
                             features: e.target.checked
                               ? [...prev.features, feature]
-                              : prev.features.filter(f => f !== feature)
+                              : prev.features.filter((f) => f !== feature),
                           }))
                         }}
                         className="rounded border-purple-600 bg-purple-800/30"
                       />
-                      <Label htmlFor={feature} className="text-purple-200 text-sm">{feature}</Label>
+                      <Label htmlFor={feature} className="text-purple-200 text-sm">
+                        {feature}
+                      </Label>
                     </div>
                   ))}
                 </div>
@@ -611,10 +626,8 @@ export function ComprehensiveRealEstateSystem() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <span className="text-purple-200">
-                  {filteredProperties.length} properties found
-                </span>
-                
+                <span className="text-purple-200">{filteredProperties.length} properties found</span>
+
                 <div className="flex items-center space-x-2">
                   <Label className="text-purple-200">Sort by:</Label>
                   <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
@@ -628,11 +641,11 @@ export function ComprehensiveRealEstateSystem() {
                       <SelectItem value="popularity">Popularity</SelectItem>
                     </SelectContent>
                   </Select>
-                  
+
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setSortOrder(prev => prev === "asc" ? "desc" : "asc")}
+                    onClick={() => setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))}
                     className="bg-purple-800/30 border-purple-600 text-purple-100"
                   >
                     {sortOrder === "asc" ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
@@ -645,9 +658,10 @@ export function ComprehensiveRealEstateSystem() {
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
-                  className={viewMode === "grid" 
-                    ? "bg-amber-600 text-white" 
-                    : "bg-purple-800/30 border-purple-600 text-purple-100"
+                  className={
+                    viewMode === "grid"
+                      ? "bg-amber-600 text-white"
+                      : "bg-purple-800/30 border-purple-600 text-purple-100"
                   }
                 >
                   Grid
@@ -656,9 +670,10 @@ export function ComprehensiveRealEstateSystem() {
                   variant={viewMode === "list" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("list")}
-                  className={viewMode === "list" 
-                    ? "bg-amber-600 text-white" 
-                    : "bg-purple-800/30 border-purple-600 text-purple-100"
+                  className={
+                    viewMode === "list"
+                      ? "bg-amber-600 text-white"
+                      : "bg-purple-800/30 border-purple-600 text-purple-100"
                   }
                 >
                   List
@@ -667,9 +682,10 @@ export function ComprehensiveRealEstateSystem() {
                   variant={viewMode === "map" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("map")}
-                  className={viewMode === "map" 
-                    ? "bg-amber-600 text-white" 
-                    : "bg-purple-800/30 border-purple-600 text-purple-100"
+                  className={
+                    viewMode === "map"
+                      ? "bg-amber-600 text-white"
+                      : "bg-purple-800/30 border-purple-600 text-purple-100"
                   }
                 >
                   <Map className="w-4 h-4" />
@@ -698,12 +714,12 @@ export function ComprehensiveRealEstateSystem() {
                         alt={property.title}
                         className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      
+
                       {/* Status Badge */}
                       <Badge className={`absolute top-2 left-2 ${getStatusColor(property.status)} text-white`}>
-                        {property.status.replace('_', ' ').toUpperCase()}
+                        {property.status.replace("_", " ").toUpperCase()}
                       </Badge>
-                      
+
                       {/* Luxury Badge */}
                       {property.isLuxury && (
                         <Badge className="absolute top-2 right-2 bg-gradient-to-r from-amber-600 to-yellow-600 text-white">
@@ -711,7 +727,7 @@ export function ComprehensiveRealEstateSystem() {
                           LUXURY
                         </Badge>
                       )}
-                      
+
                       {/* Action Buttons */}
                       <div className="absolute bottom-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
@@ -719,23 +735,23 @@ export function ComprehensiveRealEstateSystem() {
                           variant="outline"
                           onClick={() => toggleSaveProperty(property.id)}
                           className={`${
-                            savedProperties.has(property.id) 
-                              ? "bg-red-600 text-white border-red-600" 
+                            savedProperties.has(property.id)
+                              ? "bg-red-600 text-white border-red-600"
                               : "bg-white/90 text-gray-800 border-white/90"
                           }`}
                         >
                           <Heart className={`w-4 h-4 ${savedProperties.has(property.id) ? "fill-current" : ""}`} />
                         </Button>
-                        
+
                         <Button size="sm" variant="outline" className="bg-white/90 text-gray-800 border-white/90">
                           <Share className="w-4 h-4" />
                         </Button>
-                        
+
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
+                            <Button
+                              size="sm"
+                              variant="outline"
                               onClick={() => setSelectedProperty(property)}
                               className="bg-white/90 text-gray-800 border-white/90"
                             >
@@ -746,10 +762,11 @@ export function ComprehensiveRealEstateSystem() {
                             <DialogHeader>
                               <DialogTitle className="text-amber-300">{selectedProperty?.title}</DialogTitle>
                               <DialogDescription className="text-purple-200">
-                                {selectedProperty?.address.street}, {selectedProperty?.address.city}, {selectedProperty?.address.state}
+                                {selectedProperty?.address.street}, {selectedProperty?.address.city},{" "}
+                                {selectedProperty?.address.state}
                               </DialogDescription>
                             </DialogHeader>
-                            
+
                             {selectedProperty && (
                               <div className="space-y-6">
                                 {/* Image Gallery */}
@@ -763,7 +780,7 @@ export function ComprehensiveRealEstateSystem() {
                                     />
                                   ))}
                                 </div>
-                                
+
                                 {/* Property Details */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                   <div className="space-y-4">
@@ -772,7 +789,9 @@ export function ComprehensiveRealEstateSystem() {
                                       <div className="space-y-2">
                                         <div className="flex justify-between">
                                           <span className="text-purple-300">Type:</span>
-                                          <span className="text-purple-100 capitalize">{selectedProperty.propertyType}</span>
+                                          <span className="text-purple-100 capitalize">
+                                            {selectedProperty.propertyType}
+                                          </span>
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-purple-300">Bedrooms:</span>
@@ -780,4 +799,237 @@ export function ComprehensiveRealEstateSystem() {
                                         </div>
                                         <div className="flex justify-between">
                                           <span className="text-purple-300">Bathrooms:</span>
-                                          <span className\
+                                          <span className="text-purple-100">{selectedProperty.bathrooms}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-purple-300">Square Feet:</span>
+                                          <span className="text-purple-100">
+                                            {selectedProperty.sqft.toLocaleString()}
+                                          </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-purple-300">Year Built:</span>
+                                          <span className="text-purple-100">{selectedProperty.yearBuilt}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <h3 className="text-amber-300 font-semibold mb-2">Features</h3>
+                                      <div className="flex flex-wrap gap-1">
+                                        {selectedProperty.features.map((feature) => (
+                                          <Badge key={feature} variant="secondary" className="text-xs">
+                                            {feature}
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-4">
+                                    <div>
+                                      <h3 className="text-amber-300 font-semibold mb-2">Pricing</h3>
+                                      <div className="space-y-2">
+                                        <div className="flex justify-between">
+                                          <span className="text-purple-300">List Price:</span>
+                                          <span className="text-green-400 font-bold">
+                                            ${selectedProperty.price.toLocaleString()}
+                                          </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-purple-300">Price/sqft:</span>
+                                          <span className="text-purple-100">
+                                            ${selectedProperty.financials.pricePerSqft}
+                                          </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-purple-300">Est. Monthly:</span>
+                                          <span className="text-purple-100">
+                                            ${selectedProperty.monthlyPayment.toLocaleString()}
+                                          </span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                          <span className="text-purple-300">Property Taxes:</span>
+                                          <span className="text-purple-100">
+                                            ${selectedProperty.financials.taxes.toLocaleString()}/year
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <h3 className="text-amber-300 font-semibold mb-2">Agent</h3>
+                                      <div className="flex items-center space-x-3">
+                                        <img
+                                          src={selectedProperty.agent.photo || "/placeholder.svg"}
+                                          alt={selectedProperty.agent.name}
+                                          className="w-12 h-12 rounded-full"
+                                        />
+                                        <div>
+                                          <p className="text-purple-100 font-medium">{selectedProperty.agent.name}</p>
+                                          <div className="flex items-center space-x-1">
+                                            {Array.from({ length: 5 }, (_, i) => (
+                                              <Star
+                                                key={i}
+                                                className={`w-3 h-3 ${
+                                                  i < Math.floor(selectedProperty.agent.rating)
+                                                    ? "text-yellow-400 fill-current"
+                                                    : "text-gray-400"
+                                                }`}
+                                              />
+                                            ))}
+                                            <span className="text-purple-300 text-sm">
+                                              {selectedProperty.agent.rating.toFixed(1)}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex space-x-3">
+                                  <Button className="flex-1 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700">
+                                    Schedule Tour
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    className="flex-1 bg-purple-800/30 border-purple-600 text-purple-100"
+                                  >
+                                    Contact Agent
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    className="bg-purple-800/30 border-purple-600 text-purple-100"
+                                  >
+                                    <Heart
+                                      className={`w-4 h-4 ${savedProperties.has(selectedProperty.id) ? "fill-current" : ""}`}
+                                    />
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+
+                      {/* Image Count */}
+                      <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded flex items-center">
+                        <Camera className="w-3 h-3 mr-1" />
+                        {property.images.length}
+                      </div>
+                    </div>
+
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div>
+                          <h3 className="text-amber-300 font-semibold text-lg mb-1">
+                            ${property.price.toLocaleString()}
+                          </h3>
+                          <p className="text-purple-200 text-sm">{property.title}</p>
+                          <p className="text-purple-300 text-xs">
+                            {property.address.city}, {property.address.state}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-1">
+                              <Bed className="w-4 h-4 text-purple-400" />
+                              <span className="text-purple-200">{property.bedrooms}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Bath className="w-4 h-4 text-purple-400" />
+                              <span className="text-purple-200">{property.bathrooms}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Square className="w-4 h-4 text-purple-400" />
+                              <span className="text-purple-200">{property.sqft.toLocaleString()}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center space-x-1">
+                            {getPropertyTypeIcon(property.propertyType)}
+                            <span className="text-purple-300 text-xs capitalize">{property.propertyType}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-xs text-purple-300">
+                          <span>{property.daysOnMarket} days on market</span>
+                          <div className="flex items-center space-x-2">
+                            <span>{property.views} views</span>
+                            <span>•</span>
+                            <span>{property.saves} saves</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-amber-400/30 backdrop-blur-xl">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="text-purple-200 text-sm">
+                  Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+                  {Math.min(currentPage * itemsPerPage, filteredProperties.length)} of {filteredProperties.length}{" "}
+                  properties
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="bg-purple-800/30 border-purple-600 text-purple-100"
+                  >
+                    Previous
+                  </Button>
+
+                  <div className="flex items-center space-x-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      const page = i + 1
+                      return (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(page)}
+                          className={
+                            currentPage === page
+                              ? "bg-amber-600 text-white"
+                              : "bg-purple-800/30 border-purple-600 text-purple-100"
+                          }
+                        >
+                          {page}
+                        </Button>
+                      )
+                    })}
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="bg-purple-800/30 border-purple-600 text-purple-100"
+                  >
+                    Next
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
+  )
+}
