@@ -1,1 +1,2 @@
-import { EnhancedFuturisticCommandCenter as FuturisticCommandCenter } from "./enhanced-futuristic-command-center"
+// components/navigation/futuristic-command-center.tsx
+export { EnhancedFuturisticCommandCenter as FuturisticCommandCenter } from "./enhanced-futuristic-command-center"
