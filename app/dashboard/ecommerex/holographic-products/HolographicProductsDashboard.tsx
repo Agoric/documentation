@@ -37,6 +37,7 @@ const sampleProducts = [
     platforms: ["QUICA", "Global Markets", "Quantum Analytics"],
     isHolographic: true,
     has360View: true,
+    investmentClass: "QGI" as const,
     images360: [
       "/placeholder.svg?height=300&width=300&text=QGI+Performance+1",
       "/placeholder.svg?height=300&width=300&text=QGI+Performance+2",
@@ -64,6 +65,7 @@ const sampleProducts = [
     platforms: ["QUICA", "Bond Markets", "Fixed Income"],
     isHolographic: true,
     has360View: true,
+    investmentClass: "QBF" as const,
     images360: [
       "/placeholder.svg?height=300&width=300&text=QBF+Bonds+1",
       "/placeholder.svg?height=300&width=300&text=QBF+Bonds+2",
@@ -91,6 +93,7 @@ const sampleProducts = [
     platforms: ["QUICA", "Stock Markets", "Equity Trading"],
     isHolographic: true,
     has360View: true,
+    investmentClass: "QEF" as const,
     images360: [
       "/placeholder.svg?height=300&width=300&text=QEF+Stocks+1",
       "/placeholder.svg?height=300&width=300&text=QEF+Stocks+2",
@@ -116,9 +119,10 @@ const sampleProducts = [
     rating: 4.6,
     stock: 7834,
     platforms: ["QUICA", "Crypto Exchanges", "DeFi Protocols"],
-    isHolographic: false,
+    isHolographic: true,
     has360View: false,
-    holographicFeatures: [],
+    investmentClass: "QCF" as const,
+    holographicFeatures: ["Bitcoin", "Ethereum", "DeFi Protocols", "Staking Rewards"],
     floorPrice: 2500,
     totalVolume: 23410000,
     owners: 4521,
@@ -135,6 +139,7 @@ const sampleProducts = [
     platforms: ["QUICA", "REIT Markets", "Property Investment"],
     isHolographic: true,
     has360View: true,
+    investmentClass: "QRF" as const,
     images360: [
       "/placeholder.svg?height=300&width=300&text=QRF+Properties+1",
       "/placeholder.svg?height=300&width=300&text=QRF+Properties+2",
@@ -162,6 +167,7 @@ const sampleProducts = [
     platforms: ["QUICA", "Commodity Exchanges", "Futures Markets"],
     isHolographic: true,
     has360View: false,
+    investmentClass: "QCM" as const,
     holographicFeatures: ["Precious Metals", "Energy Commodities", "Agricultural Products", "Inflation Hedge"],
     floorPrice: 600,
     totalVolume: 34560000,
@@ -177,9 +183,10 @@ const sampleProducts = [
     rating: 4.3,
     stock: 12456,
     platforms: ["QUICA", "Tech Markets", "Innovation Hubs"],
-    isHolographic: false,
+    isHolographic: true,
     has360View: false,
-    holographicFeatures: [],
+    investmentClass: "QIF" as const,
+    holographicFeatures: ["AI Technology", "Quantum Computing", "Breakthrough Tech", "Future Innovation"],
     floorPrice: 1200,
     totalVolume: 12340000,
     owners: 8765,
@@ -196,6 +203,7 @@ const sampleProducts = [
     platforms: ["QUICA", "ESG Markets", "Green Finance"],
     isHolographic: true,
     has360View: true,
+    investmentClass: "QSF" as const,
     images360: [
       "/placeholder.svg?height=300&width=300&text=QSF+ESG+1",
       "/placeholder.svg?height=300&width=300&text=QSF+ESG+2",
@@ -212,6 +220,27 @@ const sampleProducts = [
     owners: 1234,
   },
 ]
+
+// Update the Product interface to include investmentClass
+interface Product {
+  id: string
+  name: string
+  description: string
+  price: number
+  image: string
+  category: string
+  rating: number
+  stock: number
+  platforms: string[]
+  isHolographic?: boolean
+  holographicFeatures?: string[]
+  has360View?: boolean
+  images360?: string[]
+  investmentClass?: "QGI" | "QBF" | "QEF" | "QCF" | "QRF" | "QCM" | "QIF" | "QSF"
+  floorPrice?: number
+  totalVolume?: number
+  owners?: number
+}
 
 interface FilterState {
   search: string
