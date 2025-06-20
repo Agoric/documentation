@@ -31,7 +31,7 @@ import {
   DollarSign,
   MessageCircle,
   Bell,
-  Compass,
+  Navigation,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -41,7 +41,7 @@ const realms = [
     title: "Home Base",
     description: "Your personal command center",
     icon: Home,
-    path: "/dashboard/home",
+    path: "/",
     color: "from-amber-400 to-orange-500",
     glowColor: "rgba(251, 191, 36, 0.5)",
     keywords: ["dashboard", "overview", "home", "main"],
@@ -256,6 +256,7 @@ export function FuturisticCommandCenter() {
   const [filteredRealms, setFilteredRealms] = useState(realms)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [notifications] = useState(3)
+  const [orbPosition, setOrbPosition] = useState({ x: 24, y: 24 })
   const pathname = usePathname()
 
   const mouseX = useMotionValue(0)
@@ -307,22 +308,36 @@ export function FuturisticCommandCenter() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [])
 
+  // Adaptive orb positioning based on page
+  useEffect(() => {
+    const isHomePage = pathname === "/"
+    const isDashboard = pathname.startsWith("/dashboard")
+
+    if (isHomePage) {
+      setOrbPosition({ x: 24, y: 24 }) // Top left for home
+    } else if (isDashboard) {
+      setOrbPosition({ x: 24, y: 80 }) // Below any potential header
+    } else {
+      setOrbPosition({ x: 24, y: 24 }) // Default position
+    }
+  }, [pathname])
+
   const currentRealm = realms.find(
     (realm) => pathname.startsWith(realm.path) || realm.subOptions?.some((sub) => pathname.startsWith(sub.path)),
   )
 
   return (
     <>
-      {/* Floating Navigation Orb */}
+      {/* Floating Navigation Orb - Global across all pages */}
       <motion.div
-        className="fixed top-6 left-6 z-50"
+        className="fixed z-50 pointer-events-auto"
         style={{
-          x: springX,
-          y: springY,
+          left: orbPosition.x,
+          top: orbPosition.y,
         }}
         animate={{
-          x: mousePosition.x * 0.02,
-          y: mousePosition.y * 0.02,
+          x: mousePosition.x * 0.01,
+          y: mousePosition.y * 0.01,
         }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
       >
@@ -334,10 +349,10 @@ export function FuturisticCommandCenter() {
         >
           {/* Pulsing glow */}
           <motion.div
-            className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 to-cyan-400"
+            className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400 to-cyan-400 opacity-50"
             animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.5, 0.8, 0.5],
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0.7, 0.3],
             }}
             transition={{
               duration: 2,
@@ -346,9 +361,21 @@ export function FuturisticCommandCenter() {
             }}
           />
 
+          {/* Orbital rings */}
+          <motion.div
+            className="absolute inset-0 rounded-full border border-purple-400/30"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute inset-2 rounded-full border border-cyan-400/20"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+          />
+
           {/* Center icon */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <Compass className="w-8 h-8 text-white" />
+            <Navigation className="w-8 h-8 text-white" />
           </div>
 
           {/* Notification badge */}
@@ -362,11 +389,30 @@ export function FuturisticCommandCenter() {
               {notifications}
             </motion.div>
           )}
+
+          {/* Hover tooltip */}
+          <motion.div
+            className="absolute left-20 top-1/2 transform -translate-y-1/2 bg-black/80 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 pointer-events-none"
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            Neural Command Center
+            <div className="text-xs text-gray-400 mt-1">⌘K to open</div>
+          </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* Floating Quick Actions */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Floating Quick Actions - Adaptive positioning */}
+      <motion.div
+        className="fixed z-40"
+        style={{
+          right: 24,
+          bottom: 24,
+        }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5 }}
+      >
         <div className="flex flex-col space-y-3">
           {quickActions.map((action, index) => {
             const Icon = action.icon
@@ -375,31 +421,32 @@ export function FuturisticCommandCenter() {
                 key={action.title}
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
               >
                 <Link href={action.path}>
                   <motion.div
                     className={cn(
-                      "w-14 h-14 rounded-full bg-gradient-to-br shadow-lg cursor-pointer flex items-center justify-center",
+                      "w-12 h-12 rounded-full bg-gradient-to-br shadow-lg cursor-pointer flex items-center justify-center backdrop-blur-sm",
                       action.color,
                     )}
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.95 }}
+                    title={action.title}
                   >
-                    <Icon className="w-6 h-6 text-white" />
+                    <Icon className="w-5 h-5 text-white" />
                   </motion.div>
                 </Link>
               </motion.div>
             )
           })}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Command Palette */}
+      {/* Command Palette - Global Modal */}
       <AnimatePresence>
         {showCommandPalette && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -422,6 +469,7 @@ export function FuturisticCommandCenter() {
                     <h2 className="text-xl font-bold text-white">Neural Command Center</h2>
                     <p className="text-purple-300 text-sm">Navigate with AI-powered intelligence</p>
                   </div>
+                  <div className="ml-auto text-xs text-purple-400">Current: {currentRealm?.title || "Unknown"}</div>
                 </div>
 
                 {/* Search Bar */}
@@ -547,9 +595,13 @@ export function FuturisticCommandCenter() {
         )}
       </AnimatePresence>
 
-      {/* Floating Citizen Status */}
+      {/* Floating Citizen Status - Adaptive positioning */}
       <motion.div
-        className="fixed top-6 right-6 z-40"
+        className="fixed z-40"
+        style={{
+          right: 24,
+          top: pathname === "/" ? 24 : 80,
+        }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
@@ -572,24 +624,24 @@ export function FuturisticCommandCenter() {
         </Card>
       </motion.div>
 
-      {/* Background Particles */}
+      {/* Background Particles - Global effect */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-purple-400/30 rounded-full"
+            className="absolute w-1 h-1 bg-purple-400/20 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
               y: [0, -100, 0],
-              opacity: [0, 1, 0],
+              opacity: [0, 0.6, 0],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 4 + Math.random() * 3,
               repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 2,
+              delay: Math.random() * 3,
             }}
           />
         ))}

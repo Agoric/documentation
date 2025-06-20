@@ -1,5 +1,5 @@
 import { PageWrapper } from "@/components/layout/page-wrapper"
-import { GamificationDashboard } from "@/components/gamification/GamificationDashboard"
+import { GamificationDashboard } from "./GamificationDashboard"
 
 export default function GamificationPage() {
   return (
