@@ -1,16 +1,17 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { UniversalLayout } from "@/components/layout/universal-layout"
+import { ImperiumLayout } from "@/components/layout/imperium-layout"
 import { ThemeProvider } from "@/components/theme-provider"
 import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 
 export const metadata: Metadata = {
-  title: "Inclusive Lending and Credit Empirical Authority",
+  title: "IMPERIUM SNAPIFI - Supreme Digital Authority",
   description:
-    "New World Wealth Navigation Assistant. Introducing the Benefits of Economic Global Citizenship, Welcome Home",
-  generator: "v0.dev",
+    "SUPREMA AUCTORITAS DIGITALIS - Navigate the future with imperial sovereignty. Global citizenship, quantum commerce, and neural intelligence.",
+  generator: "Imperium Snapifi v2.0",
+  keywords: ["imperium", "digital sovereignty", "quantum commerce", "neural intelligence", "global citizenship"],
 }
 
 export default function RootLayout({
@@ -19,12 +20,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className="dark">
+      <body className="antialiased bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950 min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <GamificationProvider>
             <ProductComparisonProvider>
-              <UniversalLayout>{children}</UniversalLayout>
+              <ImperiumLayout>{children}</ImperiumLayout>
             </ProductComparisonProvider>
           </GamificationProvider>
         </ThemeProvider>
