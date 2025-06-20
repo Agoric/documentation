@@ -483,6 +483,128 @@ export function FuturisticCommandCenter() {
         </motion.div>
       </motion.div>
 
+      {/* Enhanced Expanded Orb with Citizen Profile */}
+      <AnimatePresence>
+        {orbExpanded && (
+          <motion.div
+            className="absolute left-20 top-0 bg-gradient-to-br from-purple-900/95 to-indigo-900/95 backdrop-blur-xl border border-amber-400/30 rounded-lg overflow-hidden min-w-80"
+            initial={{ opacity: 0, x: -20, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -20, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            style={{
+              clipPath: "polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%)",
+            }}
+          >
+            {/* Imperial Header */}
+            <div className="p-4 bg-gradient-to-r from-amber-900/40 to-purple-900/40 border-b border-amber-400/20">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center relative">
+                  <Crown className="w-6 h-6 text-white" />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-amber-300 font-serif text-sm">{citizenData.name}</h3>
+                  <p className="text-xs text-amber-400 italic">{citizenData.romanName}</p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <Badge className="text-xs bg-amber-500/20 text-amber-300 border-amber-400/30 px-2 py-0">
+                      {citizenData.status}
+                    </Badge>
+                    <Badge className="text-xs bg-purple-500/20 text-purple-300 border-purple-400/30 px-2 py-0">
+                      LVL {citizenData.level}
+                    </Badge>
+                  </div>
+                </div>
+                <Button size="sm" variant="ghost" className="w-8 h-8 p-0 text-amber-400 hover:text-amber-300">
+                  <Bell className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Citizen Stats */}
+            <div className="p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="bg-blue-900/20 rounded-lg p-2 border border-blue-400/20">
+                  <div className="text-blue-400 font-semibold">QGI Balance</div>
+                  <div className="text-white font-bold">${citizenData.qgiBalance.toLocaleString()}</div>
+                </div>
+                <div className="bg-green-900/20 rounded-lg p-2 border border-green-400/20">
+                  <div className="text-green-400 font-semibold">Bond Value</div>
+                  <div className="text-white font-bold">${citizenData.bondValue.toLocaleString()}</div>
+                </div>
+              </div>
+
+              <div className="bg-purple-900/20 rounded-lg p-2 border border-purple-400/20">
+                <div className="text-purple-400 font-semibold text-xs">Citizen ID</div>
+                <div className="text-white font-mono text-xs">{citizenData.id}</div>
+              </div>
+
+              {/* Navigation Status */}
+              <div className="border-t border-amber-400/20 pt-3 space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Compass className="w-4 h-4 text-amber-400" />
+                  <span className="text-sm font-bold text-amber-300 font-serif">IMPERIUM NAVIGATOR</span>
+                </div>
+                <div className="text-xs text-purple-200">
+                  Current Realm: <span className="text-amber-300">{currentRealm?.latinTitle || "NAVIGANDO"}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-purple-300">Neural Status:</span>
+                  <div className="flex items-center space-x-1">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                    <span className="text-green-400">ACTIVE</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="space-y-2">
+                <Button
+                  size="sm"
+                  className="w-full h-8 text-xs bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white border-0"
+                  onClick={() => setShowCommandPalette(true)}
+                >
+                  <Command className="w-3 h-3 mr-2" />
+                  Open Command Imperium
+                </Button>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-xs border-amber-400/30 text-amber-400 hover:bg-amber-400/10"
+                  >
+                    <User className="w-3 h-3 mr-1" />
+                    Profile
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-xs border-green-400/30 text-green-400 hover:bg-green-400/10"
+                  >
+                    <TrendingUp className="w-3 h-3 mr-1" />
+                    Portfolio
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Imperial Footer */}
+            <div className="px-4 py-2 bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border-t border-amber-400/20">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center space-x-1">
+                  <Shield className="w-3 h-3 text-green-400" />
+                  <span className="text-green-400">SECURED</span>
+                </div>
+                <div className="flex items-center space-x-1 text-amber-400">
+                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                  <span className="font-serif">SUPREMA AUCTORITAS</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Enhanced Quick Actions with Imperial Theme */}
       <div className="fixed bottom-6 right-6 z-50">
         <div className="flex flex-col space-y-3">
