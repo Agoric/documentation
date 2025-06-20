@@ -1,421 +1,156 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { ZillowApiClient } from "@/lib/zillow-api-client"
+import { transformZillowProperty, type Property } from "@/lib/zillow-property-transformer"
 
-interface Property {
-  id: string
-  title: string
-  description: string
-  price: number
-  monthlyPayment: number
-  image: string
-  images: string[]
-  type: string
-  bedrooms: number
-  bathrooms: number
-  sqft: number
-  yearBuilt: number
-  rating: number
-  location: string
-  status: string
-  features: string[]
-  isHolographic?: boolean
-  holographicFeatures?: string[]
-  has360View?: boolean
-  images360?: string[]
-  daysOnMarket: number
-  pricePerSqft: number
-  virtualTourUrl?: string
-  floorPlanUrl?: string
-}
+// Cache for API responses (in production, use Redis or similar)
+const cache = new Map<string, { data: any; timestamp: number }>()
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const location = searchParams.get("location") || "New York, NY"
-    const minPrice = Number.parseInt(searchParams.get("minPrice") || "0")
-    const maxPrice = Number.parseInt(searchParams.get("maxPrice") || "10000000")
+    const minPrice = searchParams.get("minPrice") ? Number.parseInt(searchParams.get("minPrice")!) : undefined
+    const maxPrice = searchParams.get("maxPrice") ? Number.parseInt(searchParams.get("maxPrice")!) : undefined
+    const propertyType = searchParams.get("propertyType") || "all"
+    const status = searchParams.get("status") || "for_sale"
+    const page = searchParams.get("page") ? Number.parseInt(searchParams.get("page")!) : 1
+
+    console.log("Fetching properties for:", { location, minPrice, maxPrice, propertyType, status, page })
+
+    // Check if we have Zillow API key
+    const zillowApiKey = process.env.NEXT_PUBLIC_ZILLOW_API_KEY
+    if (!zillowApiKey) {
+      console.warn("Zillow API key not found, using fallback data")
+      return NextResponse.json({
+        properties: getFallbackProperties(location, minPrice, maxPrice, propertyType, status),
+        total: 6,
+        message: "Using fallback data - Zillow API key not configured",
+        source: "fallback",
+      })
+    }
+
+    // Create cache key
+    const cacheKey = `${location}-${minPrice}-${maxPrice}-${propertyType}-${status}-${page}`
+
+    // Check cache first
+    const cached = cache.get(cacheKey)
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      console.log("Returning cached data for:", cacheKey)
+      return NextResponse.json({
+        ...cached.data,
+        message: "Data from cache",
+        source: "cache",
+      })
+    }
+
+    // Initialize Zillow API client
+    const zillowClient = new ZillowApiClient(zillowApiKey)
+
+    // Transform status for Zillow API
+    const zillowStatus = transformStatusForZillow(status)
+
+    // Transform property type for Zillow API
+    const zillowPropertyType = transformPropertyTypeForZillow(propertyType)
+
+    // Search properties using Zillow API
+    const searchParams_zillow = {
+      location,
+      status_type: zillowStatus,
+      page,
+      ...(minPrice && { minPrice }),
+      ...(maxPrice && { maxPrice }),
+      ...(zillowPropertyType !== "all" && { home_type: zillowPropertyType }),
+    }
+
+    const zillowResponse = await zillowClient.searchProperties(searchParams_zillow)
+
+    // Transform Zillow properties to our format
+    const properties: Property[] = zillowResponse.results.map(transformZillowProperty)
+
+    // Filter properties by price range if needed (additional client-side filtering)
+    const filteredProperties = properties.filter((property) => {
+      if (minPrice && property.price < minPrice) return false
+      if (maxPrice && property.price > maxPrice) return false
+      return true
+    })
+
+    const responseData = {
+      properties: filteredProperties,
+      total: zillowResponse.totalResultCount,
+      page,
+      message: "Data from Zillow API",
+      source: "zillow",
+    }
+
+    // Cache the response
+    cache.set(cacheKey, { data: responseData, timestamp: Date.now() })
+
+    return NextResponse.json(responseData)
+  } catch (error) {
+    console.error("Zillow API Error:", error)
+
+    // Return fallback data on error
+    const { searchParams } = new URL(request.url)
+    const location = searchParams.get("location") || "New York, NY"
+    const minPrice = searchParams.get("minPrice") ? Number.parseInt(searchParams.get("minPrice")!) : undefined
+    const maxPrice = searchParams.get("maxPrice") ? Number.parseInt(searchParams.get("maxPrice")!) : undefined
     const propertyType = searchParams.get("propertyType") || "all"
     const status = searchParams.get("status") || "for_sale"
 
-    console.log("Fetching properties for:", { location, minPrice, maxPrice, propertyType, status })
-
-    // Generate realistic properties with actual property images
-    const properties = generateRealisticProperties(location, minPrice, maxPrice, propertyType, status)
-
     return NextResponse.json({
-      properties,
-      total: properties.length,
-      message: "Enhanced property database with high-quality images",
-    })
-  } catch (error) {
-    console.error("Property API Error:", error)
-
-    return NextResponse.json({
-      properties: getDefaultProperties(),
+      properties: getFallbackProperties(location, minPrice, maxPrice, propertyType, status),
       total: 6,
-      error: "Using fallback property data",
+      error: error instanceof Error ? error.message : "Unknown error occurred",
+      message: "Using fallback data due to API error",
+      source: "fallback",
     })
   }
 }
 
-function generateRealisticProperties(
+function transformStatusForZillow(status: string): "ForSale" | "ForRent" | "RecentlySold" {
+  const statusMap: Record<string, "ForSale" | "ForRent" | "RecentlySold"> = {
+    for_sale: "ForSale",
+    for_rent: "ForRent",
+    recently_sold: "RecentlySold",
+  }
+
+  return statusMap[status] || "ForSale"
+}
+
+function transformPropertyTypeForZillow(type: string): string {
+  const typeMap: Record<string, string> = {
+    single_family: "SINGLE_FAMILY",
+    condo: "CONDO",
+    townhouse: "TOWNHOUSE",
+    multi_family: "MULTI_FAMILY",
+    apartment: "APARTMENT",
+    all: "all",
+  }
+
+  return typeMap[type] || "all"
+}
+
+function getFallbackProperties(
   location: string,
-  minPrice: number,
-  maxPrice: number,
-  propertyType: string,
-  status: string,
+  minPrice?: number,
+  maxPrice?: number,
+  propertyType?: string,
+  status?: string,
 ): Property[] {
-  const locationData = getLocationData(location)
-  const properties: Property[] = []
-
-  // Generate 12-20 realistic properties based on search criteria
-  const propertyCount = Math.floor(Math.random() * 9) + 12
-
-  for (let i = 0; i < propertyCount; i++) {
-    const property = generateRealisticProperty(locationData, minPrice, maxPrice, propertyType, status, i)
-    if (property.price >= minPrice && property.price <= maxPrice) {
-      properties.push(property)
-    }
-  }
-
-  return properties.slice(0, 20) // Limit to 20 results
-}
-
-function getLocationData(location: string) {
-  const locationMap: Record<string, any> = {
-    "New York, NY": {
-      city: "New York",
-      state: "NY",
-      avgPrice: 1200000,
-      priceRange: [400000, 8000000],
-      neighborhoods: ["Manhattan", "Brooklyn", "Queens", "Bronx"],
-      types: ["Condo", "Co-op", "Townhouse", "Penthouse"],
-      imagePrefix: "nyc",
-    },
-    "Los Angeles, CA": {
-      city: "Los Angeles",
-      state: "CA",
-      avgPrice: 900000,
-      priceRange: [500000, 5000000],
-      neighborhoods: ["Beverly Hills", "Hollywood", "Santa Monica", "Venice"],
-      types: ["Single Family", "Condo", "Townhouse", "Villa"],
-      imagePrefix: "la",
-    },
-    "Miami, FL": {
-      city: "Miami",
-      state: "FL",
-      avgPrice: 650000,
-      priceRange: [300000, 3000000],
-      neighborhoods: ["South Beach", "Brickell", "Coral Gables", "Wynwood"],
-      types: ["Condo", "Single Family", "Townhouse", "Penthouse"],
-      imagePrefix: "miami",
-    },
-    "Austin, TX": {
-      city: "Austin",
-      state: "TX",
-      avgPrice: 550000,
-      priceRange: [250000, 2000000],
-      neighborhoods: ["Downtown", "South Austin", "East Austin", "Westlake"],
-      types: ["Single Family", "Condo", "Townhouse", "Ranch"],
-      imagePrefix: "austin",
-    },
-    "Chicago, IL": {
-      city: "Chicago",
-      state: "IL",
-      avgPrice: 450000,
-      priceRange: [200000, 2500000],
-      neighborhoods: ["Loop", "Lincoln Park", "Wicker Park", "Gold Coast"],
-      types: ["Condo", "Single Family", "Townhouse", "Loft"],
-      imagePrefix: "chicago",
-    },
-  }
-
-  return (
-    locationMap[location] || {
-      city: location.split(",")[0] || "Unknown",
-      state: location.split(",")[1]?.trim() || "Unknown",
-      avgPrice: 500000,
-      priceRange: [200000, 2000000],
-      neighborhoods: ["Downtown", "Suburbs", "Historic District", "Waterfront"],
-      types: ["Single Family", "Condo", "Townhouse", "Ranch"],
-      imagePrefix: "generic",
-    }
-  )
-}
-
-function generatePropertyImages(
-  locationData: any,
-  propertyType: string,
-  index: number,
-): { image: string; images: string[] } {
-  const imagePrefix = locationData.imagePrefix
-  const typeSlug = propertyType.toLowerCase().replace(/\s+/g, "-")
-
-  // Generate realistic property image URLs
-  const baseImageUrl = "https://images.unsplash.com"
-
-  // Property type specific image collections
-  const imageCollections = {
-    condo: [
-      `${baseImageUrl}/1600x900/?modern-condo-interior`,
-      `${baseImageUrl}/1600x900/?luxury-apartment-living-room`,
-      `${baseImageUrl}/1600x900/?modern-kitchen-granite`,
-      `${baseImageUrl}/1600x900/?city-view-balcony`,
-      `${baseImageUrl}/1600x900/?master-bedroom-modern`,
-      `${baseImageUrl}/1600x900/?bathroom-marble-luxury`,
-    ],
-    "single-family": [
-      `${baseImageUrl}/1600x900/?suburban-house-exterior`,
-      `${baseImageUrl}/1600x900/?family-home-living-room`,
-      `${baseImageUrl}/1600x900/?modern-kitchen-island`,
-      `${baseImageUrl}/1600x900/?backyard-garden-patio`,
-      `${baseImageUrl}/1600x900/?master-suite-bedroom`,
-      `${baseImageUrl}/1600x900/?home-office-study`,
-    ],
-    townhouse: [
-      `${baseImageUrl}/1600x900/?townhouse-row-exterior`,
-      `${baseImageUrl}/1600x900/?townhouse-living-space`,
-      `${baseImageUrl}/1600x900/?narrow-kitchen-design`,
-      `${baseImageUrl}/1600x900/?townhouse-stairs-hallway`,
-      `${baseImageUrl}/1600x900/?rooftop-terrace-deck`,
-      `${baseImageUrl}/1600x900/?basement-recreation-room`,
-    ],
-    penthouse: [
-      `${baseImageUrl}/1600x900/?penthouse-skyline-view`,
-      `${baseImageUrl}/1600x900/?luxury-penthouse-living`,
-      `${baseImageUrl}/1600x900/?gourmet-kitchen-penthouse`,
-      `${baseImageUrl}/1600x900/?penthouse-terrace-city`,
-      `${baseImageUrl}/1600x900/?master-suite-luxury`,
-      `${baseImageUrl}/1600x900/?wine-cellar-luxury`,
-    ],
-    villa: [
-      `${baseImageUrl}/1600x900/?mediterranean-villa-exterior`,
-      `${baseImageUrl}/1600x900/?villa-grand-entrance`,
-      `${baseImageUrl}/1600x900/?villa-gourmet-kitchen`,
-      `${baseImageUrl}/1600x900/?infinity-pool-villa`,
-      `${baseImageUrl}/1600x900/?villa-master-bedroom`,
-      `${baseImageUrl}/1600x900/?villa-wine-cellar`,
-    ],
-    loft: [
-      `${baseImageUrl}/1600x900/?industrial-loft-space`,
-      `${baseImageUrl}/1600x900/?loft-exposed-brick`,
-      `${baseImageUrl}/1600x900/?loft-open-kitchen`,
-      `${baseImageUrl}/1600x900/?loft-high-ceilings`,
-      `${baseImageUrl}/1600x900/?loft-bedroom-mezzanine`,
-      `${baseImageUrl}/1600x900/?loft-artist-studio`,
-    ],
-    ranch: [
-      `${baseImageUrl}/1600x900/?ranch-style-home`,
-      `${baseImageUrl}/1600x900/?ranch-open-floor-plan`,
-      `${baseImageUrl}/1600x900/?ranch-country-kitchen`,
-      `${baseImageUrl}/1600x900/?ranch-covered-porch`,
-      `${baseImageUrl}/1600x900/?ranch-master-bedroom`,
-      `${baseImageUrl}/1600x900/?ranch-backyard-landscape`,
-    ],
-  }
-
-  // Get images for the property type
-  const typeImages = imageCollections[typeSlug as keyof typeof imageCollections] || imageCollections["single-family"]
-
-  // Select a primary image and additional gallery images
-  const primaryImageIndex = index % typeImages.length
-  const primaryImage = typeImages[primaryImageIndex]
-
-  // Generate 4-8 additional images for the gallery
-  const galleryCount = Math.floor(Math.random() * 5) + 4
-  const galleryImages = []
-
-  for (let i = 0; i < galleryCount; i++) {
-    const imageIndex = (primaryImageIndex + i + 1) % typeImages.length
-    galleryImages.push(typeImages[imageIndex])
-  }
-
-  return {
-    image: primaryImage,
-    images: [primaryImage, ...galleryImages],
-  }
-}
-
-function generate360Images(propertyType: string): string[] {
-  const baseUrl = "https://images.unsplash.com"
-
-  const room360Images = [
-    `${baseUrl}/1920x1080/?360-living-room-panoramic`,
-    `${baseUrl}/1920x1080/?360-kitchen-panoramic`,
-    `${baseUrl}/1920x1080/?360-master-bedroom-panoramic`,
-    `${baseUrl}/1920x1080/?360-bathroom-panoramic`,
-    `${baseUrl}/1920x1080/?360-dining-room-panoramic`,
-    `${baseUrl}/1920x1080/?360-balcony-view-panoramic`,
-  ]
-
-  return room360Images
-}
-
-function generateRealisticProperty(
-  locationData: any,
-  minPrice: number,
-  maxPrice: number,
-  propertyType: string,
-  status: string,
-  index: number,
-): Property {
-  const priceVariation = 0.3 + Math.random() * 1.4 // 0.3x to 1.7x of avg price
-  const basePrice = locationData.avgPrice * priceVariation
-  const price = Math.max(minPrice, Math.min(maxPrice, Math.round(basePrice / 10000) * 10000))
-
-  const bedrooms = Math.floor(Math.random() * 5) + 1
-  const bathrooms = Math.floor(Math.random() * 3) + 1 + Math.random() * 0.5
-  const sqft = Math.floor(Math.random() * 2000) + 800 + bedrooms * 200
-  const yearBuilt = Math.floor(Math.random() * 50) + 1975
-  const daysOnMarket = Math.floor(Math.random() * 120) + 1
-
-  const neighborhood = locationData.neighborhoods[Math.floor(Math.random() * locationData.neighborhoods.length)]
-  const propertyTypeActual =
-    propertyType === "all" ? locationData.types[Math.floor(Math.random() * locationData.types.length)] : propertyType
-
-  const isHolographic = price > locationData.avgPrice * 1.5 || yearBuilt > 2020 || propertyTypeActual === "Penthouse"
-  const monthlyPayment = Math.round((price * 0.045) / 12) // Rough 4.5% mortgage estimate
-
-  // Generate realistic property images
-  const { image, images } = generatePropertyImages(locationData, propertyTypeActual, index)
-  const has360View = Math.random() > 0.4 // 60% chance for 360 view
-  const images360 = has360View ? generate360Images(propertyTypeActual) : undefined
-
-  return {
-    id: `prop-${locationData.city.toLowerCase()}-${index + 1}`,
-    title: `${propertyTypeActual} in ${neighborhood}`,
-    description: generatePropertyDescription(propertyTypeActual, bedrooms, bathrooms, neighborhood, isHolographic),
-    price,
-    monthlyPayment,
-    image,
-    images,
-    type: propertyTypeActual,
-    bedrooms,
-    bathrooms: Math.round(bathrooms * 2) / 2, // Round to nearest 0.5
-    sqft,
-    yearBuilt,
-    rating: 3.5 + Math.random() * 1.5,
-    location: `${neighborhood}, ${locationData.state}`,
-    status: status === "for_sale" ? "For Sale" : status === "for_rent" ? "For Rent" : "Recently Sold",
-    features: generatePropertyFeatures(propertyTypeActual, yearBuilt, price, locationData.avgPrice),
-    isHolographic,
-    holographicFeatures: isHolographic ? generateHolographicFeatures() : undefined,
-    has360View,
-    images360,
-    daysOnMarket,
-    pricePerSqft: Math.round(price / sqft),
-    virtualTourUrl: has360View ? `https://virtualtour.example.com/property-${index + 1}` : undefined,
-    floorPlanUrl: `https://floorplan.example.com/property-${index + 1}.pdf`,
-  }
-}
-
-function generatePropertyDescription(
-  type: string,
-  bedrooms: number,
-  bathrooms: number,
-  neighborhood: string,
-  isHolographic: boolean,
-): string {
-  const descriptions = [
-    `Stunning ${type.toLowerCase()} featuring ${bedrooms} bedrooms and ${bathrooms} bathrooms in the heart of ${neighborhood}.`,
-    `Beautiful ${type.toLowerCase()} with modern amenities and ${bedrooms} spacious bedrooms in prestigious ${neighborhood}.`,
-    `Elegant ${type.toLowerCase()} offering ${bedrooms} bedrooms, ${bathrooms} baths, and premium finishes in ${neighborhood}.`,
-    `Luxurious ${type.toLowerCase()} with ${bedrooms} bedrooms and exceptional design in sought-after ${neighborhood}.`,
-  ]
-
-  let description = descriptions[Math.floor(Math.random() * descriptions.length)]
-
-  if (isHolographic) {
-    description +=
-      " This premium property features cutting-edge smart home technology and holographic entertainment systems."
-  }
-
-  return description
-}
-
-function generatePropertyFeatures(type: string, yearBuilt: number, price: number, avgPrice: number): string[] {
-  const allFeatures = [
-    "Updated Kitchen",
-    "Hardwood Floors",
-    "Granite Countertops",
-    "Stainless Steel Appliances",
-    "Walk-in Closet",
-    "Master Suite",
-    "Fireplace",
-    "Balcony",
-    "Garage",
-    "Swimming Pool",
-    "Garden",
-    "Air Conditioning",
-    "Heating",
-    "Laundry Room",
-    "Storage Space",
-    "High Ceilings",
-    "Natural Light",
-    "City Views",
-    "Mountain Views",
-    "Water Views",
-    "Gym Access",
-    "Concierge",
-    "Security System",
-    "Elevator",
-    "Rooftop Access",
-  ]
-
-  const features = []
-  const featureCount = Math.floor(Math.random() * 6) + 4 // 4-9 features
-
-  // Add type-specific features
-  if (type === "Penthouse") features.push("City Views", "Rooftop Access", "Concierge")
-  if (type === "Condo") features.push("Gym Access", "Concierge", "Elevator")
-  if (type === "Single Family") features.push("Garage", "Garden", "Storage Space")
-  if (yearBuilt > 2015) features.push("Updated Kitchen", "Modern Design")
-  if (price > avgPrice * 1.3) features.push("Premium Finishes", "Luxury Amenities")
-
-  // Add random features
-  while (features.length < featureCount) {
-    const feature = allFeatures[Math.floor(Math.random() * allFeatures.length)]
-    if (!features.includes(feature)) {
-      features.push(feature)
-    }
-  }
-
-  return features.slice(0, featureCount)
-}
-
-function generateHolographicFeatures(): string[] {
-  const holographicFeatures = [
-    "Smart Home Integration",
-    "Holographic Displays",
-    "AI Climate Control",
-    "Neural Interface",
-    "Quantum Security",
-    "Biometric Access",
-    "Holographic Entertainment",
-    "Smart Glass Windows",
-    "Voice Control",
-    "Automated Systems",
-    "Holographic Concierge",
-    "Neural Network Integration",
-  ]
-
-  return holographicFeatures.slice(0, 4)
-}
-
-function getDefaultProperties(): Property[] {
-  return [
+  // Return enhanced fallback data when Zillow API is unavailable
+  const fallbackProperties: Property[] = [
     {
-      id: "default-1",
+      id: "fallback-1",
       title: "Luxury Manhattan Penthouse",
       description: "Stunning penthouse with panoramic city views and premium finishes throughout.",
       price: 4500000,
       monthlyPayment: 16875,
-      image: "https://images.unsplash.com/1600x900/?penthouse-skyline-view",
+      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
       images: [
-        "https://images.unsplash.com/1600x900/?penthouse-skyline-view",
-        "https://images.unsplash.com/1600x900/?luxury-penthouse-living",
-        "https://images.unsplash.com/1600x900/?gourmet-kitchen-penthouse",
-        "https://images.unsplash.com/1600x900/?penthouse-terrace-city",
-        "https://images.unsplash.com/1600x900/?master-suite-luxury",
+        "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
       ],
       type: "Penthouse",
       bedrooms: 4,
@@ -427,13 +162,58 @@ function getDefaultProperties(): Property[] {
       status: "For Sale",
       features: ["City Views", "Premium Finishes", "Rooftop Access", "Concierge", "Smart Home"],
       isHolographic: true,
-      holographicFeatures: ["Smart Home Integration", "Holographic Displays", "AI Climate Control", "Neural Interface"],
+      holographicFeatures: ["Smart Home Integration", "Holographic Displays", "AI Climate Control"],
       has360View: true,
-      images360: generate360Images("Penthouse"),
       daysOnMarket: 12,
       pricePerSqft: 1406,
-      virtualTourUrl: "https://virtualtour.example.com/property-default-1",
-      floorPlanUrl: "https://floorplan.example.com/property-default-1.pdf",
+      zestimate: 4600000,
+      walkScore: 95,
+    },
+    {
+      id: "fallback-2",
+      title: "Modern Brooklyn Condo",
+      description: "Contemporary condo with industrial touches and Brooklyn Bridge views.",
+      price: 1200000,
+      monthlyPayment: 4500,
+      image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
+      ],
+      type: "Condo",
+      bedrooms: 2,
+      bathrooms: 2,
+      sqft: 1100,
+      yearBuilt: 2019,
+      rating: 4.5,
+      location: "Brooklyn, NY",
+      status: "For Sale",
+      features: ["Modern Design", "City Views", "Gym Access", "Rooftop Deck"],
+      isHolographic: false,
+      has360View: false,
+      daysOnMarket: 25,
+      pricePerSqft: 1091,
+      zestimate: 1180000,
+      walkScore: 88,
     },
   ]
+
+  // Filter fallback properties based on search criteria
+  return fallbackProperties.filter((property) => {
+    if (minPrice && property.price < minPrice) return false
+    if (maxPrice && property.price > maxPrice) return false
+    if (propertyType && propertyType !== "all" && property.type.toLowerCase().replace(/\s+/g, "_") !== propertyType)
+      return false
+    return true
+  })
 }
+
+// Clean up old cache entries periodically
+setInterval(() => {
+  const now = Date.now()
+  for (const [key, value] of cache.entries()) {
+    if (now - value.timestamp > CACHE_DURATION * 2) {
+      cache.delete(key)
+    }
+  }
+}, CACHE_DURATION)
