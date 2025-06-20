@@ -58,28 +58,26 @@ interface ZillowApiError {
 class ZillowApiClient {
   private apiKey: string
   private baseUrl = "https://zillow-com1.p.rapidapi.com"
-  private rateLimitDelay = 1000 // 1 second between requests
+  private rateLimitDelay = 1500 // RapidAPI free tier is 45-60 req/min; give extra cushion
   private lastRequestTime = 0
 
   constructor(apiKey: string) {
     this.apiKey = apiKey
   }
 
-  private async makeRequest<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
-    // Rate limiting
+  private async makeRequest<T>(endpoint: string, params: Record<string, string> = {}, attempt = 1): Promise<T> {
+    // basic token-bucket style delay to keep us <40 req/min
     const now = Date.now()
-    const timeSinceLastRequest = now - this.lastRequestTime
-    if (timeSinceLastRequest < this.rateLimitDelay) {
-      await new Promise((resolve) => setTimeout(resolve, this.rateLimitDelay - timeSinceLastRequest))
+    const delta = now - this.lastRequestTime
+    if (delta < this.rateLimitDelay) {
+      await new Promise((r) => setTimeout(r, this.rateLimitDelay - delta))
     }
     this.lastRequestTime = Date.now()
 
     const url = new URL(`${this.baseUrl}${endpoint}`)
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.append(key, value)
-    })
+    Object.entries(params).forEach(([k, v]) => url.searchParams.append(k, v))
 
-    const response = await fetch(url.toString(), {
+    const resp = await fetch(url.toString(), {
       method: "GET",
       headers: {
         "X-RapidAPI-Key": this.apiKey,
@@ -88,12 +86,23 @@ class ZillowApiClient {
       },
     })
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new Error(`Zillow API Error: ${response.status} - ${errorData.message || response.statusText}`)
+    // If we’re rate-limited (HTTP 429) retry with exponential back-off (max 3 tries)
+    if (resp.status === 429) {
+      if (attempt >= 3) {
+        throw new Error("Zillow API Rate-Limit reached after 3 attempts")
+      }
+      const retryAfter = Number(resp.headers.get("Retry-After")) || (1 << attempt) * 1000 + Math.random() * 500
+      console.warn(`Zillow 429 – backing off for ${retryAfter} ms (attempt ${attempt}/3)`)
+      await new Promise((r) => setTimeout(r, retryAfter))
+      return this.makeRequest<T>(endpoint, params, attempt + 1)
     }
 
-    return response.json()
+    if (!resp.ok) {
+      const errData = await resp.json().catch(() => ({}))
+      throw new Error(`Zillow API Error: ${resp.status} - ${errData.message || resp.statusText}`)
+    }
+
+    return resp.json()
   }
 
   async searchProperties(params: {

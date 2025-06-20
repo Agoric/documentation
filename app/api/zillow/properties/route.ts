@@ -101,8 +101,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       properties: getFallbackProperties(location, minPrice, maxPrice, propertyType, status),
       total: 6,
-      error: error instanceof Error ? error.message : "Unknown error occurred",
-      message: "Using fallback data due to API error",
+      error: (error as Error)?.message, // pass message but still degrade gracefully
+      rateLimited: (error as Error)?.message?.includes("Rate-Limit") || false,
+      message: "Using cached / fallback data because Zillow rate-limit or error was hit",
       source: "fallback",
     })
   }
