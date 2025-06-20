@@ -1,10 +1,13 @@
-import { DashboardLayout } from "@/components/dashboard-layout"
-import SupremeAuthorityAdminDashboard from "@/components/admin/supreme-authority-admin-dashboard"
+import { PageWrapper } from "@/components/layout/page-wrapper"
+import { SupremeAuthorityAdminDashboard } from "@/components/admin/supreme-authority-admin-dashboard"
 
 export default function AdminPage() {
   return (
-    <DashboardLayout breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Admin Panel" }]}>
+    <PageWrapper
+      title="Supreme Authority Admin"
+      subtitle="Suprema Auctoritas Administratio - Administrative Control Center"
+    >
       <SupremeAuthorityAdminDashboard />
-    </DashboardLayout>
+    </PageWrapper>
   )
 }
