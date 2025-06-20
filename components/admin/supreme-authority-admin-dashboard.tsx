@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Trash2, Settings, Shield, Users, BarChart3, CheckCircle, Clock } from "lucide-react"
+import { Plus, Trash2, Settings, Shield, Users, BarChart3, CheckCircle, Clock, Star, Activity } from "lucide-react"
 import { useAdminAccess } from "@/contexts/admin-access-context"
 
 interface Variant {
@@ -116,39 +116,53 @@ export default function SupremeAuthorityAdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      {/* Header with indigo accents */}
-      <header className="bg-white border-b border-indigo-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {/* Enhanced header with excellence features */}
+      <header className="bg-gradient-to-r from-white via-indigo-50 to-purple-50 border-b border-indigo-200 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Settings className="w-6 h-6 text-white" />
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Settings className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Supreme Authority Dashboard</h1>
-                <p className="text-sm text-indigo-600">Advanced Configuration & Management</p>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
+                  Supreme Authority Dashboard
+                </h1>
+                <p className="text-sm text-indigo-600 font-medium">
+                  Excellence Configuration Active • Premium Features Enabled
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              {/* Auto-save status */}
-              <div className="flex items-center space-x-2 text-sm">
+            <div className="flex items-center space-x-6">
+              {/* Enhanced auto-save status */}
+              <div className="flex items-center space-x-3 text-sm bg-white/80 backdrop-blur-sm rounded-lg px-4 py-2 border border-indigo-200">
                 {isSaving ? (
                   <>
-                    <Clock className="w-4 h-4 text-indigo-500 animate-spin" />
-                    <span className="text-indigo-600">Saving...</span>
+                    <Clock className="w-5 h-5 text-indigo-500 animate-spin" />
+                    <span className="text-indigo-600 font-medium">Auto-saving...</span>
                   </>
                 ) : lastSaved ? (
                   <>
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-green-600">Saved {lastSaved.toLocaleTimeString()}</span>
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <span className="text-green-600 font-medium">Saved {lastSaved.toLocaleTimeString()}</span>
                   </>
                 ) : null}
               </div>
 
-              <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-200">
-                {variants.length} Variants
-              </Badge>
+              <div className="flex items-center space-x-2">
+                <Badge
+                  variant="outline"
+                  className="bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 border-indigo-300 font-semibold"
+                >
+                  <Star className="w-4 h-4 mr-1" />
+                  {variants.length} Excellence Variants
+                </Badge>
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
+                  <Activity className="w-4 h-4 mr-1" />
+                  Premium Active
+                </Badge>
+              </div>
             </div>
           </div>
         </div>
@@ -174,13 +188,13 @@ export default function SupremeAuthorityAdminDashboard() {
           <TabsContent value="variants" className="space-y-6">
             {/* Variant Creation */}
             <Card className="border-indigo-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-t-lg">
+              <CardHeader className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-t-lg">
                 <CardTitle className="flex items-center space-x-2">
-                  <Plus className="w-5 h-5" />
-                  <span>Variant Management</span>
+                  <Star className="w-6 h-6" />
+                  <span>Excellence Variant Management</span>
                 </CardTitle>
                 <CardDescription className="text-indigo-100">
-                  Create and manage system variants with auto-save functionality
+                  Create and manage premium system variants with AI-powered auto-save
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6">
