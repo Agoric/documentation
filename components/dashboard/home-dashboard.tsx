@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils"
 const citizenData = {
   id: "GC-2024-789456",
   name: "Alexander Magnus",
-  romanName: "Alexander Magnus Supremus",
+  romanName: "Supreme Authority Citizen",
   title: "Global Citizen - Level VII",
   memberSince: "2024-01-15",
   status: "active",
@@ -253,7 +253,7 @@ export function HomeDashboard() {
               <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
                 Citizen Dashboard
               </h1>
-              <p className="text-xl text-amber-300/80 italic font-serif">Civis Supremus Auctoritas</p>
+              <p className="text-xl text-amber-300/80 italic font-serif">Supreme Authority Platform</p>
             </div>
           </div>
         </div>

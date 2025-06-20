@@ -30,7 +30,7 @@ const environments = [
   {
     id: "home",
     title: "Home",
-    latin: "DOMUS",
+    latin: "HOME",
     icon: Home,
     path: "/dashboard/home",
     color: "from-amber-500 to-yellow-600",
@@ -43,7 +43,7 @@ const environments = [
   {
     id: "market",
     title: "QUICA Market",
-    latin: "MERCATUS",
+    latin: "MARKET",
     icon: ShoppingBag,
     path: "/dashboard/ecommerex/holographic-products",
     color: "from-purple-500 to-indigo-600",
@@ -56,7 +56,7 @@ const environments = [
   {
     id: "realestate",
     title: "Real Estate Empire",
-    latin: "DOMUS",
+    latin: "REAL ESTATE",
     icon: Building2,
     path: "/dashboard/ecommerex/real-estate",
     color: "from-green-500 to-emerald-600",
@@ -70,7 +70,7 @@ const environments = [
   {
     id: "trading",
     title: "SnapDax Trading",
-    latin: "NEGOTIUM",
+    latin: "TRADING",
     icon: TrendingUp,
     path: "/dashboard/snap-dax",
     color: "from-blue-500 to-cyan-600",
@@ -84,7 +84,7 @@ const environments = [
   {
     id: "banking",
     title: "Snapifi Banking",
-    latin: "BANCUM",
+    latin: "BANKING",
     icon: CreditCard,
     path: "/dashboard/banking",
     color: "from-cyan-500 to-blue-600",
@@ -98,7 +98,7 @@ const environments = [
   {
     id: "gamification",
     title: "Achievement Hub",
-    latin: "LUDUS",
+    latin: "ACHIEVEMENTS",
     icon: Trophy,
     path: "/dashboard/gamification",
     color: "from-amber-500 to-orange-600",
@@ -112,7 +112,7 @@ const environments = [
   {
     id: "legal",
     title: "Legal Framework",
-    latin: "LEX",
+    latin: "LEGAL",
     icon: Scale,
     path: "/legal",
     color: "from-gray-500 to-slate-600",
@@ -126,7 +126,7 @@ const environments = [
   {
     id: "citizenship",
     title: "Global Citizenship",
-    latin: "CIVITAS",
+    latin: "CITIZENSHIP",
     icon: Globe,
     path: "/citizenship/profile",
     color: "from-blue-500 to-purple-600",
@@ -140,7 +140,7 @@ const environments = [
   {
     id: "admin",
     title: "Supreme Authority",
-    latin: "IMPERIUM",
+    latin: "ADMIN",
     icon: Crown,
     path: "/admin",
     color: "from-purple-500 to-amber-600",
@@ -186,7 +186,7 @@ export function ComprehensiveEnvironmentToolbar() {
             <SupremeAuthorityCoin size="sm" variant="logo" />
             <div className="hidden md:block">
               <h1 className="text-lg font-bold text-amber-300 font-serif">Snapifi</h1>
-              <p className="text-xs text-amber-300/70 italic">Suprema Auctoritas</p>
+              <p className="text-xs text-amber-300/70 italic">Supreme Authority</p>
             </div>
           </Link>
 
