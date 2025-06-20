@@ -111,7 +111,7 @@ importers:
         specifier: latest
         version: 1.0.1
       date-fns:
-        specifier: 4.1.0
+        specifier: latest
         version: 4.1.0
       embla-carousel-react:
         specifier: latest
