@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { ZillowApiClient } from "@/lib/zillow-api-client"
+import { ZillowApiClient, ZillowSubscriptionError } from "@/lib/zillow-api-client"
 import { transformZillowProperty, type Property } from "@/lib/zillow-property-transformer"
 
 // Cache for API responses (in production, use Redis or similar)
@@ -88,9 +88,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(responseData)
   } catch (error) {
+    // -------- existing console.log stays ----------
     console.error("Zillow API Error:", error)
 
-    // Return fallback data on error
     const { searchParams } = new URL(request.url)
     const location = searchParams.get("location") || "New York, NY"
     const minPrice = searchParams.get("minPrice") ? Number.parseInt(searchParams.get("minPrice")!) : undefined
@@ -98,14 +98,21 @@ export async function GET(request: NextRequest) {
     const propertyType = searchParams.get("propertyType") || "all"
     const status = searchParams.get("status") || "for_sale"
 
-    return NextResponse.json({
-      properties: getFallbackProperties(location, minPrice, maxPrice, propertyType, status),
-      total: 6,
-      error: (error as Error)?.message, // pass message but still degrade gracefully
-      rateLimited: (error as Error)?.message?.includes("Rate-Limit") || false,
-      message: "Using cached / fallback data because Zillow rate-limit or error was hit",
-      source: "fallback",
-    })
+    const isSubError = error instanceof ZillowSubscriptionError
+
+    return NextResponse.json(
+      {
+        properties: getFallbackProperties(location, minPrice, maxPrice, propertyType, status),
+        total: 20,
+        error: (error as Error).message,
+        subscriptionRequired: isSubError,
+        message: isSubError
+          ? "Zillow API subscription required – using demo data"
+          : "Using fallback data due to Zillow API error",
+        source: "fallback",
+      },
+      { status: 200 },
+    )
   }
 }
 

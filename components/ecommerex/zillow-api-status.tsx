@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { AlertCircle, CheckCircle, Clock, Wifi, WifiOff } from "lucide-react"
 
 interface ApiStatus {
-  source: "zillow" | "cache" | "fallback"
+  source: "zillow" | "cache" | "fallback" | "subscription"
   message: string
   timestamp: number
   error?: string
@@ -23,7 +23,7 @@ export function ZillowApiStatus() {
       const data = await response.json()
 
       setStatus({
-        source: data.source || "unknown",
+        source: data.subscriptionRequired ? "subscription" : data.source || "unknown",
         message: data.message || "API response received",
         timestamp: Date.now(),
         error: data.error,
@@ -78,6 +78,12 @@ export function ZillowApiStatus() {
         return (
           <Badge variant="outline" className="border-orange-500 text-orange-600">
             Demo Mode
+          </Badge>
+        )
+      case "subscription":
+        return (
+          <Badge variant="outline" className="border-red-500 text-red-600">
+            Subscription Required
           </Badge>
         )
       default:

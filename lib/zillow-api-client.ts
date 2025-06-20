@@ -55,6 +55,13 @@ interface ZillowApiError {
   code: number
 }
 
+export class ZillowSubscriptionError extends Error {
+  constructor(message = "You are not subscribed to the Zillow API") {
+    super(message)
+    this.name = "ZillowSubscriptionError"
+  }
+}
+
 class ZillowApiClient {
   private apiKey: string
   private baseUrl = "https://zillow-com1.p.rapidapi.com"
@@ -95,6 +102,11 @@ class ZillowApiClient {
       console.warn(`Zillow 429 – backing off for ${retryAfter} ms (attempt ${attempt}/3)`)
       await new Promise((r) => setTimeout(r, retryAfter))
       return this.makeRequest<T>(endpoint, params, attempt + 1)
+    }
+
+    if (resp.status === 403) {
+      // not subscribed or wrong plan – surface a dedicated error
+      throw new ZillowSubscriptionError()
     }
 
     if (!resp.ok) {
