@@ -193,67 +193,6 @@ export function AdaptiveHolographicSidebar({
       }}
     >
       {/* Header */}
-      <div className="p-4 border-b border-amber-500/20">
-        <AnimatePresence mode="wait">
-          {isExpanded ? (
-            <motion.div
-              key="expanded-header"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center space-x-3"
-            >
-              <SupremeAuthorityCoin variant="badge" size="sm" />
-              <div>
-                <h2 className="text-lg font-bold text-amber-300">Investment Filters</h2>
-                <p className="text-xs text-amber-300/60 font-serif italic">Filtrum Investimentorum</p>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="collapsed-header"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2 }}
-              className="flex flex-col items-center space-y-2"
-            >
-              <SupremeAuthorityCoin variant="badge" size="sm" />
-              <Filter className="h-5 w-5 text-amber-400" />
-              {activeFilterCount > 0 && (
-                <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white border-0 text-xs">
-                  {activeFilterCount}
-                </Badge>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {isExpanded && activeFilterCount > 0 && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center justify-between mt-3 p-2 bg-amber-500/10 rounded-lg border border-amber-500/20"
-            >
-              <Badge className="bg-gradient-to-r from-amber-600 to-purple-600 text-white border-0">
-                {activeFilterCount} active
-              </Badge>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleClearFilters}
-                className="text-xs text-amber-300/80 hover:text-amber-300 hover:bg-amber-500/20 h-6"
-              >
-                <X className="h-3 w-3 mr-1" />
-                Clear
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      
 
       {/* Content */}
