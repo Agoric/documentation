@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -15,29 +15,31 @@ interface WolfVoiceSettings {
   useWolfSample: boolean
 }
 
-export function WolfVoiceEngine() {
+export const WolfVoiceEngine = forwardRef<any, {}>((props, ref) => {
+  const [isExpanded, setIsExpanded] = useState(false)
   const [voiceSettings, setVoiceSettings] = useState<WolfVoiceSettings>({
     enabled: true,
     volume: 0.8,
-    playbackRate: 1.1, // Slightly faster for energy
-    pitch: 0.9, // Slightly lower for authority
+    playbackRate: 1.1,
+    pitch: 0.9,
     useWolfSample: true,
   })
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
   const [wolfSampleBuffer, setWolfSampleBuffer] = useState<AudioBuffer | null>(null)
 
-  const audioRef = useRef<HTMLAudioElement | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
 
+  useImperativeHandle(ref, () => ({
+    speakWithWolfPersonality: (text: string) => speakWithWolfPersonality(text),
+  }))
+
   useEffect(() => {
-    // Initialize audio context for advanced audio processing
     if (typeof window !== "undefined") {
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
       setAudioContext(ctx)
       synthRef.current = window.speechSynthesis
 
-      // Load Wolf voice sample
       loadWolfSample()
     }
 
@@ -90,13 +92,11 @@ export function WolfVoiceEngine() {
     if (!voiceSettings.enabled) return
 
     if (voiceSettings.useWolfSample && wolfSampleBuffer) {
-      // Play the authentic Wolf sample first for personality
       playWolfSample()
 
-      // Then speak the text with Wolf-like characteristics
       setTimeout(() => {
         speakWithSynthesis(text)
-      }, 1500) // Delay to let sample play first
+      }, 1500)
     } else {
       speakWithSynthesis(text)
     }
@@ -107,12 +107,9 @@ export function WolfVoiceEngine() {
 
     synthRef.current.cancel()
 
-    // Process text for Wolf-like delivery
     const wolfText = processTextForWolf(text)
-
     const utterance = new SpeechSynthesisUtterance(wolfText)
 
-    // Select best available voice for Wolf personality
     const voices = synthRef.current.getVoices()
     const wolfVoice =
       voices.find((voice) => voice.name.includes("Google US English Male")) ||
@@ -129,14 +126,6 @@ export function WolfVoiceEngine() {
     utterance.pitch = voiceSettings.pitch
     utterance.volume = voiceSettings.volume
 
-    // Add Wolf-like emphasis and pauses
-    utterance.onboundary = (event) => {
-      if (event.name === "word" && Math.random() < 0.1) {
-        // Occasionally add slight pauses for dramatic effect
-        setTimeout(() => {}, 50)
-      }
-    }
-
     utterance.onend = () => setIsPlaying(false)
     utterance.onerror = () => setIsPlaying(false)
 
@@ -145,15 +134,14 @@ export function WolfVoiceEngine() {
   }
 
   const processTextForWolf = (text: string): string => {
-    // Add Wolf of Wall Street personality to text
     return text
       .replace(/money/gi, "MONEY")
       .replace(/success/gi, "SUCCESS")
       .replace(/win/gi, "WIN")
       .replace(/champion/gi, "CHAMPION")
-      .replace(/\./g, "... ") // Add dramatic pauses
-      .replace(/!/g, "!") // Keep exclamations strong
-      .replace(/\?/g, "?") // Keep questions natural
+      .replace(/\./g, "... ")
+      .replace(/!/g, "!")
+      .replace(/\?/g, "?")
   }
 
   const wolfQuotes = [
@@ -172,157 +160,267 @@ export function WolfVoiceEngine() {
   }
 
   return (
-    <div className="fixed top-20 right-6 z-40">
-      <Card className="w-80 bg-gradient-to-br from-amber-900/95 to-orange-900/95 backdrop-blur-xl border-amber-400/30">
-        <CardContent className="p-4">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2">
-              <Crown className="w-5 h-5 text-amber-400" />
-              <span className="text-amber-300 font-bold">Wolf Voice Engine</span>
+    <div className="fixed top-44 right-6 z-40">
+      <AnimatePresence>
+        {!isExpanded ? (
+          // Retracted State - Floating Orb
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0, transition: { duration: 0.3 } }}
+            className="relative cursor-pointer"
+            onClick={() => setIsExpanded(true)}
+          >
+            <motion.div
+              className={`w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 shadow-2xl flex items-center justify-center ${
+                isPlaying ? "shadow-amber-500/50" : ""
+              }`}
+              animate={
+                isPlaying
+                  ? {
+                      scale: [1, 1.1, 1],
+                      boxShadow: [
+                        "0 0 20px rgba(245, 158, 11, 0.5)",
+                        "0 0 40px rgba(249, 115, 22, 0.7)",
+                        "0 0 20px rgba(245, 158, 11, 0.5)",
+                      ],
+                    }
+                  : {
+                      boxShadow: [
+                        "0 0 15px rgba(245, 158, 11, 0.3)",
+                        "0 0 25px rgba(249, 115, 22, 0.5)",
+                        "0 0 15px rgba(245, 158, 11, 0.3)",
+                      ],
+                    }
+              }
+              transition={
+                isPlaying
+                  ? { repeat: Number.POSITIVE_INFINITY, duration: 1 }
+                  : { repeat: Number.POSITIVE_INFINITY, duration: 3 }
+              }
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Crown className="w-5 h-5 text-white" />
+            </motion.div>
+
+            {/* Status indicators */}
+            <div className="absolute -top-1 -right-1">
+              {isPlaying && (
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
+                  className="w-3 h-3 bg-amber-400 rounded-full"
+                />
+              )}
             </div>
-            <div className="flex items-center space-x-2">
-              <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30 text-xs">LEONARDO</Badge>
+
+            {/* Tooltip */}
+            <motion.div
+              className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gradient-to-r from-amber-900/95 to-orange-900/95 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg opacity-0 hover:opacity-100 transition-all duration-300 whitespace-nowrap border border-amber-400/30"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="flex items-center space-x-2">
+                <Crown className="w-3 h-3" />
+                <span>Wolf Voice</span>
+              </div>
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-amber-900/95"></div>
+            </motion.div>
+
+            {/* Quick controls */}
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2">
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => setVoiceSettings((prev) => ({ ...prev, enabled: !prev.enabled }))}
-                className={`w-8 h-8 p-0 ${voiceSettings.enabled ? "text-green-400" : "text-gray-400"}`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setVoiceSettings((prev) => ({ ...prev, enabled: !prev.enabled }))
+                }}
+                className={`w-8 h-8 p-0 rounded-full ${
+                  voiceSettings.enabled ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"
+                }`}
               >
                 {voiceSettings.enabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               </Button>
             </div>
-          </div>
-
-          {/* Wolf Sample Status */}
-          <div className="mb-4 p-3 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border border-amber-400/30">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-sm text-amber-300 font-medium">Authentic Wolf Sample</div>
-                <div className="text-xs text-amber-400">{wolfSampleBuffer ? "✅ Loaded & Ready" : "⏳ Loading..."}</div>
-              </div>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setVoiceSettings((prev) => ({ ...prev, useWolfSample: !prev.useWolfSample }))}
-                className={`${voiceSettings.useWolfSample ? "text-green-400" : "text-gray-400"}`}
-              >
-                {voiceSettings.useWolfSample ? "ON" : "OFF"}
-              </Button>
-            </div>
-          </div>
-
-          {/* Voice Controls */}
-          <div className="space-y-3 mb-4">
-            <div>
-              <div className="text-sm text-amber-300 mb-1">Volume</div>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={voiceSettings.volume}
-                onChange={(e) => setVoiceSettings((prev) => ({ ...prev, volume: Number.parseFloat(e.target.value) }))}
-                className="w-full accent-amber-500"
-              />
-            </div>
-
-            <div>
-              <div className="text-sm text-amber-300 mb-1">Speed ({voiceSettings.playbackRate.toFixed(1)}x)</div>
-              <input
-                type="range"
-                min="0.5"
-                max="2"
-                step="0.1"
-                value={voiceSettings.playbackRate}
-                onChange={(e) =>
-                  setVoiceSettings((prev) => ({ ...prev, playbackRate: Number.parseFloat(e.target.value) }))
-                }
-                className="w-full accent-amber-500"
-              />
-            </div>
-
-            <div>
-              <div className="text-sm text-amber-300 mb-1">Pitch ({voiceSettings.pitch.toFixed(1)})</div>
-              <input
-                type="range"
-                min="0.5"
-                max="2"
-                step="0.1"
-                value={voiceSettings.pitch}
-                onChange={(e) => setVoiceSettings((prev) => ({ ...prev, pitch: Number.parseFloat(e.target.value) }))}
-                className="w-full accent-amber-500"
-              />
-            </div>
-          </div>
-
-          {/* Test Buttons */}
-          <div className="space-y-2 mb-4">
-            <Button
-              onClick={playWolfSample}
-              disabled={!voiceSettings.enabled || !wolfSampleBuffer || isPlaying}
-              className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
-            >
-              {isPlaying ? (
-                <div className="flex items-center space-x-2">
-                  <Pause className="w-4 h-4" />
-                  <span>Playing Wolf Sample...</span>
+          </motion.div>
+        ) : (
+          // Expanded State - Full Interface
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.8, opacity: 0, y: 20, transition: { duration: 0.3 } }}
+            className="w-80"
+          >
+            <Card className="bg-gradient-to-br from-amber-900/95 to-orange-900/95 backdrop-blur-xl border-amber-400/30">
+              <CardContent className="p-4">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Crown className="w-5 h-5 text-amber-400" />
+                    <span className="text-amber-300 font-bold">Wolf Voice Engine</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30 text-xs">LEONARDO</Badge>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setVoiceSettings((prev) => ({ ...prev, enabled: !prev.enabled }))}
+                      className={`w-8 h-8 p-0 ${voiceSettings.enabled ? "text-green-400" : "text-gray-400"}`}
+                    >
+                      {voiceSettings.enabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setIsExpanded(false)}
+                      className="w-8 h-8 p-0 text-amber-400"
+                    >
+                      ×
+                    </Button>
+                  </div>
                 </div>
-              ) : (
-                <div className="flex items-center space-x-2">
-                  <Play className="w-4 h-4" />
-                  <span>Play Authentic Wolf Voice</span>
+
+                {/* Wolf Sample Status */}
+                <div className="mb-4 p-3 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border border-amber-400/30">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-amber-300 font-medium">Authentic Wolf Sample</div>
+                      <div className="text-xs text-amber-400">
+                        {wolfSampleBuffer ? "✅ Loaded & Ready" : "⏳ Loading..."}
+                      </div>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setVoiceSettings((prev) => ({ ...prev, useWolfSample: !prev.useWolfSample }))}
+                      className={`${voiceSettings.useWolfSample ? "text-green-400" : "text-gray-400"}`}
+                    >
+                      {voiceSettings.useWolfSample ? "ON" : "OFF"}
+                    </Button>
+                  </div>
                 </div>
-              )}
-            </Button>
 
-            <Button
-              onClick={playRandomWolfQuote}
-              disabled={!voiceSettings.enabled || isPlaying}
-              className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white"
-            >
-              <div className="flex items-center space-x-2">
-                <Zap className="w-4 h-4" />
-                <span>Random Wolf Quote</span>
-              </div>
-            </Button>
-          </div>
+                {/* Voice Controls */}
+                <div className="space-y-3 mb-4">
+                  <div>
+                    <div className="text-sm text-amber-300 mb-1">Volume</div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={voiceSettings.volume}
+                      onChange={(e) =>
+                        setVoiceSettings((prev) => ({ ...prev, volume: Number.parseFloat(e.target.value) }))
+                      }
+                      className="w-full accent-amber-500"
+                    />
+                  </div>
 
-          {/* Wolf Personality Indicators */}
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="text-center">
-              <div className="text-amber-400 font-bold">🎬</div>
-              <div className="text-amber-300">Leonardo</div>
-            </div>
-            <div className="text-center">
-              <div className="text-orange-400 font-bold">💰</div>
-              <div className="text-orange-300">Wall Street</div>
-            </div>
-            <div className="text-center">
-              <div className="text-red-400 font-bold">🔥</div>
-              <div className="text-red-300">High Energy</div>
-            </div>
-            <div className="text-center">
-              <div className="text-yellow-400 font-bold">👑</div>
-              <div className="text-yellow-300">Authority</div>
-            </div>
-          </div>
+                  <div>
+                    <div className="text-sm text-amber-300 mb-1">Speed ({voiceSettings.playbackRate.toFixed(1)}x)</div>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2"
+                      step="0.1"
+                      value={voiceSettings.playbackRate}
+                      onChange={(e) =>
+                        setVoiceSettings((prev) => ({ ...prev, playbackRate: Number.parseFloat(e.target.value) }))
+                      }
+                      className="w-full accent-amber-500"
+                    />
+                  </div>
 
-          {/* Status */}
-          {isPlaying && (
-            <div className="mt-4 p-2 bg-green-900/20 border border-green-400/30 rounded-lg">
-              <div className="flex items-center space-x-2">
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
-                  className="w-2 h-2 bg-green-400 rounded-full"
-                />
-                <span className="text-green-300 text-sm">Wolf Voice Active</span>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                  <div>
+                    <div className="text-sm text-amber-300 mb-1">Pitch ({voiceSettings.pitch.toFixed(1)})</div>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2"
+                      step="0.1"
+                      value={voiceSettings.pitch}
+                      onChange={(e) =>
+                        setVoiceSettings((prev) => ({ ...prev, pitch: Number.parseFloat(e.target.value) }))
+                      }
+                      className="w-full accent-amber-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Test Buttons */}
+                <div className="space-y-2 mb-4">
+                  <Button
+                    onClick={playWolfSample}
+                    disabled={!voiceSettings.enabled || !wolfSampleBuffer || isPlaying}
+                    className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
+                  >
+                    {isPlaying ? (
+                      <div className="flex items-center space-x-2">
+                        <Pause className="w-4 h-4" />
+                        <span>Playing Wolf Sample...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center space-x-2">
+                        <Play className="w-4 h-4" />
+                        <span>Play Authentic Wolf Voice</span>
+                      </div>
+                    )}
+                  </Button>
+
+                  <Button
+                    onClick={playRandomWolfQuote}
+                    disabled={!voiceSettings.enabled || isPlaying}
+                    className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Zap className="w-4 h-4" />
+                      <span>Random Wolf Quote</span>
+                    </div>
+                  </Button>
+                </div>
+
+                {/* Wolf Personality Indicators */}
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="text-center">
+                    <div className="text-amber-400 font-bold">🎬</div>
+                    <div className="text-amber-300">Leonardo</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-orange-400 font-bold">💰</div>
+                    <div className="text-orange-300">Wall Street</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-red-400 font-bold">🔥</div>
+                    <div className="text-red-300">High Energy</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-yellow-400 font-bold">👑</div>
+                    <div className="text-yellow-300">Authority</div>
+                  </div>
+                </div>
+
+                {/* Status */}
+                {isPlaying && (
+                  <div className="mt-4 p-2 bg-green-900/20 border border-green-400/30 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <motion.div
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
+                        className="w-2 h-2 bg-green-400 rounded-full"
+                      />
+                      <span className="text-green-300 text-sm">Wolf Voice Active</span>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
-}
+})
+
+WolfVoiceEngine.displayName = "WolfVoiceEngine"
