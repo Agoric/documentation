@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Volume2, VolumeX, Zap, Brain, Play, Pause } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 interface RealVoiceProfile {
   id: string
@@ -74,11 +75,25 @@ export function RealVoiceEngine() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioCache, setAudioCache] = useState<Map<string, string>>(new Map())
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [apiKey, setApiKey] = useState<string>("")
+  const { toast } = useToast()
+
+  // Pull build-time public env first
+  const PUBLIC_KEY = process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ?? ""
+  const [apiKey, setApiKey] = useState<string>(() => {
+    if (PUBLIC_KEY) return PUBLIC_KEY // 1️⃣ build-time
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("elevenlabs_api_key")
+      if (stored) return stored // 2️⃣ saved key
+    }
+    return "" // 3️⃣ none yet
+  })
 
   useEffect(() => {
-    const stored = localStorage.getItem("elevenlabs_api_key")
-    if (stored) setApiKey(stored)
+    if (!PUBLIC_KEY) {
+      // only look in LS if no env key
+      const stored = localStorage.getItem("elevenlabs_api_key")
+      if (stored) setApiKey(stored)
+    }
   }, [])
 
   useEffect(() => {
@@ -140,12 +155,21 @@ export function RealVoiceEngine() {
   }
 
   const generateElevenLabsVoice = async (text: string, voiceId: string): Promise<string | null> => {
+    if (!apiKey) {
+      toast({
+        title: "Missing ElevenLabs API key",
+        description: "Add NEXT_PUBLIC_ELEVENLABS_API_KEY or paste one into the voice panel.",
+        variant: "destructive",
+      })
+      return null
+    }
+
     try {
       const res = await fetch("/api/voice/elevenlabs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(apiKey ? { "x-elevenlabs-key": apiKey } : {}),
+          "x-elevenlabs-key": apiKey, // always send – we know we have it
         },
         body: JSON.stringify({ text, voiceId }),
       })
@@ -263,7 +287,7 @@ export function RealVoiceEngine() {
             </div>
           </div>
 
-          {/* API Key Input (optional - only shown if env-var absent) */}
+          {/* API Key Input (shown only if no key anywhere) */}
           {!apiKey && (
             <div className="mb-4 p-3 bg-amber-900/20 border border-amber-400/30 rounded-lg">
               <div className="text-sm text-amber-300 mb-2">Optional ElevenLabs API Key:</div>
