@@ -580,7 +580,7 @@ export function ImperialAIChat() {
 
                 <CardContent className="p-0 flex-1 flex flex-col">
                   <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-                    <div className="space-y-4">
+                    <div className="space-y-4 min-h-full">
                       {messages.map((message, index) => (
                         <motion.div
                           key={message.id}
@@ -600,7 +600,7 @@ export function ImperialAIChat() {
                           >
                             <div className="flex items-start space-x-2">
                               {message.type === "assistant" && (
-                                <Avatar className="w-6 h-6">
+                                <Avatar className="w-6 h-6 flex-shrink-0">
                                   <AvatarFallback
                                     className={`bg-gradient-to-br ${getOrbColors().gradient} text-white text-xs`}
                                   >
@@ -608,20 +608,22 @@ export function ImperialAIChat() {
                                   </AvatarFallback>
                                 </Avatar>
                               )}
-                              <div className="flex-1">
-                                <p className="text-sm leading-relaxed">{message.content}</p>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">
+                                  {message.content}
+                                </p>
                                 <div className="flex items-center justify-between mt-2">
                                   <div className="flex items-center space-x-2 text-xs opacity-60">
-                                    {message.isVoice && <Mic className="w-3 h-3" />}
+                                    {message.isVoice && <Mic className="w-3 h-3 flex-shrink-0" />}
                                     {message.category && (
                                       <Badge variant="outline" className="text-xs h-4">
                                         {message.category}
                                       </Badge>
                                     )}
-                                    <span>{message.timestamp.toLocaleTimeString()}</span>
+                                    <span className="flex-shrink-0">{message.timestamp.toLocaleTimeString()}</span>
                                   </div>
                                   {message.type === "assistant" && (
-                                    <div className="flex items-center space-x-1">
+                                    <div className="flex items-center space-x-1 flex-shrink-0">
                                       <Button
                                         size="sm"
                                         variant="ghost"
@@ -676,8 +678,10 @@ export function ImperialAIChat() {
                           </div>
                         </motion.div>
                       )}
+
+                      {/* Auto-scroll anchor */}
+                      <div ref={messagesEndRef} />
                     </div>
-                    <div ref={messagesEndRef} />
                   </ScrollArea>
 
                   <div className="p-4 border-t border-amber-400/20">

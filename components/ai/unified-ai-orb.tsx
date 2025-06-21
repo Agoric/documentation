@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Slider } from "@/components/ui/slider"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Mic,
   MicOff,
@@ -218,6 +219,7 @@ export function UnifiedAIOrb() {
   const synthRef = useRef<SpeechSynthesis | null>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-retract on mouse leave
   useEffect(() => {
@@ -723,6 +725,16 @@ export function UnifiedAIOrb() {
     }
   }
 
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      })
+    }
+  }, [messages, isTyping])
+
   return (
     <div
       className="fixed bottom-6 left-6 z-40"
@@ -968,91 +980,100 @@ export function UnifiedAIOrb() {
                       )}
                     </div>
                     {/* Chat Messages */}
-                    <div className="h-48 overflow-y-auto bg-slate-800/30 rounded-lg p-3 space-y-2">
-                      {messages.length === 0 ? (
-                        <div className="text-center text-slate-400 text-sm py-8">
-                          <div className="text-2xl mb-2">{selectedPersonality.icon}</div>
-                          <div>Chat with {selectedPersonality.name}!</div>
-                          <div className="text-xs mt-1">I can browse websites, read files, and mimic personalities</div>
-                        </div>
-                      ) : (
-                        messages
-                          // Ensure we never render null / undefined
-                          .filter(
-                            (m): m is NonNullable<typeof m> => m !== null && m !== undefined && typeof m === "object",
-                          )
-                          .map((message) => (
-                            <div
-                              key={message.id}
-                              className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                            >
-                              <div
-                                className={`max-w-[85%] p-2 rounded-lg text-sm ${
-                                  message.sender === "user"
-                                    ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
-                                    : message.type === "web"
-                                      ? "bg-green-600/30 text-green-100 border border-green-400/30"
-                                      : message.type === "file"
-                                        ? "bg-orange-600/30 text-orange-100 border border-orange-400/30"
-                                        : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
-                                }`}
-                              >
-                                <div className="flex items-start space-x-2">
-                                  {message.sender === "ai" && (
-                                    <div className="text-lg mt-0.5 flex-shrink-0">
-                                      {message.type === "web"
-                                        ? "🌐"
-                                        : message.type === "file"
-                                          ? "📄"
-                                          : selectedPersonality.icon}
-                                    </div>
-                                  )}
-                                  <div className="flex-1">
-                                    <div className="whitespace-pre-line">{message.text}</div>
-                                    <div className="text-xs opacity-60 mt-1 flex items-center justify-between">
-                                      <span>
-                                        {message.timestamp.toLocaleTimeString([], {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}
-                                      </span>
-                                      {message.personality && <span>{message.personality}</span>}
+                    <div className="h-48 overflow-hidden bg-slate-800/30 rounded-lg border border-slate-600/30">
+                      <ScrollArea className="h-full">
+                        <div className="p-3 space-y-2">
+                          {messages.length === 0 ? (
+                            <div className="text-center text-slate-400 text-sm py-8">
+                              <div className="text-2xl mb-2">{selectedPersonality.icon}</div>
+                              <div>Chat with {selectedPersonality.name}!</div>
+                              <div className="text-xs mt-1">
+                                I can browse websites, read files, and mimic personalities
+                              </div>
+                            </div>
+                          ) : (
+                            messages
+                              .filter(
+                                (m): m is NonNullable<typeof m> =>
+                                  m !== null && m !== undefined && typeof m === "object",
+                              )
+                              .map((message) => (
+                                <div
+                                  key={message.id}
+                                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                                >
+                                  <div
+                                    className={`max-w-[85%] p-2 rounded-lg text-sm ${
+                                      message.sender === "user"
+                                        ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
+                                        : message.type === "web"
+                                          ? "bg-green-600/30 text-green-100 border border-green-400/30"
+                                          : message.type === "file"
+                                            ? "bg-orange-600/30 text-orange-100 border border-orange-400/30"
+                                            : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
+                                    }`}
+                                  >
+                                    <div className="flex items-start space-x-2">
+                                      {message.sender === "ai" && (
+                                        <div className="text-lg mt-0.5 flex-shrink-0">
+                                          {message.type === "web"
+                                            ? "🌐"
+                                            : message.type === "file"
+                                              ? "📄"
+                                              : selectedPersonality.icon}
+                                        </div>
+                                      )}
+                                      <div className="flex-1">
+                                        <div className="whitespace-pre-line break-words">{message.text}</div>
+                                        <div className="text-xs opacity-60 mt-1 flex items-center justify-between">
+                                          <span>
+                                            {message.timestamp.toLocaleTimeString([], {
+                                              hour: "2-digit",
+                                              minute: "2-digit",
+                                            })}
+                                          </span>
+                                          {message.personality && <span>{message.personality}</span>}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                          ))
-                      )}
+                              ))
+                          )}
 
-                      {/* Typing Indicator */}
-                      {isTyping && (
-                        <div className="flex justify-start">
-                          <div className="bg-purple-600/30 text-purple-100 border border-purple-400/30 p-2 rounded-lg">
-                            <div className="flex items-center space-x-2">
-                              <div className="text-lg">{selectedPersonality.icon}</div>
-                              <div className="flex space-x-1">
-                                <motion.div
-                                  className="w-2 h-2 bg-purple-400 rounded-full"
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0 }}
-                                />
-                                <motion.div
-                                  className="w-2 h-2 bg-purple-400 rounded-full"
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
-                                />
-                                <motion.div
-                                  className="w-2 h-2 bg-purple-400 rounded-full"
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
-                                />
+                          {/* Typing Indicator */}
+                          {isTyping && (
+                            <div className="flex justify-start">
+                              <div className="bg-purple-600/30 text-purple-100 border border-purple-400/30 p-2 rounded-lg">
+                                <div className="flex items-center space-x-2">
+                                  <div className="text-lg">{selectedPersonality.icon}</div>
+                                  <div className="flex space-x-1">
+                                    <motion.div
+                                      className="w-2 h-2 bg-purple-400 rounded-full"
+                                      animate={{ scale: [1, 1.2, 1] }}
+                                      transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0 }}
+                                    />
+                                    <motion.div
+                                      className="w-2 h-2 bg-purple-400 rounded-full"
+                                      animate={{ scale: [1, 1.2, 1] }}
+                                      transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
+                                    />
+                                    <motion.div
+                                      className="w-2 h-2 bg-purple-400 rounded-full"
+                                      animate={{ scale: [1, 1.2, 1] }}
+                                      transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
+                                    />
+                                  </div>
+                                  <span className="text-xs">{selectedPersonality.name} is thinking...</span>
+                                </div>
                               </div>
-                              <span className="text-xs">{selectedPersonality.name} is thinking...</span>
                             </div>
-                          </div>
+                          )}
+
+                          {/* Auto-scroll anchor */}
+                          <div ref={messagesEndRef} />
                         </div>
-                      )}
+                      </ScrollArea>
                     </div>
 
                     {/* Message Input */}
