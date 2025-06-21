@@ -68,6 +68,27 @@ const REAL_VOICE_PROFILES: RealVoiceProfile[] = [
   },
 ]
 
+/**
+ * Minimal exponential-backoff retry wrapper for fetch.
+ * Retries on 5xx responses or network failures.
+ */
+async function fetchWithRetry(url: string, options: RequestInit, retries = 2, delay = 600): Promise<Response> {
+  try {
+    const res = await fetch(url, options)
+    if (res.ok || retries === 0) return res
+    if (res.status >= 500) {
+      // wait and retry on server errors
+      await new Promise((r) => setTimeout(r, delay))
+      return fetchWithRetry(url, options, retries - 1, delay * 2)
+    }
+    return res
+  } catch (err) {
+    if (retries === 0) throw err
+    await new Promise((r) => setTimeout(r, delay))
+    return fetchWithRetry(url, options, retries - 1, delay * 2)
+  }
+}
+
 export function RealVoiceEngine() {
   const [selectedVoice, setSelectedVoice] = useState<RealVoiceProfile>(REAL_VOICE_PROFILES[0])
   const [isEnabled, setIsEnabled] = useState(true)
@@ -127,9 +148,18 @@ export function RealVoiceEngine() {
       let audioUrl: string | null = null
 
       switch (voiceProfile.apiProvider) {
-        case "elevenlabs":
+        case "elevenlabs": {
           audioUrl = await generateElevenLabsVoice(text, voiceProfile.voiceId)
+          if (!audioUrl) {
+            // automatic fallback
+            toast({
+              title: "ElevenLabs unavailable – switching to Bark TTS",
+              description: "Using Replicate for this request.",
+            })
+            audioUrl = await generateReplicateVoice(text, voiceProfile)
+          }
           break
+        }
         case "replicate":
           audioUrl = await generateReplicateVoice(text, voiceProfile)
           break
@@ -165,49 +195,35 @@ export function RealVoiceEngine() {
     }
 
     try {
-      const res = await fetch("/api/voice/elevenlabs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-elevenlabs-key": apiKey,
+      // Hard-cap input to 1 800 chars (ElevenLabs limit ≈2 000)
+      const safeText = text.slice(0, 1800)
+
+      const res = await fetchWithRetry(
+        "/api/voice/elevenlabs",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-elevenlabs-key": apiKey,
+          },
+          body: JSON.stringify({ text: safeText, voiceId }),
         },
-        body: JSON.stringify({ text, voiceId }),
-      })
+        2, // retries
+      )
 
       if (!res.ok) {
-        // Parse JSON safely
-        let errPayload: unknown = {}
+        let payload: unknown = {}
         try {
-          errPayload = await res.json()
+          payload = await res.json()
         } catch {
-          /* noop */
+          /* no-op */
         }
 
-        // Detect invalid/expired key and clear LS so the input field shows again
-        const isInvalidKey =
-          res.status === 401 ||
-          (typeof errPayload === "object" &&
-            errPayload !== null &&
-            // @ts-ignore
-            errPayload.detail?.status === "invalid_api_key")
-
-        if (isInvalidKey) {
-          if (localStorage.getItem("elevenlabs_api_key")) {
-            localStorage.removeItem("elevenlabs_api_key")
-          }
-          setApiKey("")
-          toast({
-            title: "Invalid ElevenLabs API key",
-            description: "The key you supplied is not valid. Please provide a correct key.",
-            variant: "destructive",
-          })
-          return null
-        }
-
-        const message =
+        const msg =
           // @ts-ignore
-          errPayload?.detail?.message || `ElevenLabs proxy error: ${res.status}`
-        throw new Error(message)
+          payload?.detail?.message || `ElevenLabs proxy error: ${res.status}`
+
+        throw new Error(msg)
       }
 
       const blob = await res.blob()
