@@ -101,13 +101,16 @@ export function RealVoiceEngine() {
   // Pull build-time public env first
   const PUBLIC_KEY = process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ?? ""
   const [apiKey, setApiKey] = useState<string>(() => {
-    if (PUBLIC_KEY) return PUBLIC_KEY // 1️⃣ build-time
+    if (PUBLIC_KEY) return PUBLIC_KEY
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("elevenlabs_api_key")
-      if (stored) return stored // 2️⃣ saved key
+      if (stored) return stored
     }
-    return "" // 3️⃣ none yet
+    return ""
   })
+
+  // ✅ true when the key came from the user / localStorage
+  const hasCustomKey = !PUBLIC_KEY && Boolean(apiKey)
 
   useEffect(() => {
     if (!PUBLIC_KEY) {
@@ -204,12 +207,26 @@ export function RealVoiceEngine() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-elevenlabs-key": apiKey,
+            ...(hasCustomKey && { "x-elevenlabs-key": apiKey }), // send header only when needed
           },
           body: JSON.stringify({ text: safeText, voiceId }),
         },
-        2, // retries
+        2,
       )
+
+      if (res.status === 401) {
+        // 401 = unauthorized – usually a bad key
+        if (hasCustomKey) {
+          localStorage.removeItem("elevenlabs_api_key")
+          setApiKey("")
+        }
+        toast({
+          title: "ElevenLabs authentication failed",
+          description: "Your API key is invalid or expired. Please enter a new key.",
+          variant: "destructive",
+        })
+        return null
+      }
 
       if (!res.ok) {
         let payload: unknown = {}
