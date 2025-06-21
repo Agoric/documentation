@@ -195,6 +195,15 @@ export function UnifiedAIOrb() {
   const [userInput, setUserInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 
+  // Add after existing state declarations
+  const [isVoiceConversationMode, setIsVoiceConversationMode] = useState(false)
+  const [voiceActivityDetected, setVoiceActivityDetected] = useState(false)
+  const [conversationContext, setConversationContext] = useState<string[]>([])
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false)
+  const [voiceConfidence, setVoiceConfidence] = useState(0)
+  const [lastSpeechTime, setLastSpeechTime] = useState(0)
+  const [silenceTimer, setSilenceTimer] = useState<NodeJS.Timeout | null>(null)
+
   // Web Access State
   const [webUrl, setWebUrl] = useState("")
   const [isWebAccessing, setIsWebAccessing] = useState(false)
@@ -231,21 +240,76 @@ export function UnifiedAIOrb() {
     if (typeof window !== "undefined") {
       synthRef.current = window.speechSynthesis
 
+      // Replace the existing speech recognition setup in useEffect
       if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
         recognitionRef.current = new SpeechRecognition()
         recognitionRef.current.continuous = true
-        recognitionRef.current.interimResults = false
+        recognitionRef.current.interimResults = true
         recognitionRef.current.lang = "en-US"
+        recognitionRef.current.maxAlternatives = 3
 
         recognitionRef.current.onresult = (event) => {
-          const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim()
-          setLastCommand(transcript)
-          processVoiceCommand(transcript)
+          const results = event.results
+          const lastResult = results[results.length - 1]
+          const transcript = lastResult[0].transcript
+          const confidence = lastResult[0].confidence
+
+          setVoiceConfidence(confidence)
+          setLastSpeechTime(Date.now())
+
+          if (lastResult.isFinal) {
+            if (isVoiceConversationMode) {
+              // Seamless conversation mode
+              handleVoiceConversation(transcript.trim())
+            } else {
+              // Command mode
+              setLastCommand(transcript.toLowerCase().trim())
+              processVoiceCommand(transcript.toLowerCase().trim())
+            }
+            setVoiceActivityDetected(false)
+          } else {
+            // Interim results for real-time feedback
+            setVoiceActivityDetected(true)
+            if (transcript.trim().length > 0) {
+              setLastCommand(transcript)
+            }
+          }
         }
 
-        recognitionRef.current.onerror = () => setIsListening(false)
-        recognitionRef.current.onend = () => setIsListening(false)
+        recognitionRef.current.onstart = () => {
+          setIsListening(true)
+          setVoiceActivityDetected(false)
+        }
+
+        recognitionRef.current.onend = () => {
+          if (isVoiceConversationMode && !isWaitingForResponse) {
+            // Auto-restart in conversation mode
+            setTimeout(() => {
+              if (recognitionRef.current && isVoiceConversationMode) {
+                recognitionRef.current.start()
+              }
+            }, 100)
+          } else {
+            setIsListening(false)
+            setVoiceActivityDetected(false)
+          }
+        }
+
+        recognitionRef.current.onerror = (event) => {
+          console.error("Speech recognition error:", event.error)
+          if (event.error === "no-speech" && isVoiceConversationMode) {
+            // Restart automatically on no-speech in conversation mode
+            setTimeout(() => {
+              if (recognitionRef.current && isVoiceConversationMode) {
+                recognitionRef.current.start()
+              }
+            }, 500)
+          } else {
+            setIsListening(false)
+            setVoiceActivityDetected(false)
+          }
+        }
       }
     }
   }, [])
@@ -538,6 +602,8 @@ export function UnifiedAIOrb() {
   }
 
   const getOrbGradient = () => {
+    if (isVoiceConversationMode && voiceActivityDetected) return "from-green-400 to-emerald-500"
+    if (isVoiceConversationMode) return "from-blue-500 to-cyan-500"
     if (isListening) return "from-red-500 to-red-600"
     if (isProcessing || isTestingVoice || isConversing || isWebAccessing || isFileProcessing)
       return "from-amber-500 to-orange-500"
@@ -556,6 +622,102 @@ export function UnifiedAIOrb() {
     if (activeTab === "personality") return User
     if (activeTab === "voice-commands") return Command
     return Bot
+  }
+
+  const startVoiceConversation = () => {
+    setIsVoiceConversationMode(true)
+    setActiveTab("ai-chat")
+    if (recognitionRef.current && !isListening) {
+      recognitionRef.current.start()
+    }
+  }
+
+  const stopVoiceConversation = () => {
+    setIsVoiceConversationMode(false)
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop()
+    }
+    setIsListening(false)
+    setVoiceActivityDetected(false)
+    setIsWaitingForResponse(false)
+  }
+
+  const handleVoiceConversation = async (transcript: string) => {
+    if (!transcript.trim() || isWaitingForResponse) return
+
+    setIsWaitingForResponse(true)
+    setConversationContext((prev) => [...prev.slice(-4), transcript])
+
+    // Add user message to chat
+    const userMessage = {
+      id: Date.now().toString(),
+      text: transcript,
+      sender: "user" as const,
+      timestamp: new Date(),
+      type: "text" as const,
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+
+    try {
+      let aiResponse = ""
+
+      if (selectedProvider.name === "Groq" && selectedProvider.available) {
+        const personalityResponse = await fetch("/api/ai/personality-engine", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: transcript,
+            personality: selectedPersonality.id,
+            context: `Conversation context: ${conversationContext.join(" -> ")}. Current mode: ${currentMode.name}. This is a voice conversation, keep responses concise and conversational.`,
+          }),
+        })
+
+        if (personalityResponse.ok) {
+          const data = await personalityResponse.json()
+          aiResponse = data.response
+        } else {
+          throw new Error("Personality engine failed")
+        }
+      } else {
+        aiResponse = generateWolfResponse(transcript, currentMode)
+      }
+
+      // Add AI response to chat
+      const aiMessage = {
+        id: (Date.now() + 1).toString(),
+        text: aiResponse,
+        sender: "ai" as const,
+        timestamp: new Date(),
+        provider: selectedProvider.name,
+        personality: selectedPersonality.name,
+        type: "text" as const,
+      }
+
+      setMessages((prev) => [...prev, aiMessage])
+      setConversationCount((prev) => prev + 1)
+
+      // Speak the response
+      await speakResponse(aiResponse)
+    } catch (error) {
+      console.error("Voice conversation error:", error)
+      const fallbackResponse = "I'm having trouble processing that. Could you try again?"
+
+      const aiMessage = {
+        id: (Date.now() + 1).toString(),
+        text: fallbackResponse,
+        sender: "ai" as const,
+        timestamp: new Date(),
+        provider: "Fallback",
+        personality: selectedPersonality.name,
+        type: "text" as const,
+      }
+
+      setMessages((prev) => [...prev, aiMessage])
+      await speakResponse(fallbackResponse)
+    } finally {
+      setIsWaitingForResponse(false)
+    }
   }
 
   return (
@@ -747,6 +909,60 @@ export function UnifiedAIOrb() {
 
                   {/* AI Chat Tab */}
                   <TabsContent value="ai-chat" className="space-y-4">
+                    <div className="mb-4">
+                      <Button
+                        onClick={isVoiceConversationMode ? stopVoiceConversation : startVoiceConversation}
+                        className={`w-full ${
+                          isVoiceConversationMode
+                            ? "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                            : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                        }`}
+                      >
+                        <div className="flex items-center space-x-2">
+                          {isVoiceConversationMode ? (
+                            <>
+                              <MicOff className="w-4 h-4" />
+                              <span>Stop Voice Conversation</span>
+                              {voiceActivityDetected && (
+                                <motion.div
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.8 }}
+                                  className="w-2 h-2 bg-green-400 rounded-full"
+                                />
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <Mic className="w-4 h-4" />
+                              <span>Start Voice Conversation</span>
+                            </>
+                          )}
+                        </div>
+                      </Button>
+
+                      {isVoiceConversationMode && (
+                        <div className="mt-2 p-2 bg-blue-900/20 border border-blue-400/30 rounded-lg">
+                          <div className="flex items-center justify-between text-xs">
+                            <div className="flex items-center space-x-2">
+                              <div
+                                className={`w-2 h-2 rounded-full ${voiceActivityDetected ? "bg-green-400 animate-pulse" : "bg-gray-400"}`}
+                              />
+                              <span className="text-blue-300">
+                                {isWaitingForResponse
+                                  ? "AI is responding..."
+                                  : voiceActivityDetected
+                                    ? "Listening..."
+                                    : "Ready to listen"}
+                              </span>
+                            </div>
+                            <div className="text-blue-400">Confidence: {Math.round(voiceConfidence * 100)}%</div>
+                          </div>
+                          {lastCommand && voiceActivityDetected && (
+                            <div className="mt-1 text-xs text-blue-200 italic">"{lastCommand}"</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                     {/* Chat Messages */}
                     <div className="h-48 overflow-y-auto bg-slate-800/30 rounded-lg p-3 space-y-2">
                       {messages.length === 0 ? (
