@@ -145,7 +145,7 @@ export function WolfConversationEngine() {
   }
 
   return (
-    <div className="fixed top-56 right-6 z-40">
+    <div className="fixed bottom-6 left-48 z-40">
       <AnimatePresence>
         {!isExpanded ? (
           // Retracted State - Floating Orb

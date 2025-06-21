@@ -160,7 +160,7 @@ export const WolfVoiceEngine = forwardRef<any, {}>((props, ref) => {
   }
 
   return (
-    <div className="fixed top-44 right-6 z-40">
+    <div className="fixed bottom-6 left-34 z-40">
       <AnimatePresence>
         {!isExpanded ? (
           // Retracted State - Floating Orb

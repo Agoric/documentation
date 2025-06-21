@@ -143,7 +143,7 @@ export function EnhancedVoiceEngine() {
   }
 
   return (
-    <div className="fixed top-32 right-6 z-40">
+    <div className="fixed bottom-6 left-20 z-40">
       <AnimatePresence>
         {!isExpanded ? (
           // Retracted State - Floating Orb
