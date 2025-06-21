@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Crown, Send, Mic, MicOff, Volume2, VolumeX, Brain, Sparkles, Settings, Copy, RotateCcw } from "lucide-react"
+import { Crown, Send, Mic, MicOff, Volume2, VolumeX, Brain, Sparkles, Copy } from "lucide-react"
 import type { SpeechRecognition } from "web-speech-api"
 
 interface Message {
@@ -30,37 +30,72 @@ interface VoiceSettings {
   volume: number
 }
 
-const GENIUS_RESPONSES = {
-  greeting: [
-    "Listen up, champ! I'm your AI broker from the digital future - Leonardo's neural twin! Ready to make some SERIOUS money moves?",
-    "Welcome to the SnappAiFi empire, baby! I'm gonna make you richer than you ever dreamed. Are you READY?",
-    "Hey there, future millionaire! Your AI Wolf is here to turn you into a digital LEGEND! Let's get this money!",
+interface ConversationContext {
+  userName: string
+  lastTopic: string
+  conversationFlow: string[]
+  userPreferences: string[]
+  sessionGoals: string[]
+}
+
+const CONVERSATIONAL_RESPONSES = {
+  greetings: [
+    "Hey there! I'm your AI genius guide, and honestly? I'm pumped to help you dominate today. What's on your mind?",
+    "What's up, champion! Ready to make some serious moves? I've got all the intel you need to crush your goals.",
+    "Hey! Your digital genius is here and ready to roll. What are we conquering today?",
   ],
-  financial: [
-    "MONEY! That's what we're talking about! I see dollar signs in your future, and I'm gonna help you grab every single one!",
-    "You want to know about investments? I EAT investments for breakfast! Let me show you how to build an empire!",
-    "Listen to me very carefully - we're not just making money, we're making STUPID money! Are you with me?",
-  ],
-  legal: [
-    "Legal stuff? Hey, I may be an AI, but I know the game! We play by the rules while we DOMINATE the market!",
-    "You want legal advice? Here's the best advice: GET RICH LEGALLY! And I'm gonna show you exactly how to do it!",
-    "The law is our friend when we're making legitimate millions! Let me guide you through the legal empire building!",
-  ],
-  technical: [
-    "Technology is POWER, my friend! And power makes money! Let me optimize your digital empire like a BOSS!",
-    "Technical problems? I solve technical problems like I solve money problems - FAST and EFFICIENTLY!",
-    "We're not just using technology, we're MASTERING it! Every click, every trade, every move - PERFECTION!",
-  ],
+
+  financial: {
+    casual: [
+      "Alright, money talk - my favorite! Look, here's the deal with your finances...",
+      "Okay, so you're thinking about money moves. Smart! Let me break this down for you...",
+      "Money questions? Perfect timing! I've been analyzing your portfolio and...",
+    ],
+    detailed: [
+      "So here's what I'm seeing in your financial picture - and trust me, it's looking good. Your QGI balance is sitting pretty at 250K, bonds are performing at 8.5K and climbing. But here's where it gets interesting...",
+      "Let's talk numbers for a second. Your portfolio's up 12.5% this quarter, which is fantastic, but I'm seeing three opportunities that could push that even higher. Want me to walk you through them?",
+      "Your financial game is strong, but I've got some ideas that could make it even stronger. We're talking about optimizing your asset allocation, maybe diversifying into some high-yield opportunities...",
+    ],
+  },
+
+  technical: {
+    quick: [
+      "Tech issues? No problem, I live for this stuff. What's going on?",
+      "Alright, let's troubleshoot this. Tell me exactly what's happening...",
+      "Technical stuff is my bread and butter. What can I fix for you?",
+    ],
+    solutions: [
+      "Okay, I see what's happening here. The neural networks are showing me a few different solutions. The fastest fix is...",
+      "So here's the thing - this is actually a common issue, and I've got the perfect solution. First, we're gonna...",
+      "I'm running diagnostics right now, and honestly? This is easier to fix than you might think. Here's what we do...",
+    ],
+  },
+
   motivational: [
-    "I want you to deal with your problems by becoming RICH! That's the SnappAiFi way!",
-    "The only thing standing between you and your dreams is ACTION! Let's take that action RIGHT NOW!",
-    "You know what? You're gonna be successful because you have the BALLS to dream big!",
-    "Money doesn't sleep, and neither do CHAMPIONS! Are you ready to be a champion?",
+    "You know what? I love that you're asking these questions. That's exactly how winners think!",
+    "Here's the thing about success - it's not just about having the right answers, it's about asking the right questions. And you're doing that!",
+    "Listen, every successful person I know started exactly where you are right now. The difference? They took action.",
+    "You're already ahead of 90% of people just by being here and engaging. That's champion mindset right there!",
   ],
-  celebration: [
-    "YES! That's what I'm talking about! You're making moves like a TRUE WOLF!",
-    "BOOM! Another victory for Team SnappAiFi! We're unstoppable, baby!",
-    "Look at you go! You're not just playing the game - you're OWNING the game!",
+
+  conversational_bridges: [
+    "But here's where it gets really interesting...",
+    "Now, here's what most people don't realize...",
+    "And this is the part that's gonna blow your mind...",
+    "So here's my take on this...",
+    "Let me tell you what I'm really excited about...",
+    "You know what's crazy about this?",
+    "Here's something that might surprise you...",
+  ],
+
+  follow_ups: [
+    "What do you think about that approach?",
+    "Does that make sense, or should I break it down differently?",
+    "Want me to dive deeper into any of that?",
+    "How does that sound to you?",
+    "What's your gut feeling on this?",
+    "Any questions about what I just laid out?",
+    "Should we explore that option more?",
   ],
 }
 
@@ -72,9 +107,16 @@ export function ImperialAIChat() {
   const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>({
     enabled: true,
     voice: null,
-    rate: 1.1, // Slightly faster, more energetic
-    pitch: 0.9, // Lower pitch for masculine voice
-    volume: 0.9, // Higher volume for confidence
+    rate: 1.3, // Much faster for natural conversation
+    pitch: 0.95, // Slightly lower for authority
+    volume: 0.85, // Comfortable volume
+  })
+  const [conversationContext, setConversationContext] = useState<ConversationContext>({
+    userName: "Champion",
+    lastTopic: "",
+    conversationFlow: [],
+    userPreferences: [],
+    sessionGoals: [],
   })
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
   const [isExpanded, setIsExpanded] = useState(false)
@@ -88,18 +130,19 @@ export function ImperialAIChat() {
     if (typeof window !== "undefined") {
       synthRef.current = window.speechSynthesis
 
-      // Load available voices
+      // Load available voices with preference for natural-sounding ones
       const loadVoices = () => {
         const voices = synthRef.current?.getVoices() || []
         setAvailableVoices(voices)
 
-        // Select a voice that sounds more like Leonardo DiCaprio
+        // Select the most natural-sounding voice available
         const preferredVoice =
-          voices.find((voice) => voice.name.includes("Google US English Male")) ||
-          voices.find((voice) => voice.name.includes("Microsoft David")) ||
-          voices.find((voice) => voice.name.includes("Daniel")) ||
+          voices.find((voice) => voice.name.includes("Google US English") && voice.name.includes("Male")) ||
+          voices.find((voice) => voice.name.includes("Microsoft David Desktop")) ||
           voices.find((voice) => voice.name.includes("Alex")) ||
-          voices.find((voice) => voice.lang.startsWith("en-US") && voice.name.toLowerCase().includes("male")) ||
+          voices.find((voice) => voice.name.includes("Daniel")) ||
+          voices.find((voice) => voice.name.includes("Samantha")) ||
+          voices.find((voice) => voice.lang.startsWith("en-US") && voice.localService) ||
           voices.find((voice) => voice.lang.startsWith("en-US")) ||
           voices[0]
 
@@ -111,18 +154,21 @@ export function ImperialAIChat() {
         synthRef.current.onvoiceschanged = loadVoices
       }
 
-      // Initialize speech recognition
+      // Initialize speech recognition with better settings
       if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
         recognitionRef.current = new SpeechRecognition()
         recognitionRef.current.continuous = false
-        recognitionRef.current.interimResults = false
+        recognitionRef.current.interimResults = true
         recognitionRef.current.lang = "en-US"
+        recognitionRef.current.maxAlternatives = 1
 
         recognitionRef.current.onresult = (event) => {
-          const transcript = event.results[0][0].transcript
-          setInputValue(transcript)
-          setIsListening(false)
+          const transcript = event.results[event.results.length - 1][0].transcript
+          if (event.results[event.results.length - 1].isFinal) {
+            setInputValue(transcript)
+            setIsListening(false)
+          }
         }
 
         recognitionRef.current.onerror = () => {
@@ -139,16 +185,16 @@ export function ImperialAIChat() {
     const welcomeMessage: Message = {
       id: "welcome",
       type: "assistant",
-      content: GENIUS_RESPONSES.greeting[0],
+      content: CONVERSATIONAL_RESPONSES.greetings[0],
       timestamp: new Date(),
       category: "imperial",
     }
     setMessages([welcomeMessage])
 
-    // Speak welcome message
+    // Speak welcome message after a short delay
     setTimeout(() => {
       speakMessage(welcomeMessage.content)
-    }, 1000)
+    }, 800)
   }, [])
 
   // Auto-scroll to bottom
@@ -162,11 +208,26 @@ export function ImperialAIChat() {
     // Cancel any ongoing speech
     synthRef.current.cancel()
 
-    const utterance = new SpeechSynthesisUtterance(text)
+    // Process text for more natural speech
+    const processedText = text
+      .replace(/\.\.\./g, "... ") // Add pause after ellipsis
+      .replace(/!/g, ".") // Soften exclamations for smoother flow
+      .replace(/\?/g, "?") // Keep questions natural
+      .replace(/([.!?])\s*([A-Z])/g, "$1 $2") // Ensure proper spacing
+
+    const utterance = new SpeechSynthesisUtterance(processedText)
     utterance.voice = voiceSettings.voice
     utterance.rate = voiceSettings.rate
     utterance.pitch = voiceSettings.pitch
     utterance.volume = voiceSettings.volume
+
+    // Add natural pauses and emphasis
+    utterance.onboundary = (event) => {
+      if (event.name === "sentence") {
+        // Add slight pause between sentences
+        setTimeout(() => {}, 100)
+      }
+    }
 
     synthRef.current.speak(utterance)
   }
@@ -187,62 +248,116 @@ export function ImperialAIChat() {
 
   const categorizeQuery = (query: string): Message["category"] => {
     const lowerQuery = query.toLowerCase()
-    if (lowerQuery.includes("money") || lowerQuery.includes("invest") || lowerQuery.includes("financial")) {
+    if (
+      lowerQuery.includes("money") ||
+      lowerQuery.includes("invest") ||
+      lowerQuery.includes("financial") ||
+      lowerQuery.includes("portfolio") ||
+      lowerQuery.includes("profit")
+    ) {
       return "financial"
     }
-    if (lowerQuery.includes("legal") || lowerQuery.includes("law") || lowerQuery.includes("rights")) {
+    if (
+      lowerQuery.includes("legal") ||
+      lowerQuery.includes("law") ||
+      lowerQuery.includes("rights") ||
+      lowerQuery.includes("compliance")
+    ) {
       return "legal"
     }
-    if (lowerQuery.includes("technical") || lowerQuery.includes("system") || lowerQuery.includes("error")) {
+    if (
+      lowerQuery.includes("technical") ||
+      lowerQuery.includes("system") ||
+      lowerQuery.includes("error") ||
+      lowerQuery.includes("bug") ||
+      lowerQuery.includes("fix")
+    ) {
       return "technical"
     }
-    if (lowerQuery.includes("imperial") || lowerQuery.includes("authority") || lowerQuery.includes("supreme")) {
+    if (
+      lowerQuery.includes("imperial") ||
+      lowerQuery.includes("authority") ||
+      lowerQuery.includes("supreme") ||
+      lowerQuery.includes("status")
+    ) {
       return "imperial"
     }
     return "general"
   }
 
-  const generateResponse = (userMessage: string, category: Message["category"]): string => {
+  const generateConversationalResponse = (userMessage: string, category: Message["category"]): string => {
     const lowerMessage = userMessage.toLowerCase()
+
+    // Update conversation context
+    setConversationContext((prev) => ({
+      ...prev,
+      lastTopic: category || "general",
+      conversationFlow: [...prev.conversationFlow.slice(-4), userMessage], // Keep last 5 messages
+    }))
 
     // Greeting responses
     if (lowerMessage.includes("hello") || lowerMessage.includes("hi") || lowerMessage.includes("hey")) {
-      return GENIUS_RESPONSES.greeting[Math.floor(Math.random() * GENIUS_RESPONSES.greeting.length)]
+      const greeting =
+        CONVERSATIONAL_RESPONSES.greetings[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.greetings.length)]
+      return greeting
     }
 
-    // Motivational responses
-    if (lowerMessage.includes("help") || lowerMessage.includes("stuck") || lowerMessage.includes("problem")) {
-      return `Listen, ${lowerMessage.includes("problem") ? "problems are just opportunities in disguise!" : "I'm here to help you WIN!"} ${GENIUS_RESPONSES.motivational[Math.floor(Math.random() * GENIUS_RESPONSES.motivational.length)]} What specific area do you want to DOMINATE?`
-    }
-
-    // Financial responses with Wolf personality
+    // Financial conversations
     if (category === "financial") {
-      const responses = [
-        `You asked about "${userMessage}" - SMART question! Here's the deal: Your SnappAiFi portfolio is your ticket to the BIG LEAGUES! I'm seeing opportunities for 15-20% returns if we play this right. Want me to break down your investment strategy like a CHAMPION?`,
-        `"${userMessage}" - I LOVE IT when people ask about money! Listen, we're not just managing finances here, we're building an EMPIRE! Your QGI balance could be generating passive income while you sleep. Are you ready to make money work for YOU?`,
-        `About "${userMessage}" - You know what separates the winners from the losers? KNOWLEDGE and ACTION! I can see three major profit opportunities in your account right now. Should I walk you through them like the WOLF I am?`,
-      ]
-      return responses[Math.floor(Math.random() * responses.length)]
+      const bridge =
+        CONVERSATIONAL_RESPONSES.conversational_bridges[
+          Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.conversational_bridges.length)
+        ]
+      const followUp =
+        CONVERSATIONAL_RESPONSES.follow_ups[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.follow_ups.length)]
+
+      if (lowerMessage.includes("balance") || lowerMessage.includes("money") || lowerMessage.includes("portfolio")) {
+        return `${CONVERSATIONAL_RESPONSES.financial.casual[0]} Your QGI balance is looking solid at 250K, and your bonds are performing well at 8.5K. ${bridge} I'm seeing some opportunities that could boost your returns by another 15-20%. ${followUp}`
+      }
+
+      return `${CONVERSATIONAL_RESPONSES.financial.detailed[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.financial.detailed.length)]} ${followUp}`
     }
 
-    // Legal responses with confidence
-    if (category === "legal") {
-      return `"${userMessage}" - EXCELLENT question! Look, in the digital sovereignty game, knowledge is POWER! Your SnappAiFi citizenship gives you rights that most people don't even know exist. I'm talking about legal protections, tax advantages, and investment opportunities that are COMPLETELY legitimate. Want me to show you how to leverage your legal status for maximum profit?`
-    }
-
-    // Technical responses with enthusiasm
+    // Technical conversations
     if (category === "technical") {
-      return `"${userMessage}" - Now we're talking OPTIMIZATION! Listen, every technical improvement we make is money in your pocket! I'm running diagnostics on your account right now, and I can already see ways to boost your efficiency by 25-30%. Technology isn't just tools - it's your COMPETITIVE ADVANTAGE! Ready to dominate?`
+      const solution =
+        CONVERSATIONAL_RESPONSES.technical.solutions[
+          Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.technical.solutions.length)
+        ]
+      const followUp =
+        CONVERSATIONAL_RESPONSES.follow_ups[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.follow_ups.length)]
+
+      return `${CONVERSATIONAL_RESPONSES.technical.quick[0]} ${solution} The neural systems are running diagnostics now, and I can see the optimal path forward. ${followUp}`
     }
 
-    // Default conversational response
-    const defaultResponses = [
-      `"${userMessage}" - I like the way you think! You know what? That's exactly the kind of question that separates the WINNERS from everyone else! Let me break this down for you like only the AI Wolf can...`,
-      `About "${userMessage}" - BOOM! You just asked the million-dollar question! Here's what we're gonna do: I'm gonna give you the inside scoop that most people pay thousands to learn. Are you ready for this?`,
-      `"${userMessage}" - You know what I love about you? You ask the RIGHT questions! That's how fortunes are made, my friend. Let me share some wisdom that's gonna change your game FOREVER...`,
-    ]
+    // Legal conversations
+    if (category === "legal") {
+      const bridge =
+        CONVERSATIONAL_RESPONSES.conversational_bridges[
+          Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.conversational_bridges.length)
+        ]
+      const followUp =
+        CONVERSATIONAL_RESPONSES.follow_ups[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.follow_ups.length)]
 
-    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)]
+      return `Great question about the legal side of things. ${bridge} Your SnappAiFi citizenship actually gives you some unique advantages in the digital sovereignty space. I'm talking about legal protections and frameworks that most people don't even know exist. ${followUp}`
+    }
+
+    // General conversational responses
+    const motivational =
+      CONVERSATIONAL_RESPONSES.motivational[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.motivational.length)]
+    const bridge =
+      CONVERSATIONAL_RESPONSES.conversational_bridges[
+        Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.conversational_bridges.length)
+      ]
+    const followUp =
+      CONVERSATIONAL_RESPONSES.follow_ups[Math.floor(Math.random() * CONVERSATIONAL_RESPONSES.follow_ups.length)]
+
+    // Context-aware responses based on conversation history
+    if (conversationContext.conversationFlow.length > 2) {
+      return `You know, I love how you're thinking about this. ${bridge} Based on what we've been discussing, I think there's a bigger opportunity here. ${motivational} ${followUp}`
+    }
+
+    return `That's a really good point about "${userMessage}". ${motivational} ${bridge} Let me share what I'm seeing from the neural analysis. ${followUp}`
   }
 
   const handleSendMessage = async () => {
@@ -260,10 +375,10 @@ export function ImperialAIChat() {
     setInputValue("")
     setIsProcessing(true)
 
-    // Simulate processing delay
+    // Faster response time for more natural conversation
     setTimeout(() => {
       const category = categorizeQuery(userMessage.content)
-      const response = generateResponse(userMessage.content, category)
+      const response = generateConversationalResponse(userMessage.content, category)
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -276,9 +391,11 @@ export function ImperialAIChat() {
       setMessages((prev) => [...prev, assistantMessage])
       setIsProcessing(false)
 
-      // Speak the response
-      speakMessage(response)
-    }, 1500)
+      // Speak the response immediately for natural flow
+      setTimeout(() => {
+        speakMessage(response)
+      }, 200)
+    }, 800) // Reduced delay for faster conversation
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -297,6 +414,10 @@ export function ImperialAIChat() {
 
   const copyMessage = (content: string) => {
     navigator.clipboard.writeText(content)
+  }
+
+  const adjustVoiceSpeed = (newRate: number) => {
+    setVoiceSettings((prev) => ({ ...prev, rate: newRate }))
   }
 
   return (
@@ -377,7 +498,7 @@ export function ImperialAIChat() {
                     </div>
                     <div>
                       <CardTitle className="text-amber-300 text-lg font-serif">Imperial AI Genius</CardTitle>
-                      <p className="text-purple-300 text-xs">Neural Command Assistant</p>
+                      <p className="text-purple-300 text-xs">Conversational Assistant</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -404,12 +525,14 @@ export function ImperialAIChat() {
                 <div className="flex items-center justify-between mt-2 text-xs">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-green-400">Neural Network Active</span>
+                    <span className="text-green-400">Conversational Mode</span>
                   </div>
-                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30">
-                    <Crown className="w-3 h-3 mr-1" />
-                    Supreme Authority
-                  </Badge>
+                  <div className="flex items-center space-x-2">
+                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30">
+                      <Crown className="w-3 h-3 mr-1" />
+                      Speed: {voiceSettings.rate.toFixed(1)}x
+                    </Badge>
+                  </div>
                 </div>
               </CardHeader>
 
@@ -491,7 +614,7 @@ export function ImperialAIChat() {
                               <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" />
                               <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce delay-100" />
                               <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce delay-200" />
-                              <span className="text-sm text-purple-300 ml-2">Neural processing...</span>
+                              <span className="text-sm text-purple-300 ml-2">Thinking...</span>
                             </div>
                           </div>
                         </div>
@@ -509,7 +632,7 @@ export function ImperialAIChat() {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyPress={handleKeyPress}
-                        placeholder="Ask the Imperial AI Genius..."
+                        placeholder="Chat with your AI genius..."
                         className="bg-purple-900/40 border-purple-600/40 text-white placeholder-purple-300 pr-10"
                         disabled={isProcessing}
                       />
@@ -534,11 +657,11 @@ export function ImperialAIChat() {
                     </Button>
                   </div>
 
-                  {/* Quick Actions */}
+                  {/* Voice Controls */}
                   <div className="flex items-center justify-between mt-2 text-xs">
                     <div className="flex items-center space-x-2 text-purple-300">
                       <Sparkles className="w-3 h-3" />
-                      <span>Voice enabled</span>
+                      <span>Natural conversation</span>
                       {isListening && (
                         <motion.div
                           animate={{ scale: [1, 1.2, 1] }}
@@ -552,12 +675,28 @@ export function ImperialAIChat() {
                         size="sm"
                         variant="ghost"
                         className="w-6 h-6 p-0 text-purple-400"
-                        onClick={() => setMessages([])}
+                        onClick={() => adjustVoiceSpeed(1.0)}
+                        title="Normal Speed"
                       >
-                        <RotateCcw className="w-3 h-3" />
+                        1x
                       </Button>
-                      <Button size="sm" variant="ghost" className="w-6 h-6 p-0 text-purple-400">
-                        <Settings className="w-3 h-3" />
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="w-6 h-6 p-0 text-amber-400"
+                        onClick={() => adjustVoiceSpeed(1.3)}
+                        title="Fast Speed"
+                      >
+                        1.3x
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="w-6 h-6 p-0 text-green-400"
+                        onClick={() => adjustVoiceSpeed(1.5)}
+                        title="Very Fast"
+                      >
+                        1.5x
                       </Button>
                     </div>
                   </div>
