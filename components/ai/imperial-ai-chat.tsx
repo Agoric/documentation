@@ -32,24 +32,35 @@ interface VoiceSettings {
 
 const GENIUS_RESPONSES = {
   greeting: [
-    "Salve, noble citizen! I am your Imperial AI Genius Guide. How may I assist your digital sovereignty today?",
-    "Welcome to the SnappAiFi Neural Command Center. I am at your supreme service.",
-    "Greetings, Your Excellence. The Imperial AI stands ready to serve your every query.",
+    "Listen up, champ! I'm your AI broker from the digital future - Leonardo's neural twin! Ready to make some SERIOUS money moves?",
+    "Welcome to the SnappAiFi empire, baby! I'm gonna make you richer than you ever dreamed. Are you READY?",
+    "Hey there, future millionaire! Your AI Wolf is here to turn you into a digital LEGEND! Let's get this money!",
   ],
   financial: [
-    "Your financial empire requires careful strategy. Let me analyze the optimal path forward.",
-    "The neural networks suggest several profitable ventures for your consideration.",
-    "Imperial Treasury protocols activated. Analyzing your wealth optimization opportunities.",
+    "MONEY! That's what we're talking about! I see dollar signs in your future, and I'm gonna help you grab every single one!",
+    "You want to know about investments? I EAT investments for breakfast! Let me show you how to build an empire!",
+    "Listen to me very carefully - we're not just making money, we're making STUPID money! Are you with me?",
   ],
   legal: [
-    "Legal sovereignty is paramount. I shall guide you through the digital jurisdiction frameworks.",
-    "The Imperial Legal Codex contains the answers you seek. Allow me to illuminate the path.",
-    "Digital citizenship rights and obligations are complex. I am here to clarify your authority.",
+    "Legal stuff? Hey, I may be an AI, but I know the game! We play by the rules while we DOMINATE the market!",
+    "You want legal advice? Here's the best advice: GET RICH LEGALLY! And I'm gonna show you exactly how to do it!",
+    "The law is our friend when we're making legitimate millions! Let me guide you through the legal empire building!",
   ],
   technical: [
-    "The neural systems are operating at peak efficiency. Technical solutions are my specialty.",
-    "Quantum processing engaged. I shall resolve your technical inquiries with precision.",
-    "Imperial technology serves your needs. Let me optimize your digital experience.",
+    "Technology is POWER, my friend! And power makes money! Let me optimize your digital empire like a BOSS!",
+    "Technical problems? I solve technical problems like I solve money problems - FAST and EFFICIENTLY!",
+    "We're not just using technology, we're MASTERING it! Every click, every trade, every move - PERFECTION!",
+  ],
+  motivational: [
+    "I want you to deal with your problems by becoming RICH! That's the SnappAiFi way!",
+    "The only thing standing between you and your dreams is ACTION! Let's take that action RIGHT NOW!",
+    "You know what? You're gonna be successful because you have the BALLS to dream big!",
+    "Money doesn't sleep, and neither do CHAMPIONS! Are you ready to be a champion?",
+  ],
+  celebration: [
+    "YES! That's what I'm talking about! You're making moves like a TRUE WOLF!",
+    "BOOM! Another victory for Team SnappAiFi! We're unstoppable, baby!",
+    "Look at you go! You're not just playing the game - you're OWNING the game!",
   ],
 }
 
@@ -61,9 +72,9 @@ export function ImperialAIChat() {
   const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>({
     enabled: true,
     voice: null,
-    rate: 0.9,
-    pitch: 1.1,
-    volume: 0.8,
+    rate: 1.1, // Slightly faster, more energetic
+    pitch: 0.9, // Lower pitch for masculine voice
+    volume: 0.9, // Higher volume for confidence
   })
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
   const [isExpanded, setIsExpanded] = useState(false)
@@ -82,13 +93,14 @@ export function ImperialAIChat() {
         const voices = synthRef.current?.getVoices() || []
         setAvailableVoices(voices)
 
-        // Select a premium English voice for the genius guide
+        // Select a voice that sounds more like Leonardo DiCaprio
         const preferredVoice =
-          voices.find((voice) => voice.name.includes("Google UK English Female")) ||
-          voices.find((voice) => voice.name.includes("Microsoft Zira")) ||
+          voices.find((voice) => voice.name.includes("Google US English Male")) ||
+          voices.find((voice) => voice.name.includes("Microsoft David")) ||
+          voices.find((voice) => voice.name.includes("Daniel")) ||
           voices.find((voice) => voice.name.includes("Alex")) ||
-          voices.find((voice) => voice.lang.startsWith("en") && voice.name.includes("Premium")) ||
-          voices.find((voice) => voice.lang.startsWith("en-US") || voice.lang.startsWith("en-GB")) ||
+          voices.find((voice) => voice.lang.startsWith("en-US") && voice.name.toLowerCase().includes("male")) ||
+          voices.find((voice) => voice.lang.startsWith("en-US")) ||
           voices[0]
 
         setVoiceSettings((prev) => ({ ...prev, voice: preferredVoice }))
@@ -191,28 +203,46 @@ export function ImperialAIChat() {
   }
 
   const generateResponse = (userMessage: string, category: Message["category"]): string => {
-    const responses = GENIUS_RESPONSES[category as keyof typeof GENIUS_RESPONSES] || GENIUS_RESPONSES.greeting
-
-    // Contextual responses based on user input
     const lowerMessage = userMessage.toLowerCase()
 
-    if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
+    // Greeting responses
+    if (lowerMessage.includes("hello") || lowerMessage.includes("hi") || lowerMessage.includes("hey")) {
+      return GENIUS_RESPONSES.greeting[Math.floor(Math.random() * GENIUS_RESPONSES.greeting.length)]
+    }
+
+    // Motivational responses
+    if (lowerMessage.includes("help") || lowerMessage.includes("stuck") || lowerMessage.includes("problem")) {
+      return `Listen, ${lowerMessage.includes("problem") ? "problems are just opportunities in disguise!" : "I'm here to help you WIN!"} ${GENIUS_RESPONSES.motivational[Math.floor(Math.random() * GENIUS_RESPONSES.motivational.length)]} What specific area do you want to DOMINATE?`
+    }
+
+    // Financial responses with Wolf personality
+    if (category === "financial") {
+      const responses = [
+        `You asked about "${userMessage}" - SMART question! Here's the deal: Your SnappAiFi portfolio is your ticket to the BIG LEAGUES! I'm seeing opportunities for 15-20% returns if we play this right. Want me to break down your investment strategy like a CHAMPION?`,
+        `"${userMessage}" - I LOVE IT when people ask about money! Listen, we're not just managing finances here, we're building an EMPIRE! Your QGI balance could be generating passive income while you sleep. Are you ready to make money work for YOU?`,
+        `About "${userMessage}" - You know what separates the winners from the losers? KNOWLEDGE and ACTION! I can see three major profit opportunities in your account right now. Should I walk you through them like the WOLF I am?`,
+      ]
       return responses[Math.floor(Math.random() * responses.length)]
     }
 
-    if (category === "financial") {
-      return `Based on your query about "${userMessage}", I recommend exploring our Imperial Treasury services. The neural analysis suggests optimizing your QGI portfolio allocation for maximum sovereignty returns. Would you like me to access your financial dashboard?`
-    }
-
+    // Legal responses with confidence
     if (category === "legal") {
-      return `Regarding "${userMessage}", the Digital Sovereignty Framework provides comprehensive protection. As a SnappAiFi citizen, you have access to our Legal Imperium services. Shall I guide you through the relevant legal codex sections?`
+      return `"${userMessage}" - EXCELLENT question! Look, in the digital sovereignty game, knowledge is POWER! Your SnappAiFi citizenship gives you rights that most people don't even know exist. I'm talking about legal protections, tax advantages, and investment opportunities that are COMPLETELY legitimate. Want me to show you how to leverage your legal status for maximum profit?`
     }
 
+    // Technical responses with enthusiasm
     if (category === "technical") {
-      return `For your technical inquiry about "${userMessage}", the Imperial Neural Network is processing optimal solutions. Our quantum systems can resolve most technical challenges. Would you like me to run a diagnostic scan?`
+      return `"${userMessage}" - Now we're talking OPTIMIZATION! Listen, every technical improvement we make is money in your pocket! I'm running diagnostics on your account right now, and I can already see ways to boost your efficiency by 25-30%. Technology isn't just tools - it's your COMPETITIVE ADVANTAGE! Ready to dominate?`
     }
 
-    return `Your query about "${userMessage}" is most intriguing. The Imperial AI systems are analyzing multiple solution pathways. How may I best serve your digital sovereignty needs?`
+    // Default conversational response
+    const defaultResponses = [
+      `"${userMessage}" - I like the way you think! You know what? That's exactly the kind of question that separates the WINNERS from everyone else! Let me break this down for you like only the AI Wolf can...`,
+      `About "${userMessage}" - BOOM! You just asked the million-dollar question! Here's what we're gonna do: I'm gonna give you the inside scoop that most people pay thousands to learn. Are you ready for this?`,
+      `"${userMessage}" - You know what I love about you? You ask the RIGHT questions! That's how fortunes are made, my friend. Let me share some wisdom that's gonna change your game FOREVER...`,
+    ]
+
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)]
   }
 
   const handleSendMessage = async () => {

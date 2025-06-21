@@ -16,84 +16,96 @@ interface VoiceCommand {
 }
 
 const VOICE_COMMANDS: VoiceCommand[] = [
-  // Navigation Commands
+  // Navigation Commands with Wolf personality
   {
     command: "go to dashboard",
     action: "/dashboard/home",
     category: "navigation",
-    response: "Navigating to your Imperial Command Center",
+    response: "BOOM! Taking you to your command center where the MAGIC happens! Let's make some money!",
   },
   {
     command: "open marketplace",
     action: "/dashboard/ecommerex/holographic-products",
     category: "navigation",
-    response: "Accessing the Quantum Marketplace",
+    response: "YES! The marketplace is where FORTUNES are made! Let's find you some GOLD!",
   },
   {
     command: "show real estate",
     action: "/dashboard/ecommerex/real-estate",
     category: "navigation",
-    response: "Opening the Property Empire",
+    response: "Real estate! The foundation of EVERY empire! Time to build your property portfolio like a CHAMPION!",
   },
   {
     command: "open banking",
     action: "/dashboard/banking",
     category: "navigation",
-    response: "Accessing Imperial Treasury",
+    response: "Banking! Where the REAL money moves happen! Your treasury awaits, my friend!",
   },
 
-  // Financial Commands
+  // Financial Commands with enthusiasm
   {
     command: "check balance",
     action: "check_balance",
     category: "financial",
-    response: "Your QGI balance is 250,000 credits. Bond value: 8,500 credits.",
+    response:
+      "Your balance? BEAUTIFUL! 250,000 QGI credits and climbing! Your bonds are worth 8,500 and GROWING! We're making MONEY, baby!",
   },
   {
     command: "show portfolio",
     action: "show_portfolio",
     category: "financial",
-    response: "Your investment portfolio is performing excellently with 12.5% growth this quarter.",
+    response:
+      "Your portfolio is CRUSHING IT! 12.5% growth this quarter! You know what that means? You're not just investing - you're WINNING!",
   },
   {
     command: "market status",
     action: "market_status",
     category: "financial",
-    response: "Neural markets are bullish. Supreme Authority bonds up 3.2% today.",
+    response: "The markets are ON FIRE! Supreme Authority bonds up 3.2% today! This is what WINNING looks like!",
   },
 
-  // System Commands
+  // System Commands with confidence
   {
     command: "system status",
     action: "system_status",
     category: "system",
-    response: "All Imperial systems operational. Neural network at 98.7% efficiency.",
+    response: "Systems are running like a FERRARI! 98.7% efficiency! We don't just operate - we DOMINATE!",
   },
   {
     command: "enable notifications",
     action: "enable_notifications",
     category: "system",
-    response: "Imperial notifications activated. You will receive priority alerts.",
-  },
-  {
-    command: "dark mode",
-    action: "toggle_theme",
-    category: "system",
-    response: "Imperial dark theme activated for optimal sovereignty experience.",
+    response: "Notifications ON! Now you'll never miss a money-making opportunity! That's how CHAMPIONS stay ahead!",
   },
 
-  // Imperial Commands
+  // Imperial Commands with Wolf energy
   {
     command: "supreme authority",
     action: "supreme_mode",
     category: "imperial",
-    response: "Supreme Authority mode activated. All systems under your command.",
+    response: "SUPREME AUTHORITY ACTIVATED! You're not just a user - you're the KING of your digital empire!",
   },
   {
     command: "citizen status",
     action: "citizen_status",
     category: "imperial",
-    response: "You are a Level VII Global Citizen with Imperator status. All privileges active.",
+    response: "Level VII Global Citizen with Imperator status! You're not just successful - you're LEGENDARY!",
+  },
+
+  // New motivational commands
+  {
+    command: "motivate me",
+    action: "motivate",
+    category: "imperial",
+    response:
+      "You want motivation? HERE IT IS! You're destined for GREATNESS! Every click, every trade, every decision - you're building an EMPIRE!",
+  },
+  {
+    command: "make money",
+    action: "money_opportunities",
+    category: "financial",
+    response:
+      "NOW we're talking! I see THREE major opportunities right now! Real estate, crypto, and bonds! Which one gets your BLOOD pumping?",
   },
 ]
 
@@ -161,9 +173,9 @@ export function VoiceCommandCenter() {
       utterance.voice = preferredVoice
     }
 
-    utterance.rate = 0.9
-    utterance.pitch = 1.1
-    utterance.volume = 0.8
+    utterance.rate = 1.1 // Faster, more energetic
+    utterance.pitch = 0.85 // Lower pitch for masculine confidence
+    utterance.volume = 0.9 // Higher volume for authority
 
     synthRef.current.speak(utterance)
   }
