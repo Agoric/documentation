@@ -101,16 +101,13 @@ export function RealVoiceEngine() {
   // Pull build-time public env first
   const PUBLIC_KEY = process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ?? ""
   const [apiKey, setApiKey] = useState<string>(() => {
-    if (PUBLIC_KEY) return PUBLIC_KEY
+    if (PUBLIC_KEY) return PUBLIC_KEY // 1️⃣ build-time
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("elevenlabs_api_key")
-      if (stored) return stored
+      if (stored) return stored // 2️⃣ saved key
     }
-    return ""
+    return "" // 3️⃣ none yet
   })
-
-  // ✅ true when the key came from the user / localStorage
-  const hasCustomKey = !PUBLIC_KEY && Boolean(apiKey)
 
   useEffect(() => {
     if (!PUBLIC_KEY) {
@@ -207,26 +204,12 @@ export function RealVoiceEngine() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ...(hasCustomKey && { "x-elevenlabs-key": apiKey }), // send header only when needed
+            "x-elevenlabs-key": apiKey,
           },
           body: JSON.stringify({ text: safeText, voiceId }),
         },
-        2,
+        2, // retries
       )
-
-      if (res.status === 401) {
-        // 401 = unauthorized – usually a bad key
-        if (hasCustomKey) {
-          localStorage.removeItem("elevenlabs_api_key")
-          setApiKey("")
-        }
-        toast({
-          title: "ElevenLabs authentication failed",
-          description: "Your API key is invalid or expired. Please enter a new key.",
-          variant: "destructive",
-        })
-        return null
-      }
 
       if (!res.ok) {
         let payload: unknown = {}
@@ -236,9 +219,33 @@ export function RealVoiceEngine() {
           /* no-op */
         }
 
+        // Detect invalid/expired key and clear LS so the input field shows again
+        const isInvalidKey =
+          res.status === 401 ||
+          (typeof payload === "object" &&
+            payload !== null &&
+            // @ts-ignore
+            (payload.detail?.status === "invalid_api_key" || payload.error?.type === "invalid_api_key"))
+
+        if (isInvalidKey) {
+          if (localStorage.getItem("elevenlabs_api_key")) {
+            localStorage.removeItem("elevenlabs_api_key")
+          }
+          setApiKey("")
+          toast({
+            title: "Invalid ElevenLabs API key",
+            description: "The key you supplied is not valid. Please provide a correct key.",
+            variant: "destructive",
+          })
+          return null
+        }
+
         const msg =
           // @ts-ignore
-          payload?.detail?.message || `ElevenLabs proxy error: ${res.status}`
+          payload?.detail?.message ||
+          // @ts-ignore
+          payload?.error?.message ||
+          `ElevenLabs proxy error: ${res.status}`
 
         throw new Error(msg)
       }
