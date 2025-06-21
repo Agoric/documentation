@@ -38,7 +38,7 @@ const widgetMap = {
 
 type WidgetKey = keyof typeof widgetMap
 
-export default function FuturisticCommandCenter() {
+export function FuturisticCommandCenter() {
   /* ---- 2.  Store active key and environment state ---- */
   const [active, setActive] = useState<WidgetKey | null>("aiChat")
   const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
@@ -425,3 +425,5 @@ export default function FuturisticCommandCenter() {
     </div>
   )
 }
+
+export default FuturisticCommandCenter
