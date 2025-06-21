@@ -13,7 +13,7 @@ import {
   VOAI_ENVIRONMENTS,
   executeEnvironmentAction,
   type VOAIEnvironment,
-  type EnvironmentOption,
+  type VOAIAction,
 } from "@/lib/voai-environments"
 import { Home } from "lucide-react"
 
@@ -42,7 +42,7 @@ export function FuturisticCommandCenter() {
   /* ---- 2.  Store active key and environment state ---- */
   const [active, setActive] = useState<WidgetKey | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
-  const [activeOption, setActiveOption] = useState<EnvironmentOption | null>(null)
+  const [activeAction, setActiveAction] = useState<VOAIAction | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
   const [executionResults, setExecutionResults] = useState<string[]>([])
   const [holographicMode, setHolographicMode] = useState(true)
@@ -57,19 +57,19 @@ export function FuturisticCommandCenter() {
 
   const handleEnvironmentSelect = (environment: VOAIEnvironment) => {
     setSelectedEnvironment(environment)
-    setActiveOption(null)
+    setActiveAction(null)
     setExecutionResults([])
   }
 
-  const handleOptionExecute = async (option: EnvironmentOption) => {
+  const handleActionExecute = (action: VOAIAction) => {
     setIsExecuting(true)
-    setActiveOption(option)
+    setActiveAction(action)
 
     // Simulate execution time based on action complexity
-    const executionTime = option.category === "combat" ? 2000 : option.category === "exploration" ? 1500 : 1000
+    const executionTime = 1000
 
     setTimeout(() => {
-      const result = executeEnvironmentAction(selectedEnvironment.id, option.id)
+      const result = executeEnvironmentAction(selectedEnvironment.id, action.id)
       setExecutionResults((prev) => [result, ...prev.slice(0, 4)])
 
       // Update environment progress
@@ -79,19 +79,8 @@ export function FuturisticCommandCenter() {
       }))
 
       setIsExecuting(false)
-      setActiveOption(null)
+      setActiveAction(null)
     }, executionTime)
-  }
-
-  const getOptionCategoryColor = (category: EnvironmentOption["category"]) => {
-    const colors = {
-      interaction: "bg-blue-500/20 text-blue-300 border-blue-400/30",
-      exploration: "bg-green-500/20 text-green-300 border-green-400/30",
-      social: "bg-purple-500/20 text-purple-300 border-purple-400/30",
-      utility: "bg-amber-500/20 text-amber-300 border-amber-400/30",
-      combat: "bg-red-500/20 text-red-300 border-red-400/30",
-    }
-    return colors[category]
   }
 
   const getEnvironmentIcon = (envId: string) => {
@@ -114,6 +103,17 @@ export function FuturisticCommandCenter() {
       cyber: "shadow-lg shadow-purple-500/50",
     }
     return effects[environmentId as keyof typeof effects] || "shadow-lg"
+  }
+
+  const getEnvironmentGradient = (environmentId: string) => {
+    const gradients = {
+      wolf: "from-gray-700 via-gray-900 to-black",
+      forest: "from-green-700 via-green-900 to-black",
+      mountain: "from-blue-700 via-blue-900 to-black",
+      ocean: "from-cyan-700 via-cyan-900 to-black",
+      cyber: "from-purple-700 via-purple-900 to-black",
+    }
+    return gradients[environmentId as keyof typeof gradients] || "from-slate-700 via-slate-900 to-black"
   }
 
   return (
@@ -222,7 +222,7 @@ export function FuturisticCommandCenter() {
                       <Card
                         className={`cursor-pointer transition-all duration-300 ${
                           selectedEnvironment.id === environment.id
-                            ? `bg-gradient-to-br ${environment.gradient} border-2 border-amber-400/50 ${holographicMode ? getHolographicEffect(environment.id) : ""}`
+                            ? `bg-gradient-to-br ${getEnvironmentGradient(environment.id)} border-2 border-amber-400/50 ${holographicMode ? getHolographicEffect(environment.id) : ""}`
                             : "bg-slate-800/50 border-slate-600/50 hover:border-slate-500/50"
                         }`}
                         onClick={() => handleEnvironmentSelect(environment)}
@@ -244,12 +244,12 @@ export function FuturisticCommandCenter() {
                                   repeat: selectedEnvironment.id === environment.id ? Number.POSITIVE_INFINITY : 0,
                                 }}
                               >
-                                <span className="text-2xl">{environment.icon}</span>
+                                <span className="text-2xl">{environment.emoji}</span>
                                 <IconComponent className="w-5 h-5 text-purple-400" />
                               </motion.div>
                               <div>
                                 <CardTitle className="text-sm text-white">{environment.name}</CardTitle>
-                                <p className="text-xs text-slate-300">{environment.theme}</p>
+                                <p className="text-xs text-slate-300">{environment.name}</p>
                               </div>
                             </div>
                             {selectedEnvironment.id === environment.id && (
@@ -282,74 +282,75 @@ export function FuturisticCommandCenter() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium text-white">{selectedEnvironment.name} Actions</h3>
                 <div className="flex items-center space-x-2">
-                  <span className="text-2xl">{selectedEnvironment.icon}</span>
-                  <Badge className={`bg-gradient-to-r ${selectedEnvironment.gradient} text-white border-0`}>
-                    {selectedEnvironment.theme}
+                  <span className="text-2xl">{selectedEnvironment.emoji}</span>
+                  <Badge
+                    className={`bg-gradient-to-r ${getEnvironmentGradient(selectedEnvironment.id)} text-white border-0`}
+                  >
+                    {selectedEnvironment.name}
                   </Badge>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {selectedEnvironment.options.map((option) => (
-                  <motion.div key={option.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Card
-                      className={`cursor-pointer transition-all duration-300 ${
-                        activeOption?.id === option.id
-                          ? "bg-amber-500/20 border-amber-400/50"
-                          : "bg-slate-800/30 border-slate-600/30 hover:border-slate-500/50"
-                      }`}
-                      onClick={() => !isExecuting && handleOptionExecute(option)}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-start space-x-3">
-                          <motion.div
-                            className="text-xl mt-1"
-                            animate={
-                              activeOption?.id === option.id
-                                ? {
-                                    scale: [1, 1.2, 1],
-                                    rotate: [0, 10, -10, 0],
-                                  }
-                                : {}
-                            }
-                            transition={{
-                              duration: 1,
-                              repeat: activeOption?.id === option.id ? Number.POSITIVE_INFINITY : 0,
-                            }}
-                          >
-                            {option.icon}
-                          </motion.div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                              <h4 className="font-medium text-white text-sm">{option.name}</h4>
-                              <Badge className={getOptionCategoryColor(option.category)}>{option.category}</Badge>
-                            </div>
-                            <p className="text-xs text-slate-300 mb-2">{option.description}</p>
-                            {option.voiceCommand && (
-                              <div className="text-xs text-amber-400 italic">Voice: "{option.voiceCommand}"</div>
-                            )}
-                          </div>
-                        </div>
-
-                        {activeOption?.id === option.id && isExecuting && (
-                          <motion.div
-                            className="mt-3 flex items-center space-x-2"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                          >
+                {selectedEnvironment.actions?.length ? (
+                  selectedEnvironment.actions.map((action) => (
+                    <motion.div key={action.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Card
+                        onClick={() => !isExecuting && handleActionExecute(action)}
+                        className={`cursor-pointer transition-all duration-300 ${
+                          activeAction?.id === action.id
+                            ? "bg-amber-500/20 border-amber-400/50"
+                            : "bg-slate-800/30 border-slate-600/30 hover:border-slate-500/50"
+                        }`}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-start space-x-3">
                             <motion.div
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                              className="text-xl mt-1"
+                              animate={
+                                activeAction?.id === action.id
+                                  ? {
+                                      scale: [1, 1.2, 1],
+                                      rotate: [0, 10, -10, 0],
+                                    }
+                                  : {}
+                              }
+                              transition={{
+                                duration: 1,
+                                repeat: activeAction?.id === action.id ? Number.POSITIVE_INFINITY : 0,
+                              }}
                             >
-                              <Zap className="w-4 h-4 text-amber-400" />
+                              {action.icon}
                             </motion.div>
-                            <span className="text-xs text-amber-400">Executing action...</span>
-                          </motion.div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
+                            <div className="flex-1">
+                              <h4 className="font-medium text-white text-sm">{action.label}</h4>
+                            </div>
+                          </div>
+
+                          {activeAction?.id === action.id && isExecuting && (
+                            <motion.div
+                              className="mt-3 flex items-center space-x-2"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                            >
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                              >
+                                <Zap className="w-4 h-4 text-amber-400" />
+                              </motion.div>
+                              <span className="text-xs text-amber-400">Executing action...</span>
+                            </motion.div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))
+                ) : (
+                  <p className="text-center text-sm text-slate-400 col-span-full">
+                    No actions defined for this environment.
+                  </p>
+                )}
               </div>
             </TabsContent>
 
