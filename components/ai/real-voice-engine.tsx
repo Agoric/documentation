@@ -110,7 +110,10 @@ export function RealVoiceEngine() {
   })
 
   // Add after the ElevenLabs API key state
+  // Build-time public key first, then LS
+  const PUBLIC_REPLICATE_KEY = process.env.NEXT_PUBLIC_REPLICATE_API_KEY ?? ""
   const [replicateKey, setReplicateKey] = useState<string>(() => {
+    if (PUBLIC_REPLICATE_KEY) return PUBLIC_REPLICATE_KEY
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("replicate_api_key")
       if (stored) return stored
@@ -279,23 +282,24 @@ export function RealVoiceEngine() {
   }
 
   const generateReplicateVoice = async (text: string, voiceProfile: RealVoiceProfile): Promise<string | null> => {
+    if (!replicateKey) {
+      toast({
+        title: "Replicate key missing",
+        description: "Supply NEXT_PUBLIC_REPLICATE_API_KEY at build time or paste a key once in the panel.",
+        variant: "destructive",
+      })
+      return null
+    }
     try {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
-      }
-
-      // Add Replicate key if available
-      if (replicateKey) {
-        headers["x-replicate-key"] = replicateKey
+        "x-replicate-key": replicateKey,
       }
 
       const response = await fetch("/api/voice/replicate", {
         method: "POST",
         headers,
-        body: JSON.stringify({
-          text: text,
-          voice_preset: voiceProfile.voiceId,
-        }),
+        body: JSON.stringify({ text: text, voice_preset: voiceProfile.voiceId }),
       })
 
       if (!response.ok) {
