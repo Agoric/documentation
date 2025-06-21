@@ -250,6 +250,18 @@ export function UnifiedAIOrb() {
     }
   }, [])
 
+  // Add this useEffect to auto-browse the URL
+  useEffect(() => {
+    const autoBrowseUrl = "https://kzmr0ntnmauuv4h3c4l4.lite.vusercontent.net"
+    if (autoBrowseUrl) {
+      setWebUrl(autoBrowseUrl)
+      // Auto-browse after component mounts
+      setTimeout(() => {
+        browseWebsite()
+      }, 1000)
+    }
+  }, [])
+
   const speakResponse = async (text: string) => {
     if (!isVoiceEnabled || !synthRef.current) return
 
@@ -971,6 +983,14 @@ export function UnifiedAIOrb() {
                         className="text-xs text-blue-400 hover:text-blue-300"
                       >
                         🚀 TechCrunch
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setWebUrl("https://kzmr0ntnmauuv4h3c4l4.lite.vusercontent.net")}
+                        className="text-xs text-cyan-400 hover:text-cyan-300"
+                      >
+                        🔗 Analyze User Content
                       </Button>
                     </div>
                   </TabsContent>
