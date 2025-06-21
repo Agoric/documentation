@@ -6,18 +6,25 @@ import { NextResponse, type NextRequest } from "next/server"
 */
 export async function POST(req: NextRequest) {
   try {
-    const { text, voiceId } = (await req.json()) as { text: string; voiceId: string }
+    const body = (await req.json()) as { text: string; voiceId: string }
+    const fallback = req.headers.get("x-elevenlabs-key") ?? ""
+    const apiKey = process.env.ELEVENLABS_API_KEY ?? fallback
 
-    if (!process.env.ELEVENLABS_API_KEY) {
-      return NextResponse.json({ error: "Server missing ELEVENLABS_API_KEY env var." }, { status: 500 })
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "No ElevenLabs API key supplied (env var or x-elevenlabs-key header)." },
+        { status: 401 },
+      )
     }
+
+    const { text, voiceId } = body
 
     const upstream = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId ?? "EXAVITQu4vr4xnSDxMaL"}`, {
       method: "POST",
       headers: {
         Accept: "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": process.env.ELEVENLABS_API_KEY,
+        "xi-api-key": apiKey,
       },
       body: JSON.stringify({
         text,

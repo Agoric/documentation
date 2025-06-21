@@ -74,6 +74,12 @@ export function RealVoiceEngine() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioCache, setAudioCache] = useState<Map<string, string>>(new Map())
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [apiKey, setApiKey] = useState<string>("")
+
+  useEffect(() => {
+    const stored = localStorage.getItem("elevenlabs_api_key")
+    if (stored) setApiKey(stored)
+  }, [])
 
   useEffect(() => {
     // Initialize audio element
@@ -137,7 +143,10 @@ export function RealVoiceEngine() {
     try {
       const res = await fetch("/api/voice/elevenlabs", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(apiKey ? { "x-elevenlabs-key": apiKey } : {}),
+        },
         body: JSON.stringify({ text, voiceId }),
       })
 
@@ -254,7 +263,28 @@ export function RealVoiceEngine() {
             </div>
           </div>
 
-          {/* API Key Input */}
+          {/* API Key Input (optional - only shown if env-var absent) */}
+          {!apiKey && (
+            <div className="mb-4 p-3 bg-amber-900/20 border border-amber-400/30 rounded-lg">
+              <div className="text-sm text-amber-300 mb-2">Optional ElevenLabs API Key:</div>
+              <input
+                type="password"
+                placeholder="Paste key & press Enter…"
+                className="w-full bg-slate-800/50 border border-slate-600/30 rounded px-3 py-2 text-white text-sm"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && e.currentTarget.value) {
+                    localStorage.setItem("elevenlabs_api_key", e.currentTarget.value)
+                    setApiKey(e.currentTarget.value)
+                    e.currentTarget.value = ""
+                  }
+                }}
+              />
+              <p className="text-xs text-amber-400 mt-1">
+                Not required if <code>ELEVENLABS_API_KEY</code> is set on the server.
+              </p>
+            </div>
+          )}
+
           {/* Voice Selection */}
           <div className="mb-4">
             <div className="text-sm text-amber-300 mb-2">Select Voice:</div>
