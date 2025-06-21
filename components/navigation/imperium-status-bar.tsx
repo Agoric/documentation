@@ -2,14 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { Crown, Shield, Globe, Activity, Zap, Bell } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Crown, Shield, Activity, Zap, Globe, Star, Bell, Settings, ChevronDown } from "lucide-react"
 
 export function ImperiumStatusBar() {
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [systemStatus] = useState("OPTIMAL")
-  const [neuralActivity] = useState(98.7)
+  const [systemStatus, setSystemStatus] = useState("OPTIMAL")
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -18,102 +16,62 @@ export function ImperiumStatusBar() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-r from-purple-950/95 via-indigo-950/95 to-purple-950/95 backdrop-blur-xl border-b border-amber-400/30"
+      className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-r from-purple-950/95 via-indigo-950/95 to-purple-950/95 backdrop-blur-xl border-b border-amber-400/20"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.8, delay: 0.5 }}
-      style={{
-        clipPath: "polygon(0 0, 100% 0, calc(100% - 20px) 100%, 20px 100%)",
-      }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="flex items-center justify-between px-6 py-3">
-        {/* Left - Imperial Branding */}
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-              <Crown className="w-5 h-5 text-white" />
+      <div className="max-w-7xl mx-auto px-6 py-3">
+        <div className="flex items-center justify-between">
+          {/* Left: SnappAiFi Branding */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <Crown className="w-6 h-6 text-amber-400" />
+              <span className="text-xl font-bold text-amber-300 font-serif">
+                SNAPP<span className="text-cyan-400">AI</span>FI
+              </span>
             </div>
-            <div>
-              <h1 className="text-lg font-bold text-amber-300 font-serif">IMPERIUM SNAPIFI</h1>
-              <p className="text-xs text-amber-300/70 italic">Suprema Auctoritas Digitalis</p>
-            </div>
+            <Badge variant="outline" className="border-amber-400/50 text-amber-300 text-xs">
+              IMPERIUM v2.0
+            </Badge>
           </div>
 
-          {/* System Status Indicators */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Center: System Status */}
+          <div className="hidden md:flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <Activity className="w-4 h-4 text-green-400" />
-              <span className="text-xs text-green-400 font-mono">{systemStatus}</span>
+              <span className="text-green-400 text-sm font-medium">{systemStatus}</span>
             </div>
+
             <div className="flex items-center space-x-2">
-              <Zap className="w-4 h-4 text-cyan-400" />
-              <span className="text-xs text-cyan-400 font-mono">{neuralActivity}%</span>
+              <Globe className="w-4 h-4 text-cyan-400" />
+              <span className="text-cyan-400 text-sm">Global Network</span>
             </div>
+
             <div className="flex items-center space-x-2">
-              <Globe className="w-4 h-4 text-purple-400" />
-              <span className="text-xs text-purple-400 font-mono">GLOBAL</span>
+              <Zap className="w-4 h-4 text-yellow-400" />
+              <span className="text-yellow-400 text-sm">Neural Core</span>
             </div>
           </div>
-        </div>
 
-        {/* Center - Imperial Time */}
-        <div className="hidden lg:block">
-          <div className="text-center">
-            <div className="text-sm font-mono text-amber-300">
-              {currentTime.toLocaleTimeString("en-US", {
-                hour12: false,
-                timeZone: "UTC",
-              })}{" "}
-              UTC
+          {/* Right: Time and Notifications */}
+          <div className="flex items-center space-x-4">
+            <div className="text-purple-200 text-sm font-mono">{currentTime.toLocaleTimeString()}</div>
+
+            <div className="flex items-center space-x-2">
+              <Bell className="w-4 h-4 text-amber-400" />
+              <Badge variant="secondary" className="bg-red-500/20 text-red-300 text-xs">
+                3
+              </Badge>
             </div>
-            <div className="text-xs text-amber-300/70 font-serif italic">Tempus Imperium</div>
-          </div>
-        </div>
 
-        {/* Right - Citizen Status */}
-        <div className="flex items-center space-x-4">
-          {/* Quick Stats */}
-          <div className="hidden md:flex items-center space-x-3">
-            <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30">
-              <Star className="w-3 h-3 mr-1" />
-              Level VII
-            </Badge>
-            <Badge className="bg-purple-500/20 text-purple-300 border-purple-400/30">
+            <Badge variant="outline" className="border-green-400/50 text-green-300 text-xs">
               <Shield className="w-3 h-3 mr-1" />
-              Imperator
+              SECURE
             </Badge>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center space-x-2">
-            <Button
-              size="sm"
-              variant="ghost"
-              className="w-8 h-8 p-0 text-amber-400 hover:text-amber-300 hover:bg-amber-500/20"
-            >
-              <Bell className="w-4 h-4" />
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="w-8 h-8 p-0 text-purple-400 hover:text-purple-300 hover:bg-purple-500/20"
-            >
-              <Settings className="w-4 h-4" />
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="hidden md:flex items-center space-x-1 text-amber-300 hover:text-amber-200 hover:bg-amber-500/20"
-            >
-              <span className="text-xs font-serif">Alexander Magnus</span>
-              <ChevronDown className="w-3 h-3" />
-            </Button>
           </div>
         </div>
       </div>
-
-      {/* Imperial Accent Line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
     </motion.div>
   )
 }
