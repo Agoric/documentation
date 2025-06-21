@@ -52,8 +52,9 @@ export function FuturisticCommandCenter() {
 
   /* ---- 3.  Derive component safely with optional chaining --------------- */
   const ActiveWidget = active ? widgetMap[active] : null
-  // NEW — if dynamic import hasn’t resolved yet, don’t render
-  const ReadyWidget = typeof ActiveWidget === "function" ? ActiveWidget : null
+  const ReadyWidget =
+    // React.lazy returns an object; dynamic() returns a fn _after_ load
+    ActiveWidget && (typeof ActiveWidget === "function" || ActiveWidget.$$typeof) ? ActiveWidget : null
 
   const handleEnvironmentSelect = (environment: VOAIEnvironment) => {
     setSelectedEnvironment(environment)
@@ -292,7 +293,7 @@ export function FuturisticCommandCenter() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {selectedEnvironment.actions?.length ? (
+                {Array.isArray(selectedEnvironment.actions) && selectedEnvironment.actions.length ? (
                   selectedEnvironment.actions.map((action) => (
                     <motion.div key={action.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Card

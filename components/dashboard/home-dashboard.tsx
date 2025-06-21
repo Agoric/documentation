@@ -641,19 +641,20 @@ export function HomeDashboard() {
                         <div className="space-y-2">
                           <h4 className="text-sm font-medium text-white">Quick Actions</h4>
                           <div className="grid grid-cols-1 gap-2">
-                            {env.actions.slice(0, 3).map((action) => (
-                              <Button
-                                key={action.id}
-                                size="sm"
-                                variant="ghost"
-                                className="justify-start text-white hover:bg-white/10"
-                                onClick={() => handleEnvironmentAction(env, action)}
-                                disabled={isExecuting}
-                              >
-                                <span className="mr-2">{action.icon}</span>
-                                {action.label}
-                              </Button>
-                            ))}
+                            {Array.isArray(env.actions) &&
+                              env.actions.slice(0, 3).map((action) => (
+                                <Button
+                                  key={action.id}
+                                  size="sm"
+                                  variant="ghost"
+                                  className="justify-start text-white hover:bg-white/10"
+                                  onClick={() => handleEnvironmentAction(env, action)}
+                                  disabled={isExecuting}
+                                >
+                                  <span className="mr-2">{action.icon}</span>
+                                  {action.label}
+                                </Button>
+                              ))}
                           </div>
                         </div>
 
@@ -703,28 +704,29 @@ export function HomeDashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {selectedEnvironment.actions.map((action) => (
-                      <motion.div key={action.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Card className="bg-white/10 border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer">
-                          <CardContent
-                            className="p-4 text-center"
-                            onClick={() => handleEnvironmentAction(selectedEnvironment, action)}
-                          >
-                            <div className="text-3xl mb-2">{action.icon}</div>
-                            <div className="text-sm font-medium text-white">{action.label}</div>
-                            {isExecuting && (
-                              <motion.div
-                                className="mt-2"
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
-                              >
-                                <Zap className="w-4 h-4 text-amber-400 mx-auto" />
-                              </motion.div>
-                            )}
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
+                    {Array.isArray(selectedEnvironment.actions) &&
+                      selectedEnvironment.actions.map((action) => (
+                        <motion.div key={action.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Card className="bg-white/10 border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer">
+                            <CardContent
+                              className="p-4 text-center"
+                              onClick={() => handleEnvironmentAction(selectedEnvironment, action)}
+                            >
+                              <div className="text-3xl mb-2">{action.icon}</div>
+                              <div className="text-sm font-medium text-white">{action.label}</div>
+                              {isExecuting && (
+                                <motion.div
+                                  className="mt-2"
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
+                                >
+                                  <Zap className="w-4 h-4 text-amber-400 mx-auto" />
+                                </motion.div>
+                              )}
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
                   </div>
                 </CardContent>
               </Card>
