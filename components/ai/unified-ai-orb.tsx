@@ -7,8 +7,21 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Slider } from "@/components/ui/slider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Mic, MicOff, Volume2, VolumeX, Command, Zap, Crown, Brain, MessageSquare, Bot, Sparkles } from "lucide-react"
+import {
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Command,
+  Zap,
+  MessageSquare,
+  Bot,
+  Sparkles,
+  Globe,
+  Upload,
+  User,
+  FileText,
+} from "lucide-react"
 import type { SpeechRecognition } from "web-speech-api"
 
 interface VoiceCommand {
@@ -41,36 +54,38 @@ interface AIProvider {
   available: boolean
 }
 
+interface PersonalityProfile {
+  id: string
+  name: string
+  description: string
+  icon: string
+  traits: string[]
+}
+
 const VOICE_COMMANDS: VoiceCommand[] = [
+  {
+    command: "browse website",
+    action: "web_browse",
+    category: "system",
+    response: "I'll browse that website and analyze its content for you!",
+  },
+  {
+    command: "read file",
+    action: "file_read",
+    category: "system",
+    response: "Upload a file and I'll read and analyze it for you!",
+  },
+  {
+    command: "mimic elon musk",
+    action: "personality_elon",
+    category: "system",
+    response: "Obviously, I'm now channeling Elon Musk. This is going to be incredible!",
+  },
   {
     command: "go to dashboard",
     action: "/dashboard/home",
     category: "navigation",
-    response: "BOOM! Taking you to your command center where the MAGIC happens! Let's make some money!",
-  },
-  {
-    command: "open marketplace",
-    action: "/dashboard/ecommerex/holographic-products",
-    category: "navigation",
-    response: "YES! The marketplace is where FORTUNES are made! Let's find you some GOLD!",
-  },
-  {
-    command: "check balance",
-    action: "check_balance",
-    category: "financial",
-    response: "Your balance? BEAUTIFUL! 250,000 QGI credits and climbing! Your bonds are worth 8,500 and GROWING!",
-  },
-  {
-    command: "system status",
-    action: "system_status",
-    category: "system",
-    response: "Systems are running like a FERRARI! 98.7% efficiency! We don't just operate - we DOMINATE!",
-  },
-  {
-    command: "supreme authority",
-    action: "supreme_mode",
-    category: "imperial",
-    response: "SUPREME AUTHORITY ACTIVATED! You're not just a user - you're the KING of your digital empire!",
+    response: "BOOM! Taking you to your command center where the MAGIC happens!",
   },
 ]
 
@@ -101,6 +116,44 @@ const AI_PROVIDERS: AIProvider[] = [
   { name: "Wolf AI", model: "wolf-personality", description: "Built-in Wolf personality", icon: "🐺", available: true },
 ]
 
+const PERSONALITY_PROFILES: PersonalityProfile[] = [
+  {
+    id: "elon-musk",
+    name: "Elon Musk",
+    description: "Visionary tech entrepreneur",
+    icon: "🚀",
+    traits: ["Technical", "Direct", "Future-focused", "Ambitious"],
+  },
+  {
+    id: "steve-jobs",
+    name: "Steve Jobs",
+    description: "Apple co-founder, design perfectionist",
+    icon: "🍎",
+    traits: ["Passionate", "Design-focused", "Perfectionist", "Inspiring"],
+  },
+  {
+    id: "leonardo-wolf",
+    name: "Leonardo (Wolf)",
+    description: "Wolf of Wall Street energy",
+    icon: "🐺",
+    traits: ["Charismatic", "Money-focused", "High-energy", "Persuasive"],
+  },
+  {
+    id: "einstein",
+    name: "Albert Einstein",
+    description: "Brilliant physicist and philosopher",
+    icon: "🧠",
+    traits: ["Curious", "Thoughtful", "Wise", "Scientific"],
+  },
+  {
+    id: "oprah",
+    name: "Oprah Winfrey",
+    description: "Media mogul and inspirational leader",
+    icon: "⭐",
+    traits: ["Empathetic", "Inspiring", "Warm", "Encouraging"],
+  },
+]
+
 export function UnifiedAIOrb() {
   const [isExpanded, setIsExpanded] = useState(false)
   const [activeTab, setActiveTab] = useState("ai-chat")
@@ -122,38 +175,47 @@ export function UnifiedAIOrb() {
   })
   const [isTestingVoice, setIsTestingVoice] = useState(false)
 
-  // Wolf Voice State
-  const [wolfSettings, setWolfSettings] = useState({
-    enabled: true,
-    volume: 0.8,
-    playbackRate: 1.1,
-    pitch: 0.9,
-    useWolfSample: true,
-  })
-  const [isPlayingWolf, setIsPlayingWolf] = useState(false)
-
   // AI Chat State
   const [selectedProvider, setSelectedProvider] = useState<AIProvider>(AI_PROVIDERS[0])
+  const [selectedPersonality, setSelectedPersonality] = useState<PersonalityProfile>(PERSONALITY_PROFILES[2]) // Default to Wolf
   const [currentMode, setCurrentMode] = useState<ConversationMode>(CONVERSATION_MODES[0])
   const [conversationCount, setConversationCount] = useState(0)
-  const [lastResponse, setLastResponse] = useState("")
   const [isConversing, setIsConversing] = useState(false)
   const [messages, setMessages] = useState<
-    Array<{ id: string; text: string; sender: "user" | "ai"; timestamp: Date; provider?: string }>
+    Array<{
+      id: string
+      text: string
+      sender: "user" | "ai"
+      timestamp: Date
+      provider?: string
+      personality?: string
+      type?: "text" | "web" | "file"
+    }>
   >([])
   const [userInput, setUserInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
 
+  // Web Access State
+  const [webUrl, setWebUrl] = useState("")
+  const [isWebAccessing, setIsWebAccessing] = useState(false)
+  const [webResults, setWebResults] = useState<any>(null)
+
+  // File Processing State
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isFileProcessing, setIsFileProcessing] = useState(false)
+  const [fileResults, setFileResults] = useState<any>(null)
+
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Auto-retract on mouse leave
   useEffect(() => {
     if (!isHovered && isExpanded) {
       hoverTimeoutRef.current = setTimeout(() => {
         setIsExpanded(false)
-      }, 2000)
+      }, 3000) // Increased to 3 seconds for more complex interface
     } else if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current)
     }
@@ -188,28 +250,48 @@ export function UnifiedAIOrb() {
     }
   }, [])
 
-  const speakResponse = (text: string) => {
+  const speakResponse = async (text: string) => {
     if (!isVoiceEnabled || !synthRef.current) return
 
     synthRef.current.cancel()
-    const utterance = new SpeechSynthesisUtterance(text)
 
-    const voices = synthRef.current.getVoices()
-    const preferredVoice =
-      voices.find(
-        (voice) =>
-          voice.name.includes("Google US English Male") ||
-          voice.name.includes("Microsoft David") ||
-          voice.name.includes("Alex"),
-      ) || voices[0]
+    // Use personality-based voice synthesis
+    try {
+      const voiceResponse = await fetch("/api/ai/voice-synthesis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          personality: selectedPersonality.id,
+          customSettings,
+        }),
+      })
 
-    if (preferredVoice) utterance.voice = preferredVoice
+      if (voiceResponse.ok) {
+        const voiceData = await voiceResponse.json()
+        const utterance = new SpeechSynthesisUtterance(text)
 
-    utterance.rate = customSettings.rate
-    utterance.pitch = customSettings.pitch
-    utterance.volume = customSettings.volume
+        // Apply personality-specific voice settings
+        utterance.rate = voiceData.settings.rate
+        utterance.pitch = voiceData.settings.pitch
+        utterance.volume = voiceData.settings.volume
 
-    synthRef.current.speak(utterance)
+        const voices = synthRef.current.getVoices()
+        const preferredVoice =
+          voices.find((voice) => voice.name.includes("Google US English Male")) ||
+          voices.find((voice) => voice.name.includes("Microsoft David")) ||
+          voices[0]
+
+        if (preferredVoice) utterance.voice = preferredVoice
+
+        synthRef.current.speak(utterance)
+      }
+    } catch (error) {
+      console.error("Voice synthesis error:", error)
+      // Fallback to basic speech
+      const utterance = new SpeechSynthesisUtterance(text)
+      synthRef.current.speak(utterance)
+    }
   }
 
   const processVoiceCommand = (transcript: string) => {
@@ -224,7 +306,19 @@ export function UnifiedAIOrb() {
         setCommandHistory((prev) => [matchedCommand, ...prev.slice(0, 4)])
         speakResponse(matchedCommand.response)
 
-        if (matchedCommand.action.startsWith("/")) {
+        // Handle special commands
+        if (matchedCommand.action === "web_browse") {
+          setActiveTab("web-access")
+        } else if (matchedCommand.action === "file_read") {
+          setActiveTab("file-processor")
+        } else if (matchedCommand.action.startsWith("personality_")) {
+          const personalityId = matchedCommand.action.replace("personality_", "")
+          const personality = PERSONALITY_PROFILES.find((p) => p.id === personalityId)
+          if (personality) {
+            setSelectedPersonality(personality)
+            setActiveTab("ai-chat")
+          }
+        } else if (matchedCommand.action.startsWith("/")) {
           window.location.href = matchedCommand.action
         }
       } else {
@@ -248,34 +342,6 @@ export function UnifiedAIOrb() {
     }
   }
 
-  const testVoice = () => {
-    if (!synthRef.current || !isVoiceEnabled) return
-
-    setIsTestingVoice(true)
-    const testText = "Hey there! This is how I sound with the current voice settings."
-
-    const utterance = new SpeechSynthesisUtterance(testText)
-    utterance.rate = customSettings.rate
-    utterance.pitch = customSettings.pitch
-    utterance.volume = customSettings.volume
-    utterance.onend = () => setIsTestingVoice(false)
-
-    synthRef.current.speak(utterance)
-  }
-
-  const playWolfQuote = () => {
-    const quotes = [
-      "Money doesn't sleep, pal!",
-      "The only thing standing between you and your goal is the story you keep telling yourself!",
-      "I want you to deal with your problems by becoming rich!",
-    ]
-
-    setIsPlayingWolf(true)
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
-    speakResponse(randomQuote)
-    setTimeout(() => setIsPlayingWolf(false), 3000)
-  }
-
   const sendMessage = async () => {
     if (!userInput.trim() || !isVoiceEnabled) return
 
@@ -284,6 +350,7 @@ export function UnifiedAIOrb() {
       text: userInput,
       sender: "user" as const,
       timestamp: new Date(),
+      type: "text" as const,
     }
 
     setMessages((prev) => [...prev, userMessage])
@@ -294,13 +361,25 @@ export function UnifiedAIOrb() {
       let aiResponse = ""
 
       if (selectedProvider.name === "Groq" && selectedProvider.available) {
-        // Call Groq API
-        aiResponse = await callGroqAPI(userInput)
-      } else if (selectedProvider.name === "Wolf AI") {
-        // Use built-in Wolf personality
-        aiResponse = generateWolfResponse(userInput, currentMode)
+        // Use personality engine for Groq responses
+        const personalityResponse = await fetch("/api/ai/personality-engine", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: userInput,
+            personality: selectedPersonality.id,
+            context: `Current conversation mode: ${currentMode.name}`,
+          }),
+        })
+
+        if (personalityResponse.ok) {
+          const data = await personalityResponse.json()
+          aiResponse = data.response
+        } else {
+          throw new Error("Personality engine failed")
+        }
       } else {
-        // Fallback to Wolf personality
+        // Fallback to built-in responses
         aiResponse = generateWolfResponse(userInput, currentMode)
       }
 
@@ -312,6 +391,8 @@ export function UnifiedAIOrb() {
             sender: "ai" as const,
             timestamp: new Date(),
             provider: selectedProvider.name,
+            personality: selectedPersonality.name,
+            type: "text" as const,
           }
 
           setMessages((prev) => [...prev, aiMessage])
@@ -332,6 +413,8 @@ export function UnifiedAIOrb() {
           sender: "ai" as const,
           timestamp: new Date(),
           provider: "Wolf AI (Fallback)",
+          personality: selectedPersonality.name,
+          type: "text" as const,
         }
 
         setMessages((prev) => [...prev, aiMessage])
@@ -342,44 +425,95 @@ export function UnifiedAIOrb() {
     }
   }
 
-  const callGroqAPI = async (message: string): Promise<string> => {
-    const response = await fetch("/api/ai/groq", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message,
-        mode: currentMode.personality,
-        model: selectedProvider.model,
-      }),
-    })
+  const browseWebsite = async () => {
+    if (!webUrl.trim()) return
 
-    if (!response.ok) {
-      throw new Error("Groq API call failed")
+    setIsWebAccessing(true)
+
+    try {
+      const response = await fetch("/api/ai/web-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: webUrl,
+          action: "summarize",
+        }),
+      })
+
+      const data = await response.json()
+      setWebResults(data)
+
+      if (data.success) {
+        const webMessage = {
+          id: Date.now().toString(),
+          text: `I've analyzed ${webUrl}:\n\n**Title:** ${data.data.title}\n\n**Summary:** ${data.data.summary}\n\n**Key Points:**\n${data.data.keyPoints.map((point: string) => `• ${point}`).join("\n")}`,
+          sender: "ai" as const,
+          timestamp: new Date(),
+          provider: "Web Browser",
+          type: "web" as const,
+        }
+
+        setMessages((prev) => [...prev, webMessage])
+        speakResponse(`I've successfully analyzed the website ${webUrl}. Here's what I found: ${data.data.summary}`)
+      }
+    } catch (error) {
+      console.error("Web access error:", error)
+      speakResponse("I encountered an error while browsing that website. Please check the URL and try again.")
+    } finally {
+      setIsWebAccessing(false)
     }
+  }
 
-    const data = await response.json()
-    return data.response
+  const processFile = async () => {
+    if (!selectedFile) return
+
+    setIsFileProcessing(true)
+
+    try {
+      const formData = new FormData()
+      formData.append("file", selectedFile)
+      formData.append("action", "analyze")
+
+      const response = await fetch("/api/ai/file-processor", {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json()
+      setFileResults(data)
+
+      if (data.success) {
+        const fileMessage = {
+          id: Date.now().toString(),
+          text: `I've analyzed your file "${data.filename}":\n\n**Stats:** ${data.stats.words} words, ${data.stats.lines} lines\n\n**Preview:** ${data.preview}\n\n**Analysis:**\n• Language: ${data.analysis.language}\n• Sentiment: ${data.analysis.sentiment}\n• Complexity: ${data.analysis.complexity}\n• Keywords: ${data.analysis.keywords.join(", ")}`,
+          sender: "ai" as const,
+          timestamp: new Date(),
+          provider: "File Processor",
+          type: "file" as const,
+        }
+
+        setMessages((prev) => [...prev, fileMessage])
+        speakResponse(
+          `I've successfully analyzed your file ${data.filename}. It contains ${data.stats.words} words and has a ${data.analysis.complexity} complexity level.`,
+        )
+      }
+    } catch (error) {
+      console.error("File processing error:", error)
+      speakResponse("I encountered an error while processing that file. Please try a different file.")
+    } finally {
+      setIsFileProcessing(false)
+    }
   }
 
   const generateWolfResponse = (userInput: string, mode: ConversationMode): string => {
     const input = userInput.toLowerCase()
 
     if (input.includes("money") || input.includes("rich") || input.includes("wealth")) {
-      return mode.personality === "money-focused"
-        ? "NOW we're talking! Money is the GAME, and you're about to become the CHAMPION! I see three major opportunities right now that could EXPLODE your wealth!"
-        : "Listen, MONEY is just the scorecard! But when you're WINNING like you are, that scorecard is gonna look BEAUTIFUL! Let's talk strategy!"
+      return "NOW we're talking! Money is the GAME, and you're about to become the CHAMPION! I see three major opportunities right now that could EXPLODE your wealth!"
     }
 
     if (input.includes("help") || input.includes("advice") || input.includes("what should")) {
-      return mode.personality === "analytical"
-        ? "Here's what WINNERS do in your situation: First, we analyze the data. Second, we make the BOLD move. Third, we DOMINATE the results!"
-        : "You want advice? HERE IT IS! Stop thinking, start DOING! Every second you hesitate is a second your competition gets ahead!"
-    }
-
-    if (input.includes("tired") || input.includes("difficult") || input.includes("hard")) {
-      return "TIRED? Champions don't get tired, they get STRONGER! Every challenge is just another opportunity to show the world what you're made of! PUSH THROUGH!"
+      return "You want advice? HERE IT IS! Stop thinking, start DOING! Every second you hesitate is a second your competition gets ahead!"
     }
 
     const defaultResponses = [
@@ -393,18 +527,22 @@ export function UnifiedAIOrb() {
 
   const getOrbGradient = () => {
     if (isListening) return "from-red-500 to-red-600"
-    if (isProcessing || isTestingVoice || isPlayingWolf || isConversing) return "from-amber-500 to-orange-500"
+    if (isProcessing || isTestingVoice || isConversing || isWebAccessing || isFileProcessing)
+      return "from-amber-500 to-orange-500"
     if (selectedProvider.name === "Groq") return "from-green-500 to-emerald-600"
+    if (selectedPersonality.id === "elon-musk") return "from-blue-500 to-cyan-600"
+    if (selectedPersonality.id === "steve-jobs") return "from-gray-500 to-slate-600"
     return "from-purple-600 to-cyan-600"
   }
 
   const getOrbIcon = () => {
     if (isListening) return MicOff
-    if (isProcessing) return Zap
+    if (isProcessing || isWebAccessing || isFileProcessing) return Zap
     if (activeTab === "ai-chat") return selectedProvider.name === "Groq" ? Sparkles : Bot
+    if (activeTab === "web-access") return Globe
+    if (activeTab === "file-processor") return FileText
+    if (activeTab === "personality") return User
     if (activeTab === "voice-commands") return Command
-    if (activeTab === "voice-engine") return Brain
-    if (activeTab === "wolf-voice") return Crown
     return Bot
   }
 
@@ -458,6 +596,9 @@ export function UnifiedAIOrb() {
               {selectedProvider.name === "Groq" && selectedProvider.available && (
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" title="Groq AI Active" />
               )}
+              {selectedPersonality.id !== "leonardo-wolf" && (
+                <div className="w-3 h-3 bg-blue-500 rounded-full" title={`${selectedPersonality.name} Personality`} />
+              )}
               {isListening && (
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
@@ -465,7 +606,7 @@ export function UnifiedAIOrb() {
                   className="w-3 h-3 bg-red-500 rounded-full"
                 />
               )}
-              {(isProcessing || isTestingVoice || isPlayingWolf || isConversing) && (
+              {(isProcessing || isTestingVoice || isConversing || isWebAccessing || isFileProcessing) && (
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
@@ -486,7 +627,9 @@ export function UnifiedAIOrb() {
             >
               <div className="flex items-center space-x-2">
                 <Bot className="w-3 h-3" />
-                <span>AI Assistant ({selectedProvider.name})</span>
+                <span>
+                  AI Assistant ({selectedPersonality.name} • {selectedProvider.name})
+                </span>
               </div>
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-purple-900/95"></div>
             </motion.div>
@@ -526,7 +669,7 @@ export function UnifiedAIOrb() {
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 20, transition: { duration: 0.3 } }}
-            className="w-96"
+            className="w-[420px]"
           >
             <Card className="bg-gradient-to-br from-slate-900/95 to-purple-900/95 backdrop-blur-xl border-amber-400/30">
               <CardContent className="p-4">
@@ -534,11 +677,9 @@ export function UnifiedAIOrb() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
                     <Bot className="w-5 h-5 text-amber-400" />
-                    <span className="text-amber-300 font-bold">AI Assistant</span>
-                    <Badge
-                      className={`text-xs ${selectedProvider.name === "Groq" ? "bg-green-500/20 text-green-300" : "bg-purple-500/20 text-purple-300"}`}
-                    >
-                      {selectedProvider.name}
+                    <span className="text-amber-300 font-bold">Super AI Assistant</span>
+                    <Badge className="bg-gradient-to-r from-green-500/20 to-blue-500/20 text-green-300 text-xs">
+                      WEB • FILES • VOICES
                     </Badge>
                   </div>
                   <Button
@@ -551,83 +692,56 @@ export function UnifiedAIOrb() {
                   </Button>
                 </div>
 
+                {/* Current Personality Display */}
+                <div className="mb-4 p-2 bg-gradient-to-r from-purple-800/30 to-blue-800/30 rounded-lg border border-purple-400/30">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">{selectedPersonality.icon}</span>
+                      <div>
+                        <div className="text-sm text-purple-300 font-medium">{selectedPersonality.name}</div>
+                        <div className="text-xs text-purple-400">{selectedPersonality.description}</div>
+                      </div>
+                    </div>
+                    <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30 text-xs">
+                      {selectedProvider.name}
+                    </Badge>
+                  </div>
+                </div>
+
                 {/* Tabs */}
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                  <TabsList className="grid w-full grid-cols-4 bg-slate-800/50">
+                  <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 text-xs">
                     <TabsTrigger value="ai-chat" className="text-xs">
                       <Bot className="w-3 h-3 mr-1" />
-                      AI Chat
+                      Chat
+                    </TabsTrigger>
+                    <TabsTrigger value="web-access" className="text-xs">
+                      <Globe className="w-3 h-3 mr-1" />
+                      Web
+                    </TabsTrigger>
+                    <TabsTrigger value="file-processor" className="text-xs">
+                      <FileText className="w-3 h-3 mr-1" />
+                      Files
+                    </TabsTrigger>
+                    <TabsTrigger value="personality" className="text-xs">
+                      <User className="w-3 h-3 mr-1" />
+                      Voice
                     </TabsTrigger>
                     <TabsTrigger value="voice-commands" className="text-xs">
                       <Command className="w-3 h-3 mr-1" />
-                      Commands
-                    </TabsTrigger>
-                    <TabsTrigger value="voice-engine" className="text-xs">
-                      <Brain className="w-3 h-3 mr-1" />
-                      Engine
-                    </TabsTrigger>
-                    <TabsTrigger value="wolf-voice" className="text-xs">
-                      <Crown className="w-3 h-3 mr-1" />
-                      Wolf
+                      Cmd
                     </TabsTrigger>
                   </TabsList>
 
                   {/* AI Chat Tab */}
                   <TabsContent value="ai-chat" className="space-y-4">
-                    {/* AI Provider Selection */}
-                    <div className="space-y-2">
-                      <div className="text-sm text-cyan-300">AI Provider:</div>
-                      <Select
-                        value={selectedProvider.name}
-                        onValueChange={(value) => {
-                          const provider = AI_PROVIDERS.find((p) => p.name === value)
-                          if (provider) setSelectedProvider(provider)
-                        }}
-                      >
-                        <SelectTrigger className="bg-slate-800/50 border-slate-600/50">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {AI_PROVIDERS.map((provider) => (
-                            <SelectItem key={provider.name} value={provider.name} disabled={!provider.available}>
-                              <div className="flex items-center space-x-2">
-                                <span>{provider.icon}</span>
-                                <span>{provider.name}</span>
-                                {!provider.available && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    Soon
-                                  </Badge>
-                                )}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <div className="text-xs text-slate-400">{selectedProvider.description}</div>
-                    </div>
-
-                    {/* Personality Mode */}
-                    <div className="grid grid-cols-2 gap-2">
-                      {CONVERSATION_MODES.map((mode) => (
-                        <Button
-                          key={mode.name}
-                          size="sm"
-                          variant={currentMode.name === mode.name ? "default" : "outline"}
-                          onClick={() => setCurrentMode(mode)}
-                          className="text-xs"
-                        >
-                          {mode.name}
-                        </Button>
-                      ))}
-                    </div>
-
                     {/* Chat Messages */}
                     <div className="h-48 overflow-y-auto bg-slate-800/30 rounded-lg p-3 space-y-2">
                       {messages.length === 0 ? (
                         <div className="text-center text-slate-400 text-sm py-8">
-                          <Bot className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
-                          <div>Start chatting with {selectedProvider.name}!</div>
-                          <div className="text-xs mt-1">Ask anything - I'm powered by advanced AI</div>
+                          <div className="text-2xl mb-2">{selectedPersonality.icon}</div>
+                          <div>Chat with {selectedPersonality.name}!</div>
+                          <div className="text-xs mt-1">I can browse websites, read files, and mimic personalities</div>
                         </div>
                       ) : (
                         messages.map((message) => (
@@ -636,27 +750,36 @@ export function UnifiedAIOrb() {
                             className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                           >
                             <div
-                              className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                              className={`max-w-[85%] p-2 rounded-lg text-sm ${
                                 message.sender === "user"
                                   ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
-                                  : selectedProvider.name === "Groq"
+                                  : message.type === "web"
                                     ? "bg-green-600/30 text-green-100 border border-green-400/30"
-                                    : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
+                                    : message.type === "file"
+                                      ? "bg-orange-600/30 text-orange-100 border border-orange-400/30"
+                                      : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
                               }`}
                             >
                               <div className="flex items-start space-x-2">
                                 {message.sender === "ai" && (
                                   <div className="text-lg mt-0.5 flex-shrink-0">
-                                    {selectedProvider.name === "Groq" ? "⚡" : selectedProvider.icon}
+                                    {message.type === "web"
+                                      ? "🌐"
+                                      : message.type === "file"
+                                        ? "📄"
+                                        : selectedPersonality.icon}
                                   </div>
                                 )}
                                 <div className="flex-1">
-                                  <div>{message.text}</div>
+                                  <div className="whitespace-pre-line">{message.text}</div>
                                   <div className="text-xs opacity-60 mt-1 flex items-center justify-between">
                                     <span>
-                                      {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                      {message.timestamp.toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
                                     </span>
-                                    {message.provider && <span>{message.provider}</span>}
+                                    {message.personality && <span>{message.personality}</span>}
                                   </div>
                                 </div>
                               </div>
@@ -668,29 +791,27 @@ export function UnifiedAIOrb() {
                       {/* Typing Indicator */}
                       {isTyping && (
                         <div className="flex justify-start">
-                          <div
-                            className={`${selectedProvider.name === "Groq" ? "bg-green-600/30 text-green-100 border-green-400/30" : "bg-purple-600/30 text-purple-100 border-purple-400/30"} border p-2 rounded-lg`}
-                          >
+                          <div className="bg-purple-600/30 text-purple-100 border border-purple-400/30 p-2 rounded-lg">
                             <div className="flex items-center space-x-2">
-                              <div className="text-lg">{selectedProvider.icon}</div>
+                              <div className="text-lg">{selectedPersonality.icon}</div>
                               <div className="flex space-x-1">
                                 <motion.div
-                                  className={`w-2 h-2 ${selectedProvider.name === "Groq" ? "bg-green-400" : "bg-purple-400"} rounded-full`}
+                                  className="w-2 h-2 bg-purple-400 rounded-full"
                                   animate={{ scale: [1, 1.2, 1] }}
                                   transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0 }}
                                 />
                                 <motion.div
-                                  className={`w-2 h-2 ${selectedProvider.name === "Groq" ? "bg-green-400" : "bg-purple-400"} rounded-full`}
+                                  className="w-2 h-2 bg-purple-400 rounded-full"
                                   animate={{ scale: [1, 1.2, 1] }}
                                   transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
                                 />
                                 <motion.div
-                                  className={`w-2 h-2 ${selectedProvider.name === "Groq" ? "bg-green-400" : "bg-purple-400"} rounded-full`}
+                                  className="w-2 h-2 bg-purple-400 rounded-full"
                                   animate={{ scale: [1, 1.2, 1] }}
                                   transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
                                 />
                               </div>
-                              <span className="text-xs">{selectedProvider.name} is thinking...</span>
+                              <span className="text-xs">{selectedPersonality.name} is thinking...</span>
                             </div>
                           </div>
                         </div>
@@ -704,14 +825,14 @@ export function UnifiedAIOrb() {
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
                         onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                        placeholder={`Chat with ${selectedProvider.name}...`}
+                        placeholder={`Chat with ${selectedPersonality.name}...`}
                         className="flex-1 px-3 py-2 bg-slate-800/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 text-sm focus:outline-none focus:border-cyan-400/50"
                         disabled={isTyping}
                       />
                       <Button
                         onClick={sendMessage}
                         disabled={!userInput.trim() || !isVoiceEnabled || isTyping}
-                        className={`px-4 ${selectedProvider.name === "Groq" ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700" : "bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"}`}
+                        className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 px-4"
                       >
                         {isTyping ? (
                           <motion.div
@@ -732,62 +853,284 @@ export function UnifiedAIOrb() {
                         size="sm"
                         variant="ghost"
                         onClick={() => {
-                          setUserInput("Explain quantum computing in simple terms")
-                          setTimeout(sendMessage, 100)
-                        }}
-                        className="text-xs text-cyan-400 hover:text-cyan-300"
-                        disabled={isTyping}
-                      >
-                        🧠 Explain Tech
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setUserInput("Write a creative story about AI")
-                          setTimeout(sendMessage, 100)
-                        }}
-                        className="text-xs text-purple-400 hover:text-purple-300"
-                        disabled={isTyping}
-                      >
-                        ✨ Creative Writing
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setUserInput("Help me solve a coding problem")
+                          setUserInput("Browse https://news.ycombinator.com and summarize the top stories")
                           setTimeout(sendMessage, 100)
                         }}
                         className="text-xs text-green-400 hover:text-green-300"
                         disabled={isTyping}
                       >
-                        💻 Code Help
+                        🌐 Browse Web
                       </Button>
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => {
-                          setUserInput("Give me business advice")
+                          setUserInput("Analyze my uploaded document")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-orange-400 hover:text-orange-300"
+                        disabled={isTyping}
+                      >
+                        📄 Read File
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("Give me your best business advice")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-purple-400 hover:text-purple-300"
+                        disabled={isTyping}
+                      >
+                        💼 Business Tips
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("Motivate me to achieve my goals")
                           setTimeout(sendMessage, 100)
                         }}
                         className="text-xs text-amber-400 hover:text-amber-300"
                         disabled={isTyping}
                       >
-                        💼 Business Tips
+                        🚀 Motivate Me
                       </Button>
-                    </div>
-
-                    <div className="text-center">
-                      <Badge
-                        className={`${selectedProvider.name === "Groq" ? "bg-green-500/20 text-green-300 border-green-400/30" : "bg-purple-500/20 text-purple-300 border-purple-400/30"}`}
-                      >
-                        {conversationCount} Messages • {selectedProvider.name} AI
-                      </Badge>
                     </div>
                   </TabsContent>
 
-                  {/* Other tabs remain the same... */}
+                  {/* Web Access Tab */}
+                  <TabsContent value="web-access" className="space-y-4">
+                    <div className="p-3 bg-gradient-to-r from-green-800/30 to-blue-800/30 rounded-lg border border-green-400/30">
+                      <div className="text-sm text-green-300 font-medium mb-2">🌐 Web Access Engine</div>
+                      <div className="text-xs text-green-400">
+                        Browse any website and extract content, data, or summaries
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm text-cyan-300 mb-2">Website URL:</div>
+                        <input
+                          type="url"
+                          value={webUrl}
+                          onChange={(e) => setWebUrl(e.target.value)}
+                          placeholder="https://example.com"
+                          className="w-full px-3 py-2 bg-slate-800/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 text-sm focus:outline-none focus:border-green-400/50"
+                        />
+                      </div>
+
+                      <Button
+                        onClick={browseWebsite}
+                        disabled={!webUrl.trim() || isWebAccessing}
+                        className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                      >
+                        {isWebAccessing ? (
+                          <div className="flex items-center space-x-2">
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
+                            >
+                              <Globe className="w-4 h-4" />
+                            </motion.div>
+                            <span>Browsing Website...</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center space-x-2">
+                            <Globe className="w-4 h-4" />
+                            <span>Browse & Analyze Website</span>
+                          </div>
+                        )}
+                      </Button>
+
+                      {webResults && (
+                        <div className="p-3 bg-green-800/20 rounded-lg border border-green-600/30">
+                          <div className="text-xs text-green-300 mb-1">Web Analysis Results:</div>
+                          <div className="text-sm text-green-100">
+                            <div className="font-medium">{webResults.data?.title}</div>
+                            <div className="text-xs mt-1">{webResults.data?.summary}</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setWebUrl("https://news.ycombinator.com")}
+                        className="text-xs text-orange-400 hover:text-orange-300"
+                      >
+                        📰 Hacker News
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setWebUrl("https://techcrunch.com")}
+                        className="text-xs text-blue-400 hover:text-blue-300"
+                      >
+                        🚀 TechCrunch
+                      </Button>
+                    </div>
+                  </TabsContent>
+
+                  {/* File Processor Tab */}
+                  <TabsContent value="file-processor" className="space-y-4">
+                    <div className="p-3 bg-gradient-to-r from-orange-800/30 to-red-800/30 rounded-lg border border-orange-400/30">
+                      <div className="text-sm text-orange-300 font-medium mb-2">📄 File Processing Engine</div>
+                      <div className="text-xs text-orange-400">Upload and analyze text files, documents, and data</div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm text-cyan-300 mb-2">Upload File:</div>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                          accept=".txt,.md,.csv,.json,.log"
+                          className="hidden"
+                        />
+                        <Button
+                          onClick={() => fileInputRef.current?.click()}
+                          variant="outline"
+                          className="w-full border-dashed border-2 border-slate-600 hover:border-orange-400"
+                        >
+                          <Upload className="w-4 h-4 mr-2" />
+                          {selectedFile ? selectedFile.name : "Choose File to Analyze"}
+                        </Button>
+                      </div>
+
+                      {selectedFile && (
+                        <div className="p-2 bg-orange-800/20 rounded-lg border border-orange-600/30">
+                          <div className="text-xs text-orange-300">Selected: {selectedFile.name}</div>
+                          <div className="text-xs text-orange-400">
+                            Size: {(selectedFile.size / 1024).toFixed(1)} KB
+                          </div>
+                        </div>
+                      )}
+
+                      <Button
+                        onClick={processFile}
+                        disabled={!selectedFile || isFileProcessing}
+                        className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+                      >
+                        {isFileProcessing ? (
+                          <div className="flex items-center space-x-2">
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
+                            >
+                              <FileText className="w-4 h-4" />
+                            </motion.div>
+                            <span>Processing File...</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center space-x-2">
+                            <FileText className="w-4 h-4" />
+                            <span>Analyze File</span>
+                          </div>
+                        )}
+                      </Button>
+
+                      {fileResults && (
+                        <div className="p-3 bg-orange-800/20 rounded-lg border border-orange-600/30">
+                          <div className="text-xs text-orange-300 mb-1">File Analysis Results:</div>
+                          <div className="text-sm text-orange-100">
+                            <div className="font-medium">{fileResults.filename}</div>
+                            <div className="text-xs mt-1">
+                              {fileResults.stats?.words} words • {fileResults.analysis?.sentiment} sentiment
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="text-xs text-slate-400">
+                      Supported: .txt, .md, .csv, .json, .log files (max 10MB)
+                    </div>
+                  </TabsContent>
+
+                  {/* Personality & Voice Tab */}
+                  <TabsContent value="personality" className="space-y-4">
+                    <div className="p-3 bg-gradient-to-r from-purple-800/30 to-pink-800/30 rounded-lg border border-purple-400/30">
+                      <div className="text-sm text-purple-300 font-medium mb-2">🎭 Personality & Voice Engine</div>
+                      <div className="text-xs text-purple-400">Choose AI personalities and voice characteristics</div>
+                    </div>
+
+                    {/* Personality Selection */}
+                    <div className="space-y-2">
+                      <div className="text-sm text-cyan-300">AI Personality:</div>
+                      <div className="grid grid-cols-1 gap-2">
+                        {PERSONALITY_PROFILES.map((personality) => (
+                          <Button
+                            key={personality.id}
+                            variant={selectedPersonality.id === personality.id ? "default" : "outline"}
+                            onClick={() => setSelectedPersonality(personality)}
+                            className="justify-start text-left p-3 h-auto"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <span className="text-lg">{personality.icon}</span>
+                              <div className="flex-1">
+                                <div className="font-medium text-sm">{personality.name}</div>
+                                <div className="text-xs opacity-70">{personality.description}</div>
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                  {personality.traits.slice(0, 3).map((trait) => (
+                                    <Badge key={trait} variant="secondary" className="text-xs">
+                                      {trait}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Voice Settings */}
+                    <div className="space-y-3">
+                      <div className="text-sm text-cyan-300">Voice Settings:</div>
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm text-purple-300">Speed</span>
+                          <span className="text-xs text-purple-400">{customSettings.rate.toFixed(1)}x</span>
+                        </div>
+                        <Slider
+                          value={[customSettings.rate]}
+                          onValueChange={([value]) => setCustomSettings((prev) => ({ ...prev, rate: value }))}
+                          min={0.5}
+                          max={2.0}
+                          step={0.1}
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm text-purple-300">Pitch</span>
+                          <span className="text-xs text-purple-400">{customSettings.pitch.toFixed(2)}</span>
+                        </div>
+                        <Slider
+                          value={[customSettings.pitch]}
+                          onValueChange={([value]) => setCustomSettings((prev) => ({ ...prev, pitch: value }))}
+                          min={0.5}
+                          max={1.5}
+                          step={0.05}
+                        />
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={() => speakResponse(`Hello! I'm ${selectedPersonality.name}. This is how I sound!`)}
+                      disabled={!isVoiceEnabled || isTestingVoice}
+                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                    >
+                      {isTestingVoice ? "Testing Voice..." : `Test ${selectedPersonality.name} Voice`}
+                    </Button>
+                  </TabsContent>
+
+                  {/* Voice Commands Tab */}
                   <TabsContent value="voice-commands" className="space-y-4">
                     <div className="text-center">
                       <motion.button
@@ -822,92 +1165,54 @@ export function UnifiedAIOrb() {
                       </div>
                     )}
 
-                    <div className="text-xs text-purple-300">
-                      Try saying: "Go to dashboard", "Check balance", "System status"
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="voice-engine" className="space-y-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      {VOICE_PROFILES.map((profile) => (
-                        <Button
-                          key={profile.name}
-                          size="sm"
-                          variant={currentProfile.name === profile.name ? "default" : "outline"}
-                          onClick={() => setCurrentProfile(profile)}
-                          className="text-xs"
-                        >
-                          {profile.name}
-                        </Button>
-                      ))}
-                    </div>
-
-                    <div className="space-y-3">
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-cyan-300">Speed</span>
-                          <span className="text-xs text-cyan-400">{customSettings.rate.toFixed(1)}x</span>
-                        </div>
-                        <Slider
-                          value={[customSettings.rate]}
-                          onValueChange={([value]) => setCustomSettings((prev) => ({ ...prev, rate: value }))}
-                          min={0.5}
-                          max={2.0}
-                          step={0.1}
-                        />
-                      </div>
-
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-cyan-300">Pitch</span>
-                          <span className="text-xs text-cyan-400">{customSettings.pitch.toFixed(2)}</span>
-                        </div>
-                        <Slider
-                          value={[customSettings.pitch]}
-                          onValueChange={([value]) => setCustomSettings((prev) => ({ ...prev, pitch: value }))}
-                          min={0.5}
-                          max={1.5}
-                          step={0.05}
-                        />
+                    <div className="space-y-2">
+                      <div className="text-xs text-purple-300 font-medium">Try saying:</div>
+                      <div className="grid grid-cols-1 gap-1 text-xs text-slate-400">
+                        <div>• "Browse website [URL]"</div>
+                        <div>• "Read file" (then upload)</div>
+                        <div>• "Mimic Elon Musk"</div>
+                        <div>• "Go to dashboard"</div>
+                        <div>• "Check balance"</div>
                       </div>
                     </div>
-
-                    <Button onClick={testVoice} disabled={!isVoiceEnabled || isTestingVoice} className="w-full">
-                      {isTestingVoice ? "Testing..." : "Test Voice"}
-                    </Button>
-                  </TabsContent>
-
-                  <TabsContent value="wolf-voice" className="space-y-4">
-                    <div className="p-3 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border border-amber-400/30">
-                      <div className="text-sm text-amber-300 font-medium mb-2">Wolf of Wall Street Mode</div>
-                      <div className="text-xs text-amber-400">Leonardo DiCaprio inspired voice personality</div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-center">
-                        <div className="text-amber-400 font-bold">🎬</div>
-                        <div className="text-amber-300 text-xs">Leonardo</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-orange-400 font-bold">💰</div>
-                        <div className="text-orange-300 text-xs">Wall Street</div>
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={playWolfQuote}
-                      disabled={!isVoiceEnabled || isPlayingWolf}
-                      className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700"
-                    >
-                      {isPlayingWolf ? "Playing Wolf Quote..." : "Random Wolf Quote"}
-                    </Button>
                   </TabsContent>
                 </Tabs>
+
+                {/* Footer Stats */}
+                <div className="mt-4 pt-3 border-t border-slate-600/30">
+                  <div className="grid grid-cols-4 gap-2 text-center text-xs">
+                    <div>
+                      <div className="text-green-400 font-bold">{conversationCount}</div>
+                      <div className="text-green-300">Messages</div>
+                    </div>
+                    <div>
+                      <div className="text-blue-400 font-bold">{selectedPersonality.icon}</div>
+                      <div className="text-blue-300">Personality</div>
+                    </div>
+                    <div>
+                      <div className="text-purple-400 font-bold">🌐</div>
+                      <div className="text-purple-300">Web Access</div>
+                    </div>
+                    <div>
+                      <div className="text-amber-400 font-bold">📄</div>
+                      <div className="text-amber-300">File Reader</div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        accept=".txt,.md,.csv,.json,.log"
+        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+      />
     </div>
   )
 }
