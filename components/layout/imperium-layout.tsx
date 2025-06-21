@@ -1,64 +1,36 @@
 "use client"
 
-import type * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FuturisticCommandCenter } from "@/components/navigation/futuristic-command-center"
+import type React from "react"
 import { ImperiumStatusBar } from "@/components/navigation/imperium-status-bar"
+import { FuturisticCommandCenter } from "@/components/navigation/futuristic-command-center"
+import { ImperialAIChat } from "@/components/ai/imperial-ai-chat"
+import { VoiceCommandCenter } from "@/components/ai/voice-command-center"
 import { NeuralBackgroundEffects } from "@/components/effects/neural-background-effects"
 
 interface ImperiumLayoutProps {
   children: React.ReactNode
-  showOrb?: boolean
-  className?: string
 }
 
-export function ImperiumLayout({ children, showOrb = true, className }: ImperiumLayoutProps) {
+export function ImperiumLayout({ children }: ImperiumLayoutProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative">
       {/* Neural Background Effects */}
       <NeuralBackgroundEffects />
 
-      {/* Imperial Status Bar */}
+      {/* Status Bar */}
       <ImperiumStatusBar />
 
-      {/* Floating Command Orb - Universal Navigation */}
-      <AnimatePresence>
-        {showOrb && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="fixed z-[100]"
-          >
-            <FuturisticCommandCenter />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Main Content */}
+      <main className="pt-16">{children}</main>
 
-      {/* Main Content with Imperial Styling */}
-      <motion.div
-        className={`relative z-10 ${className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        {children}
-      </motion.div>
+      {/* Navigation Systems */}
+      <FuturisticCommandCenter />
 
-      {/* Imperial Grid Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-5 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-                 linear-gradient(rgba(251, 191, 36, 0.1) 1px, transparent 1px),
-                 linear-gradient(90deg, rgba(251, 191, 36, 0.1) 1px, transparent 1px)
-               `,
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
+      {/* AI Assistant */}
+      <ImperialAIChat />
+
+      {/* Voice Command Center */}
+      <VoiceCommandCenter />
     </div>
   )
 }
