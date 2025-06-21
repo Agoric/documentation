@@ -1,4 +1,4 @@
-import React, { isValidElement } from "react"
+import * as React from "react"
 
 interface DiamondSlabCardProps {
   children: React.ReactNode
@@ -6,18 +6,18 @@ interface DiamondSlabCardProps {
 }
 
 const DiamondSlabCard: React.FC<DiamondSlabCardProps> = ({ children, className }) => {
+  const validChildren = React.Children.toArray(children).filter((child) => child != null && React.isValidElement(child))
+
   return (
     <div className={`relative rounded-lg shadow-md ${className || ""}`}>
-      {React.Children.toArray(children)
-        .filter(isValidElement)
-        .map((child) => {
-          if (child.type === "div") {
-            return React.cloneElement(child, {
-              className: `p-4 ${child.props.className || ""}`,
-            })
-          }
-          return child
-        })}
+      {validChildren.map((child) => {
+        if (child && typeof child === "object" && "type" in child && child.type && child.type === "div") {
+          return React.cloneElement(child, {
+            className: `p-4 ${child.props?.className || ""}`,
+          })
+        }
+        return child
+      })}
     </div>
   )
 }
