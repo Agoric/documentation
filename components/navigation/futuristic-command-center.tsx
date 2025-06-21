@@ -4,17 +4,11 @@ import { useState } from "react"
 import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Brain, Crown, Mic, Volume2, VolumeX, Sparkles, Zap, Globe, Mountain, Waves, TreePine, Cpu } from "lucide-react"
 import { motion } from "framer-motion"
-import {
-  VOAI_ENVIRONMENTS,
-  executeEnvironmentAction,
-  type VOAIEnvironment,
-  type VOAIAction,
-} from "@/lib/voai-environments"
+import { voaiEnvironments, type VOAIEnvironment } from "@/lib/voai-environments"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Home } from "lucide-react"
 
 /* ---- 1.  Register widgets here (lazy-loaded, no SSR) --------------------- */
@@ -41,14 +35,14 @@ type WidgetKey = keyof typeof widgetMap
 export function FuturisticCommandCenter() {
   /* ---- 2.  Store active key and environment state ---- */
   const [active, setActive] = useState<WidgetKey | null>(null)
-  const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
-  const [activeAction, setActiveAction] = useState<VOAIAction | null>(null)
+  const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(voaiEnvironments[0])
+  const [activeAction, setActiveAction] = useState<string | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
   const [executionResults, setExecutionResults] = useState<string[]>([])
   const [holographicMode, setHolographicMode] = useState(true)
   const [ambientSoundEnabled, setAmbientSoundEnabled] = useState(true)
   const [environmentProgress, setEnvironmentProgress] = useState<Record<string, number>>({})
-  const [selectedEnv, setSelectedEnv] = useState(VOAI_ENVIRONMENTS[0].id)
+  const [activeEnv, setActiveEnv] = useState<VOAIEnvironment | null>(null)
 
   /* ---- 3.  Derive component safely with optional chaining --------------- */
   const ActiveWidget = active ? widgetMap[active] : null
@@ -60,9 +54,10 @@ export function FuturisticCommandCenter() {
     setSelectedEnvironment(environment)
     setActiveAction(null)
     setExecutionResults([])
+    setActiveEnv(environment)
   }
 
-  const handleActionExecute = (action: VOAIAction) => {
+  const handleActionExecute = (action: string) => {
     setIsExecuting(true)
     setActiveAction(action)
 
@@ -70,7 +65,7 @@ export function FuturisticCommandCenter() {
     const executionTime = 1000
 
     setTimeout(() => {
-      const result = executeEnvironmentAction(selectedEnvironment.id, action.id)
+      const result = `Executed ${action} in ${selectedEnvironment.name}`
       setExecutionResults((prev) => [result, ...prev.slice(0, 4)])
 
       // Update environment progress
@@ -140,7 +135,9 @@ export function FuturisticCommandCenter() {
             <TabsList className="grid w-full grid-cols-4 bg-slate-700/50">
               <TabsTrigger value="widgets">AI Widgets</TabsTrigger>
               <TabsTrigger value="environments">VOAI Environments</TabsTrigger>
-              <TabsTrigger value="actions">Environment Actions</TabsTrigger>
+              <TabsTrigger value="actions" disabled={!activeEnv}>
+                {activeEnv ? `${activeEnv.emoji}  ${activeEnv.name}` : "Actions"}
+              </TabsTrigger>
               <TabsTrigger value="results">Execution Results</TabsTrigger>
             </TabsList>
 
@@ -215,144 +212,55 @@ export function FuturisticCommandCenter() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {VOAI_ENVIRONMENTS.map((environment) => {
-                  const IconComponent = getEnvironmentIcon(environment.id)
-                  return (
-                    <motion.div key={environment.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <Card
-                        className={`cursor-pointer transition-all duration-300 ${
-                          selectedEnvironment.id === environment.id
-                            ? `bg-gradient-to-br ${getEnvironmentGradient(environment.id)} border-2 border-amber-400/50 ${holographicMode ? getHolographicEffect(environment.id) : ""}`
-                            : "bg-slate-800/50 border-slate-600/50 hover:border-slate-500/50"
-                        }`}
-                        onClick={() => handleEnvironmentSelect(environment)}
-                      >
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                              <motion.div
-                                className="flex items-center space-x-2"
-                                animate={
-                                  selectedEnvironment.id === environment.id
-                                    ? {
-                                        scale: [1, 1.05, 1],
-                                      }
-                                    : {}
-                                }
-                                transition={{
-                                  duration: 2,
-                                  repeat: selectedEnvironment.id === environment.id ? Number.POSITIVE_INFINITY : 0,
-                                }}
-                              >
-                                <span className="text-2xl">{environment.emoji}</span>
-                                <IconComponent className="w-5 h-5 text-purple-400" />
-                              </motion.div>
-                              <div>
-                                <CardTitle className="text-sm text-white">{environment.name}</CardTitle>
-                                <p className="text-xs text-slate-300">{environment.name}</p>
-                              </div>
-                            </div>
-                            {selectedEnvironment.id === environment.id && (
-                              <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"
-                              />
-                            )}
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0">
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-xs">
-                              <span className="text-slate-400">Mastery</span>
-                              <span className="text-amber-400">{environmentProgress[environment.id] || 0}%</span>
-                            </div>
-                            <Progress value={environmentProgress[environment.id] || 0} className="h-1" />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  )
-                })}
-              </div>
+              <ScrollArea className="h-56 pr-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {voaiEnvironments.map((environment) => {
+                    const IconComponent = getEnvironmentIcon(environment.id)
+                    return (
+                      <motion.div key={environment.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <button
+                          onClick={() => handleEnvironmentSelect(environment)}
+                          className={`rounded-lg border border-indigo-500/40 p-4 text-left transition hover:border-amber-400/70 hover:bg-indigo-800/40 ${
+                            selectedEnvironment.id === environment.id
+                              ? `bg-gradient-to-br ${getEnvironmentGradient(environment.id)} border-2 border-amber-400/50 ${holographicMode ? getHolographicEffect(environment.id) : ""}`
+                              : "bg-slate-800/50 border-slate-600/50 hover:border-slate-500/50"
+                          }`}
+                        >
+                          <h3 className="text-lg font-semibold text-amber-300 flex items-center gap-2">
+                            <span className="text-2xl">{environment.emoji}</span> {environment.name}
+                          </h3>
+                          <p className="mt-1 text-sm text-indigo-200">{environment.description}</p>
+                        </button>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </ScrollArea>
             </TabsContent>
 
             {/* Environment Actions Tab */}
             <TabsContent value="actions" className="space-y-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium text-white">{selectedEnvironment.name} Actions</h3>
-                <div className="flex items-center space-x-2">
-                  <span className="text-2xl">{selectedEnvironment.emoji}</span>
-                  <Badge
-                    className={`bg-gradient-to-r ${getEnvironmentGradient(selectedEnvironment.id)} text-white border-0`}
-                  >
-                    {selectedEnvironment.name}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {Array.isArray(selectedEnvironment.actions) && selectedEnvironment.actions.length ? (
-                  selectedEnvironment.actions.map((action) => (
-                    <motion.div key={action.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <Card
+              {activeEnv ? (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-amber-300 flex items-center gap-2">
+                    <span className="text-2xl">{activeEnv.emoji}</span>
+                    {activeEnv.name} Actions
+                  </h3>
+                  <ul className="space-y-2">
+                    {activeEnv.actions.map((action) => (
+                      <li
+                        key={action}
+                        className="rounded-md border border-indigo-500/40 px-3 py-2 text-indigo-200 hover:border-amber-400/70 hover:bg-indigo-800/40"
                         onClick={() => !isExecuting && handleActionExecute(action)}
-                        className={`cursor-pointer transition-all duration-300 ${
-                          activeAction?.id === action.id
-                            ? "bg-amber-500/20 border-amber-400/50"
-                            : "bg-slate-800/30 border-slate-600/30 hover:border-slate-500/50"
-                        }`}
                       >
-                        <CardContent className="p-4">
-                          <div className="flex items-start space-x-3">
-                            <motion.div
-                              className="text-xl mt-1"
-                              animate={
-                                activeAction?.id === action.id
-                                  ? {
-                                      scale: [1, 1.2, 1],
-                                      rotate: [0, 10, -10, 0],
-                                    }
-                                  : {}
-                              }
-                              transition={{
-                                duration: 1,
-                                repeat: activeAction?.id === action.id ? Number.POSITIVE_INFINITY : 0,
-                              }}
-                            >
-                              {action.icon}
-                            </motion.div>
-                            <div className="flex-1">
-                              <h4 className="font-medium text-white text-sm">{action.label}</h4>
-                            </div>
-                          </div>
-
-                          {activeAction?.id === action.id && isExecuting && (
-                            <motion.div
-                              className="mt-3 flex items-center space-x-2"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            >
-                              <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                              >
-                                <Zap className="w-4 h-4 text-amber-400" />
-                              </motion.div>
-                              <span className="text-xs text-amber-400">Executing action...</span>
-                            </motion.div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))
-                ) : (
-                  <p className="text-center text-sm text-slate-400 col-span-full">
-                    No actions defined for this environment.
-                  </p>
-                )}
-              </div>
+                        {action}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p className="text-sm text-indigo-200">Select an environment first.</p>
+              )}
             </TabsContent>
 
             {/* Execution Results Tab */}
@@ -364,26 +272,60 @@ export function FuturisticCommandCenter() {
                     <div>Execute environment actions to see results here</div>
                   </div>
                 ) : (
-                  executionResults.map((result, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Card className="bg-gradient-to-r from-green-800/30 to-blue-800/30 border-green-400/30">
-                        <CardContent className="p-4">
-                          <div className="flex items-start space-x-3">
-                            <div className="text-lg mt-1">✨</div>
-                            <div className="flex-1">
-                              <div className="text-sm text-green-100">{result}</div>
-                              <div className="text-xs text-green-400 mt-1">{new Date().toLocaleTimeString()}</div>
+                  executionResults.map((result, index) => {
+                    const action = result.split(" ")[1] // Extract action from result string
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Card className="bg-gradient-to-r from-green-800/30 to-blue-800/30 border-green-400/30">
+                          <CardContent className="p-4">
+                            <div className="flex items-start space-x-3">
+                              <motion.div
+                                className="text-xl mt-1"
+                                animate={
+                                  activeAction === action
+                                    ? {
+                                        scale: [1, 1.2, 1],
+                                        rotate: [0, 10, -10, 0],
+                                      }
+                                    : {}
+                                }
+                                transition={{
+                                  duration: 1,
+                                  repeat: activeAction === action ? Number.POSITIVE_INFINITY : 0,
+                                }}
+                              >
+                                {action}
+                              </motion.div>
+                              <div className="flex-1">
+                                <h4 className="font-medium text-white text-sm">{action}</h4>
+                              </div>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))
+
+                            {activeAction === action && isExecuting && (
+                              <motion.div
+                                className="mt-3 flex items-center space-x-2"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                              >
+                                <motion.div
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                                >
+                                  <Zap className="w-4 h-4 text-amber-400" />
+                                </motion.div>
+                                <span className="text-xs text-amber-400">Executing action...</span>
+                              </motion.div>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    )
+                  })
                 )}
               </div>
             </TabsContent>

@@ -19,7 +19,8 @@ export interface VOAIEnvironment {
   id: string
   name: string
   emoji: string
-  actions: VOAIAction[]
+  description: string
+  actions: string[]
 }
 
 export const VOAI_ENVIRONMENTS: VOAIEnvironment[] = [
@@ -27,37 +28,22 @@ export const VOAI_ENVIRONMENTS: VOAIEnvironment[] = [
     id: "wolf",
     name: "Wolf",
     emoji: "🐺",
-    actions: [
-      { id: "howl", label: "Howl at the Moon", icon: "🌙" },
-      { id: "hunt", label: "Hunt for Food", icon: "🦌" },
-      { id: "explore-den", label: "Explore the Den", icon: "🏔️" },
-      { id: "play-pack", label: "Play with Pack", icon: "🐾" },
-      { id: "rest", label: "Rest & Sleep", icon: "😴" },
-    ],
+    description: "Unleash your inner wolf spirit.",
+    actions: ["Howl at the Moon", "Hunt for Food", "Explore the Den"],
   },
   {
     id: "forest",
     name: "Forest",
     emoji: "🌳",
-    actions: [
-      { id: "commune", label: "Commune with Trees", icon: "🌲" },
-      { id: "gather-herbs", label: "Gather Herbs", icon: "🌿" },
-      { id: "summon-guardians", label: "Summon Guardians", icon: "🦋" },
-      { id: "control-weather", label: "Control Weather", icon: "⛈️" },
-      { id: "grove-meditate", label: "Meditate in Grove", icon: "🧘" },
-    ],
+    description: "Harness the magic of ancient woods.",
+    actions: ["Commune with Trees", "Gather Mystic Herbs", "Summon Guardians"],
   },
   {
     id: "mountain",
     name: "Mountain",
     emoji: "⛰️",
-    actions: [
-      { id: "survey", label: "Survey the Realm", icon: "🔭" },
-      { id: "command", label: "Command Forces", icon: "⚔️" },
-      { id: "forge", label: "Forge Weapons", icon: "🛠️" },
-      { id: "call-eagles", label: "Call Eagles", icon: "🦅" },
-      { id: "throne", label: "Throne of Power", icon: "👑" },
-    ],
+    description: "Rule the lofty peaks.",
+    actions: ["Survey Realm", "Forge Weapons", "Call the Eagles"],
   },
   {
     id: "ocean",
