@@ -2,12 +2,22 @@ import { type NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
   try {
+    const apiKey =
+      process.env.REPLICATE_API_TOKEN ||
+      request.headers.get("x-replicate-key") || // client-supplied key
+      ""
+
+    /* If no key anywhere, bail early with an auth error */
+    if (!apiKey) {
+      return NextResponse.json({ error: "Missing Replicate API key" }, { status: 401 })
+    }
+
     const { text, voice_preset } = await request.json()
 
     const response = await fetch("https://api.replicate.com/v1/predictions", {
       method: "POST",
       headers: {
-        Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
+        Authorization: `Token ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -32,7 +42,7 @@ export async function POST(request: NextRequest) {
 
       const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${result.id}`, {
         headers: {
-          Authorization: `Token ${process.env.REPLICATE_API_TOKEN}`,
+          Authorization: `Token ${apiKey}`,
         },
       })
 
