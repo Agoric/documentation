@@ -46,6 +46,7 @@
     "date-fns": "latest",
     "embla-carousel-react": "latest",
     "framer-motion": "latest",
+    "groq-sdk": "latest",
     "input-otp": "latest",
     "jsonwebtoken": "latest",
     "lucide-react": "^0.454.0",

@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Slider } from "@/components/ui/slider"
-import { Mic, MicOff, Volume2, VolumeX, Command, Zap, Crown, TrendingUp, Brain, MessageSquare } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Mic, MicOff, Volume2, VolumeX, Command, Zap, Crown, Brain, MessageSquare, Bot, Sparkles } from "lucide-react"
 import type { SpeechRecognition } from "web-speech-api"
 
 interface VoiceCommand {
@@ -30,6 +31,14 @@ interface ConversationMode {
   personality: string
   energy: number
   description: string
+}
+
+interface AIProvider {
+  name: string
+  model: string
+  description: string
+  icon: string
+  available: boolean
 }
 
 const VOICE_COMMANDS: VoiceCommand[] = [
@@ -79,9 +88,22 @@ const CONVERSATION_MODES: ConversationMode[] = [
   { name: "Champion", personality: "winner", energy: 100, description: "Maximum winning energy" },
 ]
 
+const AI_PROVIDERS: AIProvider[] = [
+  {
+    name: "Groq",
+    model: "llama-3.1-70b-versatile",
+    description: "Lightning fast responses",
+    icon: "⚡",
+    available: true,
+  },
+  { name: "OpenAI", model: "gpt-4o", description: "Most capable AI model", icon: "🧠", available: false },
+  { name: "Claude", model: "claude-3-sonnet", description: "Thoughtful and nuanced", icon: "🎭", available: false },
+  { name: "Wolf AI", model: "wolf-personality", description: "Built-in Wolf personality", icon: "🐺", available: true },
+]
+
 export function UnifiedAIOrb() {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [activeTab, setActiveTab] = useState("voice-commands")
+  const [activeTab, setActiveTab] = useState("ai-chat")
   const [isHovered, setIsHovered] = useState(false)
 
   // Voice Commands State
@@ -110,13 +132,14 @@ export function UnifiedAIOrb() {
   })
   const [isPlayingWolf, setIsPlayingWolf] = useState(false)
 
-  // Conversation State
+  // AI Chat State
+  const [selectedProvider, setSelectedProvider] = useState<AIProvider>(AI_PROVIDERS[0])
   const [currentMode, setCurrentMode] = useState<ConversationMode>(CONVERSATION_MODES[0])
   const [conversationCount, setConversationCount] = useState(0)
   const [lastResponse, setLastResponse] = useState("")
   const [isConversing, setIsConversing] = useState(false)
   const [messages, setMessages] = useState<
-    Array<{ id: string; text: string; sender: "user" | "wolf"; timestamp: Date }>
+    Array<{ id: string; text: string; sender: "user" | "ai"; timestamp: Date; provider?: string }>
   >([])
   const [userInput, setUserInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
@@ -130,7 +153,7 @@ export function UnifiedAIOrb() {
     if (!isHovered && isExpanded) {
       hoverTimeoutRef.current = setTimeout(() => {
         setIsExpanded(false)
-      }, 2000) // Retract after 2 seconds of no hover
+      }, 2000)
     } else if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current)
     }
@@ -267,30 +290,82 @@ export function UnifiedAIOrb() {
     setUserInput("")
     setIsTyping(true)
 
-    // Simulate Wolf thinking/typing
-    setTimeout(
-      () => {
-        const wolfResponse = generateConversationalResponse(userInput, currentMode)
-        const wolfMessage = {
+    try {
+      let aiResponse = ""
+
+      if (selectedProvider.name === "Groq" && selectedProvider.available) {
+        // Call Groq API
+        aiResponse = await callGroqAPI(userInput)
+      } else if (selectedProvider.name === "Wolf AI") {
+        // Use built-in Wolf personality
+        aiResponse = generateWolfResponse(userInput, currentMode)
+      } else {
+        // Fallback to Wolf personality
+        aiResponse = generateWolfResponse(userInput, currentMode)
+      }
+
+      setTimeout(
+        () => {
+          const aiMessage = {
+            id: (Date.now() + 1).toString(),
+            text: aiResponse,
+            sender: "ai" as const,
+            timestamp: new Date(),
+            provider: selectedProvider.name,
+          }
+
+          setMessages((prev) => [...prev, aiMessage])
+          setConversationCount((prev) => prev + 1)
+          speakResponse(aiResponse)
+          setIsTyping(false)
+        },
+        1000 + Math.random() * 2000,
+      )
+    } catch (error) {
+      console.error("AI API Error:", error)
+      const fallbackResponse = generateWolfResponse(userInput, currentMode)
+
+      setTimeout(() => {
+        const aiMessage = {
           id: (Date.now() + 1).toString(),
-          text: wolfResponse,
-          sender: "wolf" as const,
+          text: fallbackResponse,
+          sender: "ai" as const,
           timestamp: new Date(),
+          provider: "Wolf AI (Fallback)",
         }
 
-        setMessages((prev) => [...prev, wolfMessage])
+        setMessages((prev) => [...prev, aiMessage])
         setConversationCount((prev) => prev + 1)
-        speakResponse(wolfResponse)
+        speakResponse(fallbackResponse)
         setIsTyping(false)
-      },
-      1000 + Math.random() * 2000,
-    ) // Random delay for realism
+      }, 1000)
+    }
   }
 
-  const generateConversationalResponse = (userInput: string, mode: ConversationMode): string => {
+  const callGroqAPI = async (message: string): Promise<string> => {
+    const response = await fetch("/api/ai/groq", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message,
+        mode: currentMode.personality,
+        model: selectedProvider.model,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error("Groq API call failed")
+    }
+
+    const data = await response.json()
+    return data.response
+  }
+
+  const generateWolfResponse = (userInput: string, mode: ConversationMode): string => {
     const input = userInput.toLowerCase()
 
-    // Context-aware responses based on user input
     if (input.includes("money") || input.includes("rich") || input.includes("wealth")) {
       return mode.personality === "money-focused"
         ? "NOW we're talking! Money is the GAME, and you're about to become the CHAMPION! I see three major opportunities right now that could EXPLODE your wealth!"
@@ -307,17 +382,10 @@ export function UnifiedAIOrb() {
       return "TIRED? Champions don't get tired, they get STRONGER! Every challenge is just another opportunity to show the world what you're made of! PUSH THROUGH!"
     }
 
-    if (input.includes("success") || input.includes("win") || input.includes("achieve")) {
-      return "SUCCESS? You're already SUCCESSFUL just by being here! But we're not stopping at successful - we're going for LEGENDARY! BOOM!"
-    }
-
-    // Default energetic responses
     const defaultResponses = [
       "That's EXACTLY the kind of thinking that separates CHAMPIONS from everyone else! Tell me more!",
       "I LOVE that energy! You know what that tells me? You're ready to take this to the NEXT LEVEL!",
       "BOOM! Now you're speaking my language! Let's turn that thought into ACTION!",
-      "You're not just thinking like a winner - you're thinking like a CHAMPION! What's your next move?",
-      "That's the kind of mindset that builds EMPIRES! Keep that energy flowing!",
     ]
 
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)]
@@ -326,17 +394,18 @@ export function UnifiedAIOrb() {
   const getOrbGradient = () => {
     if (isListening) return "from-red-500 to-red-600"
     if (isProcessing || isTestingVoice || isPlayingWolf || isConversing) return "from-amber-500 to-orange-500"
+    if (selectedProvider.name === "Groq") return "from-green-500 to-emerald-600"
     return "from-purple-600 to-cyan-600"
   }
 
   const getOrbIcon = () => {
     if (isListening) return MicOff
     if (isProcessing) return Zap
+    if (activeTab === "ai-chat") return selectedProvider.name === "Groq" ? Sparkles : Bot
     if (activeTab === "voice-commands") return Command
     if (activeTab === "voice-engine") return Brain
     if (activeTab === "wolf-voice") return Crown
-    if (activeTab === "conversation") return MessageSquare
-    return Command
+    return Bot
   }
 
   return (
@@ -347,7 +416,6 @@ export function UnifiedAIOrb() {
     >
       <AnimatePresence>
         {!isExpanded ? (
-          // Retracted State - Unified Orb
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -359,11 +427,18 @@ export function UnifiedAIOrb() {
               className={`w-16 h-16 rounded-full bg-gradient-to-br ${getOrbGradient()} shadow-2xl flex items-center justify-center`}
               animate={{
                 scale: isListening || isProcessing ? [1, 1.1, 1] : [1, 1.05, 1],
-                boxShadow: [
-                  "0 0 20px rgba(168, 85, 247, 0.3)",
-                  "0 0 40px rgba(59, 130, 246, 0.5)",
-                  "0 0 20px rgba(168, 85, 247, 0.3)",
-                ],
+                boxShadow:
+                  selectedProvider.name === "Groq"
+                    ? [
+                        "0 0 20px rgba(34, 197, 94, 0.3)",
+                        "0 0 40px rgba(16, 185, 129, 0.5)",
+                        "0 0 20px rgba(34, 197, 94, 0.3)",
+                      ]
+                    : [
+                        "0 0 20px rgba(168, 85, 247, 0.3)",
+                        "0 0 40px rgba(59, 130, 246, 0.5)",
+                        "0 0 20px rgba(168, 85, 247, 0.3)",
+                      ],
               }}
               transition={{
                 repeat: Number.POSITIVE_INFINITY,
@@ -380,6 +455,9 @@ export function UnifiedAIOrb() {
 
             {/* Status indicators */}
             <div className="absolute -top-2 -right-2 flex flex-col space-y-1">
+              {selectedProvider.name === "Groq" && selectedProvider.available && (
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" title="Groq AI Active" />
+              )}
               {isListening && (
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
@@ -395,7 +473,7 @@ export function UnifiedAIOrb() {
                 />
               )}
               {conversationCount > 0 && (
-                <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
                   <span className="text-xs text-white font-bold">{conversationCount}</span>
                 </div>
               )}
@@ -407,8 +485,8 @@ export function UnifiedAIOrb() {
               whileHover={{ scale: 1.05 }}
             >
               <div className="flex items-center space-x-2">
-                <Command className="w-3 h-3" />
-                <span>Unified AI Assistant</span>
+                <Bot className="w-3 h-3" />
+                <span>AI Assistant ({selectedProvider.name})</span>
               </div>
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-purple-900/95"></div>
             </motion.div>
@@ -444,7 +522,6 @@ export function UnifiedAIOrb() {
             </div>
           </motion.div>
         ) : (
-          // Expanded State - Tabbed Interface
           <motion.div
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -456,25 +533,31 @@ export function UnifiedAIOrb() {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
-                    <Command className="w-5 h-5 text-amber-400" />
-                    <span className="text-amber-300 font-bold">Unified AI Assistant</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge className="bg-purple-500/20 text-purple-300 border-purple-400/30 text-xs">ALL-IN-ONE</Badge>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setIsExpanded(false)}
-                      className="w-8 h-8 p-0 text-amber-400"
+                    <Bot className="w-5 h-5 text-amber-400" />
+                    <span className="text-amber-300 font-bold">AI Assistant</span>
+                    <Badge
+                      className={`text-xs ${selectedProvider.name === "Groq" ? "bg-green-500/20 text-green-300" : "bg-purple-500/20 text-purple-300"}`}
                     >
-                      ×
-                    </Button>
+                      {selectedProvider.name}
+                    </Badge>
                   </div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setIsExpanded(false)}
+                    className="w-8 h-8 p-0 text-amber-400"
+                  >
+                    ×
+                  </Button>
                 </div>
 
                 {/* Tabs */}
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-4 bg-slate-800/50">
+                    <TabsTrigger value="ai-chat" className="text-xs">
+                      <Bot className="w-3 h-3 mr-1" />
+                      AI Chat
+                    </TabsTrigger>
                     <TabsTrigger value="voice-commands" className="text-xs">
                       <Command className="w-3 h-3 mr-1" />
                       Commands
@@ -487,13 +570,224 @@ export function UnifiedAIOrb() {
                       <Crown className="w-3 h-3 mr-1" />
                       Wolf
                     </TabsTrigger>
-                    <TabsTrigger value="conversation" className="text-xs">
-                      <MessageSquare className="w-3 h-3 mr-1" />
-                      Chat
-                    </TabsTrigger>
                   </TabsList>
 
-                  {/* Voice Commands Tab */}
+                  {/* AI Chat Tab */}
+                  <TabsContent value="ai-chat" className="space-y-4">
+                    {/* AI Provider Selection */}
+                    <div className="space-y-2">
+                      <div className="text-sm text-cyan-300">AI Provider:</div>
+                      <Select
+                        value={selectedProvider.name}
+                        onValueChange={(value) => {
+                          const provider = AI_PROVIDERS.find((p) => p.name === value)
+                          if (provider) setSelectedProvider(provider)
+                        }}
+                      >
+                        <SelectTrigger className="bg-slate-800/50 border-slate-600/50">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AI_PROVIDERS.map((provider) => (
+                            <SelectItem key={provider.name} value={provider.name} disabled={!provider.available}>
+                              <div className="flex items-center space-x-2">
+                                <span>{provider.icon}</span>
+                                <span>{provider.name}</span>
+                                {!provider.available && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    Soon
+                                  </Badge>
+                                )}
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <div className="text-xs text-slate-400">{selectedProvider.description}</div>
+                    </div>
+
+                    {/* Personality Mode */}
+                    <div className="grid grid-cols-2 gap-2">
+                      {CONVERSATION_MODES.map((mode) => (
+                        <Button
+                          key={mode.name}
+                          size="sm"
+                          variant={currentMode.name === mode.name ? "default" : "outline"}
+                          onClick={() => setCurrentMode(mode)}
+                          className="text-xs"
+                        >
+                          {mode.name}
+                        </Button>
+                      ))}
+                    </div>
+
+                    {/* Chat Messages */}
+                    <div className="h-48 overflow-y-auto bg-slate-800/30 rounded-lg p-3 space-y-2">
+                      {messages.length === 0 ? (
+                        <div className="text-center text-slate-400 text-sm py-8">
+                          <Bot className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
+                          <div>Start chatting with {selectedProvider.name}!</div>
+                          <div className="text-xs mt-1">Ask anything - I'm powered by advanced AI</div>
+                        </div>
+                      ) : (
+                        messages.map((message) => (
+                          <div
+                            key={message.id}
+                            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                          >
+                            <div
+                              className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                                message.sender === "user"
+                                  ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
+                                  : selectedProvider.name === "Groq"
+                                    ? "bg-green-600/30 text-green-100 border border-green-400/30"
+                                    : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
+                              }`}
+                            >
+                              <div className="flex items-start space-x-2">
+                                {message.sender === "ai" && (
+                                  <div className="text-lg mt-0.5 flex-shrink-0">
+                                    {selectedProvider.name === "Groq" ? "⚡" : selectedProvider.icon}
+                                  </div>
+                                )}
+                                <div className="flex-1">
+                                  <div>{message.text}</div>
+                                  <div className="text-xs opacity-60 mt-1 flex items-center justify-between">
+                                    <span>
+                                      {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                    </span>
+                                    {message.provider && <span>{message.provider}</span>}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+
+                      {/* Typing Indicator */}
+                      {isTyping && (
+                        <div className="flex justify-start">
+                          <div
+                            className={`${selectedProvider.name === "Groq" ? "bg-green-600/30 text-green-100 border-green-400/30" : "bg-purple-600/30 text-purple-100 border-purple-400/30"} border p-2 rounded-lg`}
+                          >
+                            <div className="flex items-center space-x-2">
+                              <div className="text-lg">{selectedProvider.icon}</div>
+                              <div className="flex space-x-1">
+                                <motion.div
+                                  className={`w-2 h-2 ${selectedProvider.name === "Groq" ? "bg-green-400" : "bg-purple-400"} rounded-full`}
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0 }}
+                                />
+                                <motion.div
+                                  className={`w-2 h-2 ${selectedProvider.name === "Groq" ? "bg-green-400" : "bg-purple-400"} rounded-full`}
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
+                                />
+                                <motion.div
+                                  className={`w-2 h-2 ${selectedProvider.name === "Groq" ? "bg-green-400" : "bg-purple-400"} rounded-full`}
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
+                                />
+                              </div>
+                              <span className="text-xs">{selectedProvider.name} is thinking...</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Message Input */}
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                        placeholder={`Chat with ${selectedProvider.name}...`}
+                        className="flex-1 px-3 py-2 bg-slate-800/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 text-sm focus:outline-none focus:border-cyan-400/50"
+                        disabled={isTyping}
+                      />
+                      <Button
+                        onClick={sendMessage}
+                        disabled={!userInput.trim() || !isVoiceEnabled || isTyping}
+                        className={`px-4 ${selectedProvider.name === "Groq" ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700" : "bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"}`}
+                      >
+                        {isTyping ? (
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
+                          >
+                            <Zap className="w-4 h-4" />
+                          </motion.div>
+                        ) : (
+                          <MessageSquare className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+
+                    {/* Quick Starters */}
+                    <div className="grid grid-cols-2 gap-1">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("Explain quantum computing in simple terms")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-cyan-400 hover:text-cyan-300"
+                        disabled={isTyping}
+                      >
+                        🧠 Explain Tech
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("Write a creative story about AI")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-purple-400 hover:text-purple-300"
+                        disabled={isTyping}
+                      >
+                        ✨ Creative Writing
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("Help me solve a coding problem")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-green-400 hover:text-green-300"
+                        disabled={isTyping}
+                      >
+                        💻 Code Help
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("Give me business advice")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-amber-400 hover:text-amber-300"
+                        disabled={isTyping}
+                      >
+                        💼 Business Tips
+                      </Button>
+                    </div>
+
+                    <div className="text-center">
+                      <Badge
+                        className={`${selectedProvider.name === "Groq" ? "bg-green-500/20 text-green-300 border-green-400/30" : "bg-purple-500/20 text-purple-300 border-purple-400/30"}`}
+                      >
+                        {conversationCount} Messages • {selectedProvider.name} AI
+                      </Badge>
+                    </div>
+                  </TabsContent>
+
+                  {/* Other tabs remain the same... */}
                   <TabsContent value="voice-commands" className="space-y-4">
                     <div className="text-center">
                       <motion.button
@@ -533,7 +827,6 @@ export function UnifiedAIOrb() {
                     </div>
                   </TabsContent>
 
-                  {/* Voice Engine Tab */}
                   <TabsContent value="voice-engine" className="space-y-4">
                     <div className="grid grid-cols-2 gap-2">
                       {VOICE_PROFILES.map((profile) => (
@@ -584,7 +877,6 @@ export function UnifiedAIOrb() {
                     </Button>
                   </TabsContent>
 
-                  {/* Wolf Voice Tab */}
                   <TabsContent value="wolf-voice" className="space-y-4">
                     <div className="p-3 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border border-amber-400/30">
                       <div className="text-sm text-amber-300 font-medium mb-2">Wolf of Wall Street Mode</div>
@@ -609,186 +901,6 @@ export function UnifiedAIOrb() {
                     >
                       {isPlayingWolf ? "Playing Wolf Quote..." : "Random Wolf Quote"}
                     </Button>
-                  </TabsContent>
-
-                  {/* Conversation Tab */}
-                  <TabsContent value="conversation" className="space-y-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      {CONVERSATION_MODES.map((mode) => (
-                        <Button
-                          key={mode.name}
-                          size="sm"
-                          variant={currentMode.name === mode.name ? "default" : "outline"}
-                          onClick={() => setCurrentMode(mode)}
-                          className="text-xs"
-                        >
-                          {mode.name}
-                        </Button>
-                      ))}
-                    </div>
-
-                    <div className="p-3 bg-gradient-to-r from-red-800/30 to-orange-800/30 rounded-lg border border-red-400/30">
-                      <div className="text-sm text-red-300 font-medium">Wolf Mode: {currentMode.name}</div>
-                      <div className="text-xs text-red-400">{currentMode.description}</div>
-                      <div className="flex items-center mt-1">
-                        <TrendingUp className="w-3 h-3 text-red-400 mr-1" />
-                        <span className="text-xs text-red-400">{currentMode.energy}% Energy</span>
-                      </div>
-                    </div>
-
-                    {/* Chat Messages */}
-                    <div className="h-48 overflow-y-auto bg-slate-800/30 rounded-lg p-3 space-y-2">
-                      {messages.length === 0 ? (
-                        <div className="text-center text-slate-400 text-sm py-8">
-                          <Crown className="w-8 h-8 mx-auto mb-2 text-amber-400" />
-                          <div>Start a conversation with Wolf!</div>
-                          <div className="text-xs mt-1">Ask about money, success, or motivation</div>
-                        </div>
-                      ) : (
-                        messages.map((message) => (
-                          <div
-                            key={message.id}
-                            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                          >
-                            <div
-                              className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                                message.sender === "user"
-                                  ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
-                                  : "bg-amber-600/30 text-amber-100 border border-amber-400/30"
-                              }`}
-                            >
-                              <div className="flex items-start space-x-2">
-                                {message.sender === "wolf" && (
-                                  <Crown className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
-                                )}
-                                <div className="flex-1">
-                                  <div>{message.text}</div>
-                                  <div className="text-xs opacity-60 mt-1">
-                                    {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      )}
-
-                      {/* Typing Indicator */}
-                      {isTyping && (
-                        <div className="flex justify-start">
-                          <div className="bg-amber-600/30 text-amber-100 border border-amber-400/30 p-2 rounded-lg">
-                            <div className="flex items-center space-x-2">
-                              <Crown className="w-4 h-4 text-amber-400" />
-                              <div className="flex space-x-1">
-                                <motion.div
-                                  className="w-2 h-2 bg-amber-400 rounded-full"
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0 }}
-                                />
-                                <motion.div
-                                  className="w-2 h-2 bg-amber-400 rounded-full"
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
-                                />
-                                <motion.div
-                                  className="w-2 h-2 bg-amber-400 rounded-full"
-                                  animate={{ scale: [1, 1.2, 1] }}
-                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
-                                />
-                              </div>
-                              <span className="text-xs">Wolf is typing...</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Message Input */}
-                    <div className="flex space-x-2">
-                      <input
-                        type="text"
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                        placeholder="Ask Wolf about money, success, motivation..."
-                        className="flex-1 px-3 py-2 bg-slate-800/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 text-sm focus:outline-none focus:border-amber-400/50"
-                        disabled={isTyping}
-                      />
-                      <Button
-                        onClick={sendMessage}
-                        disabled={!userInput.trim() || !isVoiceEnabled || isTyping}
-                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 px-4"
-                      >
-                        {isTyping ? (
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
-                          >
-                            <Zap className="w-4 h-4" />
-                          </motion.div>
-                        ) : (
-                          <MessageSquare className="w-4 h-4" />
-                        )}
-                      </Button>
-                    </div>
-
-                    {/* Quick Conversation Starters */}
-                    <div className="grid grid-cols-2 gap-1">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setUserInput("How can I make more money?")
-                          setTimeout(sendMessage, 100)
-                        }}
-                        className="text-xs text-green-400 hover:text-green-300"
-                        disabled={isTyping}
-                      >
-                        💰 Make Money
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setUserInput("I need motivation to succeed")
-                          setTimeout(sendMessage, 100)
-                        }}
-                        className="text-xs text-blue-400 hover:text-blue-300"
-                        disabled={isTyping}
-                      >
-                        🚀 Get Motivated
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setUserInput("What's your best business advice?")
-                          setTimeout(sendMessage, 100)
-                        }}
-                        className="text-xs text-purple-400 hover:text-purple-300"
-                        disabled={isTyping}
-                      >
-                        💼 Business Tips
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          setUserInput("How do I become successful?")
-                          setTimeout(sendMessage, 100)
-                        }}
-                        className="text-xs text-amber-400 hover:text-amber-300"
-                        disabled={isTyping}
-                      >
-                        👑 Success Secrets
-                      </Button>
-                    </div>
-
-                    <div className="text-center">
-                      <Badge className="bg-red-500/20 text-red-300 border-red-400/30">
-                        {conversationCount} Messages Exchanged
-                      </Badge>
-                    </div>
                   </TabsContent>
                 </Tabs>
               </CardContent>
