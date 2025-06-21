@@ -115,6 +115,11 @@ export function UnifiedAIOrb() {
   const [conversationCount, setConversationCount] = useState(0)
   const [lastResponse, setLastResponse] = useState("")
   const [isConversing, setIsConversing] = useState(false)
+  const [messages, setMessages] = useState<
+    Array<{ id: string; text: string; sender: "user" | "wolf"; timestamp: Date }>
+  >([])
+  const [userInput, setUserInput] = useState("")
+  const [isTyping, setIsTyping] = useState(false)
 
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
@@ -248,36 +253,74 @@ export function UnifiedAIOrb() {
     setTimeout(() => setIsPlayingWolf(false), 3000)
   }
 
-  const triggerConversation = () => {
-    const responses = {
-      "high-energy": [
-        "Listen up, CHAMPION! Today is YOUR day to absolutely DOMINATE!",
-        "BOOM! That's the sound of SUCCESS knocking on your door!",
-      ],
-      analytical: [
-        "Here's the strategic play that's gonna change EVERYTHING for you.",
-        "The data is clear - you're positioned for MASSIVE success!",
-      ],
-      "money-focused": [
-        "MONEY, MONEY, MONEY! Your portfolio is about to get a SERIOUS upgrade!",
-        "Time to turn those financial dreams into COLD HARD CASH!",
-      ],
-      winner: [
-        "WINNERS don't wait for opportunities - they CREATE them!",
-        "VICTORY is your middle name! Every move you make is calculated for SUCCESS!",
-      ],
+  const sendMessage = async () => {
+    if (!userInput.trim() || !isVoiceEnabled) return
+
+    const userMessage = {
+      id: Date.now().toString(),
+      text: userInput,
+      sender: "user" as const,
+      timestamp: new Date(),
     }
 
-    setIsConversing(true)
-    const modeResponses = responses[currentMode.personality as keyof typeof responses] || responses["high-energy"]
-    const response = modeResponses[Math.floor(Math.random() * modeResponses.length)]
+    setMessages((prev) => [...prev, userMessage])
+    setUserInput("")
+    setIsTyping(true)
 
-    setTimeout(() => {
-      setLastResponse(response)
-      setConversationCount((prev) => prev + 1)
-      speakResponse(response)
-      setIsConversing(false)
-    }, 800)
+    // Simulate Wolf thinking/typing
+    setTimeout(
+      () => {
+        const wolfResponse = generateConversationalResponse(userInput, currentMode)
+        const wolfMessage = {
+          id: (Date.now() + 1).toString(),
+          text: wolfResponse,
+          sender: "wolf" as const,
+          timestamp: new Date(),
+        }
+
+        setMessages((prev) => [...prev, wolfMessage])
+        setConversationCount((prev) => prev + 1)
+        speakResponse(wolfResponse)
+        setIsTyping(false)
+      },
+      1000 + Math.random() * 2000,
+    ) // Random delay for realism
+  }
+
+  const generateConversationalResponse = (userInput: string, mode: ConversationMode): string => {
+    const input = userInput.toLowerCase()
+
+    // Context-aware responses based on user input
+    if (input.includes("money") || input.includes("rich") || input.includes("wealth")) {
+      return mode.personality === "money-focused"
+        ? "NOW we're talking! Money is the GAME, and you're about to become the CHAMPION! I see three major opportunities right now that could EXPLODE your wealth!"
+        : "Listen, MONEY is just the scorecard! But when you're WINNING like you are, that scorecard is gonna look BEAUTIFUL! Let's talk strategy!"
+    }
+
+    if (input.includes("help") || input.includes("advice") || input.includes("what should")) {
+      return mode.personality === "analytical"
+        ? "Here's what WINNERS do in your situation: First, we analyze the data. Second, we make the BOLD move. Third, we DOMINATE the results!"
+        : "You want advice? HERE IT IS! Stop thinking, start DOING! Every second you hesitate is a second your competition gets ahead!"
+    }
+
+    if (input.includes("tired") || input.includes("difficult") || input.includes("hard")) {
+      return "TIRED? Champions don't get tired, they get STRONGER! Every challenge is just another opportunity to show the world what you're made of! PUSH THROUGH!"
+    }
+
+    if (input.includes("success") || input.includes("win") || input.includes("achieve")) {
+      return "SUCCESS? You're already SUCCESSFUL just by being here! But we're not stopping at successful - we're going for LEGENDARY! BOOM!"
+    }
+
+    // Default energetic responses
+    const defaultResponses = [
+      "That's EXACTLY the kind of thinking that separates CHAMPIONS from everyone else! Tell me more!",
+      "I LOVE that energy! You know what that tells me? You're ready to take this to the NEXT LEVEL!",
+      "BOOM! Now you're speaking my language! Let's turn that thought into ACTION!",
+      "You're not just thinking like a winner - you're thinking like a CHAMPION! What's your next move?",
+      "That's the kind of mindset that builds EMPIRES! Keep that energy flowing!",
+    ]
+
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)]
   }
 
   const getOrbGradient = () => {
@@ -585,7 +628,7 @@ export function UnifiedAIOrb() {
                     </div>
 
                     <div className="p-3 bg-gradient-to-r from-red-800/30 to-orange-800/30 rounded-lg border border-red-400/30">
-                      <div className="text-sm text-red-300 font-medium">Active: {currentMode.name}</div>
+                      <div className="text-sm text-red-300 font-medium">Wolf Mode: {currentMode.name}</div>
                       <div className="text-xs text-red-400">{currentMode.description}</div>
                       <div className="flex items-center mt-1">
                         <TrendingUp className="w-3 h-3 text-red-400 mr-1" />
@@ -593,24 +636,157 @@ export function UnifiedAIOrb() {
                       </div>
                     </div>
 
-                    <Button
-                      onClick={triggerConversation}
-                      disabled={!isVoiceEnabled || isConversing}
-                      className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700"
-                    >
-                      {isConversing ? "Wolf Speaking..." : "Get Wolf Motivation"}
-                    </Button>
+                    {/* Chat Messages */}
+                    <div className="h-48 overflow-y-auto bg-slate-800/30 rounded-lg p-3 space-y-2">
+                      {messages.length === 0 ? (
+                        <div className="text-center text-slate-400 text-sm py-8">
+                          <Crown className="w-8 h-8 mx-auto mb-2 text-amber-400" />
+                          <div>Start a conversation with Wolf!</div>
+                          <div className="text-xs mt-1">Ask about money, success, or motivation</div>
+                        </div>
+                      ) : (
+                        messages.map((message) => (
+                          <div
+                            key={message.id}
+                            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                          >
+                            <div
+                              className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                                message.sender === "user"
+                                  ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
+                                  : "bg-amber-600/30 text-amber-100 border border-amber-400/30"
+                              }`}
+                            >
+                              <div className="flex items-start space-x-2">
+                                {message.sender === "wolf" && (
+                                  <Crown className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                                )}
+                                <div className="flex-1">
+                                  <div>{message.text}</div>
+                                  <div className="text-xs opacity-60 mt-1">
+                                    {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
 
-                    {lastResponse && (
-                      <div className="p-3 bg-red-800/20 rounded-lg border border-red-600/30">
-                        <div className="text-xs text-red-300 mb-1">Last Response:</div>
-                        <div className="text-sm text-red-100 leading-relaxed">{lastResponse}</div>
-                      </div>
-                    )}
+                      {/* Typing Indicator */}
+                      {isTyping && (
+                        <div className="flex justify-start">
+                          <div className="bg-amber-600/30 text-amber-100 border border-amber-400/30 p-2 rounded-lg">
+                            <div className="flex items-center space-x-2">
+                              <Crown className="w-4 h-4 text-amber-400" />
+                              <div className="flex space-x-1">
+                                <motion.div
+                                  className="w-2 h-2 bg-amber-400 rounded-full"
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0 }}
+                                />
+                                <motion.div
+                                  className="w-2 h-2 bg-amber-400 rounded-full"
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
+                                />
+                                <motion.div
+                                  className="w-2 h-2 bg-amber-400 rounded-full"
+                                  animate={{ scale: [1, 1.2, 1] }}
+                                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
+                                />
+                              </div>
+                              <span className="text-xs">Wolf is typing...</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Message Input */}
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                        placeholder="Ask Wolf about money, success, motivation..."
+                        className="flex-1 px-3 py-2 bg-slate-800/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 text-sm focus:outline-none focus:border-amber-400/50"
+                        disabled={isTyping}
+                      />
+                      <Button
+                        onClick={sendMessage}
+                        disabled={!userInput.trim() || !isVoiceEnabled || isTyping}
+                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 px-4"
+                      >
+                        {isTyping ? (
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
+                          >
+                            <Zap className="w-4 h-4" />
+                          </motion.div>
+                        ) : (
+                          <MessageSquare className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+
+                    {/* Quick Conversation Starters */}
+                    <div className="grid grid-cols-2 gap-1">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("How can I make more money?")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-green-400 hover:text-green-300"
+                        disabled={isTyping}
+                      >
+                        💰 Make Money
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("I need motivation to succeed")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-blue-400 hover:text-blue-300"
+                        disabled={isTyping}
+                      >
+                        🚀 Get Motivated
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("What's your best business advice?")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-purple-400 hover:text-purple-300"
+                        disabled={isTyping}
+                      >
+                        💼 Business Tips
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setUserInput("How do I become successful?")
+                          setTimeout(sendMessage, 100)
+                        }}
+                        className="text-xs text-amber-400 hover:text-amber-300"
+                        disabled={isTyping}
+                      >
+                        👑 Success Secrets
+                      </Button>
+                    </div>
 
                     <div className="text-center">
                       <Badge className="bg-red-500/20 text-red-300 border-red-400/30">
-                        {conversationCount} Conversations
+                        {conversationCount} Messages Exchanged
                       </Badge>
                     </div>
                   </TabsContent>
