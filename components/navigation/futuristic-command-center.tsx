@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Brain, Crown, Mic, Volume2, VolumeX, Sparkles, Zap, Globe, Mountain, Waves, TreePine, Cpu } from "lucide-react"
 import { motion } from "framer-motion"
-import { voaiEnvironments, type VOAIEnvironment } from "@/lib/voai-environments"
+import { VOAI_ENVIRONMENTS, type VOAIEnvironment } from "@/lib/voai-environments"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Home } from "lucide-react"
 
@@ -35,7 +35,7 @@ type WidgetKey = keyof typeof widgetMap
 export function FuturisticCommandCenter() {
   /* ---- 2.  Store active key and environment state ---- */
   const [active, setActive] = useState<WidgetKey | null>(null)
-  const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(voaiEnvironments[0])
+  const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
   const [activeAction, setActiveAction] = useState<string | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
   const [executionResults, setExecutionResults] = useState<string[]>([])
@@ -214,7 +214,7 @@ export function FuturisticCommandCenter() {
 
               <ScrollArea className="h-56 pr-2">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {voaiEnvironments.map((environment) => {
+                  {VOAI_ENVIRONMENTS.map((environment) => {
                     const IconComponent = getEnvironmentIcon(environment.id)
                     return (
                       <motion.div key={environment.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
