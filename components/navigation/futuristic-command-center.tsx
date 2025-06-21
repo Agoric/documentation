@@ -40,7 +40,7 @@ type WidgetKey = keyof typeof widgetMap
 
 export function FuturisticCommandCenter() {
   /* ---- 2.  Store active key and environment state ---- */
-  const [active, setActive] = useState<WidgetKey | null>("aiChat")
+  const [active, setActive] = useState<WidgetKey | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
   const [activeOption, setActiveOption] = useState<EnvironmentOption | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
@@ -52,6 +52,8 @@ export function FuturisticCommandCenter() {
 
   /* ---- 3.  Derive component safely with optional chaining --------------- */
   const ActiveWidget = active ? widgetMap[active] : null
+  // NEW — if dynamic import hasn’t resolved yet, don’t render
+  const ReadyWidget = typeof ActiveWidget === "function" ? ActiveWidget : null
 
   const handleEnvironmentSelect = (environment: VOAIEnvironment) => {
     setSelectedEnvironment(environment)
@@ -388,18 +390,18 @@ export function FuturisticCommandCenter() {
       </Card>
 
       {/* Active Widget Display */}
-      {ActiveWidget && (
+      {ReadyWidget && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-6xl border rounded-lg overflow-hidden shadow-lg bg-slate-800/30 border-purple-500/30"
         >
-          <ActiveWidget />
+          <ReadyWidget />
         </motion.div>
       )}
 
       {/* Fallback when nothing selected */}
-      {!ActiveWidget && (
+      {!ReadyWidget && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-8">
           <p className="text-sm text-gray-500 italic">
             Select a module above to begin <span className="text-purple-500">🚀</span>
