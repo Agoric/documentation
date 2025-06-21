@@ -296,25 +296,31 @@ export function RealVoiceEngine() {
         "x-replicate-key": replicateKey,
       }
 
-      const response = await fetch("/api/voice/replicate", {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ text: text, voice_preset: voiceProfile.voiceId }),
-      })
+      const res = await fetchWithRetry(
+        "/api/voice/replicate",
+        {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ text, voice_preset: voiceProfile.voiceId }),
+        },
+        3, // retries - exponential back-off handled inside helper
+      )
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          toast({
-            title: "Missing Replicate API key",
-            description: "Please add your Replicate API key below.",
-            variant: "destructive",
-          })
-        }
-        throw new Error(`Replicate API error: ${response.status}`)
+      if (!res.ok) {
+        const errTxt = await res.text().catch(() => "")
+        toast({
+          title: "Replicate service unavailable",
+          description:
+            res.status === 502 || res.status === 504
+              ? "The TTS service is temporarily unreachable. Please try again in a moment."
+              : `Replicate error ${res.status}: ${errTxt || "Unknown error"}`,
+          variant: "destructive",
+        })
+        return null
       }
 
-      const data = await response.json()
-      return data.audio_url
+      const { audio_url } = (await res.json()) as { audio_url: string }
+      return audio_url
     } catch (error) {
       console.error("Replicate generation error:", error)
       return null
