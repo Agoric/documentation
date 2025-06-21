@@ -763,8 +763,9 @@ export function UnifiedAIOrb() {
               whileTap={{ scale: 0.95 }}
             >
               {(() => {
-                const Icon = getOrbIcon()
-                return <Icon className="w-7 h-7 text-white" />
+                const IconComp = getOrbIcon()
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                return IconComp ? <IconComp className="w-7 h-7 text-white" /> : null
               })()}
             </motion.div>
 
