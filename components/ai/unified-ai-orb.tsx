@@ -976,48 +976,53 @@ export function UnifiedAIOrb() {
                           <div className="text-xs mt-1">I can browse websites, read files, and mimic personalities</div>
                         </div>
                       ) : (
-                        messages.filter(Boolean).map((message) => (
-                          <div
-                            key={message.id}
-                            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
-                          >
+                        messages
+                          // Ensure we never render null / undefined
+                          .filter(
+                            (m): m is NonNullable<typeof m> => m !== null && m !== undefined && typeof m === "object",
+                          )
+                          .map((message) => (
                             <div
-                              className={`max-w-[85%] p-2 rounded-lg text-sm ${
-                                message.sender === "user"
-                                  ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
-                                  : message.type === "web"
-                                    ? "bg-green-600/30 text-green-100 border border-green-400/30"
-                                    : message.type === "file"
-                                      ? "bg-orange-600/30 text-orange-100 border border-orange-400/30"
-                                      : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
-                              }`}
+                              key={message.id}
+                              className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                             >
-                              <div className="flex items-start space-x-2">
-                                {message.sender === "ai" && (
-                                  <div className="text-lg mt-0.5 flex-shrink-0">
-                                    {message.type === "web"
-                                      ? "🌐"
+                              <div
+                                className={`max-w-[85%] p-2 rounded-lg text-sm ${
+                                  message.sender === "user"
+                                    ? "bg-blue-600/30 text-blue-100 border border-blue-400/30"
+                                    : message.type === "web"
+                                      ? "bg-green-600/30 text-green-100 border border-green-400/30"
                                       : message.type === "file"
-                                        ? "📄"
-                                        : selectedPersonality.icon}
-                                  </div>
-                                )}
-                                <div className="flex-1">
-                                  <div className="whitespace-pre-line">{message.text}</div>
-                                  <div className="text-xs opacity-60 mt-1 flex items-center justify-between">
-                                    <span>
-                                      {message.timestamp.toLocaleTimeString([], {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })}
-                                    </span>
-                                    {message.personality && <span>{message.personality}</span>}
+                                        ? "bg-orange-600/30 text-orange-100 border border-orange-400/30"
+                                        : "bg-purple-600/30 text-purple-100 border border-purple-400/30"
+                                }`}
+                              >
+                                <div className="flex items-start space-x-2">
+                                  {message.sender === "ai" && (
+                                    <div className="text-lg mt-0.5 flex-shrink-0">
+                                      {message.type === "web"
+                                        ? "🌐"
+                                        : message.type === "file"
+                                          ? "📄"
+                                          : selectedPersonality.icon}
+                                    </div>
+                                  )}
+                                  <div className="flex-1">
+                                    <div className="whitespace-pre-line">{message.text}</div>
+                                    <div className="text-xs opacity-60 mt-1 flex items-center justify-between">
+                                      <span>
+                                        {message.timestamp.toLocaleTimeString([], {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </span>
+                                      {message.personality && <span>{message.personality}</span>}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ))
+                          ))
                       )}
 
                       {/* Typing Indicator */}
