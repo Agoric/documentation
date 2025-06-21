@@ -250,30 +250,33 @@ export function UnifiedAIOrb() {
         recognitionRef.current.maxAlternatives = 3
 
         recognitionRef.current.onresult = (event) => {
-          const results = event.results
-          const lastResult = results[results.length - 1]
-          const transcript = lastResult[0].transcript
-          const confidence = lastResult[0].confidence
+          // Make sure we actually have a result with an alternative
+          if (!event?.results?.length) return
+
+          const lastResult = event.results[event.results.length - 1]
+          if (!lastResult || !lastResult[0]) return
+
+          const transcript = lastResult[0]?.transcript?.trim() ?? ""
+          const confidence = lastResult[0]?.confidence ?? 0
+
+          // Ignore empty interim results
+          if (!transcript) return
 
           setVoiceConfidence(confidence)
           setLastSpeechTime(Date.now())
 
           if (lastResult.isFinal) {
             if (isVoiceConversationMode) {
-              // Seamless conversation mode
-              handleVoiceConversation(transcript.trim())
+              handleVoiceConversation(transcript)
             } else {
-              // Command mode
-              setLastCommand(transcript.toLowerCase().trim())
-              processVoiceCommand(transcript.toLowerCase().trim())
+              setLastCommand(transcript.toLowerCase())
+              processVoiceCommand(transcript.toLowerCase())
             }
             setVoiceActivityDetected(false)
           } else {
-            // Interim results for real-time feedback
+            // Interim feedback
             setVoiceActivityDetected(true)
-            if (transcript.trim().length > 0) {
-              setLastCommand(transcript)
-            }
+            setLastCommand(transcript)
           }
         }
 
@@ -972,7 +975,7 @@ export function UnifiedAIOrb() {
                           <div className="text-xs mt-1">I can browse websites, read files, and mimic personalities</div>
                         </div>
                       ) : (
-                        messages.map((message) => (
+                        messages.filter(Boolean).map((message) => (
                           <div
                             key={message.id}
                             className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
