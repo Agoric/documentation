@@ -169,20 +169,56 @@ export function RealVoiceEngine() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-elevenlabs-key": apiKey, // always send – we know we have it
+          "x-elevenlabs-key": apiKey,
         },
         body: JSON.stringify({ text, voiceId }),
       })
 
       if (!res.ok) {
-        const { error } = await res.json()
-        throw new Error(error || `ElevenLabs proxy error: ${res.status}`)
+        // Parse JSON safely
+        let errPayload: unknown = {}
+        try {
+          errPayload = await res.json()
+        } catch {
+          /* noop */
+        }
+
+        // Detect invalid/expired key and clear LS so the input field shows again
+        const isInvalidKey =
+          res.status === 401 ||
+          (typeof errPayload === "object" &&
+            errPayload !== null &&
+            // @ts-ignore
+            errPayload.detail?.status === "invalid_api_key")
+
+        if (isInvalidKey) {
+          if (localStorage.getItem("elevenlabs_api_key")) {
+            localStorage.removeItem("elevenlabs_api_key")
+          }
+          setApiKey("")
+          toast({
+            title: "Invalid ElevenLabs API key",
+            description: "The key you supplied is not valid. Please provide a correct key.",
+            variant: "destructive",
+          })
+          return null
+        }
+
+        const message =
+          // @ts-ignore
+          errPayload?.detail?.message || `ElevenLabs proxy error: ${res.status}`
+        throw new Error(message)
       }
 
       const blob = await res.blob()
       return URL.createObjectURL(blob)
     } catch (err) {
       console.error("ElevenLabs proxy generation error:", err)
+      toast({
+        title: "Voice generation failed",
+        description: (err as Error).message,
+        variant: "destructive",
+      })
       return null
     }
   }
