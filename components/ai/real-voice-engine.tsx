@@ -73,8 +73,6 @@ export function RealVoiceEngine() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioCache, setAudioCache] = useState<Map<string, string>>(new Map())
-  const [apiKey, setApiKey] = useState<string>("")
-
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -86,12 +84,6 @@ export function RealVoiceEngine() {
       console.error("Audio playback error")
     }
 
-    // Check for stored API key
-    const storedKey = localStorage.getItem("elevenlabs_api_key")
-    if (storedKey) {
-      setApiKey(storedKey)
-    }
-
     return () => {
       if (audioRef.current) {
         audioRef.current.pause()
@@ -101,11 +93,6 @@ export function RealVoiceEngine() {
   }, [])
 
   const generateRealVoice = async (text: string, voiceProfile: RealVoiceProfile): Promise<string | null> => {
-    if (!apiKey && voiceProfile.apiProvider === "elevenlabs") {
-      console.warn("ElevenLabs API key not provided")
-      return null
-    }
-
     setIsGenerating(true)
 
     try {
@@ -148,33 +135,21 @@ export function RealVoiceEngine() {
 
   const generateElevenLabsVoice = async (text: string, voiceId: string): Promise<string | null> => {
     try {
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+      const res = await fetch("/api/voice/elevenlabs", {
         method: "POST",
-        headers: {
-          Accept: "audio/mpeg",
-          "Content-Type": "application/json",
-          "xi-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          text: text,
-          model_id: "eleven_monolingual_v1",
-          voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.8,
-            style: 0.2,
-            use_speaker_boost: true,
-          },
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, voiceId }),
       })
 
-      if (!response.ok) {
-        throw new Error(`ElevenLabs API error: ${response.status}`)
+      if (!res.ok) {
+        const { error } = await res.json()
+        throw new Error(error || `ElevenLabs proxy error: ${res.status}`)
       }
 
-      const audioBlob = await response.blob()
-      return URL.createObjectURL(audioBlob)
-    } catch (error) {
-      console.error("ElevenLabs generation error:", error)
+      const blob = await res.blob()
+      return URL.createObjectURL(blob)
+    } catch (err) {
+      console.error("ElevenLabs proxy generation error:", err)
       return null
     }
   }
@@ -256,11 +231,6 @@ export function RealVoiceEngine() {
     }
   }
 
-  const saveApiKey = (key: string) => {
-    setApiKey(key)
-    localStorage.setItem("elevenlabs_api_key", key)
-  }
-
   return (
     <div className="fixed top-32 right-6 z-40">
       <Card className="w-96 bg-gradient-to-br from-slate-900/95 to-purple-900/95 backdrop-blur-xl border-amber-400/30">
@@ -285,28 +255,6 @@ export function RealVoiceEngine() {
           </div>
 
           {/* API Key Input */}
-          {!apiKey && (
-            <div className="mb-4 p-3 bg-amber-900/20 border border-amber-400/30 rounded-lg">
-              <div className="text-sm text-amber-300 mb-2">ElevenLabs API Key Required:</div>
-              <input
-                type="password"
-                placeholder="Enter your ElevenLabs API key..."
-                className="w-full bg-slate-800/50 border border-slate-600/30 rounded px-3 py-2 text-white text-sm"
-                onBlur={(e) => {
-                  if (e.target.value) {
-                    saveApiKey(e.target.value)
-                  }
-                }}
-              />
-              <div className="text-xs text-amber-400 mt-1">
-                Get your free API key at{" "}
-                <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" className="underline">
-                  elevenlabs.io
-                </a>
-              </div>
-            </div>
-          )}
-
           {/* Voice Selection */}
           <div className="mb-4">
             <div className="text-sm text-amber-300 mb-2">Select Voice:</div>
@@ -361,7 +309,7 @@ export function RealVoiceEngine() {
           <div className="mb-4">
             <Button
               onClick={testVoice}
-              disabled={!isEnabled || isGenerating || (!apiKey && selectedVoice.apiProvider === "elevenlabs")}
+              disabled={!isEnabled || isGenerating}
               className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
             >
               {isGenerating ? (
