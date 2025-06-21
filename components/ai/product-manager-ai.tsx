@@ -84,8 +84,9 @@ export default function ProductManagerAI() {
               <CardHeader className="pb-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mb-3">
                   {(() => {
+                    /* SAFETY: only render when the icon is a real React component */
                     const Icon = feature.icon
-                    return Icon ? <Icon className="w-6 h-6 text-white" /> : null
+                    return typeof Icon === "function" ? <Icon className="w-6 h-6 text-white" /> : null
                   })()}
                 </div>
                 <h3 className="font-semibold text-slate-800">{feature.title}</h3>
