@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Crown, Send, Mic, MicOff, Volume2, VolumeX, Brain, Sparkles, Copy } from "lucide-react"
+import { RealVoiceEngine } from "./real-voice-engine"
 import type { SpeechRecognition } from "web-speech-api"
 
 interface Message {
@@ -24,6 +25,7 @@ interface Message {
 
 interface VoiceSettings {
   enabled: boolean
+  useRealVoice: boolean
   voice: SpeechSynthesisVoice | null
   rate: number
   pitch: number
@@ -106,10 +108,11 @@ export function ImperialAIChat() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>({
     enabled: true,
+    useRealVoice: true, // Default to real voice
     voice: null,
-    rate: 1.3, // Much faster for natural conversation
-    pitch: 0.95, // Slightly lower for authority
-    volume: 0.85, // Comfortable volume
+    rate: 1.3,
+    pitch: 0.95,
+    volume: 0.85,
   })
   const [conversationContext, setConversationContext] = useState<ConversationContext>({
     userName: "Champion",
@@ -124,24 +127,23 @@ export function ImperialAIChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
+  const realVoiceEngineRef = useRef<any>(null)
 
   // Initialize speech synthesis and recognition
   useEffect(() => {
     if (typeof window !== "undefined") {
       synthRef.current = window.speechSynthesis
 
-      // Load available voices with preference for natural-sounding ones
+      // Load available voices
       const loadVoices = () => {
         const voices = synthRef.current?.getVoices() || []
         setAvailableVoices(voices)
 
-        // Select the most natural-sounding voice available
         const preferredVoice =
           voices.find((voice) => voice.name.includes("Google US English") && voice.name.includes("Male")) ||
           voices.find((voice) => voice.name.includes("Microsoft David Desktop")) ||
           voices.find((voice) => voice.name.includes("Alex")) ||
           voices.find((voice) => voice.name.includes("Daniel")) ||
-          voices.find((voice) => voice.name.includes("Samantha")) ||
           voices.find((voice) => voice.lang.startsWith("en-US") && voice.localService) ||
           voices.find((voice) => voice.lang.startsWith("en-US")) ||
           voices[0]
@@ -154,7 +156,7 @@ export function ImperialAIChat() {
         synthRef.current.onvoiceschanged = loadVoices
       }
 
-      // Initialize speech recognition with better settings
+      // Initialize speech recognition
       if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
         recognitionRef.current = new SpeechRecognition()
@@ -191,7 +193,7 @@ export function ImperialAIChat() {
     }
     setMessages([welcomeMessage])
 
-    // Speak welcome message after a short delay
+    // Speak welcome message
     setTimeout(() => {
       speakMessage(welcomeMessage.content)
     }, 800)
@@ -202,34 +204,30 @@ export function ImperialAIChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  const speakMessage = (text: string) => {
-    if (!voiceSettings.enabled || !synthRef.current || !voiceSettings.voice) return
+  const speakMessage = async (text: string) => {
+    if (!voiceSettings.enabled) return
 
-    // Cancel any ongoing speech
-    synthRef.current.cancel()
+    if (voiceSettings.useRealVoice && realVoiceEngineRef.current) {
+      // Use real AI voice
+      await realVoiceEngineRef.current.playRealVoice(text)
+    } else if (synthRef.current && voiceSettings.voice) {
+      // Fallback to browser TTS
+      synthRef.current.cancel()
 
-    // Process text for more natural speech
-    const processedText = text
-      .replace(/\.\.\./g, "... ") // Add pause after ellipsis
-      .replace(/!/g, ".") // Soften exclamations for smoother flow
-      .replace(/\?/g, "?") // Keep questions natural
-      .replace(/([.!?])\s*([A-Z])/g, "$1 $2") // Ensure proper spacing
+      const processedText = text
+        .replace(/\.\.\./g, "... ")
+        .replace(/!/g, ".")
+        .replace(/\?/g, "?")
+        .replace(/([.!?])\s*([A-Z])/g, "$1 $2")
 
-    const utterance = new SpeechSynthesisUtterance(processedText)
-    utterance.voice = voiceSettings.voice
-    utterance.rate = voiceSettings.rate
-    utterance.pitch = voiceSettings.pitch
-    utterance.volume = voiceSettings.volume
+      const utterance = new SpeechSynthesisUtterance(processedText)
+      utterance.voice = voiceSettings.voice
+      utterance.rate = voiceSettings.rate
+      utterance.pitch = voiceSettings.pitch
+      utterance.volume = voiceSettings.volume
 
-    // Add natural pauses and emphasis
-    utterance.onboundary = (event) => {
-      if (event.name === "sentence") {
-        // Add slight pause between sentences
-        setTimeout(() => {}, 100)
-      }
+      synthRef.current.speak(utterance)
     }
-
-    synthRef.current.speak(utterance)
   }
 
   const startListening = () => {
@@ -292,7 +290,7 @@ export function ImperialAIChat() {
     setConversationContext((prev) => ({
       ...prev,
       lastTopic: category || "general",
-      conversationFlow: [...prev.conversationFlow.slice(-4), userMessage], // Keep last 5 messages
+      conversationFlow: [...prev.conversationFlow.slice(-4), userMessage],
     }))
 
     // Greeting responses
@@ -395,7 +393,7 @@ export function ImperialAIChat() {
       setTimeout(() => {
         speakMessage(response)
       }, 200)
-    }, 800) // Reduced delay for faster conversation
+    }, 800)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -412,6 +410,10 @@ export function ImperialAIChat() {
     }
   }
 
+  const toggleRealVoice = () => {
+    setVoiceSettings((prev) => ({ ...prev, useRealVoice: !prev.useRealVoice }))
+  }
+
   const copyMessage = (content: string) => {
     navigator.clipboard.writeText(content)
   }
@@ -421,291 +423,289 @@ export function ImperialAIChat() {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 z-50">
-      <AnimatePresence>
-        {!isExpanded ? (
-          // Floating AI Orb
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            className="relative cursor-pointer"
-            onClick={() => setIsExpanded(true)}
-          >
+    <>
+      <div className="fixed bottom-6 left-6 z-50">
+        <AnimatePresence>
+          {!isExpanded ? (
+            // Floating AI Orb
             <motion.div
-              className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 shadow-2xl flex items-center justify-center"
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(168, 85, 247, 0.5)",
-                  "0 0 40px rgba(59, 130, 246, 0.7)",
-                  "0 0 20px rgba(168, 85, 247, 0.5)",
-                ],
-              }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="relative cursor-pointer"
+              onClick={() => setIsExpanded(true)}
             >
-              <Brain className="w-8 h-8 text-white" />
-            </motion.div>
-
-            {/* Floating particles */}
-            {[...Array(6)].map((_, i) => (
               <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-                style={{
-                  left: `${20 + Math.random() * 60}%`,
-                  top: `${20 + Math.random() * 60}%`,
-                }}
+                className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 shadow-2xl flex items-center justify-center"
                 animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 1, 0.3],
-                  scale: [0.5, 1, 0.5],
+                  boxShadow: [
+                    "0 0 20px rgba(168, 85, 247, 0.5)",
+                    "0 0 40px rgba(59, 130, 246, 0.7)",
+                    "0 0 20px rgba(168, 85, 247, 0.5)",
+                  ],
                 }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Number.POSITIVE_INFINITY,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
+                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Brain className="w-8 h-8 text-white" />
+              </motion.div>
 
-            {/* Tooltip */}
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
-              Imperial AI Genius Guide
-            </div>
-          </motion.div>
-        ) : (
-          // Expanded Chat Interface
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.8, opacity: 0, y: 50 }}
-            className="w-96 h-[600px]"
-          >
-            <Card
-              className="h-full bg-gradient-to-br from-slate-900/98 to-purple-900/98 backdrop-blur-xl border-amber-400/30 shadow-2xl"
-              style={{
-                clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
-              }}
+              {/* Floating particles */}
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+                  style={{
+                    left: `${20 + Math.random() * 60}%`,
+                    top: `${20 + Math.random() * 60}%`,
+                  }}
+                  animate={{
+                    y: [0, -20, 0],
+                    opacity: [0.3, 1, 0.3],
+                    scale: [0.5, 1, 0.5],
+                  }}
+                  transition={{
+                    duration: 2 + Math.random(),
+                    repeat: Number.POSITIVE_INFINITY,
+                    delay: Math.random() * 2,
+                  }}
+                />
+              ))}
+
+              {/* Tooltip */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
+                Imperial AI Genius Guide
+              </div>
+            </motion.div>
+          ) : (
+            // Expanded Chat Interface
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 50 }}
+              className="w-96 h-[600px]"
             >
-              {/* Header */}
-              <CardHeader className="pb-3 border-b border-amber-400/20">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-cyan-600 flex items-center justify-center">
-                      <Brain className="w-5 h-5 text-white" />
+              <Card
+                className="h-full bg-gradient-to-br from-slate-900/98 to-purple-900/98 backdrop-blur-xl border-amber-400/30 shadow-2xl"
+                style={{
+                  clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
+                }}
+              >
+                {/* Header */}
+                <CardHeader className="pb-3 border-b border-amber-400/20">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-cyan-600 flex items-center justify-center">
+                        <Brain className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-amber-300 text-lg font-serif">Imperial AI Genius</CardTitle>
+                        <p className="text-purple-300 text-xs">Real Voice Assistant</p>
+                      </div>
                     </div>
-                    <div>
-                      <CardTitle className="text-amber-300 text-lg font-serif">Imperial AI Genius</CardTitle>
-                      <p className="text-purple-300 text-xs">Conversational Assistant</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={toggleVoice}
-                      className={`w-8 h-8 p-0 ${voiceSettings.enabled ? "text-green-400" : "text-gray-400"}`}
-                    >
-                      {voiceSettings.enabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setIsExpanded(false)}
-                      className="w-8 h-8 p-0 text-amber-400"
-                    >
-                      ×
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Status Bar */}
-                <div className="flex items-center justify-between mt-2 text-xs">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-green-400">Conversational Mode</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30">
-                      <Crown className="w-3 h-3 mr-1" />
-                      Speed: {voiceSettings.rate.toFixed(1)}x
-                    </Badge>
-                  </div>
-                </div>
-              </CardHeader>
-
-              {/* Messages */}
-              <CardContent className="p-0 flex-1 flex flex-col">
-                <ScrollArea className="flex-1 p-4">
-                  <div className="space-y-4">
-                    {messages.map((message) => (
-                      <motion.div
-                        key={message.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={toggleRealVoice}
+                        className={`w-8 h-8 p-0 ${voiceSettings.useRealVoice ? "text-amber-400" : "text-gray-400"}`}
+                        title="Toggle Real Voice"
                       >
-                        <div
-                          className={`max-w-[80%] rounded-lg p-3 ${
-                            message.type === "user"
-                              ? "bg-gradient-to-br from-amber-600/80 to-orange-600/80 text-white"
-                              : "bg-gradient-to-br from-purple-800/50 to-indigo-800/50 text-purple-100 border border-purple-600/30"
-                          }`}
+                        <Brain className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={toggleVoice}
+                        className={`w-8 h-8 p-0 ${voiceSettings.enabled ? "text-green-400" : "text-gray-400"}`}
+                      >
+                        {voiceSettings.enabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setIsExpanded(false)}
+                        className="w-8 h-8 p-0 text-amber-400"
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Status Bar */}
+                  <div className="flex items-center justify-between mt-2 text-xs">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                      <span className="text-green-400">
+                        {voiceSettings.useRealVoice ? "Real AI Voice" : "Browser Voice"}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30">
+                        <Crown className="w-3 h-3 mr-1" />
+                        {voiceSettings.useRealVoice ? "AI Powered" : "Standard"}
+                      </Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+
+                {/* Messages */}
+                <CardContent className="p-0 flex-1 flex flex-col">
+                  <ScrollArea className="flex-1 p-4">
+                    <div className="space-y-4">
+                      {messages.map((message) => (
+                        <motion.div
+                          key={message.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
                         >
-                          <div className="flex items-start space-x-2">
-                            {message.type === "assistant" && (
+                          <div
+                            className={`max-w-[80%] rounded-lg p-3 ${
+                              message.type === "user"
+                                ? "bg-gradient-to-br from-amber-600/80 to-orange-600/80 text-white"
+                                : "bg-gradient-to-br from-purple-800/50 to-indigo-800/50 text-purple-100 border border-purple-600/30"
+                            }`}
+                          >
+                            <div className="flex items-start space-x-2">
+                              {message.type === "assistant" && (
+                                <Avatar className="w-6 h-6">
+                                  <AvatarFallback className="bg-gradient-to-br from-purple-600 to-cyan-600 text-white text-xs">
+                                    AI
+                                  </AvatarFallback>
+                                </Avatar>
+                              )}
+                              <div className="flex-1">
+                                <p className="text-sm leading-relaxed">{message.content}</p>
+                                <div className="flex items-center justify-between mt-2">
+                                  <div className="flex items-center space-x-2 text-xs opacity-60">
+                                    {message.isVoice && <Mic className="w-3 h-3" />}
+                                    {message.category && (
+                                      <Badge variant="outline" className="text-xs h-4">
+                                        {message.category}
+                                      </Badge>
+                                    )}
+                                    <span>{message.timestamp.toLocaleTimeString()}</span>
+                                  </div>
+                                  {message.type === "assistant" && (
+                                    <div className="flex items-center space-x-1">
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => copyMessage(message.content)}
+                                        className="w-6 h-6 p-0 text-purple-300 hover:text-purple-100"
+                                      >
+                                        <Copy className="w-3 h-3" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => speakMessage(message.content)}
+                                        className="w-6 h-6 p-0 text-purple-300 hover:text-purple-100"
+                                      >
+                                        <Volume2 className="w-3 h-3" />
+                                      </Button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+
+                      {isProcessing && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+                          <div className="bg-gradient-to-br from-purple-800/50 to-indigo-800/50 text-purple-100 border border-purple-600/30 rounded-lg p-3">
+                            <div className="flex items-center space-x-2">
                               <Avatar className="w-6 h-6">
                                 <AvatarFallback className="bg-gradient-to-br from-purple-600 to-cyan-600 text-white text-xs">
                                   AI
                                 </AvatarFallback>
                               </Avatar>
-                            )}
-                            <div className="flex-1">
-                              <p className="text-sm leading-relaxed">{message.content}</p>
-                              <div className="flex items-center justify-between mt-2">
-                                <div className="flex items-center space-x-2 text-xs opacity-60">
-                                  {message.isVoice && <Mic className="w-3 h-3" />}
-                                  {message.category && (
-                                    <Badge variant="outline" className="text-xs h-4">
-                                      {message.category}
-                                    </Badge>
-                                  )}
-                                  <span>{message.timestamp.toLocaleTimeString()}</span>
-                                </div>
-                                {message.type === "assistant" && (
-                                  <div className="flex items-center space-x-1">
-                                    <Button
-                                      size="sm"
-                                      variant="ghost"
-                                      onClick={() => copyMessage(message.content)}
-                                      className="w-6 h-6 p-0 text-purple-300 hover:text-purple-100"
-                                    >
-                                      <Copy className="w-3 h-3" />
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant="ghost"
-                                      onClick={() => speakMessage(message.content)}
-                                      className="w-6 h-6 p-0 text-purple-300 hover:text-purple-100"
-                                    >
-                                      <Volume2 className="w-3 h-3" />
-                                    </Button>
-                                  </div>
-                                )}
+                              <div className="flex items-center space-x-1">
+                                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" />
+                                <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce delay-100" />
+                                <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce delay-200" />
+                                <span className="text-sm text-purple-300 ml-2">Thinking...</span>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))}
-
-                    {isProcessing && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                        <div className="bg-gradient-to-br from-purple-800/50 to-indigo-800/50 text-purple-100 border border-purple-600/30 rounded-lg p-3">
-                          <div className="flex items-center space-x-2">
-                            <Avatar className="w-6 h-6">
-                              <AvatarFallback className="bg-gradient-to-br from-purple-600 to-cyan-600 text-white text-xs">
-                                AI
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="flex items-center space-x-1">
-                              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" />
-                              <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce delay-100" />
-                              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce delay-200" />
-                              <span className="text-sm text-purple-300 ml-2">Thinking...</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-                  <div ref={messagesEndRef} />
-                </ScrollArea>
-
-                {/* Input Area */}
-                <div className="p-4 border-t border-amber-400/20">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex-1 relative">
-                      <Input
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        placeholder="Chat with your AI genius..."
-                        className="bg-purple-900/40 border-purple-600/40 text-white placeholder-purple-300 pr-10"
-                        disabled={isProcessing}
-                      />
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={isListening ? stopListening : startListening}
-                        className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 p-0 ${
-                          isListening ? "text-red-400" : "text-purple-400"
-                        }`}
-                        disabled={isProcessing}
-                      >
-                        {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                      </Button>
-                    </div>
-                    <Button
-                      onClick={handleSendMessage}
-                      disabled={!inputValue.trim() || isProcessing}
-                      className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
-                    >
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  {/* Voice Controls */}
-                  <div className="flex items-center justify-between mt-2 text-xs">
-                    <div className="flex items-center space-x-2 text-purple-300">
-                      <Sparkles className="w-3 h-3" />
-                      <span>Natural conversation</span>
-                      {isListening && (
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
-                          className="w-2 h-2 bg-red-400 rounded-full"
-                        />
+                        </motion.div>
                       )}
                     </div>
-                    <div className="flex items-center space-x-1">
+                    <div ref={messagesEndRef} />
+                  </ScrollArea>
+
+                  {/* Input Area */}
+                  <div className="p-4 border-t border-amber-400/20">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex-1 relative">
+                        <Input
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          onKeyPress={handleKeyPress}
+                          placeholder="Chat with your AI genius..."
+                          className="bg-purple-900/40 border-purple-600/40 text-white placeholder-purple-300 pr-10"
+                          disabled={isProcessing}
+                        />
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={isListening ? stopListening : startListening}
+                          className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 p-0 ${
+                            isListening ? "text-red-400" : "text-purple-400"
+                          }`}
+                          disabled={isProcessing}
+                        >
+                          {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                        </Button>
+                      </div>
                       <Button
-                        size="sm"
-                        variant="ghost"
-                        className="w-6 h-6 p-0 text-purple-400"
-                        onClick={() => adjustVoiceSpeed(1.0)}
-                        title="Normal Speed"
+                        onClick={handleSendMessage}
+                        disabled={!inputValue.trim() || isProcessing}
+                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white"
                       >
-                        1x
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="w-6 h-6 p-0 text-amber-400"
-                        onClick={() => adjustVoiceSpeed(1.3)}
-                        title="Fast Speed"
-                      >
-                        1.3x
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="w-6 h-6 p-0 text-green-400"
-                        onClick={() => adjustVoiceSpeed(1.5)}
-                        title="Very Fast"
-                      >
-                        1.5x
+                        <Send className="w-4 h-4" />
                       </Button>
                     </div>
+
+                    {/* Voice Controls */}
+                    <div className="flex items-center justify-between mt-2 text-xs">
+                      <div className="flex items-center space-x-2 text-purple-300">
+                        <Sparkles className="w-3 h-3" />
+                        <span>{voiceSettings.useRealVoice ? "AI Voice Active" : "Browser Voice"}</span>
+                        {isListening && (
+                          <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
+                            className="w-2 h-2 bg-red-400 rounded-full"
+                          />
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Badge
+                          className={`text-xs ${
+                            voiceSettings.useRealVoice
+                              ? "bg-green-500/20 text-green-300 border-green-400/30"
+                              : "bg-gray-500/20 text-gray-300 border-gray-400/30"
+                          }`}
+                        >
+                          {voiceSettings.useRealVoice ? "REAL AI" : "STANDARD"}
+                        </Badge>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Real Voice Engine */}
+      <RealVoiceEngine ref={realVoiceEngineRef} />
+    </>
   )
 }
