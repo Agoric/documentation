@@ -1,9 +1,11 @@
-import { EnvironmentSelector } from "@/components/voai/environment-selector"
+"use client"
 
-export default function VOAIEnvironmentsPage() {
+import VOAIIntegration from "@/components/voai/voai-integration"
+
+export default function VOAIPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <EnvironmentSelector />
-    </div>
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-950 to-slate-950">
+      <VOAIIntegration />
+    </main>
   )
 }

@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
 import { Volume2, VolumeX, Sparkles, Zap, Eye } from "lucide-react"
 import {
   VOAI_ENVIRONMENTS,
@@ -14,6 +13,8 @@ import {
   type VOAIEnvironment,
   type EnvironmentOption,
 } from "@/lib/voai-environments"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { cn } from "@/lib/utils"
 
 interface EnvironmentSelectorProps {
   onEnvironmentChange?: (environment: VOAIEnvironment) => void
@@ -105,76 +106,30 @@ export function EnvironmentSelector({ onEnvironmentChange, onActionExecute }: En
       </div>
 
       {/* Environment Selection Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {VOAI_ENVIRONMENTS.map((environment) => (
-          <motion.div key={environment.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Card
-              className={`cursor-pointer transition-all duration-300 ${
-                selectedEnvironment.id === environment.id
-                  ? `bg-gradient-to-br ${environment.gradient} border-2 border-amber-400/50 ${holographicMode ? getHolographicEffect(environment.id) : ""}`
-                  : "bg-slate-800/50 border-slate-600/50 hover:border-slate-500/50"
-              }`}
-              onClick={() => handleEnvironmentSelect(environment)}
+      <Tabs
+        value={selectedEnvironment.id}
+        onValueChange={(id) => handleEnvironmentSelect(VOAI_ENVIRONMENTS.find((env) => env.id === id)!)}
+        className="w-full"
+      >
+        <TabsList className="grid w-full grid-cols-5 bg-slate-800/50">
+          {VOAI_ENVIRONMENTS.map((environment) => (
+            <TabsTrigger
+              key={environment.id}
+              value={environment.id}
+              className="flex flex-col items-center py-2 text-xs"
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <motion.div
-                      className="text-3xl"
-                      animate={
-                        selectedEnvironment.id === environment.id
-                          ? {
-                              scale: [1, 1.1, 1],
-                              rotate: [0, 5, -5, 0],
-                            }
-                          : {}
-                      }
-                      transition={{
-                        duration: 2,
-                        repeat: selectedEnvironment.id === environment.id ? Number.POSITIVE_INFINITY : 0,
-                      }}
-                    >
-                      {environment.icon}
-                    </motion.div>
-                    <div>
-                      <CardTitle className="text-lg text-white">{environment.name}</CardTitle>
-                      <p className="text-sm text-slate-300">{environment.theme}</p>
-                    </div>
-                  </div>
-                  {selectedEnvironment.id === environment.id && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="w-3 h-3 bg-amber-400 rounded-full animate-pulse"
-                    />
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-xs text-slate-400 mb-3">{environment.description}</p>
+              <span className="text-lg">{environment.emoji}</span>
+              {environment.name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-                {/* Environment Progress */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Mastery Progress</span>
-                    <span className="text-amber-400">{environmentProgress[environment.id] || 0}%</span>
-                  </div>
-                  <Progress value={environmentProgress[environment.id] || 0} className="h-1" />
-                </div>
-
-                {/* Special Features */}
-                <div className="mt-3 flex flex-wrap gap-1">
-                  {environment.specialFeatures.slice(0, 2).map((feature) => (
-                    <Badge key={feature} variant="secondary" className="text-xs">
-                      {feature}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+        {VOAI_ENVIRONMENTS.map((env) => (
+          <TabsContent key={env.id} value={env.id}>
+            <ActionGrid env={env} />
+          </TabsContent>
         ))}
-      </div>
+      </Tabs>
 
       {/* Selected Environment Details */}
       <Card className={`bg-gradient-to-br ${selectedEnvironment.gradient} border-amber-400/30`}>
@@ -373,5 +328,33 @@ export function EnvironmentSelector({ onEnvironmentChange, onActionExecute }: En
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+function ActionGrid({ env }: { env: VOAIEnvironment }) {
+  return (
+    <ScrollArea className="h-56 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-2">
+        {env.actions.map((act) => (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            key={act.id}
+            className={cn(
+              "rounded-lg p-3 cursor-pointer bg-gradient-to-br",
+              "from-slate-800/60 to-slate-900/60 border border-slate-700/60",
+            )}
+            onClick={() => alert(`🛠️  Executing "${act.label}" in ${env.name} environment…`)}
+          >
+            <Card>
+              <CardContent className="flex items-center space-x-3 p-2">
+                <span className="text-xl">{act.icon}</span>
+                <div className="text-sm">{act.label}</div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </ScrollArea>
   )
 }

@@ -15,6 +15,7 @@ import {
   type VOAIEnvironment,
   type EnvironmentOption,
 } from "@/lib/voai-environments"
+import { Home } from "lucide-react"
 
 /* ---- 1.  Register widgets here (lazy-loaded, no SSR) --------------------- */
 const widgetMap = {
@@ -37,7 +38,7 @@ const widgetMap = {
 
 type WidgetKey = keyof typeof widgetMap
 
-export function FuturisticCommandCenter() {
+export default function FuturisticCommandCenter() {
   /* ---- 2.  Store active key and environment state ---- */
   const [active, setActive] = useState<WidgetKey | null>("aiChat")
   const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
@@ -47,6 +48,7 @@ export function FuturisticCommandCenter() {
   const [holographicMode, setHolographicMode] = useState(true)
   const [ambientSoundEnabled, setAmbientSoundEnabled] = useState(true)
   const [environmentProgress, setEnvironmentProgress] = useState<Record<string, number>>({})
+  const [selectedEnv, setSelectedEnv] = useState(VOAI_ENVIRONMENTS[0].id)
 
   /* ---- 3.  Derive component safely with optional chaining --------------- */
   const ActiveWidget = active ? widgetMap[active] : null
@@ -404,6 +406,22 @@ export function FuturisticCommandCenter() {
           </p>
         </motion.div>
       )}
+
+      {/* New Dashboard Tab */}
+      <Card className="bg-gradient-to-br from-slate-900/90 to-purple-900/90 border-amber-400/30 mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-amber-300">
+            <Home className="w-5 h-5" />
+            Dashboard
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          <p className="text-sm text-slate-300">
+            Add whatever additional widgets you like here – analytics, AI chat, etc.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   )
 }
