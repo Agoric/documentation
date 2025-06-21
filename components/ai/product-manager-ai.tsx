@@ -11,11 +11,31 @@ export default function ProductManagerAI() {
   const [isActive, setIsActive] = useState(false)
 
   const features = [
-    { icon: FileText, title: "PRD Generation", description: "Draft comprehensive Product Requirements Documents" },
-    { icon: Target, title: "Strategy Planning", description: "Develop product roadmaps and strategic initiatives" },
-    { icon: Users, title: "User Research", description: "Analyze user feedback and market research" },
-    { icon: Lightbulb, title: "Feature Ideation", description: "Generate and prioritize feature ideas" },
-    { icon: TrendingUp, title: "Metrics & KPIs", description: "Define success metrics and tracking plans" },
+    {
+      icon: FileText,
+      title: "PRD Generation",
+      description: "Draft comprehensive Product Requirements Documents",
+    },
+    {
+      icon: Target,
+      title: "Strategy Planning",
+      description: "Develop product roadmaps and strategic initiatives",
+    },
+    {
+      icon: Users,
+      title: "User Research",
+      description: "Analyze user feedback and market research",
+    },
+    {
+      icon: Lightbulb,
+      title: "Feature Ideation",
+      description: "Generate and prioritize feature ideas",
+    },
+    {
+      icon: TrendingUp,
+      title: "Metrics & KPIs",
+      description: "Define success metrics and tracking plans",
+    },
   ]
 
   return (
@@ -89,7 +109,35 @@ export default function ProductManagerAI() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-6">{/* …existing preview content… */}</CardContent>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="bg-slate-100 rounded-lg p-4">
+                  <p className="text-slate-700">👋 Hello! I'm your AI Product Manager. I can help you with:</p>
+                  <ul className="mt-2 text-sm text-slate-600 space-y-1">
+                    <li>• Writing comprehensive PRDs</li>
+                    <li>• Analyzing market opportunities</li>
+                    <li>• Defining user stories and acceptance criteria</li>
+                    <li>• Creating product roadmaps</li>
+                    <li>• Prioritizing features using frameworks like RICE</li>
+                  </ul>
+                </div>
+
+                <div className="flex gap-2 flex-wrap">
+                  <Button variant="outline" size="sm">
+                    Write a PRD
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Analyze Competition
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Create User Stories
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Define KPIs
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
           </Card>
         )}
 
