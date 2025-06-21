@@ -120,8 +120,8 @@ export function RoyalVaultDashboard() {
     }
   }
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
+  const copyToClipboard = (text: string | undefined) => {
+    if (text) navigator.clipboard.writeText(text)
   }
 
   if (loading) {
@@ -180,7 +180,7 @@ export function RoyalVaultDashboard() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => copyToClipboard(activeWallet.address)}
+                      onClick={() => copyToClipboard(activeWallet?.address)}
                       className="text-purple-200 hover:text-amber-300"
                     >
                       <Copy className="w-4 h-4" />
@@ -305,8 +305,8 @@ export function RoyalVaultDashboard() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {activeWallet &&
-                                Object.keys(activeWallet.balances).map((symbol) => (
+                              {(activeWallet ? Object.keys(activeWallet.balances) : ["ETH"]) // safe fallback
+                                .map((symbol) => (
                                   <SelectItem key={symbol} value={symbol}>
                                     {symbol}
                                   </SelectItem>

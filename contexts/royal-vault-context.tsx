@@ -589,6 +589,7 @@ export const RoyalVaultProvider: React.FC<{ children: ReactNode }> = ({ children
   const sendTransaction = async (params: SendTransactionParams): Promise<CryptoTransaction> => {
     const txId = `tx_${Date.now()}`
 
+    const price = await getCurrencyPrice(params.symbol)
     const transaction: CryptoTransaction = {
       txId,
       walletId: params.walletId,
@@ -598,7 +599,7 @@ export const RoyalVaultProvider: React.FC<{ children: ReactNode }> = ({ children
       toAddress: params.toAddress,
       amount: params.amount,
       symbol: params.symbol,
-      valueUSD: params.amount * (getCurrencyPrice(params.symbol) || 0),
+      valueUSD: params.amount * price,
       network: "ethereum",
       gasUsed: 21000,
       gasFee: 0.002,
@@ -610,19 +611,31 @@ export const RoyalVaultProvider: React.FC<{ children: ReactNode }> = ({ children
     }
 
     // Update wallet balance (mock)
-    setWallets((prev) => ({
-      ...prev,
-      [params.walletId]: {
-        ...prev[params.walletId],
-        balances: {
-          ...prev[params.walletId].balances,
-          [params.symbol]: {
-            ...prev[params.walletId].balances[params.symbol],
-            amount: prev[params.walletId].balances[params.symbol].amount - params.amount,
+    setWallets((prev) => {
+      const w = prev[params.walletId]
+      const oldBal = w.balances[params.symbol] ?? {
+        symbol: params.symbol,
+        name: params.symbol,
+        amount: 0,
+        valueUSD: 0,
+        change24h: 0,
+        decimals: 18,
+        logoUrl: "",
+      }
+      return {
+        ...prev,
+        [params.walletId]: {
+          ...w,
+          balances: {
+            ...w.balances,
+            [params.symbol]: {
+              ...oldBal,
+              amount: oldBal.amount - params.amount,
+            },
           },
         },
-      },
-    }))
+      }
+    })
 
     return transaction
   }
