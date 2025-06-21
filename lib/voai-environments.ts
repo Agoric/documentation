@@ -71,6 +71,12 @@ export const VOAI_ENVIRONMENTS: VOAIEnvironment[] = [
   },
 ]
 
+// ---------------------------------------------------------------------------
+// Alias: some legacy / camel-cased imports expect `voaiEnvironments`.
+// This keeps backwards compatibility without touching all call-sites.
+export const voaiEnvironments = VOAI_ENVIRONMENTS
+// ---------------------------------------------------------------------------
+
 export function getEnvironmentById(id: string): VOAIEnvironment | undefined {
   return VOAI_ENVIRONMENTS.find((env) => env.id === id)
 }
