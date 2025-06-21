@@ -109,12 +109,27 @@ export function RealVoiceEngine() {
     return "" // 3️⃣ none yet
   })
 
+  // Add after the ElevenLabs API key state
+  const [replicateKey, setReplicateKey] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("replicate_api_key")
+      if (stored) return stored
+    }
+    return ""
+  })
+
   useEffect(() => {
     if (!PUBLIC_KEY) {
       // only look in LS if no env key
       const stored = localStorage.getItem("elevenlabs_api_key")
       if (stored) setApiKey(stored)
     }
+  }, [])
+
+  useEffect(() => {
+    // Load Replicate key from localStorage on mount
+    const stored = localStorage.getItem("replicate_api_key")
+    if (stored) setReplicateKey(stored)
   }, [])
 
   useEffect(() => {
@@ -265,12 +280,18 @@ export function RealVoiceEngine() {
 
   const generateReplicateVoice = async (text: string, voiceProfile: RealVoiceProfile): Promise<string | null> => {
     try {
-      // Using Replicate's Bark model for voice generation
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      }
+
+      // Add Replicate key if available
+      if (replicateKey) {
+        headers["x-replicate-key"] = replicateKey
+      }
+
       const response = await fetch("/api/voice/replicate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify({
           text: text,
           voice_preset: voiceProfile.voiceId,
@@ -278,6 +299,13 @@ export function RealVoiceEngine() {
       })
 
       if (!response.ok) {
+        if (response.status === 401) {
+          toast({
+            title: "Missing Replicate API key",
+            description: "Please add your Replicate API key below.",
+            variant: "destructive",
+          })
+        }
         throw new Error(`Replicate API error: ${response.status}`)
       }
 
@@ -385,6 +413,30 @@ export function RealVoiceEngine() {
             </div>
           )}
 
+          {/* Replicate API Key Input */}
+          {!replicateKey && (
+            <div className="mb-4 p-3 bg-blue-900/20 border border-blue-400/30 rounded-lg">
+              <div className="text-sm text-blue-300 mb-2">Optional Replicate API Key:</div>
+              <input
+                type="password"
+                placeholder="Paste Replicate key & press Enter…"
+                className="w-full bg-slate-800/50 border border-slate-600/30 rounded px-3 py-2 text-white text-sm"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && e.currentTarget.value) {
+                    localStorage.setItem("replicate_api_key", e.currentTarget.value)
+                    setReplicateKey(e.currentTarget.value)
+                    e.currentTarget.value = ""
+                    toast({
+                      title: "Replicate key saved",
+                      description: "Voice generation will now use your Replicate API key.",
+                    })
+                  }
+                }}
+              />
+              <p className="text-xs text-blue-400 mt-1">For Bark TTS fallback when ElevenLabs is unavailable.</p>
+            </div>
+          )}
+
           {/* Voice Selection */}
           <div className="mb-4">
             <div className="text-sm text-amber-300 mb-2">Select Voice:</div>
@@ -428,9 +480,17 @@ export function RealVoiceEngine() {
               </div>
               <div className="col-span-2">
                 <span className="text-purple-300">Provider:</span>
-                <Badge className="ml-1 bg-blue-500/20 text-blue-300 border-blue-400/30 text-xs">
-                  {selectedVoice.apiProvider.toUpperCase()}
-                </Badge>
+                <div className="flex items-center space-x-1 ml-1">
+                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30 text-xs">
+                    {selectedVoice.apiProvider.toUpperCase()}
+                  </Badge>
+                  {selectedVoice.apiProvider === "elevenlabs" && apiKey && (
+                    <Badge className="bg-green-500/20 text-green-300 border-green-400/30 text-xs">✓ KEY</Badge>
+                  )}
+                  {selectedVoice.apiProvider === "replicate" && replicateKey && (
+                    <Badge className="bg-green-500/20 text-green-300 border-green-400/30 text-xs">✓ KEY</Badge>
+                  )}
+                </div>
               </div>
             </div>
           </div>
