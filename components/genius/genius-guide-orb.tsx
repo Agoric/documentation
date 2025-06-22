@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -16,7 +16,12 @@ import {
   Target,
   Navigation,
   MessageCircle,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
 } from "lucide-react"
+import type { SpeechRecognition } from "web-speech-api"
 
 interface GuidanceStep {
   id: string
@@ -36,6 +41,14 @@ interface GuidanceTask {
   progress: number
   priority: "low" | "medium" | "high" | "critical"
   estimatedTime: string
+}
+
+interface VoiceSettings {
+  enabled: boolean
+  rate: number
+  pitch: number
+  volume: number
+  voice: SpeechSynthesisVoice | null
 }
 
 const SAMPLE_TASKS: GuidanceTask[] = [
@@ -133,6 +146,41 @@ const SAMPLE_TASKS: GuidanceTask[] = [
   },
 ]
 
+const GENIUS_RESPONSES = {
+  greetings: [
+    "Hello there, brilliant mind! I'm your Genius Guide, and I'm absolutely thrilled to help you navigate your journey to success!",
+    "Welcome, champion! Your personal AI Genius is here and ready to guide you through every step of your transformation!",
+    "Greetings, future leader! I'm your intelligent companion, designed to make your experience seamless and extraordinary!",
+  ],
+
+  taskIntroductions: [
+    "I've identified some important tasks that will accelerate your progress. Shall we tackle them together?",
+    "There are some exciting opportunities waiting for you. Let me guide you through them step by step!",
+    "I see several ways we can optimize your journey. Ready to unlock your full potential?",
+  ],
+
+  stepCompletions: [
+    "Excellent work! You're making fantastic progress. Let's keep this momentum going!",
+    "Outstanding! You're demonstrating true leadership qualities. Ready for the next challenge?",
+    "Brilliant execution! Your dedication is truly impressive. Shall we continue?",
+  ],
+
+  encouragements: [
+    "You're doing amazingly well! Every step brings you closer to your goals.",
+    "Your progress is remarkable! I'm here to support you every step of the way.",
+    "Fantastic job! Your commitment to excellence is truly inspiring.",
+  ],
+
+  voiceCommands: {
+    "start guidance": "I'll begin guiding you through your most important tasks right away!",
+    "next step": "Let me show you the next step in your journey to success!",
+    "complete step": "Wonderful! I'll mark that step as completed and move us forward.",
+    "skip task": "No problem! I'll help you focus on what matters most to you right now.",
+    "help me": "I'm here to help! Let me provide you with personalized guidance.",
+    "what's next": "Great question! Here's what I recommend we focus on next.",
+  },
+}
+
 export function GeniusGuideOrb() {
   const { geniusActive, theme } = useJonlorenzoTheme()
   const [isVisible, setIsVisible] = useState(false)
@@ -145,13 +193,103 @@ export function GeniusGuideOrb() {
   const [isFollowing, setIsFollowing] = useState(false)
   const [tasks, setTasks] = useState<GuidanceTask[]>(SAMPLE_TASKS)
 
+  // Voice and conversation state
+  const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>({
+    enabled: true,
+    rate: 1.1,
+    pitch: 1.0,
+    volume: 0.8,
+    voice: null,
+  })
+  const [isListening, setIsListening] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [lastCommand, setLastCommand] = useState("")
+  const [conversationHistory, setConversationHistory] = useState<string[]>([])
+  const [isConversationMode, setIsConversationMode] = useState(false)
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
+
   const orbRef = useRef<HTMLDivElement>(null)
   const mousePosition = useRef({ x: 0, y: 0 })
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const synthRef = useRef<SpeechSynthesis | null>(null)
+
+  // Initialize speech synthesis and recognition
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      synthRef.current = window.speechSynthesis
+
+      const loadVoices = () => {
+        const voices = synthRef.current?.getVoices() || []
+        setAvailableVoices(voices)
+
+        // Prefer female voices for the Genius
+        const preferredVoice =
+          voices.find((voice) => voice.name.includes("Google UK English Female")) ||
+          voices.find((voice) => voice.name.includes("Microsoft Zira")) ||
+          voices.find((voice) => voice.name.includes("Samantha")) ||
+          voices.find((voice) => voice.lang.startsWith("en") && voice.name.toLowerCase().includes("female")) ||
+          voices.find((voice) => voice.lang.startsWith("en")) ||
+          voices[0]
+
+        setVoiceSettings((prev) => ({ ...prev, voice: preferredVoice }))
+      }
+
+      loadVoices()
+      if (synthRef.current) {
+        synthRef.current.onvoiceschanged = loadVoices
+      }
+
+      // Initialize speech recognition
+      if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        recognitionRef.current = new SpeechRecognition()
+        recognitionRef.current.continuous = false
+        recognitionRef.current.interimResults = true
+        recognitionRef.current.lang = "en-US"
+
+        recognitionRef.current.onresult = (event) => {
+          let finalTranscript = ""
+
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const result = event.results[i]
+            if (result.isFinal) {
+              finalTranscript += result[0].transcript
+            }
+          }
+
+          if (finalTranscript) {
+            setLastCommand(finalTranscript.toLowerCase().trim())
+            processVoiceCommand(finalTranscript.toLowerCase().trim())
+          }
+        }
+
+        recognitionRef.current.onstart = () => {
+          setIsListening(true)
+        }
+
+        recognitionRef.current.onend = () => {
+          setIsListening(false)
+        }
+
+        recognitionRef.current.onerror = (event) => {
+          console.error("Speech recognition error:", event.error)
+          setIsListening(false)
+        }
+      }
+    }
+  }, [])
 
   // Show/hide based on genius activation
   useEffect(() => {
     if (geniusActive) {
       setIsVisible(true)
+      // Welcome message
+      setTimeout(() => {
+        const greeting = GENIUS_RESPONSES.greetings[Math.floor(Math.random() * GENIUS_RESPONSES.greetings.length)]
+        speak(greeting)
+        communicate(greeting)
+      }, 1000)
+
       // Auto-start with highest priority incomplete task
       const priorityTask = tasks
         .filter((task) => task.progress < 100)
@@ -162,14 +300,18 @@ export function GeniusGuideOrb() {
 
       if (priorityTask) {
         setTimeout(() => {
-          startGuidance(priorityTask)
-        }, 1000)
+          const taskIntro =
+            GENIUS_RESPONSES.taskIntroductions[Math.floor(Math.random() * GENIUS_RESPONSES.taskIntroductions.length)]
+          speak(taskIntro)
+          setTimeout(() => startGuidance(priorityTask), 3000)
+        }, 4000)
       }
     } else {
       setIsVisible(false)
       setIsGuiding(false)
       setCurrentTask(null)
       setCurrentStep(null)
+      stopSpeaking()
     }
   }, [geniusActive])
 
@@ -179,7 +321,6 @@ export function GeniusGuideOrb() {
       mousePosition.current = { x: e.clientX, y: e.clientY }
 
       if (isFollowing && !isGuiding) {
-        // Smooth following with delay
         setTimeout(() => {
           setPosition((prev) => ({
             x: prev.x + (mousePosition.current.x - prev.x) * 0.1,
@@ -199,16 +340,109 @@ export function GeniusGuideOrb() {
     }
   }, [isVisible, isFollowing, isGuiding])
 
+  const speak = useCallback(
+    (text: string) => {
+      if (!voiceSettings.enabled || !synthRef.current || !voiceSettings.voice) return
+
+      // Stop any current speech
+      synthRef.current.cancel()
+
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.voice = voiceSettings.voice
+      utterance.rate = voiceSettings.rate
+      utterance.pitch = voiceSettings.pitch
+      utterance.volume = voiceSettings.volume
+
+      utterance.onstart = () => setIsSpeaking(true)
+      utterance.onend = () => setIsSpeaking(false)
+      utterance.onerror = () => setIsSpeaking(false)
+
+      synthRef.current.speak(utterance)
+    },
+    [voiceSettings],
+  )
+
+  const stopSpeaking = useCallback(() => {
+    if (synthRef.current) {
+      synthRef.current.cancel()
+      setIsSpeaking(false)
+    }
+  }, [])
+
+  const startListening = useCallback(() => {
+    if (recognitionRef.current && !isListening) {
+      recognitionRef.current.start()
+    }
+  }, [isListening])
+
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop()
+    }
+  }, [isListening])
+
+  const processVoiceCommand = useCallback(
+    (command: string) => {
+      setConversationHistory((prev) => [...prev.slice(-4), command])
+
+      // Check for exact matches first
+      const exactMatch = Object.entries(GENIUS_RESPONSES.voiceCommands).find(([key]) =>
+        command.includes(key.toLowerCase()),
+      )
+
+      if (exactMatch) {
+        const [, response] = exactMatch
+        speak(response)
+        communicate(response)
+
+        // Execute command actions
+        if (command.includes("start guidance")) {
+          const nextTask = tasks.find((task) => task.progress < 100)
+          if (nextTask) startGuidance(nextTask)
+        } else if (command.includes("next step")) {
+          if (currentStep) {
+            completeStep(currentStep.id)
+          }
+        } else if (command.includes("complete step")) {
+          if (currentStep) {
+            completeStep(currentStep.id)
+          }
+        }
+      } else {
+        // Contextual responses based on current state
+        let response = ""
+
+        if (command.includes("hello") || command.includes("hi")) {
+          response = "Hello! I'm delighted to assist you. How can I help you achieve your goals today?"
+        } else if (command.includes("help")) {
+          response =
+            "I'm here to provide personalized guidance! I can help you complete tasks, answer questions, or simply have a conversation."
+        } else if (command.includes("status") || command.includes("progress")) {
+          const incompleteTasks = tasks.filter((task) => task.progress < 100)
+          response = `You have ${incompleteTasks.length} tasks remaining. Your overall progress is excellent! Shall we continue?`
+        } else {
+          response =
+            "That's interesting! I'm always learning. Could you tell me more about what you'd like to accomplish?"
+        }
+
+        speak(response)
+        communicate(response)
+      }
+    },
+    [tasks, currentStep],
+  )
+
   const startGuidance = (task: GuidanceTask) => {
     setCurrentTask(task)
     setIsGuiding(true)
     setIsFollowing(false)
 
-    // Find next incomplete step
     const nextStep = task.steps.find((step) => !step.completed)
     if (nextStep) {
       setCurrentStep(nextStep)
-      communicate(`Let me guide you through: ${task.title}. First, we need to ${nextStep.title.toLowerCase()}.`)
+      const message = `Let me guide you through: ${task.title}. First, we need to ${nextStep.title.toLowerCase()}.`
+      communicate(message)
+      speak(message)
     }
   }
 
@@ -229,16 +463,25 @@ export function GeniusGuideOrb() {
       ),
     )
 
+    // Speak completion message
+    const completionMessage =
+      GENIUS_RESPONSES.stepCompletions[Math.floor(Math.random() * GENIUS_RESPONSES.stepCompletions.length)]
+    speak(completionMessage)
+
     // Move to next step
     const updatedTask = tasks.find((t) => t.id === currentTask.id)
     if (updatedTask) {
       const nextStep = updatedTask.steps.find((step) => !step.completed && step.id !== stepId)
       if (nextStep) {
         setCurrentStep(nextStep)
-        communicate(`Great! Now let's ${nextStep.title.toLowerCase()}.`)
+        const nextMessage = `Now let's ${nextStep.title.toLowerCase()}.`
+        communicate(nextMessage)
+        setTimeout(() => speak(nextMessage), 2000)
       } else {
-        // Task completed
-        communicate(`Excellent! You've completed "${currentTask.title}". Looking for your next priority...`)
+        const taskCompleteMessage = `Excellent! You've completed "${currentTask.title}". Looking for your next priority...`
+        communicate(taskCompleteMessage)
+        speak(taskCompleteMessage)
+
         setTimeout(() => {
           const nextTask = tasks.find((task) => task.progress < 100 && task.id !== currentTask.id)
           if (nextTask) {
@@ -246,7 +489,9 @@ export function GeniusGuideOrb() {
           } else {
             setIsGuiding(false)
             setIsFollowing(true)
-            communicate("All tasks completed! I'll continue to assist you as needed.")
+            const allCompleteMessage = "Congratulations! All tasks completed! I'll continue to assist you as needed."
+            communicate(allCompleteMessage)
+            speak(allCompleteMessage)
           }
         }, 3000)
       }
@@ -257,11 +502,21 @@ export function GeniusGuideOrb() {
     setIsCommunicating(true)
     setGuidanceMessage(message)
 
-    // Auto-hide message after 5 seconds
     setTimeout(() => {
       setIsCommunicating(false)
       setGuidanceMessage("")
-    }, 5000)
+    }, 6000)
+  }
+
+  const toggleConversationMode = () => {
+    setIsConversationMode(!isConversationMode)
+    if (!isConversationMode) {
+      speak("Conversation mode activated! I'm listening and ready to chat.")
+      startListening()
+    } else {
+      speak("Conversation mode deactivated.")
+      stopListening()
+    }
   }
 
   const getPriorityColor = (priority: string) => {
@@ -313,7 +568,7 @@ export function GeniusGuideOrb() {
         <motion.div
           className="w-12 h-12 rounded-full bg-gradient-to-br from-genius-400 to-genius-600 flex items-center justify-center cursor-pointer pointer-events-auto"
           animate={
-            isCommunicating
+            isCommunicating || isSpeaking
               ? {
                   scale: [1, 1.3, 1.1, 1.3, 1],
                   boxShadow: [
@@ -335,7 +590,7 @@ export function GeniusGuideOrb() {
           }
           transition={{
             repeat: Number.POSITIVE_INFINITY,
-            duration: isCommunicating ? 0.8 : 3,
+            duration: isCommunicating || isSpeaking ? 0.8 : 3,
           }}
           onClick={() => {
             if (!isGuiding && tasks.some((task) => task.progress < 100)) {
@@ -352,8 +607,22 @@ export function GeniusGuideOrb() {
           </motion.div>
         </motion.div>
 
-        {/* Orb Status Indicator */}
-        <div className="absolute -top-1 -right-1">
+        {/* Voice Status Indicators */}
+        <div className="absolute -top-1 -right-1 flex flex-col space-y-1">
+          {isSpeaking && (
+            <motion.div
+              className="w-3 h-3 bg-blue-500 rounded-full"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6 }}
+            />
+          )}
+          {isListening && (
+            <motion.div
+              className="w-3 h-3 bg-red-500 rounded-full"
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
+            />
+          )}
           {isGuiding && (
             <motion.div
               className="w-3 h-3 bg-green-500 rounded-full"
@@ -362,6 +631,61 @@ export function GeniusGuideOrb() {
             />
           )}
         </div>
+      </motion.div>
+
+      {/* Voice Controls */}
+      <motion.div
+        className="fixed top-20 right-6 z-40"
+        initial={{ scale: 0, opacity: 0, x: 50 }}
+        animate={{ scale: 1, opacity: 1, x: 0 }}
+        exit={{ scale: 0, opacity: 0, x: 50 }}
+      >
+        <Card className="bg-gradient-to-br from-genius-900/95 to-genius-800/95 backdrop-blur-xl border-genius-400/30 w-64">
+          <CardContent className="p-3">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="w-4 h-4 text-genius-300" />
+                <span className="text-genius-100 font-medium text-sm">Genius Voice</span>
+              </div>
+              <Badge className="bg-genius-500/20 text-genius-300 border-genius-400/30 text-xs">
+                {isSpeaking ? "SPEAKING" : isListening ? "LISTENING" : "READY"}
+              </Badge>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              <Button
+                size="sm"
+                onClick={toggleConversationMode}
+                className={`${
+                  isConversationMode ? "bg-green-600 hover:bg-green-700" : "bg-genius-600 hover:bg-genius-700"
+                }`}
+              >
+                {isConversationMode ? <MicOff className="w-3 h-3 mr-1" /> : <Mic className="w-3 h-3 mr-1" />}
+                {isConversationMode ? "Stop Chat" : "Start Chat"}
+              </Button>
+
+              <Button
+                size="sm"
+                onClick={() => setVoiceSettings((prev) => ({ ...prev, enabled: !prev.enabled }))}
+                variant={voiceSettings.enabled ? "default" : "outline"}
+              >
+                {voiceSettings.enabled ? <Volume2 className="w-3 h-3 mr-1" /> : <VolumeX className="w-3 h-3 mr-1" />}
+                {voiceSettings.enabled ? "Mute" : "Unmute"}
+              </Button>
+            </div>
+
+            {lastCommand && (
+              <div className="p-2 bg-genius-800/30 rounded border border-genius-600/30">
+                <div className="text-xs text-genius-300 mb-1">Last Command:</div>
+                <div className="text-xs text-genius-100">"{lastCommand}"</div>
+              </div>
+            )}
+
+            <div className="mt-3 text-xs text-genius-400">
+              Try saying: "Hello", "Help me", "Next step", "What's my status?"
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Communication Bubble */}
@@ -377,7 +701,7 @@ export function GeniusGuideOrb() {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0, opacity: 0, y: 20 }}
           >
-            <Card className="bg-gradient-to-br from-genius-900/95 to-genius-800/95 backdrop-blur-xl border-genius-400/30 max-w-xs">
+            <Card className="bg-gradient-to-br from-genius-900/95 to-genius-800/95 backdrop-blur-xl border-genius-400/30 max-w-sm">
               <CardContent className="p-3">
                 <div className="flex items-start space-x-2">
                   <motion.div
@@ -386,11 +710,29 @@ export function GeniusGuideOrb() {
                   >
                     <MessageCircle className="w-4 h-4 text-genius-300 mt-0.5" />
                   </motion.div>
-                  <div className="text-sm text-genius-100">{guidanceMessage}</div>
+                  <div className="text-sm text-genius-100 leading-relaxed">{guidanceMessage}</div>
                 </div>
+                {isSpeaking && (
+                  <div className="flex items-center space-x-1 mt-2">
+                    <Volume2 className="w-3 h-3 text-genius-400" />
+                    <div className="flex space-x-1">
+                      {[...Array(3)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="w-1 h-1 bg-genius-400 rounded-full"
+                          animate={{ scale: [1, 1.5, 1] }}
+                          transition={{
+                            repeat: Number.POSITIVE_INFINITY,
+                            duration: 0.6,
+                            delay: i * 0.2,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
-            {/* Speech bubble tail */}
             <div className="absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-genius-800/95"></div>
           </motion.div>
         )}
@@ -458,14 +800,27 @@ export function GeniusGuideOrb() {
                       <div className="flex-1">
                         <h4 className="text-genius-300 font-medium text-sm">{currentStep.title}</h4>
                         <p className="text-genius-400/70 text-xs mb-2">{currentStep.description}</p>
-                        <Button
-                          size="sm"
-                          onClick={() => completeStep(currentStep.id)}
-                          className="bg-gradient-to-r from-genius-600 to-genius-700 hover:from-genius-700 hover:to-genius-800"
-                        >
-                          <ArrowRight className="w-3 h-3 mr-1" />
-                          {currentStep.action}
-                        </Button>
+                        <div className="flex space-x-2">
+                          <Button
+                            size="sm"
+                            onClick={() => completeStep(currentStep.id)}
+                            className="bg-gradient-to-r from-genius-600 to-genius-700 hover:from-genius-700 hover:to-genius-800"
+                          >
+                            <ArrowRight className="w-3 h-3 mr-1" />
+                            {currentStep.action}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              const message = `Let me explain: ${currentStep.description}`
+                              speak(message)
+                              communicate(message)
+                            }}
+                          >
+                            <Volume2 className="w-3 h-3" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -518,19 +873,35 @@ export function GeniusGuideOrb() {
                 {/* Footer */}
                 <div className="mt-4 pt-3 border-t border-illumination-400/20 flex items-center justify-between text-xs">
                   <span className="text-illumination-400">Est. {currentTask.estimatedTime}</span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setIsGuiding(false)
-                      setIsFollowing(true)
-                      setCurrentTask(null)
-                      setCurrentStep(null)
-                    }}
-                    className="text-illumination-400 hover:text-illumination-300"
-                  >
-                    Dismiss Guide
-                  </Button>
+                  <div className="flex space-x-2">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        const message = `This task involves: ${currentTask.description}. Each step is designed to help you succeed!`
+                        speak(message)
+                        communicate(message)
+                      }}
+                      className="text-illumination-400 hover:text-illumination-300"
+                    >
+                      <Volume2 className="w-3 h-3 mr-1" />
+                      Explain
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        setIsGuiding(false)
+                        setIsFollowing(true)
+                        setCurrentTask(null)
+                        setCurrentStep(null)
+                        speak("Guidance dismissed. I'm here whenever you need me!")
+                      }}
+                      className="text-illumination-400 hover:text-illumination-300"
+                    >
+                      Dismiss
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -542,10 +913,10 @@ export function GeniusGuideOrb() {
       <AnimatePresence>
         {isVisible && !isGuiding && tasks.some((task) => task.progress < 100) && (
           <motion.div
-            className="fixed top-20 right-6 z-40"
-            initial={{ scale: 0, opacity: 0, x: 50 }}
+            className="fixed top-20 left-6 z-40"
+            initial={{ scale: 0, opacity: 0, x: -50 }}
             animate={{ scale: 1, opacity: 1, x: 0 }}
-            exit={{ scale: 0, opacity: 0, x: 50 }}
+            exit={{ scale: 0, opacity: 0, x: -50 }}
           >
             <Card className="bg-gradient-to-br from-royal-50/90 to-royal-100/90 backdrop-blur-xl border-illumination-400/30 w-80">
               <CardContent className="p-4">
@@ -579,17 +950,31 @@ export function GeniusGuideOrb() {
                     ))}
                 </div>
 
-                <Button
-                  size="sm"
-                  className="w-full mt-3 bg-gradient-to-r from-genius-600 to-genius-700 hover:from-genius-700 hover:to-genius-800"
-                  onClick={() => {
-                    const nextTask = tasks.find((task) => task.progress < 100)
-                    if (nextTask) startGuidance(nextTask)
-                  }}
-                >
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  Start Guidance
-                </Button>
+                <div className="flex space-x-2 mt-3">
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-gradient-to-r from-genius-600 to-genius-700 hover:from-genius-700 hover:to-genius-800"
+                    onClick={() => {
+                      const nextTask = tasks.find((task) => task.progress < 100)
+                      if (nextTask) startGuidance(nextTask)
+                    }}
+                  >
+                    <Sparkles className="w-3 h-3 mr-1" />
+                    Start Guidance
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const message =
+                        "I'm your intelligent guide, ready to help you succeed! Just say 'hello' to start chatting."
+                      speak(message)
+                      communicate(message)
+                    }}
+                  >
+                    <Volume2 className="w-3 h-3" />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
