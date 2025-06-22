@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -19,36 +19,12 @@ const config: Config = {
       },
     },
     extend: {
-      fontFamily: {
-        sans: [
-          "Inter",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "sans-serif",
-        ],
-        serif: ["Times New Roman", "Georgia", "Playfair Display", "serif"],
-        mono: ["SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", "monospace"],
-        imperial: ["Times New Roman", "Georgia", "Playfair Display", "serif"],
-        neural: ["SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", "monospace"],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -56,6 +32,10 @@ const config: Config = {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -65,16 +45,53 @@ const config: Config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        // Jonlorenzo Royal Theme Colors
+        royal: {
+          50: "rgb(var(--royal-50))",
+          100: "rgb(var(--royal-100))",
+          200: "rgb(var(--royal-200))",
+          300: "rgb(var(--royal-300))",
+          400: "rgb(var(--royal-400))",
+          500: "rgb(var(--royal-500))",
+          600: "rgb(var(--royal-600))",
+          700: "rgb(var(--royal-700))",
+          800: "rgb(var(--royal-800))",
+          900: "rgb(var(--royal-900))",
+          950: "rgb(var(--royal-950))",
+        },
+        illumination: {
+          50: "rgb(var(--illumination-50))",
+          100: "rgb(var(--illumination-100))",
+          200: "rgb(var(--illumination-200))",
+          300: "rgb(var(--illumination-300))",
+          400: "rgb(var(--illumination-400))",
+          500: "rgb(var(--illumination-500))",
+          600: "rgb(var(--illumination-600))",
+          700: "rgb(var(--illumination-700))",
+          800: "rgb(var(--illumination-800))",
+          900: "rgb(var(--illumination-900))",
+          950: "rgb(var(--illumination-950))",
+        },
+        genius: {
+          50: "rgb(var(--genius-50))",
+          100: "rgb(var(--genius-100))",
+          200: "rgb(var(--genius-200))",
+          300: "rgb(var(--genius-300))",
+          400: "rgb(var(--genius-400))",
+          500: "rgb(var(--genius-500))",
+          600: "rgb(var(--genius-600))",
+          700: "rgb(var(--genius-700))",
+          800: "rgb(var(--genius-800))",
+          900: "rgb(var(--genius-900))",
+          950: "rgb(var(--genius-950))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -85,16 +102,6 @@ const config: Config = {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
-        },
-        imperial: {
-          primary: "#d4af37",
-          secondary: "#8b4513",
-          accent: "#c9a96e",
-        },
-        neural: {
-          cyan: "#00d4ff",
-          purple: "#8b5cf6",
-          amber: "#f59e0b",
         },
       },
       borderRadius: {
@@ -111,27 +118,61 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "imperial-pulse": {
+        "illumination-pulse": {
           "0%, 100%": {
-            boxShadow: "0 0 20px rgba(212, 175, 55, 0.3)",
+            opacity: "calc(var(--illumination-opacity) * 0.6)",
             transform: "scale(1)",
           },
           "50%": {
-            boxShadow: "0 0 40px rgba(212, 175, 55, 0.6)",
-            transform: "scale(1.02)",
+            opacity: "var(--illumination-opacity)",
+            transform: "scale(1.05)",
           },
         },
-        "neural-flow": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
+        "genius-reverberate": {
+          "0%": {
+            transform: "scale(1)",
+            boxShadow: "0 0 30px rgba(99, 102, 241, 0.5)",
+          },
+          "25%": {
+            transform: "scale(1.1)",
+            boxShadow: "0 0 60px rgba(99, 102, 241, 0.7)",
+          },
+          "50%": {
+            transform: "scale(1.2)",
+            boxShadow: "0 0 90px rgba(99, 102, 241, 0.9)",
+          },
+          "75%": {
+            transform: "scale(1.1)",
+            boxShadow: "0 0 60px rgba(99, 102, 241, 0.7)",
+          },
+          "100%": {
+            transform: "scale(1)",
+            boxShadow: "0 0 30px rgba(99, 102, 241, 0.5)",
+          },
+        },
+        "royal-float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "smart-glow": {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(234, 179, 8, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(234, 179, 8, 0.6)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "imperial-pulse": "imperial-pulse 2s ease-in-out infinite",
-        "neural-flow": "neural-flow 3s ease-in-out infinite",
+        "illumination-pulse": "illumination-pulse 3s ease-in-out infinite",
+        "genius-reverberate": "genius-reverberate 1.5s ease-in-out infinite",
+        "royal-float": "royal-float 6s ease-in-out infinite",
+        "smart-glow": "smart-glow 2s ease-in-out infinite",
+      },
+      boxShadow: {
+        "royal-illumination": "0 0 25px rgba(121, 92, 132, 0.4), 0 0 50px rgba(234, 179, 8, 0.3)",
+        "genius-orb":
+          "0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(99, 102, 241, 0.3), 0 0 90px rgba(99, 102, 241, 0.2)",
+        "illumination-glow":
+          "0 0 20px rgba(234, 179, 8, 0.3), 0 0 40px rgba(234, 179, 8, 0.2), 0 0 60px rgba(234, 179, 8, 0.1)",
       },
     },
   },
