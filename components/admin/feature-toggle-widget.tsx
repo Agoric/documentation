@@ -23,11 +23,15 @@ export function FeatureToggleWidget({
   const [features, setFeatures] = useState<FeatureToggle[]>([])
   const [statistics, setStatistics] = useState<any>(null)
 
+  // ----- STABLE DEPENDENCIES -----
+  // use a stable, value-based key instead of the ever-changing array reference
+  const categoriesKey = showCategories.slice().sort().join("|")
+
   useEffect(() => {
     let allFeatures = featureToggleManager.getAllFeatures()
 
     // Filter by categories if specified
-    if (showCategories.length > 0) {
+    if (showCategories.length) {
       allFeatures = allFeatures.filter((f) => showCategories.includes(f.category))
     }
 
@@ -37,19 +41,19 @@ export function FeatureToggleWidget({
     setFeatures(limitedFeatures)
     setStatistics(featureToggleManager.getStatistics())
 
-    // Listen for changes
+    // Listener that updates local state when the global feature set changes
     const handleChange = () => {
-      let updatedFeatures = featureToggleManager.getAllFeatures()
-      if (showCategories.length > 0) {
-        updatedFeatures = updatedFeatures.filter((f) => showCategories.includes(f.category))
+      let updated = featureToggleManager.getAllFeatures()
+      if (showCategories.length) {
+        updated = updated.filter((f) => showCategories.includes(f.category))
       }
-      setFeatures(updatedFeatures.slice(0, maxFeatures))
+      setFeatures(updated.slice(0, maxFeatures))
       setStatistics(featureToggleManager.getStatistics())
     }
 
     featureToggleManager.addChangeListener(handleChange)
     return () => featureToggleManager.removeChangeListener(handleChange)
-  }, [maxFeatures, showCategories])
+  }, [maxFeatures, categoriesKey]) // <<— now stable
 
   const handleToggle = (featureId: string, enabled: boolean) => {
     try {
