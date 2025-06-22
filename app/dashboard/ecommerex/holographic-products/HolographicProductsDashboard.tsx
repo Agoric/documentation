@@ -178,7 +178,7 @@ export function HolographicProductsDashboard() {
   return (
     <div className="container mx-auto p-4 space-y-8">
       <HolographicHeader
-        title="Holographic Products"
+        title="EcommereX Shop"
         subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology and interactive 360° views"
       />
 
