@@ -555,145 +555,47 @@ export function EnhancedHomeDashboard() {
               </motion.div>
             </motion.div>
 
-            {/* Quick Actions Grid */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-amber-400/30 shadow-2xl shadow-amber-500/10">
-                  <CardHeader>
-                    <CardTitle className="text-amber-300 font-serif text-lg flex items-center justify-center">
-                      <Crown className="w-5 h-5 mr-2" />
-                      Royal Command Center
-                    </CardTitle>
-                    <CardDescription className="text-amber-200/70 text-center font-serif italic">
-                      Imperial Quick Actions
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    {/* High Priority Actions - Center of Attention */}
-                    <div className="space-y-3">
-                      <h4 className="text-amber-300 font-serif text-sm text-center mb-4 tracking-wider">
-                        ✦ IMPERIAL DOMAINS ✦
-                      </h4>
-                      <div className="grid grid-cols-1 gap-4">
-                        {quickActions
-                          .filter((action) => action.priority === "high")
-                          .map((action) => {
-                            const Icon = action.icon
-                            return (
-                              <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <Button
-                                  variant="ghost"
-                                  className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/60 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
-                                  onClick={() => handleQuickAction(action.action)}
-                                >
-                                  {/* Royal background pattern */}
-                                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                  {/* Animated border glow */}
-                                  <div className="absolute inset-0 border-2 border-amber-400/0 group-hover:border-amber-400/40 rounded transition-all duration-300" />
-
-                                  <Icon className="w-8 h-8 drop-shadow-lg" />
-                                  <span className="text-sm font-bold tracking-wide">{action.name}</span>
-
-                                  {selectedQuickAction === action.action && (
-                                    <motion.div
-                                      className="absolute inset-0 bg-white/20 rounded"
-                                      initial={{ opacity: 0 }}
-                                      animate={{ opacity: [0, 1, 0] }}
-                                      transition={{ duration: 0.8 }}
-                                    />
-                                  )}
-                                </Button>
-                              </motion.div>
-                            )
-                          })}
-                      </div>
-                    </div>
-
-                    {/* Medium Priority Actions */}
-                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-                      <h4 className="text-amber-300/80 font-serif text-xs text-center tracking-wider">
-                        ROYAL SERVICES
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {quickActions
-                          .filter((action) => action.priority === "medium")
-                          .map((action) => {
-                            const Icon = action.icon
-                            return (
-                              <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <Button
-                                  variant="ghost"
-                                  className={`w-full h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-br ${action.color} hover:opacity-80 text-white border border-amber-400/20 hover:border-amber-400/40 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
-                                  onClick={() => handleQuickAction(action.action)}
-                                >
-                                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                  <Icon className="w-5 h-5" />
-                                  <span className="text-xs font-medium">{action.name}</span>
-
-                                  {selectedQuickAction === action.action && (
-                                    <motion.div
-                                      className="absolute inset-0 bg-white/15 rounded"
-                                      initial={{ opacity: 0 }}
-                                      animate={{ opacity: [0, 1, 0] }}
-                                      transition={{ duration: 0.5 }}
-                                    />
-                                  )}
-                                </Button>
-                              </motion.div>
-                            )
-                          })}
-                      </div>
-                    </div>
-
-                    {/* Low Priority Actions */}
-                    <div className="space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
-                      <div className="grid grid-cols-2 gap-2">
-                        {quickActions
-                          .filter((action) => action.priority === "low")
-                          .map((action) => {
-                            const Icon = action.icon
-                            return (
-                              <motion.div key={action.name} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                                <Button
-                                  variant="ghost"
-                                  className={`w-full h-12 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-80 text-white border border-amber-400/10 hover:border-amber-400/30 text-xs transition-all duration-300`}
-                                  onClick={() => handleQuickAction(action.action)}
-                                >
-                                  <Icon className="w-4 h-4" />
-                                  <span>{action.name}</span>
-
-                                  {selectedQuickAction === action.action && (
-                                    <motion.div
-                                      className="absolute inset-0 bg-white/10 rounded"
-                                      initial={{ opacity: 0 }}
-                                      animate={{ opacity: [0, 1, 0] }}
-                                      transition={{ duration: 0.3 }}
-                                    />
-                                  )}
-                                </Button>
-                              </motion.div>
-                            )
-                          })}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
+            {/* Simplified Profile Actions */}
+            <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-amber-400/30 shadow-xl shadow-amber-500/10">
+              <CardHeader>
+                <CardTitle className="text-amber-300 font-serif text-sm flex items-center justify-center">
+                  <Crown className="w-4 h-4 mr-2" />
+                  Quick Profile Actions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
+                  >
+                    Edit Profile
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
+                  >
+                    View Stats
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
+                  >
+                    Preferences
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
+                  >
+                    Security
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Feature Toggle Widget */}
             <FeatureToggleWidget maxFeatures={5} compact={true} />
@@ -702,8 +604,214 @@ export function EnhancedHomeDashboard() {
             <ZillowApiStatus />
           </div>
 
-          {/* Center Column - Main Dashboard Content */}
+          {/* Center Column - Royal Command Center Showcase & Main Dashboard Content */}
           <div className="xl:col-span-6 space-y-6">
+            {/* SHOWCASE: Royal Command Center - Featured Prominently */}
+            <motion.div
+              initial={{ height: "auto" }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="group"
+            >
+              <Card className="bg-gradient-to-br from-amber-900/70 via-yellow-900/70 to-amber-900/70 border-4 border-amber-400/60 shadow-2xl shadow-amber-500/30 backdrop-blur-xl relative overflow-hidden">
+                {/* Royal showcase background pattern */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.2),transparent),radial-gradient(circle_at_80%_80%,rgba(251,191,36,0.2),transparent)]" />
+
+                {/* Animated royal border glow */}
+                <div className="absolute inset-0 border-4 border-amber-400/40 rounded-lg animate-pulse" />
+
+                {/* Crown ornaments in corners */}
+                <div className="absolute top-4 left-4 text-amber-400/30">
+                  <Crown className="w-8 h-8" />
+                </div>
+                <div className="absolute top-4 right-4 text-amber-400/30">
+                  <Crown className="w-8 h-8" />
+                </div>
+                <div className="absolute bottom-4 left-4 text-amber-400/30">
+                  <Crown className="w-8 h-8" />
+                </div>
+                <div className="absolute bottom-4 right-4 text-amber-400/30">
+                  <Crown className="w-8 h-8" />
+                </div>
+
+                <CardHeader className="relative z-10 text-center py-8">
+                  <motion.div
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
+                    className="flex justify-center mb-4"
+                  >
+                    <Crown className="w-16 h-16 text-amber-400 drop-shadow-2xl" />
+                  </motion.div>
+                  <CardTitle className="text-amber-300 font-serif text-3xl flex items-center justify-center mb-4">
+                    ✦ ROYAL COMMAND CENTER ✦
+                  </CardTitle>
+                  <CardDescription className="text-amber-200/80 text-center font-serif italic text-lg">
+                    Supreme Imperial Control Hub
+                  </CardDescription>
+                  <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent mt-4" />
+                </CardHeader>
+
+                <CardContent className="space-y-8 relative z-10 pb-8">
+                  {/* High Priority Actions - Imperial Domains Showcase */}
+                  <div className="space-y-6">
+                    <motion.h4
+                      className="text-amber-300 font-serif text-xl text-center mb-6 tracking-wider"
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                    >
+                      ✦ IMPERIAL DOMAINS ✦
+                    </motion.h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {quickActions
+                        .filter((action) => action.priority === "high")
+                        .map((action, index) => {
+                          const Icon = action.icon
+                          return (
+                            <motion.div
+                              key={action.name}
+                              whileHover={{ scale: 1.08, y: -5 }}
+                              whileTap={{ scale: 0.95 }}
+                              initial={{ opacity: 0, y: 30 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.2 }}
+                            >
+                              <Button
+                                variant="ghost"
+                                className={`w-full h-32 flex flex-col items-center justify-center space-y-3 bg-gradient-to-br ${action.color} hover:opacity-95 text-white border-3 border-amber-400/40 hover:border-amber-400/80 shadow-2xl hover:shadow-3xl transition-all duration-500 relative overflow-hidden group`}
+                                onClick={() => handleQuickAction(action.action)}
+                              >
+                                {/* Royal background pattern */}
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                {/* Animated border glow */}
+                                <div className="absolute inset-0 border-3 border-amber-400/0 group-hover:border-amber-400/60 rounded transition-all duration-500" />
+
+                                {/* Floating crown effect */}
+                                <motion.div
+                                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-30"
+                                  animate={{ y: [-2, 2, -2] }}
+                                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                                >
+                                  <Crown className="w-6 h-6 text-amber-300" />
+                                </motion.div>
+
+                                <motion.div whileHover={{ scale: 1.1, rotate: 5 }} transition={{ duration: 0.3 }}>
+                                  <Icon className="w-12 h-12 drop-shadow-2xl" />
+                                </motion.div>
+                                <span className="text-lg font-bold tracking-wide drop-shadow-lg">{action.name}</span>
+
+                                {selectedQuickAction === action.action && (
+                                  <motion.div
+                                    className="absolute inset-0 bg-white/30 rounded"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{ duration: 1 }}
+                                  />
+                                )}
+                              </Button>
+                            </motion.div>
+                          )
+                        })}
+                    </div>
+                  </div>
+
+                  {/* Royal Divider */}
+                  <div className="flex items-center justify-center space-x-4 py-4">
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-amber-400/50" />
+                    <Crown className="w-8 h-8 text-amber-400 animate-pulse" />
+                    <div className="w-full h-px bg-gradient-to-l from-transparent via-amber-400/50 to-amber-400/50" />
+                  </div>
+
+                  {/* Medium Priority Actions - Royal Services */}
+                  <div className="space-y-4">
+                    <h4 className="text-amber-300/90 font-serif text-lg text-center tracking-wider">
+                      ⚜️ ROYAL SERVICES ⚜️
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {quickActions
+                        .filter((action) => action.priority === "medium")
+                        .map((action, index) => {
+                          const Icon = action.icon
+                          return (
+                            <motion.div
+                              key={action.name}
+                              whileHover={{ scale: 1.05, y: -3 }}
+                              whileTap={{ scale: 0.95 }}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.6 + index * 0.1 }}
+                            >
+                              <Button
+                                variant="ghost"
+                                className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
+                                onClick={() => handleQuickAction(action.action)}
+                              >
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                                <Icon className="w-6 h-6 drop-shadow-lg" />
+                                <span className="text-xs font-medium tracking-wide">{action.name}</span>
+
+                                {selectedQuickAction === action.action && (
+                                  <motion.div
+                                    className="absolute inset-0 bg-white/20 rounded"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{ duration: 0.6 }}
+                                  />
+                                )}
+                              </Button>
+                            </motion.div>
+                          )
+                        })}
+                    </div>
+                  </div>
+
+                  {/* Low Priority Actions - Administrative */}
+                  <div className="space-y-3">
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
+                    <h4 className="text-amber-300/70 font-serif text-sm text-center tracking-wider">
+                      Administrative Functions
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {quickActions
+                        .filter((action) => action.priority === "low")
+                        .map((action, index) => {
+                          const Icon = action.icon
+                          return (
+                            <motion.div
+                              key={action.name}
+                              whileHover={{ scale: 1.03 }}
+                              whileTap={{ scale: 0.97 }}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 1 + index * 0.1 }}
+                            >
+                              <Button
+                                variant="ghost"
+                                className={`w-full h-14 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-85 text-white border border-amber-400/20 hover:border-amber-400/40 text-sm transition-all duration-300`}
+                                onClick={() => handleQuickAction(action.action)}
+                              >
+                                <Icon className="w-4 h-4" />
+                                <span>{action.name}</span>
+
+                                {selectedQuickAction === action.action && (
+                                  <motion.div
+                                    className="absolute inset-0 bg-white/15 rounded"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{ duration: 0.4 }}
+                                  />
+                                )}
+                              </Button>
+                            </motion.div>
+                          )
+                        })}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
             {/* Enhanced Portfolio Overview */}
             <motion.div
               initial={{ height: "80px" }}
