@@ -9,23 +9,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { motion } from "framer-motion"
 import {
   Briefcase,
-  Building2,
   Users,
   TrendingUp,
   DollarSign,
-  FileText,
   Target,
   Shield,
-  Zap,
   CheckCircle,
-  BarChart3,
-  PieChart,
   Activity,
   Settings,
   Server,
-  Eye,
-  ChevronRight,
-  Bell,
+  ReplaceAllIcon as All,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -213,7 +206,11 @@ export function SupremeBusinessSuite() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center space-y-4"
+        >
           <div className="flex items-center justify-center space-x-4">
             <motion.div
               animate={{ rotate: [0, 360] }}
@@ -233,9 +230,7 @@ export function SupremeBusinessSuite() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
             <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 border-green-400/30">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-green-300">
-                  {formatCurrency(businessPerformance.revenue.current)}
-                </div>
+                <div className="text-2xl font-bold text-green-300">{formatCurrency(businessPerformance.revenue.current)}</div>
                 <div className="text-sm text-gray-400">Annual Revenue</div>
                 <div className="flex items-center justify-center mt-1">
                   <TrendingUp className="w-3 h-3 text-green-400 mr-1" />
@@ -245,31 +240,23 @@ export function SupremeBusinessSuite() {
             </Card>
             <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 border-blue-400/30">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-blue-300">
-                  {formatCurrency(businessPerformance.profit.current)}
-                </div>
+                <div className="text-2xl font-bold text-blue-300">{formatCurrency(businessPerformance.profit.current)}</div>
                 <div className="text-sm text-gray-400">Net Profit</div>
                 <div className="text-blue-300 text-xs mt-1">{businessPerformance.profit.margin}% margin</div>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-purple-400/30">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-purple-300">
-                  {formatNumber(businessPerformance.employees.current)}
-                </div>
+                <div className="text-2xl font-bold text-purple-300">{formatNumber(businessPerformance.employees.current)}</div>
                 <div className="text-sm text-gray-400">Employees</div>
                 <div className="text-purple-300 text-xs mt-1">{businessPerformance.employees.retention}% retention</div>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-br from-amber-900/50 to-yellow-900/50 border-amber-400/30">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-amber-300">
-                  {formatNumber(businessPerformance.customers.current)}
-                </div>
+                <div className="text-2xl font-bold text-amber-300">{formatNumber(businessPerformance.customers.current)}</div>
                 <div className="text-sm text-gray-400">Customers</div>
-                <div className="text-amber-300 text-xs mt-1">
-                  {businessPerformance.customers.satisfaction}% satisfaction
-                </div>
+                <div className="text-amber-300 text-xs mt-1">{businessPerformance.customers.satisfaction}% satisfaction</div>
               </CardContent>
             </Card>
           </div>
@@ -300,9 +287,7 @@ export function SupremeBusinessSuite() {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <div className="text-gray-400">Current Year</div>
-                      <div className="text-2xl font-bold text-green-300">
-                        {formatCurrency(businessPerformance.revenue.current)}
-                      </div>
+                      <div className="text-2xl font-bold text-green-300">{formatCurrency(businessPerformance.revenue.current)}</div>
                     </div>
                     <div>
                       <div className="text-gray-400">Previous Year</div>
@@ -311,7 +296,8 @@ export function SupremeBusinessSuite() {
                     <div>
                       <div className="text-gray-400">Growth Rate</div>
                       <div className="text-lg text-green-300 flex items-center">
-                        <TrendingUp className="w-4 h-4 mr-1" />+{businessPerformance.revenue.growth}%
+                        <TrendingUp className="w-4 h-4 mr-1" />
+                        +{businessPerformance.revenue.growth}%
                       </div>
                     </div>
                     <div>
@@ -326,10 +312,7 @@ export function SupremeBusinessSuite() {
                         {((businessPerformance.revenue.current / businessPerformance.revenue.target) * 100).toFixed(1)}%
                       </span>
                     </div>
-                    <Progress
-                      value={(businessPerformance.revenue.current / businessPerformance.revenue.target) * 100}
-                      className="h-2"
-                    />
+                    <Progress value={(businessPerformance.revenue.current / businessPerformance.revenue.target) * 100} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -346,9 +329,7 @@ export function SupremeBusinessSuite() {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <div className="text-gray-400">Net Profit</div>
-                      <div className="text-2xl font-bold text-blue-300">
-                        {formatCurrency(businessPerformance.profit.current)}
-                      </div>
+                      <div className="text-2xl font-bold text-blue-300">{formatCurrency(businessPerformance.profit.current)}</div>
                     </div>
                     <div>
                       <div className="text-gray-400">Profit Margin</div>
@@ -357,20 +338,12 @@ export function SupremeBusinessSuite() {
                     <div>
                       <div className="text-gray-400">YoY Growth</div>
                       <div className="text-lg text-green-300">
-                        +
-                        {(
-                          ((businessPerformance.profit.current - businessPerformance.profit.previous) /
-                            businessPerformance.profit.previous) *
-                          100
-                        ).toFixed(1)}
-                        %
+                        +{(((businessPerformance.profit.current - businessPerformance.profit.previous) / businessPerformance.profit.previous) * 100).toFixed(1)}%
                       </div>
                     </div>
                     <div>
                       <div className="text-gray-400">Projection</div>
-                      <div className="text-lg text-purple-300">
-                        {formatCurrency(businessPerformance.profit.projection)}
-                      </div>
+                      <div className="text-lg text-purple-300">{formatCurrency(businessPerformance.profit.projection)}</div>
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -380,10 +353,7 @@ export function SupremeBusinessSuite() {
                         {((businessPerformance.profit.current / businessPerformance.profit.target) * 100).toFixed(1)}%
                       </span>
                     </div>
-                    <Progress
-                      value={(businessPerformance.profit.current / businessPerformance.profit.target) * 100}
-                      className="h-2"
-                    />
+                    <Progress value={(businessPerformance.profit.current / businessPerformance.profit.target) * 100} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
@@ -400,24 +370,9 @@ export function SupremeBusinessSuite() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {[
-                    {
-                      metric: "Financial Health",
-                      score: 92,
-                      color: "text-green-400",
-                      details: ["Strong Cash Flow", "Low Debt Ratio", "High Profitability"],
-                    },
-                    {
-                      metric: "Operational Efficiency",
-                      score: 87,
-                      color: "text-blue-400",
-                      details: ["Process Automation", "Resource Optimization", "Quality Control"],
-                    },
-                    {
-                      metric: "Market Position",
-                      score: 89,
-                      color: "text-purple-400",
-                      details: ["Market Share Growth", "Customer Satisfaction", "Brand Recognition"],
-                    },
+                    { metric: "Financial Health", score: 92, color: "text-green-400", details: ["Strong Cash Flow", "Low Debt Ratio", "High Profitability"] },
+                    { metric: "Operational Efficiency", score: 87, color: "text-blue-400", details: ["Process Automation", "Resource Optimization", "Quality Control"] },
+                    { metric: "Market Position", score: 89, color: "text-purple-400", details: ["Market Share Growth", "Customer Satisfaction", "Brand Recognition"] },
                   ].map((item) => (
                     <div key={item.metric} className="space-y-3">
                       <div className="flex justify-between">
@@ -461,9 +416,7 @@ export function SupremeBusinessSuite() {
                   >
                     <Card className="bg-slate-800/50 border-slate-600/50 hover:border-amber-400/50 transition-all duration-300 cursor-pointer h-full">
                       <CardContent className="p-6 space-y-4">
-                        <div
-                          className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-r ${module.color} flex items-center justify-center`}
-                        >
+                        <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-r ${module.color} flex items-center justify-center`}>
                           <Icon className="w-8 h-8 text-white" />
                         </div>
                         <div className="text-center">
@@ -538,10 +491,7 @@ export function SupremeBusinessSuite() {
               <Card className="bg-gradient-to-br from-amber-900/50 to-yellow-900/50 border-amber-400/30">
                 <CardContent className="p-4 text-center">
                   <div className="text-2xl font-bold text-amber-300">
-                    {(acquisitionPipeline.reduce((sum, acq) => sum + acq.roi, 0) / acquisitionPipeline.length).toFixed(
-                      1,
-                    )}
-                    %
+                    {(acquisitionPipeline.reduce((sum, acq) => sum + acq.roi, 0) / acquisitionPipeline.length).toFixed(1)}%
                   </div>
                   <div className="text-sm text-gray-400">Average ROI</div>
                 </CardContent>
@@ -610,200 +560,9 @@ export function SupremeBusinessSuite() {
                           </div>
                           <div>
                             <div className="text-gray-400 text-sm mb-2">Expected Synergies</div>
-                            <div className="text-lg font-semibold text-blue-300">
-                              {formatCurrency(acquisition.synergies)}
-                            </div>
+                            <div className="text-lg font-semibold text-blue-300">{formatCurrency(acquisition.synergies)}</div>
                           </div>
                         </div>
 
                         {/* Key Metrics */}
-                        <div className="space-y-4">
-                          <h5 className="text-sm font-medium text-white">Target Company Metrics</h5>
-                          <div className="grid grid-cols-2 gap-3 text-sm">
-                            <div>
-                              <div className="text-gray-400">Revenue</div>
-                              <div className="text-white">{formatCurrency(acquisition.keyMetrics.revenue)}</div>
-                            </div>
-                            <div>
-                              <div className="text-gray-400">EBITDA</div>
-                              <div className="text-white">{formatCurrency(acquisition.keyMetrics.ebitda)}</div>
-                            </div>
-                            <div>
-                              <div className="text-gray-400">Employees</div>
-                              <div className="text-white">{formatNumber(acquisition.keyMetrics.employees)}</div>
-                            </div>
-                            <div>
-                              <div className="text-gray-400">Customers</div>
-                              <div className="text-white">{formatNumber(acquisition.keyMetrics.customers)}</div>
-                            </div>
-                          </div>
-                          <div className="flex space-x-2">
-                            <Button size="sm" className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600">
-                              <Eye className="w-4 h-4 mr-2" />
-                              View Details
-                            </Button>
-                            <Button size="sm" variant="outline" className="border-amber-400/30 text-amber-300">
-                              <FileText className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">Business Analytics</h2>
-              <p className="text-slate-400">Advanced analytics and business intelligence</p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-slate-800/50 border-slate-600/50">
-                <CardHeader>
-                  <CardTitle className="text-slate-300 flex items-center">
-                    <BarChart3 className="w-5 h-5 mr-2" />
-                    Department Performance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {[
-                      { dept: "Sales", performance: 94, target: 90, color: "text-green-400" },
-                      { dept: "Marketing", performance: 87, target: 85, color: "text-blue-400" },
-                      { dept: "Operations", performance: 91, target: 88, color: "text-purple-400" },
-                      { dept: "Finance", performance: 96, target: 92, color: "text-amber-400" },
-                      { dept: "HR", performance: 89, target: 85, color: "text-pink-400" },
-                    ].map((item) => (
-                      <div key={item.dept} className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-white">{item.dept}</span>
-                          <span className={`font-semibold ${item.color}`}>{item.performance}%</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Progress value={item.performance} className="flex-1 h-2" />
-                          <span className="text-xs text-gray-400">Target: {item.target}%</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-slate-800/50 border-slate-600/50">
-                <CardHeader>
-                  <CardTitle className="text-slate-300 flex items-center">
-                    <PieChart className="w-5 h-5 mr-2" />
-                    Revenue Breakdown
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {[
-                      { source: "Product Sales", value: 45, amount: 5737500, color: "bg-blue-500" },
-                      { source: "Services", value: 30, amount: 3825000, color: "bg-green-500" },
-                      { source: "Subscriptions", value: 15, amount: 1912500, color: "bg-purple-500" },
-                      { source: "Licensing", value: 10, amount: 1275000, color: "bg-amber-500" },
-                    ].map((item) => (
-                      <div key={item.source} className="flex items-center space-x-3">
-                        <div className={`w-4 h-4 rounded ${item.color}`} />
-                        <div className="flex-1">
-                          <div className="flex justify-between">
-                            <span className="text-white">{item.source}</span>
-                            <span className="text-gray-400">{item.value}%</span>
-                          </div>
-                          <div className="text-sm text-gray-500">{formatCurrency(item.amount)}</div>
-                          <Progress value={item.value} className="h-2 mt-1" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Settings Tab */}
-          <TabsContent value="settings" className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">Business Settings</h2>
-              <p className="text-slate-400">Configure your business management preferences</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: "Company Profile",
-                  description: "Manage company information and branding",
-                  icon: Building2,
-                  color: "from-blue-600 to-cyan-600",
-                },
-                {
-                  title: "User Management",
-                  description: "Control user access and permissions",
-                  icon: Users,
-                  color: "from-purple-600 to-indigo-600",
-                },
-                {
-                  title: "Financial Settings",
-                  description: "Configure accounting and financial preferences",
-                  icon: DollarSign,
-                  color: "from-green-600 to-emerald-600",
-                },
-                {
-                  title: "Security & Compliance",
-                  description: "Manage security policies and compliance",
-                  icon: Shield,
-                  color: "from-red-600 to-pink-600",
-                },
-                {
-                  title: "Integration Settings",
-                  description: "Configure third-party integrations",
-                  icon: Zap,
-                  color: "from-amber-600 to-yellow-600",
-                },
-                {
-                  title: "Notification Preferences",
-                  description: "Customize alerts and notifications",
-                  icon: Bell,
-                  color: "from-indigo-600 to-purple-600",
-                },
-              ].map((setting, index) => {
-                const Icon = setting.icon
-                return (
-                  <motion.div
-                    key={setting.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Card className="bg-slate-800/50 border-slate-600/50 hover:border-amber-400/50 transition-all duration-300 cursor-pointer">
-                      <CardContent className="p-6 flex items-center space-x-4">
-                        <div
-                          className={`w-12 h-12 rounded-full bg-gradient-to-r ${setting.color} flex items-center justify-center`}
-                        >
-                          <Icon className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-white">{setting.title}</h3>
-                          <p className="text-sm text-gray-400">{setting.description}</p>
-                        </div>
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  )
-}
+                        \
