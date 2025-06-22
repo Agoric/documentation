@@ -251,37 +251,37 @@ export function EnhancedHomeDashboard() {
   // Update the handleQuickAction function to handle the new actions
   const handleQuickAction = useCallback((action: string) => {
     setSelectedQuickAction(action)
-    
+
     // Handle navigation for the new actions
     switch (action) {
-      case 'home':
-        window.location.href = '/dashboard/home'
+      case "home":
+        window.location.href = "/dashboard/home"
         break
-      case 'ecommx':
-        window.location.href = '/dashboard/ecommerex'
+      case "ecommx":
+        window.location.href = "/dashboard/ecommerex"
         break
-      case 'realestate':
-        window.location.href = '/dashboard/real-estate'
+      case "realestate":
+        window.location.href = "/dashboard/real-estate"
         break
-      case 'credit':
-        window.location.href = '/dashboard/credit-acceleration'
+      case "credit":
+        window.location.href = "/dashboard/credit-acceleration"
         break
-      case 'documents':
+      case "documents":
         // Scroll to documents tab or open documents modal
         break
-      case 'banking':
-        window.location.href = '/dashboard/banking'
+      case "banking":
+        window.location.href = "/dashboard/banking"
         break
-      case 'support':
+      case "support":
         // Open support chat or modal
         break
-      case 'settings':
+      case "settings":
         // Open settings modal
         break
       default:
         console.log(`Action ${action} triggered`)
     }
-    
+
     setTimeout(() => setSelectedQuickAction(null), 2000)
   }, [])
 
@@ -438,10 +438,10 @@ export function EnhancedHomeDashboard() {
             <Card className="bg-gradient-to-br from-purple-900/60 via-indigo-900/60 to-purple-900/60 border-2 border-amber-400/40 shadow-2xl shadow-purple-500/20 backdrop-blur-xl relative overflow-hidden">
               {/* Royal background pattern */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.1),transparent),radial-gradient(circle_at_80%_80%,rgba(147,51,234,0.1),transparent)]" />
-              
+
               {/* Animated border glow */}
               <div className="absolute inset-0 border-2 border-amber-400/20 rounded-lg animate-pulse" />
-              
+
               <CardHeader className="relative z-10">
                 <CardTitle className="text-amber-300 font-serif flex items-center justify-center text-lg">
                   <Crown className="w-6 h-6 mr-2 animate-pulse" />
@@ -456,8 +456,14 @@ export function EnhancedHomeDashboard() {
                       <Crown className="w-10 h-10 text-white drop-shadow-lg" />
                     </div>
                     {/* Orbital rings around avatar */}
-                    <div className="absolute inset-0 border border-amber-400/30 rounded-full animate-spin" style={{ animationDuration: '8s' }} />
-                    <div className="absolute inset-[-4px] border border-purple-400/20 rounded-full animate-spin" style={{ animationDuration: '12s', animationDirection: 'reverse' }} />
+                    <div
+                      className="absolute inset-0 border border-amber-400/30 rounded-full animate-spin"
+                      style={{ animationDuration: "8s" }}
+                    />
+                    <div
+                      className="absolute inset-[-4px] border border-purple-400/20 rounded-full animate-spin"
+                      style={{ animationDuration: "12s", animationDirection: "reverse" }}
+                    />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-transparent bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-300 bg-clip-text">
@@ -476,7 +482,9 @@ export function EnhancedHomeDashboard() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between items-center p-2 bg-gradient-to-r from-amber-900/20 to-purple-900/20 rounded border border-amber-400/20">
                     <span className="text-amber-200/80 font-serif">Citizen Registry ID</span>
-                    <span className="text-amber-300 font-mono text-xs bg-slate-900/50 px-2 py-1 rounded">{citizenData.id}</span>
+                    <span className="text-amber-300 font-mono text-xs bg-slate-900/50 px-2 py-1 rounded">
+                      {citizenData.id}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-gradient-to-r from-green-900/20 to-emerald-900/20 rounded border border-green-400/20">
                     <span className="text-green-200/80 font-serif">Imperial Status</span>
@@ -511,9 +519,7 @@ export function EnhancedHomeDashboard() {
 
                 {/* Recent Achievements with royal styling */}
                 <div className="space-y-3">
-                  <h4 className="text-amber-300 font-serif text-sm text-center tracking-wider">
-                    ✦ IMPERIAL HONORS ✦
-                  </h4>
+                  <h4 className="text-amber-300 font-serif text-sm text-center tracking-wider">✦ IMPERIAL HONORS ✦</h4>
                   <div className="grid grid-cols-2 gap-2">
                     {citizenData.achievements.slice(0, 4).map((achievement) => {
                       const Icon = achievement.icon
@@ -551,72 +557,74 @@ export function EnhancedHomeDashboard() {
                     ✦ IMPERIAL DOMAINS ✦
                   </h4>
                   <div className="grid grid-cols-1 gap-4">
-                    {quickActions.filter(action => action.priority === "high").map((action) => {
-                      const Icon = action.icon
-                      return (
-                        <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Button
-                            variant="ghost"
-                            className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/60 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
-                            onClick={() => handleQuickAction(action.action)}
-                          >
-                            {/* Royal background pattern */}
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            
-                            {/* Animated border glow */}
-                            <div className="absolute inset-0 border-2 border-amber-400/0 group-hover:border-amber-400/40 rounded transition-all duration-300" />
-                            
-                            <Icon className="w-8 h-8 drop-shadow-lg" />
-                            <span className="text-sm font-bold tracking-wide">{action.name}</span>
-                            
-                            {selectedQuickAction === action.action && (
-                              <motion.div
-                                className="absolute inset-0 bg-white/20 rounded"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [0, 1, 0] }}
-                                transition={{ duration: 0.8 }}
-                              />
-                            )}
-                          </Button>
-                        </motion.div>
-                      )
-                    })}
+                    {quickActions
+                      .filter((action) => action.priority === "high")
+                      .map((action) => {
+                        const Icon = action.icon
+                        return (
+                          <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              variant="ghost"
+                              className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/60 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
+                              onClick={() => handleQuickAction(action.action)}
+                            >
+                              {/* Royal background pattern */}
+                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                              {/* Animated border glow */}
+                              <div className="absolute inset-0 border-2 border-amber-400/0 group-hover:border-amber-400/40 rounded transition-all duration-300" />
+
+                              <Icon className="w-8 h-8 drop-shadow-lg" />
+                              <span className="text-sm font-bold tracking-wide">{action.name}</span>
+
+                              {selectedQuickAction === action.action && (
+                                <motion.div
+                                  className="absolute inset-0 bg-white/20 rounded"
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: [0, 1, 0] }}
+                                  transition={{ duration: 0.8 }}
+                                />
+                              )}
+                            </Button>
+                          </motion.div>
+                        )
+                      })}
                   </div>
                 </div>
 
                 {/* Medium Priority Actions */}
                 <div className="space-y-3">
                   <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-                  <h4 className="text-amber-300/80 font-serif text-xs text-center tracking-wider">
-                    ROYAL SERVICES
-                  </h4>
+                  <h4 className="text-amber-300/80 font-serif text-xs text-center tracking-wider">ROYAL SERVICES</h4>
                   <div className="grid grid-cols-2 gap-3">
-                    {quickActions.filter(action => action.priority === "medium").map((action) => {
-                      const Icon = action.icon
-                      return (
-                        <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <Button
-                            variant="ghost"
-                            className={`w-full h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-br ${action.color} hover:opacity-80 text-white border border-amber-400/20 hover:border-amber-400/40 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
-                            onClick={() => handleQuickAction(action.action)}
-                          >
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            
-                            <Icon className="w-5 h-5" />
-                            <span className="text-xs font-medium">{action.name}</span>
-                            
-                            {selectedQuickAction === action.action && (
-                              <motion.div
-                                className="absolute inset-0 bg-white/15 rounded"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [0, 1, 0] }}
-                                transition={{ duration: 0.5 }}
-                              />
-                            )}
-                          </Button>
-                        </motion.div>
-                      )
-                    })}
+                    {quickActions
+                      .filter((action) => action.priority === "medium")
+                      .map((action) => {
+                        const Icon = action.icon
+                        return (
+                          <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              variant="ghost"
+                              className={`w-full h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-br ${action.color} hover:opacity-80 text-white border border-amber-400/20 hover:border-amber-400/40 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
+                              onClick={() => handleQuickAction(action.action)}
+                            >
+                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                              <Icon className="w-5 h-5" />
+                              <span className="text-xs font-medium">{action.name}</span>
+
+                              {selectedQuickAction === action.action && (
+                                <motion.div
+                                  className="absolute inset-0 bg-white/15 rounded"
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: [0, 1, 0] }}
+                                  transition={{ duration: 0.5 }}
+                                />
+                              )}
+                            </Button>
+                          </motion.div>
+                        )
+                      })}
                   </div>
                 </div>
 
@@ -624,30 +632,32 @@ export function EnhancedHomeDashboard() {
                 <div className="space-y-2">
                   <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
                   <div className="grid grid-cols-2 gap-2">
-                    {quickActions.filter(action => action.priority === "low").map((action) => {
-                      const Icon = action.icon
-                      return (
-                        <motion.div key={action.name} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                          <Button
-                            variant="ghost"
-                            className={`w-full h-12 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-80 text-white border border-amber-400/10 hover:border-amber-400/30 text-xs transition-all duration-300`}
-                            onClick={() => handleQuickAction(action.action)}
-                          >
-                            <Icon className="w-4 h-4" />
-                            <span>{action.name}</span>
-                            
-                            {selectedQuickAction === action.action && (
-                              <motion.div
-                                className="absolute inset-0 bg-white/10 rounded"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [0, 1, 0] }}
-                                transition={{ duration: 0.3 }}
-                              />
-                            )}
-                          </Button>
-                        </motion.div>
-                      )
-                    })}
+                    {quickActions
+                      .filter((action) => action.priority === "low")
+                      .map((action) => {
+                        const Icon = action.icon
+                        return (
+                          <motion.div key={action.name} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                            <Button
+                              variant="ghost"
+                              className={`w-full h-12 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-80 text-white border border-amber-400/10 hover:border-amber-400/30 text-xs transition-all duration-300`}
+                              onClick={() => handleQuickAction(action.action)}
+                            >
+                              <Icon className="w-4 h-4" />
+                              <span>{action.name}</span>
+
+                              {selectedQuickAction === action.action && (
+                                <motion.div
+                                  className="absolute inset-0 bg-white/10 rounded"
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: [0, 1, 0] }}
+                                  transition={{ duration: 0.3 }}
+                                />
+                              )}
+                            </Button>
+                          </motion.div>
+                        )
+                      })}
                   </div>
                 </div>
               </CardContent>
@@ -665,21 +675,19 @@ export function EnhancedHomeDashboard() {
             {/* Enhanced Portfolio Overview */}
             <Card className="bg-gradient-to-br from-green-900/60 via-emerald-900/60 to-green-900/60 border-2 border-emerald-400/40 shadow-2xl shadow-emerald-500/20 backdrop-blur-xl relative overflow-hidden">
               {/* Royal background pattern */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,94,0.1),transparent)]"\`\`\`\
-rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,94,0.1),transparent)]"\
-              />
-              \
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,94,0.1),transparent)]" />
+
               <CardHeader className="relative z-10">
                 <CardTitle className="text-emerald-300 font-serif flex items-center justify-between text-lg">
                   <div className="flex items-center">
                     <div className="relative">
-                      <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: '8s' }} />
+                      <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: "8s" }} />
                       <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-lg animate-pulse" />
                     </div>
                     Imperial Treasury
                   </div>
                   <div className="text-right">
-                    <motion.div 
+                    <motion.div
                       className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-300 bg-clip-text"
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
@@ -706,7 +714,7 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
                       >
                         {/* Royal background glow */}
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        
+
                         <div className="flex items-center justify-between mb-3 relative z-10">
                           <div className="flex items-center space-x-3">
                             <div className="relative">
@@ -729,8 +737,11 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
                             ) : (
                               <ArrowDownRight className="w-4 h-4 text-red-400" />
                             )}
-                            <span className={`text-sm font-bold ${asset.change >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                              {asset.change >= 0 ? "+" : ""}{asset.change}%
+                            <span
+                              className={`text-sm font-bold ${asset.change >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                            >
+                              {asset.change >= 0 ? "+" : ""}
+                              {asset.change}%
                             </span>
                           </div>
                         </div>
@@ -748,7 +759,7 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
             {/* VOAI Environment Selector */}
             <Card className="bg-gradient-to-br from-indigo-900/60 via-purple-900/60 to-indigo-900/60 border-2 border-indigo-400/40 shadow-2xl shadow-indigo-500/20 backdrop-blur-xl relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(99,102,241,0.1),transparent),radial-gradient(circle_at_60%_60%,rgba(147,51,234,0.1),transparent)]" />
-              
+
               <CardHeader className="relative z-10">
                 <CardTitle className="text-indigo-300 font-serif flex items-center text-lg">
                   <div className="relative">
@@ -773,11 +784,11 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
             {/* Analytics Dashboard */}
             <Card className="bg-gradient-to-br from-blue-900/60 via-cyan-900/60 to-blue-900/60 border-2 border-cyan-400/40 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(6,182,212,0.1),transparent),radial-gradient(circle_at_75%_75%,rgba(59,130,246,0.1),transparent)]" />
-              
+
               <CardHeader className="relative z-10">
                 <CardTitle className="text-cyan-300 font-serif flex items-center text-lg">
                   <div className="relative">
-                    <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: '2s' }} />
+                    <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: "2s" }} />
                     <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg animate-pulse" />
                   </div>
                   Imperial Analytics Command
@@ -787,25 +798,44 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
               <CardContent className="relative z-10">
                 <Tabs defaultValue="financial" className="w-full">
                   <TabsList className="grid w-full grid-cols-3 bg-gradient-to-r from-cyan-800/40 via-blue-800/40 to-cyan-800/40 border border-cyan-400/30">
-                    <TabsTrigger value="financial" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200">Financial</TabsTrigger>
-                    <TabsTrigger value="credit" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200">Credit</TabsTrigger>
-                    <TabsTrigger value="activity" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200">Activity</TabsTrigger>
+                    <TabsTrigger
+                      value="financial"
+                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
+                    >
+                      Financial
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="credit"
+                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
+                    >
+                      Credit
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="activity"
+                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
+                    >
+                      Activity
+                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="financial" className="space-y-4 mt-6">
                     <div className="grid grid-cols-2 gap-4">
-                      <motion.div 
+                      <motion.div
                         className="text-center p-6 bg-gradient-to-br from-cyan-800/30 to-blue-800/30 rounded-lg border-2 border-cyan-400/30 shadow-lg"
                         whileHover={{ scale: 1.05 }}
                       >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text mb-2">12.5%</div>
+                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text mb-2">
+                          12.5%
+                        </div>
                         <div className="text-sm text-cyan-200/80 font-serif">Portfolio Growth</div>
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         className="text-center p-6 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 shadow-lg"
                         whileHover={{ scale: 1.05 }}
                       >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text mb-2">$45.2K</div>
+                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text mb-2">
+                          $45.2K
+                        </div>
                         <div className="text-sm text-emerald-200/80 font-serif">Monthly Income</div>
                       </motion.div>
                     </div>
@@ -813,18 +843,22 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
 
                   <TabsContent value="credit" className="space-y-4 mt-6">
                     <div className="grid grid-cols-2 gap-4">
-                      <motion.div 
+                      <motion.div
                         className="text-center p-6 bg-gradient-to-br from-purple-800/30 to-indigo-800/30 rounded-lg border-2 border-purple-400/30 shadow-lg"
                         whileHover={{ scale: 1.05 }}
                       >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text mb-2">847</div>
+                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text mb-2">
+                          847
+                        </div>
                         <div className="text-sm text-purple-200/80 font-serif">Snap Score</div>
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         className="text-center p-6 bg-gradient-to-br from-amber-800/30 to-yellow-800/30 rounded-lg border-2 border-amber-400/30 shadow-lg"
                         whileHover={{ scale: 1.05 }}
                       >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text mb-2">+23</div>
+                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text mb-2">
+                          +23
+                        </div>
                         <div className="text-sm text-amber-200/80 font-serif">Monthly Increase</div>
                       </motion.div>
                     </div>
@@ -864,7 +898,7 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
             {/* Update Upcoming Events */}
             <Card className="bg-gradient-to-br from-amber-900/60 via-orange-900/60 to-amber-900/60 border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20 backdrop-blur-xl relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(245,158,11,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(251,146,60,0.1),transparent)]" />
-              
+
               <CardHeader className="relative z-10">
                 <CardTitle className="text-amber-300 font-serif text-lg flex items-center">
                   <div className="relative">
@@ -878,8 +912,8 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
               <CardContent className="relative z-10">
                 <div className="space-y-3">
                   {upcomingEvents.slice(0, 3).map((event, index) => (
-                    <motion.div 
-                      key={event.id} 
+                    <motion.div
+                      key={event.id}
                       className="p-4 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border-2 border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -887,7 +921,7 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
                       whileHover={{ scale: 1.02 }}
                     >
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-                      
+
                       <div className="relative z-10">
                         <div className="text-sm font-bold text-amber-300 font-serif mb-1">{event.title}</div>
                         <div className="text-xs text-amber-200/70 mb-2">
@@ -1033,9 +1067,9 @@ rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,
   )
 }
 
-// Fix for missing Users import\
+// Fix for missing Users import
 function Users({ className }: { className?: string }) {
-  return (\
+  return (
     <svg
       className={className}
       fill="none"
@@ -1056,18 +1090,13 @@ function Users({ className }: { className?: string }) {
   )
 }
 
-// Fix for missing Star import\
+// Fix for missing Star import
 function Star({ className }: { className?: string }) {
-  return (\
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      stroke="none"
-      className={className}
-    >
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className}>
       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
     </svg>
-  );
+  )
 }
-\`\`\`
+
+export default EnhancedHomeDashboard
