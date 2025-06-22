@@ -187,15 +187,15 @@ interface GlobalCitizenshipContextType {
   updateFundLiquidity: (fundType: string, amount: number) => void
 
   // Tax Benefit System
-  generateTaxBenefitContract: (citizen: GlobalCitizen) => TaxBenefitContract
+  generateTaxBenefitContract: (citizen?: GlobalCitizen | null) => TaxBenefitContract | null
   prepareTaxDocuments: (citizenId: string) => Promise<any[]>
 
   // Digital Domicile
-  establishDigitalDomicile: (citizen: GlobalCitizen) => Promise<string>
+  establishDigitalDomicile: (citizen?: GlobalCitizen | null) => Promise<string | null>
   updateDomicileStatus: (domicileId: string, status: string) => void
 
   // Credit Line Replacement
-  replaceCreditLine: (citizen: GlobalCitizen) => void
+  replaceCreditLine: (citizen?: GlobalCitizen | null) => void
   calculateCreditReplacement: (qgiAmount: number) => number
 
   // Utility Functions
@@ -203,7 +203,7 @@ interface GlobalCitizenshipContextType {
   validateKYC: (citizenId: string) => Promise<boolean>
   generateCitizenshipCertificate: (citizenId: string) => Promise<string>
   getQGIPerformance: (fundType: string) => any
-  getCitizenshipBenefits: (citizenId: string) => string[]
+  getCitizenshipBenefits: (citizenId?: string) => string[]
 }
 
 const GlobalCitizenshipContext = createContext<GlobalCitizenshipContextType | undefined>(undefined)
@@ -595,7 +595,8 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
   }
 
   // Tax Benefit System
-  const generateTaxBenefitContract = (citizen: GlobalCitizen): TaxBenefitContract => {
+  const generateTaxBenefitContract = (citizen?: GlobalCitizen | null): TaxBenefitContract | null => {
+    if (!citizen) return null
     return {
       contractId: `TBC-${Date.now()}`,
       effectiveDate: new Date(),
@@ -638,7 +639,9 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
   }
 
   // Digital Domicile
-  const establishDigitalDomicile = async (citizen: GlobalCitizen): Promise<string> => {
+  const establishDigitalDomicile = async (citizen?: GlobalCitizen | null): Promise<string | null> => {
+    if (!citizen) return null
+
     // Simulate digital domicile establishment
     await new Promise((resolve) => setTimeout(resolve, 3000))
 
@@ -668,7 +671,9 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
   }
 
   // Credit Line Replacement
-  const replaceCreditLine = (citizen: GlobalCitizen) => {
+  const replaceCreditLine = (citizen?: GlobalCitizen | null) => {
+    if (!citizen) return
+
     const replacementValue = calculateCreditReplacement(citizen.qgiAllocation)
 
     setCurrentCitizen({
@@ -712,13 +717,15 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
     return qgiFunds[fundType]?.performanceMetrics || null
   }
 
-  const getCitizenshipBenefits = (citizenId: string): string[] => {
-    if (!currentCitizen) return []
+  const getCitizenshipBenefits = (citizenId?: string): string[] => {
+    const citizen = citizenId ? (currentCitizen?.id === citizenId ? currentCitizen : null) : currentCitizen
+
+    if (!citizen) return []
 
     return [
-      `$${currentCitizen.qgiAllocation.toLocaleString()} QGI allocation`,
-      `$${currentCitizen.bondAllocation.toLocaleString()} US 50-year Corporate Bond`,
-      `$${currentCitizen.taxBenefitContract.estimatedAnnualBenefit?.toLocaleString() || 0} estimated annual tax benefit`,
+      `$${citizen.qgiAllocation.toLocaleString()} QGI allocation`,
+      `$${citizen.bondAllocation.toLocaleString()} US 50-year Corporate Bond`,
+      `$${citizen.taxBenefitContract?.estimatedAnnualBenefit?.toLocaleString() || 0} estimated annual tax benefit`,
       "Digital domicile tax optimization",
       "SNAPPCREDITCOM inclusive lending access",
       "Global citizenship privileges",
