@@ -1,4 +1,4 @@
-import { HolographicProductsDashboard } from "./HolographicProductsDashboard"
+import HolographicProductsDashboard from "./HolographicProductsDashboard"
 
 export default function HolographicProductsPage() {
   return <HolographicProductsDashboard />
