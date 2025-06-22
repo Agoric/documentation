@@ -114,6 +114,8 @@ export function ImperialAIChat() {
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
   const [isExpanded, setIsExpanded] = useState(false)
   const [autoScroll, setAutoScroll] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
+  const [autoRetractTimer, setAutoRetractTimer] = useState<NodeJS.Timeout | null>(null)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
@@ -131,6 +133,35 @@ export function ImperialAIChat() {
       })
     }
   }, [autoScroll])
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true)
+    if (autoRetractTimer) {
+      clearTimeout(autoRetractTimer)
+      setAutoRetractTimer(null)
+    }
+    if (!isExpanded) {
+      setIsExpanded(true)
+    }
+  }, [isExpanded, autoRetractTimer])
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false)
+    const timer = setTimeout(() => {
+      if (!isHovered && isExpanded) {
+        setIsExpanded(false)
+      }
+    }, 3000) // Auto-retract after 3 seconds
+    setAutoRetractTimer(timer)
+  }, [isHovered, isExpanded])
+
+  useEffect(() => {
+    return () => {
+      if (autoRetractTimer) {
+        clearTimeout(autoRetractTimer)
+      }
+    }
+  }, [autoRetractTimer])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -429,7 +460,7 @@ export function ImperialAIChat() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0, transition: { duration: 0.3 } }}
               className="relative cursor-pointer"
-              onClick={() => setIsExpanded(true)}
+              onMouseEnter={handleMouseEnter}
             >
               <motion.div
                 className={`w-16 h-16 rounded-full bg-gradient-to-br ${getOrbColors().gradient} shadow-2xl flex items-center justify-center`}
@@ -496,6 +527,8 @@ export function ImperialAIChat() {
                 transition: { duration: 0.4, ease: "easeInOut" },
               }}
               className="w-96 h-[600px]"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <Card
                 className={`h-full backdrop-blur-xl shadow-2xl ${
@@ -579,7 +612,7 @@ export function ImperialAIChat() {
                 </CardHeader>
 
                 <CardContent className="p-0 flex-1 flex flex-col">
-                  <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+                  <ScrollArea className="flex-1 p-4 max-h-[400px] overflow-y-auto" ref={scrollAreaRef}>
                     <div className="space-y-4 min-h-full">
                       {messages.map((message, index) => (
                         <motion.div
