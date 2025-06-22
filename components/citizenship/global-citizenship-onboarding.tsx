@@ -1,4 +1,4 @@
-import { useGlobalCitizenship } from "@/lib/hooks/use-global-citizenship"
+import { useGlobalCitizenship } from "@/contexts/global-citizenship-context"
 
 export default function GlobalCitizenshipOnboarding() {
   const { currentCitizen } = useGlobalCitizenship()
