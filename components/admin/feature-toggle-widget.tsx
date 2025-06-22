@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
@@ -24,23 +24,33 @@ export function FeatureToggleWidget({
   const [statistics, setStatistics] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Memoize the change handler to prevent recreation on every render
+  // Cache the last feature-set to avoid unnecessary renders and break update-loops
+  const lastFeaturesRef = useRef<FeatureToggle[]>([])
+
   const handleChange = useCallback(() => {
     try {
-      let allFeatures = featureToggleManager.getAllFeatures()
+      let all = featureToggleManager.getAllFeatures()
 
-      // Filter by categories if specified
-      if (showCategories.length > 0) {
-        allFeatures = allFeatures.filter((f) => showCategories.includes(f.category))
+      if (showCategories.length) {
+        all = all.filter((f) => showCategories.includes(f.category))
       }
 
-      // Limit number of features
-      const limitedFeatures = allFeatures.slice(0, maxFeatures)
+      const limited = all.slice(0, maxFeatures)
 
-      setFeatures(limitedFeatures)
-      setStatistics(featureToggleManager.getStatistics())
-    } catch (error) {
-      console.error("Error updating features:", error)
+      // shallow-compare against the last feature list
+      const unchanged =
+        limited.length === lastFeaturesRef.current.length &&
+        limited.every(
+          (f, idx) => f.id === lastFeaturesRef.current[idx].id && f.enabled === lastFeaturesRef.current[idx].enabled,
+        )
+
+      if (!unchanged) {
+        lastFeaturesRef.current = limited
+        setFeatures(limited)
+        setStatistics(featureToggleManager.getStatistics())
+      }
+    } catch (err) {
+      console.error("feature-widget change err:", err)
     }
   }, [maxFeatures, showCategories])
 
@@ -58,12 +68,18 @@ export function FeatureToggleWidget({
     }
   }, [handleChange])
 
-  const handleToggle = useCallback((featureId: string, enabled: boolean) => {
-    try {
-      featureToggleManager.toggleFeature(featureId, enabled, "widget")
-    } catch (error) {
-      console.error("Failed to toggle feature:", error)
-    }
+  const handleToggle = useCallback((id: string, enabled: boolean) => {
+    // optimistic local update (instant UI feedback without re-mounting)
+    setFeatures((cur) => cur.map((f) => (f.id === id ? { ...f, enabled } : f)))
+
+    // defer the global update to the next tick to avoid nested updates
+    setTimeout(() => {
+      try {
+        featureToggleManager.toggleFeature(id, enabled, "widget")
+      } catch (e) {
+        console.error("toggleFeature err:", e)
+      }
+    }, 0)
   }, [])
 
   if (isLoading) {
