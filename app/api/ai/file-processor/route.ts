@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 async function readTextFile(filepath: string, mimeType: string) {
   const content = await readFile(filepath, "utf-8")
 
-  const lines = content.split("\n")
+  const lines = content.split(/\r?\n/)
   const wordCount = content.split(/\s+/).filter(Boolean).length
   const charCount = content.length
 
