@@ -14,7 +14,18 @@ export async function loadFeatures(): Promise<FeatureToggle[]> {
 
   // 1️⃣ HTTP error (404, 500, etc.)
   if (!res.ok) {
-    throw new Error(`Feature-toggle API responded with ${res.status} ${res.statusText}`)
+    // Attempt to extract `{ error: "…" }` sent by the API; fall back to status text
+    let apiMessage: string | undefined
+    try {
+      if (res.headers.get("content-type")?.includes("application/json")) {
+        const body = (await res.json()) as { error?: string }
+        apiMessage = body.error
+      }
+    } catch {
+      /* ignore JSON-parse failures – we'll use statusText instead */
+    }
+
+    throw new Error(apiMessage ?? `Feature-toggle API responded with ${res.status} ${res.statusText}`)
   }
 
   // 2️⃣ Non-JSON response (e.g. Next.js HTML error page)
