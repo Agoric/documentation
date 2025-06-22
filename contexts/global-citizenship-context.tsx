@@ -166,8 +166,7 @@ export interface OnboardingStep {
 }
 
 interface GlobalCitizenshipContextType {
-  // Current User State
-  currentCitizen: GlobalCitizen | null
+  currentCitizen: GlobalCitizen
   onboardingProgress: OnboardingStep[]
   qgiFunds: Record<string, QGIFund>
 
@@ -404,7 +403,38 @@ const onboardingStepsConfig = {
 }
 
 export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentCitizen, setCurrentCitizen] = useState<GlobalCitizen | null>(null)
+  // Simple placeholder citizen so UI never crashes before real data loads
+  const guestCitizen: GlobalCitizen = {
+    id: "guest",
+    type: "individual",
+    registrationDate: new Date(),
+    status: "pending",
+    name: "Guest Citizen",
+    email: "guest@example.com",
+    phone: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      postalCode: "",
+    },
+    qgiAllocation: 0,
+    qgiInstrumentId: "",
+    socialImpactScore: 0,
+    digitalDomicileId: "",
+    taxBenefitContract: {} as TaxBenefitContract,
+    membershipDues: {} as MembershipDues,
+    bondAllocation: 0,
+    creditLineReplacement: {
+      originalCreditLimit: 0,
+      qgiReplacementValue: 0,
+      effectiveDate: new Date(),
+      terms: [],
+    },
+  }
+
+  const [currentCitizen, setCurrentCitizen] = useState<GlobalCitizen>(guestCitizen)
   const [onboardingProgress, setOnboardingProgress] = useState<OnboardingStep[]>([])
   const [qgiFunds, setQGIFunds] = useState<Record<string, QGIFund>>(sampleQGIFunds)
 
@@ -568,11 +598,8 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
       setQGIFunds((prev) => ({
         ...prev,
         [fundType]: {
-          ...prev[fundType],
-          bondHoldings: {
-            ...prev[fundType].bondHoldings,
-            totalValue: prev[fundType].bondHoldings.totalValue + amount,
-          },
+          ...prev[fundType].bondHoldings,
+          totalValue: prev[fundType].bondHoldings.totalValue + amount,
         },
       }))
 
