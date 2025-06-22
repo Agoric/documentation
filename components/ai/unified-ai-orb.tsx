@@ -71,10 +71,22 @@ const VOICE_COMMANDS: VoiceCommand[] = [
     response: "I'll browse that website and analyze its content for you!",
   },
   {
+    command: "visit site",
+    action: "web_browse",
+    category: "system",
+    response: "Opening web browser to analyze the site!",
+  },
+  {
     command: "read file",
     action: "file_read",
     category: "system",
     response: "Upload a file and I'll read and analyze it for you!",
+  },
+  {
+    command: "open document",
+    action: "file_read",
+    category: "system",
+    response: "Ready to analyze your document!",
   },
   {
     command: "mimic elon musk",
@@ -83,10 +95,34 @@ const VOICE_COMMANDS: VoiceCommand[] = [
     response: "Obviously, I'm now channeling Elon Musk. This is going to be incredible!",
   },
   {
+    command: "be like elon",
+    action: "personality_elon",
+    category: "system",
+    response: "Switching to Elon Musk personality mode!",
+  },
+  {
     command: "go to dashboard",
     action: "/dashboard/home",
     category: "navigation",
     response: "BOOM! Taking you to your command center where the MAGIC happens!",
+  },
+  {
+    command: "show dashboard",
+    action: "/dashboard/home",
+    category: "navigation",
+    response: "Opening your command dashboard!",
+  },
+  {
+    command: "check balance",
+    action: "check_balance",
+    category: "financial",
+    response: "Your QGI balance is 250K and bonds at 8.5K - looking STRONG!",
+  },
+  {
+    command: "show money",
+    action: "check_balance",
+    category: "financial",
+    response: "Here's your financial status - you're doing GREAT!",
   },
 ]
 
@@ -378,18 +414,103 @@ export function UnifiedAIOrb() {
   const processVoiceCommand = (transcript: string) => {
     setIsProcessing(true)
 
-    const matchedCommand = VOICE_COMMANDS.find(
-      (cmd) => transcript.includes(cmd.command) || cmd.command.split(" ").every((word) => transcript.includes(word)),
-    )
+    // Enhanced fuzzy matching with multiple strategies
+    const findBestMatch = (input: string, commands: VoiceCommand[]) => {
+      const normalizedInput = input.toLowerCase().trim()
+
+      // Strategy 1: Exact phrase matching
+      const bestMatch = commands.find((cmd) => normalizedInput.includes(cmd.command.toLowerCase()))
+
+      if (bestMatch) return bestMatch
+
+      // Strategy 2: Keyword-based matching with scoring
+      const scoredMatches = commands.map((cmd) => {
+        const cmdWords = cmd.command.toLowerCase().split(" ")
+        const inputWords = normalizedInput.split(" ")
+
+        let score = 0
+        let matchedWords = 0
+
+        cmdWords.forEach((cmdWord) => {
+          inputWords.forEach((inputWord) => {
+            // Exact word match
+            if (inputWord === cmdWord) {
+              score += 10
+              matchedWords++
+            }
+            // Partial word match (contains)
+            else if (inputWord.includes(cmdWord) || cmdWord.includes(inputWord)) {
+              score += 5
+              matchedWords++
+            }
+            // Phonetic similarity (simple)
+            else if (Math.abs(inputWord.length - cmdWord.length) <= 2) {
+              let similarity = 0
+              const minLen = Math.min(inputWord.length, cmdWord.length)
+              for (let i = 0; i < minLen; i++) {
+                if (inputWord[i] === cmdWord[i]) similarity++
+              }
+              if (similarity / minLen > 0.6) {
+                score += 3
+                matchedWords++
+              }
+            }
+          })
+        })
+
+        // Bonus for matching more words
+        if (matchedWords >= cmdWords.length * 0.7) {
+          score += 15
+        }
+
+        return { command: cmd, score, matchedWords }
+      })
+
+      // Sort by score and return best match if score is good enough
+      scoredMatches.sort((a, b) => b.score - a.score)
+      if (scoredMatches[0]?.score >= 8) {
+        return scoredMatches[0].command
+      }
+
+      // Strategy 3: Intent-based matching
+      const intentMatches = {
+        navigation: ["go", "open", "show", "navigate", "take", "bring"],
+        web: ["browse", "visit", "website", "web", "internet", "search", "look"],
+        file: ["read", "open", "analyze", "check", "file", "document"],
+        personality: ["mimic", "be", "act", "sound", "like", "personality"],
+        financial: ["money", "balance", "portfolio", "invest", "profit", "wealth"],
+      }
+
+      for (const [intent, keywords] of Object.entries(intentMatches)) {
+        const hasKeywords = keywords.some((keyword) => normalizedInput.includes(keyword))
+
+        if (hasKeywords) {
+          const intentCommand = commands.find((cmd) => cmd.category === intent || cmd.action.includes(intent))
+          if (intentCommand) return intentCommand
+        }
+      }
+
+      return null
+    }
+
+    const matchedCommand = findBestMatch(transcript, VOICE_COMMANDS)
 
     setTimeout(() => {
       if (matchedCommand) {
         setCommandHistory((prev) => [matchedCommand, ...prev.slice(0, 4)])
-        speakResponse(matchedCommand.response)
 
-        // Handle special commands
+        // Enhanced response with confirmation
+        const confirmationResponse = `Got it! ${matchedCommand.response}`
+        speakResponse(confirmationResponse)
+
+        // Handle special commands with better interpretation
         if (matchedCommand.action === "web_browse") {
           setActiveTab("web-access")
+          // Try to extract URL from speech
+          const urlMatch = transcript.match(/(https?:\/\/[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/i)
+          if (urlMatch) {
+            setWebUrl(urlMatch[0].startsWith("http") ? urlMatch[0] : `https://${urlMatch[0]}`)
+          }
         } else if (matchedCommand.action === "file_read") {
           setActiveTab("file-processor")
         } else if (matchedCommand.action.startsWith("personality_")) {
@@ -403,7 +524,15 @@ export function UnifiedAIOrb() {
           window.location.href = matchedCommand.action
         }
       } else {
-        speakResponse("Command not recognized. Please try again.")
+        // Enhanced fallback with suggestions
+        const suggestions = [
+          "Try saying 'browse website' or 'read file'",
+          "You can say 'mimic Elon Musk' or 'go to dashboard'",
+          "Say 'check balance' or 'show portfolio'",
+        ]
+        const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)]
+
+        speakResponse(`I didn't quite catch that command. ${randomSuggestion}`)
       }
       setIsProcessing(false)
     }, 1000)

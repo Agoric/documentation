@@ -194,17 +194,60 @@ export function ImperialAIChat() {
         recognitionRef.current.continuous = false
         recognitionRef.current.interimResults = true
         recognitionRef.current.lang = "en-US"
-        recognitionRef.current.maxAlternatives = 1
+        recognitionRef.current.maxAlternatives = 3 // Get multiple alternatives
+
+        // Enhanced recognition settings
+        if (recognitionRef.current.serviceURI) {
+          recognitionRef.current.serviceURI = "wss://www.google.com/speech-api/v2/recognize"
+        }
 
         recognitionRef.current.onresult = (event) => {
-          const transcript = event.results[event.results.length - 1][0].transcript
-          if (event.results[event.results.length - 1].isFinal) {
-            setInputValue(transcript)
+          let finalTranscript = ""
+          let interimTranscript = ""
+
+          // Process all results for better accuracy
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const result = event.results[i]
+            const transcript = result[0].transcript
+
+            if (result.isFinal) {
+              finalTranscript += transcript
+            } else {
+              interimTranscript += transcript
+            }
+          }
+
+          if (finalTranscript) {
+            // Clean up the transcript
+            const cleanTranscript = finalTranscript
+              .toLowerCase()
+              .replace(/[.,!?;]/g, "") // Remove punctuation
+              .replace(/\s+/g, " ") // Normalize spaces
+              .trim()
+
+            setInputValue(cleanTranscript)
             setIsListening(false)
+
+            // Auto-send if it looks like a command
+            const commandKeywords = ["go", "show", "open", "browse", "read", "check", "mimic", "be"]
+            if (commandKeywords.some((keyword) => cleanTranscript.includes(keyword))) {
+              setTimeout(() => handleSendMessage(), 500)
+            }
+          } else if (interimTranscript) {
+            // Show interim results for feedback
+            setInputValue(interimTranscript)
           }
         }
 
-        recognitionRef.current.onerror = () => {
+        recognitionRef.current.onerror = (event) => {
+          console.log("Speech recognition error:", event.error)
+          if (event.error === "no-speech") {
+            speakMessage("I didn't hear anything. Please try speaking again.")
+          } else if (event.error === "audio-capture") {
+            speakMessage("Please check your microphone permissions.")
+          } else if (event.error === "not-allowed") {
+            speakMessage("Microphone access is required for voice commands.")
+          }
           setIsListening(false)
         }
 
