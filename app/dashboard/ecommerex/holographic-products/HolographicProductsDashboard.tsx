@@ -186,3 +186,6 @@ export function HolographicProductsDashboard() {
     </div>
   )
 }
+
+// keep the existing named export
+export default HolographicProductsDashboard
