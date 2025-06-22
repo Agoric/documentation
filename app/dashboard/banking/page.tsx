@@ -1,18 +1,9 @@
-"use client"
-
-import { PageWrapper } from "@/components/layout/page-wrapper"
-import { SnapifiBankingProvider } from "@/contexts/snapifi-banking-context"
-import { SnapifiBankingDashboard } from "@/components/banking/snapifi-banking-dashboard"
+import { SupremeBankingSuite } from "@/components/banking/supreme-banking-suite"
 
 export default function BankingPage() {
-  // TODO: replace with authenticated user’s primary account
-  const accountId = "acc_individual_001"
-
   return (
-    <SnapifiBankingProvider>
-      <PageWrapper title="Snapifi Banking" subtitle="Bancarius Digitalis – Digital Banking Services">
-        <SnapifiBankingDashboard accountId={accountId} />
-      </PageWrapper>
-    </SnapifiBankingProvider>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-8">
+      <SupremeBankingSuite />
+    </div>
   )
 }
