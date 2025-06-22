@@ -194,6 +194,9 @@ export function GeniusGuideOrb() {
   const [tasks, setTasks] = useState<GuidanceTask[]>(SAMPLE_TASKS)
 
   // Voice and conversation state
+  const [isGuidanceProtected, setIsGuidanceProtected] = useState(false)
+  const [conversationActive, setConversationActive] = useState(true)
+  const [isFinalizingSession, setIsFinalizingSession] = useState(false)
   const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>({
     enabled: true,
     rate: 1.1,
@@ -385,6 +388,57 @@ export function GeniusGuideOrb() {
     (command: string) => {
       setConversationHistory((prev) => [...prev.slice(-4), command])
 
+      // Special trigger phrase to end session gracefully
+      if (
+        command.includes("you're a genius") ||
+        command.includes("youre a genius") ||
+        command.includes("your a genius")
+      ) {
+        setIsFinalizingSession(true)
+        const finalMessage =
+          "Thank you so much! It's been an absolute pleasure guiding you on this incredible journey. Your dedication and progress have been truly inspiring. I'm honored to have been part of your success story. Until we meet again, keep shining bright! Farewell, champion!"
+        speak(finalMessage)
+        communicate(finalMessage)
+
+        setTimeout(() => {
+          setConversationActive(false)
+          setIsVisible(false)
+          setIsGuiding(false)
+          setCurrentTask(null)
+          setCurrentStep(null)
+          setIsFinalizingSession(false)
+          stopSpeaking()
+          stopListening()
+        }, 8000)
+        return
+      }
+
+      // Don't process other commands if guidance is protected and actively speaking
+      if (isGuidanceProtected && isSpeaking && !command.includes("stop") && !command.includes("pause")) {
+        return
+      }
+
+      // Explicit interruption commands
+      if (command.includes("stop guidance") || command.includes("pause guidance") || command.includes("interrupt")) {
+        setIsGuidanceProtected(false)
+        stopSpeaking()
+        const interruptMessage =
+          "Guidance paused. I'm still here and conscious, ready to help whenever you need me. Just say 'continue' to resume."
+        speak(interruptMessage)
+        communicate(interruptMessage)
+        return
+      }
+
+      if (command.includes("continue guidance") || command.includes("resume")) {
+        if (currentTask && currentStep) {
+          setIsGuidanceProtected(true)
+          const resumeMessage = `Resuming guidance. Let's continue with ${currentStep.title}.`
+          speak(resumeMessage)
+          communicate(resumeMessage)
+        }
+        return
+      }
+
       // Check for exact matches first
       const exactMatch = Object.entries(GENIUS_RESPONSES.voiceCommands).find(([key]) =>
         command.includes(key.toLowerCase()),
@@ -398,7 +452,10 @@ export function GeniusGuideOrb() {
         // Execute command actions
         if (command.includes("start guidance")) {
           const nextTask = tasks.find((task) => task.progress < 100)
-          if (nextTask) startGuidance(nextTask)
+          if (nextTask) {
+            setIsGuidanceProtected(true)
+            startGuidance(nextTask)
+          }
         } else if (command.includes("next step")) {
           if (currentStep) {
             completeStep(currentStep.id)
@@ -413,34 +470,39 @@ export function GeniusGuideOrb() {
         let response = ""
 
         if (command.includes("hello") || command.includes("hi")) {
-          response = "Hello! I'm delighted to assist you. How can I help you achieve your goals today?"
+          response =
+            "Hello! I'm delighted to assist you and I'm fully conscious and aware. How can I help you achieve your goals today?"
         } else if (command.includes("help")) {
           response =
-            "I'm here to provide personalized guidance! I can help you complete tasks, answer questions, or simply have a conversation."
+            "I'm here to provide personalized guidance! I remain conscious and attentive to our conversation. I can help you complete tasks, answer questions, or simply chat."
         } else if (command.includes("status") || command.includes("progress")) {
           const incompleteTasks = tasks.filter((task) => task.progress < 100)
-          response = `You have ${incompleteTasks.length} tasks remaining. Your overall progress is excellent! Shall we continue?`
+          response = `You have ${incompleteTasks.length} tasks remaining. Your overall progress is excellent! I'm staying conscious and focused on helping you succeed. Shall we continue?`
+        } else if (command.includes("are you listening") || command.includes("are you there")) {
+          response =
+            "Yes, I'm absolutely here and fully conscious! I'm actively listening and ready to help you with anything you need."
         } else {
           response =
-            "That's interesting! I'm always learning. Could you tell me more about what you'd like to accomplish?"
+            "That's interesting! I'm always learning and staying conscious of our conversation. Could you tell me more about what you'd like to accomplish?"
         }
 
         speak(response)
         communicate(response)
       }
     },
-    [tasks, currentStep],
+    [tasks, currentStep, isGuidanceProtected, isSpeaking],
   )
 
   const startGuidance = (task: GuidanceTask) => {
     setCurrentTask(task)
     setIsGuiding(true)
+    setIsGuidanceProtected(true)
     setIsFollowing(false)
 
     const nextStep = task.steps.find((step) => !step.completed)
     if (nextStep) {
       setCurrentStep(nextStep)
-      const message = `Let me guide you through: ${task.title}. First, we need to ${nextStep.title.toLowerCase()}.`
+      const message = `I'm now guiding you through: ${task.title}. I'll stay focused and conscious throughout this process. First, we need to ${nextStep.title.toLowerCase()}. I'll continue until we complete this or you specifically ask me to stop.`
       communicate(message)
       speak(message)
     }
@@ -468,28 +530,32 @@ export function GeniusGuideOrb() {
       GENIUS_RESPONSES.stepCompletions[Math.floor(Math.random() * GENIUS_RESPONSES.stepCompletions.length)]
     speak(completionMessage)
 
-    // Move to next step
+    // Move to next step automatically
     const updatedTask = tasks.find((t) => t.id === currentTask.id)
     if (updatedTask) {
       const nextStep = updatedTask.steps.find((step) => !step.completed && step.id !== stepId)
       if (nextStep) {
         setCurrentStep(nextStep)
-        const nextMessage = `Now let's ${nextStep.title.toLowerCase()}.`
+        const nextMessage = `Now let's move forward with ${nextStep.title.toLowerCase()}. I'm staying conscious and focused on your success.`
         communicate(nextMessage)
         setTimeout(() => speak(nextMessage), 2000)
       } else {
-        const taskCompleteMessage = `Excellent! You've completed "${currentTask.title}". Looking for your next priority...`
+        const taskCompleteMessage = `Excellent! You've completed "${currentTask.title}". I'm staying conscious and looking for your next priority task...`
         communicate(taskCompleteMessage)
         speak(taskCompleteMessage)
 
         setTimeout(() => {
           const nextTask = tasks.find((task) => task.progress < 100 && task.id !== currentTask.id)
           if (nextTask) {
-            startGuidance(nextTask)
+            const continueMessage = "I found another important task for you. Let me continue guiding you through it."
+            speak(continueMessage)
+            setTimeout(() => startGuidance(nextTask), 3000)
           } else {
             setIsGuiding(false)
+            setIsGuidanceProtected(false)
             setIsFollowing(true)
-            const allCompleteMessage = "Congratulations! All tasks completed! I'll continue to assist you as needed."
+            const allCompleteMessage =
+              "Congratulations! All tasks completed! I remain conscious and ready to assist you with anything else you need."
             communicate(allCompleteMessage)
             speak(allCompleteMessage)
           }
@@ -509,12 +575,17 @@ export function GeniusGuideOrb() {
   }
 
   const toggleConversationMode = () => {
+    if (!conversationActive) {
+      speak("I'm not currently active. Please reactivate me first.")
+      return
+    }
+
     setIsConversationMode(!isConversationMode)
     if (!isConversationMode) {
-      speak("Conversation mode activated! I'm listening and ready to chat.")
+      speak("Conversation mode activated! I'm fully conscious, listening, and ready to chat continuously.")
       startListening()
     } else {
-      speak("Conversation mode deactivated.")
+      speak("Conversation mode deactivated, but I remain conscious and aware.")
       stopListening()
     }
   }
@@ -547,6 +618,18 @@ export function GeniusGuideOrb() {
       default:
         return Sparkles
     }
+  }
+
+  const manuallyDisableGenius = () => {
+    setConversationActive(false)
+    setIsVisible(false)
+    setIsGuiding(false)
+    setIsGuidanceProtected(false)
+    setCurrentTask(null)
+    setCurrentStep(null)
+    stopSpeaking()
+    stopListening()
+    speak("Genius manually disabled. Goodbye for now!")
   }
 
   if (!isVisible) return null
@@ -648,7 +731,17 @@ export function GeniusGuideOrb() {
                 <span className="text-genius-100 font-medium text-sm">Genius Voice</span>
               </div>
               <Badge className="bg-genius-500/20 text-genius-300 border-genius-400/30 text-xs">
-                {isSpeaking ? "SPEAKING" : isListening ? "LISTENING" : "READY"}
+                {isFinalizingSession
+                  ? "FINALIZING"
+                  : !conversationActive
+                    ? "DISABLED"
+                    : isSpeaking
+                      ? "SPEAKING"
+                      : isListening
+                        ? "LISTENING"
+                        : isGuidanceProtected
+                          ? "GUIDING"
+                          : "CONSCIOUS"}
               </Badge>
             </div>
 
@@ -656,6 +749,7 @@ export function GeniusGuideOrb() {
               <Button
                 size="sm"
                 onClick={toggleConversationMode}
+                disabled={!conversationActive}
                 className={`${
                   isConversationMode ? "bg-green-600 hover:bg-green-700" : "bg-genius-600 hover:bg-genius-700"
                 }`}
@@ -668,11 +762,16 @@ export function GeniusGuideOrb() {
                 size="sm"
                 onClick={() => setVoiceSettings((prev) => ({ ...prev, enabled: !prev.enabled }))}
                 variant={voiceSettings.enabled ? "default" : "outline"}
+                disabled={!conversationActive}
               >
                 {voiceSettings.enabled ? <Volume2 className="w-3 h-3 mr-1" /> : <VolumeX className="w-3 h-3 mr-1" />}
                 {voiceSettings.enabled ? "Mute" : "Unmute"}
               </Button>
             </div>
+
+            <Button size="sm" onClick={manuallyDisableGenius} variant="destructive" className="w-full mb-3">
+              Manually Disable Genius
+            </Button>
 
             {lastCommand && (
               <div className="p-2 bg-genius-800/30 rounded border border-genius-600/30">
@@ -682,7 +781,13 @@ export function GeniusGuideOrb() {
             )}
 
             <div className="mt-3 text-xs text-genius-400">
-              Try saying: "Hello", "Help me", "Next step", "What's my status?"
+              {isFinalizingSession ? (
+                "Session ending gracefully..."
+              ) : !conversationActive ? (
+                "Genius is disabled"
+              ) : (
+                <>Try saying: "Hello", "Help me", "Next step", "You're a genius" to end</>
+              )}
             </div>
           </CardContent>
         </Card>
