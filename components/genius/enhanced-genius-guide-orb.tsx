@@ -28,7 +28,10 @@ import {
   type CharacterProfile,
   type EmotionalContext,
 } from "@/lib/enhanced-genius-voice-system"
-import SpeechRecognition from "speech-recognition"
+// Web-Speech API: grab the browser-native constructor (Chrome, Edge) or fall back to undefined on
+// server / unsupported browsers.  No external npm package is required or available.
+const SpeechRecognition =
+  typeof window !== "undefined" ? window.SpeechRecognition || (window as any).webkitSpeechRecognition : undefined
 
 // Predefined character profiles
 const CHARACTER_PROFILES: CharacterProfile[] = [
@@ -209,7 +212,7 @@ export function EnhancedGeniusGuideOrb() {
 
   // Refs
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null)
 
   // Initialize voice profile and check for greetings
   useEffect(() => {
