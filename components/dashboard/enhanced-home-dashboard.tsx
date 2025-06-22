@@ -1,18 +1,26 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { SupremeAuthorityCoin } from "@/components/branding/supreme-authority-coin"
-import { FeatureToggleWidget } from "@/components/admin/feature-toggle-widget"
-import { ZillowApiStatus } from "@/components/ecommerex/zillow-api-status"
-import { UnifiedAIOrb } from "@/components/ai/unified-ai-orb"
-import { ImperialAIChat } from "@/components/ai/imperial-ai-chat"
-import { EnvironmentSelector } from "@/components/voai/environment-selector"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Shield,
@@ -27,22 +35,55 @@ import {
   TreePine,
   Cpu,
   Sparkles,
-  BarChart3,
-  PieChart,
   Activity,
   Bell,
-  Calendar,
   Clock,
   Target,
   CreditCard,
   Wallet,
   ArrowUpRight,
-  ArrowDownRight,
   MessageSquare,
   Settings,
   X,
   Home,
   Building,
+  Star,
+  ChevronDown,
+  MoreVertical,
+  Archive,
+  Users,
+  User,
+  Lock,
+  ShieldCheck,
+  CheckCircle,
+  Database,
+  AlarmClockIcon as Alarm,
+  AlarmClockIcon as Alarm,
+  AlarmClockIcon as Alarm,
+  Trophy,
+  Brain,
+  Hash,
+  DoorOpenIcon as Open,
+  CloudLightningIcon as Lightning,
+  IceCreamConeIcon as Ice,
+  Gem,
+  Diamond,
+  ZoomInIcon as Zoom,
+  ZoomInIcon as Zoom,
+  IceCreamConeIcon as Ice,
+  GlassWaterIcon as Glass,
+  GlassWaterIcon as Glass,
+  CigaretteIcon as Smoking,
+  LigatureIcon as Bandage,
+  HeartPulseIcon as Heartbeat,
+  PowerIcon as Pulse,
+  CircleStopIcon as Stop,
+  DoorOpenIcon as Open,
+  AlarmClockIcon as Alarm,
+  AirplayIcon as Broadcast,
+  QrCodeIcon as Qr,
+  FingerprintIcon as Fossil,
+  SnowflakeIcon as Crystal,
 } from "lucide-react"
 import { VOAI_ENVIRONMENTS, type VOAIEnvironment } from "@/lib/voai-environments"
 
@@ -214,6 +255,41 @@ const upcomingEvents = [
   { id: 4, title: "Property Tax Due", date: "2024-03-30", time: "11:59 PM", type: "deadline" },
 ]
 
+// Enhanced visual elements data
+const visualEffects = {
+  particles: Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 4 + 1,
+    opacity: Math.random() * 0.5 + 0.1,
+    duration: Math.random() * 10 + 5,
+  })),
+  orbitalElements: [
+    { icon: Crown, color: "text-amber-400", size: "w-6 h-6", orbit: 1 },
+    { icon: Star, color: "text-yellow-400", size: "w-4 h-4", orbit: 2 },
+    { icon: Diamond, color: "text-cyan-400", size: "w-5 h-5", orbit: 3 },
+    { icon: Gem, color: "text-purple-400", size: "w-4 h-4", orbit: 4 },
+    { icon: Sparkles, color: "text-pink-400", size: "w-3 h-3", orbit: 5 },
+  ],
+  backgroundPatterns: [
+    "radial-gradient(circle at 10% 20%, rgba(234,179,8,0.1), transparent)",
+    "radial-gradient(circle at 80% 80%, rgba(147,51,234,0.1), transparent)",
+    "radial-gradient(circle at 40% 40%, rgba(59,130,246,0.1), transparent)",
+    "radial-gradient(circle at 90% 10%, rgba(16,185,129,0.1), transparent)",
+    "radial-gradient(circle at 20% 90%, rgba(239,68,68,0.1), transparent)",
+  ],
+}
+
+const systemStats = [
+  { label: "AI Systems", status: "Online", icon: Brain, color: "text-green-400" },
+  { label: "Market Data", status: "Live", icon: TrendingUp, color: "text-blue-400" },
+  { label: "Credit Monitoring", status: "Active", icon: Shield, color: "text-purple-400" },
+  { label: "VOAI Environments", status: "Ready", icon: Globe, color: "text-cyan-400" },
+  { label: "Security", status: "Protected", icon: Lock, color: "text-amber-400" },
+  { label: "Backup", status: "Synced", icon: Database, color: "text-emerald-400" },
+]
+
 export function EnhancedHomeDashboard() {
   const [selectedWidget, setSelectedWidget] = useState<string | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<VOAIEnvironment>(VOAI_ENVIRONMENTS[0])
@@ -230,6 +306,16 @@ export function EnhancedHomeDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [aiChatExpanded, setAiChatExpanded] = useState(false)
   const [selectedQuickAction, setSelectedQuickAction] = useState<string | null>(null)
+  const [showAdvancedStats, setShowAdvancedStats] = useState(false)
+  const [particleAnimation, setParticleAnimation] = useState(true)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+  const [sliderValue, setSliderValue] = useState([50])
+  const [switchStates, setSwitchStates] = useState({
+    notifications: true,
+    darkMode: true,
+    animations: true,
+    sounds: false,
+  })
 
   // Memoize callbacks to prevent infinite re-renders
   const updateTime = useCallback(() => {
@@ -317,130 +403,270 @@ export function EnhancedHomeDashboard() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
-      <div className="max-w-[1800px] mx-auto space-y-6">
-        {/* Enhanced Header with Live Stats */}
-        <div className="text-center relative">
-          <div className="flex items-center justify-center space-x-4 mb-6">
-            <SupremeAuthorityCoin size="lg" variant="logo" animated />
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif">
-                Supreme Command Center
-              </h1>
-              <p className="text-xl text-amber-300/80 italic font-serif">
-                {currentTime.toLocaleString()} • Level {citizenData.level} Citizen
-              </p>
+    <TooltipProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8 relative overflow-hidden">
+        {/* Animated Background Particles */}
+        {particleAnimation && (
+          <div className="absolute inset-0 pointer-events-none">
+            {visualEffects.particles.map((particle) => (
+              <motion.div
+                key={particle.id}
+                className="absolute w-1 h-1 bg-amber-400/20 rounded-full"
+                style={{
+                  left: `${particle.x}%`,
+                  top: `${particle.y}%`,
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
+                  opacity: particle.opacity,
+                }}
+                animate={{
+                  y: [0, -20, 0],
+                  opacity: [particle.opacity, particle.opacity * 0.3, particle.opacity],
+                }}
+                transition={{
+                  duration: particle.duration,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Multiple Background Patterns */}
+        <div className="absolute inset-0 pointer-events-none">
+          {visualEffects.backgroundPatterns.map((pattern, index) => (
+            <div
+              key={index}
+              className="absolute inset-0"
+              style={{ background: pattern }}
+            />
+          ))}
+        </div>
+
+        <div className="max-w-[1800px] mx-auto space-y-6 relative z-10">
+          {/* Enhanced Header with Live Stats */}
+          <div className="text-center relative">
+            <div className="flex items-center justify-center space-x-4 mb-6">
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              >
+                <SupremeAuthorityCoin size="lg" variant="logo" animated />
+              </motion.div>
+              <div>
+                <motion.h1
+                  className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-amber-400 bg-clip-text text-transparent font-serif"
+                  animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
+                  transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY }}
+                >
+                  Supreme Command Center
+                </motion.h1>
+                <p className="text-xl text-amber-300/80 italic font-serif flex items-center justify-center space-x-2">
+                  <Clock className="w-5 h-5" />
+                  <span>{currentTime.toLocaleString()}</span>
+                  <Separator orientation="vertical" className="h-4" />
+                  <Crown className="w-5 h-5" />
+                  <span>Level {citizenData.level} Citizen</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Enhanced Live Market Ticker with Carousel */}
+            <motion.div
+              className="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-amber-400/30 rounded-lg p-3 mb-6 relative overflow-hidden"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent animate-pulse" />
+              <Carousel className="w-full">
+                <CarouselContent>
+                  <CarouselItem>
+                    <div className="flex items-center justify-center space-x-8 text-sm">
+                      <div className="flex items-center space-x-2">
+                        <Zap className="w-4 h-4 text-purple-400 animate-pulse" />
+                        <span className="text-purple-300">QGI: ${marketData.qgiPrice}</span>
+                        <Badge className="bg-green-500/20 text-green-400 border-green-400/30">
+                          <TrendingUp className="w-3 h-3 mr-1" />
+                          +{marketData.qgiChange}%
+                        </Badge>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FileText className="w-4 h-4 text-blue-400 animate-pulse" />
+                        <span className="text-blue-300">Bonds: {marketData.bondYield}%</span>
+                        <Badge className="bg-green-500/20 text-green-400 border-green-400/30">
+                          <ArrowUpRight className="w-3 h-3 mr-1" />
+                          +{marketData.bondChange}%
+                        </Badge>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                  <CarouselItem>
+                    <div className="flex items-center justify-center space-x-8 text-sm">
+                      <div className="flex items-center space-x-2">
+                        <Activity className="w-4 h-4 text-amber-400 animate-bounce" />
+                        <span className="text-amber-300">Volume: ${marketData.volume24h}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Users className="w-4 h-4 text-green-400 animate-pulse" />
+                        <span className="text-green-300">{marketData.totalInvestors.toLocaleString()} Investors</span>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2" />
+              </Carousel>
+            </motion.div>
+
+            {/* Enhanced Notification Bell with Dropdown */}
+            <div className="absolute top-0 right-0 flex items-center space-x-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-amber-400 hover:text-amber-300 relative"
+                    onClick={toggleNotifications}
+                  >
+                    <motion.div
+                      animate={{ rotate: showNotifications ? 15 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Bell className="w-5 h-5" />
+                    </motion.div>
+                    {notifications.length > 0 && (
+                      <motion.span
+                        className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                      >
+                        {notifications.length}
+                      </motion.span>
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>View Notifications</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="text-amber-400 hover:text-amber-300">
+                    <MoreVertical className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-slate-900/95 border-amber-400/30">
+                  <DropdownMenuLabel className="text-amber-300">Quick Settings</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-slate-300 hover:text-amber-300">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Preferences</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-slate-300 hover:text-amber-300">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-slate-300 hover:text-amber-300">
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>Security</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
-          {/* Live Market Ticker */}
-          <motion.div
-            className="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-amber-400/30 rounded-lg p-3 mb-6"
-            animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-          >
-            <div className="flex items-center justify-center space-x-8 text-sm">
-              <div className="flex items-center space-x-2">
-                <Zap className="w-4 h-4 text-purple-400" />
-                <span className="text-purple-300">QGI: ${marketData.qgiPrice}</span>
-                <span className="text-green-400">+{marketData.qgiChange}%</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <FileText className="w-4 h-4 text-blue-400" />
-                <span className="text-blue-300">Bonds: {marketData.bondYield}%</span>
-                <span className="text-green-400">+{marketData.bondChange}%</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-amber-400" />
-                <span className="text-amber-300">Volume: ${marketData.volume24h}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Users className="w-4 h-4 text-green-400" />
-                <span className="text-green-300">{marketData.totalInvestors.toLocaleString()} Investors</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Notification Bell */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-0 right-0 text-amber-400 hover:text-amber-300"
-            onClick={toggleNotifications}
-          >
-            <Bell className="w-5 h-5" />
-            {notifications.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs flex items-center justify-center text-white">
-                {notifications.length}
-              </span>
-            )}
-          </Button>
-        </div>
-
-        {/* Notifications Dropdown */}
-        <AnimatePresence>
-          {showNotifications && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="fixed top-20 right-8 z-50 w-80"
-            >
-              <Card className="bg-gradient-to-br from-slate-900/95 to-purple-900/95 border-amber-400/30 backdrop-blur-xl">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-amber-300 text-lg">Notifications</CardTitle>
-                    <Button variant="ghost" size="sm" onClick={toggleNotifications} className="text-amber-400">
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-64">
-                    <div className="space-y-3">
-                      {notifications.map((notification) => {
-                        const Icon = notification.icon
-                        return (
-                          <div
-                            key={notification.id}
-                            className={`p-3 rounded-lg border ${
-                              notification.type === "success"
-                                ? "bg-green-900/20 border-green-400/30"
-                                : notification.type === "warning"
-                                  ? "bg-amber-900/20 border-amber-400/30"
-                                  : "bg-blue-900/20 border-blue-400/30"
-                            }`}
-                          >
-                            <div className="flex items-start space-x-3">
-                              <Icon className="w-4 h-4 mt-1 text-amber-400" />
-                              <div className="flex-1">
-                                <div className="text-sm font-medium text-white">{notification.title}</div>
-                                <div className="text-xs text-gray-300 mt-1">{notification.message}</div>
-                                <div className="text-xs text-gray-500 mt-1">{notification.time}</div>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      })}
+          {/* Enhanced Notifications Dropdown */}
+          <AnimatePresence>
+            {showNotifications && (
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                className="fixed top-20 right-8 z-50 w-96"
+              >
+                <Card className="bg-gradient-to-br from-slate-900/95 to-purple-900/95 border-amber-400/30 backdrop-blur-xl shadow-2xl">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-amber-300 text-lg flex items-center">
+                        <Bell className="w-5 h-5 mr-2" />
+                        Notifications
+                      </CardTitle>
+                      <div className="flex items-center space-x-2">
+                        <Button variant="ghost" size="sm" className="text-amber-400 hover:text-amber-300">
+                          <Settings className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" onClick={toggleNotifications} className="text-amber-400">
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-80">
+                      <div className="space-y-3">
+                        {notifications.map((notification, index) => {
+                          const Icon = notification.icon
+                          return (
+                            <motion.div
+                              key={notification.id}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className={`p-4 rounded-lg border cursor-pointer hover:scale-[1.02] transition-all duration-300 ${
+                                notification.type === "success"
+                                  ? "bg-green-900/20 border-green-400/30 hover:border-green-400/50"
+                                  : notification.type === "warning"
+                                    ? "bg-amber-900/20 border-amber-400/30 hover:border-amber-400/50"
+                                    : "bg-blue-900/20 border-blue-400/30 hover:border-blue-400/50"
+                              }`}
+                            >
+                              <div className="flex items-start space-x-3">
+                                <div className="relative">
+                                  <Icon className="w-5 h-5 mt-1 text-amber-400" />
+                                  <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-sm animate-pulse" />
+                                </div>
+                                <div className="flex-1">
+                                  <div className="text-sm font-medium text-white flex items-center justify-between">
+                                    {notification.title}
+                                    <Badge variant="outline" className="text-xs">
+                                      {notification.type}
+                                    </Badge>
+                                  </div>
+                                  <div className="text-xs text-gray-300 mt-1">{notification.message}</div>
+                                  <div className="text-xs text-gray-500 mt-2 flex items-center">
+                                    <Clock className="w-3 h-3 mr-1" />
+                                    {notification.time}
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )
+                        })}
+                      </div>
+                    </ScrollArea>
+                    <div className="mt-4 flex justify-between">
+                      <Button variant="outline" size="sm" className="text-amber-300 border-amber-400/30">
+                        <Archive className="w-4 h-4 mr-2" />
+                        Archive All
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-amber-300 border-amber-400/30">
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Mark All Read
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* Enhanced Main Grid Layout */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-          {/* Left Column - Citizen Profile & Quick Actions */}
-          <div className="xl:col-span-3 space-y-6">
-            {/* Enhanced Digital ID Card */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
+          {/* Enhanced Main Grid Layout */}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            {/* Left Column - Enhanced Citizen Profile & Controls */}
+            <div className="xl:col-span-3 space-y-6">
+              {/* Ultra Enhanced Digital ID Card */}
               <motion.div
                 initial={{ height: "auto" }}
                 whileHover={{ scale: 1.02 }}
@@ -448,950 +674,219 @@ export function EnhancedHomeDashboard() {
                 className="group"
               >
                 <Card className="bg-gradient-to-br from-purple-900/60 via-indigo-900/60 to-purple-900/60 border-2 border-amber-400/40 shadow-2xl shadow-purple-500/20 backdrop-blur-xl relative overflow-hidden">
-                  {/* Royal background pattern */}
+                  {/* Multiple Royal background patterns */}
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.1),transparent),radial-gradient(circle_at_80%_80%,rgba(147,51,234,0.1),transparent)]" />
+                  <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,rgba(234,179,8,0.1),transparent,rgba(147,51,234,0.1),transparent,rgba(234,179,8,0.1))]" />
 
-                  {/* Animated border glow */}
+                  {/* Animated border glow with multiple layers */}
                   <div className="absolute inset-0 border-2 border-amber-400/20 rounded-lg animate-pulse" />
+                  <div className="absolute inset-[-2px] border border-purple-400/10 rounded-lg animate-pulse" style={{ animationDelay: "0.5s" }} />
+
+                  {/* Orbital elements around the card */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {visualEffects.orbitalElements.map((element, index) => {
+                      const Icon = element.icon
+                      return (
+                        <motion.div
+                          key={index}
+                          className={`absolute ${element.color} ${element.size}`}
+                          style={{
+                            left: "50%",
+                            top: "50%",
+                            transformOrigin: `${50 + element.orbit * 20}px center`,
+                          }}
+                          animate={{ rotate: 360 }}
+                          transition={{
+                            duration: 10 + element.orbit * 2,
+                            repeat: Number.POSITIVE_INFINITY,
+                            ease: "linear",
+                          }}
+                        >
+                          <Icon />
+                        </motion.div>
+                      )
+                    })}
+                  </div>
 
                   <CardHeader className="relative z-10">
                     <CardTitle className="text-amber-300 font-serif flex items-center justify-center text-lg">
-                      <Crown className="w-6 h-6 mr-2 animate-pulse" />
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
+                      >
+                        <Crown className="w-6 h-6 mr-2" />
+                      </motion.div>
                       Imperial Citizenship Registry
                     </CardTitle>
                     <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-2" />
                   </CardHeader>
+
                   <CardContent className="space-y-6 relative z-10">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/30">
-                          <Crown className="w-10 h-10 text-white drop-shadow-lg" />
-                        </div>
-                        {/* Orbital rings around avatar */}
-                        <div
-                          className="absolute inset-0 border border-amber-400/30 rounded-full animate-spin"
-                          style={{ animationDuration: "8s" }}
-                        />
-                        <div
-                          className="absolute inset-[-4px] border border-purple-400/20 rounded-full animate-spin"
-                          style={{ animationDuration: "12s", animationDirection: "reverse" }}
-                        />
+                        <Avatar className="w-20 h-20 border-4 border-amber-400/50">
+                          <AvatarImage src={citizenData.avatar || "/placeholder.svg"} alt={citizenData.name} />
+                          <AvatarFallback className="bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-white text-2xl font-bold">
+                            <Crown className="w-10 h-10" />
+                          </AvatarFallback>
+                        </Avatar>
+                        
+                        {/* Multiple orbital rings around avatar */}
+                        {[1, 2, 3].map((ring) => (
+                          <motion.div
+                            key={ring}
+                            className={`absolute inset-[-${ring * 4}px] border border-amber-400/${30 - ring * 5} rounded-full`}
+                            animate={{ rotate: ring % 2 === 0 ? 360 : -360 }}
+                            transition={{
+                              duration: 8 + ring * 2,
+                              repeat: Number.POSITIVE_INFINITY,
+                              ease: "linear",
+                            }}
+                          />
+                        ))}
+
+                        {/* Status indicator */}
+                        <motion.div
+                          className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center"
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                        >
+                          <CheckCircle className="w-3 h-3 text-white" />
+                        </motion.div>
                       </div>
+
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-transparent bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-300 bg-clip-text">
+                        <motion.h3
+                          className="text-xl font-bold text-transparent bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-300 bg-clip-text"
+                          animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
+                          transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                        >
                           {citizenData.name}
-                        </h3>
+                        </motion.h3>
                         <p className="text-sm text-amber-300/80 italic font-serif">{citizenData.romanName}</p>
                         <Badge className="mt-2 bg-gradient-to-r from-purple-600/30 to-indigo-600/30 text-purple-200 border-purple-400/40 shadow-lg">
-                          <Crown className="w-3 h-3 mr-1" />
+                          <Crown className="w-3 h-3 mr-1 animate-pulse" />
                           {citizenData.title}
                         </Badge>
                       </div>
                     </div>
 
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
+                    <Separator className="bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
 
-                    <div className="space-y-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="flex justify-between items-center p-2 bg-gradient-to-r from-amber-900/20 to-purple-900/20 rounded border border-amber-400/20">
-                        <span className="text-amber-200/80 font-serif">Citizen Registry ID</span>
-                        <span className="text-amber-300 font-mono text-xs bg-slate-900/50 px-2 py-1 rounded">
-                          {citizenData.id}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center p-2 bg-gradient-to-r from-green-900/20 to-emerald-900/20 rounded border border-green-400/20">
-                        <span className="text-green-200/80 font-serif">Imperial Status</span>
-                        <Badge className="bg-gradient-to-r from-green-600/30 to-emerald-600/30 text-green-200 border-green-400/40">
-                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-1" />
-                          Active Sovereign
-                        </Badge>
-                      </div>
-                      <div className="flex justify-between items-center p-2 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 rounded border border-purple-400/20">
-                        <span className="text-purple-200/80 font-serif">Authority Level</span>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-amber-300 font-bold">Level {citizenData.level}</span>
-                          <div className="flex space-x-1">
-                            {[...Array(citizenData.level)].map((_, i) => (
-                              <Star key={i} className="w-3 h-3 text-amber-400 fill-current" />
-                            ))}
+                    {/* Enhanced Collapsible Details */}
+                    <Collapsible>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" className="w-full justify-between text-amber-300 hover:text-amber-200">
+                          <span className="font-serif">Imperial Details</span>
+                          <ChevronDown className="w-4 h-4" />
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-3 text-sm">
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex justify-between items-center p-3 bg-gradient-to-r from-amber-900/20 to-purple-900/20 rounded border border-amber-400/20"
+                        >
+                          <span className="text-amber-200/80 font-serif flex items-center">
+                            <Hash className="w-4 h-4 mr-2" />
+                            Citizen Registry ID
+                          </span>
+                          <Badge variant="outline" className="text-amber-300 font-mono text-xs">
+                            {citizenData.id}
+                          </Badge>
+                        </motion.div>
+
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="flex justify-between items-center p-3 bg-gradient-to-r from-green-900/20 to-emerald-900/20 rounded border border-green-400/20"
+                        >
+                          <span className="text-green-200/80 font-serif flex items-center">
+                            <ShieldCheck className="w-4 h-4 mr-2" />
+                            Imperial Status
+                          </span>
+                          <Badge className="bg-gradient-to-r from-green-600/30 to-emerald-600/30 text-green-200 border-green-400/40">
+                            <motion.div
+                              className="w-2 h-2 bg-green-400 rounded-full mr-1"
+                              animate={{ opacity: [1, 0.3, 1] }}
+                              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                            />
+                            Active Sovereign
+                          </Badge>
+                        </motion.div>
+
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="flex justify-between items-center p-3 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 rounded border border-purple-400/20"
+                        >
+                          <span className="text-purple-200/80 font-serif flex items-center">
+                            <Crown className="w-4 h-4 mr-2" />
+                            Authority Level
+                          </span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-amber-300 font-bold">Level {citizenData.level}</span>
+                            <div className="flex space-x-1">
+                              {[...Array(citizenData.level)].map((_, i) => (
+                                <motion.div
+                                  key={i}
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  transition={{ delay: i * 0.1 }}
+                                >
+                                  <Star className="w-3 h-3 text-amber-400 fill-current" />
+                                </motion.div>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
+                        </motion.div>
+                      </CollapsibleContent>
+                    </Collapsible>
 
-                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {/* Enhanced Progress Section */}
+                    <div className="space-y-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-amber-200/80 font-serif">Ascension Progress</span>
+                        <span className="text-amber-200/80 font-serif flex items-center">
+                          <Target className="w-4 h-4 mr-2" />
+                          Ascension Progress
+                        </span>
                         <span className="text-amber-300 font-bold">{citizenData.nextLevelProgress}%</span>
                       </div>
                       <div className="relative">
-                        <Progress value={citizenData.nextLevelProgress} className="h-3 bg-slate-800/50" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-yellow-400/30 to-amber-400/20 rounded-full animate-pulse" />
+                        <Progress value={citizenData.nextLevelProgress} className="h-4 bg-slate-800/50" />
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-yellow-400/30 to-amber-400/20 rounded-full"
+                          animate={{ opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs font-bold text-white drop-shadow-lg">
+                            {citizenData.nextLevelProgress}%
+                          </span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Recent Achievements with royal styling */}
-                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <h4 className="text-amber-300 font-serif text-sm text-center tracking-wider">
-                        ✦ IMPERIAL HONORS ✦
-                      </h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {citizenData.achievements.slice(0, 4).map((achievement) => {
-                          const Icon = achievement.icon
-                          return (
-                            <motion.div
-                              key={achievement.id}
-                              className="flex items-center space-x-2 p-2 bg-gradient-to-r from-amber-900/30 to-yellow-900/30 rounded border border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 group cursor-pointer"
-                              whileHover={{ scale: 1.02 }}
-                            >
-                              <Icon className="w-4 h-4 text-amber-400 group-hover:text-amber-300 transition-colors" />
-                              <span className="text-xs text-amber-300 font-medium">{achievement.name}</span>
-                            </motion.div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            {/* Simplified Profile Actions */}
-            <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-amber-400/30 shadow-xl shadow-amber-500/10">
-              <CardHeader>
-                <CardTitle className="text-amber-300 font-serif text-sm flex items-center justify-center">
-                  <Crown className="w-4 h-4 mr-2" />
-                  Quick Profile Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
-                  >
-                    Edit Profile
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
-                  >
-                    View Stats
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
-                  >
-                    Preferences
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs border-amber-400/30 text-amber-300 hover:bg-amber-400/10"
-                  >
-                    Security
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Feature Toggle Widget */}
-            <FeatureToggleWidget maxFeatures={5} compact={true} />
-
-            {/* Zillow API Status */}
-            <ZillowApiStatus />
-          </div>
-
-          {/* Center Column - Royal Command Center Showcase & Main Dashboard Content */}
-          <div className="xl:col-span-6 space-y-6">
-            {/* SHOWCASE: Royal Command Center - Featured Prominently */}
-            <motion.div
-              initial={{ height: "auto" }}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="group"
-            >
-              <Card className="bg-gradient-to-br from-amber-900/70 via-yellow-900/70 to-amber-900/70 border-4 border-amber-400/60 shadow-2xl shadow-amber-500/30 backdrop-blur-xl relative overflow-hidden">
-                {/* Royal showcase background pattern */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.2),transparent),radial-gradient(circle_at_80%_80%,rgba(251,191,36,0.2),transparent)]" />
-
-                {/* Animated royal border glow */}
-                <div className="absolute inset-0 border-4 border-amber-400/40 rounded-lg animate-pulse" />
-
-                {/* Crown ornaments in corners */}
-                <div className="absolute top-4 left-4 text-amber-400/30">
-                  <Crown className="w-8 h-8" />
-                </div>
-                <div className="absolute top-4 right-4 text-amber-400/30">
-                  <Crown className="w-8 h-8" />
-                </div>
-                <div className="absolute bottom-4 left-4 text-amber-400/30">
-                  <Crown className="w-8 h-8" />
-                </div>
-                <div className="absolute bottom-4 right-4 text-amber-400/30">
-                  <Crown className="w-8 h-8" />
-                </div>
-
-                <CardHeader className="relative z-10 text-center py-8">
-                  <motion.div
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
-                    className="flex justify-center mb-4"
-                  >
-                    <Crown className="w-16 h-16 text-amber-400 drop-shadow-2xl" />
-                  </motion.div>
-                  <CardTitle className="text-amber-300 font-serif text-3xl flex items-center justify-center mb-4">
-                    ✦ ROYAL COMMAND CENTER ✦
-                  </CardTitle>
-                  <CardDescription className="text-amber-200/80 text-center font-serif italic text-lg">
-                    Supreme Imperial Control Hub
-                  </CardDescription>
-                  <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent mt-4" />
-                </CardHeader>
-
-                <CardContent className="space-y-8 relative z-10 pb-8">
-                  {/* High Priority Actions - Imperial Domains Showcase */}
-                  <div className="space-y-6">
-                    <motion.h4
-                      className="text-amber-300 font-serif text-xl text-center mb-6 tracking-wider"
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-                    >
-                      ✦ IMPERIAL DOMAINS ✦
-                    </motion.h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {quickActions
-                        .filter((action) => action.priority === "high")
-                        .map((action, index) => {
-                          const Icon = action.icon
-                          return (
-                            <motion.div
-                              key={action.name}
-                              whileHover={{ scale: 1.08, y: -5 }}
-                              whileTap={{ scale: 0.95 }}
-                              initial={{ opacity: 0, y: 30 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: index * 0.2 }}
-                            >
-                              <Button
-                                variant="ghost"
-                                className={`w-full h-32 flex flex-col items-center justify-center space-y-3 bg-gradient-to-br ${action.color} hover:opacity-95 text-white border-3 border-amber-400/40 hover:border-amber-400/80 shadow-2xl hover:shadow-3xl transition-all duration-500 relative overflow-hidden group`}
-                                onClick={() => handleQuickAction(action.action)}
-                              >
-                                {/* Royal background pattern */}
-                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                {/* Animated border glow */}
-                                <div className="absolute inset-0 border-3 border-amber-400/0 group-hover:border-amber-400/60 rounded transition-all duration-500" />
-
-                                {/* Floating crown effect */}
+                    {/* Enhanced Achievements Accordion */}
+                    <Accordion type="single" collapsible>
+                      <AccordionItem value="achievements" className="border-amber-400/20">
+                        <AccordionTrigger className="text-amber-300 font-serif text-sm hover:text-amber-200">
+                          <div className="flex items-center">
+                            <Trophy className="w-4 h-4 mr-2" />
+                            ✦ IMPERIAL HONORS ✦
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="grid grid-cols-2 gap-2 mt-3">
+                            {citizenData.achievements.map((achievement, index) => {
+                              const Icon = achievement.icon
+                              return (
                                 <motion.div
-                                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-30"
-                                  animate={{ y: [-2, 2, -2] }}
-                                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                                >
-                                  <Crown className="w-6 h-6 text-amber-300" />
-                                </motion.div>
-
-                                <motion.div whileHover={{ scale: 1.1, rotate: 5 }} transition={{ duration: 0.3 }}>
-                                  <Icon className="w-12 h-12 drop-shadow-2xl" />
-                                </motion.div>
-                                <span className="text-lg font-bold tracking-wide drop-shadow-lg">{action.name}</span>
-
-                                {selectedQuickAction === action.action && (
-                                  <motion.div
-                                    className="absolute inset-0 bg-white/30 rounded"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: [0, 1, 0] }}
-                                    transition={{ duration: 1 }}
-                                  />
-                                )}
-                              </Button>
-                            </motion.div>
-                          )
-                        })}
-                    </div>
-                  </div>
-
-                  {/* Royal Divider */}
-                  <div className="flex items-center justify-center space-x-4 py-4">
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-amber-400/50" />
-                    <Crown className="w-8 h-8 text-amber-400 animate-pulse" />
-                    <div className="w-full h-px bg-gradient-to-l from-transparent via-amber-400/50 to-amber-400/50" />
-                  </div>
-
-                  {/* Medium Priority Actions - Royal Services */}
-                  <div className="space-y-4">
-                    <h4 className="text-amber-300/90 font-serif text-lg text-center tracking-wider">
-                      ⚜️ ROYAL SERVICES ⚜️
-                    </h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {quickActions
-                        .filter((action) => action.priority === "medium")
-                        .map((action, index) => {
-                          const Icon = action.icon
-                          return (
-                            <motion.div
-                              key={action.name}
-                              whileHover={{ scale: 1.05, y: -3 }}
-                              whileTap={{ scale: 0.95 }}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: 0.6 + index * 0.1 }}
-                            >
-                              <Button
-                                variant="ghost"
-                                className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
-                                onClick={() => handleQuickAction(action.action)}
-                              >
-                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                <Icon className="w-6 h-6 drop-shadow-lg" />
-                                <span className="text-xs font-medium tracking-wide">{action.name}</span>
-
-                                {selectedQuickAction === action.action && (
-                                  <motion.div
-                                    className="absolute inset-0 bg-white/20 rounded"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: [0, 1, 0] }}
-                                    transition={{ duration: 0.6 }}
-                                  />
-                                )}
-                              </Button>
-                            </motion.div>
-                          )
-                        })}
-                    </div>
-                  </div>
-
-                  {/* Low Priority Actions - Administrative */}
-                  <div className="space-y-3">
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-                    <h4 className="text-amber-300/70 font-serif text-sm text-center tracking-wider">
-                      Administrative Functions
-                    </h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {quickActions
-                        .filter((action) => action.priority === "low")
-                        .map((action, index) => {
-                          const Icon = action.icon
-                          return (
-                            <motion.div
-                              key={action.name}
-                              whileHover={{ scale: 1.03 }}
-                              whileTap={{ scale: 0.97 }}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{ delay: 1 + index * 0.1 }}
-                            >
-                              <Button
-                                variant="ghost"
-                                className={`w-full h-14 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-85 text-white border border-amber-400/20 hover:border-amber-400/40 text-sm transition-all duration-300`}
-                                onClick={() => handleQuickAction(action.action)}
-                              >
-                                <Icon className="w-4 h-4" />
-                                <span>{action.name}</span>
-
-                                {selectedQuickAction === action.action && (
-                                  <motion.div
-                                    className="absolute inset-0 bg-white/15 rounded"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: [0, 1, 0] }}
-                                    transition={{ duration: 0.4 }}
-                                  />
-                                )}
-                              </Button>
-                            </motion.div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Enhanced Portfolio Overview */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-green-900/60 via-emerald-900/60 to-green-900/60 border-2 border-emerald-400/40 shadow-2xl shadow-emerald-500/20 backdrop-blur-xl relative overflow-hidden">
-                  {/* Royal background pattern */}
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,94,0.1),transparent)]" />
-
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="text-emerald-300 font-serif flex items-center justify-between text-lg">
-                      <div className="flex items-center">
-                        <div className="relative">
-                          <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: "8s" }} />
-                          <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-lg animate-pulse" />
-                        </div>
-                        Imperial Treasury
-                      </div>
-                      <div className="text-right">
-                        <motion.div
-                          className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-300 bg-clip-text"
-                          animate={{ scale: [1, 1.05, 1] }}
-                          transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-                        >
-                          ${(citizenData.qgiBalance + citizenData.bondValue + citizenData.taxBenefits).toLocaleString()}
-                        </motion.div>
-                        <div className="text-sm text-emerald-200/80 font-serif italic">Total Sovereign Wealth</div>
-                      </div>
-                    </CardTitle>
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent mt-2" />
-                  </CardHeader>
-                  <CardContent className="relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {portfolioAssets.map((asset, index) => {
-                        const Icon = asset.icon
-                        return (
-                          <motion.div
-                            key={asset.name}
-                            className="p-4 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 hover:border-emerald-400/50 transition-all duration-300 relative overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl"
-                            whileHover={{ scale: 1.02, y: -2 }}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                          >
-                            {/* Royal background glow */}
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                            <div className="flex items-center justify-between mb-3 relative z-10">
-                              <div className="flex items-center space-x-3">
-                                <div className="relative">
-                                  <Icon className="w-6 h-6 text-emerald-400 drop-shadow-lg" />
-                                  <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-md animate-pulse" />
-                                </div>
-                                <span className="text-sm font-bold text-emerald-300 font-serif">{asset.name}</span>
-                              </div>
-                              <Badge className="bg-gradient-to-r from-emerald-600/30 to-green-600/30 text-emerald-200 border-emerald-400/40 text-xs">
-                                {asset.allocation}%
-                              </Badge>
-                            </div>
-                            <div className="flex items-center justify-between mb-3 relative z-10">
-                              <span className="text-xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text">
-                                ${asset.value.toLocaleString()}
-                              </span>
-                              <div className="flex items-center space-x-2">
-                                {asset.change >= 0 ? (
-                                  <ArrowUpRight className="w-4 h-4 text-emerald-400 animate-bounce" />
-                                ) : (
-                                  <ArrowDownRight className="w-4 h-4 text-red-400" />
-                                )}
-                                <span
-                                  className={`text-sm font-bold ${asset.change >= 0 ? "text-emerald-400" : "text-red-400"}`}
-                                >
-                                  {asset.change >= 0 ? "+" : ""}
-                                  {asset.change}%
-                                </span>
-                              </div>
-                            </div>
-                            <div className="relative">
-                              <Progress value={asset.allocation} className="h-2 bg-slate-800/50" />
-                              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 via-green-400/40 to-emerald-400/30 rounded-full animate-pulse" />
-                            </div>
-                          </motion.div>
-                        )
-                      })}
-                    </div>
-                    <div className="group-hover:opacity-0 transition-opacity duration-300">
-                      <CardTitle className="text-emerald-300 font-serif flex items-center justify-between text-lg">
-                        <div className="flex items-center">
-                          <div className="relative">
-                            <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: "8s" }} />
-                            <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-lg animate-pulse" />
-                          </div>
-                          Imperial Treasury
-                        </div>
-                        <div className="text-right">
-                          <motion.div
-                            className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-300 bg-clip-text"
-                            animate={{ scale: [1, 1.05, 1] }}
-                            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-                          >
-                            $
-                            {(
-                              citizenData.qgiBalance +
-                              citizenData.bondValue +
-                              citizenData.taxBenefits
-                            ).toLocaleString()}
-                          </motion.div>
-                          <div className="text-sm text-emerald-200/80 font-serif italic">Total Sovereign Wealth</div>
-                        </div>
-                      </CardTitle>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            {/* VOAI Environment Selector */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-indigo-900/60 via-purple-900/60 to-indigo-900/60 border-2 border-indigo-400/40 shadow-2xl shadow-indigo-500/20 backdrop-blur-xl relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(99,102,241,0.1),transparent),radial-gradient(circle_at_60%_60%,rgba(147,51,234,0.1),transparent)]" />
-
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="text-indigo-300 font-serif flex items-center text-lg">
-                      <div className="relative">
-                        <Globe className="w-6 h-6 mr-3 animate-pulse" />
-                        <div className="absolute inset-0 bg-indigo-400/20 rounded-full blur-lg animate-pulse" />
-                      </div>
-                      VOAI Imperial Environments
-                    </CardTitle>
-                    <CardDescription className="text-indigo-200/70 font-serif italic">
-                      Quantum-Enhanced Reality Domains
-                    </CardDescription>
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent mt-2" />
-                  </CardHeader>
-                  <CardContent className="relative z-10">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <EnvironmentSelector
-                        onEnvironmentChange={handleEnvironmentChange}
-                        onActionExecute={handleActionExecute}
-                      />
-                    </div>
-                    <div className="group-hover:opacity-0 transition-opacity duration-300">
-                      <CardTitle className="text-indigo-300 font-serif flex items-center text-lg">
-                        <div className="relative">
-                          <Globe className="w-6 h-6 mr-3 animate-pulse" />
-                          <div className="absolute inset-0 bg-indigo-400/20 rounded-full blur-lg animate-pulse" />
-                        </div>
-                        VOAI Imperial Environments
-                      </CardTitle>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            {/* Analytics Dashboard */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-blue-900/60 via-cyan-900/60 to-blue-900/60 border-2 border-cyan-400/40 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(6,182,212,0.1),transparent),radial-gradient(circle_at_75%_75%,rgba(59,130,246,0.1),transparent)]" />
-
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="text-cyan-300 font-serif flex items-center text-lg">
-                      <div className="relative">
-                        <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: "2s" }} />
-                        <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg animate-pulse" />
-                      </div>
-                      Imperial Analytics Command
-                    </CardTitle>
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent mt-2" />
-                  </CardHeader>
-                  <CardContent className="relative z-10">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Tabs defaultValue="financial" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 bg-gradient-to-r from-cyan-800/40 via-blue-800/40 to-cyan-800/40 border border-cyan-400/30">
-                          <TabsTrigger
-                            value="financial"
-                            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
-                          >
-                            Financial
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="credit"
-                            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
-                          >
-                            Credit
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="activity"
-                            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
-                          >
-                            Activity
-                          </TabsTrigger>
-                        </TabsList>
-
-                        <TabsContent value="financial" className="space-y-4 mt-6">
-                          <div className="grid grid-cols-2 gap-4">
-                            <motion.div
-                              className="text-center p-6 bg-gradient-to-br from-cyan-800/30 to-blue-800/30 rounded-lg border-2 border-cyan-400/30 shadow-lg"
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text mb-2">
-                                12.5%
-                              </div>
-                              <div className="text-sm text-cyan-200/80 font-serif">Portfolio Growth</div>
-                            </motion.div>
-                            <motion.div
-                              className="text-center p-6 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 shadow-lg"
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text mb-2">
-                                $45.2K
-                              </div>
-                              <div className="text-sm text-emerald-200/80 font-serif">Monthly Income</div>
-                            </motion.div>
-                          </div>
-                        </TabsContent>
-
-                        <TabsContent value="credit" className="space-y-4 mt-6">
-                          <div className="grid grid-cols-2 gap-4">
-                            <motion.div
-                              className="text-center p-6 bg-gradient-to-br from-purple-800/30 to-indigo-800/30 rounded-lg border-2 border-purple-400/30 shadow-lg"
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text mb-2">
-                                847
-                              </div>
-                              <div className="text-sm text-purple-200/80 font-serif">Snap Score</div>
-                            </motion.div>
-                            <motion.div
-                              className="text-center p-6 bg-gradient-to-br from-amber-800/30 to-yellow-800/30 rounded-lg border-2 border-amber-400/30 shadow-lg"
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text mb-2">
-                                +23
-                              </div>
-                              <div className="text-sm text-amber-200/80 font-serif">Monthly Increase</div>
-                            </motion.div>
-                          </div>
-                        </TabsContent>
-
-                        <TabsContent value="activity" className="space-y-4 mt-6">
-                          <div className="space-y-3">
-                            {citizenData.recentActivity.slice(0, 3).map((activity, index) => (
-                              <motion.div
-                                key={activity.id}
-                                className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-800/30 to-blue-800/30 rounded-lg border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                whileHover={{ scale: 1.02 }}
-                              >
-                                <div>
-                                  <div className="text-sm font-medium text-cyan-300 font-serif">{activity.action}</div>
-                                  <div className="text-xs text-cyan-200/60">{activity.date}</div>
-                                </div>
-                                <div className="text-sm font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text">
-                                  {activity.type === "investment" || activity.type === "income"
-                                    ? `$${activity.amount.toLocaleString()}`
-                                    : activity.amount}
-                                </div>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </TabsContent>
-                      </Tabs>
-                    </div>
-                    <div className="group-hover:opacity-0 transition-opacity duration-300">
-                      <CardTitle className="text-cyan-300 font-serif flex items-center text-lg">
-                        <div className="relative">
-                          <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: "2s" }} />
-                          <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg animate-pulse" />
-                        </div>
-                        Imperial Analytics Command
-                      </CardTitle>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* Right Column - AI Chat & Additional Widgets */}
-          <div className="xl:col-span-3 space-y-6">
-            {/* Update Upcoming Events */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-amber-900/60 via-orange-900/60 to-amber-900/60 border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20 backdrop-blur-xl relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(245,158,11,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(251,146,60,0.1),transparent)]" />
-
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="text-amber-300 font-serif text-lg flex items-center">
-                      <div className="relative">
-                        <Calendar className="w-5 h-5 mr-3 animate-pulse" />
-                        <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-lg animate-pulse" />
-                      </div>
-                      Imperial Calendar
-                    </CardTitle>
-                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-2" />
-                  </CardHeader>
-                  <CardContent className="relative z-10">
-                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {upcomingEvents.slice(0, 3).map((event, index) => (
-                        <motion.div
-                          key={event.id}
-                          className="p-4 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border-2 border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-
-                          <div className="relative z-10">
-                            <div className="text-sm font-bold text-amber-300 font-serif mb-1">{event.title}</div>
-                            <div className="text-xs text-amber-200/70 mb-2">
-                              {event.date} at {event.time}
-                            </div>
-                            <Badge
-                              className={`text-xs ${
-                                event.type === "deadline"
-                                  ? "bg-gradient-to-r from-red-600/30 to-rose-600/30 text-red-200 border-red-400/40"
-                                  : event.type === "payment"
-                                    ? "bg-gradient-to-r from-emerald-600/30 to-green-600/30 text-emerald-200 border-emerald-400/40"
-                                    : "bg-gradient-to-r from-blue-600/30 to-cyan-600/30 text-blue-200 border-blue-400/40"
-                              }`}
-                            >
-                              {event.type.toUpperCase()}
-                            </Badge>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    <div className="group-hover:opacity-0 transition-opacity duration-300">
-                      <CardTitle className="text-amber-300 font-serif text-lg flex items-center">
-                        <div className="relative">
-                          <Calendar className="w-5 h-5 mr-3 animate-pulse" />
-                          <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-lg animate-pulse" />
-                        </div>
-                        Imperial Calendar
-                      </CardTitle>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            {/* Market Insights */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-400/30">
-                  <CardHeader>
-                    <CardTitle className="text-purple-300 font-serif text-sm flex items-center">
-                      <TrendingUp className="w-4 h-4 mr-2" />
-                      Market Insights
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="p-3 bg-purple-800/20 rounded-lg border border-purple-400/20">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Zap className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm font-medium text-purple-300">QGI Trending Up</span>
-                      </div>
-                      <p className="text-xs text-gray-400">
-                        QGI has shown strong performance with 12.5% growth this quarter
-                      </p>
-                    </div>
-
-                    <div className="p-3 bg-green-800/20 rounded-lg border border-green-400/20">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Home className="w-4 h-4 text-green-400" />
-                        <span className="text-sm font-medium text-green-300">Real Estate Opportunity</span>
-                      </div>
-                      <p className="text-xs text-gray-400">New properties available in your investment range</p>
-                    </div>
-
-                    <div className="p-3 bg-blue-800/20 rounded-lg border border-blue-400/20">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <FileText className="w-4 h-4 text-blue-400" />
-                        <span className="text-sm font-medium text-blue-300">Bond Yields Rising</span>
-                      </div>
-                      <p className="text-xs text-gray-400">Consider increasing bond allocation for stable returns</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            {/* System Status */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-slate-400/30">
-                  <CardHeader>
-                    <CardTitle className="text-slate-300 font-serif text-sm flex items-center">
-                      <Activity className="w-4 h-4 mr-2" />
-                      System Status
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-400">AI Systems</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        <span className="text-xs text-green-400">Online</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-400">Market Data</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        <span className="text-xs text-green-400">Live</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-400">Credit Monitoring</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        <span className="text-xs text-green-400">Active</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-400">VOAI Environments</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        <span className="text-xs text-green-400">Ready</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            {/* Recent Environment Activity */}
-            <motion.div
-              initial={{ height: "80px" }}
-              whileHover={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <motion.div
-                initial={{ height: "auto" }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="group"
-              >
-                <Card className="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 border-indigo-400/30">
-                  <CardHeader>
-                    <CardTitle className="text-indigo-300 font-serif text-sm flex items-center">
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Environment Activity
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {executionResults.length === 0 ? (
-                      <div className="text-center py-4 text-slate-400">
-                        <div className="text-2xl mb-2">🎯</div>
-                        <div className="text-xs">No recent activity</div>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {executionResults.map((result, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="p-2 bg-indigo-900/20 rounded border border-indigo-400/20"
-                          >
-                            <div className="text-xs text-indigo-300">{result}</div>
-                            <div className="text-xs text-gray-500 mt-1">{new Date().toLocaleTimeString()}</div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* AI Chat Components - Floating */}
-        <UnifiedAIOrb />
-        <ImperialAIChat />
-      </div>
-    </div>
-  )
-}
-
-// Fix for missing Users import
-function Users({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      height="24"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-      width="24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  )
-}
-
-// Fix for missing Star import
-function Star({ className }: { className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className}>
-      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-    </svg>
-  )
-}
-
-export default EnhancedHomeDashboard
+                                  key={achievement.id}
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: index * 0.1 }}
+                                  whileHover={{ scale: 1.05 }}
+                                  className="flex items-center space-x-2 p-3 bg-gradient-to-r from-amber-900/30 to-yellow-900/30 rounded border border-amber-400/30 \
