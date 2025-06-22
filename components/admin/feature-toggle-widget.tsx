@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
@@ -22,45 +22,61 @@ export function FeatureToggleWidget({
 }: FeatureToggleWidgetProps) {
   const [features, setFeatures] = useState<FeatureToggle[]>([])
   const [statistics, setStatistics] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  // ----- STABLE DEPENDENCIES -----
-  // use a stable, value-based key instead of the ever-changing array reference
-  const categoriesKey = showCategories.slice().sort().join("|")
+  // Memoize the change handler to prevent recreation on every render
+  const handleChange = useCallback(() => {
+    try {
+      let allFeatures = featureToggleManager.getAllFeatures()
+
+      // Filter by categories if specified
+      if (showCategories.length > 0) {
+        allFeatures = allFeatures.filter((f) => showCategories.includes(f.category))
+      }
+
+      // Limit number of features
+      const limitedFeatures = allFeatures.slice(0, maxFeatures)
+
+      setFeatures(limitedFeatures)
+      setStatistics(featureToggleManager.getStatistics())
+    } catch (error) {
+      console.error("Error updating features:", error)
+    }
+  }, [maxFeatures, showCategories])
 
   useEffect(() => {
-    let allFeatures = featureToggleManager.getAllFeatures()
+    // Initial load
+    handleChange()
+    setIsLoading(false)
 
-    // Filter by categories if specified
-    if (showCategories.length) {
-      allFeatures = allFeatures.filter((f) => showCategories.includes(f.category))
-    }
-
-    // Limit number of features
-    const limitedFeatures = allFeatures.slice(0, maxFeatures)
-
-    setFeatures(limitedFeatures)
-    setStatistics(featureToggleManager.getStatistics())
-
-    // Listener that updates local state when the global feature set changes
-    const handleChange = () => {
-      let updated = featureToggleManager.getAllFeatures()
-      if (showCategories.length) {
-        updated = updated.filter((f) => showCategories.includes(f.category))
-      }
-      setFeatures(updated.slice(0, maxFeatures))
-      setStatistics(featureToggleManager.getStatistics())
-    }
-
+    // Add listener
     featureToggleManager.addChangeListener(handleChange)
-    return () => featureToggleManager.removeChangeListener(handleChange)
-  }, [maxFeatures, categoriesKey]) // <<— now stable
 
-  const handleToggle = (featureId: string, enabled: boolean) => {
+    // Cleanup
+    return () => {
+      featureToggleManager.removeChangeListener(handleChange)
+    }
+  }, [handleChange])
+
+  const handleToggle = useCallback((featureId: string, enabled: boolean) => {
     try {
       featureToggleManager.toggleFeature(featureId, enabled, "widget")
     } catch (error) {
       console.error("Failed to toggle feature:", error)
     }
+  }, [])
+
+  if (isLoading) {
+    return (
+      <Card className="bg-gradient-to-br from-purple-900/30 to-indigo-900/30 border-amber-400/20">
+        <CardContent className="p-4">
+          <div className="animate-pulse space-y-2">
+            <div className="h-4 bg-purple-600/30 rounded"></div>
+            <div className="h-4 bg-purple-600/30 rounded w-3/4"></div>
+          </div>
+        </CardContent>
+      </Card>
+    )
   }
 
   if (compact) {
@@ -80,11 +96,7 @@ export function FeatureToggleWidget({
                 {feature.betaFeature && <Sparkles className="w-3 h-3 text-blue-400" />}
                 {feature.premiumFeature && <Crown className="w-3 h-3 text-yellow-400" />}
               </div>
-              <Switch
-                checked={feature.enabled}
-                onCheckedChange={(enabled) => handleToggle(feature.id, enabled)}
-                size="sm"
-              />
+              <Switch checked={feature.enabled} onCheckedChange={(enabled) => handleToggle(feature.id, enabled)} />
             </div>
           ))}
           {statistics && (

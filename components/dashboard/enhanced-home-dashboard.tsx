@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -44,7 +44,7 @@ import {
   X,
   Home,
 } from "lucide-react"
-import { VOAI_ENVIRONMENTS, type VOAIEnvironment, type VOAIAction } from "@/lib/voai-environments"
+import { VOAI_ENVIRONMENTS, type VOAIEnvironment } from "@/lib/voai-environments"
 
 // Enhanced mock data with more comprehensive information
 const citizenData = {
@@ -169,12 +169,38 @@ export function EnhancedHomeDashboard() {
   const [aiChatExpanded, setAiChatExpanded] = useState(false)
   const [selectedQuickAction, setSelectedQuickAction] = useState<string | null>(null)
 
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
-    return () => clearInterval(timer)
+  // Memoize callbacks to prevent infinite re-renders
+  const updateTime = useCallback(() => {
+    setCurrentTime(new Date())
   }, [])
 
-  const getEnvironmentIcon = (envId: string) => {
+  const handleEnvironmentChange = useCallback((environment: VOAIEnvironment) => {
+    setSelectedEnvironment(environment)
+  }, [])
+
+  const handleActionExecute = useCallback((env: string, action: string, result: string) => {
+    setExecutionResults((prev) => [result, ...prev.slice(0, 2)])
+    setEnvironmentProgress((prev) => ({
+      ...prev,
+      [env]: Math.min((prev[env] || 0) + 15, 100),
+    }))
+  }, [])
+
+  const handleQuickAction = useCallback((action: string) => {
+    setSelectedQuickAction(action)
+    setTimeout(() => setSelectedQuickAction(null), 2000)
+  }, [])
+
+  const toggleNotifications = useCallback(() => {
+    setShowNotifications((prev) => !prev)
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(updateTime, 60000) // Update every minute instead of every second
+    return () => clearInterval(timer)
+  }, [updateTime])
+
+  const getEnvironmentIcon = useCallback((envId: string) => {
     const icons = {
       wolf: Crown,
       forest: TreePine,
@@ -183,9 +209,9 @@ export function EnhancedHomeDashboard() {
       cyber: Cpu,
     }
     return icons[envId as keyof typeof icons] || Globe
-  }
+  }, [])
 
-  const getEnvironmentGradient = (envId: string) => {
+  const getEnvironmentGradient = useCallback((envId: string) => {
     const gradients = {
       wolf: "from-gray-800 to-slate-700",
       forest: "from-green-800 to-emerald-700",
@@ -194,25 +220,7 @@ export function EnhancedHomeDashboard() {
       cyber: "from-purple-800 to-indigo-700",
     }
     return gradients[envId as keyof typeof gradients] || "from-slate-800 to-gray-700"
-  }
-
-  const handleEnvironmentAction = async (env: VOAIEnvironment, action: VOAIAction) => {
-    setIsExecuting(true)
-    setTimeout(() => {
-      const result = `Successfully executed "${action.label}" in ${env.name} environment!`
-      setExecutionResults((prev) => [result, ...prev.slice(0, 2)])
-      setEnvironmentProgress((prev) => ({
-        ...prev,
-        [env.id]: Math.min((prev[env.id] || 0) + 15, 100),
-      }))
-      setIsExecuting(false)
-    }, 1500)
-  }
-
-  const handleQuickAction = (action: string) => {
-    setSelectedQuickAction(action)
-    setTimeout(() => setSelectedQuickAction(null), 2000)
-  }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
@@ -264,7 +272,7 @@ export function EnhancedHomeDashboard() {
             variant="ghost"
             size="sm"
             className="absolute top-0 right-0 text-amber-400 hover:text-amber-300"
-            onClick={() => setShowNotifications(!showNotifications)}
+            onClick={toggleNotifications}
           >
             <Bell className="w-5 h-5" />
             {notifications.length > 0 && (
@@ -288,12 +296,7 @@ export function EnhancedHomeDashboard() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-amber-300 text-lg">Notifications</CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowNotifications(false)}
-                      className="text-amber-400"
-                    >
+                    <Button variant="ghost" size="sm" onClick={toggleNotifications} className="text-amber-400">
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
@@ -501,10 +504,8 @@ export function EnhancedHomeDashboard() {
               </CardHeader>
               <CardContent>
                 <EnvironmentSelector
-                  onEnvironmentChange={setSelectedEnvironment}
-                  onActionExecute={(env, action, result) => {
-                    setExecutionResults((prev) => [result, ...prev.slice(0, 2)])
-                  }}
+                  onEnvironmentChange={handleEnvironmentChange}
+                  onActionExecute={handleActionExecute}
                 />
               </CardContent>
             </Card>
