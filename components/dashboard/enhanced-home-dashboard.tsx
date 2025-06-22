@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { useGlobalCitizenship } from "@/lib/global/citizenship-context"
+import { useGlobalCitizenship } from "@/contexts/global-citizenship-context"
 
 export function EnhancedHomeDashboard() {
   const { currentCitizen } = useGlobalCitizenship()
