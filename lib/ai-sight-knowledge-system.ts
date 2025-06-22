@@ -296,8 +296,8 @@ export interface CitizenshipIntegrationPlan {
 // AI Knowledge Engine Implementation
 export class SupremeAIKnowledgeEngine implements AIKnowledgeEngine {
   async analyzeUserState(userId: string): Promise<UserGoalProfile> {
-    // Comprehensive user analysis
-    return {
+    // Build complete profile first
+    const baseProfile: UserGoalProfile = {
       userId,
       currentPhase: "onboarding",
       primaryGoals: await this.identifyPrimaryGoals(userId),
@@ -308,8 +308,14 @@ export class SupremeAIKnowledgeEngine implements AIKnowledgeEngine {
       authorityLevel: 25,
       digitalDomicileStatus: "establishing",
       profitabilityScore: 78,
-      nextRecommendedActions: await this.generateNextSteps({} as UserGoalProfile),
+      nextRecommendedActions: [], // Initialize empty, will be populated below
     }
+
+    // Generate next steps with complete profile
+    const nextSteps = await this.generateNextSteps(baseProfile)
+    baseProfile.nextRecommendedActions = nextSteps
+
+    return baseProfile
   }
 
   async generateNextSteps(profile: UserGoalProfile): Promise<RecommendedAction[]> {
