@@ -7,6 +7,7 @@ import { JonlorenzoThemeProvider } from "@/contexts/jonlorenzo-theme-context"
 import { JonlorenzoRoyalThemeToggle } from "@/components/theme/jonlorenzo-royal-theme-toggle"
 import { GeniusGuideOrb } from "@/components/genius/genius-guide-orb"
 import { Toaster } from "@/components/ui/sonner"
+import { GlobalCitizenshipProvider } from "@/contexts/global-citizenship-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -26,12 +27,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <JonlorenzoThemeProvider>
-            <div className="min-h-screen bg-gradient-to-br from-royal-50 via-royal-100 to-royal-200">
-              {children}
-              <JonlorenzoRoyalThemeToggle />
-              <GeniusGuideOrb />
-              <Toaster />
-            </div>
+            <GlobalCitizenshipProvider>
+              <div className="min-h-screen bg-gradient-to-br from-royal-50 via-royal-100 to-royal-200">
+                {children}
+                <JonlorenzoRoyalThemeToggle />
+                <GeniusGuideOrb />
+                <Toaster />
+              </div>
+            </GlobalCitizenshipProvider>
           </JonlorenzoThemeProvider>
         </ThemeProvider>
       </body>
