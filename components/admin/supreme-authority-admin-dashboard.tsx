@@ -28,6 +28,15 @@ import {
 import { motion } from "framer-motion"
 
 export function SupremeAuthorityAdminDashboard() {
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" })
+  const [registerForm, setRegisterForm] = useState({
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  })
+  const [isRegistering, setIsRegistering] = useState(false)
+
   const {
     currentAdmin,
     isAuthenticated,
@@ -110,14 +119,43 @@ export function SupremeAuthorityAdminDashboard() {
             <CardDescription className="text-purple-200">SUPREMA AUCTORITAS DIGITALIS</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <Input placeholder="Username" className="bg-purple-800/30 border-amber-400/30" />
-              <Input type="password" placeholder="Password" className="bg-purple-800/30 border-amber-400/30" />
-              <Button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700">
-                <Crown className="w-4 h-4 mr-2" />
-                Access Imperial Command
-              </Button>
-            </div>
+            <Tabs defaultValue="login" className="space-y-4">
+              <TabsList className="grid w-full grid-cols-2 bg-purple-800/30">
+                <TabsTrigger value="login" className="data-[state=active]:bg-amber-500/20">
+                  Login
+                </TabsTrigger>
+                <TabsTrigger value="register" className="data-[state=active]:bg-amber-500/20">
+                  Register
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="login" className="space-y-4">
+                <Input placeholder="Email" type="email" className="bg-purple-800/30 border-amber-400/30" />
+                <Input type="password" placeholder="Password" className="bg-purple-800/30 border-amber-400/30" />
+                <Button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700">
+                  <Crown className="w-4 h-4 mr-2" />
+                  Access Imperial Command
+                </Button>
+              </TabsContent>
+
+              <TabsContent value="register" className="space-y-4">
+                <Input placeholder="Email Address" type="email" className="bg-purple-800/30 border-amber-400/30" />
+                <Input placeholder="Username" className="bg-purple-800/30 border-amber-400/30" />
+                <Input type="password" placeholder="Password" className="bg-purple-800/30 border-amber-400/30" />
+                <Input
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="bg-purple-800/30 border-amber-400/30"
+                />
+                <Button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
+                  <Crown className="w-4 h-4 mr-2" />
+                  Register as Supreme Authority
+                </Button>
+                <p className="text-xs text-purple-300 text-center">
+                  Registration grants immediate Supreme Authority access
+                </p>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </div>
