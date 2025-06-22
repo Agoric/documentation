@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
@@ -133,6 +135,19 @@ const SAMPLE_TASKS: GuidanceTask[] = [
   },
 ]
 
+type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement>>
+
+const CATEGORY_ICONS: Record<GuidanceStep["category"], LucideIcon> = {
+  navigation: Navigation,
+  action: Target,
+  information: Lightbulb,
+  completion: CheckCircle,
+}
+
+function getCategoryIcon(category: GuidanceStep["category"]): LucideIcon {
+  return CATEGORY_ICONS[category] ?? Sparkles
+}
+
 export function GeniusGuideOrb() {
   const { geniusActive, theme } = useJonlorenzoTheme()
   const [isVisible, setIsVisible] = useState(false)
@@ -213,14 +228,12 @@ export function GeniusGuideOrb() {
   }
 
   const completeStep = (stepId: string) => {
-    if (!currentTask) return
-
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === currentTask.id
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === currentTask?.id
           ? {
               ...task,
-              steps: task.steps.map((step) => (step.id === stepId ? { ...step, completed: true } : step)),
+              steps: task.steps.map((s) => (s.id === stepId ? { ...s, completed: true } : s)),
               progress: Math.round(
                 (task.steps.filter((s) => s.completed || s.id === stepId).length / task.steps.length) * 100,
               ),
@@ -228,29 +241,6 @@ export function GeniusGuideOrb() {
           : task,
       ),
     )
-
-    // Move to next step
-    const updatedTask = tasks.find((t) => t.id === currentTask.id)
-    if (updatedTask) {
-      const nextStep = updatedTask.steps.find((step) => !step.completed && step.id !== stepId)
-      if (nextStep) {
-        setCurrentStep(nextStep)
-        communicate(`Great! Now let's ${nextStep.title.toLowerCase()}.`)
-      } else {
-        // Task completed
-        communicate(`Excellent! You've completed "${currentTask.title}". Looking for your next priority...`)
-        setTimeout(() => {
-          const nextTask = tasks.find((task) => task.progress < 100 && task.id !== currentTask.id)
-          if (nextTask) {
-            startGuidance(nextTask)
-          } else {
-            setIsGuiding(false)
-            setIsFollowing(true)
-            communicate("All tasks completed! I'll continue to assist you as needed.")
-          }
-        }, 3000)
-      }
-    }
   }
 
   const communicate = (message: string) => {
@@ -276,21 +266,6 @@ export function GeniusGuideOrb() {
         return "text-green-400"
       default:
         return "text-blue-400"
-    }
-  }
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "navigation":
-        return Navigation
-      case "action":
-        return Target
-      case "information":
-        return Lightbulb
-      case "completion":
-        return CheckCircle
-      default:
-        return Sparkles
     }
   }
 
