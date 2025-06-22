@@ -9,32 +9,12 @@ type Stat = {
   icon: keyof typeof Icons
 }
 
-const stats: Stat[] = [
-  {
-    title: "Total Revenue",
-    value: "$45,231.89",
-    change: "+20.1% from last month",
-    icon: "DollarSign",
-  },
-  {
-    title: "Active Users",
-    value: "2,350",
-    change: "+180.1% from last month",
-    icon: "Users",
-  },
-  {
-    title: "Conversion Rate",
-    value: "12.5%",
-    change: "+19% from last month",
-    icon: "TrendingUp",
-  },
-  {
-    title: "Total Orders",
-    value: "1,234",
-    change: "+7% from last month",
-    icon: "BarChart3",
-  },
-]
+const stats = [
+  { title: "Total Revenue", value: "$45,231.89", change: "+20.1% from last month", icon: "DollarSign" },
+  { title: "Active Users", value: "2,350", change: "+180.1% from last month", icon: "Users" },
+  { title: "Conversion Rate", value: "12.5%", change: "+19% from last month", icon: "TrendingUp" },
+  { title: "Total Orders", value: "1,234", change: "+7% from last month", icon: "BarChart3" },
+] as const
 
 export default function DashboardHomePage() {
   return (
@@ -56,7 +36,10 @@ export default function DashboardHomePage() {
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
-                {Icon && <Icon className="h-4 w-4 text-brand-500" />}
+                {(() => {
+                  const Icon = Icons[stat.icon as keyof typeof Icons] ?? null
+                  return Icon ? <Icon className="h-4 w-4 text-brand-500" /> : null
+                })()}
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
