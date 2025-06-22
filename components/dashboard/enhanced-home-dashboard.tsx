@@ -435,233 +435,265 @@ export function EnhancedHomeDashboard() {
           {/* Left Column - Citizen Profile & Quick Actions */}
           <div className="xl:col-span-3 space-y-6">
             {/* Enhanced Digital ID Card */}
-            <Card className="bg-gradient-to-br from-purple-900/60 via-indigo-900/60 to-purple-900/60 border-2 border-amber-400/40 shadow-2xl shadow-purple-500/20 backdrop-blur-xl relative overflow-hidden">
-              {/* Royal background pattern */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.1),transparent),radial-gradient(circle_at_80%_80%,rgba(147,51,234,0.1),transparent)]" />
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-purple-900/60 via-indigo-900/60 to-purple-900/60 border-2 border-amber-400/40 shadow-2xl shadow-purple-500/20 backdrop-blur-xl relative overflow-hidden">
+                  {/* Royal background pattern */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.1),transparent),radial-gradient(circle_at_80%_80%,rgba(147,51,234,0.1),transparent)]" />
 
-              {/* Animated border glow */}
-              <div className="absolute inset-0 border-2 border-amber-400/20 rounded-lg animate-pulse" />
+                  {/* Animated border glow */}
+                  <div className="absolute inset-0 border-2 border-amber-400/20 rounded-lg animate-pulse" />
 
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-amber-300 font-serif flex items-center justify-center text-lg">
-                  <Crown className="w-6 h-6 mr-2 animate-pulse" />
-                  Imperial Citizenship Registry
-                </CardTitle>
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-2" />
-              </CardHeader>
-              <CardContent className="space-y-6 relative z-10">
-                <div className="flex items-center space-x-4">
-                  <div className="relative">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/30">
-                      <Crown className="w-10 h-10 text-white drop-shadow-lg" />
-                    </div>
-                    {/* Orbital rings around avatar */}
-                    <div
-                      className="absolute inset-0 border border-amber-400/30 rounded-full animate-spin"
-                      style={{ animationDuration: "8s" }}
-                    />
-                    <div
-                      className="absolute inset-[-4px] border border-purple-400/20 rounded-full animate-spin"
-                      style={{ animationDuration: "12s", animationDirection: "reverse" }}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-transparent bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-300 bg-clip-text">
-                      {citizenData.name}
-                    </h3>
-                    <p className="text-sm text-amber-300/80 italic font-serif">{citizenData.romanName}</p>
-                    <Badge className="mt-2 bg-gradient-to-r from-purple-600/30 to-indigo-600/30 text-purple-200 border-purple-400/40 shadow-lg">
-                      <Crown className="w-3 h-3 mr-1" />
-                      {citizenData.title}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center p-2 bg-gradient-to-r from-amber-900/20 to-purple-900/20 rounded border border-amber-400/20">
-                    <span className="text-amber-200/80 font-serif">Citizen Registry ID</span>
-                    <span className="text-amber-300 font-mono text-xs bg-slate-900/50 px-2 py-1 rounded">
-                      {citizenData.id}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-gradient-to-r from-green-900/20 to-emerald-900/20 rounded border border-green-400/20">
-                    <span className="text-green-200/80 font-serif">Imperial Status</span>
-                    <Badge className="bg-gradient-to-r from-green-600/30 to-emerald-600/30 text-green-200 border-green-400/40">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-1" />
-                      Active Sovereign
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 rounded border border-purple-400/20">
-                    <span className="text-purple-200/80 font-serif">Authority Level</span>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-amber-300 font-bold">Level {citizenData.level}</span>
-                      <div className="flex space-x-1">
-                        {[...Array(citizenData.level)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 text-amber-400 fill-current" />
-                        ))}
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="text-amber-300 font-serif flex items-center justify-center text-lg">
+                      <Crown className="w-6 h-6 mr-2 animate-pulse" />
+                      Imperial Citizenship Registry
+                    </CardTitle>
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-2" />
+                  </CardHeader>
+                  <CardContent className="space-y-6 relative z-10">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/30">
+                          <Crown className="w-10 h-10 text-white drop-shadow-lg" />
+                        </div>
+                        {/* Orbital rings around avatar */}
+                        <div
+                          className="absolute inset-0 border border-amber-400/30 rounded-full animate-spin"
+                          style={{ animationDuration: "8s" }}
+                        />
+                        <div
+                          className="absolute inset-[-4px] border border-purple-400/20 rounded-full animate-spin"
+                          style={{ animationDuration: "12s", animationDirection: "reverse" }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-transparent bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-300 bg-clip-text">
+                          {citizenData.name}
+                        </h3>
+                        <p className="text-sm text-amber-300/80 italic font-serif">{citizenData.romanName}</p>
+                        <Badge className="mt-2 bg-gradient-to-r from-purple-600/30 to-indigo-600/30 text-purple-200 border-purple-400/40 shadow-lg">
+                          <Crown className="w-3 h-3 mr-1" />
+                          {citizenData.title}
+                        </Badge>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-amber-200/80 font-serif">Ascension Progress</span>
-                    <span className="text-amber-300 font-bold">{citizenData.nextLevelProgress}%</span>
-                  </div>
-                  <div className="relative">
-                    <Progress value={citizenData.nextLevelProgress} className="h-3 bg-slate-800/50" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-yellow-400/30 to-amber-400/20 rounded-full animate-pulse" />
-                  </div>
-                </div>
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
 
-                {/* Recent Achievements with royal styling */}
-                <div className="space-y-3">
-                  <h4 className="text-amber-300 font-serif text-sm text-center tracking-wider">✦ IMPERIAL HONORS ✦</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    {citizenData.achievements.slice(0, 4).map((achievement) => {
-                      const Icon = achievement.icon
-                      return (
-                        <motion.div
-                          key={achievement.id}
-                          className="flex items-center space-x-2 p-2 bg-gradient-to-r from-amber-900/30 to-yellow-900/30 rounded border border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 group cursor-pointer"
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <Icon className="w-4 h-4 text-amber-400 group-hover:text-amber-300 transition-colors" />
-                          <span className="text-xs text-amber-300 font-medium">{achievement.name}</span>
-                        </motion.div>
-                      )
-                    })}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="space-y-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex justify-between items-center p-2 bg-gradient-to-r from-amber-900/20 to-purple-900/20 rounded border border-amber-400/20">
+                        <span className="text-amber-200/80 font-serif">Citizen Registry ID</span>
+                        <span className="text-amber-300 font-mono text-xs bg-slate-900/50 px-2 py-1 rounded">
+                          {citizenData.id}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center p-2 bg-gradient-to-r from-green-900/20 to-emerald-900/20 rounded border border-green-400/20">
+                        <span className="text-green-200/80 font-serif">Imperial Status</span>
+                        <Badge className="bg-gradient-to-r from-green-600/30 to-emerald-600/30 text-green-200 border-green-400/40">
+                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-1" />
+                          Active Sovereign
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between items-center p-2 bg-gradient-to-r from-purple-900/20 to-indigo-900/20 rounded border border-purple-400/20">
+                        <span className="text-purple-200/80 font-serif">Authority Level</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-amber-300 font-bold">Level {citizenData.level}</span>
+                          <div className="flex space-x-1">
+                            {[...Array(citizenData.level)].map((_, i) => (
+                              <Star key={i} className="w-3 h-3 text-amber-400 fill-current" />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-amber-200/80 font-serif">Ascension Progress</span>
+                        <span className="text-amber-300 font-bold">{citizenData.nextLevelProgress}%</span>
+                      </div>
+                      <div className="relative">
+                        <Progress value={citizenData.nextLevelProgress} className="h-3 bg-slate-800/50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-yellow-400/30 to-amber-400/20 rounded-full animate-pulse" />
+                      </div>
+                    </div>
+
+                    {/* Recent Achievements with royal styling */}
+                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <h4 className="text-amber-300 font-serif text-sm text-center tracking-wider">
+                        ✦ IMPERIAL HONORS ✦
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {citizenData.achievements.slice(0, 4).map((achievement) => {
+                          const Icon = achievement.icon
+                          return (
+                            <motion.div
+                              key={achievement.id}
+                              className="flex items-center space-x-2 p-2 bg-gradient-to-r from-amber-900/30 to-yellow-900/30 rounded border border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 group cursor-pointer"
+                              whileHover={{ scale: 1.02 }}
+                            >
+                              <Icon className="w-4 h-4 text-amber-400 group-hover:text-amber-300 transition-colors" />
+                              <span className="text-xs text-amber-300 font-medium">{achievement.name}</span>
+                            </motion.div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* Quick Actions Grid */}
-            <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-amber-400/30 shadow-2xl shadow-amber-500/10">
-              <CardHeader>
-                <CardTitle className="text-amber-300 font-serif text-lg flex items-center justify-center">
-                  <Crown className="w-5 h-5 mr-2" />
-                  Royal Command Center
-                </CardTitle>
-                <CardDescription className="text-amber-200/70 text-center font-serif italic">
-                  Imperial Quick Actions
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* High Priority Actions - Center of Attention */}
-                <div className="space-y-3">
-                  <h4 className="text-amber-300 font-serif text-sm text-center mb-4 tracking-wider">
-                    ✦ IMPERIAL DOMAINS ✦
-                  </h4>
-                  <div className="grid grid-cols-1 gap-4">
-                    {quickActions
-                      .filter((action) => action.priority === "high")
-                      .map((action) => {
-                        const Icon = action.icon
-                        return (
-                          <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Button
-                              variant="ghost"
-                              className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/60 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
-                              onClick={() => handleQuickAction(action.action)}
-                            >
-                              {/* Royal background pattern */}
-                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-amber-400/30 shadow-2xl shadow-amber-500/10">
+                  <CardHeader>
+                    <CardTitle className="text-amber-300 font-serif text-lg flex items-center justify-center">
+                      <Crown className="w-5 h-5 mr-2" />
+                      Royal Command Center
+                    </CardTitle>
+                    <CardDescription className="text-amber-200/70 text-center font-serif italic">
+                      Imperial Quick Actions
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {/* High Priority Actions - Center of Attention */}
+                    <div className="space-y-3">
+                      <h4 className="text-amber-300 font-serif text-sm text-center mb-4 tracking-wider">
+                        ✦ IMPERIAL DOMAINS ✦
+                      </h4>
+                      <div className="grid grid-cols-1 gap-4">
+                        {quickActions
+                          .filter((action) => action.priority === "high")
+                          .map((action) => {
+                            const Icon = action.icon
+                            return (
+                              <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Button
+                                  variant="ghost"
+                                  className={`w-full h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br ${action.color} hover:opacity-90 text-white border-2 border-amber-400/30 hover:border-amber-400/60 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group`}
+                                  onClick={() => handleQuickAction(action.action)}
+                                >
+                                  {/* Royal background pattern */}
+                                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                              {/* Animated border glow */}
-                              <div className="absolute inset-0 border-2 border-amber-400/0 group-hover:border-amber-400/40 rounded transition-all duration-300" />
+                                  {/* Animated border glow */}
+                                  <div className="absolute inset-0 border-2 border-amber-400/0 group-hover:border-amber-400/40 rounded transition-all duration-300" />
 
-                              <Icon className="w-8 h-8 drop-shadow-lg" />
-                              <span className="text-sm font-bold tracking-wide">{action.name}</span>
+                                  <Icon className="w-8 h-8 drop-shadow-lg" />
+                                  <span className="text-sm font-bold tracking-wide">{action.name}</span>
 
-                              {selectedQuickAction === action.action && (
-                                <motion.div
-                                  className="absolute inset-0 bg-white/20 rounded"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: [0, 1, 0] }}
-                                  transition={{ duration: 0.8 }}
-                                />
-                              )}
-                            </Button>
-                          </motion.div>
-                        )
-                      })}
-                  </div>
-                </div>
+                                  {selectedQuickAction === action.action && (
+                                    <motion.div
+                                      className="absolute inset-0 bg-white/20 rounded"
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: [0, 1, 0] }}
+                                      transition={{ duration: 0.8 }}
+                                    />
+                                  )}
+                                </Button>
+                              </motion.div>
+                            )
+                          })}
+                      </div>
+                    </div>
 
-                {/* Medium Priority Actions */}
-                <div className="space-y-3">
-                  <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-                  <h4 className="text-amber-300/80 font-serif text-xs text-center tracking-wider">ROYAL SERVICES</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    {quickActions
-                      .filter((action) => action.priority === "medium")
-                      .map((action) => {
-                        const Icon = action.icon
-                        return (
-                          <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Button
-                              variant="ghost"
-                              className={`w-full h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-br ${action.color} hover:opacity-80 text-white border border-amber-400/20 hover:border-amber-400/40 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
-                              onClick={() => handleQuickAction(action.action)}
-                            >
-                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Medium Priority Actions */}
+                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
+                      <h4 className="text-amber-300/80 font-serif text-xs text-center tracking-wider">
+                        ROYAL SERVICES
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        {quickActions
+                          .filter((action) => action.priority === "medium")
+                          .map((action) => {
+                            const Icon = action.icon
+                            return (
+                              <motion.div key={action.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Button
+                                  variant="ghost"
+                                  className={`w-full h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-br ${action.color} hover:opacity-80 text-white border border-amber-400/20 hover:border-amber-400/40 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden group`}
+                                  onClick={() => handleQuickAction(action.action)}
+                                >
+                                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                              <Icon className="w-5 h-5" />
-                              <span className="text-xs font-medium">{action.name}</span>
+                                  <Icon className="w-5 h-5" />
+                                  <span className="text-xs font-medium">{action.name}</span>
 
-                              {selectedQuickAction === action.action && (
-                                <motion.div
-                                  className="absolute inset-0 bg-white/15 rounded"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: [0, 1, 0] }}
-                                  transition={{ duration: 0.5 }}
-                                />
-                              )}
-                            </Button>
-                          </motion.div>
-                        )
-                      })}
-                  </div>
-                </div>
+                                  {selectedQuickAction === action.action && (
+                                    <motion.div
+                                      className="absolute inset-0 bg-white/15 rounded"
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: [0, 1, 0] }}
+                                      transition={{ duration: 0.5 }}
+                                    />
+                                  )}
+                                </Button>
+                              </motion.div>
+                            )
+                          })}
+                      </div>
+                    </div>
 
-                {/* Low Priority Actions */}
-                <div className="space-y-2">
-                  <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
-                  <div className="grid grid-cols-2 gap-2">
-                    {quickActions
-                      .filter((action) => action.priority === "low")
-                      .map((action) => {
-                        const Icon = action.icon
-                        return (
-                          <motion.div key={action.name} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                            <Button
-                              variant="ghost"
-                              className={`w-full h-12 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-80 text-white border border-amber-400/10 hover:border-amber-400/30 text-xs transition-all duration-300`}
-                              onClick={() => handleQuickAction(action.action)}
-                            >
-                              <Icon className="w-4 h-4" />
-                              <span>{action.name}</span>
+                    {/* Low Priority Actions */}
+                    <div className="space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
+                      <div className="grid grid-cols-2 gap-2">
+                        {quickActions
+                          .filter((action) => action.priority === "low")
+                          .map((action) => {
+                            const Icon = action.icon
+                            return (
+                              <motion.div key={action.name} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                <Button
+                                  variant="ghost"
+                                  className={`w-full h-12 flex items-center justify-center space-x-2 bg-gradient-to-r ${action.color} hover:opacity-80 text-white border border-amber-400/10 hover:border-amber-400/30 text-xs transition-all duration-300`}
+                                  onClick={() => handleQuickAction(action.action)}
+                                >
+                                  <Icon className="w-4 h-4" />
+                                  <span>{action.name}</span>
 
-                              {selectedQuickAction === action.action && (
-                                <motion.div
-                                  className="absolute inset-0 bg-white/10 rounded"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: [0, 1, 0] }}
-                                  transition={{ duration: 0.3 }}
-                                />
-                              )}
-                            </Button>
-                          </motion.div>
-                        )
-                      })}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                                  {selectedQuickAction === action.action && (
+                                    <motion.div
+                                      className="absolute inset-0 bg-white/10 rounded"
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: [0, 1, 0] }}
+                                      transition={{ duration: 0.3 }}
+                                    />
+                                  )}
+                                </Button>
+                              </motion.div>
+                            )
+                          })}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* Feature Toggle Widget */}
             <FeatureToggleWidget maxFeatures={5} compact={true} />
@@ -673,389 +705,544 @@ export function EnhancedHomeDashboard() {
           {/* Center Column - Main Dashboard Content */}
           <div className="xl:col-span-6 space-y-6">
             {/* Enhanced Portfolio Overview */}
-            <Card className="bg-gradient-to-br from-green-900/60 via-emerald-900/60 to-green-900/60 border-2 border-emerald-400/40 shadow-2xl shadow-emerald-500/20 backdrop-blur-xl relative overflow-hidden">
-              {/* Royal background pattern */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,94,0.1),transparent)]" />
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-green-900/60 via-emerald-900/60 to-green-900/60 border-2 border-emerald-400/40 shadow-2xl shadow-emerald-500/20 backdrop-blur-xl relative overflow-hidden">
+                  {/* Royal background pattern */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(34,197,94,0.1),transparent)]" />
 
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-emerald-300 font-serif flex items-center justify-between text-lg">
-                  <div className="flex items-center">
-                    <div className="relative">
-                      <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: "8s" }} />
-                      <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-lg animate-pulse" />
-                    </div>
-                    Imperial Treasury
-                  </div>
-                  <div className="text-right">
-                    <motion.div
-                      className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-300 bg-clip-text"
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-                    >
-                      ${(citizenData.qgiBalance + citizenData.bondValue + citizenData.taxBenefits).toLocaleString()}
-                    </motion.div>
-                    <div className="text-sm text-emerald-200/80 font-serif italic">Total Sovereign Wealth</div>
-                  </div>
-                </CardTitle>
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent mt-2" />
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {portfolioAssets.map((asset, index) => {
-                    const Icon = asset.icon
-                    return (
-                      <motion.div
-                        key={asset.name}
-                        className="p-4 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 hover:border-emerald-400/50 transition-all duration-300 relative overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl"
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        {/* Royal background glow */}
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                        <div className="flex items-center justify-between mb-3 relative z-10">
-                          <div className="flex items-center space-x-3">
-                            <div className="relative">
-                              <Icon className="w-6 h-6 text-emerald-400 drop-shadow-lg" />
-                              <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-md animate-pulse" />
-                            </div>
-                            <span className="text-sm font-bold text-emerald-300 font-serif">{asset.name}</span>
-                          </div>
-                          <Badge className="bg-gradient-to-r from-emerald-600/30 to-green-600/30 text-emerald-200 border-emerald-400/40 text-xs">
-                            {asset.allocation}%
-                          </Badge>
-                        </div>
-                        <div className="flex items-center justify-between mb-3 relative z-10">
-                          <span className="text-xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text">
-                            ${asset.value.toLocaleString()}
-                          </span>
-                          <div className="flex items-center space-x-2">
-                            {asset.change >= 0 ? (
-                              <ArrowUpRight className="w-4 h-4 text-emerald-400 animate-bounce" />
-                            ) : (
-                              <ArrowDownRight className="w-4 h-4 text-red-400" />
-                            )}
-                            <span
-                              className={`text-sm font-bold ${asset.change >= 0 ? "text-emerald-400" : "text-red-400"}`}
-                            >
-                              {asset.change >= 0 ? "+" : ""}
-                              {asset.change}%
-                            </span>
-                          </div>
-                        </div>
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="text-emerald-300 font-serif flex items-center justify-between text-lg">
+                      <div className="flex items-center">
                         <div className="relative">
-                          <Progress value={asset.allocation} className="h-2 bg-slate-800/50" />
-                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 via-green-400/40 to-emerald-400/30 rounded-full animate-pulse" />
+                          <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: "8s" }} />
+                          <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-lg animate-pulse" />
                         </div>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              </CardContent>
-            </Card>
+                        Imperial Treasury
+                      </div>
+                      <div className="text-right">
+                        <motion.div
+                          className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-300 bg-clip-text"
+                          animate={{ scale: [1, 1.05, 1] }}
+                          transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                        >
+                          ${(citizenData.qgiBalance + citizenData.bondValue + citizenData.taxBenefits).toLocaleString()}
+                        </motion.div>
+                        <div className="text-sm text-emerald-200/80 font-serif italic">Total Sovereign Wealth</div>
+                      </div>
+                    </CardTitle>
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent mt-2" />
+                  </CardHeader>
+                  <CardContent className="relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {portfolioAssets.map((asset, index) => {
+                        const Icon = asset.icon
+                        return (
+                          <motion.div
+                            key={asset.name}
+                            className="p-4 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 hover:border-emerald-400/50 transition-all duration-300 relative overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl"
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                          >
+                            {/* Royal background glow */}
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                            <div className="flex items-center justify-between mb-3 relative z-10">
+                              <div className="flex items-center space-x-3">
+                                <div className="relative">
+                                  <Icon className="w-6 h-6 text-emerald-400 drop-shadow-lg" />
+                                  <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-md animate-pulse" />
+                                </div>
+                                <span className="text-sm font-bold text-emerald-300 font-serif">{asset.name}</span>
+                              </div>
+                              <Badge className="bg-gradient-to-r from-emerald-600/30 to-green-600/30 text-emerald-200 border-emerald-400/40 text-xs">
+                                {asset.allocation}%
+                              </Badge>
+                            </div>
+                            <div className="flex items-center justify-between mb-3 relative z-10">
+                              <span className="text-xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text">
+                                ${asset.value.toLocaleString()}
+                              </span>
+                              <div className="flex items-center space-x-2">
+                                {asset.change >= 0 ? (
+                                  <ArrowUpRight className="w-4 h-4 text-emerald-400 animate-bounce" />
+                                ) : (
+                                  <ArrowDownRight className="w-4 h-4 text-red-400" />
+                                )}
+                                <span
+                                  className={`text-sm font-bold ${asset.change >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                                >
+                                  {asset.change >= 0 ? "+" : ""}
+                                  {asset.change}%
+                                </span>
+                              </div>
+                            </div>
+                            <div className="relative">
+                              <Progress value={asset.allocation} className="h-2 bg-slate-800/50" />
+                              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 via-green-400/40 to-emerald-400/30 rounded-full animate-pulse" />
+                            </div>
+                          </motion.div>
+                        )
+                      })}
+                    </div>
+                    <div className="group-hover:opacity-0 transition-opacity duration-300">
+                      <CardTitle className="text-emerald-300 font-serif flex items-center justify-between text-lg">
+                        <div className="flex items-center">
+                          <div className="relative">
+                            <PieChart className="w-6 h-6 mr-3 animate-spin" style={{ animationDuration: "8s" }} />
+                            <div className="absolute inset-0 bg-emerald-400/20 rounded-full blur-lg animate-pulse" />
+                          </div>
+                          Imperial Treasury
+                        </div>
+                        <div className="text-right">
+                          <motion.div
+                            className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-300 bg-clip-text"
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                          >
+                            $
+                            {(
+                              citizenData.qgiBalance +
+                              citizenData.bondValue +
+                              citizenData.taxBenefits
+                            ).toLocaleString()}
+                          </motion.div>
+                          <div className="text-sm text-emerald-200/80 font-serif italic">Total Sovereign Wealth</div>
+                        </div>
+                      </CardTitle>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* VOAI Environment Selector */}
-            <Card className="bg-gradient-to-br from-indigo-900/60 via-purple-900/60 to-indigo-900/60 border-2 border-indigo-400/40 shadow-2xl shadow-indigo-500/20 backdrop-blur-xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(99,102,241,0.1),transparent),radial-gradient(circle_at_60%_60%,rgba(147,51,234,0.1),transparent)]" />
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-indigo-900/60 via-purple-900/60 to-indigo-900/60 border-2 border-indigo-400/40 shadow-2xl shadow-indigo-500/20 backdrop-blur-xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(99,102,241,0.1),transparent),radial-gradient(circle_at_60%_60%,rgba(147,51,234,0.1),transparent)]" />
 
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-indigo-300 font-serif flex items-center text-lg">
-                  <div className="relative">
-                    <Globe className="w-6 h-6 mr-3 animate-pulse" />
-                    <div className="absolute inset-0 bg-indigo-400/20 rounded-full blur-lg animate-pulse" />
-                  </div>
-                  VOAI Imperial Environments
-                </CardTitle>
-                <CardDescription className="text-indigo-200/70 font-serif italic">
-                  Quantum-Enhanced Reality Domains
-                </CardDescription>
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent mt-2" />
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <EnvironmentSelector
-                  onEnvironmentChange={handleEnvironmentChange}
-                  onActionExecute={handleActionExecute}
-                />
-              </CardContent>
-            </Card>
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="text-indigo-300 font-serif flex items-center text-lg">
+                      <div className="relative">
+                        <Globe className="w-6 h-6 mr-3 animate-pulse" />
+                        <div className="absolute inset-0 bg-indigo-400/20 rounded-full blur-lg animate-pulse" />
+                      </div>
+                      VOAI Imperial Environments
+                    </CardTitle>
+                    <CardDescription className="text-indigo-200/70 font-serif italic">
+                      Quantum-Enhanced Reality Domains
+                    </CardDescription>
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent mt-2" />
+                  </CardHeader>
+                  <CardContent className="relative z-10">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <EnvironmentSelector
+                        onEnvironmentChange={handleEnvironmentChange}
+                        onActionExecute={handleActionExecute}
+                      />
+                    </div>
+                    <div className="group-hover:opacity-0 transition-opacity duration-300">
+                      <CardTitle className="text-indigo-300 font-serif flex items-center text-lg">
+                        <div className="relative">
+                          <Globe className="w-6 h-6 mr-3 animate-pulse" />
+                          <div className="absolute inset-0 bg-indigo-400/20 rounded-full blur-lg animate-pulse" />
+                        </div>
+                        VOAI Imperial Environments
+                      </CardTitle>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* Analytics Dashboard */}
-            <Card className="bg-gradient-to-br from-blue-900/60 via-cyan-900/60 to-blue-900/60 border-2 border-cyan-400/40 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(6,182,212,0.1),transparent),radial-gradient(circle_at_75%_75%,rgba(59,130,246,0.1),transparent)]" />
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-blue-900/60 via-cyan-900/60 to-blue-900/60 border-2 border-cyan-400/40 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(6,182,212,0.1),transparent),radial-gradient(circle_at_75%_75%,rgba(59,130,246,0.1),transparent)]" />
 
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-cyan-300 font-serif flex items-center text-lg">
-                  <div className="relative">
-                    <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: "2s" }} />
-                    <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg animate-pulse" />
-                  </div>
-                  Imperial Analytics Command
-                </CardTitle>
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent mt-2" />
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <Tabs defaultValue="financial" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 bg-gradient-to-r from-cyan-800/40 via-blue-800/40 to-cyan-800/40 border border-cyan-400/30">
-                    <TabsTrigger
-                      value="financial"
-                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
-                    >
-                      Financial
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="credit"
-                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
-                    >
-                      Credit
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="activity"
-                      className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
-                    >
-                      Activity
-                    </TabsTrigger>
-                  </TabsList>
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="text-cyan-300 font-serif flex items-center text-lg">
+                      <div className="relative">
+                        <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: "2s" }} />
+                        <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg animate-pulse" />
+                      </div>
+                      Imperial Analytics Command
+                    </CardTitle>
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent mt-2" />
+                  </CardHeader>
+                  <CardContent className="relative z-10">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Tabs defaultValue="financial" className="w-full">
+                        <TabsList className="grid w-full grid-cols-3 bg-gradient-to-r from-cyan-800/40 via-blue-800/40 to-cyan-800/40 border border-cyan-400/30">
+                          <TabsTrigger
+                            value="financial"
+                            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
+                          >
+                            Financial
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="credit"
+                            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
+                          >
+                            Credit
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="activity"
+                            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600/50 data-[state=active]:to-blue-600/50 data-[state=active]:text-cyan-200"
+                          >
+                            Activity
+                          </TabsTrigger>
+                        </TabsList>
 
-                  <TabsContent value="financial" className="space-y-4 mt-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <motion.div
-                        className="text-center p-6 bg-gradient-to-br from-cyan-800/30 to-blue-800/30 rounded-lg border-2 border-cyan-400/30 shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text mb-2">
-                          12.5%
-                        </div>
-                        <div className="text-sm text-cyan-200/80 font-serif">Portfolio Growth</div>
-                      </motion.div>
-                      <motion.div
-                        className="text-center p-6 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text mb-2">
-                          $45.2K
-                        </div>
-                        <div className="text-sm text-emerald-200/80 font-serif">Monthly Income</div>
-                      </motion.div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="credit" className="space-y-4 mt-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <motion.div
-                        className="text-center p-6 bg-gradient-to-br from-purple-800/30 to-indigo-800/30 rounded-lg border-2 border-purple-400/30 shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text mb-2">
-                          847
-                        </div>
-                        <div className="text-sm text-purple-200/80 font-serif">Snap Score</div>
-                      </motion.div>
-                      <motion.div
-                        className="text-center p-6 bg-gradient-to-br from-amber-800/30 to-yellow-800/30 rounded-lg border-2 border-amber-400/30 shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text mb-2">
-                          +23
-                        </div>
-                        <div className="text-sm text-amber-200/80 font-serif">Monthly Increase</div>
-                      </motion.div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="activity" className="space-y-4 mt-6">
-                    <div className="space-y-3">
-                      {citizenData.recentActivity.slice(0, 3).map((activity, index) => (
-                        <motion.div
-                          key={activity.id}
-                          className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-800/30 to-blue-800/30 rounded-lg border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <div>
-                            <div className="text-sm font-medium text-cyan-300 font-serif">{activity.action}</div>
-                            <div className="text-xs text-cyan-200/60">{activity.date}</div>
+                        <TabsContent value="financial" className="space-y-4 mt-6">
+                          <div className="grid grid-cols-2 gap-4">
+                            <motion.div
+                              className="text-center p-6 bg-gradient-to-br from-cyan-800/30 to-blue-800/30 rounded-lg border-2 border-cyan-400/30 shadow-lg"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text mb-2">
+                                12.5%
+                              </div>
+                              <div className="text-sm text-cyan-200/80 font-serif">Portfolio Growth</div>
+                            </motion.div>
+                            <motion.div
+                              className="text-center p-6 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg border-2 border-emerald-400/30 shadow-lg"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-emerald-300 to-green-300 bg-clip-text mb-2">
+                                $45.2K
+                              </div>
+                              <div className="text-sm text-emerald-200/80 font-serif">Monthly Income</div>
+                            </motion.div>
                           </div>
-                          <div className="text-sm font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text">
-                            {activity.type === "investment" || activity.type === "income"
-                              ? `$${activity.amount.toLocaleString()}`
-                              : activity.amount}
+                        </TabsContent>
+
+                        <TabsContent value="credit" className="space-y-4 mt-6">
+                          <div className="grid grid-cols-2 gap-4">
+                            <motion.div
+                              className="text-center p-6 bg-gradient-to-br from-purple-800/30 to-indigo-800/30 rounded-lg border-2 border-purple-400/30 shadow-lg"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text mb-2">
+                                847
+                              </div>
+                              <div className="text-sm text-purple-200/80 font-serif">Snap Score</div>
+                            </motion.div>
+                            <motion.div
+                              className="text-center p-6 bg-gradient-to-br from-amber-800/30 to-yellow-800/30 rounded-lg border-2 border-amber-400/30 shadow-lg"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text mb-2">
+                                +23
+                              </div>
+                              <div className="text-sm text-amber-200/80 font-serif">Monthly Increase</div>
+                            </motion.div>
                           </div>
-                        </motion.div>
-                      ))}
+                        </TabsContent>
+
+                        <TabsContent value="activity" className="space-y-4 mt-6">
+                          <div className="space-y-3">
+                            {citizenData.recentActivity.slice(0, 3).map((activity, index) => (
+                              <motion.div
+                                key={activity.id}
+                                className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-800/30 to-blue-800/30 rounded-lg border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02 }}
+                              >
+                                <div>
+                                  <div className="text-sm font-medium text-cyan-300 font-serif">{activity.action}</div>
+                                  <div className="text-xs text-cyan-200/60">{activity.date}</div>
+                                </div>
+                                <div className="text-sm font-bold text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text">
+                                  {activity.type === "investment" || activity.type === "income"
+                                    ? `$${activity.amount.toLocaleString()}`
+                                    : activity.amount}
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </TabsContent>
+                      </Tabs>
                     </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
+                    <div className="group-hover:opacity-0 transition-opacity duration-300">
+                      <CardTitle className="text-cyan-300 font-serif flex items-center text-lg">
+                        <div className="relative">
+                          <BarChart3 className="w-6 h-6 mr-3 animate-bounce" style={{ animationDuration: "2s" }} />
+                          <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-lg animate-pulse" />
+                        </div>
+                        Imperial Analytics Command
+                      </CardTitle>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* Right Column - AI Chat & Additional Widgets */}
           <div className="xl:col-span-3 space-y-6">
             {/* Update Upcoming Events */}
-            <Card className="bg-gradient-to-br from-amber-900/60 via-orange-900/60 to-amber-900/60 border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20 backdrop-blur-xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(245,158,11,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(251,146,60,0.1),transparent)]" />
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-amber-900/60 via-orange-900/60 to-amber-900/60 border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20 backdrop-blur-xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(245,158,11,0.1),transparent),radial-gradient(circle_at_70%_70%,rgba(251,146,60,0.1),transparent)]" />
 
-              <CardHeader className="relative z-10">
-                <CardTitle className="text-amber-300 font-serif text-lg flex items-center">
-                  <div className="relative">
-                    <Calendar className="w-5 h-5 mr-3 animate-pulse" />
-                    <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-lg animate-pulse" />
-                  </div>
-                  Imperial Calendar
-                </CardTitle>
-                <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-2" />
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="space-y-3">
-                  {upcomingEvents.slice(0, 3).map((event, index) => (
-                    <motion.div
-                      key={event.id}
-                      className="p-4 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border-2 border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-
-                      <div className="relative z-10">
-                        <div className="text-sm font-bold text-amber-300 font-serif mb-1">{event.title}</div>
-                        <div className="text-xs text-amber-200/70 mb-2">
-                          {event.date} at {event.time}
-                        </div>
-                        <Badge
-                          className={`text-xs ${
-                            event.type === "deadline"
-                              ? "bg-gradient-to-r from-red-600/30 to-rose-600/30 text-red-200 border-red-400/40"
-                              : event.type === "payment"
-                                ? "bg-gradient-to-r from-emerald-600/30 to-green-600/30 text-emerald-200 border-emerald-400/40"
-                                : "bg-gradient-to-r from-blue-600/30 to-cyan-600/30 text-blue-200 border-blue-400/40"
-                          }`}
-                        >
-                          {event.type.toUpperCase()}
-                        </Badge>
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="text-amber-300 font-serif text-lg flex items-center">
+                      <div className="relative">
+                        <Calendar className="w-5 h-5 mr-3 animate-pulse" />
+                        <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-lg animate-pulse" />
                       </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                      Imperial Calendar
+                    </CardTitle>
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-2" />
+                  </CardHeader>
+                  <CardContent className="relative z-10">
+                    <div className="space-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {upcomingEvents.slice(0, 3).map((event, index) => (
+                        <motion.div
+                          key={event.id}
+                          className="p-4 bg-gradient-to-r from-amber-800/30 to-orange-800/30 rounded-lg border-2 border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          whileHover={{ scale: 1.02 }}
+                        >
+                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+
+                          <div className="relative z-10">
+                            <div className="text-sm font-bold text-amber-300 font-serif mb-1">{event.title}</div>
+                            <div className="text-xs text-amber-200/70 mb-2">
+                              {event.date} at {event.time}
+                            </div>
+                            <Badge
+                              className={`text-xs ${
+                                event.type === "deadline"
+                                  ? "bg-gradient-to-r from-red-600/30 to-rose-600/30 text-red-200 border-red-400/40"
+                                  : event.type === "payment"
+                                    ? "bg-gradient-to-r from-emerald-600/30 to-green-600/30 text-emerald-200 border-emerald-400/40"
+                                    : "bg-gradient-to-r from-blue-600/30 to-cyan-600/30 text-blue-200 border-blue-400/40"
+                              }`}
+                            >
+                              {event.type.toUpperCase()}
+                            </Badge>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                    <div className="group-hover:opacity-0 transition-opacity duration-300">
+                      <CardTitle className="text-amber-300 font-serif text-lg flex items-center">
+                        <div className="relative">
+                          <Calendar className="w-5 h-5 mr-3 animate-pulse" />
+                          <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-lg animate-pulse" />
+                        </div>
+                        Imperial Calendar
+                      </CardTitle>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* Market Insights */}
-            <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-400/30">
-              <CardHeader>
-                <CardTitle className="text-purple-300 font-serif text-sm flex items-center">
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  Market Insights
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="p-3 bg-purple-800/20 rounded-lg border border-purple-400/20">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Zap className="w-4 h-4 text-purple-400" />
-                    <span className="text-sm font-medium text-purple-300">QGI Trending Up</span>
-                  </div>
-                  <p className="text-xs text-gray-400">
-                    QGI has shown strong performance with 12.5% growth this quarter
-                  </p>
-                </div>
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-400/30">
+                  <CardHeader>
+                    <CardTitle className="text-purple-300 font-serif text-sm flex items-center">
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      Market Insights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="p-3 bg-purple-800/20 rounded-lg border border-purple-400/20">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Zap className="w-4 h-4 text-purple-400" />
+                        <span className="text-sm font-medium text-purple-300">QGI Trending Up</span>
+                      </div>
+                      <p className="text-xs text-gray-400">
+                        QGI has shown strong performance with 12.5% growth this quarter
+                      </p>
+                    </div>
 
-                <div className="p-3 bg-green-800/20 rounded-lg border border-green-400/20">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Home className="w-4 h-4 text-green-400" />
-                    <span className="text-sm font-medium text-green-300">Real Estate Opportunity</span>
-                  </div>
-                  <p className="text-xs text-gray-400">New properties available in your investment range</p>
-                </div>
+                    <div className="p-3 bg-green-800/20 rounded-lg border border-green-400/20">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Home className="w-4 h-4 text-green-400" />
+                        <span className="text-sm font-medium text-green-300">Real Estate Opportunity</span>
+                      </div>
+                      <p className="text-xs text-gray-400">New properties available in your investment range</p>
+                    </div>
 
-                <div className="p-3 bg-blue-800/20 rounded-lg border border-blue-400/20">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <FileText className="w-4 h-4 text-blue-400" />
-                    <span className="text-sm font-medium text-blue-300">Bond Yields Rising</span>
-                  </div>
-                  <p className="text-xs text-gray-400">Consider increasing bond allocation for stable returns</p>
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="p-3 bg-blue-800/20 rounded-lg border border-blue-400/20">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <FileText className="w-4 h-4 text-blue-400" />
+                        <span className="text-sm font-medium text-blue-300">Bond Yields Rising</span>
+                      </div>
+                      <p className="text-xs text-gray-400">Consider increasing bond allocation for stable returns</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* System Status */}
-            <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-slate-400/30">
-              <CardHeader>
-                <CardTitle className="text-slate-300 font-serif text-sm flex items-center">
-                  <Activity className="w-4 h-4 mr-2" />
-                  System Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-400">AI Systems</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-green-400">Online</span>
-                  </div>
-                </div>
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-slate-400/30">
+                  <CardHeader>
+                    <CardTitle className="text-slate-300 font-serif text-sm flex items-center">
+                      <Activity className="w-4 h-4 mr-2" />
+                      System Status
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-400">AI Systems</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-xs text-green-400">Online</span>
+                      </div>
+                    </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-400">Market Data</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-green-400">Live</span>
-                  </div>
-                </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-400">Market Data</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-xs text-green-400">Live</span>
+                      </div>
+                    </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-400">Credit Monitoring</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-green-400">Active</span>
-                  </div>
-                </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-400">Credit Monitoring</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-xs text-green-400">Active</span>
+                      </div>
+                    </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-400">VOAI Environments</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs text-green-400">Ready</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-400">VOAI Environments</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-xs text-green-400">Ready</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* Recent Environment Activity */}
-            <Card className="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 border-indigo-400/30">
-              <CardHeader>
-                <CardTitle className="text-indigo-300 font-serif text-sm flex items-center">
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  Environment Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {executionResults.length === 0 ? (
-                  <div className="text-center py-4 text-slate-400">
-                    <div className="text-2xl mb-2">🎯</div>
-                    <div className="text-xs">No recent activity</div>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {executionResults.map((result, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-2 bg-indigo-900/20 rounded border border-indigo-400/20"
-                      >
-                        <div className="text-xs text-indigo-300">{result}</div>
-                        <div className="text-xs text-gray-500 mt-1">{new Date().toLocaleTimeString()}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <motion.div
+              initial={{ height: "80px" }}
+              whileHover={{ height: "auto" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <motion.div
+                initial={{ height: "auto" }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="group"
+              >
+                <Card className="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 border-indigo-400/30">
+                  <CardHeader>
+                    <CardTitle className="text-indigo-300 font-serif text-sm flex items-center">
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Environment Activity
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {executionResults.length === 0 ? (
+                      <div className="text-center py-4 text-slate-400">
+                        <div className="text-2xl mb-2">🎯</div>
+                        <div className="text-xs">No recent activity</div>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {executionResults.map((result, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="p-2 bg-indigo-900/20 rounded border border-indigo-400/20"
+                          >
+                            <div className="text-xs text-indigo-300">{result}</div>
+                            <div className="text-xs text-gray-500 mt-1">{new Date().toLocaleTimeString()}</div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
 
