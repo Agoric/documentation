@@ -16,8 +16,20 @@ export async function GET(_req: NextRequest, { params }: Params) {
 export async function PUT(req: NextRequest, { params }: Params) {
   try {
     const { enabled } = (await req.json()) as { enabled: boolean }
+
+    // If feature already at requested state, just return it.
+    const current = featureToggleManager.getAllFeatures().find((f) => f.id === params.id)
+    if (!current) {
+      return new Response("Feature not found", { status: 404 })
+    }
+    if (current.enabled === enabled) {
+      return Response.json(current) // 200 OK – nothing changed
+    }
+
+    // Otherwise toggle it
     const ok = featureToggleManager.toggleFeature(params.id, enabled, "api")
     if (!ok) throw new Error("Toggle failed")
+
     const updated = featureToggleManager.getAllFeatures().find((f) => f.id === params.id)
     return Response.json(updated)
   } catch (err) {

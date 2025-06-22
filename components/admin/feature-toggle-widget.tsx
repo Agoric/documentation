@@ -47,10 +47,13 @@ export function FeatureToggleWidget() {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        const msg = await response.text()
+        throw new Error(`HTTP error! status: ${response.status} - ${msg}`)
       }
 
       toast.success(`Feature toggle ${id} updated successfully.`)
+
+      setFeatures((prev) => prev?.map((f) => (f.id === id ? { ...f, enabled } : f)) ?? null)
     } catch (error) {
       console.error("Failed to update feature toggle:", error)
       toast.error(`Failed to update feature toggle ${id}.`)
