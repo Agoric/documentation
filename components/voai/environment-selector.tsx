@@ -30,6 +30,16 @@ export function EnvironmentSelector({ onEnvironmentChange, onActionExecute }: En
   const [ambientSoundEnabled, setAmbientSoundEnabled] = useState(true)
   const [environmentProgress, setEnvironmentProgress] = useState<Record<string, number>>({})
 
+  // ------------------ NEW: SAFE FALLBACKS ------------------
+  /**
+   * Many environments do not ship every optional property (options, personalityBoosts, specialFeatures).
+   * We normalise them here to avoid “cannot read properties of undefined” runtime errors.
+   */
+  const optionList = selectedEnvironment?.options ?? []
+  const personalityBoosts = selectedEnvironment?.personalityBoosts ?? []
+  const specialFeatures = selectedEnvironment?.specialFeatures ?? []
+  // ----------------------------------------------------------
+
   useEffect(() => {
     onEnvironmentChange?.(selectedEnvironment)
   }, [selectedEnvironment, onEnvironmentChange])
@@ -187,7 +197,7 @@ export function EnvironmentSelector({ onEnvironmentChange, onActionExecute }: En
 
             <TabsContent value="actions" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {selectedEnvironment.options.map((option) => (
+                {optionList.map((option) => (
                   <motion.div key={option.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Card
                       className={`cursor-pointer transition-all duration-300 ${
@@ -252,7 +262,7 @@ export function EnvironmentSelector({ onEnvironmentChange, onActionExecute }: En
 
             <TabsContent value="boosts" className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {selectedEnvironment.personalityBoosts.map((boost, index) => (
+                {personalityBoosts.map((boost, index) => (
                   <motion.div
                     key={boost}
                     initial={{ opacity: 0, y: 20 }}
@@ -272,7 +282,7 @@ export function EnvironmentSelector({ onEnvironmentChange, onActionExecute }: En
               <div className="mt-6">
                 <h4 className="text-lg font-medium text-white mb-3">Special Features</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {selectedEnvironment.specialFeatures.map((feature, index) => (
+                  {specialFeatures.map((feature, index) => (
                     <motion.div
                       key={feature}
                       initial={{ opacity: 0, x: -20 }}
