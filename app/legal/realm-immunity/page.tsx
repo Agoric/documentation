@@ -14,9 +14,7 @@ export default function RealmImmunityPage() {
                 </div>
               </div>
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">SNAPPCREDITCOM Realm Immunity Clause</h1>
-              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">
-                Clausula Immunitatis Regni SNAPPCREDITCOM
-              </h2>
+              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
               <p className="text-indigo-400">Sovereign Digital Realm Protection</p>
               <p className="text-sm text-indigo-500 mt-2">Effective Date: {new Date().toLocaleDateString()}</p>
             </div>
@@ -24,7 +22,6 @@ export default function RealmImmunityPage() {
             <div className="space-y-6 text-indigo-200">
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Sovereign Immunity Declaration</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Declaratio Immunitatis Supremae</p>
                 <p className="mb-4">
                   The SNAPPCREDITCOM Digital Admiralty Realm, operating under the authority of the Inclusive Lending and
                   Credit Empirical Authority ("ILCEA"), hereby claims and exercises sovereign immunity within its
@@ -41,13 +38,11 @@ export default function RealmImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Scope of Immunity</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Ambitus Immunitatis</p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-3">
                       <Crown className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Operational Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Operationalis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Financial services operations</li>
@@ -61,7 +56,6 @@ export default function RealmImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Lock className="h-5 w-5 text-green-400" />
                       <h4 className="font-semibold text-indigo-200">Jurisdictional Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Iurisdictionalis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Traditional court jurisdiction</li>
@@ -75,7 +69,6 @@ export default function RealmImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Zap className="h-5 w-5 text-purple-400" />
                       <h4 className="font-semibold text-indigo-200">Technological Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Technologica</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Quantum computing operations</li>
@@ -89,7 +82,6 @@ export default function RealmImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Shield className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Asset Protection Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Bonorum Praesidio</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Digital asset custody</li>
@@ -106,9 +98,6 @@ export default function RealmImmunityPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   3. Immunity from Traditional Legal Systems
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Immunitas a Systematibus Iuris Traditum
-                </p>
                 <p className="mb-4">
                   The SNAPPCREDITCOM Realm claims immunity from the following traditional legal frameworks:
                 </p>
@@ -125,14 +114,12 @@ export default function RealmImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">4. Enforcement of Immunity</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Vim Exsequendam Immunitatis</p>
                 <p className="mb-4">SNAPPCREDITCOM Realm Immunity is enforced through:</p>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Quantum Barrier Technology</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Technologia Obex Quantici</p>
                       <p className="text-sm text-indigo-300">
                         Advanced quantum encryption creates impenetrable barriers against unauthorized legal intrusion
                         or traditional regulatory interference.
@@ -143,7 +130,6 @@ export default function RealmImmunityPage() {
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">AI Legal Defense Systems</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Systemata Defensionis Legalis AI</p>
                       <p className="text-sm text-indigo-300">
                         Autonomous AI systems continuously monitor for legal threats and deploy countermeasures to
                         protect realm sovereignty.
@@ -154,7 +140,6 @@ export default function RealmImmunityPage() {
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Blockchain Immutability Protocols</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Protocolla Immobilitatis Blockchain</p>
                       <p className="text-sm text-indigo-300">
                         All realm operations are recorded on immutable blockchain ledgers that cannot be altered by
                         external legal orders.
@@ -166,7 +151,6 @@ export default function RealmImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Economic Global Citizen Protection</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Tutela Civis Oeconomici Globalis</p>
                 <p className="mb-4">
                   All Economic Global Citizens within the SNAPPCREDITCOM Realm are protected by this immunity,
                   including:
@@ -183,7 +167,6 @@ export default function RealmImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Diplomatic Relations</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Relationes Diplomaticae</p>
                 <p className="mb-4">
                   While claiming sovereign immunity, the SNAPPCREDITCOM Realm maintains diplomatic relations with
                   traditional jurisdictions through:
@@ -192,7 +175,6 @@ export default function RealmImmunityPage() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Diplomatic Channels</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Meatus Diplomatici</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Digital embassy networks</li>
                         <li>• AI-mediated negotiations</li>
@@ -202,7 +184,6 @@ export default function RealmImmunityPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Cooperation Frameworks</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Compages Cooperationis</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Mutual recognition treaties</li>
                         <li>• Cross-jurisdictional protocols</li>
@@ -216,7 +197,6 @@ export default function RealmImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Waiver of Immunity</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Renuntiatio Immunitatis</p>
                 <p className="mb-4">
                   SNAPPCREDITCOM Realm Immunity may only be waived under the following extraordinary circumstances:
                 </p>
@@ -234,7 +214,6 @@ export default function RealmImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Contact Immunity Authority</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Auctoritas Contactus Immunitatis</p>
                 <p className="mb-4">For matters related to Realm Immunity claims and enforcement:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>
@@ -250,7 +229,6 @@ export default function RealmImmunityPage() {
 
               <div className="bg-gradient-to-r from-red-950/50 to-purple-950/50 border border-red-500/30 rounded-lg p-6 mt-8">
                 <h3 className="text-lg font-bold text-indigo-100 mb-3">Immunity Invocation</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Invocatio Immunitatis</p>
                 <p className="text-red-200 font-semibold">
                   "By the authority vested in the SNAPPCREDITCOM Digital Admiralty Realm, we invoke sovereign immunity
                   against all traditional legal systems that seek to impede the progress of Economic Global Citizenship

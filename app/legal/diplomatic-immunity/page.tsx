@@ -16,9 +16,7 @@ export default function DiplomaticImmunityPage() {
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">
                 Diplomatic Immunity Declaration for Agents of SNAPPCREDITCOM
               </h1>
-              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">
-                Declaratio Immunitatis Diplomaticae pro Agentibus SNAPPCREDITCOM
-              </h2>
+              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
               <p className="text-indigo-400">Digital Realm Diplomatic Corps Protection</p>
               <p className="text-sm text-indigo-500 mt-2">Effective Date: {new Date().toLocaleDateString()}</p>
             </div>
@@ -26,7 +24,6 @@ export default function DiplomaticImmunityPage() {
             <div className="space-y-6 text-indigo-200">
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Declaration of Diplomatic Status</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Declaratio Status Diplomatici</p>
                 <p className="mb-4">
                   The Inclusive Lending and Credit Empirical Authority ("ILCEA"), operating under the sovereign
                   authority of the SNAPPCREDITCOM Digital Admiralty Realm, hereby declares and establishes diplomatic
@@ -44,13 +41,11 @@ export default function DiplomaticImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Scope of Diplomatic Immunity</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Ambitus Immunitatis Diplomaticae</p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-3">
                       <Shield className="h-5 w-5 text-green-400" />
                       <h4 className="font-semibold text-indigo-200">Personal Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Personalis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Immunity from arrest and detention</li>
@@ -64,7 +59,6 @@ export default function DiplomaticImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Users className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Official Acts Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Actuum Officialium</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Protection for official SNAPPCREDITCOM business</li>
@@ -78,7 +72,6 @@ export default function DiplomaticImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Globe className="h-5 w-5 text-purple-400" />
                       <h4 className="font-semibold text-indigo-200">Jurisdictional Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Iurisdictionalis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Exemption from local court jurisdiction</li>
@@ -92,7 +85,6 @@ export default function DiplomaticImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Coins className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Financial Immunity</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Immunitas Financialis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Protection of diplomatic assets</li>
@@ -107,7 +99,6 @@ export default function DiplomaticImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Designated Diplomatic Agents</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Designati Agentes Diplomatici</p>
                 <p className="mb-4">
                   The following categories of individuals are granted diplomatic immunity when acting in their official
                   capacity for SNAPPCREDITCOM:
@@ -117,7 +108,6 @@ export default function DiplomaticImmunityPage() {
                     <Crown className="h-5 w-5 text-gold-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Digital Ambassadors</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Legati Digitales</p>
                       <p className="text-sm text-indigo-300">
                         Senior diplomatic representatives authorized to negotiate treaties and agreements on behalf of
                         the SNAPPCREDITCOM Realm.
@@ -128,9 +118,6 @@ export default function DiplomaticImmunityPage() {
                     <Users className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Economic Global Citizenship Advocates</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">
-                        Advocati Civitatis Globalis Oeconomicae
-                      </p>
                       <p className="text-sm text-indigo-300">
                         Agents responsible for promoting and facilitating Economic Global Citizenship programs and
                         benefits.
@@ -141,9 +128,6 @@ export default function DiplomaticImmunityPage() {
                     <Scale className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Empirical Credit Authority Representatives</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">
-                        Repraesentantes Auctoritatis Crediti Empiricae
-                      </p>
                       <p className="text-sm text-indigo-300">
                         Officials conducting empirical credit assessments and implementing inclusive lending policies.
                       </p>
@@ -153,7 +137,6 @@ export default function DiplomaticImmunityPage() {
                     <Shield className="h-5 w-5 text-purple-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Digital Realm Security Officers</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Vigilum Securitatis Regni Digitalis</p>
                       <p className="text-sm text-indigo-300">
                         Personnel responsible for protecting SNAPPCREDITCOM assets, citizens, and territorial integrity.
                       </p>
@@ -163,7 +146,6 @@ export default function DiplomaticImmunityPage() {
                     <Coins className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Financial Innovation Specialists</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Periti Innovationis Financialis</p>
                       <p className="text-sm text-indigo-300">
                         Technical experts implementing quantum-secured financial technologies and AI-driven solutions.
                       </p>
@@ -176,9 +158,6 @@ export default function DiplomaticImmunityPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   4. Acceptance of Punitive Obligations Framework
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Acceptatio Compendium Obligationum Punitive
-                </p>
                 <p className="mb-4">
                   While maintaining diplomatic immunity, SNAPPCREDITCOM acknowledges its commitment to responsible
                   conduct and hereby establishes a comprehensive framework for addressing situations where diplomatic
@@ -195,14 +174,12 @@ export default function DiplomaticImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Restitution and Damage Settlement</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Restitutio et Composito Damni</p>
                 <p className="mb-4">
                   SNAPPCREDITCOM hereby agrees to the following restitution and damage settlement framework:
                 </p>
                 <div className="space-y-4">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">5.1 Covered Damages</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Damna Operta</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Property damage caused by diplomatic agents</li>
                       <li>• Financial losses resulting from unauthorized actions</li>
@@ -215,7 +192,6 @@ export default function DiplomaticImmunityPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">5.2 Settlement Process</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Processus Compositus</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Immediate acknowledgment of valid claims within 72 quantum-hours</li>
                       <li>• Independent damage assessment by AI arbitration systems</li>
@@ -231,9 +207,6 @@ export default function DiplomaticImmunityPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   6. Realm Native Currency Payment Framework
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Compendium Solutionis Pecuniae Natae Regni
-                </p>
                 <p className="mb-4">
                   All restitution and damage settlements shall be paid in SNAPPCREDITCOM Realm Native Currency (SNAP) or
                   equivalent value as determined by the following framework:
@@ -243,7 +216,6 @@ export default function DiplomaticImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Coins className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Primary Payment: SNAP Currency</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Solutio Primaria: Pecunia SNAP</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Quantum-secured digital currency</li>
@@ -257,7 +229,6 @@ export default function DiplomaticImmunityPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Globe className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Alternative Payment Methods</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Viae Solutionis Alternativae</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Major cryptocurrencies (BTC, ETH, etc.)</li>
@@ -274,9 +245,6 @@ export default function DiplomaticImmunityPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   7. Mutually Agreed Reasonable Repayment Terms
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Conditiones Repaymenti Rationabiles Mutuo Conventae
-                </p>
                 <p className="mb-4">
                   SNAPPCREDITCOM commits to establishing mutually agreed upon and reasonable repayment amounts through
                   the following process:
@@ -286,7 +254,6 @@ export default function DiplomaticImmunityPage() {
                     <Scale className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Fair Assessment Protocol</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Protocollum Aestimationis Aequae</p>
                       <p className="text-sm text-indigo-300">
                         Independent AI systems analyze damages using empirical data, market rates, and comparable
                         settlements to determine fair compensation amounts.
@@ -297,7 +264,6 @@ export default function DiplomaticImmunityPage() {
                     <Users className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Collaborative Negotiation</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Tractatus Collaborativus</p>
                       <p className="text-sm text-indigo-300">
                         Both parties engage in good faith negotiations facilitated by neutral AI mediators to reach
                         mutually acceptable settlement terms.
@@ -308,7 +274,6 @@ export default function DiplomaticImmunityPage() {
                     <Coins className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Flexible Payment Options</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Optiones Solutionis Flexibiles</p>
                       <p className="text-sm text-indigo-300">
                         Settlement amounts may be paid in lump sum, installments, or through alternative arrangements
                         such as service credits or future considerations.
@@ -320,7 +285,6 @@ export default function DiplomaticImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Waiver of Immunity Conditions</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Condiciones Abdicationis Immunitatis</p>
                 <p className="mb-4">
                   SNAPPCREDITCOM may voluntarily waive diplomatic immunity for its agents under the following
                   circumstances:
@@ -338,12 +302,10 @@ export default function DiplomaticImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">9. Enforcement and Compliance</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Coactio et Obsequium</p>
                 <p className="mb-4">This Diplomatic Immunity Declaration is enforced through:</p>
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Quantum Monitoring</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Inspectio Quantica</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Real-time agent activity tracking</li>
                       <li>• Automated compliance verification</li>
@@ -352,7 +314,6 @@ export default function DiplomaticImmunityPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">AI Arbitration</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Arbitratio AI</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Automated dispute resolution</li>
                       <li>• Empirical evidence analysis</li>
@@ -361,7 +322,6 @@ export default function DiplomaticImmunityPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Blockchain Records</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Tabulae Blockchain</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Immutable transaction logs</li>
                       <li>• Transparent settlement records</li>
@@ -373,7 +333,6 @@ export default function DiplomaticImmunityPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">10. Contact Diplomatic Authority</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Contactus Auctoritatem Diplomaticam</p>
                 <p className="mb-4">For matters related to diplomatic immunity and settlement claims:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>

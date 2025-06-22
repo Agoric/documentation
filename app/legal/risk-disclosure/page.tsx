@@ -14,7 +14,7 @@ export default function RiskDisclosurePage() {
                 </div>
               </div>
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">Risk Disclosure Statement</h1>
-              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">Declaratio Revelationis Periculi</h2>
+              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
               <p className="text-indigo-400">Important Information for Economic Global Citizens</p>
               <p className="text-sm text-indigo-500 mt-2">Last Updated: {new Date().toLocaleDateString()}</p>
             </div>
@@ -34,14 +34,12 @@ export default function RiskDisclosurePage() {
             <div className="space-y-6 text-indigo-200">
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. General Investment Risks</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Pericula Investimenti Generalia</p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <TrendingDown className="h-5 w-5 text-red-400" />
                       <h4 className="font-semibold text-indigo-200">Market Risk</h4>
                     </div>
-                    <p className="text-xs italic font-serif text-indigo-400">Periculum Mercatus</p>
                     <p className="text-sm text-indigo-300">
                       Investment values may fluctuate due to market conditions, economic factors, and global events.
                     </p>
@@ -51,7 +49,6 @@ export default function RiskDisclosurePage() {
                       <AlertTriangle className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Liquidity Risk</h4>
                     </div>
-                    <p className="text-xs italic font-serif text-indigo-400">Periculum Liquiditatis</p>
                     <p className="text-sm text-indigo-300">
                       Some investments may be difficult to sell quickly or at desired prices.
                     </p>
@@ -61,7 +58,6 @@ export default function RiskDisclosurePage() {
                       <Shield className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Credit Risk</h4>
                     </div>
-                    <p className="text-xs italic font-serif text-indigo-400">Periculum Crediti</p>
                     <p className="text-sm text-indigo-300">
                       Risk of loss due to borrower default or credit deterioration.
                     </p>
@@ -71,7 +67,6 @@ export default function RiskDisclosurePage() {
                       <TrendingUp className="h-5 w-5 text-green-400" />
                       <h4 className="font-semibold text-indigo-200">Technology Risk</h4>
                     </div>
-                    <p className="text-xs italic font-serif text-indigo-400">Periculum Technologiae</p>
                     <p className="text-sm text-indigo-300">
                       Risks associated with quantum computing, AI algorithms, and blockchain technology.
                     </p>
@@ -81,9 +76,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Empirical Credit Assessment Risks</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Pericula Aestimationis Crediti Empiricae
-                </p>
                 <p className="mb-4">
                   Our Empirical Credit Authority uses advanced algorithms and alternative data sources. Important
                   considerations include:
@@ -99,9 +91,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Tokenized Asset Investment Risks</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Pericula Investimenti Bonorum Tokenizatorum
-                </p>
                 <p className="mb-4">Tokenized investments carry specific risks:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Regulatory uncertainty around tokenized securities</li>
@@ -115,7 +104,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">4. Quantum Computing and AI Risks</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Pericula Computandi Quantici et AI</p>
                 <p className="mb-4">Our advanced technology systems present unique risks:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Quantum computing technology is still evolving and may contain errors</li>
@@ -128,7 +116,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Regulatory and Legal Risks</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Pericula Regulatoria et Legalia</p>
                 <p className="mb-4">
                   As a global platform offering innovative financial services, ILCEA faces regulatory risks:
                 </p>
@@ -143,7 +130,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Lending and Credit Risks</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Pericula Mutui et Crediti</p>
                 <p className="mb-4">For borrowers using our inclusive lending services:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Failure to repay loans may damage your credit score</li>
@@ -156,7 +142,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Your Responsibilities</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Officia Tua</p>
                 <p className="mb-4">As an Economic Global Citizen, you are responsible for:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Understanding all risks before making financial decisions</li>
@@ -170,7 +155,6 @@ export default function RiskDisclosurePage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Contact Information</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Informationes Contactus</p>
                 <p className="mb-4">For questions about risks or to report concerns:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>

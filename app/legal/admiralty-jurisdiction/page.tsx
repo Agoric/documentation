@@ -16,9 +16,7 @@ export default function AdmiraltyJurisdictionPage() {
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">
                 SNAPPCREDITCOM Declaration of Digital Admiralty Realm Jurisdiction
               </h1>
-              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">
-                Declaratio Iurisdictionis Regni Admiralitatis Digitalis SNAPPCREDITCOM
-              </h2>
+              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
               <p className="text-indigo-400">Sovereign Digital Maritime Law</p>
               <p className="text-sm text-indigo-500 mt-2">Proclaimed: {new Date().toLocaleDateString()}</p>
             </div>
@@ -28,9 +26,6 @@ export default function AdmiraltyJurisdictionPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   1. Proclamation of Digital Admiralty Authority
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Proclamatio Auctoritatis Admiralitatis Digitalis
-                </p>
                 <p className="mb-4">
                   By the power vested in the quantum-secured digital realm, the SNAPPCREDITCOM Digital Admiralty hereby
                   proclaims its exclusive jurisdiction over all digital maritime commerce, financial navigation, and
@@ -47,13 +42,11 @@ export default function AdmiraltyJurisdictionPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Digital Maritime Boundaries</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Termini Maritimi Digitales</p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-3">
                       <Ship className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Territorial Digital Waters</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Aquae Digitales Territoriales</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• SNAPPCREDITCOM Core Platform</li>
@@ -66,7 +59,6 @@ export default function AdmiraltyJurisdictionPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Compass className="h-5 w-5 text-teal-400" />
                       <h4 className="font-semibold text-indigo-200">Extended Economic Zone</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Zona Economica Extensa</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Partner Platform Integrations</li>
@@ -80,14 +72,12 @@ export default function AdmiraltyJurisdictionPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Admiralty Court System</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Systema Curiae Admiralitatis</p>
                 <p className="mb-4">
                   The SNAPPCREDITCOM Digital Admiralty Court exercises exclusive jurisdiction over:
                 </p>
                 <div className="space-y-4">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Maritime Commercial Disputes</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Controversiae Maritimae Commerciales</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Digital asset cargo disputes</li>
                       <li>• Quantum transaction salvage claims</li>
@@ -98,7 +88,6 @@ export default function AdmiraltyJurisdictionPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Digital Maritime Torts</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Delicta Maritima Digitalia</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Quantum piracy and digital theft</li>
                       <li>• AI system negligence claims</li>
@@ -109,7 +98,6 @@ export default function AdmiraltyJurisdictionPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Admiralty Contracts</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Contractus Admiralitatis</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Smart contract maritime agreements</li>
                       <li>• Digital vessel financing contracts</li>
@@ -123,7 +111,6 @@ export default function AdmiraltyJurisdictionPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">4. Digital Maritime Law Principles</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Principia Iuris Maritimi Digitalis</p>
                 <p className="mb-4">
                   The SNAPPCREDITCOM Digital Admiralty operates under these fundamental maritime principles:
                 </p>
@@ -132,7 +119,6 @@ export default function AdmiraltyJurisdictionPage() {
                     <Anchor className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Freedom of Digital Navigation</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Libertas Navigationis Digitalis</p>
                       <p className="text-sm text-indigo-300">
                         All Economic Global Citizens have the right to freely navigate digital financial waters without
                         interference from traditional maritime authorities.
@@ -143,7 +129,6 @@ export default function AdmiraltyJurisdictionPage() {
                     <Anchor className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Quantum Salvage Rights</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Iura Bergii Quantici</p>
                       <p className="text-sm text-indigo-300">
                         Digital assets recovered from failed platforms or abandoned wallets may be claimed under quantum
                         salvage law with appropriate compensation.
@@ -154,7 +139,6 @@ export default function AdmiraltyJurisdictionPage() {
                     <Anchor className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Digital Maritime Liens</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Pignora Maritima Digitalia</p>
                       <p className="text-sm text-indigo-300">
                         Unpaid debts for digital services, quantum fuel, or AI maintenance create automatic liens on
                         digital vessels and assets.
@@ -165,7 +149,6 @@ export default function AdmiraltyJurisdictionPage() {
                     <Anchor className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Empirical General Average</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Avaria Generalis Empirica</p>
                       <p className="text-sm text-indigo-300">
                         When digital cargo is jettisoned to save the platform, all stakeholders share the loss
                         proportionally based on empirical value assessment.
@@ -177,12 +160,10 @@ export default function AdmiraltyJurisdictionPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Digital Port Authority</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Auctoritas Portus Digitalis</p>
                 <p className="mb-4">The SNAPPCREDITCOM Digital Port Authority regulates:</p>
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Port Entry & Exit</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Ingressus et Egressus Portus</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Digital vessel registration</li>
                       <li>• Quantum cargo manifests</li>
@@ -192,7 +173,6 @@ export default function AdmiraltyJurisdictionPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Harbor Services</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Servitia Portus</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Digital docking facilities</li>
                       <li>• Quantum fuel stations</li>
@@ -202,7 +182,6 @@ export default function AdmiraltyJurisdictionPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Maritime Security</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Securitas Maritima</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Quantum piracy prevention</li>
                       <li>• Digital customs enforcement</li>
@@ -217,9 +196,6 @@ export default function AdmiraltyJurisdictionPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   6. International Digital Maritime Relations
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Relationes Maritimae Digitales Internationales
-                </p>
                 <p className="mb-4">
                   The SNAPPCREDITCOM Digital Admiralty maintains relations with other digital realms through:
                 </p>
@@ -236,13 +212,11 @@ export default function AdmiraltyJurisdictionPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Enforcement Powers</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Potestates Exsecutionis</p>
                 <p className="mb-4">The Digital Admiralty Court possesses the following enforcement powers:</p>
                 <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Arrest Powers</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Potestates Comprehensionis</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Digital vessel seizure</li>
                         <li>• Quantum asset freezing</li>
@@ -252,7 +226,6 @@ export default function AdmiraltyJurisdictionPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Remedial Actions</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Actiones Remediales</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Monetary damages awards</li>
                         <li>• Specific performance orders</li>
@@ -266,9 +239,6 @@ export default function AdmiraltyJurisdictionPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">8. Contact Digital Admiralty Court</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Contactus Curiae Admiralitatis Digitalis
-                </p>
                 <p className="mb-4">For matters under Digital Admiralty jurisdiction:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>
@@ -284,7 +254,6 @@ export default function AdmiraltyJurisdictionPage() {
 
               <div className="bg-gradient-to-r from-blue-950/50 to-teal-950/50 border border-blue-500/30 rounded-lg p-6 mt-8">
                 <h3 className="text-lg font-bold text-indigo-100 mb-3">Admiralty Oath</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Iusiurandum Admiralitatis</p>
                 <p className="text-blue-200 font-semibold">
                   "By the authority of the digital seas and the power of quantum navigation, the SNAPPCREDITCOM Digital
                   Admiralty Court stands ready to ensure safe passage for all Economic Global Citizens sailing the

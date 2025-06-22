@@ -16,9 +16,7 @@ export default function IntellectualPropertyPage() {
               <h1 className="text-3xl font-bold text-indigo-100 mb-2">
                 Comprehensive Intellectual Property Declaration
               </h1>
-              <h2 className="text-xl text-indigo-300 mb-4 italic font-serif">
-                Declaratio Comprehensiva Proprietatis Intellectualis
-              </h2>
+              <h2 className="text-xl text-indigo-300 mb-4">Inclusive Lending and Credit Empirical Authority</h2>
               <p className="text-indigo-400">SNAPPCREDITCOM Universal Copyright Claim</p>
               <p className="text-sm text-indigo-500 mt-2">Effective Date: {new Date().toLocaleDateString()}</p>
             </div>
@@ -26,7 +24,6 @@ export default function IntellectualPropertyPage() {
             <div className="space-y-6 text-indigo-200">
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">1. Universal Copyright Declaration</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Declaratio Universalis Iuris Auctoris</p>
                 <p className="mb-4">
                   The Inclusive Lending and Credit Empirical Authority ("ILCEA"), operating under the SNAPPCREDITCOM
                   Digital Admiralty Realm, hereby claims exclusive copyright and intellectual property rights to ALL
@@ -44,15 +41,11 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">2. Scope of Intellectual Property Rights</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Ambitus Iurium Proprietatis Intellectualis
-                </p>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-3">
                       <Brain className="h-5 w-5 text-purple-400" />
                       <h4 className="font-semibold text-indigo-200">Conceptual & Theoretical</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Conceptualis et Theoretica</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Economic Global Citizenship concept</li>
@@ -67,7 +60,6 @@ export default function IntellectualPropertyPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Zap className="h-5 w-5 text-yellow-400" />
                       <h4 className="font-semibold text-indigo-200">Physical & Digital</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Physica et Digitalis</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Platform architecture and design</li>
@@ -82,7 +74,6 @@ export default function IntellectualPropertyPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Eye className="h-5 w-5 text-blue-400" />
                       <h4 className="font-semibold text-indigo-200">Altered Reality & Likeness</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Realitas Alterata et Similitudo</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Virtual reality financial environments</li>
@@ -97,7 +88,6 @@ export default function IntellectualPropertyPage() {
                     <div className="flex items-center gap-2 mb-3">
                       <Copyright className="h-5 w-5 text-red-400" />
                       <h4 className="font-semibold text-indigo-200">Process & Strategy</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Processus et Strategia</p>
                     </div>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Credit assessment methodologies</li>
@@ -113,12 +103,10 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">3. Dimensional Copyright Coverage</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Tegumentum Dimensionale Iuris Auctoris</p>
                 <p className="mb-4">SNAPPCREDITCOM copyright extends across all dimensions and realities:</p>
                 <div className="space-y-4">
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Physical Dimension</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Dimensio Physica</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Hardware implementations and designs</li>
                       <li>• Physical security devices and biometric scanners</li>
@@ -129,7 +117,6 @@ export default function IntellectualPropertyPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Digital Dimension</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Dimensio Digitalis</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Software code, algorithms, and digital architectures</li>
                       <li>• User interfaces, graphics, and digital artwork</li>
@@ -140,7 +127,6 @@ export default function IntellectualPropertyPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Quantum Dimension</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Dimensio Quantica</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Quantum computing algorithms and implementations</li>
                       <li>• Quantum encryption and security protocols</li>
@@ -151,7 +137,6 @@ export default function IntellectualPropertyPage() {
                   </div>
                   <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                     <h4 className="font-semibold text-indigo-200 mb-2">Conceptual Dimension</h4>
-                    <p className="text-xs italic font-serif text-indigo-400">Dimensio Conceptualis</p>
                     <ul className="text-sm text-indigo-300 space-y-1">
                       <li>• Abstract ideas, theories, and philosophical frameworks</li>
                       <li>• Business models, strategies, and operational concepts</li>
@@ -167,9 +152,6 @@ export default function IntellectualPropertyPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   4. Resemblance and Characteristics Protection
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Protectio Similitudinis et Proprietatum
-                </p>
                 <p className="mb-4">
                   Copyright protection extends to any resemblance or characteristics that bear similarity to
                   SNAPPCREDITCOM intellectual property, including:
@@ -188,7 +170,6 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">5. Enforcement Mechanisms</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Mechanismi Coercitionis</p>
                 <p className="mb-4">
                   SNAPPCREDITCOM employs advanced enforcement mechanisms to protect intellectual property:
                 </p>
@@ -197,9 +178,6 @@ export default function IntellectualPropertyPage() {
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">AI-Powered Monitoring</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">
-                        Custodia ab Intelligentia Artificiali Aucta
-                      </p>
                       <p className="text-sm text-indigo-300">
                         Continuous AI surveillance across all digital platforms, monitoring for unauthorized use or
                         resemblance to protected intellectual property.
@@ -210,7 +188,6 @@ export default function IntellectualPropertyPage() {
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Quantum Fingerprinting</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Signatura Quantica</p>
                       <p className="text-sm text-indigo-300">
                         Quantum-secured fingerprinting technology that can identify even subtle similarities or
                         derivative works across multiple dimensions.
@@ -221,7 +198,6 @@ export default function IntellectualPropertyPage() {
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Blockchain Evidence Recording</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Notatio Evidentiae in Catena Clausa</p>
                       <p className="text-sm text-indigo-300">
                         Immutable blockchain recording of all intellectual property creation and infringement evidence
                         for legal proceedings.
@@ -232,7 +208,6 @@ export default function IntellectualPropertyPage() {
                     <Zap className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-indigo-200">Digital Admiralty Enforcement</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Coercitio Digitalis Admiraltatis</p>
                       <p className="text-sm text-indigo-300">
                         Enforcement through SNAPPCREDITCOM Digital Admiralty Court with powers to seize infringing
                         digital assets and impose quantum-secured penalties.
@@ -244,13 +219,11 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">6. Licensing and Permissions</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Licentiandi et Permissiones</p>
                 <p className="mb-4">Use of SNAPPCREDITCOM intellectual property requires explicit licensing:</p>
                 <div className="bg-indigo-950/30 border border-indigo-500/20 rounded-lg p-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Licensing Categories</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Categoriae Licentiandi</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Commercial use licenses</li>
                         <li>• Academic research permissions</li>
@@ -260,7 +233,6 @@ export default function IntellectualPropertyPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-indigo-200 mb-2">Licensing Requirements</h4>
-                      <p className="text-xs italic font-serif text-indigo-400">Requisita Licentiandi</p>
                       <ul className="text-sm text-indigo-300 space-y-1">
                         <li>• Quantum-verified application process</li>
                         <li>• AI-assessed compatibility review</li>
@@ -274,7 +246,6 @@ export default function IntellectualPropertyPage() {
 
               <section>
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">7. Penalties for Infringement</h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">Poenae pro Infractione</p>
                 <p className="mb-4">Unauthorized use of SNAPPCREDITCOM intellectual property results in:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Immediate cease and desist orders enforced by quantum barriers</li>
@@ -291,9 +262,6 @@ export default function IntellectualPropertyPage() {
                 <h3 className="text-xl font-semibold text-indigo-100 mb-3">
                   8. Contact Intellectual Property Department
                 </h3>
-                <p className="text-sm italic font-serif text-indigo-400 mb-2">
-                  Contactus Departmentum Proprietatis Intellectualis
-                </p>
                 <p className="mb-4">For licensing inquiries or to report infringement:</p>
                 <div className="bg-indigo-950/50 p-4 rounded-lg border border-indigo-500/20">
                   <p>
