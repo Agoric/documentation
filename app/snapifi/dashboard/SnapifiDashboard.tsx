@@ -18,8 +18,8 @@ import {
   Coins,
   CreditCard,
   Cpu,
-  Sparkles,
   Users,
+  Crown,
 } from "lucide-react"
 import { GeniusAIConcierge } from "@/components/snapifi/genius-ai-concierge"
 import { MasterBanker } from "@/components/snapifi/master-banker"
@@ -132,7 +132,7 @@ export default function SnapifiDashboard() {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 royal-pattern min-h-screen p-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -146,17 +146,21 @@ export default function SnapifiDashboard() {
 
         <TabsContent value="overview" className="space-y-6">
           {/* Quantum Processing Status */}
-          <Card className="bg-gradient-to-r from-cyan-50 to-blue-50 border-cyan-200">
+          <Card className="royal-card royal-shimmer">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Cpu className="h-6 w-6 text-cyan-600" />
-                  <CardTitle>Quantum Computing Status</CardTitle>
+                <div className="flex items-center space-x-3">
+                  <div className="p-3 bg-royal-gradient rounded-xl shadow-royal-glow">
+                    <Cpu className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="royal-subheading">Quantum Processing Unit Status</CardTitle>
+                    <Badge className="royal-badge mt-2">
+                      <Zap className="h-3 w-3 mr-1" />
+                      Royal Active
+                    </Badge>
+                  </div>
                 </div>
-                <Badge className="bg-cyan-100 text-cyan-800">
-                  <Zap className="h-3 w-3 mr-1" />
-                  Active
-                </Badge>
               </div>
             </CardHeader>
             <CardContent>
@@ -182,14 +186,16 @@ export default function SnapifiDashboard() {
             {quickStats.map((stat, index) => {
               const IconComponent = stat.icon
               return (
-                <Card key={index}>
+                <Card key={index} className="royal-card royal-hover">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                    <IconComponent className={`h-4 w-4 ${stat.color}`} />
+                    <CardTitle className="text-sm font-semibold text-royal-700">{stat.title}</CardTitle>
+                    <div className="p-2 bg-royal-gradient rounded-lg">
+                      <IconComponent className="h-4 w-4 text-white" />
+                    </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{stat.value}</div>
-                    <p className="text-xs text-muted-foreground">{stat.change}</p>
+                    <div className="text-3xl font-royal font-bold royal-text">{stat.value}</div>
+                    <p className="text-sm gold-accent">{stat.change}</p>
                   </CardContent>
                 </Card>
               )
@@ -201,17 +207,17 @@ export default function SnapifiDashboard() {
             {platformFeatures.map((feature) => {
               const IconComponent = feature.icon
               return (
-                <Card key={feature.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <Card key={feature.id} className="royal-card royal-hover cursor-pointer">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 ${feature.color} rounded-lg`}>
+                      <div className="flex items-center space-x-4">
+                        <div className="p-3 bg-royal-gradient rounded-xl shadow-royal">
                           <IconComponent className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <CardTitle className="text-lg">{feature.title}</CardTitle>
-                          <Badge className="bg-green-100 text-green-800">
-                            <Sparkles className="h-3 w-3 mr-1" />
+                          <CardTitle className="text-lg font-royal royal-text">{feature.title}</CardTitle>
+                          <Badge className="royal-badge mt-1">
+                            <Crown className="h-3 w-3 mr-1" />
                             {feature.status}
                           </Badge>
                         </div>

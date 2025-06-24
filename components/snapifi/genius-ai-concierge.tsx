@@ -6,7 +6,19 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Bot, Send, Mic, MicOff, Sparkles, TrendingUp, AlertCircle, CheckCircle, Clock, Brain, Zap } from "lucide-react"
+import {
+  Bot,
+  Send,
+  Mic,
+  MicOff,
+  Sparkles,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  Brain,
+  Crown,
+} from "lucide-react"
 
 interface Message {
   id: string
@@ -92,22 +104,22 @@ export function GeniusAIConcierge() {
   }
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="h-[600px] flex flex-col royal-card">
       <CardHeader className="border-b">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-12 w-12 royal-border">
               <AvatarImage src="/ai-concierge-avatar.png" />
-              <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-                <Bot className="h-5 w-5" />
+              <AvatarFallback className="bg-royal-gradient text-white">
+                <Crown className="h-6 w-6" />
               </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle className="flex items-center space-x-2">
-                <span>Genius AI Concierge</span>
-                <Badge className="bg-green-100 text-green-800">
-                  <Zap className="h-3 w-3 mr-1" />
-                  Quantum Powered
+                <span className="royal-text font-royal">Genius AI Concierge</span>
+                <Badge className="royal-badge">
+                  <Crown className="h-3 w-3 mr-1" />
+                  Royal Powered
                 </Badge>
               </CardTitle>
               <CardDescription>Personalized financial assistant with machine learning</CardDescription>
@@ -199,9 +211,9 @@ export function GeniusAIConcierge() {
                   variant="outline"
                   size="sm"
                   onClick={() => handleQuickAction(action.label)}
-                  className="justify-start text-xs"
+                  className="justify-start text-xs royal-hover border-royal-200 hover:bg-royal-50"
                 >
-                  <IconComponent className="h-3 w-3 mr-1" />
+                  <IconComponent className="h-3 w-3 mr-1 crown-icon" />
                   {action.label}
                 </Button>
               )
@@ -217,7 +229,7 @@ export function GeniusAIConcierge() {
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputValue)}
               className="flex-1"
             />
-            <Button onClick={() => handleSendMessage(inputValue)} size="sm">
+            <Button onClick={() => handleSendMessage(inputValue)} size="sm" className="royal-button">
               <Send className="h-4 w-4" />
             </Button>
           </div>

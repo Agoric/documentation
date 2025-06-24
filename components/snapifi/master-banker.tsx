@@ -16,8 +16,8 @@ import {
   DollarSign,
   BarChart3,
   Lightbulb,
-  Star,
   Zap,
+  Crown,
 } from "lucide-react"
 
 export function MasterBanker() {
@@ -101,16 +101,18 @@ export function MasterBanker() {
   const currentStrategy = strategies.find((s) => s.id === activeStrategy) || strategies[0]
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="h-[600px] flex flex-col royal-card">
       <CardHeader className="border-b">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center space-x-2">
-              <Brain className="h-6 w-6 text-purple-600" />
-              <span>Master Banker</span>
-              <Badge className="bg-purple-100 text-purple-800">
-                <Star className="h-3 w-3 mr-1" />
-                Elite Advisor
+              <div className="p-2 bg-royal-gradient rounded-lg">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <span className="royal-text font-royal">Master Banker</span>
+              <Badge className="royal-badge">
+                <Crown className="h-3 w-3 mr-1" />
+                Royal Elite Advisor
               </Badge>
             </CardTitle>
             <CardDescription>Advanced financial strategist with predictive analytics</CardDescription>
@@ -133,17 +135,17 @@ export function MasterBanker() {
           <div className="flex-1 overflow-y-auto p-4">
             <TabsContent value={activeStrategy} className="space-y-4 mt-0">
               {/* Strategy Overview */}
-              <Card>
+              <Card className="royal-card">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{currentStrategy.title}</CardTitle>
+                    <CardTitle className="text-lg royal-text font-royal">{currentStrategy.title}</CardTitle>
                     <Badge
                       className={
                         currentStrategy.risk === "Low"
-                          ? "bg-green-100 text-green-800"
+                          ? "status-premium"
                           : currentStrategy.risk === "Medium"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
+                            ? "status-elite"
+                            : "status-platinum"
                       }
                     >
                       {currentStrategy.risk} Risk

@@ -32,6 +32,7 @@ import {
   TrendingUp,
   Shield,
   Zap,
+  Crown,
 } from "lucide-react"
 
 const navigationItems = [
@@ -171,15 +172,15 @@ export function SnapifiSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar className="border-r">
-      <SidebarHeader className="border-b p-4">
-        <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
-            <Zap className="h-4 w-4 text-white" />
+    <Sidebar className="royal-sidebar">
+      <SidebarHeader className="border-b border-royal-700/50 p-6">
+        <div className="flex items-center space-x-3">
+          <div className="h-10 w-10 rounded-xl bg-royal-gradient flex items-center justify-center shadow-royal-glow">
+            <Crown className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="font-bold text-lg">Snapifi</h2>
-            <p className="text-xs text-muted-foreground">Financial Platform</p>
+            <h2 className="font-royal text-xl font-bold royal-text">Snapifi</h2>
+            <p className="text-xs text-gold-400 font-medium">Royal Financial Platform</p>
           </div>
         </div>
       </SidebarHeader>
@@ -196,19 +197,15 @@ export function SnapifiSidebar() {
 
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild isActive={isActive}>
-                        <Link href={item.url} className="flex items-center space-x-3">
-                          <IconComponent className="h-4 w-4" />
+                      <SidebarMenuButton asChild isActive={isActive} className="royal-hover">
+                        <Link href={item.url} className="flex items-center space-x-3 p-3 rounded-xl">
+                          <IconComponent className="h-5 w-5 crown-icon" />
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <span className="font-medium">{item.title}</span>
-                              {item.badge && (
-                                <Badge variant="secondary" className="text-xs">
-                                  {item.badge}
-                                </Badge>
-                              )}
+                              <span className="font-semibold text-white">{item.title}</span>
+                              {item.badge && <Badge className="royal-badge">{item.badge}</Badge>}
                             </div>
-                            <p className="text-xs text-muted-foreground">{item.description}</p>
+                            <p className="text-xs text-gold-300/80">{item.description}</p>
                           </div>
                         </Link>
                       </SidebarMenuButton>
