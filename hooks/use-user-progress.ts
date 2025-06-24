@@ -1,76 +1,168 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 export interface Goal {
   id: string
+  userId: string
   title: string
+  description: string
   current: number
   target: number
   progress: number // 0‒100
   timeframe: string
   nextStep: string
+  category: "savings" | "credit" | "investment" | "debt" | "income" | "custom"
+  priority: "low" | "medium" | "high"
+  createdAt: number
+  updatedAt: number
+  completedAt?: number
+  isCompleted: boolean
+}
+
+export interface Achievement {
+  id: string
+  userId: string
+  title: string
+  description: string
+  icon: string
+  category: "goal" | "milestone" | "streak" | "special"
+  unlockedAt: number
+  progress: number
+  isUnlocked: boolean
 }
 
 export interface UserProgressState {
   progress: number
   goals: Goal[]
-  achievements: string[]
+  achievements: Achievement[]
+  loading: boolean
+  error: string | null
 }
 
 /**
- * Very small client-side hook that returns static demo data.
- * Replace the mock fetch with a real request once you have an API.
+ * Enhanced hook that fetches real data from backend APIs
+ * and provides CRUD operations for goals
  */
-export function useUserProgress(): UserProgressState {
+export function useUserProgress(): UserProgressState & {
+  createGoal: (goal: Partial<Goal>) => Promise<void>
+  updateGoal: (id: string, updates: Partial<Goal>) => Promise<void>
+  deleteGoal: (id: string) => Promise<void>
+  refreshData: () => Promise<void>
+} {
   const [state, setState] = useState<UserProgressState>({
     progress: 0,
     goals: [],
     achievements: [],
+    loading: true,
+    error: null,
   })
 
-  useEffect(() => {
-    // Simulated async fetch
-    const timer = setTimeout(() => {
-      const mockGoals: Goal[] = [
-        {
-          id: "credit",
-          title: "Credit Score Improvement",
-          current: 800,
-          target: 800,
-          progress: 100,
-          timeframe: "Achieved",
-          nextStep: "Maintain excellent credit",
-        },
-        {
-          id: "savings",
-          title: "Emergency Fund",
-          current: 25000,
-          target: 25000,
-          progress: 100,
-          timeframe: "Achieved",
-          nextStep: "Consider investment opportunities",
-        },
-        {
-          id: "investment",
-          title: "Investment Portfolio",
-          current: 150000,
-          target: 150000,
-          progress: 100,
-          timeframe: "Achieved",
-          nextStep: "Explore premium investments",
-        },
-      ]
+  const userId = "supreme_citizen_001" // This would come from auth context
+
+  const fetchData = useCallback(async () => {
+    try {
+      setState((prev) => ({ ...prev, loading: true, error: null }))
+
+      // Fetch goals and progress
+      const goalsResponse = await fetch(`/api/goals?userId=${userId}`)
+      if (!goalsResponse.ok) throw new Error("Failed to fetch goals")
+      const { goals, progress: progressData } = await goalsResponse.json()
+
+      // Fetch achievements
+      const achievementsResponse = await fetch(`/api/achievements?userId=${userId}`)
+      if (!achievementsResponse.ok) throw new Error("Failed to fetch achievements")
+      const { achievements } = await achievementsResponse.json()
 
       setState({
-        progress: 100,
-        goals: mockGoals,
-        achievements: ["All goals achieved", "Premium level reached", "All features unlocked"],
+        progress: progressData.totalProgress,
+        goals,
+        achievements,
+        loading: false,
+        error: null,
       })
-    }, 400) // 0.4 s artificial delay
+    } catch (error) {
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error: error instanceof Error ? error.message : "Unknown error occurred",
+      }))
+    }
+  }, [userId])
 
-    return () => clearTimeout(timer)
-  }, [])
+  const createGoal = useCallback(
+    async (goalData: Partial<Goal>) => {
+      try {
+        const response = await fetch("/api/goals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...goalData, userId }),
+        })
 
-  return state
+        if (!response.ok) throw new Error("Failed to create goal")
+
+        await fetchData() // Refresh data
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : "Failed to create goal",
+        }))
+      }
+    },
+    [userId, fetchData],
+  )
+
+  const updateGoal = useCallback(
+    async (id: string, updates: Partial<Goal>) => {
+      try {
+        const response = await fetch("/api/goals", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, ...updates }),
+        })
+
+        if (!response.ok) throw new Error("Failed to update goal")
+
+        await fetchData() // Refresh data
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : "Failed to update goal",
+        }))
+      }
+    },
+    [fetchData],
+  )
+
+  const deleteGoal = useCallback(
+    async (id: string) => {
+      try {
+        const response = await fetch(`/api/goals?id=${id}`, {
+          method: "DELETE",
+        })
+
+        if (!response.ok) throw new Error("Failed to delete goal")
+
+        await fetchData() // Refresh data
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : "Failed to delete goal",
+        }))
+      }
+    },
+    [fetchData],
+  )
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  return {
+    ...state,
+    createGoal,
+    updateGoal,
+    deleteGoal,
+    refreshData: fetchData,
+  }
 }
