@@ -12,27 +12,21 @@ export function bankingApiMiddleware(req: NextRequest, _next: NextFetchEvent) {
     return NextResponse.json({ message: "Authorization header is missing" }, { status: 401 })
   }
 
-  const bearerRegex = /^Bearer\s+(.+)$/i
-  const bearerTokenMatch = authorizationHeader.match(bearerRegex)
+  if (authorizationHeader?.startsWith("Bearer ")) {
+    const token = authorizationHeader.substring(7)
 
-  if (!bearerTokenMatch || !bearerTokenMatch[1]) {
+    if (token !== "valid-token") {
+      return NextResponse.json({ message: "Invalid token" }, { status: 401 })
+    }
+  } else {
     return NextResponse.json({ message: "Invalid authorization header format" }, { status: 401 })
-  }
-
-  const token = bearerTokenMatch[1]
-
-  if (token !== "valid-token") {
-    return NextResponse.json({ message: "Invalid token" }, { status: 401 })
   }
 
   if (!idempotencyKeyHeader) {
     return NextResponse.json({ message: "Idempotency-Key header is missing" }, { status: 400 })
   }
 
-  const idempotencyRegex = /^Idempotency-Key\s*:\s*(.+)$/i
-  const idempotencyKeyMatch = idempotencyKeyHeader.match(idempotencyRegex)
-
-  if (!idempotencyKeyMatch || !idempotencyKeyMatch[1]) {
+  if (!/^[a-zA-Z0-9-]+$/.test(idempotencyKeyHeader)) {
     return NextResponse.json({ message: "Invalid Idempotency-Key header format" }, { status: 400 })
   }
 
