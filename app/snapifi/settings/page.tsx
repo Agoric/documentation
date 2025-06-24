@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Settings, User, Shield, Bell, Lock, Eye, EyeOff } from "lucide-react"
+import { Settings, User, Shield, Bell, Palette, Globe, CreditCard, Smartphone, Lock, Eye, EyeOff } from "lucide-react"
 
 export default function SettingsPage() {
   const [notifications, setNotifications] = useState({
@@ -32,9 +32,7 @@ export default function SettingsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Platform Settings</h1>
-          <p className="text-muted-foreground">
-            Manage your account preferences and platform configuration
-          </p>
+          <p className="text-muted-foreground">Manage your account preferences and platform configuration</p>
         </div>
         <Badge className="bg-blue-100 text-blue-800">
           <Settings className="h-3 w-3 mr-1" />
@@ -103,7 +101,7 @@ export default function SettingsPage() {
                   </div>
                   <Badge className="bg-green-100 text-green-800">Enabled</Badge>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
                     <h4 className="font-medium">Biometric Login</h4>
@@ -135,11 +133,7 @@ export default function SettingsPage() {
                     readOnly
                     className="flex-1"
                   />
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setShowApiKey(!showApiKey)}
-                  >
+                  <Button variant="outline" size="icon" onClick={() => setShowApiKey(!showApiKey)}>
                     {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
                   <Button variant="outline">Regenerate</Button>
@@ -167,7 +161,7 @@ export default function SettingsPage() {
                   </div>
                   <Switch
                     checked={notifications.email}
-                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, email: checked }))}
+                    onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, email: checked }))}
                   />
                 </div>
 
@@ -178,7 +172,7 @@ export default function SettingsPage() {
                   </div>
                   <Switch
                     checked={notifications.push}
-                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, push: checked }))}
+                    onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, push: checked }))}
                   />
                 </div>
 
@@ -189,7 +183,7 @@ export default function SettingsPage() {
                   </div>
                   <Switch
                     checked={notifications.sms}
-                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, sms: checked }))}
+                    onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, sms: checked }))}
                   />
                 </div>
 
@@ -200,7 +194,7 @@ export default function SettingsPage() {
                   </div>
                   <Switch
                     checked={notifications.marketing}
-                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, marketing: checked }))}
+                    onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, marketing: checked }))}
                   />
                 </div>
               </div>
@@ -226,7 +220,7 @@ export default function SettingsPage() {
                   </div>
                   <Switch
                     checked={privacy.profileVisible}
-                    onCheckedChange={(checked) => setPrivacy(prev => ({ ...prev, profileVisible: checked }))}
+                    onCheckedChange={(checked) => setPrivacy((prev) => ({ ...prev, profileVisible: checked }))}
                   />
                 </div>
 
@@ -237,8 +231,142 @@ export default function SettingsPage() {
                   </div>
                   <Switch
                     checked={privacy.dataSharing}
-                    onCheckedChange={(checked) => setPrivacy(prev => ({ ...prev, dataSharing: checked }))}
+                    onCheckedChange={(checked) => setPrivacy((prev) => ({ ...prev, dataSharing: checked }))}
                   />
                 </div>
 
-                \
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Analytics Tracking</h4>
+                    <p className="text-sm text-muted-foreground">Help us improve with usage analytics</p>
+                  </div>
+                  <Switch
+                    checked={privacy.analytics}
+                    onCheckedChange={(checked) => setPrivacy((prev) => ({ ...prev, analytics: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Third-Party Integrations</h4>
+                    <p className="text-sm text-muted-foreground">Allow third-party services to access your data</p>
+                  </div>
+                  <Switch
+                    checked={privacy.thirdParty}
+                    onCheckedChange={(checked) => setPrivacy((prev) => ({ ...prev, thirdParty: checked }))}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="integrations" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Smartphone className="h-5 w-5" />
+                <span>Platform Integrations</span>
+              </CardTitle>
+              <CardDescription>Connect external services and applications</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <CreditCard className="h-6 w-6 text-blue-600" />
+                    <div>
+                      <h4 className="font-medium">Plaid Banking</h4>
+                      <p className="text-sm text-muted-foreground">Connect your bank accounts</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800">Connected</Badge>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Globe className="h-6 w-6 text-purple-600" />
+                    <div>
+                      <h4 className="font-medium">Zillow API</h4>
+                      <p className="text-sm text-muted-foreground">Real estate data integration</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800">Connected</Badge>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Shield className="h-6 w-6 text-orange-600" />
+                    <div>
+                      <h4 className="font-medium">Credit Monitoring</h4>
+                      <p className="text-sm text-muted-foreground">Real-time credit score tracking</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Connect
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="preferences" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Palette className="h-5 w-5" />
+                <span>Platform Preferences</span>
+              </CardTitle>
+              <CardDescription>Customize your platform experience</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Theme</Label>
+                  <select className="w-full p-2 border rounded">
+                    <option>Light</option>
+                    <option>Dark</option>
+                    <option>System</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Language</Label>
+                  <select className="w-full p-2 border rounded">
+                    <option>English</option>
+                    <option>Spanish</option>
+                    <option>French</option>
+                    <option>German</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Currency</Label>
+                  <select className="w-full p-2 border rounded">
+                    <option>USD ($)</option>
+                    <option>EUR (€)</option>
+                    <option>GBP (£)</option>
+                    <option>JPY (¥)</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Time Zone</Label>
+                  <select className="w-full p-2 border rounded">
+                    <option>UTC-8 (Pacific)</option>
+                    <option>UTC-5 (Eastern)</option>
+                    <option>UTC+0 (GMT)</option>
+                    <option>UTC+8 (Asia/Manila)</option>
+                  </select>
+                </div>
+              </div>
+
+              <Button>Save Preferences</Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
