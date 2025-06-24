@@ -21,6 +21,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useRouter, usePathname } from "next/navigation"
 import { KeyboardShortcutsHelp } from "./keyboard-shortcuts-help"
 import { BookmarkManager } from "./bookmark-manager"
+import { BreadcrumbNavigation } from "./breadcrumb-navigation"
 import { useEnvironmentShortcuts } from "@/hooks/use-keyboard-shortcuts"
 
 const environments = [
@@ -174,7 +175,12 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[380px] p-0 bg-background/95 backdrop-blur-sm border-white/20">
+        <PopoverContent className="w-[420px] p-0 bg-background/95 backdrop-blur-sm border-white/20">
+          {/* Breadcrumb Navigation */}
+          <div className="border-b border-white/10 p-4">
+            <BreadcrumbNavigation />
+          </div>
+
           <Command>
             <CommandInput placeholder="Search environments..." />
             <CommandList>
