@@ -4,7 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
-import { EnvironmentDropdown } from "@/components/ui/environment-dropdown"
+import { GlobalNavigation } from "@/components/ui/global-navigation"
 
 export const metadata: Metadata = {
   title: "Inclusive Lending and Credit Empirical Authority",
@@ -24,9 +24,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <GamificationProvider>
             <ProductComparisonProvider>
-              <div className="fixed top-4 right-4 z-50">
-                <EnvironmentDropdown />
-              </div>
+              <GlobalNavigation />
               {children}
             </ProductComparisonProvider>
           </GamificationProvider>
