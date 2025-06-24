@@ -1,12 +1,12 @@
 "use client"
 
-import { EnhancedHomeDashboard } from "@/components/dashboard/enhanced-home-dashboard"
-import { PageWrapper } from "@/components/layout/page-wrapper"
+import { GlobalCitizenshipProvider } from "@/contexts/global-citizenship-context"
+import EnhancedHomeDashboard from "@/components/dashboard/enhanced-home-dashboard"
 
-export default function HomePage() {
+export default function HomeDashboardPage() {
   return (
-    <PageWrapper showSidebar={false}>
+    <GlobalCitizenshipProvider>
       <EnhancedHomeDashboard />
-    </PageWrapper>
+    </GlobalCitizenshipProvider>
   )
 }
