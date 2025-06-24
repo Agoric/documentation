@@ -561,9 +561,9 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
 
   // QGI Fund Management
   const addToQGIFund = (citizenId: string, amount: number) => {
-    // find fund type from the *citizenId* we receive
-    const citizenType = currentCitizen?.id === citizenId ? currentCitizen.type : "individual"
-    const fundType = citizenType === "individual" ? "social_impact" : "institutional"
+    if (!currentCitizen) return
+
+    const fundType = currentCitizen.type === "individual" ? "social_impact" : "institutional"
 
     setQGIFunds((prev) => ({
       ...prev,
@@ -593,16 +593,13 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
         bondCertificateId: `BOND-${Date.now()}`,
       })
 
-      // Deep update – keep the rest of the fund intact
+      // Update fund bond holdings
       const fundType = currentCitizen.type === "individual" ? "social_impact" : "institutional"
       setQGIFunds((prev) => ({
         ...prev,
         [fundType]: {
-          ...prev[fundType],
-          bondHoldings: {
-            ...prev[fundType].bondHoldings,
-            totalValue: prev[fundType].bondHoldings.totalValue + amount,
-          },
+          ...prev[fundType].bondHoldings,
+          totalValue: prev[fundType].bondHoldings.totalValue + amount,
         },
       }))
 
@@ -794,15 +791,4 @@ export const GlobalCitizenshipProvider: React.FC<{ children: ReactNode }> = ({ c
       {children}
     </GlobalCitizenshipContext.Provider>
   )
-}
-
-// Utility: shallow update nested objects (helps avoid similar bugs)
-function updateObject<T extends Record<string, unknown>, K extends keyof T>(obj: T, key: K, patch: Partial<T[K]>): T {
-  return {
-    ...obj,
-    [key]: {
-      ...(obj[key] as object),
-      ...patch,
-    },
-  }
 }
