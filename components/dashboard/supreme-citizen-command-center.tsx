@@ -609,6 +609,483 @@ export function SupremeCitizenCommandCenter() {
           </Card>
         </TabsContent>
 
+        {/* Credit Hub Tab */}
+        <TabsContent value="credit" className="space-y-6">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
+              Supreme Credit Intelligence Hub
+            </h2>
+            <p className="text-slate-400">Advanced credit optimization with AI-powered recommendations</p>
+          </div>
+
+          {/* Credit Score Matrix */}
+          <Card className="bg-gradient-to-br from-slate-900/80 to-purple-900/20 border-emerald-400/30">
+            <CardHeader>
+              <CardTitle className="text-emerald-300 flex items-center text-2xl">
+                <Shield className="w-8 h-8 mr-3" />
+                Credit Score Matrix - Real-Time Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* SNAP Scores - Proprietary */}
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold text-emerald-300 mb-4">SNAP Proprietary Scoring</h3>
+
+                  {/* SNAP Personal */}
+                  <motion.div
+                    className="p-6 bg-gradient-to-br from-emerald-900/40 to-green-900/40 rounded-xl border-2 border-emerald-400/30"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-4 h-4 bg-emerald-400 rounded-full animate-pulse" />
+                        <span className="text-emerald-300 font-semibold">SNAP Personal</span>
+                      </div>
+                      <UIBadge className="bg-emerald-600/20 text-emerald-300 border-emerald-400/30">
+                        SUPREME TIER
+                      </UIBadge>
+                    </div>
+                    <div className="text-6xl font-bold text-emerald-300 mb-2">
+                      {citizenData.creditScores.snap_personal}
+                    </div>
+                    <div className="flex items-center space-x-2 mb-4">
+                      <TrendingUp className="w-5 h-5 text-emerald-400" />
+                      <span className="text-emerald-400">+23 points this month</span>
+                    </div>
+                    <Progress value={(citizenData.creditScores.snap_personal / 850) * 100} className="h-3 mb-4" />
+                    <div className="text-sm text-emerald-400/70">
+                      Inclusive metrics including QGI performance, citizenship tier, and traditional factors
+                    </div>
+                  </motion.div>
+
+                  {/* SNAP Business */}
+                  <motion.div
+                    className="p-6 bg-gradient-to-br from-emerald-900/40 to-green-900/40 rounded-xl border-2 border-emerald-400/30"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-4 h-4 bg-emerald-400 rounded-full animate-pulse" />
+                        <span className="text-emerald-300 font-semibold">SNAP Business</span>
+                      </div>
+                      <UIBadge className="bg-emerald-600/20 text-emerald-300 border-emerald-400/30">
+                        MASTER TIER
+                      </UIBadge>
+                    </div>
+                    <div className="text-6xl font-bold text-emerald-300 mb-2">
+                      {citizenData.creditScores.snap_business}
+                    </div>
+                    <div className="flex items-center space-x-2 mb-4">
+                      <TrendingUp className="w-5 h-5 text-emerald-400" />
+                      <span className="text-emerald-400">+18 points this month</span>
+                    </div>
+                    <Progress value={(citizenData.creditScores.snap_business / 850) * 100} className="h-3 mb-4" />
+                    <div className="text-sm text-emerald-400/70">
+                      Business credit with Supreme Authority backing and institutional verification
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Traditional Scores */}
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold text-blue-300 mb-4">Traditional Bureau Scores</h3>
+
+                  {[
+                    { name: "Equifax", score: citizenData.creditScores.equifax, change: +12 },
+                    { name: "TransUnion", score: citizenData.creditScores.transunion, change: +8 },
+                    { name: "Experian", score: citizenData.creditScores.experian, change: +15 },
+                  ].map((bureau) => (
+                    <motion.div
+                      key={bureau.name}
+                      className="p-4 bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg border border-blue-400/20"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-blue-300 font-semibold">{bureau.name}</div>
+                          <div className="text-3xl font-bold text-blue-300">{bureau.score}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center space-x-1 mb-2">
+                            <TrendingUp className="w-4 h-4 text-green-400" />
+                            <span className="text-green-400 text-sm">+{bureau.change}</span>
+                          </div>
+                          <Progress value={(bureau.score / 850) * 100} className="h-2 w-24" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Credit Optimization Opportunities */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Immediate Opportunities */}
+            <Card className="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 border-indigo-400/30">
+              <CardHeader>
+                <CardTitle className="text-indigo-300 flex items-center">
+                  <motion.div
+                    animate={{ opacity: [1, 0.3, 1] }}
+                    transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
+                  >
+                    <Zap className="w-6 h-6 mr-2" />
+                  </motion.div>
+                  Immediate Optimization Opportunities
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {[
+                  {
+                    title: "Credit Line Increase Request",
+                    description: "Pre-approved for $150K increase on Black Diamond Card",
+                    impact: "+25 points",
+                    timeframe: "24 hours",
+                    urgency: "high",
+                  },
+                  {
+                    title: "Debt Consolidation Optimization",
+                    description: "Consolidate remaining external debt for better utilization",
+                    impact: "+18 points",
+                    timeframe: "3 days",
+                    urgency: "medium",
+                  },
+                  {
+                    title: "Business Credit Line Activation",
+                    description: "Activate pre-approved $500K business line",
+                    impact: "+32 points",
+                    timeframe: "48 hours",
+                    urgency: "critical",
+                  },
+                ].map((opportunity, index) => (
+                  <motion.div
+                    key={index}
+                    className="p-4 bg-indigo-800/20 rounded-lg border border-indigo-400/20"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-indigo-300 font-semibold">{opportunity.title}</h4>
+                      <UIBadge
+                        className={`${
+                          opportunity.urgency === "critical"
+                            ? "bg-red-600/20 text-red-300 border-red-400/30"
+                            : opportunity.urgency === "high"
+                              ? "bg-amber-600/20 text-amber-300 border-amber-400/30"
+                              : "bg-blue-600/20 text-blue-300 border-blue-400/30"
+                        }`}
+                      >
+                        {opportunity.urgency.toUpperCase()}
+                      </UIBadge>
+                    </div>
+                    <p className="text-indigo-200/70 text-sm mb-3">{opportunity.description}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <span className="text-emerald-400 font-semibold">{opportunity.impact}</span>
+                        <span className="text-indigo-400 text-sm">{opportunity.timeframe}</span>
+                      </div>
+                      <Button size="sm" className="bg-gradient-to-r from-indigo-600 to-purple-600">
+                        Execute
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Credit Factors Analysis */}
+            <Card className="bg-gradient-to-br from-slate-900/50 to-gray-900/50 border-slate-400/30">
+              <CardHeader>
+                <CardTitle className="text-slate-300 flex items-center">
+                  <PieChart className="w-6 h-6 mr-2" />
+                  Credit Factor Analysis
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {[
+                  { factor: "QGI Investment Performance", weight: 35, status: "excellent", score: 95 },
+                  { factor: "Payment History", weight: 30, status: "excellent", score: 98 },
+                  { factor: "Credit Utilization", weight: 20, status: "good", score: 85 },
+                  { factor: "Account Age", weight: 10, status: "good", score: 82 },
+                  { factor: "Credit Mix", weight: 5, status: "attention", score: 65 },
+                ].map((factor, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-300 text-sm">{factor.factor}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className={`text-sm font-semibold ${getTextColor(factor.status)}`}>{factor.score}%</span>
+                        <span className="text-slate-400 text-xs">({factor.weight}%)</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Progress value={factor.score} className="flex-1 h-2" />
+                      <div
+                        className={`w-3 h-3 rounded-full ${
+                          factor.status === "excellent"
+                            ? "bg-emerald-400"
+                            : factor.status === "good"
+                              ? "bg-blue-400"
+                              : "bg-amber-400"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Black Diamond Card Management */}
+          <Card className="bg-gradient-to-br from-black/80 to-slate-900/80 border-amber-400/50">
+            <CardHeader>
+              <CardTitle className="text-amber-300 flex items-center text-2xl">
+                <Diamond className="w-8 h-8 mr-3" />
+                Black Diamond Card - Elite Credit Management
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Card Status */}
+                <div className="space-y-4">
+                  <h4 className="text-amber-300 font-semibold">Card Status</h4>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-emerald-900/20 rounded-lg border border-emerald-400/20">
+                      <span className="text-emerald-300">Available Credit</span>
+                      <span className="text-emerald-300 font-bold">
+                        {formatCurrency(citizenData.blackDiamondCard.available)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-amber-900/20 rounded-lg border border-amber-400/20">
+                      <span className="text-amber-300">Cards Consolidated</span>
+                      <span className="text-amber-300 font-bold">{citizenData.blackDiamondCard.consolidatedCards}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-emerald-900/20 rounded-lg border border-emerald-400/20">
+                      <span className="text-emerald-300">Monthly Savings</span>
+                      <span className="text-emerald-300 font-bold">
+                        {formatCurrency(citizenData.blackDiamondCard.totalSavings)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Protection Features */}
+                <div className="space-y-4">
+                  <h4 className="text-amber-300 font-semibold">Citizen Protection</h4>
+                  <div className="space-y-3">
+                    {[
+                      { feature: "Fraud Protection", status: "active", icon: Shield },
+                      { feature: "Auto-Pay Protection", status: "active", icon: CheckCircle },
+                      { feature: "Rate Lock Guarantee", status: "active", icon: Lock },
+                      { feature: "Emergency Credit Access", status: "active", icon: Zap },
+                    ].map((item, index) => {
+                      const Icon = item.icon
+                      return (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 bg-emerald-900/20 rounded-lg border border-emerald-400/20"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <Icon className="w-4 h-4 text-emerald-400" />
+                            <span className="text-emerald-300">{item.feature}</span>
+                          </div>
+                          <UIBadge className="bg-emerald-600/20 text-emerald-300 border-emerald-400/30">ACTIVE</UIBadge>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="space-y-4">
+                  <h4 className="text-amber-300 font-semibold">Quick Actions</h4>
+                  <div className="space-y-3">
+                    <Button className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700">
+                      Request Credit Increase
+                    </Button>
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
+                      Add New Card to Consolidate
+                    </Button>
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+                      View Detailed Statement
+                    </Button>
+                    <Button className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700">
+                      Optimize Payment Schedule
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Credit Acceleration Programs */}
+          <Card className="bg-gradient-to-br from-purple-900/50 to-indigo-900/50 border-purple-400/30">
+            <CardHeader>
+              <CardTitle className="text-purple-300 flex items-center text-2xl">
+                <Rocket className="w-8 h-8 mr-3" />
+                Credit Acceleration Programs
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    tier: "Tier I - Foundation",
+                    description: "Basic credit optimization and monitoring",
+                    features: ["Credit monitoring", "Basic optimization", "Monthly reports"],
+                    cost: 5000,
+                    guarantee: "50 point increase",
+                    duration: "12 months",
+                    status: "completed",
+                  },
+                  {
+                    tier: "Tier II - Advanced",
+                    description: "Advanced credit strategies and business credit",
+                    features: ["Business credit building", "Advanced optimization", "Bi-weekly coaching"],
+                    cost: 10000,
+                    guarantee: "150 point increase",
+                    duration: "18 months",
+                    status: "completed",
+                  },
+                  {
+                    tier: "Tier III - Supreme",
+                    description: "Maximum credit optimization with guarantees",
+                    features: ["Supreme Authority backing", "Guaranteed approvals", "Wealth management"],
+                    cost: 15000,
+                    guarantee: "300 point increase",
+                    duration: "24 months",
+                    status: "active",
+                  },
+                ].map((program, index) => (
+                  <motion.div
+                    key={index}
+                    className="p-6 bg-purple-800/20 rounded-xl border border-purple-400/20"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="text-center mb-4">
+                      <h4 className="text-purple-300 font-bold text-lg mb-2">{program.tier}</h4>
+                      <p className="text-purple-200/70 text-sm">{program.description}</p>
+                    </div>
+
+                    <div className="space-y-3 mb-4">
+                      {program.features.map((feature, fIndex) => (
+                        <div key={fIndex} className="flex items-center space-x-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-400" />
+                          <span className="text-purple-200 text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="text-center space-y-2 mb-4">
+                      <div className="text-2xl font-bold text-purple-300">{formatCurrency(program.cost)}</div>
+                      <div className="text-purple-400 text-sm">{program.duration}</div>
+                      <UIBadge className="bg-emerald-600/20 text-emerald-300 border-emerald-400/30">
+                        {program.guarantee}
+                      </UIBadge>
+                    </div>
+
+                    <Button
+                      className={`w-full ${
+                        program.status === "active"
+                          ? "bg-emerald-600 hover:bg-emerald-700"
+                          : program.status === "completed"
+                            ? "bg-blue-600 hover:bg-blue-700"
+                            : "bg-gradient-to-r from-purple-600 to-indigo-600"
+                      }`}
+                      disabled={program.status === "completed"}
+                    >
+                      {program.status === "active"
+                        ? "Currently Active"
+                        : program.status === "completed"
+                          ? "Completed"
+                          : "Activate Program"}
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Credit Monitoring & Alerts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 border-green-400/30">
+              <CardHeader>
+                <CardTitle className="text-green-300 flex items-center">
+                  <Shield className="w-6 h-6 mr-2" />
+                  Active Monitoring
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {[
+                  { service: "24/7 Credit Monitoring", status: "active", lastCheck: "2 minutes ago" },
+                  { service: "Identity Theft Protection", status: "active", lastCheck: "5 minutes ago" },
+                  { service: "Dark Web Surveillance", status: "active", lastCheck: "1 hour ago" },
+                  { service: "Account Change Alerts", status: "active", lastCheck: "Real-time" },
+                ].map((service, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-green-800/20 rounded-lg border border-green-400/20"
+                  >
+                    <div>
+                      <div className="text-green-300 font-medium">{service.service}</div>
+                      <div className="text-green-400/70 text-sm">Last check: {service.lastCheck}</div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                      <UIBadge className="bg-green-600/20 text-green-300 border-green-400/30">ACTIVE</UIBadge>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 border-blue-400/30">
+              <CardHeader>
+                <CardTitle className="text-blue-300 flex items-center">
+                  <TrendingUp className="w-6 h-6 mr-2" />
+                  Recent Activity
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {[
+                  {
+                    activity: "SNAP Score increased to 847",
+                    time: "2 hours ago",
+                    impact: "positive",
+                    details: "+5 points from QGI performance",
+                  },
+                  {
+                    activity: "Credit utilization optimized",
+                    time: "1 day ago",
+                    impact: "positive",
+                    details: "Reduced to 8.5% across all accounts",
+                  },
+                  {
+                    activity: "New account added to monitoring",
+                    time: "3 days ago",
+                    impact: "neutral",
+                    details: "Business checking account",
+                  },
+                  {
+                    activity: "Payment processed successfully",
+                    time: "1 week ago",
+                    impact: "positive",
+                    details: "Black Diamond Card auto-pay",
+                  },
+                ].map((item, index) => (
+                  <div key={index} className="p-3 bg-blue-800/20 rounded-lg border border-blue-400/20">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-blue-300 text-sm font-medium">{item.activity}</span>
+                      <span className="text-blue-400 text-xs">{item.time}</span>
+                    </div>
+                    <p className="text-blue-200/70 text-xs">{item.details}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
         {/* Navigation Tab */}
         <TabsContent value="navigation" className="space-y-6">
           <div className="text-center mb-8">
