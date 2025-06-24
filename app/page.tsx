@@ -12,32 +12,39 @@ import {
   Shield,
   Mic,
   MicOff,
-  Target,
   CreditCard,
   Building,
-  Briefcase,
   ChevronRight,
   Bell,
   Settings,
-  Home,
   BarChart3,
   Wallet,
   Bot,
-  Lightbulb,
-  Clock,
+  Unlock,
+  Star,
+  Gift,
 } from "lucide-react"
 import { VoiceControlInterface } from "@/components/voice/voice-control-interface"
 import { useVoiceControl } from "@/hooks/use-voice-control"
 import { useUserProgress } from "@/hooks/use-user-progress"
+import { featureUnlockSystem } from "@/lib/features/feature-unlock-system"
+import Link from "next/link"
 
 export default function HomePage() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(false)
+  const [allFeaturesUnlocked, setAllFeaturesUnlocked] = useState(false)
   const { isListening, startListening, stopListening } = useVoiceControl()
   const { progress, goals, achievements } = useUserProgress()
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
+
+    // Auto-unlock all features
+    const userId = "supreme_citizen_001"
+    featureUnlockSystem.unlockAllFeatures(userId)
+    setAllFeaturesUnlocked(true)
+
     return () => clearInterval(timer)
   }, [])
 
@@ -51,8 +58,9 @@ export default function HomePage() {
       description: "Comprehensive banking and financial services",
       icon: Building,
       status: "Active",
-      progress: 87,
+      progress: 100,
       href: "/dashboard/banking",
+      features: ["International Transfers", "Private Banking", "Business Banking"],
     },
     {
       id: "trading",
@@ -60,8 +68,9 @@ export default function HomePage() {
       description: "Advanced cryptocurrency trading platform",
       icon: TrendingUp,
       status: "Active",
-      progress: 92,
+      progress: 100,
       href: "/dashboard/dax",
+      features: ["Algorithmic Trading", "Institutional Access", "Real-time Data"],
     },
     {
       id: "ai-concierge",
@@ -69,8 +78,9 @@ export default function HomePage() {
       description: "Intelligent financial assistant",
       icon: Bot,
       status: "Active",
-      progress: 78,
+      progress: 100,
       href: "/dashboard/ai-concierge",
+      features: ["Market Prediction", "Risk Management", "Investment Advisor"],
     },
     {
       id: "legal",
@@ -78,26 +88,29 @@ export default function HomePage() {
       description: "Global legal and compliance management",
       icon: Shield,
       status: "Active",
-      progress: 95,
+      progress: 100,
       href: "/legal/compliance-dashboard",
+      features: ["Blockchain Registry", "Digital Signatures", "International Legal"],
     },
     {
-      id: "investments",
-      title: "Investment Platform",
-      description: "Portfolio management and investments",
-      icon: Briefcase,
-      status: "Coming Soon",
-      progress: 45,
-      href: "/dashboard/investments",
+      id: "voice",
+      title: "Voice Control",
+      description: "Advanced voice navigation and commands",
+      icon: Mic,
+      status: "Active",
+      progress: 100,
+      href: "/voice/settings",
+      features: ["Voice Biometrics", "Multi-language", "Voice Commands"],
     },
     {
-      id: "real-estate",
-      title: "Real Estate",
-      description: "Property investment and management",
-      icon: Home,
-      status: "Beta",
-      progress: 63,
-      href: "/dashboard/real-estate",
+      id: "analytics",
+      title: "Analytics Suite",
+      description: "Comprehensive financial analytics",
+      icon: BarChart3,
+      status: "Active",
+      progress: 100,
+      href: "/analytics/dashboard",
+      features: ["Predictive Analytics", "AI Insights", "Custom Reports"],
     },
   ]
 
@@ -105,67 +118,39 @@ export default function HomePage() {
     {
       id: "credit",
       title: "Credit Score Improvement",
-      current: 720,
+      current: 800,
       target: 800,
-      progress: 75,
-      timeframe: "6 months",
-      nextStep: "Pay down credit card balances",
+      progress: 100,
+      timeframe: "Achieved",
+      nextStep: "Maintain excellent credit",
     },
     {
       id: "savings",
       title: "Emergency Fund",
-      current: 15000,
+      current: 25000,
       target: 25000,
-      progress: 60,
-      timeframe: "12 months",
-      nextStep: "Increase monthly savings by $500",
+      progress: 100,
+      timeframe: "Achieved",
+      nextStep: "Consider investment opportunities",
     },
     {
       id: "investment",
       title: "Investment Portfolio",
-      current: 85000,
+      current: 150000,
       target: 150000,
-      progress: 57,
-      timeframe: "24 months",
-      nextStep: "Diversify into international markets",
+      progress: 100,
+      timeframe: "Achieved",
+      nextStep: "Explore premium investments",
     },
   ]
 
-  const geniusRecommendations = [
-    {
-      id: 1,
-      title: "Optimize Credit Utilization",
-      description: "Reduce credit utilization to boost your score by 50+ points",
-      impact: "High",
-      timeToComplete: "2 weeks",
-      action: "Start Now",
-      href: "/dashboard/credit",
-    },
-    {
-      id: 2,
-      title: "Diversify Crypto Portfolio",
-      description: "Add DeFi tokens to increase potential returns by 15%",
-      impact: "Medium",
-      timeToComplete: "1 day",
-      action: "Explore Options",
-      href: "/dashboard/dax",
-    },
-    {
-      id: 3,
-      title: "Set Up Automated Savings",
-      description: "Automate savings to reach emergency fund goal 3 months faster",
-      impact: "High",
-      timeToComplete: "30 minutes",
-      action: "Configure",
-      href: "/dashboard/banking",
-    },
-  ]
-
-  const recentActivity = [
-    { id: 1, type: "payment", description: "Credit card payment processed", amount: "$2,500", time: "2 hours ago" },
-    { id: 2, type: "trade", description: "Bitcoin purchase completed", amount: "$5,000", time: "4 hours ago" },
-    { id: 3, type: "goal", description: "Savings goal milestone reached", amount: "60%", time: "1 day ago" },
-    { id: 4, type: "legal", description: "Compliance document updated", amount: "", time: "2 days ago" },
+  const premiumFeatures = [
+    "Quantum Security Encryption",
+    "24/7 Personal Concierge",
+    "Exclusive Investment Access",
+    "Global Citizenship Services",
+    "Private Banking Services",
+    "Institutional Trading Access",
   ]
 
   const toggleVoice = () => {
@@ -210,6 +195,13 @@ export default function HomePage() {
                 {citizenshipStatus}
               </Badge>
 
+              {allFeaturesUnlocked && (
+                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-3 py-1">
+                  <Crown className="h-4 w-4 mr-1" />
+                  All Features Unlocked
+                </Badge>
+              )}
+
               <Button
                 variant={isListening ? "default" : "outline"}
                 size="sm"
@@ -235,6 +227,29 @@ export default function HomePage() {
       {/* Voice Control Interface */}
       {isVoiceEnabled && <VoiceControlInterface />}
 
+      {/* Feature Unlock Celebration */}
+      {allFeaturesUnlocked && (
+        <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Gift className="h-8 w-8" />
+                <div>
+                  <h2 className="text-xl font-bold">🎉 All Features Unlocked!</h2>
+                  <p className="text-green-100">You now have access to the complete Supreme Financial Platform</p>
+                </div>
+              </div>
+              <Link href="/features/unlock-all">
+                <Button variant="secondary" className="bg-white text-green-600 hover:bg-gray-100">
+                  View All Features
+                  <ChevronRight className="h-4 w-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
@@ -242,8 +257,8 @@ export default function HomePage() {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="progress">Progress</TabsTrigger>
             <TabsTrigger value="environments">Environments</TabsTrigger>
-            <TabsTrigger value="genius">Genius Guide</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="premium">Premium</TabsTrigger>
+            <TabsTrigger value="features">All Features</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -256,7 +271,7 @@ export default function HomePage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-100">Total Balance</p>
-                      <p className="text-2xl font-bold">$127,450</p>
+                      <p className="text-2xl font-bold">$10,127,450</p>
                     </div>
                     <Wallet className="h-8 w-8 text-green-200" />
                   </div>
@@ -268,7 +283,7 @@ export default function HomePage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-blue-100">Credit Score</p>
-                      <p className="text-2xl font-bold">720</p>
+                      <p className="text-2xl font-bold">800</p>
                     </div>
                     <CreditCard className="h-8 w-8 text-blue-200" />
                   </div>
@@ -280,21 +295,21 @@ export default function HomePage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-purple-100">Portfolio Value</p>
-                      <p className="text-2xl font-bold">$85,000</p>
+                      <p className="text-2xl font-bold">$5,850,000</p>
                     </div>
                     <BarChart3 className="h-8 w-8 text-purple-200" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-r from-orange-500 to-red-600 text-white">
+              <Card className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-orange-100">Goals Progress</p>
-                      <p className="text-2xl font-bold">64%</p>
+                      <p className="text-orange-100">Features Unlocked</p>
+                      <p className="text-2xl font-bold">100%</p>
                     </div>
-                    <Target className="h-8 w-8 text-orange-200" />
+                    <Unlock className="h-8 w-8 text-orange-200" />
                   </div>
                 </CardContent>
               </Card>
@@ -309,17 +324,14 @@ export default function HomePage() {
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                            <IconComponent className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                          <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                            <IconComponent className="h-6 w-6 text-white" />
                           </div>
                           <div>
                             <CardTitle className="text-lg">{env.title}</CardTitle>
-                            <Badge
-                              variant={
-                                env.status === "Active" ? "default" : env.status === "Beta" ? "secondary" : "outline"
-                              }
-                            >
-                              {env.status}
+                            <Badge className="bg-green-100 text-green-800">
+                              <Star className="h-3 w-3 mr-1" />
+                              Premium
                             </Badge>
                           </div>
                         </div>
@@ -328,14 +340,22 @@ export default function HomePage() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">{env.description}</p>
-                      <div className="space-y-2">
+                      <div className="space-y-2 mb-4">
                         <div className="flex justify-between text-sm">
-                          <span>Progress</span>
+                          <span>Features Unlocked</span>
                           <span>{env.progress}%</span>
                         </div>
                         <Progress value={env.progress} className="h-2" />
                       </div>
-                      <Button className="w-full mt-4" variant="outline">
+                      <div className="space-y-1 mb-4">
+                        {env.features.map((feature, index) => (
+                          <div key={index} className="flex items-center text-xs text-slate-600">
+                            <Crown className="h-3 w-3 text-yellow-500 mr-1" />
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                         Access Platform
                       </Button>
                     </CardContent>
@@ -349,11 +369,11 @@ export default function HomePage() {
           <TabsContent value="progress" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {financialGoals.map((goal) => (
-                <Card key={goal.id}>
+                <Card key={goal.id} className="border-green-200 bg-green-50">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       {goal.title}
-                      <Badge variant="outline">{goal.timeframe}</Badge>
+                      <Badge className="bg-green-100 text-green-800">{goal.timeframe}</Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -363,13 +383,13 @@ export default function HomePage() {
                     </div>
                     <Progress value={goal.progress} className="h-3" />
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-600 dark:text-slate-400">{goal.progress}% Complete</span>
-                      <Button size="sm" variant="outline">
-                        View Details
+                      <span className="text-sm text-green-600 font-medium">✅ {goal.progress}% Complete</span>
+                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                        Goal Achieved!
                       </Button>
                     </div>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                      <p className="text-sm font-medium text-blue-900 dark:text-blue-100">Next Step: {goal.nextStep}</p>
+                    <div className="bg-green-100 p-3 rounded-lg">
+                      <p className="text-sm font-medium text-green-900">Next Step: {goal.nextStep}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -377,110 +397,58 @@ export default function HomePage() {
             </div>
           </TabsContent>
 
-          {/* Environments Tab */}
-          <TabsContent value="environments" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {environments.map((env) => {
-                const IconComponent = env.icon
-                return (
-                  <Card key={env.id} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-center space-x-3">
-                        <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                          <IconComponent className="h-8 w-8 text-white" />
-                        </div>
-                        <div>
-                          <CardTitle>{env.title}</CardTitle>
-                          <p className="text-sm text-slate-600 dark:text-slate-400">{env.description}</p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <Badge
-                          variant={
-                            env.status === "Active" ? "default" : env.status === "Beta" ? "secondary" : "outline"
-                          }
-                        >
-                          {env.status}
-                        </Badge>
-                        <span className="text-sm text-slate-600 dark:text-slate-400">{env.progress}% Setup</span>
-                      </div>
-                      <Progress value={env.progress} className="h-2" />
-                      <Button className="w-full">
-                        Launch Platform
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-          </TabsContent>
-
-          {/* Genius Guide Tab */}
-          <TabsContent value="genius" className="space-y-6">
-            <Card>
+          {/* Premium Tab */}
+          <TabsContent value="premium" className="space-y-6">
+            <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Lightbulb className="h-6 w-6 text-yellow-500" />
-                  <span>Genius Recommendations</span>
+                  <Crown className="h-6 w-6 text-yellow-600" />
+                  <span>Premium Features Unlocked</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {geniusRecommendations.map((rec) => (
-                  <div
-                    key={rec.id}
-                    className="border rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{rec.title}</h3>
-                        <p className="text-slate-600 dark:text-slate-400 mt-1">{rec.description}</p>
-                        <div className="flex items-center space-x-4 mt-3">
-                          <Badge variant={rec.impact === "High" ? "default" : "secondary"}>{rec.impact} Impact</Badge>
-                          <span className="text-sm text-slate-600 dark:text-slate-400 flex items-center">
-                            <Clock className="h-4 w-4 mr-1" />
-                            {rec.timeToComplete}
-                          </span>
-                        </div>
-                      </div>
-                      <Button className="ml-4">
-                        {rec.action}
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                      </Button>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {premiumFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-center space-x-3 p-3 bg-white rounded-lg border">
+                      <Crown className="h-5 w-5 text-yellow-500" />
+                      <span className="font-medium">{feature}</span>
+                      <Badge className="ml-auto bg-green-100 text-green-800">Active</Badge>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Activity Tab */}
-          <TabsContent value="activity" className="space-y-6">
+          {/* All Features Tab */}
+          <TabsContent value="features" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle className="flex items-center justify-between">
+                  Complete Feature Access
+                  <Link href="/features/unlock-all">
+                    <Button>
+                      View Detailed Features
+                      <ChevronRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  </Link>
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-full">
-                          {activity.type === "payment" && <CreditCard className="h-4 w-4 text-blue-600" />}
-                          {activity.type === "trade" && <TrendingUp className="h-4 w-4 text-green-600" />}
-                          {activity.type === "goal" && <Target className="h-4 w-4 text-purple-600" />}
-                          {activity.type === "legal" && <Shield className="h-4 w-4 text-orange-600" />}
-                        </div>
-                        <div>
-                          <p className="font-medium">{activity.description}</p>
-                          <p className="text-sm text-slate-600 dark:text-slate-400">{activity.time}</p>
-                        </div>
-                      </div>
-                      {activity.amount && <span className="font-semibold text-green-600">{activity.amount}</span>}
+                <div className="text-center py-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="p-4 bg-green-100 rounded-full">
+                      <Unlock className="h-12 w-12 text-green-600" />
                     </div>
-                  ))}
+                  </div>
+                  <h3 className="text-2xl font-bold text-green-900 mb-2">All Features Unlocked!</h3>
+                  <p className="text-green-700 mb-4">
+                    You have complete access to all 25+ features across banking, trading, AI, legal, voice control,
+                    analytics, and premium services.
+                  </p>
+                  <Link href="/features/unlock-all">
+                    <Button className="bg-green-600 hover:bg-green-700">Explore All Features</Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -489,6 +457,26 @@ export default function HomePage() {
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Premium Account Settings</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span>Account Level</span>
+                    <Badge className="bg-yellow-100 text-yellow-800">Supreme Level 5</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Verification Status</span>
+                    <Badge className="bg-green-100 text-green-800">Premium Verified</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Feature Access</span>
+                    <Badge className="bg-blue-100 text-blue-800">100% Unlocked</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle>Voice Control Settings</CardTitle>
@@ -501,42 +489,12 @@ export default function HomePage() {
                     </Button>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Language</span>
-                    <Button variant="outline" size="sm">
-                      English
-                    </Button>
+                    <span>Voice Biometrics</span>
+                    <Badge className="bg-green-100 text-green-800">Active</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Voice Training</span>
-                    <Button variant="outline" size="sm">
-                      Configure
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Notification Preferences</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span>Goal Updates</span>
-                    <Button variant="outline" size="sm">
-                      On
-                    </Button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Market Alerts</span>
-                    <Button variant="outline" size="sm">
-                      On
-                    </Button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Security Notifications</span>
-                    <Button variant="outline" size="sm">
-                      On
-                    </Button>
+                    <span>Multi-language Support</span>
+                    <Badge className="bg-blue-100 text-blue-800">25+ Languages</Badge>
                   </div>
                 </CardContent>
               </Card>
