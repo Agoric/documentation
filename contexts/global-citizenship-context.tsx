@@ -207,12 +207,86 @@ interface GlobalCitizenshipContextType {
 
 const GlobalCitizenshipContext = createContext<GlobalCitizenshipContextType | undefined>(undefined)
 
-export const useGlobalCitizenship = () => {
+export const useGlobalCitizenship = (): GlobalCitizenshipContextType => {
   const context = useContext(GlobalCitizenshipContext)
-  if (!context) {
-    throw new Error("useGlobalCitizenship must be used within a GlobalCitizenshipProvider")
+  if (context) return context
+
+  // ---------- Fallback (read-only) -----------
+  // We’re outside a <GlobalCitizenshipProvider>.  Instead of throwing and
+  // crashing the UI we return a minimal guest context and warn developers.
+  if (process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "useGlobalCitizenship was called outside of a GlobalCitizenshipProvider. " +
+        "Returning a read-only guest context.",
+    )
   }
-  return context
+
+  const noop = () => {
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.warn("GlobalCitizenshipProvider is missing — this call is a no-op.")
+    }
+  }
+
+  const asyncNoop = async () => false
+
+  const guestCitizen: GlobalCitizen = {
+    id: "guest",
+    type: "individual",
+    registrationDate: new Date(),
+    status: "pending",
+    name: "Guest",
+    email: "guest@example.com",
+    phone: "",
+    address: { street: "", city: "", state: "", country: "", postalCode: "" },
+    qgiAllocation: 0,
+    qgiInstrumentId: "",
+    socialImpactScore: 0,
+    digitalDomicileId: "",
+    taxBenefitContract: {} as TaxBenefitContract,
+    membershipDues: {} as MembershipDues,
+    bondAllocation: 0,
+    creditLineReplacement: {
+      originalCreditLimit: 0,
+      qgiReplacementValue: 0,
+      effectiveDate: new Date(),
+      terms: [],
+    },
+  }
+
+  return {
+    currentCitizen: guestCitizen,
+    onboardingProgress: [],
+    qgiFunds: sampleQGIFunds,
+    // Registration
+    startRegistration: noop,
+    updateProfile: noop,
+    submitRegistration: asyncNoop,
+    // Payments
+    processMembershipPayment: asyncNoop,
+    calculateQGIAllocation: () => 0,
+    calculateBondAllocation: () => 0,
+    // QGI funds
+    addToQGIFund: noop,
+    purchaseBond: asyncNoop,
+    updateFundLiquidity: noop,
+    // Tax
+    generateTaxBenefitContract: () => null,
+    prepareTaxDocuments: async () => [],
+    // Digital domicile
+    establishDigitalDomicile: async () => null,
+    updateDomicileStatus: noop,
+    // Credit-line replacement
+    replaceCreditLine: noop,
+    calculateCreditReplacement: () => 0,
+    // Utils
+    getOnboardingSteps: () => [],
+    validateKYC: async () => false,
+    generateCitizenshipCertificate: async () => "",
+    getQGIPerformance: () => null,
+    getCitizenshipBenefits: () => [],
+  }
 }
 
 // Sample data and configurations
