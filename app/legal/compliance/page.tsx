@@ -1,4 +1,4 @@
-import HolographicGlassCard from "@/components/snap-dax/holographic-glass-card"
+import { HolographicGlassCard } from "@/components/snap-dax/holographic-glass-card"
 import { Shield, CheckCircle2, Globe, Lock, FileText, Users } from "lucide-react"
 
 export default function CompliancePage() {
