@@ -20,6 +20,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useRouter, usePathname } from "next/navigation"
 import { KeyboardShortcutsHelp } from "./keyboard-shortcuts-help"
+import { BookmarkManager } from "./bookmark-manager"
 import { useEnvironmentShortcuts } from "@/hooks/use-keyboard-shortcuts"
 
 const environments = [
@@ -208,6 +209,13 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
           </Command>
         </PopoverContent>
       </Popover>
+      <BookmarkManager
+        currentEnvironment={{
+          name: currentEnvironment.label,
+          path: currentEnvironment.value,
+          icon: currentEnvironment.icon.name,
+        }}
+      />
       <KeyboardShortcutsHelp />
     </div>
   )

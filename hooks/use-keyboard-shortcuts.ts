@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback } from "react"
 import { useRouter, usePathname } from "next/navigation"
+import { useEnvironmentBookmarks } from "./use-environment-bookmarks"
 
 interface KeyboardShortcut {
   key: string
@@ -42,12 +43,28 @@ const useKeyboardShortcuts = (shortcuts: KeyboardShortcut[]) => {
   }, [handleKeyDown])
 }
 
+// Parse shortcut string like "Alt+B" or "Ctrl+Shift+1" into modifier keys and main key
+const parseShortcut = (shortcut: string) => {
+  const parts = shortcut.split("+")
+  const mainKey = parts[parts.length - 1]
+  const modifiers = parts.slice(0, -1)
+
+  return {
+    key: mainKey,
+    ctrlKey: modifiers.includes("Ctrl"),
+    altKey: modifiers.includes("Alt"),
+    shiftKey: modifiers.includes("Shift"),
+    metaKey: modifiers.includes("Meta"),
+  }
+}
+
 export const useEnvironmentShortcuts = () => {
   const router = useRouter()
   const pathname = usePathname()
+  const { bookmarks, navigateToBookmark } = useEnvironmentBookmarks()
 
   const shortcuts: KeyboardShortcut[] = [
-    // Main Platform
+    // Default environment shortcuts
     {
       key: "1",
       altKey: true,
@@ -60,21 +77,18 @@ export const useEnvironmentShortcuts = () => {
       action: () => router.push("/dashboard/snap-dax"),
       description: "Go to SNAP-DAX Trading",
     },
-    // Commerce
     {
       key: "3",
       altKey: true,
       action: () => router.push("/dashboard/ecommerex/holographic-products"),
       description: "Go to EcommereX Shop",
     },
-    // Gaming & Rewards
     {
       key: "4",
       altKey: true,
       action: () => router.push("/dashboard/gamification"),
       description: "Go to Gamification Hub",
     },
-    // Legal Framework
     {
       key: "5",
       altKey: true,
@@ -99,7 +113,6 @@ export const useEnvironmentShortcuts = () => {
       action: () => router.push("/legal/diplomatic-immunity"),
       description: "Go to Diplomatic Immunity",
     },
-    // Administration
     {
       key: "9",
       altKey: true,
@@ -112,7 +125,6 @@ export const useEnvironmentShortcuts = () => {
       action: () => router.push("/admin/users"),
       description: "Go to User Management",
     },
-    // Quick actions
     {
       key: "h",
       altKey: true,
@@ -125,11 +137,22 @@ export const useEnvironmentShortcuts = () => {
       action: () => router.push("/admin/system"),
       description: "Go to System Monitoring",
     },
+    // Custom bookmark shortcuts
+    ...bookmarks
+      .filter((bookmark) => bookmark.customShortcut)
+      .map((bookmark) => {
+        const parsed = parseShortcut(bookmark.customShortcut!)
+        return {
+          ...parsed,
+          action: () => navigateToBookmark(bookmark.id),
+          description: `Go to ${bookmark.name}`,
+        }
+      }),
   ]
 
   useKeyboardShortcuts(shortcuts)
 
-  return { shortcuts, currentPath: pathname }
+  return { shortcuts, currentPath: pathname, bookmarks }
 }
 
 export default useKeyboardShortcuts
