@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -28,16 +28,6 @@ const config: Config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#38bdf8",
-          500: "#0ea5e9",
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -63,22 +53,55 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Landing page inspired colors
-        brand: {
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#38bdf8",
-          500: "#0ea5e9",
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
+        // Jonlorenzo Royal Theme Colors
+        royal: {
+          50: "rgb(var(--royal-50))",
+          100: "rgb(var(--royal-100))",
+          200: "rgb(var(--royal-200))",
+          300: "rgb(var(--royal-300))",
+          400: "rgb(var(--royal-400))",
+          500: "rgb(var(--royal-500))",
+          600: "rgb(var(--royal-600))",
+          700: "rgb(var(--royal-700))",
+          800: "rgb(var(--royal-800))",
+          900: "rgb(var(--royal-900))",
+          950: "rgb(var(--royal-950))",
         },
-        gradient: {
-          from: "#667eea",
-          to: "#764ba2",
+        illumination: {
+          50: "rgb(var(--illumination-50))",
+          100: "rgb(var(--illumination-100))",
+          200: "rgb(var(--illumination-200))",
+          300: "rgb(var(--illumination-300))",
+          400: "rgb(var(--illumination-400))",
+          500: "rgb(var(--illumination-500))",
+          600: "rgb(var(--illumination-600))",
+          700: "rgb(var(--illumination-700))",
+          800: "rgb(var(--illumination-800))",
+          900: "rgb(var(--illumination-900))",
+          950: "rgb(var(--illumination-950))",
+        },
+        genius: {
+          50: "rgb(var(--genius-50))",
+          100: "rgb(var(--genius-100))",
+          200: "rgb(var(--genius-200))",
+          300: "rgb(var(--genius-300))",
+          400: "rgb(var(--genius-400))",
+          500: "rgb(var(--genius-500))",
+          600: "rgb(var(--genius-600))",
+          700: "rgb(var(--genius-700))",
+          800: "rgb(var(--genius-800))",
+          900: "rgb(var(--genius-900))",
+          950: "rgb(var(--genius-950))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
         },
       },
       borderRadius: {
@@ -95,30 +118,61 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+        "illumination-pulse": {
+          "0%, 100%": {
+            opacity: "calc(var(--illumination-opacity) * 0.6)",
+            transform: "scale(1)",
+          },
+          "50%": {
+            opacity: "var(--illumination-opacity)",
+            transform: "scale(1.05)",
+          },
         },
-        "slide-in": {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(0)" },
+        "genius-reverberate": {
+          "0%": {
+            transform: "scale(1)",
+            boxShadow: "0 0 30px rgba(99, 102, 241, 0.5)",
+          },
+          "25%": {
+            transform: "scale(1.1)",
+            boxShadow: "0 0 60px rgba(99, 102, 241, 0.7)",
+          },
+          "50%": {
+            transform: "scale(1.2)",
+            boxShadow: "0 0 90px rgba(99, 102, 241, 0.9)",
+          },
+          "75%": {
+            transform: "scale(1.1)",
+            boxShadow: "0 0 60px rgba(99, 102, 241, 0.7)",
+          },
+          "100%": {
+            transform: "scale(1)",
+            boxShadow: "0 0 30px rgba(99, 102, 241, 0.5)",
+          },
+        },
+        "royal-float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "smart-glow": {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(234, 179, 8, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(234, 179, 8, 0.6)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out",
-        "slide-in": "slide-in 0.3s ease-out",
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        "hero-gradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        "card-gradient": "linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
+        "illumination-pulse": "illumination-pulse 3s ease-in-out infinite",
+        "genius-reverberate": "genius-reverberate 1.5s ease-in-out infinite",
+        "royal-float": "royal-float 6s ease-in-out infinite",
+        "smart-glow": "smart-glow 2s ease-in-out infinite",
       },
       boxShadow: {
-        landing: "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-        "landing-lg": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        "royal-illumination": "0 0 25px rgba(121, 92, 132, 0.4), 0 0 50px rgba(234, 179, 8, 0.3)",
+        "genius-orb":
+          "0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(99, 102, 241, 0.3), 0 0 90px rgba(99, 102, 241, 0.2)",
+        "illumination-glow":
+          "0 0 20px rgba(234, 179, 8, 0.3), 0 0 40px rgba(234, 179, 8, 0.2), 0 0 60px rgba(234, 179, 8, 0.1)",
       },
     },
   },
