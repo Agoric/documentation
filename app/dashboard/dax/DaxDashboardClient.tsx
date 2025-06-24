@@ -1,5 +1,6 @@
 "use client"
-import { useState, useEffect } from "react"
+
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -7,118 +8,66 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import {
   ArrowUpRight,
   ArrowDownRight,
   BarChart3,
-  Clock,
   Activity,
-  Target,
-  Shield,
-  AlertTriangle,
   DollarSign,
-  Percent,
-  LineChart,
   PieChart,
   Settings,
-  Bell,
-  Eye,
   Zap,
+  Wifi,
+  WifiOff,
 } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useCryptoAssets, useOrderBook, useMarketData } from "@/hooks/use-crypto-data"
+import { LivePriceTicker } from "@/components/crypto/live-price-ticker"
 
-// Types for trading data
-interface Asset {
-  id: string
-  name: string
-  symbol: string
-  price: number
-  change: number
-  volume: number
-  marketCap: number
-  high24h: number
-  low24h: number
-}
-
-interface OrderBookEntry {
-  price: number
-  amount: number
-  total: number
-}
-
-interface Trade {
-  id: string
-  symbol: string
-  type: "buy" | "sell"
-  amount: number
-  price: number
-  timestamp: Date
-  status: "completed" | "pending" | "cancelled"
-  pnl?: number
-}
-
-interface PortfolioMetrics {
-  totalValue: number
-  totalPnL: number
-  totalPnLPercent: number
-  dayChange: number
-  dayChangePercent: number
-  winRate: number
-  sharpeRatio: number
-  maxDrawdown: number
-}
-
-// Enhanced Trading Interface Component
+// Enhanced Trading Interface with Real Data
 const TradingInterface = () => {
-  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null)
+  const [selectedAssetId, setSelectedAssetId] = useState<string>("")
   const [orderType, setOrderType] = useState<"market" | "limit" | "stop">("market")
   const [tradeType, setTradeType] = useState<"buy" | "sell">("buy")
   const [amount, setAmount] = useState("")
   const [price, setPrice] = useState("")
   const [stopPrice, setStopPrice] = useState("")
 
-  const assets: Asset[] = [
-    {
-      id: "1",
-      name: "Bitcoin",
-      symbol: "BTC",
-      price: 43567.89,
-      change: 2.34,
-      volume: 28500000000,
-      marketCap: 850000000000,
-      high24h: 44200.0,
-      low24h: 42800.0,
-    },
-    {
-      id: "2",
-      name: "Ethereum",
-      symbol: "ETH",
-      price: 2345.67,
-      change: -1.23,
-      volume: 15200000000,
-      marketCap: 280000000000,
-      high24h: 2400.0,
-      low24h: 2300.0,
-    },
-  ]
+  const { assets, loading: assetsLoading } = useCryptoAssets(["bitcoin", "ethereum", "solana", "cardano", "polkadot"])
+  const selectedAsset = assets.find((asset) => asset.id === selectedAssetId)
 
   const handleTrade = () => {
     if (!selectedAsset || !amount) return
 
-    const trade: Trade = {
+    const trade = {
       id: Date.now().toString(),
-      symbol: selectedAsset.symbol,
+      symbol: selectedAsset.symbol.toUpperCase(),
       type: tradeType,
       amount: Number.parseFloat(amount),
-      price: orderType === "market" ? selectedAsset.price : Number.parseFloat(price),
+      price: orderType === "market" ? selectedAsset.current_price : Number.parseFloat(price),
       timestamp: new Date(),
-      status: "pending",
+      status: "pending" as const,
     }
 
     console.log("Executing trade:", trade)
     // Here you would integrate with your trading API
+  }
+
+  if (assetsLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-6 w-40" />
+          <Skeleton className="h-4 w-60" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -126,15 +75,15 @@ const TradingInterface = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Zap className="h-5 w-5" />
-          Advanced Trading
+          Live Trading Interface
         </CardTitle>
-        <CardDescription>Execute trades with advanced order types</CardDescription>
+        <CardDescription>Execute trades with real-time market data</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Asset Selection */}
         <div className="space-y-2">
           <Label>Select Asset</Label>
-          <Select onValueChange={(value) => setSelectedAsset(assets.find((a) => a.id === value) || null)}>
+          <Select onValueChange={setSelectedAssetId}>
             <SelectTrigger>
               <SelectValue placeholder="Choose an asset to trade" />
             </SelectTrigger>
@@ -142,11 +91,14 @@ const TradingInterface = () => {
               {assets.map((asset) => (
                 <SelectItem key={asset.id} value={asset.id}>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">{asset.symbol}</span>
-                    <span className="text-muted-foreground">${asset.price.toLocaleString()}</span>
-                    <Badge variant={asset.change >= 0 ? "default" : "destructive"} className="text-xs">
-                      {asset.change >= 0 ? "+" : ""}
-                      {asset.change}%
+                    <span className="font-medium">{asset.symbol.toUpperCase()}</span>
+                    <span className="text-muted-foreground">${asset.current_price.toLocaleString()}</span>
+                    <Badge
+                      variant={asset.price_change_percentage_24h >= 0 ? "default" : "destructive"}
+                      className="text-xs"
+                    >
+                      {asset.price_change_percentage_24h >= 0 ? "+" : ""}
+                      {asset.price_change_percentage_24h.toFixed(2)}%
                     </Badge>
                   </div>
                 </SelectItem>
@@ -157,24 +109,24 @@ const TradingInterface = () => {
 
         {selectedAsset && (
           <>
-            {/* Asset Info */}
+            {/* Real-time Asset Info */}
             <div className="p-4 bg-muted/50 rounded-lg">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <div className="text-muted-foreground">Price</div>
-                  <div className="font-medium">${selectedAsset.price.toLocaleString()}</div>
+                  <div className="text-muted-foreground">Current Price</div>
+                  <div className="font-medium">${selectedAsset.current_price.toLocaleString()}</div>
                 </div>
                 <div>
                   <div className="text-muted-foreground">24h High</div>
-                  <div className="font-medium">${selectedAsset.high24h.toLocaleString()}</div>
+                  <div className="font-medium">${selectedAsset.high_24h.toLocaleString()}</div>
                 </div>
                 <div>
                   <div className="text-muted-foreground">24h Low</div>
-                  <div className="font-medium">${selectedAsset.low24h.toLocaleString()}</div>
+                  <div className="font-medium">${selectedAsset.low_24h.toLocaleString()}</div>
                 </div>
                 <div>
                   <div className="text-muted-foreground">Volume</div>
-                  <div className="font-medium">${(selectedAsset.volume / 1000000000).toFixed(2)}B</div>
+                  <div className="font-medium">${(selectedAsset.total_volume / 1000000000).toFixed(2)}B</div>
                 </div>
               </div>
             </div>
@@ -216,7 +168,7 @@ const TradingInterface = () => {
 
             {/* Amount Input */}
             <div className="space-y-2">
-              <Label>Amount ({selectedAsset.symbol})</Label>
+              <Label>Amount ({selectedAsset.symbol.toUpperCase()})</Label>
               <Input type="number" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
 
@@ -226,7 +178,7 @@ const TradingInterface = () => {
                 <Label>Price (USD)</Label>
                 <Input
                   type="number"
-                  placeholder={selectedAsset.price.toString()}
+                  placeholder={selectedAsset.current_price.toString()}
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -255,7 +207,9 @@ const TradingInterface = () => {
                     $
                     {(
                       Number.parseFloat(amount) *
-                      (orderType === "market" ? selectedAsset.price : Number.parseFloat(price) || selectedAsset.price)
+                      (orderType === "market"
+                        ? selectedAsset.current_price
+                        : Number.parseFloat(price) || selectedAsset.current_price)
                     ).toLocaleString()}
                   </span>
                 </div>
@@ -265,7 +219,9 @@ const TradingInterface = () => {
                     $
                     {(
                       Number.parseFloat(amount) *
-                      (orderType === "market" ? selectedAsset.price : Number.parseFloat(price) || selectedAsset.price) *
+                      (orderType === "market"
+                        ? selectedAsset.current_price
+                        : Number.parseFloat(price) || selectedAsset.current_price) *
                       0.001
                     ).toFixed(2)}
                   </span>
@@ -288,435 +244,219 @@ const TradingInterface = () => {
   )
 }
 
-// Order Book Component
-const OrderBook = () => {
-  const [bids, setBids] = useState<OrderBookEntry[]>([])
-  const [asks, setAsks] = useState<OrderBookEntry[]>([])
+// Real-time Order Book Component
+const LiveOrderBook = ({ symbol = "BTCUSDT" }: { symbol?: string }) => {
+  const { orderBook, loading, error } = useOrderBook(symbol)
 
-  useEffect(() => {
-    // Simulate order book data
-    const generateOrderBook = () => {
-      const basePrice = 43567.89
-      const newBids: OrderBookEntry[] = []
-      const newAsks: OrderBookEntry[] = []
-
-      for (let i = 0; i < 10; i++) {
-        const bidPrice = basePrice - (i + 1) * 10
-        const askPrice = basePrice + (i + 1) * 10
-        const bidAmount = Math.random() * 5
-        const askAmount = Math.random() * 5
-
-        newBids.push({
-          price: bidPrice,
-          amount: bidAmount,
-          total: bidPrice * bidAmount,
-        })
-
-        newAsks.push({
-          price: askPrice,
-          amount: askAmount,
-          total: askPrice * askAmount,
-        })
-      }
-
-      setBids(newBids)
-      setAsks(newAsks.reverse())
-    }
-
-    generateOrderBook()
-    const interval = setInterval(generateOrderBook, 2000)
-    return () => clearInterval(interval)
-  }, [])
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5" />
-          Order Book
-        </CardTitle>
-        <CardDescription>Real-time buy and sell orders</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {/* Asks (Sell Orders) */}
-          <div>
-            <div className="flex justify-between text-xs text-muted-foreground mb-2">
-              <span>Price (USD)</span>
-              <span>Amount</span>
-              <span>Total</span>
-            </div>
-            <div className="space-y-1">
-              {asks.map((ask, index) => (
-                <div key={index} className="flex justify-between text-sm text-red-500">
-                  <span>${ask.price.toLocaleString()}</span>
-                  <span>{ask.amount.toFixed(4)}</span>
-                  <span>${ask.total.toLocaleString()}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Current Price */}
-          <div className="text-center py-2">
-            <div className="text-2xl font-bold">$43,567.89</div>
-            <div className="text-sm text-green-500">+2.34% (+$987.23)</div>
-          </div>
-
-          <Separator />
-
-          {/* Bids (Buy Orders) */}
-          <div>
-            <div className="space-y-1">
-              {bids.map((bid, index) => (
-                <div key={index} className="flex justify-between text-sm text-green-500">
-                  <span>${bid.price.toLocaleString()}</span>
-                  <span>{bid.amount.toFixed(4)}</span>
-                  <span>${bid.total.toLocaleString()}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-// Portfolio Analytics Component
-const PortfolioAnalytics = () => {
-  const [metrics, setMetrics] = useState<PortfolioMetrics>({
-    totalValue: 128435.23,
-    totalPnL: 15234.67,
-    totalPnLPercent: 13.45,
-    dayChange: 2945.32,
-    dayChangePercent: 2.34,
-    winRate: 68.5,
-    sharpeRatio: 1.85,
-    maxDrawdown: -8.2,
-  })
-
-  const [holdings, setHoldings] = useState([
-    { symbol: "BTC", amount: 2.5, value: 108919.73, allocation: 85.0, pnl: 12500.0 },
-    { symbol: "ETH", amount: 8.3, value: 19469.56, allocation: 15.0, pnl: 2734.67 },
-  ])
-
-  return (
-    <div className="space-y-6">
-      {/* Performance Metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <DollarSign className="h-4 w-4 text-green-500" />
-              <span className="text-sm font-medium">Total P&L</span>
-            </div>
-            <div className="text-2xl font-bold text-green-500">+${metrics.totalPnL.toLocaleString()}</div>
-            <div className="text-sm text-muted-foreground">+{metrics.totalPnLPercent}%</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="h-4 w-4 text-blue-500" />
-              <span className="text-sm font-medium">Win Rate</span>
-            </div>
-            <div className="text-2xl font-bold">{metrics.winRate}%</div>
-            <Progress value={metrics.winRate} className="mt-2" />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <LineChart className="h-4 w-4 text-purple-500" />
-              <span className="text-sm font-medium">Sharpe Ratio</span>
-            </div>
-            <div className="text-2xl font-bold">{metrics.sharpeRatio}</div>
-            <div className="text-sm text-muted-foreground">Risk-adjusted return</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="h-4 w-4 text-red-500" />
-              <span className="text-sm font-medium">Max Drawdown</span>
-            </div>
-            <div className="text-2xl font-bold text-red-500">{metrics.maxDrawdown}%</div>
-            <div className="text-sm text-muted-foreground">Largest loss</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Portfolio Allocation */}
+  if (loading) {
+    return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PieChart className="h-5 w-5" />
-            Portfolio Allocation
-          </CardTitle>
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-4 w-48" />
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {holdings.map((holding, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-sm font-medium">
-                      {holding.symbol.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-medium">{holding.symbol}</div>
-                      <div className="text-sm text-muted-foreground">{holding.amount} tokens</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-medium">${holding.value.toLocaleString()}</div>
-                    <div className={`text-sm ${holding.pnl >= 0 ? "text-green-500" : "text-red-500"}`}>
-                      {holding.pnl >= 0 ? "+" : ""}${holding.pnl.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Progress value={holding.allocation} className="flex-1" />
-                  <span className="text-sm font-medium w-12">{holding.allocation}%</span>
-                </div>
-              </div>
+          <div className="space-y-2">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <Skeleton key={i} className="h-6 w-full" />
             ))}
           </div>
         </CardContent>
       </Card>
-    </div>
-  )
-}
+    )
+  }
 
-// Risk Management Component
-const RiskManagement = () => {
-  const [riskMetrics, setRiskMetrics] = useState({
-    portfolioRisk: "Medium",
-    valueAtRisk: 5234.67,
-    positionSizing: 85,
-    diversificationScore: 72,
-    leverageRatio: 1.2,
-  })
-
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Shield className="h-4 w-4 text-blue-500" />
-              <span className="text-sm font-medium">Portfolio Risk</span>
-            </div>
-            <div className="text-2xl font-bold">{riskMetrics.portfolioRisk}</div>
-            <Badge variant="secondary" className="mt-2">
-              Acceptable
-            </Badge>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="h-4 w-4 text-orange-500" />
-              <span className="text-sm font-medium">Value at Risk (1d)</span>
-            </div>
-            <div className="text-2xl font-bold text-orange-500">${riskMetrics.valueAtRisk.toLocaleString()}</div>
-            <div className="text-sm text-muted-foreground">95% confidence</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Percent className="h-4 w-4 text-green-500" />
-              <span className="text-sm font-medium">Diversification</span>
-            </div>
-            <div className="text-2xl font-bold">{riskMetrics.diversificationScore}%</div>
-            <Progress value={riskMetrics.diversificationScore} className="mt-2" />
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Risk Alerts */}
+  if (error) {
+    return (
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            Risk Alerts
+            <WifiOff className="h-5 w-5 text-red-500" />
+            Order Book - Offline
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
-              <div>
-                <div className="font-medium text-yellow-800">High Concentration Risk</div>
-                <div className="text-sm text-yellow-700">
-                  85% of your portfolio is allocated to BTC. Consider diversifying.
-                </div>
+          <div className="text-sm text-red-500">Failed to load order book: {error}</div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Wifi className="h-5 w-5 text-green-500" />
+          Live Order Book
+        </CardTitle>
+        <CardDescription>Real-time market depth for {symbol}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {orderBook && (
+          <div className="space-y-4">
+            {/* Asks (Sell Orders) */}
+            <div>
+              <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                <span>Price (USD)</span>
+                <span>Amount</span>
+                <span>Total</span>
+              </div>
+              <div className="space-y-1">
+                {orderBook.asks.slice(0, 10).map(([price, amount], index) => (
+                  <div key={index} className="flex justify-between text-sm text-red-500">
+                    <span>${price.toLocaleString()}</span>
+                    <span>{amount.toFixed(4)}</span>
+                    <span>${(price * amount).toLocaleString()}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <Eye className="h-5 w-5 text-blue-600 mt-0.5" />
-              <div>
-                <div className="font-medium text-blue-800">Market Volatility Alert</div>
-                <div className="text-sm text-blue-700">
-                  Increased volatility detected. Consider reducing position sizes.
-                </div>
+            <Separator />
+
+            {/* Current Price */}
+            <div className="text-center py-2">
+              <div className="text-2xl font-bold">
+                ${orderBook.bids[0] ? ((orderBook.bids[0][0] + orderBook.asks[0][0]) / 2).toLocaleString() : "N/A"}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Spread: $
+                {orderBook.asks[0] && orderBook.bids[0]
+                  ? (orderBook.asks[0][0] - orderBook.bids[0][0]).toFixed(2)
+                  : "N/A"}
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Bids (Buy Orders) */}
+            <div>
+              <div className="space-y-1">
+                {orderBook.bids.slice(0, 10).map(([price, amount], index) => (
+                  <div key={index} className="flex justify-between text-sm text-green-500">
+                    <span>${price.toLocaleString()}</span>
+                    <span>{amount.toFixed(4)}</span>
+                    <span>${(price * amount).toLocaleString()}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+// Market Overview with Real Data
+const MarketOverview = () => {
+  const { marketData, loading, error } = useMarketData()
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i}>
+            <CardContent className="p-4">
+              <Skeleton className="h-10 w-10 rounded-full mx-auto mb-2" />
+              <Skeleton className="h-4 w-20 mx-auto mb-1" />
+              <Skeleton className="h-6 w-16 mx-auto" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return <div className="text-sm text-red-500">Error loading market data: {error}</div>
+  }
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <Card>
+        <CardContent className="p-4 flex flex-col items-center text-center">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+            <DollarSign className="h-5 w-5" />
+          </div>
+          <div className="text-sm font-medium">Market Cap</div>
+          <div className="text-xl font-bold">${(marketData.totalMarketCap / 1e12).toFixed(2)}T</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4 flex flex-col items-center text-center">
+          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-2">
+            <BarChart3 className="h-5 w-5" />
+          </div>
+          <div className="text-sm font-medium">24h Volume</div>
+          <div className="text-xl font-bold">${(marketData.totalVolume / 1e9).toFixed(1)}B</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4 flex flex-col items-center text-center">
+          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mb-2">
+            <PieChart className="h-5 w-5" />
+          </div>
+          <div className="text-sm font-medium">BTC Dominance</div>
+          <div className="text-xl font-bold">{marketData.btcDominance.toFixed(1)}%</div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4 flex flex-col items-center text-center">
+          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-2">
+            <Activity className="h-5 w-5" />
+          </div>
+          <div className="text-sm font-medium">Active Coins</div>
+          <div className="text-xl font-bold">{marketData.activeCoins.toLocaleString()}</div>
         </CardContent>
       </Card>
     </div>
   )
 }
 
-// Trading History Component
-const TradingHistory = () => {
-  const [trades, setTrades] = useState<Trade[]>([
-    {
-      id: "1",
-      symbol: "BTC",
-      type: "buy",
-      amount: 0.5,
-      price: 42000,
-      timestamp: new Date(Date.now() - 86400000),
-      status: "completed",
-      pnl: 783.95,
-    },
-    {
-      id: "2",
-      symbol: "ETH",
-      type: "sell",
-      amount: 2.0,
-      price: 2400,
-      timestamp: new Date(Date.now() - 172800000),
-      status: "completed",
-      pnl: -156.23,
-    },
-    {
-      id: "3",
-      symbol: "BTC",
-      type: "buy",
-      amount: 1.0,
-      price: 43500,
-      timestamp: new Date(Date.now() - 3600000),
-      status: "pending",
-    },
-  ])
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Clock className="h-5 w-5" />
-          Trading History
-        </CardTitle>
-        <CardDescription>Your recent trading activity</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {trades.map((trade) => (
-            <div key={trade.id} className="flex items-center justify-between p-3 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    trade.type === "buy" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
-                  }`}
-                >
-                  {trade.type === "buy" ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
-                </div>
-                <div>
-                  <div className="font-medium">
-                    {trade.type.toUpperCase()} {trade.amount} {trade.symbol}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    ${trade.price.toLocaleString()} • {trade.timestamp.toLocaleDateString()}
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <Badge
-                  variant={
-                    trade.status === "completed" ? "default" : trade.status === "pending" ? "secondary" : "destructive"
-                  }
-                >
-                  {trade.status}
-                </Badge>
-                {trade.pnl !== undefined && (
-                  <div className={`text-sm mt-1 ${trade.pnl >= 0 ? "text-green-500" : "text-red-500"}`}>
-                    {trade.pnl >= 0 ? "+" : ""}${trade.pnl.toFixed(2)}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-// Main Enhanced DAX Dashboard
+// Main Enhanced DAX Dashboard with Real Data
 export default function DaxDashboardClient() {
-  const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("overview")
+  const { assets, loading: assetsLoading } = useCryptoAssets(["bitcoin", "ethereum", "solana", "cardano", "polkadot"])
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div className="space-y-8">
-        <div className="flex justify-between items-center">
-          <div>
-            <Skeleton className="h-8 w-48 mb-2" />
-            <Skeleton className="h-4 w-64" />
-          </div>
-          <div className="flex gap-2">
-            <Skeleton className="h-10 w-24" />
-            <Skeleton className="h-10 w-32" />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Skeleton className="h-80 col-span-2" />
-          <Skeleton className="h-80" />
-        </div>
-      </div>
-    )
-  }
+  const tradingSymbols = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "ADA/USDT", "DOT/USDT"]
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Enhanced DAX Dashboard</h1>
-          <p className="text-muted-foreground">Advanced trading tools and portfolio analytics</p>
+      {/* Header with Live Price Ticker */}
+      <div className="space-y-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Live DAX Dashboard</h1>
+            <p className="text-muted-foreground">Real-time cryptocurrency trading and analytics</p>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Button>
+            <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+              <Activity className="mr-2 h-4 w-4" />
+              Live Trading
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </Button>
-          <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-            <Activity className="mr-2 h-4 w-4" />
-            Live Trading
-          </Button>
+
+        {/* Live Price Ticker */}
+        <div className="border rounded-lg p-4 bg-muted/30">
+          <div className="flex items-center gap-2 mb-3">
+            <Wifi className="h-4 w-4 text-green-500" />
+            <span className="text-sm font-medium">Live Market Prices</span>
+          </div>
+          <LivePriceTicker symbols={tradingSymbols} />
         </div>
       </div>
+
+      {/* Market Overview */}
+      <MarketOverview />
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -732,10 +472,64 @@ export default function DaxDashboardClient() {
         <TabsContent value="overview" className="mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <PortfolioAnalytics />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Top Cryptocurrencies</CardTitle>
+                  <CardDescription>Real-time market data from CoinGecko</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {assetsLoading ? (
+                    <div className="space-y-4">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Skeleton className="w-10 h-10 rounded-full" />
+                            <div>
+                              <Skeleton className="h-5 w-24 mb-1" />
+                              <Skeleton className="h-4 w-16" />
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <Skeleton className="h-5 w-20 mb-1" />
+                            <Skeleton className="h-4 w-12" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {assets.map((asset) => (
+                        <div
+                          key={asset.id}
+                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
+                              {asset.symbol.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="font-medium">{asset.name}</div>
+                              <div className="text-sm text-muted-foreground">{asset.symbol.toUpperCase()}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-medium">${asset.current_price.toLocaleString()}</div>
+                            <div
+                              className={`text-sm ${asset.price_change_percentage_24h >= 0 ? "text-green-500" : "text-red-500"}`}
+                            >
+                              {asset.price_change_percentage_24h >= 0 ? "+" : ""}
+                              {asset.price_change_percentage_24h.toFixed(2)}%
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </div>
             <div>
-              <OrderBook />
+              <LiveOrderBook symbol="BTCUSDT" />
             </div>
           </div>
         </TabsContent>
@@ -743,48 +537,82 @@ export default function DaxDashboardClient() {
         <TabsContent value="trading" className="mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TradingInterface />
-            <OrderBook />
+            <LiveOrderBook symbol="BTCUSDT" />
           </div>
         </TabsContent>
 
         <TabsContent value="analytics" className="mt-6">
-          <PortfolioAnalytics />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Portfolio Performance</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] flex items-center justify-center bg-muted/30 rounded-md">
+                  <span className="text-muted-foreground">Portfolio analytics with real data</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Market Trends</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] flex items-center justify-center bg-muted/30 rounded-md">
+                  <span className="text-muted-foreground">Market trend analysis</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="risk" className="mt-6">
-          <RiskManagement />
+          <Card>
+            <CardHeader>
+              <CardTitle>Risk Management</CardTitle>
+              <CardDescription>Monitor and manage your trading risks</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[400px] flex items-center justify-center bg-muted/30 rounded-md">
+                <span className="text-muted-foreground">Risk management tools</span>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="history" className="mt-6">
-          <TradingHistory />
+          <Card>
+            <CardHeader>
+              <CardTitle>Trading History</CardTitle>
+              <CardDescription>Your trading activity and performance</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[400px] flex items-center justify-center bg-muted/30 rounded-md">
+                <span className="text-muted-foreground">Trading history with real data</span>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="market" className="mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Market Overview</CardTitle>
+                <CardTitle>Market Analysis</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[400px] flex items-center justify-center bg-muted/30 rounded-md">
-                  <span className="text-muted-foreground">Market data visualization</span>
+                  <span className="text-muted-foreground">Advanced market analysis</span>
                 </div>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Market Sentiment</CardTitle>
+                <CardTitle>News & Sentiment</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span>Fear & Greed Index</span>
-                    <Badge variant="default">Greed (75)</Badge>
-                  </div>
-                  <Progress value={75} />
-                  <div className="text-sm text-muted-foreground">
-                    Market sentiment is currently showing greed, indicating potential overvaluation.
-                  </div>
+                <div className="h-[400px] flex items-center justify-center bg-muted/30 rounded-md">
+                  <span className="text-muted-foreground">Market news and sentiment</span>
                 </div>
               </CardContent>
             </Card>
