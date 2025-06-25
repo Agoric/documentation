@@ -41,14 +41,14 @@ const environments = [
         value: "/dashboard/home",
         label: "Dashboard Home",
         icon: Home,
-        description: "Main dashboard and overview",
+        description: "Main dashboard hub",
         shortcut: "Alt+H",
       },
       {
         value: "/dashboard",
-        label: "Analytics Dashboard",
+        label: "Main Dashboard",
         icon: BarChart3,
-        description: "Analytics and insights",
+        description: "Overview and analytics",
         shortcut: "Alt+1",
       },
       {
@@ -57,18 +57,6 @@ const environments = [
         icon: Building2,
         description: "Financial trading platform",
         shortcut: "Alt+2",
-      },
-    ],
-  },
-  {
-    category: "Real Estate",
-    items: [
-      {
-        value: "/real-estate",
-        label: "Real Estate Hub",
-        icon: Home,
-        description: "Property marketplace and loans",
-        shortcut: "Alt+R",
       },
     ],
   },
@@ -93,18 +81,6 @@ const environments = [
         icon: Gamepad2,
         description: "Rewards and achievements",
         shortcut: "Alt+4",
-      },
-    ],
-  },
-  {
-    category: "Onboarding",
-    items: [
-      {
-        value: "/onboarding",
-        label: "Financial Optimization",
-        icon: Users,
-        description: "Complete financial profile setup",
-        shortcut: "Alt+O",
       },
     ],
   },
