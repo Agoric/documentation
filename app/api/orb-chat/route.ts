@@ -76,3 +76,12 @@ ASSISTANT:`.trim()
 
   return NextResponse.json({ content: text })
 }
+
+// 👇 Add at the very bottom of the file
+export default async function handler(req: Request) {
+  // Only handle POST in this API route
+  if (req.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 })
+  }
+  return POST(req)
+}
