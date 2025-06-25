@@ -5,395 +5,396 @@ import { usePathname } from "next/navigation"
 import { generateText } from "ai"
 import { groq } from "@ai-sdk/groq"
 
-interface ConversationMessage {
+interface Message {
+  id: string
   role: "user" | "assistant"
   content: string
   timestamp: Date
-  context?: string
-}
-
-interface UserProfile {
-  creditScore: number
-  income: number
-  savings: number
-  goals: string[]
-  riskTolerance: "low" | "medium" | "high"
-  currentPage: string
-}
-
-interface AIResponse {
-  content: string
   actions?: Array<{
     label: string
-    action: () => void
-    icon?: React.ComponentType<{ className?: string }>
+    url: string
   }>
-  metadata?: {
-    confidence: number
-    sources?: string[]
-    calculations?: any
-  }
+  confidence?: number
+}
+
+interface Insight {
+  id: string
+  title: string
+  message: string
+  action: string
+  priority: "low" | "medium" | "high" | "featured"
+  context: string[]
+  timestamp: Date
 }
 
 export function useConversationalOrb() {
-  const [conversationHistory, setConversationHistory] = React.useState<ConversationMessage[]>([])
+  const [messages, setMessages] = React.useState<Message[]>([])
+  const [insights, setInsights] = React.useState<Insight[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
-  const [currentContext, setCurrentContext] = React.useState("")
-  const [quickResponses, setQuickResponses] = React.useState<string[]>([])
-
+  const [isListening, setIsListening] = React.useState(false)
+  const [isSpeaking, setIsSpeaking] = React.useState(false)
+  const [conversationContext, setConversationContext] = React.useState<string>("")
   const pathname = usePathname()
 
-  // Mock user profile - in real app, this would come from user data
-  const userProfile: UserProfile = {
+  // User profile for personalization
+  const userProfile = {
     creditScore: 750,
     income: 85000,
     savings: 25000,
-    goals: ["Buy a house", "Retirement planning", "Emergency fund"],
+    goals: ["home-purchase", "investment", "emergency-fund"],
     riskTolerance: "medium",
     currentPage: pathname,
   }
 
-  // Update context when page changes
-  React.useEffect(() => {
-    const pathSegments = pathname.split("/").filter(Boolean)
-    const context = pathSegments.join(" > ")
-    setCurrentContext(context)
-    updateQuickResponses(pathname)
-  }, [pathname])
+  // Generate contextual AI system prompt based on current page
+  const getSystemPrompt = React.useCallback(
+    (currentPath: string) => {
+      const basePrompt = `You are the Genius Guide, an AI financial assistant for the Snapifi Financial Platform. You provide expert advice on loans, investments, credit optimization, and real estate.
 
-  const updateQuickResponses = (path: string) => {
-    const responses = {
-      "real-estate": [
-        "What's my home buying budget?",
-        "Explain 50-year loan benefits",
-        "Find properties in my area",
-        "Calculate mortgage payments",
-      ],
-      "snap-dax": [
-        "Analyze my portfolio",
-        "What should I invest in?",
-        "Market outlook today",
-        "Rebalance recommendations",
-      ],
-      ecommerex: [
-        "Check my rewards balance",
-        "Find the best deals",
-        "Product recommendations",
-        "Exclusive member offers",
-      ],
-      default: ["Check my credit score", "Improve my finances", "Investment advice", "Loan options"],
-    }
-
-    const contextKey = path.includes("real-estate")
-      ? "real-estate"
-      : path.includes("snap-dax")
-        ? "snap-dax"
-        : path.includes("ecommerex")
-          ? "ecommerex"
-          : "default"
-
-    setQuickResponses(responses[contextKey])
-  }
-
-  const getSystemPrompt = (context: string, userProfile: UserProfile) => {
-    return `You are an expert AI financial assistant for Snapifi, a revolutionary financial platform. You help users with:
-
-CORE SERVICES:
-- 50-Year Revolutionary Loans (3.1% APR, lower monthly payments)
-- Real Estate Investment & Property Search
-- Credit Score Optimization & Monitoring  
-- Investment Portfolio Management (SNAP-DAX)
-- EcommereX Marketplace & Rewards
-- Financial Planning & Goal Setting
-
-USER PROFILE:
+User Profile:
 - Credit Score: ${userProfile.creditScore}
 - Annual Income: $${userProfile.income.toLocaleString()}
 - Savings: $${userProfile.savings.toLocaleString()}
 - Goals: ${userProfile.goals.join(", ")}
 - Risk Tolerance: ${userProfile.riskTolerance}
-- Current Page: ${context}
 
-PERSONALITY:
-- Friendly, knowledgeable, and trustworthy
-- Proactive with personalized recommendations
-- Explain complex financial concepts simply
-- Always promote Snapifi's unique 50-year loan advantage
-- Provide actionable, specific advice
+Key Platform Features to Promote:
+- Revolutionary 50-Year Loans at 3.1% APR (reduces monthly payments by 40%)
+- Credit optimization strategies
+- Real estate marketplace with holographic property views
+- Investment platform (SNAP-DAX)
+- EcommereX shopping with rewards
 
-CONTEXT AWARENESS:
-${getContextSpecificGuidance(context)}
+Current Context: ${currentPath}
 
-RESPONSE FORMAT:
-- Be conversational and helpful
-- Provide specific numbers and calculations when relevant
-- Suggest actionable next steps
-- Mention relevant Snapifi features and benefits
-- Keep responses concise but comprehensive
+Guidelines:
+1. Always be helpful, professional, and encouraging
+2. Provide specific, actionable advice
+3. Include relevant calculations when helpful
+4. Promote appropriate platform features
+5. Keep responses concise but comprehensive
+6. Include confidence level (0-100%) for recommendations
+7. Suggest specific next actions with button labels and URLs when relevant
 
-Always prioritize the user's financial wellbeing and highlight how Snapifi's innovative services can help achieve their goals.`
-  }
+Response Format:
+- Provide clear, actionable advice
+- Include confidence percentage
+- Suggest 1-2 specific actions with button labels and URLs
+- Use encouraging, professional tone`
 
-  const getContextSpecificGuidance = (context: string) => {
-    if (context.includes("real-estate")) {
-      return `USER IS BROWSING REAL ESTATE:
-- Emphasize 50-year loan benefits (40% lower payments vs 30-year)
-- Calculate affordability based on their income
-- Suggest properties within budget
-- Explain pre-approval process
-- Highlight investment potential`
-    }
+      // Add page-specific context
+      if (currentPath.includes("/real-estate")) {
+        return (
+          basePrompt +
+          `\n\nCurrent Focus: Real Estate - Emphasize property search, 50-year loans, affordability calculations, and market insights.`
+        )
+      } else if (currentPath.includes("/dashboard/snap-dax")) {
+        return (
+          basePrompt +
+          `\n\nCurrent Focus: Trading/Investments - Focus on portfolio optimization, market analysis, and investment strategies.`
+        )
+      } else if (currentPath.includes("/ecommerex")) {
+        return (
+          basePrompt +
+          `\n\nCurrent Focus: Shopping - Highlight rewards optimization, exclusive deals, and platform citizen benefits.`
+        )
+      } else if (currentPath.includes("/dashboard")) {
+        return (
+          basePrompt +
+          `\n\nCurrent Focus: Financial Dashboard - Provide comprehensive financial health analysis and optimization strategies.`
+        )
+      }
 
-    if (context.includes("snap-dax")) {
-      return `USER IS ON TRADING PLATFORM:
-- Analyze portfolio allocation
-- Suggest diversification strategies
-- Explain market trends and opportunities
-- Recommend based on risk tolerance
-- Discuss long-term vs short-term strategies`
-    }
-
-    if (context.includes("ecommerex")) {
-      return `USER IS SHOPPING:
-- Check rewards balance and expiration
-- Suggest products based on purchase history
-- Highlight exclusive member deals
-- Explain cashback and points system
-- Recommend budget-friendly options`
-    }
-
-    return `GENERAL FINANCIAL GUIDANCE:
-- Assess overall financial health
-- Suggest improvements for credit score
-- Recommend savings strategies
-- Explain investment options
-- Promote 50-year loan advantages`
-  }
-
-  const sendMessage = async (
-    message: string,
-    options: {
-      context: string
-      userProfile: UserProfile
-      conversationHistory: ConversationMessage[]
+      return basePrompt
     },
-  ): Promise<AIResponse> => {
-    setIsLoading(true)
+    [pathname],
+  )
 
-    try {
-      const systemPrompt = getSystemPrompt(options.context, options.userProfile)
+  // Send message to AI
+  const sendMessage = React.useCallback(
+    async (userMessage: string) => {
+      setIsLoading(true)
 
-      const conversationContext = options.conversationHistory
-        .slice(-10) // Keep last 10 messages for context
-        .map((msg) => `${msg.role}: ${msg.content}`)
-        .join("\n")
+      // Add user message
+      const userMsg: Message = {
+        id: Date.now().toString(),
+        role: "user",
+        content: userMessage,
+        timestamp: new Date(),
+      }
 
-      const fullPrompt = `${systemPrompt}
+      setMessages((prev) => [...prev, userMsg])
 
-CONVERSATION HISTORY:
-${conversationContext}
+      try {
+        // Generate AI response
+        const { text } = await generateText({
+          model: groq("llama-3.1-70b-versatile"),
+          system: getSystemPrompt(pathname),
+          messages: [
+            ...messages.map((msg) => ({
+              role: msg.role,
+              content: msg.content,
+            })),
+            {
+              role: "user",
+              content: userMessage,
+            },
+          ],
+          temperature: 0.7,
+          maxTokens: 500,
+        })
 
-USER MESSAGE: ${message}
+        // Parse response for actions and confidence
+        const actions = extractActions(text, pathname)
+        const confidence = extractConfidence(text)
 
-Provide a helpful, personalized response based on the user's profile and current context. Include specific recommendations and actionable advice.`
-
-      const { text } = await generateText({
-        model: groq("llama-3.1-70b-versatile"),
-        prompt: fullPrompt,
-        temperature: 0.7,
-        maxTokens: 500,
-      })
-
-      // Add to conversation history
-      const newMessages: ConversationMessage[] = [
-        {
-          role: "user",
-          content: message,
-          timestamp: new Date(),
-          context: options.context,
-        },
-        {
+        // Add AI response
+        const aiMsg: Message = {
+          id: (Date.now() + 1).toString(),
           role: "assistant",
           content: text,
           timestamp: new Date(),
-          context: options.context,
-        },
+          actions,
+          confidence,
+        }
+
+        setMessages((prev) => [...prev, aiMsg])
+      } catch (error) {
+        console.error("Failed to generate AI response:", error)
+
+        // Add error message
+        const errorMsg: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content:
+            "I apologize, but I'm having trouble processing your request right now. Please try again in a moment, or feel free to explore our platform features directly.",
+          timestamp: new Date(),
+          actions: [
+            { label: "View Properties", url: "/real-estate" },
+            { label: "Check Credit", url: "/dashboard/credit" },
+          ],
+        }
+
+        setMessages((prev) => [...prev, errorMsg])
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [messages, pathname, getSystemPrompt],
+  )
+
+  // Extract action buttons from AI response
+  const extractActions = (text: string, currentPath: string): Array<{ label: string; url: string }> => {
+    const actions: Array<{ label: string; url: string }> = []
+
+    // Common actions based on content keywords
+    if (
+      text.toLowerCase().includes("property") ||
+      text.toLowerCase().includes("home") ||
+      text.toLowerCase().includes("real estate")
+    ) {
+      actions.push({ label: "View Properties", url: "/real-estate" })
+    }
+
+    if (
+      text.toLowerCase().includes("loan") ||
+      text.toLowerCase().includes("mortgage") ||
+      text.toLowerCase().includes("50-year")
+    ) {
+      actions.push({ label: "Apply for Loan", url: "/real-estate/loans" })
+    }
+
+    if (text.toLowerCase().includes("credit") || text.toLowerCase().includes("score")) {
+      actions.push({ label: "Check Credit", url: "/dashboard/credit" })
+    }
+
+    if (
+      text.toLowerCase().includes("invest") ||
+      text.toLowerCase().includes("portfolio") ||
+      text.toLowerCase().includes("trading")
+    ) {
+      actions.push({ label: "Start Trading", url: "/dashboard/snap-dax" })
+    }
+
+    if (text.toLowerCase().includes("calculate") || text.toLowerCase().includes("payment")) {
+      actions.push({ label: "Use Calculator", url: "/tools/calculator" })
+    }
+
+    return actions.slice(0, 2) // Limit to 2 actions
+  }
+
+  // Extract confidence level from AI response
+  const extractConfidence = (text: string): number => {
+    const confidenceMatch = text.match(/confidence[:\s]*(\d+)%?/i)
+    if (confidenceMatch) {
+      return Number.parseInt(confidenceMatch[1])
+    }
+    return 85 // Default confidence
+  }
+
+  // Get contextual suggestions based on current page
+  const getContextualSuggestions = React.useCallback((currentPath: string) => {
+    const baseSuggestions = [
+      "What's my home buying budget?",
+      "How can I improve my credit score?",
+      "Should I refinance my mortgage?",
+      "What's the best investment strategy for me?",
+    ]
+
+    if (currentPath.includes("/real-estate")) {
+      return [
+        "What's my home buying budget with a 50-year loan?",
+        "Show me properties in my price range",
+        "How much can I save with your 50-year loan?",
+        "What are current mortgage rates?",
+        "Calculate my monthly payment",
       ]
-
-      setConversationHistory((prev) => [...prev, ...newMessages])
-
-      // Generate contextual actions based on response
-      const actions = generateContextualActions(text, options.context)
-
-      return {
-        content: text,
-        actions,
-        metadata: {
-          confidence: 0.85,
-          sources: ["Snapifi AI", "Financial Database"],
-        },
-      }
-    } catch (error) {
-      console.error("AI conversation error:", error)
-      throw new Error("Failed to process your message. Please try again.")
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const generateContextualActions = (response: string, context: string) => {
-    const actions = []
-
-    // Loan-related actions
-    if (response.toLowerCase().includes("loan") || response.toLowerCase().includes("mortgage")) {
-      actions.push({
-        label: "Apply for 50-Year Loan",
-        action: () => (window.location.href = "/real-estate/loans/apply"),
-      })
-      actions.push({
-        label: "Loan Calculator",
-        action: () => (window.location.href = "/real-estate/calculator"),
-      })
+    } else if (currentPath.includes("/dashboard/snap-dax")) {
+      return [
+        "Should I rebalance my portfolio?",
+        "What are the best investment opportunities?",
+        "How can I reduce investment risk?",
+        "Analyze my current portfolio performance",
+        "What's the market outlook?",
+      ]
+    } else if (currentPath.includes("/ecommerex")) {
+      return [
+        "How can I maximize my rewards points?",
+        "What exclusive deals are available?",
+        "Show me platform citizen benefits",
+        "How do I earn more rewards?",
+        "What's trending in the marketplace?",
+      ]
+    } else if (currentPath.includes("/dashboard")) {
+      return [
+        "What's my overall financial health?",
+        "How can I optimize my finances?",
+        "What goals should I focus on?",
+        "Show me ways to save money",
+        "Analyze my spending patterns",
+      ]
     }
 
-    // Property-related actions
-    if (response.toLowerCase().includes("property") || response.toLowerCase().includes("house")) {
-      actions.push({
-        label: "Search Properties",
-        action: () => (window.location.href = "/real-estate"),
-      })
-    }
+    return baseSuggestions
+  }, [])
 
-    // Investment-related actions
-    if (response.toLowerCase().includes("invest") || response.toLowerCase().includes("portfolio")) {
-      actions.push({
-        label: "View Portfolio",
-        action: () => (window.location.href = "/dashboard/snap-dax"),
-      })
-    }
+  // Clear conversation
+  const clearConversation = React.useCallback(() => {
+    setMessages([])
+    setConversationContext("")
+  }, [])
 
-    // Credit-related actions
-    if (response.toLowerCase().includes("credit") || response.toLowerCase().includes("score")) {
-      actions.push({
-        label: "Check Credit Score",
-        action: () => (window.location.href = "/dashboard/credit"),
-      })
-    }
-
-    return actions.slice(0, 3) // Limit to 3 actions
-  }
-
-  const startVoiceInput = (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
-        reject(new Error("Speech recognition not supported"))
-        return
-      }
-
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
-      const recognition = new SpeechRecognition()
-
-      recognition.continuous = false
-      recognition.interimResults = false
-      recognition.lang = "en-US"
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript
-        resolve(transcript)
-      }
-
-      recognition.onerror = (event) => {
-        reject(new Error(`Speech recognition error: ${event.error}`))
-      }
-
-      recognition.start()
-    })
-  }
-
-  const stopVoiceInput = () => {
-    // Implementation for stopping voice input
-  }
-
-  const speakResponse = async (text: string) => {
+  // Text-to-speech
+  const speakText = React.useCallback(async (text: string) => {
     if ("speechSynthesis" in window) {
+      setIsSpeaking(true)
+
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.rate = 0.9
-      utterance.pitch = 1.0
+      utterance.pitch = 1.1
       utterance.volume = 0.8
 
-      // Use a pleasant voice if available
+      // Use a more pleasant voice if available
       const voices = speechSynthesis.getVoices()
-      const preferredVoice = voices.find((voice) => voice.name.includes("Google") || voice.name.includes("Microsoft"))
+      const preferredVoice = voices.find(
+        (voice) => voice.name.includes("Google") || voice.name.includes("Microsoft") || voice.name.includes("Samantha"),
+      )
       if (preferredVoice) {
         utterance.voice = preferredVoice
       }
 
+      utterance.onend = () => setIsSpeaking(false)
+      utterance.onerror = () => setIsSpeaking(false)
+
       speechSynthesis.speak(utterance)
     }
-  }
+  }, [])
 
-  const clearConversation = () => {
-    setConversationHistory([])
-  }
+  // Speech-to-text
+  const startListening = React.useCallback((): Promise<string | null> => {
+    return new Promise((resolve) => {
+      if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+        const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+        const recognition = new SpeechRecognition()
 
-  const saveConversation = () => {
-    const conversationData = {
-      timestamp: new Date().toISOString(),
-      messages: conversationHistory,
-      context: currentContext,
+        recognition.continuous = false
+        recognition.interimResults = false
+        recognition.lang = "en-US"
+
+        setIsListening(true)
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript
+          setIsListening(false)
+          resolve(transcript)
+        }
+
+        recognition.onerror = () => {
+          setIsListening(false)
+          resolve(null)
+        }
+
+        recognition.onend = () => {
+          setIsListening(false)
+        }
+
+        recognition.start()
+      } else {
+        resolve(null)
+      }
+    })
+  }, [])
+
+  const stopListening = React.useCallback(() => {
+    setIsListening(false)
+  }, [])
+
+  // Generate contextual insights based on current page
+  React.useEffect(() => {
+    const generateInsights = () => {
+      const newInsights: Insight[] = []
+
+      if (pathname.includes("/real-estate")) {
+        newInsights.push({
+          id: "property-opportunity",
+          title: "Property Market Alert",
+          message: "3 new properties matching your criteria were listed today. Interest rates may rise next month.",
+          action: "View Properties",
+          priority: "high",
+          context: ["real-estate"],
+          timestamp: new Date(),
+        })
+      }
+
+      if (pathname.includes("/dashboard")) {
+        newInsights.push({
+          id: "credit-optimization",
+          title: "Credit Score Boost",
+          message: "Paying down $500 on your credit card could increase your score by 15-20 points within 30 days.",
+          action: "Optimize Credit",
+          priority: "medium",
+          context: ["dashboard", "credit"],
+          timestamp: new Date(),
+        })
+      }
+
+      setInsights(newInsights)
     }
 
-    // Save to localStorage or send to backend
-    localStorage.setItem(`snapifi-conversation-${Date.now()}`, JSON.stringify(conversationData))
-  }
-
-  const getContextualPrompts = () => {
-    const prompts = {
-      "real-estate": [
-        "What's my maximum home buying budget?",
-        "How much can I save with a 50-year loan?",
-        "Show me properties under $400k",
-      ],
-      "snap-dax": [
-        "Should I rebalance my portfolio?",
-        "What's the market outlook for tech stocks?",
-        "How can I reduce investment risk?",
-      ],
-      ecommerex: [
-        "What rewards do I have available?",
-        "Find me the best electronics deals",
-        "How can I maximize my cashback?",
-      ],
-      default: [
-        "How can I improve my credit score?",
-        "What's the best savings strategy for me?",
-        "Should I refinance my current loan?",
-      ],
-    }
-
-    const contextKey = pathname.includes("real-estate")
-      ? "real-estate"
-      : pathname.includes("snap-dax")
-        ? "snap-dax"
-        : pathname.includes("ecommerex")
-          ? "ecommerex"
-          : "default"
-
-    return prompts[contextKey]
-  }
+    generateInsights()
+  }, [pathname])
 
   return {
-    sendMessage,
+    messages,
+    insights,
     isLoading,
-    conversationHistory,
-    currentContext,
-    userProfile,
-    quickResponses,
-    startVoiceInput,
-    stopVoiceInput,
-    speakResponse,
+    isListening,
+    isSpeaking,
+    sendMessage,
     clearConversation,
-    saveConversation,
-    getContextualPrompts,
+    speakText,
+    startListening,
+    stopListening,
+    getContextualSuggestions,
   }
 }
