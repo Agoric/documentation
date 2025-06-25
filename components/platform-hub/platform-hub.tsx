@@ -36,7 +36,7 @@ const platformEnvironments = {
       href: "/dashboard/home",
       variant: "hologram" as const,
       stats: "12 Active Goals",
-      gradient: "from-emerald-400 to-teal-500",
+      gradient: "from-yellow-400 to-yellow-600",
     },
     {
       id: "analytics",
@@ -46,7 +46,7 @@ const platformEnvironments = {
       href: "/dashboard/analytics",
       variant: "quantum" as const,
       stats: "98.7% Accuracy",
-      gradient: "from-purple-400 to-pink-500",
+      gradient: "from-yellow-300 to-yellow-500",
     },
     {
       id: "portfolio",
@@ -56,7 +56,7 @@ const platformEnvironments = {
       href: "/dashboard/portfolio",
       variant: "plasma" as const,
       stats: "$2.4M Managed",
-      gradient: "from-orange-400 to-red-500",
+      gradient: "from-yellow-500 to-yellow-700",
     },
     {
       id: "planning",
@@ -66,7 +66,7 @@ const platformEnvironments = {
       href: "/dashboard/financial-planning",
       variant: "glass" as const,
       stats: "15 Year Horizon",
-      gradient: "from-indigo-400 to-purple-500",
+      gradient: "from-yellow-200 to-yellow-400",
     },
   ],
   commerce: [
@@ -78,7 +78,7 @@ const platformEnvironments = {
       href: "/dashboard/ecommerex/holographic-products",
       variant: "hologram" as const,
       stats: "1.2K Products",
-      gradient: "from-green-400 to-emerald-500",
+      gradient: "from-yellow-400 to-yellow-600",
     },
     {
       id: "marketplace",
@@ -88,7 +88,7 @@ const platformEnvironments = {
       href: "/commerce/marketplace",
       variant: "neon" as const,
       stats: "847 Vendors",
-      gradient: "from-cyan-400 to-blue-500",
+      gradient: "from-yellow-300 to-yellow-500",
     },
     {
       id: "real-estate",
@@ -98,7 +98,7 @@ const platformEnvironments = {
       href: "/real-estate",
       variant: "neural" as const,
       stats: "2.1K Properties",
-      gradient: "from-teal-400 to-green-500",
+      gradient: "from-yellow-500 to-yellow-700",
     },
     {
       id: "snap-dax",
@@ -108,7 +108,7 @@ const platformEnvironments = {
       href: "/dashboard/snap-dax",
       variant: "neon" as const,
       stats: "+24.7% Today",
-      gradient: "from-blue-400 to-cyan-500",
+      gradient: "from-yellow-400 to-yellow-600",
     },
   ],
   rewards: [
@@ -120,7 +120,7 @@ const platformEnvironments = {
       href: "/dashboard/gamification",
       variant: "plasma" as const,
       stats: "Level 47",
-      gradient: "from-yellow-400 to-orange-500",
+      gradient: "from-yellow-400 to-yellow-600",
     },
   ],
   legal: [
@@ -132,7 +132,7 @@ const platformEnvironments = {
       href: "/legal",
       variant: "quantum" as const,
       stats: "100% Compliant",
-      gradient: "from-violet-400 to-purple-500",
+      gradient: "from-yellow-300 to-yellow-500",
     },
     {
       id: "compliance",
@@ -142,7 +142,7 @@ const platformEnvironments = {
       href: "/legal/compliance",
       variant: "glass" as const,
       stats: "Zero Violations",
-      gradient: "from-slate-400 to-gray-500",
+      gradient: "from-yellow-200 to-yellow-400",
     },
   ],
   admin: [
@@ -154,7 +154,7 @@ const platformEnvironments = {
       href: "/admin/dashboard",
       variant: "neural" as const,
       stats: "99.9% Uptime",
-      gradient: "from-red-400 to-pink-500",
+      gradient: "from-yellow-500 to-yellow-700",
     },
   ],
 }
@@ -165,20 +165,20 @@ export function PlatformHub() {
   const [hoveredCard, setHoveredCard] = React.useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent,rgba(120,119,198,0.05),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent,rgba(255,215,0,0.05),transparent)]" />
 
-        {/* Floating Orbs */}
+        {/* Floating Gold Orbs */}
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-32 h-32 rounded-full opacity-10"
             style={{
               background: `radial-gradient(circle, ${
-                i % 3 === 0 ? "#06b6d4" : i % 3 === 1 ? "#8b5cf6" : "#10b981"
+                i % 3 === 0 ? "#ffd700" : i % 3 === 1 ? "#ffed4e" : "#fbbf24"
               }, transparent)`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -213,38 +213,38 @@ export function PlatformHub() {
 
         {/* Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-12 bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-2">
+          <TabsList className="grid w-full grid-cols-5 mb-12 bg-black/40 backdrop-blur-xl border border-yellow-400/20 rounded-2xl p-2">
             <TabsTrigger
               value="dashboard"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
             >
               <Rocket className="w-4 h-4 mr-2" />
               Command
             </TabsTrigger>
             <TabsTrigger
               value="commerce"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
             >
               <ShoppingBag className="w-4 h-4 mr-2" />
               Commerce
             </TabsTrigger>
             <TabsTrigger
               value="rewards"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-orange-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
             >
               <Trophy className="w-4 h-4 mr-2" />
               Honors
             </TabsTrigger>
             <TabsTrigger
               value="legal"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
             >
               <Scale className="w-4 h-4 mr-2" />
               Legal
             </TabsTrigger>
             <TabsTrigger
               value="admin"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-pink-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
             >
               <Settings className="w-4 h-4 mr-2" />
               System
@@ -277,22 +277,22 @@ export function PlatformHub() {
                           {env.icon}
                         </div>
                         <div className="text-right">
-                          <div className="text-xs text-slate-400 mb-1">STATUS</div>
-                          <div className="text-sm font-semibold text-emerald-400">{env.stats}</div>
+                          <div className="text-xs text-yellow-600 mb-1">STATUS</div>
+                          <div className="text-sm font-semibold text-yellow-400">{env.stats}</div>
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 mb-6">
-                        <h3 className="text-xl font-bold text-white mb-3 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                        <h3 className="text-xl font-bold text-yellow-400 mb-3 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
                           {env.title}
                         </h3>
-                        <p className="text-slate-300 text-sm leading-relaxed">{env.description}</p>
+                        <p className="text-yellow-200 text-sm leading-relaxed">{env.description}</p>
                       </div>
 
                       {/* Action Button */}
                       <QuantumButton
-                        variant={env.variant === "glass" ? "secondary" : env.variant}
+                        variant={env.variant === "glass" ? "secondary" : "primary"}
                         size="md"
                         className="w-full"
                         onClick={() => (window.location.href = env.href)}
@@ -318,8 +318,8 @@ export function PlatformHub() {
           >
             <FuturisticCard variant="neon" className="px-4 py-2">
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                <span className="text-cyan-400 font-medium">DEMO MODE ACTIVE</span>
+                <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                <span className="text-yellow-400 font-medium">DEMO MODE ACTIVE</span>
               </div>
             </FuturisticCard>
           </motion.div>
@@ -336,11 +336,11 @@ export function PlatformHub() {
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
                 <Zap className="w-3 h-3 text-yellow-400" />
-                <span className="text-slate-300">QUANTUM: ONLINE</span>
+                <span className="text-yellow-300">QUANTUM: ONLINE</span>
               </div>
               <div className="flex items-center gap-2">
-                <Brain className="w-3 h-3 text-purple-400" />
-                <span className="text-slate-300">AI: ACTIVE</span>
+                <Brain className="w-3 h-3 text-yellow-400" />
+                <span className="text-yellow-300">AI: ACTIVE</span>
               </div>
             </div>
           </FuturisticCard>

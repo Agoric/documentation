@@ -18,35 +18,35 @@ interface FuturisticCardProps {
 
 const cardVariants = {
   glass: {
-    background: "rgba(255, 255, 255, 0.02)",
-    border: "1px solid rgba(255, 255, 255, 0.05)",
+    background: "rgba(255, 215, 0, 0.03)",
+    border: "1px solid rgba(255, 215, 0, 0.1)",
     backdropFilter: "blur(20px)",
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.8)",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.1)",
   },
   neon: {
-    background: "linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.1))",
-    border: "1px solid rgba(6, 182, 212, 0.3)",
-    boxShadow: "0 0 20px rgba(6, 182, 212, 0.3), inset 0 0 20px rgba(168, 85, 247, 0.1)",
+    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.05))",
+    border: "1px solid rgba(255, 215, 0, 0.3)",
+    boxShadow: "0 0 20px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.1)",
   },
   hologram: {
-    background: "linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1))",
-    border: "1px solid rgba(34, 197, 94, 0.3)",
-    boxShadow: "0 0 30px rgba(34, 197, 94, 0.2)",
+    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.1), rgba(251, 191, 36, 0.1))",
+    border: "1px solid rgba(255, 215, 0, 0.4)",
+    boxShadow: "0 0 30px rgba(255, 215, 0, 0.3)",
   },
   neural: {
-    background: "linear-gradient(135deg, rgba(5, 8, 15, 0.95), rgba(10, 15, 25, 0.9))",
-    border: "1px solid rgba(148, 163, 184, 0.1)",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.8)",
+    background: "linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(10, 10, 0, 0.9))",
+    border: "1px solid rgba(255, 215, 0, 0.2)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 215, 0, 0.1)",
   },
   quantum: {
-    background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1))",
-    border: "1px solid rgba(139, 92, 246, 0.3)",
-    boxShadow: "0 0 25px rgba(139, 92, 246, 0.3)",
+    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.1))",
+    border: "1px solid rgba(255, 215, 0, 0.3)",
+    boxShadow: "0 0 25px rgba(255, 215, 0, 0.3)",
   },
   plasma: {
-    background: "linear-gradient(135deg, rgba(251, 113, 133, 0.1), rgba(249, 115, 22, 0.1), rgba(234, 179, 8, 0.1))",
-    border: "1px solid rgba(251, 113, 133, 0.3)",
-    boxShadow: "0 0 25px rgba(251, 113, 133, 0.2)",
+    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 237, 78, 0.1), rgba(251, 191, 36, 0.1))",
+    border: "1px solid rgba(255, 215, 0, 0.4)",
+    boxShadow: "0 0 25px rgba(255, 215, 0, 0.4)",
   },
 }
 
@@ -95,9 +95,7 @@ export function FuturisticCard({
         <motion.div
           className="absolute inset-0 rounded-inherit"
           style={{
-            background: `conic-gradient(from 0deg at 50% 50%, transparent, ${
-              variant === "neon" ? "#06b6d4" : variant === "hologram" ? "#22c55e" : "#8b5cf6"
-            }, transparent)`,
+            background: `conic-gradient(from 0deg at 50% 50%, transparent, #ffd700, transparent)`,
             padding: "1px",
           }}
           animate={{ rotate: 360 }}
@@ -113,7 +111,7 @@ export function FuturisticCard({
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+              className="absolute w-1 h-1 bg-yellow-400 rounded-full"
               initial={{
                 x: mousePosition.x,
                 y: mousePosition.y,
@@ -140,7 +138,7 @@ export function FuturisticCard({
           animate={{ opacity: 0.3 }}
           exit={{ opacity: 0 }}
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.1), transparent 50%)`,
+            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 215, 0, 0.2), transparent 50%)`,
           }}
         />
       )}
@@ -151,7 +149,7 @@ export function FuturisticCard({
       {/* Scan Line Effect */}
       {animated && (
         <motion.div
-          className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50"
+          className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-50"
           animate={{
             y: isHovered ? [0, 300, 0] : 0,
           }}
