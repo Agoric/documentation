@@ -1,51 +1,28 @@
 import type React from "react"
-import type { Metadata } from "next"
-import "./globals.css"
+import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import { GamificationProvider } from "@/contexts/gamification-context"
-import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
-import { EnvironmentDropdown } from "@/components/ui/environment-dropdown"
-import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
-import { ConversationalGeniusOrb } from "@/components/genius-guide-orb/conversational-genius-orb"
+import { GoalPrioritizingOrb } from "@/components/genius-guide-orb/goal-prioritizing-orb"
+import "./globals.css"
 
-export const metadata: Metadata = {
-  title: "Inclusive Lending and Credit Empirical Authority",
-  description:
-    "New World Wealth Navigation Assistant. Introducing the Benefits of Economic Global Citizenship, Welcome Home",
-  generator: "v0.dev",
+const inter = Inter({ subsets: ["latin"] })
+
+export const metadata = {
+  title: "Snapifi Financial Platform",
+  description: "Revolutionary financial platform with 50-year loans and holographic experiences",
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <GamificationProvider>
-            <ProductComparisonProvider>
-              <div className="flex h-screen">
-                {/* Sidebar */}
-                <EnvironmentSidebar />
-
-                {/* Main Content */}
-                <div className="flex-1 flex flex-col">
-                  {/* Top Navigation */}
-                  <div className="fixed top-4 right-4 z-50">
-                    <EnvironmentDropdown />
-                  </div>
-
-                  {/* Page Content */}
-                  <main className="flex-1 overflow-auto">{children}</main>
-                </div>
-              </div>
-
-              {/* Conversational Genius Guide Orb - Always Available */}
-              <ConversationalGeniusOrb />
-            </ProductComparisonProvider>
-          </GamificationProvider>
+          {children}
+          <GoalPrioritizingOrb />
         </ThemeProvider>
       </body>
     </html>
