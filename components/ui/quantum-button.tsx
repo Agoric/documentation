@@ -5,11 +5,12 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 interface QuantumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost" | "neon" | "hologram" | "plasma"
+  variant?: "primary" | "secondary" | "ghost" | "neon" | "hologram" | "plasma" | "gold-highlight"
   size?: "sm" | "md" | "lg" | "xl"
   loading?: boolean
   icon?: React.ReactNode
   children: React.ReactNode
+  premium?: boolean
 }
 
 const buttonVariants = {
@@ -49,6 +50,12 @@ const buttonVariants = {
     border: "1px solid rgba(0, 71, 171, 0.5)",
     boxShadow: "0 0 25px rgba(0, 71, 171, 0.6)",
   },
+  "gold-highlight": {
+    background: "linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24)",
+    color: "#000000",
+    border: "1px solid rgba(255, 215, 0, 0.5)",
+    boxShadow: "0 0 20px rgba(255, 215, 0, 0.4), 0 0 10px rgba(0, 71, 171, 0.2)",
+  },
 }
 
 const sizeClasses = {
@@ -66,13 +73,16 @@ export function QuantumButton({
   children,
   className,
   disabled,
+  premium = false,
   ...props
 }: QuantumButtonProps) {
   const [isHovered, setIsHovered] = React.useState(false)
   const [isPressed, setIsPressed] = React.useState(false)
 
+  const effectiveVariant = premium ? "gold-highlight" : variant
   const variantStyles =
-    (buttonVariants as Record<string, (typeof buttonVariants)["primary"]>)[variant] ?? buttonVariants["primary"]
+    (buttonVariants as Record<string, (typeof buttonVariants)["primary"]>)[effectiveVariant] ??
+    buttonVariants["primary"]
 
   return (
     <motion.button
@@ -80,6 +90,7 @@ export function QuantumButton({
         "relative overflow-hidden font-medium transition-all duration-300 backdrop-blur-sm",
         sizeClasses[size],
         disabled && "opacity-50 cursor-not-allowed",
+        premium && "font-bold",
         className,
       )}
       style={variantStyles}
@@ -93,6 +104,11 @@ export function QuantumButton({
       disabled={disabled || loading}
       {...props}
     >
+      {/* Premium Gold Corner Accent */}
+      {premium && (
+        <div className="absolute top-0 right-0 w-3 h-3 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-bl-lg" />
+      )}
+
       {/* Animated Background */}
       <motion.div
         className="absolute inset-0"
@@ -100,7 +116,9 @@ export function QuantumButton({
           background: isHovered
             ? [
                 variantStyles.background,
-                variant === "primary" ? "linear-gradient(135deg, #0066CC, #0047AB, #0080FF)" : variantStyles.background,
+                effectiveVariant === "gold-highlight"
+                  ? "linear-gradient(135deg, #ffed4e, #ffd700, #fbbf24)"
+                  : "linear-gradient(135deg, #0066CC, #0047AB, #0080FF)",
                 variantStyles.background,
               ]
             : variantStyles.background,
@@ -111,7 +129,7 @@ export function QuantumButton({
       {/* Ripple Effect */}
       {isPressed && (
         <motion.div
-          className="absolute inset-0 bg-blue-400/30 rounded-inherit"
+          className={cn("absolute inset-0 rounded-inherit", premium ? "bg-yellow-400/30" : "bg-blue-400/30")}
           initial={{ scale: 0, opacity: 1 }}
           animate={{ scale: 2, opacity: 0 }}
           transition={{ duration: 0.6 }}
@@ -123,7 +141,11 @@ export function QuantumButton({
         className="absolute inset-0 rounded-inherit"
         animate={{
           boxShadow: isHovered
-            ? [variantStyles.boxShadow, `0 0 40px rgba(0, 71, 171, 0.8)`, variantStyles.boxShadow]
+            ? [
+                variantStyles.boxShadow,
+                premium ? `0 0 40px rgba(255, 215, 0, 0.8)` : `0 0 40px rgba(0, 71, 171, 0.8)`,
+                variantStyles.boxShadow,
+              ]
             : variantStyles.boxShadow,
         }}
         transition={{ duration: 2, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
@@ -145,7 +167,10 @@ export function QuantumButton({
 
       {/* Scan Line */}
       <motion.div
-        className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+        className={cn(
+          "absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent to-transparent",
+          premium ? "via-yellow-400" : "via-blue-400",
+        )}
         animate={{
           x: isHovered ? ["-100%", "100%"] : "-100%",
         }}
