@@ -493,6 +493,7 @@ export function RealEstateMarketplace() {
         {/* Property Grid */}
         <div className="container mx-auto px-6">
           <StreamingPropertyGrid
+            properties={sortedProperties}
             location={searchQuery}
             minPrice={priceRange !== "all" ? getPriceRange(priceRange)[0] || undefined : undefined}
             maxPrice={priceRange !== "all" ? getPriceRange(priceRange)[1] || undefined : undefined}
