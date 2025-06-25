@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { GoalPrioritizingOrb } from "@/components/genius-guide-orb/goal-prioritizing-orb"
 import "./globals.css"
+import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,7 +22,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {children}
+          <div className="flex h-screen">
+            <EnvironmentSidebar />
+            <main className="flex-1 overflow-auto">{children}</main>
+          </div>
           <GoalPrioritizingOrb />
         </ThemeProvider>
       </body>
