@@ -33,6 +33,8 @@ import {
   List,
   Clock,
   Bookmark,
+  Package,
+  Calculator,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -118,7 +120,7 @@ const environments: Environment[] = [
         id: "portfolio",
         name: "Portfolio Management",
         description: "Manage and optimize your investment portfolio",
-        path: "/dashboard/snap-dax#portfolio",
+        path: "/dashboard/portfolio",
         icon: Briefcase,
       },
       {
@@ -134,6 +136,89 @@ const environments: Environment[] = [
         description: "Real-time market data and insights",
         path: "/dashboard/snap-dax#analysis",
         icon: Activity,
+      },
+    ],
+  },
+  {
+    id: "analytics-reports",
+    name: "Analytics & Reports",
+    description: "Comprehensive insights into your financial performance and platform analytics",
+    path: "/dashboard/analytics",
+    icon: BarChart3,
+    category: "Main Platform",
+    color: "from-indigo-500/20 to-blue-500/20",
+    subEnvironments: [
+      {
+        id: "performance-metrics",
+        name: "Performance Metrics",
+        description: "Track key performance indicators",
+        path: "/dashboard/analytics#performance",
+        icon: TrendingUp,
+      },
+      {
+        id: "financial-reports",
+        name: "Financial Reports",
+        description: "Detailed financial reporting",
+        path: "/dashboard/analytics#reports",
+        icon: FileText,
+      },
+    ],
+  },
+  {
+    id: "portfolio-management",
+    name: "Portfolio Management",
+    description: "Advanced portfolio tracking and optimization with AI-powered insights",
+    path: "/dashboard/portfolio",
+    icon: Briefcase,
+    category: "Main Platform",
+    color: "from-teal-500/20 to-green-500/20",
+    subEnvironments: [
+      {
+        id: "holdings",
+        name: "Current Holdings",
+        description: "View and manage your investments",
+        path: "/dashboard/portfolio#holdings",
+        icon: Package,
+      },
+      {
+        id: "performance",
+        name: "Performance Analysis",
+        description: "Analyze portfolio performance",
+        path: "/dashboard/portfolio#performance",
+        icon: TrendingUp,
+      },
+    ],
+  },
+  {
+    id: "financial-planning",
+    name: "Financial Planning",
+    description: "Comprehensive financial planning tools with goal tracking and budget management",
+    path: "/dashboard/financial-planning",
+    icon: Target,
+    category: "Main Platform",
+    isNew: true,
+    color: "from-violet-500/20 to-purple-500/20",
+    subEnvironments: [
+      {
+        id: "goals",
+        name: "Financial Goals",
+        description: "Set and track financial objectives",
+        path: "/dashboard/financial-planning#goals",
+        icon: Target,
+      },
+      {
+        id: "budget",
+        name: "Budget Tracker",
+        description: "Monitor spending and budgets",
+        path: "/dashboard/financial-planning#budget",
+        icon: DollarSign,
+      },
+      {
+        id: "planning-tools",
+        name: "Planning Tools",
+        description: "Financial calculators and tools",
+        path: "/dashboard/financial-planning#tools",
+        icon: Calculator,
       },
     ],
   },
@@ -176,6 +261,38 @@ const environments: Environment[] = [
     ],
   },
   {
+    id: "marketplace-analytics",
+    name: "Marketplace Analytics",
+    description: "Comprehensive marketplace insights, vendor management, and sales analytics",
+    path: "/commerce/marketplace",
+    icon: BarChart3,
+    category: "Commerce",
+    color: "from-emerald-500/20 to-teal-500/20",
+    subEnvironments: [
+      {
+        id: "vendor-management",
+        name: "Vendor Management",
+        description: "Manage marketplace vendors",
+        path: "/commerce/marketplace#vendors",
+        icon: Users,
+      },
+      {
+        id: "order-management",
+        name: "Order Management",
+        description: "Track and manage orders",
+        path: "/commerce/marketplace#orders",
+        icon: Package,
+      },
+      {
+        id: "sales-analytics",
+        name: "Sales Analytics",
+        description: "Analyze sales performance",
+        path: "/commerce/marketplace#analytics",
+        icon: TrendingUp,
+      },
+    ],
+  },
+  {
     id: "real-estate",
     name: "Real Estate Hub",
     description: "Revolutionary 50-year loan marketplace with holographic property tours and AI matching",
@@ -212,14 +329,14 @@ const environments: Environment[] = [
     ],
   },
 
-  // Gaming & Rewards
+  // Gaming & Rewards (now Honors and Rewards)
   {
     id: "gamification",
     name: "Gamification Hub",
     description: "Earn rewards, unlock achievements, and compete on leaderboards while managing finances",
     path: "/dashboard/gamification",
     icon: Gamepad2,
-    category: "Gaming & Rewards",
+    category: "Honors and Rewards",
     color: "from-yellow-500/20 to-orange-500/20",
     subEnvironments: [
       {
@@ -351,7 +468,7 @@ const categories = [
   { id: "all", name: "All Environments", icon: Grid3X3 },
   { id: "Main Platform", name: "Main Platform", icon: BarChart3 },
   { id: "Commerce", name: "Commerce", icon: ShoppingBag },
-  { id: "Gaming & Rewards", name: "Gaming & Rewards", icon: Gamepad2 },
+  { id: "Honors and Rewards", name: "Honors and Rewards", icon: Gamepad2 },
   { id: "Legal Framework", name: "Legal Framework", icon: Gavel },
   { id: "Administration", name: "Administration", icon: Server },
 ]
