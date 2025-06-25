@@ -45,7 +45,7 @@ const environmentMap = {
   },
   "/dashboard/gamification": {
     icon: Gamepad2,
-    category: "Gaming & Rewards",
+    category: "Honors and Rewards",
     related: ["/dashboard/ecommerex/holographic-products", "/dashboard", "/admin/users"],
   },
   "/legal": {
@@ -163,7 +163,16 @@ export function EnvironmentSearchSuggestions() {
         icon: Gamepad2,
         description: "Rewards and achievements",
         reason: "Popular with Commerce users",
-        category: "Gaming & Rewards",
+        category: "Honors and Rewards",
+      })
+    } else if (currentInfo.category === "Honors and Rewards") {
+      suggestions.push({
+        label: "EcommereX Shop",
+        path: "/dashboard/ecommerex/holographic-products",
+        icon: ShoppingBag,
+        description: "Holographic product marketplace",
+        reason: "Popular with Honors and Rewards users",
+        category: "Commerce",
       })
     }
 

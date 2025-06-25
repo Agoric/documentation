@@ -101,7 +101,7 @@ const environments: Environment[] = [
     path: "/dashboard/gamification",
     icon: Gamepad2,
     description: "Rewards and achievements",
-    category: "Gaming & Rewards",
+    category: "Honors and Rewards",
     shortcut: "Alt+4",
   },
 
@@ -233,7 +233,7 @@ const categories = [
   { id: "all", name: "All Environments", icon: Grid3X3 },
   { id: "Main Platform", name: "Main Platform", icon: BarChart3 },
   { id: "Commerce", name: "Commerce", icon: ShoppingBag },
-  { id: "Gaming & Rewards", name: "Gaming & Rewards", icon: Gamepad2 },
+  { id: "Honors and Rewards", name: "Honors and Rewards", icon: Gamepad2 },
   { id: "Legal Framework", name: "Legal Framework", icon: Gavel },
   { id: "Administration", name: "Administration", icon: Server },
 ]
