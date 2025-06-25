@@ -1,17 +1,26 @@
-// This is a new file, so we'll create the initial content here.
-// Since there's no existing code, we'll start with a basic component structure.
-
-import type React from "react"
-
-type StreamingPropertyGridProps = {}
-
-const StreamingPropertyGrid: React.FC<StreamingPropertyGridProps> = () => {
+export function StreamingPropertyGrid({
+  properties,
+  location,
+  minPrice,
+  maxPrice,
+  propertyType,
+  batchSize = 5,
+  viewMode = "grid",
+}: {
+  properties: any[]
+  location?: string
+  minPrice?: number
+  maxPrice?: number
+  propertyType?: string
+  batchSize?: number
+  viewMode?: "grid" | "list"
+}) {
   return (
     <div>
-      {/* Content of the streaming property grid will go here */}
-      <p>Streaming Property Grid</p>
+      {/* TODO: real streaming implementation */}
+      <p>
+        Streaming {properties.length} properties for {location ?? "all locations"}
+      </p>
     </div>
   )
 }
-
-export default StreamingPropertyGrid
