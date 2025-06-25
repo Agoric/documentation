@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
 import { ComparisonBar } from "@/components/real-estate/property-comparison-bar"
 import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
-import { StreamingPropertyGrid } from "@/components/real-estate/streaming-property-grid"
+import StreamingPropertyGrid from "@/components/real-estate/streaming-property-grid"
 
 // Sample property data with real images
 const sampleProperties = [
