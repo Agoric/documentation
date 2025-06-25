@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 
 interface Property {
   id: string
@@ -54,8 +54,13 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
   const [error, setError] = useState<string | null>(null)
   const [status, setStatus] = useState<string>("")
   const [isDemo, setIsDemo] = useState(false)
-  const [progress, setProgress] = useState({ current: 0, total: 0 })
+  const [progress, setProgress] = useState<{ current: number; total?: number }>({
+    current: 0,
+    total: undefined,
+  })
   const [isComplete, setIsComplete] = useState(false)
+
+  const abortRef = useRef<AbortController | null>(null)
 
   const startStreaming = useCallback(async () => {
     setLoading(true)
@@ -63,7 +68,7 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
     setProperties([])
     setStatus("Initializing...")
     setIsComplete(false)
-    setProgress({ current: 0, total: 0 })
+    setProgress({ current: 0, total: undefined })
 
     try {
       const params = new URLSearchParams()
@@ -73,7 +78,10 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
       if (options.propertyType) params.append("propertyType", options.propertyType)
       if (options.batchSize) params.append("batchSize", options.batchSize.toString())
 
-      const response = await fetch(`/api/zillow/stream?${params}`)
+      abortRef.current = new AbortController()
+      const response = await fetch(`/api/zillow/stream?${params}`, {
+        signal: abortRef.current.signal,
+      })
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
@@ -81,7 +89,9 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
 
       const reader = response.body?.getReader()
       if (!reader) {
-        throw new Error("No response body reader available")
+        setError("Streaming is not supported by this environment.")
+        setLoading(false)
+        return
       }
 
       const decoder = new TextDecoder()
@@ -98,8 +108,9 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
 
         for (const line of lines) {
           if (line.startsWith("data: ")) {
+            const json = line.slice(6)
             try {
-              const eventData: StreamEvent = JSON.parse(line.slice(6))
+              const eventData: StreamEvent = JSON.parse(json)
 
               switch (eventData.type) {
                 case "status":
@@ -127,8 +138,9 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
                   setLoading(false)
                   break
               }
-            } catch (parseError) {
-              console.error("Error parsing stream event:", parseError)
+            } catch (parseErr) {
+              console.error("Malformed SSE line:", json)
+              // keep streaming – just ignore this line
             }
           }
         }
@@ -142,13 +154,14 @@ export function useStreamingProperties(options: UseStreamingPropertiesOptions = 
   }, [options.location, options.minPrice, options.maxPrice, options.propertyType, options.batchSize])
 
   const stopStreaming = useCallback(() => {
+    abortRef.current?.abort()
     setLoading(false)
     setStatus("Streaming stopped")
   }, [])
 
   const clearProperties = useCallback(() => {
     setProperties([])
-    setProgress({ current: 0, total: 0 })
+    setProgress({ current: 0, total: undefined })
     setIsComplete(false)
     setError(null)
     setStatus("")
