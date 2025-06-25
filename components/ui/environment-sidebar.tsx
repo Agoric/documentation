@@ -52,11 +52,21 @@ interface Environment {
 const environments: Environment[] = [
   // Main Platform
   {
+    id: "dashboard-home",
+    name: "Dashboard Home",
+    path: "/dashboard/home",
+    icon: Home,
+    description: "Main dashboard and overview",
+    category: "Main Platform",
+    shortcut: "Alt+H",
+    isPopular: true,
+  },
+  {
     id: "dashboard",
-    name: "Main Dashboard",
+    name: "Analytics Dashboard",
     path: "/dashboard",
     icon: BarChart3,
-    description: "Overview and analytics",
+    description: "Analytics and insights",
     category: "Main Platform",
     shortcut: "Alt+1",
     isPopular: true,
@@ -70,6 +80,18 @@ const environments: Environment[] = [
     category: "Main Platform",
     shortcut: "Alt+2",
     isPopular: true,
+  },
+
+  // Real Estate
+  {
+    id: "real-estate",
+    name: "Real Estate Hub",
+    path: "/real-estate",
+    icon: Home,
+    description: "Property marketplace and loans",
+    category: "Real Estate",
+    shortcut: "Alt+R",
+    isNew: true,
   },
 
   // Commerce
@@ -93,6 +115,18 @@ const environments: Environment[] = [
     description: "Rewards and achievements",
     category: "Gaming & Rewards",
     shortcut: "Alt+4",
+  },
+
+  // Onboarding
+  {
+    id: "onboarding",
+    name: "Financial Optimization",
+    path: "/onboarding",
+    icon: Users,
+    description: "Complete financial profile setup",
+    category: "Onboarding",
+    shortcut: "Alt+O",
+    isNew: true,
   },
 
   // Legal Framework
@@ -222,8 +256,10 @@ const environments: Environment[] = [
 const categories = [
   { id: "all", name: "All Environments", icon: Grid3X3 },
   { id: "Main Platform", name: "Main Platform", icon: BarChart3 },
+  { id: "Real Estate", name: "Real Estate", icon: Home },
   { id: "Commerce", name: "Commerce", icon: ShoppingBag },
   { id: "Gaming & Rewards", name: "Gaming & Rewards", icon: Gamepad2 },
+  { id: "Onboarding", name: "Onboarding", icon: Users },
   { id: "Legal Framework", name: "Legal Framework", icon: Gavel },
   { id: "Administration", name: "Administration", icon: Server },
 ]

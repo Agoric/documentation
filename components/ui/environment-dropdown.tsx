@@ -14,6 +14,7 @@ import {
   ShoppingBag,
   Server,
   History,
+  Home,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -37,10 +38,17 @@ const environments = [
     category: "Main Platform",
     items: [
       {
+        value: "/dashboard/home",
+        label: "Dashboard Home",
+        icon: Home,
+        description: "Main dashboard and overview",
+        shortcut: "Alt+H",
+      },
+      {
         value: "/dashboard",
-        label: "Main Dashboard",
+        label: "Analytics Dashboard",
         icon: BarChart3,
-        description: "Overview and analytics",
+        description: "Analytics and insights",
         shortcut: "Alt+1",
       },
       {
@@ -49,6 +57,18 @@ const environments = [
         icon: Building2,
         description: "Financial trading platform",
         shortcut: "Alt+2",
+      },
+    ],
+  },
+  {
+    category: "Real Estate",
+    items: [
+      {
+        value: "/real-estate",
+        label: "Real Estate Hub",
+        icon: Home,
+        description: "Property marketplace and loans",
+        shortcut: "Alt+R",
       },
     ],
   },
@@ -73,6 +93,18 @@ const environments = [
         icon: Gamepad2,
         description: "Rewards and achievements",
         shortcut: "Alt+4",
+      },
+    ],
+  },
+  {
+    category: "Onboarding",
+    items: [
+      {
+        value: "/onboarding",
+        label: "Financial Optimization",
+        icon: Users,
+        description: "Complete financial profile setup",
+        shortcut: "Alt+O",
       },
     ],
   },
@@ -158,7 +190,7 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
       const found = category.items.find((item) => pathname.startsWith(item.value))
       if (found) return found
     }
-    return environments[0].items[0] // Default to main dashboard
+    return environments[0].items[0] // Default to dashboard home
   }, [pathname])
 
   // Track visits
