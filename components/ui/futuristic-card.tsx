@@ -18,10 +18,10 @@ interface FuturisticCardProps {
 
 const cardVariants = {
   glass: {
-    background: "rgba(255, 255, 255, 0.05)",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
+    background: "rgba(255, 255, 255, 0.02)",
+    border: "1px solid rgba(255, 255, 255, 0.05)",
     backdropFilter: "blur(20px)",
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.8)",
   },
   neon: {
     background: "linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.1))",
@@ -34,9 +34,9 @@ const cardVariants = {
     boxShadow: "0 0 30px rgba(34, 197, 94, 0.2)",
   },
   neural: {
-    background: "linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8))",
-    border: "1px solid rgba(148, 163, 184, 0.2)",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.5)",
+    background: "linear-gradient(135deg, rgba(5, 8, 15, 0.95), rgba(10, 15, 25, 0.9))",
+    border: "1px solid rgba(148, 163, 184, 0.1)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.8)",
   },
   quantum: {
     background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1))",

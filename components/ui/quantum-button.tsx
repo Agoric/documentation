@@ -20,14 +20,14 @@ const buttonVariants = {
     boxShadow: "0 0 20px rgba(99, 102, 241, 0.3)",
   },
   secondary: {
-    background: "rgba(255, 255, 255, 0.05)",
+    background: "rgba(255, 255, 255, 0.02)",
     color: "white",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.6)",
   },
   ghost: {
     background: "transparent",
-    color: "rgba(255, 255, 255, 0.8)",
+    color: "rgba(255, 255, 255, 0.9)",
     border: "1px solid transparent",
     boxShadow: "none",
   },
