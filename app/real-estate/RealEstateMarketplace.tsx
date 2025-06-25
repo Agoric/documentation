@@ -1,204 +1,409 @@
-const RealEstateMarketplace = () => {
+"use client"
+
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Search, DollarSign, Home, TrendingUp, Star } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { HolographicHeader } from "@/components/ecommerex/holographic-header"
+import { HolographicPropertyCard } from "@/components/real-estate/holographic-property-card"
+import { PaginatedPropertyGrid } from "@/components/real-estate/paginated-property-grid"
+import { ComparisonBar } from "@/components/real-estate/property-comparison-bar"
+import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
+
+// Sample property data with realistic real estate information
+const sampleProperties = [
+  {
+    id: "1",
+    address: "123 Luxury Lane, Beverly Hills, CA",
+    price: 2850000,
+    bedrooms: 4,
+    bathrooms: 3.5,
+    sqft: 3200,
+    lotSize: 0.75,
+    yearBuilt: 2019,
+    propertyType: "Single Family",
+    images: ["/placeholder.svg?height=400&width=600"],
+    description: "Stunning modern home with panoramic city views and premium finishes throughout.",
+    features: ["Pool", "Garage", "Fireplace", "Hardwood Floors"],
+    neighborhood: "Beverly Hills",
+    walkScore: 85,
+    schoolRating: 9,
+    marketTrend: "up",
+    daysOnMarket: 12,
+    pricePerSqft: 891,
+    isHolographic: true,
+    holographicFeatures: ["Virtual Tour", "3D Walkthrough", "AR Staging"],
+    has360View: true,
+    zestimate: 2900000,
+    priceHistory: [
+      { date: "2024-01", price: 2750000 },
+      { date: "2024-06", price: 2850000 },
+    ],
+  },
+  {
+    id: "2",
+    address: "456 Ocean Drive, Malibu, CA",
+    price: 4200000,
+    bedrooms: 5,
+    bathrooms: 4,
+    sqft: 4500,
+    lotSize: 1.2,
+    yearBuilt: 2021,
+    propertyType: "Single Family",
+    images: ["/placeholder.svg?height=400&width=600"],
+    description: "Oceanfront estate with private beach access and infinity pool.",
+    features: ["Ocean View", "Private Beach", "Infinity Pool", "Wine Cellar"],
+    neighborhood: "Malibu",
+    walkScore: 65,
+    schoolRating: 8,
+    marketTrend: "up",
+    daysOnMarket: 8,
+    pricePerSqft: 933,
+    isHolographic: true,
+    holographicFeatures: ["Drone Tour", "Virtual Reality", "Smart Home"],
+    has360View: true,
+    zestimate: 4350000,
+    priceHistory: [
+      { date: "2024-01", price: 4000000 },
+      { date: "2024-06", price: 4200000 },
+    ],
+  },
+  {
+    id: "3",
+    address: "789 Downtown Loft, Los Angeles, CA",
+    price: 1250000,
+    bedrooms: 2,
+    bathrooms: 2,
+    sqft: 1800,
+    lotSize: 0,
+    yearBuilt: 2020,
+    propertyType: "Condo",
+    images: ["/placeholder.svg?height=400&width=600"],
+    description: "Modern downtown loft with floor-to-ceiling windows and city views.",
+    features: ["City View", "Rooftop Deck", "Gym", "Concierge"],
+    neighborhood: "Downtown LA",
+    walkScore: 95,
+    schoolRating: 7,
+    marketTrend: "stable",
+    daysOnMarket: 25,
+    pricePerSqft: 694,
+    isHolographic: false,
+    has360View: false,
+    zestimate: 1275000,
+    priceHistory: [
+      { date: "2024-01", price: 1200000 },
+      { date: "2024-06", price: 1250000 },
+    ],
+  },
+  {
+    id: "4",
+    address: "321 Suburban Street, Pasadena, CA",
+    price: 950000,
+    bedrooms: 3,
+    bathrooms: 2,
+    sqft: 2100,
+    lotSize: 0.5,
+    yearBuilt: 2018,
+    propertyType: "Single Family",
+    images: ["/placeholder.svg?height=400&width=600"],
+    description: "Charming family home in quiet neighborhood with excellent schools.",
+    features: ["Garden", "2-Car Garage", "Updated Kitchen", "Solar Panels"],
+    neighborhood: "Pasadena",
+    walkScore: 75,
+    schoolRating: 9,
+    marketTrend: "up",
+    daysOnMarket: 18,
+    pricePerSqft: 452,
+    isHolographic: true,
+    holographicFeatures: ["Energy Efficiency", "Smart Thermostat"],
+    has360View: true,
+    zestimate: 975000,
+    priceHistory: [
+      { date: "2024-01", price: 900000 },
+      { date: "2024-06", price: 950000 },
+    ],
+  },
+  {
+    id: "5",
+    address: "654 Hillside Drive, Hollywood Hills, CA",
+    price: 3500000,
+    bedrooms: 4,
+    bathrooms: 3,
+    sqft: 3800,
+    lotSize: 1.0,
+    yearBuilt: 2022,
+    propertyType: "Single Family",
+    images: ["/placeholder.svg?height=400&width=600"],
+    description: "Contemporary architectural masterpiece with stunning valley views.",
+    features: ["Valley View", "Infinity Pool", "Home Theater", "Wine Room"],
+    neighborhood: "Hollywood Hills",
+    walkScore: 70,
+    schoolRating: 8,
+    marketTrend: "up",
+    daysOnMarket: 5,
+    pricePerSqft: 921,
+    isHolographic: true,
+    holographicFeatures: ["Smart Home", "Virtual Staging", "3D Tour"],
+    has360View: true,
+    zestimate: 3650000,
+    priceHistory: [
+      { date: "2024-01", price: 3300000 },
+      { date: "2024-06", price: 3500000 },
+    ],
+  },
+  {
+    id: "6",
+    address: "987 Beachfront Blvd, Santa Monica, CA",
+    price: 5200000,
+    bedrooms: 6,
+    bathrooms: 5,
+    sqft: 5500,
+    lotSize: 0.8,
+    yearBuilt: 2023,
+    propertyType: "Single Family",
+    images: ["/placeholder.svg?height=400&width=600"],
+    description: "Brand new luxury beachfront home with unobstructed ocean views.",
+    features: ["Ocean Front", "Private Elevator", "Rooftop Deck", "Smart Home"],
+    neighborhood: "Santa Monica",
+    walkScore: 88,
+    schoolRating: 9,
+    marketTrend: "up",
+    daysOnMarket: 3,
+    pricePerSqft: 945,
+    isHolographic: true,
+    holographicFeatures: ["Virtual Reality", "Drone Tour", "AI Assistant"],
+    has360View: true,
+    zestimate: 5400000,
+    priceHistory: [{ date: "2024-06", price: 5200000 }],
+  },
+]
+
+export function RealEstateMarketplace() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [priceRange, setPriceRange] = useState("all")
+  const [sortBy, setSortBy] = useState("featured")
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+
+  // Filter properties based on search criteria
+  const filteredProperties = sampleProperties.filter((property) => {
+    const matchesSearch =
+      property.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.neighborhood.toLowerCase().includes(searchQuery.toLowerCase())
+
+    const matchesCategory =
+      selectedCategory === "all" || property.propertyType.toLowerCase().includes(selectedCategory.toLowerCase())
+
+    const matchesPrice =
+      priceRange === "all" ||
+      (priceRange === "under-1m" && property.price < 1000000) ||
+      (priceRange === "1m-3m" && property.price >= 1000000 && property.price < 3000000) ||
+      (priceRange === "3m-5m" && property.price >= 3000000 && property.price < 5000000) ||
+      (priceRange === "over-5m" && property.price >= 5000000)
+
+    return matchesSearch && matchesCategory && matchesPrice
+  })
+
+  // Sort properties
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    switch (sortBy) {
+      case "price-low":
+        return a.price - b.price
+      case "price-high":
+        return b.price - a.price
+      case "newest":
+        return b.yearBuilt - a.yearBuilt
+      case "sqft":
+        return b.sqft - a.sqft
+      default:
+        return 0
+    }
+  })
+
   return (
-    <div>
-      {/* Header Section */}
-      <header className="bg-white py-6 shadow-md">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <a href="/" className="text-2xl font-bold text-blue-600">
-              RealEstate.AI
-            </a>
-            <nav>
-              <ul className="flex space-x-6">
-                <li>
-                  <a href="#" className="hover:text-blue-500">
-                    Buy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-500">
-                    Sell
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-500">
-                    Rent
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-500">
-                    Mortgage
-                  </a>
-                </li>
-              </ul>
-            </nav>
+    <PropertyComparisonProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900">
+        {/* Header */}
+        <HolographicHeader
+          title="Real Estate Marketplace"
+          subtitle="Discover your dream home with revolutionary 50-year financing options and holographic property tours"
+          className="mb-8"
+        />
+
+        {/* Search and Filters */}
+        <div className="container mx-auto px-6 mb-8">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {/* Search */}
+              <div className="lg:col-span-2 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search by location, neighborhood..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+              </div>
+
+              {/* Property Type */}
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                  <SelectValue placeholder="Property Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="single">Single Family</SelectItem>
+                  <SelectItem value="condo">Condo</SelectItem>
+                  <SelectItem value="townhouse">Townhouse</SelectItem>
+                  <SelectItem value="multi">Multi-Family</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Price Range */}
+              <Select value={priceRange} onValueChange={setPriceRange}>
+                <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                  <SelectValue placeholder="Price Range" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Prices</SelectItem>
+                  <SelectItem value="under-1m">Under $1M</SelectItem>
+                  <SelectItem value="1m-3m">$1M - $3M</SelectItem>
+                  <SelectItem value="3m-5m">$3M - $5M</SelectItem>
+                  <SelectItem value="over-5m">Over $5M</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Sort */}
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                  <SelectValue placeholder="Sort By" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured</SelectItem>
+                  <SelectItem value="price-low">Price: Low to High</SelectItem>
+                  <SelectItem value="price-high">Price: High to Low</SelectItem>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="sqft">Largest First</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Quick Filters */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Badge variant="outline" className="border-cyan-400/30 text-cyan-300 hover:bg-cyan-400/10 cursor-pointer">
+                <Home className="w-3 h-3 mr-1" />
+                New Listings
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-purple-400/30 text-purple-300 hover:bg-purple-400/10 cursor-pointer"
+              >
+                <TrendingUp className="w-3 h-3 mr-1" />
+                Price Reduced
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-green-400/30 text-green-300 hover:bg-green-400/10 cursor-pointer"
+              >
+                <Star className="w-3 h-3 mr-1" />
+                Virtual Tours
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-yellow-400/30 text-yellow-300 hover:bg-yellow-400/10 cursor-pointer"
+              >
+                <DollarSign className="w-3 h-3 mr-1" />
+                50-Year Loans
+              </Badge>
+            </div>
           </div>
         </div>
-      </header>
 
-      {/* Loan Calculator Section - Referenced by Goal Prioritizing Orb */}
-      <section id="loan-calculator-section" className="py-16 bg-gradient-to-r from-blue-50 to-purple-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Revolutionary 50-Year Loan Calculator
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover how our innovative 50-year mortgage can save you $720+ per month compared to traditional loans
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div
-              id="calculator-form"
-              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20"
-            >
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold mb-6">Loan Details</h3>
-
-                  {/* Loan Amount Input - Referenced by Goal Prioritizing Orb */}
-                  <div id="loan-amount-input" className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Loan Amount</label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="$500,000"
-                      defaultValue="500000"
-                    />
+        {/* 50-Year Loan Promotion Banner */}
+        <div className="container mx-auto px-6 mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-purple-900/40 via-indigo-900/40 to-cyan-900/40 backdrop-blur-sm border border-cyan-400/30 rounded-xl p-6"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text mb-2">
+                  Revolutionary 50-Year Financing Available
+                </h3>
+                <p className="text-indigo-200/80 mb-4">
+                  Lower your monthly payments by up to 40% and build generational wealth with our exclusive 50-year loan
+                  program.
+                </p>
+                <div className="flex gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-green-300">Rates from 3.25% APR</span>
                   </div>
-
-                  {/* Credit Score Field - Referenced by Goal Prioritizing Orb */}
-                  <div id="credit-score-field" className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Credit Score</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                      <option value="750+">Excellent (750+)</option>
-                      <option value="700-749">Good (700-749)</option>
-                      <option value="650-699">Fair (650-699)</option>
-                      <option value="600-649">Poor (600-649)</option>
-                    </select>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                    <span className="text-cyan-300">Digital Citizen Exclusive</span>
                   </div>
-
-                  {/* Down Payment Slider - Referenced by Goal Prioritizing Orb */}
-                  <div id="down-payment-slider" className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Down Payment</label>
-                    <input
-                      type="range"
-                      min="5"
-                      max="30"
-                      defaultValue="20"
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>5%</span>
-                      <span>20%</span>
-                      <span>30%</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  {/* Interest Rate Display - Referenced by Goal Prioritizing Orb */}
-                  <div
-                    id="interest-rate-display"
-                    className="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-200"
-                  >
-                    <h4 className="text-lg font-semibold text-blue-600 mb-2">Your Rate</h4>
-                    <div className="text-3xl font-bold text-blue-700">3.1% APR</div>
-                    <p className="text-sm text-blue-600">50-Year Fixed Rate</p>
-                  </div>
-
-                  {/* Monthly Payment Result - Referenced by Goal Prioritizing Orb */}
-                  <div
-                    id="monthly-payment-result"
-                    className="p-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl border border-green-200"
-                  >
-                    <h4 className="text-lg font-semibold text-green-600 mb-2">Monthly Payment</h4>
-                    <div className="text-3xl font-bold text-green-700">$1,850</div>
-                    <p className="text-sm text-green-600">Save $720/month vs 30-year</p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
-                      Get Pre-Approved
-                    </button>
-                    <button className="w-full border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-300">
-                      Schedule Consultation
-                    </button>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                    <span className="text-purple-300">Instant Pre-Approval</span>
                   </div>
                 </div>
               </div>
+              <Button className="bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-700 hover:to-purple-700 text-white px-8">
+                Get Pre-Approved
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Results Header */}
+        <div className="container mx-auto px-6 mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">{sortedProperties.length} Properties Found</h2>
+              <p className="text-indigo-200/70">
+                Showing results for {searchQuery || "all locations"} •{" "}
+                {selectedCategory !== "all" ? selectedCategory : "all property types"}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={viewMode === "grid" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("grid")}
+                className="border-white/20"
+              >
+                Grid
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("list")}
+                className="border-white/20"
+              >
+                List
+              </Button>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Pre-Approval Form Section - Referenced by Goal Prioritizing Orb */}
-      <section id="loan-application" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Pre-Approval Application</h2>
-              <p className="text-gray-600">Complete your pre-approval in minutes with our streamlined process</p>
-            </div>
-
-            <div id="pre-approval-form" className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Income Input - Referenced by Goal Prioritizing Orb */}
-                  <div id="income-input" className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Annual Income</label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      placeholder="$85,000"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Employment Status</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                      <option>Full-time Employee</option>
-                      <option>Self-employed</option>
-                      <option>Contract Worker</option>
-                      <option>Retired</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Monthly Debt Payments</label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      placeholder="$1,200"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Assets Value</label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                      placeholder="$150,000"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:shadow-lg transition-all duration-300"
-                >
-                  Submit Pre-Approval Application
-                </button>
-              </form>
-            </div>
-          </div>
+        {/* Property Grid */}
+        <div className="container mx-auto px-6">
+          <PaginatedPropertyGrid
+            properties={sortedProperties}
+            itemsPerPage={12}
+            viewMode={viewMode}
+            renderProperty={(property) => <HolographicPropertyCard key={property.id} property={property} />}
+          />
         </div>
-      </section>
-    </div>
+
+        {/* Comparison Bar */}
+        <ComparisonBar />
+      </div>
+    </PropertyComparisonProvider>
   )
 }
-
-export default RealEstateMarketplace
