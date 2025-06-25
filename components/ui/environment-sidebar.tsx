@@ -26,6 +26,8 @@ import {
   Filter,
   Grid3X3,
   List,
+  ShieldCheck,
+  Briefcase,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -91,6 +93,26 @@ const environments: Environment[] = [
     description: "Holographic product marketplace",
     category: "Commerce",
     shortcut: "Alt+3",
+    isNew: true,
+  },
+  {
+    id: "credit-suite",
+    name: "Credit Suite",
+    path: "/credit-suite",
+    icon: ShieldCheck,
+    description: "Credit monitoring and optimization",
+    category: "Commerce",
+    shortcut: "Alt+C",
+    isPopular: true,
+  },
+  {
+    id: "business-suite",
+    name: "Business Suite",
+    path: "/business-suite",
+    icon: Briefcase,
+    description: "Business management and analytics",
+    category: "Commerce",
+    shortcut: "Alt+B",
     isNew: true,
   },
 
