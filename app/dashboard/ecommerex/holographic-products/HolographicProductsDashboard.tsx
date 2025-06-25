@@ -2,6 +2,7 @@
 
 import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-grid"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
+import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 
 // Enhanced sample product data with 360° view support
 const products = [
@@ -176,14 +177,16 @@ const products = [
 
 export function HolographicProductsDashboard() {
   return (
-    <div className="container mx-auto p-4 space-y-8">
-      <HolographicHeader
-        title="EcommereX Shop"
-        subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology and interactive 360° views"
-      />
+    <ProductComparisonProvider>
+      <div className="container mx-auto p-4 space-y-8">
+        <HolographicHeader
+          title="EcommereX Shop"
+          subtitle="Browse our cutting-edge product catalog featuring revolutionary holographic technology and interactive 360° views"
+        />
 
-      <PaginatedProductGrid products={products} itemsPerPage={6} />
-    </div>
+        <PaginatedProductGrid products={products} itemsPerPage={6} />
+      </div>
+    </ProductComparisonProvider>
   )
 }
 
