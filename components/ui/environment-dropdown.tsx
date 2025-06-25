@@ -13,6 +13,7 @@ import {
   Gamepad2,
   ShoppingBag,
   Server,
+  History,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -22,7 +23,14 @@ import { useRouter, usePathname } from "next/navigation"
 import { KeyboardShortcutsHelp } from "./keyboard-shortcuts-help"
 import { BookmarkManager } from "./bookmark-manager"
 import { BreadcrumbNavigation } from "./breadcrumb-navigation"
+import { EnvironmentSearchSuggestions } from "./environment-search-suggestions"
+import { EnvironmentNotifications } from "./environment-notifications"
+import { EnvironmentTools } from "./environment-tools"
 import { useEnvironmentShortcuts } from "@/hooks/use-keyboard-shortcuts"
+import { useEnvironmentHistory } from "@/hooks/use-environment-history"
+import { useEnvironmentNotifications } from "@/hooks/use-environment-notifications"
+import { useEnvironmentThemes } from "@/hooks/use-environment-themes"
+import { getCurrentEnvironmentFromPath } from "@/utils/breadcrumb-utils"
 
 const environments = [
   {
@@ -138,8 +146,11 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
   const router = useRouter()
   const pathname = usePathname()
 
-  // Initialize keyboard shortcuts
+  // Initialize all hooks
   useEnvironmentShortcuts()
+  useEnvironmentThemes()
+  const { trackVisit, getRecentEnvironments } = useEnvironmentHistory()
+  const { getUnreadCount } = useEnvironmentNotifications()
 
   // Find current environment
   const currentEnvironment = React.useMemo(() => {
@@ -150,10 +161,23 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
     return environments[0].items[0] // Default to main dashboard
   }, [pathname])
 
+  // Track visits
+  React.useEffect(() => {
+    const envInfo = getCurrentEnvironmentFromPath(pathname)
+    trackVisit({
+      name: envInfo.name,
+      icon: currentEnvironment.icon.name,
+      category: envInfo.category,
+    })
+  }, [pathname, trackVisit, currentEnvironment])
+
   const handleSelect = (value: string) => {
     setOpen(false)
     router.push(value)
   }
+
+  const recentEnvironments = getRecentEnvironments(3)
+  const unreadNotifications = getUnreadCount(pathname)
 
   return (
     <div className="flex items-center gap-2">
@@ -164,7 +188,7 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "w-[280px] justify-between bg-background/50 backdrop-blur-sm border-white/20 hover:bg-background/70",
+              "w-[280px] justify-between bg-background/50 backdrop-blur-sm border-white/20 hover:bg-background/70 relative",
               className,
             )}
           >
@@ -172,19 +196,59 @@ export function EnvironmentDropdown({ className }: EnvironmentDropdownProps) {
               <currentEnvironment.icon className="h-4 w-4" />
               <span className="truncate">{currentEnvironment.label}</span>
             </div>
-            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <div className="flex items-center gap-2">
+              {unreadNotifications > 0 && (
+                <div className="flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs rounded-full">
+                  {unreadNotifications}
+                </div>
+              )}
+              <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
+            </div>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[420px] p-0 bg-background/95 backdrop-blur-sm border-white/20">
+        <PopoverContent className="w-[480px] p-0 bg-background/95 backdrop-blur-sm border-white/20 max-h-[80vh] overflow-hidden">
           {/* Breadcrumb Navigation */}
           <div className="border-b border-white/10 p-4">
             <BreadcrumbNavigation />
           </div>
 
+          {/* Environment Tools */}
+          <div className="border-b border-white/10 p-4">
+            <EnvironmentTools />
+          </div>
+
+          {/* Notifications */}
+          {unreadNotifications > 0 && (
+            <div className="border-b border-white/10">
+              <EnvironmentNotifications />
+            </div>
+          )}
+
+          {/* Recent Environments */}
+          {recentEnvironments.length > 0 && (
+            <div className="border-b border-white/10 p-2">
+              <div className="flex items-center gap-2 px-2 py-1 text-xs font-medium text-muted-foreground">
+                <History className="h-3 w-3" />
+                Recent
+              </div>
+              {recentEnvironments.map((env) => (
+                <button
+                  key={env.path}
+                  onClick={() => handleSelect(env.path)}
+                  className="w-full flex items-center gap-2 px-2 py-1 text-sm hover:bg-white/10 rounded"
+                >
+                  <span className="text-xs opacity-70">{env.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
           <Command>
             <CommandInput placeholder="Search environments..." />
-            <CommandList>
-              <CommandEmpty>No environment found.</CommandEmpty>
+            <CommandList className="max-h-[300px]">
+              <CommandEmpty>
+                <EnvironmentSearchSuggestions />
+              </CommandEmpty>
               {environments.map((category) => (
                 <CommandGroup key={category.category} heading={category.category}>
                   {category.items.map((item) => (
