@@ -1,7 +1,5 @@
 "use client"
 
-import { cn } from "@/lib/utils"
-
 import * as React from "react"
 import { motion } from "framer-motion"
 import {
@@ -20,8 +18,6 @@ import {
   Rocket,
   Globe,
   Shield,
-  Crown,
-  Star,
 } from "lucide-react"
 import { FuturisticCard } from "@/components/ui/futuristic-card"
 import { NeuralGrid } from "@/components/ui/neural-grid"
@@ -40,8 +36,7 @@ const platformEnvironments = {
       href: "/dashboard/home",
       variant: "hologram" as const,
       stats: "12 Active Goals",
-      gradient: "from-blue-400 to-blue-600",
-      premium: false,
+      gradient: "from-emerald-400 to-teal-500",
     },
     {
       id: "analytics",
@@ -51,8 +46,7 @@ const platformEnvironments = {
       href: "/dashboard/analytics",
       variant: "quantum" as const,
       stats: "98.7% Accuracy",
-      gradient: "from-blue-300 to-blue-500",
-      premium: true,
+      gradient: "from-purple-400 to-pink-500",
     },
     {
       id: "portfolio",
@@ -62,8 +56,7 @@ const platformEnvironments = {
       href: "/dashboard/portfolio",
       variant: "plasma" as const,
       stats: "$2.4M Managed",
-      gradient: "from-blue-500 to-blue-700",
-      premium: false,
+      gradient: "from-orange-400 to-red-500",
     },
     {
       id: "planning",
@@ -73,8 +66,7 @@ const platformEnvironments = {
       href: "/dashboard/financial-planning",
       variant: "glass" as const,
       stats: "15 Year Horizon",
-      gradient: "from-blue-200 to-blue-400",
-      premium: true,
+      gradient: "from-indigo-400 to-purple-500",
     },
   ],
   commerce: [
@@ -86,8 +78,7 @@ const platformEnvironments = {
       href: "/dashboard/ecommerex/holographic-products",
       variant: "hologram" as const,
       stats: "1.2K Products",
-      gradient: "from-blue-400 to-blue-600",
-      premium: false,
+      gradient: "from-green-400 to-emerald-500",
     },
     {
       id: "marketplace",
@@ -97,8 +88,7 @@ const platformEnvironments = {
       href: "/commerce/marketplace",
       variant: "neon" as const,
       stats: "847 Vendors",
-      gradient: "from-blue-300 to-blue-500",
-      premium: false,
+      gradient: "from-cyan-400 to-blue-500",
     },
     {
       id: "real-estate",
@@ -108,8 +98,7 @@ const platformEnvironments = {
       href: "/real-estate",
       variant: "neural" as const,
       stats: "2.1K Properties",
-      gradient: "from-blue-500 to-blue-700",
-      premium: true,
+      gradient: "from-teal-400 to-green-500",
     },
     {
       id: "snap-dax",
@@ -117,10 +106,9 @@ const platformEnvironments = {
       description: "Advanced quantum trading platform with neural networks",
       icon: <TrendingUp className="w-6 h-6" />,
       href: "/dashboard/snap-dax",
-      variant: "gold-highlight" as const,
+      variant: "neon" as const,
       stats: "+24.7% Today",
-      gradient: "from-yellow-400 to-yellow-600",
-      premium: true,
+      gradient: "from-blue-400 to-cyan-500",
     },
   ],
   rewards: [
@@ -130,10 +118,9 @@ const platformEnvironments = {
       description: "Advanced gamification with neural reward algorithms",
       icon: <Trophy className="w-6 h-6" />,
       href: "/dashboard/gamification",
-      variant: "gold-highlight" as const,
+      variant: "plasma" as const,
       stats: "Level 47",
-      gradient: "from-yellow-400 to-yellow-600",
-      premium: true,
+      gradient: "from-yellow-400 to-orange-500",
     },
   ],
   legal: [
@@ -145,8 +132,7 @@ const platformEnvironments = {
       href: "/legal",
       variant: "quantum" as const,
       stats: "100% Compliant",
-      gradient: "from-blue-300 to-blue-500",
-      premium: false,
+      gradient: "from-violet-400 to-purple-500",
     },
     {
       id: "compliance",
@@ -156,8 +142,7 @@ const platformEnvironments = {
       href: "/legal/compliance",
       variant: "glass" as const,
       stats: "Zero Violations",
-      gradient: "from-blue-200 to-blue-400",
-      premium: false,
+      gradient: "from-slate-400 to-gray-500",
     },
   ],
   admin: [
@@ -169,8 +154,7 @@ const platformEnvironments = {
       href: "/admin/dashboard",
       variant: "neural" as const,
       stats: "99.9% Uptime",
-      gradient: "from-blue-500 to-blue-700",
-      premium: false,
+      gradient: "from-red-400 to-pink-500",
     },
   ],
 }
@@ -181,23 +165,20 @@ export function PlatformHub() {
   const [hoveredCard, setHoveredCard] = React.useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,71,171,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent,rgba(0,71,171,0.05),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent,rgba(120,119,198,0.05),transparent)]" />
 
-        {/* Gold highlight overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(255,215,0,0.03),transparent_40%)]" />
-
-        {/* Floating Cobalt Blue and Gold Orbs */}
-        {[...Array(12)].map((_, i) => (
+        {/* Floating Orbs */}
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-32 h-32 rounded-full opacity-10"
             style={{
               background: `radial-gradient(circle, ${
-                i % 4 === 0 ? "#ffd700" : i % 4 === 1 ? "#0047AB" : i % 4 === 2 ? "#0066CC" : "#0080FF"
+                i % 3 === 0 ? "#06b6d4" : i % 3 === 1 ? "#8b5cf6" : "#10b981"
               }, transparent)`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -223,48 +204,47 @@ export function PlatformHub() {
             title="SNAPIFI NEXUS"
             subtitle="Next-Generation Financial Platform"
             description="Experience the future of finance with quantum computing, neural networks, and holographic interfaces"
-            variant="gold-highlight"
+            variant="rainbow"
             size="lg"
             animated={true}
             glitchEffect={true}
-            premium={true}
           />
         </div>
 
         {/* Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-12 bg-black/40 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-2">
+          <TabsList className="grid w-full grid-cols-5 mb-12 bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-2">
             <TabsTrigger
               value="dashboard"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400 hover:text-yellow-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
             >
               <Rocket className="w-4 h-4 mr-2" />
               Command
             </TabsTrigger>
             <TabsTrigger
               value="commerce"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400 hover:text-yellow-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
             >
               <ShoppingBag className="w-4 h-4 mr-2" />
               Commerce
             </TabsTrigger>
             <TabsTrigger
               value="rewards"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400 hover:text-yellow-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-orange-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
             >
-              <Crown className="w-4 h-4 mr-2" />
+              <Trophy className="w-4 h-4 mr-2" />
               Honors
             </TabsTrigger>
             <TabsTrigger
               value="legal"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400 hover:text-yellow-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
             >
               <Scale className="w-4 h-4 mr-2" />
               Legal
             </TabsTrigger>
             <TabsTrigger
               value="admin"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400 hover:text-yellow-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-pink-500 data-[state=active]:text-white rounded-xl transition-all duration-300"
             >
               <Settings className="w-4 h-4 mr-2" />
               System
@@ -285,7 +265,6 @@ export function PlatformHub() {
                     interactive={true}
                     borderAnimation={true}
                     particleEffect={hoveredCard === env.id}
-                    premium={env.premium}
                   >
                     <div
                       className="h-full flex flex-col"
@@ -294,49 +273,32 @@ export function PlatformHub() {
                     >
                       {/* Header */}
                       <div className="flex items-start justify-between mb-6">
-                        <div className={`p-3 rounded-xl bg-gradient-to-r ${env.gradient} bg-opacity-20 relative`}>
-                          {env.premium && (
-                            <Star className="absolute -top-1 -right-1 w-3 h-3 text-yellow-400 fill-current" />
-                          )}
+                        <div className={`p-3 rounded-xl bg-gradient-to-r ${env.gradient} bg-opacity-20`}>
                           {env.icon}
                         </div>
                         <div className="text-right">
-                          <div className={cn("text-xs mb-1", env.premium ? "text-yellow-600" : "text-blue-600")}>
-                            {env.premium ? "PREMIUM" : "STATUS"}
-                          </div>
-                          <div
-                            className={cn("text-sm font-semibold", env.premium ? "text-yellow-400" : "text-blue-400")}
-                          >
-                            {env.stats}
-                          </div>
+                          <div className="text-xs text-slate-400 mb-1">STATUS</div>
+                          <div className="text-sm font-semibold text-emerald-400">{env.stats}</div>
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 mb-6">
-                        <h3
-                          className={cn(
-                            "text-xl font-bold mb-3 bg-gradient-to-r bg-clip-text text-transparent",
-                            env.premium ? "from-yellow-400 to-yellow-200" : "from-blue-400 to-blue-200",
-                          )}
-                        >
+                        <h3 className="text-xl font-bold text-white mb-3 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                           {env.title}
                         </h3>
-                        <p className={cn("text-sm leading-relaxed", env.premium ? "text-yellow-200" : "text-blue-200")}>
-                          {env.description}
-                        </p>
+                        <p className="text-slate-300 text-sm leading-relaxed">{env.description}</p>
                       </div>
 
                       {/* Action Button */}
                       <QuantumButton
-                        variant={env.variant === "glass" ? "secondary" : env.premium ? "gold-highlight" : "primary"}
+                        variant={env.variant === "glass" ? "secondary" : env.variant}
                         size="md"
                         className="w-full"
                         onClick={() => (window.location.href = env.href)}
-                        icon={env.premium ? <Crown className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-                        premium={env.premium}
+                        icon={<Sparkles className="w-4 h-4" />}
                       >
-                        {env.premium ? "Launch Premium" : "Launch Environment"}
+                        Launch Environment
                       </QuantumButton>
                     </div>
                   </FuturisticCard>
@@ -356,8 +318,8 @@ export function PlatformHub() {
           >
             <FuturisticCard variant="neon" className="px-4 py-2">
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                <span className="text-blue-400 font-medium">DEMO MODE ACTIVE</span>
+                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                <span className="text-cyan-400 font-medium">DEMO MODE ACTIVE</span>
               </div>
             </FuturisticCard>
           </motion.div>
@@ -373,16 +335,12 @@ export function PlatformHub() {
           <FuturisticCard variant="glass" className="px-4 py-2">
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <Zap className="w-3 h-3 text-blue-400" />
-                <span className="text-blue-300">QUANTUM: ONLINE</span>
+                <Zap className="w-3 h-3 text-yellow-400" />
+                <span className="text-slate-300">QUANTUM: ONLINE</span>
               </div>
               <div className="flex items-center gap-2">
-                <Brain className="w-3 h-3 text-blue-400" />
-                <span className="text-blue-300">AI: ACTIVE</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Crown className="w-3 h-3 text-yellow-400" />
-                <span className="text-yellow-300">PREMIUM</span>
+                <Brain className="w-3 h-3 text-purple-400" />
+                <span className="text-slate-300">AI: ACTIVE</span>
               </div>
             </div>
           </FuturisticCard>

@@ -5,56 +5,49 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 interface QuantumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost" | "neon" | "hologram" | "plasma" | "gold-highlight"
+  variant?: "primary" | "secondary" | "ghost" | "neon" | "hologram" | "plasma"
   size?: "sm" | "md" | "lg" | "xl"
   loading?: boolean
   icon?: React.ReactNode
   children: React.ReactNode
-  premium?: boolean
 }
 
 const buttonVariants = {
   primary: {
-    background: "linear-gradient(135deg, #0047AB, #0066CC, #0080FF)",
-    color: "#ffffff",
-    border: "1px solid rgba(0, 71, 171, 0.5)",
-    boxShadow: "0 0 20px rgba(0, 71, 171, 0.4)",
+    background: "linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef)",
+    color: "white",
+    border: "1px solid rgba(99, 102, 241, 0.3)",
+    boxShadow: "0 0 20px rgba(99, 102, 241, 0.3)",
   },
   secondary: {
-    background: "rgba(0, 71, 171, 0.05)",
-    color: "#0047AB",
-    border: "1px solid rgba(0, 71, 171, 0.2)",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.8)",
+    background: "rgba(255, 255, 255, 0.05)",
+    color: "white",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
   },
   ghost: {
     background: "transparent",
-    color: "#0047AB",
+    color: "rgba(255, 255, 255, 0.8)",
     border: "1px solid transparent",
     boxShadow: "none",
   },
   neon: {
-    background: "linear-gradient(135deg, rgba(0, 71, 171, 0.1), rgba(0, 102, 204, 0.1))",
-    color: "#0047AB",
-    border: "1px solid #0047AB",
-    boxShadow: "0 0 20px rgba(0, 71, 171, 0.5)",
+    background: "linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(168, 85, 247, 0.1))",
+    color: "#06b6d4",
+    border: "1px solid #06b6d4",
+    boxShadow: "0 0 20px rgba(6, 182, 212, 0.5)",
   },
   hologram: {
-    background: "linear-gradient(135deg, rgba(0, 71, 171, 0.1), rgba(0, 102, 204, 0.1))",
-    color: "#0047AB",
-    border: "1px solid #0047AB",
-    boxShadow: "0 0 20px rgba(0, 71, 171, 0.4)",
+    background: "linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1))",
+    color: "#22c55e",
+    border: "1px solid #22c55e",
+    boxShadow: "0 0 20px rgba(34, 197, 94, 0.4)",
   },
   plasma: {
-    background: "linear-gradient(135deg, #0047AB, #0066CC, #0080FF)",
-    color: "#ffffff",
-    border: "1px solid rgba(0, 71, 171, 0.5)",
-    boxShadow: "0 0 25px rgba(0, 71, 171, 0.6)",
-  },
-  "gold-highlight": {
-    background: "linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24)",
-    color: "#000000",
-    border: "1px solid rgba(255, 215, 0, 0.5)",
-    boxShadow: "0 0 20px rgba(255, 215, 0, 0.4), 0 0 10px rgba(0, 71, 171, 0.2)",
+    background: "linear-gradient(135deg, #f59e0b, #ef4444, #ec4899)",
+    color: "white",
+    border: "1px solid rgba(245, 158, 11, 0.3)",
+    boxShadow: "0 0 25px rgba(245, 158, 11, 0.4)",
   },
 }
 
@@ -73,16 +66,17 @@ export function QuantumButton({
   children,
   className,
   disabled,
-  premium = false,
   ...props
 }: QuantumButtonProps) {
   const [isHovered, setIsHovered] = React.useState(false)
   const [isPressed, setIsPressed] = React.useState(false)
 
-  const effectiveVariant = premium ? "gold-highlight" : variant
+  /* ------------------------------------------------------------------ *
+   * Gracefully handle unknown variants by falling back to "primary".   *
+   * ------------------------------------------------------------------ */
   const variantStyles =
-    (buttonVariants as Record<string, (typeof buttonVariants)["primary"]>)[effectiveVariant] ??
-    buttonVariants["primary"]
+    // cast so TS stops complaining about dynamic key access
+    (buttonVariants as Record<string, (typeof buttonVariants)["primary"]>)[variant] ?? buttonVariants["primary"]
 
   return (
     <motion.button
@@ -90,9 +84,9 @@ export function QuantumButton({
         "relative overflow-hidden font-medium transition-all duration-300 backdrop-blur-sm",
         sizeClasses[size],
         disabled && "opacity-50 cursor-not-allowed",
-        premium && "font-bold",
         className,
       )}
+      /* Apply the safe variant styles directly */
       style={variantStyles}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -104,11 +98,6 @@ export function QuantumButton({
       disabled={disabled || loading}
       {...props}
     >
-      {/* Premium Gold Corner Accent */}
-      {premium && (
-        <div className="absolute top-0 right-0 w-3 h-3 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-bl-lg" />
-      )}
-
       {/* Animated Background */}
       <motion.div
         className="absolute inset-0"
@@ -116,9 +105,7 @@ export function QuantumButton({
           background: isHovered
             ? [
                 variantStyles.background,
-                effectiveVariant === "gold-highlight"
-                  ? "linear-gradient(135deg, #ffed4e, #ffd700, #fbbf24)"
-                  : "linear-gradient(135deg, #0066CC, #0047AB, #0080FF)",
+                variant === "primary" ? "linear-gradient(135deg, #8b5cf6, #d946ef, #6366f1)" : variantStyles.background,
                 variantStyles.background,
               ]
             : variantStyles.background,
@@ -129,7 +116,7 @@ export function QuantumButton({
       {/* Ripple Effect */}
       {isPressed && (
         <motion.div
-          className={cn("absolute inset-0 rounded-inherit", premium ? "bg-yellow-400/30" : "bg-blue-400/30")}
+          className="absolute inset-0 bg-white/20 rounded-inherit"
           initial={{ scale: 0, opacity: 1 }}
           animate={{ scale: 2, opacity: 0 }}
           transition={{ duration: 0.6 }}
@@ -143,7 +130,7 @@ export function QuantumButton({
           boxShadow: isHovered
             ? [
                 variantStyles.boxShadow,
-                premium ? `0 0 40px rgba(255, 215, 0, 0.8)` : `0 0 40px rgba(0, 71, 171, 0.8)`,
+                `0 0 40px ${variant === "neon" ? "rgba(6, 182, 212, 0.8)" : "rgba(99, 102, 241, 0.6)"}`,
                 variantStyles.boxShadow,
               ]
             : variantStyles.boxShadow,
@@ -167,10 +154,7 @@ export function QuantumButton({
 
       {/* Scan Line */}
       <motion.div
-        className={cn(
-          "absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent to-transparent",
-          premium ? "via-yellow-400" : "via-blue-400",
-        )}
+        className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent"
         animate={{
           x: isHovered ? ["-100%", "100%"] : "-100%",
         }}
