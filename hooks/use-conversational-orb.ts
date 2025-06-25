@@ -10,10 +10,21 @@ export interface Message {
   timestamp: Date
 }
 
+interface Insight {
+  id: string
+  title: string
+  message: string
+  priority: "low" | "medium" | "high" | "featured"
+  timestamp: Date
+}
+
 export function useConversationalOrb() {
   const pathname = usePathname()
   const [messages, setMessages] = React.useState<Message[]>([])
+  const [insights, setInsights] = React.useState<Insight[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
+  const [isListening, setIsListening] = React.useState(false)
+  const [isSpeaking, setIsSpeaking] = React.useState(false)
 
   // mock user profile (replace with real data source as needed)
   const userProfile = {
@@ -23,6 +34,22 @@ export function useConversationalOrb() {
     goals: ["Buy a house", "Retirement planning"],
     riskTolerance: "medium" as const,
   }
+
+  // —─────────────────────────────────────────────────────────
+  // Context-aware quick-reply helper
+  const getContextualSuggestions = React.useCallback((currentPath: string): string[] => {
+    if (currentPath.includes("/real-estate"))
+      return ["What's my home-buying budget?", "Show me 50-year loan savings", "Find properties under $400k"]
+    if (currentPath.includes("/dashboard/snap-dax"))
+      return ["Should I rebalance my portfolio?", "Market outlook today", "How can I reduce investment risk?"]
+    if (currentPath.includes("/ecommerex"))
+      return ["How do I maximise rewards?", "Any exclusive deals today?", "Show platform citizen benefits"]
+    return [
+      "How can I improve my credit score?",
+      "What's the best savings strategy for me?",
+      "Should I refinance my mortgage?",
+    ]
+  }, [])
 
   const sendMessage = async (userMessage: string) => {
     const userMsg: Message = {
@@ -64,5 +91,55 @@ export function useConversationalOrb() {
     }
   }
 
-  return { messages, isLoading, sendMessage }
+  // —─────────────────────────────────────────────────────────
+  // Text-to-speech
+  const speakText = React.useCallback(async (text: string) => {
+    if (!("speechSynthesis" in window)) return
+    setIsSpeaking(true)
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.onend = () => setIsSpeaking(false)
+    utterance.onerror = () => setIsSpeaking(false)
+    speechSynthesis.speak(utterance)
+  }, [])
+
+  // Speech-to-text
+  const startListening = React.useCallback((): Promise<string | null> => {
+    return new Promise((resolve) => {
+      const SR = window.webkitSpeechRecognition || window.SpeechRecognition
+      if (!SR) return resolve(null)
+      const recog = new SR()
+      recog.lang = "en-US"
+      recog.interimResults = false
+      setIsListening(true)
+      recog.onresult = (e) => {
+        setIsListening(false)
+        resolve(e.results[0][0].transcript)
+      }
+      recog.onerror = () => {
+        setIsListening(false)
+        resolve(null)
+      }
+      recog.start()
+    })
+  }, [])
+
+  const stopListening = React.useCallback(() => {
+    setIsListening(false)
+  }, [])
+
+  const clearConversation = React.useCallback(() => setMessages([]), [])
+
+  return {
+    messages,
+    insights,
+    isLoading,
+    isListening,
+    isSpeaking,
+    sendMessage,
+    clearConversation,
+    speakText,
+    startListening,
+    stopListening,
+    getContextualSuggestions,
+  }
 }
