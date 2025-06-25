@@ -1,4 +1,7 @@
+"use client"
+
 import { LaserIlluminatedTitle } from "@/components/ui/laser-illuminated-title"
+import { ArrowRight } from "lucide-react"
 
 export default function Home() {
   return (
@@ -15,7 +18,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By <img src="/vercel.svg" alt="Vercel Logo" className="dark:invert" width={100} height={24} priority />
+            By <img src="/vercel.svg" alt="Vercel Logo" className="dark:invert" width={100} height={24} />
           </a>
         </div>
       </div>
@@ -42,7 +45,7 @@ export default function Home() {
           <h2 className={`mb-3 text-2xl font-semibold`}>
             Docs{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
+              <ArrowRight className="w-4 h-4" />
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
@@ -59,7 +62,7 @@ export default function Home() {
           <h2 className={`mb-3 text-2xl font-semibold`}>
             Learn{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
+              <ArrowRight className="w-4 h-4" />
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
@@ -76,7 +79,7 @@ export default function Home() {
           <h2 className={`mb-3 text-2xl font-semibold`}>
             Templates{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
+              <ArrowRight className="w-4 h-4" />
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Explore starter templates for your Next.js project.</p>
@@ -91,7 +94,7 @@ export default function Home() {
           <h2 className={`mb-3 text-2xl font-semibold`}>
             Deploy{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
+              <ArrowRight className="w-4 h-4" />
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
