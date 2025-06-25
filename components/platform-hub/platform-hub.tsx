@@ -36,7 +36,7 @@ const platformEnvironments = {
       href: "/dashboard/home",
       variant: "hologram" as const,
       stats: "12 Active Goals",
-      gradient: "from-yellow-400 to-yellow-600",
+      gradient: "from-blue-400 to-blue-600",
     },
     {
       id: "analytics",
@@ -46,7 +46,7 @@ const platformEnvironments = {
       href: "/dashboard/analytics",
       variant: "quantum" as const,
       stats: "98.7% Accuracy",
-      gradient: "from-yellow-300 to-yellow-500",
+      gradient: "from-blue-300 to-blue-500",
     },
     {
       id: "portfolio",
@@ -56,7 +56,7 @@ const platformEnvironments = {
       href: "/dashboard/portfolio",
       variant: "plasma" as const,
       stats: "$2.4M Managed",
-      gradient: "from-yellow-500 to-yellow-700",
+      gradient: "from-blue-500 to-blue-700",
     },
     {
       id: "planning",
@@ -66,7 +66,7 @@ const platformEnvironments = {
       href: "/dashboard/financial-planning",
       variant: "glass" as const,
       stats: "15 Year Horizon",
-      gradient: "from-yellow-200 to-yellow-400",
+      gradient: "from-blue-200 to-blue-400",
     },
   ],
   commerce: [
@@ -78,7 +78,7 @@ const platformEnvironments = {
       href: "/dashboard/ecommerex/holographic-products",
       variant: "hologram" as const,
       stats: "1.2K Products",
-      gradient: "from-yellow-400 to-yellow-600",
+      gradient: "from-blue-400 to-blue-600",
     },
     {
       id: "marketplace",
@@ -88,7 +88,7 @@ const platformEnvironments = {
       href: "/commerce/marketplace",
       variant: "neon" as const,
       stats: "847 Vendors",
-      gradient: "from-yellow-300 to-yellow-500",
+      gradient: "from-blue-300 to-blue-500",
     },
     {
       id: "real-estate",
@@ -98,7 +98,7 @@ const platformEnvironments = {
       href: "/real-estate",
       variant: "neural" as const,
       stats: "2.1K Properties",
-      gradient: "from-yellow-500 to-yellow-700",
+      gradient: "from-blue-500 to-blue-700",
     },
     {
       id: "snap-dax",
@@ -108,7 +108,7 @@ const platformEnvironments = {
       href: "/dashboard/snap-dax",
       variant: "neon" as const,
       stats: "+24.7% Today",
-      gradient: "from-yellow-400 to-yellow-600",
+      gradient: "from-blue-400 to-blue-600",
     },
   ],
   rewards: [
@@ -120,7 +120,7 @@ const platformEnvironments = {
       href: "/dashboard/gamification",
       variant: "plasma" as const,
       stats: "Level 47",
-      gradient: "from-yellow-400 to-yellow-600",
+      gradient: "from-blue-400 to-blue-600",
     },
   ],
   legal: [
@@ -132,7 +132,7 @@ const platformEnvironments = {
       href: "/legal",
       variant: "quantum" as const,
       stats: "100% Compliant",
-      gradient: "from-yellow-300 to-yellow-500",
+      gradient: "from-blue-300 to-blue-500",
     },
     {
       id: "compliance",
@@ -142,7 +142,7 @@ const platformEnvironments = {
       href: "/legal/compliance",
       variant: "glass" as const,
       stats: "Zero Violations",
-      gradient: "from-yellow-200 to-yellow-400",
+      gradient: "from-blue-200 to-blue-400",
     },
   ],
   admin: [
@@ -154,7 +154,7 @@ const platformEnvironments = {
       href: "/admin/dashboard",
       variant: "neural" as const,
       stats: "99.9% Uptime",
-      gradient: "from-yellow-500 to-yellow-700",
+      gradient: "from-blue-500 to-blue-700",
     },
   ],
 }
@@ -168,17 +168,17 @@ export function PlatformHub() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent,rgba(255,215,0,0.05),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,71,171,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent,rgba(0,71,171,0.05),transparent)]" />
 
-        {/* Floating Gold Orbs */}
+        {/* Floating Cobalt Blue Orbs */}
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-32 h-32 rounded-full opacity-10"
             style={{
               background: `radial-gradient(circle, ${
-                i % 3 === 0 ? "#ffd700" : i % 3 === 1 ? "#ffed4e" : "#fbbf24"
+                i % 3 === 0 ? "#0047AB" : i % 3 === 1 ? "#0066CC" : "#0080FF"
               }, transparent)`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -213,38 +213,38 @@ export function PlatformHub() {
 
         {/* Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-12 bg-black/40 backdrop-blur-xl border border-yellow-400/20 rounded-2xl p-2">
+          <TabsList className="grid w-full grid-cols-5 mb-12 bg-black/40 backdrop-blur-xl border border-blue-400/20 rounded-2xl p-2">
             <TabsTrigger
               value="dashboard"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400"
             >
               <Rocket className="w-4 h-4 mr-2" />
               Command
             </TabsTrigger>
             <TabsTrigger
               value="commerce"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400"
             >
               <ShoppingBag className="w-4 h-4 mr-2" />
               Commerce
             </TabsTrigger>
             <TabsTrigger
               value="rewards"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400"
             >
               <Trophy className="w-4 h-4 mr-2" />
               Honors
             </TabsTrigger>
             <TabsTrigger
               value="legal"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400"
             >
               <Scale className="w-4 h-4 mr-2" />
               Legal
             </TabsTrigger>
             <TabsTrigger
               value="admin"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-yellow-600 data-[state=active]:text-black rounded-xl transition-all duration-300 text-yellow-400"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white rounded-xl transition-all duration-300 text-blue-400"
             >
               <Settings className="w-4 h-4 mr-2" />
               System
@@ -277,17 +277,17 @@ export function PlatformHub() {
                           {env.icon}
                         </div>
                         <div className="text-right">
-                          <div className="text-xs text-yellow-600 mb-1">STATUS</div>
-                          <div className="text-sm font-semibold text-yellow-400">{env.stats}</div>
+                          <div className="text-xs text-blue-600 mb-1">STATUS</div>
+                          <div className="text-sm font-semibold text-blue-400">{env.stats}</div>
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 mb-6">
-                        <h3 className="text-xl font-bold text-yellow-400 mb-3 bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
+                        <h3 className="text-xl font-bold text-blue-400 mb-3 bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">
                           {env.title}
                         </h3>
-                        <p className="text-yellow-200 text-sm leading-relaxed">{env.description}</p>
+                        <p className="text-blue-200 text-sm leading-relaxed">{env.description}</p>
                       </div>
 
                       {/* Action Button */}
@@ -318,8 +318,8 @@ export function PlatformHub() {
           >
             <FuturisticCard variant="neon" className="px-4 py-2">
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-                <span className="text-yellow-400 font-medium">DEMO MODE ACTIVE</span>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+                <span className="text-blue-400 font-medium">DEMO MODE ACTIVE</span>
               </div>
             </FuturisticCard>
           </motion.div>
@@ -335,12 +335,12 @@ export function PlatformHub() {
           <FuturisticCard variant="glass" className="px-4 py-2">
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-2">
-                <Zap className="w-3 h-3 text-yellow-400" />
-                <span className="text-yellow-300">QUANTUM: ONLINE</span>
+                <Zap className="w-3 h-3 text-blue-400" />
+                <span className="text-blue-300">QUANTUM: ONLINE</span>
               </div>
               <div className="flex items-center gap-2">
-                <Brain className="w-3 h-3 text-yellow-400" />
-                <span className="text-yellow-300">AI: ACTIVE</span>
+                <Brain className="w-3 h-3 text-blue-400" />
+                <span className="text-blue-300">AI: ACTIVE</span>
               </div>
             </div>
           </FuturisticCard>

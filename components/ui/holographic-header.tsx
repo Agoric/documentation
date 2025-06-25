@@ -17,24 +17,24 @@ interface HolographicHeaderProps {
 
 const variantStyles = {
   primary: {
-    title: "bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500",
-    subtitle: "text-yellow-300",
-    description: "text-yellow-100",
+    title: "bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500",
+    subtitle: "text-blue-300",
+    description: "text-blue-100",
   },
   secondary: {
-    title: "bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-400",
-    subtitle: "text-yellow-300",
-    description: "text-yellow-100",
+    title: "bg-gradient-to-r from-blue-400 via-blue-200 to-blue-400",
+    subtitle: "text-blue-300",
+    description: "text-blue-100",
   },
   accent: {
-    title: "bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500",
-    subtitle: "text-yellow-300",
-    description: "text-yellow-100",
+    title: "bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500",
+    subtitle: "text-blue-300",
+    description: "text-blue-100",
   },
   rainbow: {
-    title: "bg-gradient-to-r from-yellow-200 via-yellow-400 via-yellow-300 via-yellow-500 via-yellow-400 to-yellow-200",
-    subtitle: "text-yellow-300",
-    description: "text-yellow-100",
+    title: "bg-gradient-to-r from-blue-200 via-blue-400 via-blue-300 via-blue-500 via-blue-400 to-blue-200",
+    subtitle: "text-blue-300",
+    description: "text-blue-100",
   },
 }
 
@@ -102,7 +102,7 @@ export function HolographicHeader({
         transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
         style={{
           filter: glitchActive ? "hue-rotate(30deg) saturate(2)" : "none",
-          textShadow: glitchActive ? "2px 0 #ffd700, -2px 0 #ffed4e, 0 2px #fbbf24" : "0 0 20px rgba(255, 215, 0, 0.5)",
+          textShadow: glitchActive ? "2px 0 #0047AB, -2px 0 #0066CC, 0 2px #0080FF" : "0 0 20px rgba(0, 71, 171, 0.5)",
         }}
       >
         {title}
@@ -110,7 +110,7 @@ export function HolographicHeader({
 
       {/* Animated Underline */}
       <motion.div
-        className="mx-auto h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
+        className="mx-auto h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
         initial={animated ? { width: 0 } : { width: "200px" }}
         animate={{ width: "200px" }}
         transition={{ duration: 1, delay: 0.5 }}
@@ -150,7 +150,7 @@ export function HolographicHeader({
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-yellow-400/30 rounded-full"
+              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
               animate={{
                 x: [0, Math.random() * 100 - 50, 0],
                 y: [0, Math.random() * 50 - 25, 0],

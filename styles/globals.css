@@ -15,71 +15,71 @@ body {
 @layer base {
   :root {
     --background: 0 0% 0%;
-    --foreground: 45 100% 70%;
+    --foreground: 213 100% 70%;
     --card: 0 0% 2%;
-    --card-foreground: 45 100% 70%;
+    --card-foreground: 213 100% 70%;
     --popover: 0 0% 2%;
-    --popover-foreground: 45 100% 70%;
-    --primary: 45 100% 70%;
+    --popover-foreground: 213 100% 70%;
+    --primary: 213 100% 70%;
     --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 5%;
-    --secondary-foreground: 45 100% 70%;
+    --secondary-foreground: 213 100% 70%;
     --muted: 0 0% 5%;
-    --muted-foreground: 45 50% 50%;
-    --accent: 45 100% 70%;
+    --muted-foreground: 213 50% 50%;
+    --accent: 213 100% 70%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 45 100% 70%;
-    --border: 45 100% 15%;
+    --destructive-foreground: 213 100% 70%;
+    --border: 213 100% 15%;
     --input: 0 0% 8%;
-    --ring: 45 100% 70%;
-    --chart-1: 45 100% 70%;
-    --chart-2: 45 80% 60%;
-    --chart-3: 45 60% 50%;
-    --chart-4: 45 40% 40%;
-    --chart-5: 45 20% 30%;
+    --ring: 213 100% 70%;
+    --chart-1: 213 100% 70%;
+    --chart-2: 213 80% 60%;
+    --chart-3: 213 60% 50%;
+    --chart-4: 213 40% 40%;
+    --chart-5: 213 20% 30%;
     --sidebar-background: 0 0% 1%;
-    --sidebar-foreground: 45 100% 70%;
-    --sidebar-primary: 45 100% 70%;
+    --sidebar-foreground: 213 100% 70%;
+    --sidebar-primary: 213 100% 70%;
     --sidebar-primary-foreground: 0 0% 0%;
     --sidebar-accent: 0 0% 3%;
-    --sidebar-accent-foreground: 45 100% 70%;
-    --sidebar-border: 45 100% 10%;
-    --sidebar-ring: 45 100% 70%;
+    --sidebar-accent-foreground: 213 100% 70%;
+    --sidebar-border: 213 100% 10%;
+    --sidebar-ring: 213 100% 70%;
   }
   .dark {
     --background: 0 0% 0%;
-    --foreground: 45 100% 70%;
+    --foreground: 213 100% 70%;
     --card: 0 0% 2%;
-    --card-foreground: 45 100% 70%;
+    --card-foreground: 213 100% 70%;
     --popover: 0 0% 2%;
-    --popover-foreground: 45 100% 70%;
-    --primary: 45 100% 70%;
+    --popover-foreground: 213 100% 70%;
+    --primary: 213 100% 70%;
     --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 5%;
-    --secondary-foreground: 45 100% 70%;
+    --secondary-foreground: 213 100% 70%;
     --muted: 0 0% 5%;
-    --muted-foreground: 45 50% 50%;
-    --accent: 45 100% 70%;
+    --muted-foreground: 213 50% 50%;
+    --accent: 213 100% 70%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 45 100% 70%;
-    --border: 45 100% 15%;
+    --destructive-foreground: 213 100% 70%;
+    --border: 213 100% 15%;
     --input: 0 0% 8%;
-    --ring: 45 100% 70%;
-    --chart-1: 45 100% 70%;
-    --chart-2: 45 80% 60%;
-    --chart-3: 45 60% 50%;
-    --chart-4: 45 40% 40%;
-    --chart-5: 45 20% 30%;
+    --ring: 213 100% 70%;
+    --chart-1: 213 100% 70%;
+    --chart-2: 213 80% 60%;
+    --chart-3: 213 60% 50%;
+    --chart-4: 213 40% 40%;
+    --chart-5: 213 20% 30%;
     --sidebar-background: 0 0% 1%;
-    --sidebar-foreground: 45 100% 70%;
-    --sidebar-primary: 45 100% 70%;
+    --sidebar-foreground: 213 100% 70%;
+    --sidebar-primary: 213 100% 70%;
     --sidebar-primary-foreground: 0 0% 0%;
     --sidebar-accent: 0 0% 3%;
-    --sidebar-accent-foreground: 45 100% 70%;
-    --sidebar-border: 45 100% 10%;
-    --sidebar-ring: 45 100% 70%;
+    --sidebar-accent-foreground: 213 100% 70%;
+    --sidebar-border: 213 100% 10%;
+    --sidebar-ring: 213 100% 70%;
   }
 }
 
@@ -89,24 +89,24 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    background: linear-gradient(135deg, #000000 0%, #0a0a00 25%, #1a1a00 50%, #0f0f00 75%, #000000 100%);
+    background: linear-gradient(135deg, #000000 0%, #000a1a 25%, #001a33 50%, #000f1f 75%, #000000 100%);
     min-height: 100vh;
   }
 }
 
-/* Custom gold gradients */
-.gold-gradient {
-  background: linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24, #f59e0b);
+/* Custom cobalt blue gradients */
+.cobalt-gradient {
+  background: linear-gradient(135deg, #0047ab, #0066cc, #0080ff, #4a90e2);
 }
 
-.gold-text {
-  background: linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24);
+.cobalt-text {
+  background: linear-gradient(135deg, #0047ab, #0066cc, #0080ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.black-gold-border {
+.black-cobalt-border {
   border: 1px solid;
-  border-image: linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24) 1;
+  border-image: linear-gradient(135deg, #0047ab, #0066cc, #0080ff) 1;
 }

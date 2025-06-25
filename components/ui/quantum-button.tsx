@@ -14,40 +14,40 @@ interface QuantumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const buttonVariants = {
   primary: {
-    background: "linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24)",
-    color: "#000000",
-    border: "1px solid rgba(255, 215, 0, 0.5)",
-    boxShadow: "0 0 20px rgba(255, 215, 0, 0.4)",
+    background: "linear-gradient(135deg, #0047AB, #0066CC, #0080FF)",
+    color: "#ffffff",
+    border: "1px solid rgba(0, 71, 171, 0.5)",
+    boxShadow: "0 0 20px rgba(0, 71, 171, 0.4)",
   },
   secondary: {
-    background: "rgba(255, 215, 0, 0.05)",
-    color: "#ffd700",
-    border: "1px solid rgba(255, 215, 0, 0.2)",
+    background: "rgba(0, 71, 171, 0.05)",
+    color: "#0047AB",
+    border: "1px solid rgba(0, 71, 171, 0.2)",
     boxShadow: "0 4px 20px rgba(0, 0, 0, 0.8)",
   },
   ghost: {
     background: "transparent",
-    color: "#ffd700",
+    color: "#0047AB",
     border: "1px solid transparent",
     boxShadow: "none",
   },
   neon: {
-    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.1))",
-    color: "#ffd700",
-    border: "1px solid #ffd700",
-    boxShadow: "0 0 20px rgba(255, 215, 0, 0.5)",
+    background: "linear-gradient(135deg, rgba(0, 71, 171, 0.1), rgba(0, 102, 204, 0.1))",
+    color: "#0047AB",
+    border: "1px solid #0047AB",
+    boxShadow: "0 0 20px rgba(0, 71, 171, 0.5)",
   },
   hologram: {
-    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.1))",
-    color: "#ffd700",
-    border: "1px solid #ffd700",
-    boxShadow: "0 0 20px rgba(255, 215, 0, 0.4)",
+    background: "linear-gradient(135deg, rgba(0, 71, 171, 0.1), rgba(0, 102, 204, 0.1))",
+    color: "#0047AB",
+    border: "1px solid #0047AB",
+    boxShadow: "0 0 20px rgba(0, 71, 171, 0.4)",
   },
   plasma: {
-    background: "linear-gradient(135deg, #ffd700, #ffed4e, #fbbf24)",
-    color: "#000000",
-    border: "1px solid rgba(255, 215, 0, 0.5)",
-    boxShadow: "0 0 25px rgba(255, 215, 0, 0.6)",
+    background: "linear-gradient(135deg, #0047AB, #0066CC, #0080FF)",
+    color: "#ffffff",
+    border: "1px solid rgba(0, 71, 171, 0.5)",
+    boxShadow: "0 0 25px rgba(0, 71, 171, 0.6)",
   },
 }
 
@@ -100,7 +100,7 @@ export function QuantumButton({
           background: isHovered
             ? [
                 variantStyles.background,
-                variant === "primary" ? "linear-gradient(135deg, #ffed4e, #ffd700, #fbbf24)" : variantStyles.background,
+                variant === "primary" ? "linear-gradient(135deg, #0066CC, #0047AB, #0080FF)" : variantStyles.background,
                 variantStyles.background,
               ]
             : variantStyles.background,
@@ -111,7 +111,7 @@ export function QuantumButton({
       {/* Ripple Effect */}
       {isPressed && (
         <motion.div
-          className="absolute inset-0 bg-yellow-400/30 rounded-inherit"
+          className="absolute inset-0 bg-blue-400/30 rounded-inherit"
           initial={{ scale: 0, opacity: 1 }}
           animate={{ scale: 2, opacity: 0 }}
           transition={{ duration: 0.6 }}
@@ -123,7 +123,7 @@ export function QuantumButton({
         className="absolute inset-0 rounded-inherit"
         animate={{
           boxShadow: isHovered
-            ? [variantStyles.boxShadow, `0 0 40px rgba(255, 215, 0, 0.8)`, variantStyles.boxShadow]
+            ? [variantStyles.boxShadow, `0 0 40px rgba(0, 71, 171, 0.8)`, variantStyles.boxShadow]
             : variantStyles.boxShadow,
         }}
         transition={{ duration: 2, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
@@ -145,7 +145,7 @@ export function QuantumButton({
 
       {/* Scan Line */}
       <motion.div
-        className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
+        className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
         animate={{
           x: isHovered ? ["-100%", "100%"] : "-100%",
         }}
