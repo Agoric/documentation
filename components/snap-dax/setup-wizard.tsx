@@ -69,7 +69,7 @@ export function SetupWizard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
             <Rocket className="h-6 w-6 text-purple-600" />
-            SNAP DAX Setup Wizard
+            SnappAiFi DAX Setup Wizard
           </CardTitle>
           <CardDescription className="text-lg">
             Initialize your Digital Asset Exchange with QGI bonds and government program integration
@@ -204,7 +204,7 @@ export function SetupWizard() {
               <div className="mt-3 text-sm text-red-600">
                 <p className="font-medium">Troubleshooting:</p>
                 <ul className="list-disc list-inside mt-1 space-y-1">
-                  <li>Check your NEON_NEON_DATABASE_URL environment variable</li>
+                  <li>Check your NEON_NEON_NEON_DATABASE_URL environment variable</li>
                   <li>Verify your database is running and accessible</li>
                   <li>Ensure you have table creation permissions</li>
                   <li>Try refreshing and running the setup again</li>

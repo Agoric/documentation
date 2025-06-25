@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { neon } from "@neondatabase/serverless"
 
-const sql = neon(process.env.NEON_NEON_DATABASE_URL!)
+const sql = neon(process.env.NEON_NEON_NEON_DATABASE_URL!)
 
 export async function POST(req: NextRequest) {
   try {
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
       await sql`
         INSERT INTO business_bonds (business_id, business_name, bond_amount, bank_rate, credit_guarantee_amount)
         VALUES 
-          ('BUS_DEMO_001', 'Snapifi Tech Solutions', 500000.00, 0.0525, 500000.00),
+          ('BUS_DEMO_001', 'SnappAiFi Tech Solutions', 500000.00, 0.0525, 500000.00),
           ('BUS_DEMO_002', 'Digital Asset Ventures', 500000.00, 0.0525, 500000.00),
           ('BUS_DEMO_003', 'Real Estate Tokenization LLC', 500000.00, 0.0525, 500000.00)
         ON CONFLICT (business_id) DO NOTHING

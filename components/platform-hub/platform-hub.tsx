@@ -201,7 +201,7 @@ export function PlatformHub() {
         {/* Header */}
         <div className="mb-16">
           <HolographicHeader
-            title="SNAPIFI NEXUS"
+            title="SNAPPAIFI NEXUS"
             subtitle="Next-Generation Financial Platform"
             description="Experience the future of finance with quantum computing, neural networks, and holographic interfaces"
             variant="rainbow"

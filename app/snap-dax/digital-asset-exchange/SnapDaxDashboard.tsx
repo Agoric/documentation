@@ -49,7 +49,7 @@ const mockData = {
     {
       id: "BUS-001",
       businessId: "BUS_DEMO_001",
-      businessName: "Snapifi Tech Solutions",
+      businessName: "SnappAiFi Tech Solutions",
       bondAmount: 500000,
       bankRate: 0.0525,
       creditGuaranteeAmount: 500000,
@@ -119,7 +119,7 @@ export function SnapDaxDashboard() {
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
-            SNAP Digital Asset X-Change
+            SnappAiFi Digital Asset X-Change
           </h1>
           <p className="text-gray-600 text-lg">
             Government-Backed QGI Bonds • 60x Leverage • Institutional Trading Platform

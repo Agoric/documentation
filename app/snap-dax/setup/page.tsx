@@ -6,7 +6,7 @@ export default function SnapDaxSetupPage() {
       <div className="container mx-auto py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
-            SNAP DAX Setup
+            SnappAiFi DAX Setup
           </h1>
           <p className="text-gray-600 mt-2">Initialize your Digital Asset Exchange with government-backed QGI bonds</p>
         </div>

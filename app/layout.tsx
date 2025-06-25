@@ -7,7 +7,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Snapifi Financial Platform",
+  title: "SnappAiFi Financial Platform",
   description: "Revolutionary financial platform with 50-year loans and holographic experiences",
     generator: 'v0.dev'
 }

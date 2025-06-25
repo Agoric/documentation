@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 - Optimize savings`
   }
 
-  const getSystemPrompt = () => `You are the Genius Guide, an AI assistant on Snapifi.
+  const getSystemPrompt = () => `You are the Genius Guide, an AI assistant on SnappAiFi.
 
 USER PROFILE
 - Credit Score: ${userProfile.creditScore}
