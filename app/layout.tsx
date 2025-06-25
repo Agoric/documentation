@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 import { EnvironmentDropdown } from "@/components/ui/environment-dropdown"
+import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 
 export const metadata: Metadata = {
   title: "Inclusive Lending and Credit Empirical Authority",
@@ -24,15 +25,21 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <GamificationProvider>
             <ProductComparisonProvider>
-              {/* Global Environment Navigation */}
-              <div className="fixed top-4 right-4 z-[9999] pointer-events-none">
-                <div className="pointer-events-auto">
-                  <EnvironmentDropdown />
+              <div className="flex h-screen">
+                {/* Sidebar */}
+                <EnvironmentSidebar />
+
+                {/* Main Content */}
+                <div className="flex-1 flex flex-col">
+                  {/* Top Navigation */}
+                  <div className="fixed top-4 right-4 z-50">
+                    <EnvironmentDropdown />
+                  </div>
+
+                  {/* Page Content */}
+                  <main className="flex-1 overflow-auto">{children}</main>
                 </div>
               </div>
-
-              {/* Main Content */}
-              <main className="min-h-screen">{children}</main>
             </ProductComparisonProvider>
           </GamificationProvider>
         </ThemeProvider>
