@@ -15,6 +15,10 @@ import {
   Compass,
   Route,
   Flag,
+  Target,
+  CheckCircle,
+  ArrowRight,
+  ExternalLink,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -43,11 +47,15 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
     currentInterest,
     goalProgress,
     isAnalyzing,
+    currentTaskLocation,
     confirmInterest,
     proceedToNextStep,
+    navigateToTask,
     getLocationInfo,
     identifyOpportunities,
     navigateToOpportunity,
+    getCurrentTaskGuidance,
+    markTaskCompleted,
   } = useGoalPrioritizingOrb()
 
   // Enhanced floating animation with interest indication
@@ -109,24 +117,25 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
     return () => clearInterval(interval)
   }, [pathname, identifyOpportunities])
 
-  // Handle interest confirmation
+  // Handle interest confirmation with precise navigation
   const handleConfirmInterest = async () => {
     if (currentInterest) {
       const confirmed = await confirmInterest(currentInterest.id)
       if (confirmed) {
-        // Navigate to the location/item of interest
-        navigateToOpportunity(currentInterest)
         setShowingInterest(false)
       }
     }
   }
 
-  // Handle next step progression
+  // Handle next step progression with precise navigation
   const handleNextStep = async () => {
     const nextStep = await proceedToNextStep()
-    if (nextStep?.navigation) {
-      router.push(nextStep.navigation.path)
-    }
+    // Navigation is handled within proceedToNextStep
+  }
+
+  // Handle direct step navigation
+  const handleStepNavigation = async (step: any) => {
+    await navigateToTask(step)
   }
 
   if (isMinimized) {
@@ -207,7 +216,7 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                {/* Current Interest/Opportunity */}
+                {/* Current Interest/Opportunity with Precise Navigation */}
                 {currentInterest && showingInterest && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -216,7 +225,7 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
                   >
                     <div className="flex items-start gap-3">
                       <div className="p-2 rounded-lg bg-green-500/20 text-green-400">
-                        <MapPin className="h-4 w-4" />
+                        <Target className="h-4 w-4" />
                       </div>
                       <div className="flex-1 space-y-2">
                         <div className="flex items-center gap-2">
@@ -226,19 +235,66 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
                           </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground leading-relaxed">{currentInterest.description}</p>
+
+                        {/* Navigation Details */}
+                        <div className="space-y-2 p-2 rounded bg-green-500/5 border border-green-500/10">
+                          <div className="flex items-center gap-2 text-xs text-green-400">
+                            <MapPin className="h-3 w-3" />
+                            <span>Location: {currentInterest.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <ExternalLink className="h-3 w-3" />
+                            <span>Path: {currentInterest.navigation.path}</span>
+                          </div>
+                          {currentInterest.navigation.section && (
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <ArrowRight className="h-3 w-3" />
+                              <span>Section: {currentInterest.navigation.section}</span>
+                            </div>
+                          )}
+                        </div>
+
                         <div className="flex items-center gap-2">
                           <Button
                             onClick={handleConfirmInterest}
                             className="h-8 text-xs bg-green-500 hover:bg-green-600"
                           >
                             <MousePointer className="h-3 w-3 mr-1" />
-                            Explore This Opportunity
+                            Navigate & Explore
                           </Button>
                           <div className="flex items-center gap-1 text-xs text-green-400">
                             <Star className="h-3 w-3" />
-                            <span>High Impact</span>
+                            <span>{currentInterest.impact} Impact</span>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Current Task Location Guidance */}
+                {currentTaskLocation && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-3 p-4 rounded-lg bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-indigo-500/10 border border-blue-500/20"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Navigation className="h-4 w-4 text-blue-400" />
+                      <h4 className="text-sm font-medium text-blue-400">Current Task Location</h4>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-xs text-muted-foreground">
+                        <strong>Page:</strong> {currentTaskLocation.page}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        <strong>Section:</strong> {currentTaskLocation.section}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        <strong>Element:</strong> {currentTaskLocation.element}
+                      </div>
+                      <div className="text-xs text-blue-400 font-medium">
+                        <strong>Expected Outcome:</strong> {currentTaskLocation.expectedOutcome}
                       </div>
                     </div>
                   </motion.div>
@@ -280,7 +336,7 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
                   ))}
                 </div>
 
-                {/* Next Actionable Steps */}
+                {/* Next Actionable Steps with Precise Navigation */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Route className="h-4 w-4 text-blue-400" />
@@ -293,28 +349,48 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 cursor-pointer"
-                      onClick={() => step.navigation && router.push(step.navigation.path)}
+                      className="space-y-2 p-3 rounded-lg hover:bg-muted/50 cursor-pointer border border-transparent hover:border-blue-500/20"
+                      onClick={() => handleStepNavigation(step)}
                     >
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">
-                        {index + 1}
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs font-medium">{step.title}</p>
+                          <p className="text-xs text-muted-foreground">{step.description}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Badge variant="secondary" className="text-xs">
+                            {step.estimatedTime}
+                          </Badge>
+                          <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="text-xs font-medium">{step.title}</p>
-                        <p className="text-xs text-muted-foreground">{step.description}</p>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Badge variant="secondary" className="text-xs">
-                          {step.estimatedTime}
-                        </Badge>
-                        <ChevronRight className="h-3 w-3 text-muted-foreground" />
+
+                      {/* Navigation Details */}
+                      <div className="ml-9 space-y-1 p-2 rounded bg-blue-500/5 border border-blue-500/10">
+                        <div className="flex items-center gap-2 text-xs text-blue-400">
+                          <ExternalLink className="h-3 w-3" />
+                          <span>Navigate to: {step.navigation.path}</span>
+                        </div>
+                        {step.navigation.section && (
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <ArrowRight className="h-3 w-3" />
+                            <span>Section: {step.navigation.section}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <CheckCircle className="h-3 w-3" />
+                          <span>Complete: {step.completionCriteria}</span>
+                        </div>
                       </div>
                     </motion.div>
                   ))}
 
                   <Button onClick={handleNextStep} className="w-full h-8 text-xs">
                     <Navigation className="h-3 w-3 mr-1" />
-                    Proceed to Next Step
+                    Navigate to Next Step
                   </Button>
                 </div>
 
@@ -353,7 +429,7 @@ export function GoalPrioritizingOrb({ className }: GoalPrioritizingOrbProps) {
                     >
                       <Compass className="h-4 w-4 text-blue-400" />
                     </motion.div>
-                    <span className="text-xs text-blue-400">Analyzing opportunities...</span>
+                    <span className="text-xs text-blue-400">Navigating to task location...</span>
                   </div>
                 )}
               </CardContent>
