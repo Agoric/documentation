@@ -15,9 +15,10 @@ import {
   BarChart3,
   Home,
   DollarSign,
-  Star,
   RotateCcw,
   Zap,
+  School,
+  Car,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -51,6 +52,15 @@ interface Property {
   has360View?: boolean
   zestimate: number
   priceHistory: Array<{ date: string; price: number }>
+  coordinates?: { lat: number; lng: number }
+  taxes?: number
+  hoa?: number
+  schools?: {
+    elementary?: string
+    middle?: string
+    high?: string
+    district?: string
+  }
 }
 
 interface HolographicPropertyCardProps {
@@ -61,6 +71,7 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showBidModal, setShowBidModal] = useState(false)
 
   const { addToComparison, removeFromComparison, isInComparison, maxComparisonItems, comparisonProperties } =
@@ -85,6 +96,22 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
         return <TrendingDown className="w-4 h-4 text-red-400" />
       default:
         return <div className="w-4 h-4 bg-gray-400 rounded-full" />
+    }
+  }
+
+  const handleImageError = () => {
+    setImageError(true)
+  }
+
+  const nextImage = () => {
+    if (property.images.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % property.images.length)
+    }
+  }
+
+  const prevImage = () => {
+    if (property.images.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + property.images.length) % property.images.length)
     }
   }
 
@@ -152,23 +179,61 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
           )}
 
           <CardContent className="relative z-10 p-6">
-            {/* Property Image */}
+            {/* Property Image Gallery */}
             <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-lg bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
               <div className="relative w-full h-full">
-                {!imageError ? (
-                  <Image
-                    src={property.images[0] || "/placeholder.svg"}
-                    alt={property.address}
-                    fill
-                    className="object-cover transition-all duration-500 group-hover:scale-110"
-                    style={{
-                      filter: property.isHolographic
-                        ? "brightness(1.1) contrast(1.1) saturate(1.2)"
-                        : "brightness(1) contrast(1) saturate(1)",
-                    }}
-                    onError={() => setImageError(true)}
-                    priority={false}
-                  />
+                {!imageError && property.images.length > 0 ? (
+                  <>
+                    <Image
+                      src={property.images[currentImageIndex] || "/placeholder.svg"}
+                      alt={property.address}
+                      fill
+                      className="object-cover transition-all duration-500 group-hover:scale-110"
+                      style={{
+                        filter: property.isHolographic
+                          ? "brightness(1.1) contrast(1.1) saturate(1.2)"
+                          : "brightness(1) contrast(1) saturate(1)",
+                      }}
+                      onError={handleImageError}
+                      priority={false}
+                    />
+
+                    {/* Image Navigation */}
+                    {property.images.length > 1 && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            prevImage()
+                          }}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          ←
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            nextImage()
+                          }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          →
+                        </button>
+
+                        {/* Image Indicators */}
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+                          {property.images.map((_, index) => (
+                            <div
+                              key={index}
+                              className={`w-2 h-2 rounded-full transition-all ${
+                                index === currentImageIndex ? "bg-white" : "bg-white/50"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-800/30 to-purple-800/30">
                     <div className="text-center">
@@ -276,7 +341,9 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 </div>
                 <div className="flex items-center gap-2">
                   {getTrendIcon()}
-                  <span className="text-sm text-indigo-200/70">${property.pricePerSqft}/sqft</span>
+                  <span className="text-sm text-indigo-200/70">
+                    {property.pricePerSqft > 0 ? `$${property.pricePerSqft}/sqft` : "Price/sqft N/A"}
+                  </span>
                 </div>
               </div>
 
@@ -284,15 +351,15 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
               <div className="flex items-center gap-4 text-sm text-indigo-200/70">
                 <div className="flex items-center gap-1">
                   <Bed className="w-4 h-4" />
-                  <span>{property.bedrooms} bed</span>
+                  <span>{property.bedrooms || 0} bed</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Bath className="w-4 h-4" />
-                  <span>{property.bathrooms} bath</span>
+                  <span>{property.bathrooms || 0} bath</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Square className="w-4 h-4" />
-                  <span>{property.sqft.toLocaleString()} sqft</span>
+                  <span>{property.sqft ? property.sqft.toLocaleString() : "N/A"} sqft</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
@@ -305,12 +372,23 @@ export function HolographicPropertyCard({ property }: HolographicPropertyCardPro
                 <span className="text-indigo-200/70">{property.neighborhood}</span>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
-                    <Star className="w-3 h-3 text-yellow-400" />
+                    <School className="w-3 h-3 text-yellow-400" />
                     <span className="text-indigo-200/70">{property.schoolRating}/10</span>
                   </div>
-                  <span className="text-indigo-200/70">Walk: {property.walkScore}</span>
+                  <div className="flex items-center gap-1">
+                    <Car className="w-3 h-3 text-blue-400" />
+                    <span className="text-indigo-200/70">Walk: {property.walkScore}</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Additional Info */}
+              {(property.taxes || property.hoa) && (
+                <div className="flex items-center justify-between text-xs text-indigo-200/60">
+                  {property.taxes && <span>Taxes: ${property.taxes.toLocaleString()}/yr</span>}
+                  {property.hoa && <span>HOA: ${property.hoa.toLocaleString()}/mo</span>}
+                </div>
+              )}
 
               {/* Holographic Features */}
               {property.isHolographic && property.holographicFeatures && (
