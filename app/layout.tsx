@@ -6,6 +6,7 @@ import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 import { EnvironmentDropdown } from "@/components/ui/environment-dropdown"
 import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
+import { GeniusOrb } from "@/components/genius-guide-orb/genius-orb"
 
 export const metadata: Metadata = {
   title: "Inclusive Lending and Credit Empirical Authority",
@@ -40,6 +41,9 @@ export default function RootLayout({
                   <main className="flex-1 overflow-auto">{children}</main>
                 </div>
               </div>
+
+              {/* Genius Guide Orb */}
+              <GeniusOrb />
             </ProductComparisonProvider>
           </GamificationProvider>
         </ThemeProvider>
