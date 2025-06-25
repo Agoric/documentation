@@ -1,224 +1,250 @@
 "use client"
+
+import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  BarChart3,
-  Building2,
-  ShoppingBag,
-  Gamepad2,
-  Shield,
-  Globe,
-  Users,
-  Server,
   ArrowRight,
   Zap,
   TrendingUp,
+  Globe,
+  Building2,
+  Shield,
+  Gavel,
+  Users,
+  BarChart3,
+  Gamepad2,
+  ShoppingBag,
+  Server,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-const environmentSuggestions = {
-  "/legal": [
-    {
-      name: "Compliance Portal",
-      path: "/legal/compliance",
-      icon: Shield,
-      reason: "Related legal environment",
-      category: "Legal Framework",
-    },
-    {
-      name: "Digital Domicile",
-      path: "/legal/digital-domicile",
-      icon: Globe,
-      reason: "Legal jurisdiction",
-      category: "Legal Framework",
-    },
-    {
-      name: "Diplomatic Immunity",
-      path: "/legal/diplomatic-immunity",
-      icon: Users,
-      reason: "Agent legal status",
-      category: "Legal Framework",
-    },
-  ],
-  "/dashboard": [
-    {
-      name: "SNAP-DAX Trading",
-      path: "/dashboard/snap-dax",
-      icon: Building2,
-      reason: "Financial platform",
-      category: "Main Platform",
-    },
-    {
-      name: "EcommereX Shop",
-      path: "/dashboard/ecommerex/holographic-products",
-      icon: ShoppingBag,
-      reason: "Commerce platform",
-      category: "Commerce",
-    },
-    {
-      name: "Gamification Hub",
-      path: "/dashboard/gamification",
-      icon: Gamepad2,
-      reason: "Rewards system",
-      category: "Gaming & Rewards",
-    },
-  ],
-  "/admin": [
-    {
-      name: "User Management",
-      path: "/admin/users",
-      icon: Users,
-      reason: "User administration",
-      category: "Administration",
-    },
-    {
-      name: "System Monitoring",
-      path: "/admin/system",
-      icon: Server,
-      reason: "System health",
-      category: "Administration",
-    },
-    {
-      name: "Admin Dashboard",
-      path: "/admin/dashboard",
-      icon: BarChart3,
-      reason: "Administration overview",
-      category: "Administration",
-    },
-  ],
+interface Suggestion {
+  label: string
+  path: string
+  icon: React.ElementType
+  description: string
+  reason: string
+  category: string
 }
 
-const popularEnvironments = [
-  {
-    name: "EcommereX Shop",
-    path: "/dashboard/ecommerex/holographic-products",
-    icon: ShoppingBag,
-    reason: "Most visited",
-    category: "Commerce",
-  },
-  {
-    name: "SNAP-DAX Trading",
-    path: "/dashboard/snap-dax",
-    icon: Building2,
-    reason: "Trending",
-    category: "Main Platform",
-  },
-  {
-    name: "Main Dashboard",
-    path: "/dashboard",
+const environmentMap = {
+  "/dashboard": {
     icon: BarChart3,
-    reason: "Home base",
     category: "Main Platform",
+    related: ["/dashboard/snap-dax", "/dashboard/gamification", "/dashboard/ecommerex/holographic-products"],
   },
-]
+  "/dashboard/snap-dax": {
+    icon: Building2,
+    category: "Main Platform",
+    related: ["/dashboard", "/admin/system", "/legal/compliance"],
+  },
+  "/dashboard/ecommerex/holographic-products": {
+    icon: ShoppingBag,
+    category: "Commerce",
+    related: ["/dashboard/gamification", "/admin/users", "/dashboard"],
+  },
+  "/dashboard/gamification": {
+    icon: Gamepad2,
+    category: "Gaming & Rewards",
+    related: ["/dashboard/ecommerex/holographic-products", "/dashboard", "/admin/users"],
+  },
+  "/legal": {
+    icon: Gavel,
+    category: "Legal Framework",
+    related: ["/legal/compliance", "/legal/digital-domicile", "/legal/diplomatic-immunity"],
+  },
+  "/legal/compliance": {
+    icon: Shield,
+    category: "Legal Framework",
+    related: ["/legal", "/legal/digital-domicile", "/admin/dashboard"],
+  },
+  "/legal/digital-domicile": {
+    icon: Globe,
+    category: "Legal Framework",
+    related: ["/legal/compliance", "/legal/diplomatic-immunity", "/legal"],
+  },
+  "/legal/diplomatic-immunity": {
+    icon: Users,
+    category: "Legal Framework",
+    related: ["/legal/digital-domicile", "/legal/compliance", "/admin/users"],
+  },
+  "/admin/dashboard": {
+    icon: Server,
+    category: "Administration",
+    related: ["/admin/users", "/admin/system", "/dashboard"],
+  },
+  "/admin/users": {
+    icon: Users,
+    category: "Administration",
+    related: ["/admin/dashboard", "/admin/system", "/legal/diplomatic-immunity"],
+  },
+  "/admin/system": {
+    icon: Server,
+    category: "Administration",
+    related: ["/admin/dashboard", "/admin/users", "/dashboard/snap-dax"],
+  },
+}
 
-const quickActions = [
-  {
-    name: "View Analytics",
-    action: () => console.log("Analytics"),
-    icon: TrendingUp,
-    description: "Check platform metrics",
-  },
-  {
-    name: "Quick Setup",
-    action: () => console.log("Setup"),
-    icon: Zap,
-    description: "Configure new features",
-  },
-]
+const pathToLabel = {
+  "/dashboard": "Main Dashboard",
+  "/dashboard/snap-dax": "SNAP-DAX Trading",
+  "/dashboard/ecommerex/holographic-products": "EcommereX Shop",
+  "/dashboard/gamification": "Gamification Hub",
+  "/legal": "Legal Center",
+  "/legal/compliance": "Compliance Portal",
+  "/legal/digital-domicile": "Digital Domicile",
+  "/legal/diplomatic-immunity": "Diplomatic Immunity",
+  "/admin/dashboard": "Admin Dashboard",
+  "/admin/users": "User Management",
+  "/admin/system": "System Monitoring",
+}
 
 export function EnvironmentSearchSuggestions() {
   const pathname = usePathname()
   const router = useRouter()
 
-  // Get suggestions based on current path
-  const getRelatedEnvironments = () => {
-    const basePath = pathname.split("/").slice(0, 2).join("/")
-    return environmentSuggestions[basePath as keyof typeof environmentSuggestions] || []
-  }
+  const getSuggestions = React.useMemo((): Suggestion[] => {
+    const currentEnv = Object.entries(environmentMap).find(([path]) => pathname.startsWith(path))
 
-  const relatedEnvironments = getRelatedEnvironments()
+    if (!currentEnv) {
+      // Default suggestions for unknown paths
+      return [
+        {
+          label: "Main Dashboard",
+          path: "/dashboard",
+          icon: BarChart3,
+          description: "Overview and analytics",
+          reason: "Popular destination",
+          category: "Main Platform",
+        },
+        {
+          label: "EcommereX Shop",
+          path: "/dashboard/ecommerex/holographic-products",
+          icon: ShoppingBag,
+          description: "Holographic product marketplace",
+          reason: "Trending now",
+          category: "Commerce",
+        },
+      ]
+    }
 
-  const handleNavigate = (path: string) => {
+    const [currentPath, currentInfo] = currentEnv
+    const suggestions: Suggestion[] = []
+
+    // Add related environments
+    currentInfo.related.forEach((relatedPath) => {
+      const relatedInfo = environmentMap[relatedPath as keyof typeof environmentMap]
+      if (relatedInfo) {
+        suggestions.push({
+          label: pathToLabel[relatedPath as keyof typeof pathToLabel],
+          path: relatedPath,
+          icon: relatedInfo.icon,
+          description: getEnvironmentDescription(relatedPath),
+          reason: "Related environment",
+          category: relatedInfo.category,
+        })
+      }
+    })
+
+    // Add popular destinations based on current category
+    if (currentInfo.category === "Legal Framework") {
+      suggestions.push({
+        label: "Admin Dashboard",
+        path: "/admin/dashboard",
+        icon: Server,
+        description: "System administration",
+        reason: "Frequently accessed from Legal",
+        category: "Administration",
+      })
+    } else if (currentInfo.category === "Commerce") {
+      suggestions.push({
+        label: "Gamification Hub",
+        path: "/dashboard/gamification",
+        icon: Gamepad2,
+        description: "Rewards and achievements",
+        reason: "Popular with Commerce users",
+        category: "Gaming & Rewards",
+      })
+    }
+
+    return suggestions.slice(0, 4) // Limit to 4 suggestions
+  }, [pathname])
+
+  const handleSuggestionClick = (path: string) => {
     router.push(path)
   }
 
   return (
-    <div className="p-4 text-center">
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-muted-foreground mb-2">No environments found</h3>
-        <p className="text-xs text-muted-foreground">Try these suggestions instead:</p>
-      </div>
+    <div className="p-4 space-y-4">
+      <div className="text-center">
+        <div className="text-sm text-muted-foreground mb-3">No environments found. Try these suggestions:</div>
 
-      {/* Related Environments */}
-      {relatedEnvironments.length > 0 && (
-        <div className="mb-4">
-          <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
-            <ArrowRight className="h-3 w-3" />
-            Related to current area
-          </h4>
-          <div className="space-y-1">
-            {relatedEnvironments.map((env) => (
-              <Button
-                key={env.path}
-                variant="ghost"
-                size="sm"
-                onClick={() => handleNavigate(env.path)}
-                className="w-full justify-start text-xs h-8 hover:bg-white/10"
-              >
-                <env.icon className="h-3 w-3 mr-2" />
-                <span className="flex-1 text-left">{env.name}</span>
-                <span className="text-xs text-muted-foreground">{env.reason}</span>
-              </Button>
-            ))}
+        <div className="space-y-2">
+          {getSuggestions.map((suggestion, index) => (
+            <Button
+              key={suggestion.path}
+              variant="ghost"
+              className="w-full justify-start h-auto p-3 hover:bg-white/10 group"
+              onClick={() => handleSuggestionClick(suggestion.path)}
+            >
+              <div className="flex items-start gap-3 w-full">
+                <suggestion.icon className="h-4 w-4 mt-0.5 text-muted-foreground group-hover:text-foreground" />
+                <div className="flex-1 text-left">
+                  <div className="font-medium text-sm">{suggestion.label}</div>
+                  <div className="text-xs text-muted-foreground">{suggestion.description}</div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <Zap className="h-3 w-3 text-yellow-500" />
+                    <span className="text-xs text-yellow-600">{suggestion.reason}</span>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+              </div>
+            </Button>
+          ))}
+        </div>
+
+        <div className="mt-4 pt-3 border-t border-white/10">
+          <div className="text-xs text-muted-foreground mb-2">Quick Actions:</div>
+          <div className="flex gap-2 justify-center">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs h-7"
+              onClick={() => handleSuggestionClick("/dashboard")}
+            >
+              <TrendingUp className="h-3 w-3 mr-1" />
+              Popular
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs h-7"
+              onClick={() => handleSuggestionClick("/admin/dashboard")}
+            >
+              <Server className="h-3 w-3 mr-1" />
+              Admin
+            </Button>
           </div>
-        </div>
-      )}
-
-      {/* Popular Environments */}
-      <div className="mb-4">
-        <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
-          <TrendingUp className="h-3 w-3" />
-          Popular destinations
-        </h4>
-        <div className="space-y-1">
-          {popularEnvironments.map((env) => (
-            <Button
-              key={env.path}
-              variant="ghost"
-              size="sm"
-              onClick={() => handleNavigate(env.path)}
-              className="w-full justify-start text-xs h-8 hover:bg-white/10"
-            >
-              <env.icon className="h-3 w-3 mr-2" />
-              <span className="flex-1 text-left">{env.name}</span>
-              <span className="text-xs text-muted-foreground">{env.reason}</span>
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div>
-        <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
-          <Zap className="h-3 w-3" />
-          Quick actions
-        </h4>
-        <div className="space-y-1">
-          {quickActions.map((action) => (
-            <Button
-              key={action.name}
-              variant="ghost"
-              size="sm"
-              onClick={action.action}
-              className="w-full justify-start text-xs h-8 hover:bg-white/10"
-            >
-              <action.icon className="h-3 w-3 mr-2" />
-              <span className="flex-1 text-left">{action.name}</span>
-              <span className="text-xs text-muted-foreground">{action.description}</span>
-            </Button>
-          ))}
         </div>
       </div>
     </div>
   )
+}
+
+function getEnvironmentDescription(path: string): string {
+  const descriptions: Record<string, string> = {
+    "/dashboard": "Overview and analytics",
+    "/dashboard/snap-dax": "Financial trading platform",
+    "/dashboard/ecommerex/holographic-products": "Holographic product marketplace",
+    "/dashboard/gamification": "Rewards and achievements",
+    "/legal": "Legal documents and compliance",
+    "/legal/compliance": "Regulatory compliance",
+    "/legal/digital-domicile": "Digital jurisdiction declaration",
+    "/legal/diplomatic-immunity": "Agent diplomatic status",
+    "/admin/dashboard": "System administration",
+    "/admin/users": "Manage platform users",
+    "/admin/system": "Infrastructure monitoring",
+  }
+
+  return descriptions[path] || "Platform environment"
 }
