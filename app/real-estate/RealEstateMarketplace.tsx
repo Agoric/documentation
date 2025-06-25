@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Search, DollarSign, Home, TrendingUp, Star, RefreshCw, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,10 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
-import { HolographicPropertyCard } from "@/components/real-estate/holographic-property-card"
-import { PaginatedPropertyGrid } from "@/components/real-estate/paginated-property-grid"
 import { ComparisonBar } from "@/components/real-estate/property-comparison-bar"
 import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
+import { StreamingPropertyGrid } from "@/components/real-estate/streaming-property-grid"
 
 interface Property {
   id: string
@@ -49,7 +48,6 @@ interface Property {
 }
 
 export function RealEstateMarketplace() {
-  const [properties, setProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isDemo, setIsDemo] = useState(false)
@@ -59,57 +57,6 @@ export function RealEstateMarketplace() {
   const [sortBy, setSortBy] = useState("featured")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [totalProperties, setTotalProperties] = useState(0)
-
-  // Fetch properties from Zillow API
-  const fetchProperties = async () => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const params = new URLSearchParams()
-      if (searchQuery) params.append("location", searchQuery)
-      if (selectedCategory !== "all") params.append("propertyType", selectedCategory)
-      if (priceRange !== "all") {
-        const [min, max] = getPriceRange(priceRange)
-        if (min) params.append("minPrice", min.toString())
-        if (max) params.append("maxPrice", max.toString())
-      }
-      params.append("limit", "20")
-
-      const response = await fetch(`/api/zillow/properties?${params}`)
-      const data = await response.json()
-
-      if (data.success) {
-        setProperties(data.properties)
-        setTotalProperties(data.total)
-        setIsDemo(data.isDemo || false)
-        if (data.message) {
-          console.log("API Message:", data.message)
-        }
-      } else {
-        throw new Error(data.error || "Failed to fetch properties")
-      }
-    } catch (err) {
-      console.error("Error fetching properties:", err)
-      setError("Failed to load properties. Please try again.")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Initial load
-  useEffect(() => {
-    fetchProperties()
-  }, [])
-
-  // Refetch when search parameters change
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      fetchProperties()
-    }, 500) // Debounce search
-
-    return () => clearTimeout(timeoutId)
-  }, [searchQuery, selectedCategory, priceRange])
 
   const getPriceRange = (range: string): [number | null, number | null] => {
     switch (range) {
@@ -125,29 +72,6 @@ export function RealEstateMarketplace() {
         return [null, null]
     }
   }
-
-  // Filter and sort properties
-  const filteredProperties = properties.filter((property) => {
-    return true // Server-side filtering is handled by API
-  })
-
-  // Sort properties
-  const sortedProperties = [...filteredProperties].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return a.price - b.price
-      case "price-high":
-        return b.price - a.price
-      case "newest":
-        return b.yearBuilt - a.yearBuilt
-      case "sqft":
-        return b.sqft - a.sqft
-      case "days-market":
-        return a.daysOnMarket - b.daysOnMarket
-      default:
-        return 0
-    }
-  })
 
   return (
     <PropertyComparisonProvider>
@@ -175,15 +99,6 @@ export function RealEstateMarketplace() {
                     Showing sample properties. Live Zillow integration will display real listings.
                   </p>
                 </div>
-                <Button
-                  onClick={fetchProperties}
-                  disabled={loading}
-                  className="ml-auto bg-amber-600 hover:bg-amber-700 text-white"
-                  size="sm"
-                >
-                  <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-                  Retry
-                </Button>
               </div>
             </motion.div>
           </div>
@@ -341,7 +256,7 @@ export function RealEstateMarketplace() {
               <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-3" />
               <h3 className="text-red-300 font-semibold mb-2">Error Loading Properties</h3>
               <p className="text-red-200/70 mb-4">{error}</p>
-              <Button onClick={fetchProperties} className="bg-red-600 hover:bg-red-700 text-white">
+              <Button className="bg-red-600 hover:bg-red-700 text-white">
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Try Again
               </Button>
@@ -355,30 +270,15 @@ export function RealEstateMarketplace() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">
-                  {sortedProperties.length} Properties Found
+                  Properties Found
                   {isDemo && <span className="text-amber-400 ml-2">(Demo)</span>}
                 </h2>
                 <p className="text-indigo-200/70">
                   Showing results for {searchQuery} •{" "}
                   {selectedCategory !== "all" ? selectedCategory : "all property types"}
-                  {totalProperties > sortedProperties.length && (
-                    <span className="ml-2 text-cyan-300">
-                      ({sortedProperties.length} of {totalProperties} total)
-                    </span>
-                  )}
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Button
-                  onClick={fetchProperties}
-                  disabled={loading}
-                  variant="outline"
-                  size="sm"
-                  className="border-white/20 text-white hover:bg-white/10"
-                >
-                  <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-                  Refresh
-                </Button>
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
@@ -400,14 +300,16 @@ export function RealEstateMarketplace() {
           </div>
         )}
 
-        {/* Property Grid */}
+        {/* Streaming Property Grid */}
         {!loading && !error && (
           <div className="container mx-auto px-6">
-            <PaginatedPropertyGrid
-              properties={sortedProperties}
-              itemsPerPage={12}
+            <StreamingPropertyGrid
+              location={searchQuery}
+              minPrice={priceRange !== "all" ? getPriceRange(priceRange)[0] || undefined : undefined}
+              maxPrice={priceRange !== "all" ? getPriceRange(priceRange)[1] || undefined : undefined}
+              propertyType={selectedCategory !== "all" ? selectedCategory : undefined}
+              batchSize={5}
               viewMode={viewMode}
-              renderProperty={(property) => <HolographicPropertyCard key={property.id} property={property} />}
             />
           </div>
         )}
