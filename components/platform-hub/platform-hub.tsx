@@ -39,16 +39,6 @@ const platformEnvironments = {
       gradient: "from-emerald-400 to-teal-500",
     },
     {
-      id: "snap-dax",
-      title: "SNAP-DAX Trading",
-      description: "Advanced quantum trading platform with neural networks",
-      icon: <TrendingUp className="w-6 h-6" />,
-      href: "/dashboard/snap-dax",
-      variant: "neon" as const,
-      stats: "+24.7% Today",
-      gradient: "from-blue-400 to-cyan-500",
-    },
-    {
       id: "analytics",
       title: "Neural Analytics",
       description: "AI-powered insights and predictive modeling",
@@ -109,6 +99,16 @@ const platformEnvironments = {
       variant: "neural" as const,
       stats: "2.1K Properties",
       gradient: "from-teal-400 to-green-500",
+    },
+    {
+      id: "snap-dax",
+      title: "SNAP-DAX Trading",
+      description: "Advanced quantum trading platform with neural networks",
+      icon: <TrendingUp className="w-6 h-6" />,
+      href: "/dashboard/snap-dax",
+      variant: "neon" as const,
+      stats: "+24.7% Today",
+      gradient: "from-blue-400 to-cyan-500",
     },
   ],
   rewards: [
