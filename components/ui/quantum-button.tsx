@@ -71,6 +71,13 @@ export function QuantumButton({
   const [isHovered, setIsHovered] = React.useState(false)
   const [isPressed, setIsPressed] = React.useState(false)
 
+  /* ------------------------------------------------------------------ *
+   * Gracefully handle unknown variants by falling back to "primary".   *
+   * ------------------------------------------------------------------ */
+  const variantStyles =
+    // cast so TS stops complaining about dynamic key access
+    (buttonVariants as Record<string, (typeof buttonVariants)["primary"]>)[variant] ?? buttonVariants["primary"]
+
   return (
     <motion.button
       className={cn(
@@ -79,7 +86,8 @@ export function QuantumButton({
         disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
-      style={buttonVariants[variant]}
+      /* Apply the safe variant styles directly */
+      style={variantStyles}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseDown={() => setIsPressed(true)}
@@ -96,13 +104,11 @@ export function QuantumButton({
         animate={{
           background: isHovered
             ? [
-                buttonVariants[variant].background,
-                variant === "primary"
-                  ? "linear-gradient(135deg, #8b5cf6, #d946ef, #6366f1)"
-                  : buttonVariants[variant].background,
-                buttonVariants[variant].background,
+                variantStyles.background,
+                variant === "primary" ? "linear-gradient(135deg, #8b5cf6, #d946ef, #6366f1)" : variantStyles.background,
+                variantStyles.background,
               ]
-            : buttonVariants[variant].background,
+            : variantStyles.background,
         }}
         transition={{ duration: 2, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
       />
@@ -123,11 +129,11 @@ export function QuantumButton({
         animate={{
           boxShadow: isHovered
             ? [
-                buttonVariants[variant].boxShadow,
+                variantStyles.boxShadow,
                 `0 0 40px ${variant === "neon" ? "rgba(6, 182, 212, 0.8)" : "rgba(99, 102, 241, 0.6)"}`,
-                buttonVariants[variant].boxShadow,
+                variantStyles.boxShadow,
               ]
-            : buttonVariants[variant].boxShadow,
+            : variantStyles.boxShadow,
         }}
         transition={{ duration: 2, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
       />
