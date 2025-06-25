@@ -33,7 +33,6 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { SidebarWidgets } from "@/components/ui/sidebar-widgets"
 import { useEnvironmentHistory } from "@/hooks/use-environment-history"
 import { useEnvironmentNotifications } from "@/hooks/use-environment-notifications"
 import { useEnvironmentBookmarks } from "@/hooks/use-environment-bookmarks"
@@ -238,7 +237,6 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
   const [searchQuery, setSearchQuery] = React.useState("")
   const [selectedCategory, setSelectedCategory] = React.useState("all")
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("list")
-  const [showWidgets, setShowWidgets] = React.useState(true)
 
   const pathname = usePathname()
   const router = useRouter()
@@ -333,28 +331,15 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
                   <Grid3X3 className="h-3 w-3" />
                 </Button>
               </div>
-              <Button
-                variant={showWidgets ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setShowWidgets(!showWidgets)}
-                className="h-7 px-2 text-xs"
-              >
+              <Button variant="ghost" size="sm" className="h-7 px-2 text-xs">
                 <Filter className="h-3 w-3 mr-1" />
-                Widgets
+                Filter
               </Button>
             </div>
           </div>
 
           <ScrollArea className="flex-1">
             <div className="p-4 space-y-6">
-              {/* Widgets Section */}
-              {showWidgets && (
-                <>
-                  <SidebarWidgets />
-                  <Separator />
-                </>
-              )}
-
               {/* Quick Access */}
               <div className="space-y-3">
                 <h3 className="text-sm font-medium text-muted-foreground">Quick Access</h3>
