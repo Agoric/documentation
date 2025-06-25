@@ -3,6 +3,12 @@
 import * as React from "react"
 import { usePathname } from "next/navigation"
 
+/* Generates a unique ID in all runtimes */
+const generateId = () =>
+  typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`
+
 export interface Message {
   id: string
   role: "user" | "assistant"
@@ -53,7 +59,7 @@ export function useConversationalOrb() {
 
   const sendMessage = async (userMessage: string) => {
     const userMsg: Message = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: "user",
       content: userMessage,
       timestamp: new Date(),
@@ -78,7 +84,7 @@ export function useConversationalOrb() {
       const { content } = (await res.json()) as { content: string }
 
       const aiMsg: Message = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: "assistant",
         content,
         timestamp: new Date(),
