@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Search, DollarSign, Home, TrendingUp, Star, RefreshCw, AlertCircle } from "lucide-react"
+import { Search, DollarSign, Home, TrendingUp, Star, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -11,6 +11,190 @@ import { HolographicHeader } from "@/components/ecommerex/holographic-header"
 import { ComparisonBar } from "@/components/real-estate/property-comparison-bar"
 import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
 import { StreamingPropertyGrid } from "@/components/real-estate/streaming-property-grid"
+
+// Sample property data with real images
+const sampleProperties = [
+  {
+    id: "1",
+    address: "123 Luxury Lane, Beverly Hills, CA",
+    price: 2850000,
+    bedrooms: 4,
+    bathrooms: 3.5,
+    sqft: 3200,
+    lotSize: 0.75,
+    yearBuilt: 2019,
+    propertyType: "Single Family",
+    images: [
+      "/properties/luxury-modern-home.jpg",
+      "/properties/luxury-interior-1.jpg",
+      "/properties/luxury-interior-2.jpg",
+    ],
+    description: "Stunning modern home with panoramic city views and premium finishes throughout.",
+    features: ["Pool", "Garage", "Fireplace", "Hardwood Floors"],
+    neighborhood: "Beverly Hills",
+    walkScore: 85,
+    schoolRating: 9,
+    marketTrend: "up" as const,
+    daysOnMarket: 12,
+    pricePerSqft: 891,
+    isHolographic: true,
+    holographicFeatures: ["Virtual Tour", "3D Walkthrough", "AR Staging"],
+    has360View: true,
+    zestimate: 2900000,
+    priceHistory: [
+      { date: "2024-01", price: 2750000 },
+      { date: "2024-06", price: 2850000 },
+    ],
+  },
+  {
+    id: "2",
+    address: "456 Ocean Drive, Malibu, CA",
+    price: 4200000,
+    bedrooms: 5,
+    bathrooms: 4,
+    sqft: 4500,
+    lotSize: 1.2,
+    yearBuilt: 2021,
+    propertyType: "Single Family",
+    images: [
+      "/properties/oceanfront-estate.jpg",
+      "/properties/luxury-interior-2.jpg",
+      "/properties/luxury-interior-3.jpg",
+    ],
+    description: "Oceanfront estate with private beach access and infinity pool.",
+    features: ["Ocean View", "Private Beach", "Infinity Pool", "Wine Cellar"],
+    neighborhood: "Malibu",
+    walkScore: 65,
+    schoolRating: 8,
+    marketTrend: "up" as const,
+    daysOnMarket: 8,
+    pricePerSqft: 933,
+    isHolographic: true,
+    holographicFeatures: ["Drone Tour", "Virtual Reality", "Smart Home"],
+    has360View: true,
+    zestimate: 4350000,
+    priceHistory: [
+      { date: "2024-01", price: 4000000 },
+      { date: "2024-06", price: 4200000 },
+    ],
+  },
+  {
+    id: "3",
+    address: "789 Downtown Loft, Los Angeles, CA",
+    price: 1250000,
+    bedrooms: 2,
+    bathrooms: 2,
+    sqft: 1800,
+    lotSize: 0,
+    yearBuilt: 2020,
+    propertyType: "Condo",
+    images: ["/properties/downtown-loft.jpg", "/properties/luxury-interior-1.jpg"],
+    description: "Modern downtown loft with floor-to-ceiling windows and city views.",
+    features: ["City View", "Rooftop Deck", "Gym", "Concierge"],
+    neighborhood: "Downtown LA",
+    walkScore: 95,
+    schoolRating: 7,
+    marketTrend: "stable" as const,
+    daysOnMarket: 25,
+    pricePerSqft: 694,
+    isHolographic: false,
+    has360View: false,
+    zestimate: 1275000,
+    priceHistory: [
+      { date: "2024-01", price: 1200000 },
+      { date: "2024-06", price: 1250000 },
+    ],
+  },
+  {
+    id: "4",
+    address: "321 Suburban Street, Pasadena, CA",
+    price: 950000,
+    bedrooms: 3,
+    bathrooms: 2,
+    sqft: 2100,
+    lotSize: 0.5,
+    yearBuilt: 2018,
+    propertyType: "Single Family",
+    images: ["/properties/suburban-family-home.jpg", "/properties/luxury-interior-3.jpg"],
+    description: "Charming family home in quiet neighborhood with excellent schools.",
+    features: ["Garden", "2-Car Garage", "Updated Kitchen", "Solar Panels"],
+    neighborhood: "Pasadena",
+    walkScore: 75,
+    schoolRating: 9,
+    marketTrend: "up" as const,
+    daysOnMarket: 18,
+    pricePerSqft: 452,
+    isHolographic: true,
+    holographicFeatures: ["Energy Efficiency", "Smart Thermostat"],
+    has360View: true,
+    zestimate: 975000,
+    priceHistory: [
+      { date: "2024-01", price: 900000 },
+      { date: "2024-06", price: 950000 },
+    ],
+  },
+  {
+    id: "5",
+    address: "654 Hillside Drive, Hollywood Hills, CA",
+    price: 3500000,
+    bedrooms: 4,
+    bathrooms: 3,
+    sqft: 3800,
+    lotSize: 1.0,
+    yearBuilt: 2022,
+    propertyType: "Single Family",
+    images: [
+      "/properties/hollywood-hills-contemporary.jpg",
+      "/properties/luxury-interior-1.jpg",
+      "/properties/luxury-interior-2.jpg",
+    ],
+    description: "Contemporary architectural masterpiece with stunning valley views.",
+    features: ["Valley View", "Infinity Pool", "Home Theater", "Wine Room"],
+    neighborhood: "Hollywood Hills",
+    walkScore: 70,
+    schoolRating: 8,
+    marketTrend: "up" as const,
+    daysOnMarket: 5,
+    pricePerSqft: 921,
+    isHolographic: true,
+    holographicFeatures: ["Smart Home", "Virtual Staging", "3D Tour"],
+    has360View: true,
+    zestimate: 3650000,
+    priceHistory: [
+      { date: "2024-01", price: 3300000 },
+      { date: "2024-06", price: 3500000 },
+    ],
+  },
+  {
+    id: "6",
+    address: "987 Beachfront Blvd, Santa Monica, CA",
+    price: 5200000,
+    bedrooms: 6,
+    bathrooms: 5,
+    sqft: 5500,
+    lotSize: 0.8,
+    yearBuilt: 2023,
+    propertyType: "Single Family",
+    images: [
+      "/properties/santa-monica-beachfront.jpg",
+      "/properties/luxury-interior-2.jpg",
+      "/properties/luxury-interior-3.jpg",
+    ],
+    description: "Brand new luxury beachfront home with unobstructed ocean views.",
+    features: ["Ocean Front", "Private Elevator", "Rooftop Deck", "Smart Home"],
+    neighborhood: "Santa Monica",
+    walkScore: 88,
+    schoolRating: 9,
+    marketTrend: "up" as const,
+    daysOnMarket: 3,
+    pricePerSqft: 945,
+    isHolographic: true,
+    holographicFeatures: ["Virtual Reality", "Drone Tour", "AI Assistant"],
+    has360View: true,
+    zestimate: 5400000,
+    priceHistory: [{ date: "2024-06", price: 5200000 }],
+  },
+]
 
 interface Property {
   id: string
@@ -48,15 +232,15 @@ interface Property {
 }
 
 export function RealEstateMarketplace() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isDemo, setIsDemo] = useState(false)
+  const [isDemo, setIsDemo] = useState(true)
   const [searchQuery, setSearchQuery] = useState("Los Angeles, CA")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [priceRange, setPriceRange] = useState("all")
   const [sortBy, setSortBy] = useState("featured")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-  const [totalProperties, setTotalProperties] = useState(0)
+  const [totalProperties, setTotalProperties] = useState(sampleProperties.length)
 
   const getPriceRange = (range: string): [number | null, number | null] => {
     switch (range) {
@@ -72,6 +256,41 @@ export function RealEstateMarketplace() {
         return [null, null]
     }
   }
+
+  // Filter properties based on search criteria
+  const filteredProperties = sampleProperties.filter((property) => {
+    const matchesSearch =
+      property.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.neighborhood.toLowerCase().includes(searchQuery.toLowerCase())
+
+    const matchesCategory =
+      selectedCategory === "all" || property.propertyType.toLowerCase().includes(selectedCategory.toLowerCase())
+
+    const matchesPrice =
+      priceRange === "all" ||
+      (priceRange === "under-1m" && property.price < 1000000) ||
+      (priceRange === "1m-3m" && property.price >= 1000000 && property.price < 3000000) ||
+      (priceRange === "3m-5m" && property.price >= 3000000 && property.price < 5000000) ||
+      (priceRange === "over-5m" && property.price >= 5000000)
+
+    return matchesSearch && matchesCategory && matchesPrice
+  })
+
+  // Sort properties
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    switch (sortBy) {
+      case "price-low":
+        return a.price - b.price
+      case "price-high":
+        return b.price - a.price
+      case "newest":
+        return b.yearBuilt - a.yearBuilt
+      case "sqft":
+        return b.sqft - a.sqft
+      default:
+        return 0
+    }
+  })
 
   return (
     <PropertyComparisonProvider>
@@ -96,7 +315,7 @@ export function RealEstateMarketplace() {
                 <div>
                   <p className="text-amber-200 font-medium">Demo Mode Active</p>
                   <p className="text-amber-200/70 text-sm">
-                    Showing sample properties. Live Zillow integration will display real listings.
+                    Showing sample properties with real images. Live Zillow integration will display actual listings.
                   </p>
                 </div>
               </div>
@@ -237,82 +456,52 @@ export function RealEstateMarketplace() {
           </motion.div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="container mx-auto px-6 mb-6">
-            <div className="flex items-center justify-center py-12">
-              <div className="flex items-center gap-3">
-                <RefreshCw className="w-6 h-6 text-cyan-400 animate-spin" />
-                <span className="text-white text-lg">Loading properties...</span>
-              </div>
+        {/* Results Header */}
+        <div className="container mx-auto px-6 mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                {sortedProperties.length} Properties Found
+                {isDemo && <span className="text-amber-400 ml-2">(Demo)</span>}
+              </h2>
+              <p className="text-indigo-200/70">
+                Showing results for {searchQuery} •{" "}
+                {selectedCategory !== "all" ? selectedCategory : "all property types"}
+              </p>
             </div>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="container mx-auto px-6 mb-6">
-            <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6 text-center">
-              <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-3" />
-              <h3 className="text-red-300 font-semibold mb-2">Error Loading Properties</h3>
-              <p className="text-red-200/70 mb-4">{error}</p>
-              <Button className="bg-red-600 hover:bg-red-700 text-white">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Try Again
+            <div className="flex items-center gap-2">
+              <Button
+                variant={viewMode === "grid" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("grid")}
+                className="border-white/20"
+              >
+                Grid
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("list")}
+                className="border-white/20"
+              >
+                List
               </Button>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Results Header */}
-        {!loading && !error && (
-          <div className="container mx-auto px-6 mb-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-2">
-                  Properties Found
-                  {isDemo && <span className="text-amber-400 ml-2">(Demo)</span>}
-                </h2>
-                <p className="text-indigo-200/70">
-                  Showing results for {searchQuery} •{" "}
-                  {selectedCategory !== "all" ? selectedCategory : "all property types"}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setViewMode("grid")}
-                  className="border-white/20"
-                >
-                  Grid
-                </Button>
-                <Button
-                  variant={viewMode === "list" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setViewMode("list")}
-                  className="border-white/20"
-                >
-                  List
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Streaming Property Grid */}
-        {!loading && !error && (
-          <div className="container mx-auto px-6">
-            <StreamingPropertyGrid
-              location={searchQuery}
-              minPrice={priceRange !== "all" ? getPriceRange(priceRange)[0] || undefined : undefined}
-              maxPrice={priceRange !== "all" ? getPriceRange(priceRange)[1] || undefined : undefined}
-              propertyType={selectedCategory !== "all" ? selectedCategory : undefined}
-              batchSize={5}
-              viewMode={viewMode}
-            />
-          </div>
-        )}
+        {/* Property Grid */}
+        <div className="container mx-auto px-6">
+          <StreamingPropertyGrid
+            properties={sortedProperties}
+            location={searchQuery}
+            minPrice={priceRange !== "all" ? getPriceRange(priceRange)[0] || undefined : undefined}
+            maxPrice={priceRange !== "all" ? getPriceRange(priceRange)[1] || undefined : undefined}
+            propertyType={selectedCategory !== "all" ? selectedCategory : undefined}
+            batchSize={5}
+            viewMode={viewMode}
+          />
+        </div>
 
         {/* Comparison Bar */}
         <ComparisonBar />

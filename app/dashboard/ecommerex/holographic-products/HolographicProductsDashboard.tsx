@@ -4,7 +4,7 @@ import { PaginatedProductGrid } from "@/components/ecommerex/paginated-product-g
 import { HolographicHeader } from "@/components/ecommerex/holographic-header"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 
-// Enhanced sample product data with 360° view support
+// Enhanced sample product data with real images
 const products = [
   {
     id: "1",
