@@ -1,331 +1,238 @@
-"use client"
-
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import {
-  Users,
-  Settings,
-  Database,
-  Activity,
-  AlertTriangle,
-  CheckCircle,
-  XCircle,
-  RefreshCw,
-  Shield,
-  BarChart3,
-  FileText,
-  Zap,
-} from "lucide-react"
-
-interface SystemStatus {
-  service: string
-  status: "online" | "offline" | "warning"
-  uptime: string
-  lastCheck: string
+{
+  /* Analytics Overview Section - Referenced by Goal Prioritizing Orb */
 }
-
-interface UserActivity {
-  id: string
-  user: string
-  action: string
-  timestamp: string
-  status: "success" | "failed" | "pending"
-}
-
-export default function AdminDashboard() {
-  const [systemStatus] = useState<SystemStatus[]>([
-    { service: "Authentication Service", status: "online", uptime: "99.9%", lastCheck: "2 min ago" },
-    { service: "Database Cluster", status: "online", uptime: "99.8%", lastCheck: "1 min ago" },
-    { service: "Payment Gateway", status: "warning", uptime: "98.5%", lastCheck: "5 min ago" },
-    { service: "Holographic Engine", status: "online", uptime: "99.7%", lastCheck: "3 min ago" },
-    { service: "AI Processing", status: "online", uptime: "99.2%", lastCheck: "1 min ago" },
-    { service: "Diplomatic Agent System", status: "online", uptime: "100%", lastCheck: "30 sec ago" },
-  ])
-
-  const [recentActivity] = useState<UserActivity[]>([
-    {
-      id: "1",
-      user: "admin@snapifi.com",
-      action: "System backup completed",
-      timestamp: "5 min ago",
-      status: "success",
-    },
-    {
-      id: "2",
-      user: "alexandra.chen@snappcreditcom.realm",
-      action: "Diplomatic mission updated",
-      timestamp: "12 min ago",
-      status: "success",
-    },
-    { id: "3", user: "system", action: "Database optimization", timestamp: "1 hour ago", status: "success" },
-    {
-      id: "4",
-      user: "marcus.rodriguez@snappcreditcom.realm",
-      action: "Failed login attempt",
-      timestamp: "2 hours ago",
-      status: "failed",
-    },
-    { id: "5", user: "system", action: "Security scan initiated", timestamp: "3 hours ago", status: "pending" },
-  ])
-
-  const getStatusIcon = (status: SystemStatus["status"]) => {
-    switch (status) {
-      case "online":
-        return <CheckCircle className="h-4 w-4 text-green-500" />
-      case "offline":
-        return <XCircle className="h-4 w-4 text-red-500" />
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />
-    }
-  }
-
-  const getStatusBadge = (status: SystemStatus["status"]) => {
-    switch (status) {
-      case "online":
-        return (
-          <Badge variant="default" className="bg-green-500">
-            Online
-          </Badge>
-        )
-      case "offline":
-        return <Badge variant="destructive">Offline</Badge>
-      case "warning":
-        return (
-          <Badge variant="secondary" className="bg-yellow-500">
-            Warning
-          </Badge>
-        )
-    }
-  }
-
-  const getActivityIcon = (status: UserActivity["status"]) => {
-    switch (status) {
-      case "success":
-        return <CheckCircle className="h-4 w-4 text-green-500" />
-      case "failed":
-        return <XCircle className="h-4 w-4 text-red-500" />
-      case "pending":
-        return <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />
-    }
-  }
-
-  return (
-    <div className="container mx-auto p-6 space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Snapifi Admin Dashboard
-          </h1>
-          <p className="text-muted-foreground mt-2">System maintenance and monitoring interface</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-          <Button size="sm">
-            <Settings className="h-4 w-4 mr-2" />
-            Settings
-          </Button>
-        </div>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12,847</div>
-            <p className="text-xs text-muted-foreground">+2.5% from last month</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">System Uptime</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">99.8%</div>
-            <p className="text-xs text-muted-foreground">Last 30 days</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">47</div>
-            <p className="text-xs text-muted-foreground">Diplomatic agents online</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$2.4M</div>
-            <p className="text-xs text-muted-foreground">+12.3% from last month</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* System Status */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Database className="h-5 w-5" />
-            System Status
-          </CardTitle>
-          <CardDescription>Real-time monitoring of all system services</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {systemStatus.map((service, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  {getStatusIcon(service.status)}
-                  <div>
-                    <h4 className="font-medium">{service.service}</h4>
-                    <p className="text-sm text-muted-foreground">Last check: {service.lastCheck}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-sm font-medium">Uptime: {service.uptime}</p>
-                  </div>
-                  {getStatusBadge(service.status)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Activity */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
-              Recent Activity
-            </CardTitle>
-            <CardDescription>Latest system and user activities</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-center gap-3 p-3 border rounded-lg">
-                  {getActivityIcon(activity.status)}
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{activity.action}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {activity.user} • {activity.timestamp}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5" />
-              Quick Actions
-            </CardTitle>
-            <CardDescription>Common maintenance tasks</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" className="h-20 flex-col">
-                <Database className="h-6 w-6 mb-2" />
-                Backup Database
-              </Button>
-              <Button variant="outline" className="h-20 flex-col">
-                <RefreshCw className="h-6 w-6 mb-2" />
-                Restart Services
-              </Button>
-              <Button variant="outline" className="h-20 flex-col">
-                <Shield className="h-6 w-6 mb-2" />
-                Security Scan
-              </Button>
-              <Button variant="outline" className="h-20 flex-col">
-                <FileText className="h-6 w-6 mb-2" />
-                Generate Report
-              </Button>
-            </div>
-
-            <div className="space-y-3 pt-4 border-t">
-              <div className="flex gap-2">
-                <Input placeholder="Search users, logs, or services..." className="flex-1" />
-                <Button size="sm">Search</Button>
-              </div>
-              <div className="flex gap-2">
-                <Select>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="Select service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="auth">Authentication</SelectItem>
-                    <SelectItem value="db">Database</SelectItem>
-                    <SelectItem value="payment">Payment Gateway</SelectItem>
-                    <SelectItem value="holo">Holographic Engine</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button size="sm" variant="outline">
-                  Manage
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* System Logs Preview */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            System Logs
-          </CardTitle>
-          <CardDescription>Recent system events and error logs</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-black text-green-400 p-4 rounded-lg font-mono text-sm space-y-1 max-h-64 overflow-y-auto">
-            <div>[2024-01-22 14:30:15] INFO: Authentication service started successfully</div>
-            <div>[2024-01-22 14:30:16] INFO: Database connection established</div>
-            <div>[2024-01-22 14:30:17] INFO: Holographic engine initialized</div>
-            <div>[2024-01-22 14:30:18] INFO: Payment gateway connected</div>
-            <div>[2024-01-22 14:30:19] INFO: Diplomatic agent system online</div>
-            <div>[2024-01-22 14:30:20] INFO: All systems operational</div>
-            <div>[2024-01-22 14:31:45] WARN: High memory usage detected on server-02</div>
-            <div>[2024-01-22 14:32:10] INFO: Memory usage normalized</div>
-            <div>[2024-01-22 14:33:22] INFO: Backup process initiated</div>
-            <div>[2024-01-22 14:35:45] INFO: Backup completed successfully</div>
-          </div>
-          <div className="flex justify-between items-center mt-4">
-            <p className="text-sm text-muted-foreground">Showing last 10 entries</p>
-            <Button variant="outline" size="sm">
-              View Full Logs
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+;<section id="analytics-overview" className="py-8">
+  <div className="container mx-auto px-4">
+    <div className="mb-8">
+      <h2 className="text-2xl font-bold mb-2">Analytics Overview</h2>
+      <p className="text-gray-600">Monitor platform performance and user engagement metrics</p>
     </div>
-  )
-}
+
+    <div className="grid lg:grid-cols-3 gap-8">
+      {/* User Analytics Section - Referenced by Goal Prioritizing Orb */}
+      <div id="user-analytics-section" className="lg:col-span-2">
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold">User Engagement Analytics</h3>
+            <select className="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+              <option value="30-days">Last 30 Days</option>
+              <option value="7-days">Last 7 Days</option>
+              <option value="90-days">Last 90 Days</option>
+            </select>
+          </div>
+
+          {/* Active Users Chart - Referenced by Goal Prioritizing Orb */}
+          <div id="active-users-chart" className="mb-8">
+            <h4 className="font-medium text-gray-900 mb-4">Daily Active Users</h4>
+            <div className="h-64 bg-gradient-to-t from-blue-50 to-white rounded-lg border border-blue-200 flex items-end justify-center p-4">
+              <div className="flex items-end gap-2 h-full w-full max-w-md">
+                {[65, 78, 82, 75, 89, 94, 87, 92, 88, 95, 91, 97, 89, 94].map((height, index) => (
+                  <div
+                    key={index}
+                    className="bg-gradient-to-t from-blue-500 to-blue-400 rounded-t flex-1"
+                    style={{ height: `${height}%` }}
+                  ></div>
+                ))}
+              </div>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600 mt-2">
+              <span>Jan 1</span>
+              <span>Jan 15</span>
+              <span>Jan 30</span>
+            </div>
+          </div>
+
+          {/* Engagement Trends - Referenced by Goal Prioritizing Orb */}
+          <div id="engagement-trends" className="grid md:grid-cols-3 gap-6">
+            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+              <div className="text-2xl font-bold text-green-700">94.2%</div>
+              <div className="text-sm text-green-600">User Retention Rate</div>
+              <div className="text-xs text-green-500 flex items-center gap-1 mt-1">
+                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                +2.3% from last month
+              </div>
+            </div>
+
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="text-2xl font-bold text-blue-700">8.7 min</div>
+              <div className="text-sm text-blue-600">Avg Session Duration</div>
+              <div className="text-xs text-blue-500 flex items-center gap-1 mt-1">
+                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                +15% from last month
+              </div>
+            </div>
+
+            <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <div className="text-2xl font-bold text-purple-700">3.4</div>
+              <div className="text-sm text-purple-600">Pages per Session</div>
+              <div className="text-xs text-purple-500 flex items-center gap-1 mt-1">
+                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                +8% from last month
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Engagement Metrics - Referenced by Goal Prioritizing Orb */}
+      <div id="engagement-metrics" className="space-y-6">
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+          <h3 className="text-lg font-semibold mb-4">Top Features</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Loan Calculator</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 bg-gray-200 rounded-full h-2">
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: "85%" }}></div>
+                </div>
+                <span className="text-sm font-bold text-green-600">85%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Dashboard</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 bg-gray-200 rounded-full h-2">
+                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: "72%" }}></div>
+                </div>
+                <span className="text-sm font-bold text-blue-600">72%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Portfolio Manager</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 bg-gray-200 rounded-full h-2">
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: "68%" }}></div>
+                </div>
+                <span className="text-sm font-bold text-purple-600">68%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Goal Tracker</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 bg-gray-200 rounded-full h-2">
+                  <div className="bg-orange-500 h-2 rounded-full" style={{ width: "61%" }}></div>
+                </div>
+                <span className="text-sm font-bold text-orange-600">61%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Legal Center</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 bg-gray-200 rounded-full h-2">
+                  <div className="bg-teal-500 h-2 rounded-full" style={{ width: "45%" }}></div>
+                </div>
+                <span className="text-sm font-bold text-teal-600">45%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+          <h3 className="text-lg font-semibold mb-4">Platform Health</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">System Uptime</span>
+              <span className="text-sm font-bold text-green-600">99.97%</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">API Response Time</span>
+              <span className="text-sm font-bold text-blue-600">142ms</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Error Rate</span>
+              <span className="text-sm font-bold text-red-600">0.03%</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Database Performance</span>
+              <span className="text-sm font-bold text-green-600">Optimal</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Optimization Recommendations - Referenced by Goal Prioritizing Orb */}
+        <div id="optimization-recommendations" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+          <h3 className="text-lg font-semibold mb-4">Optimization Opportunities</h3>
+          <div className="space-y-4">
+            <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+              <div className="flex items-start gap-3">
+                <div className="p-1 bg-yellow-200 rounded">
+                  <svg className="h-4 w-4 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-yellow-800">Legal Center Engagement</p>
+                  <p className="text-xs text-yellow-600">
+                    45% usage suggests need for better onboarding or UX improvements
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+              <div className="flex items-start gap-3">
+                <div className="p-1 bg-green-200 rounded">
+                  <svg className="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-green-800">Loan Calculator Success</p>
+                  <p className="text-xs text-green-600">
+                    85% usage indicates strong product-market fit - consider expanding features
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start gap-3">
+                <div className="p-1 bg-blue-200 rounded">
+                  <svg className="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-blue-800">Mobile Optimization</p>
+                  <p className="text-xs text-blue-600">
+                    62% mobile traffic suggests prioritizing responsive design improvements
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

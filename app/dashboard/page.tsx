@@ -1,611 +1,417 @@
 "use client"
-
-import type * as React from "react"
-import { useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
-import {
-  TrendingUp,
-  Target,
-  CreditCard,
-  Home,
-  PiggyBank,
-  BarChart3,
-  Bell,
-  Settings,
-  Plus,
-  ArrowRight,
-  CheckCircle,
-  AlertCircle,
-  Clock,
-} from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { RoyalDiamondSlabCard } from "@/components/ui/royal-diamond-slab-card"
-
-interface FinancialGoal {
-  id: string
-  title: string
-  target: number
-  current: number
-  deadline: Date
-  priority: "high" | "medium" | "low"
-  category: "savings" | "credit" | "investment" | "debt"
-}
-
-interface QuickAction {
-  id: string
-  title: string
-  description: string
-  icon: React.ComponentType<{ className?: string }>
-  href: string
-  category: string
-}
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  CreditCard,
+  Target,
+  PiggyBank,
+  AlertCircle,
+  CheckCircle,
+  Calendar,
+} from "lucide-react"
 
 export default function DashboardPage() {
-  const searchParams = useSearchParams()
-  const [activeTab, setActiveTab] = useState("overview")
-  const [goals, setGoals] = useState<FinancialGoal[]>([])
-  const [quickActions, setQuickActions] = useState<QuickAction[]>([])
-
-  // Check URL parameters for specific actions
-  useEffect(() => {
-    const action = searchParams.get("action")
-    const goalType = searchParams.get("goalType")
-    const focus = searchParams.get("focus")
-
-    if (action === "credit-payment") {
-      // Scroll to credit optimization section
-      setTimeout(() => {
-        const creditSection = document.getElementById("credit-score-section")
-        if (creditSection) {
-          creditSection.scrollIntoView({ behavior: "smooth" })
-        }
-      }, 100)
-    }
-
-    if (goalType === "emergency-fund" && action === "setup-auto-transfer") {
-      // Scroll to savings goals section
-      setTimeout(() => {
-        const savingsSection = document.getElementById("savings-goals-section")
-        if (savingsSection) {
-          savingsSection.scrollIntoView({ behavior: "smooth" })
-        }
-      }, 100)
-    }
-
-    if (focus === "credit-optimization") {
-      setActiveTab("credit")
-    }
-  }, [searchParams])
-
-  // Mock data
-  useEffect(() => {
-    setGoals([
-      {
-        id: "GOAL-001",
-        title: "Emergency Fund",
-        target: 15000,
-        current: 11000,
-        deadline: new Date("2024-12-31"),
-        priority: "high",
-        category: "savings",
-      },
-      {
-        id: "GOAL-002",
-        title: "Credit Score Improvement",
-        target: 800,
-        current: 750,
-        deadline: new Date("2024-06-30"),
-        priority: "high",
-        category: "credit",
-      },
-      {
-        id: "GOAL-003",
-        title: "House Down Payment",
-        target: 90000,
-        current: 45000,
-        deadline: new Date("2025-03-31"),
-        priority: "medium",
-        category: "savings",
-      },
-      {
-        id: "GOAL-004",
-        title: "Investment Portfolio",
-        target: 100000,
-        current: 73000,
-        deadline: new Date("2024-12-31"),
-        priority: "medium",
-        category: "investment",
-      },
-    ])
-
-    setQuickActions([
-      {
-        id: "ACTION-001",
-        title: "Apply for 50-Year Loan",
-        description: "Get pre-approved with payments 40% lower",
-        icon: Home,
-        href: "/loans/application",
-        category: "loans",
-      },
-      {
-        id: "ACTION-002",
-        title: "Check Credit Score",
-        description: "View your latest credit report and score",
-        icon: CreditCard,
-        href: "/credit/report",
-        category: "credit",
-      },
-      {
-        id: "ACTION-003",
-        title: "Start Trading",
-        description: "Access SNAP-DAX trading platform",
-        icon: TrendingUp,
-        href: "/dashboard/snap-dax",
-        category: "trading",
-      },
-      {
-        id: "ACTION-004",
-        title: "Browse Properties",
-        description: "Explore real estate with 50-year financing",
-        icon: Home,
-        href: "/real-estate",
-        category: "real-estate",
-      },
-    ])
-  }, [])
-
-  const getGoalProgress = (goal: FinancialGoal) => {
-    return Math.min((goal.current / goal.target) * 100, 100)
-  }
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return "bg-red-500/20 text-red-400"
-      case "medium":
-        return "bg-yellow-500/20 text-yellow-400"
-      case "low":
-        return "bg-green-500/20 text-green-400"
-      default:
-        return "bg-gray-500/20 text-gray-400"
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-              Financial Dashboard
-            </h1>
-            <p className="text-muted-foreground mt-2">Your comprehensive financial command center</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm">
-              <Bell className="h-4 w-4 mr-2" />
-              Notifications
-            </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            Welcome Back, Alex
+          </h1>
+          <p className="text-gray-600">Here's your financial overview and goals progress</p>
         </div>
 
-        {/* Financial Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <RoyalDiamondSlabCard
-            variant="emerald"
-            size="md"
-            title="Net Worth"
-            content="$247,500"
-            highlightWords={["Net"]}
-            className="h-32"
-          >
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-emerald-400" />
-              <span className="text-sm text-emerald-400">+8.2% this month</span>
-            </div>
-          </RoyalDiamondSlabCard>
+        {/* Financial Overview Section - Referenced by Goal Prioritizing Orb */}
+        <section id="financial-overview" className="mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold mb-2">Financial Overview</h2>
+            <p className="text-gray-600">Monitor your financial health and optimization opportunities</p>
+          </div>
 
-          <RoyalDiamondSlabCard
-            variant="sapphire"
-            size="md"
-            title="Credit Score"
-            content="750"
-            highlightWords={["Credit"]}
-            className="h-32"
-            id="credit-optimization-card"
-          >
-            <div className="flex items-center gap-2">
-              <CreditCard className="h-5 w-5 text-blue-400" />
-              <span className="text-sm text-blue-400">Excellent</span>
-            </div>
-          </RoyalDiamondSlabCard>
-
-          <RoyalDiamondSlabCard
-            variant="ruby"
-            size="md"
-            title="Monthly Savings"
-            content="$2,450"
-            highlightWords={["Savings"]}
-            className="h-32"
-          >
-            <div className="flex items-center gap-2">
-              <PiggyBank className="h-5 w-5 text-red-400" />
-              <span className="text-sm text-red-400">On track</span>
-            </div>
-          </RoyalDiamondSlabCard>
-
-          <RoyalDiamondSlabCard
-            variant="diamond"
-            size="md"
-            title="Investment Return"
-            content="12.4%"
-            highlightWords={["Return"]}
-            className="h-32"
-          >
-            <div className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-white" />
-              <span className="text-sm text-white">YTD performance</span>
-            </div>
-          </RoyalDiamondSlabCard>
-        </div>
-
-        {/* Main Content Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-background/50 backdrop-blur-sm">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="goals">Goals</TabsTrigger>
-            <TabsTrigger value="credit">Credit</TabsTrigger>
-            <TabsTrigger value="investments">Investments</TabsTrigger>
-          </TabsList>
-
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Quick Actions */}
-              <Card className="bg-background/50 backdrop-blur-sm border-white/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5" />
-                    Quick Actions
-                  </CardTitle>
-                  <CardDescription>Common tasks and next steps</CardDescription>
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 mb-8">
+            {/* Credit Score Section - Referenced by Goal Prioritizing Orb */}
+            <div id="credit-score-section">
+              <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-200">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-green-600">Credit Score</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {quickActions.map((action) => (
-                    <div
-                      key={action.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-background/30 hover:bg-background/50 transition-colors cursor-pointer"
-                      onClick={() => (window.location.href = action.href)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                          <action.icon className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{action.title}</p>
-                          <p className="text-sm text-muted-foreground">{action.description}</p>
-                        </div>
-                      </div>
-                      <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Recent Activity */}
-              <Card className="bg-background/50 backdrop-blur-sm border-white/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="h-5 w-5" />
-                    Recent Activity
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                      <div>
-                        <p className="font-medium">Savings Goal Updated</p>
-                        <p className="text-sm text-muted-foreground">Emergency fund: $11,000</p>
-                      </div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">2 hours ago</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                    <div className="flex items-center gap-3">
-                      <TrendingUp className="h-5 w-5 text-blue-400" />
-                      <div>
-                        <p className="font-medium">Investment Return</p>
-                        <p className="text-sm text-muted-foreground">Portfolio gained $1,250</p>
-                      </div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">1 day ago</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                    <div className="flex items-center gap-3">
-                      <AlertCircle className="h-5 w-5 text-yellow-400" />
-                      <div>
-                        <p className="font-medium">Credit Utilization</p>
-                        <p className="text-sm text-muted-foreground">Increased to 28%</p>
-                      </div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">3 days ago</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Goals Tab */}
-          <TabsContent value="goals" className="space-y-6" id="savings-goals-section">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">Financial Goals</h2>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Goal
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {goals.map((goal) => (
-                <Card key={goal.id} className="bg-background/50 backdrop-blur-sm border-white/20">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{goal.title}</CardTitle>
-                      <Badge className={getPriorityColor(goal.priority)}>{goal.priority} priority</Badge>
-                    </div>
-                    <CardDescription>
-                      Target: ${goal.target.toLocaleString()} by {goal.deadline.toLocaleDateString()}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Progress</span>
-                        <span className="font-medium">
-                          ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
-                        </span>
-                      </div>
-                      <Progress value={getGoalProgress(goal)} className="h-2" />
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">{Math.round(getGoalProgress(goal))}% complete</span>
-                        <span className="text-muted-foreground">
-                          ${(goal.target - goal.current).toLocaleString()} remaining
-                        </span>
-                      </div>
-                    </div>
-
-                    {goal.id === "GOAL-001" && (
-                      <div
-                        className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20"
-                        id="auto-transfer-setup"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium">Auto-Transfer Setup</span>
-                          <Button size="sm">Configure</Button>
-                        </div>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span>Recommended Amount:</span>
-                            <span className="font-medium">$450/month</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Frequency:</span>
-                            <span>Monthly</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <Button className="w-full" variant="outline">
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Credit Tab */}
-          <TabsContent value="credit" className="space-y-6" id="credit-score-section">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Credit Score Overview */}
-              <Card className="bg-background/50 backdrop-blur-sm border-white/20">
-                <CardHeader>
-                  <CardTitle>Credit Score Overview</CardTitle>
-                  <CardDescription>Current score and improvement recommendations</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-blue-400 mb-2">750</div>
-                    <div className="text-sm text-muted-foreground">Excellent Credit</div>
-                  </div>
-
+                <CardContent>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Payment History</span>
-                      <span className="font-medium text-green-400">100%</span>
+                    {/* Current Score - Referenced by Goal Prioritizing Orb */}
+                    <div id="current-score" className="text-3xl font-bold text-green-700">
+                      750
                     </div>
-                    <div className="flex items-center justify-between" id="credit-utilization-chart">
-                      <span className="text-sm">Credit Utilization</span>
-                      <span className="font-medium text-yellow-400">28%</span>
+                    <div className="flex items-center text-sm text-green-600">
+                      <TrendingUp className="h-4 w-4 mr-1" />
+                      <span>+15 this month</span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Credit Age</span>
-                      <span className="font-medium">8.5 years</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Credit Mix</span>
-                      <span className="font-medium text-green-400">Good</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Credit Improvement */}
-              <Card className="bg-background/50 backdrop-blur-sm border-white/20">
-                <CardHeader>
-                  <CardTitle>Improvement Recommendations</CardTitle>
-                  <CardDescription>Actions to boost your credit score</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20" id="payment-recommendation">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium">Strategic Payment</span>
-                      <Badge className="bg-blue-500/20 text-blue-400">High Impact</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Pay down $500 on your highest utilization card to reduce overall utilization to 20%
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Potential Score Increase:</span>
-                      <span className="font-medium text-green-400">+20 points</span>
-                    </div>
-                    <Button className="w-full mt-3" id="pay-now-button">
-                      Make Payment Now
-                    </Button>
-                  </div>
-
-                  <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium">Credit Limit Increase</span>
-                      <Badge className="bg-green-500/20 text-green-400">Medium Impact</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Request a credit limit increase to improve your utilization ratio
-                    </p>
-                    <Button className="w-full" variant="outline">
-                      Request Increase
-                    </Button>
-                  </div>
-
-                  <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium">Monitor Credit Report</span>
-                      <Badge className="bg-yellow-500/20 text-yellow-400">Maintenance</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Check for errors and monitor changes to your credit report
-                    </p>
-                    <Button className="w-full" variant="outline">
-                      View Full Report
-                    </Button>
+                    <Progress value={75} className="h-2" />
+                    <p className="text-xs text-green-600">Excellent range</p>
                   </div>
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
 
-          {/* Investments Tab */}
-          <TabsContent value="investments" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Portfolio Overview */}
-              <Card className="bg-background/50 backdrop-blur-sm border-white/20" id="portfolio-allocation-chart">
-                <CardHeader>
-                  <CardTitle>Portfolio Allocation</CardTitle>
-                  <CardDescription>Current investment distribution</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Technology Stocks</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={35} className="w-20 h-2" id="tech-allocation-slider" />
-                        <span className="font-medium">35%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">International Funds</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={20} className="w-20 h-2" id="international-funds" />
-                        <span className="font-medium">20%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Bonds</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={25} className="w-20 h-2" />
-                        <span className="font-medium">25%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Real Estate</span>
-                      <div className="flex items-center gap-2">
-                        <Progress value={20} className="w-20 h-2" />
-                        <span className="font-medium">20%</span>
-                      </div>
-                    </div>
+            <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-blue-600">Net Worth</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="text-3xl font-bold text-blue-700">$485K</div>
+                  <div className="flex items-center text-sm text-blue-600">
+                    <TrendingUp className="h-4 w-4 mr-1" />
+                    <span>+8.2% YTD</span>
                   </div>
+                  <Progress value={68} className="h-2" />
+                  <p className="text-xs text-blue-600">Above avg for age</p>
+                </div>
+              </CardContent>
+            </Card>
 
-                  <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium">Rebalancing Needed</span>
-                      <Badge className="bg-yellow-500/20 text-yellow-400">Action Required</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Your tech allocation is 5% above target. Consider rebalancing for optimal diversification.
-                    </p>
-                    <Button className="w-full" id="rebalance-button">
-                      Rebalance Portfolio
-                    </Button>
+            <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-purple-600">Monthly Income</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="text-3xl font-bold text-purple-700">$8.5K</div>
+                  <div className="flex items-center text-sm text-purple-600">
+                    <TrendingUp className="h-4 w-4 mr-1" />
+                    <span>+12% vs last year</span>
                   </div>
-                </CardContent>
-              </Card>
+                  <Progress value={85} className="h-2" />
+                  <p className="text-xs text-purple-600">Strong growth</p>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Performance Metrics */}
-              <Card className="bg-background/50 backdrop-blur-sm border-white/20">
-                <CardHeader>
-                  <CardTitle>Performance Metrics</CardTitle>
-                  <CardDescription>Investment performance and returns</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-400">+12.4%</div>
-                      <div className="text-sm text-muted-foreground">YTD Return</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-400">$73,000</div>
-                      <div className="text-sm text-muted-foreground">Total Value</div>
-                    </div>
+            <Card className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border-orange-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-orange-600">Debt-to-Income</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="text-3xl font-bold text-orange-700">18%</div>
+                  <div className="flex items-center text-sm text-green-600">
+                    <TrendingDown className="h-4 w-4 mr-1" />
+                    <span>-3% this quarter</span>
                   </div>
+                  <Progress value={18} className="h-2" />
+                  <p className="text-xs text-green-600">Excellent ratio</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">1 Month</span>
-                      <span className="font-medium text-green-400">+2.1%</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">3 Months</span>
-                      <span className="font-medium text-green-400">+5.8%</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">1 Year</span>
-                      <span className="font-medium text-green-400">+12.4%</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">All Time</span>
-                      <span className="font-medium text-green-400">+18.7%</span>
-                    </div>
-                  </div>
-
-                  <Button className="w-full">View Detailed Analytics</Button>
-                </CardContent>
-              </Card>
+          {/* Credit Optimization Card - Referenced by Goal Prioritizing Orb */}
+          <div id="credit-optimization-card" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 mb-6">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Credit Score Optimization</h3>
+                <p className="text-sm text-gray-600">Boost your score by 20+ points with strategic actions</p>
+              </div>
+              <Badge variant="secondary" className="bg-green-100 text-green-700">
+                High Impact
+              </Badge>
             </div>
-          </TabsContent>
-        </Tabs>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Optimization Tips - Referenced by Goal Prioritizing Orb */}
+              <div id="optimization-tips" className="space-y-4">
+                <h4 className="font-medium text-gray-900">Recommendations</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-green-800">Pay down credit cards</p>
+                      <p className="text-xs text-green-600">Reduce utilization from 35% to 15%</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <AlertCircle className="h-5 w-5 text-blue-500 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-blue-800">Keep old accounts open</p>
+                      <p className="text-xs text-blue-600">Maintain credit history length</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Calculator - Referenced by Goal Prioritizing Orb */}
+              <div id="payment-calculator" className="space-y-4">
+                <h4 className="font-medium text-gray-900">Strategic Payment</h4>
+                <div className="space-y-3">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="text-sm text-gray-600">Recommended payment</div>
+                    <div className="text-2xl font-bold text-gray-900">$500</div>
+                    <div className="text-sm text-green-600">Expected score increase: +18 points</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Current utilization:</span>
+                      <span className="font-medium text-red-600">35%</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>After payment:</span>
+                      <span className="font-medium text-green-600">15%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium text-gray-900">Take Action</h4>
+                {/* Pay Now Button - Referenced by Goal Prioritizing Orb */}
+                <button
+                  id="pay-now-button"
+                  className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                >
+                  Make $500 Payment
+                </button>
+                <button className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-300">
+                  Schedule Payment
+                </button>
+                <div className="text-xs text-green-600 bg-green-50 p-2 rounded">
+                  <strong>Impact:</strong> This payment could increase your credit score by 15-20 points within 30 days.
+                </div>
+              </div>
+            </div>
+
+            {/* Credit Utilization Chart - Referenced by Goal Prioritizing Orb */}
+            <div id="credit-utilization-chart" className="mt-6 p-4 bg-gray-50 rounded-lg">
+              <h4 className="font-medium text-gray-900 mb-4">Credit Utilization by Card</h4>
+              <div className="space-y-3">
+                <div className="flex items-center gap-4">
+                  <div className="w-24 text-sm font-medium">Chase Sapphire</div>
+                  <div className="flex-1">
+                    <div className="flex justify-between text-xs mb-1">
+                      <span>$3,500 / $10,000</span>
+                      <span className="text-red-600 font-medium">35%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-red-500 h-2 rounded-full" style={{ width: "35%" }}></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-24 text-sm font-medium">Discover Card</div>
+                  <div className="flex-1">
+                    <div className="flex justify-between text-xs mb-1">
+                      <span>$750 / $5,000</span>
+                      <span className="text-yellow-600 font-medium">15%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-yellow-500 h-2 rounded-full" style={{ width: "15%" }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Recommendation - Referenced by Goal Prioritizing Orb */}
+            <div id="payment-recommendation" className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start gap-3">
+                <Target className="h-5 w-5 text-blue-500 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-blue-800">Smart Payment Strategy</p>
+                  <p className="text-xs text-blue-600">
+                    Pay $500 toward Chase Sapphire to reduce utilization to 30%, then focus on paying it down to 15% for
+                    maximum score impact.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Goal Tracker Section - Referenced by Goal Prioritizing Orb */}
+        <section id="goal-tracker" className="mb-12">
+          <div id="savings-goals-section" className="mb-6">
+            <h2 className="text-2xl font-bold mb-2">Goal Tracker</h2>
+            <p className="text-gray-600">Monitor progress toward your financial objectives</p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Emergency Fund Card - Referenced by Goal Prioritizing Orb */}
+            <div id="emergency-fund-card" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-green-100 rounded-lg">
+                    <PiggyBank className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Emergency Fund</h3>
+                    <p className="text-sm text-gray-600">Build to $10,000</p>
+                  </div>
+                </div>
+                <Badge variant="secondary" className="bg-green-100 text-green-700">
+                  73%
+                </Badge>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span>Current: $7,300</span>
+                    <span>Goal: $10,000</span>
+                  </div>
+                  <Progress value={73} className="h-3" />
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="text-sm text-gray-600 mb-2">Monthly Progress</div>
+                  <div className="text-lg font-bold text-gray-900">+$450</div>
+                  <div className="text-xs text-green-600">On track to reach goal in 6 months</div>
+                </div>
+
+                {/* Auto Transfer Setup - Referenced by Goal Prioritizing Orb */}
+                <div id="auto-transfer-setup" className="space-y-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-medium text-blue-800">Optimize Your Savings</h4>
+                  <p className="text-xs text-blue-600">Set up automatic transfers to reach your goal faster</p>
+
+                  {/* Amount Input - Referenced by Goal Prioritizing Orb */}
+                  <div id="amount-input" className="space-y-2">
+                    <label className="block text-xs font-medium text-blue-700">Monthly Transfer Amount</label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500">
+                        $
+                      </span>
+                      <input
+                        type="number"
+                        className="w-full pl-8 pr-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="450"
+                        defaultValue="450"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Frequency Selector - Referenced by Goal Prioritizing Orb */}
+                  <div id="frequency-selector" className="space-y-2">
+                    <label className="block text-xs font-medium text-blue-700">Frequency</label>
+                    <select className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                      <option value="monthly">Monthly</option>
+                      <option value="biweekly">Bi-weekly</option>
+                      <option value="weekly">Weekly</option>
+                    </select>
+                  </div>
+
+                  <button className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-medium text-sm hover:bg-blue-600 transition-colors">
+                    Set Up Auto-Transfer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 50-Year Loan Goal */}
+            <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-200">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-purple-100 rounded-lg">
+                    <DollarSign className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-base">50-Year Loan</CardTitle>
+                    <p className="text-sm text-gray-600">Pre-approval progress</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span>Application Status</span>
+                      <span className="font-medium">45% Complete</span>
+                    </div>
+                    <Progress value={45} className="h-3" />
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span>Income verification</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span>Credit check completed</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-4 w-4 border-2 border-gray-300 rounded-full"></div>
+                      <span>Document upload</span>
+                    </div>
+                  </div>
+                  <Button className="w-full bg-purple-500 hover:bg-purple-600">Continue Application</Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Investment Portfolio Goal */}
+            <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-blue-200">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-blue-100 rounded-lg">
+                    <TrendingUp className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-base">Portfolio Rebalance</CardTitle>
+                    <p className="text-sm text-gray-600">Optimize allocation</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span>Optimization Score</span>
+                      <span className="font-medium">60%</span>
+                    </div>
+                    <Progress value={60} className="h-3" />
+                  </div>
+                  <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <AlertCircle className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm font-medium text-orange-800">Action Needed</span>
+                    </div>
+                    <p className="text-xs text-orange-700">Tech allocation too high (45%). Consider rebalancing.</p>
+                  </div>
+                  <Button className="w-full bg-blue-500 hover:bg-blue-600">View Recommendations</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Quick Actions */}
+        <section className="mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold mb-2">Quick Actions</h2>
+            <p className="text-gray-600">Common tasks and shortcuts</p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-4">
+            <Button variant="outline" className="p-6 h-auto flex-col gap-3">
+              <CreditCard className="h-6 w-6" />
+              <span>Make Payment</span>
+            </Button>
+            <Button variant="outline" className="p-6 h-auto flex-col gap-3">
+              <Target className="h-6 w-6" />
+              <span>Set New Goal</span>
+            </Button>
+            <Button variant="outline" className="p-6 h-auto flex-col gap-3">
+              <TrendingUp className="h-6 w-6" />
+              <span>View Investments</span>
+            </Button>
+            <Button variant="outline" className="p-6 h-auto flex-col gap-3">
+              <Calendar className="h-6 w-6" />
+              <span>Schedule Call</span>
+            </Button>
+          </div>
+        </section>
       </div>
     </div>
   )
