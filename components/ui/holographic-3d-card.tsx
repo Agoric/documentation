@@ -2,526 +2,445 @@
 
 import * as React from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { Text, Environment, PerspectiveCamera, OrbitControls } from "@react-three/drei"
+import { Text, Environment, OrbitControls } from "@react-three/drei"
 import { motion } from "framer-motion"
 import * as THREE from "three"
-import { RoyalDiamondSlabCard } from "./royal-diamond-slab-card"
-import { DiamondParticleSystem } from "./diamond-particle-system"
+import { cn } from "@/lib/utils"
 
 interface Holographic3DCardProps {
   variant?: "emerald" | "sapphire" | "ruby" | "diamond" | "obsidian" | "platinum"
+  size?: "sm" | "md" | "lg" | "xl"
+  intensity?: "subtle" | "moderate" | "intense" | "maximum"
   title?: string
   subtitle?: string
   content?: string
   highlightWords?: string[]
   achievementLevel?: number
-  autoRotate?: boolean
-  hologramIntensity?: "low" | "medium" | "high" | "maximum"
-  projectionHeight?: number
-  interactive?: boolean
-  showParticles?: boolean
   className?: string
+  autoRotate?: boolean
+  hologramHeight?: number
+  perspective?: "isometric" | "perspective" | "orthographic"
+  interactionMode?: "orbit" | "tilt" | "float" | "locked"
+  holographicEffects?: boolean
+  depthLayers?: number
+  children?: React.ReactNode
 }
 
-// Holographic Shader Material
-const holographicVertexShader = `
-  varying vec2 vUv;
-  varying vec3 vPosition;
-  varying vec3 vNormal;
-  uniform float time;
-  uniform float intensity;
-  
-  void main() {
-    vUv = uv;
-    vPosition = position;
-    vNormal = normal;
-    
-    vec3 pos = position;
-    
-    // Add holographic distortion
-    pos.z += sin(pos.x * 10.0 + time * 2.0) * 0.02 * intensity;
-    pos.z += cos(pos.y * 8.0 + time * 1.5) * 0.015 * intensity;
-    
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-  }
-`
-
-const holographicFragmentShader = `
-  varying vec2 vUv;
-  varying vec3 vPosition;
-  varying vec3 vNormal;
-  uniform float time;
-  uniform float intensity;
-  uniform vec3 color1;
-  uniform vec3 color2;
-  uniform vec3 color3;
-  uniform float opacity;
-  
-  void main() {
-    vec2 uv = vUv;
-    
-    // Holographic interference patterns
-    float interference1 = sin(uv.x * 50.0 + time * 3.0) * 0.5 + 0.5;
-    float interference2 = cos(uv.y * 30.0 + time * 2.0) * 0.5 + 0.5;
-    float interference3 = sin((uv.x + uv.y) * 40.0 + time * 4.0) * 0.5 + 0.5;
-    
-    // Combine interference patterns
-    float pattern = (interference1 + interference2 + interference3) / 3.0;
-    
-    // Create holographic color shifts
-    vec3 hologramColor = mix(color1, color2, pattern);
-    hologramColor = mix(hologramColor, color3, sin(time * 2.0 + pattern * 6.28) * 0.5 + 0.5);
-    
-    // Add fresnel effect
-    vec3 viewDirection = normalize(cameraPosition - vPosition);
-    float fresnel = 1.0 - dot(vNormal, viewDirection);
-    fresnel = pow(fresnel, 2.0);
-    
-    // Scanline effect
-    float scanline = sin(uv.y * 200.0 + time * 10.0) * 0.1 + 0.9;
-    
-    // Final color with holographic effects
-    vec3 finalColor = hologramColor * scanline * (1.0 + fresnel * 0.5);
-    float finalOpacity = opacity * intensity * (0.7 + pattern * 0.3);
-    
-    gl_FragColor = vec4(finalColor, finalOpacity);
-  }
-`
-
-// 3D Card Mesh Component
-function Card3D({
+// Holographic Card Mesh Component
+function HolographicCardMesh({
   variant = "diamond",
-  title,
-  subtitle,
-  content,
-  highlightWords,
-  achievementLevel,
-  hologramIntensity = "medium",
-  projectionHeight = 2,
-  showParticles = true,
-}: Holographic3DCardProps) {
-  const meshRef = React.useRef<THREE.Mesh>(null)
-  const materialRef = React.useRef<THREE.ShaderMaterial>(null)
-  const groupRef = React.useRef<THREE.Group>(null)
-  const { clock } = useThree()
-
-  const intensityMap = {
-    low: 0.3,
-    medium: 0.6,
-    high: 0.9,
-    maximum: 1.2,
-  }
-
-  const variantColors = {
-    emerald: {
-      color1: new THREE.Color(0x10b981),
-      color2: new THREE.Color(0x34d399),
-      color3: new THREE.Color(0x6ee7b7),
-    },
-    sapphire: {
-      color1: new THREE.Color(0x3b82f6),
-      color2: new THREE.Color(0x60a5fa),
-      color3: new THREE.Color(0x93c5fd),
-    },
-    ruby: {
-      color1: new THREE.Color(0xef4444),
-      color2: new THREE.Color(0xf87171),
-      color3: new THREE.Color(0xfca5a5),
-    },
-    diamond: {
-      color1: new THREE.Color(0xffffff),
-      color2: new THREE.Color(0xe2e8f0),
-      color3: new THREE.Color(0xcbd5e1),
-    },
-    obsidian: {
-      color1: new THREE.Color(0x8b5cf6),
-      color2: new THREE.Color(0xa78bfa),
-      color3: new THREE.Color(0xc4b5fd),
-    },
-    platinum: {
-      color1: new THREE.Color(0x6b7280),
-      color2: new THREE.Color(0x9ca3af),
-      color3: new THREE.Color(0xd1d5db),
-    },
-  }
-
-  const colors = variantColors[variant]
-
-  useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.time.value = clock.getElapsedTime()
-    }
-
-    if (groupRef.current) {
-      // Gentle floating animation
-      groupRef.current.position.y = Math.sin(clock.getElapsedTime() * 0.5) * 0.1
-      groupRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.3) * 0.05
-    }
-  })
-
-  return (
-    <group ref={groupRef} position={[0, projectionHeight, 0]}>
-      {/* Main Card Mesh */}
-      <mesh ref={meshRef} position={[0, 0, 0]}>
-        <planeGeometry args={[4, 2.5, 32, 32]} />
-        <shaderMaterial
-          ref={materialRef}
-          vertexShader={holographicVertexShader}
-          fragmentShader={holographicFragmentShader}
-          uniforms={{
-            time: { value: 0 },
-            intensity: { value: intensityMap[hologramIntensity] },
-            color1: { value: colors.color1 },
-            color2: { value: colors.color2 },
-            color3: { value: colors.color3 },
-            opacity: { value: 0.8 },
-          }}
-          transparent
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* Holographic Frame */}
-      <mesh position={[0, 0, -0.01]}>
-        <planeGeometry args={[4.2, 2.7, 1, 1]} />
-        <meshBasicMaterial color={colors.color1} transparent opacity={0.3} side={THREE.DoubleSide} />
-      </mesh>
-
-      {/* 3D Text Elements */}
-      {title && (
-        <Text
-          position={[0, 0.8, 0.1]}
-          fontSize={0.3}
-          color="gold"
-          anchorX="center"
-          anchorY="middle"
-          font="/fonts/Geist-Bold.ttf"
-        >
-          {title}
-        </Text>
-      )}
-
-      {subtitle && (
-        <Text
-          position={[0, 0.4, 0.1]}
-          fontSize={0.15}
-          color="#fbbf24"
-          anchorX="center"
-          anchorY="middle"
-          font="/fonts/Geist-Regular.ttf"
-        >
-          {subtitle}
-        </Text>
-      )}
-
-      {content && (
-        <Text
-          position={[0, -0.2, 0.1]}
-          fontSize={0.12}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-          maxWidth={3.5}
-          textAlign="center"
-          font="/fonts/Geist-Regular.ttf"
-        >
-          {content}
-        </Text>
-      )}
-
-      {/* Achievement Level Indicators */}
-      {achievementLevel && achievementLevel > 1 && (
-        <group position={[0, -0.8, 0.1]}>
-          {[...Array(Math.min(achievementLevel, 5))].map((_, i) => (
-            <mesh key={i} position={[(i - 2) * 0.3, 0, 0]}>
-              <sphereGeometry args={[0.05, 8, 8]} />
-              <meshBasicMaterial color={colors.color2} />
-            </mesh>
-          ))}
-        </group>
-      )}
-
-      {/* Holographic Particles */}
-      {showParticles && (
-        <HolographicParticles
-          variant={variant}
-          intensity={hologramIntensity}
-          count={hologramIntensity === "maximum" ? 100 : 50}
-        />
-      )}
-
-      {/* Projection Beams */}
-      <ProjectionBeams variant={variant} intensity={hologramIntensity} height={projectionHeight} />
-    </group>
-  )
-}
-
-// Holographic Particles in 3D Space
-function HolographicParticles({
-  variant,
-  intensity = "medium",
-  count = 50,
+  size = "md",
+  title = "Holographic Card",
+  subtitle = "3D Projection",
+  content = "Revolutionary holographic display technology",
+  hologramHeight = 2,
+  depthLayers = 5,
+  autoRotate = true,
 }: {
   variant: string
-  intensity: string
-  count: number
+  size: string
+  title: string
+  subtitle: string
+  content: string
+  hologramHeight: number
+  depthLayers: number
+  autoRotate: boolean
 }) {
+  const meshRef = React.useRef<THREE.Group>(null)
+  const hologramRef = React.useRef<THREE.Group>(null)
   const particlesRef = React.useRef<THREE.Points>(null)
-  const { clock } = useThree()
+  const { camera, scene } = useThree()
 
+  // Card dimensions based on size
+  const dimensions = {
+    sm: { width: 4, height: 2.5 },
+    md: { width: 5, height: 3 },
+    lg: { width: 6, height: 3.5 },
+    xl: { width: 7, height: 4 },
+  }[size]
+
+  // Variant colors
   const variantColors = {
-    emerald: 0x10b981,
-    sapphire: 0x3b82f6,
-    ruby: 0xef4444,
-    diamond: 0xffffff,
-    obsidian: 0x8b5cf6,
-    platinum: 0x6b7280,
-  }
+    emerald: { primary: "#10b981", secondary: "#34d399", glow: "#6ee7b7" },
+    sapphire: { primary: "#3b82f6", secondary: "#60a5fa", glow: "#93c5fd" },
+    ruby: { primary: "#ef4444", secondary: "#f87171", glow: "#fca5a5" },
+    diamond: { primary: "#ffffff", secondary: "#f8fafc", glow: "#e2e8f0" },
+    obsidian: { primary: "#8b5cf6", secondary: "#a78bfa", glow: "#c4b5fd" },
+    platinum: { primary: "#6b7280", secondary: "#9ca3af", glow: "#d1d5db" },
+  }[variant]
 
-  const positions = React.useMemo(() => {
-    const pos = new Float32Array(count * 3)
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 8
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 6
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 4
+  // Create holographic particles
+  const particleCount = 200
+  const particlePositions = React.useMemo(() => {
+    const positions = new Float32Array(particleCount * 3)
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 10 // x
+      positions[i * 3 + 1] = Math.random() * hologramHeight * 2 // y
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10 // z
     }
-    return pos
-  }, [count])
+    return positions
+  }, [hologramHeight])
 
-  useFrame(() => {
+  // Animation loop
+  useFrame((state) => {
+    if (meshRef.current && autoRotate) {
+      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1
+      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.2
+    }
+
+    if (hologramRef.current) {
+      hologramRef.current.rotation.y += 0.01
+    }
+
     if (particlesRef.current) {
-      particlesRef.current.rotation.y = clock.getElapsedTime() * 0.1
-      const positions = particlesRef.current.geometry.attributes.position.array as Float32Array
-
-      for (let i = 0; i < count; i++) {
-        positions[i * 3 + 1] += Math.sin(clock.getElapsedTime() + i) * 0.001
-      }
-
-      particlesRef.current.geometry.attributes.position.needsUpdate = true
+      particlesRef.current.rotation.y += 0.005
+      particlesRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.1
     }
   })
 
   return (
-    <points ref={particlesRef}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.05}
-        color={variantColors[variant as keyof typeof variantColors]}
-        transparent
-        opacity={0.8}
-        sizeAttenuation
-      />
-    </points>
-  )
-}
+    <group ref={meshRef}>
+      {/* Holographic Base Platform */}
+      <mesh position={[0, -hologramHeight / 2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[dimensions.width * 0.8, dimensions.width * 0.8, 0.1, 32]} />
+        <meshStandardMaterial
+          color={variantColors.primary}
+          emissive={variantColors.primary}
+          emissiveIntensity={0.3}
+          transparent
+          opacity={0.6}
+        />
+      </mesh>
 
-// Projection Beams from Base
-function ProjectionBeams({
-  variant,
-  intensity = "medium",
-  height = 2,
-}: {
-  variant: string
-  intensity: string
-  height: number
-}) {
-  const beamRefs = React.useRef<THREE.Mesh[]>([])
-  const { clock } = useThree()
-
-  const variantColors = {
-    emerald: 0x10b981,
-    sapphire: 0x3b82f6,
-    ruby: 0xef4444,
-    diamond: 0xffffff,
-    obsidian: 0x8b5cf6,
-    platinum: 0x6b7280,
-  }
-
-  useFrame(() => {
-    beamRefs.current.forEach((beam, index) => {
-      if (beam) {
-        beam.material.opacity = 0.3 + Math.sin(clock.getElapsedTime() * 2 + index) * 0.2
-      }
-    })
-  })
-
-  return (
-    <group>
-      {/* Corner Projection Beams */}
-      {[
-        [-2, -1.25],
-        [2, -1.25],
-        [-2, 1.25],
-        [2, 1.25],
-      ].map(([x, y], index) => (
+      {/* Holographic Projection Beams */}
+      {[...Array(8)].map((_, i) => (
         <mesh
-          key={index}
-          ref={(el) => {
-            if (el) beamRefs.current[index] = el
-          }}
-          position={[x, y - height, 0]}
-          rotation={[0, 0, 0]}
+          key={i}
+          position={[
+            Math.cos((i * Math.PI * 2) / 8) * dimensions.width * 0.7,
+            -hologramHeight / 4,
+            Math.sin((i * Math.PI * 2) / 8) * dimensions.width * 0.7,
+          ]}
+          rotation={[0, (i * Math.PI * 2) / 8, 0]}
         >
-          <cylinderGeometry args={[0.02, 0.1, height, 8]} />
-          <meshBasicMaterial color={variantColors[variant as keyof typeof variantColors]} transparent opacity={0.4} />
+          <coneGeometry args={[0.05, hologramHeight * 1.5, 8]} />
+          <meshStandardMaterial
+            color={variantColors.glow}
+            emissive={variantColors.glow}
+            emissiveIntensity={0.8}
+            transparent
+            opacity={0.4}
+          />
         </mesh>
       ))}
 
-      {/* Base Projector Platform */}
-      <mesh position={[0, -height - 0.1, 0]}>
-        <cylinderGeometry args={[1.5, 1.5, 0.2, 16]} />
-        <meshBasicMaterial color={variantColors[variant as keyof typeof variantColors]} transparent opacity={0.6} />
-      </mesh>
+      {/* Multi-Layer Holographic Card */}
+      <group ref={hologramRef} position={[0, hologramHeight / 2, 0]}>
+        {[...Array(depthLayers)].map((_, layer) => (
+          <group key={layer} position={[0, 0, -layer * 0.1]}>
+            {/* Card Base */}
+            <mesh>
+              <boxGeometry args={[dimensions.width, dimensions.height, 0.05]} />
+              <meshStandardMaterial
+                color={variantColors.primary}
+                emissive={variantColors.primary}
+                emissiveIntensity={0.4 - layer * 0.08}
+                transparent
+                opacity={0.8 - layer * 0.15}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
 
-      {/* Central Projection Beam */}
-      <mesh position={[0, -height / 2, 0]}>
-        <cylinderGeometry args={[0.05, 0.2, height, 8]} />
-        <meshBasicMaterial color={variantColors[variant as keyof typeof variantColors]} transparent opacity={0.5} />
-      </mesh>
+            {/* Card Border Glow */}
+            <mesh>
+              <boxGeometry args={[dimensions.width + 0.1, dimensions.height + 0.1, 0.02]} />
+              <meshStandardMaterial
+                color={variantColors.glow}
+                emissive={variantColors.glow}
+                emissiveIntensity={0.6 - layer * 0.1}
+                transparent
+                opacity={0.3 - layer * 0.05}
+              />
+            </mesh>
+
+            {/* Holographic Text Layers */}
+            {layer === 0 && (
+              <>
+                <Text
+                  position={[0, 0.8, 0.03]}
+                  fontSize={0.4}
+                  color={variantColors.glow}
+                  anchorX="center"
+                  anchorY="middle"
+                  font="/fonts/Geist-Bold.ttf"
+                >
+                  {title}
+                </Text>
+                <Text
+                  position={[0, 0.3, 0.03]}
+                  fontSize={0.2}
+                  color={variantColors.secondary}
+                  anchorX="center"
+                  anchorY="middle"
+                  font="/fonts/Geist-Regular.ttf"
+                >
+                  {subtitle}
+                </Text>
+                <Text
+                  position={[0, -0.2, 0.03]}
+                  fontSize={0.15}
+                  color={variantColors.primary}
+                  anchorX="center"
+                  anchorY="middle"
+                  maxWidth={dimensions.width - 0.5}
+                  textAlign="center"
+                  font="/fonts/Geist-Regular.ttf"
+                >
+                  {content}
+                </Text>
+              </>
+            )}
+          </group>
+        ))}
+      </group>
+
+      {/* Holographic Particles */}
+      <points ref={particlesRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[particlePositions, 3]} />
+        </bufferGeometry>
+        <pointsMaterial
+          color={variantColors.glow}
+          size={0.02}
+          transparent
+          opacity={0.6}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+
+      {/* Holographic Grid Lines */}
+      <group>
+        {[...Array(20)].map((_, i) => (
+          <mesh
+            key={`grid-${i}`}
+            position={[(i - 10) * 0.5, -hologramHeight / 2 + 0.01, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <planeGeometry args={[0.01, dimensions.width * 2]} />
+            <meshStandardMaterial
+              color={variantColors.glow}
+              emissive={variantColors.glow}
+              emissiveIntensity={0.2}
+              transparent
+              opacity={0.3}
+            />
+          </mesh>
+        ))}
+        {[...Array(20)].map((_, i) => (
+          <mesh
+            key={`grid-z-${i}`}
+            position={[0, -hologramHeight / 2 + 0.01, (i - 10) * 0.5]}
+            rotation={[-Math.PI / 2, Math.PI / 2, 0]}
+          >
+            <planeGeometry args={[0.01, dimensions.width * 2]} />
+            <meshStandardMaterial
+              color={variantColors.glow}
+              emissive={variantColors.glow}
+              emissiveIntensity={0.2}
+              transparent
+              opacity={0.3}
+            />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Holographic Scan Lines */}
+      <group>
+        {[...Array(5)].map((_, i) => (
+          <mesh
+            key={`scan-${i}`}
+            position={[0, -hologramHeight / 2 + (i * hologramHeight) / 4, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <ringGeometry args={[dimensions.width * 0.3, dimensions.width * 0.9, 32]} />
+            <meshStandardMaterial
+              color={variantColors.secondary}
+              emissive={variantColors.secondary}
+              emissiveIntensity={0.4}
+              transparent
+              opacity={0.2}
+            />
+          </mesh>
+        ))}
+      </group>
     </group>
   )
 }
 
-// Main Holographic 3D Card Component
 export function Holographic3DCard({
   variant = "diamond",
-  title = "Snapifi Platform Citizen",
-  subtitle = "Elite Financial Status",
-  content = "Revolutionary 50-Year Loans • Premium Trading Access • Diplomatic Immunity",
-  highlightWords = ["50-Year", "Premium", "Diplomatic"],
+  size = "md",
+  intensity = "moderate",
+  title = "Holographic Card",
+  subtitle = "3D Projection",
+  content = "Revolutionary holographic display technology",
+  highlightWords = [],
   achievementLevel = 1,
-  autoRotate = true,
-  hologramIntensity = "medium",
-  projectionHeight = 2,
-  interactive = true,
-  showParticles = true,
   className,
+  autoRotate = true,
+  hologramHeight = 3,
+  perspective = "perspective",
+  interactionMode = "orbit",
+  holographicEffects = true,
+  depthLayers = 5,
+  children,
 }: Holographic3DCardProps) {
   const [isHovered, setIsHovered] = React.useState(false)
-  const [viewMode, setViewMode] = React.useState<"3d" | "2d">("3d")
+  const [isFullscreen, setIsFullscreen] = React.useState(false)
+
+  const canvasHeight = {
+    sm: "300px",
+    md: "400px",
+    lg: "500px",
+    xl: "600px",
+  }[size]
+
+  const cameraSettings = {
+    isometric: { position: [5, 5, 5], fov: 50 },
+    perspective: { position: [0, 2, 8], fov: 75 },
+    orthographic: { position: [0, 0, 10], fov: 30 },
+  }[perspective]
 
   return (
-    <div className={`relative w-full h-96 ${className}`}>
-      {/* 3D Holographic View */}
-      {viewMode === "3d" && (
-        <div
-          className="w-full h-full rounded-xl overflow-hidden bg-black/20 backdrop-blur-sm"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <Canvas>
-            <PerspectiveCamera makeDefault position={[0, 2, 6]} />
-
-            {/* Lighting */}
-            <ambientLight intensity={0.4} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#4f46e5" />
-
-            {/* Environment */}
-            <Environment preset="night" />
-
-            {/* 3D Card */}
-            <Card3D
-              variant={variant}
-              title={title}
-              subtitle={subtitle}
-              content={content}
-              highlightWords={highlightWords}
-              achievementLevel={achievementLevel}
-              hologramIntensity={hologramIntensity}
-              projectionHeight={projectionHeight}
-              showParticles={showParticles}
-            />
-
-            {/* Controls */}
-            {interactive && (
-              <OrbitControls
-                enablePan={false}
-                enableZoom={true}
-                enableRotate={true}
-                autoRotate={autoRotate}
-                autoRotateSpeed={0.5}
-                minDistance={3}
-                maxDistance={10}
-                minPolarAngle={Math.PI / 6}
-                maxPolarAngle={Math.PI - Math.PI / 6}
-              />
-            )}
-          </Canvas>
-
-          {/* 2D Overlay Card for Comparison */}
-          <div className="absolute top-4 right-4 opacity-20 hover:opacity-100 transition-opacity">
-            <RoyalDiamondSlabCard
-              variant={variant}
-              size="sm"
-              title={title}
-              subtitle={subtitle}
-              content={content}
-              highlightWords={highlightWords}
-              achievementLevel={achievementLevel}
-              className="scale-50 origin-top-right"
-            />
-          </div>
-
-          {/* Controls */}
-          <div className="absolute bottom-4 left-4 flex gap-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setViewMode(viewMode === "3d" ? "2d" : "3d")}
-              className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-lg text-white text-sm hover:bg-white/20 transition-colors"
-            >
-              {viewMode === "3d" ? "2D View" : "3D View"}
-            </motion.button>
-          </div>
-
-          {/* Holographic Status Indicator */}
-          <div className="absolute top-4 left-4 flex items-center gap-2">
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-            <span className="text-cyan-400 text-xs font-medium">HOLOGRAM ACTIVE</span>
-          </div>
-        </div>
+    <motion.div
+      className={cn(
+        "relative rounded-xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10",
+        isFullscreen ? "fixed inset-4 z-50" : "",
+        className,
       )}
+      style={{ height: isFullscreen ? "auto" : canvasHeight }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ scale: isFullscreen ? 1 : 1.02 }}
+    >
+      {/* 3D Canvas */}
+      <Canvas
+        camera={{
+          position: cameraSettings.position,
+          fov: cameraSettings.fov,
+        }}
+        style={{ background: "transparent" }}
+      >
+        {/* Lighting */}
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[10, 10, 5]} intensity={0.8} />
+        <pointLight position={[0, 10, 0]} intensity={0.6} color="#ffffff" />
+        <pointLight position={[5, 0, 5]} intensity={0.4} color={variant === "emerald" ? "#10b981" : "#3b82f6"} />
 
-      {/* 2D Fallback View */}
-      {viewMode === "2d" && (
-        <div className="w-full h-full flex items-center justify-center">
-          <RoyalDiamondSlabCard
-            variant={variant}
-            size="lg"
-            title={title}
-            subtitle={subtitle}
-            content={content}
-            highlightWords={highlightWords}
-            achievementLevel={achievementLevel}
-            premiumAnimation={isHovered ? "laser-show" : "none"}
+        {/* Environment */}
+        <Environment preset="night" />
+
+        {/* Holographic Card */}
+        <HolographicCardMesh
+          variant={variant}
+          size={size}
+          title={title}
+          subtitle={subtitle}
+          content={content}
+          hologramHeight={hologramHeight}
+          depthLayers={depthLayers}
+          autoRotate={autoRotate}
+        />
+
+        {/* Camera Controls */}
+        {interactionMode === "orbit" && (
+          <OrbitControls
+            enablePan={false}
+            enableZoom={true}
+            enableRotate={true}
+            autoRotate={autoRotate}
+            autoRotateSpeed={0.5}
+            minDistance={5}
+            maxDistance={15}
+            minPolarAngle={Math.PI / 6}
+            maxPolarAngle={Math.PI - Math.PI / 6}
           />
+        )}
+      </Canvas>
 
-          {/* Switch to 3D Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setViewMode("3d")}
-            className="absolute bottom-4 left-4 px-3 py-1 bg-white/10 backdrop-blur-sm rounded-lg text-white text-sm hover:bg-white/20 transition-colors"
-          >
-            3D Hologram
-          </motion.button>
-        </div>
-      )}
-
-      {/* Particle Effects Overlay */}
-      {showParticles && viewMode === "3d" && (
+      {/* Holographic Overlay Effects */}
+      {holographicEffects && (
         <div className="absolute inset-0 pointer-events-none">
-          <DiamondParticleSystem
-            variant={variant as any}
-            intensity={hologramIntensity as any}
-            active={isHovered}
-            count={30}
+          {/* Scan Lines */}
+          <motion.div
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 255, 0.1) 2px,
+                rgba(0, 255, 255, 0.1) 4px
+              )`,
+            }}
+            animate={{
+              backgroundPosition: isHovered ? ["0px 0px", "0px 20px"] : "0px 0px",
+            }}
+            transition={{
+              duration: 2,
+              repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+              ease: "linear",
+            }}
           />
+
+          {/* Holographic Shimmer */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent"
+            animate={{
+              x: isHovered ? ["-100%", "100%"] : "-100%",
+            }}
+            transition={{
+              duration: 3,
+              repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+              ease: "linear",
+            }}
+          />
+
+          {/* Corner Brackets */}
+          <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-cyan-400 opacity-60" />
+          <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-cyan-400 opacity-60" />
+          <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-cyan-400 opacity-60" />
+          <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-cyan-400 opacity-60" />
         </div>
       )}
-    </div>
+
+      {/* Controls */}
+      <div className="absolute top-4 left-4 flex gap-2 z-10">
+        <motion.button
+          className="p-2 rounded-lg bg-black/40 backdrop-blur-sm text-white/80 hover:text-white"
+          onClick={() => setIsFullscreen(!isFullscreen)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          {isFullscreen ? "🗙" : "⛶"}
+        </motion.button>
+      </div>
+
+      {/* Status Indicators */}
+      <div className="absolute bottom-4 left-4 flex items-center gap-2 text-xs text-cyan-400 z-10">
+        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+        <span>HOLOGRAM ACTIVE</span>
+        <span className="opacity-60">|</span>
+        <span>LEVEL {achievementLevel}</span>
+      </div>
+
+      {/* Traditional Card Overlay (for comparison) */}
+      {children && (
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 z-20">
+          <div className="scale-75">{children}</div>
+        </div>
+      )}
+    </motion.div>
   )
 }
