@@ -23,6 +23,7 @@ import {
   Calendar,
   DollarSign,
   Zap,
+  Clock,
 } from "lucide-react"
 
 export default function FinancialPlanningPage() {
@@ -109,6 +110,39 @@ export default function FinancialPlanningPage() {
   const totalBudgeted = budgetCategories.reduce((sum, cat) => sum + cat.budgeted, 0)
   const totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0)
   const totalRemaining = totalBudgeted - totalSpent
+
+  // Calculate months to reach goal
+  const calculateMonthsToGoal = (goal: (typeof goals)[0]) => {
+    const remaining = goal.target - goal.current
+    if (remaining <= 0) return 0
+    if (goal.monthlyContribution <= 0) return Number.POSITIVE_INFINITY
+    return Math.ceil(remaining / goal.monthlyContribution)
+  }
+
+  // Format months display
+  const formatMonthsDisplay = (months: number) => {
+    if (months === 0) return "Goal Reached!"
+    if (months === Number.POSITIVE_INFINITY) return "No contributions"
+    if (months <= 12) return `${months} months`
+
+    const years = Math.floor(months / 12)
+    const remainingMonths = months % 12
+
+    if (remainingMonths === 0) {
+      return years === 1 ? "1 year" : `${years} years`
+    } else {
+      return `${years}y ${remainingMonths}m`
+    }
+  }
+
+  // Get status color based on months
+  const getStatusColor = (months: number) => {
+    if (months === 0) return "text-green-500"
+    if (months <= 6) return "text-green-500"
+    if (months <= 12) return "text-blue-500"
+    if (months <= 24) return "text-orange-500"
+    return "text-red-500"
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
@@ -198,67 +232,98 @@ export default function FinancialPlanningPage() {
 
           <TabsContent value="goals" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {goals.map((goal) => (
-                <Card
-                  key={goal.id}
-                  className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20"
-                >
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-gradient-to-br ${goal.color}/20 to-transparent`}>
-                          <goal.icon className={`h-5 w-5 ${goal.color.replace("bg-", "text-")}`} />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg">{goal.title}</CardTitle>
-                          <CardDescription>{goal.description}</CardDescription>
-                        </div>
-                      </div>
-                      <Badge
-                        variant={
-                          goal.priority === "high"
-                            ? "destructive"
-                            : goal.priority === "medium"
-                              ? "default"
-                              : "secondary"
-                        }
-                      >
-                        {goal.priority}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span>
-                          ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
-                        </span>
-                      </div>
-                      <Progress value={goal.progress} className="h-2" />
-                      <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{goal.progress}% complete</span>
-                        <span>Target: {new Date(goal.deadline).toLocaleDateString()}</span>
-                      </div>
-                    </div>
+              {goals.map((goal) => {
+                const monthsToGoal = calculateMonthsToGoal(goal)
+                const monthsDisplay = formatMonthsDisplay(monthsToGoal)
+                const statusColor = getStatusColor(monthsToGoal)
 
-                    <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Monthly Contribution</p>
-                        <p className="font-medium">${goal.monthlyContribution.toLocaleString()}</p>
+                return (
+                  <Card
+                    key={goal.id}
+                    className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20"
+                  >
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg bg-gradient-to-br ${goal.color}/20 to-transparent`}>
+                            <goal.icon className={`h-5 w-5 ${goal.color.replace("bg-", "text-")}`} />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{goal.title}</CardTitle>
+                            <CardDescription>{goal.description}</CardDescription>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-2">
+                          <Badge
+                            variant={
+                              goal.priority === "high"
+                                ? "destructive"
+                                : goal.priority === "medium"
+                                  ? "default"
+                                  : "secondary"
+                            }
+                          >
+                            {goal.priority}
+                          </Badge>
+                          <div className="flex items-center gap-1 text-sm">
+                            <Clock className="h-3 w-3" />
+                            <span className={statusColor}>{monthsDisplay}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progress</span>
+                          <span>
+                            ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
+                          </span>
+                        </div>
+                        <Progress value={goal.progress} className="h-2" />
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>{goal.progress}% complete</span>
+                          <span>Target: {new Date(goal.deadline).toLocaleDateString()}</span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+
+                      {/* Time to Goal Section */}
+                      <div className="p-3 rounded-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/10">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-muted-foreground">Time to Goal</p>
+                            <p className={`font-medium ${statusColor}`}>{monthsDisplay}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm text-muted-foreground">Remaining</p>
+                            <p className="font-medium">${(goal.target - goal.current).toLocaleString()}</p>
+                          </div>
+                        </div>
+                        {monthsToGoal > 0 && monthsToGoal !== Number.POSITIVE_INFINITY && (
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            At ${goal.monthlyContribution.toLocaleString()}/month
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Monthly Contribution</p>
+                          <p className="font-medium">${goal.monthlyContribution.toLocaleString()}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
           </TabsContent>
 
@@ -322,15 +387,15 @@ export default function FinancialPlanningPage() {
                   <div className="pt-4 border-t border-white/10">
                     <h4 className="font-medium mb-2">Quick Actions</h4>
                     <div className="space-y-2">
-                      <Button variant="outline" size="sm" className="w-full justify-start">
+                      <Button variant="outline" size="sm" className="w-full justify-start bg-transparent">
                         <Plus className="h-4 w-4 mr-2" />
                         Add Expense
                       </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start">
+                      <Button variant="outline" size="sm" className="w-full justify-start bg-transparent">
                         <Edit className="h-4 w-4 mr-2" />
                         Edit Budget
                       </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start">
+                      <Button variant="outline" size="sm" className="w-full justify-start bg-transparent">
                         <Calendar className="h-4 w-4 mr-2" />
                         View History
                       </Button>
@@ -350,9 +415,11 @@ export default function FinancialPlanningPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {goals.slice(0, 3).map((goal) => {
-                    const monthsRemaining = Math.ceil((goal.target - goal.current) / goal.monthlyContribution)
+                    const monthsRemaining = calculateMonthsToGoal(goal)
                     const projectedDate = new Date()
                     projectedDate.setMonth(projectedDate.getMonth() + monthsRemaining)
+                    const monthsDisplay = formatMonthsDisplay(monthsRemaining)
+                    const statusColor = getStatusColor(monthsRemaining)
 
                     return (
                       <div
@@ -363,13 +430,23 @@ export default function FinancialPlanningPage() {
                           <goal.icon className={`h-5 w-5 ${goal.color.replace("bg-", "text-")}`} />
                           <div>
                             <h4 className="font-medium">{goal.title}</h4>
-                            <p className="text-sm text-muted-foreground">{monthsRemaining} months remaining</p>
+                            <p className={`text-sm ${statusColor}`}>{monthsDisplay}</p>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium">{projectedDate.toLocaleDateString()}</p>
+                          <p className="font-medium">
+                            {monthsRemaining === 0 || monthsRemaining === Number.POSITIVE_INFINITY
+                              ? "N/A"
+                              : projectedDate.toLocaleDateString()}
+                          </p>
                           <Badge variant="outline" className="text-xs">
-                            {monthsRemaining < 12 ? "On Track" : "Long Term"}
+                            {monthsRemaining === 0
+                              ? "Complete"
+                              : monthsRemaining < 12
+                                ? "Short Term"
+                                : monthsRemaining < 60
+                                  ? "Medium Term"
+                                  : "Long Term"}
                           </Badge>
                         </div>
                       </div>
