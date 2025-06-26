@@ -31,8 +31,7 @@ import {
   Beaker,
   Download,
   GitBranch,
-  Brain,
-  Activity,
+  Package,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -88,17 +87,6 @@ const environments: Environment[] = [
     shortcut: "Alt+2",
     isPopular: true,
   },
-  {
-    id: "live-version",
-    name: "Live Platform",
-    path: "/live",
-    icon: Activity,
-    description: "Full live production platform",
-    category: "Main Platform",
-    shortcut: "Alt+L",
-    isNew: true,
-    isPopular: true,
-  },
 
   // Commerce
   {
@@ -151,17 +139,7 @@ const environments: Environment[] = [
     icon: Beaker,
     description: "Cutting-edge experimental features",
     category: "Research & Development",
-    shortcut: "Alt+E",
-    isNew: true,
-  },
-  {
-    id: "suggestions-hub",
-    name: "Suggestions Hub",
-    path: "/suggestions-hub",
-    icon: Brain,
-    description: "All AI suggestions unlocked",
-    category: "Research & Development",
-    shortcut: "Alt+S",
+    shortcut: "Alt+L",
     isNew: true,
   },
   {
@@ -173,6 +151,16 @@ const environments: Environment[] = [
     category: "Research & Development",
     shortcut: "Alt+G",
     isNew: true,
+  },
+  {
+    id: "full-platform-download",
+    name: "Full Platform (2.8GB)",
+    path: "/clone-download/full-platform",
+    icon: Package,
+    description: "Complete SnappAiFi platform download",
+    category: "Research & Development",
+    shortcut: "Alt+F",
+    isPopular: true,
   },
 
   // Downloads
@@ -307,7 +295,7 @@ const environments: Environment[] = [
     icon: Monitor,
     description: "Infrastructure monitoring",
     category: "Administration",
-    shortcut: "Alt+M",
+    shortcut: "Alt+S",
   },
 ]
 
@@ -446,17 +434,6 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
                     <Home className="h-4 w-4 mr-3" />
                     Home
                   </Button>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start h-9"
-                    onClick={() => handleEnvironmentClick("/live")}
-                  >
-                    <Activity className="h-4 w-4 mr-3" />
-                    <span className="flex items-center gap-2">
-                      Live Platform
-                      <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    </span>
-                  </Button>
                 </div>
               </div>
 
@@ -592,9 +569,6 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
                         <div className="flex-1 text-left min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="truncate">{environment.name}</span>
-                            {environment.id === "live-version" && (
-                              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                            )}
                             {environment.isNew && (
                               <Badge variant="secondary" className="text-xs h-4">
                                 New
@@ -634,16 +608,6 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
             {/* Quick Access Icons */}
             <Button variant="ghost" size="sm" className="w-full h-10 p-0" onClick={() => handleEnvironmentClick("/")}>
               <Home className="h-4 w-4" />
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full h-10 p-0 relative"
-              onClick={() => handleEnvironmentClick("/live")}
-            >
-              <Activity className="h-4 w-4" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             </Button>
 
             <Separator />
