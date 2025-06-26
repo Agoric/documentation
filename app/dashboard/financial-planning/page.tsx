@@ -24,10 +24,15 @@ import {
   DollarSign,
   Zap,
   Clock,
+  RefreshCw,
+  Check,
+  User,
+  ChevronUp,
 } from "lucide-react"
 
 export default function FinancialPlanningPage() {
   const [selectedGoal, setSelectedGoal] = React.useState<string | null>(null)
+  const [isProfileExpanded, setIsProfileExpanded] = React.useState(false)
 
   const goals = [
     {
@@ -119,6 +124,64 @@ export default function FinancialPlanningPage() {
     return Math.ceil(remaining / goal.monthlyContribution)
   }
 
+  // Calculate goal status based on deadline vs projected completion
+  const getGoalStatus = (goal: (typeof goals)[0]) => {
+    const monthsToGoal = calculateMonthsToGoal(goal)
+    const deadlineDate = new Date(goal.deadline)
+    const currentDate = new Date()
+    const monthsToDeadline = Math.ceil((deadlineDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24 * 30))
+
+    if (monthsToGoal === 0) return "completed"
+    if (monthsToGoal === Number.POSITIVE_INFINITY) return "stalled"
+    if (monthsToGoal <= monthsToDeadline * 0.8) return "on-track" // 20% buffer
+    if (monthsToGoal <= monthsToDeadline * 1.2) return "at-risk" // Within 20% of deadline
+    return "behind"
+  }
+
+  // Get progress bar color based on status
+  const getProgressBarColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 shadow-emerald-500/50 shadow-lg"
+      case "on-track":
+        return "bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 shadow-emerald-500/50 shadow-lg"
+      case "at-risk":
+        return "bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 shadow-yellow-500/50 shadow-lg"
+      case "behind":
+        return "bg-gradient-to-r from-red-400 via-red-500 to-red-600 shadow-red-500/50 shadow-lg"
+      case "stalled":
+        return "bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600 shadow-gray-500/50 shadow-lg"
+      default:
+        return "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 shadow-blue-500/50 shadow-lg"
+    }
+  }
+
+  // Calculate overall progress
+  const calculateOverallProgress = () => {
+    const totalTarget = goals.reduce((sum, goal) => sum + goal.target, 0)
+    const totalCurrent = goals.reduce((sum, goal) => sum + goal.current, 0)
+    const overallProgress = (totalCurrent / totalTarget) * 100
+
+    const onTrackGoals = goals.filter(
+      (goal) => getGoalStatus(goal) === "on-track" || getGoalStatus(goal) === "completed",
+    ).length
+    const atRiskGoals = goals.filter((goal) => getGoalStatus(goal) === "at-risk").length
+    const behindGoals = goals.filter((goal) => getGoalStatus(goal) === "behind").length
+
+    let overallStatus = "on-track"
+    if (behindGoals > 0) overallStatus = "behind"
+    else if (atRiskGoals > 0) overallStatus = "at-risk"
+
+    return {
+      progress: overallProgress,
+      status: overallStatus,
+      onTrack: onTrackGoals,
+      atRisk: atRiskGoals,
+      behind: behindGoals,
+      total: goals.length,
+    }
+  }
+
   // Format months display
   const formatMonthsDisplay = (months: number) => {
     if (months === 0) return "Goal Reached!"
@@ -136,16 +199,104 @@ export default function FinancialPlanningPage() {
   }
 
   // Get status color based on months
-  const getStatusColor = (months: number) => {
-    if (months === 0) return "text-green-500"
-    if (months <= 6) return "text-green-500"
-    if (months <= 12) return "text-blue-500"
-    if (months <= 24) return "text-orange-500"
-    return "text-red-500"
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "text-emerald-500"
+      case "on-track":
+        return "text-emerald-500"
+      case "at-risk":
+        return "text-yellow-500"
+      case "behind":
+        return "text-red-500"
+      case "stalled":
+        return "text-gray-500"
+      default:
+        return "text-blue-500"
+    }
   }
+
+  const overallProgress = calculateOverallProgress()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
+      {/* Floating Profile Card */}
+      <div
+        className="fixed top-4 right-4 z-50 transition-all duration-300 ease-in-out"
+        onMouseEnter={() => setIsProfileExpanded(true)}
+        onMouseLeave={() => setIsProfileExpanded(false)}
+      >
+        <Card
+          className={`bg-gradient-to-br from-background/95 to-background/80 backdrop-blur-xl border-white/20 shadow-2xl transition-all duration-300 ${
+            isProfileExpanded ? "w-80 h-auto" : "w-16 h-16"
+          }`}
+        >
+          <CardContent className="p-4">
+            {!isProfileExpanded ? (
+              <div className="flex items-center justify-center w-8 h-8">
+                <User className="h-6 w-6 text-primary" />
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                      <User className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Financial Profile</h3>
+                      <p className="text-sm text-muted-foreground">Overall Progress</p>
+                    </div>
+                  </div>
+                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span>Total Progress</span>
+                    <span className="font-medium">{overallProgress.progress.toFixed(1)}%</span>
+                  </div>
+
+                  <div className="relative">
+                    <Progress value={overallProgress.progress} className="h-3 bg-white/10" />
+                    <div
+                      className={`absolute top-0 left-0 h-3 rounded-full transition-all duration-500 ${getProgressBarColor(overallProgress.status)}`}
+                      style={{ width: `${overallProgress.progress}%` }}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="text-center">
+                      <div className="font-medium text-emerald-500">{overallProgress.onTrack}</div>
+                      <div className="text-muted-foreground">On Track</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-medium text-yellow-500">{overallProgress.atRisk}</div>
+                      <div className="text-muted-foreground">At Risk</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-medium text-red-500">{overallProgress.behind}</div>
+                      <div className="text-muted-foreground">Behind</div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 pt-2 border-t border-white/10">
+                    <Button size="sm" variant="outline" className="flex-1 bg-transparent">
+                      <RefreshCw className="h-3 w-3 mr-1" />
+                      Recalculate
+                    </Button>
+                    <Button size="sm" className="flex-1">
+                      <Check className="h-3 w-3 mr-1" />
+                      Accept
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -213,8 +364,12 @@ export default function FinancialPlanningPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">On Track Goals</p>
-                  <p className="text-2xl font-bold">4/5</p>
-                  <p className="text-sm text-orange-500">80% success rate</p>
+                  <p className="text-2xl font-bold">
+                    {overallProgress.onTrack}/{overallProgress.total}
+                  </p>
+                  <p className="text-sm text-orange-500">
+                    {Math.round((overallProgress.onTrack / overallProgress.total) * 100)}% success rate
+                  </p>
                 </div>
                 <TrendingUp className="h-8 w-8 text-orange-500" />
               </div>
@@ -235,7 +390,9 @@ export default function FinancialPlanningPage() {
               {goals.map((goal) => {
                 const monthsToGoal = calculateMonthsToGoal(goal)
                 const monthsDisplay = formatMonthsDisplay(monthsToGoal)
-                const statusColor = getStatusColor(monthsToGoal)
+                const goalStatus = getGoalStatus(goal)
+                const statusColor = getStatusColor(goalStatus)
+                const progressBarColor = getProgressBarColor(goalStatus)
 
                 return (
                   <Card
@@ -280,7 +437,13 @@ export default function FinancialPlanningPage() {
                             ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
                           </span>
                         </div>
-                        <Progress value={goal.progress} className="h-2" />
+                        <div className="relative">
+                          <Progress value={goal.progress} className="h-3 bg-white/10" />
+                          <div
+                            className={`absolute top-0 left-0 h-3 rounded-full transition-all duration-500 ${progressBarColor}`}
+                            style={{ width: `${goal.progress}%` }}
+                          />
+                        </div>
                         <div className="flex justify-between text-sm text-muted-foreground">
                           <span>{goal.progress}% complete</span>
                           <span>Target: {new Date(goal.deadline).toLocaleDateString()}</span>
@@ -293,6 +456,9 @@ export default function FinancialPlanningPage() {
                           <div>
                             <p className="text-sm text-muted-foreground">Time to Goal</p>
                             <p className={`font-medium ${statusColor}`}>{monthsDisplay}</p>
+                            <Badge variant="outline" className={`text-xs mt-1 ${statusColor}`}>
+                              {goalStatus.replace("-", " ").toUpperCase()}
+                            </Badge>
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-muted-foreground">Remaining</p>
@@ -312,6 +478,9 @@ export default function FinancialPlanningPage() {
                           <p className="font-medium">${goal.monthlyContribution.toLocaleString()}</p>
                         </div>
                         <div className="flex gap-2">
+                          <Button variant="ghost" size="sm">
+                            <RefreshCw className="h-4 w-4" />
+                          </Button>
                           <Button variant="ghost" size="sm">
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -419,7 +588,8 @@ export default function FinancialPlanningPage() {
                     const projectedDate = new Date()
                     projectedDate.setMonth(projectedDate.getMonth() + monthsRemaining)
                     const monthsDisplay = formatMonthsDisplay(monthsRemaining)
-                    const statusColor = getStatusColor(monthsRemaining)
+                    const goalStatus = getGoalStatus(goal)
+                    const statusColor = getStatusColor(goalStatus)
 
                     return (
                       <div
@@ -439,14 +609,8 @@ export default function FinancialPlanningPage() {
                               ? "N/A"
                               : projectedDate.toLocaleDateString()}
                           </p>
-                          <Badge variant="outline" className="text-xs">
-                            {monthsRemaining === 0
-                              ? "Complete"
-                              : monthsRemaining < 12
-                                ? "Short Term"
-                                : monthsRemaining < 60
-                                  ? "Medium Term"
-                                  : "Long Term"}
+                          <Badge variant="outline" className={`text-xs ${statusColor}`}>
+                            {goalStatus.replace("-", " ").toUpperCase()}
                           </Badge>
                         </div>
                       </div>
