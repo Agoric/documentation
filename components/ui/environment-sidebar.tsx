@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, HelpCircle, Compass, Brain, Download } from "lucide-react"
+import { LayoutDashboard, Settings, HelpCircle, Compass, Brain, Download, GitBranch } from "lucide-react"
 
 import type { MainNavItem, SidebarNavItem } from "@/types"
 
@@ -83,6 +83,16 @@ export const dashboardConfig: DashboardConfig = {
           category: "Main Platform",
           shortcut: "Alt+D",
           isPopular: true,
+        },
+        {
+          id: "clone-download",
+          name: "Platform Clone",
+          path: "/clone-download",
+          icon: GitBranch,
+          description: "Download complete platform clone",
+          category: "Research & Development",
+          shortcut: "Alt+G",
+          isNew: true,
         },
       ],
     },
