@@ -1,33 +1,23 @@
 import type React from "react"
-import { Inter } from "next/font/google"
-import { ThemeProvider } from "@/components/theme-provider"
-import { GoalPrioritizingOrb } from "@/components/genius-guide-orb/goal-prioritizing-orb"
+import type { Metadata } from "next"
 import "./globals.css"
-import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
+import { PremiumUnlockProvider } from "@/contexts/premium-unlock-context"
 
-const inter = Inter({ subsets: ["latin"] })
-
-export const metadata = {
-  title: "SnappAiFi Financial Platform",
-  description: "Revolutionary financial platform with 50-year loans and holographic experiences",
-    generator: 'v0.dev'
+export const metadata: Metadata = {
+  title: "v0 App",
+  description: "Created with v0",
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="flex h-screen">
-            <EnvironmentSidebar />
-            <main className="flex-1 overflow-auto">{children}</main>
-          </div>
-          <GoalPrioritizingOrb />
-        </ThemeProvider>
+    <html lang="en">
+      <body>
+        <PremiumUnlockProvider>{children}</PremiumUnlockProvider>
       </body>
     </html>
   )
