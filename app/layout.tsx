@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { PremiumUnlockProvider } from "@/contexts/premium-unlock-context"
+import { GlobalUnlockProvider } from "@/contexts/global-unlock-context"
 
 export const metadata: Metadata = {
   title: "v0 App",
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PremiumUnlockProvider>{children}</PremiumUnlockProvider>
+        <GlobalUnlockProvider>{children}</GlobalUnlockProvider>
       </body>
     </html>
   )
