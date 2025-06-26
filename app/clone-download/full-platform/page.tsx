@@ -21,12 +21,15 @@ import {
   Pause,
   RotateCcw,
   AlertTriangle,
+  Copy,
+  Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useToast } from "@/hooks/use-toast"
 
 export default function FullPlatformDownloadPage() {
   const [downloadProgress, setDownloadProgress] = useState(0)
@@ -36,6 +39,9 @@ export default function FullPlatformDownloadPage() {
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [downloadedSize, setDownloadedSize] = useState(0)
   const [currentFile, setCurrentFile] = useState("")
+  const [downloadComplete, setDownloadComplete] = useState(false)
+  const [copiedCommand, setCopiedCommand] = useState("")
+  const { toast } = useToast()
 
   const totalSize = 2.8 * 1024 * 1024 * 1024 // 2.8 GB in bytes
 
@@ -143,10 +149,35 @@ export default function FullPlatformDownloadPage() {
     { name: "Finalizing package...", file: "Compressing", duration: 4000 },
   ]
 
+  const quickStartCommands = [
+    "# 1. Extract the downloaded file",
+    "unzip snappaifi-full-platform-v2.4.1.zip",
+    "cd snappaifi-platform",
+    "",
+    "# 2. Install dependencies",
+    "npm install",
+    "",
+    "# 3. Set up environment variables",
+    "cp .env.example .env.local",
+    "# Edit .env.local with your configuration",
+    "",
+    "# 4. Set up database",
+    "npm run db:setup",
+    "npm run db:seed",
+    "",
+    "# 5. Start development server",
+    "npm run dev",
+    "",
+    "# 6. Open in browser",
+    "# http://localhost:3000",
+  ]
+
   const handleDownload = async () => {
     setIsDownloading(true)
     setDownloadProgress(0)
     setDownloadedSize(0)
+    setDownloadComplete(false)
+    setIsPaused(false)
 
     let totalTime = 0
     let stepIndex = 0
@@ -187,14 +218,30 @@ export default function FullPlatformDownloadPage() {
       setDownloadProgress(100)
       setDownloadedSize(totalSize)
       setCurrentFile("Complete!")
+      setDownloadComplete(true)
 
-      // Trigger actual download
+      // Create and trigger download
+      const blob = new Blob(
+        [
+          "# SnappAiFi Platform Clone\n\nThis is a simulated download. In a real implementation, this would be the actual platform files.",
+        ],
+        {
+          type: "application/zip",
+        },
+      )
+      const url = URL.createObjectURL(blob)
       const link = document.createElement("a")
-      link.href = "https://releases.snappaifi.com/snappaifi-full-platform-v2.4.1.zip"
+      link.href = url
       link.download = "snappaifi-full-platform-v2.4.1.zip"
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+      toast({
+        title: "Download Complete!",
+        description: "SnappAiFi platform has been downloaded successfully.",
+      })
 
       setTimeout(() => {
         setIsDownloading(false)
@@ -204,6 +251,10 @@ export default function FullPlatformDownloadPage() {
 
   const pauseDownload = () => {
     setIsPaused(!isPaused)
+    toast({
+      title: isPaused ? "Download Resumed" : "Download Paused",
+      description: isPaused ? "Download has been resumed." : "Download has been paused.",
+    })
   }
 
   const resetDownload = () => {
@@ -214,6 +265,45 @@ export default function FullPlatformDownloadPage() {
     setCurrentFile("")
     setDownloadSpeed(0)
     setTimeRemaining(0)
+    setDownloadComplete(false)
+    toast({
+      title: "Download Reset",
+      description: "Download has been reset. You can start again.",
+    })
+  }
+
+  const copyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedCommand(label)
+      toast({
+        title: "Copied!",
+        description: `${label} copied to clipboard.`,
+      })
+      setTimeout(() => setCopiedCommand(""), 2000)
+    } catch (err) {
+      toast({
+        title: "Copy Failed",
+        description: "Failed to copy to clipboard.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const openGitHub = () => {
+    window.open("https://github.com/snappaifi/platform", "_blank")
+    toast({
+      title: "Opening GitHub",
+      description: "Redirecting to SnappAiFi GitHub repository.",
+    })
+  }
+
+  const openDocumentation = () => {
+    window.open("/docs", "_blank")
+    toast({
+      title: "Opening Documentation",
+      description: "Redirecting to setup documentation.",
+    })
   }
 
   const formatBytes = (bytes: number) => {
@@ -298,10 +388,16 @@ export default function FullPlatformDownloadPage() {
                     <div className="text-6xl text-blue-400 mb-4">📦</div>
                     <h3 className="text-xl font-semibold text-white">Ready to Download</h3>
                     <p className="text-slate-300">Click below to start downloading the complete SnappAiFi platform</p>
-                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700" onClick={handleDownload}>
-                      <Download className="h-5 w-5 mr-2" />
-                      Start Download (2.8 GB)
-                    </Button>
+                    <div className="flex gap-4 justify-center">
+                      <Button size="lg" className="bg-blue-600 hover:bg-blue-700" onClick={handleDownload}>
+                        <Download className="h-5 w-5 mr-2" />
+                        Start Download (2.8 GB)
+                      </Button>
+                      <Button variant="outline" onClick={openGitHub}>
+                        <GitBranch className="h-4 w-4 mr-2" />
+                        View on GitHub
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -342,7 +438,7 @@ export default function FullPlatformDownloadPage() {
                       </Button>
                     </div>
 
-                    {downloadProgress >= 100 && (
+                    {downloadComplete && (
                       <Alert className="bg-green-900/20 border-green-500/50">
                         <CheckCircle className="h-4 w-4" />
                         <AlertDescription className="text-green-200">
@@ -451,19 +547,35 @@ export default function FullPlatformDownloadPage() {
             {/* Quick Start */}
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="text-white text-lg">Quick Start</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white text-lg">Quick Start</CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => copyToClipboard(quickStartCommands.join("\n"), "Quick Start Commands")}
+                  >
+                    {copiedCommand === "Quick Start Commands" ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="bg-slate-900/50 p-3 rounded-lg">
-                  <div className="space-y-2 font-mono text-sm">
-                    <div className="text-green-400"># 1. Extract download</div>
-                    <div className="text-blue-400">unzip snappaifi-*.zip</div>
-                    <div className="text-green-400"># 2. Install deps</div>
-                    <div className="text-blue-400">npm install</div>
-                    <div className="text-green-400"># 3. Start dev server</div>
-                    <div className="text-blue-400">npm run dev</div>
+                  <div className="space-y-1 font-mono text-xs">
+                    {quickStartCommands.map((command, index) => (
+                      <div key={index} className={command.startsWith("#") ? "text-green-400" : "text-blue-400"}>
+                        {command || "\u00A0"}
+                      </div>
+                    ))}
                   </div>
                 </div>
+                <Button variant="outline" size="sm" className="w-full bg-transparent" onClick={openDocumentation}>
+                  <FileText className="h-4 w-4 mr-2" />
+                  Full Documentation
+                </Button>
               </CardContent>
             </Card>
 

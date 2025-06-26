@@ -358,6 +358,28 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
     return pathname === path || pathname.startsWith(path + "/")
   }
 
+  // Keyboard shortcuts
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey) {
+        const environment = environments.find((env) => {
+          if (!env.shortcut) return false
+          const shortcut = env.shortcut.toLowerCase()
+          const key = event.key.toLowerCase()
+          return shortcut.includes(key)
+        })
+
+        if (environment) {
+          event.preventDefault()
+          handleEnvironmentClick(environment.path)
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
   return (
     <div
       className={cn(
