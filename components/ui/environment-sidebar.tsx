@@ -28,6 +28,7 @@ import {
   List,
   ShieldCheck,
   Briefcase,
+  Beaker,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -125,6 +126,18 @@ const environments: Environment[] = [
     description: "Rewards and achievements",
     category: "Honors and Rewards",
     shortcut: "Alt+4",
+  },
+
+  // Research & Development
+  {
+    id: "beta-lab",
+    name: "Beta Features Lab",
+    path: "/beta-lab",
+    icon: Beaker,
+    description: "Cutting-edge experimental features",
+    category: "Research & Development",
+    shortcut: "Alt+L",
+    isNew: true,
   },
 
   // Legal Framework
@@ -256,6 +269,7 @@ const categories = [
   { id: "Main Platform", name: "Main Platform", icon: BarChart3 },
   { id: "Commerce", name: "Commerce", icon: ShoppingBag },
   { id: "Honors and Rewards", name: "Honors and Rewards", icon: Gamepad2 },
+  { id: "Research & Development", name: "Research & Development", icon: Beaker },
   { id: "Legal Framework", name: "Legal Framework", icon: Gavel },
   { id: "Administration", name: "Administration", icon: Server },
 ]
