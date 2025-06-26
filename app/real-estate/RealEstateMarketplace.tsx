@@ -93,3 +93,4 @@ const RealEstateMarketplace = () => {
 }
 
 export default RealEstateMarketplace
+export { RealEstateMarketplace }
