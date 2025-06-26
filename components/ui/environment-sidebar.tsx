@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings, HelpCircle, Compass, Brain } from "lucide-react"
+import { LayoutDashboard, Settings, HelpCircle, Compass, Brain, Download } from "lucide-react"
 
 import type { MainNavItem, SidebarNavItem } from "@/types"
 
@@ -73,6 +73,16 @@ export const dashboardConfig: DashboardConfig = {
           shortcut: "Alt+S",
           status: "unlocked",
           isNew: true,
+        },
+        {
+          id: "download",
+          name: "App Downloads",
+          path: "/download",
+          icon: Download,
+          description: "Download SnappAiFi apps for all devices",
+          category: "Main Platform",
+          shortcut: "Alt+D",
+          isPopular: true,
         },
       ],
     },
