@@ -175,6 +175,18 @@ const environments: Environment[] = [
     isPopular: true,
   },
 
+  // Settings
+  {
+    id: "settings",
+    name: "Settings & Controls",
+    path: "/settings",
+    icon: Settings,
+    description: "User and platform controls",
+    category: "Settings",
+    shortcut: "Alt+,",
+    isPopular: true,
+  },
+
   // Legal Framework
   {
     id: "legal",
@@ -306,6 +318,7 @@ const categories = [
   { id: "Honors and Rewards", name: "Honors and Rewards", icon: Gamepad2 },
   { id: "Research & Development", name: "Research & Development", icon: Beaker },
   { id: "Downloads", name: "Downloads", icon: Download },
+  { id: "Settings", name: "Settings", icon: Settings },
   { id: "Legal Framework", name: "Legal Framework", icon: Gavel },
   { id: "Administration", name: "Administration", icon: Server },
 ]
@@ -663,7 +676,12 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
 
       {/* Footer */}
       <div className="p-4 border-t border-white/10">
-        <Button variant="ghost" size="sm" className={cn("w-full", isCollapsed ? "h-10 p-0" : "justify-start h-9")}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className={cn("w-full", isCollapsed ? "h-10 p-0" : "justify-start h-9")}
+          onClick={() => handleEnvironmentClick("/settings")}
+        >
           <Settings className="h-4 w-4" />
           {!isCollapsed && <span className="ml-3">Settings</span>}
         </Button>
