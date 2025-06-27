@@ -3,14 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,8 +13,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { CheckSquare, Square, MoreHorizontal, Tag, Trash2, Download, Edit3, Archive, Flag } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { Tag, Trash2, Download, Edit3, Archive, Star, Flag, X, ChevronDown, MoreHorizontal } from "lucide-react"
 import type { Transaction } from "@/utils/transaction-export"
 
 interface BulkActionsToolbarProps {
@@ -45,141 +41,229 @@ export function BulkActionsToolbar({
   onBulkExport,
   availableCategories,
 }: BulkActionsToolbarProps) {
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [bulkCategory, setBulkCategory] = useState<string>("")
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState("")
 
-  const isAllSelected = selectedTransactions.length === allTransactions.length && allTransactions.length > 0
-  const isPartiallySelected = selectedTransactions.length > 0 && selectedTransactions.length < allTransactions.length
+  const selectedCount = selectedTransactions.length
+  const totalCount = allTransactions.length
+  const isAllSelected = selectedCount === totalCount && totalCount > 0
+  const isPartiallySelected = selectedCount > 0 && selectedCount < totalCount
 
-  const handleSelectToggle = () => {
-    if (isAllSelected) {
-      onDeselectAll()
-    } else {
-      onSelectAll()
+  const handleCategorize = () => {
+    if (selectedCategory && selectedTransactions.length > 0) {
+      onBulkCategorize(selectedTransactions, selectedCategory)
+      setSelectedCategory("")
     }
   }
 
-  const handleBulkCategorize = () => {
-    if (bulkCategory && selectedTransactions.length > 0) {
-      onBulkCategorize(selectedTransactions, bulkCategory)
-      setBulkCategory("")
+  const handleBulkAction = (action: string) => {
+    switch (action) {
+      case "export":
+        onBulkExport(selectedTransactions)
+        break
+      case "archive":
+        console.log("Archive transactions:", selectedTransactions)
+        break
+      case "flag":
+        console.log("Flag transactions:", selectedTransactions)
+        break
+      case "star":
+        console.log("Star transactions:", selectedTransactions)
+        break
     }
   }
 
-  const handleBulkDelete = () => {
-    onBulkDelete(selectedTransactions)
-    setShowDeleteDialog(false)
-  }
-
-  const selectedAmount = allTransactions
-    .filter((t) => selectedTransactions.includes(t.id))
-    .reduce((sum, t) => sum + Math.abs(t.amount), 0)
-
-  if (selectedTransactions.length === 0) {
+  if (selectedCount === 0) {
     return null
   }
 
   return (
-    <>
-      <div className="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" onClick={handleSelectToggle}>
-            {isAllSelected ? (
-              <CheckSquare className="w-4 h-4" />
-            ) : isPartiallySelected ? (
-              <div className="w-4 h-4 border-2 border-blue-600 bg-blue-600 rounded-sm flex items-center justify-center">
-                <div className="w-2 h-0.5 bg-white" />
-              </div>
-            ) : (
-              <Square className="w-4 h-4" />
-            )}
-          </Button>
+    <Card className="bg-blue-50 border-blue-200">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between">
+          {/* Selection Info */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={isAllSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = isPartiallySelected
+                }}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    onSelectAll()
+                  } else {
+                    onDeselectAll()
+                  }
+                }}
+              />
+              <span className="text-sm font-medium text-blue-900">
+                {selectedCount} of {totalCount} transaction{selectedCount !== 1 ? "s" : ""} selected
+              </span>
+            </div>
 
-          <div className="flex items-center space-x-2">
-            <Badge variant="secondary">{selectedTransactions.length} selected</Badge>
-            <span className="text-sm text-muted-foreground">Total: ${selectedAmount.toLocaleString()}</span>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          {/* Category Assignment */}
-          <div className="flex items-center space-x-2">
-            <Select value={bulkCategory} onValueChange={setBulkCategory}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Set category" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableCategories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button size="sm" onClick={handleBulkCategorize} disabled={!bulkCategory}>
-              <Tag className="w-4 h-4 mr-2" />
-              Apply
+            <Button variant="ghost" size="sm" onClick={onDeselectAll} className="text-blue-700 hover:text-blue-900">
+              <X className="h-4 w-4 mr-1" />
+              Clear
             </Button>
           </div>
 
           {/* Quick Actions */}
-          <Button variant="outline" size="sm" onClick={() => onBulkExport(selectedTransactions)}>
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-
-          {/* More Actions */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <MoreHorizontal className="w-4 h-4" />
+          <div className="flex items-center gap-2">
+            {/* Categorize */}
+            <div className="flex items-center gap-2">
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Categorize" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableCategories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                size="sm"
+                onClick={handleCategorize}
+                disabled={!selectedCategory}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                <Tag className="h-4 w-4 mr-1" />
+                Apply
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <Edit3 className="w-4 h-4 mr-2" />
-                Bulk Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Archive className="w-4 h-4 mr-2" />
-                Archive
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Flag className="w-4 h-4 mr-2" />
-                Flag for Review
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600" onClick={() => setShowDeleteDialog(true)}>
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete Selected
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </div>
 
-          <Button variant="ghost" size="sm" onClick={onDeselectAll}>
-            Clear
-          </Button>
+            <Separator orientation="vertical" className="h-6" />
+
+            {/* Export */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleBulkAction("export")}
+              className="border-blue-300 text-blue-700 hover:bg-blue-100"
+            >
+              <Download className="h-4 w-4 mr-1" />
+              Export
+            </Button>
+
+            {/* More Actions */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="border-blue-300 text-blue-700 hover:bg-blue-100"
+            >
+              <MoreHorizontal className="h-4 w-4 mr-1" />
+              More
+              <ChevronDown className={`h-3 w-3 ml-1 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+            </Button>
+
+            {/* Delete */}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-red-300 text-red-700 hover:bg-red-100 bg-transparent"
+                >
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Transactions</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to delete {selectedCount} transaction{selectedCount !== 1 ? "s" : ""}? This
+                    action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => onBulkDelete(selectedTransactions)}
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Delete {selectedCount} Transaction{selectedCount !== 1 ? "s" : ""}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
-      </div>
 
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Transactions</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete {selectedTransactions.length} selected transaction
-              {selectedTransactions.length === 1 ? "" : "s"}? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleBulkDelete} className="bg-red-600 hover:bg-red-700">
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+        {/* Expanded Actions */}
+        {isExpanded && (
+          <div className="mt-4 pt-4 border-t border-blue-200">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm text-blue-700 font-medium">Additional Actions:</span>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleBulkAction("star")}
+                className="text-blue-700 hover:bg-blue-100"
+              >
+                <Star className="h-4 w-4 mr-1" />
+                Star
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleBulkAction("flag")}
+                className="text-blue-700 hover:bg-blue-100"
+              >
+                <Flag className="h-4 w-4 mr-1" />
+                Flag
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleBulkAction("archive")}
+                className="text-blue-700 hover:bg-blue-100"
+              >
+                <Archive className="h-4 w-4 mr-1" />
+                Archive
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => console.log("Bulk edit:", selectedTransactions)}
+                className="text-blue-700 hover:bg-blue-100"
+              >
+                <Edit3 className="h-4 w-4 mr-1" />
+                Edit Details
+              </Button>
+            </div>
+
+            {/* Selection Summary */}
+            <div className="mt-3 p-3 bg-blue-100 rounded-lg">
+              <div className="text-sm text-blue-800">
+                <strong>Selection Summary:</strong>
+                <div className="mt-1 flex gap-4">
+                  <span>
+                    Income:{" "}
+                    {allTransactions.filter((t) => selectedTransactions.includes(t.id) && t.type === "income").length}
+                  </span>
+                  <span>
+                    Expenses:{" "}
+                    {allTransactions.filter((t) => selectedTransactions.includes(t.id) && t.type === "expense").length}
+                  </span>
+                  <span>
+                    Transfers:{" "}
+                    {allTransactions.filter((t) => selectedTransactions.includes(t.id) && t.type === "transfer").length}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }

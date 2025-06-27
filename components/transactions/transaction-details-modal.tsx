@@ -1,38 +1,48 @@
 "use client"
 
+import React from "react"
+
 import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  CreditCard,
-  MapPin,
-  Calendar,
-  DollarSign,
-  Tag,
-  Building,
-  FileText,
   Edit3,
   Save,
   X,
+  MapPin,
+  Calendar,
+  CreditCard,
+  Building2,
+  FileText,
+  Tag,
+  DollarSign,
+  Clock,
+  User,
+  Phone,
+  ExternalLink,
+  Receipt,
+  AlertTriangle,
+  CheckCircle,
   TrendingUp,
   TrendingDown,
   ArrowUpDown,
 } from "lucide-react"
-import { format } from "date-fns"
 import type { Transaction } from "@/utils/transaction-export"
+import { format } from "date-fns"
 
 interface TransactionDetailsModalProps {
   transaction: Transaction | null
   isOpen: boolean
   onClose: () => void
-  onUpdate?: (transaction: Transaction) => void
+  onUpdate: (transaction: Transaction) => void
   availableCategories: string[]
 }
 
@@ -45,25 +55,34 @@ export function TransactionDetailsModal({
 }: TransactionDetailsModalProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editedTransaction, setEditedTransaction] = useState<Transaction | null>(null)
+  const [notes, setNotes] = useState("")
+  const [tags, setTags] = useState<string[]>([])
 
-  if (!transaction) return null
+  React.useEffect(() => {
+    if (transaction) {
+      setEditedTransaction({ ...transaction })
+      setNotes(transaction.notes || "")
+      setTags(transaction.tags || [])
+    }
+  }, [transaction])
 
-  const handleEdit = () => {
-    setEditedTransaction({ ...transaction })
-    setIsEditing(true)
-  }
+  if (!transaction || !editedTransaction) return null
 
   const handleSave = () => {
-    if (editedTransaction && onUpdate) {
-      onUpdate(editedTransaction)
+    const updatedTransaction = {
+      ...editedTransaction,
+      notes,
+      tags,
     }
+    onUpdate(updatedTransaction)
     setIsEditing(false)
-    setEditedTransaction(null)
   }
 
   const handleCancel = () => {
+    setEditedTransaction({ ...transaction })
+    setNotes(transaction.notes || "")
+    setTags(transaction.tags || [])
     setIsEditing(false)
-    setEditedTransaction(null)
   }
 
   const formatCurrency = (amount: number) => {
@@ -76,13 +95,13 @@ export function TransactionDetailsModal({
   const getTransactionIcon = (type: string) => {
     switch (type) {
       case "income":
-        return <TrendingUp className="w-6 h-6 text-green-600" />
+        return <TrendingUp className="w-5 h-5 text-green-600" />
       case "expense":
-        return <TrendingDown className="w-6 h-6 text-red-600" />
+        return <TrendingDown className="w-5 h-5 text-red-600" />
       case "transfer":
-        return <ArrowUpDown className="w-6 h-6 text-blue-600" />
+        return <ArrowUpDown className="w-5 h-5 text-blue-600" />
       default:
-        return <CreditCard className="w-6 h-6 text-gray-600" />
+        return <CreditCard className="w-5 h-5 text-gray-600" />
     }
   }
 
@@ -90,47 +109,54 @@ export function TransactionDetailsModal({
     switch (status) {
       case "completed":
         return (
-          <Badge variant="default" className="bg-green-100 text-green-800">
+          <Badge className="bg-green-100 text-green-800">
+            <CheckCircle className="w-3 h-3 mr-1" />
             Completed
           </Badge>
         )
       case "pending":
         return (
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+          <Badge className="bg-yellow-100 text-yellow-800">
+            <Clock className="w-3 h-3 mr-1" />
             Pending
           </Badge>
         )
       case "failed":
-        return <Badge variant="destructive">Failed</Badge>
+        return (
+          <Badge variant="destructive">
+            <AlertTriangle className="w-3 h-3 mr-1" />
+            Failed
+          </Badge>
+        )
       default:
         return <Badge variant="outline">{status}</Badge>
     }
   }
 
-  const currentTransaction = editedTransaction || transaction
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              {getTransactionIcon(currentTransaction.type)}
+            <div className="flex items-center gap-3">
+              {getTransactionIcon(transaction.type)}
               <div>
-                <DialogTitle className="text-xl">Transaction Details</DialogTitle>
-                <DialogDescription>
-                  {format(new Date(currentTransaction.date), "MMMM dd, yyyy 'at' h:mm a")}
+                <DialogTitle className="text-xl">{transaction.description}</DialogTitle>
+                <DialogDescription className="flex items-center gap-2 mt-1">
+                  <Calendar className="w-4 h-4" />
+                  {format(new Date(transaction.date), "MMMM dd, yyyy 'at' h:mm a")}
                 </DialogDescription>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
+              {getStatusBadge(transaction.status)}
               {!isEditing ? (
-                <Button variant="outline" size="sm" onClick={handleEdit}>
+                <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
                   <Edit3 className="w-4 h-4 mr-2" />
                   Edit
                 </Button>
               ) : (
-                <div className="flex space-x-2">
+                <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleCancel}>
                     <X className="w-4 h-4 mr-2" />
                     Cancel
@@ -145,255 +171,407 @@ export function TransactionDetailsModal({
           </div>
         </DialogHeader>
 
-        <div className="space-y-6">
-          {/* Main Transaction Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Transaction Information</span>
-                {getStatusBadge(currentTransaction.status)}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="flex items-center">
-                    <FileText className="w-4 h-4 mr-2" />
-                    Description
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      value={currentTransaction.description}
-                      onChange={(e) =>
-                        setEditedTransaction((prev) => (prev ? { ...prev, description: e.target.value } : null))
-                      }
-                    />
-                  ) : (
-                    <p className="text-sm bg-gray-50 p-2 rounded">{currentTransaction.description}</p>
-                  )}
-                </div>
+        <Tabs defaultValue="details" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="details">Details</TabsTrigger>
+            <TabsTrigger value="merchant">Merchant</TabsTrigger>
+            <TabsTrigger value="notes">Notes & Tags</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
+          </TabsList>
 
-                <div className="space-y-2">
-                  <Label className="flex items-center">
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    Amount
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={currentTransaction.amount}
-                      onChange={(e) =>
-                        setEditedTransaction((prev) =>
-                          prev ? { ...prev, amount: Number.parseFloat(e.target.value) || 0 } : null,
-                        )
-                      }
-                    />
-                  ) : (
-                    <p
-                      className={`text-lg font-semibold ${
-                        currentTransaction.amount >= 0 ? "text-green-600" : "text-red-600"
-                      }`}
+          <TabsContent value="details" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Transaction Amount */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="w-5 h-5" />
+                    Transaction Amount
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center">
+                    <div
+                      className={`text-3xl font-bold ${transaction.amount >= 0 ? "text-green-600" : "text-red-600"}`}
                     >
-                      {currentTransaction.amount >= 0 ? "+" : ""}
-                      {formatCurrency(currentTransaction.amount)}
+                      {transaction.amount >= 0 ? "+" : ""}
+                      {formatCurrency(transaction.amount)}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {transaction.type === "income"
+                        ? "Money received"
+                        : transaction.type === "expense"
+                          ? "Money spent"
+                          : "Money transferred"}
                     </p>
-                  )}
-                </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-                <div className="space-y-2">
-                  <Label className="flex items-center">
-                    <Tag className="w-4 h-4 mr-2" />
-                    Category
-                  </Label>
-                  {isEditing ? (
-                    <Select
-                      value={currentTransaction.category}
-                      onValueChange={(value) =>
-                        setEditedTransaction((prev) => (prev ? { ...prev, category: value } : null))
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableCategories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <Badge variant="secondary">{currentTransaction.category}</Badge>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="flex items-center">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Date
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      type="date"
-                      value={currentTransaction.date}
-                      onChange={(e) =>
-                        setEditedTransaction((prev) => (prev ? { ...prev, date: e.target.value } : null))
-                      }
-                    />
-                  ) : (
-                    <p className="text-sm bg-gray-50 p-2 rounded">
-                      {format(new Date(currentTransaction.date), "EEEE, MMMM dd, yyyy")}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Type</Label>
-                  {isEditing ? (
-                    <Select
-                      value={currentTransaction.type}
-                      onValueChange={(value: "income" | "expense" | "transfer") =>
-                        setEditedTransaction((prev) => (prev ? { ...prev, type: value } : null))
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="income">Income</SelectItem>
-                        <SelectItem value="expense">Expense</SelectItem>
-                        <SelectItem value="transfer">Transfer</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <Badge
-                      variant={
-                        currentTransaction.type === "income"
-                          ? "default"
-                          : currentTransaction.type === "expense"
-                            ? "destructive"
-                            : "secondary"
-                      }
-                    >
-                      {currentTransaction.type.charAt(0).toUpperCase() + currentTransaction.type.slice(1)}
+              {/* Transaction Details */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    Transaction Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Transaction ID:</span>
+                    <span className="font-mono text-sm">{transaction.id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Type:</span>
+                    <Badge variant="outline" className="capitalize">
+                      {transaction.type}
                     </Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Account:</span>
+                    <span>{transaction.account}</span>
+                  </div>
+                  {transaction.reference && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Reference:</span>
+                      <span className="font-mono text-sm">{transaction.reference}</span>
+                    </div>
                   )}
-                </div>
+                </CardContent>
+              </Card>
+            </div>
 
-                <div className="space-y-2">
-                  <Label className="flex items-center">
-                    <Building className="w-4 h-4 mr-2" />
-                    Account
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      value={currentTransaction.account}
-                      onChange={(e) =>
-                        setEditedTransaction((prev) => (prev ? { ...prev, account: e.target.value } : null))
-                      }
-                    />
-                  ) : (
-                    <p className="text-sm bg-gray-50 p-2 rounded">{currentTransaction.account}</p>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Additional Details */}
-          {(currentTransaction.merchant || currentTransaction.location || currentTransaction.reference) && (
+            {/* Editable Fields */}
             <Card>
               <CardHeader>
-                <CardTitle>Additional Details</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Tag className="w-5 h-5" />
+                  Transaction Information
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {currentTransaction.merchant && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="flex items-center">
-                      <Building className="w-4 h-4 mr-2" />
-                      Merchant
-                    </Label>
+                    <Label htmlFor="description">Description</Label>
                     {isEditing ? (
                       <Input
-                        value={currentTransaction.merchant}
+                        id="description"
+                        value={editedTransaction.description}
                         onChange={(e) =>
-                          setEditedTransaction((prev) => (prev ? { ...prev, merchant: e.target.value } : null))
+                          setEditedTransaction({
+                            ...editedTransaction,
+                            description: e.target.value,
+                          })
                         }
                       />
                     ) : (
-                      <p className="text-sm bg-gray-50 p-2 rounded">{currentTransaction.merchant}</p>
+                      <p className="p-2 bg-muted rounded">{transaction.description}</p>
                     )}
                   </div>
-                )}
 
-                {currentTransaction.location && (
                   <div className="space-y-2">
-                    <Label className="flex items-center">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      Location
-                    </Label>
+                    <Label htmlFor="category">Category</Label>
                     {isEditing ? (
-                      <Input
-                        value={currentTransaction.location}
-                        onChange={(e) =>
-                          setEditedTransaction((prev) => (prev ? { ...prev, location: e.target.value } : null))
+                      <Select
+                        value={editedTransaction.category}
+                        onValueChange={(value) =>
+                          setEditedTransaction({
+                            ...editedTransaction,
+                            category: value,
+                          })
                         }
-                      />
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableCategories.map((category) => (
+                            <SelectItem key={category} value={category}>
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     ) : (
-                      <p className="text-sm bg-gray-50 p-2 rounded">{currentTransaction.location}</p>
+                      <p className="p-2 bg-muted rounded">{transaction.category}</p>
                     )}
                   </div>
-                )}
 
-                {currentTransaction.reference && (
                   <div className="space-y-2">
-                    <Label className="flex items-center">
-                      <FileText className="w-4 h-4 mr-2" />
-                      Reference
-                    </Label>
+                    <Label htmlFor="date">Date</Label>
                     {isEditing ? (
                       <Input
-                        value={currentTransaction.reference}
+                        id="date"
+                        type="date"
+                        value={editedTransaction.date}
                         onChange={(e) =>
-                          setEditedTransaction((prev) => (prev ? { ...prev, reference: e.target.value } : null))
+                          setEditedTransaction({
+                            ...editedTransaction,
+                            date: e.target.value,
+                          })
                         }
                       />
                     ) : (
-                      <p className="text-sm bg-gray-50 p-2 rounded font-mono">{currentTransaction.reference}</p>
+                      <p className="p-2 bg-muted rounded">{format(new Date(transaction.date), "MMMM dd, yyyy")}</p>
                     )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="amount">Amount</Label>
+                    {isEditing ? (
+                      <Input
+                        id="amount"
+                        type="number"
+                        step="0.01"
+                        value={editedTransaction.amount}
+                        onChange={(e) =>
+                          setEditedTransaction({
+                            ...editedTransaction,
+                            amount: Number.parseFloat(e.target.value),
+                          })
+                        }
+                      />
+                    ) : (
+                      <p className="p-2 bg-muted rounded">{formatCurrency(transaction.amount)}</p>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="merchant" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="w-5 h-5" />
+                  Merchant Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {transaction.merchant ? (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Merchant Name</Label>
+                        <p className="p-2 bg-muted rounded">{transaction.merchant}</p>
+                      </div>
+                      {transaction.location && (
+                        <div className="space-y-2">
+                          <Label>Location</Label>
+                          <p className="p-2 bg-muted rounded flex items-center gap-2">
+                            <MapPin className="w-4 h-4" />
+                            {transaction.location}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Mock merchant details */}
+                    <Separator />
+                    <div className="space-y-3">
+                      <h4 className="font-medium">Additional Merchant Details</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Category:</span>
+                          <span>Retail</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">MCC Code:</span>
+                          <span>5411</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Phone:</span>
+                          <span className="flex items-center gap-1">
+                            <Phone className="w-3 h-3" />
+                            (555) 123-4567
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Website:</span>
+                          <span className="flex items-center gap-1">
+                            <ExternalLink className="w-3 h-3" />
+                            <a href="#" className="text-blue-600 hover:underline">
+                              Visit Website
+                            </a>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                    <p className="text-gray-600">No merchant information available</p>
+                    <p className="text-sm text-gray-500">This transaction may be a transfer or internal transaction</p>
                   </div>
                 )}
               </CardContent>
             </Card>
-          )}
+          </TabsContent>
 
-          {/* Notes Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Notes</CardTitle>
-              <CardDescription>Add personal notes about this transaction</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Textarea placeholder="Add notes about this transaction..." className="min-h-[100px]" defaultValue="" />
-            </CardContent>
-          </Card>
+          <TabsContent value="notes" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5" />
+                  Notes & Tags
+                </CardTitle>
+                <CardDescription>Add personal notes and tags to help organize your transactions</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="notes">Personal Notes</Label>
+                  <Textarea
+                    id="notes"
+                    placeholder="Add any notes about this transaction..."
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows={4}
+                  />
+                </div>
 
-          {/* Transaction ID */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Transaction ID:</span>
-                <code className="bg-gray-100 px-2 py-1 rounded text-xs">{currentTransaction.id}</code>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                <div className="space-y-2">
+                  <Label>Tags</Label>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                        {tag}
+                        <X
+                          className="w-3 h-3 cursor-pointer"
+                          onClick={() => setTags(tags.filter((_, i) => i !== index))}
+                        />
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Add a tag..."
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          const value = e.currentTarget.value.trim()
+                          if (value && !tags.includes(value)) {
+                            setTags([...tags, value])
+                            e.currentTarget.value = ""
+                          }
+                        }
+                      }}
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const input = document.querySelector('input[placeholder="Add a tag..."]') as HTMLInputElement
+                        const value = input?.value.trim()
+                        if (value && !tags.includes(value)) {
+                          setTags([...tags, value])
+                          input.value = ""
+                        }
+                      }}
+                    >
+                      Add Tag
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Quick Tags</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {["Business", "Personal", "Tax Deductible", "Recurring", "Important"].map((quickTag) => (
+                      <Button
+                        key={quickTag}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          if (!tags.includes(quickTag)) {
+                            setTags([...tags, quickTag])
+                          }
+                        }}
+                        disabled={tags.includes(quickTag)}
+                      >
+                        {quickTag}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="history" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5" />
+                  Transaction History
+                </CardTitle>
+                <CardDescription>Timeline of changes and updates to this transaction</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Mock transaction history */}
+                  <div className="flex items-start gap-3 p-3 border rounded-lg">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium">Transaction Completed</p>
+                      <p className="text-sm text-muted-foreground">Payment processed successfully</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {format(new Date(transaction.date), "MMM dd, yyyy 'at' h:mm a")}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 border rounded-lg">
+                    <Clock className="w-5 h-5 text-yellow-600 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium">Transaction Initiated</p>
+                      <p className="text-sm text-muted-foreground">Payment authorization received</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {format(
+                          new Date(new Date(transaction.date).getTime() - 2 * 60 * 1000),
+                          "MMM dd, yyyy 'at' h:mm a",
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 border rounded-lg">
+                    <User className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium">Transaction Created</p>
+                      <p className="text-sm text-muted-foreground">Transaction record created in system</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {format(
+                          new Date(new Date(transaction.date).getTime() - 5 * 60 * 1000),
+                          "MMM dd, yyyy 'at' h:mm a",
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Attachments */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Receipt className="w-5 h-5" />
+                  Attachments
+                </CardTitle>
+                <CardDescription>Receipts and documents related to this transaction</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <Receipt className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                  <p className="text-gray-600">No attachments</p>
+                  <Button variant="outline" className="mt-2 bg-transparent">
+                    Upload Receipt
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   )
