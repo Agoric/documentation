@@ -328,10 +328,11 @@ interface EnvironmentSidebarProps {
 }
 
 export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
+  const [isExpanded, setIsExpanded] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState("")
   const [selectedCategory, setSelectedCategory] = React.useState("all")
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("list")
+  const sidebarRef = React.useRef<HTMLDivElement>(null)
 
   const pathname = usePathname()
   const router = useRouter()
@@ -339,6 +340,33 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
   const { getRecentEnvironments } = useEnvironmentHistory()
   const { getUnreadCount } = useEnvironmentNotifications()
   const { bookmarks } = useEnvironmentBookmarks()
+
+  // Auto-expand/collapse based on mouse position
+  React.useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const sidebar = sidebarRef.current
+      if (!sidebar) return
+
+      const rect = sidebar.getBoundingClientRect()
+      const isNearSidebar = event.clientX <= rect.right + 50 // 50px buffer zone
+
+      if (isNearSidebar && !isExpanded) {
+        setIsExpanded(true)
+      } else if (!isNearSidebar && isExpanded) {
+        // Add a small delay before collapsing to prevent flickering
+        setTimeout(() => {
+          const currentRect = sidebar.getBoundingClientRect()
+          const isStillNear = event.clientX <= currentRect.right + 50
+          if (!isStillNear) {
+            setIsExpanded(false)
+          }
+        }, 300)
+      }
+    }
+
+    document.addEventListener("mousemove", handleMouseMove)
+    return () => document.removeEventListener("mousemove", handleMouseMove)
+  }, [isExpanded])
 
   // Filter environments based on search and category
   const filteredEnvironments = React.useMemo(() => {
@@ -395,26 +423,29 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
 
   return (
     <div
+      ref={sidebarRef}
       className={cn(
-        "flex flex-col h-screen bg-background/95 backdrop-blur-sm border-r border-white/20 transition-all duration-300",
-        isCollapsed ? "w-16" : "w-80",
+        "fixed left-0 top-0 z-40 flex flex-col h-screen bg-background/95 backdrop-blur-sm border-r border-white/20 transition-all duration-300 ease-in-out",
+        isExpanded ? "w-80" : "w-16",
         className,
       )}
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/10">
-        {!isCollapsed && (
+        {isExpanded && (
           <div className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
             <span className="font-semibold">Environments</span>
           </div>
         )}
-        <Button variant="ghost" size="sm" onClick={() => setIsCollapsed(!isCollapsed)} className="h-8 w-8 p-0">
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded)} className="h-8 w-8 p-0">
+          {isExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </Button>
       </div>
 
-      {!isCollapsed && (
+      {isExpanded && (
         <>
           {/* Search */}
           <div className="p-4 space-y-3">
@@ -637,7 +668,7 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
       )}
 
       {/* Collapsed View */}
-      {isCollapsed && (
+      {!isExpanded && (
         <ScrollArea className="flex-1">
           <div className="p-2 space-y-2">
             {/* Quick Access Icons */}
@@ -679,11 +710,11 @@ export function EnvironmentSidebar({ className }: EnvironmentSidebarProps) {
         <Button
           variant="ghost"
           size="sm"
-          className={cn("w-full", isCollapsed ? "h-10 p-0" : "justify-start h-9")}
+          className={cn("w-full", !isExpanded ? "h-10 p-0" : "justify-start h-9")}
           onClick={() => handleEnvironmentClick("/settings")}
         >
           <Settings className="h-4 w-4" />
-          {!isCollapsed && <span className="ml-3">Settings</span>}
+          {isExpanded && <span className="ml-3">Settings</span>}
         </Button>
       </div>
     </div>

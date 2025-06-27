@@ -19,14 +19,15 @@ import {
   Heart,
   Plus,
   Edit,
-  Trash2,
   Calendar,
   DollarSign,
   Zap,
-  Clock,
-  RefreshCw,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
 } from "lucide-react"
 import { QuantumProfileCard } from "@/components/ui/quantum-profile-card"
+import { GoalPrioritizingOrb } from "@/components/genius-guide-orb/goal-prioritizing-orb"
 
 export default function FinancialPlanningPage() {
   const [selectedGoal, setSelectedGoal] = React.useState<string | null>(null)
@@ -131,6 +132,7 @@ export default function FinancialPlanningPage() {
     if (monthsToGoal === 0) return "completed"
     if (monthsToGoal === Number.POSITIVE_INFINITY) return "stalled"
     if (monthsToGoal <= monthsToDeadline * 0.8) return "on-track" // 20% buffer
+    if (monthsToGoal <= monthsToDeadline * 1.2) return "at-risk" // Within 20% of  // 20% buffer
     if (monthsToGoal <= monthsToDeadline * 1.2) return "at-risk" // Within 20% of deadline
     return "behind"
   }
@@ -213,10 +215,28 @@ export default function FinancialPlanningPage() {
     }
   }
 
+  // Get status icon
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "completed":
+        return CheckCircle
+      case "on-track":
+        return CheckCircle
+      case "at-risk":
+        return AlertTriangle
+      case "behind":
+        return XCircle
+      case "stalled":
+        return XCircle
+      default:
+        return Target
+    }
+  }
+
   const overallProgress = calculateOverallProgress()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6 pl-20">
       {/* Quantum Profile Card */}
       <QuantumProfileCard
         overallProgress={overallProgress}
@@ -318,114 +338,8 @@ export default function FinancialPlanningPage() {
           </TabsList>
 
           <TabsContent value="goals" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {goals.map((goal) => {
-                const monthsToGoal = calculateMonthsToGoal(goal)
-                const monthsDisplay = formatMonthsDisplay(monthsToGoal)
-                const goalStatus = getGoalStatus(goal)
-                const statusColor = getStatusColor(goalStatus)
-                const progressBarColor = getProgressBarColor(goalStatus)
-
-                return (
-                  <Card
-                    key={goal.id}
-                    className="bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm border-white/20"
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg bg-gradient-to-br ${goal.color}/20 to-transparent`}>
-                            <goal.icon className={`h-5 w-5 ${goal.color.replace("bg-", "text-")}`} />
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg">{goal.title}</CardTitle>
-                            <CardDescription>{goal.description}</CardDescription>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <Badge
-                            variant={
-                              goal.priority === "high"
-                                ? "destructive"
-                                : goal.priority === "medium"
-                                  ? "default"
-                                  : "secondary"
-                            }
-                          >
-                            {goal.priority}
-                          </Badge>
-                          <div className="flex items-center gap-1 text-sm">
-                            <Clock className="h-3 w-3" />
-                            <span className={statusColor}>{monthsDisplay}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>Progress</span>
-                          <span>
-                            ${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="relative">
-                          <Progress value={goal.progress} className="h-3 bg-white/10" />
-                          <div
-                            className={`absolute top-0 left-0 h-3 rounded-full transition-all duration-500 ${progressBarColor}`}
-                            style={{ width: `${goal.progress}%` }}
-                          />
-                        </div>
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                          <span>{goal.progress}% complete</span>
-                          <span>Target: {new Date(goal.deadline).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-
-                      {/* Time to Goal Section */}
-                      <div className="p-3 rounded-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/10">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">Time to Goal</p>
-                            <p className={`font-medium ${statusColor}`}>{monthsDisplay}</p>
-                            <Badge variant="outline" className={`text-xs mt-1 ${statusColor}`}>
-                              {goalStatus.replace("-", " ").toUpperCase()}
-                            </Badge>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-sm text-muted-foreground">Remaining</p>
-                            <p className="font-medium">${(goal.target - goal.current).toLocaleString()}</p>
-                          </div>
-                        </div>
-                        {monthsToGoal > 0 && monthsToGoal !== Number.POSITIVE_INFINITY && (
-                          <div className="mt-2 text-xs text-muted-foreground">
-                            At ${goal.monthlyContribution.toLocaleString()}/month
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Monthly Contribution</p>
-                          <p className="font-medium">${goal.monthlyContribution.toLocaleString()}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button variant="ghost" size="sm">
-                            <RefreshCw className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
+            {/* Goal Prioritizing Orb */}
+            <GoalPrioritizingOrb />
           </TabsContent>
 
           <TabsContent value="budget" className="space-y-6">
