@@ -3,22 +3,22 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 import { PremiumUnlockProvider } from "@/contexts/premium-unlock-context"
 import { GlobalUnlockProvider } from "@/contexts/global-unlock-context"
-import { DiplomaticAgentProvider } from "@/contexts/diplomatic-agent-context"
+import { DemoContextProvider } from "@/contexts/demo-context"
 import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
 import { CreditProvider } from "@/contexts/credit-context"
-import { DemoContextProvider } from "@/contexts/demo-context"
-import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
+import { DiplomaticAgentProvider } from "@/contexts/diplomatic-agent-context"
 import { CursorOrb } from "@/components/ui/cursor-orb"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Snapifi Financial Platform",
-  description: "Next-generation financial platform with AI-powered tools and holographic interfaces",
+  description: "Advanced financial platform with AI-powered tools",
     generator: 'v0.dev'
 }
 
@@ -33,23 +33,23 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <PremiumUnlockProvider>
             <GlobalUnlockProvider>
-              <DiplomaticAgentProvider>
+              <DemoContextProvider>
                 <GamificationProvider>
                   <ProductComparisonProvider>
                     <PropertyComparisonProvider>
                       <CreditProvider>
-                        <DemoContextProvider>
-                          <div className="relative min-h-screen">
+                        <DiplomaticAgentProvider>
+                          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
                             <EnvironmentSidebar />
-                            <CursorOrb enabled={true} />
-                            <main className="transition-all duration-300">{children}</main>
+                            <main className="pl-20">{children}</main>
+                            <CursorOrb />
                           </div>
-                        </DemoContextProvider>
+                        </DiplomaticAgentProvider>
                       </CreditProvider>
                     </PropertyComparisonProvider>
                   </ProductComparisonProvider>
                 </GamificationProvider>
-              </DiplomaticAgentProvider>
+              </DemoContextProvider>
             </GlobalUnlockProvider>
           </PremiumUnlockProvider>
         </ThemeProvider>
