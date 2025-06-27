@@ -280,7 +280,7 @@ export default function LoanCenterPage() {
           <CardHeader>
             <CardTitle className="text-white text-center">50-Year Bond Structure Overview</CardTitle>
             <CardDescription className="text-purple-200 text-center">
-              Revolutionary financing combining government guarantees with corporate bond market efficiency
+              Revolutionary financing combining the best of government backing and corporate bond markets
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -376,109 +376,106 @@ export default function LoanCenterPage() {
           <TabsContent value="bond-types" className="space-y-6">
             {/* Bond Types Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredLoanTypes.map((loanType) => {
-                const monthlySavings = calculateMonthlySavings(loanType)
-                return (
-                  <Card
-                    key={loanType.id}
-                    className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 cursor-pointer group"
-                    onClick={() => handleLoanTypeClick(loanType)}
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`p-3 rounded-lg bg-gradient-to-r ${loanType.color}`}>
-                            <loanType.icon className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-white">{loanType.name}</CardTitle>
-                            <CardDescription className="text-blue-200">{loanType.description}</CardDescription>
-                          </div>
+              {filteredLoanTypes.map((loanType) => (
+                <Card
+                  key={loanType.id}
+                  className="bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-sm border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 cursor-pointer group"
+                  onClick={() => handleLoanTypeClick(loanType)}
+                >
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-3 rounded-lg bg-gradient-to-r ${loanType.color}`}>
+                          <loanType.icon className="h-6 w-6 text-white" />
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                            <span className="text-sm text-blue-200">{(loanType.popularity / 20).toFixed(1)}</span>
-                          </div>
-                          <ArrowRight className="h-5 w-5 text-blue-400 group-hover:translate-x-1 transition-transform" />
+                        <div>
+                          <CardTitle className="text-white">{loanType.name}</CardTitle>
+                          <CardDescription className="text-blue-200">{loanType.description}</CardDescription>
                         </div>
                       </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="text-center">
-                          <div className="text-sm text-blue-300">Bond Rate</div>
-                          <div className="font-semibold text-white">{loanType.rate}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                          <span className="text-sm text-blue-200">{(loanType.popularity / 20).toFixed(1)}</span>
                         </div>
-                        <div className="text-center">
-                          <div className="text-sm text-blue-300">Amount</div>
-                          <div className="font-semibold text-white">{loanType.amount}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-sm text-blue-300">Term</div>
-                          <div className="font-semibold text-white">{loanType.term}</div>
-                        </div>
+                        <ArrowRight className="h-5 w-5 text-blue-400 group-hover:translate-x-1 transition-transform" />
                       </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center">
+                        <div className="text-sm text-blue-300">Bond Rate</div>
+                        <div className="font-semibold text-white">{loanType.rate}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm text-blue-300">Amount</div>
+                        <div className="font-semibold text-white">{loanType.amount}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm text-blue-300">Term</div>
+                        <div className="font-semibold text-white">{loanType.term}</div>
+                      </div>
+                    </div>
 
-                      {/* Bond Structure Details */}
-                      <div className="bg-purple-800/30 p-3 rounded-lg border border-purple-500/20">
-                        <h4 className="text-sm font-medium text-white mb-2">Bond Structure</h4>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className="flex justify-between">
-                            <span className="text-purple-300">Guarantee:</span>
-                            <span className="text-white">{loanType.bondStructure.guaranteeTerm}yr</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-purple-300">DAX Mirror:</span>
-                            <span className="text-white">{loanType.bondStructure.corporateMirror}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-purple-300">Base Rate:</span>
-                            <span className="text-white">{loanType.bondStructure.baseRate}%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-purple-300">DAX Spread:</span>
-                            <span className="text-white">+{loanType.bondStructure.daxSpread}%</span>
-                          </div>
+                    {/* Bond Structure Details */}
+                    <div className="bg-purple-800/30 p-3 rounded-lg border border-purple-500/20">
+                      <h4 className="text-sm font-medium text-white mb-2">Bond Structure</h4>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-purple-300">Guarantee:</span>
+                          <span className="text-white">{loanType.bondStructure.guaranteeTerm}yr</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-purple-300">DAX Mirror:</span>
+                          <span className="text-white">{loanType.bondStructure.corporateMirror}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-purple-300">Base Rate:</span>
+                          <span className="text-white">{loanType.bondStructure.baseRate}%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-purple-300">DAX Spread:</span>
+                          <span className="text-white">+{loanType.bondStructure.daxSpread}%</span>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="space-y-2">
-                        <h4 className="font-medium text-white">50-Year Bond Features:</h4>
-                        <ul className="space-y-1">
-                          {loanType.features.map((feature, index) => (
-                            <li key={index} className="text-sm text-blue-200 flex items-center gap-2">
-                              <CheckCircle className="h-3 w-3 text-green-400" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-white">50-Year Bond Features:</h4>
+                      <ul className="space-y-1">
+                        {loanType.features.map((feature, index) => (
+                          <li key={index} className="text-sm text-blue-200 flex items-center gap-2">
+                            <CheckCircle className="h-3 w-3 text-green-400" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                      <div className="bg-green-800/30 p-3 rounded-lg border border-green-500/20">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-green-300">Monthly Savings vs 30-year:</span>
-                          <span className="font-semibold text-green-400">
-                            ${monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                          </span>
-                        </div>
+                    <div className="bg-green-800/30 p-3 rounded-lg border border-green-500/20">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-green-300">Monthly Savings vs 30-year:</span>
+                        <span className="font-semibold text-green-400">
+                          ${calculateMonthlySavings(loanType).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                        </span>
                       </div>
+                    </div>
 
-                      <div className="flex items-center justify-between pt-2">
-                        <div className="flex gap-2">
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                            {loanType.guarantee}
-                          </Badge>
-                          <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
-                            {loanType.popularity}% Popular
-                          </Badge>
-                        </div>
-                        <Button className={`bg-gradient-to-r ${loanType.color} text-white`}>Apply Now</Button>
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="flex gap-2">
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                          {loanType.guarantee}
+                        </Badge>
+                        <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
+                          {loanType.popularity}% Popular
+                        </Badge>
                       </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
+                      <Button className={`bg-gradient-to-r ${loanType.color} text-white`}>Apply Now</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
             {/* Bond Benefits */}
