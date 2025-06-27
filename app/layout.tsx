@@ -4,6 +4,7 @@ import "./globals.css"
 import { GlobalUnlockProvider } from "@/contexts/global-unlock-context"
 import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 import { GoalPrioritizingOrb } from "@/components/genius-guide-orb/goal-prioritizing-orb"
+import { CursorOrb } from "@/components/ui/cursor-orb"
 
 export const metadata: Metadata = {
   title: "SnappAiFi Financial Platform",
@@ -25,6 +26,7 @@ export default function RootLayout({
             <main className="flex-1 overflow-auto">{children}</main>
           </div>
           <GoalPrioritizingOrb />
+          <CursorOrb variant="holographic" size="md" showTrail={true} showParticles={true} />
         </GlobalUnlockProvider>
       </body>
     </html>
