@@ -10,7 +10,7 @@ import { GamificationProvider } from "@/contexts/gamification-context"
 import { ProductComparisonProvider } from "@/contexts/product-comparison-context"
 import { PropertyComparisonProvider } from "@/contexts/property-comparison-context"
 import { CreditProvider } from "@/contexts/credit-context"
-import { DemoProvider } from "@/contexts/demo-context"
+import { DemoContextProvider } from "@/contexts/demo-context"
 import { EnvironmentSidebar } from "@/components/ui/environment-sidebar"
 import { CursorOrb } from "@/components/ui/cursor-orb"
 
@@ -38,13 +38,13 @@ export default function RootLayout({
                   <ProductComparisonProvider>
                     <PropertyComparisonProvider>
                       <CreditProvider>
-                        <DemoProvider>
+                        <DemoContextProvider>
                           <div className="relative min-h-screen">
                             <EnvironmentSidebar />
                             <CursorOrb enabled={true} />
                             <main className="transition-all duration-300">{children}</main>
                           </div>
-                        </DemoProvider>
+                        </DemoContextProvider>
                       </CreditProvider>
                     </PropertyComparisonProvider>
                   </ProductComparisonProvider>
