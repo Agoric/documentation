@@ -1,228 +1,185 @@
--- Create compliance tables for loan compliance bot
--- Supports 50-year government bond structures with DAX mirroring
+-- Loan Compliance Bot Database Schema
+-- Creates tables for compliance monitoring, rules, and audit trails
 
--- Compliance rules table
+-- Compliance Rules Table
 CREATE TABLE IF NOT EXISTS compliance_rules (
-    id VARCHAR(50) PRIMARY KEY,
-    category VARCHAR(50) NOT NULL,
-    rule_name VARCHAR(255) NOT NULL,
-    severity VARCHAR(20) NOT NULL CHECK (severity IN ('critical', 'high', 'medium', 'low')),
-    loan_types JSONB NOT NULL DEFAULT '[]'::jsonb,
-    description TEXT NOT NULL,
-    regulation VARCHAR(255) NOT NULL,
-    auto_check BOOLEAN DEFAULT TRUE,
-    remediation TEXT NOT NULL,
-    bond_structure_rule BOOLEAN DEFAULT FALSE,
-    dax_mirror_rule BOOLEAN DEFAULT FALSE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    rule_id VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    severity VARCHAR(20) CHECK (severity IN ('critical', 'high', 'medium', 'low')),
+    loan_types TEXT[], -- Array of loan types this rule applies to
+    rule_logic JSONB, -- Stores the rule logic/conditions
+    enabled BOOLEAN DEFAULT true,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255)
 );
 
--- Compliance alerts table
-CREATE TABLE IF NOT EXISTS compliance_alerts (
-    id VARCHAR(50) PRIMARY KEY,
-    application_id VARCHAR(50) NOT NULL,
-    rule_id VARCHAR(50) NOT NULL REFERENCES compliance_rules(id),
-    severity VARCHAR(20) NOT NULL CHECK (severity IN ('critical', 'high', 'medium', 'low')),
-    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'resolved', 'pending', 'dismissed')),
-    message TEXT NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    resolved_at TIMESTAMP WITH TIME ZONE,
-    assigned_to VARCHAR(255),
-    resolution_notes TEXT,
-    bond_structure_impact BOOLEAN DEFAULT FALSE,
-    dax_compliance_impact BOOLEAN DEFAULT FALSE
-);
-
--- Compliance scans table
+-- Compliance Scans Table
 CREATE TABLE IF NOT EXISTS compliance_scans (
-    id SERIAL PRIMARY KEY,
-    application_id VARCHAR(50) NOT NULL,
-    scan_type VARCHAR(50) NOT NULL DEFAULT 'automated',
-    loan_type VARCHAR(20) NOT NULL,
-    overall_score INTEGER NOT NULL CHECK (overall_score >= 0 AND overall_score <= 100),
-    bond_compliance_score INTEGER NOT NULL CHECK (bond_compliance_score >= 0 AND bond_compliance_score <= 100),
-    dax_mirror_score INTEGER NOT NULL CHECK (dax_mirror_score >= 0 AND dax_mirror_score <= 100),
-    alerts_count INTEGER DEFAULT 0,
-    critical_alerts_count INTEGER DEFAULT 0,
-    scan_duration_ms INTEGER,
-    scan_results JSONB,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    scan_id VARCHAR(100) UNIQUE NOT NULL,
+    scan_type VARCHAR(50) DEFAULT 'full', -- full, partial, targeted
+    status VARCHAR(20) CHECK (status IN ('pending', 'running', 'completed', 'failed')),
+    total_loans INTEGER DEFAULT 0,
+    scanned_loans INTEGER DEFAULT 0,
+    average_score DECIMAL(5,2),
+    total_violations INTEGER DEFAULT 0,
+    critical_violations INTEGER DEFAULT 0,
+    bond_compliance_rate DECIMAL(5,2),
+    started_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    completed_at TIMESTAMP WITH TIME ZONE,
+    scan_duration_seconds INTEGER,
+    initiated_by VARCHAR(255),
+    scan_parameters JSONB
+);
+
+-- Loan Compliance Results Table
+CREATE TABLE IF NOT EXISTS loan_compliance_results (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    scan_id VARCHAR(100) REFERENCES compliance_scans(scan_id),
+    loan_id VARCHAR(100) NOT NULL,
+    loan_type VARCHAR(20) CHECK (loan_type IN ('FHA', 'VA', 'USDA', 'SBA')),
+    overall_score DECIMAL(5,2) NOT NULL,
+    bond_structure_valid BOOLEAN DEFAULT false,
+    guarantee_period_correct BOOLEAN DEFAULT false,
+    dax_mirror_active BOOLEAN DEFAULT false,
+    compliance_status VARCHAR(20) CHECK (compliance_status IN ('compliant', 'non_compliant', 'warning')),
     scanned_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    scanned_by VARCHAR(255) DEFAULT 'compliance_bot'
+    raw_results JSONB -- Stores detailed compliance check results
 );
 
--- Bond structure compliance table
-CREATE TABLE IF NOT EXISTS bond_structure_compliance (
-    id SERIAL PRIMARY KEY,
-    application_id VARCHAR(50) NOT NULL,
-    loan_type VARCHAR(20) NOT NULL,
-    bond_term INTEGER NOT NULL,
-    guarantee_term INTEGER NOT NULL,
-    dax_mirror_type VARCHAR(50) NOT NULL,
-    term_compliance BOOLEAN DEFAULT FALSE,
-    guarantee_compliance BOOLEAN DEFAULT FALSE,
-    dax_mirror_compliance BOOLEAN DEFAULT FALSE,
-    risk_adjustment_compliance BOOLEAN DEFAULT FALSE,
-    secondary_market_compliance BOOLEAN DEFAULT FALSE,
-    government_backing_verified BOOLEAN DEFAULT FALSE,
-    corporate_bond_structure_verified BOOLEAN DEFAULT FALSE,
-    compliance_score INTEGER NOT NULL CHECK (compliance_score >= 0 AND compliance_score <= 100),
-    last_verified TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    verification_notes TEXT
+-- Compliance Violations Table
+CREATE TABLE IF NOT EXISTS compliance_violations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    result_id UUID REFERENCES loan_compliance_results(id),
+    loan_id VARCHAR(100) NOT NULL,
+    rule_id VARCHAR(100) REFERENCES compliance_rules(rule_id),
+    severity VARCHAR(20) CHECK (severity IN ('critical', 'high', 'medium', 'low')),
+    violation_message TEXT NOT NULL,
+    recommendation TEXT,
+    status VARCHAR(20) CHECK (status IN ('active', 'resolved', 'investigating', 'false_positive')) DEFAULT 'active',
+    detected_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    resolved_at TIMESTAMP WITH TIME ZONE,
+    resolved_by VARCHAR(255),
+    resolution_notes TEXT
 );
 
--- DAX mirroring compliance table
-CREATE TABLE IF NOT EXISTS dax_mirroring_compliance (
-    id SERIAL PRIMARY KEY,
-    application_id VARCHAR(50) NOT NULL,
-    loan_type VARCHAR(20) NOT NULL,
-    dax_mirror_type VARCHAR(50) NOT NULL,
-    base_rate DECIMAL(5,3) NOT NULL,
-    dax_spread DECIMAL(5,3) NOT NULL,
-    risk_adjustment DECIMAL(5,3) NOT NULL,
-    government_discount DECIMAL(5,3) NOT NULL,
-    final_rate DECIMAL(5,3) NOT NULL,
-    spread_compliance BOOLEAN DEFAULT FALSE,
-    pricing_compliance BOOLEAN DEFAULT FALSE,
-    liquidity_compliance BOOLEAN DEFAULT FALSE,
-    yield_curve_compliance BOOLEAN DEFAULT FALSE,
-    covenant_compliance BOOLEAN DEFAULT FALSE,
-    compliance_score INTEGER NOT NULL CHECK (compliance_score >= 0 AND compliance_score <= 100),
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    market_data_source VARCHAR(100),
-    validation_notes TEXT
-);
-
--- Institutional lender settings table
-CREATE TABLE IF NOT EXISTS institutional_lender_settings (
-    id SERIAL PRIMARY KEY,
-    lender_id VARCHAR(50) NOT NULL UNIQUE,
-    lender_name VARCHAR(255) NOT NULL,
-    compliance_threshold INTEGER DEFAULT 85 CHECK (compliance_threshold >= 0 AND compliance_threshold <= 100),
-    auto_scan_enabled BOOLEAN DEFAULT TRUE,
-    alert_email_notifications BOOLEAN DEFAULT TRUE,
-    webhook_url VARCHAR(500),
-    custom_rules JSONB DEFAULT '[]'::jsonb,
-    bond_structure_requirements JSONB DEFAULT '{}'::jsonb,
-    dax_mirror_preferences JSONB DEFAULT '{}'::jsonb,
-    risk_tolerance_settings JSONB DEFAULT '{}'::jsonb,
-    reporting_frequency VARCHAR(20) DEFAULT 'daily' CHECK (reporting_frequency IN ('real-time', 'hourly', 'daily', 'weekly')),
+-- Bond Structures Table
+CREATE TABLE IF NOT EXISTS bond_structures (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    loan_type VARCHAR(20) CHECK (loan_type IN ('FHA', 'VA', 'USDA', 'SBA')),
+    bond_type VARCHAR(50) NOT NULL, -- e.g., "FHA 30-Year", "VA 50-Year"
+    guarantee_period_years INTEGER NOT NULL,
+    government_backing BOOLEAN DEFAULT true,
+    dax_mirror_enabled BOOLEAN DEFAULT false,
+    structure_config JSONB, -- Detailed bond structure configuration
+    effective_date DATE NOT NULL,
+    expiry_date DATE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Insert default compliance rules for 50-year government bonds
-INSERT INTO compliance_rules (
-    id, category, rule_name, severity, loan_types, description, regulation, auto_check, remediation, bond_structure_rule, dax_mirror_rule
-) VALUES 
--- FHA Rules
-(
-    'FHA-001', 'Eligibility', 'Credit Score Minimum', 'critical', '["fha"]'::jsonb,
-    'Borrower must have minimum credit score of 580 for 3.5% down payment',
-    'FHA Handbook 4000.1', TRUE,
-    'Require higher down payment or decline application', FALSE, FALSE
-),
-(
-    'FHA-002', 'Bond Structure', 'FHA 50-Year Bond Compliance', 'high', '["fha"]'::jsonb,
-    'FHA 50-year bond must maintain 30-year government guarantee structure',
-    'FHA Handbook 4000.1 (Modified for Bond Structure)', TRUE,
-    'Verify 30-year guarantee period and DAX Secondary mirror compliance', TRUE, TRUE
-),
+-- Compliance Alerts Table
+CREATE TABLE IF NOT EXISTS compliance_alerts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    alert_id VARCHAR(100) UNIQUE NOT NULL,
+    loan_id VARCHAR(100) NOT NULL,
+    violation_id UUID REFERENCES compliance_violations(id),
+    alert_type VARCHAR(50) NOT NULL,
+    severity VARCHAR(20) CHECK (severity IN ('critical', 'high', 'medium', 'low')),
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    status VARCHAR(20) CHECK (status IN ('active', 'acknowledged', 'resolved', 'dismissed')) DEFAULT 'active',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    acknowledged_at TIMESTAMP WITH TIME ZONE,
+    resolved_at TIMESTAMP WITH TIME ZONE,
+    acknowledged_by VARCHAR(255),
+    resolved_by VARCHAR(255),
+    metadata JSONB -- Additional alert metadata
+);
 
--- VA Rules
-(
-    'VA-001', 'Eligibility', 'Military Service Verification', 'critical', '["va"]'::jsonb,
-    'Valid Certificate of Eligibility required for all VA loans',
-    '38 CFR 36.4302', TRUE,
-    'Obtain COE from VA or veteran', FALSE, FALSE
-),
-(
-    'VA-002', 'Bond Structure', 'VA 50-Year Full Guarantee', 'high', '["va"]'::jsonb,
-    'VA 50-year bond must maintain full government guarantee throughout entire term',
-    'VA Circular 26-20-16 (Modified for Bond Structure)', TRUE,
-    'Verify full 50-year guarantee and DAX Premium mirror compliance', TRUE, TRUE
-),
+-- Compliance Audit Trail Table
+CREATE TABLE IF NOT EXISTS compliance_audit_trail (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    entity_type VARCHAR(50) NOT NULL, -- 'loan', 'rule', 'scan', 'alert'
+    entity_id VARCHAR(100) NOT NULL,
+    action VARCHAR(50) NOT NULL, -- 'created', 'updated', 'deleted', 'scanned', 'resolved'
+    old_values JSONB,
+    new_values JSONB,
+    performed_by VARCHAR(255) NOT NULL,
+    performed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    ip_address INET,
+    user_agent TEXT,
+    notes TEXT
+);
 
--- USDA Rules
-(
-    'USDA-001', 'Property', 'Rural Area Eligibility', 'critical', '["usda"]'::jsonb,
-    'Property must be located in USDA eligible rural area',
-    '7 CFR 3550.53', TRUE,
-    'Verify property location with USDA eligibility map', FALSE, FALSE
-),
-(
-    'USDA-002', 'Bond Structure', 'USDA 35-Year Rural Bond Guarantee', 'medium', '["usda"]'::jsonb,
-    'USDA 50-year rural bond includes 35-year government guarantee period',
-    '7 CFR 3550 (Modified for Bond Structure)', TRUE,
-    'Confirm 35-year guarantee period and agricultural DAX mirror pricing', TRUE, TRUE
-),
+-- Compliance Metrics Table (for performance tracking)
+CREATE TABLE IF NOT EXISTS compliance_metrics (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    metric_date DATE NOT NULL,
+    total_loans INTEGER DEFAULT 0,
+    compliant_loans INTEGER DEFAULT 0,
+    compliance_rate DECIMAL(5,2),
+    total_violations INTEGER DEFAULT 0,
+    critical_violations INTEGER DEFAULT 0,
+    avg_processing_time_seconds DECIMAL(10,2),
+    false_positive_rate DECIMAL(5,2),
+    accuracy_rate DECIMAL(5,2),
+    cost_savings_usd DECIMAL(15,2),
+    risk_mitigation_usd DECIMAL(15,2),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
--- SBA Rules
-(
-    'SBA-001', 'Business', 'Business Use Requirement', 'critical', '["sba"]'::jsonb,
-    'Loan proceeds must be used for eligible business purposes',
-    '13 CFR 120.111', FALSE,
-    'Review business plan and use of funds documentation', FALSE, FALSE
-),
-(
-    'SBA-002', 'Bond Structure', 'SBA 25-Year Business Bond Guarantee', 'high', '["sba"]'::jsonb,
-    'SBA 50-year business bond includes 25-year government guarantee with corporate structure',
-    '13 CFR 120 (Modified for Corporate Bond Structure)', TRUE,
-    'Validate 25-year guarantee period and corporate DAX mirror compliance', TRUE, TRUE
-),
-
--- Universal Rules
-(
-    'DAX-001', 'Bond Structure', 'DAX Secondary Market Compliance', 'high', '["fha", "va", "usda", "sba"]'::jsonb,
-    'All 50-year government bonds must mirror appropriate DAX corporate bond structures',
-    'Internal Snapifi Bond Policy 2024-001', TRUE,
-    'Verify DAX mirror type, spread, and pricing compliance', TRUE, TRUE
-),
-(
-    'GEN-001', 'Documentation', 'Anti-Money Laundering', 'critical', '["fha", "va", "usda", "sba"]'::jsonb,
-    'Complete AML verification required for all loan applications',
-    '31 CFR 1020.220', TRUE,
-    'Complete enhanced due diligence and SAR filing if necessary', FALSE, FALSE
-),
-(
-    'BOND-001', 'Bond Structure', '50-Year Term Compliance', 'high', '["fha", "va", "usda", "sba"]'::jsonb,
-    'All government bonds must be structured with 50-year amortization',
-    'Internal Snapifi Bond Policy 2024-001', TRUE,
-    'Verify bond term length and amortization schedule', TRUE, FALSE
-),
-(
-    'BOND-002', 'Bond Structure', 'Government Guarantee Verification', 'critical', '["fha", "va", "usda", "sba"]'::jsonb,
-    'Government guarantee period must be properly documented and verified',
-    'Multiple Government Regulations (Program Specific)', TRUE,
-    'Verify guarantee terms with appropriate government agency', TRUE, FALSE
-)
-
-ON CONFLICT (id) DO UPDATE SET
-    category = EXCLUDED.category,
-    rule_name = EXCLUDED.rule_name,
-    severity = EXCLUDED.severity,
-    loan_types = EXCLUDED.loan_types,
-    description = EXCLUDED.description,
-    regulation = EXCLUDED.regulation,
-    auto_check = EXCLUDED.auto_check,
-    remediation = EXCLUDED.remediation,
-    bond_structure_rule = EXCLUDED.bond_structure_rule,
-    dax_mirror_rule = EXCLUDED.dax_mirror_rule,
-    updated_at = NOW();
-
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_compliance_alerts_application ON compliance_alerts(application_id);
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_compliance_scans_status ON compliance_scans(status);
+CREATE INDEX IF NOT EXISTS idx_compliance_scans_started_at ON compliance_scans(started_at);
+CREATE INDEX IF NOT EXISTS idx_loan_compliance_results_loan_id ON loan_compliance_results(loan_id);
+CREATE INDEX IF NOT EXISTS idx_loan_compliance_results_scan_id ON loan_compliance_results(scan_id);
+CREATE INDEX IF NOT EXISTS idx_compliance_violations_loan_id ON compliance_violations(loan_id);
+CREATE INDEX IF NOT EXISTS idx_compliance_violations_status ON compliance_violations(status);
+CREATE INDEX IF NOT EXISTS idx_compliance_violations_severity ON compliance_violations(severity);
 CREATE INDEX IF NOT EXISTS idx_compliance_alerts_status ON compliance_alerts(status);
 CREATE INDEX IF NOT EXISTS idx_compliance_alerts_severity ON compliance_alerts(severity);
-CREATE INDEX IF NOT EXISTS idx_compliance_scans_application ON compliance_scans(application_id);
-CREATE INDEX IF NOT EXISTS idx_compliance_scans_date ON compliance_scans(scanned_at);
-CREATE INDEX IF NOT EXISTS idx_bond_structure_compliance_application ON bond_structure_compliance(application_id);
-CREATE INDEX IF NOT EXISTS idx_dax_mirroring_compliance_application ON dax_mirroring_compliance(application_id);
-CREATE INDEX IF NOT EXISTS idx_compliance_rules_loan_types ON compliance_rules USING GIN(loan_types);
-CREATE INDEX IF NOT EXISTS idx_compliance_rules_category ON compliance_rules(category);
+CREATE INDEX IF NOT EXISTS idx_compliance_alerts_loan_id ON compliance_alerts(loan_id);
+CREATE INDEX IF NOT EXISTS idx_compliance_audit_trail_entity ON compliance_audit_trail(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_compliance_audit_trail_performed_at ON compliance_audit_trail(performed_at);
+CREATE INDEX IF NOT EXISTS idx_compliance_metrics_date ON compliance_metrics(metric_date);
 
--- Success message
-SELECT 'Loan Compliance Bot Database Setup Complete!' as message,
-       'Tables created: compliance_rules, compliance_alerts, compliance_scans, bond_structure_compliance, dax_mirroring_compliance, institutional_lender_settings' as tables_created,
-       'Compliance rules added: 12 rules covering FHA, VA, USDA, SBA, and universal bond requirements' as rules_added,
-       'Ready for institutional deployment' as status;
+-- Insert default compliance rules
+INSERT INTO compliance_rules (rule_id, name, description, severity, loan_types, rule_logic, enabled) VALUES
+('FHA_BOND_STRUCTURE', 'FHA 30-Year Bond Structure', 'Verify FHA loans have proper 30-year government guarantee structure', 'critical', ARRAY['FHA'], '{"guarantee_period": 30, "government_backing": true}', true),
+('VA_BOND_STRUCTURE', 'VA 50-Year Bond Structure', 'Verify VA loans have proper 50-year government guarantee structure', 'critical', ARRAY['VA'], '{"guarantee_period": 50, "government_backing": true}', true),
+('USDA_BOND_STRUCTURE', 'USDA 35-Year Bond Structure', 'Verify USDA loans have proper 35-year government guarantee structure', 'critical', ARRAY['USDA'], '{"guarantee_period": 35, "government_backing": true}', true),
+('SBA_BOND_STRUCTURE', 'SBA 25-Year Bond Structure', 'Verify SBA loans have proper 25-year government guarantee structure', 'critical', ARRAY['SBA'], '{"guarantee_period": 25, "government_backing": true}', true),
+('DAX_MIRROR_COMPLIANCE', 'DAX Corporate Bond Mirroring', 'Ensure loan structure mirrors corporate bond requirements for DAX trading', 'high', ARRAY['FHA', 'VA', 'USDA', 'SBA'], '{"dax_mirror_required": true}', true),
+('DOCUMENTATION_COMPLETE', 'Required Documentation', 'Verify all required documents are present and valid', 'medium', ARRAY['FHA', 'VA', 'USDA', 'SBA'], '{"required_docs_check": true}', true),
+('BORROWER_ELIGIBILITY', 'Borrower Eligibility', 'Verify borrower meets program-specific eligibility requirements', 'high', ARRAY['FHA', 'VA', 'USDA', 'SBA'], '{"eligibility_check": true}', true)
+ON CONFLICT (rule_id) DO NOTHING;
+
+-- Insert default bond structures
+INSERT INTO bond_structures (loan_type, bond_type, guarantee_period_years, government_backing, dax_mirror_enabled, effective_date) VALUES
+('FHA', 'FHA 30-Year Government Bond', 30, true, true, '2024-01-01'),
+('VA', 'VA 50-Year Government Bond', 50, true, true, '2024-01-01'),
+('USDA', 'USDA 35-Year Government Bond', 35, true, true, '2024-01-01'),
+('SBA', 'SBA 25-Year Government Bond', 25, true, true, '2024-01-01')
+ON CONFLICT DO NOTHING;
+
+-- Create function to update timestamps
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create triggers for updated_at columns
+CREATE TRIGGER update_compliance_rules_updated_at BEFORE UPDATE ON compliance_rules FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_bond_structures_updated_at BEFORE UPDATE ON bond_structures FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Grant permissions (adjust as needed for your setup)
+-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO compliance_bot_user;
+-- GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO compliance_bot_user;

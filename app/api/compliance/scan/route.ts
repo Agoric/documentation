@@ -1,263 +1,319 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { neon } from "@neondatabase/serverless"
+
+interface ComplianceRule {
+  id: string
+  name: string
+  description: string
+  severity: "critical" | "high" | "medium" | "low"
+  loanTypes: string[]
+  enabled: boolean
+}
+
+interface LoanData {
+  id: string
+  type: "FHA" | "VA" | "USDA" | "SBA"
+  amount: number
+  borrowerInfo: any
+  documents: string[]
+  bondStructure: {
+    guaranteePeriod: number
+    daxMirrorCompliant: boolean
+    governmentBacking: boolean
+  }
+}
+
+interface ComplianceResult {
+  loanId: string
+  overallScore: number
+  violations: Array<{
+    ruleId: string
+    severity: string
+    message: string
+    recommendation: string
+  }>
+  bondCompliance: {
+    structureValid: boolean
+    guaranteePeriodCorrect: boolean
+    daxMirrorActive: boolean
+  }
+}
+
+// Compliance rules for different loan types
+const complianceRules: ComplianceRule[] = [
+  {
+    id: "FHA_BOND_STRUCTURE",
+    name: "FHA 30-Year Bond Structure",
+    description: "Verify FHA loans have proper 30-year government guarantee structure",
+    severity: "critical",
+    loanTypes: ["FHA"],
+    enabled: true,
+  },
+  {
+    id: "VA_BOND_STRUCTURE",
+    name: "VA 50-Year Bond Structure",
+    description: "Verify VA loans have proper 50-year government guarantee structure",
+    severity: "critical",
+    loanTypes: ["VA"],
+    enabled: true,
+  },
+  {
+    id: "USDA_BOND_STRUCTURE",
+    name: "USDA 35-Year Bond Structure",
+    description: "Verify USDA loans have proper 35-year government guarantee structure",
+    severity: "critical",
+    loanTypes: ["USDA"],
+    enabled: true,
+  },
+  {
+    id: "SBA_BOND_STRUCTURE",
+    name: "SBA 25-Year Bond Structure",
+    description: "Verify SBA loans have proper 25-year government guarantee structure",
+    severity: "critical",
+    loanTypes: ["SBA"],
+    enabled: true,
+  },
+  {
+    id: "DAX_MIRROR_COMPLIANCE",
+    name: "DAX Corporate Bond Mirroring",
+    description: "Ensure loan structure mirrors corporate bond requirements for DAX trading",
+    severity: "high",
+    loanTypes: ["FHA", "VA", "USDA", "SBA"],
+    enabled: true,
+  },
+  {
+    id: "DOCUMENTATION_COMPLETE",
+    name: "Required Documentation",
+    description: "Verify all required documents are present and valid",
+    severity: "medium",
+    loanTypes: ["FHA", "VA", "USDA", "SBA"],
+    enabled: true,
+  },
+  {
+    id: "BORROWER_ELIGIBILITY",
+    name: "Borrower Eligibility",
+    description: "Verify borrower meets program-specific eligibility requirements",
+    severity: "high",
+    loanTypes: ["FHA", "VA", "USDA", "SBA"],
+    enabled: true,
+  },
+]
+
+function validateBondStructure(loan: LoanData): ComplianceResult["bondCompliance"] {
+  const expectedGuaranteePeriods = {
+    FHA: 30,
+    VA: 50,
+    USDA: 35,
+    SBA: 25,
+  }
+
+  const expectedPeriod = expectedGuaranteePeriods[loan.type]
+  const actualPeriod = loan.bondStructure.guaranteePeriod
+
+  return {
+    structureValid: loan.bondStructure.governmentBacking,
+    guaranteePeriodCorrect: actualPeriod === expectedPeriod,
+    daxMirrorActive: loan.bondStructure.daxMirrorCompliant,
+  }
+}
+
+function runComplianceCheck(loan: LoanData): ComplianceResult {
+  const violations = []
+  let totalScore = 100
+
+  // Check bond structure compliance
+  const bondCompliance = validateBondStructure(loan)
+
+  // Apply compliance rules
+  for (const rule of complianceRules) {
+    if (!rule.enabled || !rule.loanTypes.includes(loan.type)) continue
+
+    let ruleViolated = false
+    let message = ""
+    let recommendation = ""
+
+    switch (rule.id) {
+      case "FHA_BOND_STRUCTURE":
+      case "VA_BOND_STRUCTURE":
+      case "USDA_BOND_STRUCTURE":
+      case "SBA_BOND_STRUCTURE":
+        if (!bondCompliance.structureValid || !bondCompliance.guaranteePeriodCorrect) {
+          ruleViolated = true
+          message = `${loan.type} bond structure does not meet government guarantee requirements`
+          recommendation = "Review bond structure and guarantee period configuration"
+        }
+        break
+
+      case "DAX_MIRROR_COMPLIANCE":
+        if (!bondCompliance.daxMirrorActive) {
+          ruleViolated = true
+          message = "Loan structure not properly mirrored for DAX corporate bond trading"
+          recommendation = "Configure DAX mirroring to enable secondary market trading"
+        }
+        break
+
+      case "DOCUMENTATION_COMPLETE":
+        const requiredDocs = {
+          FHA: ["income_verification", "credit_report", "property_appraisal", "fha_certificate"],
+          VA: ["income_verification", "credit_report", "property_appraisal", "va_certificate", "military_service"],
+          USDA: ["income_verification", "credit_report", "property_appraisal", "rural_certification"],
+          SBA: ["business_plan", "financial_statements", "tax_returns", "sba_eligibility"],
+        }
+
+        const required = requiredDocs[loan.type] || []
+        const missing = required.filter((doc) => !loan.documents.includes(doc))
+
+        if (missing.length > 0) {
+          ruleViolated = true
+          message = `Missing required documents: ${missing.join(", ")}`
+          recommendation = "Upload all required documentation before proceeding"
+        }
+        break
+
+      case "BORROWER_ELIGIBILITY":
+        // Simplified eligibility check
+        if (loan.amount > 1000000 && loan.type === "FHA") {
+          ruleViolated = true
+          message = "Loan amount exceeds FHA limits"
+          recommendation = "Reduce loan amount or consider conventional financing"
+        }
+        break
+    }
+
+    if (ruleViolated) {
+      violations.push({
+        ruleId: rule.id,
+        severity: rule.severity,
+        message,
+        recommendation,
+      })
+
+      // Deduct points based on severity
+      const severityPoints = {
+        critical: 25,
+        high: 15,
+        medium: 10,
+        low: 5,
+      }
+      totalScore -= severityPoints[rule.severity]
+    }
+  }
+
+  return {
+    loanId: loan.id,
+    overallScore: Math.max(0, totalScore),
+    violations,
+    bondCompliance,
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.NEON_NEON_DATABASE_URL) {
-      return NextResponse.json({ error: "Database configuration missing" }, { status: 500 })
+    const { loanIds, scanType = "full" } = await request.json()
+
+    // Simulate fetching loan data (in real implementation, this would query the database)
+    const mockLoans: LoanData[] = [
+      {
+        id: "FHA-2024-0892",
+        type: "FHA",
+        amount: 350000,
+        borrowerInfo: { creditScore: 720, income: 75000 },
+        documents: ["income_verification", "credit_report", "property_appraisal"],
+        bondStructure: {
+          guaranteePeriod: 25, // Should be 30 for FHA
+          daxMirrorCompliant: true,
+          governmentBacking: true,
+        },
+      },
+      {
+        id: "VA-2024-0445",
+        type: "VA",
+        amount: 425000,
+        borrowerInfo: { creditScore: 680, income: 85000 },
+        documents: ["income_verification", "credit_report", "property_appraisal", "va_certificate"],
+        bondStructure: {
+          guaranteePeriod: 50,
+          daxMirrorCompliant: false, // Violation
+          governmentBacking: true,
+        },
+      },
+      {
+        id: "USDA-2024-0234",
+        type: "USDA",
+        amount: 275000,
+        borrowerInfo: { creditScore: 650, income: 55000 },
+        documents: ["income_verification", "credit_report", "property_appraisal"],
+        bondStructure: {
+          guaranteePeriod: 35,
+          daxMirrorCompliant: true,
+          governmentBacking: true,
+        },
+      },
+    ]
+
+    // Filter loans if specific IDs provided
+    const loansToScan = loanIds ? mockLoans.filter((loan) => loanIds.includes(loan.id)) : mockLoans
+
+    // Run compliance checks
+    const results: ComplianceResult[] = loansToScan.map(runComplianceCheck)
+
+    // Calculate summary statistics
+    const summary = {
+      totalScanned: results.length,
+      averageScore: results.reduce((sum, result) => sum + result.overallScore, 0) / results.length,
+      totalViolations: results.reduce((sum, result) => sum + result.violations.length, 0),
+      criticalViolations: results.reduce(
+        (sum, result) => sum + result.violations.filter((v) => v.severity === "critical").length,
+        0,
+      ),
+      bondComplianceRate:
+        (results.filter((r) => r.bondCompliance.structureValid && r.bondCompliance.daxMirrorActive).length /
+          results.length) *
+        100,
     }
-
-    const sql = neon(process.env.NEON_DATABASE_URL)
-    const { applicationId, loanType, fullScan } = await request.json()
-
-    // Run compliance checks based on loan type and 50-year bond structure
-    const complianceResults = await runComplianceChecks(sql, applicationId, loanType, fullScan)
 
     return NextResponse.json({
       success: true,
-      applicationId,
-      complianceScore: complianceResults.score,
-      alerts: complianceResults.alerts,
-      bondCompliance: complianceResults.bondCompliance,
-      daxMirrorCompliance: complianceResults.daxMirrorCompliance,
-      scanTimestamp: new Date().toISOString(),
+      scanId: `SCAN-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      summary,
+      results,
     })
   } catch (error) {
     console.error("Compliance scan error:", error)
-    return NextResponse.json({ error: "Failed to run compliance scan" }, { status: 500 })
+    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 })
   }
 }
 
-async function runComplianceChecks(sql: any, applicationId: string, loanType: string, fullScan: boolean) {
-  const alerts = []
-  let score = 100
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const scanId = searchParams.get("scanId")
 
-  // Get application data
-  const application = await sql`
-    SELECT * FROM loan_applications WHERE id = ${applicationId}
-  `
+    if (scanId) {
+      // Return specific scan results
+      return NextResponse.json({
+        success: true,
+        scanId,
+        status: "completed",
+        results: [], // Would fetch from database
+      })
+    }
 
-  if (!application.length) {
-    throw new Error("Application not found")
-  }
-
-  const app = application[0]
-
-  // Check loan type specific requirements
-  switch (loanType) {
-    case "fha":
-      // FHA specific compliance checks
-      if (app.credit_score < 580) {
-        alerts.push({
-          id: `FHA-${Date.now()}`,
-          severity: "critical",
-          rule: "FHA Credit Score Minimum",
-          message: `Credit score ${app.credit_score} below FHA minimum of 580`,
-          regulation: "FHA Handbook 4000.1",
-        })
-        score -= 25
-      }
-
-      // Check 50-year bond structure compliance for FHA
-      if (!app.bond_structure || app.bond_structure.guaranteeTerm !== 30) {
-        alerts.push({
-          id: `FHA-BOND-${Date.now()}`,
-          severity: "high",
-          rule: "FHA 50-Year Bond Structure",
-          message: "FHA bond must have 30-year government guarantee period",
-          regulation: "Internal Snapifi Bond Policy 2024-001",
-        })
-        score -= 15
-      }
-      break
-
-    case "va":
-      // VA specific compliance checks
-      if (!app.military_service) {
-        alerts.push({
-          id: `VA-${Date.now()}`,
-          severity: "critical",
-          rule: "VA Military Service Requirement",
-          message: "VA loan requires valid military service verification",
-          regulation: "38 CFR 36.4302",
-        })
-        score -= 30
-      }
-
-      // Check VA 50-year bond with full guarantee
-      if (!app.bond_structure || app.bond_structure.guaranteeTerm !== 50) {
-        alerts.push({
-          id: `VA-BOND-${Date.now()}`,
-          severity: "high",
-          rule: "VA 50-Year Full Guarantee",
-          message: "VA bond must have full 50-year government guarantee",
-          regulation: "VA Circular 26-20-16 (Modified)",
-        })
-        score -= 15
-      }
-      break
-
-    case "usda":
-      // USDA specific compliance checks
-      if (!app.rural_eligible) {
-        alerts.push({
-          id: `USDA-${Date.now()}`,
-          severity: "critical",
-          rule: "USDA Rural Area Requirement",
-          message: "Property must be in USDA eligible rural area",
-          regulation: "7 CFR 3550.53",
-        })
-        score -= 30
-      }
-
-      // Check USDA 35-year guarantee structure
-      if (!app.bond_structure || app.bond_structure.guaranteeTerm !== 35) {
-        alerts.push({
-          id: `USDA-BOND-${Date.now()}`,
-          severity: "medium",
-          rule: "USDA 35-Year Rural Bond Guarantee",
-          message: "USDA rural bond should have 35-year government guarantee",
-          regulation: "7 CFR 3550 (Modified for Bond Structure)",
-        })
-        score -= 10
-      }
-      break
-
-    case "sba":
-      // SBA specific compliance checks
-      if (!app.business_use) {
-        alerts.push({
-          id: `SBA-${Date.now()}`,
-          severity: "critical",
-          rule: "SBA Business Use Requirement",
-          message: "SBA loan must be for eligible business purposes",
-          regulation: "13 CFR 120.111",
-        })
-        score -= 30
-      }
-
-      // Check SBA 25-year business guarantee
-      if (!app.bond_structure || app.bond_structure.guaranteeTerm !== 25) {
-        alerts.push({
-          id: `SBA-BOND-${Date.now()}`,
-          severity: "high",
-          rule: "SBA 25-Year Business Bond Guarantee",
-          message: "SBA business bond should have 25-year government guarantee",
-          regulation: "13 CFR 120 (Modified for Corporate Bond)",
-        })
-        score -= 15
-      }
-      break
-  }
-
-  // Check DAX mirroring compliance for all loan types
-  if (!app.dax_mirror_compliance || app.dax_mirror_compliance < 95) {
-    alerts.push({
-      id: `DAX-${Date.now()}`,
-      severity: "high",
-      rule: "DAX Secondary Market Compliance",
-      message: "Bond structure must properly mirror DAX corporate bond pricing",
-      regulation: "Internal Snapifi Bond Policy 2024-001",
+    // Return recent scans
+    return NextResponse.json({
+      success: true,
+      recentScans: [
+        {
+          id: "SCAN-1705741935000",
+          timestamp: "2024-01-20T14:32:15Z",
+          loansScanned: 1247,
+          averageScore: 96.2,
+          status: "completed",
+        },
+      ],
     })
-    score -= 10
+  } catch (error) {
+    console.error("Error fetching compliance data:", error)
+    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 })
   }
-
-  // Universal compliance checks
-  if (!app.aml_verification) {
-    alerts.push({
-      id: `AML-${Date.now()}`,
-      severity: "critical",
-      rule: "Anti-Money Laundering Verification",
-      message: "AML verification required for all loan applications",
-      regulation: "31 CFR 1020.220",
-    })
-    score -= 20
-  }
-
-  // Calculate specific compliance metrics
-  const bondCompliance = calculateBondCompliance(app, loanType)
-  const daxMirrorCompliance = calculateDaxMirrorCompliance(app, loanType)
-
-  return {
-    score: Math.max(0, score),
-    alerts,
-    bondCompliance,
-    daxMirrorCompliance,
-  }
-}
-
-function calculateBondCompliance(app: any, loanType: string) {
-  let compliance = 100
-
-  // Check 50-year bond structure requirements
-  if (!app.bond_structure) {
-    compliance -= 30
-  } else {
-    // Check term length
-    if (app.bond_structure.term !== 50) {
-      compliance -= 20
-    }
-
-    // Check guarantee periods by loan type
-    const expectedGuarantee = {
-      fha: 30,
-      va: 50,
-      usda: 35,
-      sba: 25,
-    }[loanType]
-
-    if (app.bond_structure.guaranteeTerm !== expectedGuarantee) {
-      compliance -= 15
-    }
-
-    // Check DAX mirror assignment
-    const expectedDaxMirror = {
-      fha: "DAX Secondary",
-      va: "DAX Premium",
-      usda: "DAX Agricultural",
-      sba: "DAX Corporate",
-    }[loanType]
-
-    if (app.bond_structure.daxMirror !== expectedDaxMirror) {
-      compliance -= 10
-    }
-  }
-
-  return Math.max(0, compliance)
-}
-
-function calculateDaxMirrorCompliance(app: any, loanType: string) {
-  let compliance = 100
-
-  // Check DAX mirroring implementation
-  if (!app.dax_mirror_compliance) {
-    compliance -= 40
-  } else {
-    compliance = app.dax_mirror_compliance
-  }
-
-  // Additional checks for specific loan types
-  if (loanType === "va" && compliance < 98) {
-    compliance -= 5 // VA loans require premium DAX compliance
-  }
-
-  return Math.max(0, compliance)
-}
-
-export async function GET() {
-  return NextResponse.json({
-    message: "Compliance scan API operational",
-    endpoints: {
-      POST: "Run compliance scan for specific application",
-      GET: "API status check",
-    },
-    supportedLoanTypes: ["fha", "va", "usda", "sba"],
-    bondStructures: {
-      fha: "50-year with 30-year guarantee (DAX Secondary)",
-      va: "50-year with 50-year guarantee (DAX Premium)",
-      usda: "50-year with 35-year guarantee (DAX Agricultural)",
-      sba: "50-year with 25-year guarantee (DAX Corporate)",
-    },
-    timestamp: new Date().toISOString(),
-  })
 }
