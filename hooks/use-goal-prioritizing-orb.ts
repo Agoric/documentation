@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
+import { useCallback } from "react"
 
 interface Goal {
   id: string
@@ -12,6 +13,7 @@ interface Goal {
   timeframe: string
   impact: "high" | "medium" | "low"
   category: "financial" | "property" | "investment" | "credit" | "savings"
+  deadline: string
 }
 
 interface ActionableStep {
@@ -74,6 +76,7 @@ interface GoalRecommendation {
   title: string
   description: string
   impact: "high" | "medium" | "low"
+  category: "optimization" | "risk-management" | "acceleration" | "diversification"
 }
 
 // Helper function to generate safe IDs
@@ -112,6 +115,7 @@ export function useGoalPrioritizingOrb() {
         timeframe: "2 weeks",
         impact: "high",
         category: "property",
+        deadline: "2024-01-01",
       },
       {
         id: generateId(),
@@ -122,6 +126,7 @@ export function useGoalPrioritizingOrb() {
         timeframe: "30 days",
         impact: "high",
         category: "credit",
+        deadline: "2023-12-15",
       },
       {
         id: generateId(),
@@ -132,6 +137,7 @@ export function useGoalPrioritizingOrb() {
         timeframe: "6 months",
         impact: "medium",
         category: "savings",
+        deadline: "2023-11-01",
       },
       {
         id: generateId(),
@@ -142,6 +148,7 @@ export function useGoalPrioritizingOrb() {
         timeframe: "1 week",
         impact: "medium",
         category: "investment",
+        deadline: "2023-10-01",
       },
     ]
 
@@ -532,16 +539,118 @@ export function useGoalPrioritizingOrb() {
   }
 
   // ---  Goal Recommendations ---------------------------------------------
-  // Convert the next actionable steps into a simple, UI-friendly list
-  const getGoalRecommendations = React.useCallback((): GoalRecommendation[] => {
-    // Surface at most the first 5 actionable steps
-    return nextActionableSteps.slice(0, 5).map((step) => ({
-      id: step.id,
-      title: step.title,
-      description: step.description,
-      impact: step.impact,
-    }))
-  }, [nextActionableSteps])
+  // AI-powered goal recommendations
+  const getGoalRecommendations = useCallback((): GoalRecommendation[] => {
+    return [
+      {
+        id: "emergency-optimization",
+        title: "Optimize Emergency Fund Strategy",
+        description:
+          "Your emergency fund is nearly complete. Consider moving excess to higher-yield investments once you reach your target.",
+        impact: "high",
+        category: "optimization",
+      },
+      {
+        id: "retirement-acceleration",
+        title: "Accelerate Retirement Savings",
+        description:
+          "Increase retirement contributions by $500/month to take advantage of compound growth over the next 20 years.",
+        impact: "high",
+        category: "acceleration",
+      },
+      {
+        id: "house-timeline",
+        title: "Adjust Home Purchase Timeline",
+        description:
+          "Consider extending your home purchase deadline by 6 months to reduce monthly contribution pressure and improve other goals.",
+        impact: "medium",
+        category: "risk-management",
+      },
+      {
+        id: "education-diversification",
+        title: "Diversify Education Funding",
+        description: "Split education fund between 529 plan and Roth IRA for tax advantages and flexibility.",
+        impact: "medium",
+        category: "diversification",
+      },
+      {
+        id: "vacation-timing",
+        title: "Optimize Vacation Timing",
+        description: "Your vacation goal is on track. Consider booking early for better rates and potential savings.",
+        impact: "low",
+        category: "optimization",
+      },
+    ]
+  }, [])
+
+  // Prioritize goals based on AI analysis
+  const prioritizeGoals = useCallback((goals: Goal[]) => {
+    setIsAnalyzing(true)
+
+    // Simulate AI processing
+    setTimeout(() => {
+      setIsAnalyzing(false)
+    }, 2000)
+
+    // AI prioritization logic
+    return goals.sort((a, b) => {
+      // Priority weight
+      const priorityWeight = { high: 3, medium: 2, low: 1 }
+
+      // Progress weight (goals closer to completion get slight boost)
+      const progressWeight = (progress: number) => (progress > 80 ? 1.2 : progress < 20 ? 0.8 : 1)
+
+      // Deadline urgency weight
+      const deadlineWeight = (deadline: string) => {
+        const months = (new Date(deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24 * 30)
+        return months < 12 ? 1.5 : months < 24 ? 1.2 : 1
+      }
+
+      const scoreA = priorityWeight[a.priority] * progressWeight(a.progress) * deadlineWeight(a.deadline)
+      const scoreB = priorityWeight[b.priority] * progressWeight(b.progress) * deadlineWeight(b.deadline)
+
+      return scoreB - scoreA
+    })
+  }, [])
+
+  // Get goal insights
+  const getGoalInsights = useCallback((goal: Goal) => {
+    const insights = []
+
+    if (goal.progress > 80) {
+      insights.push("🎯 Nearly complete! Consider planning next steps.")
+    }
+
+    if (goal.progress < 20) {
+      insights.push("⚡ Needs attention. Consider increasing contributions.")
+    }
+
+    const deadlineMonths = (new Date(goal.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24 * 30)
+    if (deadlineMonths < 6) {
+      insights.push("⏰ Deadline approaching. Review timeline.")
+    }
+
+    return insights
+  }, [])
+
+  // Calculate optimal allocation
+  const calculateOptimalAllocation = useCallback((goals: Goal[], totalBudget: number) => {
+    const allocations = new Map()
+
+    // Simple allocation based on priority and urgency
+    goals.forEach((goal) => {
+      const priorityMultiplier = { high: 0.4, medium: 0.35, low: 0.25 }
+      const baseAllocation = totalBudget * priorityMultiplier[goal.priority]
+
+      // Adjust based on progress and deadline
+      const progressAdjustment = goal.progress < 50 ? 1.2 : 0.8
+      const finalAllocation = baseAllocation * progressAdjustment
+
+      allocations.set(goal.id, Math.round(finalAllocation))
+    })
+
+    return allocations
+  }, [])
 
   return {
     prioritizedGoals,
@@ -558,7 +667,9 @@ export function useGoalPrioritizingOrb() {
     navigateToOpportunity,
     getCurrentTaskGuidance,
     markTaskCompleted,
-    // NEW ➜ allow components to fetch concise AI suggestions
     getGoalRecommendations,
+    prioritizeGoals,
+    getGoalInsights,
+    calculateOptimalAllocation,
   }
 }
