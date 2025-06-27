@@ -33,7 +33,7 @@ import { useGoalPrioritizingOrb } from "@/hooks/use-goal-prioritizing-orb"
 import { cn } from "@/lib/utils"
 
 export default function FinancialPlanningPage() {
-  const { isPremiumUnlocked, unlockPremium } = usePremiumUnlock()
+  const { isPremiumUnlocked, unlockAllFeatures } = usePremiumUnlock()
   const {
     goals,
     recommendations,
@@ -47,10 +47,8 @@ export default function FinancialPlanningPage() {
 
   // Auto-unlock premium features
   React.useEffect(() => {
-    if (!isPremiumUnlocked) {
-      unlockPremium()
-    }
-  }, [isPremiumUnlocked, unlockPremium])
+    unlockAllFeatures()
+  }, [unlockAllFeatures])
 
   const getStatusColor = (status: string) => {
     switch (status) {
