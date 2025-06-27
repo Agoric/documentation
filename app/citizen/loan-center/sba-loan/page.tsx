@@ -19,6 +19,7 @@ import {
   CheckCircle,
   Shield,
   Briefcase,
+  Target,
 } from "lucide-react"
 
 export default function SBALoanPage() {
@@ -459,4 +460,284 @@ export default function SBALoanPage() {
                             value={formData.collateral}
                             onChange={(e) => handleInputChange("collateral", e.target.value)}
                             className="w-full p-2 bg-orange-800/30 border border-orange-500/30 rounded-md text-white h-24"
-                            placeholder="Describe available collateral (real estate, equipment, etc.)..."\
+                            placeholder="Describe available collateral (real estate, equipment, etc.)..."
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {currentStep === 5 && (
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-white">Review Your SBA Application</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-medium text-orange-300">Personal Information</h4>
+                              <p className="text-white">
+                                {formData.firstName} {formData.lastName}
+                              </p>
+                              <p className="text-orange-200">{formData.email}</p>
+                              <p className="text-orange-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-orange-300">Business Information</h4>
+                              <p className="text-white">{formData.businessName}</p>
+                              <p className="text-orange-200">
+                                {formData.businessType} - {formData.businessStructure}
+                              </p>
+                              <p className="text-orange-200">{formData.yearsInBusiness} years in business</p>
+                              <p className="text-orange-200">{formData.numberOfEmployees} employees</p>
+                            </div>
+                          </div>
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-medium text-orange-300">Loan Details</h4>
+                              <p className="text-white">Amount: ${Number(formData.loanAmount).toLocaleString()}</p>
+                              <p className="text-orange-200">Purpose: {formData.loanPurpose}</p>
+                              <p className="text-orange-200 text-sm">{formData.useOfFunds}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-orange-300">Financial Information</h4>
+                              <p className="text-white">
+                                Annual Revenue: ${Number(formData.annualRevenue).toLocaleString()}
+                              </p>
+                              <p className="text-orange-200">
+                                Personal Income: ${Number(formData.personalIncome).toLocaleString()}
+                              </p>
+                              <p className="text-orange-200">
+                                Monthly Cash Flow: ${Number(formData.businessCashFlow).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between pt-6">
+                      <Button
+                        variant="outline"
+                        onClick={handlePrevStep}
+                        disabled={currentStep === 1}
+                        className="border-orange-500/30 text-orange-300 bg-transparent"
+                      >
+                        Previous
+                      </Button>
+                      {currentStep < loanSteps.length ? (
+                        <Button onClick={handleNextStep} className="bg-gradient-to-r from-orange-500 to-red-600">
+                          Next Step
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={handleSubmitApplication}
+                          className="bg-gradient-to-r from-green-500 to-emerald-600"
+                        >
+                          Submit SBA Application
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Loan Summary */}
+              <div className="space-y-6">
+                <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Calculator className="h-5 w-5 text-orange-400" />
+                      SBA Loan Summary
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-white mb-2">
+                        ${monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                      </div>
+                      <div className="text-orange-200">Monthly Payment (10-year term)</div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-orange-300">Loan Amount:</span>
+                        <span className="text-white">${Number(formData.loanAmount || 250000).toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-orange-300">SBA Rate:</span>
+                        <span className="text-white">8.25%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-orange-300">SBA Guarantee:</span>
+                        <span className="text-white">Up to 85%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-orange-300">Term:</span>
+                        <span className="text-white">Up to 25 years</span>
+                      </div>
+                    </div>
+
+                    <div className="bg-green-800/30 p-3 rounded-lg border border-green-500/20">
+                      <p className="text-sm text-green-200">
+                        <Shield className="h-4 w-4 inline mr-1" />
+                        SBA Government Guarantee
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Target className="h-5 w-5 text-orange-400" />
+                      SBA Benefits
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                      <span className="text-orange-200">Government guarantee</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                      <span className="text-orange-200">Lower down payments</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                      <span className="text-orange-200">Competitive rates</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                      <span className="text-orange-200">Longer repayment terms</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="programs" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {sbaLoanPrograms.map((program) => (
+                <Card
+                  key={program.name}
+                  className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20 hover:border-orange-400/40 transition-all duration-300"
+                >
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center justify-between">
+                      {program.name}
+                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30">{program.rate}</Badge>
+                    </CardTitle>
+                    <CardDescription className="text-orange-200">{program.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-orange-300">Max Amount:</span>
+                      <span className="text-white font-medium">{program.amount}</span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-white">SBA Benefits:</h4>
+                      <ul className="space-y-1">
+                        {program.features.map((feature, index) => (
+                          <li key={index} className="text-sm text-orange-200 flex items-center gap-2">
+                            <CheckCircle className="h-3 w-3 text-green-400" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <Button className={`w-full bg-gradient-to-r ${program.color}`}>Select SBA Program</Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="requirements" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-orange-400" />
+                    Business Requirements
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Size Standards</h4>
+                    <ul className="space-y-1 text-sm text-orange-200">
+                      <li>• Must qualify as small business</li>
+                      <li>• Based on industry size standards</li>
+                      <li>• Employee count or revenue limits</li>
+                      <li>• SBA size tool available</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Business Operations</h4>
+                    <ul className="space-y-1 text-sm text-orange-200">
+                      <li>• For-profit business</li>
+                      <li>• Operating in the US</li>
+                      <li>• Owner invested equity</li>
+                      <li>• Exhausted other financing</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Eligible Uses</h4>
+                    <ul className="space-y-1 text-sm text-orange-200">
+                      <li>• Working capital</li>
+                      <li>• Equipment purchase</li>
+                      <li>• Real estate acquisition</li>
+                      <li>• Debt refinancing</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-orange-900/50 to-red-900/30 backdrop-blur-sm border-orange-500/20">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-orange-400" />
+                    Owner Requirements
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Personal Requirements</h4>
+                    <ul className="space-y-1 text-sm text-orange-200">
+                      <li>• Good character and credit</li>
+                      <li>• Management experience</li>
+                      <li>• Personal guarantee required</li>
+                      <li>• No criminal background</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Financial Requirements</h4>
+                    <ul className="space-y-1 text-sm text-orange-200">
+                      <li>• Adequate cash flow</li>
+                      <li>• Reasonable debt-to-income</li>
+                      <li>• Collateral may be required</li>
+                      <li>• Personal financial statements</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium text-white mb-2">Documentation</h4>
+                    <ul className="space-y-1 text-sm text-orange-200">
+                      <li>• Business plan required</li>
+                      <li>• Financial statements</li>
+                      <li>• Tax returns (3 years)</li>
+                      <li>• Cash flow projections</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}
