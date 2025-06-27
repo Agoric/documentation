@@ -68,3 +68,6 @@ const GoalPrioritizingOrb: React.FC<GoalPrioritizingOrbProps> = () => {
 }
 
 export default GoalPrioritizingOrb
+
+// ✅ NEW: allow named import
+export { GoalPrioritizingOrb }
